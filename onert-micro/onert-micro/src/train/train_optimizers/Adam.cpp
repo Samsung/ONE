@@ -26,7 +26,7 @@ using namespace onert_micro;
 using namespace onert_micro::train;
 using namespace onert_micro::train::optimizers;
 
-void Adam::reset()
+void Adam::fullReset()
 {
   for (auto &cur_tensor_index_data : _tensor_to_exponent_avg)
   {
@@ -51,6 +51,52 @@ void Adam::reset()
     core::memory::OMMemoryManager::deallocateMemory(allocated_data);
   }
   _tensor_index_to_gradient.clear();
+}
+
+void Adam::reset()
+{
+  for (auto &cur_tensor_index_data : _tensor_index_to_gradient)
+  {
+    uint8_t *allocated_data = cur_tensor_index_data.second;
+
+    core::memory::OMMemoryManager::deallocateMemory(allocated_data);
+  }
+  _tensor_index_to_gradient.clear();
+}
+
+uint8_t *Adam::getExponentAvgDataByTensorIndex(uint16_t tensor_index)
+{
+  auto it = _tensor_to_exponent_avg.find(tensor_index);
+  if (it == _tensor_to_exponent_avg.end())
+    return nullptr;
+
+  return it->second;
+}
+
+uint8_t *Adam::getExponentAvgSquaresDataByTensorIndex(uint16_t tensor_index)
+{
+  auto it = _tensor_to_exponent_avg_squares.find(tensor_index);
+  if (it == _tensor_to_exponent_avg_squares.end())
+    return nullptr;
+
+  return it->second;
+}
+
+void Adam::setExponentAvgDataByTensorIndex(uint16_t tensor_index, uint8_t *data)
+{
+  assert(_tensor_to_exponent_avg.find(tensor_index) == _tensor_to_exponent_avg.end());
+  assert(data != nullptr);
+
+  _tensor_to_exponent_avg[tensor_index] = data;
+}
+
+void Adam::setExponentAvgSquaresDataByTensorIndex(uint16_t tensor_index, uint8_t *data)
+{
+  assert(_tensor_to_exponent_avg_squares.find(tensor_index) ==
+         _tensor_to_exponent_avg_squares.end());
+  assert(data != nullptr);
+
+  _tensor_to_exponent_avg_squares[tensor_index] = data;
 }
 
 /*

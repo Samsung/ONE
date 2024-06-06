@@ -106,15 +106,15 @@ DataBuffer readFile(const char *path)
  */
 int entry(int argc, char **argv)
 {
-  if (argc != 10 and argc != 9)
+  if (argc != 11 and argc != 10)
   {
-    std::cerr
-      << "Two variant of usage with and without wof file: " << argv[0]
-      << " <path/to/circle/model> "
-         " optional(<path/to/wof/file>) <path/to/save/trained/result> <path/to/input/train_data> "
-         "<path/to/input/target_train_data> "
-         "<path/to/input/test_data> <path/to/input/target_test_data> num_of_train_smpl "
-         "num_of_test_smpl\n";
+    std::cerr << "Two variant of usage with and without wof file: " << argv[0]
+              << " <path/to/circle/model> "
+                 " optional(<path/to/wof/file>) <path/to/save/trained/model> "
+                 "<path/to/save/checkpoint> <path/to/input/train_data> "
+                 "<path/to/input/target_train_data> "
+                 "<path/to/input/test_data> <path/to/input/target_test_data> num_of_train_smpl "
+                 "num_of_test_smpl\n";
     return EXIT_FAILURE;
   }
 
@@ -125,31 +125,34 @@ int entry(int argc, char **argv)
   const char *input_target_train_data_path = nullptr;
   const char *input_input_test_data_path = nullptr;
   const char *input_target_test_data_path = nullptr;
+  const char *checkpoints_path = nullptr;
   int32_t num_train_data_samples = 0;
   int32_t num_test_data_samples = 0;
 
-  if (argc == 10)
+  if (argc == 11)
   {
     circle_model_path = argv[1];
     wof_file_path = argv[2];
     output_trained_file_path = argv[3];
+    checkpoints_path = argv[4];
+    input_input_train_data_path = argv[5];
+    input_target_train_data_path = argv[6];
+    input_input_test_data_path = argv[7];
+    input_target_test_data_path = argv[8];
+    num_train_data_samples = atoi(argv[9]);
+    num_test_data_samples = atoi(argv[10]);
+  }
+  else if (argc == 10)
+  {
+    circle_model_path = argv[1];
+    output_trained_file_path = argv[2];
+    checkpoints_path = argv[3];
     input_input_train_data_path = argv[4];
     input_target_train_data_path = argv[5];
     input_input_test_data_path = argv[6];
     input_target_test_data_path = argv[7];
     num_train_data_samples = atoi(argv[8]);
     num_test_data_samples = atoi(argv[9]);
-  }
-  else if (argc == 9)
-  {
-    circle_model_path = argv[1];
-    output_trained_file_path = argv[2];
-    input_input_train_data_path = argv[3];
-    input_target_train_data_path = argv[4];
-    input_input_test_data_path = argv[5];
-    input_target_test_data_path = argv[6];
-    num_train_data_samples = atoi(argv[7]);
-    num_test_data_samples = atoi(argv[8]);
   }
   else
   {
@@ -175,12 +178,12 @@ int entry(int argc, char **argv)
 
   // Set user defined training settings
   const uint32_t training_epochs = 50;
-  const float lambda = 0.01f;
-  const uint32_t BATCH_SIZE = 64;
-  const uint32_t INPUT_SIZE = 13;
-  const uint32_t OUTPUT_SIZE = 1;
+  const float lambda = 0.001f;
+  const uint32_t BATCH_SIZE = 32;
+  const uint32_t INPUT_SIZE = 180;
+  const uint32_t OUTPUT_SIZE = 4;
   const uint32_t num_train_layers = 0;
-  const onert_micro::OMLoss loss = onert_micro::MSE;
+  const onert_micro::OMLoss loss = onert_micro::CROSS_ENTROPY;
   const onert_micro::OMTrainOptimizer train_optim = onert_micro::ADAM;
   const float beta = 0.9;
   const float beta_squares = 0.999;
@@ -211,13 +214,15 @@ int entry(int argc, char **argv)
   // Note: here test size used with BATCH_SIZE = 1
   float test_input[INPUT_SIZE];
   float test_target[OUTPUT_SIZE];
+  std::vector<float> accuracy_v;
+  std::vector<float> cross_entropy_v;
+  float max_accuracy = std::numeric_limits<float>::min();
 
   for (uint32_t e = 0; e < training_epochs; ++e)
   {
-    std::vector<float> accuracy_v;
-    std::vector<float> cross_entropy_v;
     // Run train for current epoch
     std::cout << "Run training for epoch: " << e + 1 << "/" << training_epochs << "\n";
+    config.training_context.num_epoch = e + 1;
     uint32_t num_steps = num_train_data_samples / BATCH_SIZE;
     for (int i = 0; i < num_steps; ++i)
     {
@@ -249,10 +254,11 @@ int entry(int argc, char **argv)
       float accuracy = 0.f;
 
       // Evaluate cross_entropy and accuracy metrics
-      train_interpreter.evaluateMetric(
-        onert_micro::MSE_METRICS, reinterpret_cast<void *>(&cross_entropy_metric), cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::MAE_METRICS,
-                                       reinterpret_cast<void *>(&accuracy), cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+                                       reinterpret_cast<void *>(&cross_entropy_metric),
+                                       cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+                                       cur_batch_size);
 
       // Save them into vectors
       accuracy_v.push_back(accuracy);
@@ -261,8 +267,8 @@ int entry(int argc, char **argv)
     // Calculate and print average values
     float sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
     float sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
-    std::cout << "Train Average MAE = " << sum_acc / accuracy_v.size() << "\n";
-    std::cout << "Train Average MSE = " << sum_ent / cross_entropy_v.size() << "\n";
+    std::cout << "Train Average ACCURACY = " << sum_acc / accuracy_v.size() << "\n";
+    std::cout << "Train Average CROSS ENTROPY = " << sum_ent / cross_entropy_v.size() << "\n";
 
     // Run test for current epoch
     std::cout << "Run test for epoch: " << e + 1 << "/" << training_epochs << "\n";
@@ -290,21 +296,36 @@ int entry(int argc, char **argv)
       float cross_entropy_metric = 0.f;
       float accuracy = 0.f;
 
-      train_interpreter.evaluateMetric(
-        onert_micro::MAE_METRICS, reinterpret_cast<void *>(&cross_entropy_metric), cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::MSE_METRICS,
-                                       reinterpret_cast<void *>(&accuracy), cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+                                       reinterpret_cast<void *>(&cross_entropy_metric),
+                                       cur_batch_size);
+      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+                                       cur_batch_size);
 
       accuracy_v.push_back(accuracy);
       cross_entropy_v.push_back(cross_entropy_metric);
     }
+    // Calculate and print average values
     sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
     sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
-    std::cout << "Test Average MSE = " << sum_acc / accuracy_v.size() << "\n";
-    std::cout << "Test Average MAE = " << sum_ent / cross_entropy_v.size() << "\n";
+    std::cout << "Test Average ACCURACY = " << sum_acc / accuracy_v.size() << "\n";
+    std::cout << "Test Average CROSS ENTROPY = " << sum_ent / cross_entropy_v.size() << "\n";
+
+    float acc = sum_acc / accuracy_v.size();
+    if (acc > max_accuracy)
+    {
+      // Save best checkpoint
+      train_interpreter.saveCheckpoint(config, checkpoints_path);
+      max_accuracy = acc;
+      std::cout << "Found new max Test ACCURACY = " << max_accuracy << " in epoch = " << e + 1
+                << " / " << training_epochs << "\n";
+    }
   }
 
-  // Save training result
+  // Load best model
+  train_interpreter.loadCheckpoint(config, checkpoints_path);
+
+  // Save training best result
   train_interpreter.saveModel(config, output_trained_file_path);
 
   return EXIT_SUCCESS;

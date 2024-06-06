@@ -179,12 +179,12 @@ OMStatus OMExecutionPlanCreator::createBackwardExecutionPlan(
   }
 
   uint32_t last_node_pos = std::min(num_kernels, num_train_layers);
+  const auto *op_codes = runtime_context.getCircleOpcodes();
   for (int32_t index = 0; index < last_node_pos; ++index)
   {
     uint32_t cur_op_index = num_kernels - index - 1;
     auto *cur_op = operators->operator[](cur_op_index);
 
-    const auto *op_codes = runtime_context.getCircleOpcodes();
     uint32_t cur_opcode_index = cur_op->opcode_index();
 
     assert(cur_opcode_index < op_codes->size());

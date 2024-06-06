@@ -51,10 +51,27 @@ public:
   Adam(Adam &&) = delete;
   Adam &operator=(const Adam &) = delete;
   Adam &&operator=(const Adam &&) = delete;
-  ~Adam() { reset(); }
+  ~Adam() { fullReset(); }
 
   // Reset and deallocate all internal states
+  void fullReset();
+
+  // Reset only gradients
   void reset();
+
+  // Check is contains current state or not
+  // Needed for saving checkpoints
+  bool isReset()
+  {
+    return _tensor_to_exponent_avg_squares.empty() or _tensor_to_exponent_avg.empty();
+  }
+
+  // Get exponent and exponent squares data be tensor index
+  uint8_t *getExponentAvgDataByTensorIndex(uint16_t tensor_index);
+  uint8_t *getExponentAvgSquaresDataByTensorIndex(uint16_t tensor_index);
+  // Set exponent and exponent squares data be tensor index
+  void setExponentAvgDataByTensorIndex(uint16_t tensor_index, uint8_t *data);
+  void setExponentAvgSquaresDataByTensorIndex(uint16_t tensor_index, uint8_t *data);
 
   // Update internal states according to Adam theory
   OMStatus handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context);
