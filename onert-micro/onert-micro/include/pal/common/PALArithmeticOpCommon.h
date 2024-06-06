@@ -46,7 +46,10 @@ template <typename T> struct DivFn
 {
   T operator()(T lhs, T rhs) { return lhs / rhs; }
 };
-
+template <typename T> struct SquaredDifferenceFn
+{
+  T operator()(T lhs, T rhs) { return (lhs - rhs) * (lhs - rhs); }
+};
 template <typename T, typename Fn>
 OMStatus ArithmeticOp(const core::BinaryArithmeticBroadcastParams &params, const int flat_size,
                       const T *input1_data, const T *input2_data, T *output_data)
