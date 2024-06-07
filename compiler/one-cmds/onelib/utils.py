@@ -96,19 +96,26 @@ def get_config_parser() -> configparser.ConfigParser:
     return parser
 
 
-def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
+def parse_cfg(config_path: Union[str, None],
+              section_to_parse: str,
+              args,
+              quiet: bool = False):
     """
     parse configuration file and store the information to args
     
     :param config_path: path to configuration file
     :param section_to_parse: section name to parse
     :param args: object to store the parsed information
+    :param quiet: raise no error when given section doesn't exist
     """
     if config_path is None:
         return
 
     parser = get_config_parser()
     parser.read(config_path)
+
+    if not parser.has_section(section_to_parse) and quiet:
+        return
 
     if not parser.has_section(section_to_parse):
         raise AssertionError('configuration file must have \'' + section_to_parse +

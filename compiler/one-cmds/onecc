@@ -67,7 +67,7 @@ def _check_subtool_exists():
 
 
 def _get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-b BACKEND] [-W WORKFLOW] [-O OPTIMIZATION] [COMMAND <args>]'
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-b BACKEND] [-W WORKFLOW] [-O OPTIMIZATION] [-T TARGET] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
@@ -88,6 +88,9 @@ def _get_parser():
 
     parser.add_argument(
         '-b', '--backend', type=str, help='generate code for given backend')
+
+    parser.add_argument(
+        '-T', '--target', type=str, help='run with specific target of the backend')
 
     # just for help message
     compile_group = parser.add_argument_group('compile to circle model')
@@ -205,6 +208,8 @@ def main():
             runner.add_opt(getattr(args, 'O'))
         if oneutils.is_valid_attr(args, 'backend'):
             runner.set_backend(args.backend)
+        if oneutils.is_valid_attr(args, 'target'):
+            runner.set_target(args.target)
         runner.run(bin_dir)
     elif oneutils.is_valid_attr(args, 'workflow'):
         runner = WorkflowRunner(args.workflow)

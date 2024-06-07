@@ -18,6 +18,7 @@
  * dummy-compile only tests its interface rather than its functionality.
  *
  * ./dummy-compile -o ${OUTPUT_NAME} ${INPUT_NAME}
+ * ./dummy-compile -o ${OUTPUT_NAME} ${INPUT_NAME} -T {TARGET_NAME}
  *
  * NOTE argv[3](INPUT_NAME) is not used here.
  */
@@ -28,7 +29,7 @@
 
 int main(int argc, char **argv)
 {
-  if (argc != 4)
+  if (argc != 4 and argc != 6)
     return EXIT_FAILURE;
 
   std::string opt_o{"-o"};
@@ -40,7 +41,21 @@ int main(int argc, char **argv)
   std::string output_name{argv[2]};
   std::ofstream outfile(output_name);
 
-  outfile << "dummy-compile dummy output!!" << std::endl;
+  if (argc == 4)
+  {
+    outfile << "dummy-compile dummy output!!" << std::endl;
+  }
+  // argc == 6
+  else
+  {
+    std::string opt_T{"--target"};
+    std::string argv_4{argv[4]};
+    if (opt_T != argv_4)
+      return EXIT_FAILURE;
+
+    std::string target_name(argv[5]);
+    outfile << "dummy-compile with " << target_name << " target" << std::endl;
+  }
 
   outfile.close();
 
