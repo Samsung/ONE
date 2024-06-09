@@ -1,0 +1,7 @@
+var classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel =
+[
+    [ "NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html#aaf7907a2169b2c83710c2d8e94f9760b", null ],
+    [ "~NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html#a19c07d695d615bf11f8a6341e46c951c", null ],
+    [ "get_model_ptr", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html#a7e9d3b676c87d4fec8006ea80f0411c2", null ],
+    [ "_test_kernel_model_circle", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html#acb124d2a2dea733a48ce5d13997fe4bb", null ]
+];

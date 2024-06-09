@@ -1,0 +1,7 @@
+<map id="onert_micro::test_model::TestDataFloatSquaredDifference" name="onert_micro::test_model::TestDataFloatSquaredDifference">
+<area shape="rect" id="Node000001" title=" " alt="" coords="21,183,236,223"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_squared_difference_base.html" title=" " alt="" coords="5,94,252,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,150,131,182,126,182,126,150"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="49,5,208,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,62,131,94,126,94,126,62"/>
+</map>

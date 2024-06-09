@@ -1,0 +1,5 @@
+var onert_micro_2include_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h =
+[
+    [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchLogSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel" ],
+    [ "test_kernel_model_circle", "onert-micro_2include_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h.html#af47a0c582a9cbb8008f04532cc54c8e2", null ]
+];

@@ -1,0 +1,5 @@
+var onert_micro_2include_2test__models_2squared__difference_2_neg_squared_difference_kernel_8h =
+[
+    [ "onert_micro::test_model::NegTestDataInputsTypeMismatchSquaredDifference", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_squared_difference.html", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_squared_difference" ],
+    [ "test_kernel_model_circle", "onert-micro_2include_2test__models_2squared__difference_2_neg_squared_difference_kernel_8h.html#a505b7f6bd60e1e6f21154cfe2163210a", null ]
+];

@@ -1,0 +1,7 @@
+var luci_interpreter_2include_2luci__interpreter_2test__models_2transpose__conv_2_neg_transpose_conv_kernel_8h =
+[
+    [ "luci_interpreter::test_kernel::NegTestDataInputMismatchTransposeConvKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_mismatch_transpose_conv_kernel" ],
+    [ "luci_interpreter::test_kernel::NegTestDataInvalidInputShapeTransposeConvKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_shape_transpose_conv_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_invalid_input_shape_transpose_conv_kernel" ],
+    [ "test_kernel_model_circle", "luci-interpreter_2include_2luci__interpreter_2test__models_2transpose__conv_2_neg_transpose_conv_kernel_8h.html#a2b0b23a93eccea838e7aef516b13095d", null ],
+    [ "test_kernel_model_circle", "luci-interpreter_2include_2luci__interpreter_2test__models_2transpose__conv_2_neg_transpose_conv_kernel_8h.html#ad757f4b1500befe66b0426bdef6a7007", null ]
+];

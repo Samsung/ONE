@@ -12,6 +12,8 @@ var namespaceonert__micro_1_1core =
     [ "ConcatenationParams", "structonert__micro_1_1core_1_1_concatenation_params.html", "structonert__micro_1_1core_1_1_concatenation_params" ],
     [ "FloatConv2D", "structonert__micro_1_1core_1_1_float_conv2_d.html", "structonert__micro_1_1core_1_1_float_conv2_d" ],
     [ "FullyConnectedParams", "structonert__micro_1_1core_1_1_fully_connected_params.html", "structonert__micro_1_1core_1_1_fully_connected_params" ],
+    [ "L2NormalizationParams", "structonert__micro_1_1core_1_1_l2_normalization_params.html", "structonert__micro_1_1core_1_1_l2_normalization_params" ],
+    [ "LogSoftmaxParams", "structonert__micro_1_1core_1_1_log_softmax_params.html", "structonert__micro_1_1core_1_1_log_softmax_params" ],
     [ "OMDataTypeImpl", "structonert__micro_1_1core_1_1_o_m_data_type_impl.html", null ],
     [ "OMDataTypeImpl< OMDataType::BOOL >", "structonert__micro_1_1core_1_1_o_m_data_type_impl_3_01_o_m_data_type_1_1_b_o_o_l_01_4.html", "structonert__micro_1_1core_1_1_o_m_data_type_impl_3_01_o_m_data_type_1_1_b_o_o_l_01_4" ],
     [ "OMDataTypeImpl< OMDataType::FLOAT16 >", "structonert__micro_1_1core_1_1_o_m_data_type_impl_3_01_o_m_data_type_1_1_f_l_o_a_t16_01_4.html", "structonert__micro_1_1core_1_1_o_m_data_type_impl_3_01_o_m_data_type_1_1_f_l_o_a_t16_01_4" ],

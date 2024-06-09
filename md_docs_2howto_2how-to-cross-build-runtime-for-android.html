@@ -99,8 +99,8 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <p>Or you can use <code>tools/cross/install_android_sdk.sh</code> script to prepare Android SDK including NDK. You can find NDK in <code>{android-sdk-dir}/ndk/{ndk-version}</code> directory.</p>
 <h1>Build</h1>
 <h2>Host Environment Requirements</h2>
-<p>CMake 3.6.0 or later is required for Android NDK r20 CMake support. So if you want to use Docker, please use <code>infra/docker/focal/Dockerfile</code> which is based on Ubuntu 20.04. It has CMake 3.16.3.</p>
-<div class="fragment"><div class="line">$ ./nnas build-docker-image -t nnfw/one-devtools:focal</div>
+<p>CMake 3.6.0 or later is required for Android NDK r20 CMake support. So if you want to use Docker, please use <code>infra/docker/android-sdk/Dockerfile</code>.</p>
+<div class="fragment"><div class="line">$ ./nnas build-docker-image --codename android-sdk -t nnfw/one-devtools:android-sdk</div>
 </div><!-- fragment --><h2>Build and install the runtime</h2>
 <p>Some tools/libs are still not supported and those are not built by default - mostly due to dependency on HDF5 library. Please refer to <code>infra/nnfw/cmake/options/options_aarch64-android.cmake</code> for details.</p>
 <p>Different from cross build for linux,</p>

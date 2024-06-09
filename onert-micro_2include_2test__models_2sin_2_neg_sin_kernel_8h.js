@@ -1,0 +1,4 @@
+var onert_micro_2include_2test__models_2sin_2_neg_sin_kernel_8h =
+[
+    [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSinKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sin_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sin_kernel" ]
+];

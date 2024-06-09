@@ -118,9 +118,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2b38dfae07532ab37407ad24af0cd73b" id="r_a2b38dfae07532ab37407ad24af0cd73b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_event_writer.html">EventWriter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_writer.html#a2b38dfae07532ab37407ad24af0cd73b">get</a> (const std::string &amp;filename)</td></tr>
-<tr class="memdesc:a2b38dfae07532ab37407ad24af0cd73b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retuens a singleton object.  <br /></td></tr>
-<tr class="separator:a2b38dfae07532ab37407ad24af0cd73b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae20a81071359193d55a4b2bf1b89eb8f" id="r_ae20a81071359193d55a4b2bf1b89eb8f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_event_writer.html">EventWriter</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_event_writer.html#ae20a81071359193d55a4b2bf1b89eb8f">get</a> (const std::string &amp;workspace_dir)</td></tr>
+<tr class="memdesc:ae20a81071359193d55a4b2bf1b89eb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retuens a singleton object.  <br /></td></tr>
+<tr class="separator:ae20a81071359193d55a4b2bf1b89eb8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -164,8 +164,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2b38dfae07532ab37407ad24af0cd73b" name="a2b38dfae07532ab37407ad24af0cd73b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b38dfae07532ab37407ad24af0cd73b">&#9670;&#160;</a></span>get()</h2>
+<a id="ae20a81071359193d55a4b2bf1b89eb8f" name="ae20a81071359193d55a4b2bf1b89eb8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae20a81071359193d55a4b2bf1b89eb8f">&#9670;&#160;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +177,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">static <a class="el" href="class_event_writer.html">EventWriter</a> * EventWriter::get </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td class="paramname"><em>workspace_dir</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -194,7 +194,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   94</span>  {</div>
 <div class="line"><span class="lineno">   95</span>    std::unique_lock&lt;std::mutex&gt; lock{_mutex};</div>
 <div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    <span class="keyword">static</span> <a class="code hl_class" href="class_event_writer.html">EventWriter</a> singleton(filename);</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keyword">static</span> <a class="code hl_class" href="class_event_writer.html">EventWriter</a> singleton(workspace_dir);</div>
 <div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> &amp;singleton;</div>
 <div class="line"><span class="lineno">   99</span>  }</div>
 <div class="ttc" id="aclass_event_writer_html"><div class="ttname"><a href="class_event_writer.html">EventWriter</a></div><div class="ttdef"><b>Definition</b> <a href="_event_writer_8h_source.html#l00080">EventWriter.h:81</a></div></div>

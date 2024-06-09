@@ -1,4 +1,0 @@
-var _neg_sqrt_kernel_8h =
-[
-    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchSqrtKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_sqrt_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_sqrt_kernel" ]
-];

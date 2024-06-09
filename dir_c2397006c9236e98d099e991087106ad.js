@@ -1,6 +1,6 @@
 var dir_c2397006c9236e98d099e991087106ad =
 [
-    [ "FloatL2NormalizeKernel.h", "_float_l2_normalize_kernel_8h.html", "_float_l2_normalize_kernel_8h" ],
-    [ "NegL2NormalizeKernel.h", "_neg_l2_normalize_kernel_8h.html", "_neg_l2_normalize_kernel_8h" ],
-    [ "TestDataL2NormalizeBase.h", "_test_data_l2_normalize_base_8h.html", "_test_data_l2_normalize_base_8h" ]
+    [ "FloatL2NormalizeKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2l2__normalization_2_float_l2_normalize_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2l2__normalization_2_float_l2_normalize_kernel_8h" ],
+    [ "NegL2NormalizeKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2l2__normalization_2_neg_l2_normalize_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2l2__normalization_2_neg_l2_normalize_kernel_8h" ],
+    [ "TestDataL2NormalizeBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2l2__normalization_2_test_data_l2_normalize_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2l2__normalization_2_test_data_l2_normalize_base_8h" ]
 ];

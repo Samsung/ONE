@@ -18,8 +18,11 @@ var namespaceonert__micro_1_1execute =
     [ "computePadding", "namespaceonert__micro_1_1execute.html#afa7ceac3620b2b1f2610dbbe5367edff", null ],
     [ "computePaddingHeightWidth", "namespaceonert__micro_1_1execute.html#afcd2a79dd4fb5a079bbe41b8aa834ca3", null ],
     [ "evalComparisonGeneric", "namespaceonert__micro_1_1execute.html#aaeb8636803a5020701dd2565e98a4728", null ],
+    [ "evalQuantizedComparisonGeneric", "namespaceonert__micro_1_1execute.html#ae6286a7b10df60824b289f6baf289029", null ],
     [ "getQuantizedConvolutionMultipler", "namespaceonert__micro_1_1execute.html#a0c2fd479509da8a95b7cd84652f01e38", null ],
     [ "quantizeMultiplier", "namespaceonert__micro_1_1execute.html#a08c8cab72e9c82644f03ab9e6d4af1ee", null ],
+    [ "quantizeMultiplierSmallerThanOneExp", "namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38", null ],
+    [ "readDataKernel", "namespaceonert__micro_1_1execute.html#a20e362151b5cbe06c7c8c9e5b54ec543", null ],
     [ "kernel_builtin_execute", "namespaceonert__micro_1_1execute.html#a628d7ac02011d8c04aff4375f9803240", null ],
     [ "kernel_custom_execute", "namespaceonert__micro_1_1execute.html#a9d940352336b4e93813c268fbc8e59ee", null ]
 ];

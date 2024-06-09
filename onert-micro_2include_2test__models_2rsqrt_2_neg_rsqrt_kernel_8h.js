@@ -1,0 +1,4 @@
+var onert_micro_2include_2test__models_2rsqrt_2_neg_rsqrt_kernel_8h =
+[
+    [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchRsqrtKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_rsqrt_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_rsqrt_kernel" ]
+];

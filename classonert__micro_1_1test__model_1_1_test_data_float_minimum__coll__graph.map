@@ -1,0 +1,7 @@
+<map id="onert_micro::test_model::TestDataFloatMinimum" name="onert_micro::test_model::TestDataFloatMinimum">
+<area shape="rect" id="Node000001" title=" " alt="" coords="21,183,183,223"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_minimum_base.html" title=" " alt="" coords="5,94,199,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,150,105,182,99,182,99,150"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="22,5,182,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,62,105,94,99,94,99,62"/>
+</map>

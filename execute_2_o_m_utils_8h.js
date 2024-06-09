@@ -6,5 +6,6 @@ var execute_2_o_m_utils_8h =
     [ "computePadding", "execute_2_o_m_utils_8h.html#afa7ceac3620b2b1f2610dbbe5367edff", null ],
     [ "computePaddingHeightWidth", "execute_2_o_m_utils_8h.html#afcd2a79dd4fb5a079bbe41b8aa834ca3", null ],
     [ "getQuantizedConvolutionMultipler", "execute_2_o_m_utils_8h.html#a0c2fd479509da8a95b7cd84652f01e38", null ],
-    [ "quantizeMultiplier", "execute_2_o_m_utils_8h.html#a08c8cab72e9c82644f03ab9e6d4af1ee", null ]
+    [ "quantizeMultiplier", "execute_2_o_m_utils_8h.html#a08c8cab72e9c82644f03ab9e6d4af1ee", null ],
+    [ "quantizeMultiplierSmallerThanOneExp", "execute_2_o_m_utils_8h.html#a6b3b2086437cf9875010e5c914dbde38", null ]
 ];

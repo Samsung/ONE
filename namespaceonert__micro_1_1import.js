@@ -1,5 +1,9 @@
 var namespaceonert__micro_1_1import =
 [
+    [ "helpers", "namespaceonert__micro_1_1import_1_1helpers.html", [
+      [ "configure_SISO_kernel", "namespaceonert__micro_1_1import_1_1helpers.html#a01b36a36b9716d68952f4ea38f97e345", null ],
+      [ "configure_TISO_kernel", "namespaceonert__micro_1_1import_1_1helpers.html#a3bd703f62c8cae3357868df2c9d76da1", null ]
+    ] ],
     [ "KernelBuiltinConfigureRegistry", "classonert__micro_1_1import_1_1_kernel_builtin_configure_registry.html", "classonert__micro_1_1import_1_1_kernel_builtin_configure_registry" ],
     [ "KernelCustomConfigureRegistry", "classonert__micro_1_1import_1_1_kernel_custom_configure_registry.html", "classonert__micro_1_1import_1_1_kernel_custom_configure_registry" ],
     [ "OMConfigureArgs", "structonert__micro_1_1import_1_1_o_m_configure_args.html", "structonert__micro_1_1import_1_1_o_m_configure_args" ],

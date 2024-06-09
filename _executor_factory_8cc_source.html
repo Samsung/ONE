@@ -604,15 +604,15 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                                       order,</div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>                                       tracing_ctx};</div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span> </div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath.empty())</div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;tracing_mode)</div>
 <div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>  {</div>
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>    std::unique_ptr&lt;exec::IExecutionObserver&gt; ctp =</div>
-<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath, exec-&gt;graph(), tracing_ctx);</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;workspace_dir, exec-&gt;graph(), tracing_ctx);</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>    exec-&gt;addObserver(std::move(ctp));</div>
 <div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  }</div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;minmax_filepath.empty())</div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>    exec-&gt;addObserver(std::make_unique&lt;exec::MinMaxRecorder&gt;(</div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>      <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;minmax_filepath, exec-&gt;graph(), exec-&gt;getBackendContexts()));</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;minmax_dump)</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>    exec-&gt;addObserver(std::make_unique&lt;exec::MinMaxRecorder&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;workspace_dir, exec-&gt;graph(),</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>                                                             exec-&gt;getBackendContexts()));</div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span> </div>
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>  <span class="keywordflow">return</span> exec;</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>}</div>
@@ -696,10 +696,10 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>    exec = dataflow_exec;</div>
 <div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>  }</div>
 <div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath.empty())</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;tracing_mode)</div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>  {</div>
 <div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    std::unique_ptr&lt;exec::IExecutionObserver&gt; ctp =</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath, exec-&gt;graph(), tracing_ctx);</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;workspace_dir, exec-&gt;graph(), tracing_ctx);</div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>    exec-&gt;addObserver(std::move(ctp));</div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>  }</div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span> </div>
@@ -991,10 +991,10 @@ $(document).ready(function(){initNavTree('_executor_factory_8cc_source.html','')
 <div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>                                                 tracing_ctx,</div>
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>                                                 training_info.lossInfo()};</div>
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath.empty())</div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;tracing_mode)</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>  {</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    std::unique_ptr&lt;exec::IExecutionObserver&gt; ctp =</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;trace_filepath, exec-&gt;graph(), tracing_ctx);</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>      std::make_unique&lt;exec::TracingObserver&gt;(<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>-&gt;workspace_dir, exec-&gt;graph(), tracing_ctx);</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    exec-&gt;addObserver(std::move(ctp));</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>  }</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>  <span class="comment">// TODO Support MINMAX_H5DUMPER</span></div>

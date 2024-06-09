@@ -51,7 +51,7 @@ var searchData=
   ['quantizewithminmaxpass_2eh_48',['QuantizeWithMinMaxPass.h',['../_quantize_with_min_max_pass_8h.html',1,'']]],
   ['quantizewithpredecessorpass_2ecpp_49',['QuantizeWithPredecessorPass.cpp',['../_quantize_with_predecessor_pass_8cpp.html',1,'']]],
   ['quantizewithpredecessorpass_2eh_50',['QuantizeWithPredecessorPass.h',['../_quantize_with_predecessor_pass_8h.html',1,'']]],
-  ['quantlesskernel_2eh_51',['QuantLessKernel.h',['../_quant_less_kernel_8h.html',1,'']]],
+  ['quantlesskernel_2eh_51',['quantlesskernel.h',['../luci-interpreter_2include_2luci__interpreter_2test__models_2less_2_quant_less_kernel_8h.html',1,'(Global Namespace)'],['../onert-micro_2include_2test__models_2less_2_quant_less_kernel_8h.html',1,'(Global Namespace)']]],
   ['quants16slicekernel_2eh_52',['QuantS16SliceKernel.h',['../_quant_s16_slice_kernel_8h.html',1,'']]],
   ['quants8unidirectionallstm_2eh_53',['QuantS8UnidirectionalLSTM.h',['../_quant_s8_unidirectional_l_s_t_m_8h.html',1,'']]],
   ['quantu8slicekernel_2eh_54',['QuantU8SliceKernel.h',['../_quant_u8_slice_kernel_8h.html',1,'']]]

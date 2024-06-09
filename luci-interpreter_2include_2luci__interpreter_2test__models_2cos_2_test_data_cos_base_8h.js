@@ -1,0 +1,4 @@
+var luci_interpreter_2include_2luci__interpreter_2test__models_2cos_2_test_data_cos_base_8h =
+[
+    [ "luci_interpreter::test_kernel::TestDataCosBase< T >", "classluci__interpreter_1_1test__kernel_1_1_test_data_cos_base.html", "classluci__interpreter_1_1test__kernel_1_1_test_data_cos_base" ]
+];

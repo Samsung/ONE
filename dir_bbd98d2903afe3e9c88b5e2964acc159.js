@@ -1,6 +1,6 @@
 var dir_bbd98d2903afe3e9c88b5e2964acc159 =
 [
-    [ "FloatMaximumKernel.h", "_float_maximum_kernel_8h.html", "_float_maximum_kernel_8h" ],
-    [ "NegMaximumKernel.h", "_neg_maximum_kernel_8h.html", "_neg_maximum_kernel_8h" ],
-    [ "TestDataMaximumBase.h", "_test_data_maximum_base_8h.html", "_test_data_maximum_base_8h" ]
+    [ "FloatMaximumKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h" ],
+    [ "NegMaximumKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_neg_maximum_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_neg_maximum_kernel_8h" ],
+    [ "TestDataMaximumBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_test_data_maximum_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_test_data_maximum_base_8h" ]
 ];

@@ -1,0 +1,5 @@
+var luci_interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_neg_average_pool2_d_kernel_8h =
+[
+    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel" ],
+    [ "test_kernel_model_circle", "luci-interpreter_2include_2luci__interpreter_2test__models_2average__pool__2d_2_neg_average_pool2_d_kernel_8h.html#aff5d1f1c60ca988ad7052836baea7530", null ]
+];

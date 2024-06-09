@@ -2,6 +2,8 @@ var _o_m_kernel_data_8h =
 [
     [ "onert_micro::core::ConcatenationParams", "structonert__micro_1_1core_1_1_concatenation_params.html", "structonert__micro_1_1core_1_1_concatenation_params" ],
     [ "onert_micro::core::SoftmaxParams", "structonert__micro_1_1core_1_1_softmax_params.html", "structonert__micro_1_1core_1_1_softmax_params" ],
+    [ "onert_micro::core::LogSoftmaxParams", "structonert__micro_1_1core_1_1_log_softmax_params.html", "structonert__micro_1_1core_1_1_log_softmax_params" ],
+    [ "onert_micro::core::L2NormalizationParams", "structonert__micro_1_1core_1_1_l2_normalization_params.html", "structonert__micro_1_1core_1_1_l2_normalization_params" ],
     [ "onert_micro::core::Pool2DParams", "structonert__micro_1_1core_1_1_pool2_d_params.html", "structonert__micro_1_1core_1_1_pool2_d_params" ],
     [ "onert_micro::core::StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ],
     [ "onert_micro::core::BinaryArithmeticBroadcastParams", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params" ],

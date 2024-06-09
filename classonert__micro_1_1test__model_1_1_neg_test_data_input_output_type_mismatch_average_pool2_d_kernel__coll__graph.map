@@ -1,0 +1,5 @@
+<map id="onert_micro::test_model::NegTestDataInputOutputTypeMismatchAveragePool2DKernel" name="onert_micro::test_model::NegTestDataInputOutputTypeMismatchAveragePool2DKernel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,211,150"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_neg_test_data_base.html" title=" " alt="" coords="28,5,188,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,61,111,93,105,93,105,61"/>
+</map>

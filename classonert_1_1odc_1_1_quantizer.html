@@ -254,7 +254,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  116</span> </div>
 <div class="line"><span class="lineno">  117</span>    <span class="comment">// Record minmax by minmax-embedder</span></div>
 <div class="line"><span class="lineno">  118</span>    <span class="comment">// TODO use workspace to find minmax file</span></div>
-<div class="line"><span class="lineno">  119</span>    <span class="keyword">auto</span> minmax_path = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::MINMAX_FILEPATH);</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">auto</span> minmax_path = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::WORKSPACE_DIR) + <span class="stringliteral">&quot;/minmax.bin&quot;</span>;</div>
 <div class="line"><span class="lineno">  120</span>    Embedder().embed(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), minmax_path, {1.f, 99.f});</div>
 <div class="line"><span class="lineno">  121</span>  }</div>
 <div class="line"><span class="lineno">  122</span> </div>

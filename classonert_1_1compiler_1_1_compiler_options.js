@@ -10,6 +10,7 @@ var classonert_1_1compiler_1_1_compiler_options =
     [ "he_profiling_mode", "classonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990", null ],
     [ "he_scheduler", "classonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d", null ],
     [ "manual_scheduler_options", "classonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661", null ],
-    [ "minmax_filepath", "classonert_1_1compiler_1_1_compiler_options.html#a954cebf067d95ba97dcb1f84447ba7f0", null ],
-    [ "trace_filepath", "classonert_1_1compiler_1_1_compiler_options.html#a8b905a4bda3686d971e6569fb0565cee", null ]
+    [ "minmax_dump", "classonert_1_1compiler_1_1_compiler_options.html#add696a4e909b66aee4396c6b324ffa33", null ],
+    [ "tracing_mode", "classonert_1_1compiler_1_1_compiler_options.html#a51ef469d584ccd711b52cd0208efd277", null ],
+    [ "workspace_dir", "classonert_1_1compiler_1_1_compiler_options.html#ad358220bfb6825f15249a67bb5f02e66", null ]
 ];

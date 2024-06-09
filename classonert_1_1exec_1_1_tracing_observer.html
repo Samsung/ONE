@@ -109,8 +109,8 @@ Collaboration diagram for onert::exec::TracingObserver:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3c9601cfb85307b3b83943ac1221f995" id="r_a3c9601cfb85307b3b83943ac1221f995"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#a3c9601cfb85307b3b83943ac1221f995">TracingObserver</a> (const std::string &amp;filepath, const <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph, const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">util::TracingCtx</a> *tracing_ctx)</td></tr>
-<tr class="separator:a3c9601cfb85307b3b83943ac1221f995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a567279f8974b5f48e62c9e3c36f2e5c8" id="r_a567279f8974b5f48e62c9e3c36f2e5c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#a567279f8974b5f48e62c9e3c36f2e5c8">TracingObserver</a> (const std::string &amp;workspace_dir, const <a class="el" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph, const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">util::TracingCtx</a> *tracing_ctx)</td></tr>
+<tr class="separator:a567279f8974b5f48e62c9e3c36f2e5c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a607f6cabe9bda0f3bcabf75eedbc0d8b" id="r_a607f6cabe9bda0f3bcabf75eedbc0d8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#a607f6cabe9bda0f3bcabf75eedbc0d8b">~TracingObserver</a> ()</td></tr>
 <tr class="separator:a607f6cabe9bda0f3bcabf75eedbc0d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e0c71b1626bf89aaf68dbab215a0915" id="r_a0e0c71b1626bf89aaf68dbab215a0915"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#a0e0c71b1626bf89aaf68dbab215a0915">handleSubgraphBegin</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>) override</td></tr>
@@ -131,8 +131,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00072">72</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3c9601cfb85307b3b83943ac1221f995" name="a3c9601cfb85307b3b83943ac1221f995"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c9601cfb85307b3b83943ac1221f995">&#9670;&#160;</a></span>TracingObserver()</h2>
+<a id="a567279f8974b5f48e62c9e3c36f2e5c8" name="a567279f8974b5f48e62c9e3c36f2e5c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a567279f8974b5f48e62c9e3c36f2e5c8">&#9670;&#160;</a></span>TracingObserver()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +141,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">onert::exec::TracingObserver::TracingObserver </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filepath</em>, </td>
+          <td class="paramname"><em>workspace_dir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -167,10 +167,10 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  118</span>  : _recorder{std::make_unique&lt;EventRecorder&gt;()}, _collector{_recorder.get()}, _graph{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>},</div>
 <div class="line"><span class="lineno">  119</span>    _tracing_ctx{tracing_ctx}</div>
 <div class="line"><span class="lineno">  120</span>{</div>
-<div class="line"><span class="lineno">  121</span>  _event_writer = <a class="code hl_function" href="class_event_writer.html#a2b38dfae07532ab37407ad24af0cd73b">EventWriter::get</a>(filepath);</div>
+<div class="line"><span class="lineno">  121</span>  _event_writer = <a class="code hl_function" href="class_event_writer.html#ae20a81071359193d55a4b2bf1b89eb8f">EventWriter::get</a>(workspace_dir);</div>
 <div class="line"><span class="lineno">  122</span>  _event_writer-&gt;<a class="code hl_function" href="class_event_writer.html#afc754027bc412f44d2af4d1d08a8eb64">startToUse</a>();</div>
 <div class="line"><span class="lineno">  123</span>}</div>
-<div class="ttc" id="aclass_event_writer_html_a2b38dfae07532ab37407ad24af0cd73b"><div class="ttname"><a href="class_event_writer.html#a2b38dfae07532ab37407ad24af0cd73b">EventWriter::get</a></div><div class="ttdeci">static EventWriter * get(const std::string &amp;filename)</div><div class="ttdoc">Retuens a singleton object.</div><div class="ttdef"><b>Definition</b> <a href="_event_writer_8h_source.html#l00093">EventWriter.h:93</a></div></div>
+<div class="ttc" id="aclass_event_writer_html_ae20a81071359193d55a4b2bf1b89eb8f"><div class="ttname"><a href="class_event_writer.html#ae20a81071359193d55a4b2bf1b89eb8f">EventWriter::get</a></div><div class="ttdeci">static EventWriter * get(const std::string &amp;workspace_dir)</div><div class="ttdoc">Retuens a singleton object.</div><div class="ttdef"><b>Definition</b> <a href="_event_writer_8h_source.html#l00093">EventWriter.h:93</a></div></div>
 <div class="ttc" id="aclass_event_writer_html_afc754027bc412f44d2af4d1d08a8eb64"><div class="ttname"><a href="class_event_writer.html#afc754027bc412f44d2af4d1d08a8eb64">EventWriter::startToUse</a></div><div class="ttdeci">void startToUse()</div><div class="ttdoc">Call this when observer which use EventWriter starts.</div><div class="ttdef"><b>Definition</b> <a href="_event_writer_8h_source.html#l00104">EventWriter.h:104</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 </div><!-- fragment -->
