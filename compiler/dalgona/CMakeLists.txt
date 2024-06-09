@@ -3,13 +3,18 @@
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+find_package(Python3 3.8 QUIET COMPONENTS Interpreter Development)
 
-if(NOT ${PYTHONINTERP_FOUND})
+if(NOT Python3_FOUND)
   message(STATUS "Build dalgona: FAILED (Python3 is missing)")
   return()
 endif()
+
+execute_process(
+  COMMAND ${Python3_EXECUTABLE} -c "import sys; print(sys.version_info.minor)"
+  OUTPUT_VARIABLE PYTHON_VERSION_MINOR
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
 if(${PYTHON_VERSION_MINOR} LESS 8)
   message(STATUS "Build dalgona: FAILED (Install Python version higher than or equal to 3.8)")
@@ -32,11 +37,11 @@ add_compile_options(-fvisibility=hidden)
 
 add_executable(dalgona ${DRIVER} ${SOURCES})
 target_include_directories(dalgona PRIVATE include)
-target_include_directories(dalgona PRIVATE ${PYTHON_INCLUDE_DIRS})
+target_include_directories(dalgona PRIVATE ${Python3_INCLUDE_DIRS})
 target_include_directories(dalgona PRIVATE ${Pybind11_INCLUDE_DIRS})
 
 target_link_libraries(dalgona INTERFACE pybind11::embed)
-target_link_libraries(dalgona PRIVATE ${PYTHON_LIBRARIES})
+target_link_libraries(dalgona PRIVATE Python3::Python)
 target_link_libraries(dalgona PRIVATE arser)
 target_link_libraries(dalgona PRIVATE safemain)
 target_link_libraries(dalgona PRIVATE foder)

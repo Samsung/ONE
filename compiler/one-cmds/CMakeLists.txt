@@ -3,18 +3,25 @@
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+find_package(Python3 3.8 QUIET COMPONENTS Interpreter Development)
 
-if(NOT ${PYTHONINTERP_FOUND})
+if(NOT Python3_FOUND)
   message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
   return()
 endif()
+
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} -c "import sys; print(sys.version_info.minor)"
+    OUTPUT_VARIABLE PYTHON_VERSION_MINOR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
 if(${PYTHON_VERSION_MINOR} LESS 8)
   message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
   return()
 endif()
+
+set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
 
 # NOTE these files should not have extensions.
 #      below code will remove extension when copy and install.
