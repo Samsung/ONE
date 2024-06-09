@@ -19,6 +19,7 @@
 #include <tfldump/Dump.h>
 
 #include <iostream>
+#include <cstdint>
 
 int entry(int argc, char **argv)
 {

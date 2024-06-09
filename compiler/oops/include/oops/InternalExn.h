@@ -19,6 +19,7 @@
 
 #include <exception>
 #include <string>
+#include <cstdint>
 
 /// @ brief throw internal exception with message
 #define INTERNAL_EXN(msg) throw oops::InternalExn(__FILE__, __LINE__, msg)

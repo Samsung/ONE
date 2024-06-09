@@ -33,6 +33,7 @@
 #include <cstring>
 
 #include <cassert>
+#include <cstdint>
 
 namespace arser
 {

@@ -18,6 +18,7 @@
 #define __CIRCLE_HELPER_PATH_H__
 
 #include <string>
+#include <cstdint>
 
 namespace partee
 {

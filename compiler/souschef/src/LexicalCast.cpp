@@ -19,6 +19,7 @@
 #include <cassert>
 #include <limits>
 #include <stdexcept>
+#include <cstdint>
 
 namespace souschef
 {
