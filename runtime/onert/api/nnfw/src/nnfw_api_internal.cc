@@ -1369,13 +1369,13 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
     std::set<onert::ir::OperationIndex> trainable_ops;
     for (uint32_t idx = 0; idx < info->trainble_ops_size; ++idx)
     {
-      if (idx >= primary_subgraph()->operations().size())
+      if (info->trainble_ops_idx[idx] >= primary_subgraph()->operations().size())
       {
         std::cerr << "Error during nnfw_session::train_set_traininfo: provided op_index=" << idx
                   << " is out of operators range" << std::endl;
         return NNFW_STATUS_ERROR;
       }
-      trainable_ops.emplace(onert::ir::OperationIndex{idx});
+      trainable_ops.emplace(onert::ir::OperationIndex{info->trainble_ops_idx[idx]});
     }
     _train_info->setTrainableOps(trainable_ops);
   }
