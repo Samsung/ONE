@@ -272,6 +272,7 @@ void Args::Initialize(void)
         "If not given, the model's output sizes are used\n"
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n")
     ("num_runs,r", po::value<int>()->default_value(1)->notifier([&](const auto &v) { _num_runs = v; }), "The number of runs")
+    ("fixed_input", "Use same random input data on each run (avaliable on random input)")
     ("warmup_runs,w", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _warmup_runs = v; }), "The number of warmup runs")
     ("run_delay,t", po::value<int>()->default_value(-1)->notifier([&](const auto &v) { _run_delay = v; }), "Delay time(us) between runs (as default no delay")
     ("gpumem_poll,g", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _gpumem_poll = v; }), "Check gpu memory polling separately")
@@ -366,6 +367,11 @@ void Args::Parse(const int argc, char **argv)
     if (!vm.count("modelfile") && !vm.count("nnpackage") && !vm.count("path"))
       throw boost::program_options::error(
         std::string("Require one of options modelfile, nnpackage, or path."));
+  }
+
+  if (vm.count("fixed_input"))
+  {
+    _fixed_input = true;
   }
 
   try
