@@ -20,29 +20,31 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
 {
   CirclePlusGen cgen;
 
-  int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
   uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
-  int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
   uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
+  int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
   int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
   int out = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1,
                          circle::ActivationFunctionType_NONE, 1, 1);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 1.0f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
-  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, 1.0f,
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
-  _context->addTrainCase(uniformTCD<float>(
-    {{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
-      1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}},                               // inputs
-    {{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11, 4}}, // expected
-    {{62469.609375f}}                                                            // loss
-    ));
+  _context->addTrainCase(
+    uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
+                         1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
+                      {{{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11,
+                         4}}},    // expected dataset
+                      {324.0978f} // last losses
+                      ));
+
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
   _context->setEpoch(2);
