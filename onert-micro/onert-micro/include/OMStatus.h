@@ -32,6 +32,8 @@ enum OMStatus
   FailedCheckCondition,
   NoQuantization,
   UnsupportedDynamicShapeCase,
+  FailReadWOFFile,
+  FailReadCheckpointFile,
 };
 
 } // namespace onert_micro
