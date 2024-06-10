@@ -26,8 +26,7 @@ namespace onert_run
 {
 void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
 {
-  uint32_t num_inputs;
-  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
+  uint32_t num_inputs = inputs.size();
 
   // Support multiple inputs
   // Option 1: Get comman-separated input file list like --load:raw a,b,c
@@ -40,13 +39,7 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
   {
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
-      nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
-
-      // allocate memory for data
-      auto bufsz = bufsize_for(&ti);
-      inputs[i].alloc(bufsz);
-
+      auto bufsz = inputs[i].size();
       std::ifstream file(filename + "." + std::to_string(i), std::ios::ate | std::ios::binary);
       auto filesz = file.tellg();
       if (bufsz != filesz)
@@ -58,9 +51,6 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
       file.seekg(0, std::ios::beg);
       file.read(reinterpret_cast<char *>(inputs[i].data()), filesz);
       file.close();
-
-      NNPR_ENSURE_STATUS(nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), bufsz));
-      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session_, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   }
   catch (const std::exception &e)
@@ -70,17 +60,14 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
   }
 };
 
-void RawFormatter::dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs)
+void RawFormatter::dumpOutputs(const std::string &filename, const std::vector<Allocation> &outputs)
 {
-  uint32_t num_outputs;
-  NNPR_ENSURE_STATUS(nnfw_output_size(session_, &num_outputs));
+  uint32_t num_outputs = outputs.size();
   try
   {
     for (uint32_t i = 0; i < num_outputs; i++)
     {
-      nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session_, i, &ti));
-      auto bufsz = bufsize_for(&ti);
+      auto bufsz = outputs[i].size();
 
       std::ofstream file(filename + "." + std::to_string(i), std::ios::out | std::ios::binary);
       file.write(reinterpret_cast<const char *>(outputs[i].data()), bufsz);
@@ -95,17 +82,14 @@ void RawFormatter::dumpOutputs(const std::string &filename, std::vector<Allocati
   }
 }
 
-void RawFormatter::dumpInputs(const std::string &filename, std::vector<Allocation> &inputs)
+void RawFormatter::dumpInputs(const std::string &filename, const std::vector<Allocation> &inputs)
 {
-  uint32_t num_inputs;
-  NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
+  uint32_t num_inputs = inputs.size();
   try
   {
     for (uint32_t i = 0; i < num_inputs; i++)
     {
-      nnfw_tensorinfo ti;
-      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
-      auto bufsz = bufsize_for(&ti);
+      auto bufsz = inputs[i].size();
 
       std::ofstream file(filename + "." + std::to_string(i), std::ios::out | std::ios::binary);
       file.write(reinterpret_cast<const char *>(inputs[i].data()), bufsz);

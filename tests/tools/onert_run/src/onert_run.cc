@@ -183,94 +183,102 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
 
     uint32_t num_inputs;
+    uint32_t num_outputs;
     NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
+    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
 
     // verify input and output
+    for (uint32_t i = 0; i < num_inputs; ++i)
+    {
+      nnfw_tensorinfo ti;
+      NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
 
-    auto verifyInputTypes = [session]() {
-      uint32_t sz;
-      NNPR_ENSURE_STATUS(nnfw_input_size(session, &sz));
-      for (uint32_t i = 0; i < sz; ++i)
+      if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED)
+      {
+        std::cerr << "E: not supported input type" << std::endl;
+        exit(-1);
+      }
+    }
+
+    for (uint32_t i = 0; i < num_outputs; ++i)
+    {
+      nnfw_tensorinfo ti;
+      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+
+      if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED)
+      {
+        std::cerr << "E: not supported output type" << std::endl;
+        exit(-1);
+      }
+    }
+
+    std::vector<Allocation> inputs(num_inputs);
+    std::vector<Allocation> outputs(num_outputs);
+
+    auto setInputTensorInfo = [&](const TensorShapeMap &tensor_shape_map, bool allocate) {
+      for (uint32_t i = 0; i < num_inputs; i++)
       {
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
 
-        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED)
+        // Find updated shape index and update tensor info
+        auto found = tensor_shape_map.find(i);
+        if (found != tensor_shape_map.end())
         {
-          std::cerr << "E: not supported input type" << std::endl;
-          exit(-1);
-        }
-      }
-    };
-
-    auto verifyOutputTypes = [session]() {
-      uint32_t sz;
-      NNPR_ENSURE_STATUS(nnfw_output_size(session, &sz));
-
-      for (uint32_t i = 0; i < sz; ++i)
-      {
-        nnfw_tensorinfo ti;
-        NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-
-        if (ti.dtype < NNFW_TYPE_TENSOR_FLOAT32 || ti.dtype > NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED)
-        {
-          std::cerr << "E: not supported output type" << std::endl;
-          exit(-1);
-        }
-      }
-    };
-
-    auto setTensorInfo = [session](const TensorShapeMap &tensor_shape_map) {
-      for (auto tensor_shape : tensor_shape_map)
-      {
-        auto ind = tensor_shape.first;
-        auto &shape = tensor_shape.second;
-        nnfw_tensorinfo ti;
-        // to fill dtype
-        NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, ind, &ti));
-
-        bool set_input = false;
-        if (ti.rank != shape.size())
-        {
-          set_input = true;
-        }
-        else
-        {
-          for (int i = 0; i < ti.rank; i++)
+          auto &shape = found->second;
+          bool set_input = false;
+          if (ti.rank != shape.size())
           {
-            if (ti.dims[i] != shape.at(i))
+            set_input = true;
+          }
+          else
+          {
+            for (int32_t i = 0; i < ti.rank; i++)
             {
-              set_input = true;
-              break;
+              if (ti.dims[i] != shape.at(i))
+              {
+                set_input = true;
+                break;
+              }
             }
           }
-        }
-        if (!set_input)
-          continue;
 
-        ti.rank = shape.size();
-        for (int i = 0; i < ti.rank; i++)
-          ti.dims[i] = shape.at(i);
-        NNPR_ENSURE_STATUS(nnfw_set_input_tensorinfo(session, ind, &ti));
+          if (set_input)
+          {
+            ti.rank = shape.size();
+            for (int i = 0; i < ti.rank; i++)
+              ti.dims[i] = shape.at(i);
+            NNPR_ENSURE_STATUS(nnfw_set_input_tensorinfo(session, i, &ti));
+          }
+        }
+
+        // Allocate memory for input data and set buffer
+        if (allocate)
+        {
+          auto input_size_in_bytes = bufsize_for(&ti);
+          inputs[i].alloc(input_size_in_bytes, ti.dtype);
+
+          NNPR_ENSURE_STATUS(
+            nnfw_set_input(session, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
+          NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+        }
       }
     };
-
-    verifyInputTypes();
-    verifyOutputTypes();
 
 // set input shape before compilation
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
 
-    auto fill_shape_from_h5 = [&session](const std::string &h5_file, TensorShapeMap &shape_map) {
+    auto fill_shape_from_h5 = [&](const std::string &h5_file, TensorShapeMap &shape_map) {
       assert(!h5_file.empty());
-      auto shapes = H5Formatter(session).readTensorShapes(h5_file);
+      auto shapes = H5Formatter().readTensorShapes(h5_file, num_inputs);
       overwriteShapeMap(shape_map, shapes);
     };
 
     if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::PREPARE)
       fill_shape_from_h5(args.getLoadFilename(), args.getShapeMapForPrepare());
 #endif
-    setTensorInfo(args.getShapeMapForPrepare());
+    // Set shape info, but don't alloc yet
+    setInputTensorInfo(args.getShapeMapForPrepare(), false);
 
     // prepare execution
 
@@ -279,52 +287,44 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_prepare(session));
     });
 
-// set input shape after compilation and before execution
+    // Set input shape and buffer after compilation and before execution
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::RUN ||
         (!args.getLoadFilename().empty() && !args.shapeParamProvided()))
       fill_shape_from_h5(args.getLoadFilename(), args.getShapeMapForRun());
 #endif
-    setTensorInfo(args.getShapeMapForRun());
+    setInputTensorInfo(args.getShapeMapForRun(), true);
 
-    // prepare input
-    std::vector<Allocation> inputs(num_inputs);
+    // Prepare input data
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     if (!args.getLoadFilename().empty())
-      H5Formatter(session).loadInputs(args.getLoadFilename(), inputs);
+      H5Formatter().loadInputs(args.getLoadFilename(), inputs);
     else if (!args.getLoadRawFilename().empty())
-      RawFormatter(session).loadInputs(args.getLoadRawFilename(), inputs);
+      RawFormatter().loadInputs(args.getLoadRawFilename(), inputs);
     else
-      RandomGenerator(session).generate(inputs);
+      RandomGenerator().generate(inputs);
 #else
     if (!args.getLoadRawFilename().empty())
-      RawFormatter(session).loadInputs(args.getLoadRawFilename(), inputs);
+      RawFormatter().loadInputs(args.getLoadRawFilename(), inputs);
     else
-      RandomGenerator(session).generate(inputs);
+      RandomGenerator().generate(inputs);
 #endif
 
-    // prepare output
-    uint32_t num_outputs = 0;
-    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
-    std::vector<Allocation> outputs(num_outputs);
+    // Prepare output buffer
     auto output_sizes = args.getOutputSizes();
     for (uint32_t i = 0; i < num_outputs; i++)
     {
       nnfw_tensorinfo ti;
-      uint64_t output_size_in_bytes = 0;
+      NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+      uint64_t output_size_in_bytes = bufsize_for(&ti);
       {
         auto found = output_sizes.find(i);
-        if (found == output_sizes.end())
-        {
-          NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-          output_size_in_bytes = bufsize_for(&ti);
-        }
-        else
+        if (output_sizes.find(i) != output_sizes.end())
         {
           output_size_in_bytes = found->second;
         }
       }
-      outputs[i].alloc(output_size_in_bytes);
+      outputs[i].alloc(output_size_in_bytes, ti.dtype);
       NNPR_ENSURE_STATUS(
         nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
       NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
@@ -368,12 +368,27 @@ int main(const int argc, char **argv)
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     // dump output tensors
     if (!args.getDumpFilename().empty())
-      H5Formatter(session).dumpOutputs(args.getDumpFilename(), outputs);
+    {
+      std::vector<TensorShape> output_shapes;
+      for (uint32_t i = 0; i < num_outputs; i++)
+      {
+        nnfw_tensorinfo ti;
+        NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+
+        TensorShape shape;
+        for (uint32_t j = 0; j < ti.rank; j++)
+          shape.emplace_back(ti.dims[j]);
+
+        output_shapes.emplace_back(shape);
+      }
+
+      H5Formatter().dumpOutputs(args.getDumpFilename(), outputs, output_shapes);
+    }
 #endif
     if (!args.getDumpRawInputFilename().empty())
-      RawFormatter(session).dumpInputs(args.getDumpRawInputFilename(), inputs);
+      RawFormatter().dumpInputs(args.getDumpRawInputFilename(), inputs);
     if (!args.getDumpRawFilename().empty())
-      RawFormatter(session).dumpOutputs(args.getDumpRawFilename(), outputs);
+      RawFormatter().dumpOutputs(args.getDumpRawFilename(), outputs);
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 

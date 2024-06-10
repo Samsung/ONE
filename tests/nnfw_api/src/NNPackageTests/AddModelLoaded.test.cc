@@ -196,7 +196,7 @@ TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_no_such_name)
 TEST_F(ValidationTestAddModelLoaded, debug_set_config)
 {
   // At least one test for all valid keys
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "TRACE_FILEPATH", ""));
+  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "TRACING_MODE", "0"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "1"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "2"));

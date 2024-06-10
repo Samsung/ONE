@@ -5,6 +5,15 @@ from lib import utils
 from schema import circle_traininfo_generated as ctr_gen
 
 
+def to_camel_case(string: str):
+    if not '_' in string:
+        # string is already camel case
+        return string
+
+    captialized_str: str = "".join(x.capitalize() for x in string.lower().split("_"))
+    return string[0].lower() + captialized_str[1:]
+
+
 def _generate_optimizer(
         opt_type: utils.OPTIM_OPTIONS_T, args: dict
 ) -> Tuple[ctr_gen.Optimizer, ctr_gen.OptimizerOptions, utils.OPTIM_OPTIONS_T]:
@@ -12,7 +21,7 @@ def _generate_optimizer(
     options_t_str: str = opt_type.__name__  # e.g. SGDOptionsT
     options_str: str = options_t_str[:-1]  # e.g. SGDOptions
     optimizer_camel: str = options_str.replace("Options", "")  # e.g. SGD
-    optimizer_str: str = re.sub(r'(?<!^)(?=[A-Z])', '_',
+    optimizer_str: str = re.sub(r'(?<=[a-z])(?=[A-Z])', '_',
                                 optimizer_camel).upper()  # e.g. SGD
 
     optimizer = getattr(ctr_gen.Optimizer, optimizer_str)
@@ -22,6 +31,7 @@ def _generate_optimizer(
     # e.g. SGDOptionsT.learningRate = 0.001
     optimizer_opt = opt_type()
     for (key, value) in args.items():
+        key = to_camel_case(key)
         setattr(optimizer_opt, key, value)
 
     return optimizer, optimizer_opt_type, optimizer_opt
@@ -66,7 +76,7 @@ def _generate_lossfn(
     options_t_str: str = lossfn_type.__name__  # e.g. CategoricalCrossentropyOptionsT
     options_str: str = options_t_str[:-1]  # e.g. CategoricalCrossentropyOptions
     lossfn_camel: str = options_str.replace("Options", "")  # e.g. CategoricalCrossentropy
-    lossfn_str: str = re.sub(r'(?<!^)(?=[A-Z])', '_',
+    lossfn_str: str = re.sub(r'(?<=[a-z])(?=[A-Z])', '_',
                              lossfn_camel).upper()  # e.g. CATEGORICAL_CROSSENTROPY
 
     lossfn = getattr(ctr_gen.LossFn, lossfn_str)
@@ -76,6 +86,7 @@ def _generate_lossfn(
     # e.g. CategoricalCrossentropyOptionsT.fromLogits = True
     lossfn_opt = lossfn_type()
     for (key, value) in args.items():
+        key = to_camel_case(key)
         setattr(lossfn_opt, key, value)
 
     return lossfn, lossfn_opt_type, lossfn_opt

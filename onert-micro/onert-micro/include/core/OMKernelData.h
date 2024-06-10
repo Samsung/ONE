@@ -52,6 +52,19 @@ struct SoftmaxParams
   int row_size;
 };
 
+struct LogSoftmaxParams
+{
+  int num_rows;
+  int row_size;
+};
+
+struct L2NormalizationParams
+{
+  int num_rows;
+  int row_size;
+  float epsilon = 1e-6;
+};
+
 struct Pool2DParams
 {
   int32_t stride_w;
@@ -102,6 +115,7 @@ struct FloatConv2D
   int32_t stride_h;
   int32_t dilation_width_factor;
   int32_t dilation_height_factor;
+  int32_t depth_multiplier;
   int32_t pad_h;
   int32_t pad_w;
   float activation_min;

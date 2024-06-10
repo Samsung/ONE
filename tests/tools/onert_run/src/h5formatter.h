@@ -18,7 +18,6 @@
 #define __ONERT_RUN_H5FORMATTER_H__
 
 #include "allocation.h"
-#include "formatter.h"
 #include "types.h"
 
 #include <string>
@@ -28,13 +27,14 @@ struct nnfw_session;
 
 namespace onert_run
 {
-class H5Formatter : public Formatter
+class H5Formatter
 {
 public:
-  H5Formatter(nnfw_session *sess) : Formatter(sess) {}
-  std::vector<TensorShape> readTensorShapes(const std::string &filename) override;
-  void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) override;
-  void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) override;
+  H5Formatter() = default;
+  std::vector<TensorShape> readTensorShapes(const std::string &filename, uint32_t num_inputs);
+  void loadInputs(const std::string &filename, std::vector<Allocation> &inputs);
+  void dumpOutputs(const std::string &filename, const std::vector<Allocation> &outputs,
+                   const std::vector<TensorShape> &shape_map);
 };
 } // namespace onert_run
 

@@ -18,7 +18,6 @@
 #define __ONERT_RUN_RAWFORMATTER_H__
 
 #include "allocation.h"
-#include "formatter.h"
 #include "types.h"
 
 #include <string>
@@ -28,13 +27,13 @@ struct nnfw_session;
 
 namespace onert_run
 {
-class RawFormatter : public Formatter
+class RawFormatter
 {
 public:
-  RawFormatter(nnfw_session *sess) : Formatter(sess) {}
-  void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) override;
-  void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) override;
-  void dumpInputs(const std::string &filename, std::vector<Allocation> &inputs);
+  RawFormatter() = default;
+  void loadInputs(const std::string &filename, std::vector<Allocation> &inputs);
+  void dumpOutputs(const std::string &filename, const std::vector<Allocation> &outputs);
+  void dumpInputs(const std::string &filename, const std::vector<Allocation> &inputs);
 };
 } // namespace onert_run
 

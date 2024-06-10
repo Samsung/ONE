@@ -72,7 +72,7 @@ private:
 class TracingObserver : public IExecutionObserver
 {
 public:
-  TracingObserver(const std::string &filepath, const ir::Graph &graph,
+  TracingObserver(const std::string &workspace_dir, const ir::Graph &graph,
                   const util::TracingCtx *tracing_ctx);
   ~TracingObserver();
   void handleSubgraphBegin(ir::SubgraphIndex) override;
