@@ -130,7 +130,7 @@ int main(const int argc, char **argv)
       auto it = std::find(acc.begin(), acc.end(), type);
       if (it == acc.end())
         return "metric";
-      return "accuracy";
+      return "categorical_accuracy";
     };
 
     // get training information
@@ -245,6 +245,7 @@ int main(const int argc, char **argv)
         //
         {
           std::fill(losses.begin(), losses.end(), 0);
+          std::fill(metrics.begin(), metrics.end(), 0);
           for (uint32_t n = 0; n < num_step; ++n)
           {
             // get batchsize data
@@ -269,11 +270,14 @@ int main(const int argc, char **argv)
             measure.run(epoch, n, [&]() { NNPR_ENSURE_STATUS(nnfw_train(session, true)); });
 
             // store loss
+            Metrics metric(output_data, expected_data, expected_infos);
             for (int32_t i = 0; i < num_expecteds; ++i)
             {
               float temp = 0.f;
               NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
               losses[i] += temp;
+              if (args.getMetricType() == 0)
+                metrics[i] += metric.categoricalAccuracy(i);
             }
           }
 
@@ -286,6 +290,16 @@ int main(const int argc, char **argv)
           for (uint32_t i = 0; i < num_expecteds; ++i)
           {
             std::cout << "[" << i << "] " << losses[i] / num_step;
+          }
+          // TODO use init-statement in selection statements (c++17)
+          std::string str;
+          if ((str = getMetricTypeStr(args.getMetricType())) != "")
+          {
+            std::cout << " - " << str << ": ";
+            for (uint32_t i = 0; i < num_expecteds; ++i)
+            {
+              std::cout << "[" << i << "] " << metrics[i] / num_step;
+            }
           }
         }
 
