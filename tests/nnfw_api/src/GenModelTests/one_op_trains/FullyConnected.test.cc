@@ -31,7 +31,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected)
   cgen.addOperatorFullyConnected({{input, weight, bias}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -41,12 +41,12 @@ TEST_F(GenModelTrain, OneOp_FullyConnected)
   _context->addTrainCase(
     uniformTCD<float>({{{1, 3}}, {{2, 1}}},                                     // inputs
                       {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
-                      {21.520715f}                                              // loss
+                      {11.4484f}                                              // loss
                       ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(2);
+  _context->setEpoch(4);
 
   SUCCEED();
 }
@@ -62,7 +62,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected_OptionalBias)
   cgen.addOperatorFullyConnected({{input, weight, -1 /* Optional bias */}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 2;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -72,12 +72,12 @@ TEST_F(GenModelTrain, OneOp_FullyConnected_OptionalBias)
   _context->addTrainCase(
     uniformTCD<float>({{{1, 3, 2, 1}}},                                     // inputs
                       {{{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
-                      {{43.178924f}}                                        // loss
+                      {{12.7512f}}                                        // loss
                       ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(3);
+  _context->setEpoch(5);
 
   SUCCEED();
 }
@@ -96,7 +96,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_FourOperand)
   cgen.addOperatorFullyConnected({{input, weight, bias, wrong}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -123,7 +123,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_InvalidWeightShape)
   cgen.addOperatorFullyConnected({{input, weight, bias, wrong}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -147,7 +147,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_NoBias)
   cgen.addOperatorFullyConnected({{input, weight /* Missing bias */}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,

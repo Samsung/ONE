@@ -377,11 +377,11 @@ protected:
 
         // Prepare expected losses
         const auto &ref_losses = train_case.losses;
-        std::vector<float> actual_losses;
+        std::vector<float> actual_losses(num_expecteds, 0.f);
 
         for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
         {
-          actual_losses.resize(num_expecteds, 0.f);
+          std::fill(actual_losses.begin(), actual_losses.end(), 0.f);
 
           for (uint32_t step = 0; step < num_step; step++)
           {
