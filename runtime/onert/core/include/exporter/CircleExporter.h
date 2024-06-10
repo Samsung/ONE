@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <string>
+#include <memory>
 
 namespace onert
 {
@@ -55,7 +56,7 @@ public:
 private:
   std::string _path;
   std::string _data;
-  ::circle::ModelT *_model;
+  std::unique_ptr<::circle::ModelT> _model;
 };
 } // namespace exporter
 } // namespace onert
