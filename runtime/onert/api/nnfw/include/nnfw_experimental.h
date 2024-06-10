@@ -585,7 +585,7 @@ NNFW_STATUS nnfw_set_execute_config(nnfw_session *session, const NNFW_RUN_CONFIG
  * @param[in] session nnfw_session to reset all execution configurations
  * @return    @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_reset_execte_config(nnfw_session *session);
+NNFW_STATUS nnfw_reset_execute_config(nnfw_session *session);
 
 #ifdef __cplusplus
 }
