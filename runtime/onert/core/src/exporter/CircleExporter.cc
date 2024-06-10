@@ -49,7 +49,7 @@ CircleExporter::CircleExporter(const std::string &source, const std::string &pat
   const auto model = ::circle::GetModel(_data.data());
   if (!model)
     throw std::runtime_error("Failed to load original circle file");
-  _model = model->UnPack();
+  _model.reset(model->UnPack());
 }
 
 CircleExporter::~CircleExporter() { finish(); }
@@ -57,7 +57,7 @@ CircleExporter::~CircleExporter() { finish(); }
 void CircleExporter::finish()
 {
   flatbuffers::FlatBufferBuilder builder(1024);
-  builder.Finish(::circle::Model::Pack(builder, _model), ::circle::ModelIdentifier());
+  builder.Finish(::circle::Model::Pack(builder, _model.get()), ::circle::ModelIdentifier());
 
   std::ofstream dst(_path.c_str(), std::ios::binary);
   dst.write((const char *)builder.GetBufferPointer(), builder.GetSize());

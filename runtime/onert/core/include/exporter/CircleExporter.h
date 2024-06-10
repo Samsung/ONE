@@ -15,6 +15,7 @@
  */
 
 #include <string>
+#include <memory>
 
 namespace circle
 {
@@ -31,12 +32,13 @@ public:
   CircleExporter(const std::string &source, const std::string &path);
   ~CircleExporter();
 
+private:
   void finish();
 
 private:
   std::string _path;
   std::string _data;
-  ::circle::ModelT *_model;
+  std::unique_ptr<::circle::ModelT> _model;
 };
 
 } // namespace exporter
