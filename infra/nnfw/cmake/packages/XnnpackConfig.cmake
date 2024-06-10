@@ -23,9 +23,10 @@ function(_Xnnpack_Build)
   set(XNNPACK_BUILD_BENCHMARKS OFF CACHE BOOL "Build XNNPACK benchmarks")
   set(XNNPACK_USE_SYSTEM_LIBS ON CACHE BOOL "Use system-provided dependency libraries")
 
-  # microkernel build is not supported under gcc 9.x and clang
+  # microkernel build is not supported under gcc 9.x, clang, and tizen armv7l
   # TODO Enable this
-if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0 OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0 OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
+  (TARGET_OS STREQUAL "tizen" AND TARGET_ARCH STREQUAL "armv7l"))
   set(XNNPACK_ENABLE_ASSEMBLY OFF CACHE BOOL "Build XNNPACK with assembly micro-kernels")
   set(XNNPACK_ENABLE_ARM_I8MM OFF CACHE BOOL "Build XNNPACK with ARM I8MM (8-bit integer matrix multiply accumulate) micro-kernels")
   # Set definition: used on patched code
