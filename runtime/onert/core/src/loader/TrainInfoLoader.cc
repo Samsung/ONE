@@ -126,6 +126,7 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
 
   auto tinfo = std::make_unique<ir::train::TrainingInfo>();
   {
+    tinfo->setVersion(circle_model->version());
     tinfo->setBatchSize(circle_model->batch_size());
     tinfo->setOptimizerInfo(loadOptimizerInfo(circle_model));
     tinfo->setLossInfo(loadLossInfo(circle_model));
