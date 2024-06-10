@@ -18,7 +18,7 @@
 
 namespace
 {
-CircleBuffers get_conv2d_test_model(const std::vector<int32_t> trainable_ops)
+CircleBuffers get_conv2d_test_model(const std::vector<int32_t> &trainable_ops)
 {
   CirclePlusGen cgen;
 
