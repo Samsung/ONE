@@ -493,6 +493,12 @@ private:
 
     tri.batch_size = circle_model->batch_size();
 
+    tri.trainble_ops_size = circle_model->trainable_ops()->size();
+    for (size_t i = 0; i < circle_model->trainable_ops()->size(); ++i)
+    {
+      tri.trainble_ops_idx[i] = circle_model->trainable_ops()->Get(i);
+    }
+
     return tri;
   }
 

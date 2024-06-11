@@ -205,6 +205,11 @@ typedef struct nnfw_loss_info
 } nnfw_loss_info;
 
 /**
+ * @brief Maximum numer of trainable operations
+ */
+#define NNFW_TRAINABLE_OPS_MAX_SIZE (256)
+
+/**
  * @brief Training information to prepare training
  * @todo  Add more training information
  *        (e.g. optimizer, loss function, ...)
@@ -220,6 +225,10 @@ typedef struct nnfw_train_info
                            .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE};
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
+
+  /** indexes of trainable operations */
+  uint32_t trainble_ops_size = 0;
+  uint32_t trainble_ops_idx[NNFW_TRAINABLE_OPS_MAX_SIZE];
 } nnfw_train_info;
 
 /**

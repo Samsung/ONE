@@ -69,10 +69,12 @@ CircleBuffer CirclePlusGen::createModelTraining()
 
   int32_t batch_size = _info.batch_size;
 
+  auto trainable_ops = _fbb_plus.CreateVector(_info.trainable_ops);
+
   // NOTE: epochs will be removed
-  auto model_training =
-    circle::CreateModelTraining(_fbb_plus, 0, optimizer, optimizer_opt_type, optimizer_opt, lossfn,
-                                lossfn_opt_type, lossfn_opt, 0, batch_size, loss_reduction_type);
+  auto model_training = circle::CreateModelTraining(
+    _fbb_plus, 0, optimizer, optimizer_opt_type, optimizer_opt, lossfn, lossfn_opt_type, lossfn_opt,
+    0, batch_size, loss_reduction_type, trainable_ops);
   _fbb_plus.Finish(model_training, circle::ModelTrainingIdentifier());
 
   return CircleBuffer{std::move(_fbb_plus)};

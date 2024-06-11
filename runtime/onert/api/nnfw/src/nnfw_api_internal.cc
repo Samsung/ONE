@@ -1289,6 +1289,15 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     info->loss_info.loss = convertLossCode(loss.loss_code);
     info->loss_info.reduction_type = convertLossReduction(loss.reduction_type);
     info->opt = convertOptimizerCode(optim.optim_code);
+    {
+      assert(_train_info->getTrainableOps().size() < NNFW_TRAINABLE_OPS_MAX_SIZE);
+      size_t pos = 0;
+      for (auto const &train_op_idx : _train_info->getTrainableOps())
+      {
+        info->trainble_ops_idx[pos++] = train_op_idx.value();
+      }
+      info->trainble_ops_size = _train_info->getTrainableOps().size();
+    }
   }
   catch (const std::exception &e)
   {
@@ -1356,6 +1365,19 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
     _train_info->setBatchSize(info->batch_size);
     _train_info->setLossInfo(loss_info);
     _train_info->setOptimizerInfo(opt_info);
+
+    std::set<onert::ir::OperationIndex> trainable_ops;
+    for (uint32_t idx = 0; idx < info->trainble_ops_size; ++idx)
+    {
+      if (info->trainble_ops_idx[idx] >= primary_subgraph()->operations().size())
+      {
+        std::cerr << "Error during nnfw_session::train_set_traininfo: provided op_index=" << idx
+                  << " is out of operators range" << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+      trainable_ops.emplace(onert::ir::OperationIndex{info->trainble_ops_idx[idx]});
+    }
+    _train_info->setTrainableOps(trainable_ops);
   }
   catch (const std::exception &e)
   {
