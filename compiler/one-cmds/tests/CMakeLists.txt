@@ -6,6 +6,7 @@ file(GLOB CONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.cfg")
 file(GLOB QCONFIGITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.qconf.json")
 file(GLOB PYSCRIPTS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.py")
 file(GLOB WORKFLOWITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.workflow.json")
+file(GLOB PYTHONITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.py")
 
 # Create a script to run the tests at installation folder
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
@@ -56,6 +57,11 @@ foreach(WORKFLOWITEM IN ITEMS ${WORKFLOWITEMS})
   get_filename_component(ITEM_PREFIX ${WORKFLOWITEM} NAME_WE)
   install(FILES ${WORKFLOWITEM} DESTINATION test)
 endforeach(WORKFLOWITEM)
+
+foreach(PYTHONITEM IN ITEMS ${PYTHONITEMS})
+  get_filename_component(ITEM_PREFIX ${PYTHONITEM} NAME_WE)
+  install(FILES ${PYTHONITEM} DESTINATION test)
+endforeach(PYTHONITEM)
 
 file(APPEND "${DRIVER_SCRIPT}" "popd > /dev/null\n\n")
 
