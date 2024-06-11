@@ -18,7 +18,7 @@
  * dummy-profile only tests its interface rather than its functionality.
  *
  * ./dummy-profile ${INPUT_NAME}
- * dummy-profile dummy output!!!
+ * ./dummy-profile --target ${TARGET_NAME} ${INPUT_NAME}
  */
 
 #include <iostream>
@@ -27,10 +27,23 @@
 
 int main(int argc, char **argv)
 {
-  if (argc != 2)
+  if (argc != 2 and argc != 4)
     return EXIT_FAILURE;
 
-  std::cout << "dummy-profile dummy output!!!" << std::endl;
+  if (argc == 2)
+  {
+    std::cout << "dummy-profile dummy output!!!" << std::endl;
+  }
+  if (argc == 4)
+  {
+    std::string opt_T{"--target"};
+    std::string argv_1{argv[1]};
+    if (opt_T != argv_1)
+      return EXIT_FAILURE;
+    std::string target_name{argv[2]};
+
+    std::cout << "dummy-profile with " << target_name << " target" << std::endl;
+  }
 
   return EXIT_SUCCESS;
 }

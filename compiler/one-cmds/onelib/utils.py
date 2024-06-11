@@ -27,7 +27,7 @@ import sys
 from typing import Union, Optional
 
 import onelib.constant as _constant
-from onelib.argparse import ArgumentParser
+from onelib.argumentparse import ArgumentParser
 
 
 def add_default_arg(parser):
