@@ -32,18 +32,15 @@ namespace compiler
 
 struct ManualSchedulerOptions
 {
-public:
   void setBackendMap(const std::string &str);
 
-public:
   std::string backend_for_all;
   std::unordered_map<ir::OpCode, std::string> opcode_to_backend;
   std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
 };
 
-class CompilerOptions
+struct CompilerOptions
 {
-public:
   /**
    * @brief   Set default values for CompilerOptions
    * @return  Generated CompileOption
@@ -52,11 +49,6 @@ public:
    *          when we stop supporting Android NNAPI.
    */
   static std::unique_ptr<CompilerOptions> fromGlobalConfig();
-
-  /**
-   * @brief Allow to compute float32 using float16 data type
-   */
-  void enableToFp16() { fp16_enable = true; }
 
   /**
    * @brief Force default values of CompilerOptions for correct compilations
@@ -71,7 +63,6 @@ public:
    */
   void verboseOptions();
 
-public:
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
   bool minmax_dump; //< Whether minmax dump is enabled or not
