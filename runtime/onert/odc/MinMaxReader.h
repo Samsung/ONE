@@ -17,8 +17,8 @@
 #ifndef __ONERT_ODC_MINMAX_READER_H__
 #define __ONERT_ODC_MINMAX_READER_H__
 
+#include <cstdint>
 #include <string>
-#include <utility>
 #include <vector>
 
 namespace onert
