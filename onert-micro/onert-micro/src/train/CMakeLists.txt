@@ -20,6 +20,7 @@ set(SOURCES
         metrics/Accuracy.cpp
         train_optimizers/SGD.cpp
         train_optimizers/Adam.cpp
+        tests/BostonHousingTask.test.cpp
         )
 
 # Add configure kernels
@@ -36,3 +37,20 @@ target_include_directories(${OM_TRAIN_LIB} PUBLIC "${OM_INCLUDE_DIR}")
 target_link_libraries(${OM_TRAIN_LIB} PUBLIC ${OM_CORE_LIB})
 
 message(STATUS "ONERT MICRO TRAIN BUILD FINISHED")
+
+if(NOT ENABLE_TEST)
+    return()
+endif(NOT ENABLE_TEST)
+
+message(STATUS "ONERT MICRO TEST TRAIN BUILD STARTED")
+
+nnas_find_package(GTest REQUIRED)
+
+set (TEST_SOURCES
+        tests/BostonHousingTask.test.cpp)
+
+GTest_AddTest(${OM_TRAIN_LIB}_test ${TEST_SOURCES})
+target_include_directories(${OM_TRAIN_LIB}_test PUBLIC "${OM_INCLUDE_DIR}")
+target_link_libraries(${OM_TRAIN_LIB}_test ${OM_TRAINING_INTERPRETER_LIB})
+target_link_libraries(${OM_TRAIN_LIB}_test onert_micro_coverage)
+target_link_libraries(${OM_TRAIN_LIB} PUBLIC onert_micro_coverage)

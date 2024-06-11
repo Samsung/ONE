@@ -79,6 +79,8 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
   uint32_t batch_size = config.training_context.batch_size;
   config.training_context.num_step += 1;
 
+  config.training_context.num_step += 1;
+
   // A - Run and update optimizers state batch_size times
   //  a. Allocate forward inputs and memcopy current sample (in current batch) into forward inputs
   //  b. Run forward graph

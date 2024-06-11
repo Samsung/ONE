@@ -25,6 +25,8 @@
 
 #define MODEL_TYPE float
 
+#define CLASSIFICATION_TASK 0
+
 namespace
 {
 
@@ -177,13 +179,13 @@ int entry(int argc, char **argv)
     config.wof_ptr = nullptr;
 
   // Set user defined training settings
-  const uint32_t training_epochs = 50;
-  const float lambda = 0.001f;
+  const uint32_t training_epochs = 30;
+  const float lambda = 0.1f;
   const uint32_t BATCH_SIZE = 32;
-  const uint32_t INPUT_SIZE = 180;
-  const uint32_t OUTPUT_SIZE = 4;
+  const uint32_t INPUT_SIZE = 13;
+  const uint32_t OUTPUT_SIZE = 1;
   const uint32_t num_train_layers = 0;
-  const onert_micro::OMLoss loss = onert_micro::CROSS_ENTROPY;
+  const onert_micro::OMLoss loss = onert_micro::MSE;
   const onert_micro::OMTrainOptimizer train_optim = onert_micro::ADAM;
   const float beta = 0.9;
   const float beta_squares = 0.999;
@@ -200,6 +202,7 @@ int entry(int argc, char **argv)
     train_context.beta = beta;
     train_context.beta_squares = beta_squares;
     train_context.epsilon = epsilon;
+    train_context.epochs = training_epochs;
 
     config.training_context = train_context;
   }
@@ -214,9 +217,14 @@ int entry(int argc, char **argv)
   // Note: here test size used with BATCH_SIZE = 1
   float test_input[INPUT_SIZE];
   float test_target[OUTPUT_SIZE];
+
   std::vector<float> accuracy_v;
   std::vector<float> cross_entropy_v;
+  std::vector<float> mse_v;
+  std::vector<float> mae_v;
+
   float max_accuracy = std::numeric_limits<float>::min();
+  float min_mae = std::numeric_limits<float>::max();
 
   for (uint32_t e = 0; e < training_epochs; ++e)
   {
@@ -230,7 +238,6 @@ int entry(int argc, char **argv)
       cur_batch_size = std::max(1u, cur_batch_size);
 
       config.training_context.batch_size = cur_batch_size;
-      config.training_context.num_step = i + 1;
 
       // Read current input and target data
       readDataFromFile(input_input_train_data_path, reinterpret_cast<char *>(training_input),
@@ -253,22 +260,51 @@ int entry(int argc, char **argv)
       float cross_entropy_metric = 0.f;
       float accuracy = 0.f;
 
-      // Evaluate cross_entropy and accuracy metrics
-      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
-                                       reinterpret_cast<void *>(&cross_entropy_metric),
-                                       cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
-                                       cur_batch_size);
+      if (CLASSIFICATION_TASK)
+      {
+        // Evaluate cross_entropy and accuracy metrics
+        train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+                                         reinterpret_cast<void *>(&cross_entropy_metric),
+                                         cur_batch_size);
+        train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+                                         cur_batch_size);
 
-      // Save them into vectors
-      accuracy_v.push_back(accuracy);
-      cross_entropy_v.push_back(cross_entropy_metric);
+        // Save them into vectors
+        accuracy_v.push_back(accuracy);
+        cross_entropy_v.push_back(cross_entropy_metric);
+      }
+      else
+      {
+        // Evaluate mse and mae metrics
+        train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&mse),
+                                         cur_batch_size);
+        train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&mae),
+                                         cur_batch_size);
+
+        // Save them into vectors
+        mse_v.push_back(mse);
+        mae_v.push_back(mae);
+      }
     }
+
+    // Reset num step value
+    config.training_context.num_step = 0;
+
     // Calculate and print average values
-    float sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
-    float sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
-    std::cout << "Train Average ACCURACY = " << sum_acc / accuracy_v.size() << "\n";
-    std::cout << "Train Average CROSS ENTROPY = " << sum_ent / cross_entropy_v.size() << "\n";
+    if (CLASSIFICATION_TASK)
+    {
+      float sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
+      float sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
+      std::cout << "Train Average ACCURACY = " << sum_acc / accuracy_v.size() << "\n";
+      std::cout << "Train Average CROSS ENTROPY = " << sum_ent / cross_entropy_v.size() << "\n";
+    }
+    else
+    {
+      float sum_mse = std::accumulate(mse_v.begin(), mse_v.end(), 0.f);
+      float sum_mae = std::accumulate(mae_v.begin(), mae_v.end(), 0.f);
+      std::cout << "Train Average MSE = " << sum_mse / mse_v.size() << "\n";
+      std::cout << "Train Average MAE = " << sum_mae / mae_v.size() << "\n";
+    }
 
     // Run test for current epoch
     std::cout << "Run test for epoch: " << e + 1 << "/" << training_epochs << "\n";
@@ -296,29 +332,68 @@ int entry(int argc, char **argv)
       float cross_entropy_metric = 0.f;
       float accuracy = 0.f;
 
-      train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
-                                       reinterpret_cast<void *>(&cross_entropy_metric),
-                                       cur_batch_size);
-      train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
-                                       cur_batch_size);
+      if (CLASSIFICATION_TASK)
+      {
+        // Evaluate cross_entropy and accuracy metrics
+        train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+                                         reinterpret_cast<void *>(&cross_entropy_metric),
+                                         cur_batch_size);
+        train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
+                                         cur_batch_size);
 
-      accuracy_v.push_back(accuracy);
-      cross_entropy_v.push_back(cross_entropy_metric);
+        // Save them into vectors
+        accuracy_v.push_back(accuracy);
+        cross_entropy_v.push_back(cross_entropy_metric);
+      }
+      else
+      {
+        // Evaluate mse and mae metrics
+        train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&mse),
+                                         cur_batch_size);
+        train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&mae),
+                                         cur_batch_size);
+
+        // Save them into vectors
+        mse_v.push_back(mse);
+        mae_v.push_back(mae);
+      }
     }
     // Calculate and print average values
-    sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
-    sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
-    std::cout << "Test Average ACCURACY = " << sum_acc / accuracy_v.size() << "\n";
-    std::cout << "Test Average CROSS ENTROPY = " << sum_ent / cross_entropy_v.size() << "\n";
-
-    float acc = sum_acc / accuracy_v.size();
-    if (acc > max_accuracy)
+    if (CLASSIFICATION_TASK)
     {
-      // Save best checkpoint
-      train_interpreter.saveCheckpoint(config, checkpoints_path);
-      max_accuracy = acc;
-      std::cout << "Found new max Test ACCURACY = " << max_accuracy << " in epoch = " << e + 1
-                << " / " << training_epochs << "\n";
+      float sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);
+      float sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);
+      std::cout << "Test Average ACCURACY = " << sum_acc / accuracy_v.size() << "\n";
+      std::cout << "Test Average CROSS ENTROPY = " << sum_ent / cross_entropy_v.size() << "\n";
+
+      // Best checkpoint part
+      float acc = sum_acc / accuracy_v.size();
+      if (acc > max_accuracy)
+      {
+        // Save best checkpoint
+        train_interpreter.saveCheckpoint(config, checkpoints_path);
+        max_accuracy = acc;
+        std::cout << "Found new max Test ACCURACY = " << max_accuracy << " in epoch = " << e + 1
+                  << " / " << training_epochs << "\n";
+      }
+    }
+    else
+    {
+      float sum_mse = std::accumulate(mse_v.begin(), mse_v.end(), 0.f);
+      float sum_mae = std::accumulate(mae_v.begin(), mae_v.end(), 0.f);
+      std::cout << "Test Average MSE = " << sum_mse / mse_v.size() << "\n";
+      std::cout << "Test Average MAE = " << sum_mae / mae_v.size() << "\n";
+
+      // Best checkpoint part
+      float acc = sum_mae / mae_v.size();
+      if (acc < min_mae)
+      {
+        // Save best checkpoint
+        train_interpreter.saveCheckpoint(config, checkpoints_path);
+        min_mae = acc;
+        std::cout << "Found new min Test MAE = " << min_mae << " in epoch = " << e + 1 << " / "
+                  << training_epochs << "\n";
+      }
     }
   }
 
