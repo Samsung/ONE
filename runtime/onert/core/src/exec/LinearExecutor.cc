@@ -24,13 +24,13 @@ namespace onert
 namespace exec
 {
 
-void LinearExecutor::executeImpl()
+void LinearExecutor::executeImpl(const ExecutionObservee &subject)
 {
-  if (_tracing_ctx)
+  if (!subject.isEmpty() && _tracing_ctx)
   {
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
 
-    _subject.notifySubgraphBegin(profiling_subg_index);
+    subject.notifySubgraphBegin(profiling_subg_index);
     for (auto &&code : _code)
     {
       const auto backend = code.lower_info->backend();
@@ -38,7 +38,7 @@ void LinearExecutor::executeImpl()
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
-      _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
+      subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
       auto &fn_seq = code.fn_seq;
 
@@ -49,9 +49,9 @@ void LinearExecutor::executeImpl()
       fn_seq->enableDynamicShapeInferer(handle_dynamic_tensor);
       fn_seq->run();
 
-      _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
+      subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
-    _subject.notifySubgraphEnd(profiling_subg_index);
+    subject.notifySubgraphEnd(profiling_subg_index);
   }
   else
   {

@@ -70,7 +70,7 @@ ParallelExecutor::ParallelExecutor(std::unique_ptr<compiler::LoweredGraph> lower
   VERBOSE(ParallelExecutor) << "Constructing Parallel Executor" << std::endl;
 }
 
-void ParallelExecutor::executeImpl()
+void ParallelExecutor::executeImpl(const ExecutionObservee &subject)
 {
   bool dynamic_input_exists = hasDynamicInput();
 
@@ -102,7 +102,7 @@ void ParallelExecutor::executeImpl()
 
   auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
 
-  _subject.notifySubgraphBegin(profiling_subg_index);
+  subject.notifySubgraphBegin(profiling_subg_index);
 
   while (true)
   {
@@ -129,10 +129,10 @@ void ParallelExecutor::executeImpl()
     auto op_ind = _job_to_op[job_index];
     auto backend = _lowered_graph->lower_info().operation.at(op_ind).backend();
     auto setup = [&, op_ind, backend]() {
-      _subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
+      subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
     };
     auto teardown = [&, job_index, op_ind, backend]() {
-      _subject.notifyJobEnd(this, profiling_subg_index, op_ind, backend);
+      subject.notifyJobEnd(this, profiling_subg_index, op_ind, backend);
       notify(job_index);
     };
 
@@ -151,7 +151,7 @@ void ParallelExecutor::executeImpl()
 
   // Wait for all the jobs done
   _scheduler->finish();
-  _subject.notifySubgraphEnd(profiling_subg_index);
+  subject.notifySubgraphEnd(profiling_subg_index);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

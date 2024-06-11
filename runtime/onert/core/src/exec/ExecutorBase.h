@@ -64,9 +64,9 @@ public:
     _indexed_ranks = std::move(ranks);
   };
 
-  virtual void executeImpl(void) = 0;
+  virtual void executeImpl(const ExecutionObservee &subject) = 0;
 
-  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
+  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _observers.add(std::move(ref)); };
 
   const std::vector<backend::builtin::IOTensor *> &getInputTensors() const override
   {
@@ -86,7 +86,7 @@ protected:
   bool hasDynamicInput();
 
 protected:
-  ExecutionObservee _subject;
+  ExecObservers _observers;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::LoweredGraph> _lowered_graph;
   backend::BackendContexts _backend_contexts;

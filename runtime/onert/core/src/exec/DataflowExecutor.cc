@@ -123,7 +123,7 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
   _input_info = _initial_input_info;
 }
 
-void DataflowExecutor::executeImpl()
+void DataflowExecutor::executeImpl(const ExecutionObservee &subject)
 {
   assert(noWaitingJobs());
 
@@ -143,7 +143,7 @@ void DataflowExecutor::executeImpl()
 
   auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_graph);
 
-  _subject.notifySubgraphBegin(profiling_subg_index);
+  subject.notifySubgraphBegin(profiling_subg_index);
 
   while (!_ready_jobs.empty())
   {
@@ -155,7 +155,7 @@ void DataflowExecutor::executeImpl()
     auto op_ind = _job_to_op[job_index];
     const backend::Backend *backend = _lowered_graph->lower_info().operation.at(op_ind).backend();
 
-    _subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
+    subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
 
     job->fn_seq()->initRunning();
 
@@ -166,13 +166,13 @@ void DataflowExecutor::executeImpl()
 
     job->run();
 
-    _subject.notifyJobEnd(this, profiling_subg_index, op_ind, backend);
+    subject.notifyJobEnd(this, profiling_subg_index, op_ind, backend);
     notify(job_index);
     _finished_jobs[job_index] = std::move(job);
   }
   assert(noWaitingJobs());
 
-  _subject.notifySubgraphEnd(profiling_subg_index);
+  subject.notifySubgraphEnd(profiling_subg_index);
 
   // Reset input info for the next execution
   _input_info = _initial_input_info;

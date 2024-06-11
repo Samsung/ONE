@@ -18,6 +18,7 @@
 
 #include "ShapeConverter.h"
 
+#include "util/ConfigSource.h"
 #include <misc/polymorphic_downcast.h>
 
 namespace onert
@@ -93,7 +94,10 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     output_tensor->setTensor(output);
   }
 
-  executeImpl();
+  // Create observee
+  ExecutionObservee subject(_observers);
+
+  executeImpl(subject);
 }
 
 void ExecutorBase::execute(const ExecutionContext &ctx)
@@ -157,7 +161,10 @@ void ExecutorBase::execute(const ExecutionContext &ctx)
     tensor->set_dynamic(); // It can't be resized but shape could change
   }
 
-  executeImpl();
+  // Create observee
+  ExecutionObservee subject(_observers);
+
+  executeImpl(subject);
 
   // Update output(s) desc
   for (uint32_t n = 0; n < _graph.getOutputs().size(); ++n)

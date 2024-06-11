@@ -70,7 +70,7 @@ public:
     _indexed_ranks = std::move(ranks);
   };
 
-  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _subject.add(std::move(ref)); };
+  void addObserver(std::unique_ptr<IExecutionObserver> ref) { _observers.add(std::move(ref)); };
 
   const std::vector<backend::builtin::IOTensor *> &getInputTensors() const override
   {
@@ -91,14 +91,14 @@ public:
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
 private:
-  void forwardImpl(bool training);
-  void backwardImpl(uint32_t training_step);
+  void forwardImpl(const ExecutionObservee &subject, bool training);
+  void backwardImpl(const ExecutionObservee &subject, uint32_t training_step);
 
 private:
   compiler::train::TrainableCodeMap _code_map;
   std::vector<ir::OperationIndex> _forward_order;
   std::vector<ir::OperationIndex> _backward_order;
-  ExecutionObservee _subject;
+  ExecObservers _observers;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   std::unique_ptr<compiler::train::LoweredTrainableGraph> _lowered_graph;
   backend::train::TrainableBackendContexts _backend_contexts;

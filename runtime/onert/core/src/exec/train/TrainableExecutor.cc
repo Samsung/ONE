@@ -94,18 +94,21 @@ void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
       tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
   }
 
-  forwardImpl(training);
+  // Create observee
+  ExecutionObservee subject(_observers);
+
+  forwardImpl(subject, training);
 
   // TODO Update output(s) desc if desc has dynamic input
 }
 
-void TrainableExecutor::forwardImpl(bool training)
+void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool training)
 {
-  if (_tracing_ctx)
+  if (!subject.isEmpty() && _tracing_ctx)
   {
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
 
-    _subject.notifySubgraphBegin(profiling_subg_index);
+    subject.notifySubgraphBegin(profiling_subg_index);
     for (auto &&index : _forward_order)
     {
       const auto &code = _code_map.at(index);
@@ -114,14 +117,14 @@ void TrainableExecutor::forwardImpl(bool training)
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
-      _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
+      subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
       auto &tn_seq = code.tn_seq;
       tn_seq->forward(training && code.op->isRequiredForBackward());
 
-      _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
+      subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
-    _subject.notifySubgraphEnd(profiling_subg_index);
+    subject.notifySubgraphEnd(profiling_subg_index);
   }
   else
   {
@@ -145,16 +148,19 @@ void TrainableExecutor::backward(const ExecutionContext &, uint32_t training_ste
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
 
-  backwardImpl(training_step);
+  // Create observee
+  ExecutionObservee subject(_observers);
+
+  backwardImpl(subject, training_step);
 }
 
-void TrainableExecutor::backwardImpl(uint32_t training_step)
+void TrainableExecutor::backwardImpl(const ExecutionObservee &subject, uint32_t training_step)
 {
-  if (_tracing_ctx)
+  if (!subject.isEmpty() && _tracing_ctx)
   {
     auto profiling_subg_index = _tracing_ctx->getSubgraphIndex(&_trainable_graph.graph());
 
-    _subject.notifySubgraphBegin(profiling_subg_index);
+    subject.notifySubgraphBegin(profiling_subg_index);
     for (auto &&index : _backward_order)
     {
       const auto &code = _code_map.at(index);
@@ -167,14 +173,14 @@ void TrainableExecutor::backwardImpl(uint32_t training_step)
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
-      _subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
+      subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
       auto &tn_seq = code.tn_seq;
       tn_seq->backward(training_step, code.op->isWeightsUpdateEnabled());
 
-      _subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
+      subject.notifyJobEnd(this, profiling_subg_index, code.op_ind, backend);
     }
-    _subject.notifySubgraphEnd(profiling_subg_index);
+    subject.notifySubgraphEnd(profiling_subg_index);
   }
   else
   {
