@@ -26,6 +26,12 @@ class TrainParam():
         builder.Finish(self.train_param.Pack(builder), self.TRAINING_PARAM_IDENTIFIER)
         return builder.Output()
 
+    def set_trainable(self, trainable: List[int]):
+        self.train_param.trainableOps = trainable
+
+    def get_trainable(self) -> List[int]:
+        return self.train_param.trainableOps
+
     @classmethod
     def from_json(cls, json_file: str):
         '''Create TrainInfo from json file'''

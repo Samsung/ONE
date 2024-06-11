@@ -1,5 +1,5 @@
 import re
-from typing import Tuple
+from typing import Tuple, List, Union
 
 from lib import utils
 from schema import circle_traininfo_generated as ctr_gen
