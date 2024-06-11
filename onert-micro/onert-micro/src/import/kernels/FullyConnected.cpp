@@ -104,7 +104,15 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
   if (output->quantization()->scale() == nullptr or output->quantization()->scale()->size() != 1)
     return UnsupportedQuantizationType;
 
+  if (output->quantization()->zero_point() == nullptr or
+      output->quantization()->zero_point()->size() != 1)
+    return UnsupportedQuantizationType;
+
   if (weight->quantization()->scale() == nullptr or weight->quantization()->scale()->size() != 1)
+    return UnsupportedQuantizationType;
+
+  if (weight->quantization()->zero_point() == nullptr or
+      weight->quantization()->zero_point()->size() != 1)
     return UnsupportedQuantizationType;
 
 #endif // DIS_QUANT

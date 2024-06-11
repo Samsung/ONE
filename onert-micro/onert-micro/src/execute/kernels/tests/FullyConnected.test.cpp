@@ -41,11 +41,19 @@ TEST_F(FullyConnectedTest, Float_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
-TEST_F(FullyConnectedTest, Float_S8)
+TEST_F(FullyConnectedTest, S8_P)
 {
   onert_micro::test_model::TestDataS8FullyConnected test_data_kernel;
   std::vector<int8_t> output_data_vector =
     onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(FullyConnectedTest, S16_P)
+{
+  onert_micro::test_model::TestDataS16FullyConnected test_data_kernel;
+  std::vector<int16_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int16_t>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
@@ -63,7 +71,12 @@ TEST_F(FullyConnectedTest, Wrong_bias_shape_NEG)
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
 }
 
-// TODO: add S16 test and more NEG tests
+TEST_F(FullyConnectedTest, No_zero_points_NEG)
+{
+  onert_micro::test_model::NegTestDataNoZeroPointsFullyConnectedKernel test_data_kernel;
+
+  EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
 
 } // namespace testing
 } // namespace execute
