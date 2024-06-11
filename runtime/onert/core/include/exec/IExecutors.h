@@ -87,9 +87,9 @@ public:
 
   /**
    * @brief     Execute NN package executor set
-   * @param[in] desc  Input and output buffer description
+   * @param[in] ctx  Execution context
    */
-  virtual void execute(const IODescription &desc) = 0;
+  virtual void execute(const ExecutionContext &ctx) = 0;
 };
 
 } // namespace exec

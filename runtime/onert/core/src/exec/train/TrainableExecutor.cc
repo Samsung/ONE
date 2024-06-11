@@ -62,13 +62,14 @@ void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
   throw std::runtime_error("TrainableExecutor does not support multiple subgraphs yet");
 }
 
-void TrainableExecutor::forward(const IODescription &desc, bool training)
+void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
 
+  auto &desc = ctx.desc;
   // TODO Update IO tensors if desc has dynamic input
   // Set input(s)
   assert(_input_tensors.size() == desc.inputs.size());
@@ -137,7 +138,7 @@ void TrainableExecutor::forwardImpl(bool training)
   }
 }
 
-void TrainableExecutor::backward(const IODescription &, uint32_t training_step)
+void TrainableExecutor::backward(const ExecutionContext &, uint32_t training_step)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,

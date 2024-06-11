@@ -67,16 +67,16 @@ public:
 
   const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
-  void execute(const IODescription &desc) override;
+  void execute(const ExecutionContext &ctx) override;
 
   /**
    * @brief Train
    *
-   * @param desc          IO information
+   * @param ctx           Execution context
    * @param training_step The number of iterations of an training process.
    *                      In other words, the number of gradient update.
    */
-  void train(const IODescription &desc, uint32_t training_step);
+  void train(const ExecutionContext &ctx, uint32_t training_step);
 
   float getLoss(const ir::IOIndex &index) const;
 

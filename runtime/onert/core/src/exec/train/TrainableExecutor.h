@@ -56,13 +56,13 @@ public:
 public:
   const ir::Graph &graph() const final { return _trainable_graph.graph(); }
 
-  void execute(const IODescription &desc) override { forward(desc, false); };
+  void execute(const ExecutionContext &ctx) override { forward(ctx, false); };
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs) override;
 
-  void forward(const IODescription &desc, bool training);
-  void backward(const IODescription &desc, uint32_t training_step);
+  void forward(const ExecutionContext &ctx, bool training);
+  void backward(const ExecutionContext &ctx, uint32_t training_step);
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final

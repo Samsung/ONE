@@ -96,7 +96,7 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
   executeImpl();
 }
 
-void ExecutorBase::execute(const IODescription &desc)
+void ExecutorBase::execute(const ExecutionContext &ctx)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
@@ -104,6 +104,7 @@ void ExecutorBase::execute(const IODescription &desc)
   std::lock_guard<std::mutex> lock(_mutex);
 
   // Set input(s)
+  auto &desc = ctx.desc;
   assert(_input_tensors.size() == desc.inputs.size());
   for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
@@ -114,7 +115,7 @@ void ExecutorBase::execute(const IODescription &desc)
     tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
                           desc.inputs[i]->size);
 
-    if (desc.updated)
+    if (ctx.shape_updated)
     {
       auto &input_shape = desc.inputs.at(i)->info.shape();
       tensor->set_dynamic();

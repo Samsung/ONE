@@ -24,7 +24,7 @@
 #include "backend/train/ITrainableTensor.h"
 #include "ir/Layout.h"
 #include "exec/IExecutors.h"
-#include "IODescription.h"
+#include "ExecutionContext.h"
 
 #include <thread>
 #include <deque>
@@ -182,7 +182,7 @@ private:
 
 private:
   const std::shared_ptr<IExecutors> _executors;
-  IODescription _io_desc;
+  ExecutionContext _ctx;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
 };

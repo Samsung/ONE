@@ -58,21 +58,21 @@ const ir::OperandInfo &TrainableExecutors::outputInfo(const ir::IOIndex &index) 
   return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
 }
 
-void TrainableExecutors::execute(const IODescription &desc)
+void TrainableExecutors::execute(const ExecutionContext &ctx)
 {
   if (_executors.size() > 1)
     throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
-  entryExecutor()->forward(desc, false);
+  entryExecutor()->forward(ctx, false);
 
   // TODO Support multple executors
 }
 
-void TrainableExecutors::train(const IODescription &desc, uint32_t training_step)
+void TrainableExecutors::train(const ExecutionContext &ctx, uint32_t training_step)
 {
   if (_executors.size() > 1)
     throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
-  entryExecutor()->forward(desc, true);
-  entryExecutor()->backward(desc, training_step);
+  entryExecutor()->forward(ctx, true);
+  entryExecutor()->backward(ctx, training_step);
 
   // TODO Support multple executors
 }
