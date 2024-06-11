@@ -66,7 +66,7 @@ OMStatus OMTrainingInterpreter::saveModel(const OMConfig &config, const char *sa
   // Close file
   out_file.close();
 #else
-  assert(fasle && "Not supported");
+  assert(false && "Not supported");
   return UnknownError;
 #endif // DIS_STREAM
 
@@ -107,7 +107,7 @@ OMStatus OMTrainingInterpreter::loadCheckpoint(OMConfig &config, const char *loa
     return UnknownError;
   }
 #else
-  assert(fasle && "Not supported");
+  assert(false && "Not supported");
   return UnknownError;
 #endif // DIS_STREAM
 
@@ -146,7 +146,7 @@ OMStatus OMTrainingInterpreter::saveCheckpoint(const OMConfig &config, const cha
   // Close file
   out_file.close();
 #else
-  assert(fasle && "Not supported");
+  assert(false && "Not supported");
   return UnknownError;
 #endif // DIS_STREAM
 
