@@ -333,7 +333,8 @@ protected:
             const auto &expected_loss = ref_losses[epoch];
             float expected =
               *(reinterpret_cast<const float *>(expected_loss.data() + i * sizeof(float)));
-            EXPECT_NEAR(expected, actual, 0.001) << "Loss " << epoch + 1 << "/" << num_epoch << " #" << i;
+            EXPECT_NEAR(expected, actual, 0.001)
+              << "Loss " << epoch + 1 << "/" << num_epoch << " #" << i;
           }
         }
       }

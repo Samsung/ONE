@@ -20,7 +20,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D)
 {
   CirclePlusGen cgen;
 
-  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2*2*4, 0.f));
+  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 2 * 4, 0.f));
   uint32_t bias_buf = cgen.addBuffer(std::vector<float>(4, 0.f));
 
   int in = cgen.addTensor({{1, 3, 2, 2}, circle::TensorType::TensorType_FLOAT32});
@@ -39,8 +39,8 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D)
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(uniformTCD<float>({{1, 2, 7, 8, 3, 4, 9, 10, 5, 6, 11, 12}},
-                                          {{71, -34, 99, -20, 91, -26, 127, -4}},
-                                          {{5187.5000}, {176.7085}, {42.2953}}));
+                                           {{71, -34, 99, -20, 91, -26, 127, -4}},
+                                           {{5187.5000}, {176.7085}, {42.2953}}));
   _context->setBackends({"train"});
   _context->setEpoch(3);
 
@@ -51,7 +51,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier)
 {
   CirclePlusGen cgen;
 
-  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(3*1*2, 0.f));
+  uint32_t weight_buf = cgen.addBuffer(std::vector<float>(3 * 1 * 2, 0.f));
   uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
 
   int in = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
@@ -87,9 +87,9 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier)
 //   uint32_t bias_buf = cgen.addBuffer(std::vector<float>(4, 0.f));
 
 //   int in = cgen.addTensor({{1, 4, 4, 2}, circle::TensorType::TensorType_FLOAT32});
-//   int weight = cgen.addTensor({{1, 2, 2, 4}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-//   int bias = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32, bias_buf});
-//   int out = cgen.addTensor({{1, 2, 2, 4}, circle::TensorType::TensorType_FLOAT32});
+//   int weight = cgen.addTensor({{1, 2, 2, 4}, circle::TensorType::TensorType_FLOAT32,
+//   weight_buf}); int bias = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32,
+//   bias_buf}); int out = cgen.addTensor({{1, 2, 2, 4}, circle::TensorType::TensorType_FLOAT32});
 //   cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1, 2,
 //                                   circle::ActivationFunctionType_NONE, 2, 2);
 //   cgen.setInputsAndOutputs({in}, {out});
