@@ -29,6 +29,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 outputfile="sample.tvn"
+configfile="one-codegen_005.cfg"
 
 rm -rf ${outputfile}
 rm -f ${filename}.log
@@ -37,7 +38,7 @@ rm -f ${filename}.log
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-one-codegen -b dummy -T rose -- -o ${outputfile} "dummy.circle" > ${filename}.log 2>&1
+one-codegen -C ${configfile} -T rose > ${filename}.log 2>&1
 
 rm -rf ../bin/dummy-compile
 

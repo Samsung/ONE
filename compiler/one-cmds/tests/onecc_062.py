@@ -1,9 +1,9 @@
-from onelib import argparse
-from onelib.argparse import DriverName, NormalOption, TargetOption
+from onelib import argumentparse
+from onelib.argumentparse import DriverName, NormalOption, TargetOption
 
 
 def command_schema():
-    parser = argparse.ArgumentParser()
+    parser = argumentparse.ArgumentParser()
     parser.add_argument("dummy-compile", action=DriverName)
     parser.add_argument("--target", action=TargetOption)
     parser.add_argument("--DSP-quota", action=NormalOption)
