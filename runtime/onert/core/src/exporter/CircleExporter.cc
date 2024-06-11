@@ -16,6 +16,7 @@
 
 #include "exporter/CircleExporter.h"
 
+#include "exec/Execution.h"
 #include "circle_schema_generated.h"
 
 #include <fstream>
@@ -53,6 +54,32 @@ CircleExporter::CircleExporter(const std::string &source, const std::string &pat
 }
 
 CircleExporter::~CircleExporter() { finish(); }
+
+void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
+{
+  exec->iterateTrainableTensors(
+    [&](const ir::OperandIndex &idx, const backend::train::ITrainableTensor *tensor) {
+      const auto &subgs = _model->subgraphs;
+      if (subgs.size() != 1)
+        throw std::runtime_error("Circle does not has valid subgraph or has multiple subgraphs");
+
+      const auto &subg = subgs.at(0); // Get 1st subgraph
+      if (!idx.valid() || idx.value() >= subg->tensors.size())
+        throw std::runtime_error("Trainable tensor index is out of range");
+
+      const auto buf_idx = subg->tensors.at(idx.value())->buffer;
+      if (buf_idx >= _model->buffers.size())
+        throw std::runtime_error("Buffer for trainable tensors is invalid");
+
+      const auto &buffer = _model->buffers.at(buf_idx);
+
+      auto org_buf_sz = buffer->data.size();
+      if (org_buf_sz != tensor->total_size())
+        throw std::runtime_error("Trained tensor buffer size does not match original tensor's one");
+
+      memcpy(&buffer->data[0], tensor->buffer(), org_buf_sz);
+    });
+}
 
 void CircleExporter::finish()
 {

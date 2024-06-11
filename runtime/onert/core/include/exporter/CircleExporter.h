@@ -21,6 +21,13 @@ namespace circle
 {
 struct ModelT;
 } // namespace circle
+namespace onert
+{
+namespace exec
+{
+class Execution;
+} // namespace exec
+} // namespace onert
 
 namespace onert
 {
@@ -31,6 +38,8 @@ class CircleExporter
 public:
   CircleExporter(const std::string &source, const std::string &path);
   ~CircleExporter();
+
+  void updateWeight(const std::unique_ptr<onert::exec::Execution> &exec);
 
 private:
   void finish();
