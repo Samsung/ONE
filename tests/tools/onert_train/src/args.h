@@ -21,6 +21,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <set>
 #include <boost/program_options.hpp>
 
 #include "nnfw_experimental.h"
@@ -69,6 +70,7 @@ public:
   const bool printVersion(void) const { return _print_version; }
   const int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
+  std::set<uint32_t> getTrainableOpsIdx(void) const { return _trainable_ops_idx; }
 
 private:
   void Initialize();
@@ -115,6 +117,7 @@ private:
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
+  std::set<uint32_t> _trainable_ops_idx;
 };
 
 } // end of namespace onert_train
