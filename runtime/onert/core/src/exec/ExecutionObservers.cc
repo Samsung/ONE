@@ -116,17 +116,22 @@ void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex,
 TracingObserver::TracingObserver(const std::string &workspace_dir, const ir::Graph &graph,
                                  const util::TracingCtx *tracing_ctx)
   : _recorder{std::make_unique<EventRecorder>()}, _collector{_recorder.get()}, _graph{graph},
-    _tracing_ctx{tracing_ctx}
+    _workspace_dir{workspace_dir}, _tracing_ctx{tracing_ctx}, _triggered{false}
 {
-  _event_writer = EventWriter::get(workspace_dir);
-  _event_writer->startToUse();
+  // DO NOTHING
 }
 
 TracingObserver::~TracingObserver()
 {
   try
   {
-    _event_writer->readyToFlush(std::move(_recorder));
+    // Write file if this observer is triggered at least once
+    if (_triggered)
+    {
+      auto event_writer = EventWriter::get(_workspace_dir);
+      event_writer->startToUse();
+      event_writer->readyToFlush(std::move(_recorder));
+    }
   }
   catch (const std::exception &e)
   {
@@ -136,6 +141,8 @@ TracingObserver::~TracingObserver()
 
 void TracingObserver::handleSubgraphBegin(ir::SubgraphIndex subg_ind)
 {
+  _triggered = true;
+
   _collector.onEvent(
     EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::BEGIN, subg_ind.value()});
 }
