@@ -974,6 +974,9 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   if (!dir)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
+  if (isStatePreparedOrFinishedRun())
+    return NNFW_STATUS_INVALID_STATE;
+
   _coptions->workspace_dir = std::string(dir);
 
   // TODO Set workspace dir to workspace user (ex. compiler, quantization manager, etc)
