@@ -196,19 +196,15 @@ TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_no_such_name)
 TEST_F(ValidationTestAddModelLoaded, debug_set_config)
 {
   // At least one test for all valid keys
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "TRACING_MODE", "0"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "TRACING_MODE", "1"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "MINMAX_DUMP", "0"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "MINMAX_DUMP", "1"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "1"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "2"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "EXECUTOR", "Linear"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "OP_BACKEND_ALLOPS", "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "EXECUTOR", "Linear"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "USE_SCHEDULER", "0"));
   NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "USE_SCHEDULER", "1"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "PROFILING_MODE", "0"));
-  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "PROFILING_MODE", "1"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "FP16_ENABLE", "0"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_config(_session, "FP16_ENABLE", "1"));
   SUCCEED();
 }
 
@@ -246,4 +242,52 @@ TEST_F(ValidationTestAddModelLoaded, neg_debug_get_config)
   // wrong keys
   ASSERT_EQ(nnfw_get_config(_session, "", buf, sizeof(buf)), NNFW_STATUS_ERROR);
   ASSERT_EQ(nnfw_get_config(_session, "BAD_KEY", buf, sizeof(buf)), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddModelLoaded, set_workspace)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_workspace(_session, "."));
+  SUCCEED();
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_set_workspace)
+{
+  ASSERT_EQ(nnfw_set_workspace(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestAddModelLoaded, set_backends_per_operation)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_backends_per_operation(_session, "0=cpu;1=acl_cl"));
+  SUCCEED();
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_set_backends_per_operation)
+{
+  EXPECT_EQ(nnfw_set_backends_per_operation(_session, nullptr), NNFW_STATUS_ERROR);
+  // TODO Check invalid string
+}
+
+TEST_F(ValidationTestAddModelLoaded, set_prepare_config)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_prepare_config(_session, NNFW_PREPARE_CONFIG_PROFILE, nullptr));
+  SUCCEED();
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_set_execute_config)
+{
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr),
+            NNFW_STATUS_INVALID_STATE);
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr),
+            NNFW_STATUS_INVALID_STATE);
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_PROFILE, nullptr),
+            NNFW_STATUS_INVALID_STATE);
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_set_execute_config_with_no_workspace)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_workspace(_session, ""));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr),
+            NNFW_STATUS_ERROR);
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr), NNFW_STATUS_ERROR);
 }

@@ -198,4 +198,23 @@ TEST_F(ValidationTestAddSessionPrepared, neg_internal_set_config)
   ASSERT_EQ(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"), NNFW_STATUS_INVALID_STATE);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, neg_set_workspace)
+{
+  EXPECT_EQ(nnfw_set_workspace(_session, ""), NNFW_STATUS_ERROR);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, neg_set_prepare_config)
+{
+  EXPECT_EQ(nnfw_set_prepare_config(_session, NNFW_PREPARE_CONFIG_PROFILE, nullptr),
+            NNFW_STATUS_INVALID_STATE);
+}
+
+TEST_F(ValidationTestAddSessionPrepared, set_execute_config)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr));
+  NNFW_ENSURE_SUCCESS(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr));
+  NNFW_ENSURE_SUCCESS(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_PROFILE, nullptr));
+  SUCCEED();
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting
