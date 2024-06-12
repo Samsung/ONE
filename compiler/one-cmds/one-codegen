@@ -58,7 +58,7 @@ def _get_parser(backends_list):
     return parser
 
 
-def _verify_arg(parser, args, cfg_args, backend_args, unknown_args, cfg_target_args):
+def _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_args):
     """verify given arguments"""
     cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
     cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
@@ -159,7 +159,7 @@ def main():
     # oneutils.parse_cfg(args.config, 'one-codegen', args)
 
     # verify arguments
-    _verify_arg(parser, args, cfg_args, backend_args, unknown_args, cfg_target_args)
+    _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_args)
     '''
     one-codegen defines its behavior for below cases.
 
