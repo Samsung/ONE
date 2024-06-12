@@ -5,6 +5,13 @@ from schema import circle_schema_generated as cir_gen
 from lib.train_param import TrainParam
 
 
+def _not_none(elem, elem_name=""):
+    '''Make sure that elem is not empty'''
+    if elem == None:
+        raise RuntimeError(f"{elem_name} is none")
+    return
+
+
 class CirclePlus():
     ''' Wrapper class of circle_schema_generated.ModelT'''
     TINFO_META_TAG = "CIRCLE_TRAINING"
@@ -66,6 +73,42 @@ class CirclePlus():
         '''Add train_param to the model's metadata field'''
         tparam_buff = train_param.to_buff()
         self._add_metadata(self.TINFO_META_TAG, tparam_buff)
+
+    def get_number_of_operators(self, subgraph_idx=0) -> int:
+        '''Return a number of operators in the subgraph'''
+        subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
+        _not_none(subgraphs, "subgraphs")
+
+        operators: typing.List[cir_gen.OperatorT] = subgraphs[subgraph_idx].operators
+        if operators == None:
+            return 0
+        return len(operators)
+
+    def get_operators(self, subgraph_idx=0) -> typing.List[str]:
+        '''Return a list of opcodes according to the order of operations in the subgraph'''
+        subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
+        opcodes: typing.List[cir_gen.OperatorCodeT] = self.model.operatorCodes
+        _not_none(subgraphs, "subgraphs")
+        _not_none(opcodes, "operatorCodes")
+
+        operators: typing.List[cir_gen.OperatorT] = subgraphs[subgraph_idx].operators
+        _not_none(operators, "Operators")
+
+        opcodes_str = cir_gen.BuiltinOperator.__dict__.keys()  # ['GRU', 'BCQ_GATHER' .. ]
+        opcodes_int = cir_gen.BuiltinOperator.__dict__.values()  # [-5, -4, -3....]
+        opcode_dict = dict(zip(opcodes_int,
+                               opcodes_str))  #{-5:'GRU', -4:'BCQ_GATHER', ...}
+
+        opcode_in_order = []
+        for op in operators:
+            op_int = opcodes[op.opcodeIndex].builtinCode
+            if op_int in opcode_dict.keys():
+                op_str = opcode_dict[op_int]
+            else:
+                op_str = "UNKNOWN"  # might be custom_op
+            opcode_in_order.append(op_str)
+
+        return opcode_in_order
 
     def export(self, circle_file: str):
         '''Export model to the circle file'''
