@@ -978,15 +978,14 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
   // Not allowed to change workspace after prepare
-  if (isStatePrepared())
-    return NNFW_STATUS_ERROR;
+  if (isStatePreparedOrFinishedRun())
+    return NNFW_STATUS_INVALID_STATE;
 
   auto sdir = std::string(dir);
   _coptions->workspace_dir = sdir;
 
-  // TODO Set workspace dir to workspace user (ex. quantization manager, etc)
-  //      if model is already loaded
-  _quant_manager->setWorkspaceDir(sdir);
+  if (_quant_manager != nullptr)
+    _quant_manager->setWorkspaceDir(sdir);
 
   return NNFW_STATUS_NO_ERROR;
 }

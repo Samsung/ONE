@@ -200,7 +200,7 @@ TEST_F(ValidationTestAddSessionPrepared, neg_internal_set_config)
 
 TEST_F(ValidationTestAddSessionPrepared, neg_set_workspace)
 {
-  EXPECT_EQ(nnfw_set_workspace(_session, ""), NNFW_STATUS_ERROR);
+  EXPECT_EQ(nnfw_set_workspace(_session, ""), NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_set_prepare_config)
