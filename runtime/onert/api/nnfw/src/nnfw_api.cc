@@ -270,7 +270,7 @@ NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
 
 NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *, uint32_t, nnfw_tensorinfo)
 {
-  return NNFW_STATUS_DEPRECATED_API;
+  return nnfw_session::deprecated("nnfw_apply_tensorinfo: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
@@ -365,23 +365,19 @@ NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *b
   return session->set_backends_per_operation(backend_settings);
 }
 
-NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *map_file_path)
+NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *, const char *)
 {
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->prepare_pipeline(map_file_path);
+  return nnfw_session::deprecated("nnfw_prepare_pipeline: Deprecated");
 }
 
-NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *inputs, void *lengths)
+NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *, void *, void *)
 {
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->push_pipeline_input((std::vector<void *> *)inputs,
-                                      (std::vector<uint32_t> *)lengths);
+  return nnfw_session::deprecated("nnfw_apply_tensorinfo: Deprecated");
 }
 
-NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs)
+NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *, void *)
 {
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->pop_pipeline_output((std::vector<void *> *)outputs);
+  return nnfw_session::deprecated("nnfw_apply_tensorinfo: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)

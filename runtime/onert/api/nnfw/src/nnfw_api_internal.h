@@ -123,7 +123,6 @@ public:
   ~nnfw_session();
   NNFW_STATUS load_model_from_nnpackage(const char *package_file_path);
   NNFW_STATUS prepare();
-  NNFW_STATUS prepare_pipeline(const char *map_file_path);
   NNFW_STATUS run();
 
   NNFW_STATUS run_async();
@@ -148,6 +147,8 @@ public:
 
   NNFW_STATUS set_workspace(const char *dir);
 
+  static NNFW_STATUS deprecated(const char *msg);
+
   //
   // Internal-only API
   //
@@ -160,9 +161,6 @@ public:
   //
   // Experimental API
   //
-  NNFW_STATUS push_pipeline_input(std::vector<void *> *inputs, std::vector<uint32_t> *lengths);
-  NNFW_STATUS pop_pipeline_output(std::vector<void *> *outputs);
-
   NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
   NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
   NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
