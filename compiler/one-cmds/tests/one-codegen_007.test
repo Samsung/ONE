@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# run dummy-compile drvier with given target in the command line
+# run dummy-compile drvier with given target overwrited from the command line
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -29,7 +29,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 outputfile="sample.tvn"
-configfile="one-codegen_005.cfg"
+configfile="one-codegen_006.cfg"
 
 rm -rf ${outputfile}
 rm -f ${filename}.log

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# run dummy-compile drvier with given target in the command line
+# run dummy-compile drvier with given target in the cfg file
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -29,7 +29,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 outputfile="sample.tvn"
-configfile="one-codegen_005.cfg"
+configfile="one-codegen_006.cfg"
 
 rm -rf ${outputfile}
 rm -f ${filename}.log
@@ -38,11 +38,11 @@ rm -f ${filename}.log
 cp dummy-compile ../bin/dummy-compile
 
 # run test
-one-codegen -C ${configfile} -T rose > ${filename}.log 2>&1
+one-codegen -C ${configfile} > ${filename}.log 2>&1
 
 rm -rf ../bin/dummy-compile
 
-if grep -q "dummy-compile with rose target" "${outputfile}"; then
+if grep -q "dummy-compile with sunflower target" "${outputfile}"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi

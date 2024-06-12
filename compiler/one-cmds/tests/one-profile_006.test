@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# run dummy-compile drvier with given target in the command line
+# run dummy-profile drvier with given target in the cfg file
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -22,27 +22,27 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-compile
+  rm -rf ../bin/dummy-profile
   exit 255
 }
 
 trap trap_err_onexit ERR
 
 outputfile="sample.tvn"
-configfile="one-codegen_005.cfg"
+configfile="one-profile_006.cfg"
 
 rm -rf ${outputfile}
 rm -f ${filename}.log
 
-# copy dummy-compile to bin folder
-cp dummy-compile ../bin/dummy-compile
+# copy dummy-profile to bin folder
+cp dummy-profile ../bin/dummy-profile
 
 # run test
-one-codegen -C ${configfile} -T rose > ${filename}.log 2>&1
+one-profile -C ${configfile} > ${filename}.log 2>&1
 
-rm -rf ../bin/dummy-compile
+rm -rf ../bin/dummy-profile
 
-if grep -q "dummy-compile with rose target" "${outputfile}"; then
+if grep -q "dummy-profile with sunflower target" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi
