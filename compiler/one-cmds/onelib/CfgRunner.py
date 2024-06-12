@@ -54,6 +54,7 @@ class CfgRunner:
                 self.add_opt(o[1:])
 
         self.backend = None
+        self.target = None
 
     def _verify_cfg(self, cfgparser):
         if not cfgparser.has_section('onecc'):
@@ -88,6 +89,9 @@ class CfgRunner:
     def set_backend(self, backend: str):
         self.backend = backend
 
+    def set_target(self, target: str):
+        self.target = target
+
     def detect_import_drivers(self, dir):
         self.import_drivers = list(oneutils.detect_one_import_drivers(dir).keys())
 
@@ -111,6 +115,8 @@ class CfgRunner:
                 options.append('--verbose')
             if (section == 'one-codegen' or section == 'one-profile') and self.backend:
                 options += ['-b', self.backend]
+            if self.target:
+                options += ['-T', self.target]
             driver_path = os.path.join(working_dir, section)
             cmd = [driver_path] + options
             oneutils.run(cmd)

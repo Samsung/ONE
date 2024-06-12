@@ -310,7 +310,7 @@ def _get_model_type(parser, args):
 
 def main():
     # get backend list
-    backends_list = backends.get_list('init')
+    backends_list = backends.get_list('*-init')
 
     # parse arguments
     parser = _get_parser(backends_list)
