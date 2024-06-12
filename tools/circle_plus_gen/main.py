@@ -45,7 +45,6 @@ def inject_hparams(in_file, hparams_file, out_file=None) -> None:
         out_file = in_file
 
     tparams: TrainParam = TrainParam.from_json(hparams_file)
-
     circle_model: CirclePlus = CirclePlus.from_file(in_file)
     circle_model.set_train_param(tparams)
     print("succesfully add hyperparameters to the circle file")
