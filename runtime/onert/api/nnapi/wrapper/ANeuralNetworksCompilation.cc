@@ -26,7 +26,7 @@ ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksMode
     _compiler{std::make_shared<compiler::Compiler>(_model, _coptions.get())}
 {
   if (model->allowedToFp16())
-    _coptions->enableToFp16();
+    _coptions->fp16_enable = true;
 }
 
 bool ANeuralNetworksCompilation::finish() noexcept

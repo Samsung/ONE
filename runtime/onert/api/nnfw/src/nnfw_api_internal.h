@@ -50,7 +50,7 @@ class TrainingInfo;
 namespace compiler
 {
 struct CompilerArtifact;
-class CompilerOptions;
+struct CompilerOptions;
 } // namespace compiler
 namespace odc
 {
