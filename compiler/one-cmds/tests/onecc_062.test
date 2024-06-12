@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# use command schema
+
+: '
+This test assumes below directories.
+
+[one hierarchy]
+    one
+    ├── backends
+    │   └── command
+    │       └── codegen
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    └── test # pwd
+'
+
+BACKENDS_ALREADY_EXIST=true
+CMD_ALREADY_EXIST=true
+CODEGEN_ALREADY_EXIST=true
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+clean_envir()
+{
+  rm -rf ../bin/dummy-compile
+  rm -rf ../backends/command/codegen/onecc_062.py
+  if [ "$CODEGEN_ALREADY_EXIST" = false ]; then
+    rm -rf ../backends/command/codegen/
+  fi
+  if [ "$CMD_ALREADY_EXIST" = false ]; then
+    rm -rf ../backends/command/
+  fi
+  if [ "$BACKENDS_ALREADY_EXIST" = false ]; then
+    rm -rf ../backends/
+  fi
+}
+
+trap_err_onexit()
+{
+  echo "${filename_ext} FAILED"
+  clean_envir
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+configfile="onecc_062.cfg"
+outputfile="onecc_062.tvn"
+
+rm -f ${filename}.log
+rm -rf ${outputfile}
+
+# copy dummy tools to bin folder
+cp dummy-compile ../bin/dummy-compile
+
+if [ ! -d "../backends/" ]; then
+  mkdir -p ../backends/
+  BACKENDS_ALREADY_EXIST=false
+fi
+if [ ! -d "../backends/command/" ]; then
+  mkdir -p ../backends/command/
+  CMD_ALREADY_EXIST=false
+fi
+if [ ! -d "../backends/command/codegen/" ]; then
+  mkdir -p ../backends/command/codegen/
+  CODEGEN_ALREADY_EXIST=false
+fi
+
+cp onecc_062.py ../backends/command/codegen/
+
+# run test
+onecc -C ${configfile} > ${filename}.log 2>&1
+
+clean_envir
+
+if grep -q "dummy-compile with onecc-062 target" "${outputfile}"; then
+  echo "${filename_ext} SUCCESS"
+  exit 0
+fi
+
+trap_err_onexit

@@ -42,11 +42,10 @@ def get_list(cmdname):
     backend_set = set()
 
     # bin folder
-    files = [f for f in glob.glob(dir_path + '/../*-' + cmdname)]
+    files = [f for f in glob.glob(dir_path + '/../' + cmdname)]
     # backends folder
     files += [
-        f
-        for f in glob.glob(dir_path + '/../../backends/**/*-' + cmdname, recursive=True)
+        f for f in glob.glob(dir_path + '/../../backends/**/' + cmdname, recursive=True)
     ]
     # TODO find backends in `$PATH`
 
