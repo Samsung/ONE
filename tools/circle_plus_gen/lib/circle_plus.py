@@ -84,15 +84,15 @@ class CirclePlus():
             return 0
         return len(operators)
 
-    def get_operators(self, subgraph_idx=0) -> typing.List[str]:
-        '''Return a list of opcodes according to the order of operations in the subgraph'''
+    def get_operator_names(self, subgraph_idx=0) -> typing.List[str]:
+        '''Return a list of operator names according to the order of operations in the subgraph'''
         subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
         opcodes: typing.List[cir_gen.OperatorCodeT] = self.model.operatorCodes
         _not_none(subgraphs, "subgraphs")
         _not_none(opcodes, "operatorCodes")
 
         operators: typing.List[cir_gen.OperatorT] = subgraphs[subgraph_idx].operators
-        _not_none(operators, "Operators")
+        _not_none(operators, "operators")
 
         opcodes_str = cir_gen.BuiltinOperator.__dict__.keys()  # ['GRU', 'BCQ_GATHER' .. ]
         opcodes_int = cir_gen.BuiltinOperator.__dict__.values()  # [-5, -4, -3....]

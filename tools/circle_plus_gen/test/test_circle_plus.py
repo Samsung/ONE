@@ -22,8 +22,8 @@ class TestCirclePlus(unittest.TestCase):
         num_op = self.circle_model.get_number_of_operators()
         self.assertEqual(num_op, 1)
 
-    def test_get_operators(self):
-        ops = self.circle_model.get_operators()
+    def test_get_operator_names(self):
+        ops = self.circle_model.get_operator_names()
         self.assertEqual(ops, ['FULLY_CONNECTED'])
 
 
