@@ -981,36 +981,41 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   using namespace onert::util;
 
   const std::string skey = key;
+  const std::string svalue = value;
 
-  if (skey == config::TRACING_MODE)
+  if (skey == config::GRAPH_DOT_DUMP)
   {
-    _exec_options->trace = toBool(value);
+    _coptions->graph_dump_level = toInt(svalue);
   }
-  else if (skey == config::MINMAX_DUMP)
-  {
-    _exec_options->dump_minmax = toBool(value);
-  }
-  else if (skey == config::GRAPH_DOT_DUMP)
-  {
-    _coptions->graph_dump_level = toInt(value);
-  }
-  else if (skey == config::EXECUTOR)
-  {
-    _coptions->executor = value;
-  }
+  // BACKENDS: use nnfw_set_available_backends
   else if (skey == config::OP_BACKEND_ALLOPS)
   {
-    _coptions->manual_scheduler_options.backend_for_all = value;
+    _coptions->manual_scheduler_options.backend_for_all = svalue;
   }
+  // OP_BACKEND_MAP: nnfw_set_backends_per_operation
+  // ONERT_LOG_ENABLE: not used in _coptions and _exec_options
+  // CPU_MEMORY_PLANNER: not used in _coptions and _exec_options
+  else if (skey == config::EXECUTOR)
+  {
+    _coptions->executor = svalue;
+  }
+  // ACL_LAYOUT: not used in _coptions and _exec_options
+  // NCNN_LAYOUT: not used in _coptions and _exec_options
+  // PROFILING_MODE: use nnfw_set_prepare_config and nnfw_set_execute_config
   else if (skey == config::USE_SCHEDULER)
   {
-    _coptions->he_scheduler = toBool(value);
+    _coptions->he_scheduler = toBool(svalue);
   }
-  else if (skey == config::PROFILING_MODE)
+  // TRACING_MODE: use nnfw_set_execute_config
+  // MINMAX_DUMP: use nnfw_set_execute_config
+  else if (skey == config::FP16_ENABLE)
   {
-    _coptions->he_profiling_mode = toBool(value);
-    _exec_options->profile = toBool(value);
+    _coptions->fp16_enable = toBool(svalue);
   }
+  // RUY_THREADS: not used in _coptions and _exec_options
+  // XNNPACK_THREADS: not used in _coptions and _exec_options
+  // USE_MMAPED_DATA: not used in _coptions and _exec_options
+  // WORKSPACE_DIR:: use nnfw_set_workspace
   else
   {
     return NNFW_STATUS_ERROR;
@@ -1914,6 +1919,12 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
 
 NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *)
 {
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_prepare_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
   switch (key)
   {
     case NNFW_PREPARE_CONFIG_PROFILE:
@@ -1928,6 +1939,12 @@ NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, cons
 
 NNFW_STATUS nnfw_session::reset_prepare_config()
 {
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::reset_prepare_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
   _coptions->he_profiling_mode = false;
 
   return NNFW_STATUS_NO_ERROR;
@@ -1935,6 +1952,12 @@ NNFW_STATUS nnfw_session::reset_prepare_config()
 
 NNFW_STATUS nnfw_session::set_execute_config(const NNFW_RUN_CONFIG key, const char *)
 {
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_execution_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
   switch (key)
   {
     case NNFW_RUN_CONFIG_DUMP_MINMAX:
@@ -1959,6 +1982,12 @@ NNFW_STATUS nnfw_session::set_execute_config(const NNFW_RUN_CONFIG key, const ch
 
 NNFW_STATUS nnfw_session::reset_execute_config()
 {
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_execution_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
   _exec_options->dump_minmax = false;
   _exec_options->trace = false;
   _exec_options->profile = false;
