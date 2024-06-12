@@ -24,9 +24,10 @@ import os
 import subprocess
 import sys
 
-from typing import Union
+from typing import Union, Optional
 
 import onelib.constant as _constant
+from onelib.argumentparse import ArgumentParser
 
 
 def add_default_arg(parser):
@@ -96,19 +97,26 @@ def get_config_parser() -> configparser.ConfigParser:
     return parser
 
 
-def parse_cfg(config_path: Union[str, None], section_to_parse: str, args):
+def parse_cfg(config_path: Union[str, None],
+              section_to_parse: str,
+              args,
+              quiet: bool = False):
     """
     parse configuration file and store the information to args
     
     :param config_path: path to configuration file
     :param section_to_parse: section name to parse
     :param args: object to store the parsed information
+    :param quiet: raise no error when given section doesn't exist
     """
     if config_path is None:
         return
 
     parser = get_config_parser()
     parser.read(config_path)
+
+    if not parser.has_section(section_to_parse) and quiet:
+        return
 
     if not parser.has_section(section_to_parse):
         raise AssertionError('configuration file must have \'' + section_to_parse +
@@ -229,6 +237,31 @@ def get_optimization_list(get_name=False):
         opt_list = [remove_suffix(s, '.cfg') for s in opt_list]
 
     return opt_list
+
+
+def get_arg_parser(target: Optional[str], cmd: str) -> Optional[ArgumentParser]:
+    if not target:
+        return None
+
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    # for python module naming convention
+    target_name = target.replace('-', '_')
+    command_schema_path = dir_path + f'/../../backends/command/{cmd}/{target_name}.py'
+    if not os.path.isfile(command_schema_path):
+        return None
+
+    # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
+    spec = importlib.util.spec_from_file_location(target_name, command_schema_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[target_name] = module
+    spec.loader.exec_module(module)
+
+    if not hasattr(module, "command_schema"):
+        raise RuntimeError('You must implement "command_schema" function')
+
+    parser: ArgumentParser = module.command_schema()
+    parser.target = target
+    return parser
 
 
 def detect_one_import_drivers(search_path):
