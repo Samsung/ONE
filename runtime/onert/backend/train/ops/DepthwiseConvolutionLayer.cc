@@ -50,6 +50,9 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
   _grad_weights = grad_weights;
   _grad_bias = grad_bias;
 
+  if (_dilationWidth != 1 || _dilationHeight != 1)
+    throw std::runtime_error("train DepthwiseConvolutionLayer: Unsupported dilation yet");
+
   if (activation != ir::Activation::NONE)
   {
     _act_back_prop_output =
