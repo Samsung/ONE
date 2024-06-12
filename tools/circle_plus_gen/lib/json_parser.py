@@ -1,5 +1,5 @@
 import re
-from typing import Tuple
+from typing import Tuple, List, Union
 
 from lib import utils
 from schema import circle_traininfo_generated as ctr_gen
@@ -148,3 +148,33 @@ def load_loss_reduction(s: str):
         raise ValueError(f"not supported loss.args.reduction={s}")
 
     return type
+
+
+def load_trainable(s: str, num_op: int) -> List[int]:
+    '''Return [int] to set ModelTrainingT.trainableOps
+    '''
+    s = s.lower()
+
+    if s == "all":
+        return list(range(0, num_op))
+    elif s == "none":
+        return []
+    elif s.startswith("last"):
+        try:
+            last_n = int(s[4:])  #remvoe 'last'
+        except ValueError as e:
+            print(e)
+            raise ValueError(f"lastN: N is not integer value")
+
+        if last_n < 0:
+            raise ValueError(f"lastN : N is negative value")
+
+        if last_n > num_op:
+            raise ValueError(
+                f"number of operators({num_op}) < number of trainable operators({last_n})"
+            )
+
+        start_idx = num_op - last_n
+        return list(range(start_idx, num_op))
+    else:
+        raise ValueError(f"not supported train {s}")

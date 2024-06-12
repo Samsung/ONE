@@ -12,5 +12,6 @@
             "reduction": "sum over batch size"  
         }  
     },  
-    "batchSize": 64  
+    "batchSize": 64, 
+    "train" : "last2"
 }  

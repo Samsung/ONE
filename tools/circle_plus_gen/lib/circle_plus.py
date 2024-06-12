@@ -33,7 +33,7 @@ class CirclePlus():
         for m in metadata:
             if m.name.decode("utf-8") == self.TINFO_META_TAG:
                 buff: cir_gen.BufferT = buffers[m.buffer]
-                tparam: TrainParam = TrainParam.from_buff(buff.data)
+                tparam: TrainParam = TrainParam.from_buff(self, buff.data)
                 return tparam
 
         return None
@@ -67,6 +67,15 @@ class CirclePlus():
         '''Add train_param to the model's metadata field'''
         tparam_buff = train_param.to_buff()
         self._add_metadata(self.TINFO_META_TAG, tparam_buff)
+
+    def get_number_of_operators(self, subgraph_idx=0) -> int:
+        '''Return a number of operator in the subgraph'''
+        subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
+        self._check_not_empty(subgraphs, "subgraphs")
+
+        operators: typing.List[cir_gen.OperatorT] = subgraphs[subgraph_idx].operators
+        self._check_not_empty(operators, "Operators")
+        return len(operators)
 
     def _check_not_empty(self, elem, elem_name=""):
         '''Make sure that elem is not empty'''
