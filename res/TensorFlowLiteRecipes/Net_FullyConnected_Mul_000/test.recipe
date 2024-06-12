@@ -1,0 +1,66 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 }
+}
+operand {
+  name: "mul_ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "fc_wgt"
+  type: FLOAT32
+  shape { dim: 16 dim: 8 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "fc_bias"
+  type: FLOAT32
+  shape { dim: 16 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "fc"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: NONE
+  }
+  input: "ifm"
+  input: "fc_wgt"
+  input: "fc_bias"
+  output: "fc"
+}
+operation {
+  type: "Mul"
+  input: "mul_ifm"
+  input: "fc"
+  output: "ofm"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
