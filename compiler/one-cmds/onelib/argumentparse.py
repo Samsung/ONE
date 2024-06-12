@@ -47,6 +47,8 @@ class ArgumentParser():
         self.target: str = None
 
     def add_argument(self, *args, **kwargs):
+        if not 'action' in kwargs:
+            raise RuntimeError('"action" keyword argument is required')
         action = kwargs['action']
         if not action in self._SUPPORTED_ACTIONS:
             raise RuntimeError('Invalid action')
