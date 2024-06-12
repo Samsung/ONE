@@ -193,6 +193,19 @@ TEST_F(ValidationTestAddModelLoaded, neg_experimental_output_no_such_name)
   ASSERT_EQ(ind, 999);
 }
 
+TEST_F(ValidationTestAddModelLoaded, set_backends_per_operation)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_backends_per_operation(_session, "0=cpu;1=acl_cl"));
+  SUCCEED();
+}
+
+TEST_F(ValidationTestAddModelLoaded, neg_set_backends_per_operation)
+{
+  EXPECT_EQ(nnfw_set_backends_per_operation(_session, nullptr), NNFW_STATUS_ERROR);
+  EXPECT_EQ(nnfw_set_backends_per_operation(_session, "0?cpu;1?acl_cl"), NNFW_STATUS_ERROR);
+  EXPECT_EQ(nnfw_set_backends_per_operation(_session, "0=cpu:1=acl_cl"), NNFW_STATUS_ERROR);
+}
+
 TEST_F(ValidationTestAddModelLoaded, debug_set_config)
 {
   // At least one test for all valid keys
