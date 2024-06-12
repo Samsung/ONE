@@ -15,7 +15,11 @@
  */
 
 #include "MinMaxRecorder.h"
-
+#if MINMAX_H5DUMPER
+#include "../dumper/h5/MinMaxDumper.h"
+#else
+#include "MinMaxData.h"
+#endif
 #include "backend/ITensor.h"
 
 #include <cassert>
@@ -28,12 +32,9 @@ namespace exec
 
 MinMaxRecorder::MinMaxRecorder(const std::string &workspace_dir, const ir::Graph &graph,
                                const backend::BackendContexts &backend_contexts)
-#if MINMAX_H5DUMPER
-  : _graph{graph}, _backend_contexts{backend_contexts}, _h5dumper(workspace_dir + "/minmax.h5")
-#else
-  : _graph{graph}, _backend_contexts{backend_contexts}, _raw_dumper(workspace_dir + "/minmax.bin")
-#endif
+  : _graph{graph}, _backend_contexts{backend_contexts}, _workspace_dir(workspace_dir)
 {
+  // DO NOTHING
 }
 
 std::pair<float, float> minmaxFrom(const backend::ITensor *tensor)
@@ -148,9 +149,11 @@ void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
   // It would be better to dump at the end of model execution, not subgraph
   // But it requires more changes than subgraph.
 #if MINMAX_H5DUMPER
-  _h5dumper.dump(_input_minmax, _op_minmax);
+  auto h5dumper = dumper::h5::MinMaxDumper(_workspace_dir + "/minmax.h5");
+  h5dumper.dump(_input_minmax, _op_minmax);
 #else
-  _raw_dumper.dump(_input_minmax, _op_minmax);
+  auto raw_dumper = RawMinMaxDumper(_workspace_dir + "/minmax.bin");
+  raw_dumper.dump(_input_minmax, _op_minmax);
 #endif
 }
 
