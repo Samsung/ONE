@@ -75,7 +75,7 @@ class CirclePlus():
         self._add_metadata(self.TINFO_META_TAG, tparam_buff)
 
     def get_number_of_operators(self, subgraph_idx=0) -> int:
-        '''Return a number of operators in the subgraph'''
+        '''Return the number of operators in the subgraph'''
         subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
         _not_none(subgraphs, "subgraphs")
 
@@ -102,7 +102,7 @@ class CirclePlus():
         opcode_in_order = []
         for op in operators:
             op_int = opcodes[op.opcodeIndex].builtinCode
-            if op_int in opcode_dict.keys():
+            if op_int in opcode_dict:
                 op_str = opcode_dict[op_int]
             else:
                 op_str = "UNKNOWN"  # might be custom_op
