@@ -252,7 +252,8 @@ def main():
                 raise FileNotFoundError(backend_base + ' not found')
 
             codegen_cmd = [codegen_path]
-            # "--target" option is intentionally inserted at the beginning of the command to match the command of backends' tool.
+            # "--target" option is intentionally inserted at the beginning of the command.
+            # It would match the command of backends' tool.
             if target_to_run:
                 codegen_cmd += ['--target', target_to_run]
             if not cmd_overwrite and oneutils.is_valid_attr(cfg_args, given_backend):
