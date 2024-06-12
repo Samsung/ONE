@@ -366,7 +366,7 @@ private:
 
 TEST(Optimizer, SGDValueValidation)
 {
-  // Single step
+  // 10 steps
   {
     const auto shape = ir::Shape{1, 3, 3};
     const auto type_info = ir::TypeInfo{ir::DataType::FLOAT32};
@@ -461,7 +461,7 @@ TEST(Optimizer, neg_SGDUnsupportedType)
 
 TEST(Optimizer, AdamValueValidation)
 {
-  // single step
+  // 10 steps
   {
     const auto shape = ir::Shape{1, 3, 3};
     const auto type_info = ir::TypeInfo{ir::DataType::FLOAT32};
