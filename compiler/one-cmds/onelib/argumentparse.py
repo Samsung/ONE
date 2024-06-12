@@ -62,6 +62,7 @@ class ArgumentParser():
 
     def make_cmd(self, cfg_args: SimpleNamespace) -> List:
         assert self.target, "Target should be set before making commands"
+        assert self.driver, "Driver should be set before making commands"
         # find driver path
         driver_name = self.driver
         driver_list = backends.get_list(driver_name)
