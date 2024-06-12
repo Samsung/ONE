@@ -41,7 +41,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected)
   _context->addTrainCase(
     uniformTCD<float>({{{1, 3}}, {{2, 1}}},                                     // inputs
                       {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
-                      {11.4484f}                                              // loss
+                      {11.4484f}                                                // loss
                       ));
 
   _context->setBackends({"train"});
@@ -72,7 +72,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected_OptionalBias)
   _context->addTrainCase(
     uniformTCD<float>({{{1, 3, 2, 1}}},                                     // inputs
                       {{{2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
-                      {{12.7512f}}                                        // loss
+                      {{12.7512f}}                                          // loss
                       ));
 
   _context->setBackends({"train"});
