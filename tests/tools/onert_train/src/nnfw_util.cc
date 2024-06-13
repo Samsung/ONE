@@ -109,6 +109,16 @@ std::ostream &operator<<(std::ostream &os, const nnfw_train_info &info)
   os << "- batch_size      = " << info.batch_size << "\n";
   os << "- loss_info       = " << info.loss_info << "\n";
   os << "- optimizer       = " << info.opt << "\n";
+  os << "- trainalbe_ops   = [";
+  auto const size = info.trainble_ops_size;
+  if (size > 0)
+  {
+    for (int i = 0; i < size - 1; ++i)
+      os << info.trainble_ops_idx[i] << ", ";
+    os << info.trainble_ops_idx[size - 1];
+  }
+  os << "]\n";
+
   return os;
 }
 
