@@ -31,7 +31,7 @@ option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
 option(BUILD_NPUD "Build NPU daemon" OFF)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
-option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" ON)
+option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
 #
 # Default build configuration for contrib
 #
