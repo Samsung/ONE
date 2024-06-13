@@ -14,6 +14,7 @@ set(SOURCES
         OMKernelExecutionBuilder.cpp
         OMRuntimeKernel.cpp
         OMUtils.cpp
+        kernels/ConvolutionCommon.cpp
         )
 
 # Add configure kernels

@@ -17,6 +17,7 @@
 #ifndef ONERT_MICRO_EXECUTE_UTILS_H
 #define ONERT_MICRO_EXECUTE_UTILS_H
 
+#include <cmath>
 #include "OMStatus.h"
 #include "core/reader/OMCircleReader.h"
 #include "core/OMRuntimeShape.h"
@@ -85,10 +86,25 @@ void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier,
 void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier,
                                          int *left_shift);
 
-void calculateActivationRangeQuantized(circle::ActivationFunctionType activation,
-                                       int32_t output_zero_point, float output_scale,
-                                       circle::TensorType data_type, int32_t *activation_min,
-                                       int32_t *activation_max);
+inline std::vector<double>
+getQuantizedConvolutionMultiplers(float input_scale, const flatbuffers::Vector<float> *filter_scale,
+                                  float output_scale)
+{
+  std::vector<double> effective_output_scales;
+  size_t n = filter_scale->size();
+  effective_output_scales.reserve(n);
+  for (size_t i = 0; i < n; ++i)
+  {
+    effective_output_scales.push_back(
+      getQuantizedConvolutionMultipler(input_scale, filter_scale->operator[](i), output_scale));
+  }
+  return effective_output_scales;
+}
+
+OMStatus calculateActivationRangeQuantized(circle::ActivationFunctionType activation,
+                                           int32_t output_zero_point, float output_scale,
+                                           circle::TensorType data_type, int32_t *activation_min,
+                                           int32_t *activation_max);
 
 inline int computeOutSize(circle::Padding padding, int image_size, int filter_size, int stride,
                           int dilation_rate = 1)

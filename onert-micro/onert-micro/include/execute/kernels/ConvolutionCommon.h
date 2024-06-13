@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef LUCI_INTERPRETER_PAL_CONV2D_H
-#define LUCI_INTERPRETER_PAL_CONV2D_H
-#include "PALConv2DCommon.h"
+#ifndef ONERT_MICRO_EXECUTE_KERNELS_CONVOLUTION_COMMON_H
+#define ONERT_MICRO_EXECUTE_KERNELS_CONVOLUTION_COMMON_H
 
-#endif // LUCI_INTERPRETER_PAL_CONV2D_H
+#include "OMStatus.h"
+
+#include "core/OMKernelData.h"
+#include "core/OMRuntimeShape.h"
+
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus createConvParams(core::ConvQuant &params, const circle::Tensor *input,
+                          const circle::Tensor *filter, const circle::Tensor *output,
+                          const circle::Conv2DOptions *options);
+
+} // namespace execute
+} // namespace onert_micro
+
+#endif // ONERT_MICRO_EXECUTE_KERNELS_CONVOLUTION_COMMON_H
