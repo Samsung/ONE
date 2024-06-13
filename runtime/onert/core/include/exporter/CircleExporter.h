@@ -27,6 +27,13 @@ namespace exec
 {
 class Execution;
 } // namespace exec
+namespace ir
+{
+namespace train
+{
+class TrainingInfo;
+} // namespace train
+} // namespace ir
 } // namespace onert
 
 namespace onert
@@ -40,6 +47,7 @@ public:
   ~CircleExporter();
 
   void updateWeight(const std::unique_ptr<onert::exec::Execution> &exec);
+  void updateMetadata(const std::unique_ptr<onert::ir::train::TrainingInfo> &training_info);
 
 private:
   void finish();
