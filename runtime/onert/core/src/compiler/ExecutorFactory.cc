@@ -501,15 +501,13 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
                                        order,
                                        tracing_ctx};
 
-  if (options->tracing_mode)
+  if (!options->workspace_dir.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
-    exec->addObserver(std::move(ctp));
-  }
-  if (options->minmax_dump)
+    exec->addObserver(
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
     exec->addObserver(std::make_unique<exec::MinMaxRecorder>(options->workspace_dir, exec->graph(),
                                                              exec->getBackendContexts()));
+  }
 
   return exec;
 }
@@ -593,11 +591,10 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
     exec = dataflow_exec;
   }
 
-  if (options->tracing_mode)
+  if (!options->workspace_dir.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
-    exec->addObserver(std::move(ctp));
+    exec->addObserver(
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
   }
 
   return exec;
@@ -886,11 +883,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                  tracing_ctx,
                                                  training_info.lossInfo()};
 
-  if (options->tracing_mode)
+  if (!options->workspace_dir.empty())
   {
-    std::unique_ptr<exec::IExecutionObserver> ctp =
-      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx);
-    exec->addObserver(std::move(ctp));
+    exec->addObserver(
+      std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
   }
   // TODO Support MINMAX_H5DUMPER
 

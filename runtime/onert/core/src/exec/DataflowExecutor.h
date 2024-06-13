@@ -54,7 +54,7 @@ public:
                    const compiler::TensorRegistries &tensor_regs, compiler::CodeMap &&code_map,
                    const util::TracingCtx *tracing_ctx);
 
-  void executeImpl() override;
+  void executeImpl(const ExecutionObservee &subject) override;
 
 protected:
   int64_t calculateRank(const std::vector<ir::OperationIndex> &operations);

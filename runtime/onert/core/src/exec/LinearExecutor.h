@@ -59,7 +59,7 @@ public:
   }
 
 public:
-  void executeImpl(void) override;
+  void executeImpl(const ExecutionObservee &subject) override;
 
 private:
   std::vector<compiler::CodeAndInfo> _code;
