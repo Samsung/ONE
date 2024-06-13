@@ -1,53 +1,49 @@
 # External code: Android NN API
-/ONE/compiler/ann-api/include/NeuralNetworks.h
-/ONE/compiler/ann-ref
+compiler/ann-api/include/NeuralNetworks.h
+compiler/ann-ref/
 
 # Eigen
-/ONE/compiler/nnc/backends/soft_backend/code_snippets/eigen.def
+compiler/nnc/backends/soft_backend/code_snippets/eigen.def
 
 # Frontend test tools that are needed for release package build
-/ONE/compiler/circlechef
-/ONE/compiler/circle-verify
-/ONE/compiler/luci/tester
+compiler/circlechef/
+compiler/circle-verify/
+compiler/luci/tester/
 
 # Exclude IR headers which have lots of similar patterns
 # TODO remove this when refactoring is possible
-/ONE/compiler/luci/lang/include/luci/IR/Nodes
-/ONE/compiler/luci/import/include/luci/Import/Nodes
-/ONE/compiler/loco/include/loco/IR
-/ONE/compiler/tflchef/tflite/src/Op/include
+compiler/luci/lang/include/luci/IR/Nodes/
+compiler/luci/import/include/luci/Import/Nodes/
+compiler/loco/include/loco/IR/
+compiler/tflchef/tflite/src/Op/include/
 
 # Exclude interpreter kernels which have similar patterns
-/ONE/compiler/luci-interpreter/src/kernels
-/ONE/compiler/locomotiv/src/Node
-
-# Test codes
-/ONE/tests
+compiler/luci-interpreter/src/kernels/
+compiler/locomotiv/src/Node/
 
 # Flatbuffers generated
-/ONE/runtime/libs/circle-schema/include/circle_schema_generated.h
-/ONE/runtime/libs/circle-schema/include/circle_traininfo_generated.h
-/ONE/runtime/onert/core/src/loader/tflite_schema_generated.h
+runtime/libs/circle-schema/include/circle_schema_generated.h
+runtime/libs/circle-schema/include/circle_traininfo_generated.h
+runtime/onert/core/src/loader/tflite_schema_generated.h
 
 # External code: Android NN API
-/ONE/runtime/nnapi-header/include/NeuralNetworks.h
-/ONE/runtime/nnapi-header/include/NeuralNetworksExtensions.h
+runtime/nnapi-header/include/NeuralNetworks.h
+runtime/nnapi-header/include/NeuralNetworksExtensions.h
 
 # External code: Tensorflow lite
-/ONE/runtime/libs/nnapi
-/ONE/runtime/libs/profiling
+runtime/libs/profiling/
 
 # External code: 3rd party
-/ONE/runtime/3rdparty
+runtime/3rdparty/
 
 # External code: compute libraries
-/ONE/compute
+compute/
 
 # Experimental subprojects not for release
-/ONE/runtime/contrib
+runtime/contrib/
 
 # Downloaded externals
-/ONE/externals
+externals/
 
 # Intermediate code for runtime build (refer nnfw.spec file's nncc_workspace)
-/ONE/build/nncc/
+build/nncc/
