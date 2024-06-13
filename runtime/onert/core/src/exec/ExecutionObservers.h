@@ -86,8 +86,9 @@ private:
   std::unique_ptr<EventRecorder> _recorder;
   EventCollector _collector;
   const ir::Graph &_graph;
-  EventWriter *_event_writer;
+  std::string _workspace_dir;
   const util::TracingCtx *_tracing_ctx;
+  bool _triggered;
 };
 
 } // namespace exec
