@@ -55,6 +55,9 @@ class CfgRunner:
 
         self.backend = None
         self.target = None
+        if self.cfgparser.has_section('backend'):
+            if 'target' in self.cfgparser['backend']:
+                self.target = self.cfgparser['backend']['target']
 
     def _verify_cfg(self, cfgparser):
         if not cfgparser.has_section('onecc'):
