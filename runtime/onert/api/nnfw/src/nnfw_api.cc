@@ -372,12 +372,12 @@ NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *, const char *)
 
 NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *, void *, void *)
 {
-  return nnfw_session::deprecated("nnfw_apply_tensorinfo: Deprecated");
+  return nnfw_session::deprecated("nnfw_push_pipeline_input: Deprecated");
 }
 
 NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *, void *)
 {
-  return nnfw_session::deprecated("nnfw_apply_tensorinfo: Deprecated");
+  return nnfw_session::deprecated("nnfw_pop_pipeline_output: Deprecated");
 }
 
 NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)
