@@ -243,7 +243,8 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
-    _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
+    _compiler_artifact{nullptr}, _execution{nullptr},
+    _exec_options{onert::exec::ExecutionOptions::fromGlobalConfig()}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""}
 {
   // DO NOTHING
@@ -1902,6 +1903,84 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
     std::cerr << "Error during nnfw_session::compile : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_prepare_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  switch (key)
+  {
+    case NNFW_PREPARE_CONFIG_PROFILE:
+      _coptions->he_profiling_mode = true;
+      break;
+    default:
+      return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::reset_prepare_config()
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::reset_prepare_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  _coptions->he_profiling_mode = false;
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_execute_config(const NNFW_RUN_CONFIG key, const char *)
+{
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_execution_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  switch (key)
+  {
+    case NNFW_RUN_CONFIG_DUMP_MINMAX:
+      if (_coptions->workspace_dir.empty())
+        return NNFW_STATUS_ERROR;
+      _exec_options->dump_minmax = true;
+      break;
+    case NNFW_RUN_CONFIG_TRACE:
+      if (_coptions->workspace_dir.empty())
+        return NNFW_STATUS_ERROR;
+      _exec_options->trace = true;
+      break;
+    case NNFW_RUN_CONFIG_PROFILE:
+      _exec_options->profile = true;
+      break;
+    default:
+      return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::reset_execute_config()
+{
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_execution_config : Invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  _exec_options->dump_minmax = false;
+  _exec_options->trace = false;
+  _exec_options->profile = false;
 
   return NNFW_STATUS_NO_ERROR;
 }
