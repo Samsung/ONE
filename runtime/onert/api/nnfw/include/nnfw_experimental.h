@@ -116,9 +116,12 @@ NNFW_STATUS nnfw_output_tensorindex(nnfw_session *session, const char *tensornam
  */
 NNFW_STATUS nnfw_set_backends_per_operation(nnfw_session *session, const char *backend_settings);
 
-/*
- * Prepare session to be ready for inference
+/**
+ * @brief Prepare session to be ready for inference
+ *
  * This phase may finalize model compilation, scheduling, and additional settings.
+ *
+ * @deprecated Deprecated since 1.22.1
  *
  * @param session the session to be prepared
  * @return NNFW_STATUS_NO_ERROR if successful
@@ -131,6 +134,8 @@ NNFW_STATUS nnfw_prepare_pipeline(nnfw_session *session, const char *map_file_pa
  * This function must be called after {@link nnfw_prepare_pipeline}, \p inputs given to this
  * function can be reused for many inferences. \p lengths must be greater or equal than the operand
  * requires. if you give empty \p inputs to this function, then this function will join all threads.
+ *
+ * @deprecated Deprecated since 1.22.1
  *
  * @param[in] session Session to the input is to be set
  * @param[in] inputs  Raw buffers for input, it must be \p std::vector<void *> type pointer for
@@ -147,6 +152,8 @@ NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *inputs, void *
  *
  * This function must be called after {@link nnfw_prepare_pipeline}, \p outputs given to this
  * function must be cleared for memory management.
+ *
+ * @deprecated Deprecated since 1.22.1
  *
  * @param[in]   session Session from last outputs is to be extracted
  * @param[out]  outputs Raw buffer for outputs, it must be \p std::vector<void *> type pointer for

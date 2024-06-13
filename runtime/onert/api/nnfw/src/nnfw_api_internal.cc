@@ -507,12 +507,6 @@ NNFW_STATUS nnfw_session::prepare()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::prepare_pipeline(const char *)
-{
-  std::cerr << "Pipeline prepare_pipeline: deprecated feature " << std::endl;
-  return NNFW_STATUS_ERROR;
-}
-
 NNFW_STATUS nnfw_session::run()
 {
   if (!isStatePreparedOrFinishedRun())
@@ -866,18 +860,6 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::push_pipeline_input(std::vector<void *> *, std::vector<uint32_t> *)
-{
-  std::cerr << "Pipeline push_pipeline_input: deprecated feature " << std::endl;
-  return NNFW_STATUS_ERROR;
-}
-
-NNFW_STATUS nnfw_session::pop_pipeline_output(std::vector<void *> *)
-{
-  std::cerr << "Pipeline pop_pipeline_output: deprecated feature " << std::endl;
-  return NNFW_STATUS_ERROR;
-}
-
 NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
                                                     nnfw_custom_eval eval_func)
 {
@@ -979,6 +961,12 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   //      if model is already loaded
 
   return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::deprecated(const char *msg)
+{
+  std::cerr << msg << std::endl;
+  return NNFW_STATUS_DEPRECATED_API;
 }
 
 NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
