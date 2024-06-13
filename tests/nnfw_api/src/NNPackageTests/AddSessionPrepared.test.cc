@@ -198,4 +198,10 @@ TEST_F(ValidationTestAddSessionPrepared, neg_internal_set_config)
   ASSERT_EQ(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"), NNFW_STATUS_INVALID_STATE);
 }
 
+TEST_F(ValidationTestAddSessionPrepared, neg_set_workspace)
+{
+  // Call after prepare
+  EXPECT_EQ(nnfw_set_workspace(_session, "."), NNFW_STATUS_INVALID_STATE);
+}
+
 // TODO Validation check when "nnfw_run" is called without input & output tensor setting
