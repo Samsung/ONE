@@ -29,7 +29,7 @@ class While : public Kernel
 {
 public:
   While(std::vector<const Tensor *> inputs, std::vector<Tensor *> outputs, RuntimeGraph *cond_graph,
-        RuntimeGraph *body_graph);
+        RuntimeGraph *body_graph, RuntimeGraph *outer_graph);
 
   const Tensor *input(int index) const { return _inputs[index]; }
   Tensor *output(int index) const { return _outputs[index]; }
@@ -40,6 +40,7 @@ public:
 private:
   RuntimeGraph *const _cond_graph = nullptr;
   RuntimeGraph *const _body_graph = nullptr;
+  RuntimeGraph *const _outer_graph = nullptr;
 };
 
 } // namespace kernels
