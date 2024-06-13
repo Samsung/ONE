@@ -30,6 +30,7 @@ usr/bin/one-prepare-venv usr/share/one/bin/
 usr/bin/one-profile usr/share/one/bin/
 usr/bin/one-quantize usr/share/one/bin/
 usr/bin/one-version usr/share/one/bin/
+usr/bin/onelib/argumentparse.py usr/share/one/bin/onelib/
 usr/bin/onelib/backends.py usr/share/one/bin/onelib/
 usr/bin/onelib/constant.py usr/share/one/bin/onelib/
 usr/bin/onelib/make_cmd.py usr/share/one/bin/onelib/
