@@ -406,8 +406,10 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
   }
 }
 
-void MultiModelExecutors::execute(const IODescription &desc)
+void MultiModelExecutors::execute(const ExecutionContext &ctx)
 {
+  auto &desc = ctx.desc;
+
   // Check supported multi model package
   checkSupportedMultimodel();
 

@@ -23,7 +23,7 @@
 
 #include "compiler/LoweredGraph.h"
 #include "exec/IExecutor.h"
-#include "exec/IODescription.h"
+#include "exec/ExecutionContext.h"
 #include "ir/Graph.h"
 #include "ir/OperationIndexMap.h"
 #include "util/TracingCtx.h"
@@ -53,7 +53,7 @@ public:
 
   const ir::Graph &graph() const final { return _graph; }
 
-  void execute(const IODescription &desc) final;
+  void execute(const ExecutionContext &ctx) final;
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs) override;

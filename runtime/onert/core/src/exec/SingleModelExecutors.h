@@ -58,7 +58,7 @@ public:
 
   const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
-  void execute(const IODescription &desc) override;
+  void execute(const ExecutionContext &ctx) override;
 
 private:
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;

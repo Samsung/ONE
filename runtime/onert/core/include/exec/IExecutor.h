@@ -23,7 +23,7 @@
 
 #include "ir/Graph.h"
 #include "IFunction.h"
-#include "IODescription.h"
+#include "ExecutionContext.h"
 #include "ir/Index.h"
 #include "ir/OperationIndexMap.h"
 
@@ -75,10 +75,10 @@ struct IExecutor
 
   /**
    * @brief     Execute with user-given input/output description (for primary subgraph)
-   * @param[in] desc Input and output description
+   * @param[in] ctx Execution context
    * @note      This method should be thread-safe
    */
-  virtual void execute(const IODescription &desc) = 0;
+  virtual void execute(const ExecutionContext &ctx) = 0;
 
   /**
    * @brief Execute with given input/output tensors
