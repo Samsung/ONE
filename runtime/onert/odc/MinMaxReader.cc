@@ -25,7 +25,34 @@ namespace
 void inline readMMFile(void *ptr, size_t size, size_t count, FILE *fp, const std::string &err_msg)
 {
   if (fread(ptr, size, count, fp) != count)
+  {
+    std::fclose(fp);
     throw std::runtime_error(err_msg);
+  }
+}
+
+void inline checkHeader(FILE *file)
+{
+  // Check magic code and version
+  // Match with runtime/onert/core/src/exec/MinMaxData.cc
+  // TODO Use util to share code and version
+  const uint32_t MAGIC_CODE = 0x4F4D4D44;
+  const uint32_t VERSION = 1;
+  {
+    uint32_t read_magic_code = 0;
+    uint32_t read_version = 0;
+    if (std::fread(&read_magic_code, sizeof(uint32_t), 1, file) != 1 ||
+        read_magic_code != MAGIC_CODE)
+    {
+      std::fclose(file);
+      throw std::runtime_error{"MinMaxReader: Invalid magic code"};
+    }
+    if (std::fread(&read_version, sizeof(uint32_t), 1, file) != 1 || read_version != VERSION)
+    {
+      std::fclose(file);
+      throw std::runtime_error{"MinMaxReader: Invalid version"};
+    }
+  }
 }
 
 } // namespace
@@ -48,26 +75,7 @@ MinMaxVectors MinMaxReader::readOP(uint32_t model_idx, uint32_t subg_idx, uint32
   if (!file)
     throw std::runtime_error("Cannot open file: " + _filepath);
 
-  // Check magic code and version
-  // Match with runtime/onert/core/src/exec/MinMaxData.cc
-  // TODO Use util to share code and version
-  const uint32_t MAGIC_CODE = 0x4F4D4D44;
-  const uint32_t VERSION = 1;
-  {
-    uint32_t read_magic_code = 0;
-    uint32_t read_version = 0;
-    if (std::fread(&read_magic_code, sizeof(uint32_t), 1, file) != 1 ||
-        read_magic_code != MAGIC_CODE)
-    {
-      std::fclose(file);
-      throw std::runtime_error{"MinMaxReader: Invalid magic code " + _filepath};
-    }
-    if (std::fread(&read_version, sizeof(uint32_t), 1, file) != 1 || read_version != VERSION)
-    {
-      std::fclose(file);
-      throw std::runtime_error{"MinMaxReader: Invalid version " + _filepath};
-    }
-  }
+  checkHeader(file);
 
   // Read num_run
   uint32_t num_run = 0;
@@ -129,6 +137,8 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
   auto file = std::fopen(_filepath.c_str(), "rb");
   if (!file)
     throw std::runtime_error("Cannot open file: " + _filepath);
+
+  checkHeader(file);
 
   // Read num_run
   uint32_t num_run = 0;

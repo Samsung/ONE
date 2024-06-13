@@ -93,17 +93,13 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
   if (module.get() == nullptr)
     return 1;
 
-  luci::CircleQuantizer quantizer;
-  auto options = quantizer.options();
-  if (options == nullptr)
-    return 1;
-
-  // Fill quantization type param
-  fillQuantizeOptionParam(options, qtype);
-
   // Additional phase for full quantization
   if (full_quantize)
   {
+    luci::CircleQuantizer quantizer;
+    auto options = quantizer.options();
+    fillQuantizeOptionParam(options, qtype);
+
     // Fake quantization
     options->enable(QuantizerOptions::Algorithm::QuantizeDequantizeWeights);
     for (size_t idx = 0; idx < module->size(); ++idx)
@@ -119,6 +115,10 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
     auto minmax_path = util::getConfigString(util::config::WORKSPACE_DIR) + "/minmax.bin";
     Embedder().embed(module.get(), minmax_path, {1.f, 99.f});
   }
+
+  luci::CircleQuantizer quantizer;
+  auto options = quantizer.options();
+  fillQuantizeOptionParam(options, qtype);
 
   if (full_quantize)
     options->enable(QuantizerOptions::Algorithm::QuantizeWithMinMax);
@@ -150,7 +150,6 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
   if (!exporter.invoke(&contract))
     return 1;
 
-  // Return 0 when luci::CircleQuantizer::Options::Algorithm::QuantizeWeights is ready
   return 0;
 }
 
