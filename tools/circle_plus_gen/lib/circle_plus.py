@@ -1,5 +1,6 @@
 import flatbuffers
 import typing
+import collections
 
 from schema import circle_schema_generated as cir_gen
 from lib.train_param import TrainParam
@@ -32,7 +33,7 @@ class CirclePlus():
         for m in metadata:
             if m.name.decode("utf-8") == self.TINFO_META_TAG:
                 buff: cir_gen.BufferT = buffers[m.buffer]
-                tparam: TrainParam = TrainParam.from_buff(buff.data)
+                tparam: TrainParam = TrainParam.from_buff(self, buff.data)
                 return tparam
 
         return None
@@ -66,6 +67,48 @@ class CirclePlus():
         '''Add train_param to the model's metadata field'''
         tparam_buff = train_param.to_buff()
         self._add_metadata(self.TINFO_META_TAG, tparam_buff)
+
+    def get_number_of_operators(self, subgraph_idx=0) -> int:
+        '''Return a number of operator in the subgraph'''
+        subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
+        self._check_not_empty(subgraphs, "subgraphs")
+
+        operators: typing.List[cir_gen.OperatorT] = subgraphs[subgraph_idx].operators
+        self._check_not_empty(operators, "Operators")
+        return len(operators)
+
+    def _check_not_empty(self, elem, elem_name=""):
+        '''Make sure that elem is not empty'''
+        if elem == None:
+            raise RuntimeError(f"{elem_name} is none")
+
+        if isinstance(elem, collections.Sized):
+            if len(elem) == 0:
+                raise RuntimeError(f"{elem_name} is empty")
+        return
+
+    def get_operators(self, subgraph_idx=0) -> typing.List[str]:
+        '''Return a list of operators of the subgraph, sorted by operator index'''
+        subgraphs: typing.List[cir_gen.SubGraphT] = self.model.subgraphs
+        opcodes: typing.List[cir_gen.OperatorCodeT] = self.model.operatorCodes
+        self._check_not_empty(subgraphs, "subgraphs")
+        self._check_not_empty(opcodes, "operatorCodes")
+
+        operators: typing.List[cir_gen.OperatorT] = subgraphs[subgraph_idx].operators
+        self._check_not_empty(operators, "Operators")
+
+        builtin_opcodes_str = cir_gen.BuiltinOperator.__dict__.keys()
+        builtin_opcodes_int = cir_gen.BuiltinOperator.__dict__.values()
+        opcode_dict = dict(zip(builtin_opcodes_int,
+                               builtin_opcodes_str))  #{-5:'GRU', -4:'BCQ_GATHER', ...}
+
+        opcode_in_order = []
+        for op in operators:
+            code_int = opcodes[op.opcodeIndex].builtinCode
+            code_str = opcode_dict[code_int]
+            opcode_in_order.append(code_str)
+
+        return opcode_in_order
 
     def export(self, circle_file: str):
         '''Export model to the circle file'''

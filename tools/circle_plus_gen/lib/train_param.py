@@ -1,5 +1,12 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from lib.circle_plus import CirclePlus
+
 import flatbuffers
 import json
+import numpy as np
 
 from lib.utils import *
 from lib.json_parser import *
@@ -10,13 +17,14 @@ class TrainParam():
     '''Wrapper class of circle_traninfo_generated.ModelTrainingT'''
     TRAINING_PARAM_IDENTIFIER = b"CTR0"
 
-    def __init__(self):
+    def __init__(self, circle_model: CirclePlus):
         self.train_param = ctr_gen.ModelTrainingT()
+        self.circle_model = circle_model
 
     @classmethod
-    def from_buff(cls, buff):
+    def from_buff(cls, circle_model: CirclePlus, buff):
         '''Create TrainInfo from packed(serialized) buffer'''
-        new_tparam = cls()
+        new_tparam = cls(circle_model)
         new_tparam.train_param = ctr_gen.ModelTrainingT.InitFromPackedBuf(bytearray(buff))
         return new_tparam
 
@@ -26,8 +34,14 @@ class TrainParam():
         builder.Finish(self.train_param.Pack(builder), self.TRAINING_PARAM_IDENTIFIER)
         return builder.Output()
 
+    def set_trainable(self, trainable: List[int]):
+        self.train_param.trainableOps = trainable
+
+    def get_trainable(self) -> List[int]:
+        return self.train_param.trainableOps
+
     @classmethod
-    def from_json(cls, json_file: str):
+    def from_json(cls, circle_model: CirclePlus, json_file: str):
         '''Create TrainInfo from json file'''
         with open(json_file, 'rt') as f:
             json_obj = json.load(f)
@@ -52,7 +66,19 @@ class TrainParam():
         if "reduction" in json_obj["loss"].keys():
             tparam.lossReductionType = load_loss_reduction(json_obj["loss"]["reduction"])
 
-        new_tparam = cls()
+        # load trainable
+        train = "all"  # default, train all operators
+        if "train" in json_obj.keys():
+            train = json_obj["train"]
+
+        try:
+            tparam.trainableOps = load_trainable(train,
+                                                 circle_model.get_number_of_operators())
+        except ValueError as e:
+            print(e)
+            raise (f"failed to parse \'train\'")
+
+        new_tparam = cls(circle_model)
         new_tparam.train_param = tparam
         return new_tparam
 
@@ -74,5 +100,19 @@ class TrainParam():
         }
         json_form["loss"]["args"]["reduction"] = name_rdt(tparam.lossReductionType)[0]
         json_form["batchSize"] = tparam.batchSize
+
+        total = self.circle_model.get_number_of_operators()
+        trainable = len(tparam.trainableOps)
+
+        if trainable == 0:
+            json_form["trainable"] = "none"
+        elif trainable == total and (np.arange(0,
+                                               trainable) == tparam.trainableOps).all():
+            json_form["trainable"] = "all"
+        elif trainable < total and (np.arange(total - trainable,
+                                              total) == tparam.trainableOps).all():
+            json_form["trainable"] = "last" + str(trainable)
+        else:
+            raise ValueError(f"trainable Ops has unexpected values {tparam.trainableOps}")
 
         return json.dumps(json_form, indent=4)

@@ -10,7 +10,6 @@ def get_cmd_args():
         prog='circle_plus_gen',
         description='circle_plus_gen help handle circle file with training hyperparameters'
     )
-
     parser.add_argument('input', help='input circle file')
     parser.add_argument(
         'hyperparameters', nargs='?', help='training hyperparameters json file')
@@ -23,46 +22,42 @@ def get_cmd_args():
     return args
 
 
-def print_training_hparameters(in_circle_file) -> typing.NoReturn:
+def print_training_hparameters(circle_model: CirclePlus):
     '''
-    if in_circle_file has training hyperparameters, print it out
+    if circle_model has training parameters, print it out
     '''
-    print(f"check hyperparameters in {in_circle_file}")
-
-    circle_model: CirclePlus = CirclePlus.from_file(in_circle_file)
     tinfo: typing.Union[TrainParam, None] = circle_model.get_train_param()
 
     if tinfo == None:
         print("No hyperparameters")
     else:
         print(tinfo.dump_as_json())
+        print()
 
-
-def inject_hparams(in_file, hparams_file, out_file=None) -> None:
-    '''
-    Inject hparams_file's contents into in_file's circle model, and save it as out_file 
-    '''
-    # if out_file isn't given, rewrite in_file
-    if out_file is None:
-        out_file = in_file
-
-    tparams: TrainParam = TrainParam.from_json(hparams_file)
-    print("load training hyperparameters")
-    print(tparams.dump_as_json())
-
-    circle_model: CirclePlus = CirclePlus.from_file(in_file)
-    circle_model.set_train_param(tparams)
-    print("succesfully add hyperparameters to the circle file")
-
-    circle_model.export(out_file)
-    print(f"saved in {out_file}")
+        print("trainable operators :")
+        trainable = tinfo.get_trainable()
+        if len(trainable) == 0:
+            print("\tno trainable operators")
+        else:
+            operators = circle_model.get_operators(subgraph_idx=0)
+            for i in tinfo.get_trainable():
+                print(f"\t[{i}] {operators[i]}")
 
 
 if __name__ == "__main__":
     args = get_cmd_args()
 
-    if args.hyperparameters is None:
-        print_training_hparameters(args.input)
+    circle_model: CirclePlus = CirclePlus.from_file(args.input)
 
-    else:
-        inject_hparams(args.input, args.hyperparameters, args.output)
+    if args.hyperparameters is not None:
+        tparams = TrainParam.from_json(circle_model, args.hyperparameters)
+        circle_model.set_train_param(tparams)
+
+    print_training_hparameters(circle_model)
+
+    # if out_file isn't given, rewrite in_file
+    out_file = args.output
+    if out_file is None:
+        out_file = args.input
+
+    circle_model.export(out_file)
