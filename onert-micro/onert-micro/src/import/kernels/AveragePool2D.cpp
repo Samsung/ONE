@@ -87,5 +87,16 @@ onert_micro::import::configure_kernel_CircleAveragePool2D(const OMConfigureArgs 
     return UnsupportedType;
   }
 
+  // Check quantization params
+  if (output->quantization() == nullptr)
+  {
+    return NoQuantization;
+  }
+
+  if (output->quantization()->scale()->size() != 1)
+  {
+    return UnsupportedType;
+  }
+
   return status;
 }
