@@ -1212,9 +1212,17 @@ NNFW_STATUS nnfw_session::set_backends_per_operation(const char *backend_setting
     return NNFW_STATUS_ERROR;
   }
 
-  // Backend for all
-  auto &ms_options = _coptions->manual_scheduler_options;
-  ms_options.setBackendMap(std::string{backend_settings});
+  try
+  {
+    // Backend for all
+    auto &ms_options = _coptions->manual_scheduler_options;
+    ms_options.setBackendMap(std::string{backend_settings});
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_backends_per_operation" << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
   return NNFW_STATUS_NO_ERROR;
 }

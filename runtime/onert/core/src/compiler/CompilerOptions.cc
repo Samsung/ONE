@@ -64,6 +64,9 @@ void ManualSchedulerOptions::setBackendMap(const std::string &str)
     }
 
     auto key_val = nnfw::misc::split(key_val_str, '=');
+    if (key_val.size() != 2)
+      throw std::runtime_error{"Invalid key-value pair"};
+
     const auto &key_str = key_val.at(0);
     const auto &val = key_val.at(1);
     auto key = static_cast<uint32_t>(std::stoi(key_str));
