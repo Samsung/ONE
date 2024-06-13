@@ -15,7 +15,7 @@
  */
 
 /**
- * dummy-infer only tests its interface rather than its functionality.
+ * dummy-compiler only tests its interface rather than its functionality.
  *
  * ./dummy-compiler --target ${TARGET_NAME} --verbose ${INPUT_NAME} ${OUTPUT_NAME}
  */

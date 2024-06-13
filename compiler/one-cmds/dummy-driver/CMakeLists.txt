@@ -13,6 +13,9 @@ set(HELP_PROFILE_SRC src/help-profile.cpp)
 set(DUMMY_ENV_SRC src/dummyEnv-compile.cpp)
 set(DUMMY_ONNX_EXT src/dummy-onnx-ext.cpp)
 
+# Note that `dummy-compiler` is differnet from `dummy-compile`.
+# Without command schema, codegen drivers have "-compile" suffix in their names.
+# Such restriction can be relieved with the command schema.
 add_executable(dummy-compiler ${DUMMY_COMPILER_SRC})
 add_executable(dummy-compile ${DUMMY_DRIVER_SRC})
 add_executable(dummyV2-compile ${DUMMY_V2_DRIVER_SRC})
