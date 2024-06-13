@@ -14,5 +14,3 @@ option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" OF
 option(BUILD_NPUD "Build NPU daemon" OFF)
 # Do not allow to use CONFIG option on Tizen
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
-
-option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)

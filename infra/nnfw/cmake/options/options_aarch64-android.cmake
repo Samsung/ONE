@@ -6,5 +6,3 @@ option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
 option(DOWNLOAD_BOOST "Download boost source" ON)
 option(BUILD_BOOST "Build boost source" ON)
 option(BUILD_LOGGING "Build logging runtime" OFF)
-
-option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
