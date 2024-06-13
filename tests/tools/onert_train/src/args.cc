@@ -20,6 +20,7 @@
 
 #include <functional>
 #include <iostream>
+#include <numeric>
 #include <sys/stat.h>
 #include <json/json.h>
 
@@ -229,6 +230,44 @@ void Args::Initialize(void)
     }
   };
 
+  auto process_trainable_ops = [&](const std::string &trainable_ops_idx_str) {
+    std::stringstream ss(trainable_ops_idx_str);
+    std::string token;
+    try
+    {
+      while (std::getline(ss, token, ','))
+      {
+        const auto range_iter = token.find("-");
+        if (range_iter != std::string::npos)
+        {
+          const auto begin_idx = std::stoi(token.substr(0, range_iter));
+          const auto end_idx = std::stoi(token.substr(range_iter + 1, token.size()));
+          if (begin_idx > end_idx)
+          {
+            std::cerr << "begin_idx=" << begin_idx
+                      << " of trainable operator index cannot be greater than end_idx=" << end_idx
+                      << "\n";
+            exit(1);
+          }
+          std::vector<uint32_t> range(end_idx - begin_idx + 1);
+          std::iota(std::begin(range), std::end(range), begin_idx);
+          _trainable_ops_idx.insert(std::begin(range), std::end(range));
+        }
+        _trainable_ops_idx.emplace(std::stoi(token));
+      }
+    }
+    catch (const std::invalid_argument &ex)
+    {
+      std::cerr << "Invalid argument passed as trainable_ops_idx: " << ex.what() << "\n";
+      exit(1);
+    }
+    catch (const std::out_of_range &ex)
+    {
+      std::cerr << "Out of range argument passed as trainable_ops_idx: " << ex.what() << "\n";
+      exit(1);
+    }
+  };
+
   // General options
   po::options_description general("General options", 100);
 
@@ -285,6 +324,9 @@ void Args::Initialize(void)
         "The output buffer size in JSON 1D array\n"
         "If not given, the model's output sizes are used\n"
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.")
+    ("trainable_ops_idx", po::value<std::string>()->notifier(process_trainable_ops),
+        "Indexes of trainable nodes in the graph (indexes numeration starts with 0). "
+        "The indexes can be passed as a comma-separated list (like 65,68,70) or in a range form (like 60-70).")
     ;
   // clang-format on
 

@@ -31,6 +31,7 @@ onert_train \
 --learning_rate 0.01 \   
 --loss 2 \                  # cateogrical crossentropy
 --loss_reduction_type 1     # sum over batch size
+--trainable_ops_idx 0-30    # indexes of operations which should be trained
 ```
 
 `onert_train --help` would help you to set each parameter.
@@ -79,6 +80,7 @@ If you start with tensorflow code, you could first save it as saved format and t
 Now you're ready to run `onert_train`. <br/>
 Please pass your model file to `--modelfile` and data files to `--load_input:raw` and `--load_expected:raw`. <br/>
 Also, you could set training parameter using options like `--batch_size`, `--epoch`.. etc.
+Please pay special attention for `trainable_ops_idx` to determine operations which should be trained.
 
 ```bash 
 $ onert_train \
@@ -91,4 +93,5 @@ $ onert_train \
 --learning_rate 0.001 \
 --loss 2 \               # cateogrical crossentropy
 --loss_reduction_type 1  # sum over batch size
+--trainable_ops_idx 0-10
 ```

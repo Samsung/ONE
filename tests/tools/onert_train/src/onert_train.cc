@@ -145,6 +145,13 @@ int main(const int argc, char **argv)
       args.getLossReductionType().value_or(tri.loss_info.reduction_type);
     tri.opt = args.getOptimizerType().value_or(tri.opt);
 
+    size_t pos = 0;
+    tri.trainble_ops_size = args.getTrainableOpsIdx().size();
+    for (auto const &idx : args.getTrainableOpsIdx())
+    {
+      tri.trainble_ops_idx[pos++] = idx;
+    }
+
     std::cout << "== training parameter ==" << std::endl;
     std::cout << tri;
     std::cout << "========================" << std::endl;
