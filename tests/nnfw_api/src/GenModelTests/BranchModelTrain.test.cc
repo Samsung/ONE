@@ -16,7 +16,7 @@
 
 #include "GenModelTrain.h"
 
-TEST_F(GenModelTrain, BranchOps_FC_BinaryArithmetic)
+TEST_F(GenModelTrain, BranchOps_FC_Add)
 {
   // (( Input 0 )) -> [ FC ] ----\
   //                              |=> [ Add ] -> (( Output 0 ))
@@ -55,7 +55,10 @@ TEST_F(GenModelTrain, BranchOps_FC_BinaryArithmetic)
 
     SUCCEED();
   }
+}
 
+TEST_F(GenModelTrain, BranchOps_FC_Sub)
+{
   // (( Input 0 )) --------------\
   //                              |=> [ Sub ] -> (( Output 0 ))
   // (( Input 1 )) -> [ FC ] ----/
@@ -93,9 +96,12 @@ TEST_F(GenModelTrain, BranchOps_FC_BinaryArithmetic)
 
     SUCCEED();
   }
+}
 
+TEST_F(GenModelTrain, BranchOps_FC_Mul)
+{
   // (( Input 0 )) -> [ FC ] ----\
-  //                              |=> [ Mul ] -> (( Output 0 ))
+  //                              |=> [ Mul ] -> [ FC ] -> (( Output 0 ))
   // (( Input 1 )) -> [ FC ] ----/
   {
     CirclePlusGen cgen;

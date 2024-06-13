@@ -324,6 +324,17 @@ uint32_t CircleGen::addOperatorLogSoftmax(const OperatorParams &params)
                                 circle::BuiltinOptions_LogSoftmaxOptions, options);
 }
 
+uint32_t CircleGen::addOperatorMaxPool2D(const OperatorParams &params, circle::Padding padding,
+                                         int stride_w, int stride_h, int filter_w, int filter_h,
+                                         circle::ActivationFunctionType actfn)
+{
+  auto options =
+    circle::CreatePool2DOptions(_fbb, padding, stride_w, stride_h, filter_w, filter_h, actfn)
+      .Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_MAX_POOL_2D,
+                                circle::BuiltinOptions_Pool2DOptions, options);
+}
+
 uint32_t CircleGen::addOperatorMean(const OperatorParams &params, bool keep_dims)
 {
   auto options = circle::CreateReducerOptions(_fbb, keep_dims).Union();
