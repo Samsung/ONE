@@ -18,6 +18,7 @@
 #include "test_models/add/FloatAddKernel.h"
 #include "test_models/add/NegAddKernel.h"
 #include "test_models/add/IntAddKernel.h"
+#include "test_models/add/QuantAddKernel.h"
 
 namespace onert_micro
 {
@@ -97,6 +98,26 @@ TEST_F(AddTest, Float_P)
   }
 }
 
+TEST_F(AddTest, INT8_P)
+{
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_model::TestDataInt8Add test_data_add_no_broadcasting(is_with_broadcast);
+    std::vector<int8_t> output_data_vector =
+      onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_add_no_broadcasting);
+    EXPECT_THAT(output_data_vector, test_data_add_no_broadcasting.get_output_data_by_index(0));
+  }
+  // With broadcast
+  {
+    const bool is_with_broadcast = true;
+    test_model::TestDataInt8Add test_data_add_with_broadcasting(is_with_broadcast);
+    std::vector<int8_t> output_data_vector =
+      onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_add_with_broadcasting);
+    EXPECT_THAT(output_data_vector, test_data_add_with_broadcasting.get_output_data_by_index(0));
+  }
+}
+
 TEST_F(AddTest, Input_output_type_mismatch_NEG)
 {
   onert_micro::test_model::NegTestDataInputMismatchAddKernel test_data_kernel;
@@ -107,6 +128,13 @@ TEST_F(AddTest, Input_output_type_mismatch_NEG)
 TEST_F(AddTest, No_quant_params_NEG)
 {
   onert_micro::test_model::NegTestDataNoQuantParamsS16AddKernel test_data_kernel;
+
+  EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
+TEST_F(AddTest, No_output_scale_param_NEG)
+{
+  onert_micro::test_model::NegTestQuantAddNoScaleKernel test_data_kernel;
 
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
 }

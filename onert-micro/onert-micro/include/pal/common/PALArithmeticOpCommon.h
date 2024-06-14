@@ -65,6 +65,17 @@ OMStatus ArithmeticOp(const core::BinaryArithmeticBroadcastParams &params, const
   return Ok;
 }
 
+template <typename T>
+void ElementWise(const uint32_t size, const core::ArithmeticQuantParams &params,
+                 const T *input1_data, const T *input2_data, T *output_data,
+                 T (*binary_func)(T, T, const core::ArithmeticQuantParams &))
+{
+  for (int i = 0; i < size; ++i)
+  {
+    output_data[i] = binary_func(input1_data[i], input2_data[i], params);
+  }
+}
+
 template <typename T, typename Fn>
 inline void ArithmeticOpScalar(const core::BinaryArithmeticBroadcastParams &params,
                                const int flat_size, const T *input_data, const T scalar_value,
@@ -128,6 +139,126 @@ OMStatus BroadcastArithmeticOp4DSlow(const core::BinaryArithmeticBroadcastParams
     }
   }
   return Ok;
+}
+
+template <typename T>
+void BroadcastInput1(int size, const core::ArithmeticQuantParams &params, const T *input1_data,
+                     const T *input2_data, T *output_data,
+                     T (*binary_func)(T, T, const core::ArithmeticQuantParams &))
+{
+  for (int i = 0; i < size; ++i)
+  {
+    output_data[i] = binary_func(input1_data[0], input2_data[i], params);
+  }
+}
+
+template <typename T>
+void BroadcastInput2(int size, const core::ArithmeticQuantParams &params, const T *input1_data,
+                     const T *input2_data, T *output_data,
+                     T (*binary_func)(T, T, const core::ArithmeticQuantParams &))
+{
+  for (int i = 0; i < size; ++i)
+  {
+    output_data[i] = binary_func(input1_data[i], input2_data[0], params);
+  }
+}
+
+template <typename T>
+void BroadcastRecursiveDimensions(const core::ArithmeticQuantParams &params, int dimension,
+                                  size_t *input1_offset_p, size_t *input2_offset_p,
+                                  size_t *output_offset, size_t *compressed_input1_stride,
+                                  size_t *compressed_input2_stride, size_t *compressed_output_shape,
+                                  const T *input1_data, const T *input2_data, T *output_data,
+                                  T (*binary_func)(T, T, const core::ArithmeticQuantParams &))
+{
+  if (dimension > 0)
+  {
+    for (size_t c = 0; c < compressed_output_shape[dimension]; ++c)
+    {
+      size_t input1_offset_c = *input1_offset_p;
+      size_t input2_offset_c = *input2_offset_p;
+      BroadcastRecursiveDimensions(params, dimension - 1, &input1_offset_c, &input2_offset_c,
+                                   output_offset, compressed_input1_stride,
+                                   compressed_input2_stride, compressed_output_shape, input1_data,
+                                   input2_data, output_data, binary_func);
+      *input1_offset_p += compressed_input1_stride[dimension];
+      *input2_offset_p += compressed_input2_stride[dimension];
+    }
+  }
+  else
+  {
+    assert(dimension == 0);
+    bool input1_is_broadcast = compressed_input1_stride[dimension] == 0;
+    bool input2_is_broadcast = compressed_input2_stride[dimension] == 0;
+    assert(!(input1_is_broadcast && input2_is_broadcast));
+    const T *input1_data_ptr = input1_data + *input1_offset_p;
+    const T *input2_data_ptr = input2_data + *input2_offset_p;
+    T *output_data_ptr = output_data + *output_offset;
+    if (input1_is_broadcast)
+    {
+      // input1 is broadcast.
+      BroadcastInput1<T>(compressed_output_shape[dimension], params, input1_data_ptr,
+                         input2_data_ptr, output_data_ptr, binary_func);
+      *input2_offset_p += compressed_output_shape[dimension];
+    }
+    else if (input2_is_broadcast)
+    {
+      // input2 is broadcast.
+      BroadcastInput2<T>(compressed_output_shape[dimension], params, input1_data_ptr,
+                         input2_data_ptr, output_data_ptr, binary_func);
+      *input1_offset_p += compressed_output_shape[dimension];
+    }
+    else
+    {
+      // Add element-wise.
+      ElementWise<T>(compressed_output_shape[dimension], params, input1_data_ptr, input2_data_ptr,
+                     output_data_ptr, binary_func);
+      *input1_offset_p += compressed_output_shape[dimension];
+      *input2_offset_p += compressed_output_shape[dimension];
+    }
+    *output_offset += compressed_output_shape[dimension];
+  }
+}
+
+template <typename T>
+void BroadcastBinaryFunction6DSlow(const core::ArithmeticQuantParams &params,
+                                   const core::OMRuntimeShape &input1_shape, const T *input1_data,
+                                   const core::OMRuntimeShape &input2_shape, const T *input2_data,
+                                   const core::OMRuntimeShape &output_shape, T *output_data,
+                                   T (*binary_func)(T, T, const core::ArithmeticQuantParams &))
+{
+  constexpr int kMaxBroadcastDim = 6;
+
+  // In Tensorflow, the dimensions are canonically named (batch_number, row,
+  // col, channel), with extents (batches, height, width, depth), with the
+  // trailing dimension changing most rapidly (channels has the smallest stride,
+  // typically 1 element).
+  //
+  // In generated C code, we store arrays with the dimensions reversed. The
+  // first dimension has smallest stride.
+  //
+  // We name our variables by their Tensorflow convention, but generate C code
+  // nesting loops such that the innermost loop has the smallest stride for the
+  // best cache behavior.
+  size_t compressed_input1_stride[kMaxBroadcastDim];
+  size_t compressed_input2_stride[kMaxBroadcastDim];
+  size_t compressed_output_shape[kMaxBroadcastDim];
+  bool broadcastable_shape = ReduceDimensionsForBroadcast<kMaxBroadcastDim>(
+    input1_shape, input2_shape, compressed_input1_stride, compressed_input2_stride,
+    compressed_output_shape);
+  // Skip broadcasting for degenerate shapes.
+  if (!broadcastable_shape)
+  {
+    return;
+  }
+
+  size_t input1_offset = 0;
+  size_t input2_offset = 0;
+  size_t output_offset = 0;
+  BroadcastRecursiveDimensions(params, kMaxBroadcastDim - 1, &input1_offset, &input2_offset,
+                               &output_offset, compressed_input1_stride, compressed_input2_stride,
+                               compressed_output_shape, input1_data, input2_data, output_data,
+                               binary_func);
 }
 
 } // namespace pal

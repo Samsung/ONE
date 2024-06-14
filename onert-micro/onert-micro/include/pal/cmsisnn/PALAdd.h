@@ -21,6 +21,8 @@
 #include "PALAddCommon.h"
 #include "PALUtils.h"
 
+#include "arm_nnfunctions.h"
+
 namespace onert_micro
 {
 namespace execute
@@ -31,7 +33,16 @@ namespace pal
 OMStatus Add(const core::ArithmeticQuantParams &params, const uint32_t flat_size,
              const int8_t *input1_data, const int8_t *input2_data, int8_t *output_data)
 {
-  ElementWise(flat_size, params, input1_data, input2_data, output_data, AddFunc);
+  auto status = arm_elementwise_add_s8(
+    input1_data, input2_data, params.input1_offset, params.input1_multiplier, params.input1_shift,
+    params.input2_offset, params.input2_multiplier, params.input2_shift, params.left_shift,
+    output_data, params.output_offset, params.output_multiplier, params.output_shift,
+    params.quantized_activation_min, params.quantized_activation_max, flat_size);
+
+  assert(status == ARM_CMSIS_NN_SUCCESS);
+  if (status != ARM_CMSIS_NN_SUCCESS)
+    return UnknownError;
+
   return Ok;
 }
 

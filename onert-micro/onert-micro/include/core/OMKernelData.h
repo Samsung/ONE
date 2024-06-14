@@ -103,6 +103,22 @@ struct TransposeParams
   int32_t perm[5];
 };
 
+struct ArithmeticQuantParams
+{
+  int32_t input1_offset;
+  int32_t input2_offset;
+  int left_shift;
+  int32_t input1_multiplier;
+  int32_t input2_multiplier;
+  int input1_shift;
+  int input2_shift;
+  int32_t output_multiplier;
+  int output_shift;
+  int32_t output_offset;
+  int32_t quantized_activation_max;
+  int32_t quantized_activation_min;
+};
+
 struct BinaryArithmeticBroadcastParams
 {
   // float activation params.
