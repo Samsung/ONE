@@ -1,4 +1,5 @@
 # dummy driver for interface test
+set(DUMMY_COMPILER_SRC src/dummy-compiler.cpp)
 set(DUMMY_DRIVER_SRC src/dummy-compile.cpp)
 set(DUMMY_V2_DRIVER_SRC src/dummyV2-compile.cpp)
 set(HELP_DRIVER_SRC src/help-compile.cpp)
@@ -12,6 +13,10 @@ set(HELP_PROFILE_SRC src/help-profile.cpp)
 set(DUMMY_ENV_SRC src/dummyEnv-compile.cpp)
 set(DUMMY_ONNX_EXT src/dummy-onnx-ext.cpp)
 
+# Note that `dummy-compiler` is differnet from `dummy-compile`.
+# Without command schema, codegen drivers have "-compile" suffix in their names.
+# Such restriction can be relieved with the command schema.
+add_executable(dummy-compiler ${DUMMY_COMPILER_SRC})
 add_executable(dummy-compile ${DUMMY_DRIVER_SRC})
 add_executable(dummyV2-compile ${DUMMY_V2_DRIVER_SRC})
 add_executable(help-compile ${HELP_DRIVER_SRC})
@@ -25,6 +30,7 @@ add_executable(help-profile ${HELP_PROFILE_SRC})
 add_executable(dummyEnv-compile ${DUMMY_ENV_SRC})
 add_executable(dummy-onnx-ext ${DUMMY_ONNX_EXT})
 
+set(DUMMY_COMPILER "${CMAKE_CURRENT_BINARY_DIR}/dummy-compiler")
 set(DUMMY_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/dummy-compile")
 set(DUMMY_V2_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/dummyV2-compile")
 set(HELP_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/help-compile")
@@ -38,6 +44,11 @@ set(HELP_PROFILE "${CMAKE_CURRENT_BINARY_DIR}/help-profile")
 set(DUMMY_ENV "${CMAKE_CURRENT_BINARY_DIR}/dummyEnv-compile")
 set(DUMMY_ONNX_EXT "${CMAKE_CURRENT_BINARY_DIR}/dummy-onnx-ext")
 
+install(FILES ${DUMMY_COMPILER}
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                    GROUP_READ GROUP_EXECUTE
+                    WORLD_READ WORLD_EXECUTE
+        DESTINATION test)
 install(FILES ${DUMMY_DRIVER}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                     GROUP_READ GROUP_EXECUTE

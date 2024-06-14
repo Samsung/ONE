@@ -15,7 +15,7 @@
 # limitations under the License.
 
 from types import SimpleNamespace
-from typing import List, Tuple
+from typing import List, Tuple, Union, Type
 import shutil
 
 import onelib.backends as backends
@@ -42,7 +42,7 @@ class ArgumentParser():
     _SUPPORTED_ACTIONS = [DriverName, NormalOption, TargetOption]
 
     def __init__(self):
-        self._actions: List[Tuple[str, Action]] = list()
+        self._actions: List[Tuple[str, Action, Union[Type[str], Type[bool]]]] = list()
         self.driver: str = None
         self.target: str = None
 
@@ -54,13 +54,18 @@ class ArgumentParser():
             raise RuntimeError('Invalid action')
         if not args:
             raise RuntimeError('Invalid option name')
-
+        dtype = kwargs.get('dtype', str)
         # use first option.
         arg = args[0]
+        if dtype == bool and action != NormalOption:
+            raise RuntimeError('Only normal option can be boolean type')
+        if dtype == bool and not all(a.startswith('-') for a in args):
+            raise RuntimeError('Boolean type option should start with dash("-")')
+
         if action == DriverName:
             self.driver = arg
         else:
-            self._actions.append((arg, kwargs['action']))
+            self._actions.append((arg, kwargs['action'], dtype))
 
     def make_cmd(self, cfg_args: SimpleNamespace) -> List:
         assert self.target, "Target should be set before making commands"
@@ -77,7 +82,7 @@ class ArgumentParser():
         cmd: List = [driver_path]
         # traverse the action in order and make commands
         for action in self._actions:
-            arg, act = action
+            arg, act, dtype = action
             assert act in [NormalOption, TargetOption]
             # positional input doesn't have dash(-) in the string
             option_name = arg
@@ -87,14 +92,18 @@ class ArgumentParser():
             elif arg.startswith('-'):
                 option_name = arg[len('-'):]
 
-            if act == NormalOption and not oneutils.is_valid_attr(cfg_args, option_name):
-                # TODO raise error when invalid option is given in the cfg file.
-                continue
+            if act == NormalOption:
+                if not oneutils.is_valid_attr(cfg_args, option_name):
+                    # TODO raise error when invalid option is given in the cfg file.
+                    continue
+                if dtype == bool and getattr(cfg_args, option_name).lower() == "false":
+                    continue
             if arg.startswith('-'):
                 cmd += [arg]
             if act == TargetOption:
                 cmd += [self.target]
             else:
                 assert act == NormalOption
-                cmd += [getattr(cfg_args, option_name)]
+                if dtype == str:
+                    cmd += [getattr(cfg_args, option_name)]
         return cmd
