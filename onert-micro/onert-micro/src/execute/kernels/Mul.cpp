@@ -30,12 +30,53 @@ using namespace onert_micro::execute;
 namespace
 {
 
-constexpr uint32_t numInput = 2;
-constexpr uint32_t numOutput = 1;
-
 constexpr uint32_t input1TensorIdx = 0;
 constexpr uint32_t input2TensorIdx = 1;
 constexpr uint32_t outputTensorIdx = 0;
+
+void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
+                          const circle::Tensor *input2, const circle::Tensor *output,
+                          circle::ActivationFunctionType act)
+{
+  assert(input1->quantization() != nullptr); // Fix caller
+  assert(input2->quantization() != nullptr); // Fix caller
+  assert(output->quantization() != nullptr); // Fix caller
+
+  assert(input1->quantization()->scale() != nullptr and
+         input1->quantization()->scale()->size() == 1); // Fix caller
+  assert(input2->quantization()->scale() != nullptr and
+         input2->quantization()->scale()->size() == 1); // Fix caller
+  assert(output->quantization()->scale() != nullptr and
+         output->quantization()->scale()->size() == 1); // Fix caller
+
+  assert(input1->quantization()->zero_point() != nullptr and
+         input1->quantization()->zero_point()->size() == 1); // Fix caller
+  assert(input2->quantization()->zero_point() != nullptr and
+         input2->quantization()->zero_point()->size() == 1); // Fix caller
+  assert(output->quantization()->zero_point() != nullptr and
+         output->quantization()->zero_point()->size() == 1); // Fix caller
+
+  const auto input1_zp = input1->quantization()->zero_point()->operator[](0);
+  const auto input2_zp = input2->quantization()->zero_point()->operator[](0);
+  const auto output_zp = output->quantization()->zero_point()->operator[](0);
+
+  const auto input1_scale = input1->quantization()->scale()->operator[](0);
+  const auto input2_scale = input2->quantization()->scale()->operator[](0);
+  const auto output_scale = output->quantization()->scale()->operator[](0);
+
+  params.input1_offset = static_cast<int32_t>(input1_zp);
+  params.input2_offset = static_cast<int32_t>(input2_zp);
+  params.output_offset = static_cast<int32_t>(output_zp);
+  params.left_shift = (output->type() == circle::TensorType_INT16) ? 15 : 20;
+
+  double real_multiplier = static_cast<double>(input1_scale) * static_cast<double>(input2_scale) /
+                           static_cast<double>(output_scale);
+  quantizeMultiplier(real_multiplier, &params.output_multiplier, &params.output_shift);
+
+  calculateActivationRangeQuantized(act, output_zp, output_scale, output->type(),
+                                    &params.quantized_activation_min,
+                                    &params.quantized_activation_max);
+}
 
 } // namespace
 
@@ -159,6 +200,33 @@ OMStatus onert_micro::execute::execute_kernel_CircleMul(const OMExecuteArgs &exe
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      core::ArithmeticQuantParams add_params{};
+
+      calculateQuantParams(add_params, input1, input2, output,
+                           options->fused_activation_function());
+
+      if (need_broadcast)
+      {
+        status = pal::BroadcastMul6DSlow(
+          add_params, input1_shape, core::utils::castInputData<int8_t>(input1_data), input2_shape,
+          core::utils::castInputData<int8_t>(input2_data), output_shape,
+          core::utils::castOutputData<int8_t>(output_data));
+      }
+      else
+      {
+        assert(input1_shape.flatSize() == input2_shape.flatSize());
+        assert(input1_shape.flatSize() == output_shape.flatSize());
+        status = pal::Mul(add_params, input1_shape.flatSize(),
+                          core::utils::castInputData<int8_t>(input1_data),
+                          core::utils::castInputData<int8_t>(input2_data),
+                          core::utils::castOutputData<int8_t>(output_data));
+      }
+    }
+    break;
+#endif // DIF_QUANT
     default:
     {
       status = UnsupportedType;

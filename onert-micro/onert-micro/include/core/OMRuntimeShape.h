@@ -28,7 +28,7 @@ namespace onert_micro
 namespace core
 {
 
-static constexpr int maxTensorShapeSize = 5;
+static constexpr int maxTensorShapeSize = 6;
 
 class OMRuntimeShape
 {

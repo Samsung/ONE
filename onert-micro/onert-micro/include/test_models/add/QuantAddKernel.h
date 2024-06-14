@@ -96,7 +96,7 @@ namespace add_int8_with_broadcasting
 /*
  * Add Kernel:
  *
- * Input_1(1, 4, 4, 3)   Input_2(1, 4, 4, 3)
+ * Input_1(1, 4, 4, 3)   Input_2(1, 4, 4, 1)
  *       \             /
  *        Add(with broadcast)
  *              |
