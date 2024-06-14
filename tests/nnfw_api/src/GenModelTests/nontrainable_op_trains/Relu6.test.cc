@@ -16,21 +16,27 @@
 
 #include "GenModelTrain.h"
 
-TEST_F(GenModelTrain, NonTrainableOps_FC_Relu6)
+TEST_F(GenModelTrain, NonTrainableOps_FC_Relu6_FC)
 {
   // (( Input 0 )) -> [ FC ] -> [ Relu6 ] -> (( Output 0 ))
   {
     CirclePlusGen cgen;
 
-    uint32_t weight_buf = cgen.addBuffer(std::vector<float>(8 * 2, 0.f));
-    uint32_t bias_buf = cgen.addBuffer(std::vector<float>(8, 0.f));
+    uint32_t weight1_buf = cgen.addBuffer(std::vector<float>(8 * 2, 0.f));
+    uint32_t bias1_buf = cgen.addBuffer(std::vector<float>(8, 0.f));
+    uint32_t weight2_buf = cgen.addBuffer(std::vector<float>(8 * 8, 0.f));
+    uint32_t bias2_buf = cgen.addBuffer(std::vector<float>(8, 0.f));
     int input = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
-    int weight = cgen.addTensor({{8, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
-    int bias = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+    int weight1 = cgen.addTensor({{8, 2}, circle::TensorType::TensorType_FLOAT32, weight1_buf});
+    int bias1 = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32, bias1_buf});
+    int weight2 = cgen.addTensor({{8, 8}, circle::TensorType::TensorType_FLOAT32, weight2_buf});
+    int bias2 = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32, bias2_buf});
     int fc_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int relu_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
     int output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
-    cgen.addOperatorFullyConnected({{input, weight, bias}, {fc_output}});
-    cgen.addOperatorRelu6({{fc_output}, {output}});
+    cgen.addOperatorFullyConnected({{input, weight1, bias1}, {fc_output}});
+    cgen.addOperatorRelu({{fc_output}, {relu_output}});
+    cgen.addOperatorFullyConnected({{relu_output, weight2, bias2}, {output}});
     cgen.setInputsAndOutputs({input}, {output});
 
     float learning_rate = 0.01f;
@@ -43,7 +49,7 @@ TEST_F(GenModelTrain, NonTrainableOps_FC_Relu6)
     _context->addTrainCase(
       uniformTCD<float>({{{1, 3}}, {{2, 1}}},                                     // inputs
                         {{{2, 0, 6, 5, 2, 1, 6, 5}}, {{2, 1, 6, 5, 0, 1, 6, 6}}}, // expected
-                        {16.8750f}                                                // loss
+                        {16.3412f}                                                // loss
                         ));
 
     _context->setBackends({"train"});
