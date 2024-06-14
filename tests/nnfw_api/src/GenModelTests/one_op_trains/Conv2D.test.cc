@@ -18,7 +18,7 @@
 
 namespace
 {
-CircleBuffers gen_conv2d_test_model(const std::vector<int32_t> &trainable_ops)
+CirclePlusGen gen_conv2d_test_model()
 {
   CirclePlusGen cgen;
 
@@ -34,17 +34,19 @@ CircleBuffers gen_conv2d_test_model(const std::vector<int32_t> &trainable_ops)
 
   float learning_rate = 0.01f;
   int32_t batch_size = 1;
-  cgen.addTrainInfo(
-    {circle::Optimizer::Optimizer_SGD, learning_rate, circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, trainable_ops});
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
 
-  return cgen.finish();
+  return cgen;
 }
 } // namespace
 
 TEST_F(GenModelTrain, OneOp_Conv2D_training_enabled)
 {
-  _context = std::make_unique<GenModelTrainContext>(gen_conv2d_test_model({0}));
+  auto cgen = gen_conv2d_test_model();
+  cgen.markAllOpsAsTrainable();
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                          1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
@@ -62,7 +64,8 @@ TEST_F(GenModelTrain, OneOp_Conv2D_training_enabled)
 
 TEST_F(GenModelTrain, OneOp_Conv2D_training_disabled)
 {
-  _context = std::make_unique<GenModelTrainContext>(gen_conv2d_test_model({}));
+  auto cgen = gen_conv2d_test_model();
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                          1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset

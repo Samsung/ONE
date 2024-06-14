@@ -81,6 +81,11 @@ uint32_t CircleGen::nextSubgraph()
   return ind;
 }
 
+uint32_t CircleGen::getCurrentSubgraphOpsSize() const
+{
+  return _subgraph_contexts.back().operators.size();
+}
+
 CircleBuffer CircleGen::finish()
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgraphs;
