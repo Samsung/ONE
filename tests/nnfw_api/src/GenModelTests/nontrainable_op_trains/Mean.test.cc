@@ -59,6 +59,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Mean_InvalidShape)
 {
   CirclePlusGen cgen;
   int input = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+  // Invalid axis: axis should be smaller than the rank of the input
   int axis = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
   int out = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
   bool keep_dims = true;
