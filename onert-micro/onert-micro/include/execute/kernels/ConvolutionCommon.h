@@ -29,7 +29,7 @@ namespace execute
 
 OMStatus createConvParams(core::ConvQuant &params, const circle::Tensor *input,
                           const circle::Tensor *filter, const circle::Tensor *output,
-                          const circle::Conv2DOptions *options);
+                          circle::ActivationFunctionType act_type);
 
 } // namespace execute
 } // namespace onert_micro

@@ -61,13 +61,6 @@ onert_micro::import::configure_kernel_CircleDepthwiseConv2D(const OMConfigureArg
   OMStatus status = Ok;
   const auto *options = runtime_kernel.first_operator->builtin_options_as_DepthwiseConv2DOptions();
 
-  if (!(input->type() == circle::TensorType_FLOAT32 &&
-        weight->type() == circle::TensorType_FLOAT32 &&
-        (bias == nullptr or bias->type() == circle::TensorType_FLOAT32)))
-  {
-    return UnsupportedType;
-  }
-
   core::OMRuntimeShape input_shape(input);
   core::OMRuntimeShape weight_shape(weight);
   core::OMRuntimeShape bias_shape(bias);
@@ -106,6 +99,32 @@ onert_micro::import::configure_kernel_CircleDepthwiseConv2D(const OMConfigureArg
     default:
       return UnsupportedActivation;
   }
+
+  if (input->type() == circle::TensorType_FLOAT32)
+    return status;
+
+  auto input_quant = input->quantization();
+  auto filter_quant = weight->quantization();
+  auto output_quant = output->quantization();
+
+  status = utils::checkCondition(input_quant != nullptr and filter_quant != nullptr and
+                                 output_quant != nullptr);
+  if (status != Ok)
+    return status;
+
+  auto input_scales = input_quant->scale();
+  auto filter_scales = filter_quant->scale();
+  auto output_scales = output_quant->scale();
+
+  status = utils::checkCondition(input_scales != nullptr and filter_scales != nullptr and
+                                 output_scales != nullptr);
+  if (status != Ok)
+    return status;
+
+  // Support only per channel
+  status = utils::checkCondition(filter_scales->size() > 1);
+  if (status != Ok)
+    return status;
 
   return status;
 }

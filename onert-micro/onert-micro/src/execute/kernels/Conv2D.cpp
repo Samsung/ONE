@@ -140,7 +140,19 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2D(const OMExecuteArgs &
       params.pad_h = padding_h;
       params.pad_w = padding_w;
 
-      status = createConvParams(params, input, weight, output, options);
+      const auto padding = options->padding();
+      const auto stride_height = options->stride_h();
+      const auto stride_width = options->stride_w();
+      const auto dilation_height_factor = options->dilation_h_factor();
+      const auto dilation_width_factor = options->dilation_h_factor();
+
+      params.stride_height = stride_height;
+      params.stride_width = stride_width;
+      params.dilation_height_factor = dilation_height_factor;
+      params.dilation_width_factor = dilation_width_factor;
+
+      status =
+        createConvParams(params, input, weight, output, options->fused_activation_function());
       assert(status == Ok);
       if (status != Ok)
         return status;

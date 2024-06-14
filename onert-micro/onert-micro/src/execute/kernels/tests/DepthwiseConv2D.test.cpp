@@ -17,6 +17,7 @@
 #include "execute/OMTestUtils.h"
 #include "test_models/depthwise_conv_2d/FloatDepthwiseConv2DKernel.h"
 #include "test_models/depthwise_conv_2d/NegDepthwiseConv2DKernel.h"
+#include "test_models/depthwise_conv_2d/QuantDepthwiseConv2DKernel.h"
 
 namespace onert_micro
 {
@@ -41,6 +42,21 @@ TEST_F(DepthwiseConv2DTest, Float_P)
               FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
+TEST_F(DepthwiseConv2DTest, INT8_P)
+{
+  onert_micro::test_model::TestDataInt8DepthwiseConv2D test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(DepthwiseConv2DTest, No_quant_params_NEG)
+{
+  onert_micro::test_model::NegTestDataNoQuantParamsDepthwiseConv2DKernel test_data_kernel;
+
+  EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
 TEST_F(DepthwiseConv2DTest, Input_weigth_type_mismatch_NEG)
 {
   onert_micro::test_model::NegTestDataInputMismatchDepthwiseConv2DKernel test_data_kernel;
@@ -50,7 +66,7 @@ TEST_F(DepthwiseConv2DTest, Input_weigth_type_mismatch_NEG)
 
 TEST_F(DepthwiseConv2DTest, Invalid_input_shape_NEG)
 {
-  onert_micro::test_model::NegTestDataInvalidInputTypeDepthwiseConv2DKernel test_data_kernel;
+  onert_micro::test_model::NegTestDataInvalidInputShapeDepthwiseConv2DKernel test_data_kernel;
 
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
 }
