@@ -18,6 +18,7 @@
 #include "test_models/mul/FloatMulKernel.h"
 #include "test_models/mul/NegMulKernel.h"
 #include "test_models/mul/IntMulKernel.h"
+#include "test_models/mul/QuantMulKernel.h"
 
 namespace onert_micro
 {
@@ -49,6 +50,26 @@ TEST_F(MulTest, INT_P)
     test_model::TestDataIntMul test_data_add_with_broadcasting(is_with_broadcast);
     std::vector<int32_t> output_data_vector =
       onert_micro::execute::testing::checkKernel<int32_t>(2, &test_data_add_with_broadcasting);
+    EXPECT_THAT(output_data_vector, test_data_add_with_broadcasting.get_output_data_by_index(0));
+  }
+}
+
+TEST_F(MulTest, INT8_P)
+{
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_model::TestDataInt8Mul test_data_add_no_broadcasting(is_with_broadcast);
+    std::vector<int8_t> output_data_vector =
+      onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_add_no_broadcasting);
+    EXPECT_THAT(output_data_vector, test_data_add_no_broadcasting.get_output_data_by_index(0));
+  }
+  // With broadcast
+  {
+    const bool is_with_broadcast = true;
+    test_model::TestDataInt8Mul test_data_add_with_broadcasting(is_with_broadcast);
+    std::vector<int8_t> output_data_vector =
+      onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_add_with_broadcasting);
     EXPECT_THAT(output_data_vector, test_data_add_with_broadcasting.get_output_data_by_index(0));
   }
 }
@@ -94,6 +115,13 @@ TEST_F(MulTest, Wrong_Input2_Type_NEG)
 TEST_F(MulTest, Wrong_Ouput_Type_NEG)
 {
   onert_micro::test_model::NegTestDataInt16TypeMul test_data_kernel;
+
+  EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
+TEST_F(MulTest, No_output_scale_param_NEG)
+{
+  onert_micro::test_model::NegTestQuantMulNoScaleKernel test_data_kernel;
 
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
 }

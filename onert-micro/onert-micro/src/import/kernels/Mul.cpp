@@ -72,10 +72,28 @@ OMStatus onert_micro::import::configure_kernel_CircleMul(const OMConfigureArgs &
     return NoQuantization;
   }
 
-  if (input1->quantization()->scale()->size() != 1 or
-      input2->quantization()->scale()->size() != 1 or output->quantization()->scale()->size() != 1)
+  if (input1->quantization()->scale() == nullptr or
+      input1->quantization()->zero_point() == nullptr or
+      input1->quantization()->scale()->size() != 1 or
+      input1->quantization()->zero_point()->size() != 1)
   {
-    return UnsupportedQuantizationType;
+    return NoQuantization;
+  }
+
+  if (input2->quantization()->scale() == nullptr or
+      input2->quantization()->zero_point() == nullptr or
+      input2->quantization()->scale()->size() != 1 or
+      input2->quantization()->zero_point()->size() != 1)
+  {
+    return NoQuantization;
+  }
+
+  if (output->quantization()->scale() == nullptr or
+      output->quantization()->zero_point() == nullptr or
+      output->quantization()->scale()->size() != 1 or
+      output->quantization()->zero_point()->size() != 1)
+  {
+    return NoQuantization;
   }
 
 #endif // DIS_QUANT
