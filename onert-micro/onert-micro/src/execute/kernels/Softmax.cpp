@@ -73,36 +73,64 @@ OMStatus onert_micro::execute::execute_kernel_CircleSoftmax(const OMExecuteArgs 
   assert(input_data != nullptr);
   assert(output_data != nullptr);
 
+  const float beta = options->beta();
+
+  core::OMRuntimeShape inputs_shape(input);
+  core::OMRuntimeShape outputs_shape(output);
+
+  const auto dim_count = inputs_shape.dimensionsCount();
+
+  const auto trailing_dim = dim_count - 1;
+
+  int flat_size = 1;
+  for (int i = 0; i < inputs_shape.dimensionsCount(); ++i)
+  {
+    flat_size *= (i == trailing_dim) ? 1 : inputs_shape.dims(i);
+  }
+
+  core::SoftmaxParams params{};
+  params.beta = beta;
+  params.num_rows = flat_size;
+  params.row_size = std::min(inputs_shape.dims(trailing_dim), outputs_shape.dims(trailing_dim));
+
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
-      const float beta = options->beta();
-
-      core::OMRuntimeShape inputs_shape(input);
-      core::OMRuntimeShape outputs_shape(output);
-
-      const auto dim_count = inputs_shape.dimensionsCount();
-
-      const auto trailing_dim = dim_count - 1;
-
-      int flat_size = 1;
-      for (int i = 0; i < inputs_shape.dimensionsCount(); ++i)
-      {
-        flat_size *= (i == trailing_dim) ? 1 : inputs_shape.dims(i);
-      }
-
-      core::SoftmaxParams params;
-      params.beta = beta;
-      params.num_rows = flat_size;
-      params.row_size = std::min(inputs_shape.dims(trailing_dim), outputs_shape.dims(trailing_dim));
 
       status = pal::Softmax(params, core::utils::castInputData<float>(input_data),
                             core::utils::castOutputData<float>(output_data));
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      assert(output->type() == circle::TensorType_INT8);
+      if (output->type() != circle::TensorType_INT8)
+        return UnsupportedType;
+
+      assert(input->quantization() != nullptr and output->quantization() != nullptr);
+      assert(input->quantization()->scale() != nullptr and
+             output->quantization()->scale() != nullptr);
+      assert(input->quantization()->zero_point() != nullptr and
+             output->quantization()->zero_point() != nullptr);
+      assert(input->quantization()->scale()->size() == 1 and
+             output->quantization()->scale()->size() == 1);
+      assert(input->quantization()->zero_point()->size() == 1 and
+             output->quantization()->zero_point()->size() == 1);
+
+      params.output_scale = output->quantization()->scale()->operator[](0);
+      params.input_scale = input->quantization()->scale()->operator[](0);
+      params.output_zp = output->quantization()->zero_point()->operator[](0);
+      params.input_zp = input->quantization()->zero_point()->operator[](0);
+
+      status = pal::Softmax(params, core::utils::castInputData<int8_t>(input_data),
+                            core::utils::castOutputData<int8_t>(output_data));
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedType;

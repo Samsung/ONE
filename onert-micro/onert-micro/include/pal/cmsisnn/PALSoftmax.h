@@ -20,4 +20,27 @@
 
 #include "PALSoftmaxCommon.h"
 
+#include <arm_nnfunctions.h>
+
+namespace onert_micro
+{
+namespace execute
+{
+namespace pal
+{
+
+template <>
+OMStatus Softmax<int8_t, int8_t>(const core::SoftmaxParams &params, const int8_t *input_data,
+                                 int8_t *output_data)
+{
+  arm_softmax_s8(input_data, params.num_rows, params.row_size, params.input_multiplier,
+                 params.input_left_shift, params.diff_min, output_data);
+
+  return Ok;
+}
+
+} // namespace pal
+} // namespace execute
+} // namespace onert_micro
+
 #endif // ONERT_MICRO_EXECUTE_PAL_SOFTMAX_H
