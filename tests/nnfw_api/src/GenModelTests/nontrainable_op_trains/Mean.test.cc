@@ -80,6 +80,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Mean_InvalidShape)
 TEST_F(GenModelTrain, neg_NonTrainableOps_Mean_InvalidType)
 {
   CirclePlusGen cgen;
+  // Invalid  type: input tensor type should be FLOAT32
   int input = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_INT32});
   int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
   int out = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_FLOAT32});
