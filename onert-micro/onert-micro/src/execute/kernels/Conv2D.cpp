@@ -22,8 +22,9 @@
 #include "execute/OMKernelExecutionBuilder.h"
 #include "execute/OMUtils.h"
 #include "execute/OMRuntimeKernel.h"
+#include "execute/kernels/ConvolutionCommon.h"
 
-#include "PALConv2d.h"
+#include "PALConv2D.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
@@ -95,6 +96,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2D(const OMExecuteArgs &
 
   OMRuntimeShape weight_shape(weight);
   OMRuntimeShape input_shape(input);
+  OMRuntimeShape output_shape(output);
 
   const int input_width = input_shape.dims(2);
   const int input_height = input_shape.dims(1);
@@ -110,7 +112,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2D(const OMExecuteArgs &
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
-
       FloatConv2D params{};
       status = calculateActivationRange(options->fused_activation_function(),
                                         &params.activation_min, &params.activation_max);
@@ -126,12 +127,32 @@ OMStatus onert_micro::execute::execute_kernel_CircleConv2D(const OMExecuteArgs &
 
       status = pal::ConvFloat(&params, input_shape, core::utils::castInputData<float>(input_data),
                               weight_shape, core::utils::castInputData<float>(weight_data),
-                              core::utils::castInputData<float>(bias_data), OMRuntimeShape(output),
+                              core::utils::castInputData<float>(bias_data), output_shape,
                               core::utils::castOutputData<float>(output_data));
       assert(status == Ok);
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      ConvQuant params{};
+      params.pad_h = padding_h;
+      params.pad_w = padding_w;
+
+      status = createConvParams(params, input, weight, output, options);
+      assert(status == Ok);
+      if (status != Ok)
+        return status;
+
+      status =
+        pal::ConvPerChannel(params, input_shape, core::utils::castInputData<int8_t>(input_data),
+                            weight_shape, core::utils::castInputData<int8_t>(weight_data),
+                            core::utils::castInputData<int32_t>(bias_data), output_shape,
+                            core::utils::castOutputData<int8_t>(output_data));
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedActivation;

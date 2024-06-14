@@ -86,5 +86,31 @@ OMStatus onert_micro::import::configure_kernel_CircleConv2D(const OMConfigureArg
 
   status = utils::checkCondition(bias == nullptr or weight_shape.dims(0) == bias_shape.flatSize());
 
+  if (input->type() == circle::TensorType_FLOAT32)
+    return status;
+
+  auto input_quant = input->quantization();
+  auto filter_quant = weight->quantization();
+  auto output_quant = output->quantization();
+
+  status = utils::checkCondition(input_quant != nullptr and filter_quant != nullptr and
+                                 output_quant != nullptr);
+  if (status != Ok)
+    return status;
+
+  auto input_scales = input_quant->scale();
+  auto filter_scales = filter_quant->scale();
+  auto output_scales = output_quant->scale();
+
+  status = utils::checkCondition(input_scales != nullptr and filter_scales != nullptr and
+                                 output_scales != nullptr);
+  if (status != Ok)
+    return status;
+
+  // Support only per channel
+  status = utils::checkCondition(filter_scales->size() > 1);
+  if (status != Ok)
+    return status;
+
   return status;
 }

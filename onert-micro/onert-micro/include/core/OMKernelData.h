@@ -115,6 +115,28 @@ struct BinaryArithmeticBroadcastParams
   BroadcastableOpCategory broadcast_category;
 };
 
+struct ConvQuant
+{
+  int32_t pad_h;
+  int32_t pad_w;
+  int32_t stride_w;
+  int32_t stride_h;
+  int32_t stride_width;
+  int32_t stride_height;
+  int32_t dilation_width_factor;
+  int32_t dilation_height_factor;
+  int32_t input_offset;
+  int32_t weights_offset;
+  int32_t output_offset;
+  int32_t output_multiplier;
+  int32_t output_shift;
+  int32_t quantized_activation_min;
+  int32_t quantized_activation_max;
+  int32_t depth_multiplier;
+  std::vector<int32_t> per_channel_output_multiplier;
+  std::vector<int> per_channel_output_shift;
+};
+
 struct FloatConv2D
 {
   int32_t stride_w;

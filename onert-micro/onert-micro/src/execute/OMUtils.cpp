@@ -71,10 +71,10 @@ void onert_micro::execute::quantizeMultiplierSmallerThanOneExp(double double_mul
 
 namespace
 {
-static void calculateActivationRangeQuantizedImpl(circle::ActivationFunctionType activation,
-                                                  int32_t qmin, int32_t qmax, int32_t zero_point,
-                                                  float scale, int32_t *activation_min,
-                                                  int32_t *activation_max)
+OMStatus calculateActivationRangeQuantizedImpl(circle::ActivationFunctionType activation,
+                                               int32_t qmin, int32_t qmax, int32_t zero_point,
+                                               float scale, int32_t *activation_min,
+                                               int32_t *activation_max)
 {
   assert(scale != 0.f);
 
@@ -103,11 +103,13 @@ static void calculateActivationRangeQuantizedImpl(circle::ActivationFunctionType
       break;
     default:
       assert(false && "Unsupported activation.");
+      return UnsupportedActivation;
   }
+  return Ok;
 }
 } // namespace
 
-void onert_micro::execute::calculateActivationRangeQuantized(
+OMStatus onert_micro::execute::calculateActivationRangeQuantized(
   circle::ActivationFunctionType activation, int32_t output_zero_point, float output_scale,
   circle::TensorType data_type, int32_t *activation_min, int32_t *activation_max)
 {
@@ -131,8 +133,9 @@ void onert_micro::execute::calculateActivationRangeQuantized(
       break;
     default:
       assert(false && "Unsupported type.");
+      return UnsupportedType;
   }
 
-  calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output_zero_point, output_scale,
-                                        activation_min, activation_max);
+  return calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output_zero_point,
+                                               output_scale, activation_min, activation_max);
 }
