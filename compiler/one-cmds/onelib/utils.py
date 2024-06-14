@@ -239,21 +239,21 @@ def get_optimization_list(get_name=False):
     return opt_list
 
 
-def get_arg_parser(target: Optional[str], cmd: str) -> Optional[ArgumentParser]:
-    if not target:
+def get_arg_parser(backend: Optional[str], cmd: str,
+                   target: Optional[str]) -> Optional[ArgumentParser]:
+    if not backend:
         return None
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     # for python module naming convention
-    target_name = target.replace('-', '_')
-    command_schema_path = dir_path + f'/../../backends/command/{cmd}/{target_name}.py'
+    command_schema_path = dir_path + f'/../../backends/command/{backend}/{cmd}.py'
     if not os.path.isfile(command_schema_path):
         return None
 
     # https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly
-    spec = importlib.util.spec_from_file_location(target_name, command_schema_path)
+    spec = importlib.util.spec_from_file_location(cmd, command_schema_path)
     module = importlib.util.module_from_spec(spec)
-    sys.modules[target_name] = module
+    sys.modules[cmd] = module
     spec.loader.exec_module(module)
 
     if not hasattr(module, "command_schema"):

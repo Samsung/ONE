@@ -29,23 +29,34 @@ This test assumes below directories.
     ├── include
     ├── lib
     ├── optimization
+    ├── target
     └── test # pwd
 '
 
 BACKENDS_ALREADY_EXIST=true
 CMD_ALREADY_EXIST=true
-PROFILE_ALREADY_EXIST=true
+DUMMY_ALREADY_EXIST=true
+TARGET_ALREADY_EXIST=true
+
+BACKEND_NAME="dummy"
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
-command_schema="one_profile_008.py"
+
+configfile="one-profile_008.cfg"
+targetfile="one-profile_008.ini"
+commandschema="one-profile_008.py"
 
 clean_envir()
 {
   rm -rf ../bin/dummy-profile
-  rm -rf ../backends/command/profile/${command_schema}
-  if [ "$PROFILE_ALREADY_EXIST" = false ]; then
-    rm -rf ../backends/command/profile/
+  rm -rf ../target/${targetfile}
+  rm -rf "../backends/command/${BACKEND_NAME}/profile.py"
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+  if [ "$DUMMY_ALREADY_EXIST" = false ]; then
+    rm -rf "../backends/command/${BACKEND_NAME}/"
   fi
   if [ "$CMD_ALREADY_EXIST" = false ]; then
     rm -rf ../backends/command/
@@ -64,15 +75,12 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-configfile="one-profile_008.cfg"
-outputfile="one-profile_008.tvn"
-
 rm -f ${filename}.log
-rm -rf ${outputfile}
 
-# copy dummy tools to bin folder
-cp dummy-profile ../bin/dummy-profile
-
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
 if [ ! -d "../backends/" ]; then
   mkdir -p ../backends/
   BACKENDS_ALREADY_EXIST=false
@@ -81,19 +89,22 @@ if [ ! -d "../backends/command/" ]; then
   mkdir -p ../backends/command/
   CMD_ALREADY_EXIST=false
 fi
-if [ ! -d "../backends/command/profile/" ]; then
-  mkdir -p ../backends/command/profile/
-  PROFILE_ALREADY_EXIST=false
+if [ ! -d "../backends/command/${BACKEND_NAME}/" ]; then
+  mkdir -p ../backends/command/${BACKEND_NAME}/
+  DUMMY_ALREADY_EXIST=false
 fi
 
-cp ${command_schema} ../backends/command/profile/
+# copy dummy tools to bin folder
+cp dummy-profile ../bin/dummy-profile
+cp ${targetfile} ../target/
+cp ${commandschema} "../backends/command/${BACKEND_NAME}/profile.py"
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
 
 clean_envir
 
-if grep -q "dummy-profile with one-profile-008 target" "${filename}.log"; then
+if grep -q "dummy-profile with one-profile_008 target" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi

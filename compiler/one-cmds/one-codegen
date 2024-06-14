@@ -76,7 +76,9 @@ def _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_a
             # overwrite the value if it exists as command line option has higher priority.
             if oneutils.is_valid_attr(args, 'target'):
                 target_to_run = args.target
-            schema_exist = oneutils.get_arg_parser(target_to_run, cmd="codegen")
+            given_backend = backends.get_backend_from_target_conf(target_to_run)
+            schema_exist = oneutils.get_arg_parser(
+                given_backend, cmd="codegen", target=target_to_run)
             if not schema_exist:
                 missing.append('-b/--backend')
         else:
@@ -206,10 +208,13 @@ def main():
                     assert (oneutils.is_valid_attr(cfg_args, 'command'))
                     setattr(cfg_args, args.backend, cfg_args.command)
             else:
-                # check if command schema exists
+                # get backend information
+                given_backend = backends.get_backend_from_target_conf(target_to_run)
+                # check if command schema for the backend exists
                 # 1. if it exists, run the command according to the schema.
                 # 2. if it doesn't exist, insert "--target ${TARGET}" at the beginning of the given command.
-                parser = oneutils.get_arg_parser(target_to_run, cmd="codegen")
+                parser = oneutils.get_arg_parser(
+                    given_backend, cmd="codegen", target=target_to_run)
                 # [11], [13]
                 if target_to_run and parser:
                     # DO NOTHING

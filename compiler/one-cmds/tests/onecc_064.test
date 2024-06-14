@@ -29,24 +29,35 @@ This test assumes below directories.
     ├── include
     ├── lib
     ├── optimization
+    ├── target
     └── test # pwd
 '
 
 BACKENDS_ALREADY_EXIST=true
 CMD_ALREADY_EXIST=true
-CODEGEN_ALREADY_EXIST=true
+DUMMY_ALREADY_EXIST=true
+TARGET_ALREADY_EXIST=true
+
+BACKEND_NAME="dummy"
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
-command_schema="onecc_064.py"
+
 driver_name="dummy-compiler"
+configfile="onecc_064.cfg"
+outputfile="onecc_064.tvn"
+targetfile="onecc_064.ini"
 
 clean_envir()
 {
   rm -rf ../bin/${driver_name}
-  rm -rf ../backends/command/codegen/${command_schema}
-  if [ "$CODEGEN_ALREADY_EXIST" = false ]; then
-    rm -rf ../backends/command/codegen/
+  rm -rf ../target/${targetfile}
+  rm -rf "../backends/command/${BACKEND_NAME}/codegen.py"
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+  if [ "$DUMMY_ALREADY_EXIST" = false ]; then
+    rm -rf "../backends/command/${BACKEND_NAME}/"
   fi
   if [ "$CMD_ALREADY_EXIST" = false ]; then
     rm -rf ../backends/command/
@@ -65,15 +76,16 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-configfile="onecc_064.cfg"
-outputfile="onecc_064.tvn"
-
 rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # copy dummy tools to bin folder
 cp ${driver_name} ../bin/${driver_name}
 
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
 if [ ! -d "../backends/" ]; then
   mkdir -p ../backends/
   BACKENDS_ALREADY_EXIST=false
@@ -82,19 +94,22 @@ if [ ! -d "../backends/command/" ]; then
   mkdir -p ../backends/command/
   CMD_ALREADY_EXIST=false
 fi
-if [ ! -d "../backends/command/codegen/" ]; then
-  mkdir -p ../backends/command/codegen/
-  CODEGEN_ALREADY_EXIST=false
+if [ ! -d "../backends/command/${BACKEND_NAME}/" ]; then
+  mkdir -p ../backends/command/${BACKEND_NAME}/
+  DUMMY_ALREADY_EXIST=false
 fi
 
-cp ${command_schema} ../backends/command/codegen/
+# copy dummy tools to bin folder
+cp ${driver_name} ../bin/
+cp ${targetfile} ../target/
+cp onecc_064.py "../backends/command/${BACKEND_NAME}/codegen.py"
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
 
 clean_envir
 
-if grep -q "${driver_name} with onecc-064 target" "${outputfile}"; then
+if grep -q "${driver_name} with onecc_064 target" "${outputfile}"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi

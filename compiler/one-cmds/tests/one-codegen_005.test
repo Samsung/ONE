@@ -16,33 +16,68 @@
 
 # run dummy-compile drvier with given target in the command line
 
+: '
+This test assumes below directories.
+
+[one hierarchy]
+    one
+    ├── backends
+    │   └── command
+    │       └── codegen
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test # pwd
+'
+
+TARGET_ALREADY_EXIST=true
+
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
+
+configfile="one-codegen_005.cfg"
+outputfile="one-codegen_005.tvn"
+targetfile="one-codegen_005.ini"
+
+clean_envir()
+{
+  rm -rf ../bin/dummy-compile
+  rm -rf ../target/${targetfile}
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+}
 
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-compile
+  clean_envir
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-outputfile="sample.tvn"
-configfile="one-codegen_005.cfg"
-
 rm -rf ${outputfile}
 rm -f ${filename}.log
 
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
+
 # copy dummy-compile to bin folder
 cp dummy-compile ../bin/dummy-compile
+cp ${targetfile} ../target/
 
 # run test
-one-codegen -C ${configfile} -T rose > ${filename}.log 2>&1
+one-codegen -C ${configfile} -T one-codegen_005 > ${filename}.log 2>&1
 
-rm -rf ../bin/dummy-compile
+clean_envir
 
-if grep -q "dummy-compile with rose target" "${outputfile}"; then
+if grep -q "dummy-compile with one-codegen_005 target" "${outputfile}"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi
