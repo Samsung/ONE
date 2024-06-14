@@ -109,6 +109,27 @@ OMStatus onert_micro::execute::execute_kernel_CircleMaxPool2D(const OMExecuteArg
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      assert(output->quantization() != nullptr);
+      assert(output->quantization()->scale() != nullptr);
+      assert(output->quantization()->scale()->size() == 1);
+      const auto output_scale = output->quantization()->scale()->operator[](0);
+
+      assert(output->quantization()->zero_point() != nullptr);
+      assert(output->quantization()->zero_point()->size() == 1);
+      const auto output_zp = output->quantization()->zero_point()->operator[](0);
+
+      calculateActivationRangeQuantized(
+        options->fused_activation_function(), output_zp, output_scale, output->type(),
+        &params.quantized_activation_min, &params.quantized_activation_max);
+      status = pal::MaxPool(params, input_shape, core::utils::castInputData<int8_t>(input_data),
+                            core::OMRuntimeShape(output),
+                            core::utils::castOutputData<int8_t>(output_data));
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedType;
