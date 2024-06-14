@@ -44,7 +44,11 @@ int32_t QuantizerLoader::loadLibrary()
     return 0;
 
   const std::string quantize_so = std::string("libonert_odc") + SHARED_LIB_EXT;
+#ifdef __ANDROID__
   void *handle = dlopen(quantize_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
+#else
+  void *handle = dlopen(quantize_so.c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_DEEPBIND);
+#endif
   auto dlerror_msg = dlerror();
 
   if (handle == nullptr)

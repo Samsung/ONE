@@ -76,12 +76,15 @@ inline void* loadLibrary(const char* name) {
   // TODO: change RTLD_LOCAL? Assumes there can be multiple instances of nn
   // api RT
   void* handle = nullptr;
-#if 1 //#ifdef __ANDROID__
+#ifdef __ANDROID__
   handle = dlopen(name, RTLD_LAZY | RTLD_LOCAL);
+#else
+  handle = dlopen(name, RTLD_LAZY | RTLD_LOCAL | RTLD_DEEPBIND);
+#endif
   if (handle == nullptr) {
     NNAPI_LOG("nnapi error: unable to open library %s", name);
   }
-#endif
+//#endif
   return handle;
 }
 

@@ -31,7 +31,11 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::str
   std::string libname = "lib" + type + "_loader.so";
 
   // Open custom loader library
-  void *handle = dlopen(libname.c_str(), RTLD_LAZY);
+#ifdef __ANDROID__
+  void *handle = dlopen(libname.c_str(), RTLD_LAZY | RTLD_LOCAL);
+#else
+  void *handle = dlopen(libname.c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_DEEPBIND);
+#endif
   if (!handle)
     throw std::runtime_error("Failed to open " + type + " loader");
 

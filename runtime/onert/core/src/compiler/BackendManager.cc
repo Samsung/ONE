@@ -65,7 +65,11 @@ void BackendManager::loadBackend(const std::string &backend)
   }
 
   const std::string backend_so = "libbackend_" + backend + SHARED_LIB_EXT;
+#ifdef __ANDROID__
   void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
+#else
+  void *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_DEEPBIND);
+#endif
 
   if (handle == nullptr)
   {

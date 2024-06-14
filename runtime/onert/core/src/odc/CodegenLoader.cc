@@ -44,7 +44,11 @@ void CodegenLoader::loadLibrary(const char *target)
     return;
 
   const std::string codegen_so = "lib" + std::string{target} + SHARED_LIB_EXT;
+#ifdef __ANDROID__
   void *handle = dlopen(codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);
+#else
+  void *handle = dlopen(codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_DEEPBIND);
+#endif
   if (handle == nullptr)
   {
     throw std::runtime_error("CodegenLoader: " + std::string{dlerror()});
