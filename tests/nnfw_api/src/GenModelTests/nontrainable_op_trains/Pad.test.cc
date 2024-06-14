@@ -61,6 +61,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Pad_InvalidShape)
   uint32_t padding_buf = cgen.addBuffer(padding_data);
   int input = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
+  // Invalid shape: output shape should be equal to input shape
   int output = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorPad({{input, padding}, {output}});
   cgen.setInputsAndOutputs({input, padding}, {output});
@@ -81,6 +82,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Pad_InvalidType)
   CirclePlusGen cgen;
   std::vector<int32_t> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
   uint32_t padding_buf = cgen.addBuffer(padding_data);
+  // Invalid  type: input tensor type should be FLOAT32
   int input = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
   int padding = cgen.addTensor({{4, 2}, circle::TensorType::TensorType_INT32, padding_buf});
   int output = cgen.addTensor({{1, 4, 4, 1}, circle::TensorType::TensorType_FLOAT32});
