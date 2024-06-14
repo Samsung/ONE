@@ -16,7 +16,9 @@
 
 #include "GenModelTrain.h"
 
-TEST_F(GenModelTrain, OneOp_Conv2D)
+namespace
+{
+CircleBuffers gen_conv2d_test_model(const std::vector<int32_t> &trainable_ops)
 {
   CirclePlusGen cgen;
 
@@ -32,12 +34,17 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
 
   float learning_rate = 0.01f;
   int32_t batch_size = 1;
-  const std::vector<int32_t> trainable_ops{0};
   cgen.addTrainInfo(
     {circle::Optimizer::Optimizer_SGD, learning_rate, circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, trainable_ops});
 
-  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  return cgen.finish();
+}
+} // namespace
+
+TEST_F(GenModelTrain, OneOp_Conv2D_training_enabled)
+{
+  _context = std::make_unique<GenModelTrainContext>(gen_conv2d_test_model({0}));
   _context->addTrainCase(
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                          1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
@@ -49,6 +56,24 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
   _context->setEpoch(2);
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTrain, OneOp_Conv2D_training_disabled)
+{
+  _context = std::make_unique<GenModelTrainContext>(gen_conv2d_test_model({}));
+  _context->addTrainCase(
+    uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
+                         1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
+                      {{{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11,
+                         4}}},   // expected dataset
+                      {403.333f} // gain of loss after each epoch is const (equal 403.333)
+                      ));
+
+  _context->setBackends({"train"});
+  // To apply backward to loss, epoch should be >= 2
+  _context->setEpoch(10);
 
   SUCCEED();
 }
