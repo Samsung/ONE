@@ -38,7 +38,7 @@ extern "C" {
  *
  * <p>After loading, prepare inference by calling {@link nnfw_prepare}.
  * Application can set runtime environment before prepare by calling
- * {@link nnfw_set_available_backends} and {@link nnfw_set_op_backend}, and it is optional.
+ * {@link nnfw_set_available_backends}, and it is optional.
  *
  * <p>Application can inference by calling {@link nnfw_run}.
  * Before inference, application has responsibility to set input tensor to set input data by calling

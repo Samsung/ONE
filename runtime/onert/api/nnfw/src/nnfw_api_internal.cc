@@ -867,29 +867,6 @@ NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
   return NNFW_STATUS_NO_ERROR;
 }
 
-static std::string get_op_backend_string(std::string op)
-{
-#define MAP_MACRO(CircleName, OneRTName) {#CircleName, #OneRTName},
-
-  static std::unordered_map<std::string, std::string> operation_map = {
-#include "OpMap.lst"
-  };
-
-#undef MAP_MACRO
-
-  auto n = operation_map.find(op);
-
-  if (n == operation_map.end())
-  {
-    // this return value is handled by a caller to return error code
-    return std::string("");
-  }
-  else
-  {
-    return n->second;
-  }
-}
-
 NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 {
   if (!isStateModelLoaded())
@@ -909,37 +886,6 @@ NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::set_available_backends : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-  return NNFW_STATUS_NO_ERROR;
-}
-
-NNFW_STATUS nnfw_session::set_op_backend(const char *op, const char *backend)
-{
-  if (!isStateModelLoaded())
-    return NNFW_STATUS_INVALID_STATE;
-
-  try
-  {
-    if (!op || !backend)
-      return NNFW_STATUS_UNEXPECTED_NULL;
-    if (!null_terminating(op, MAX_OP_NAME_LENGTH) ||
-        !null_terminating(backend, MAX_BACKEND_NAME_LENGTH))
-      return NNFW_STATUS_ERROR;
-
-    auto key = get_op_backend_string(op);
-
-    if (key.empty())
-    {
-      return NNFW_STATUS_ERROR;
-    }
-
-    auto &opcode_to_backend = _coptions->manual_scheduler_options.opcode_to_backend;
-    opcode_to_backend.emplace(onert::ir::toOpCode(key), backend);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during nnfw_session::set_op_backend : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
   return NNFW_STATUS_NO_ERROR;

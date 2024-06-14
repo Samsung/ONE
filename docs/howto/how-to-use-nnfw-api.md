@@ -21,11 +21,11 @@ nnfw_create_session(&session);
 ``` c
 nnfw_load_model_from_file(session, nnpackage_path);
 ```
-3) (Optional) Assign a specific backend to operations
+3) (Optional) Assign a specific backend
 ``` c
-  // Use 'acl_neon' backend for CONV_2D and 'cpu' for otherwise.
+  // Use 'acl_neon' backend only
   // Note that defalut backend is 'cpu'.
-  nnfw_set_op_backend(session, "CONV_2D", "acl_neon");
+  nnfw_set_available_backends(session, "acl_neon");
 ```
 
 4) Compilation

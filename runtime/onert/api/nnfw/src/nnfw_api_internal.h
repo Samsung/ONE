@@ -143,7 +143,6 @@ public:
   NNFW_STATUS output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
 
   NNFW_STATUS set_available_backends(const char *backends);
-  NNFW_STATUS set_op_backend(const char *op, const char *backend);
 
   NNFW_STATUS set_workspace(const char *dir);
 
