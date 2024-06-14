@@ -64,6 +64,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Relu_InvalidShape)
   CirclePlusGen cgen;
 
   int input = cgen.addTensor({{2, 1}, circle::TensorType::TensorType_FLOAT32});
+  // Invalid shape: output shape should be equal to input shape
   int output = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorRelu({{input}, {output}});
   cgen.setInputsAndOutputs({input}, {output});
@@ -83,6 +84,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Relu_InvalidType)
 {
   CirclePlusGen cgen;
 
+  // Invalid  type: input tensor type should be FLOAT32
   int input = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_INT32});
   int output = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   cgen.addOperatorRelu({{input}, {output}});
