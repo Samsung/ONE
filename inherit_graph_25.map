@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$struct_arguments.html" title="Read&#45;only string sequence view." alt="" coords="5,5,90,31"/>
+<area shape="rect" id="Node000000" href="$classargumentparse_1_1_action.html" title=" " alt="" coords="5,55,153,80"/>
+<area shape="rect" id="Node000001" href="$classargumentparse_1_1_driver_name.html" title=" " alt="" coords="206,5,386,31"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="153,48,235,29,237,34,154,53"/>
+<area shape="rect" id="Node000002" href="$classargumentparse_1_1_normal_option.html" title=" " alt="" coords="201,55,391,80"/>
+<area shape="poly" id="edge3_Node000000_Node000002" title=" " alt="" coords="168,65,200,65,200,70,168,70"/>
+<area shape="rect" id="Node000003" href="$classargumentparse_1_1_target_option.html" title=" " alt="" coords="203,104,389,130"/>
+<area shape="poly" id="edge4_Node000000_Node000003" title=" " alt="" coords="154,82,237,101,235,106,153,87"/>
 </map>

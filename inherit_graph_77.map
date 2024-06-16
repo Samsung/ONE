@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classcoco_1_1_block_index.html" title="A BlockIndex denotes the index of a block in a block list." alt="" coords="5,5,125,31"/>
+<area shape="rect" id="Node000000" href="$structcmdline_1_1_view.html" title=" " alt="" coords="5,5,107,31"/>
+<area shape="rect" id="Node000001" href="$classcmdline_1_1_vector.html" title=" " alt="" coords="155,5,265,31"/>
+<area shape="poly" id="edge112_Node000000_Node000001" title=" " alt="" coords="123,16,154,16,154,21,123,21"/>
 </map>

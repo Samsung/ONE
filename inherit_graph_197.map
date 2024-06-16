@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classflatbuffers_1_1_array.html" title=" " alt="" coords="5,5,119,46"/>
+<area shape="rect" id="Node000000" href="$classflatbuffers_1_1_allocator.html" title=" " alt="" coords="5,35,140,60"/>
+<area shape="rect" id="Node000001" href="$classflatbuffers_1_1_default_allocator.html" title=" " alt="" coords="188,5,363,31"/>
+<area shape="poly" id="edge227_Node000000_Node000001" title=" " alt="" coords="154,33,187,28,188,34,155,38"/>
+<area shape="rect" id="Node000002" href="$classflatbuffers_1_1grpc_1_1_slice_allocator.html" title=" " alt="" coords="218,55,333,96"/>
+<area shape="poly" id="edge228_Node000000_Node000002" title=" " alt="" coords="155,56,218,65,218,70,155,62"/>
 </map>

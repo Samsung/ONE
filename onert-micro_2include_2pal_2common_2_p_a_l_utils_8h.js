@@ -11,6 +11,7 @@ var onert_micro_2include_2pal_2common_2_p_a_l_utils_8h =
     [ "nextIndex", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a36e759f35baf92c43b698cd711aea733", null ],
     [ "offset", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#abee9a45bb904d8290e56177ad969867f", null ],
     [ "offset", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#aa84292f0955cd0f8500d3f68c1f73524", null ],
+    [ "ReduceDimensionsForBroadcast", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a6d854845904479887b91aa4c69d2a0e2", null ],
     [ "reducedOutputOffset", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a917c4ed35594d1bdbf9d7480dd2cc80b", null ],
     [ "roundingDivideByPOT", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#ae80281d044eff14f43bc3fc7d5641ff1", null ],
     [ "saturatingRoundingDoublingHighMul", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a2ad5774e254ec60ce4ee72beda2089a7", null ]

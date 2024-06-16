@@ -132,17 +132,31 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>dummy-profile only tests its interface rather than its functionality.</p>
-<p>./dummy-profile ${INPUT_NAME} dummy-profile dummy output!!! </p>
+<p>./dummy-profile ${INPUT_NAME} ./dummy-profile &ndash;target ${TARGET_NAME} ${INPUT_NAME} </p>
 
 <p class="definition">Definition at line <a class="el" href="dummy-profile_8cpp_source.html#l00028">28</a> of file <a class="el" href="dummy-profile_8cpp_source.html">dummy-profile.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (argc != 2)</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (argc != 2 and argc != 4)</div>
 <div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
 <div class="line"><span class="lineno">   32</span> </div>
-<div class="line"><span class="lineno">   33</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;dummy-profile dummy output!!!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (argc == 2)</div>
+<div class="line"><span class="lineno">   34</span>  {</div>
+<div class="line"><span class="lineno">   35</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;dummy-profile dummy output!!!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   36</span>  }</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (argc == 4)</div>
+<div class="line"><span class="lineno">   38</span>  {</div>
+<div class="line"><span class="lineno">   39</span>    std::string opt_T{<span class="stringliteral">&quot;--target&quot;</span>};</div>
+<div class="line"><span class="lineno">   40</span>    std::string argv_1{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1]};</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (opt_T != argv_1)</div>
+<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   43</span>    std::string target_name{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2]};</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;dummy-profile with &quot;</span> &lt;&lt; target_name &lt;&lt; <span class="stringliteral">&quot; target&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><span class="lineno">   49</span>}</div>
+<div class="ttc" id="anamespaceminimal_html_a5f2767e1a6e0198d72dfe1719abc3b2a"><div class="ttname"><a href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">minimal.argv</a></div><div class="ttdeci">argv</div><div class="ttdef"><b>Definition</b> <a href="minimal_8py_source.html#l00025">minimal.py:25</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

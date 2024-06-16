@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1exec.html',''); init
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">onert::exec Namespace Reference</div></div>
 </div><!--header-->
@@ -112,13 +113,19 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_dynamic_shape_inferer.html">DynamicShapeInferer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to infer shape of output tensor at execution time and allocate memory fo output tensor if needed.  <a href="classonert_1_1exec_1_1_dynamic_shape_inferer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_exec_observers.html">ExecObservers</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_exec_time.html">ExecTime</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html">Execution</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to define execution instance to collect input/output information for inference and prepare executor run (TODO)  <a href="classonert_1_1exec_1_1_execution.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html">ExecutionObservee</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that.  <a href="classonert_1_1exec_1_1_execution_observee.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_execution_options.html">ExecutionOptions</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_executor_base.html">ExecutorBase</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,6 +200,14 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a893a10751ea3505eaad6ffe3da376aef" id="r_a893a10751ea3505eaad6ffe3da376aef"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a893a10751ea3505eaad6ffe3da376aef">MeasurementData</a> = std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *, std::unordered_map&lt; std::string, std::unordered_map&lt; bool, std::map&lt; uint32_t, int64_t &gt; &gt; &gt; &gt;</td></tr>
 <tr class="memdesc:a893a10751ea3505eaad6ffe3da376aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">table, that contains execution time of an operation on some backend for different input sizes and transfer time from one backend to another for various input sizes (permutation time)  <br /></td></tr>
 <tr class="separator:a893a10751ea3505eaad6ffe3da376aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a7197df3298167805c3fe9e0646ba9068" id="r_a7197df3298167805c3fe9e0646ba9068"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> { <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">PROFILE</a>
+, <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89">TRACING</a>
+, <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe">MINMAX_DUMP</a>
+ }</td></tr>
+<tr class="separator:a7197df3298167805c3fe9e0646ba9068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -287,6 +302,44 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a7197df3298167805c3fe9e0646ba9068" name="a7197df3298167805c3fe9e0646ba9068"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7197df3298167805c3fe9e0646ba9068">&#9670;&#160;</a></span>ObserverType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">onert::exec::ObserverType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147" name="a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147"></a>PROFILE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89" name="a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89"></a>TRACING&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe" name="a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe"></a>MINMAX_DUMP&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00036">36</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">PROFILE</a>,</div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89">TRACING</a>,</div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe">MINMAX_DUMP</a>,</div>
+<div class="line"><span class="lineno">   41</span>};</div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89">onert::exec::ObserverType::TRACING</a></div><div class="ttdeci">@ TRACING</div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">onert::exec::ObserverType::PROFILE</a></div><div class="ttdeci">@ PROFILE</div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe">onert::exec::ObserverType::MINMAX_DUMP</a></div><div class="ttdeci">@ MINMAX_DUMP</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a039cac362aced788260e0f8249f78c79" name="a039cac362aced788260e0f8249f78c79"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a039cac362aced788260e0f8249f78c79">&#9670;&#160;</a></span>convertShape()</h2>
@@ -361,7 +414,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::NCHW</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_executor_base_8cc_source.html#l00099">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_executor_base_8cc_source.html#l00049">onert::exec::ExecutorBase::execute()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_executor_base_8cc_source.html#l00103">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_executor_base_8cc_source.html#l00050">onert::exec::ExecutorBase::execute()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -513,40 +566,40 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_recorder_8cc_source.html#l00039">39</a> of file <a class="el" href="_min_max_recorder_8cc_source.html">MinMaxRecorder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_elements = tensor-&gt;total_size() / <span class="keyword">sizeof</span>(float);</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordtype">bool</span> all_nan = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_elements; ++i)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> number = data[i];</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (std::isnan(number))</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> (number == std::numeric_limits&lt;float&gt;::lowest())</div>
-<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>    all_nan = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (number &gt; max)</div>
-<div class="line"><span class="lineno">   60</span>      max = number;</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (number &lt; min)</div>
-<div class="line"><span class="lineno">   63</span>      min = number;</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">if</span> (all_nan)</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;All values are NaN(Not a Number)&quot;</span>);</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">return</span> {min, max};</div>
-<div class="line"><span class="lineno">   70</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_recorder_8cc_source.html#l00040">40</a> of file <a class="el" href="_min_max_recorder_8cc_source.html">MinMaxRecorder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_elements = tensor-&gt;total_size() / <span class="keyword">sizeof</span>(float);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordtype">bool</span> all_nan = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_elements; ++i)</div>
+<div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> number = data[i];</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (std::isnan(number))</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (number == std::numeric_limits&lt;float&gt;::lowest())</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    all_nan = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (number &gt; max)</div>
+<div class="line"><span class="lineno">   61</span>      max = number;</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (number &lt; min)</div>
+<div class="line"><span class="lineno">   64</span>      min = number;</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (all_nan)</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;All values are NaN(Not a Number)&quot;</span>);</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> {min, max};</div>
+<div class="line"><span class="lineno">   71</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00072">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00114">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00073">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00115">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
 
 </div>
 </div>

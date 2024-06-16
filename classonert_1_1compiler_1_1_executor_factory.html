@@ -195,15 +195,15 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00607">607</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  611</span>{</div>
-<div class="line"><span class="lineno">  612</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8cc_source.html#l00604">604</a> of file <a class="el" href="_executor_factory_8cc_source.html">ExecutorFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  608</span>{</div>
+<div class="line"><span class="lineno">  609</span>  assert(<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  610</span> </div>
+<div class="line"><span class="lineno">  611</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor != <span class="stringliteral">&quot;Linear&quot;</span>)</div>
+<div class="line"><span class="lineno">  612</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: TrainableExecutor supports only &#39;Linear&#39; now&quot;</span>);</div>
 <div class="line"><span class="lineno">  613</span> </div>
-<div class="line"><span class="lineno">  614</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>.options-&gt;executor != <span class="stringliteral">&quot;Linear&quot;</span>)</div>
-<div class="line"><span class="lineno">  615</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ExecutorFactory: TrainableExecutor supports only &#39;Linear&#39; now&quot;</span>);</div>
-<div class="line"><span class="lineno">  616</span> </div>
-<div class="line"><span class="lineno">  617</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);</div>
-<div class="line"><span class="lineno">  618</span>}</div>
+<div class="line"><span class="lineno">  614</span>  <span class="keywordflow">return</span> createTrainableExecutor(std::move(lowered_graph), executors, args, training_info);</div>
+<div class="line"><span class="lineno">  615</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

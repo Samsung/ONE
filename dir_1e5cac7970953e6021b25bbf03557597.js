@@ -1,6 +1,7 @@
 var dir_1e5cac7970953e6021b25bbf03557597 =
 [
     [ "dummy-compile.cpp", "dummy-compile_8cpp.html", "dummy-compile_8cpp" ],
+    [ "dummy-compiler.cpp", "dummy-compiler_8cpp.html", "dummy-compiler_8cpp" ],
     [ "dummy-infer.cpp", "dummy-infer_8cpp.html", "dummy-infer_8cpp" ],
     [ "dummy-inferV2.cpp", "dummy-infer_v2_8cpp.html", "dummy-infer_v2_8cpp" ],
     [ "dummy-onnx-ext.cpp", "dummy-onnx-ext_8cpp.html", "dummy-onnx-ext_8cpp" ],

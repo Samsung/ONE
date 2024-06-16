@@ -1,0 +1,4 @@
+var luci_interpreter_2include_2luci__interpreter_2test__models_2relu_2_neg_re_l_u_kernel_8h =
+[
+    [ "luci_interpreter::test_kernel::NegTestDataInputOutputTypeMismatchReLUKernel", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel.html", "classluci__interpreter_1_1test__kernel_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel" ]
+];

@@ -10,6 +10,9 @@ var _o_m_status_8h =
       [ "ModelNotImport", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3", null ],
       [ "FailedCheckCondition", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6", null ],
       [ "NoQuantization", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5", null ],
-      [ "UnsupportedDynamicShapeCase", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3", null ]
+      [ "UnsupportedDynamicShapeCase", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3", null ],
+      [ "FailReadWOFFile", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b", null ],
+      [ "FailReadCheckpointFile", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069", null ],
+      [ "CmsisNNError", "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6", null ]
     ] ]
 ];

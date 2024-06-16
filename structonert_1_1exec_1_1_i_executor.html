@@ -114,9 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f5655e4ad7317c32e3ce6fad3ec9d72" id="r_a1f5655e4ad7317c32e3ce6fad3ec9d72"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">setIndexedRanks</a> (std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f">ir::OperationIndexMap</a>&lt; int64_t &gt; &gt;)=0</td></tr>
 <tr class="memdesc:a1f5655e4ad7317c32e3ce6fad3ec9d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an ordering on operations.  <br /></td></tr>
 <tr class="separator:a1f5655e4ad7317c32e3ce6fad3ec9d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38088b2781a5d06b217c799ff6cf37c9" id="r_a38088b2781a5d06b217c799ff6cf37c9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a38088b2781a5d06b217c799ff6cf37c9">execute</a> (const <a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a> &amp;desc)=0</td></tr>
-<tr class="memdesc:a38088b2781a5d06b217c799ff6cf37c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute with user-given input/output description (for primary subgraph)  <br /></td></tr>
-<tr class="separator:a38088b2781a5d06b217c799ff6cf37c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5f51887630b4a4551288094cbaf1c1" id="r_a0e5f51887630b4a4551288094cbaf1c1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a0e5f51887630b4a4551288094cbaf1c1">execute</a> (const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx)=0</td></tr>
+<tr class="memdesc:a0e5f51887630b4a4551288094cbaf1c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute with user-given input/output description (for primary subgraph)  <br /></td></tr>
+<tr class="separator:a0e5f51887630b4a4551288094cbaf1c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa5e09f32a3285b8145382b19d996829" id="r_afa5e09f32a3285b8145382b19d996829"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#afa5e09f32a3285b8145382b19d996829">execute</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * &gt; &amp;inputs, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * &gt; &amp;outputs)=0</td></tr>
 <tr class="memdesc:afa5e09f32a3285b8145382b19d996829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute with given input/output tensors.  <br /></td></tr>
 <tr class="separator:afa5e09f32a3285b8145382b19d996829"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,8 +187,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a38088b2781a5d06b217c799ff6cf37c9" name="a38088b2781a5d06b217c799ff6cf37c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38088b2781a5d06b217c799ff6cf37c9">&#9670;&#160;</a></span>execute() <span class="overload">[1/2]</span></h2>
+<a id="a0e5f51887630b4a4551288094cbaf1c1" name="a0e5f51887630b4a4551288094cbaf1c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e5f51887630b4a4551288094cbaf1c1">&#9670;&#160;</a></span>execute() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,8 +199,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual void onert::exec::IExecutor::execute </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structonert_1_1exec_1_1_i_o_description.html">IODescription</a> &amp;&#160;</td>
-          <td class="paramname"><em>desc</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -214,13 +214,13 @@ Public Member Functions</h2></td></tr>
 <p>Execute with user-given input/output description (for primary subgraph) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">desc</td><td>Input and output description </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ctx</td><td>Execution context </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This method should be thread-safe </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#ad602e711f5628814a6994ce5690155dd">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#aaacc895e9a59529504fa58b4a78bd6a4">onert::exec::train::TrainableExecutor</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#ab2424f0eeadda8a749f04517d839bd5b">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9db7c025b579af84be8a30ce3ec3e82d">onert::exec::train::TrainableExecutor</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00058">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_if_layer_8cc_source.html#l00041">onert::backend::builtin::kernel::IfLayer::run()</a>.</p>
 

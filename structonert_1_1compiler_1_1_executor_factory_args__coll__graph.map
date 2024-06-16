@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="738,55,899,96"/>
 <area shape="rect" id="Node000002" href="$classonert_1_1util_1_1_tracing_ctx.html" title="Class to maintain information about profiling per session." alt="" coords="452,5,594,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="608,32,738,57,737,63,607,37"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1compiler_1_1_compiler_options.html" title=" " alt="" coords="442,55,604,96"/>
+<area shape="rect" id="Node000003" href="$structonert_1_1compiler_1_1_compiler_options.html" title=" " alt="" coords="442,55,604,96"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="620,73,738,73,738,78,620,78"/>
 <area shape="rect" id="Node000004" href="$structonert_1_1compiler_1_1_manual_scheduler_options.html" title=" " alt="" coords="5,55,217,96"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="232,73,441,73,441,78,232,78"/>

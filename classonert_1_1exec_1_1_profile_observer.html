@@ -118,6 +118,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5ba88043f57e72d4b263835d4fc4fbd1" id="r_a5ba88043f57e72d4b263835d4fc4fbd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_profile_observer.html#a5ba88043f57e72d4b263835d4fc4fbd1">handleSubgraphEnd</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>) override</td></tr>
 <tr class="memdesc:a5ba88043f57e72d4b263835d4fc4fbd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just after model (not individual operation) execution ends.  <br /></td></tr>
 <tr class="separator:a5ba88043f57e72d4b263835d4fc4fbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eb64db6023f7b328d3b8266f5febc4e" id="r_a3eb64db6023f7b328d3b8266f5febc4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_profile_observer.html#a3eb64db6023f7b328d3b8266f5febc4e">type</a> () const override</td></tr>
+<tr class="separator:a3eb64db6023f7b328d3b8266f5febc4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1exec_1_1_i_execution_observer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1exec_1_1_i_execution_observer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">onert::exec::IExecutionObserver</a></td></tr>
 <tr class="memitem:a7c21a9072cda29597fb1730b175d4916 inherit pub_methods_classonert_1_1exec_1_1_i_execution_observer" id="r_a7c21a9072cda29597fb1730b175d4916"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html#a7c21a9072cda29597fb1730b175d4916">handleSubgraphBegin</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>)</td></tr>
 <tr class="memdesc:a7c21a9072cda29597fb1730b175d4916 inherit pub_methods_classonert_1_1exec_1_1_i_execution_observer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before model (not individual operation) execution begins.  <br /></td></tr>
@@ -127,7 +129,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00052">52</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00082">82</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af61d056e2b758cba903e4de1dd67449c" name="af61d056e2b758cba903e4de1dd67449c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af61d056e2b758cba903e4de1dd67449c">&#9670;&#160;</a></span>ProfileObserver()</h2>
@@ -163,10 +165,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00055">55</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>    : _et(std::move(et)), _graph(graph)</div>
-<div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00085">85</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>    : _et(std::move(et)), _graph(graph)</div>
+<div class="line"><span class="lineno">   87</span>  {</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -348,9 +350,42 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html#ac3aab4b5bfca6c7cb242b5d6c28601f7">onert::exec::IExecutionObserver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00064">64</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{ _et-&gt;storeOperationsExecTime(); }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00094">94</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{ _et-&gt;storeOperationsExecTime(); }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a3eb64db6023f7b328d3b8266f5febc4e" name="a3eb64db6023f7b328d3b8266f5febc4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eb64db6023f7b328d3b8266f5febc4e">&#9670;&#160;</a></span>type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> onert::exec::ProfileObserver::type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html#a18c2ea405bcfbe82d96cc6db14a98a32">onert::exec::IExecutionObserver</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00095">95</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">ObserverType::PROFILE</a>; }</div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">onert::exec::ObserverType::PROFILE</a></div><div class="ttdeci">@ PROFILE</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">onert::exec::PROFILE</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

@@ -202,7 +202,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  227</span>  <span class="keywordflow">return</span> model;</div>
 <div class="line"><span class="lineno">  228</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00283">nnfw_session::load_circle_from_buffer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00279">nnfw_session::load_circle_from_buffer()</a>.</p>
 
 </div>
 </div>
@@ -409,13 +409,14 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  126</span> </div>
 <div class="line"><span class="lineno">  127</span>  <span class="keyword">auto</span> tinfo = std::make_unique&lt;ir::train::TrainingInfo&gt;();</div>
 <div class="line"><span class="lineno">  128</span>  {</div>
-<div class="line"><span class="lineno">  129</span>    tinfo-&gt;setBatchSize(circle_model-&gt;batch_size());</div>
-<div class="line"><span class="lineno">  130</span>    tinfo-&gt;setOptimizerInfo(loadOptimizerInfo(circle_model));</div>
-<div class="line"><span class="lineno">  131</span>    tinfo-&gt;setLossInfo(loadLossInfo(circle_model));</div>
-<div class="line"><span class="lineno">  132</span>    tinfo-&gt;setTrainableOps(loadTrainableOps(circle_model));</div>
-<div class="line"><span class="lineno">  133</span>  }</div>
-<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">return</span> tinfo;</div>
-<div class="line"><span class="lineno">  135</span>}</div>
+<div class="line"><span class="lineno">  129</span>    tinfo-&gt;setVersion(circle_model-&gt;version());</div>
+<div class="line"><span class="lineno">  130</span>    tinfo-&gt;setBatchSize(circle_model-&gt;batch_size());</div>
+<div class="line"><span class="lineno">  131</span>    tinfo-&gt;setOptimizerInfo(loadOptimizerInfo(circle_model));</div>
+<div class="line"><span class="lineno">  132</span>    tinfo-&gt;setLossInfo(loadLossInfo(circle_model));</div>
+<div class="line"><span class="lineno">  133</span>    tinfo-&gt;setTrainableOps(loadTrainableOps(circle_model));</div>
+<div class="line"><span class="lineno">  134</span>  }</div>
+<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">return</span> tinfo;</div>
+<div class="line"><span class="lineno">  136</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 

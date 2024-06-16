@@ -136,8 +136,8 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">enum</span> MetricsTypeEnum</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">MSE</a>,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_enumvalue" href="namespacecircle__eval__diff.html#a5c3f0374bf404b03613f7ad266e587ccad7bfc720460d75c28ce69ce26d239f9f">MAE</a></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">MSE</a>,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">MAE</a></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">enum</span> LossTypeEnum</div>
@@ -147,14 +147,14 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">enum</span> OptimizerTypeEnum</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">SGD</a></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">struct </span>TrainingSettings</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  MetricsTypeEnum metric = <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">MSE</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  MetricsTypeEnum metric = <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">MSE</a>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  LossTypeEnum error_type = MSE_Loss;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  OptimizerTypeEnum optimizer_type = <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">SGD</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  OptimizerTypeEnum optimizer_type = <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  uint32_t number_of_epochs = 1;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  uint32_t batch_size = 1;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">float</span> learning_rate = 0.00001;</div>
@@ -167,10 +167,10 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_TRAINING_SETTINGS_H</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">// ENABLE_TRAINING</span></div>
-<div class="ttc" id="anamespacecircle__eval__diff_html_a5c3f0374bf404b03613f7ad266e587ccad7bfc720460d75c28ce69ce26d239f9f"><div class="ttname"><a href="namespacecircle__eval__diff.html#a5c3f0374bf404b03613f7ad266e587ccad7bfc720460d75c28ce69ce26d239f9f">circle_eval_diff::Metric::MAE</a></div><div class="ttdeci">@ MAE</div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_ac56dcc0882ef61d9d8f9c9132d917ba0"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#ac56dcc0882ef61d9d8f9c9132d917ba0">nnfw::cker::train::MSE</a></div><div class="ttdeci">void MSE(const Shape &amp;y_pred_shape, const T *y_pred_data, const Shape &amp;y_true_shape, const T *y_true_data, const Shape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00036">Loss.h:36</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">onert::ir::train::OptimizerCode::SGD</a></div><div class="ttdeci">@ SGD</div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">onert_micro::MSE</a></div><div class="ttdeci">@ MSE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00053">OMConfig.h:53</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">onert_micro::MAE</a></div><div class="ttdeci">@ MAE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00054">OMConfig.h:54</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">onert_micro::SGD</a></div><div class="ttdeci">@ SGD</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00031">OMConfig.h:31</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

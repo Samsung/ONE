@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="keyword">class </span>KernelTrainRegistry</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>{</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keyword">using </span>KernelTrainFunc = Status(<span class="keyword">const</span> circle::Operator *, CircleReader *,</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keyword">using </span><a class="code hl_typedef" href="namespaceonert__micro_1_1train.html#ae76ca2df5c7dc463025bd87a004301f5">KernelTrainFunc</a> = Status(<span class="keyword">const</span> circle::Operator *, CircleReader *,</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                                 GradientCalculationStorage *, <span class="keyword">const</span> TrainingSettings &amp;,</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                                 TrainableWeightStorage *, <span class="keywordtype">bool</span>);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
@@ -285,7 +285,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                      <span class="keywordtype">bool</span> is_compute_gradient) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="keyword">constexpr</span> KernelTrainFunc *get_kernel_train_func(circle::BuiltinOperator opcode)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespaceonert__micro_1_1train.html#ae76ca2df5c7dc463025bd87a004301f5">KernelTrainFunc</a> *get_kernel_train_func(circle::BuiltinOperator opcode)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keyword">const</span> <span class="keyword">auto</span> tmp = size_t(<a class="code hl_function" href="namespaceluci__interpreter.html#a6bcc0e0add6c86bcf559c0123631be52">get_builder_id</a>(opcode));</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    assert(tmp &lt; <span class="keywordtype">size_t</span>(BuilderID::Size));</div>
@@ -299,7 +299,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  }</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  KernelTrainFunc *_operator_train[size_t(BuilderID::Size)];</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  <a class="code hl_typedef" href="namespaceonert__micro_1_1train.html#ae76ca2df5c7dc463025bd87a004301f5">KernelTrainFunc</a> *_operator_train[size_t(BuilderID::Size)];</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>};</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="keyword">constexpr</span> KernelTrainRegistry kernel_train;</div>
@@ -330,6 +330,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="ttc" id="anamespaceluci__interpreter_html_a6bcc0e0add6c86bcf559c0123631be52"><div class="ttname"><a href="namespaceluci__interpreter.html#a6bcc0e0add6c86bcf559c0123631be52">luci_interpreter::get_builder_id</a></div><div class="ttdeci">constexpr BuilderID get_builder_id(circle::BuiltinOperator opcode)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00043">KernelBuilder.h:43</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aaca25dba79731428ed6105fd609ca24b"><div class="ttname"><a href="namespaceluci__interpreter.html#aaca25dba79731428ed6105fd609ca24b">luci_interpreter::kernel_configure</a></div><div class="ttdeci">constexpr KernelConfigureRegistry kernel_configure</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00199">KernelBuilder.h:199</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_ac54aa4be2cc4f48e3a9f3b3266963e83"><div class="ttname"><a href="namespaceluci__interpreter.html#ac54aa4be2cc4f48e3a9f3b3266963e83">luci_interpreter::kernel_executor</a></div><div class="ttdeci">constexpr KernelExecuteRegistry kernel_executor</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_kernel_builder_8h_source.html#l00200">KernelBuilder.h:200</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1train_html_ae76ca2df5c7dc463025bd87a004301f5"><div class="ttname"><a href="namespaceonert__micro_1_1train.html#ae76ca2df5c7dc463025bd87a004301f5">onert_micro::train::KernelTrainFunc</a></div><div class="ttdeci">OMStatus(const OMBackpropExecuteArgs &amp;) KernelTrainFunc</div><div class="ttdef"><b>Definition</b> <a href="_o_m_backprop_execution_builder_8h_source.html#l00031">OMBackpropExecutionBuilder.h:31</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_builders_8h_html"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_builders_8h.html">Builders.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

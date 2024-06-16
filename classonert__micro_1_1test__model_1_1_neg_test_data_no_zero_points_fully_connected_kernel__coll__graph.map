@@ -1,0 +1,5 @@
+<map id="onert_micro::test_model::NegTestDataNoZeroPointsFullyConnectedKernel" name="onert_micro::test_model::NegTestDataNoZeroPointsFullyConnectedKernel">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,217,150"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_neg_test_data_base.html" title=" " alt="" coords="31,5,191,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,61,114,93,108,93,108,61"/>
+</map>

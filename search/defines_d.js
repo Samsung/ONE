@@ -13,11 +13,12 @@ var searchData=
   ['nnc_5ftarget_5fx86_5fcpp_10',['NNC_TARGET_X86_CPP',['../_options_8h.html#aa3de196ce105f4e0a2a471e27936bb41',1,'Options.h']]],
   ['nnfw_5fmax_5frank_11',['NNFW_MAX_RANK',['../nnfw_8h.html#ae4a6c20a576dbf5f53f34aa891089a25',1,'nnfw.h']]],
   ['nnfw_5freturn_5ferror_5fif_5fnull_12',['nnfw_return_error_if_null',['../nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c',1,'NNFW_RETURN_ERROR_IF_NULL:&#160;nnfw_api.cc'],['../nnfw__debug_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c',1,'NNFW_RETURN_ERROR_IF_NULL:&#160;nnfw_debug.cc']]],
-  ['nnfw_5fversion_13',['NNFW_VERSION',['../nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a',1,'nnfw_version.h']]],
-  ['node_14',['node',['../_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56',1,'NODE:&#160;NodeExecution.cpp'],['../_node_execution_8h.html#ae8470b23f89c23e56817daed65182e56',1,'NODE:&#160;NodeExecution.h']]],
-  ['npu_5ftensor_5fmax_15',['NPU_TENSOR_MAX',['../runtime_2service_2npud_2core_2_backend_8h.html#ac09c99377c75927bf9dd38d425523bea',1,'Backend.h']]],
-  ['ns_5fuse_5fexternal_5fmbed_5ftls_16',['NS_USE_EXTERNAL_MBED_TLS',['../mbed__config_8h.html#aa473adf10afc075ab78ac24a71e985ae',1,'mbed_config.h']]],
-  ['nsapi_5fppp_5favailable_17',['NSAPI_PPP_AVAILABLE',['../mbed__config_8h.html#a12421040b4bedcb3cd0f16b7eaa379c4',1,'mbed_config.h']]],
-  ['nsdynmem_5ftracker_5fenabled_18',['NSDYNMEM_TRACKER_ENABLED',['../mbed__config_8h.html#a1e0dc3dce4184ab88245c656ec897386',1,'mbed_config.h']]],
-  ['nyi_19',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
+  ['nnfw_5ftrainable_5fops_5fmax_5fsize_13',['NNFW_TRAINABLE_OPS_MAX_SIZE',['../nnfw__experimental_8h.html#a0c2ee48d319b519d389ced5bec94783c',1,'nnfw_experimental.h']]],
+  ['nnfw_5fversion_14',['NNFW_VERSION',['../nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a',1,'nnfw_version.h']]],
+  ['node_15',['node',['../_node_execution_8cpp.html#ae8470b23f89c23e56817daed65182e56',1,'NODE:&#160;NodeExecution.cpp'],['../_node_execution_8h.html#ae8470b23f89c23e56817daed65182e56',1,'NODE:&#160;NodeExecution.h']]],
+  ['npu_5ftensor_5fmax_16',['NPU_TENSOR_MAX',['../runtime_2service_2npud_2core_2_backend_8h.html#ac09c99377c75927bf9dd38d425523bea',1,'Backend.h']]],
+  ['ns_5fuse_5fexternal_5fmbed_5ftls_17',['NS_USE_EXTERNAL_MBED_TLS',['../mbed__config_8h.html#aa473adf10afc075ab78ac24a71e985ae',1,'mbed_config.h']]],
+  ['nsapi_5fppp_5favailable_18',['NSAPI_PPP_AVAILABLE',['../mbed__config_8h.html#a12421040b4bedcb3cd0f16b7eaa379c4',1,'mbed_config.h']]],
+  ['nsdynmem_5ftracker_5fenabled_19',['NSDYNMEM_TRACKER_ENABLED',['../mbed__config_8h.html#a1e0dc3dce4184ab88245c656ec897386',1,'mbed_config.h']]],
+  ['nyi_20',['NYI',['../compiler_2ann-ref_2src_2_logging_8h.html#a8b43124f2727d5471bf4b4c20a342ce5',1,'Logging.h']]]
 ];

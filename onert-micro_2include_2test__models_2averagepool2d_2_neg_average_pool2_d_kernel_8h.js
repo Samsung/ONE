@@ -1,5 +1,7 @@
 var onert_micro_2include_2test__models_2averagepool2d_2_neg_average_pool2_d_kernel_8h =
 [
     [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel" ],
-    [ "test_kernel_model_circle", "onert-micro_2include_2test__models_2averagepool2d_2_neg_average_pool2_d_kernel_8h.html#a9c7750527547907753ca66368af474a3", null ]
+    [ "onert_micro::test_model::NegTestDataNoQuantParamsAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_average_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_average_pool2_d_kernel" ],
+    [ "test_kernel_model_circle", "onert-micro_2include_2test__models_2averagepool2d_2_neg_average_pool2_d_kernel_8h.html#a9c7750527547907753ca66368af474a3", null ],
+    [ "test_kernel_model_circle", "onert-micro_2include_2test__models_2averagepool2d_2_neg_average_pool2_d_kernel_8h.html#a7aac48bcb13cc084e71a02b85c74535c", null ]
 ];

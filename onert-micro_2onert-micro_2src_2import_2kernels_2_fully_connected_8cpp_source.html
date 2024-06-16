@@ -203,13 +203,21 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2src_2import_
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale() == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale()-&gt;size() != 1)</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">UnsupportedQuantizationType</a>;</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordflow">if</span> (weight-&gt;quantization()-&gt;scale() == <span class="keyword">nullptr</span> or weight-&gt;quantization()-&gt;scale()-&gt;size() != 1)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">UnsupportedQuantizationType</a>;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>}</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;zero_point() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;zero_point()-&gt;size() != 1)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">UnsupportedQuantizationType</a>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordflow">if</span> (weight-&gt;quantization()-&gt;scale() == <span class="keyword">nullptr</span> or weight-&gt;quantization()-&gt;scale()-&gt;size() != 1)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">UnsupportedQuantizationType</a>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">if</span> (weight-&gt;quantization()-&gt;zero_point() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      weight-&gt;quantization()-&gt;zero_point()-&gt;size() != 1)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">UnsupportedQuantizationType</a>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>}</div>
 <div class="ttc" id="a_o_m_kernel_configure_builder_8h_html"><div class="ttname"><a href="_o_m_kernel_configure_builder_8h.html">OMKernelConfigureBuilder.h</a></div></div>
 <div class="ttc" id="a_o_m_kernel_data_8h_html"><div class="ttname"><a href="_o_m_kernel_data_8h.html">OMKernelData.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_kernel_8h_html"><div class="ttname"><a href="_o_m_runtime_kernel_8h.html">OMRuntimeKernel.h</a></div></div>

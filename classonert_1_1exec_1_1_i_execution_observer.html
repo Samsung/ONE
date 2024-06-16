@@ -109,12 +109,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac3aab4b5bfca6c7cb242b5d6c28601f7" id="r_ac3aab4b5bfca6c7cb242b5d6c28601f7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html#ac3aab4b5bfca6c7cb242b5d6c28601f7">handleSubgraphEnd</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>)</td></tr>
 <tr class="memdesc:ac3aab4b5bfca6c7cb242b5d6c28601f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just after model (not individual operation) execution ends.  <br /></td></tr>
 <tr class="separator:ac3aab4b5bfca6c7cb242b5d6c28601f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18c2ea405bcfbe82d96cc6db14a98a32" id="r_a18c2ea405bcfbe82d96cc6db14a98a32"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html#a18c2ea405bcfbe82d96cc6db14a98a32">type</a> () const =0</td></tr>
+<tr class="separator:a18c2ea405bcfbe82d96cc6db14a98a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c92cdeb34bcac06ba2445504922702f" id="r_a3c92cdeb34bcac06ba2445504922702f"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html#a3c92cdeb34bcac06ba2445504922702f">~IExecutionObserver</a> ()=default</td></tr>
 <tr class="separator:a3c92cdeb34bcac06ba2445504922702f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00035">35</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00043">43</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3c92cdeb34bcac06ba2445504922702f" name="a3c92cdeb34bcac06ba2445504922702f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c92cdeb34bcac06ba2445504922702f">&#9670;&#160;</a></span>~IExecutionObserver()</h2>
@@ -270,8 +272,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#a0e0c71b1626bf89aaf68dbab215a0915">onert::exec::TracingObserver</a>, and <a class="el" href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">onert::exec::MinMaxRecorder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00039">39</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00047">47</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,9 +305,36 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classonert_1_1exec_1_1_profile_observer.html#a5ba88043f57e72d4b263835d4fc4fbd1">onert::exec::ProfileObserver</a>, <a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#ae62d3326e04bedd8732e2f5fedfef18e">onert::exec::TracingObserver</a>, and <a class="el" href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">onert::exec::MinMaxRecorder</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00047">47</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00055">55</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span>; }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a18c2ea405bcfbe82d96cc6db14a98a32" name="a18c2ea405bcfbe82d96cc6db14a98a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18c2ea405bcfbe82d96cc6db14a98a32">&#9670;&#160;</a></span>type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068">ObserverType</a> onert::exec::IExecutionObserver::type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_profile_observer.html#a3eb64db6023f7b328d3b8266f5febc4e">onert::exec::ProfileObserver</a>, <a class="el" href="classonert_1_1exec_1_1_tracing_observer.html#a2e67712964ee4cf1b3a19f5491682f15">onert::exec::TracingObserver</a>, and <a class="el" href="classonert_1_1exec_1_1_min_max_recorder.html#a09af76e7e6f8d2e441548e84fe219af0">onert::exec::MinMaxRecorder</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

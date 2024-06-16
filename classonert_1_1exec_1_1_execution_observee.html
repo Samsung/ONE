@@ -102,58 +102,122 @@ $(document).ready(function(){initNavTree('classonert_1_1exec_1_1_execution_obser
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5d670498e2f8ec407d7be9365ce0fbdb" id="r_a5d670498e2f8ec407d7be9365ce0fbdb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a5d670498e2f8ec407d7be9365ce0fbdb">add</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> &gt; observer)</td></tr>
-<tr class="memdesc:a5d670498e2f8ec407d7be9365ce0fbdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register an observer.  <br /></td></tr>
-<tr class="separator:a5d670498e2f8ec407d7be9365ce0fbdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17d0a6ece0fbacaf85642f34b632131c" id="r_a17d0a6ece0fbacaf85642f34b632131c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a17d0a6ece0fbacaf85642f34b632131c">notifySubgraphBegin</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> ind)</td></tr>
-<tr class="separator:a17d0a6ece0fbacaf85642f34b632131c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37778579482fd58fef5060970b1e31ec" id="r_a37778579482fd58fef5060970b1e31ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a37778579482fd58fef5060970b1e31ec">notifySubgraphEnd</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> ind)</td></tr>
-<tr class="separator:a37778579482fd58fef5060970b1e31ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1747078a26f8e51f8e47a5291fdc835c" id="r_a1747078a26f8e51f8e47a5291fdc835c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a1747078a26f8e51f8e47a5291fdc835c">notifyJobBegin</a> (<a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *executor, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> subg_ind, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> op_ind, const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend)</td></tr>
-<tr class="separator:a1747078a26f8e51f8e47a5291fdc835c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e1d3c9d42db26e22e09536903256c02" id="r_a1e1d3c9d42db26e22e09536903256c02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a1e1d3c9d42db26e22e09536903256c02">notifyJobEnd</a> (<a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *executor, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> subg_ind, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> op_ind, const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend)</td></tr>
-<tr class="separator:a1e1d3c9d42db26e22e09536903256c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a667d4a7de225039b09c164b8986c7078" id="r_a667d4a7de225039b09c164b8986c7078"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a667d4a7de225039b09c164b8986c7078">ExecutionObservee</a> (const <a class="el" href="classonert_1_1exec_1_1_exec_observers.html">ExecObservers</a> &amp;observers)</td></tr>
+<tr class="memdesc:a667d4a7de225039b09c164b8986c7078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register enabled observers.  <br /></td></tr>
+<tr class="separator:a667d4a7de225039b09c164b8986c7078"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2add4b1ecba2ca1347e28d9ae7aeab7b" id="r_a2add4b1ecba2ca1347e28d9ae7aeab7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a2add4b1ecba2ca1347e28d9ae7aeab7b">notifySubgraphBegin</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> ind) const</td></tr>
+<tr class="separator:a2add4b1ecba2ca1347e28d9ae7aeab7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a773643f24f571310bdf3ba5730801883" id="r_a773643f24f571310bdf3ba5730801883"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a773643f24f571310bdf3ba5730801883">notifySubgraphEnd</a> (<a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> ind) const</td></tr>
+<tr class="separator:a773643f24f571310bdf3ba5730801883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6f83688ca947e13b53359cf3f82c899" id="r_ab6f83688ca947e13b53359cf3f82c899"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#ab6f83688ca947e13b53359cf3f82c899">notifyJobBegin</a> (<a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *executor, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> subg_ind, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> op_ind, const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend) const</td></tr>
+<tr class="separator:ab6f83688ca947e13b53359cf3f82c899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fe9ba28172ce58d8173bc0beb5994ee" id="r_a4fe9ba28172ce58d8173bc0beb5994ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a4fe9ba28172ce58d8173bc0beb5994ee">notifyJobEnd</a> (<a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *executor, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> subg_ind, <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> op_ind, const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend) const</td></tr>
+<tr class="separator:a4fe9ba28172ce58d8173bc0beb5994ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c7cd85a8748f0128b88fe9e93cc05d6" id="r_a2c7cd85a8748f0128b88fe9e93cc05d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution_observee.html#a2c7cd85a8748f0128b88fe9e93cc05d6">isEmpty</a> () const</td></tr>
+<tr class="separator:a2c7cd85a8748f0128b88fe9e93cc05d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that. </p>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observee_8h_source.html#l00035">35</a> of file <a class="el" href="_execution_observee_8h_source.html">ExecutionObservee.h</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5d670498e2f8ec407d7be9365ce0fbdb" name="a5d670498e2f8ec407d7be9365ce0fbdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d670498e2f8ec407d7be9365ce0fbdb">&#9670;&#160;</a></span>add()</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a667d4a7de225039b09c164b8986c7078" name="a667d4a7de225039b09c164b8986c7078"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a667d4a7de225039b09c164b8986c7078">&#9670;&#160;</a></span>ExecutionObservee()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void onert::exec::ExecutionObservee::add </td>
+          <td class="memname">onert::exec::ExecutionObservee::ExecutionObservee </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> &gt;&#160;</td>
-          <td class="paramname"><em>observer</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1exec_1_1_exec_observers.html">ExecObservers</a> &amp;&#160;</td>
+          <td class="paramname"><em>observers</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Register an observer. </p>
+<p>Register enabled observers. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">observer</td><td>Observer to be added </td></tr>
+    <tr><td class="paramname">observer</td><td>Observers generated by compiler </td></tr>
   </table>
   </dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00024">24</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
-<div class="line"><span class="lineno">   26</span>  _observers.emplace_back(std::move(observer));</div>
-<div class="line"><span class="lineno">   27</span>}</div>
+<div class="line"><span class="lineno">   26</span>  <span class="comment">// TODO Use execution option</span></div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::MINMAX_DUMP))</div>
+<div class="line"><span class="lineno">   28</span>  {</div>
+<div class="line"><span class="lineno">   29</span>    <span class="keyword">auto</span> observer = observers.get(<a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe">ObserverType::MINMAX_DUMP</a>);</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> (!observer)</div>
+<div class="line"><span class="lineno">   31</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;MinMaxRecorder is only supported on LinearExecutor, single model&quot;</span>};</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>    _observers.emplace_back(observer);</div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::TRACING_MODE))</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keyword">auto</span> observer = observers.get(<a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89">ObserverType::TRACING</a>);</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> (!observer)</div>
+<div class="line"><span class="lineno">   40</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Cannot find TracingObserver&quot;</span>};</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>    _observers.emplace_back(observer);</div>
+<div class="line"><span class="lineno">   43</span>  }</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::PROFILING_MODE))</div>
+<div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> observer = observers.get(<a class="code hl_enumvalue" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">ObserverType::PROFILE</a>);</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (!observer)</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   50</span>        <span class="stringliteral">&quot;Profiling is only supported on DataflowExecutor with heterogenous scheduler&quot;</span>};</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    _observers.emplace_back(observer);</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89">onert::exec::ObserverType::TRACING</a></div><div class="ttdeci">@ TRACING</div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">onert::exec::ObserverType::PROFILE</a></div><div class="ttdeci">@ PROFILE</div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe"><div class="ttname"><a href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe">onert::exec::ObserverType::MINMAX_DUMP</a></div><div class="ttdeci">@ MINMAX_DUMP</div></div>
+<div class="ttc" id="anamespaceonert_1_1util_html_a31f86c6ba380a60f458c85e621e0f953"><div class="ttname"><a href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">onert::util::getConfigBool</a></div><div class="ttdeci">bool getConfigBool(const std::string &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00118">ConfigSource.cc:118</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_executor_base_8h_source.html#l00069">onert::exec::ExecutorBase::addObserver()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00073">onert::exec::train::TrainableExecutor::addObserver()</a>.</p>
+<p class="reference">References <a class="el" href="_execution_observers_8h_source.html#l00070">onert::exec::ExecObservers::get()</a>, <a class="el" href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00118">onert::util::getConfigBool()</a>, <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068af5aa69e965fdd1491a6f1cffb2e3e5fe">onert::exec::MINMAX_DUMP</a>, <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147">onert::exec::PROFILE</a>, and <a class="el" href="namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89">onert::exec::TRACING</a>.</p>
 
 </div>
 </div>
-<a id="a1747078a26f8e51f8e47a5291fdc835c" name="a1747078a26f8e51f8e47a5291fdc835c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1747078a26f8e51f8e47a5291fdc835c">&#9670;&#160;</a></span>notifyJobBegin()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2c7cd85a8748f0128b88fe9e93cc05d6" name="a2c7cd85a8748f0128b88fe9e93cc05d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c7cd85a8748f0128b88fe9e93cc05d6">&#9670;&#160;</a></span>isEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::exec::ExecutionObservee::isEmpty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_execution_observee_8h_source.html#l00050">50</a> of file <a class="el" href="_execution_observee_8h_source.html">ExecutionObservee.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _observers.size() == 0; }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>.</p>
+
+</div>
+</div>
+<a id="ab6f83688ca947e13b53359cf3f82c899" name="ab6f83688ca947e13b53359cf3f82c899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6f83688ca947e13b53359cf3f82c899">&#9670;&#160;</a></span>notifyJobBegin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,25 +249,25 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00045">45</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    o-&gt;handleJobBegin(executor, subg_ind, op_ind, backend);</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00072">72</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
+<div class="line"><span class="lineno">   77</span>  {</div>
+<div class="line"><span class="lineno">   78</span>    o-&gt;handleJobBegin(executor, subg_ind, op_ind, backend);</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
+<div class="line"><span class="lineno">   80</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>, and <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>, and <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>.</p>
 
 </div>
 </div>
-<a id="a1e1d3c9d42db26e22e09536903256c02" name="a1e1d3c9d42db26e22e09536903256c02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e1d3c9d42db26e22e09536903256c02">&#9670;&#160;</a></span>notifyJobEnd()</h2>
+<a id="a4fe9ba28172ce58d8173bc0beb5994ee" name="a4fe9ba28172ce58d8173bc0beb5994ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fe9ba28172ce58d8173bc0beb5994ee">&#9670;&#160;</a></span>notifyJobEnd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -235,25 +299,25 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00054">54</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
-<div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    o-&gt;handleJobEnd(executor, subg_ind, op_ind, backend);</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00082">82</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>{</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
+<div class="line"><span class="lineno">   87</span>  {</div>
+<div class="line"><span class="lineno">   88</span>    o-&gt;handleJobEnd(executor, subg_ind, op_ind, backend);</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>, and <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>, and <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>.</p>
 
 </div>
 </div>
-<a id="a17d0a6ece0fbacaf85642f34b632131c" name="a17d0a6ece0fbacaf85642f34b632131c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17d0a6ece0fbacaf85642f34b632131c">&#9670;&#160;</a></span>notifySubgraphBegin()</h2>
+<a id="a2add4b1ecba2ca1347e28d9ae7aeab7b" name="a2add4b1ecba2ca1347e28d9ae7aeab7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2add4b1ecba2ca1347e28d9ae7aeab7b">&#9670;&#160;</a></span>notifySubgraphBegin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,25 +327,25 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>&#160;</td>
           <td class="paramname"><em>ind</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00029">29</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
-<div class="line"><span class="lineno">   32</span>  {</div>
-<div class="line"><span class="lineno">   33</span>    o-&gt;handleSubgraphBegin(ind);</div>
-<div class="line"><span class="lineno">   34</span>  }</div>
-<div class="line"><span class="lineno">   35</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00056">56</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
+<div class="line"><span class="lineno">   59</span>  {</div>
+<div class="line"><span class="lineno">   60</span>    o-&gt;handleSubgraphBegin(ind);</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>, and <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>, and <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>.</p>
 
 </div>
 </div>
-<a id="a37778579482fd58fef5060970b1e31ec" name="a37778579482fd58fef5060970b1e31ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37778579482fd58fef5060970b1e31ec">&#9670;&#160;</a></span>notifySubgraphEnd()</h2>
+<a id="a773643f24f571310bdf3ba5730801883" name="a773643f24f571310bdf3ba5730801883"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a773643f24f571310bdf3ba5730801883">&#9670;&#160;</a></span>notifySubgraphEnd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,20 +355,20 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>&#160;</td>
           <td class="paramname"><em>ind</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00037">37</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
-<div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    o-&gt;handleSubgraphEnd(ind);</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observee_8cc_source.html#l00064">64</a> of file <a class="el" href="_execution_observee_8cc_source.html">ExecutionObservee.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;o : _observers)</div>
+<div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    o-&gt;handleSubgraphEnd(ind);</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
+<div class="line"><span class="lineno">   70</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>, and <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00126">onert::exec::DataflowExecutor::executeImpl()</a>, <a class="el" href="_linear_executor_8cc_source.html#l00027">onert::exec::LinearExecutor::executeImpl()</a>, and <a class="el" href="_parallel_executor_8cc_source.html#l00073">onert::exec::ParallelExecutor::executeImpl()</a>.</p>
 
 </div>
 </div>

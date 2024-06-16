@@ -109,6 +109,8 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert__micro_1_1test__model" id="r_namespaceonert__micro_1_1test__model"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1test__model.html">test_model</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceonert__micro_1_1train" id="r_namespaceonert__micro_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1train.html">train</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -116,9 +118,29 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_interpreter.html">OMInterpreter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1_o_m_training_context.html">OMTrainingContext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html">OMTrainingInterpreter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a766b22baf7176111a6e866ad8d03685c" id="r_a766b22baf7176111a6e866ad8d03685c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c">OMTrainOptimizer</a> { <a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>
+, <a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">ADAM</a>
+ }</td></tr>
+<tr class="separator:a766b22baf7176111a6e866ad8d03685c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad046550495f851ca3f09b45262799224" id="r_ad046550495f851ca3f09b45262799224"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224">OMMetrics</a> { <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">MSE_METRICS</a>
+, <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">MAE_METRICS</a>
+, <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">CROSS_ENTROPY_METRICS</a>
+, <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">ACCURACY</a>
+ }</td></tr>
+<tr class="separator:ad046550495f851ca3f09b45262799224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19286e39871396769ee22d2d9a5ed3fd" id="r_a19286e39871396769ee22d2d9a5ed3fd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">OMLoss</a> { <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b">BINARY_CROSS_ENTROPY</a>
+, <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">CROSS_ENTROPY</a>
+, <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">MSE</a>
+, <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">MAE</a>
+ }</td></tr>
+<tr class="separator:a19286e39871396769ee22d2d9a5ed3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5cb1f87e294d806ce8b550b56b239cb" id="r_ac5cb1f87e294d806ce8b550b56b239cb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> { <br />
 &#160;&#160;<a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>
 , <a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>
@@ -132,11 +154,79 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">NoQuantization</a>
 , <a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3">UnsupportedDynamicShapeCase</a>
+, <a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b">FailReadWOFFile</a>
+, <a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069">FailReadCheckpointFile</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6">CmsisNNError</a>
 <br />
  }</td></tr>
 <tr class="separator:ac5cb1f87e294d806ce8b550b56b239cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a19286e39871396769ee22d2d9a5ed3fd" name="a19286e39871396769ee22d2d9a5ed3fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19286e39871396769ee22d2d9a5ed3fd">&#9670;&#160;</a></span>OMLoss</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">onert_micro::OMLoss</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b" name="a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b"></a>BINARY_CROSS_ENTROPY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa" name="a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa"></a>CROSS_ENTROPY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6" name="a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6"></a>MSE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c" name="a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c"></a>MAE&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_o_m_config_8h_source.html#l00049">49</a> of file <a class="el" href="_o_m_config_8h_source.html">OMConfig.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
+<div class="line"><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b">BINARY_CROSS_ENTROPY</a>,</div>
+<div class="line"><span class="lineno">   52</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">CROSS_ENTROPY</a>,</div>
+<div class="line"><span class="lineno">   53</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">MSE</a>,</div>
+<div class="line"><span class="lineno">   54</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">MAE</a>,</div>
+<div class="line"><span class="lineno">   55</span>};</div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b">onert_micro::BINARY_CROSS_ENTROPY</a></div><div class="ttdeci">@ BINARY_CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00051">OMConfig.h:51</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">onert_micro::CROSS_ENTROPY</a></div><div class="ttdeci">@ CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00052">OMConfig.h:52</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">onert_micro::MSE</a></div><div class="ttdeci">@ MSE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00053">OMConfig.h:53</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">onert_micro::MAE</a></div><div class="ttdeci">@ MAE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00054">OMConfig.h:54</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ad046550495f851ca3f09b45262799224" name="ad046550495f851ca3f09b45262799224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad046550495f851ca3f09b45262799224">&#9670;&#160;</a></span>OMMetrics</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224">onert_micro::OMMetrics</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614" name="ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614"></a>MSE_METRICS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f" name="ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f"></a>MAE_METRICS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087" name="ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087"></a>CROSS_ENTROPY_METRICS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc" name="ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc"></a>ACCURACY&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_o_m_config_8h_source.html#l00038">38</a> of file <a class="el" href="_o_m_config_8h_source.html">OMConfig.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">MSE_METRICS</a>,</div>
+<div class="line"><span class="lineno">   41</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">MAE_METRICS</a>,</div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">CROSS_ENTROPY_METRICS</a>,</div>
+<div class="line"><span class="lineno">   43</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">ACCURACY</a>,</div>
+<div class="line"><span class="lineno">   44</span>};</div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">onert_micro::MAE_METRICS</a></div><div class="ttdeci">@ MAE_METRICS</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00041">OMConfig.h:41</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">onert_micro::MSE_METRICS</a></div><div class="ttdeci">@ MSE_METRICS</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00040">OMConfig.h:40</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">onert_micro::CROSS_ENTROPY_METRICS</a></div><div class="ttdeci">@ CROSS_ENTROPY_METRICS</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00042">OMConfig.h:42</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">onert_micro::ACCURACY</a></div><div class="ttdeci">@ ACCURACY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00043">OMConfig.h:43</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ac5cb1f87e294d806ce8b550b56b239cb" name="ac5cb1f87e294d806ce8b550b56b239cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac5cb1f87e294d806ce8b550b56b239cb">&#9670;&#160;</a></span>OMStatus</h2>
 
@@ -159,6 +249,9 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6" name="ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6"></a>FailedCheckCondition&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5" name="ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5"></a>NoQuantization&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3" name="ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3"></a>UnsupportedDynamicShapeCase&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b" name="ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b"></a>FailReadWOFFile&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069" name="ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069"></a>FailReadCheckpointFile&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6" name="ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6"></a>CmsisNNError&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_status_8h_source.html#l00023">23</a> of file <a class="el" href="_o_m_status_8h_source.html">OMStatus.h</a>.</p>
@@ -173,7 +266,10 @@ Enumerations</h2></td></tr>
 <div class="line"><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6">FailedCheckCondition</a>,</div>
 <div class="line"><span class="lineno">   33</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">NoQuantization</a>,</div>
 <div class="line"><span class="lineno">   34</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3">UnsupportedDynamicShapeCase</a>,</div>
-<div class="line"><span class="lineno">   35</span>};</div>
+<div class="line"><span class="lineno">   35</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b">FailReadWOFFile</a>,</div>
+<div class="line"><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069">FailReadCheckpointFile</a>,</div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6">CmsisNNError</a>,</div>
+<div class="line"><span class="lineno">   38</span>};</div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">onert_micro::ModelNotImport</a></div><div class="ttdeci">@ ModelNotImport</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00031">OMStatus.h:31</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
@@ -181,9 +277,38 @@ Enumerations</h2></td></tr>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">onert_micro::UnsupportedActivation</a></div><div class="ttdeci">@ UnsupportedActivation</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00028">OMStatus.h:28</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">onert_micro::UnsupportedQuantizationType</a></div><div class="ttdeci">@ UnsupportedQuantizationType</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00027">OMStatus.h:27</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6">onert_micro::FailedCheckCondition</a></div><div class="ttdeci">@ FailedCheckCondition</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00032">OMStatus.h:32</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6">onert_micro::CmsisNNError</a></div><div class="ttdeci">@ CmsisNNError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00037">OMStatus.h:37</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba9155f6c53f8e3fc5520309e1ee33836b">onert_micro::FailReadWOFFile</a></div><div class="ttdeci">@ FailReadWOFFile</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00035">OMStatus.h:35</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351">onert_micro::UnsupportedOp</a></div><div class="ttdeci">@ UnsupportedOp</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00029">OMStatus.h:29</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad452e7f2b570d9c0428cdec9eb5e7069">onert_micro::FailReadCheckpointFile</a></div><div class="ttdeci">@ FailReadCheckpointFile</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00036">OMStatus.h:36</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">onert_micro::NoQuantization</a></div><div class="ttdeci">@ NoQuantization</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00033">OMStatus.h:33</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbaf187db894aea637bc3264fedaa15d2a3">onert_micro::UnsupportedDynamicShapeCase</a></div><div class="ttdeci">@ UnsupportedDynamicShapeCase</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00034">OMStatus.h:34</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a766b22baf7176111a6e866ad8d03685c" name="a766b22baf7176111a6e866ad8d03685c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a766b22baf7176111a6e866ad8d03685c">&#9670;&#160;</a></span>OMTrainOptimizer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c">onert_micro::OMTrainOptimizer</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9" name="a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9"></a>SGD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7" name="a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7"></a>ADAM&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_o_m_config_8h_source.html#l00029">29</a> of file <a class="el" href="_o_m_config_8h_source.html">OMConfig.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>,</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">ADAM</a>,</div>
+<div class="line"><span class="lineno">   33</span>};</div>
+<div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">onert_micro::ADAM</a></div><div class="ttdeci">@ ADAM</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00032">OMConfig.h:32</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">onert_micro::SGD</a></div><div class="ttdeci">@ SGD</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00031">OMConfig.h:31</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

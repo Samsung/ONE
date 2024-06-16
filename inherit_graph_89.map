@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structcoco_1_1_instr_1_1_i_visitor.html" title=" " alt="" coords="5,5,164,46"/>
+<area shape="rect" id="Node000000" href="$structcoco_1_1_feature_layout.html" title="A FeatureLayout connects each feature index to a Bag element." alt="" coords="5,96,144,122"/>
+<area shape="rect" id="Node000001" href="$classcoco_1_1_feature_layouts_1_1_b_c.html" title="BC (Channel&#45;wise Channel&#45;major) Feature Layout." alt="" coords="192,5,361,31"/>
+<area shape="poly" id="edge175_Node000000_Node000001" title=" " alt="" coords="108,85,191,41,224,29,225,34,193,46,111,90"/>
+<area shape="rect" id="Node000002" href="$classcoco_1_1_feature_layouts_1_1_b_c_h_w.html" title="BCHW Feature Layout." alt="" coords="204,55,349,96"/>
+<area shape="poly" id="edge176_Node000000_Node000002" title=" " alt="" coords="158,92,203,85,204,90,159,98"/>
+<area shape="rect" id="Node000003" href="$classcoco_1_1_feature_layouts_1_1_b_h_w_c.html" title="BHWC Feature Layout." alt="" coords="204,121,349,161"/>
+<area shape="poly" id="edge177_Node000000_Node000003" title=" " alt="" coords="159,120,204,127,203,132,159,125"/>
+<area shape="rect" id="Node000004" href="$classcoco_1_1_feature_layouts_1_1_generic.html" title="Generic Feature Layout." alt="" coords="204,186,349,227"/>
+<area shape="poly" id="edge178_Node000000_Node000004" title=" " alt="" coords="112,127,193,170,221,183,219,188,191,175,110,132"/>
 </map>

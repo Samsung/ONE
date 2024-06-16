@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonert_1_1api_1_1_custom_kernel_registry.html" title=" " alt="" coords="5,5,167,46"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,46,62,72"/>
+<area shape="rect" id="Node000001" href="$class_analysis_template_1_1_analysis_template.html" title=" " alt="" coords="110,5,286,46"/>
+<area shape="poly" id="edge2308_Node000000_Node000001" title=" " alt="" coords="76,48,109,41,110,46,78,53"/>
+<area shape="rect" id="Node000002" href="$class_single_operator_test_1_1_single_operator_test.html" title=" " alt="" coords="112,71,284,111"/>
+<area shape="poly" id="edge2309_Node000000_Node000002" title=" " alt="" coords="78,65,112,71,111,77,77,70"/>
 </map>

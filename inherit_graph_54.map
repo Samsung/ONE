@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structcircle__eval__diff_1_1_tensor_data_type.html" title=" " alt="" coords="5,5,159,46"/>
-<area shape="rect" id="Node000001" href="$structcircle__eval__diff_1_1_tensor.html" title=" " alt="" coords="207,46,360,72"/>
-<area shape="poly" id="edge32_Node000000_Node000001" title=" " alt="" coords="174,38,207,44,206,49,173,43"/>
-<area shape="rect" id="Node000002" href="$structcircle__eval__diff_1_1_tensor_shape.html" title=" " alt="" coords="5,71,159,111"/>
-<area shape="poly" id="edge33_Node000002_Node000001" title=" " alt="" coords="173,74,206,69,207,74,174,79"/>
+<area shape="rect" id="Node000000" href="$classcircle__eval__diff_1_1_input_data_loader.html" title=" " alt="" coords="5,35,175,75"/>
+<area shape="rect" id="Node000001" href="$classcircle__eval__diff_1_1_directory_loader.html" title=" " alt="" coords="234,5,399,46"/>
+<area shape="poly" id="edge28_Node000000_Node000001" title=" " alt="" coords="190,39,233,34,234,39,191,45"/>
+<area shape="rect" id="Node000002" href="$classcircle__eval__diff_1_1_h_d_f5_loader.html" title=" " alt="" coords="223,70,410,96"/>
+<area shape="poly" id="edge29_Node000000_Node000002" title=" " alt="" coords="191,65,223,69,222,74,190,70"/>
 </map>

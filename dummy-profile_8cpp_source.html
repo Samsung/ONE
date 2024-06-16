@@ -120,13 +120,26 @@ $(document).ready(function(){initNavTree('dummy-profile_8cpp_source.html',''); i
 <div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="dummy-profile_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">   28</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordflow">if</span> (argc != 2)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordflow">if</span> (argc != 2 and argc != 4)</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;dummy-profile dummy output!!!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">if</span> (argc == 2)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;dummy-profile dummy output!!!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> (argc == 4)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    std::string opt_T{<span class="stringliteral">&quot;--target&quot;</span>};</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    std::string argv_1{argv[1]};</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (opt_T != argv_1)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    std::string target_name{argv[2]};</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;dummy-profile with &quot;</span> &lt;&lt; target_name &lt;&lt; <span class="stringliteral">&quot; target&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
 </div>
 <div class="ttc" id="aonert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_source.html#l00058">main.cpp:58</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

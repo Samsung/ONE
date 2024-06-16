@@ -132,29 +132,47 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>dummy-compile only tests its interface rather than its functionality.</p>
-<p>./dummy-compile -o ${OUTPUT_NAME} ${INPUT_NAME}</p>
+<p>./dummy-compile -o ${OUTPUT_NAME} ${INPUT_NAME} ./dummy-compile &ndash;target {TARGET_NAME} -o ${OUTPUT_NAME} ${INPUT_NAME}</p>
 <p>NOTE argv[3](INPUT_NAME) is not used here. </p>
 
-<p class="definition">Definition at line <a class="el" href="dummy-compile_8cpp_source.html#l00029">29</a> of file <a class="el" href="dummy-compile_8cpp_source.html">dummy-compile.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (argc != 4)</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  std::string opt_o{<span class="stringliteral">&quot;-o&quot;</span>};</div>
-<div class="line"><span class="lineno">   35</span>  std::string argv_1{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1]};</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (opt_o != argv_1)</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  std::string output_name{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2]};</div>
-<div class="line"><span class="lineno">   41</span>  std::ofstream <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a>(output_name);</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a> &lt;&lt; <span class="stringliteral">&quot;dummy-compile dummy output!!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a>.close();</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="dummy-compile_8cpp_source.html#l00030">30</a> of file <a class="el" href="dummy-compile_8cpp_source.html">dummy-compile.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (argc != 4 and argc != 6)</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (argc == 4)</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    std::string opt_o{<span class="stringliteral">&quot;-o&quot;</span>};</div>
+<div class="line"><span class="lineno">   38</span>    std::string argv_1{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1]};</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> (opt_o != argv_1)</div>
+<div class="line"><span class="lineno">   40</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>    std::string output_name{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2]};</div>
+<div class="line"><span class="lineno">   43</span>    std::ofstream <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a>(output_name);</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a> &lt;&lt; <span class="stringliteral">&quot;dummy-compile dummy output!!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a>.close();</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (argc == 6)</div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    std::string opt_T{<span class="stringliteral">&quot;--target&quot;</span>};</div>
+<div class="line"><span class="lineno">   50</span>    std::string argv_1{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1]};</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (opt_T != argv_1)</div>
+<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   53</span>    std::string target_name{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2]};</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    std::string opt_o{<span class="stringliteral">&quot;-o&quot;</span>};</div>
+<div class="line"><span class="lineno">   56</span>    std::string argv_3{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[3]};</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">if</span> (opt_o != argv_3)</div>
+<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    std::string output_name{<a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[4]};</div>
+<div class="line"><span class="lineno">   61</span>    std::ofstream <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a>(output_name);</div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a> &lt;&lt; <span class="stringliteral">&quot;dummy-compile with &quot;</span> &lt;&lt; target_name &lt;&lt; <span class="stringliteral">&quot; target&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   63</span>    <a class="code hl_variable" href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">outfile</a>.close();</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="anamespaceinfer__testcases_html_af000f360a446ef4ad47d258ec13cbae5"><div class="ttname"><a href="namespaceinfer__testcases.html#af000f360a446ef4ad47d258ec13cbae5">infer_testcases.outfile</a></div><div class="ttdeci">str outfile</div><div class="ttdef"><b>Definition</b> <a href="infer__testcases_8py_source.html#l00137">infer_testcases.py:137</a></div></div>
 <div class="ttc" id="anamespaceminimal_html_a5f2767e1a6e0198d72dfe1719abc3b2a"><div class="ttname"><a href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">minimal.argv</a></div><div class="ttdeci">argv</div><div class="ttdef"><b>Definition</b> <a href="minimal_8py_source.html#l00025">minimal.py:25</a></div></div>
 </div><!-- fragment -->

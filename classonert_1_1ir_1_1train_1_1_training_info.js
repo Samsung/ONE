@@ -15,6 +15,8 @@ var classonert_1_1ir_1_1train_1_1_training_info =
     [ "setLossInfo", "classonert_1_1ir_1_1train_1_1_training_info.html#a73bbc27fa4078c4ef2b31cc1e384cf41", null ],
     [ "setOptimizerInfo", "classonert_1_1ir_1_1train_1_1_training_info.html#a85b2b8155807654cbc15964fe97fdaf9", null ],
     [ "setTrainableOps", "classonert_1_1ir_1_1train_1_1_training_info.html#a44b704d9645f11c9a8bf0e2f3fdd9c41", null ],
+    [ "setVersion", "classonert_1_1ir_1_1train_1_1_training_info.html#ad0dd51f8925595010ab3db65863a6cf7", null ],
     [ "trainingStep", "classonert_1_1ir_1_1train_1_1_training_info.html#ae8948da950220e89c16e9778c58c8664", null ],
-    [ "trainingStep", "classonert_1_1ir_1_1train_1_1_training_info.html#a6a459e770d29f20f3899cd85d49f1e28", null ]
+    [ "trainingStep", "classonert_1_1ir_1_1train_1_1_training_info.html#a6a459e770d29f20f3899cd85d49f1e28", null ],
+    [ "version", "classonert_1_1ir_1_1train_1_1_training_info.html#a0d5d0283f4688f95f22647f80d5ebc44", null ]
 ];

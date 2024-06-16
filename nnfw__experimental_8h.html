@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('nnfw__experimental_8h.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -114,6 +115,12 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__train__info.html">nnfw_train_info</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Training information to prepare training.  <a href="structnnfw__train__info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a0c2ee48d319b519d389ced5bec94783c" id="r_a0c2ee48d319b519d389ced5bec94783c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a0c2ee48d319b519d389ced5bec94783c">NNFW_TRAINABLE_OPS_MAX_SIZE</a>&#160;&#160;&#160;(256)</td></tr>
+<tr class="memdesc:a0c2ee48d319b519d389ced5bec94783c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum numer of trainable operations.  <br /></td></tr>
+<tr class="separator:a0c2ee48d319b519d389ced5bec94783c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -160,6 +167,16 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a6b579b96cb876a738cb8ccfd174c0b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preference for target-dependent code generation.  <a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">More...</a><br /></td></tr>
 <tr class="separator:a6b579b96cb876a738cb8ccfd174c0b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae580e8c93ff80d9d50b0dc355c6fa581" id="r_ae580e8c93ff80d9d50b0dc355c6fa581"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a> { <a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a>
+ }</td></tr>
+<tr class="memdesc:ae580e8c93ff80d9d50b0dc355c6fa581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration key for prepare (compile and schedule)  <a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">More...</a><br /></td></tr>
+<tr class="separator:ae580e8c93ff80d9d50b0dc355c6fa581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa184da9db1560ca26dd7ee889bd1013d" id="r_aa184da9db1560ca26dd7ee889bd1013d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a> { <a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a>
+, <a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a>
+, <a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a>
+ }</td></tr>
+<tr class="memdesc:aa184da9db1560ca26dd7ee889bd1013d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration key for execution.  <a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">More...</a><br /></td></tr>
+<tr class="separator:aa184da9db1560ca26dd7ee889bd1013d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -175,6 +192,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ac7b4df41162c0e5b6977110c2976072f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the backend for each operation in the session.  <br /></td></tr>
 <tr class="separator:ac7b4df41162c0e5b6977110c2976072f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0358e9d67030e0af594395bf0983003c" id="r_a0358e9d67030e0af594395bf0983003c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a0358e9d67030e0af594395bf0983003c">nnfw_prepare_pipeline</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *map_file_path=nullptr)</td></tr>
+<tr class="memdesc:a0358e9d67030e0af594395bf0983003c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare session to be ready for inference.  <br /></td></tr>
 <tr class="separator:a0358e9d67030e0af594395bf0983003c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac631a7695a0fd98716e984f3af3154bd" id="r_ac631a7695a0fd98716e984f3af3154bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ac631a7695a0fd98716e984f3af3154bd">nnfw_push_pipeline_input</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, void *inputs, void *lengths)</td></tr>
 <tr class="memdesc:ac631a7695a0fd98716e984f3af3154bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set input buffer.  <br /></td></tr>
@@ -230,7 +248,38 @@ Functions</h2></td></tr>
 <tr class="memitem:a9c434de04d0c57bf7e28a1c7721bdd49" id="r_a9c434de04d0c57bf7e28a1c7721bdd49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49">nnfw_codegen</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *target, <a class="el" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a> pref)</td></tr>
 <tr class="memdesc:a9c434de04d0c57bf7e28a1c7721bdd49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate target-dependent code.  <br /></td></tr>
 <tr class="separator:a9c434de04d0c57bf7e28a1c7721bdd49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a4d2e7d154230ba3115b18cc556d9b2" id="r_a1a4d2e7d154230ba3115b18cc556d9b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#a1a4d2e7d154230ba3115b18cc556d9b2">nnfw_set_prepare_config</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, <a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a> key, const char *value)</td></tr>
+<tr class="memdesc:a1a4d2e7d154230ba3115b18cc556d9b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set prepare configuration.  <br /></td></tr>
+<tr class="separator:a1a4d2e7d154230ba3115b18cc556d9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab370befbcaf1e98c99c1e43fedbc9dad" id="r_ab370befbcaf1e98c99c1e43fedbc9dad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ab370befbcaf1e98c99c1e43fedbc9dad">nnfw_reset_prepare_config</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session)</td></tr>
+<tr class="memdesc:ab370befbcaf1e98c99c1e43fedbc9dad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset prepare configurations.  <br /></td></tr>
+<tr class="separator:ab370befbcaf1e98c99c1e43fedbc9dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1121e4e6f07fc7dbda4466afbd3f670" id="r_ac1121e4e6f07fc7dbda4466afbd3f670"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ac1121e4e6f07fc7dbda4466afbd3f670">nnfw_set_execute_config</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const <a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a> key, const char *value)</td></tr>
+<tr class="memdesc:ac1121e4e6f07fc7dbda4466afbd3f670"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set execution (run or train) configuration.  <br /></td></tr>
+<tr class="separator:ac1121e4e6f07fc7dbda4466afbd3f670"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8ac04143e1db077ea615e463ea1ce38" id="r_ab8ac04143e1db077ea615e463ea1ce38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ab8ac04143e1db077ea615e463ea1ce38">nnfw_reset_execute_config</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session)</td></tr>
+<tr class="memdesc:ab8ac04143e1db077ea615e463ea1ce38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset execution (run or train) configurations.  <br /></td></tr>
+<tr class="separator:ab8ac04143e1db077ea615e463ea1ce38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a0c2ee48d319b519d389ced5bec94783c" name="a0c2ee48d319b519d389ced5bec94783c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c2ee48d319b519d389ced5bec94783c">&#9670;&#160;</a></span>NNFW_TRAINABLE_OPS_MAX_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NNFW_TRAINABLE_OPS_MAX_SIZE&#160;&#160;&#160;(256)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Maximum numer of trainable operations. </p>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00217">217</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a300b163aa909a1decc6f41d9d46a20e1" name="a300b163aa909a1decc6f41d9d46a20e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a300b163aa909a1decc6f41d9d46a20e1">&#9670;&#160;</a></span>nnfw_custom_eval</h2>
@@ -303,19 +352,46 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00459">459</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  460</span>{</div>
-<div class="line"><span class="lineno">  462</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>,</div>
-<div class="line"><span class="lineno">  463</span>  <span class="comment">// TODO Support Traffic and Cycle code generation preference</span></div>
-<div class="line"><span class="lineno">  465</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a>,</div>
-<div class="line"><span class="lineno">  467</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a>,</div>
-<div class="line"><span class="lineno">  469</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a>,</div>
-<div class="line"><span class="lineno">  470</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a></div><div class="ttdeci">NNFW_CODEGEN_PREF</div><div class="ttdoc">Preference for target-dependent code generation.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00459">nnfw_experimental.h:460</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_DEFAULT</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00462">nnfw_experimental.h:462</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_MEMORY_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00467">nnfw_experimental.h:467</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00469">nnfw_experimental.h:469</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00465">nnfw_experimental.h:465</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00475">475</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  476</span>{</div>
+<div class="line"><span class="lineno">  478</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>,</div>
+<div class="line"><span class="lineno">  479</span>  <span class="comment">// TODO Support Traffic and Cycle code generation preference</span></div>
+<div class="line"><span class="lineno">  481</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a>,</div>
+<div class="line"><span class="lineno">  483</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a>,</div>
+<div class="line"><span class="lineno">  485</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a>,</div>
+<div class="line"><span class="lineno">  486</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">NNFW_CODEGEN_PREF</a></div><div class="ttdeci">NNFW_CODEGEN_PREF</div><div class="ttdoc">Preference for target-dependent code generation.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00475">nnfw_experimental.h:476</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_DEFAULT</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00478">nnfw_experimental.h:478</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e">NNFW_CODEGEN_PREF_MEMORY_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_MEMORY_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00483">nnfw_experimental.h:483</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1">NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00485">nnfw_experimental.h:485</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ac09d5b13bcb3e3d55306eb997e0f6755">NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_PERFORMANCE_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00481">nnfw_experimental.h:481</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ae580e8c93ff80d9d50b0dc355c6fa581" name="ae580e8c93ff80d9d50b0dc355c6fa581"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae580e8c93ff80d9d50b0dc355c6fa581">&#9670;&#160;</a></span>NNFW_PREPARE_CONFIG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configuration key for prepare (compile and schedule) </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98" name="ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98"></a>NNFW_PREPARE_CONFIG_PROFILE&#160;</td><td class="fielddoc"><p>Prepare to dump execution time profile file (not require value setting) TODO: Use workspace </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00527">527</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  528</span>{</div>
+<div class="line"><span class="lineno">  533</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a>,</div>
+<div class="line"><span class="lineno">  534</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a></div><div class="ttdeci">NNFW_PREPARE_CONFIG</div><div class="ttdoc">Configuration key for prepare (compile and schedule)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00527">nnfw_experimental.h:528</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a></div><div class="ttdeci">@ NNFW_PREPARE_CONFIG_PROFILE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00533">nnfw_experimental.h:533</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -361,21 +437,58 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00407">407</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  408</span>{</div>
-<div class="line"><span class="lineno">  410</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a>,</div>
-<div class="line"><span class="lineno">  412</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>,</div>
-<div class="line"><span class="lineno">  414</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>,</div>
-<div class="line"><span class="lineno">  416</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>,</div>
-<div class="line"><span class="lineno">  418</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a>,</div>
-<div class="line"><span class="lineno">  419</span> </div>
-<div class="line"><span class="lineno">  420</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a></div><div class="ttdeci">NNFW_QUANTIZE_TYPE</div><div class="ttdoc">Convert between training mode and inference mode.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00407">nnfw_experimental.h:408</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00418">nnfw_experimental.h:418</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00412">nnfw_experimental.h:412</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00414">nnfw_experimental.h:414</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_NOT_SET</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00410">nnfw_experimental.h:410</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I8_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00416">nnfw_experimental.h:416</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00423">423</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  424</span>{</div>
+<div class="line"><span class="lineno">  426</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a>,</div>
+<div class="line"><span class="lineno">  428</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>,</div>
+<div class="line"><span class="lineno">  430</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a>,</div>
+<div class="line"><span class="lineno">  432</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>,</div>
+<div class="line"><span class="lineno">  434</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a>,</div>
+<div class="line"><span class="lineno">  435</span> </div>
+<div class="line"><span class="lineno">  436</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7">NNFW_QUANTIZE_TYPE</a></div><div class="ttdeci">NNFW_QUANTIZE_TYPE</div><div class="ttdoc">Convert between training mode and inference mode.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00423">nnfw_experimental.h:424</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8">NNFW_QUANTIZE_TYPE_WO_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00434">nnfw_experimental.h:434</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_U8_ASYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00428">nnfw_experimental.h:428</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64">NNFW_QUANTIZE_TYPE_I16_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_I16_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00430">nnfw_experimental.h:430</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe">NNFW_QUANTIZE_TYPE_NOT_SET</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_NOT_SET</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00426">nnfw_experimental.h:426</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I8_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00432">nnfw_experimental.h:432</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa184da9db1560ca26dd7ee889bd1013d" name="aa184da9db1560ca26dd7ee889bd1013d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa184da9db1560ca26dd7ee889bd1013d">&#9670;&#160;</a></span>NNFW_RUN_CONFIG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configuration key for execution. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3" name="aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3"></a>NNFW_RUN_CONFIG_DUMP_MINMAX&#160;</td><td class="fielddoc"><p>Dump minmax data for each layers to workspace (not require value setting) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad" name="aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad"></a>NNFW_RUN_CONFIG_TRACE&#160;</td><td class="fielddoc"><p>Dump execution event file to workspace (not require value setting) </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca" name="aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca"></a>NNFW_RUN_CONFIG_PROFILE&#160;</td><td class="fielddoc"><p>Dump execution time profile file (not require value setting)</p>
+<p>You should set prepare configuration <code><a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a></code> before prepare. Otherwise, this configuration will be ignored.</p>
+<p>TODO: Use workspace </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00564">564</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  565</span>{</div>
+<div class="line"><span class="lineno">  567</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a>,</div>
+<div class="line"><span class="lineno">  569</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a>,</div>
+<div class="line"><span class="lineno">  578</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a>,</div>
+<div class="line"><span class="lineno">  579</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013d"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a></div><div class="ttdeci">NNFW_RUN_CONFIG</div><div class="ttdoc">Configuration key for execution.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00564">nnfw_experimental.h:565</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_PROFILE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00578">nnfw_experimental.h:578</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_TRACE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00569">nnfw_experimental.h:569</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_DUMP_MINMAX</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00567">nnfw_experimental.h:567</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -408,16 +521,16 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60" name="ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"></a>NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00177">177</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  178</span>{</div>
-<div class="line"><span class="lineno">  179</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841">NNFW_TRAIN_LOSS_UNDEFINED</a> = 0,</div>
-<div class="line"><span class="lineno">  180</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a> = 1,</div>
-<div class="line"><span class="lineno">  181</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a> = 2,</div>
-<div class="line"><span class="lineno">  182</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a></div><div class="ttdeci">NNFW_TRAIN_LOSS</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00177">nnfw_experimental.h:178</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00180">nnfw_experimental.h:180</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841">NNFW_TRAIN_LOSS_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_UNDEFINED</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00179">nnfw_experimental.h:179</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00181">nnfw_experimental.h:181</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00184">184</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
+<div class="line"><span class="lineno">  186</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841">NNFW_TRAIN_LOSS_UNDEFINED</a> = 0,</div>
+<div class="line"><span class="lineno">  187</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a> = 1,</div>
+<div class="line"><span class="lineno">  188</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a> = 2,</div>
+<div class="line"><span class="lineno">  189</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660">NNFW_TRAIN_LOSS</a></div><div class="ttdeci">NNFW_TRAIN_LOSS</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00184">nnfw_experimental.h:185</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aba147206e48f5788afb61da5a02b7929">NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00187">nnfw_experimental.h:187</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841">NNFW_TRAIN_LOSS_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_UNDEFINED</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00186">nnfw_experimental.h:186</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00188">nnfw_experimental.h:188</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -441,16 +554,16 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00184">184</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
-<div class="line"><span class="lineno">  187</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a> = 0,</div>
-<div class="line"><span class="lineno">  189</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a> = 1,</div>
-<div class="line"><span class="lineno">  191</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a> = 2,</div>
-<div class="line"><span class="lineno">  192</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a></div><div class="ttdeci">NNFW_TRAIN_LOSS_REDUCTION</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00184">nnfw_experimental.h:185</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00187">nnfw_experimental.h:187</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00191">nnfw_experimental.h:191</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00189">nnfw_experimental.h:189</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00191">191</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  192</span>{</div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a> = 0,</div>
+<div class="line"><span class="lineno">  196</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a> = 1,</div>
+<div class="line"><span class="lineno">  198</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a> = 2,</div>
+<div class="line"><span class="lineno">  199</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1">NNFW_TRAIN_LOSS_REDUCTION</a></div><div class="ttdeci">NNFW_TRAIN_LOSS_REDUCTION</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00191">nnfw_experimental.h:192</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60">NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00194">nnfw_experimental.h:194</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df">NNFW_TRAIN_LOSS_REDUCTION_SUM</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00198">nnfw_experimental.h:198</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00196">nnfw_experimental.h:196</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -471,16 +584,16 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8" name="a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"></a>NNFW_TRAIN_OPTIMIZER_ADAM&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00194">194</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
-<div class="line"><span class="lineno">  196</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a> = 0,</div>
-<div class="line"><span class="lineno">  197</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a> = 1,</div>
-<div class="line"><span class="lineno">  198</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a> = 2,</div>
-<div class="line"><span class="lineno">  199</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a></div><div class="ttdeci">NNFW_TRAIN_OPTIMIZER</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00194">nnfw_experimental.h:195</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_ADAM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00198">nnfw_experimental.h:198</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_SGD</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00197">nnfw_experimental.h:197</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_UNDEFINED</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00196">nnfw_experimental.h:196</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00201">201</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  202</span>{</div>
+<div class="line"><span class="lineno">  203</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a> = 0,</div>
+<div class="line"><span class="lineno">  204</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a> = 1,</div>
+<div class="line"><span class="lineno">  205</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a> = 2,</div>
+<div class="line"><span class="lineno">  206</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4">NNFW_TRAIN_OPTIMIZER</a></div><div class="ttdeci">NNFW_TRAIN_OPTIMIZER</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00201">nnfw_experimental.h:202</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8">NNFW_TRAIN_OPTIMIZER_ADAM</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_ADAM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00205">nnfw_experimental.h:205</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4acb6c07a8a04094bb70c57210d2786e4e">NNFW_TRAIN_OPTIMIZER_SGD</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_SGD</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00204">nnfw_experimental.h:204</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb"><div class="ttname"><a href="nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb">NNFW_TRAIN_OPTIMIZER_UNDEFINED</a></div><div class="ttdeci">@ NNFW_TRAIN_OPTIMIZER_UNDEFINED</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00203">nnfw_experimental.h:203</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -529,11 +642,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00492">492</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  493</span>{</div>
-<div class="line"><span class="lineno">  494</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  495</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;codegen(target, pref);</div>
-<div class="line"><span class="lineno">  496</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00488">488</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  489</span>{</div>
+<div class="line"><span class="lineno">  490</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  491</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;codegen(target, pref);</div>
+<div class="line"><span class="lineno">  492</span>}</div>
 <div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
 <div class="ttc" id="annfw__api_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00048">nnfw_api.cc:48</a></div></div>
 </div><!-- fragment -->
@@ -688,13 +801,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00381">381</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  382</span>{</div>
-<div class="line"><span class="lineno">  383</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  384</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;pop_pipeline_output((std::vector&lt;void *&gt; *)outputs);</div>
-<div class="line"><span class="lineno">  385</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00378">378</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  379</span>{</div>
+<div class="line"><span class="lineno">  380</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_pop_pipeline_output: Deprecated&quot;</span>);</div>
+<div class="line"><span class="lineno">  381</span>}</div>
+<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__internal_8cc_source.html#l00966">nnfw_api_internal.cc:966</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00966">nnfw_session::deprecated()</a>.</p>
 
 </div>
 </div>
@@ -724,13 +837,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Prepare session to be ready for inference. </p>
+<p>This phase may finalize model compilation, scheduling, and additional settings.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">session</td><td>the session to be prepared </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>NNFW_STATUS_NO_ERROR if successful </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00368">368</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  369</span>{</div>
-<div class="line"><span class="lineno">  370</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  371</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;prepare_pipeline(map_file_path);</div>
-<div class="line"><span class="lineno">  372</span>}</div>
+<div class="line"><span class="lineno">  370</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_prepare_pipeline: Deprecated&quot;</span>);</div>
+<div class="line"><span class="lineno">  371</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00966">nnfw_session::deprecated()</a>.</p>
 
 </div>
 </div>
@@ -778,14 +900,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00374">374</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  375</span>{</div>
-<div class="line"><span class="lineno">  376</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  377</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;push_pipeline_input((std::vector&lt;void *&gt; *)inputs,</div>
-<div class="line"><span class="lineno">  378</span>                                      (std::vector&lt;uint32_t&gt; *)lengths);</div>
-<div class="line"><span class="lineno">  379</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00373">373</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  374</span>{</div>
+<div class="line"><span class="lineno">  375</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_push_pipeline_input: Deprecated&quot;</span>);</div>
+<div class="line"><span class="lineno">  376</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00966">nnfw_session::deprecated()</a>.</p>
 
 </div>
 </div>
@@ -814,11 +934,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>ODC_STATUS_NO_ERROR</code> if successful, otherwise return <code>ODC_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00480">480</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  481</span>{</div>
-<div class="line"><span class="lineno">  482</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  483</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;quantize();</div>
-<div class="line"><span class="lineno">  484</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00476">476</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  477</span>{</div>
+<div class="line"><span class="lineno">  478</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  479</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;quantize();</div>
+<div class="line"><span class="lineno">  480</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -864,6 +984,62 @@ Functions</h2></td></tr>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="ab8ac04143e1db077ea615e463ea1ce38" name="ab8ac04143e1db077ea615e463ea1ce38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8ac04143e1db077ea615e463ea1ce38">&#9670;&#160;</a></span>nnfw_reset_execute_config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_reset_execute_config </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset execution (run or train) configurations. </p>
+<p>This function reset all execution configuration.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to reset all execution configurations </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+</div>
+</div>
+<a id="ab370befbcaf1e98c99c1e43fedbc9dad" name="ab370befbcaf1e98c99c1e43fedbc9dad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab370befbcaf1e98c99c1e43fedbc9dad">&#9670;&#160;</a></span>nnfw_reset_prepare_config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_reset_prepare_config </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reset prepare configurations. </p>
+<p>This function reset all prepare configuration.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to reset all prepare configurations </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
 </div>
 </div>
@@ -952,13 +1128,105 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00486">486</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  487</span>{</div>
-<div class="line"><span class="lineno">  488</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  489</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_codegen_model_path(path);</div>
-<div class="line"><span class="lineno">  490</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00482">482</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  483</span>{</div>
+<div class="line"><span class="lineno">  484</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  485</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_codegen_model_path(path);</div>
+<div class="line"><span class="lineno">  486</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="ac1121e4e6f07fc7dbda4466afbd3f670" name="ac1121e4e6f07fc7dbda4466afbd3f670"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1121e4e6f07fc7dbda4466afbd3f670">&#9670;&#160;</a></span>nnfw_set_execute_config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_set_execute_config </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a>&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set execution (run or train) configuration. </p>
+<p>This function set execution configuration to dump execution data to workspace. If you enable configuration to dump execution data into workspace and want to change workspace, refer <code><a class="el" href="nnfw_8h.html#a614f8ef052a7f9cdd4cb8e569f3af2af">nnfw_set_workspace</a></code> to use workspace directory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to set execution configuration </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>execution configuration key </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>execution configuration value if needed, otherwise set NULL </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
+</div>
+</div>
+<a id="a1a4d2e7d154230ba3115b18cc556d9b2" name="a1a4d2e7d154230ba3115b18cc556d9b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a4d2e7d154230ba3115b18cc556d9b2">&#9670;&#160;</a></span>nnfw_set_prepare_config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_set_prepare_config </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a>&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set prepare configuration. </p>
+<p>This function set prepare configuration to decide additional compiling and scheduing feature. If you enable configuration to prepare dumping execution data into workspace, refer <code><a class="el" href="nnfw_8h.html#a614f8ef052a7f9cdd4cb8e569f3af2af">nnfw_set_workspace</a></code> to use workspace directory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>nnfw_session to set prepare configuration </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>prepare configuration key </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>prepare configuration value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
 </div>
 </div>
@@ -999,11 +1267,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, <code>NNFW_STATUS_UNEXPECTED_NULL</code> if session is null, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00468">468</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  469</span>{</div>
-<div class="line"><span class="lineno">  470</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  471</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_quantization_type(qtype);</div>
-<div class="line"><span class="lineno">  472</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00464">464</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  465</span>{</div>
+<div class="line"><span class="lineno">  466</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  467</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_quantization_type(qtype);</div>
+<div class="line"><span class="lineno">  468</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1047,11 +1315,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00474">474</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  475</span>{</div>
-<div class="line"><span class="lineno">  476</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  477</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_quantized_model_path(path);</div>
-<div class="line"><span class="lineno">  478</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00470">470</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  471</span>{</div>
+<div class="line"><span class="lineno">  472</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  473</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_quantized_model_path(path);</div>
+<div class="line"><span class="lineno">  474</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1095,11 +1363,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00448">448</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  449</span>{</div>
-<div class="line"><span class="lineno">  450</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  451</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_run(update_weights);</div>
-<div class="line"><span class="lineno">  452</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00444">444</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  445</span>{</div>
+<div class="line"><span class="lineno">  446</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  447</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_run(update_weights);</div>
+<div class="line"><span class="lineno">  448</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1149,11 +1417,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00420">420</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  422</span>{</div>
-<div class="line"><span class="lineno">  423</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  424</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_expected_tensorinfo(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  425</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00416">416</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  418</span>{</div>
+<div class="line"><span class="lineno">  419</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  420</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_expected_tensorinfo(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  421</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1196,11 +1464,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00460">460</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  461</span>{</div>
-<div class="line"><span class="lineno">  462</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  463</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circle(path);</div>
-<div class="line"><span class="lineno">  464</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00456">456</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  457</span>{</div>
+<div class="line"><span class="lineno">  458</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  459</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circle(path);</div>
+<div class="line"><span class="lineno">  460</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1250,11 +1518,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00454">454</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  455</span>{</div>
-<div class="line"><span class="lineno">  456</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  457</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_get_loss(index, loss);</div>
-<div class="line"><span class="lineno">  458</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00450">450</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  451</span>{</div>
+<div class="line"><span class="lineno">  452</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  453</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_get_loss(index, loss);</div>
+<div class="line"><span class="lineno">  454</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1300,11 +1568,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00395">395</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  396</span>{</div>
-<div class="line"><span class="lineno">  397</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  398</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_get_traininfo(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  399</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00391">391</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  392</span>{</div>
+<div class="line"><span class="lineno">  393</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  394</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_get_traininfo(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  395</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1354,11 +1622,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00413">413</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  415</span>{</div>
-<div class="line"><span class="lineno">  416</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  417</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_input_tensorinfo(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  418</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00409">409</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  411</span>{</div>
+<div class="line"><span class="lineno">  412</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  413</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_input_tensorinfo(index, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  414</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1392,11 +1660,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00407">407</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  408</span>{</div>
-<div class="line"><span class="lineno">  409</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  410</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_prepare();</div>
-<div class="line"><span class="lineno">  411</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00403">403</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  404</span>{</div>
+<div class="line"><span class="lineno">  405</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  406</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_prepare();</div>
+<div class="line"><span class="lineno">  407</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1453,11 +1721,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00434">434</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  436</span>{</div>
-<div class="line"><span class="lineno">  437</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  438</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_expected(index, expected, expected_info);</div>
-<div class="line"><span class="lineno">  439</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00430">430</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
+<div class="line"><span class="lineno">  433</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  434</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_expected(index, expected, expected_info);</div>
+<div class="line"><span class="lineno">  435</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1514,11 +1782,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00427">427</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  429</span>{</div>
-<div class="line"><span class="lineno">  430</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  431</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_input(index, input, input_info);</div>
-<div class="line"><span class="lineno">  432</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00423">423</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  425</span>{</div>
+<div class="line"><span class="lineno">  426</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  427</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_input(index, input, input_info);</div>
+<div class="line"><span class="lineno">  428</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1582,11 +1850,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00441">441</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  443</span>{</div>
-<div class="line"><span class="lineno">  444</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  445</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_output(index, type, buffer, length);</div>
-<div class="line"><span class="lineno">  446</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00437">437</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  439</span>{</div>
+<div class="line"><span class="lineno">  440</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  441</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_output(index, type, buffer, length);</div>
+<div class="line"><span class="lineno">  442</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
@@ -1629,11 +1897,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00401">401</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  402</span>{</div>
-<div class="line"><span class="lineno">  403</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  404</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_traininfo(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  405</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00397">397</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  398</span>{</div>
+<div class="line"><span class="lineno">  399</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  400</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_traininfo(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  401</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 

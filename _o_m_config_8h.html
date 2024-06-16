@@ -91,15 +91,20 @@ $(document).ready(function(){initNavTree('_o_m_config_8h.html',''); initResizabl
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">OMConfig.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+</div>
 <p><a href="_o_m_config_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1_o_m_training_context.html">onert_micro::OMTrainingContext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1_o_m_config.html">onert_micro::OMConfig</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -107,6 +112,25 @@ Data Structures</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceonert__micro" id="r_namespaceonert__micro"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html">onert_micro</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a766b22baf7176111a6e866ad8d03685c" id="r_a766b22baf7176111a6e866ad8d03685c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c">onert_micro::OMTrainOptimizer</a> { <a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">onert_micro::SGD</a>
+, <a class="el" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">onert_micro::ADAM</a>
+ }</td></tr>
+<tr class="separator:a766b22baf7176111a6e866ad8d03685c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad046550495f851ca3f09b45262799224" id="r_ad046550495f851ca3f09b45262799224"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224">onert_micro::OMMetrics</a> { <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">onert_micro::MSE_METRICS</a>
+, <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">onert_micro::MAE_METRICS</a>
+, <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">onert_micro::CROSS_ENTROPY_METRICS</a>
+, <a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">onert_micro::ACCURACY</a>
+ }</td></tr>
+<tr class="separator:ad046550495f851ca3f09b45262799224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19286e39871396769ee22d2d9a5ed3fd" id="r_a19286e39871396769ee22d2d9a5ed3fd"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">onert_micro::OMLoss</a> { <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b">onert_micro::BINARY_CROSS_ENTROPY</a>
+, <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">onert_micro::CROSS_ENTROPY</a>
+, <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">onert_micro::MSE</a>
+, <a class="el" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">onert_micro::MAE</a>
+ }</td></tr>
+<tr class="separator:a19286e39871396769ee22d2d9a5ed3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

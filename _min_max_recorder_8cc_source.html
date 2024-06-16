@@ -114,166 +114,171 @@ $(document).ready(function(){initNavTree('_min_max_recorder_8cc_source.html','')
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_min_max_recorder_8h.html">MinMaxRecorder.h</a>&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_i_tensor_8h.html">backend/ITensor.h</a>&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span>exec</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#a698efe8135c0d49fe0852228d28e9161">   29</a></span><a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#a698efe8135c0d49fe0852228d28e9161">MinMaxRecorder::MinMaxRecorder</a>(<span class="keyword">const</span> std::string &amp;workspace_dir, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                               <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62">backend::BackendContexts</a> &amp;backend_contexts)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#if MINMAX_H5DUMPER</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  : _graph{graph}, _backend_contexts{backend_contexts}, _h5dumper(workspace_dir + <span class="stringliteral">&quot;/minmax.h5&quot;</span>)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  : _graph{graph}, _backend_contexts{backend_contexts}, _raw_dumper(workspace_dir + <span class="stringliteral">&quot;/minmax.bin&quot;</span>)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#if MINMAX_H5DUMPER</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;../dumper/h5/MinMaxDumper.h&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_min_max_data_8h.html">MinMaxData.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="_i_tensor_8h.html">backend/ITensor.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>exec</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#a698efe8135c0d49fe0852228d28e9161">   33</a></span><a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#a698efe8135c0d49fe0852228d28e9161">MinMaxRecorder::MinMaxRecorder</a>(<span class="keyword">const</span> std::string &amp;workspace_dir, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> &amp;graph,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                               <span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62">backend::BackendContexts</a> &amp;backend_contexts)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  : _graph{graph}, _backend_contexts{backend_contexts}, _workspace_dir(workspace_dir)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
 </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">   39</a></span>std::pair&lt;float, float&gt; <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *tensor)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_elements = tensor-&gt;total_size() / <span class="keyword">sizeof</span>(float);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">bool</span> all_nan = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_elements; ++i)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> number = data[i];</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">if</span> (std::isnan(number))</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> (number == std::numeric_limits&lt;float&gt;::lowest())</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    all_nan = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">if</span> (number &gt; max)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      max = number;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">if</span> (number &lt; min)</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      min = number;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">if</span> (all_nan)</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;All values are NaN(Not a Number)&quot;</span>);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> {min, max};</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">   40</a></span>std::pair&lt;float, float&gt; <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *tensor)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_elements = tensor-&gt;total_size() / <span class="keyword">sizeof</span>(float);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">float</span> min = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">bool</span> all_nan = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_elements; ++i)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> number = data[i];</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (std::isnan(number))</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">if</span> (number == std::numeric_limits&lt;float&gt;::lowest())</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    all_nan = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">if</span> (number &gt; max)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      max = number;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">if</span> (number &lt; min)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      min = number;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">if</span> (all_nan)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;All values are NaN(Not a Number)&quot;</span>);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">return</span> {min, max};</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#a706e45e5847eeca6268d01ad8e5f0232">   72</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#a706e45e5847eeca6268d01ad8e5f0232">MinMaxRecorder::handleJobEnd</a>(<a class="code hl_struct" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *, <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> subg_idx,</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                                  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> op_idx, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>{</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_reg = _backend_contexts.at(backend)-&gt;tensor_registry;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = _graph.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(op_idx);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;outputs = op.getOutputs();</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// TODO: Support multiple output</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span> (outputs.size() != 1)</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Only 1 output operator is supported for recording minmax.&quot;</span>);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">auto</span> tensor = tensor_reg-&gt;getITensor(outputs.at(0));</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="comment">// Logic copied from MinMaxObserver.cpp.</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="comment">// Filter Ops</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">if</span> (tensor-&gt;is_constant())</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordflow">if</span> (tensor-&gt;data_type() != ir::DataType::FLOAT32)</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">switch</span> (op.opcode())</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// Operators with multiple outputs</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">case</span> ir::OpCode::If:</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">case</span> ir::OpCode::Split:</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">case</span> ir::OpCode::SplitV:</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">case</span> ir::OpCode::TopKV2:</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">case</span> ir::OpCode::Unpack:</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">case</span> ir::OpCode::While:</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment">// NOTE: Sin, Cos, Tanh&#39;s output is in [-1, 1]</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// We may not need to dump those operators.</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">default</span>:; <span class="comment">// Do Nothing</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  }</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="comment">// Otherwise, dump!</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  assert(tensor-&gt;data_type() == ir::DataType::FLOAT32);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keyword">auto</span> minmax = <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(tensor);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  _op_minmax.<a class="code hl_function" href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">append</a>({subg_idx, op_idx}, minmax.first, minmax.second);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>}</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#a706e45e5847eeca6268d01ad8e5f0232">   73</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#a706e45e5847eeca6268d01ad8e5f0232">MinMaxRecorder::handleJobEnd</a>(<a class="code hl_struct" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *, <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> subg_idx,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                                  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> op_idx, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *backend)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>{</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_reg = _backend_contexts.at(backend)-&gt;tensor_registry;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = _graph.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(op_idx);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;outputs = op.getOutputs();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="comment">// TODO: Support multiple output</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span> (outputs.size() != 1)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Only 1 output operator is supported for recording minmax.&quot;</span>);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">auto</span> tensor = tensor_reg-&gt;getITensor(outputs.at(0));</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="comment">// Logic copied from MinMaxObserver.cpp.</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="comment">// Filter Ops</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">if</span> (tensor-&gt;is_constant())</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">if</span> (tensor-&gt;data_type() != ir::DataType::FLOAT32)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordflow">switch</span> (op.opcode())</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// Operators with multiple outputs</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">case</span> ir::OpCode::If:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">case</span> ir::OpCode::Split:</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">case</span> ir::OpCode::SplitV:</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">case</span> ir::OpCode::TopKV2:</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">case</span> ir::OpCode::Unpack:</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">case</span> ir::OpCode::While:</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// NOTE: Sin, Cos, Tanh&#39;s output is in [-1, 1]</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="comment">// We may not need to dump those operators.</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">default</span>:; <span class="comment">// Do Nothing</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// Otherwise, dump!</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  assert(tensor-&gt;data_type() == ir::DataType::FLOAT32);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">auto</span> minmax = <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(tensor);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  _op_minmax.<a class="code hl_function" href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">append</a>({subg_idx, op_idx}, minmax.first, minmax.second);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>}</div>
 </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="foldopen" id="foldopen00114" data-start="{" data-end="}">
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">  114</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">MinMaxRecorder::handleSubgraphBegin</a>(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> subg_idx)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>{</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// Make sure there is only cpu backend except for builtin backend</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  std::set&lt;std::string&gt; backend_names;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <a class="code hl_struct" href="structonert_1_1backend_1_1_i_tensor_registry.html">backend::ITensorRegistry</a> *tensor_reg = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : _backend_contexts)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  {</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    backend_names.insert(pair.first-&gt;config()-&gt;id());</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordflow">if</span> (pair.first-&gt;config()-&gt;id() == <span class="stringliteral">&quot;cpu&quot;</span>)</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      tensor_reg = pair.second-&gt;tensor_registry.get();</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    }</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  }</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keywordflow">if</span> (backend_names != std::set&lt;std::string&gt;{<span class="stringliteral">&quot;builtin&quot;</span>, <span class="stringliteral">&quot;cpu&quot;</span>})</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;MinMaxRecorder must have cpu backend only.&quot;</span>);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inputs = _graph.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#ab25f47df48eaac8f44a817ceef1521ee">getInputs</a>(); <span class="comment">//.at(op_idx);</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; inputs.size(); ++i)</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  {</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">auto</span> input_idx = inputs.at(i);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">auto</span> tensor = tensor_reg-&gt;<a class="code hl_function" href="structonert_1_1backend_1_1_i_tensor_registry.html#a047ae974521f90c1b981104506e5744d">getITensor</a>(input_idx);</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> (tensor-&gt;is_constant())</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordflow">if</span> (tensor-&gt;data_type() != ir::DataType::FLOAT32)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keyword">auto</span> minmax = <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(tensor);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    _input_minmax.<a class="code hl_function" href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">append</a>({subg_idx, <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::IOIndex</a>{i}}, minmax.first, minmax.second);</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  }</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>}</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">  115</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">MinMaxRecorder::handleSubgraphBegin</a>(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> subg_idx)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>{</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">// Make sure there is only cpu backend except for builtin backend</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  std::set&lt;std::string&gt; backend_names;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <a class="code hl_struct" href="structonert_1_1backend_1_1_i_tensor_registry.html">backend::ITensorRegistry</a> *tensor_reg = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : _backend_contexts)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    backend_names.insert(pair.first-&gt;config()-&gt;id());</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">if</span> (pair.first-&gt;config()-&gt;id() == <span class="stringliteral">&quot;cpu&quot;</span>)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      tensor_reg = pair.second-&gt;tensor_registry.get();</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordflow">if</span> (backend_names != std::set&lt;std::string&gt;{<span class="stringliteral">&quot;builtin&quot;</span>, <span class="stringliteral">&quot;cpu&quot;</span>})</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;MinMaxRecorder must have cpu backend only.&quot;</span>);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inputs = _graph.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#ab25f47df48eaac8f44a817ceef1521ee">getInputs</a>(); <span class="comment">//.at(op_idx);</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; inputs.size(); ++i)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">auto</span> input_idx = inputs.at(i);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keyword">auto</span> tensor = tensor_reg-&gt;<a class="code hl_function" href="structonert_1_1backend_1_1_i_tensor_registry.html#a047ae974521f90c1b981104506e5744d">getITensor</a>(input_idx);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">if</span> (tensor-&gt;is_constant())</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> (tensor-&gt;data_type() != ir::DataType::FLOAT32)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keyword">auto</span> minmax = <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(tensor);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    _input_minmax.<a class="code hl_function" href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">append</a>({subg_idx, <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::IOIndex</a>{i}}, minmax.first, minmax.second);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
 </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="foldopen" id="foldopen00146" data-start="{" data-end="}">
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">  146</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">MinMaxRecorder::handleSubgraphEnd</a>(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a>)</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>{</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="comment">// It would be better to dump at the end of model execution, not subgraph</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// But it requires more changes than subgraph.</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#if MINMAX_H5DUMPER</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  _h5dumper.dump(_input_minmax, _op_minmax);</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  _raw_dumper.<a class="code hl_function" href="classonert_1_1exec_1_1_raw_min_max_dumper.html#a21cbd4cad2190f8faa9c77646b4325b8">dump</a>(_input_minmax, _op_minmax);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>}</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">  147</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">MinMaxRecorder::handleSubgraphEnd</a>(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a>)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>{</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="comment">// It would be better to dump at the end of model execution, not subgraph</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="comment">// But it requires more changes than subgraph.</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="preprocessor">#if MINMAX_H5DUMPER</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <span class="keyword">auto</span> h5dumper = <a class="code hl_class" href="classonert_1_1dumper_1_1h5_1_1_min_max_dumper.html">dumper::h5::MinMaxDumper</a>(_workspace_dir + <span class="stringliteral">&quot;/minmax.h5&quot;</span>);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  h5dumper.dump(_input_minmax, _op_minmax);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">auto</span> raw_dumper = <a class="code hl_class" href="classonert_1_1exec_1_1_raw_min_max_dumper.html">RawMinMaxDumper</a>(_workspace_dir + <span class="stringliteral">&quot;/minmax.bin&quot;</span>);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  raw_dumper.dump(_input_minmax, _op_minmax);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>}</div>
 </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>} <span class="comment">// namespace exec</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>} <span class="comment">// namespace exec</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_i_tensor_8h_html"><div class="ttname"><a href="_i_tensor_8h.html">ITensor.h</a></div></div>
+<div class="ttc" id="a_min_max_data_8h_html"><div class="ttname"><a href="_min_max_data_8h.html">MinMaxData.h</a></div></div>
 <div class="ttc" id="a_min_max_recorder_8h_html"><div class="ttname"><a href="_min_max_recorder_8h.html">MinMaxRecorder.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_html"><div class="ttname"><a href="classonert_1_1backend_1_1_backend.html">onert::backend::Backend</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2backend_2_backend_8h_source.html#l00036">Backend.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a></div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_8h_source.html#l00036">ITensor.h:37</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_a4da3f922392d46ccac1f27f892c1eea3"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">onert::exec::MinMaxRecorder::handleSubgraphEnd</a></div><div class="ttdeci">void handleSubgraphEnd(ir::SubgraphIndex) override</div><div class="ttdoc">Invoked just after model (not individual operation) execution ends.</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00146">MinMaxRecorder.cc:146</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_a698efe8135c0d49fe0852228d28e9161"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#a698efe8135c0d49fe0852228d28e9161">onert::exec::MinMaxRecorder::MinMaxRecorder</a></div><div class="ttdeci">MinMaxRecorder(const std::string &amp;workspace_dir, const ir::Graph &amp;graph, const backend::BackendContexts &amp;backend_contexts)</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00029">MinMaxRecorder.cc:29</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_a706e45e5847eeca6268d01ad8e5f0232"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#a706e45e5847eeca6268d01ad8e5f0232">onert::exec::MinMaxRecorder::handleJobEnd</a></div><div class="ttdeci">void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex, const backend::Backend *) override</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00072">MinMaxRecorder.cc:72</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_afffc8094950a9d4bf5e05620f0591cd0"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">onert::exec::MinMaxRecorder::handleSubgraphBegin</a></div><div class="ttdeci">void handleSubgraphBegin(ir::SubgraphIndex) override</div><div class="ttdoc">Invoked just before model (not individual operation) execution begins.</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00114">MinMaxRecorder.cc:114</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_raw_min_max_dumper_html_a21cbd4cad2190f8faa9c77646b4325b8"><div class="ttname"><a href="classonert_1_1exec_1_1_raw_min_max_dumper.html#a21cbd4cad2190f8faa9c77646b4325b8">onert::exec::RawMinMaxDumper::dump</a></div><div class="ttdeci">void dump(const exec::IOMinMaxMap &amp;in_minmax, const exec::OpMinMaxMap &amp;op_minmax) const</div><div class="ttdoc">Dump input minmax map.</div><div class="ttdef"><b>Definition</b> <a href="_min_max_data_8cc_source.html#l00028">MinMaxData.cc:28</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1h5_1_1_min_max_dumper_html"><div class="ttname"><a href="classonert_1_1dumper_1_1h5_1_1_min_max_dumper.html">onert::dumper::h5::MinMaxDumper</a></div><div class="ttdef"><b>Definition</b> <a href="_min_max_dumper_8h_source.html#l00058">MinMaxDumper.h:59</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_a4da3f922392d46ccac1f27f892c1eea3"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#a4da3f922392d46ccac1f27f892c1eea3">onert::exec::MinMaxRecorder::handleSubgraphEnd</a></div><div class="ttdeci">void handleSubgraphEnd(ir::SubgraphIndex) override</div><div class="ttdoc">Invoked just after model (not individual operation) execution ends.</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00147">MinMaxRecorder.cc:147</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_a698efe8135c0d49fe0852228d28e9161"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#a698efe8135c0d49fe0852228d28e9161">onert::exec::MinMaxRecorder::MinMaxRecorder</a></div><div class="ttdeci">MinMaxRecorder(const std::string &amp;workspace_dir, const ir::Graph &amp;graph, const backend::BackendContexts &amp;backend_contexts)</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00033">MinMaxRecorder.cc:33</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_a706e45e5847eeca6268d01ad8e5f0232"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#a706e45e5847eeca6268d01ad8e5f0232">onert::exec::MinMaxRecorder::handleJobEnd</a></div><div class="ttdeci">void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex, const backend::Backend *) override</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00073">MinMaxRecorder.cc:73</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_min_max_recorder_html_afffc8094950a9d4bf5e05620f0591cd0"><div class="ttname"><a href="classonert_1_1exec_1_1_min_max_recorder.html#afffc8094950a9d4bf5e05620f0591cd0">onert::exec::MinMaxRecorder::handleSubgraphBegin</a></div><div class="ttdeci">void handleSubgraphBegin(ir::SubgraphIndex) override</div><div class="ttdoc">Invoked just before model (not individual operation) execution begins.</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00115">MinMaxRecorder.cc:115</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_raw_min_max_dumper_html"><div class="ttname"><a href="classonert_1_1exec_1_1_raw_min_max_dumper.html">onert::exec::RawMinMaxDumper</a></div><div class="ttdef"><b>Definition</b> <a href="_min_max_data_8h_source.html#l00055">MinMaxData.h:56</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00033">Graph.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_ab25f47df48eaac8f44a817ceef1521ee"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#ab25f47df48eaac8f44a817ceef1521ee">onert::ir::Graph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00107">Graph.h:107</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">Graph.h:115</a></div></div>
@@ -281,7 +286,7 @@ $(document).ready(function(){initNavTree('_min_max_recorder_8cc_source.html','')
 <div class="ttc" id="aclassonert_1_1util_1_1_min_max_map_html_a5092165820baf57f2b1892d671d4b814"><div class="ttname"><a href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">onert::util::MinMaxMap::append</a></div><div class="ttdeci">void append(N node, float min, float max)</div><div class="ttdef"><b>Definition</b> <a href="util_2_min_max_map_8h_source.html#l00036">MinMaxMap.h:36</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">ObjectManager.h:121</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_html_ae138503c939b99456da0092d81727e62"><div class="ttname"><a href="namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62">onert::backend::BackendContexts</a></div><div class="ttdeci">std::unordered_map&lt; const Backend *, std::unique_ptr&lt; BackendContext &gt; &gt; BackendContexts</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00081">BackendContext.h:81</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1exec_html_a066a36efca45963d0e0d80fadace30e2"><div class="ttname"><a href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">onert::exec::minmaxFrom</a></div><div class="ttdeci">std::pair&lt; float, float &gt; minmaxFrom(const backend::ITensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00039">MinMaxRecorder.cc:39</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_a066a36efca45963d0e0d80fadace30e2"><div class="ttname"><a href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">onert::exec::minmaxFrom</a></div><div class="ttdeci">std::pair&lt; float, float &gt; minmaxFrom(const backend::ITensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_min_max_recorder_8cc_source.html#l00040">MinMaxRecorder.cc:40</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1_i_tensor_registry_html"><div class="ttname"><a href="structonert_1_1backend_1_1_i_tensor_registry.html">onert::backend::ITensorRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_registry_8h_source.html#l00031">ITensorRegistry.h:32</a></div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1_i_tensor_registry_html_a047ae974521f90c1b981104506e5744d"><div class="ttname"><a href="structonert_1_1backend_1_1_i_tensor_registry.html#a047ae974521f90c1b981104506e5744d">onert::backend::ITensorRegistry::getITensor</a></div><div class="ttdeci">virtual ITensor * getITensor(const ir::OperandIndex &amp;)=0</div><div class="ttdoc">Returns pointer of ITensor among native and migrant tensors.</div></div>

@@ -5,6 +5,7 @@ var nnfw__experimental_8h =
     [ "custom_kernel_registration_info", "structcustom__kernel__registration__info.html", "structcustom__kernel__registration__info" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
+    [ "NNFW_TRAINABLE_OPS_MAX_SIZE", "nnfw__experimental_8h.html#a0c2ee48d319b519d389ced5bec94783c", null ],
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
     [ "nnfw_loss_info", "nnfw__experimental_8h.html#a880f87813a0082373ae5b64f1b66606a", null ],
     [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
@@ -14,12 +15,20 @@ var nnfw__experimental_8h =
       [ "NNFW_CODEGEN_PREF_MEMORY_FIRST", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a567af972839b375025c092bf8e1daa5e", null ],
       [ "NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1", null ]
     ] ],
+    [ "NNFW_PREPARE_CONFIG", "nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581", [
+      [ "NNFW_PREPARE_CONFIG_PROFILE", "nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98", null ]
+    ] ],
     [ "NNFW_QUANTIZE_TYPE", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7", [
       [ "NNFW_QUANTIZE_TYPE_NOT_SET", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe", null ],
       [ "NNFW_QUANTIZE_TYPE_U8_ASYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72", null ],
       [ "NNFW_QUANTIZE_TYPE_I16_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a4ed617c7d8b6ddb2aea5125b215f5a64", null ],
       [ "NNFW_QUANTIZE_TYPE_WO_I8_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10", null ],
       [ "NNFW_QUANTIZE_TYPE_WO_I16_SYM", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a31d803af1794983db983ee7dd4aea8d8", null ]
+    ] ],
+    [ "NNFW_RUN_CONFIG", "nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d", [
+      [ "NNFW_RUN_CONFIG_DUMP_MINMAX", "nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3", null ],
+      [ "NNFW_RUN_CONFIG_TRACE", "nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad", null ],
+      [ "NNFW_RUN_CONFIG_PROFILE", "nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca", null ]
     ] ],
     [ "NNFW_TRAIN_LOSS", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660", [
       [ "NNFW_TRAIN_LOSS_UNDEFINED", "nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660aece3ed3093ee0562927dab0334c1d841", null ],
@@ -44,8 +53,12 @@ var nnfw__experimental_8h =
     [ "nnfw_push_pipeline_input", "nnfw__experimental_8h.html#ac631a7695a0fd98716e984f3af3154bd", null ],
     [ "nnfw_quantize", "nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9", null ],
     [ "nnfw_register_custom_op_info", "nnfw__experimental_8h.html#a1cc20d75d44428477e0020e4c8c581a6", null ],
+    [ "nnfw_reset_execute_config", "nnfw__experimental_8h.html#ab8ac04143e1db077ea615e463ea1ce38", null ],
+    [ "nnfw_reset_prepare_config", "nnfw__experimental_8h.html#ab370befbcaf1e98c99c1e43fedbc9dad", null ],
     [ "nnfw_set_backends_per_operation", "nnfw__experimental_8h.html#ac7b4df41162c0e5b6977110c2976072f", null ],
     [ "nnfw_set_codegen_model_path", "nnfw__experimental_8h.html#adf518c89391eaedd334ea28cf09a4710", null ],
+    [ "nnfw_set_execute_config", "nnfw__experimental_8h.html#ac1121e4e6f07fc7dbda4466afbd3f670", null ],
+    [ "nnfw_set_prepare_config", "nnfw__experimental_8h.html#a1a4d2e7d154230ba3115b18cc556d9b2", null ],
     [ "nnfw_set_quantization_type", "nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6", null ],
     [ "nnfw_set_quantized_model_path", "nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0", null ],
     [ "nnfw_train", "nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4", null ],

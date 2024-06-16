@@ -8,7 +8,7 @@ var namespaceonert_1_1compiler =
     [ "Compiler", "classonert_1_1compiler_1_1_compiler.html", "classonert_1_1compiler_1_1_compiler" ],
     [ "CompilerArtifact", "structonert_1_1compiler_1_1_compiler_artifact.html", "structonert_1_1compiler_1_1_compiler_artifact" ],
     [ "CompilerFactory", "classonert_1_1compiler_1_1_compiler_factory.html", "classonert_1_1compiler_1_1_compiler_factory" ],
-    [ "CompilerOptions", "classonert_1_1compiler_1_1_compiler_options.html", "classonert_1_1compiler_1_1_compiler_options" ],
+    [ "CompilerOptions", "structonert_1_1compiler_1_1_compiler_options.html", "structonert_1_1compiler_1_1_compiler_options" ],
     [ "ExecutionBuilder", "classonert_1_1compiler_1_1_execution_builder.html", "classonert_1_1compiler_1_1_execution_builder" ],
     [ "ExecutorFactory", "classonert_1_1compiler_1_1_executor_factory.html", "classonert_1_1compiler_1_1_executor_factory" ],
     [ "ExecutorFactoryArgs", "structonert_1_1compiler_1_1_executor_factory_args.html", "structonert_1_1compiler_1_1_executor_factory_args" ],

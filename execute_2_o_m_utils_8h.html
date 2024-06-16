@@ -95,7 +95,8 @@ $(document).ready(function(){initNavTree('execute_2_o_m_utils_8h.html',''); init
   <div class="headertitle"><div class="title">OMUtils.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_status_8h_source.html">OMStatus.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;cmath&gt;</code><br />
+<code>#include &quot;<a class="el" href="_o_m_status_8h_source.html">OMStatus.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_circle_reader_8h_source.html">core/reader/OMCircleReader.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_runtime_shape_8h_source.html">core/OMRuntimeShape.h</a>&quot;</code><br />
 </div>
@@ -119,8 +120,10 @@ Functions</h2></td></tr>
 <tr class="separator:a08c8cab72e9c82644f03ab9e6d4af1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b3b2086437cf9875010e5c914dbde38" id="r_a6b3b2086437cf9875010e5c914dbde38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38">onert_micro::execute::quantizeMultiplierSmallerThanOneExp</a> (double double_multiplier, int32_t *quantized_multiplier, int *left_shift)</td></tr>
 <tr class="separator:a6b3b2086437cf9875010e5c914dbde38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa8421c77e8aaf3acc2e662fb2f76f2e" id="r_afa8421c77e8aaf3acc2e662fb2f76f2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#afa8421c77e8aaf3acc2e662fb2f76f2e">onert_micro::execute::calculateActivationRangeQuantized</a> (circle::ActivationFunctionType activation, int32_t output_zero_point, float output_scale, circle::TensorType data_type, int32_t *activation_min, int32_t *activation_max)</td></tr>
-<tr class="separator:afa8421c77e8aaf3acc2e662fb2f76f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e0bf080a0023117641415c6eec4417d" id="r_a3e0bf080a0023117641415c6eec4417d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a3e0bf080a0023117641415c6eec4417d">onert_micro::execute::getQuantizedConvolutionMultiplers</a> (float input_scale, const <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; float &gt; *filter_scale, float output_scale)</td></tr>
+<tr class="separator:a3e0bf080a0023117641415c6eec4417d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4162f05d689856864535c2adcea44f70" id="r_a4162f05d689856864535c2adcea44f70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a4162f05d689856864535c2adcea44f70">onert_micro::execute::calculateActivationRangeQuantized</a> (circle::ActivationFunctionType activation, int32_t output_zero_point, float output_scale, circle::TensorType data_type, int32_t *activation_min, int32_t *activation_max)</td></tr>
+<tr class="separator:a4162f05d689856864535c2adcea44f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a179e123f603902f20e7f4f78573bcdfd" id="r_a179e123f603902f20e7f4f78573bcdfd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a179e123f603902f20e7f4f78573bcdfd">onert_micro::execute::computeOutSize</a> (circle::Padding padding, int image_size, int filter_size, int stride, int dilation_rate=1)</td></tr>
 <tr class="separator:a179e123f603902f20e7f4f78573bcdfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa7ceac3620b2b1f2610dbbe5367edff" id="r_afa7ceac3620b2b1f2610dbbe5367edff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#afa7ceac3620b2b1f2610dbbe5367edff">onert_micro::execute::computePadding</a> (int32_t stride, int32_t dilation_rate, int32_t in_size, int32_t filter_size, int32_t out_size)</td></tr>

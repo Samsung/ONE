@@ -1,11 +1,16 @@
 <map id="onert&#45;micro/onert&#45;micro/include/pal" name="onert&#45;micro/onert&#45;micro/include/pal">
-<area shape="rect" id="node1" href="dir_fa67ff5997c37682ad2ec9ab94d6ff7f.html" title="core" alt="" coords="50,210,97,236"/>
-<area shape="rect" id="node3" href="dir_398ea7c36d76878cd9138b670aaa7b8c.html" title="common" alt="" coords="38,137,109,162"/>
-<area shape="poly" id="edge1" href="dir_000122_000159.html" alt="" coords="76,163,76,195,71,195,71,163"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000122_000159.html" title="35" alt="" coords="75,184,89,199"/>
-<area shape="rect" id="node4" href="dir_27df084425cdb74fdb1aaa75ef807535.html" title="mcu" alt="" coords="37,63,83,89"/>
-<area shape="poly" id="edge2" href="dir_000527_000122.html" alt="" coords="65,88,71,121,66,122,60,89"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000527_000122.html" title="11" alt="" coords="69,109,83,124"/>
-<area shape="rect" id="clust2" href="dir_80b149f4d94c4524139d4d5b95e16bd0.html" alt="" coords="27,52,156,173"/>
-<area shape="rect" id="clust1" href="dir_32fb82c918ad356f958b362edaba515d.html" title="include" alt="" coords="16,16,167,247"/>
+<area shape="rect" id="node1" href="dir_fa67ff5997c37682ad2ec9ab94d6ff7f.html" title="core" alt="" coords="112,210,158,236"/>
+<area shape="rect" id="node3" href="dir_edc0a29d62f1f4985018a685f587dc4d.html" title="cmsisnn" alt="" coords="108,63,178,89"/>
+<area shape="poly" id="edge1" href="dir_000118_000161.html" alt="" coords="146,89,144,173,142,195,136,195,139,173,140,89"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000118_000161.html" title="2" alt="" coords="144,186,151,201"/>
+<area shape="rect" id="node4" href="dir_398ea7c36d76878cd9138b670aaa7b8c.html" title="common" alt="" coords="38,137,109,162"/>
+<area shape="poly" id="edge2" href="dir_000124_000161.html" alt="" coords="85,161,116,197,112,200,81,164"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000124_000161.html" title="41" alt="" coords="112,183,126,198"/>
+<area shape="rect" id="node5" href="dir_27df084425cdb74fdb1aaa75ef807535.html" title="mcu" alt="" coords="37,63,83,89"/>
+<area shape="poly" id="edge4" href="dir_000533_000161.html" alt="" coords="79,87,103,108,124,135,134,165,137,194,132,195,129,166,119,138,99,111,76,91"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000533_000161.html" title="2" alt="" coords="140,184,147,199"/>
+<area shape="poly" id="edge3" href="dir_000533_000124.html" alt="" coords="65,88,71,121,66,122,60,89"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000533_000124.html" title="17" alt="" coords="69,109,83,124"/>
+<area shape="rect" id="clust2" href="dir_80b149f4d94c4524139d4d5b95e16bd0.html" alt="" coords="27,52,251,173"/>
+<area shape="rect" id="clust1" href="dir_32fb82c918ad356f958b362edaba515d.html" title="include" alt="" coords="16,16,261,247"/>
 </map>

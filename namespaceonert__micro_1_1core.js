@@ -2,14 +2,17 @@ var namespaceonert__micro_1_1core =
 [
     [ "memory", "namespaceonert__micro_1_1core_1_1memory.html", "namespaceonert__micro_1_1core_1_1memory" ],
     [ "reader", "namespaceonert__micro_1_1core_1_1reader.html", "namespaceonert__micro_1_1core_1_1reader" ],
+    [ "train", "namespaceonert__micro_1_1core_1_1train.html", "namespaceonert__micro_1_1core_1_1train" ],
     [ "utils", "namespaceonert__micro_1_1core_1_1utils.html", [
       [ "castInputData", "namespaceonert__micro_1_1core_1_1utils.html#ac152b979ced7463692f71e4043083054", null ],
       [ "castOutputData", "namespaceonert__micro_1_1core_1_1utils.html#a08b2cd03b5ad70048889b8de4ee90a19", null ],
       [ "checkCondition", "namespaceonert__micro_1_1core_1_1utils.html#ac6a603d9f6087345f25e682cbd2ce12f", null ]
     ] ],
+    [ "ArithmeticQuantParams", "structonert__micro_1_1core_1_1_arithmetic_quant_params.html", "structonert__micro_1_1core_1_1_arithmetic_quant_params" ],
     [ "BinaryArithmeticBroadcastParams", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params" ],
     [ "ComparisonParams", "structonert__micro_1_1core_1_1_comparison_params.html", "structonert__micro_1_1core_1_1_comparison_params" ],
     [ "ConcatenationParams", "structonert__micro_1_1core_1_1_concatenation_params.html", "structonert__micro_1_1core_1_1_concatenation_params" ],
+    [ "ConvQuant", "structonert__micro_1_1core_1_1_conv_quant.html", "structonert__micro_1_1core_1_1_conv_quant" ],
     [ "FloatConv2D", "structonert__micro_1_1core_1_1_float_conv2_d.html", "structonert__micro_1_1core_1_1_float_conv2_d" ],
     [ "FullyConnectedParams", "structonert__micro_1_1core_1_1_fully_connected_params.html", "structonert__micro_1_1core_1_1_fully_connected_params" ],
     [ "L2NormalizationParams", "structonert__micro_1_1core_1_1_l2_normalization_params.html", "structonert__micro_1_1core_1_1_l2_normalization_params" ],
@@ -32,9 +35,11 @@ var namespaceonert__micro_1_1core =
     [ "OMRuntimeModule", "classonert__micro_1_1core_1_1_o_m_runtime_module.html", "classonert__micro_1_1core_1_1_o_m_runtime_module" ],
     [ "OMRuntimeShape", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html", "classonert__micro_1_1core_1_1_o_m_runtime_shape" ],
     [ "OMRuntimeStorage", "classonert__micro_1_1core_1_1_o_m_runtime_storage.html", "classonert__micro_1_1core_1_1_o_m_runtime_storage" ],
+    [ "OMTrainingRuntimeModule", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html", "classonert__micro_1_1core_1_1_o_m_training_runtime_module" ],
     [ "Pool2DParams", "structonert__micro_1_1core_1_1_pool2_d_params.html", "structonert__micro_1_1core_1_1_pool2_d_params" ],
     [ "SoftmaxParams", "structonert__micro_1_1core_1_1_softmax_params.html", "structonert__micro_1_1core_1_1_softmax_params" ],
     [ "StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ],
+    [ "TransposeParams", "structonert__micro_1_1core_1_1_transpose_params.html", "structonert__micro_1_1core_1_1_transpose_params" ],
     [ "BroadcastableOpCategory", "namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46", [
       [ "kNone", "namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46a35c3ace1970663a16e5c65baa5941b13", null ],
       [ "kNonBroadcast", "namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46a474311140849eefcabdcbb172ad82866", null ],

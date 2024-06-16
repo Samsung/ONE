@@ -171,16 +171,34 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2src_2import_
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">NoQuantization</a>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (input1-&gt;quantization()-&gt;scale()-&gt;size() != 1 or</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      input2-&gt;quantization()-&gt;scale()-&gt;size() != 1 or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale()-&gt;size() != 1)</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">UnsupportedQuantizationType</a>;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">if</span> (input1-&gt;quantization()-&gt;scale() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      input1-&gt;quantization()-&gt;zero_point() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>      input1-&gt;quantization()-&gt;scale()-&gt;size() != 1 or</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      input1-&gt;quantization()-&gt;zero_point()-&gt;size() != 1)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">NoQuantization</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordflow">if</span> (input2-&gt;quantization()-&gt;scale() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      input2-&gt;quantization()-&gt;zero_point() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      input2-&gt;quantization()-&gt;scale()-&gt;size() != 1 or</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      input2-&gt;quantization()-&gt;zero_point()-&gt;size() != 1)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">NoQuantization</a>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;zero_point() == <span class="keyword">nullptr</span> or</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale()-&gt;size() != 1 or</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;zero_point()-&gt;size() != 1)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">NoQuantization</a>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
 <div class="ttc" id="a_o_m_kernel_configure_builder_8h_html"><div class="ttname"><a href="_o_m_kernel_configure_builder_8h.html">OMKernelConfigureBuilder.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_kernel_8h_html"><div class="ttname"><a href="_o_m_runtime_kernel_8h.html">OMRuntimeKernel.h</a></div></div>
 <div class="ttc" id="a_o_m_status_8h_html"><div class="ttname"><a href="_o_m_status_8h.html">OMStatus.h</a></div></div>
@@ -195,7 +213,6 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2src_2import_
 <div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00024">OMMemoryManager.h:25</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba4b7665dd8538c67519f5475efc29f674">onert_micro::UnsupportedQuantizationType</a></div><div class="ttdeci">@ UnsupportedQuantizationType</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00027">OMStatus.h:27</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cbad5f1bb30ac504d5f64f969b6ebc1f3b5">onert_micro::NoQuantization</a></div><div class="ttdeci">@ NoQuantization</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00033">OMStatus.h:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,0 +1,7 @@
+<map id="onert_micro::test_model::TestDataFloatRound" name="onert_micro::test_model::TestDataFloatRound">
+<area shape="rect" id="Node000001" title=" " alt="" coords="14,183,174,223"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_round_base.html" title=" " alt="" coords="5,94,183,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,150,97,182,91,182,91,150"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="14,5,174,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="97,62,97,94,91,94,91,62"/>
+</map>

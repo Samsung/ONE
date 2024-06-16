@@ -1,11 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,112,81,137"/>
-<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_arg_min_max_layer_ex.html" title=" " alt="" coords="144,5,332,46"/>
-<area shape="poly" id="edge284_Node000000_Node000001" title=" " alt="" coords="67,99,95,77,127,57,156,44,158,49,130,61,98,81,71,103"/>
-<area shape="rect" id="Node000002" href="$classarm__compute_1_1_c_l_direct_transpose_conv_layer.html" title=" " alt="" coords="129,71,347,111"/>
-<area shape="poly" id="edge285_Node000000_Node000002" title=" " alt="" coords="95,113,128,107,129,112,96,118"/>
-<area shape="rect" id="Node000003" href="$classarm__compute_1_1_c_l_fully_connected_hybrid_layer.html" title=" " alt="" coords="132,136,344,177"/>
-<area shape="poly" id="edge286_Node000000_Node000003" title=" " alt="" coords="96,130,132,136,131,141,95,136"/>
-<area shape="rect" id="Node000004" href="$classarm__compute_1_1_c_l_fully_connected_layer_ex.html" title=" " alt="" coords="132,201,344,242"/>
-<area shape="poly" id="edge287_Node000000_Node000004" title=" " alt="" coords="71,145,99,167,130,186,159,198,156,203,127,191,96,171,68,149"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,141,31"/>
+<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_cast_bool_kernel.html" title="Class for the kernel converting boolean type." alt="" coords="189,5,402,31"/>
+<area shape="poly" id="edge277_Node000000_Node000001" title=" " alt="" coords="156,16,188,16,188,21,156,21"/>
 </map>

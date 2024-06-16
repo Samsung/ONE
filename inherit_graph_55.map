@@ -1,3 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structcircle__planner_1_1_allocation_node_information.html" title=" " alt="" coords="5,5,170,46"/>
+<area shape="rect" id="Node000000" href="$classcircle__eval__diff_1_1_metric_printer.html" title=" " alt="" coords="5,97,155,137"/>
+<area shape="rect" id="Node000001" href="$classcircle__eval__diff_1_1_m_a_e_printer.html" title=" " alt="" coords="209,5,389,31"/>
+<area shape="poly" id="edge30_Node000000_Node000001" title=" " alt="" coords="121,85,159,61,202,40,232,29,234,34,204,45,162,66,123,90"/>
+<area shape="rect" id="Node000002" href="$classcircle__eval__diff_1_1_m_a_p_e_printer.html" title=" " alt="" coords="205,55,393,80"/>
+<area shape="poly" id="edge31_Node000000_Node000002" title=" " alt="" coords="169,94,238,78,239,84,170,99"/>
+<area shape="rect" id="Node000003" href="$classcircle__eval__diff_1_1_m_p_e_i_r_printer.html" title=" " alt="" coords="203,104,395,130"/>
+<area shape="poly" id="edge32_Node000000_Node000003" title=" " alt="" coords="170,114,202,114,202,120,170,120"/>
+<area shape="rect" id="Node000004" href="$classcircle__eval__diff_1_1_m_s_e_printer.html" title=" " alt="" coords="209,153,389,179"/>
+<area shape="poly" id="edge33_Node000000_Node000004" title=" " alt="" coords="170,134,239,150,238,155,169,140"/>
+<area shape="rect" id="Node000005" href="$classcircle__eval__diff_1_1_top_k_match_printer.html" title=" " alt="" coords="209,203,389,244"/>
+<area shape="poly" id="edge34_Node000000_Node000005" title=" " alt="" coords="125,144,204,189,230,200,228,205,201,194,122,148"/>
 </map>

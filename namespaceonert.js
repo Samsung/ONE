@@ -5,6 +5,7 @@ var namespaceonert =
     [ "compiler", "namespaceonert_1_1compiler.html", "namespaceonert_1_1compiler" ],
     [ "dumper", "namespaceonert_1_1dumper.html", "namespaceonert_1_1dumper" ],
     [ "exec", "namespaceonert_1_1exec.html", "namespaceonert_1_1exec" ],
+    [ "exporter", "namespaceonert_1_1exporter.html", "namespaceonert_1_1exporter" ],
     [ "ir", "namespaceonert_1_1ir.html", "namespaceonert_1_1ir" ],
     [ "loader", "namespaceonert_1_1loader.html", "namespaceonert_1_1loader" ],
     [ "odc", "namespaceonert_1_1odc.html", "namespaceonert_1_1odc" ],
