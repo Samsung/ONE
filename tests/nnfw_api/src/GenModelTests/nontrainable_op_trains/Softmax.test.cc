@@ -39,6 +39,7 @@ TEST_F(GenModelTrain, NonTrainableOps_FC_Softmax)
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                        circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+    cgen.markAllOpsAsTrainable();
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
@@ -70,6 +71,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Softmax_InvalidShape)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -92,6 +94,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Softmax_InvalidType)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
