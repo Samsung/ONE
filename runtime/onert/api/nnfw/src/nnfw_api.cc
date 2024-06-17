@@ -489,3 +489,31 @@ NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->codegen(target, pref);
 }
+
+// Configuration
+
+NNFW_STATUS nnfw_set_prepare_config(nnfw_session *session, const NNFW_PREPARE_CONFIG key,
+                                    const char *value)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_prepare_config(key, value);
+}
+
+NNFW_STATUS nnfw_reset_prepare_config(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->reset_prepare_config();
+}
+
+NNFW_STATUS nnfw_set_execute_config(nnfw_session *session, const NNFW_RUN_CONFIG key,
+                                    const char *value)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_execute_config(key, value);
+}
+
+NNFW_STATUS nnfw_reset_execute_config(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->reset_execute_config();
+}

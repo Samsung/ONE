@@ -36,6 +36,7 @@ class CustomKernelRegistry;
 namespace exec
 {
 class Execution;
+struct ExecutionOptions;
 } // namespace exec
 namespace ir
 {
@@ -190,6 +191,11 @@ public:
   NNFW_STATUS set_codegen_model_path(const char *path);
   NNFW_STATUS codegen(const char *target, NNFW_CODEGEN_PREF pref);
 
+  NNFW_STATUS set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *value);
+  NNFW_STATUS reset_prepare_config();
+  NNFW_STATUS set_execute_config(const NNFW_RUN_CONFIG key, const char *value);
+  NNFW_STATUS reset_execute_config();
+
 private:
   const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
@@ -211,6 +217,7 @@ private:
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> _compiler_artifact;
   std::unique_ptr<onert::exec::Execution> _execution;
+  std::unique_ptr<onert::exec::ExecutionOptions> _exec_options;
   std::shared_ptr<onert::api::CustomKernelRegistry> _kernel_registry;
   std::vector<std::thread> _threads;
   std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;

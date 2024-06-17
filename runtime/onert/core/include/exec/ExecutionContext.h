@@ -68,6 +68,8 @@ struct ExecutionOptions
   bool dump_minmax = false;
   bool trace = false;
   bool profile = false;
+
+  static std::unique_ptr<ExecutionOptions> fromGlobalConfig();
 };
 
 struct ExecutionContext
