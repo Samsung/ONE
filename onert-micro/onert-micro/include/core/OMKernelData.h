@@ -50,6 +50,10 @@ struct SoftmaxParams
   int diff_min;
   int num_rows;
   int row_size;
+  int32_t input_zp;
+  int32_t output_zp;
+  float input_scale;
+  float output_scale;
 };
 
 struct LogSoftmaxParams

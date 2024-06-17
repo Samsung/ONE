@@ -79,5 +79,13 @@ OMStatus onert_micro::import::configure_kernel_CircleSoftmax(const OMConfigureAr
   if (input->quantization()->scale() == nullptr or input->quantization()->scale()->size() != 1)
     return NoQuantization;
 
+  if (output->quantization()->zero_point() == nullptr or
+      output->quantization()->zero_point()->size() != 1)
+    return NoQuantization;
+
+  if (input->quantization()->zero_point() == nullptr or
+      input->quantization()->zero_point()->size() != 1)
+    return NoQuantization;
+
   return status;
 }
