@@ -44,9 +44,6 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
   ir::OperandIndexMap<uint32_t> def_map;
   ir::OperandIndexSequence constants;
 
-  auto model_io =
-    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-
   // Prepare scanning
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
@@ -194,8 +191,6 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   const ir::Graph &graph = *ctx.graph();
   auto tensor_builder = ctx.tensor_builder;
 
-  auto model_io =
-    (graph.getInputs() + graph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;

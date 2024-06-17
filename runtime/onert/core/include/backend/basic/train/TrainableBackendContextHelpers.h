@@ -36,8 +36,6 @@ ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
 {
   const auto &tgraph = *ctx.trainable_graph();
 
-  auto model_io =
-    (tgraph.getInputs() + tgraph.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;
