@@ -292,7 +292,7 @@ NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backe
   return session->set_available_backends(backends);
 }
 
-/*
+/**
  * Set the operation's backend
  *
  * @param[in] session session to be modified
@@ -301,10 +301,9 @@ NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backe
  *
  * @return NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_set_op_backend(nnfw_session *session, const char *op, const char *backend)
+NNFW_STATUS nnfw_set_op_backend(nnfw_session *, const char *, const char *)
 {
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->set_op_backend(op, backend);
+  return nnfw_session::deprecated("nnfw_set_op_backend: Deprecated");
 }
 
 /*

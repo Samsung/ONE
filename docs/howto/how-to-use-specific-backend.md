@@ -9,9 +9,6 @@ ONE runtime has many ways to use specific backend during inference
 - For each backend string, `libbackend_{backend}.so` will be dynamically loaded during nnfw_prepare.
 - Among the multiple backends, the 1st element is used as the default backend.
 
-### [nnfw_set_op_backend](https://github.com/Samsung/ONE/blob/c46ddc04abdb58323fbd38389e6927f003bfaea1/runtime/onert/api/include/nnfw.h#L476)
-- The backend for op has higher priority than available backends specified by nnfw_set_available_backends.
-
 ## Using Environment Variable
 
 ### 1. BACKENDS
@@ -22,7 +19,6 @@ BACKENDS=cpu ./Product/out/bin/onert_run ...
 ```
 
 ### 2. OP_BACKEND_[OP_TYPE]
-- Same as `nnfw_set_op_backend`
 - Set backend for specific operator type
 - Example
   - Execute `Conv2D` operator on ruy backend and others on cpu backend

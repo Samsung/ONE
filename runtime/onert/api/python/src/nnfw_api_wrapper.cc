@@ -163,14 +163,6 @@ NNFW_SESSION::NNFW_SESSION(const char *package_file_path, const char *backends)
   ensure_status(nnfw_set_available_backends(this->session, backends));
   ensure_status(nnfw_prepare(this->session));
 }
-NNFW_SESSION::NNFW_SESSION(const char *package_file_path, const char *op, const char *backend)
-{
-  this->session = nullptr;
-  ensure_status(nnfw_create_session(&(this->session)));
-  ensure_status(nnfw_load_model_from_file(this->session, package_file_path));
-  ensure_status(nnfw_set_op_backend(this->session, op, backend));
-  ensure_status(nnfw_prepare(this->session));
-}
 NNFW_SESSION::~NNFW_SESSION()
 {
   if (session)

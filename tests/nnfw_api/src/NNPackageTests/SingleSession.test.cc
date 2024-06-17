@@ -136,4 +136,5 @@ TEST_F(ValidationTestSessionCreated, neg_deprecated_api)
   EXPECT_EQ(nnfw_prepare_pipeline(nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
   EXPECT_EQ(nnfw_push_pipeline_input(nullptr, nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
   EXPECT_EQ(nnfw_pop_pipeline_output(nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
+  EXPECT_EQ(nnfw_set_op_backend(nullptr, nullptr, nullptr), NNFW_STATUS_DEPRECATED_API);
 }
