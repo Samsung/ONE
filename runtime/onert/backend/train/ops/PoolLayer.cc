@@ -45,7 +45,7 @@ private:
   std::unique_ptr<Tensor> _arg_max_index;
 
 public:
-  MaxPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t, const uint32_t paddingTop,
+  MaxPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t paddingTop, const uint32_t,
             const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t kernelWidth,
             const uint32_t kernelHeight, const ir::Activation activation,
             const IPortableTensor *output)
