@@ -226,7 +226,7 @@ OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_conf
     auto batches = static_cast<float>(training_config.batch_size);
     for (uint32_t i = 0; i < flat_size; ++i)
     {
-      const auto cur_val = calculated_data[i] / batches;
+      const auto cur_val = calculated_data[i];
       exponent_data[i] = beta * exponent_data[i] + (1 - beta) * cur_val;
       exponent_square_data[i] =
         beta_squares * exponent_square_data[i] + (1 - beta_squares) * cur_val * cur_val;
