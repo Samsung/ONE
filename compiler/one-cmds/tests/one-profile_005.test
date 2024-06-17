@@ -23,7 +23,7 @@ This test assumes below directories.
     one
     ├── backends
     │   └── command
-    │       └── codegen
+    │       └── profile
     ├── bin
     ├── doc
     ├── include
@@ -62,6 +62,11 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 rm -f ${filename}.log
+
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
 
 # copy dummy-profile to bin folder
 cp dummy-profile ../bin/dummy-profile
