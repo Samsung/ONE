@@ -24,19 +24,8 @@ OMStatus onert_micro::execute::createConvParams(core::ConvQuant &params,
                                                 const circle::Tensor *input,
                                                 const circle::Tensor *filter,
                                                 const circle::Tensor *output,
-                                                const circle::Conv2DOptions *options)
+                                                circle::ActivationFunctionType act_type)
 {
-  const auto padding = options->padding();
-  const auto stride_height = options->stride_h();
-  const auto stride_width = options->stride_w();
-  const auto dilation_height_factor = options->dilation_h_factor();
-  const auto dilation_width_factor = options->dilation_h_factor();
-
-  params.stride_height = stride_height;
-  params.stride_width = stride_width;
-  params.dilation_height_factor = dilation_height_factor;
-  params.dilation_width_factor = dilation_width_factor;
-
   assert(input->quantization() != nullptr);  // Fix caller
   assert(filter->quantization() != nullptr); // Fix caller
   assert(output->quantization() != nullptr); // Fix caller
@@ -74,8 +63,8 @@ OMStatus onert_micro::execute::createConvParams(core::ConvQuant &params,
   int32_t activation_min{};
   int32_t activation_max{};
   OMStatus status = execute::calculateActivationRangeQuantized(
-    options->fused_activation_function(), static_cast<int32_t>(output_zp), output_scale,
-    output->type(), &activation_min, &activation_max);
+    act_type, static_cast<int32_t>(output_zp), output_scale, output->type(), &activation_min,
+    &activation_max);
   assert(status == Ok);
   if (status != Ok)
     return status;

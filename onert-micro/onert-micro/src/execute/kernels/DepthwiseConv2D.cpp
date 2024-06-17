@@ -22,6 +22,7 @@
 #include "execute/OMKernelExecutionBuilder.h"
 #include "execute/OMUtils.h"
 #include "execute/OMRuntimeKernel.h"
+#include "execute/kernels/ConvolutionCommon.h"
 
 #include "PALDepthwiseConv2D.h"
 
@@ -106,6 +107,8 @@ onert_micro::execute::execute_kernel_CircleDepthwiseConv2D(const OMExecuteArgs &
                                      input_height, input_width, weight_height, weight_width,
                                      options->padding(), &padding_h, &padding_w);
 
+  const auto output_shape = OMRuntimeShape(output);
+
   switch (input->type())
   {
 #ifndef DIS_FLOAT
@@ -129,12 +132,45 @@ onert_micro::execute::execute_kernel_CircleDepthwiseConv2D(const OMExecuteArgs &
       status = execute::pal::DepthwiseConv2D<float>(
         &params, input_shape, core::utils::castInputData<float>(input_data), weight_shape,
         core::utils::castInputData<float>(weight_data),
-        core::utils::castInputData<float>(bias_data), OMRuntimeShape(output),
+        core::utils::castInputData<float>(bias_data), output_shape,
         core::utils::castOutputData<float>(output_data));
       assert(status == Ok);
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      ConvQuant params{};
+      params.pad_h = padding_h;
+      params.pad_w = padding_w;
+      params.depth_multiplier = options->depth_multiplier();
+
+      const auto padding = options->padding();
+      const auto stride_height = options->stride_h();
+      const auto stride_width = options->stride_w();
+      const auto dilation_height_factor = options->dilation_h_factor();
+      const auto dilation_width_factor = options->dilation_h_factor();
+
+      params.stride_height = stride_height;
+      params.stride_width = stride_width;
+      params.dilation_height_factor = dilation_height_factor;
+      params.dilation_width_factor = dilation_width_factor;
+
+      status =
+        createConvParams(params, input, weight, output, options->fused_activation_function());
+      assert(status == Ok);
+      if (status != Ok)
+        return status;
+
+      status = pal::DepthwiseConvPerChannel(
+        params, input_shape, core::utils::castInputData<int8_t>(input_data), weight_shape,
+        core::utils::castInputData<int8_t>(weight_data),
+        core::utils::castInputData<int32_t>(bias_data), output_shape,
+        core::utils::castOutputData<int8_t>(output_data));
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedActivation;
