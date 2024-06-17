@@ -54,6 +54,9 @@ public:
   void *getInputDataAt(uint32_t position);
   void *getOutputDataAt(uint32_t position);
 
+  size_t getInputDataTypeSize(uint32_t position);
+  size_t getOutputDataTypeSize(uint32_t position);
+
   OMStatus allocateGraphInputs();
 
   OMStatus reset();
