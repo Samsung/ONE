@@ -41,6 +41,7 @@ TEST_F(GenModelTrain, NonTrainableOps_FC_Mean)
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                        circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+    cgen.markAllOpsAsTrainable();
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(uniformTCD<float>({{{1, 3}}, {{2, 1}}}, // inputs
@@ -71,6 +72,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Mean_InvalidShape)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -93,6 +95,7 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Mean_InvalidType)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
