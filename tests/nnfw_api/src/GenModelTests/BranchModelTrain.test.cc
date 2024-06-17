@@ -42,6 +42,7 @@ TEST_F(GenModelTrain, BranchOps_FC_Add)
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                        circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+    cgen.markAllOpsAsTrainable();
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(uniformTCD<float>(
@@ -83,6 +84,7 @@ TEST_F(GenModelTrain, BranchOps_FC_Sub)
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                        circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+    cgen.markAllOpsAsTrainable();
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(uniformTCD<float>(
@@ -130,12 +132,14 @@ TEST_F(GenModelTrain, BranchOps_FC_Mul)
                         circle::ActivationFunctionType::ActivationFunctionType_NONE);
     cgen.addOperatorFullyConnected({{mul_output, weight2, bias2}, {output}});
     cgen.setInputsAndOutputs({input0, input1}, {output});
+    cgen.markAllOpsAsTrainable();
 
     float learning_rate = 0.01f;
     int32_t batch_size = 1;
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                        circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+    cgen.markAllOpsAsTrainable();
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
