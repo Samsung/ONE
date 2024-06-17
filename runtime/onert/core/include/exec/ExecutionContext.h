@@ -69,14 +69,14 @@ struct ExecutionOptions
   bool trace = false;
   bool profile = false;
 
-  static std::unique_ptr<ExecutionOptions> fromGlobalConfig();
+  static void fromGlobalConfig(ExecutionOptions &options);
 };
 
 struct ExecutionContext
 {
   IODescription desc;
   bool shape_updated = false; // Require shape inference and buffer size calculation
-  ExecutionOptions optoins;
+  ExecutionOptions options;
 };
 
 } // namespace exec

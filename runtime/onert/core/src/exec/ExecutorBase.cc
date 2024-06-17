@@ -48,13 +48,15 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
 }
 
 void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs,
-                           const std::vector<backend::IPortableTensor *> &outputs)
+                           const std::vector<backend::IPortableTensor *> &outputs,
+                           const ExecutionOptions &options)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   // Deadlock occurs when an Executor is called recursively.
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = options;
 
   assert(inputs.size() == _graph.getInputs().size());
   assert(inputs.size() == _input_tensors.size());
@@ -95,7 +97,7 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
   }
 
   // Create observee
-  ExecutionObservee subject(_observers);
+  ExecutionObservee subject(_observers, options);
 
   executeImpl(subject);
 }
@@ -106,6 +108,7 @@ void ExecutorBase::execute(const ExecutionContext &ctx)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = ctx.options;
 
   // Set input(s)
   auto &desc = ctx.desc;
@@ -162,7 +165,7 @@ void ExecutorBase::execute(const ExecutionContext &ctx)
   }
 
   // Create observee
-  ExecutionObservee subject(_observers);
+  ExecutionObservee subject(_observers, ctx.options);
 
   executeImpl(subject);
 

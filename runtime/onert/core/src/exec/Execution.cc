@@ -39,6 +39,9 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   for (uint32_t i = 0; i < _executors->outputSize(); ++i)
     _ctx.desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
   _ctx.shape_updated = false;
+
+  // Initialize options
+  ExecutionOptions::fromGlobalConfig(_ctx.options);
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)

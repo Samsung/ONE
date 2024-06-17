@@ -243,8 +243,7 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
-    _compiler_artifact{nullptr}, _execution{nullptr},
-    _exec_options{onert::exec::ExecutionOptions::fromGlobalConfig()}, _kernel_registry{nullptr},
+    _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""}
 {
   // DO NOTHING
@@ -1899,15 +1898,15 @@ NNFW_STATUS nnfw_session::set_execute_config(const NNFW_RUN_CONFIG key, const ch
     case NNFW_RUN_CONFIG_DUMP_MINMAX:
       if (_coptions->workspace_dir.empty())
         return NNFW_STATUS_ERROR;
-      _exec_options->dump_minmax = true;
+      _execution->executionOptions().dump_minmax = true;
       break;
     case NNFW_RUN_CONFIG_TRACE:
       if (_coptions->workspace_dir.empty())
         return NNFW_STATUS_ERROR;
-      _exec_options->trace = true;
+      _execution->executionOptions().trace = true;
       break;
     case NNFW_RUN_CONFIG_PROFILE:
-      _exec_options->profile = true;
+      _execution->executionOptions().profile = true;
       break;
     default:
       return NNFW_STATUS_ERROR;
@@ -1924,9 +1923,9 @@ NNFW_STATUS nnfw_session::reset_execute_config()
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  _exec_options->dump_minmax = false;
-  _exec_options->trace = false;
-  _exec_options->profile = false;
+  _execution->executionOptions().dump_minmax = false;
+  _execution->executionOptions().trace = false;
+  _execution->executionOptions().profile = false;
 
   return NNFW_STATUS_NO_ERROR;
 }

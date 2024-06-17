@@ -56,7 +56,8 @@ public:
   void execute(const ExecutionContext &ctx) final;
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
-               const std::vector<backend::IPortableTensor *> &outputs) override;
+               const std::vector<backend::IPortableTensor *> &outputs,
+               const ExecutionOptions &options) override;
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
@@ -79,6 +80,8 @@ public:
   }
   backend::BackendContexts &getBackendContexts() { return _backend_contexts; }
 
+  const ExecutionOptions &currentOptions() const override { return _current_options; }
+
 protected:
   /**
    * @brief Returns @c true if any input tensor is dynamic; @c false if all are static tensors
@@ -95,6 +98,14 @@ protected:
   std::vector<backend::builtin::IOTensor *> _output_tensors;
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
+  /**
+   * It is set by execute() method only in thread-safe environment.
+   * It is used for non-primary executor call on builtin backend
+   * and accessed by entryExecutor's currentOptions() method.
+   *
+   * TODO: Find better way to pass config to non-primary executor
+   */
+  ExecutionOptions _current_options;
 };
 
 } // namespace exec

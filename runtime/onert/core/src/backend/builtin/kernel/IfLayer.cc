@@ -69,7 +69,8 @@ void IfLayer::run()
     subg_exec = _executors->at(_model_index, _else_subg_index);
   }
 
-  subg_exec->execute(_input_tensors, _output_tensors);
+  subg_exec->execute(_input_tensors, _output_tensors,
+                     _executors->entryExecutor()->currentOptions());
   VERBOSE(If) << "Return from $" << (cond_result ? _then_subg_index : _else_subg_index)
               << std::endl;
 }

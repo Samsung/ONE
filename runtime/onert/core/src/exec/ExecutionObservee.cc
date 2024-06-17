@@ -21,10 +21,11 @@ namespace onert
 namespace exec
 {
 
-ExecutionObservee::ExecutionObservee(const ExecObservers &observers)
+ExecutionObservee::ExecutionObservee(const ExecObservers &observers,
+                                     const ExecutionOptions &options)
 {
   // TODO Use execution option
-  if (util::getConfigBool(util::config::MINMAX_DUMP))
+  if (options.dump_minmax)
   {
     auto observer = observers.get(ObserverType::MINMAX_DUMP);
     if (!observer)
@@ -33,7 +34,7 @@ ExecutionObservee::ExecutionObservee(const ExecObservers &observers)
     _observers.emplace_back(observer);
   }
 
-  if (util::getConfigBool(util::config::TRACING_MODE))
+  if (options.trace)
   {
     auto observer = observers.get(ObserverType::TRACING);
     if (!observer)
@@ -42,7 +43,7 @@ ExecutionObservee::ExecutionObservee(const ExecObservers &observers)
     _observers.emplace_back(observer);
   }
 
-  if (util::getConfigBool(util::config::PROFILING_MODE))
+  if (options.profile)
   {
     auto observer = observers.get(ObserverType::PROFILE);
     if (!observer)
