@@ -25,7 +25,7 @@ def get_cmd_args():
 
 def print_training_hparameters(circle_model: CirclePlus):
     '''
-    if in_circle_model has training hyperparameters, print it out
+    if circle_model has training hyperparameters, print it out
     '''
     tinfo: typing.Union[TrainParam, None] = circle_model.get_train_param()
 
