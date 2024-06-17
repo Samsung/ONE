@@ -16,33 +16,63 @@
 
 # run dummy-profile driver with given target
 
+: '
+This test assumes below directories.
+
+[one hierarchy]
+    one
+    ├── backends
+    │   └── command
+    │       └── codegen
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test # pwd
+'
+
+TARGET_ALREADY_EXIST=true
+
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
+
+configfile="one-profile_005.cfg"
+targetfile="one-profile_005.ini"
+# not used
+inputfile="one-profile_005.tvn"
+
+clean_envir()
+{
+  rm -rf ../bin/dummy-profile
+  rm -rf ../target/${targetfile}
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+}
 
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-profile
+  clean_envir
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-# not used
-inputfile="sample.tvn"
-configfile="one-profile_005.cfg"
-
 rm -f ${filename}.log
 
 # copy dummy-profile to bin folder
 cp dummy-profile ../bin/dummy-profile
+cp ${targetfile} ../target/
 
 # run test
-one-profile -C ${configfile} -T rose ${inputfile} > ${filename}.log
+one-profile -C ${configfile} -T one-profile_005 ${inputfile} > ${filename}.log
 
-rm -rf ../bin/dummy-profile
+clean_envir
 
-if grep -q "dummy-profile with rose target" "${filename}.log"; then
+if grep -q "dummy-profile with one-profile_005 target" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi

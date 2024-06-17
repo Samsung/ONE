@@ -16,33 +16,66 @@
 
 # run dummy-profile drvier with given target overwrited from the command line
 
+: '
+This test assumes below directories.
+
+[one hierarchy]
+    one
+    ├── backends
+    │   └── command
+    │       └── profile
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test # pwd
+'
+
+TARGET_ALREADY_EXIST=true
+
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
+
+configfile="one-profile_007.cfg"
+targetfile="one-profile_007.ini"
+
+clean_envir()
+{
+  rm -rf ../bin/dummy-profile
+  rm -rf ../target/${targetfile}
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+}
 
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-profile
+  clean_envir
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-outputfile="sample.tvn"
-configfile="one-profile_006.cfg"
-
-rm -rf ${outputfile}
 rm -f ${filename}.log
+
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
 
 # copy dummy-profile to bin folder
 cp dummy-profile ../bin/dummy-profile
+cp ${targetfile} ../target/
 
 # run test
-one-profile -C ${configfile} -T rose > ${filename}.log 2>&1
+one-profile -C ${configfile} -T one-profile_007 > ${filename}.log 2>&1
 
-rm -rf ../bin/dummy-profile
+clean_envir
 
-if grep -q "dummy-profile with rose target" "${filename}.log"; then
+if grep -q "dummy-profile with one-profile_007 target" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi

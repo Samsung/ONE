@@ -17,6 +17,8 @@
 import glob
 import ntpath
 import os
+
+import onelib.utils as oneutils
 """
 [one hierarchy]
 one
@@ -58,6 +60,28 @@ def get_list(cmdname):
             backends_list.append(cand)
 
     return backends_list
+
+
+def get_backend_from_target_conf(target: str):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    target_conf_path = dir_path + f'/../../target/{target}.ini'
+    if not os.path.isfile(target_conf_path):
+        return None
+
+    # target config doesn't have section.
+    # but, configparser needs configs to have one or more sections.
+    DUMMY_SECTION = 'dummy_section'
+    with open(target_conf_path, 'r') as f:
+        config_str = f'[{DUMMY_SECTION}]\n' + f.read()
+    parser = oneutils.get_config_parser()
+    parser.read_string(config_str)
+    assert parser.has_section(DUMMY_SECTION)
+
+    BACKEND_KEY = 'BACKEND'
+    if BACKEND_KEY in parser[DUMMY_SECTION]:
+        return parser[DUMMY_SECTION][BACKEND_KEY]
+
+    return None
 
 
 def search_driver(driver):

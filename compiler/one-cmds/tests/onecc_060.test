@@ -16,33 +16,66 @@
 
 # 'target' option
 
+: '
+This test assumes below directories.
+
+[one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test # pwd
+'
+
+TARGET_ALREADY_EXIST=true
+
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
+
+configfile="onecc_060.cfg"
+outputfile="onecc_060.tvn"
+targetfile="onecc_060.ini"
+
+clean_envir()
+{
+  rm -rf ../bin/dummy-compile
+  rm -rf ../target/${targetfile}
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+}
 
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-compile
+  clean_envir
   exit 255
 }
 
 trap trap_err_onexit ERR
 
-configfile="onecc_060.cfg"
-outputfile="onecc_060.tvn"
-
 rm -f ${filename}.log
 rm -rf ${outputfile}
 
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
+
 # copy dummy tools to bin folder
 cp dummy-compile ../bin/dummy-compile
+cp ${targetfile} ../target/
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
 
-rm -rf ../bin/dummy-compile
+clean_envir
 
-if grep -q "dummy-compile with rose target" "${outputfile}"; then
+if grep -q "dummy-compile with onecc_060 target" "${outputfile}"; then
   echo "${filename_ext} SUCCESS"
   exit 0
 fi
