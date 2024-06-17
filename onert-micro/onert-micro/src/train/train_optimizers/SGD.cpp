@@ -112,6 +112,9 @@ OMStatus SGD::updateWeights(const onert_micro::OMTrainingContext &training_confi
     auto *f_weight_data = reinterpret_cast<float *>(weight_data);
     float lambda = training_config.learning_rate;
     const uint32_t batch_size = training_config.batch_size;
+
+    assert(batch_size != 0);
+
     for (uint32_t i = 0; i < flat_size; ++i)
     {
       f_weight_data[i] -= (lambda * grad_data[i]) / (static_cast<float>(batch_size));

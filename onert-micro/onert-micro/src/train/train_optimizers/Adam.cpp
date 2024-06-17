@@ -246,6 +246,10 @@ OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_conf
     float beta_in_pow_batch = std::pow(beta, num_step);
     float beta_square_in_pow_batch = std::pow(beta_squares, num_step);
     float epsilon = training_config.epsilon;
+
+    assert((1.f - beta_in_pow_batch) != 0);
+    assert((1.f - beta_square_in_pow_batch) != 0);
+
     for (uint32_t i = 0; i < flat_size; ++i)
     {
       float exponent_corrected = exponent_data[i] / (1.f - beta_in_pow_batch);
