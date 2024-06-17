@@ -44,6 +44,8 @@ public:
 public:
   void addTrainInfo(const TrainInfo &info);
 
+  void markAllOpsAsTrainable();
+
   // NOTE: this is overriden from CircleGen::finish()
   CircleBuffers finish();
 

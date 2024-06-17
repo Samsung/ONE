@@ -16,6 +16,8 @@
 
 #include "CirclePlusGen.h"
 
+#include <numeric>
+
 CircleBuffers CirclePlusGen::finish()
 {
   CircleBuffers cbufs;
@@ -25,6 +27,12 @@ CircleBuffers CirclePlusGen::finish()
 }
 
 void CirclePlusGen::addTrainInfo(const TrainInfo &info) { _info = info; }
+
+void CirclePlusGen::markAllOpsAsTrainable()
+{
+  _info.trainable_ops.resize(getCurrentSubgraphOpsSize());
+  std::iota(std::begin(_info.trainable_ops), std::end(_info.trainable_ops), 0);
+}
 
 CircleBuffer CirclePlusGen::createModelTraining()
 {

@@ -36,6 +36,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
@@ -67,6 +68,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected_OptionalBias)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
@@ -101,6 +103,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_FourOperand)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -128,6 +131,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_InvalidWeightShape)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -152,6 +156,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_NoBias)
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
                      circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});

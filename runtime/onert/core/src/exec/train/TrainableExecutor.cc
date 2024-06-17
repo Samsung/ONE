@@ -187,6 +187,10 @@ void TrainableExecutor::backwardImpl(const ExecutionObservee &subject, uint32_t 
     for (auto &&index : _backward_order)
     {
       const auto &code = _code_map.at(index);
+      if (!code.op->isRequiredForBackward())
+      {
+        continue;
+      }
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());

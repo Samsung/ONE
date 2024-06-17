@@ -133,6 +133,7 @@ public:
   uint32_t addTensor(const TensorParams &params, const SparsityParams &sp);
   void setInputsAndOutputs(const std::vector<int> &inputs, const std::vector<int> &outputs);
   uint32_t nextSubgraph();
+  uint32_t getCurrentSubgraphOpsSize() const;
   CircleBuffer finish();
 
   // ===== Add Operator methods begin (SORTED IN ALPHABETICAL ORDER) =====
