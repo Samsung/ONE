@@ -241,7 +241,7 @@ OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_conf
       return UnknownError;
 
     float *f_weight_data = reinterpret_cast<float *>(weight_data);
-    float lambda = training_config.lambda;
+    float lambda = training_config.learning_rate;
     float num_step = static_cast<float>(training_config.num_step);
     float beta_in_pow_batch = std::pow(beta, num_step);
     float beta_square_in_pow_batch = std::pow(beta_squares, num_step);

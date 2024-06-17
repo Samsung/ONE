@@ -50,7 +50,7 @@ public:
       onert_micro::OMTrainingContext train_context;
       train_context.batch_size = batch_size;
       train_context.num_of_train_layers = num_train_layers;
-      train_context.lambda = lambda;
+      train_context.learning_rate = lambda;
       train_context.loss = loss;
       train_context.optimizer = train_optim;
       train_context.beta = beta;

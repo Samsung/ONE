@@ -78,6 +78,7 @@ struct OMTrainingContext
   float epsilon = 10e-8;
   uint32_t num_step = 0;
   uint32_t num_epoch = 0;
+  uint32_t epochs = 0;
 };
 
 /*

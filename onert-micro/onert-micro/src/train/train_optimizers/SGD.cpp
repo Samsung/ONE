@@ -110,7 +110,7 @@ OMStatus SGD::updateWeights(const onert_micro::OMTrainingContext &training_confi
       return UnknownError;
 
     float *f_weight_data = reinterpret_cast<float *>(weight_data);
-    float lambda = training_config.lambda;
+    float lambda = training_config.learning_rate;
     const uint32_t batch_size = training_config.batch_size;
     for (uint32_t i = 0; i < flat_size; ++i)
     {
