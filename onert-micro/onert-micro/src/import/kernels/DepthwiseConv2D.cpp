@@ -70,6 +70,10 @@ onert_micro::import::configure_kernel_CircleDepthwiseConv2D(const OMConfigureArg
   if (status != Ok)
     return status;
 
+  status = utils::checkCondition(input->type() == weight->type());
+  if (status != Ok)
+    return status;
+
   status = utils::checkCondition(input_shape.dimensionsCount() == 4);
   if (status != Ok)
     return status;
@@ -101,7 +105,10 @@ onert_micro::import::configure_kernel_CircleDepthwiseConv2D(const OMConfigureArg
   }
 
   if (input->type() == circle::TensorType_FLOAT32)
+  {
+    status = utils::checkCondition(bias == nullptr or input->type() == bias->type());
     return status;
+  }
 
   auto input_quant = input->quantization();
   auto filter_quant = weight->quantization();
