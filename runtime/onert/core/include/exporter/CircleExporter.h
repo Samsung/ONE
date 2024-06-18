@@ -16,6 +16,7 @@
 
 #include <string>
 #include <memory>
+#include <mutex>
 
 namespace circle
 {
@@ -56,6 +57,7 @@ private:
   std::string _path;
   std::string _data;
   std::unique_ptr<::circle::ModelT> _model;
+  std::mutex _mutex;
 };
 
 } // namespace exporter
