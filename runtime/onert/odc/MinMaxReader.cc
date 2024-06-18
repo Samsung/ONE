@@ -22,7 +22,7 @@
 namespace
 {
 
-void inline readMMFile(void *ptr, size_t size, size_t count, FILE *fp, const std::string &err_msg)
+void readMMFile(void *ptr, size_t size, size_t count, FILE *fp, const std::string &err_msg)
 {
   if (fread(ptr, size, count, fp) != count)
   {
@@ -31,7 +31,7 @@ void inline readMMFile(void *ptr, size_t size, size_t count, FILE *fp, const std
   }
 }
 
-void inline checkHeader(FILE *file)
+void checkHeader(FILE *file)
 {
   // Check magic code and version
   // Match with runtime/onert/core/src/exec/MinMaxData.cc
@@ -41,13 +41,18 @@ void inline checkHeader(FILE *file)
   {
     uint32_t read_magic_code = 0;
     uint32_t read_version = 0;
-    if (std::fread(&read_magic_code, sizeof(uint32_t), 1, file) != 1 ||
-        read_magic_code != MAGIC_CODE)
+
+    readMMFile(&read_magic_code, sizeof(uint32_t), 1, file,
+               "MinMaxReader: Failed to read magic code");
+    readMMFile(&read_version, sizeof(uint32_t), 1, file, "MinMaxReader: Failed to read version");
+
+    if (read_magic_code != MAGIC_CODE)
     {
       std::fclose(file);
       throw std::runtime_error{"MinMaxReader: Invalid magic code"};
     }
-    if (std::fread(&read_version, sizeof(uint32_t), 1, file) != 1 || read_version != VERSION)
+
+    if (read_version != VERSION)
     {
       std::fclose(file);
       throw std::runtime_error{"MinMaxReader: Invalid version"};
