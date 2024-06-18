@@ -10,7 +10,8 @@ set(SOURCES
         OMDataType.cpp
         memory/OMMemoryManager.cpp
         memory/OMRuntimeAllocator.cpp
-        reader/OMCircleReader.cpp)
+        reader/OMCircleReader.cpp
+        reader/OMWeightOnlyFormatReader.cpp)
 
 add_library(${OM_CORE_LIB} STATIC ${SOURCES})
 
