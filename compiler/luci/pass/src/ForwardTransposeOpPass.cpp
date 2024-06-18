@@ -164,6 +164,7 @@ private:
     {
       if (auto y = dynamic_cast<luci::CircleTranspose *>(node->y()))
       {
+        RETURN_FALSE_UNLESS(node->rank() == y->rank());
         RETURN_FALSE_UNLESS(check_rank_four(x));
         RETURN_FALSE_UNLESS(check_perm(y));
 
@@ -190,6 +191,7 @@ private:
     {
       if (auto x = dynamic_cast<luci::CircleTranspose *>(node->x()))
       {
+        RETURN_FALSE_UNLESS(node->rank() == x->rank());
         RETURN_FALSE_UNLESS(check_rank_four(y));
         RETURN_FALSE_UNLESS(check_perm(x));
 
