@@ -217,8 +217,12 @@ def main():
                     given_backend, cmd="codegen", target=target_to_run)
                 # [11], [13]
                 if target_to_run and parser:
-                    # DO NOTHING
-                    pass
+                    if oneutils.is_valid_attr(cfg_args, 'command'):
+                        given_backends = [given_backend]
+                        setattr(cfg_args, given_backend, cfg_args.command)
+                    else:
+                        # DO NOTHING
+                        pass
                 # [12], [14]
                 else:
                     # [3]
@@ -236,7 +240,7 @@ def main():
 
     # make commands
     # 1. if command schema exists
-    if parser:
+    if parser and not oneutils.is_valid_attr(cfg_args, 'command'):
         codegen_cmd = parser.make_cmd(cfg_args)
         # run backend driver
         oneutils.run(codegen_cmd, err_prefix=parser.driver)
