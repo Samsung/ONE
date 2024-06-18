@@ -200,6 +200,12 @@ struct ComparisonParams
   bool is_broadcast;
 };
 
+struct QuantizationParams
+{
+  float scale;
+  int32_t zero_point;
+};
+
 } // namespace core
 } // namespace onert_micro
 
