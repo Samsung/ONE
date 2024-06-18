@@ -39,9 +39,10 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
   {
     auto &object = _graph.operands().at(input);
 
-    if (object.isConstant() && object.getUses().size() >= 2)
+    const auto key = ReplaceKey{input, factor};
+    if (object.isConstant() && (object.getUses().size() >= 2 ||
+                                _replace_operands_map.find(key) != _replace_operands_map.end()))
     {
-      const auto key = ReplaceKey{input, factor};
       if (_replace_operands_map.count(key) == 0)
       {
         ir::Operand new_object(object);
