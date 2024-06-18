@@ -22,8 +22,6 @@ This test assumes below directories.
 [one hierarchy]
     one
     ├── backends
-    │   └── command
-    │       └── profile
     ├── bin
     ├── doc
     ├── include

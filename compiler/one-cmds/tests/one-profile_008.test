@@ -23,7 +23,8 @@ This test assumes below directories.
     one
     ├── backends
     │   └── command
-    │       └── profile
+    │       └── dummy
+    │           └── profile.py
     ├── bin
     ├── doc
     ├── include

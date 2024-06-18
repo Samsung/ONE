@@ -24,6 +24,7 @@ This test assumes below directories.
     ├── backends
     │   └── command
     │       └── dummy (backend name)
+    │           └── profile.py
     ├── bin
     ├── doc
     ├── include
