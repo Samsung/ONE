@@ -23,7 +23,8 @@ This test assumes below directories.
     one
     ├── backends
     │   └── command
-    │       └── codegen
+    │       └── dummy
+    │           └── codegen.py
     ├── bin
     ├── doc
     ├── include
@@ -78,9 +79,6 @@ trap trap_err_onexit ERR
 
 rm -f ${filename}.log
 rm -rf ${outputfile}
-
-# copy dummy tools to bin folder
-cp ${driver_name} ../bin/${driver_name}
 
 if [ ! -d "../target/" ]; then
   mkdir -p ../target/

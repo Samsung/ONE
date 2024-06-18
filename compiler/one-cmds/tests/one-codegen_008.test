@@ -23,7 +23,8 @@ This test assumes below directories.
     one
     ├── backends
     │   └── command
-    │       └── codegen
+    │       └── dummy
+    │           └── codegen.py
     ├── bin
     ├── doc
     ├── include

@@ -24,6 +24,7 @@ This test assumes below directories.
     ├── backends
     │   └── command
     │       └── dummy (backend name)
+    │           └── codegen.py
     ├── bin
     ├── doc
     ├── include
