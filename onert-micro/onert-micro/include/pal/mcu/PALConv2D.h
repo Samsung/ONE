@@ -46,8 +46,8 @@ OMStatus ConvPerChannel(const core::ConvQuant &params, const core::OMRuntimeShap
   const int pad_height = params.pad_h;
   const int32_t output_offset = params.output_offset;
 
-  const std::vector<int32_t> &output_multiplier = params.per_channel_output_multiplier;
-  const std::vector<int32_t> &output_shift = params.per_channel_output_shift;
+  const auto &output_multiplier = params.per_channel_output_multiplier;
+  const auto &output_shift = params.per_channel_output_shift;
 
   // Set min and max value of the output.
   const int32_t output_activation_min = params.quantized_activation_min;
