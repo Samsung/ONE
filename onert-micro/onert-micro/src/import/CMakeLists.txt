@@ -5,6 +5,7 @@ set(SOURCES
         OMKernelConfiguration.cpp
         OMKernelConfigureBuilder.cpp
         helpers/OMConfigureSISOKernel.cpp
+        helpers/OMPadCommon.cpp
         helpers/OMConfigureTISOKernel.cpp
         )
 
