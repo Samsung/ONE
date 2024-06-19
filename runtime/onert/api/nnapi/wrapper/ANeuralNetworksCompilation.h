@@ -28,7 +28,7 @@
 struct ANeuralNetworksCompilation
 {
 public:
-  ANeuralNetworksCompilation(const ANeuralNetworksModel *model) noexcept;
+  ANeuralNetworksCompilation(const ANeuralNetworksModel *model);
 
 public:
   bool finish() noexcept;
