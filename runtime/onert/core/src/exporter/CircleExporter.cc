@@ -60,17 +60,31 @@ void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
 {
   exec->iterateTrainableTensors(
     [&](const ir::OperandIndex &idx, const backend::train::ITrainableTensor *tensor) {
+      std::lock_guard<std::mutex> guard(_mutex);
       const auto &subgs = _model->subgraphs;
       if (subgs.size() != 1)
         throw std::runtime_error("Circle does not has valid subgraph or has multiple subgraphs");
 
-      const auto &subg = subgs.at(0); // Get 1st subgraph
-      if (!idx.valid() || idx.value() >= subg->tensors.size())
-        throw std::runtime_error("Trainable tensor index is out of range");
+      if (!idx.valid())
+        throw std::runtime_error("Trainable tensor is invalid");
 
-      const auto buf_idx = subg->tensors.at(idx.value())->buffer;
-      if (buf_idx >= _model->buffers.size())
-        throw std::runtime_error("Buffer for trainable tensors is invalid");
+      uint32_t buf_idx = -1;
+      const auto &subg = subgs.at(0); // Get 1st subgraph
+      if (idx.value() >= subg->tensors.size())
+      {
+        auto buffer = std::make_unique<::circle::BufferT>();
+        buffer->size = tensor->total_size();
+        buffer->data.resize(buffer->size);
+
+        buf_idx = _model->buffers.size();
+        _model->buffers.push_back(std::move(buffer));
+      }
+      else
+      {
+        buf_idx = subg->tensors.at(idx.value())->buffer;
+        if (buf_idx >= _model->buffers.size())
+          throw std::runtime_error("Buffer for trainable tensors is invalid");
+      }
 
       const auto &buffer = _model->buffers.at(buf_idx);
 
@@ -78,7 +92,7 @@ void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
       if (org_buf_sz != tensor->total_size())
         throw std::runtime_error("Trained tensor buffer size does not match original tensor's one");
 
-      memcpy(&buffer->data[0], tensor->buffer(), org_buf_sz);
+      memcpy(buffer->data.data(), tensor->buffer(), org_buf_sz);
     });
 }
 
