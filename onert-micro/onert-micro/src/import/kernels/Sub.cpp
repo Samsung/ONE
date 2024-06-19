@@ -14,71 +14,12 @@
  * limitations under the License.
  */
 
-#include "OMStatus.h"
-
-#include "core/OMUtils.h"
-#include "import/OMKernelConfigureBuilder.h"
-#include "execute/OMRuntimeKernel.h"
+#include "import/helpers/OMConfigureTISOKernel.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-namespace
-{
-
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
-
-// TODO: reduce code duplication with Add, Mul
 OMStatus onert_micro::import::configure_kernel_CircleSub(const OMConfigureArgs &config_args)
 {
-  OMRuntimeContext &runtime_context = config_args.runtime_context;
-  uint16_t op_index = config_args.kernel_index;
-
-  onert_micro::execute::OMRuntimeKernel runtime_kernel;
-
-  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-  if (status != Ok)
-    return status;
-
-  const circle::Tensor *input1 = runtime_kernel.inputs[input1TensorIdx];
-  const circle::Tensor *input2 = runtime_kernel.inputs[input2TensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input1 != nullptr);
-  assert(input2 != nullptr);
-  assert(output != nullptr);
-
-  status = utils::checkCondition(input1->type() == output->type());
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input2->type() == output->type());
-  if (status != Ok)
-    return status;
-
-  if (input1->type() != circle::TensorType_INT8 and input1->type() != circle::TensorType_INT16)
-    return status;
-
-#ifndef DIS_QUANT
-
-  // Check quantization params
-  if (input1->quantization() == nullptr or input2->quantization() == nullptr or
-      output->quantization() == nullptr)
-  {
-    return NoQuantization;
-  }
-
-  if (input1->quantization()->scale()->size() != 1 or
-      input2->quantization()->scale()->size() != 1 or output->quantization()->scale()->size() != 1)
-  {
-    return UnsupportedQuantizationType;
-  }
-
-#endif // DIS_QUANT
-
-  return status;
+  return import::helpers::configure_TISO_kernel(config_args);
 }
