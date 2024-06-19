@@ -16,6 +16,7 @@
 
 #include <string>
 #include <memory>
+#include <mutex>
 
 namespace circle
 {
@@ -27,6 +28,13 @@ namespace exec
 {
 class Execution;
 } // namespace exec
+namespace ir
+{
+namespace train
+{
+class TrainingInfo;
+} // namespace train
+} // namespace ir
 } // namespace onert
 
 namespace onert
@@ -40,6 +48,7 @@ public:
   ~CircleExporter();
 
   void updateWeight(const std::unique_ptr<onert::exec::Execution> &exec);
+  void updateMetadata(const std::unique_ptr<onert::ir::train::TrainingInfo> &training_info);
 
 private:
   void finish();
@@ -48,6 +57,7 @@ private:
   std::string _path;
   std::string _data;
   std::unique_ptr<::circle::ModelT> _model;
+  std::mutex _mutex;
 };
 
 } // namespace exporter

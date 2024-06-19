@@ -17,11 +17,12 @@
 #include "exporter/CircleExporter.h"
 
 #include "exec/Execution.h"
+#include "ir/train/TrainingInfo.h"
 #include "circle_schema_generated.h"
+#include "TrainInfoBuilder.h"
 
 #include <fstream>
 #include <iostream>
-#include <mutex>
 
 namespace onert
 {
@@ -79,6 +80,49 @@ void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
 
       memcpy(&buffer->data[0], tensor->buffer(), org_buf_sz);
     });
+}
+
+void CircleExporter::updateMetadata(const std::unique_ptr<ir::train::TrainingInfo> &training_info)
+{
+  const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
+
+  TrainInfoBuilder tbuilder(training_info);
+  bool found = false;
+  for (const auto &meta : _model->metadata)
+  {
+    if (meta->name == std::string{TRAININFO_METADATA_NAME})
+    {
+      std::lock_guard<std::mutex> guard(_mutex);
+      const uint32_t buf_idx = meta->buffer;
+      auto &buffer = _model->buffers.at(buf_idx);
+
+      if (tbuilder.size() != buffer->data.size())
+      {
+        buffer->data.resize(tbuilder.size());
+        buffer->size = tbuilder.size();
+      }
+
+      memcpy(buffer->data.data(), tbuilder.get(), tbuilder.size());
+      found = true;
+      break;
+    }
+  }
+
+  if (!found)
+  {
+    std::lock_guard<std::mutex> guard(_mutex);
+    auto buffer = std::make_unique<::circle::BufferT>();
+    buffer->size = tbuilder.size();
+    buffer->data.resize(buffer->size);
+    memcpy(buffer->data.data(), tbuilder.get(), buffer->size);
+
+    auto meta = std::make_unique<::circle::MetadataT>();
+    meta->name = std::string{TRAININFO_METADATA_NAME};
+    meta->buffer = _model->buffers.size();
+
+    _model->buffers.push_back(std::move(buffer));
+    _model->metadata.push_back(std::move(meta));
+  }
 }
 
 void CircleExporter::finish()
