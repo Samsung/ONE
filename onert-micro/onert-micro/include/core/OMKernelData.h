@@ -214,6 +214,14 @@ struct QuantizationParams
   int32_t zero_point;
 };
 
+struct SliceParams
+{
+  int8_t begin_count;
+  int32_t begin[5];
+  int8_t size_count;
+  int32_t size[5];
+};
+
 } // namespace core
 } // namespace onert_micro
 
