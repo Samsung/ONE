@@ -169,6 +169,12 @@ def _get_parser():
         'Ensure generated circle model preserves the I/O order of the original onnx model.'
     )
 
+    # force use onnx-tf for one-import-onnx-ext is installed
+    parser.add_argument(
+        '--disable_ext',
+        action='store_false',
+        help='Disable one-import-onnx-ext and use legacy onnx-tf package')
+
     # save intermediate file(s)
     parser.add_argument(
         '--save_intermediate',
@@ -238,7 +244,9 @@ def _remap_io_names(onnx_model):
     remapper.update()
 
 
-def _check_ext():
+def _check_ext(args):
+    if oneutils.is_valid_attr(args, 'disable_ext'):
+        return None
     dir_path = os.path.dirname(os.path.realpath(__file__))
     ext_path = os.path.join(dir_path, 'one-import-onnx-ext')
     if (os.path.isfile(ext_path)):
@@ -252,7 +260,7 @@ def _convert(args):
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
-    ext_path = _check_ext()
+    ext_path = _check_ext(args)
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # save intermediate
