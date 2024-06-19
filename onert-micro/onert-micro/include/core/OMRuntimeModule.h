@@ -31,7 +31,7 @@ namespace core
 
 class OMRuntimeModule
 {
-private:
+protected:
   std::vector<OMRuntimeGraph> _graphs;
 
 public:
