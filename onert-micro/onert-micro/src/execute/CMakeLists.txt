@@ -36,6 +36,7 @@ add_library(${OM_EXECUTE_LIB} STATIC ${SOURCES})
 
 target_include_directories(${OM_EXECUTE_LIB} PUBLIC "${OM_INCLUDE_DIR}")
 target_link_libraries(${OM_EXECUTE_LIB} PUBLIC ${OM_CORE_LIB})
+target_link_libraries(${OM_EXECUTE_LIB} PUBLIC onert_micro_coverage)
 
 target_include_directories(${OM_EXECUTE_LIB} PUBLIC ${OM_PAL_COMMON_DIR})
 add_pal_to_target(${OM_EXECUTE_LIB})
