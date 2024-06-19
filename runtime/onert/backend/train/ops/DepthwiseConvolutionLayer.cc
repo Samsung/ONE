@@ -20,6 +20,8 @@
 
 #include <cker/train/operation/ReLU.h>
 
+#include <iostream>
+
 namespace onert
 {
 namespace backend
@@ -154,11 +156,76 @@ void DepthwiseConvolutionLayer::backwardFloat32()
     getBuffer<float>(_back_prop_input), _use_padded_filter, getBuffer<float>(_filter_buffers.get()),
     getBuffer<float>(_filter_dim_buffers.get()));
 
+  const auto input_buf = getBuffer<float>(_input);
+  std::cout
+    << "=====================================   Input   ======================================"
+    << std::endl;
+  for (int i = 0; i < getShape(_input).FlatSize(); ++i)
+  {
+    printf("%.4f\t", input_buf[i]);
+  }
+  std::cout << std::endl;
+  std::cout
+    << "======================================================================================"
+    << std::endl;
+
+  const auto output_buf = getBuffer<float>(backprop_act);
+  std::cout
+    << "=====================================   Output   ====================================="
+    << std::endl;
+  for (int i = 0; i < getShape(backprop_act).FlatSize(); ++i)
+  {
+    printf("%.4f\t", output_buf[i]);
+  }
+  std::cout << std::endl;
+  std::cout
+    << "======================================================================================"
+    << std::endl;
+
+  const auto weight_buf = getBuffer<float>(_kernel);
+  std::cout
+    << "====================================   Weights   ====================================="
+    << std::endl;
+  for (int i = 0; i < getShape(_kernel).FlatSize(); ++i)
+  {
+    printf("%.4f\t", weight_buf[i]);
+  }
+  std::cout << std::endl;
+  std::cout
+    << "======================================================================================"
+    << std::endl;
+
+  const auto back_prop_buf = getBuffer<float>(_back_prop_input);
+  std::cout
+    << "==============================   Back Propagation Input   ============================"
+    << std::endl;
+  for (int i = 0; i < getShape(_back_prop_input).FlatSize(); ++i)
+  {
+    printf("%.4f\t", back_prop_buf[i]);
+  }
+  std::cout << std::endl;
+  std::cout
+    << "======================================================================================"
+    << std::endl;
+
   // Calculate gradient for weights
   _dconv_kernel->backpropFilter(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights),
     getBuffer<float>(_padded_filter.get()), getBuffer<float>(_filter_buffers.get()));
+
+  const auto grad_buf = getBuffer<float>(_grad_weights);
+  std::cout
+    << "================================    Gradient Weights   ==============================="
+    << std::endl;
+  for (int i = 0; i < getShape(_grad_weights).FlatSize(); ++i)
+  {
+    printf("%.4f\t", grad_buf[i]);
+  }
+  std::cout << std::endl;
+  std::cout
+    << "======================================================================================\n\n"
+    << std::endl;
 
   // Calculate gradient for bias
   if (_bias)

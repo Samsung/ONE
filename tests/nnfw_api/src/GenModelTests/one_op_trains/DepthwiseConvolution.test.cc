@@ -32,7 +32,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D)
                                   circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -42,12 +42,12 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D)
   _context->addTrainCase(
     uniformTCD<float>({{{1, 2, 7, 8, 3, 4, 9, 1, 5, 6, 11, 2}}}, // input dataset
                       {{{1, -4, 1, -3, 2, -2, 2, -4}}},          // expected dataset
-                      {13.107666f}                               // last losses
+                      {1.1701f}                                  // last losses
                       ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(2);
+  _context->setEpoch(4);
 
   SUCCEED();
 }
@@ -66,7 +66,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier)
                                   circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -76,12 +76,12 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier)
   _context->addTrainCase(
     uniformTCD<float>({{{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}}}, // input dataset
                       {{{6.5f, 7.5f, 8.5f, 3.5f, 8.5f, 5.5f, 2.5f, 3.5f}}}, // expected dataset
-                      {74.799194f}                                          // last losses
+                      {15.5431f}                                            // last losses
                       ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(2);
+  _context->setEpoch(4);
 
   SUCCEED();
 }
@@ -100,7 +100,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier_RELU6)
                                   circle::ActivationFunctionType_RELU6);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -110,12 +110,12 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier_RELU6)
   _context->addTrainCase(
     uniformTCD<float>({{{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}}}, // input dataset
                       {{{6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f}}}, // expected dataset
-                      {72.f}                                                // last losses
+                      {36.0000f}                                            // last losses
                       ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(2);
+  _context->setEpoch(4);
 
   SUCCEED();
 }
@@ -134,7 +134,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_3x3)
                                   circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -144,12 +144,12 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_3x3)
   _context->addTrainCase(uniformTCD<float>(
     {{{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}}},       // input dataset
     {{{6.0f, 16.0f, 8.0f, 16.0f, 10.0f, 16.0f, 12.0f, 16.0f}}}, // expected dataset
-    {329.703643f}                                               // last losses
+    {13.7338f}                                                  // last losses
     ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(2);
+  _context->setEpoch(4);
 
   SUCCEED();
 }
@@ -170,7 +170,7 @@ TEST_F(GenModelTrain, neg_OneOp_DepthwiseConv2D_Stride)
                                   circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -197,7 +197,7 @@ TEST_F(GenModelTrain, neg_OneOp_DepthwiseConv2D_Dilation)
                                   circle::ActivationFunctionType_NONE, 0, 0);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
@@ -224,7 +224,7 @@ TEST_F(GenModelTrain, neg_OneOp_DepthwiseConv2D_Type)
                                   circle::ActivationFunctionType_NONE);
   cgen.setInputsAndOutputs({in}, {out});
 
-  float learning_rate = 0.001f;
+  float learning_rate = 0.01f;
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
