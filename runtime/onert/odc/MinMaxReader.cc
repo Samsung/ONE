@@ -24,7 +24,16 @@ namespace
 
 void readMMFile(void *ptr, size_t size, size_t count, FILE *fp, const std::string &err_msg)
 {
-  if (fread(ptr, size, count, fp) != count)
+  if (std::fread(ptr, size, count, fp) != count)
+  {
+    std::fclose(fp);
+    throw std::runtime_error(err_msg);
+  }
+}
+
+void seekMMFile(FILE *fp, int64_t offset, int whence, const std::string &err_msg)
+{
+  if (std::fseek(fp, offset, whence) != 0)
   {
     std::fclose(fp);
     throw std::runtime_error(err_msg);
@@ -88,7 +97,7 @@ MinMaxVectors MinMaxReader::readOP(uint32_t model_idx, uint32_t subg_idx, uint32
 
   MinMaxVectors mmv;
   float minmax[2];
-  size_t data_size = sizeof(float) * 2 + sizeof(uint32_t) * 3;
+  const int64_t data_size = sizeof(float) * 2 + sizeof(uint32_t) * 3;
 
   for (uint32_t r = 0; r < num_run; ++r)
   {
@@ -118,20 +127,23 @@ MinMaxVectors MinMaxReader::readOP(uint32_t model_idx, uint32_t subg_idx, uint32
         mmv.max_vector.emplace_back(minmax[1]);
 
         // Skip remain operation minmax data
-        uint32_t remain_elem = num_op - i - 1;
-        std::fseek(file, data_size * remain_elem, SEEK_CUR);
+        const uint32_t remain_elem = num_op - i - 1;
+        seekMMFile(file, static_cast<int64_t>(data_size * remain_elem), SEEK_CUR,
+                   "Failed to skip remain minmax data");
+
         break;
       }
 
       // Skip minmax data
-      std::fseek(file, sizeof(float) * 2, SEEK_CUR);
+      seekMMFile(file, sizeof(float) * 2, SEEK_CUR, "Failed to skip minmax data");
     }
 
     // Skip input minmax data
-    std::fseek(file, data_size * num_input, SEEK_CUR);
+    seekMMFile(file, static_cast<int64_t>(data_size * num_input), SEEK_CUR,
+               "Failed to skip input minmax data");
   }
 
-  fclose(file);
+  std::fclose(file);
   return mmv;
 }
 
@@ -151,7 +163,7 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
 
   MinMaxVectors mmv;
   float minmax[2];
-  size_t data_size = sizeof(float) * 2 + sizeof(uint32_t) * 3;
+  const int64_t data_size = sizeof(float) * 2 + sizeof(uint32_t) * 3;
 
   for (uint32_t r = 0; r < num_run; ++r)
   {
@@ -162,7 +174,8 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
     readMMFile(&num_input, sizeof(uint32_t), 1, file, "Cannot read num of inputs");
 
     // Skip operation minmax data
-    std::fseek(file, data_size * num_op, SEEK_CUR);
+    seekMMFile(file, static_cast<int64_t>(data_size * num_op), SEEK_CUR,
+               "Cannot skip operation minmax data");
 
     // Find operation
     for (uint32_t i = 0; i < num_input; ++i)
@@ -185,17 +198,18 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
         mmv.max_vector.emplace_back(minmax[1]);
 
         // Skip remain input minmax data
-        uint32_t remain_elem = num_input - i - 1;
-        std::fseek(file, data_size * remain_elem, SEEK_CUR);
+        const uint32_t remain_elem = num_input - i - 1;
+        seekMMFile(file, static_cast<int64_t>(data_size * remain_elem), SEEK_CUR,
+                   "Cannot skip remain minmax data from file");
         break;
       }
 
       // Skip minmax data
-      std::fseek(file, sizeof(float) * 2, SEEK_CUR);
+      seekMMFile(file, sizeof(float) * 2, SEEK_CUR, "Cannot skip minmax data from file");
     }
   }
 
-  fclose(file);
+  std::fclose(file);
   return mmv;
 }
 
