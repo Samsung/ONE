@@ -247,6 +247,9 @@ def _remap_io_names(onnx_model):
 def _check_ext(args):
     if oneutils.is_valid_attr(args, 'disable_ext'):
         return None
+    env_disable_ext = os.getenv('ONE_IMPORT_ONNX_EXT_DISABLE')
+    if env_disable_ext == '1' or env_disable_ext == 'Y':
+        return None
     dir_path = os.path.dirname(os.path.realpath(__file__))
     ext_path = os.path.join(dir_path, 'one-import-onnx-ext')
     if (os.path.isfile(ext_path)):
