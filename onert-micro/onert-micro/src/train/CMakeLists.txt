@@ -20,7 +20,6 @@ set(SOURCES
         metrics/Accuracy.cpp
         train_optimizers/SGD.cpp
         train_optimizers/Adam.cpp
-        tests/BostonHousingTask.test.cpp
         )
 
 # Add configure kernels

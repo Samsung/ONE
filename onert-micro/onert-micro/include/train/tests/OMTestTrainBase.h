@@ -18,6 +18,7 @@
 #define ONERT_MICRO_TRAIN_TESTS_TEST_TRAIN_BASE_H
 
 #include <vector>
+#include <cstddef>
 
 namespace onert_micro
 {
