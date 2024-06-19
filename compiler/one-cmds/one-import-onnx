@@ -172,7 +172,7 @@ def _get_parser():
     # force use onnx-tf for one-import-onnx-ext is installed
     parser.add_argument(
         '--disable_ext',
-        action='store_false',
+        action='store_true',
         help='Disable one-import-onnx-ext and use legacy onnx-tf package')
 
     # save intermediate file(s)
