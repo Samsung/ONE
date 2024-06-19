@@ -101,8 +101,8 @@ public:
     const int pad_width = params.padding_values.width;
 
     depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp<Eigen::ThreadPoolDevice, T>()(
-      batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,
-      stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,
+      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
+      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
       input_data, filter_grad_data, padded_filter_data, filter_buffers_data);
   }
 };
