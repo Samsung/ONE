@@ -18,6 +18,7 @@
 #define LUCI_INTERPRETER_LOADER_GRAPHLOADER_H
 
 #include "core/RuntimeGraph.h"
+#include "core/RuntimeModule.h"
 #include "luci_interpreter/core/reader/CircleMicroReader.h"
 
 #include <unordered_map>
@@ -29,6 +30,7 @@ class GraphLoader
 {
 public:
   static void checkInplaceOps(CircleReader *reader, RuntimeGraph *runtime_graph);
+  static void checkWhileOps(CircleReader *reader, RuntimeModule *runtime_module);
 };
 
 } // namespace luci_interpreter

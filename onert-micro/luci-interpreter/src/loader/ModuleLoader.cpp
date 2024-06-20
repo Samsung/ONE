@@ -43,6 +43,8 @@ void ModuleLoader::load(RuntimeModule *runtime_module, SimpleMemoryManager *memo
 #endif // USE_STATIC_ALLOC
   }
 
+  GraphLoader::checkWhileOps(&reader, runtime_module);
+
   // For Dynamic Memory manager we build memory allocate/deallocate plan and then configure kernels.
   // For Static Memory manager we only configure kernels.
   for (size_t i = 0; i < reader.num_subgraph(); ++i)
