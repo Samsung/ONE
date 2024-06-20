@@ -44,4 +44,15 @@ NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer,
  */
 NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *file_path);
 
+/**
+ * @brief Export circle+ model
+ * @note  This function should be called on training mode
+ *        This function should be called before or after {@link nnfw_train}
+ *
+ * @param[in] session     The session to export training model
+ * @param[in] file_path   The path to export training model
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *file_path);
+
 #endif // __NNFW_INTERNAL_H__
