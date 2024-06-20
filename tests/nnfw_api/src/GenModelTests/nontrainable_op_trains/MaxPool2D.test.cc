@@ -168,5 +168,95 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Depth2_Filter2)
   }
 }
 
-// TODO : Add test case to check stride supporting
-// TODO : Add more negative test cases
+TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Stride2Filter2)
+{
+  // (( Input 0 )) -> [ Conv2D ] -> [ MaxPool2D ] -> (( Output 0 ))
+  // Padding : Same
+  // stride height : 2, stride width : 2
+  // filter height : 2, filter hight : 2
+  // Activation : None
+  {
+    CirclePlusGen cgen;
+    uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
+    uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
+    int input = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
+    int weight = cgen.addTensor({{2, 3, 3, 1}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+    int bias = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+    int conv_output = cgen.addTensor({{1, 3, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+    int output = cgen.addTensor({{1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+    auto [padding, stride_w, stride_h, filter_w, filter_h, actfn] = getDefaultPool2DOptions();
+    stride_w = 2;
+    stride_h = 2;
+    filter_w = 2;
+    filter_h = 2;
+
+    cgen.addOperatorConv2D({{input, weight, bias}, {conv_output}}, circle::Padding_VALID, 1, 1,
+                           circle::ActivationFunctionType_NONE, 1, 1);
+    cgen.addOperatorMaxPool2D({{conv_output}, {output}}, padding, stride_w, stride_h, filter_w,
+                              filter_h, actfn);
+    cgen.setInputsAndOutputs({input}, {output});
+
+    float learning_rate = 0.01f;
+    int32_t batch_size = 1;
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+    cgen.markAllOpsAsTrainable();
+
+    _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+    _context->addTrainCase(
+      uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
+                           1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // inputs
+                        {{{1, 2, 3, 4, 5, 6, 7, 8}}},                    // expected
+                        {9.0784f}                                        // loss
+                        ));
+
+    _context->setBackends({"train"});
+    _context->setEpoch(4);
+
+    SUCCEED();
+  }
+}
+
+TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidShape)
+{
+  CirclePlusGen cgen;
+  int input = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int output = cgen.addTensor({{1, 2, 3, 1}, circle::TensorType::TensorType_FLOAT32});
+  const auto [padding, stride_w, stride_h, filter_w, filter_h, actfn] = getDefaultPool2DOptions();
+
+  cgen.addOperatorMaxPool2D({{input}, {output}}, padding, stride_w, stride_h, filter_w, filter_h,
+                            actfn);
+  cgen.setInputsAndOutputs({input}, {output});
+
+  float learning_rate = 0.01f;
+  int32_t batch_size = 1;
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->setBackends({"train"});
+  _context->expectFailCompile();
+}
+
+TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidType)
+{
+  CirclePlusGen cgen;
+  int input = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
+  int output = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  const auto [padding, stride_w, stride_h, filter_w, filter_h, actfn] = getDefaultPool2DOptions();
+  cgen.addOperatorMaxPool2D({{input}, {output}}, padding, stride_w, stride_h, filter_w, filter_h,
+                            actfn);
+  cgen.setInputsAndOutputs({input, padding}, {output});
+
+  float learning_rate = 0.01f;
+  int32_t batch_size = 1;
+  cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                     circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
+  cgen.markAllOpsAsTrainable();
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->setBackends({"train"});
+  _context->expectFailCompile();
+}
