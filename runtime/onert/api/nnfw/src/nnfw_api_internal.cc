@@ -927,11 +927,7 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
 
   const std::string skey = key;
 
-  if (skey == config::TRACING_MODE)
-  {
-    _coptions->tracing_mode = toBool(value);
-  }
-  else if (skey == config::GRAPH_DOT_DUMP)
+  if (skey == config::GRAPH_DOT_DUMP)
   {
     _coptions->graph_dump_level = toInt(value);
   }
