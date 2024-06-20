@@ -91,7 +91,7 @@ public:
   // To check checkpoint file format please see https://github.com/Samsung/ONE/discussions/13037
   OMStatus loadCheckpointData(OMConfig &config, const char *data);
 
-  void* getInputData(int32_t index);
+  void *getInputData(int32_t index);
 };
 
 } // namespace core

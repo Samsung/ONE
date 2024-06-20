@@ -303,7 +303,7 @@ OMStatus OMTrainingRuntimeModule::loadCheckpointData(OMConfig &config, const cha
   return status;
 }
 
-void* OMTrainingRuntimeModule::getInputData(int32_t index)
+void *OMTrainingRuntimeModule::getInputData(int32_t index)
 {
   return _training_handler.getInputData(index);
 }
