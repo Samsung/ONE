@@ -94,6 +94,9 @@ OMStatus OMRuntimeAllocator::deallocate(size_t kernel_index, OMRuntimeStorage *s
   {
     uint8_t *allocated_data = nullptr;
     OMStatus status = storage->getDataByTensorIndex(&allocated_data, tensor_index);
+    // To continue deallocate due to current tensor is not saved in storage
+    if (allocated_data == nullptr)
+      continue;
     if (status != Ok)
       return status;
 

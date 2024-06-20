@@ -13,6 +13,13 @@ else()
     set(KERNEL_REGISTER_FILE ${OM_KERNELS_BUILD_LIST})
 endif()
 
+# if no path is specified, use classic to KernelsToBuild list, else use generated one
+if (NOT OM_KERNELS_TRAIN_LIST)
+    set(KERNEL_TRAIN_REGISTER_FILE "${OM_PAL_DIR}/KernelsToTrain.lst")
+else()
+    set(KERNEL_TRAIN_REGISTER_FILE ${OM_KERNELS_TRAIN_LIST})
+endif()
+
 set(PASS_REGISTER_FILE "${OM_INCLUDE_DIR}/optimize/BuildPass.lst")
 set(CUSTOM_KERNEL_REGISTER_FILE "${OM_PAL_DIR}/CustomKernelsToBuild.lst")
 
