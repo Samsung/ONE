@@ -23,14 +23,11 @@ namespace onert
 namespace exec
 {
 
-std::unique_ptr<ExecutionOptions> ExecutionOptions::fromGlobalConfig()
+void ExecutionOptions::fromGlobalConfig(ExecutionOptions &options)
 {
-  auto options = std::make_unique<ExecutionOptions>();
-  options->dump_minmax = util::getConfigBool(util::config::MINMAX_DUMP);
-  options->trace = util::getConfigBool(util::config::TRACING_MODE);
-  options->profile = util::getConfigBool(util::config::PROFILING_MODE);
-
-  return options;
+  options.dump_minmax = util::getConfigBool(util::config::MINMAX_DUMP);
+  options.trace = util::getConfigBool(util::config::TRACING_MODE);
+  options.profile = util::getConfigBool(util::config::PROFILING_MODE);
 }
 
 } // namespace exec

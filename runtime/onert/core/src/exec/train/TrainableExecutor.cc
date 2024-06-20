@@ -57,7 +57,8 @@ TrainableExecutor::TrainableExecutor(
 }
 
 void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
-                                const std::vector<backend::IPortableTensor *> &)
+                                const std::vector<backend::IPortableTensor *> &,
+                                const ExecutionOptions &)
 {
   throw std::runtime_error("TrainableExecutor does not support multiple subgraphs yet");
 }
@@ -68,6 +69,7 @@ void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = ctx.options;
 
   auto &desc = ctx.desc;
   // TODO Update IO tensors if desc has dynamic input
@@ -95,7 +97,7 @@ void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
   }
 
   // Create observee
-  ExecutionObservee subject(_observers);
+  ExecutionObservee subject(_observers, ctx.options);
 
   forwardImpl(subject, training);
 
@@ -141,15 +143,16 @@ void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool train
   }
 }
 
-void TrainableExecutor::backward(const ExecutionContext &, uint32_t training_step)
+void TrainableExecutor::backward(const ExecutionContext &ctx, uint32_t training_step)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
+  _current_options = ctx.options;
 
   // Create observee
-  ExecutionObservee subject(_observers);
+  ExecutionObservee subject(_observers, ctx.options);
 
   backwardImpl(subject, training_step);
 }

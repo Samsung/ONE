@@ -59,7 +59,8 @@ public:
   void execute(const ExecutionContext &ctx) override { forward(ctx, false); };
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
-               const std::vector<backend::IPortableTensor *> &outputs) override;
+               const std::vector<backend::IPortableTensor *> &outputs,
+               const ExecutionOptions &options) override;
 
   void forward(const ExecutionContext &ctx, bool training);
   void backward(const ExecutionContext &ctx, uint32_t training_step);
@@ -90,6 +91,8 @@ public:
 
   backend::train::TrainableBackendContexts &getBackendContexts() { return _backend_contexts; }
 
+  const ExecutionOptions &currentOptions() const override { return _current_options; }
+
 private:
   void forwardImpl(const ExecutionObservee &subject, bool training);
   void backwardImpl(const ExecutionObservee &subject, uint32_t training_step);
@@ -109,6 +112,14 @@ private:
   std::mutex _mutex;
   const util::TracingCtx *_tracing_ctx;
   const ir::train::LossInfo _loss_info;
+  /**
+   * It is set by execute() method only in thread-safe environment.
+   * It is used for non-primary executor call on builtin backend
+   * and accessed by entryExecutor's currentOptions() method.
+   *
+   * TODO: Find better way to pass config to non-primary executor
+   */
+  ExecutionOptions _current_options;
 };
 
 } // namespace train

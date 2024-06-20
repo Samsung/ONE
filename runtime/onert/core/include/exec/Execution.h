@@ -176,6 +176,8 @@ public:
   size_t getInputTotalSize(ir::IOIndex ind) const;
   size_t getOutputTotalSize(ir::IOIndex ind) const;
 
+  ExecutionOptions &executionOptions() { return _ctx.options; }
+
 private:
   const IExecutor *entryExecutor() const { return _executors->entryExecutor(); };
   IExecutor *entryExecutor() { return _executors->entryExecutor(); };
