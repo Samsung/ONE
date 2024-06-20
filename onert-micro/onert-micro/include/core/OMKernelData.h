@@ -157,6 +157,12 @@ struct ConvQuant
   std::vector<int> per_channel_output_shift;
 };
 
+struct SplitParams
+{
+  uint8_t *output_data[5];
+  uint32_t num_outputs;
+};
+
 struct FloatConv2D
 {
   int32_t stride_w;
