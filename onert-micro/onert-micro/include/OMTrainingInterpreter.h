@@ -85,6 +85,13 @@ public:
 
   // Load current status from checkpoint and save it in current model and in current config
   OMStatus loadCheckpoint(OMConfig &config, const char *load_path);
+
+  OMStatus run() { return _training_runtime_module.run(); }
+  OMStatus allocateInputs() { return _training_runtime_module.allocateInputs(); }
+
+  void *getInputData(uint32_t position);
+  void *getInputDataAt(uint32_t position);
+  void *getOutputDataAt(uint32_t position);
 };
 
 } // namespace onert_micro
