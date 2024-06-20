@@ -138,7 +138,7 @@ void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool train
       ruy::profiler::ScopeLabel label(code.op->name());
 #endif
       auto &tn_seq = code.tn_seq;
-      tn_seq->forward(training);
+      tn_seq->forward(training && code.op->isRequiredForBackward());
     }
   }
 }
