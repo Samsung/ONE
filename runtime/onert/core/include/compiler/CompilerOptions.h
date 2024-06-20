@@ -65,10 +65,8 @@ struct CompilerOptions
 
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
-  bool minmax_dump; //< Whether minmax dump is enabled or not
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
-  bool tracing_mode;    //< Whether tracing mode ON/OFF
   int graph_dump_level; //< Graph dump level, values between 0 and 2 are valid
   std::string executor; //< Executor name to use
   ManualSchedulerOptions manual_scheduler_options; //< Options for ManualScheduler
