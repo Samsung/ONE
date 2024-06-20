@@ -104,16 +104,23 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
                                                                  runtime_allocator, config);
     if (status != Ok)
       return status;
+  }
+  for (uint32_t i = 0; i < num_subgraph; ++i)
+  {
+    // Second - load default graph
+    OMRuntimeGraph &graph = _graphs.at(i);
 
+    OMRuntimeContext &runtime_context = graph.getRuntimeContext();
+    OMRuntimeStorage &runtime_storage = graph.getRuntimeStorage();
+    memory::OMRuntimeAllocator &runtime_allocator = graph.getRuntimeAllocator();
     // 5 - KernelConfigure
     import::OMConfigureArgs configure_args = {runtime_storage, runtime_context, 0, config, *this};
 
     status = import::OMKernelConfiguration::configureKernels(configure_args);
     if (status != Ok)
       return status;
-
-    // Done!
   }
+  // Done!
 
   return Ok;
 }

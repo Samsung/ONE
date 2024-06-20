@@ -56,7 +56,6 @@ OMStatus isInplaceOperation(const circle::Operator *op, core::OMRuntimeContext &
     case circle::BuiltinOperator_ADD:
     case circle::BuiltinOperator_MUL:
     case circle::BuiltinOperator_SUB:
-    case circle::BuiltinOperator_WHILE:
     case circle::BuiltinOperator_ZEROS_LIKE:
     {
       is_inplace = true;
