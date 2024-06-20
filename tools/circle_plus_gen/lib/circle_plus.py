@@ -14,7 +14,7 @@ def _not_none(elem, elem_name=""):
 
 class CirclePlus():
     ''' Wrapper class of circle_schema_generated.ModelT'''
-    TINFO_META_TAG = "CIRCLE_TRAINING"
+    TINFO_META_TAG = b"CIRCLE_TRAINING"
     CIRCLE_IDENTIFIER = b"CIR0"
 
     def __init__(self):
@@ -37,7 +37,7 @@ class CirclePlus():
             return None
 
         for m in metadata:
-            if m.name.decode("utf-8") == self.TINFO_META_TAG:
+            if m.name == self.TINFO_META_TAG:
                 buff: cir_gen.BufferT = buffers[m.buffer]
                 tparam: TrainParam = TrainParam.from_buff(buff.data)
                 return tparam
@@ -51,7 +51,7 @@ class CirclePlus():
         # If there are train_param, Replace it
         if self.get_train_param() is not None:
             for m in self.model.metadata:
-                if m.name.decode("utf-8") == self.TINFO_META_TAG:
+                if m.name == self.TINFO_META_TAG:
                     self.model.buffers[m.buffer] = buffer_obj
 
         # There are no train_param, So add a new buffer and metadata
