@@ -186,6 +186,14 @@ struct FullyConnectedParams
   int32_t quantized_activation_max;
 };
 
+struct PadParams
+{
+  int32_t left_padding_count;
+  int32_t left_padding[5];
+  int32_t right_padding_count;
+  int32_t right_padding[5];
+};
+
 struct ComparisonParams
 {
   // uint8_t inference params.
