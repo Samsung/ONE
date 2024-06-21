@@ -377,8 +377,11 @@ int main(const int argc, char **argv)
       }
     });
 
-    if (args.getExportModelFilename() != "")
-      NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, args.getExportModelFilename().c_str()));
+    if (auto name = args.getExportCircleFilename(); name != "")
+      NNPR_ENSURE_STATUS(nnfw_train_export_circle(session, name.c_str()));
+
+    if (auto name = args.getExportCirclePlusFilename(); name != "")
+      NNPR_ENSURE_STATUS(nnfw_train_export_circleplus(session, name.c_str()));
 
     NNPR_ENSURE_STATUS(nnfw_close_session(session));
 
