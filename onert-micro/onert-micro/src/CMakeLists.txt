@@ -13,6 +13,8 @@ set(OM_INCLUDE_OPTIMIZE_DIR "${OM_INCLUDE_DIR}/optimize")
 #define train path
 set(OM_SOURCE_TRAIN_DIR "${OM_SOURCE_DIR}/train")
 set(OM_INCLUDE_TRAIN_DIR "${OM_INCLUDE_DIR}/train")
+#define train path
+set(OM_SOURCE_DEV_DIR "${OM_SOURCE_DIR}/api")
 
 #OM_Interpreter lib binary name
 set(OM_INTERPRETER_LIB "onert_micro_interpreter")
@@ -30,6 +32,8 @@ set(OM_OPTIMIZE_LIB "onert_micro_optimize${OM_SUFFIX}")
 set(OM_PAL_LIB "onert_micro_pal${OM_SUFFIX}")
 #Train lib binary name
 set(OM_TRAIN_LIB "onert_micro_train${OM_SUFFIX}")
+#dev name
+set(OM_DEV_LIB "onert_micro_dev${OM_SUFFIX}")
 
 message(STATUS "ONERT MICRO BEGIN")
 
@@ -41,6 +45,8 @@ add_subdirectory(${OM_SOURCE_IMPORT_DIR})
 add_subdirectory(${OM_SOURCE_EXECUTE_DIR})
 #build optimize lib
 add_subdirectory(${OM_SOURCE_OPTIMIZE_DIR})
+#build dev lib
+add_subdirectory(${OM_SOURCE_DEV_DIR})
 
 target_link_libraries(${OM_CORE_LIB} PUBLIC ${OM_CIRCLE_SCHEMA})
 target_link_libraries(${OM_CORE_LIB} PUBLIC ${OM_IMPORT_LIB})
