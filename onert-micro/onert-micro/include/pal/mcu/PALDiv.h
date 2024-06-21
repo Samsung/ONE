@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +15,9 @@
  * limitations under the License.
  */
 
-#include "import/helpers/OMConfigureTISOKernel.h"
+#ifndef ONERT_MICRO_EXECUTE_PAL_DIV_H
+#define ONERT_MICRO_EXECUTE_PAL_DIV_H
 
-using namespace onert_micro;
-using namespace onert_micro::core;
+#include "PALDivCommon.h"
 
-OMStatus onert_micro::import::configure_kernel_CircleMul(const OMConfigureArgs &config_args)
-{
-  return import::helpers::configure_TISO_kernel(config_args);
-}
+#endif // ONERT_MICRO_EXECUTE_PAL_MUL_H

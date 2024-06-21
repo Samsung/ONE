@@ -19,7 +19,7 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus onert_micro::import::configure_kernel_CircleMul(const OMConfigureArgs &config_args)
+OMStatus onert_micro::import::configure_kernel_CircleDiv(const OMConfigureArgs &config_args)
 {
   return import::helpers::configure_TISO_kernel(config_args);
 }
