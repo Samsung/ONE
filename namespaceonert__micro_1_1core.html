@@ -168,9 +168,17 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html">OMTrainingRuntimeModule</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_pad_params.html">PadParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_pool2_d_params.html">Pool2DParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_quantization_params.html">QuantizationParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_slice_params.html">SliceParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_softmax_params.html">SoftmaxParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_split_params.html">SplitParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_strided_slice_params.html">StridedSliceParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -479,7 +487,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00029">onert_micro::UnsupportedOp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_kernel_configuration_8cpp_source.html#l00025">onert_micro::import::OMKernelConfiguration::configureKernels()</a>, <a class="el" href="_o_m_kernel_execute_8cpp_source.html#l00024">onert_micro::execute::OMKernelExecute::executeKernel()</a>, and <a class="el" href="_o_m_backprop_execute_8cpp_source.html#l00026">onert_micro::train::OMBackpropExecute::runBackward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_kernel_configuration_8cpp_source.html#l00025">onert_micro::import::OMKernelConfiguration::configureKernels()</a>, <a class="el" href="_o_m_backprop_execute_8cpp_source.html#l00026">onert_micro::train::OMBackpropExecute::runBackward()</a>, and <a class="el" href="_o_m_kernel_execute_8cpp_source.html#l00024">onert_micro::execute::OMKernelExecute::runForward()</a>.</p>
 
 </div>
 </div>
@@ -652,7 +660,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00041">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, and <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00112">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00041">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, and <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00115">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>.</p>
 
 </div>
 </div>
@@ -701,7 +709,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> OMDataType::Unknown;</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00041">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, and <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00112">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00041">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, and <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00115">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>.</p>
 
 </div>
 </div>

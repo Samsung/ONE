@@ -16,5 +16,6 @@ var classonert__micro_1_1core_1_1_o_m_runtime_module =
     [ "operator=", "classonert__micro_1_1core_1_1_o_m_runtime_module.html#a8def32f937a2e4d79d231323f1295e5a", null ],
     [ "operator=", "classonert__micro_1_1core_1_1_o_m_runtime_module.html#a88ab02d8418709381ccbe991dbab2562", null ],
     [ "reset", "classonert__micro_1_1core_1_1_o_m_runtime_module.html#a02d41f5ce8606961449f1e5d9e2bc007", null ],
-    [ "run", "classonert__micro_1_1core_1_1_o_m_runtime_module.html#a4830dcc23f6027bc5f78e6053ac3aa4d", null ]
+    [ "run", "classonert__micro_1_1core_1_1_o_m_runtime_module.html#a4830dcc23f6027bc5f78e6053ac3aa4d", null ],
+    [ "_graphs", "classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4", null ]
 ];

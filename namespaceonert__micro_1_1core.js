@@ -36,8 +36,12 @@ var namespaceonert__micro_1_1core =
     [ "OMRuntimeShape", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html", "classonert__micro_1_1core_1_1_o_m_runtime_shape" ],
     [ "OMRuntimeStorage", "classonert__micro_1_1core_1_1_o_m_runtime_storage.html", "classonert__micro_1_1core_1_1_o_m_runtime_storage" ],
     [ "OMTrainingRuntimeModule", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html", "classonert__micro_1_1core_1_1_o_m_training_runtime_module" ],
+    [ "PadParams", "structonert__micro_1_1core_1_1_pad_params.html", "structonert__micro_1_1core_1_1_pad_params" ],
     [ "Pool2DParams", "structonert__micro_1_1core_1_1_pool2_d_params.html", "structonert__micro_1_1core_1_1_pool2_d_params" ],
+    [ "QuantizationParams", "structonert__micro_1_1core_1_1_quantization_params.html", "structonert__micro_1_1core_1_1_quantization_params" ],
+    [ "SliceParams", "structonert__micro_1_1core_1_1_slice_params.html", "structonert__micro_1_1core_1_1_slice_params" ],
     [ "SoftmaxParams", "structonert__micro_1_1core_1_1_softmax_params.html", "structonert__micro_1_1core_1_1_softmax_params" ],
+    [ "SplitParams", "structonert__micro_1_1core_1_1_split_params.html", "structonert__micro_1_1core_1_1_split_params" ],
     [ "StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ],
     [ "TransposeParams", "structonert__micro_1_1core_1_1_transpose_params.html", "structonert__micro_1_1core_1_1_transpose_params" ],
     [ "BroadcastableOpCategory", "namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46", [

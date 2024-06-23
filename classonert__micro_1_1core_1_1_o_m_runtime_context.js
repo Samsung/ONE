@@ -17,5 +17,6 @@ var classonert__micro_1_1core_1_1_o_m_runtime_context =
     [ "isConstTensor", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a401abafced0fec857acbf7cb3bda4a1b", null ],
     [ "operator=", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a1ee2f7b4bfbb6cb404178a37aa343720", null ],
     [ "operator=", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a1162d950d20ed85e523b92312b289744", null ],
-    [ "setModel", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#ae16e77fefcd50e851a4a7cd7f390f45d", null ]
+    [ "setModel", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#ae16e77fefcd50e851a4a7cd7f390f45d", null ],
+    [ "setWofFile", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a46837db187f9fe84e5eb7c0310478e5b", null ]
 ];

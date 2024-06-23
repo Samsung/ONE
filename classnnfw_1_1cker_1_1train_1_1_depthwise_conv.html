@@ -241,8 +241,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  101</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> pad_width = params.padding_values.width;</div>
 <div class="line"><span class="lineno">  102</span> </div>
 <div class="line"><span class="lineno">  103</span>    depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt;Eigen::ThreadPoolDevice, T&gt;()(</div>
-<div class="line"><span class="lineno">  104</span>      batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,</div>
-<div class="line"><span class="lineno">  105</span>      stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,</div>
+<div class="line"><span class="lineno">  104</span>      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,</div>
+<div class="line"><span class="lineno">  105</span>      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,</div>
 <div class="line"><span class="lineno">  106</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>, filter_grad_data, padded_filter_data, filter_buffers_data);</div>
 <div class="line"><span class="lineno">  107</span>  }</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>

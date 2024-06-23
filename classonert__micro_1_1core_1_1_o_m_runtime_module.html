@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('classonert__micro_1_1core_1_1_o_m_runt
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">onert_micro::core::OMRuntimeModule Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -133,6 +134,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aabd1d18f07f501655fcdb31cdcb0e8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ef4c950d4acff9fa926e32f40e3edf7" id="r_a5ef4c950d4acff9fa926e32f40e3edf7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a5ef4c950d4acff9fa926e32f40e3edf7">allocateInputs</a> ()</td></tr>
 <tr class="separator:a5ef4c950d4acff9fa926e32f40e3edf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a3c9b58d2859243eb8b4d2daea244a2c4" id="r_a3c9b58d2859243eb8b4d2daea244a2c4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_graph.html">OMRuntimeGraph</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a></td></tr>
+<tr class="separator:a3c9b58d2859243eb8b4d2daea244a2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -256,18 +262,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00116">116</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  117</span>{</div>
-<div class="line"><span class="lineno">  118</span>  assert(_graphs.size() &gt; 0);</div>
-<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> (_graphs.size() == 0)</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">ModelNotImport</a>;</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">return</span> _graphs.at(0).allocateGraphInputs();</div>
-<div class="line"><span class="lineno">  122</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00128">128</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
+<div class="line"><span class="lineno">  130</span>  assert(<a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.size() &gt; 0);</div>
+<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.size() == 0)</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">ModelNotImport</a>;</div>
+<div class="line"><span class="lineno">  133</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).allocateGraphInputs();</div>
+<div class="line"><span class="lineno">  134</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_module_html_a3c9b58d2859243eb8b4d2daea244a2c4"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">onert_micro::core::OMRuntimeModule::_graphs</a></div><div class="ttdeci">std::vector&lt; OMRuntimeGraph &gt; _graphs</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_module_8h_source.html#l00035">OMRuntimeModule.h:35</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">onert_micro::ModelNotImport</a></div><div class="ttdeci">@ ModelNotImport</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00031">OMStatus.h:31</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00031">onert_micro::ModelNotImport</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>, and <a class="el" href="_o_m_status_8h_source.html#l00031">onert_micro::ModelNotImport</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00058">onert_micro::OMInterpreter::allocateInputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00058">onert_micro::OMInterpreter::allocateInputs()</a>, and <a class="el" href="_o_m_training_interpreter_8h_source.html#l00090">onert_micro::OMTrainingInterpreter::allocateInputs()</a>.</p>
 
 </div>
 </div>
@@ -289,10 +296,12 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00041">41</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> _graphs.at(0).getInputDataAt(position);</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).getInputDataAt(position);</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00038">onert_micro::OMInterpreter::getInputDataAt()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00038">onert_micro::OMInterpreter::getInputDataAt()</a>, and <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00156">onert_micro::OMTrainingInterpreter::getInputDataAt()</a>.</p>
 
 </div>
 </div>
@@ -314,9 +323,11 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00031">31</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> _graphs.at(0).getInputSizeAt(position);</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).getInputSizeAt(position);</div>
 <div class="line"><span class="lineno">   34</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00048">onert_micro::OMInterpreter::getInputSizeAt()</a>, and <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00041">onert_micro::OMTrainingInterpreter::getInputSizeAt()</a>.</p>
 
 </div>
@@ -337,8 +348,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00027">27</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{ <span class="keywordflow">return</span> _graphs.at(0).getNumberOfInputs(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).getNumberOfInputs(); }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00034">onert_micro::OMInterpreter::getNumberOfInputs()</a>.</p>
 
 </div>
@@ -359,8 +372,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00029">29</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{ <span class="keywordflow">return</span> _graphs.at(0).getNumberOfOutputs(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).getNumberOfOutputs(); }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00036">onert_micro::OMInterpreter::getNumberOfOutputs()</a>.</p>
 
 </div>
@@ -383,10 +398,12 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00046">46</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> _graphs.at(0).getOutputDataAt(position);</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).getOutputDataAt(position);</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00043">onert_micro::OMInterpreter::getOutputDataAt()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00043">onert_micro::OMInterpreter::getOutputDataAt()</a>, and <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00161">onert_micro::OMTrainingInterpreter::getOutputDataAt()</a>.</p>
 
 </div>
 </div>
@@ -408,9 +425,11 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00036">36</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> _graphs.at(0).getOutputSizeAt(position);</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0).getOutputSizeAt(position);</div>
 <div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00053">onert_micro::OMInterpreter::getOutputSizeAt()</a>, and <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00046">onert_micro::OMTrainingInterpreter::getOutputSizeAt()</a>.</p>
 
 </div>
@@ -441,19 +460,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00158">158</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  <span class="keywordflow">if</span> (pos &gt;= _graphs.size())</div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>  *runtime_graph = &amp;_graphs.at(pos);</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  166</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00170">170</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  171</span>{</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keywordflow">if</span> (pos &gt;= <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.size())</div>
+<div class="line"><span class="lineno">  173</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>  *runtime_graph = &amp;<a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(pos);</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  178</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>
@@ -489,9 +508,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>  <span class="keywordflow">if</span> (model_ptr == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>  <span class="comment">// First - parse reader</span></div>
-<div class="line"><span class="lineno">   58</span>  <span class="comment">// Second - load default graph</span></div>
-<div class="line"><span class="lineno">   59</span>  <span class="comment">// Third - optimize it until can</span></div>
+<div class="line"><span class="lineno">   57</span>  <span class="comment">// 1 - parse reader</span></div>
+<div class="line"><span class="lineno">   58</span>  <span class="comment">// 2 - load default graph</span></div>
+<div class="line"><span class="lineno">   59</span>  <span class="comment">// 3 - optimize it until can</span></div>
 <div class="line"><span class="lineno">   60</span>  <span class="comment">// 4 - AllocDeallocPlan creation</span></div>
 <div class="line"><span class="lineno">   61</span>  <span class="comment">// 5 - KernelConfigure</span></div>
 <div class="line"><span class="lineno">   62</span>  <span class="comment">// 6 - Allocate inputs</span></div>
@@ -511,12 +530,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordflow">if</span> (num_subgraph == 0)</div>
 <div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>  _graphs.resize(num_subgraph);</div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.resize(num_subgraph);</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_subgraph; ++i)</div>
 <div class="line"><span class="lineno">   82</span>  {</div>
 <div class="line"><span class="lineno">   83</span>    <span class="comment">// Second - load default graph</span></div>
-<div class="line"><span class="lineno">   84</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_graph.html">OMRuntimeGraph</a> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = _graphs.at(i);</div>
+<div class="line"><span class="lineno">   84</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_graph.html">OMRuntimeGraph</a> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(i);</div>
 <div class="line"><span class="lineno">   85</span> </div>
 <div class="line"><span class="lineno">   86</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;runtime_context = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.getRuntimeContext();</div>
 <div class="line"><span class="lineno">   87</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">OMRuntimeStorage</a> &amp;runtime_storage = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.getRuntimeStorage();</div>
@@ -524,31 +543,44 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   89</span> </div>
 <div class="line"><span class="lineno">   90</span>    runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#ae16e77fefcd50e851a4a7cd7f390f45d">setModel</a>(model_ptr, i);</div>
 <div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>    <span class="comment">// Third - optimize it until can</span></div>
-<div class="line"><span class="lineno">   93</span>    status = <a class="code hl_function" href="structonert__micro_1_1optimize_1_1_o_m_optimizer.html#aa65f58fb530c68271d56ec8a9699dae6">optimize::OMOptimizer::optimize</a>(runtime_storage, runtime_context, config);</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
-<div class="line"><span class="lineno">   95</span>      <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">   92</span>    <span class="comment">// Parse and validate WOF file if it is exist</span></div>
+<div class="line"><span class="lineno">   93</span>    <span class="comment">// WARNING: setWofFile method of RuntimeContext should follow after setModel.</span></div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.wof_ptr != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   95</span>      runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a46837db187f9fe84e5eb7c0310478e5b">setWofFile</a>(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.wof_ptr);</div>
 <div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>    <span class="comment">// 4 - AllocDeallocPlan creation</span></div>
-<div class="line"><span class="lineno">   98</span>    status = <a class="code hl_function" href="structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html#a83d19a3d070837dc3553dd2bde25f98d">import::OMExecutionPlanCreator::createExecutionPlan</a>(runtime_storage, runtime_context,</div>
-<div class="line"><span class="lineno">   99</span>                                                                 runtime_allocator, config);</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
-<div class="line"><span class="lineno">  101</span>      <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment">// 5 - KernelConfigure</span></div>
-<div class="line"><span class="lineno">  104</span>    <a class="code hl_struct" href="structonert__micro_1_1import_1_1_o_m_configure_args.html">import::OMConfigureArgs</a> configure_args = {runtime_storage, runtime_context, 0, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>, *<span class="keyword">this</span>};</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>    status = <a class="code hl_function" href="structonert__micro_1_1import_1_1_o_m_kernel_configuration.html#ae0bcc7d6cdc1c1206981b4e50515375b">import::OMKernelConfiguration::configureKernels</a>(configure_args);</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
-<div class="line"><span class="lineno">  108</span>      <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="comment">// Done!</span></div>
-<div class="line"><span class="lineno">  111</span>  }</div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment">// Third - optimize it until can</span></div>
+<div class="line"><span class="lineno">   98</span>    status = <a class="code hl_function" href="structonert__micro_1_1optimize_1_1_o_m_optimizer.html#aa65f58fb530c68271d56ec8a9699dae6">optimize::OMOptimizer::optimize</a>(runtime_storage, runtime_context, config);</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
+<div class="line"><span class="lineno">  100</span>      <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>    <span class="comment">// 4 - AllocDeallocPlan creation</span></div>
+<div class="line"><span class="lineno">  103</span>    status = <a class="code hl_function" href="structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html#a83d19a3d070837dc3553dd2bde25f98d">import::OMExecutionPlanCreator::createExecutionPlan</a>(runtime_storage, runtime_context,</div>
+<div class="line"><span class="lineno">  104</span>                                                                 runtime_allocator, config);</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
+<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  107</span>  }</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_subgraph; ++i)</div>
+<div class="line"><span class="lineno">  109</span>  {</div>
+<div class="line"><span class="lineno">  110</span>    <span class="comment">// Second - load default graph</span></div>
+<div class="line"><span class="lineno">  111</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_graph.html">OMRuntimeGraph</a> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(i);</div>
 <div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  114</span>}</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">onert_micro::core::OMRuntimeContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00031">OMRuntimeContext.h:32</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_ae16e77fefcd50e851a4a7cd7f390f45d"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#ae16e77fefcd50e851a4a7cd7f390f45d">onert_micro::core::OMRuntimeContext::setModel</a></div><div class="ttdeci">OMStatus setModel(const char *model_ptr, uint32_t graph_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00044">OMRuntimeContext.h:44</a></div></div>
+<div class="line"><span class="lineno">  113</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;runtime_context = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.getRuntimeContext();</div>
+<div class="line"><span class="lineno">  114</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">OMRuntimeStorage</a> &amp;runtime_storage = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.getRuntimeStorage();</div>
+<div class="line"><span class="lineno">  115</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html">memory::OMRuntimeAllocator</a> &amp;runtime_allocator = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.getRuntimeAllocator();</div>
+<div class="line"><span class="lineno">  116</span>    <span class="comment">// 5 - KernelConfigure</span></div>
+<div class="line"><span class="lineno">  117</span>    <a class="code hl_struct" href="structonert__micro_1_1import_1_1_o_m_configure_args.html">import::OMConfigureArgs</a> configure_args = {runtime_storage, runtime_context, 0, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>, *<span class="keyword">this</span>};</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>    status = <a class="code hl_function" href="structonert__micro_1_1import_1_1_o_m_kernel_configuration.html#ae0bcc7d6cdc1c1206981b4e50515375b">import::OMKernelConfiguration::configureKernels</a>(configure_args);</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
+<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  122</span>  }</div>
+<div class="line"><span class="lineno">  123</span>  <span class="comment">// Done!</span></div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  126</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">onert_micro::core::OMRuntimeContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00032">OMRuntimeContext.h:33</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_a46837db187f9fe84e5eb7c0310478e5b"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a46837db187f9fe84e5eb7c0310478e5b">onert_micro::core::OMRuntimeContext::setWofFile</a></div><div class="ttdeci">OMStatus setWofFile(char *wof_ptr)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00058">OMRuntimeContext.h:58</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_ae16e77fefcd50e851a4a7cd7f390f45d"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#ae16e77fefcd50e851a4a7cd7f390f45d">onert_micro::core::OMRuntimeContext::setModel</a></div><div class="ttdeci">OMStatus setModel(const char *model_ptr, uint32_t graph_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00046">OMRuntimeContext.h:46</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_graph_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_graph.html">onert_micro::core::OMRuntimeGraph</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_graph_8h_source.html#l00033">OMRuntimeGraph.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_storage_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">onert_micro::core::OMRuntimeStorage</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_storage_8h_source.html#l00033">OMRuntimeStorage.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html">onert_micro::core::memory::OMRuntimeAllocator</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_allocator_8h_source.html#l00034">OMRuntimeAllocator.h:35</a></div></div>
@@ -559,11 +591,11 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_ad2e650e5f9a54072f7e063a353ef6489"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">gen_h5_explicit_inputs_all.config</a></div><div class="ttdeci">config</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00071">gen_h5_explicit_inputs_all.py:71</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1import_1_1_o_m_configure_args_html"><div class="ttname"><a href="structonert__micro_1_1import_1_1_o_m_configure_args.html">onert_micro::import::OMConfigureArgs</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_configure_args_8h_source.html#l00031">OMConfigureArgs.h:32</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1import_1_1_o_m_execution_plan_creator_html_a83d19a3d070837dc3553dd2bde25f98d"><div class="ttname"><a href="structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html#a83d19a3d070837dc3553dd2bde25f98d">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan</a></div><div class="ttdeci">static OMStatus createExecutionPlan(core::OMRuntimeStorage &amp;runtime_storage, core::OMRuntimeContext &amp;runtime_context, core::memory::OMRuntimeAllocator &amp;allocator, const OMConfig &amp;configs)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_execution_plan_creator_8cpp_source.html#l00025">OMExecutionPlanCreator.cpp:25</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1import_1_1_o_m_execution_plan_creator_html_a83d19a3d070837dc3553dd2bde25f98d"><div class="ttname"><a href="structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html#a83d19a3d070837dc3553dd2bde25f98d">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan</a></div><div class="ttdeci">static OMStatus createExecutionPlan(core::OMRuntimeStorage &amp;runtime_storage, core::OMRuntimeContext &amp;runtime_context, core::memory::OMRuntimeAllocator &amp;allocator, const OMConfig &amp;configs)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_execution_plan_creator_8cpp_source.html#l00049">OMExecutionPlanCreator.cpp:49</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1import_1_1_o_m_kernel_configuration_html_ae0bcc7d6cdc1c1206981b4e50515375b"><div class="ttname"><a href="structonert__micro_1_1import_1_1_o_m_kernel_configuration.html#ae0bcc7d6cdc1c1206981b4e50515375b">onert_micro::import::OMKernelConfiguration::configureKernels</a></div><div class="ttdeci">static OMStatus configureKernels(OMConfigureArgs &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configuration_8cpp_source.html#l00025">OMKernelConfiguration.cpp:25</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1optimize_1_1_o_m_optimizer_html_aa65f58fb530c68271d56ec8a9699dae6"><div class="ttname"><a href="structonert__micro_1_1optimize_1_1_o_m_optimizer.html#aa65f58fb530c68271d56ec8a9699dae6">onert_micro::optimize::OMOptimizer::optimize</a></div><div class="ttdeci">static OMStatus optimize(core::OMRuntimeStorage &amp;storage, core::OMRuntimeContext &amp;context, const OMConfig &amp;configs)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_optimizer_8cpp_source.html#l00026">OMOptimizer.cpp:26</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_kernel_configuration_8cpp_source.html#l00025">onert_micro::import::OMKernelConfiguration::configureKernels()</a>, <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00025">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, <a class="el" href="_o_m_circle_reader_8h_source.html#l00061">onert_micro::core::reader::OMCircleReader::num_subgraph()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_optimizer_8cpp_source.html#l00026">onert_micro::optimize::OMOptimizer::optimize()</a>, <a class="el" href="_o_m_circle_reader_8cpp_source.html#l00055">onert_micro::core::reader::OMCircleReader::parse()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00044">onert_micro::core::OMRuntimeContext::setModel()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>, <a class="el" href="_o_m_kernel_configuration_8cpp_source.html#l00025">onert_micro::import::OMKernelConfiguration::configureKernels()</a>, <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00049">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, <a class="el" href="_o_m_circle_reader_8h_source.html#l00061">onert_micro::core::reader::OMCircleReader::num_subgraph()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_optimizer_8cpp_source.html#l00026">onert_micro::optimize::OMOptimizer::optimize()</a>, <a class="el" href="_o_m_circle_reader_8cpp_source.html#l00055">onert_micro::core::reader::OMCircleReader::parse()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00046">onert_micro::core::OMRuntimeContext::setModel()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00058">onert_micro::core::OMRuntimeContext::setWofFile()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00021">onert_micro::OMInterpreter::importModel()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00029">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>.</p>
 
@@ -636,22 +668,22 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00143">143</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  144</span>{</div>
-<div class="line"><span class="lineno">  145</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>  <span class="keywordflow">if</span> (_graphs.empty())</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">ModelNotImport</a>;</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;graph : _graphs)</div>
-<div class="line"><span class="lineno">  151</span>  {</div>
-<div class="line"><span class="lineno">  152</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.reset();</div>
-<div class="line"><span class="lineno">  153</span>  }</div>
-<div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  156</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00155">155</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  156</span>{</div>
+<div class="line"><span class="lineno">  157</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.empty())</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">ModelNotImport</a>;</div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;graph : <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>)</div>
+<div class="line"><span class="lineno">  163</span>  {</div>
+<div class="line"><span class="lineno">  164</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.reset();</div>
+<div class="line"><span class="lineno">  165</span>  }</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  168</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00031">onert_micro::ModelNotImport</a>, and <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>, <a class="el" href="_o_m_status_8h_source.html#l00031">onert_micro::ModelNotImport</a>, and <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_o_m_interpreter_8cpp_source.html#l00032">onert_micro::OMInterpreter::reset()</a>.</p>
 
@@ -672,30 +704,57 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00124">124</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>{</div>
-<div class="line"><span class="lineno">  126</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">if</span> (_graphs.empty())</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">ModelNotImport</a>;</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>  core::OMRuntimeGraph &amp;main_graph = _graphs.at(0);</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>  <a class="code hl_struct" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">execute::OMExecuteArgs</a> execute_args = {main_graph.getRuntimeStorage(),</div>
-<div class="line"><span class="lineno">  134</span>                                         main_graph.getRuntimeContext(), 0, *<span class="keyword">this</span>};</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>  status = <a class="code hl_function" href="structonert__micro_1_1execute_1_1_o_m_kernel_execute.html#aa1577957aa46a5f60925b7691795263a">execute::OMKernelExecute::executeKernel</a>(execute_args, main_graph.getRuntimeAllocator());</div>
-<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
-<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">return</span> status;</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00136">136</a> of file <a class="el" href="_o_m_runtime_module_8cpp_source.html">OMRuntimeModule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  137</span>{</div>
+<div class="line"><span class="lineno">  138</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  141</span>}</div>
+<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.empty())</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3">ModelNotImport</a>;</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>  core::OMRuntimeGraph &amp;main_graph = <a class="code hl_variable" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a3c9b58d2859243eb8b4d2daea244a2c4">_graphs</a>.at(0);</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>  <a class="code hl_struct" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">execute::OMExecuteArgs</a> execute_args = {main_graph.getRuntimeStorage(),</div>
+<div class="line"><span class="lineno">  146</span>                                         main_graph.getRuntimeContext(), 0, *<span class="keyword">this</span>};</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>  status = <a class="code hl_function" href="structonert__micro_1_1execute_1_1_o_m_kernel_execute.html#a62bba2d522ab99380a665915842622c7">execute::OMKernelExecute::runForward</a>(execute_args, main_graph.getRuntimeAllocator());</div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  153</span>}</div>
 <div class="ttc" id="astructonert__micro_1_1execute_1_1_o_m_execute_args_html"><div class="ttname"><a href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">onert_micro::execute::OMExecuteArgs</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_execute_args_8h_source.html#l00030">OMExecuteArgs.h:31</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1_o_m_kernel_execute_html_aa1577957aa46a5f60925b7691795263a"><div class="ttname"><a href="structonert__micro_1_1execute_1_1_o_m_kernel_execute.html#aa1577957aa46a5f60925b7691795263a">onert_micro::execute::OMKernelExecute::executeKernel</a></div><div class="ttdeci">static OMStatus executeKernel(OMExecuteArgs &amp;, core::memory::OMRuntimeAllocator &amp;allocator)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_execute_8cpp_source.html#l00024">OMKernelExecute.cpp:24</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1execute_1_1_o_m_kernel_execute_html_a62bba2d522ab99380a665915842622c7"><div class="ttname"><a href="structonert__micro_1_1execute_1_1_o_m_kernel_execute.html#a62bba2d522ab99380a665915842622c7">onert_micro::execute::OMKernelExecute::runForward</a></div><div class="ttdeci">static OMStatus runForward(OMExecuteArgs &amp;, core::memory::OMRuntimeAllocator &amp;allocator)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_execute_8cpp_source.html#l00024">OMKernelExecute.cpp:24</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_kernel_execute_8cpp_source.html#l00024">onert_micro::execute::OMKernelExecute::executeKernel()</a>, <a class="el" href="_o_m_runtime_graph_8h_source.html#l00063">onert_micro::core::OMRuntimeGraph::getRuntimeAllocator()</a>, <a class="el" href="_o_m_runtime_graph_8h_source.html#l00065">onert_micro::core::OMRuntimeGraph::getRuntimeContext()</a>, <a class="el" href="_o_m_runtime_graph_8h_source.html#l00061">onert_micro::core::OMRuntimeGraph::getRuntimeStorage()</a>, <a class="el" href="_o_m_status_8h_source.html#l00031">onert_micro::ModelNotImport</a>, and <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">_graphs</a>, <a class="el" href="_o_m_runtime_graph_8h_source.html#l00066">onert_micro::core::OMRuntimeGraph::getRuntimeAllocator()</a>, <a class="el" href="_o_m_runtime_graph_8h_source.html#l00068">onert_micro::core::OMRuntimeGraph::getRuntimeContext()</a>, <a class="el" href="_o_m_runtime_graph_8h_source.html#l00064">onert_micro::core::OMRuntimeGraph::getRuntimeStorage()</a>, <a class="el" href="_o_m_status_8h_source.html#l00031">onert_micro::ModelNotImport</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_kernel_execute_8cpp_source.html#l00024">onert_micro::execute::OMKernelExecute::runForward()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00190">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>, <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>, <a class="el" href="_o_m_interpreter_8cpp_source.html#l00030">onert_micro::OMInterpreter::run()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00190">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>, <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>, <a class="el" href="_o_m_interpreter_8cpp_source.html#l00030">onert_micro::OMInterpreter::run()</a>, <a class="el" href="_o_m_training_interpreter_8h_source.html#l00089">onert_micro::OMTrainingInterpreter::run()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a3c9b58d2859243eb8b4d2daea244a2c4" name="a3c9b58d2859243eb8b4d2daea244a2c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c9b58d2859243eb8b4d2daea244a2c4">&#9670;&#160;</a></span>_graphs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_graph.html">OMRuntimeGraph</a>&gt; onert_micro::core::OMRuntimeModule::_graphs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_module_8h_source.html#l00035">35</a> of file <a class="el" href="_o_m_runtime_module_8h_source.html">OMRuntimeModule.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00128">allocateInputs()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00272">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00190">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00041">getInputDataAt()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00031">getInputSizeAt()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00027">getNumberOfInputs()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00029">getNumberOfOutputs()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00046">getOutputDataAt()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00036">getOutputSizeAt()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00170">getRuntimeGraphAt()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00051">importModel()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00029">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00291">onert_micro::core::OMTrainingRuntimeModule::loadCheckpointData()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00155">reset()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00247">onert_micro::core::OMTrainingRuntimeModule::reset()</a>, <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00136">run()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
 
 </div>
 </div>

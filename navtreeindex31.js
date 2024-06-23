@@ -1,5 +1,6 @@
 var NAVTREEINDEX31 =
 {
+"_unused_operand_elimination_pass_8h_source.html":[36,0,4,2,2,1,1,0,25],
 "_update_8cpp.html":[36,0,0,27,0,1,1,39],
 "_update_8cpp_source.html":[36,0,0,27,0,1,1,39],
 "_update_8forward_8h.html":[36,0,0,27,0,0,0,1,58],
@@ -155,11 +156,6 @@ var NAVTREEINDEX31 =
 "_where_options_8h_source.html":[36,0,0,126,2,0,181],
 "_while_8cc.html":[36,0,4,2,2,1,5,0,69],
 "_while_8cc_source.html":[36,0,4,2,2,1,5,0,69],
-"_while_kernel_8h.html":[36,0,3,4,0,0,1,85,1],
-"_while_kernel_8h.html#a588c48ffc369fbd6340469da72f51d90":[36,0,3,4,0,0,1,85,1,1],
-"_while_kernel_8h.html#ab8b72cd65047952bcb8f2c9538651e13":[36,0,3,4,0,0,1,85,1,2],
-"_while_kernel_8h.html#ad59582d148d721ed63e7bb4e626c4954":[36,0,3,4,0,0,1,85,1,3],
-"_while_kernel_8h_source.html":[36,0,3,4,0,0,1,85,1],
 "_while_layer_8cc.html":[36,0,4,2,2,1,0,1,0,4],
 "_while_layer_8cc_source.html":[36,0,4,2,2,1,0,1,0,4],
 "_while_layer_8h.html":[36,0,4,2,2,1,0,1,0,5],
@@ -174,10 +170,10 @@ var NAVTREEINDEX31 =
 "_window2_d_8h_source.html":[36,0,0,27,0,0,0,1,64],
 "_window_8h.html":[36,0,0,45,0,0,1,53],
 "_window_8h_source.html":[36,0,0,45,0,0,1,53],
-"_work_queue_8cc.html":[36,0,4,2,2,1,3,40],
-"_work_queue_8cc_source.html":[36,0,4,2,2,1,3,40],
-"_work_queue_8h.html":[36,0,4,2,2,1,3,41],
-"_work_queue_8h_source.html":[36,0,4,2,2,1,3,41],
+"_work_queue_8cc.html":[36,0,4,2,2,1,3,41],
+"_work_queue_8cc_source.html":[36,0,4,2,2,1,3,41],
+"_work_queue_8h.html":[36,0,4,2,2,1,3,42],
+"_work_queue_8h_source.html":[36,0,4,2,2,1,3,42],
 "_workflow_runner_8py.html":[36,0,0,93,1,10],
 "_workflow_runner_8py_source.html":[36,0,0,93,1,10],
 "_write_tester_8cpp.html":[36,0,0,52,11,0,3],
@@ -249,5 +245,9 @@ var NAVTREEINDEX31 =
 "activation__float__helpers_8h.html":[36,0,1,0,1,0,0,0,0],
 "activation__float__helpers_8h.html#a0bd249f46d4fb9dc5cfcb062761c55bb":[36,0,1,0,1,0,0,0,0,16],
 "activation__float__helpers_8h.html#a3d828b57d03a6109bdc4719408927179":[36,0,1,0,1,0,0,0,0,4],
-"activation__float__helpers_8h.html#a3fbe1c283cc8c5e8bd79623c760b498d":[36,0,1,0,1,0,0,0,0,14]
+"activation__float__helpers_8h.html#a3fbe1c283cc8c5e8bd79623c760b498d":[36,0,1,0,1,0,0,0,0,14],
+"activation__float__helpers_8h.html#a43bf6bb78e61889b6a1f3f60b36d52a8":[36,0,1,0,1,0,0,0,0,13],
+"activation__float__helpers_8h.html#a5885769bd59707cdfdfaa82677ea4483":[36,0,1,0,1,0,0,0,0,12],
+"activation__float__helpers_8h.html#a6451b6d9cf6fcf9dcb35a68376e85856":[36,0,1,0,1,0,0,0,0,5],
+"activation__float__helpers_8h.html#a6d28176cdf4fe5f1b39245907d5ca7b8":[36,0,1,0,1,0,0,0,0,9]
 };

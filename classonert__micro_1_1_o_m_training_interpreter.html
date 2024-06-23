@@ -133,6 +133,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af7a1de4fd7b329cf7c4177612ca4a6b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af22a7426e71fc494f6870deac0e777eb" id="r_af22a7426e71fc494f6870deac0e777eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html#af22a7426e71fc494f6870deac0e777eb">loadCheckpoint</a> (<a class="el" href="structonert__micro_1_1_o_m_config.html">OMConfig</a> &amp;config, const char *load_path)</td></tr>
 <tr class="separator:af22a7426e71fc494f6870deac0e777eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3536bb54a4d1e27e29a20e6abc2a4bab" id="r_a3536bb54a4d1e27e29a20e6abc2a4bab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html#a3536bb54a4d1e27e29a20e6abc2a4bab">run</a> ()</td></tr>
+<tr class="separator:a3536bb54a4d1e27e29a20e6abc2a4bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc45710327b6405be28734452e273f47" id="r_adc45710327b6405be28734452e273f47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html#adc45710327b6405be28734452e273f47">allocateInputs</a> ()</td></tr>
+<tr class="separator:adc45710327b6405be28734452e273f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e861401fec1464eac7f51fc3da7959" id="r_a45e861401fec1464eac7f51fc3da7959"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html#a45e861401fec1464eac7f51fc3da7959">getInputData</a> (uint32_t position)</td></tr>
+<tr class="separator:a45e861401fec1464eac7f51fc3da7959"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f9997ed754443c2c7b5f29a670033b" id="r_a86f9997ed754443c2c7b5f29a670033b"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html#a86f9997ed754443c2c7b5f29a670033b">getInputDataAt</a> (uint32_t position)</td></tr>
+<tr class="separator:a86f9997ed754443c2c7b5f29a670033b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ef2787c23bceee5fce2d05e65108c66" id="r_a8ef2787c23bceee5fce2d05e65108c66"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1_o_m_training_interpreter.html#a8ef2787c23bceee5fce2d05e65108c66">getOutputDataAt</a> (uint32_t position)</td></tr>
+<tr class="separator:a8ef2787c23bceee5fce2d05e65108c66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -241,6 +251,37 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="adc45710327b6405be28734452e273f47" name="adc45710327b6405be28734452e273f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc45710327b6405be28734452e273f47">&#9670;&#160;</a></span>allocateInputs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::OMTrainingInterpreter::allocateInputs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_interpreter_8h_source.html#l00090">90</a> of file <a class="el" href="_o_m_training_interpreter_8h_source.html">OMTrainingInterpreter.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{ <span class="keywordflow">return</span> _training_runtime_module.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a5ef4c950d4acff9fa926e32f40e3edf7">allocateInputs</a>(); }</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_module_html_a5ef4c950d4acff9fa926e32f40e3edf7"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a5ef4c950d4acff9fa926e32f40e3edf7">onert_micro::core::OMRuntimeModule::allocateInputs</a></div><div class="ttdeci">OMStatus allocateInputs()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_module_8cpp_source.html#l00128">OMRuntimeModule.cpp:128</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00128">onert_micro::core::OMRuntimeModule::allocateInputs()</a>.</p>
+
+</div>
+</div>
 <a id="afc6f872a5466ab962a918388d370ec3c" name="afc6f872a5466ab962a918388d370ec3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc6f872a5466ab962a918388d370ec3c">&#9670;&#160;</a></span>evaluateMetric()</h2>
 
@@ -289,6 +330,60 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00190">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
+
+</div>
+</div>
+<a id="a45e861401fec1464eac7f51fc3da7959" name="a45e861401fec1464eac7f51fc3da7959"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e861401fec1464eac7f51fc3da7959">&#9670;&#160;</a></span>getInputData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * OMTrainingInterpreter::getInputData </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00166">166</a> of file <a class="el" href="_o_m_training_interpreter_8cpp_source.html">OMTrainingInterpreter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
+<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">return</span> _training_runtime_module.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#adab87d7c51d94f5c4b50626b32879766">getInputData</a>(position);</div>
+<div class="line"><span class="lineno">  169</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_training_runtime_module_html_adab87d7c51d94f5c4b50626b32879766"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#adab87d7c51d94f5c4b50626b32879766">onert_micro::core::OMTrainingRuntimeModule::getInputData</a></div><div class="ttdeci">void * getInputData(int32_t index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_runtime_module_8cpp_source.html#l00306">OMTrainingRuntimeModule.cpp:306</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00306">onert_micro::core::OMTrainingRuntimeModule::getInputData()</a>.</p>
+
+</div>
+</div>
+<a id="a86f9997ed754443c2c7b5f29a670033b" name="a86f9997ed754443c2c7b5f29a670033b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f9997ed754443c2c7b5f29a670033b">&#9670;&#160;</a></span>getInputDataAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * OMTrainingInterpreter::getInputDataAt </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00156">156</a> of file <a class="el" href="_o_m_training_interpreter_8cpp_source.html">OMTrainingInterpreter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  157</span>{</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">return</span> _training_runtime_module.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#ad00fd02b80a2026cfec1d37fa8a1ccd2">getInputDataAt</a>(position);</div>
+<div class="line"><span class="lineno">  159</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_module_html_ad00fd02b80a2026cfec1d37fa8a1ccd2"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#ad00fd02b80a2026cfec1d37fa8a1ccd2">onert_micro::core::OMRuntimeModule::getInputDataAt</a></div><div class="ttdeci">void * getInputDataAt(uint32_t position)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_module_8cpp_source.html#l00041">OMRuntimeModule.cpp:41</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00041">onert_micro::core::OMRuntimeModule::getInputDataAt()</a>.</p>
+
 </div>
 </div>
 <a id="a9c0a3419223cfbaa1b0e0e6ab73cfb08" name="a9c0a3419223cfbaa1b0e0e6ab73cfb08"></a>
@@ -314,6 +409,32 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_module_html_a5f424fca1a7e7c26ced90a8efa4e95c8"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a5f424fca1a7e7c26ced90a8efa4e95c8">onert_micro::core::OMRuntimeModule::getInputSizeAt</a></div><div class="ttdeci">uint32_t getInputSizeAt(uint32_t position)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_module_8cpp_source.html#l00031">OMRuntimeModule.cpp:31</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00031">onert_micro::core::OMRuntimeModule::getInputSizeAt()</a>.</p>
+
+</div>
+</div>
+<a id="a8ef2787c23bceee5fce2d05e65108c66" name="a8ef2787c23bceee5fce2d05e65108c66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ef2787c23bceee5fce2d05e65108c66">&#9670;&#160;</a></span>getOutputDataAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * OMTrainingInterpreter::getOutputDataAt </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00161">161</a> of file <a class="el" href="_o_m_training_interpreter_8cpp_source.html">OMTrainingInterpreter.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordflow">return</span> _training_runtime_module.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a8b4050807e1d0dd6ecb6db3478ae67e7">getOutputDataAt</a>(position);</div>
+<div class="line"><span class="lineno">  164</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_module_html_a8b4050807e1d0dd6ecb6db3478ae67e7"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a8b4050807e1d0dd6ecb6db3478ae67e7">onert_micro::core::OMRuntimeModule::getOutputDataAt</a></div><div class="ttdeci">void * getOutputDataAt(uint32_t position)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_module_8cpp_source.html#l00046">OMRuntimeModule.cpp:46</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00046">onert_micro::core::OMRuntimeModule::getOutputDataAt()</a>.</p>
 
 </div>
 </div>
@@ -381,6 +502,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00029">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
 
 </div>
 </div>
@@ -459,6 +582,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00291">onert_micro::core::OMTrainingRuntimeModule::loadCheckpointData()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
+
 </div>
 </div>
 <a id="a7e3bc58907d29c976ba82ab3ce5fb50a" name="a7e3bc58907d29c976ba82ab3ce5fb50a"></a>
@@ -536,6 +661,39 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a3536bb54a4d1e27e29a20e6abc2a4bab" name="a3536bb54a4d1e27e29a20e6abc2a4bab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3536bb54a4d1e27e29a20e6abc2a4bab">&#9670;&#160;</a></span>run()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::OMTrainingInterpreter::run </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_interpreter_8h_source.html#l00089">89</a> of file <a class="el" href="_o_m_training_interpreter_8h_source.html">OMTrainingInterpreter.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{ <span class="keywordflow">return</span> _training_runtime_module.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a4830dcc23f6027bc5f78e6053ac3aa4d">run</a>(); }</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_module_html_a4830dcc23f6027bc5f78e6053ac3aa4d"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_module.html#a4830dcc23f6027bc5f78e6053ac3aa4d">onert_micro::core::OMRuntimeModule::run</a></div><div class="ttdeci">OMStatus run()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_module_8cpp_source.html#l00136">OMRuntimeModule.cpp:136</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_module_8cpp_source.html#l00136">onert_micro::core::OMRuntimeModule::run()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>.</p>
+
+</div>
+</div>
 <a id="af7a1de4fd7b329cf7c4177612ca4a6b2" name="af7a1de4fd7b329cf7c4177612ca4a6b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7a1de4fd7b329cf7c4177612ca4a6b2">&#9670;&#160;</a></span>saveCheckpoint()</h2>
 
@@ -602,6 +760,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00272">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
+
 </div>
 </div>
 <a id="a2837e2faab43a324c69737730b0612e1" name="a2837e2faab43a324c69737730b0612e1"></a>
@@ -658,6 +818,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
+
 </div>
 </div>
 <a id="a837186bdb9c56cb6c283dc48cd50d8e1" name="a837186bdb9c56cb6c283dc48cd50d8e1"></a>
@@ -701,6 +863,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_training_runtime_module_html_a465fdb5ee71bc37280769b5d1e745217"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#a465fdb5ee71bc37280769b5d1e745217">onert_micro::core::OMTrainingRuntimeModule::setInputData</a></div><div class="ttdeci">void setInputData(uint8_t *data, uint32_t input_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_runtime_module_8h_source.html#l00075">OMTrainingRuntimeModule.h:75</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8h_source.html#l00075">onert_micro::core::OMTrainingRuntimeModule::setInputData()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
 
 </div>
 </div>
@@ -746,6 +910,8 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8h_source.html#l00081">onert_micro::core::OMTrainingRuntimeModule::setTargetData()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
+
 </div>
 </div>
 <a id="adc4ec85df9039bc8a5923b15131d13b1" name="adc4ec85df9039bc8a5923b15131d13b1"></a>
@@ -771,6 +937,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_training_runtime_module_html_ae172098ecda0164fe5e04241bcd994ce"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#ae172098ecda0164fe5e04241bcd994ce">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep</a></div><div class="ttdeci">OMStatus trainSingleStep(OMConfig &amp;config)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_runtime_module_8cpp_source.html#l00076">OMTrainingRuntimeModule.cpp:76</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
 
 </div>
 </div>

@@ -104,10 +104,10 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-use-nnfw-api.ht
 <div class="line">nnfw_create_session(&amp;session);</div>
 </div><!-- fragment --><p> 2) Load nnpackage </p><div class="fragment"><div class="line"> c</div>
 <div class="line">nnfw_load_model_from_file(session, nnpackage_path);</div>
-</div><!-- fragment --><p> 3) (Optional) Assign a specific backend to operations </p><div class="fragment"><div class="line">c</div>
-<div class="line"> // Use &#39;acl_neon&#39; backend for CONV_2D and &#39;cpu&#39; for otherwise.</div>
+</div><!-- fragment --><p> 3) (Optional) Assign a specific backend </p><div class="fragment"><div class="line">c</div>
+<div class="line"> // Use &#39;acl_neon&#39; backend only</div>
 <div class="line"> // Note that defalut backend is &#39;cpu&#39;.</div>
-<div class="line"> nnfw_set_op_backend(session, &quot;CONV_2D&quot;, &quot;acl_neon&quot;);</div>
+<div class="line"> nnfw_set_available_backends(session, &quot;acl_neon&quot;);</div>
 </div><!-- fragment --><p>4) Compilation </p><div class="fragment"><div class="line">c</div>
 <div class="line"> // Compile model</div>
 <div class="line"> nnfw_prepare(session);</div>

@@ -101,9 +101,9 @@ Collaboration diagram for onert_micro::core::SoftmaxParams:</div>
 <div class="dyncontent">
 <div class="center"><img src="structonert__micro_1_1core_1_1_softmax_params__coll__graph.png" border="0" usemap="#aonert__micro_1_1core_1_1_softmax_params_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert__micro_1_1core_1_1_softmax_params_coll__map" id="aonert__micro_1_1core_1_1_softmax_params_coll__map">
-<area shape="rect" title=" " alt="" coords="5,109,132,150"/>
+<area shape="rect" title=" " alt="" coords="5,139,132,180"/>
 <area shape="rect" title=" " alt="" coords="38,5,99,31"/>
-<area shape="poly" title=" " alt="" coords="71,47,71,109,66,109,66,47"/>
+<area shape="poly" title=" " alt="" coords="71,46,71,139,66,139,66,46"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -121,6 +121,14 @@ Data Fields</h2></td></tr>
 <tr class="separator:a2bc423e4202f6906cb4170d4b77e4ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91848f6c522752de8b151b103443e5c3" id="r_a91848f6c522752de8b151b103443e5c3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_softmax_params.html#a91848f6c522752de8b151b103443e5c3">row_size</a></td></tr>
 <tr class="separator:a91848f6c522752de8b151b103443e5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5719ceac9a8432c4ceed2f50d37b5d5a" id="r_a5719ceac9a8432c4ceed2f50d37b5d5a"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_softmax_params.html#a5719ceac9a8432c4ceed2f50d37b5d5a">input_zp</a></td></tr>
+<tr class="separator:a5719ceac9a8432c4ceed2f50d37b5d5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc41fcbf2ef774c4ca02f52b01745b56" id="r_adc41fcbf2ef774c4ca02f52b01745b56"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_softmax_params.html#adc41fcbf2ef774c4ca02f52b01745b56">output_zp</a></td></tr>
+<tr class="separator:adc41fcbf2ef774c4ca02f52b01745b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e4ade3681505b6ba6ee94689482903b" id="r_a5e4ade3681505b6ba6ee94689482903b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_softmax_params.html#a5e4ade3681505b6ba6ee94689482903b">input_scale</a></td></tr>
+<tr class="separator:a5e4ade3681505b6ba6ee94689482903b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d967d056233c299060f0062b507388e" id="r_a9d967d056233c299060f0062b507388e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_softmax_params.html#a9d967d056233c299060f0062b507388e">output_scale</a></td></tr>
+<tr class="separator:a9d967d056233c299060f0062b507388e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -140,7 +148,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00047">47</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00032">onert_micro::execute::pal::Softmax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>, and <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00086">onert_micro::execute::pal::Softmax&lt; float, float &gt;()</a>.</p>
 
 </div>
 </div>
@@ -158,6 +166,8 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00050">50</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_softmax_8h_source.html#l00033">onert_micro::execute::pal::Softmax&lt; int8_t, int8_t &gt;()</a>.</p>
+
 </div>
 </div>
 <a id="ab4e75575a6a09ccf0d0bd9d8e5991dd2" name="ab4e75575a6a09ccf0d0bd9d8e5991dd2"></a>
@@ -173,6 +183,8 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00049">49</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_softmax_8h_source.html#l00033">onert_micro::execute::pal::Softmax&lt; int8_t, int8_t &gt;()</a>.</p>
 
 </div>
 </div>
@@ -190,6 +202,44 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00048">48</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_softmax_8h_source.html#l00033">onert_micro::execute::pal::Softmax&lt; int8_t, int8_t &gt;()</a>.</p>
+
+</div>
+</div>
+<a id="a5e4ade3681505b6ba6ee94689482903b" name="a5e4ade3681505b6ba6ee94689482903b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e4ade3681505b6ba6ee94689482903b">&#9670;&#160;</a></span>input_scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float onert_micro::core::SoftmaxParams::input_scale</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00055">55</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>.</p>
+
+</div>
+</div>
+<a id="a5719ceac9a8432c4ceed2f50d37b5d5a" name="a5719ceac9a8432c4ceed2f50d37b5d5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5719ceac9a8432c4ceed2f50d37b5d5a">&#9670;&#160;</a></span>input_zp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t onert_micro::core::SoftmaxParams::input_zp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00053">53</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>.</p>
+
 </div>
 </div>
 <a id="a2bc423e4202f6906cb4170d4b77e4ae5" name="a2bc423e4202f6906cb4170d4b77e4ae5"></a>
@@ -206,7 +256,43 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00051">51</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00032">onert_micro::execute::pal::Softmax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00086">onert_micro::execute::pal::Softmax&lt; float, float &gt;()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_softmax_8h_source.html#l00033">onert_micro::execute::pal::Softmax&lt; int8_t, int8_t &gt;()</a>.</p>
+
+</div>
+</div>
+<a id="a9d967d056233c299060f0062b507388e" name="a9d967d056233c299060f0062b507388e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d967d056233c299060f0062b507388e">&#9670;&#160;</a></span>output_scale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float onert_micro::core::SoftmaxParams::output_scale</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00056">56</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>.</p>
+
+</div>
+</div>
+<a id="adc41fcbf2ef774c4ca02f52b01745b56" name="adc41fcbf2ef774c4ca02f52b01745b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc41fcbf2ef774c4ca02f52b01745b56">&#9670;&#160;</a></span>output_zp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t onert_micro::core::SoftmaxParams::output_zp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00054">54</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>.</p>
 
 </div>
 </div>
@@ -224,7 +310,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00052">52</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00032">onert_micro::execute::pal::Softmax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">onert_micro::execute::pal::Softmax()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00086">onert_micro::execute::pal::Softmax&lt; float, float &gt;()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_softmax_8h_source.html#l00033">onert_micro::execute::pal::Softmax&lt; int8_t, int8_t &gt;()</a>.</p>
 
 </div>
 </div>

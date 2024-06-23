@@ -90,22 +90,29 @@ $(document).ready(function(){initNavTree('_training_driver_8cpp.html',''); initR
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">TrainingDriver.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;luci_interpreter/Interpreter.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="_training_onert_micro_8h_source.html">luci_interpreter/TrainingOnertMicro.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="_training_settings_8h_source.html">luci_interpreter/TrainingSettings.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_training_interpreter_8h_source.html">OMTrainingInterpreter.h</a>&quot;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;numeric&gt;</code><br />
 </div>
 <p><a href="_training_driver_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a609febbafa682bd13f7cffc78ee9130f" id="r_a609febbafa682bd13f7cffc78ee9130f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f">MODEL_TYPE</a>&#160;&#160;&#160;float</td></tr>
+<tr class="separator:a609febbafa682bd13f7cffc78ee9130f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d3e7062b50d925fea93123774a96342" id="r_a0d3e7062b50d925fea93123774a96342"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_training_driver_8cpp.html#a0d3e7062b50d925fea93123774a96342">CLASSIFICATION_TASK</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a0d3e7062b50d925fea93123774a96342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a0bd2da0b208d77121c01ef3a7e7ae198" id="r_a0bd2da0b208d77121c01ef3a7e7ae198"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_training_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198">entry</a> (int argc, char **argv)</td></tr>
@@ -114,6 +121,39 @@ Functions</h2></td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627" id="r_a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_training_driver_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a0d3e7062b50d925fea93123774a96342" name="a0d3e7062b50d925fea93123774a96342"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d3e7062b50d925fea93123774a96342">&#9670;&#160;</a></span>CLASSIFICATION_TASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLASSIFICATION_TASK&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_training_driver_8cpp_source.html#l00028">28</a> of file <a class="el" href="_training_driver_8cpp_source.html">TrainingDriver.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a609febbafa682bd13f7cffc78ee9130f" name="a609febbafa682bd13f7cffc78ee9130f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a609febbafa682bd13f7cffc78ee9130f">&#9670;&#160;</a></span>MODEL_TYPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MODEL_TYPE&#160;&#160;&#160;float</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_training_driver_8cpp_source.html#l00026">26</a> of file <a class="el" href="_training_driver_8cpp_source.html">TrainingDriver.cpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a0bd2da0b208d77121c01ef3a7e7ae198" name="a0bd2da0b208d77121c01ef3a7e7ae198"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bd2da0b208d77121c01ef3a7e7ae198">&#9670;&#160;</a></span>entry()</h2>
@@ -146,172 +186,341 @@ Functions</h2></td></tr>
 <p>HDF5 layout is like below</p>
 <p>GROUP "/" ㄴGROUP "name" ㄴATTRIBUTE "0" ㄴDATA (0): "input_01:0" ㄴATTRIBUTE "1" ㄴDATA (0): "input_02:0" ㄴGROUP "value" ㄴDATASET "0" ㄴDATA ... ㄴDATASET "1" ㄴDATA ...</p>
 
-<p class="definition">Definition at line <a class="el" href="_training_driver_8cpp_source.html#l00061">61</a> of file <a class="el" href="_training_driver_8cpp_source.html">TrainingDriver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (argc != 8)</div>
-<div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    std::cerr</div>
-<div class="line"><span class="lineno">   66</span>      &lt;&lt; <span class="stringliteral">&quot;Usage: &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[0]</div>
-<div class="line"><span class="lineno">   67</span>      &lt;&lt; <span class="stringliteral">&quot; &lt;path/to/circle/model&gt; &lt;path/to/input/train_data&gt; &lt;path/to/input/label_train_data&gt; &quot;</span></div>
-<div class="line"><span class="lineno">   68</span>         <span class="stringliteral">&quot;&lt;path/to/input/test_data&gt; &lt;path/to/input/label_test_data&gt; num_of_train_smpl &quot;</span></div>
-<div class="line"><span class="lineno">   69</span>         <span class="stringliteral">&quot;num_of_test_smpl\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">   71</span>  }</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *filename = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1];</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_train_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2];</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_label_train_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[3];</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_test_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[4];</div>
-<div class="line"><span class="lineno">   77</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_label_test_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[5];</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> int32_t num_train_data_samples = atoi(argv[6]);</div>
-<div class="line"><span class="lineno">   79</span>  <span class="keyword">const</span> int32_t num_test_data_samples = atoi(argv[7]);</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>  std::ifstream <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>(filename, std::ios::binary | std::ios::in);</div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.good())</div>
-<div class="line"><span class="lineno">   83</span>  {</div>
-<div class="line"><span class="lineno">   84</span>    std::string errmsg = <span class="stringliteral">&quot;Failed to open file&quot;</span>;</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">throw</span> std::runtime_error(errmsg.c_str());</div>
-<div class="line"><span class="lineno">   86</span>  }</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.seekg(0, std::ios::end);</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keyword">auto</span> fileSize = <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.tellg();</div>
-<div class="line"><span class="lineno">   90</span>  <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.seekg(0, std::ios::beg);</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>  <span class="comment">// reserve capacity</span></div>
-<div class="line"><span class="lineno">   93</span>  DataBuffer model_data(fileSize);</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// read the data</span></div>
-<div class="line"><span class="lineno">   96</span>  <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.read(model_data.data(), fileSize);</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.fail())</div>
-<div class="line"><span class="lineno">   98</span>  {</div>
-<div class="line"><span class="lineno">   99</span>    std::string errmsg = <span class="stringliteral">&quot;Failed to read file&quot;</span>;</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">throw</span> std::runtime_error(errmsg.c_str());</div>
-<div class="line"><span class="lineno">  101</span>  }</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>  <span class="comment">// Create interpreter.</span></div>
-<div class="line"><span class="lineno">  104</span>  <a class="code hl_class" href="classluci__interpreter_1_1_interpreter.html">luci_interpreter::Interpreter</a> <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>(model_data.data(), <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>  luci_interpreter::training::TrainingSettings settings;</div>
-<div class="line"><span class="lineno">  107</span>  settings.learning_rate = 0.0001;</div>
-<div class="line"><span class="lineno">  108</span>  settings.number_of_epochs = 100;</div>
-<div class="line"><span class="lineno">  109</span>  settings.batch_size = 1;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_size = <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.getInputDataSizeByIndex(0);</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_size = <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.getOutputDataSizeByIndex(0);</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  <span class="keywordtype">char</span> *train_data = <span class="keyword">new</span> <span class="keywordtype">char</span>[input_size * num_train_data_samples];</div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordtype">char</span> *label_train_data = <span class="keyword">new</span> <span class="keywordtype">char</span>[output_size * num_train_data_samples];</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordtype">char</span> *<a class="code hl_variable" href="test__data_8h.html#a96516f4d42798a694799756cb0884b98">test_data</a> = <span class="keyword">new</span> <span class="keywordtype">char</span>[input_size * num_test_data_samples];</div>
-<div class="line"><span class="lineno">  118</span>  <span class="keywordtype">char</span> *label_test_data = <span class="keyword">new</span> <span class="keywordtype">char</span>[output_size * num_test_data_samples];</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>  readDataFromFile(input_train_data_path, train_data, input_size * num_train_data_samples);</div>
-<div class="line"><span class="lineno">  121</span>  readDataFromFile(input_test_data_path, <a class="code hl_variable" href="test__data_8h.html#a96516f4d42798a694799756cb0884b98">test_data</a>, input_size * num_test_data_samples);</div>
+<p class="definition">Definition at line <a class="el" href="_training_driver_8cpp_source.html#l00109">109</a> of file <a class="el" href="_training_driver_8cpp_source.html">TrainingDriver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
+<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">if</span> (argc != 11 and argc != 10)</div>
+<div class="line"><span class="lineno">  112</span>  {</div>
+<div class="line"><span class="lineno">  113</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Two variant of usage with and without wof file: &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[0]</div>
+<div class="line"><span class="lineno">  114</span>              &lt;&lt; <span class="stringliteral">&quot; &lt;path/to/circle/model&gt; &quot;</span></div>
+<div class="line"><span class="lineno">  115</span>                 <span class="stringliteral">&quot; optional(&lt;path/to/wof/file&gt;) &lt;path/to/save/trained/model&gt; &quot;</span></div>
+<div class="line"><span class="lineno">  116</span>                 <span class="stringliteral">&quot;&lt;path/to/save/checkpoint&gt; &lt;path/to/input/train_data&gt; &quot;</span></div>
+<div class="line"><span class="lineno">  117</span>                 <span class="stringliteral">&quot;&lt;path/to/input/target_train_data&gt; &quot;</span></div>
+<div class="line"><span class="lineno">  118</span>                 <span class="stringliteral">&quot;&lt;path/to/input/test_data&gt; &lt;path/to/input/target_test_data&gt; num_of_train_smpl &quot;</span></div>
+<div class="line"><span class="lineno">  119</span>                 <span class="stringliteral">&quot;num_of_test_smpl\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">  121</span>  }</div>
 <div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>  readDataFromFile(input_label_train_data_path, label_train_data,</div>
-<div class="line"><span class="lineno">  124</span>                   output_size * num_train_data_samples);</div>
-<div class="line"><span class="lineno">  125</span>  readDataFromFile(input_label_test_data_path, label_test_data,</div>
-<div class="line"><span class="lineno">  126</span>                   output_size * num_test_data_samples);</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>  luci_interpreter::training::TrainingOnertMicro onert_micro_training(&amp;interpreter, settings);</div>
-<div class="line"><span class="lineno">  129</span>  onert_micro_training.enableTrainingMode();</div>
-<div class="line"><span class="lineno">  130</span>  onert_micro_training.train(num_train_data_samples, <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(train_data),</div>
-<div class="line"><span class="lineno">  131</span>                             <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(label_train_data));</div>
-<div class="line"><span class="lineno">  132</span>  onert_micro_training.disableTrainingMode();</div>
+<div class="line"><span class="lineno">  123</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *circle_model_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *wof_file_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *output_trained_file_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_input_train_data_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  127</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_target_train_data_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  128</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_input_test_data_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *input_target_test_data_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *checkpoints_path = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  131</span>  int32_t num_train_data_samples = 0;</div>
+<div class="line"><span class="lineno">  132</span>  int32_t num_test_data_samples = 0;</div>
 <div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.getInputDataSizeByIndex(0);</div>
-<div class="line"><span class="lineno">  135</span>  <span class="keyword">auto</span> train_data_u8 = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(train_data);</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>  printf(<span class="stringliteral">&quot;Run train dataset:\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_train_data_samples; ++i)</div>
-<div class="line"><span class="lineno">  139</span>  {</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.allocateInputTensor(0));</div>
-<div class="line"><span class="lineno">  141</span> </div>
-<div class="line"><span class="lineno">  142</span>    std::memcpy(input_data, train_data_u8, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.interpret();</div>
-<div class="line"><span class="lineno">  145</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.readOutputTensor(0));</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>    printf(<span class="stringliteral">&quot;Sample № = %d\n&quot;</span>, i);</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_size / <span class="keyword">sizeof</span>(float); ++j)</div>
-<div class="line"><span class="lineno">  149</span>    {</div>
-<div class="line"><span class="lineno">  150</span>      printf(<span class="stringliteral">&quot;j = %d: predicted_result = %f, correct_result = %f\n&quot;</span>, j, data[j],</div>
-<div class="line"><span class="lineno">  151</span>             <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(label_train_data)[j + i * output_size / <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>)]);</div>
-<div class="line"><span class="lineno">  152</span>    }</div>
-<div class="line"><span class="lineno">  153</span>    printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  154</span>    train_data_u8 += <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><span class="lineno">  155</span>  }</div>
-<div class="line"><span class="lineno">  156</span> </div>
-<div class="line"><span class="lineno">  157</span>  <span class="keyword">auto</span> test_data_u8 = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="test__data_8h.html#a96516f4d42798a694799756cb0884b98">test_data</a>);</div>
-<div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>  printf(<span class="stringliteral">&quot;Run test dataset:\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  160</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_test_data_samples; ++i)</div>
-<div class="line"><span class="lineno">  161</span>  {</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.allocateInputTensor(0));</div>
+<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">if</span> (argc == 11)</div>
+<div class="line"><span class="lineno">  135</span>  {</div>
+<div class="line"><span class="lineno">  136</span>    circle_model_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1];</div>
+<div class="line"><span class="lineno">  137</span>    wof_file_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2];</div>
+<div class="line"><span class="lineno">  138</span>    output_trained_file_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[3];</div>
+<div class="line"><span class="lineno">  139</span>    checkpoints_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[4];</div>
+<div class="line"><span class="lineno">  140</span>    input_input_train_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[5];</div>
+<div class="line"><span class="lineno">  141</span>    input_target_train_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[6];</div>
+<div class="line"><span class="lineno">  142</span>    input_input_test_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[7];</div>
+<div class="line"><span class="lineno">  143</span>    input_target_test_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[8];</div>
+<div class="line"><span class="lineno">  144</span>    num_train_data_samples = atoi(argv[9]);</div>
+<div class="line"><span class="lineno">  145</span>    num_test_data_samples = atoi(argv[10]);</div>
+<div class="line"><span class="lineno">  146</span>  }</div>
+<div class="line"><span class="lineno">  147</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (argc == 10)</div>
+<div class="line"><span class="lineno">  148</span>  {</div>
+<div class="line"><span class="lineno">  149</span>    circle_model_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[1];</div>
+<div class="line"><span class="lineno">  150</span>    output_trained_file_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[2];</div>
+<div class="line"><span class="lineno">  151</span>    checkpoints_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[3];</div>
+<div class="line"><span class="lineno">  152</span>    input_input_train_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[4];</div>
+<div class="line"><span class="lineno">  153</span>    input_target_train_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[5];</div>
+<div class="line"><span class="lineno">  154</span>    input_input_test_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[6];</div>
+<div class="line"><span class="lineno">  155</span>    input_target_test_data_path = <a class="code hl_variable" href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">argv</a>[7];</div>
+<div class="line"><span class="lineno">  156</span>    num_train_data_samples = atoi(argv[8]);</div>
+<div class="line"><span class="lineno">  157</span>    num_test_data_samples = atoi(argv[9]);</div>
+<div class="line"><span class="lineno">  158</span>  }</div>
+<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  160</span>  {</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unknown commands number\n&quot;</span>);</div>
+<div class="line"><span class="lineno">  162</span>  }</div>
 <div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>    std::memcpy(input_data, test_data_u8, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.interpret();</div>
-<div class="line"><span class="lineno">  167</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a> = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>.readOutputTensor(0));</div>
-<div class="line"><span class="lineno">  168</span> </div>
-<div class="line"><span class="lineno">  169</span>    printf(<span class="stringliteral">&quot;Sample № = %d\n&quot;</span>, i);</div>
-<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_size / <span class="keyword">sizeof</span>(float); ++j)</div>
-<div class="line"><span class="lineno">  171</span>    {</div>
-<div class="line"><span class="lineno">  172</span>      printf(<span class="stringliteral">&quot;j = %d: predicted_result = %f, correct_result = %f\n&quot;</span>, j, data[j],</div>
-<div class="line"><span class="lineno">  173</span>             <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(label_test_data)[j + i * output_size / <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>)]);</div>
-<div class="line"><span class="lineno">  174</span>    }</div>
-<div class="line"><span class="lineno">  175</span>    printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  176</span>    test_data_u8 += <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><span class="lineno">  177</span>  }</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>  <span class="keywordtype">float</span> mse_result = 0.0f;</div>
+<div class="line"><span class="lineno">  164</span>  DataBuffer <a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a> = readFile(circle_model_path);</div>
+<div class="line"><span class="lineno">  165</span>  DataBuffer wof_data;</div>
+<div class="line"><span class="lineno">  166</span>  <span class="comment">// If defined wof file</span></div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">if</span> (wof_file_path != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  168</span>    wof_data = readFile(wof_file_path);</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">// Configure training mode</span></div>
+<div class="line"><span class="lineno">  171</span>  <a class="code hl_struct" href="structonert__micro_1_1_o_m_config.html">onert_micro::OMConfig</a> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>;</div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span>  <span class="comment">// Save model size and model ptr in config</span></div>
+<div class="line"><span class="lineno">  174</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_size = <a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a>.size();</div>
+<div class="line"><span class="lineno">  175</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a>.data();</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>  <span class="comment">// If defined wof file</span></div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">if</span> (wof_file_path != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  179</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.wof_ptr = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>  settings.metric = luci_interpreter::training::MSE;</div>
-<div class="line"><span class="lineno">  182</span>  onert_micro_training.test(num_train_data_samples, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(train_data),</div>
-<div class="line"><span class="lineno">  183</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(label_train_data),</div>
-<div class="line"><span class="lineno">  184</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mse_result));</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>  <span class="keywordtype">float</span> mae_result = 0.0f;</div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>  settings.metric = luci_interpreter::training::MAE;</div>
-<div class="line"><span class="lineno">  189</span>  onert_micro_training.test(num_train_data_samples, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(train_data),</div>
-<div class="line"><span class="lineno">  190</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(label_train_data),</div>
-<div class="line"><span class="lineno">  191</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mae_result));</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>  printf(<span class="stringliteral">&quot;MSE_ERROR TRAIN = %f\n&quot;</span>, mse_result);</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>  printf(<span class="stringliteral">&quot;MAE_ERROR TRAIN = %f\n&quot;</span>, mae_result);</div>
-<div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>  mse_result = 0.0f;</div>
-<div class="line"><span class="lineno">  198</span> </div>
-<div class="line"><span class="lineno">  199</span>  settings.metric = luci_interpreter::training::MSE;</div>
-<div class="line"><span class="lineno">  200</span>  onert_micro_training.test(num_test_data_samples, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="test__data_8h.html#a96516f4d42798a694799756cb0884b98">test_data</a>),</div>
-<div class="line"><span class="lineno">  201</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(label_test_data),</div>
-<div class="line"><span class="lineno">  202</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mse_result));</div>
-<div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>  mae_result = 0.0f;</div>
-<div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>  settings.metric = luci_interpreter::training::MAE;</div>
-<div class="line"><span class="lineno">  207</span>  onert_micro_training.test(num_test_data_samples, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="test__data_8h.html#a96516f4d42798a694799756cb0884b98">test_data</a>),</div>
-<div class="line"><span class="lineno">  208</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(label_test_data),</div>
-<div class="line"><span class="lineno">  209</span>                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mae_result));</div>
-<div class="line"><span class="lineno">  210</span> </div>
-<div class="line"><span class="lineno">  211</span>  printf(<span class="stringliteral">&quot;MSE_ERROR TEST = %f\n&quot;</span>, mse_result);</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>  printf(<span class="stringliteral">&quot;MAE_ERROR TEST = %f\n&quot;</span>, mae_result);</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><span class="lineno">  216</span>}</div>
-<div class="ttc" id="aclassluci__interpreter_1_1_interpreter_html"><div class="ttname"><a href="classluci__interpreter_1_1_interpreter.html">luci_interpreter::Interpreter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_interpreter_8h_source.html#l00050">Interpreter.h:51</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
+<div class="line"><span class="lineno">  181</span>  <span class="comment">// Set user defined training settings</span></div>
+<div class="line"><span class="lineno">  182</span>  <span class="keyword">const</span> uint32_t training_epochs = 30;</div>
+<div class="line"><span class="lineno">  183</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> lambda = 0.001f;</div>
+<div class="line"><span class="lineno">  184</span>  <span class="keyword">const</span> uint32_t BATCH_SIZE = 32;</div>
+<div class="line"><span class="lineno">  185</span>  <span class="keyword">const</span> uint32_t INPUT_SIZE = 180;</div>
+<div class="line"><span class="lineno">  186</span>  <span class="keyword">const</span> uint32_t OUTPUT_SIZE = 4;</div>
+<div class="line"><span class="lineno">  187</span>  <span class="keyword">const</span> uint32_t num_train_layers = 10;</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">onert_micro::OMLoss</a> loss = <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">onert_micro::CROSS_ENTROPY</a>;</div>
+<div class="line"><span class="lineno">  189</span>  <span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c">onert_micro::OMTrainOptimizer</a> train_optim = <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">onert_micro::ADAM</a>;</div>
+<div class="line"><span class="lineno">  190</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> beta = 0.9;</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> beta_squares = 0.999;</div>
+<div class="line"><span class="lineno">  192</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> epsilon = 1e-07;</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.train_mode = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  195</span>  {</div>
+<div class="line"><span class="lineno">  196</span>    <a class="code hl_struct" href="structonert__micro_1_1_o_m_training_context.html">onert_micro::OMTrainingContext</a> train_context;</div>
+<div class="line"><span class="lineno">  197</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#ab07cf5e8d8b057e39c0d01494102168d">batch_size</a> = BATCH_SIZE;</div>
+<div class="line"><span class="lineno">  198</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a> = num_train_layers;</div>
+<div class="line"><span class="lineno">  199</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aed2ddd2f27c50792753bf638d49eafe5">learning_rate</a> = lambda;</div>
+<div class="line"><span class="lineno">  200</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aef2a1913f57cf39369355cbcd552d1db">loss</a> = loss;</div>
+<div class="line"><span class="lineno">  201</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#a8eb4935188db5fd11be29b368d306a59">optimizer</a> = train_optim;</div>
+<div class="line"><span class="lineno">  202</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#a57f07f4e6aba3811b34b79e9097af212">beta</a> = beta;</div>
+<div class="line"><span class="lineno">  203</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#ade098e2ffb932f17dc2c8c46c9e32a5f">beta_squares</a> = beta_squares;</div>
+<div class="line"><span class="lineno">  204</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#a41240ac2508c13d88709f9bccba54c53">epsilon</a> = epsilon;</div>
+<div class="line"><span class="lineno">  205</span>    train_context.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#a85ef728ee34f5078bf749b88cf977b33">epochs</a> = training_epochs;</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context = train_context;</div>
+<div class="line"><span class="lineno">  208</span>  }</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>  <span class="comment">// Create training interpreter and import models</span></div>
+<div class="line"><span class="lineno">  211</span>  <a class="code hl_class" href="classonert__micro_1_1_o_m_training_interpreter.html">onert_micro::OMTrainingInterpreter</a> train_interpreter;</div>
+<div class="line"><span class="lineno">  212</span>  train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#a6a97bd56df21ec7c653012e4700fc695">importTrainModel</a>(<a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a>.data(), config);</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>  <span class="comment">// Temporary buffer to read input data from file using BATCH_SIZE</span></div>
+<div class="line"><span class="lineno">  215</span>  <span class="keywordtype">float</span> training_input[BATCH_SIZE * INPUT_SIZE];</div>
+<div class="line"><span class="lineno">  216</span>  <span class="keywordtype">float</span> training_target[BATCH_SIZE * OUTPUT_SIZE];</div>
+<div class="line"><span class="lineno">  217</span>  <span class="comment">// Note: here test size used with BATCH_SIZE = 1</span></div>
+<div class="line"><span class="lineno">  218</span>  <span class="keywordtype">float</span> test_input[INPUT_SIZE];</div>
+<div class="line"><span class="lineno">  219</span>  <span class="keywordtype">float</span> test_target[OUTPUT_SIZE];</div>
+<div class="line"><span class="lineno">  220</span> </div>
+<div class="line"><span class="lineno">  221</span>  std::vector&lt;float&gt; accuracy_v;</div>
+<div class="line"><span class="lineno">  222</span>  std::vector&lt;float&gt; cross_entropy_v;</div>
+<div class="line"><span class="lineno">  223</span>  std::vector&lt;float&gt; mse_v;</div>
+<div class="line"><span class="lineno">  224</span>  std::vector&lt;float&gt; mae_v;</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>  <span class="keywordtype">float</span> max_accuracy = std::numeric_limits&lt;float&gt;::min();</div>
+<div class="line"><span class="lineno">  227</span>  <span class="keywordtype">float</span> min_mae = std::numeric_limits&lt;float&gt;::max();</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">for</span> (uint32_t e = 0; e &lt; training_epochs; ++e)</div>
+<div class="line"><span class="lineno">  230</span>  {</div>
+<div class="line"><span class="lineno">  231</span>    <span class="comment">// Run train for current epoch</span></div>
+<div class="line"><span class="lineno">  232</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Run training for epoch: &quot;</span> &lt;&lt; e + 1 &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; training_epochs &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  233</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.num_epoch = e + 1;</div>
+<div class="line"><span class="lineno">  234</span>    uint32_t num_steps = num_train_data_samples / BATCH_SIZE;</div>
+<div class="line"><span class="lineno">  235</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_steps; ++i)</div>
+<div class="line"><span class="lineno">  236</span>    {</div>
+<div class="line"><span class="lineno">  237</span>      uint32_t cur_batch_size = std::min(BATCH_SIZE, num_train_data_samples - BATCH_SIZE * i - 1);</div>
+<div class="line"><span class="lineno">  238</span>      cur_batch_size = std::max(1u, cur_batch_size);</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.batch_size = cur_batch_size;</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>      <span class="comment">// Read current input and target data</span></div>
+<div class="line"><span class="lineno">  243</span>      readDataFromFile(input_input_train_data_path, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(training_input),</div>
+<div class="line"><span class="lineno">  244</span>                       <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * INPUT_SIZE * cur_batch_size,</div>
+<div class="line"><span class="lineno">  245</span>                       i * <span class="keyword">sizeof</span>(<a class="code hl_define" href="_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f">MODEL_TYPE</a>) * INPUT_SIZE * BATCH_SIZE);</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>      readDataFromFile(input_target_train_data_path, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(training_target),</div>
+<div class="line"><span class="lineno">  248</span>                       <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * OUTPUT_SIZE * cur_batch_size,</div>
+<div class="line"><span class="lineno">  249</span>                       i * <span class="keyword">sizeof</span>(<a class="code hl_define" href="_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f">MODEL_TYPE</a>) * OUTPUT_SIZE * BATCH_SIZE);</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>      <span class="comment">// Set input and target</span></div>
+<div class="line"><span class="lineno">  252</span>      train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#a837186bdb9c56cb6c283dc48cd50d8e1">setInput</a>(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(training_input), 0);</div>
+<div class="line"><span class="lineno">  253</span>      train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#a55c98b4d07e20701a58e4c7b322835b0">setTarget</a>(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(training_target), 0);</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span>      <span class="comment">// Train with current batch size</span></div>
+<div class="line"><span class="lineno">  256</span>      train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#adc4ec85df9039bc8a5923b15131d13b1">trainSingleStep</a>(config);</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>      <span class="keywordtype">float</span> mse = 0.f;</div>
+<div class="line"><span class="lineno">  259</span>      <span class="keywordtype">float</span> mae = 0.f;</div>
+<div class="line"><span class="lineno">  260</span>      <span class="keywordtype">float</span> cross_entropy_metric = 0.f;</div>
+<div class="line"><span class="lineno">  261</span>      <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a5d6db9a1dc722586187fc2db530f8388">accuracy</a> = 0.f;</div>
+<div class="line"><span class="lineno">  262</span> </div>
+<div class="line"><span class="lineno">  263</span>      <span class="keywordflow">if</span> (<a class="code hl_define" href="_training_driver_8cpp.html#a0d3e7062b50d925fea93123774a96342">CLASSIFICATION_TASK</a>)</div>
+<div class="line"><span class="lineno">  264</span>      {</div>
+<div class="line"><span class="lineno">  265</span>        <span class="comment">// Evaluate cross_entropy and accuracy metrics</span></div>
+<div class="line"><span class="lineno">  266</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">onert_micro::CROSS_ENTROPY_METRICS</a>,</div>
+<div class="line"><span class="lineno">  267</span>                                         <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;cross_entropy_metric),</div>
+<div class="line"><span class="lineno">  268</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  269</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">onert_micro::ACCURACY</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;accuracy),</div>
+<div class="line"><span class="lineno">  270</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span>        <span class="comment">// Save them into vectors</span></div>
+<div class="line"><span class="lineno">  273</span>        accuracy_v.push_back(accuracy);</div>
+<div class="line"><span class="lineno">  274</span>        cross_entropy_v.push_back(cross_entropy_metric);</div>
+<div class="line"><span class="lineno">  275</span>      }</div>
+<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  277</span>      {</div>
+<div class="line"><span class="lineno">  278</span>        <span class="comment">// Evaluate mse and mae metrics</span></div>
+<div class="line"><span class="lineno">  279</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">onert_micro::MSE_METRICS</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mse),</div>
+<div class="line"><span class="lineno">  280</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  281</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">onert_micro::MAE_METRICS</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mae),</div>
+<div class="line"><span class="lineno">  282</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  283</span> </div>
+<div class="line"><span class="lineno">  284</span>        <span class="comment">// Save them into vectors</span></div>
+<div class="line"><span class="lineno">  285</span>        mse_v.push_back(mse);</div>
+<div class="line"><span class="lineno">  286</span>        mae_v.push_back(mae);</div>
+<div class="line"><span class="lineno">  287</span>      }</div>
+<div class="line"><span class="lineno">  288</span>    }</div>
+<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  290</span>    <span class="comment">// Reset num step value</span></div>
+<div class="line"><span class="lineno">  291</span>    <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.num_step = 0;</div>
+<div class="line"><span class="lineno">  292</span> </div>
+<div class="line"><span class="lineno">  293</span>    <span class="comment">// Calculate and print average values</span></div>
+<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> (<a class="code hl_define" href="_training_driver_8cpp.html#a0d3e7062b50d925fea93123774a96342">CLASSIFICATION_TASK</a>)</div>
+<div class="line"><span class="lineno">  295</span>    {</div>
+<div class="line"><span class="lineno">  296</span>      <span class="keywordtype">float</span> sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  297</span>      <span class="keywordtype">float</span> sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  298</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Train Average ACCURACY = &quot;</span> &lt;&lt; sum_acc / accuracy_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  299</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Train Average CROSS ENTROPY = &quot;</span> &lt;&lt; sum_ent / cross_entropy_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  300</span>    }</div>
+<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  302</span>    {</div>
+<div class="line"><span class="lineno">  303</span>      <span class="keywordtype">float</span> sum_mse = std::accumulate(mse_v.begin(), mse_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  304</span>      <span class="keywordtype">float</span> sum_mae = std::accumulate(mae_v.begin(), mae_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  305</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Train Average MSE = &quot;</span> &lt;&lt; sum_mse / mse_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  306</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Train Average MAE = &quot;</span> &lt;&lt; sum_mae / mae_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  307</span>    }</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>    <span class="comment">// Run test for current epoch</span></div>
+<div class="line"><span class="lineno">  310</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Run test for epoch: &quot;</span> &lt;&lt; e + 1 &lt;&lt; <span class="stringliteral">&quot;/&quot;</span> &lt;&lt; training_epochs &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  311</span>    num_steps = num_test_data_samples;</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>    accuracy_v.clear();</div>
+<div class="line"><span class="lineno">  314</span>    cross_entropy_v.clear();</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_steps; ++i)</div>
+<div class="line"><span class="lineno">  317</span>    {</div>
+<div class="line"><span class="lineno">  318</span>      uint32_t cur_batch_size = 1;</div>
+<div class="line"><span class="lineno">  319</span>      readDataFromFile(input_input_test_data_path, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(test_input),</div>
+<div class="line"><span class="lineno">  320</span>                       <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * INPUT_SIZE * cur_batch_size,</div>
+<div class="line"><span class="lineno">  321</span>                       i * <span class="keyword">sizeof</span>(<a class="code hl_define" href="_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f">MODEL_TYPE</a>) * INPUT_SIZE);</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>      readDataFromFile(input_target_test_data_path, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(test_target),</div>
+<div class="line"><span class="lineno">  324</span>                       <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * OUTPUT_SIZE * cur_batch_size,</div>
+<div class="line"><span class="lineno">  325</span>                       i * <span class="keyword">sizeof</span>(<a class="code hl_define" href="_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f">MODEL_TYPE</a>) * OUTPUT_SIZE);</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>      train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#a837186bdb9c56cb6c283dc48cd50d8e1">setInput</a>(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(test_input), 0);</div>
+<div class="line"><span class="lineno">  328</span>      train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#a55c98b4d07e20701a58e4c7b322835b0">setTarget</a>(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(test_target), 0);</div>
+<div class="line"><span class="lineno">  329</span> </div>
+<div class="line"><span class="lineno">  330</span>      <span class="keywordtype">float</span> mse = 0.f;</div>
+<div class="line"><span class="lineno">  331</span>      <span class="keywordtype">float</span> mae = 0.f;</div>
+<div class="line"><span class="lineno">  332</span>      <span class="keywordtype">float</span> cross_entropy_metric = 0.f;</div>
+<div class="line"><span class="lineno">  333</span>      <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a5d6db9a1dc722586187fc2db530f8388">accuracy</a> = 0.f;</div>
+<div class="line"><span class="lineno">  334</span> </div>
+<div class="line"><span class="lineno">  335</span>      <span class="keywordflow">if</span> (<a class="code hl_define" href="_training_driver_8cpp.html#a0d3e7062b50d925fea93123774a96342">CLASSIFICATION_TASK</a>)</div>
+<div class="line"><span class="lineno">  336</span>      {</div>
+<div class="line"><span class="lineno">  337</span>        <span class="comment">// Evaluate cross_entropy and accuracy metrics</span></div>
+<div class="line"><span class="lineno">  338</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">onert_micro::CROSS_ENTROPY_METRICS</a>,</div>
+<div class="line"><span class="lineno">  339</span>                                         <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;cross_entropy_metric),</div>
+<div class="line"><span class="lineno">  340</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  341</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">onert_micro::ACCURACY</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;accuracy),</div>
+<div class="line"><span class="lineno">  342</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  343</span> </div>
+<div class="line"><span class="lineno">  344</span>        <span class="comment">// Save them into vectors</span></div>
+<div class="line"><span class="lineno">  345</span>        accuracy_v.push_back(accuracy);</div>
+<div class="line"><span class="lineno">  346</span>        cross_entropy_v.push_back(cross_entropy_metric);</div>
+<div class="line"><span class="lineno">  347</span>      }</div>
+<div class="line"><span class="lineno">  348</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  349</span>      {</div>
+<div class="line"><span class="lineno">  350</span>        <span class="comment">// Evaluate mse and mae metrics</span></div>
+<div class="line"><span class="lineno">  351</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">onert_micro::MSE_METRICS</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mse),</div>
+<div class="line"><span class="lineno">  352</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  353</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">evaluateMetric</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">onert_micro::MAE_METRICS</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(&amp;mae),</div>
+<div class="line"><span class="lineno">  354</span>                                         cur_batch_size);</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span>        <span class="comment">// Save them into vectors</span></div>
+<div class="line"><span class="lineno">  357</span>        mse_v.push_back(mse);</div>
+<div class="line"><span class="lineno">  358</span>        mae_v.push_back(mae);</div>
+<div class="line"><span class="lineno">  359</span>      }</div>
+<div class="line"><span class="lineno">  360</span>    }</div>
+<div class="line"><span class="lineno">  361</span>    <span class="comment">// Calculate and print average values</span></div>
+<div class="line"><span class="lineno">  362</span>    <span class="keywordflow">if</span> (<a class="code hl_define" href="_training_driver_8cpp.html#a0d3e7062b50d925fea93123774a96342">CLASSIFICATION_TASK</a>)</div>
+<div class="line"><span class="lineno">  363</span>    {</div>
+<div class="line"><span class="lineno">  364</span>      <span class="keywordtype">float</span> sum_acc = std::accumulate(accuracy_v.begin(), accuracy_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  365</span>      <span class="keywordtype">float</span> sum_ent = std::accumulate(cross_entropy_v.begin(), cross_entropy_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  366</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Test Average ACCURACY = &quot;</span> &lt;&lt; sum_acc / accuracy_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  367</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Test Average CROSS ENTROPY = &quot;</span> &lt;&lt; sum_ent / cross_entropy_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  368</span> </div>
+<div class="line"><span class="lineno">  369</span>      <span class="comment">// Best checkpoint part</span></div>
+<div class="line"><span class="lineno">  370</span>      <span class="keywordtype">float</span> acc = sum_acc / accuracy_v.size();</div>
+<div class="line"><span class="lineno">  371</span>      <span class="keywordflow">if</span> (acc &gt; max_accuracy)</div>
+<div class="line"><span class="lineno">  372</span>      {</div>
+<div class="line"><span class="lineno">  373</span>        <span class="comment">// Save best checkpoint</span></div>
+<div class="line"><span class="lineno">  374</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#af7a1de4fd7b329cf7c4177612ca4a6b2">saveCheckpoint</a>(config, checkpoints_path);</div>
+<div class="line"><span class="lineno">  375</span>        max_accuracy = acc;</div>
+<div class="line"><span class="lineno">  376</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Found new max Test ACCURACY = &quot;</span> &lt;&lt; max_accuracy &lt;&lt; <span class="stringliteral">&quot; in epoch = &quot;</span> &lt;&lt; e + 1</div>
+<div class="line"><span class="lineno">  377</span>                  &lt;&lt; <span class="stringliteral">&quot; / &quot;</span> &lt;&lt; training_epochs &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  378</span>      }</div>
+<div class="line"><span class="lineno">  379</span>    }</div>
+<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  381</span>    {</div>
+<div class="line"><span class="lineno">  382</span>      <span class="keywordtype">float</span> sum_mse = std::accumulate(mse_v.begin(), mse_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  383</span>      <span class="keywordtype">float</span> sum_mae = std::accumulate(mae_v.begin(), mae_v.end(), 0.f);</div>
+<div class="line"><span class="lineno">  384</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Test Average MSE = &quot;</span> &lt;&lt; sum_mse / mse_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  385</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Test Average MAE = &quot;</span> &lt;&lt; sum_mae / mae_v.size() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  386</span> </div>
+<div class="line"><span class="lineno">  387</span>      <span class="comment">// Best checkpoint part</span></div>
+<div class="line"><span class="lineno">  388</span>      <span class="keywordtype">float</span> acc = sum_mae / mae_v.size();</div>
+<div class="line"><span class="lineno">  389</span>      <span class="keywordflow">if</span> (acc &lt; min_mae)</div>
+<div class="line"><span class="lineno">  390</span>      {</div>
+<div class="line"><span class="lineno">  391</span>        <span class="comment">// Save best checkpoint</span></div>
+<div class="line"><span class="lineno">  392</span>        train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#af7a1de4fd7b329cf7c4177612ca4a6b2">saveCheckpoint</a>(config, checkpoints_path);</div>
+<div class="line"><span class="lineno">  393</span>        min_mae = acc;</div>
+<div class="line"><span class="lineno">  394</span>        std::cout &lt;&lt; <span class="stringliteral">&quot;Found new min Test MAE = &quot;</span> &lt;&lt; min_mae &lt;&lt; <span class="stringliteral">&quot; in epoch = &quot;</span> &lt;&lt; e + 1 &lt;&lt; <span class="stringliteral">&quot; / &quot;</span></div>
+<div class="line"><span class="lineno">  395</span>                  &lt;&lt; training_epochs &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  396</span>      }</div>
+<div class="line"><span class="lineno">  397</span>    }</div>
+<div class="line"><span class="lineno">  398</span>  }</div>
+<div class="line"><span class="lineno">  399</span> </div>
+<div class="line"><span class="lineno">  400</span>  <span class="comment">// Load best model</span></div>
+<div class="line"><span class="lineno">  401</span>  train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#af22a7426e71fc494f6870deac0e777eb">loadCheckpoint</a>(config, checkpoints_path);</div>
+<div class="line"><span class="lineno">  402</span> </div>
+<div class="line"><span class="lineno">  403</span>  <span class="comment">// Save training best result</span></div>
+<div class="line"><span class="lineno">  404</span>  train_interpreter.<a class="code hl_function" href="classonert__micro_1_1_o_m_training_interpreter.html#a2837e2faab43a324c69737730b0612e1">saveModel</a>(config, output_trained_file_path);</div>
+<div class="line"><span class="lineno">  405</span> </div>
+<div class="line"><span class="lineno">  406</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><span class="lineno">  407</span>}</div>
+<div class="ttc" id="a_training_driver_8cpp_html_a0d3e7062b50d925fea93123774a96342"><div class="ttname"><a href="_training_driver_8cpp.html#a0d3e7062b50d925fea93123774a96342">CLASSIFICATION_TASK</a></div><div class="ttdeci">#define CLASSIFICATION_TASK</div><div class="ttdef"><b>Definition</b> <a href="_training_driver_8cpp_source.html#l00028">TrainingDriver.cpp:28</a></div></div>
+<div class="ttc" id="a_training_driver_8cpp_html_a609febbafa682bd13f7cffc78ee9130f"><div class="ttname"><a href="_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f">MODEL_TYPE</a></div><div class="ttdeci">#define MODEL_TYPE</div><div class="ttdef"><b>Definition</b> <a href="_training_driver_8cpp_source.html#l00026">TrainingDriver.cpp:26</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html">onert_micro::OMTrainingInterpreter</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8h_source.html#l00028">OMTrainingInterpreter.h:29</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_a2837e2faab43a324c69737730b0612e1"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#a2837e2faab43a324c69737730b0612e1">onert_micro::OMTrainingInterpreter::saveModel</a></div><div class="ttdeci">OMStatus saveModel(const OMConfig &amp;config, const char *save_path)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8cpp_source.html#l00051">OMTrainingInterpreter.cpp:51</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_a55c98b4d07e20701a58e4c7b322835b0"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#a55c98b4d07e20701a58e4c7b322835b0">onert_micro::OMTrainingInterpreter::setTarget</a></div><div class="ttdeci">void setTarget(uint8_t *data, uint32_t target_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8h_source.html#l00053">OMTrainingInterpreter.h:53</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_a6a97bd56df21ec7c653012e4700fc695"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#a6a97bd56df21ec7c653012e4700fc695">onert_micro::OMTrainingInterpreter::importTrainModel</a></div><div class="ttdeci">OMStatus importTrainModel(char *model_ptr, const OMConfig &amp;config)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8cpp_source.html#l00025">OMTrainingInterpreter.cpp:25</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_a837186bdb9c56cb6c283dc48cd50d8e1"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#a837186bdb9c56cb6c283dc48cd50d8e1">onert_micro::OMTrainingInterpreter::setInput</a></div><div class="ttdeci">void setInput(uint8_t *data, uint32_t input_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8h_source.html#l00047">OMTrainingInterpreter.h:47</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_adc4ec85df9039bc8a5923b15131d13b1"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#adc4ec85df9039bc8a5923b15131d13b1">onert_micro::OMTrainingInterpreter::trainSingleStep</a></div><div class="ttdeci">OMStatus trainSingleStep(OMConfig &amp;config)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8cpp_source.html#l00034">OMTrainingInterpreter.cpp:34</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_af22a7426e71fc494f6870deac0e777eb"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#af22a7426e71fc494f6870deac0e777eb">onert_micro::OMTrainingInterpreter::loadCheckpoint</a></div><div class="ttdeci">OMStatus loadCheckpoint(OMConfig &amp;config, const char *load_path)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8cpp_source.html#l00077">OMTrainingInterpreter.cpp:77</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_af7a1de4fd7b329cf7c4177612ca4a6b2"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#af7a1de4fd7b329cf7c4177612ca4a6b2">onert_micro::OMTrainingInterpreter::saveCheckpoint</a></div><div class="ttdeci">OMStatus saveCheckpoint(const OMConfig &amp;config, const char *save_path)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8cpp_source.html#l00120">OMTrainingInterpreter.cpp:120</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1_o_m_training_interpreter_html_afc6f872a5466ab962a918388d370ec3c"><div class="ttname"><a href="classonert__micro_1_1_o_m_training_interpreter.html#afc6f872a5466ab962a918388d370ec3c">onert_micro::OMTrainingInterpreter::evaluateMetric</a></div><div class="ttdeci">OMStatus evaluateMetric(OMMetrics metric, void *metric_val, uint32_t test_size)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_interpreter_8h_source.html#l00071">OMTrainingInterpreter.h:71</a></div></div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_ad2e650e5f9a54072f7e063a353ef6489"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">gen_h5_explicit_inputs_all.config</a></div><div class="ttdeci">config</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00071">gen_h5_explicit_inputs_all.py:71</a></div></div>
 <div class="ttc" id="anamespaceminimal_html_a5f2767e1a6e0198d72dfe1719abc3b2a"><div class="ttname"><a href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">minimal.argv</a></div><div class="ttdeci">argv</div><div class="ttdef"><b>Definition</b> <a href="minimal_8py_source.html#l00025">minimal.py:25</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_a0a84c6ac9b6bfc7cd2d996c82f0a7462"><div class="ttname"><a href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">part_eval_one.interpreter</a></div><div class="ttdeci">interpreter</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00053">part_eval_one.py:53</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
-<div class="ttc" id="anamespacetf2tflite_v2_html_abe660e9c50ccb26ca3f53160f59fabb7"><div class="ttname"><a href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">tf2tfliteV2.file</a></div><div class="ttdeci">file</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00300">tf2tfliteV2.py:300</a></div></div>
-<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
-<div class="ttc" id="atest__data_8h_html_a96516f4d42798a694799756cb0884b98"><div class="ttname"><a href="test__data_8h.html#a96516f4d42798a694799756cb0884b98">test_data</a></div><div class="ttdeci">float test_data[1960]</div><div class="ttdef"><b>Definition</b> <a href="test__data_8h_source.html#l00019">test_data.h:19</a></div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a5d6db9a1dc722586187fc2db530f8388"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a5d6db9a1dc722586187fc2db530f8388">mir_caffe::CaffeOpType::accuracy</a></div><div class="ttdeci">@ accuracy</div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fd"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">onert_micro::OMLoss</a></div><div class="ttdeci">OMLoss</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00049">OMConfig.h:50</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">onert_micro::CROSS_ENTROPY</a></div><div class="ttdeci">@ CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00052">OMConfig.h:52</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685c"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685c">onert_micro::OMTrainOptimizer</a></div><div class="ttdeci">OMTrainOptimizer</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00029">OMConfig.h:30</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">onert_micro::ADAM</a></div><div class="ttdeci">@ ADAM</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00032">OMConfig.h:32</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">onert_micro::MAE_METRICS</a></div><div class="ttdeci">@ MAE_METRICS</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00041">OMConfig.h:41</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">onert_micro::MSE_METRICS</a></div><div class="ttdeci">@ MSE_METRICS</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00040">OMConfig.h:40</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">onert_micro::CROSS_ENTROPY_METRICS</a></div><div class="ttdeci">@ CROSS_ENTROPY_METRICS</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00042">OMConfig.h:42</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc"><div class="ttname"><a href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">onert_micro::ACCURACY</a></div><div class="ttdeci">@ ACCURACY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00043">OMConfig.h:43</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_ab8593f39f8c0562457496ffafe7c2932"><div class="ttname"><a href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">part_eval_one.circle_model</a></div><div class="ttdeci">str circle_model</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00025">part_eval_one.py:25</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_config_html"><div class="ttname"><a href="structonert__micro_1_1_o_m_config.html">onert_micro::OMConfig</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00091">OMConfig.h:92</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html">onert_micro::OMTrainingContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00069">OMConfig.h:70</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_a41240ac2508c13d88709f9bccba54c53"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#a41240ac2508c13d88709f9bccba54c53">onert_micro::OMTrainingContext::epsilon</a></div><div class="ttdeci">float epsilon</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00078">OMConfig.h:78</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_a57f07f4e6aba3811b34b79e9097af212"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#a57f07f4e6aba3811b34b79e9097af212">onert_micro::OMTrainingContext::beta</a></div><div class="ttdeci">float beta</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00076">OMConfig.h:76</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_a85ef728ee34f5078bf749b88cf977b33"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#a85ef728ee34f5078bf749b88cf977b33">onert_micro::OMTrainingContext::epochs</a></div><div class="ttdeci">uint32_t epochs</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00081">OMConfig.h:81</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_a8eb4935188db5fd11be29b368d306a59"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#a8eb4935188db5fd11be29b368d306a59">onert_micro::OMTrainingContext::optimizer</a></div><div class="ttdeci">OMTrainOptimizer optimizer</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00073">OMConfig.h:73</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_ab07cf5e8d8b057e39c0d01494102168d"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#ab07cf5e8d8b057e39c0d01494102168d">onert_micro::OMTrainingContext::batch_size</a></div><div class="ttdeci">uint32_t batch_size</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00071">OMConfig.h:71</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_ade098e2ffb932f17dc2c8c46c9e32a5f"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#ade098e2ffb932f17dc2c8c46c9e32a5f">onert_micro::OMTrainingContext::beta_squares</a></div><div class="ttdeci">float beta_squares</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00077">OMConfig.h:77</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_aed2ddd2f27c50792753bf638d49eafe5"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#aed2ddd2f27c50792753bf638d49eafe5">onert_micro::OMTrainingContext::learning_rate</a></div><div class="ttdeci">float learning_rate</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00075">OMConfig.h:75</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_aedc0007f16729d63a1c436944ac5cf69"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">onert_micro::OMTrainingContext::num_of_train_layers</a></div><div class="ttdeci">uint32_t num_of_train_layers</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00072">OMConfig.h:72</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1_o_m_training_context_html_aef2a1913f57cf39369355cbcd552d1db"><div class="ttname"><a href="structonert__micro_1_1_o_m_training_context.html#aef2a1913f57cf39369355cbcd552d1db">onert_micro::OMTrainingContext::loss</a></div><div class="ttdeci">OMLoss loss</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00074">OMConfig.h:74</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="test__data_8h_source.html#l00019">test_data</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00043">onert_micro::ACCURACY</a>, <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_config_8h_source.html#l00071">onert_micro::OMTrainingContext::batch_size</a>, <a class="el" href="_o_m_config_8h_source.html#l00076">onert_micro::OMTrainingContext::beta</a>, <a class="el" href="_o_m_config_8h_source.html#l00077">onert_micro::OMTrainingContext::beta_squares</a>, <a class="el" href="_training_driver_8cpp_source.html#l00028">CLASSIFICATION_TASK</a>, <a class="el" href="_o_m_config_8h_source.html#l00052">onert_micro::CROSS_ENTROPY</a>, <a class="el" href="_o_m_config_8h_source.html#l00042">onert_micro::CROSS_ENTROPY_METRICS</a>, <a class="el" href="_o_m_config_8h_source.html#l00081">onert_micro::OMTrainingContext::epochs</a>, <a class="el" href="_o_m_config_8h_source.html#l00078">onert_micro::OMTrainingContext::epsilon</a>, <a class="el" href="_o_m_training_interpreter_8h_source.html#l00071">onert_micro::OMTrainingInterpreter::evaluateMetric()</a>, <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00025">onert_micro::OMTrainingInterpreter::importTrainModel()</a>, <a class="el" href="_o_m_config_8h_source.html#l00075">onert_micro::OMTrainingContext::learning_rate</a>, <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00077">onert_micro::OMTrainingInterpreter::loadCheckpoint()</a>, <a class="el" href="_o_m_config_8h_source.html#l00074">onert_micro::OMTrainingContext::loss</a>, <a class="el" href="_o_m_config_8h_source.html#l00041">onert_micro::MAE_METRICS</a>, <a class="el" href="_training_driver_8cpp_source.html#l00026">MODEL_TYPE</a>, <a class="el" href="_o_m_config_8h_source.html#l00040">onert_micro::MSE_METRICS</a>, <a class="el" href="_o_m_config_8h_source.html#l00072">onert_micro::OMTrainingContext::num_of_train_layers</a>, <a class="el" href="_o_m_config_8h_source.html#l00073">onert_micro::OMTrainingContext::optimizer</a>, <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00120">onert_micro::OMTrainingInterpreter::saveCheckpoint()</a>, <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00051">onert_micro::OMTrainingInterpreter::saveModel()</a>, <a class="el" href="_o_m_training_interpreter_8h_source.html#l00047">onert_micro::OMTrainingInterpreter::setInput()</a>, <a class="el" href="_o_m_training_interpreter_8h_source.html#l00053">onert_micro::OMTrainingInterpreter::setTarget()</a>, and <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00034">onert_micro::OMTrainingInterpreter::trainSingleStep()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_safe_main_8cpp_source.html#l00037">main()</a>.</p>
 
@@ -343,15 +552,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_driver_8cpp_source.html#l00235">235</a> of file <a class="el" href="_training_driver_8cpp_source.html">TrainingDriver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
-<div class="line"><span class="lineno">  237</span>  <span class="comment">// NOTE main does not catch internal exceptions for debug build to make it easy to</span></div>
-<div class="line"><span class="lineno">  238</span>  <span class="comment">//      check the stacktrace with a debugger</span></div>
-<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="_training_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198">entry</a>(argc, argv);</div>
-<div class="line"><span class="lineno">  240</span>}</div>
-<div class="ttc" id="a_training_driver_8cpp_html_a0bd2da0b208d77121c01ef3a7e7ae198"><div class="ttname"><a href="_training_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198">entry</a></div><div class="ttdeci">int entry(int argc, char **argv)</div><div class="ttdoc">Dump IR for given arguments.</div><div class="ttdef"><b>Definition</b> <a href="_training_driver_8cpp_source.html#l00061">TrainingDriver.cpp:61</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_training_driver_8cpp_source.html#l00426">426</a> of file <a class="el" href="_training_driver_8cpp_source.html">TrainingDriver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  427</span>{</div>
+<div class="line"><span class="lineno">  428</span>  <span class="comment">// NOTE main does not catch internal exceptions for debug build to make it easy to</span></div>
+<div class="line"><span class="lineno">  429</span>  <span class="comment">//      check the stacktrace with a debugger</span></div>
+<div class="line"><span class="lineno">  430</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="_training_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198">entry</a>(argc, argv);</div>
+<div class="line"><span class="lineno">  431</span>}</div>
+<div class="ttc" id="a_training_driver_8cpp_html_a0bd2da0b208d77121c01ef3a7e7ae198"><div class="ttname"><a href="_training_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198">entry</a></div><div class="ttdeci">int entry(int argc, char **argv)</div><div class="ttdoc">Dump IR for given arguments.</div><div class="ttdef"><b>Definition</b> <a href="_training_driver_8cpp_source.html#l00109">TrainingDriver.cpp:109</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_training_driver_8cpp_source.html#l00061">entry()</a>.</p>
+<p class="reference">References <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>.</p>
 
 </div>
 </div>

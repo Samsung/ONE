@@ -15,6 +15,7 @@ var namespaces_dup =
     [ "arser", "namespacearser.html", "namespacearser" ],
     [ "AveragePool2D_000", "namespace_average_pool2_d__000.html", "namespace_average_pool2_d__000" ],
     [ "backends", "namespacebackends.html", [
+      [ "get_backend_from_target_conf", "namespacebackends.html#a3331bdac18aa86edf4ba7a4e4dce446e", null ],
       [ "get_list", "namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999", null ],
       [ "search_driver", "namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b", null ]
     ] ],
@@ -678,7 +679,7 @@ var namespaces_dup =
       [ "add_default_arg", "namespaceutils.html#accb81ab9d46a43dee0cd6cc2d4206688", null ],
       [ "add_default_arg_no_CS", "namespaceutils.html#a16b0548ce93d9261bb2c3c61cd09ec21", null ],
       [ "detect_one_import_drivers", "namespaceutils.html#a820405bf450946dd77f5c47209da86a9", null ],
-      [ "get_arg_parser", "namespaceutils.html#a4e122cbb71ddda136c17c89fb244d70e", null ],
+      [ "get_arg_parser", "namespaceutils.html#a02aca4db1f40aafc0dc5c0a037dd0864", null ],
       [ "get_config_parser", "namespaceutils.html#a37a200d7b4b3fad24a2ec512c6fd4bd5", null ],
       [ "get_optimization_list", "namespaceutils.html#a6d2447e5424375e6dd8b2f2e64bf57b2", null ],
       [ "is_accumulated_arg", "namespaceutils.html#a61d940a9a4805d3f6ce89aab6e4ffaaf", null ],

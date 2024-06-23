@@ -208,8 +208,8 @@ $(document).ready(function(){initNavTree('train_2operation_2_depthwise_conv_8h_s
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> pad_width = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ab424f92784d7f28eba2b61dcb1be277b">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">width</a>;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <a class="code hl_struct" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op.html">depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt;Eigen::ThreadPoolDevice, T&gt;</a>()(</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      batch, input_width, input_height, input_depth, filter_width, filter_height, depth_multiplier,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      stride, pad_width, pad_height, incoming_width, incoming_height, output_depth, incoming_data,</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      input_data, filter_grad_data, padded_filter_data, filter_buffers_data);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  }</div>
 </div>

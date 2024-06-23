@@ -91,7 +91,8 @@ $(document).ready(function(){initNavTree('namespaceonert__micro_1_1core_1_1reade
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">onert_micro::core::reader Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -100,6 +101,9 @@ $(document).ready(function(){initNavTree('namespaceonert__micro_1_1core_1_1reade
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html">OMCircleReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Circle file and provides helpers to access attributes.  <a href="classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1reader_1_1_o_m_weight_only_format_reader.html">OMWeightOnlyFormatReader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Weight Only Format files and provides helpers functions.  <a href="classonert__micro_1_1core_1_1reader_1_1_o_m_weight_only_format_reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -116,6 +120,13 @@ Typedefs</h2></td></tr>
 <tr class="separator:ac8ec1d295512261aa0cd0769908286a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1702668e63d1f3dec1701c45449290f" id="r_ac1702668e63d1f3dec1701c45449290f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#ac1702668e63d1f3dec1701c45449290f">CircleValues</a> = <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; int32_t &gt;</td></tr>
 <tr class="separator:ac1702668e63d1f3dec1701c45449290f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a39059ea1916fe28dd6e6846b45e2a484" id="r_a39059ea1916fe28dd6e6846b45e2a484"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#a39059ea1916fe28dd6e6846b45e2a484">wof_magic_number</a> = 429</td></tr>
+<tr class="separator:a39059ea1916fe28dd6e6846b45e2a484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3e9b386c8177eb3e1d450d716f1f6e0" id="r_ab3e9b386c8177eb3e1d450d716f1f6e0"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#ab3e9b386c8177eb3e1d450d716f1f6e0">schema_version</a> = 1</td></tr>
+<tr class="separator:ab3e9b386c8177eb3e1d450d716f1f6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ad56863b8feb01f567cf2d43d53ae7343" name="ad56863b8feb01f567cf2d43d53ae7343"></a>
@@ -211,6 +222,59 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_o_m_circle_reader_8h_source.html#l00036">36</a> of file <a class="el" href="_o_m_circle_reader_8h_source.html">OMCircleReader.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ab3e9b386c8177eb3e1d450d716f1f6e0" name="ab3e9b386c8177eb3e1d450d716f1f6e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3e9b386c8177eb3e1d450d716f1f6e0">&#9670;&#160;</a></span>schema_version</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t onert_micro::core::reader::schema_version = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_weight_only_format_reader_8h_source.html#l00043">43</a> of file <a class="el" href="_o_m_weight_only_format_reader_8h_source.html">OMWeightOnlyFormatReader.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_weight_only_format_reader_8cpp_source.html#l00025">onert_micro::core::reader::OMWeightOnlyFormatReader::validate()</a>.</p>
+
+</div>
+</div>
+<a id="a39059ea1916fe28dd6e6846b45e2a484" name="a39059ea1916fe28dd6e6846b45e2a484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39059ea1916fe28dd6e6846b45e2a484">&#9670;&#160;</a></span>wof_magic_number</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint16_t onert_micro::core::reader::wof_magic_number = 429</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_weight_only_format_reader_8h_source.html#l00042">42</a> of file <a class="el" href="_o_m_weight_only_format_reader_8h_source.html">OMWeightOnlyFormatReader.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_weight_only_format_reader_8cpp_source.html#l00025">onert_micro::core::reader::OMWeightOnlyFormatReader::validate()</a>.</p>
 
 </div>
 </div>

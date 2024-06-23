@@ -9,7 +9,5 @@ var structonert_1_1compiler_1_1_compiler_options =
     [ "he_profiling_mode", "structonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990", null ],
     [ "he_scheduler", "structonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d", null ],
     [ "manual_scheduler_options", "structonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661", null ],
-    [ "minmax_dump", "structonert_1_1compiler_1_1_compiler_options.html#add696a4e909b66aee4396c6b324ffa33", null ],
-    [ "tracing_mode", "structonert_1_1compiler_1_1_compiler_options.html#a51ef469d584ccd711b52cd0208efd277", null ],
     [ "workspace_dir", "structonert_1_1compiler_1_1_compiler_options.html#ad358220bfb6825f15249a67bb5f02e66", null ]
 ];

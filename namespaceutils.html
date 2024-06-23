@@ -121,8 +121,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1a4f8082a07c3c321517c652ca02b766"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d2447e5424375e6dd8b2f2e64bf57b2" id="r_a6d2447e5424375e6dd8b2f2e64bf57b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceutils.html#a6d2447e5424375e6dd8b2f2e64bf57b2">get_optimization_list</a> (get_name=False)</td></tr>
 <tr class="separator:a6d2447e5424375e6dd8b2f2e64bf57b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e122cbb71ddda136c17c89fb244d70e" id="r_a4e122cbb71ddda136c17c89fb244d70e"><td class="memItemLeft" align="right" valign="top">Optional[ArgumentParser]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceutils.html#a4e122cbb71ddda136c17c89fb244d70e">get_arg_parser</a> (Optional[str] target, str cmd)</td></tr>
-<tr class="separator:a4e122cbb71ddda136c17c89fb244d70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02aca4db1f40aafc0dc5c0a037dd0864" id="r_a02aca4db1f40aafc0dc5c0a037dd0864"><td class="memItemLeft" align="right" valign="top">Optional[ArgumentParser]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceutils.html#a02aca4db1f40aafc0dc5c0a037dd0864">get_arg_parser</a> (Optional[str] backend, str cmd, Optional[str] target)</td></tr>
+<tr class="separator:a02aca4db1f40aafc0dc5c0a037dd0864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a820405bf450946dd77f5c47209da86a9" id="r_a820405bf450946dd77f5c47209da86a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceutils.html#a820405bf450946dd77f5c47209da86a9">detect_one_import_drivers</a> (search_path)</td></tr>
 <tr class="separator:a820405bf450946dd77f5c47209da86a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -264,8 +264,8 @@ dict: each entry is related to single detected driver,
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a4e122cbb71ddda136c17c89fb244d70e" name="a4e122cbb71ddda136c17c89fb244d70e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e122cbb71ddda136c17c89fb244d70e">&#9670;&#160;</a></span>get_arg_parser()</h2>
+<a id="a02aca4db1f40aafc0dc5c0a037dd0864" name="a02aca4db1f40aafc0dc5c0a037dd0864"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02aca4db1f40aafc0dc5c0a037dd0864">&#9670;&#160;</a></span>get_arg_parser()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,13 +274,19 @@ dict: each entry is related to single detected driver,
           <td class="memname"> Optional[ArgumentParser] utils.get_arg_parser </td>
           <td>(</td>
           <td class="paramtype">Optional[str]&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
+          <td class="paramname"><em>backend</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">str&#160;</td>
-          <td class="paramname"><em>cmd</em>&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Optional[str]&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -291,21 +297,20 @@ dict: each entry is related to single detected driver,
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00242">242</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  242</span><span class="keyword">def </span>get_arg_parser(target: Optional[str], cmd: str) -&gt; Optional[ArgumentParser]:</div>
-<div class="line"><span class="lineno">  243</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> target:</div>
-<div class="line"><span class="lineno">  244</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  245</span> </div>
-<div class="line"><span class="lineno">  246</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">  247</span>    <span class="comment"># for python module naming convention</span></div>
-<div class="line"><span class="lineno">  248</span>    target_name = target.replace(<span class="stringliteral">&#39;-&#39;</span>, <span class="stringliteral">&#39;_&#39;</span>)</div>
-<div class="line"><span class="lineno">  249</span>    command_schema_path = dir_path + f<span class="stringliteral">&#39;/../../backends/command/{cmd}/{target_name}.py&#39;</span></div>
+<div class="fragment"><div class="line"><span class="lineno">  243</span>                   target: Optional[str]) -&gt; Optional[ArgumentParser]:</div>
+<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> backend:</div>
+<div class="line"><span class="lineno">  245</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">  248</span>    <span class="comment"># for python module naming convention</span></div>
+<div class="line"><span class="lineno">  249</span>    command_schema_path = dir_path + f<span class="stringliteral">&#39;/../../backends/command/{backend}/{cmd}.py&#39;</span></div>
 <div class="line"><span class="lineno">  250</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(command_schema_path):</div>
 <div class="line"><span class="lineno">  251</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 <div class="line"><span class="lineno">  252</span> </div>
 <div class="line"><span class="lineno">  253</span>    <span class="comment"># https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly</span></div>
-<div class="line"><span class="lineno">  254</span>    spec = importlib.util.spec_from_file_location(target_name, command_schema_path)</div>
+<div class="line"><span class="lineno">  254</span>    spec = importlib.util.spec_from_file_location(cmd, command_schema_path)</div>
 <div class="line"><span class="lineno">  255</span>    module = importlib.util.module_from_spec(spec)</div>
-<div class="line"><span class="lineno">  256</span>    sys.modules[target_name] = module</div>
+<div class="line"><span class="lineno">  256</span>    sys.modules[cmd] = module</div>
 <div class="line"><span class="lineno">  257</span>    spec.loader.exec_module(module)</div>
 <div class="line"><span class="lineno">  258</span> </div>
 <div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(module, <span class="stringliteral">&quot;command_schema&quot;</span>):</div>

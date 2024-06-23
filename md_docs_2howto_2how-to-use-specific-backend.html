@@ -100,10 +100,6 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-use-specific-ba
 <li>For each backend string, <code>libbackend_{backend}.so</code> will be dynamically loaded during nnfw_prepare.</li>
 <li>Among the multiple backends, the 1st element is used as the default backend.</li>
 </ul>
-<h2><a href="https://github.com/Samsung/ONE/blob/c46ddc04abdb58323fbd38389e6927f003bfaea1/runtime/onert/api/include/nnfw.h#L476">nnfw_set_op_backend</a></h2>
-<ul>
-<li>The backend for op has higher priority than available backends specified by nnfw_set_available_backends.</li>
-</ul>
 <h1>Using Environment Variable</h1>
 <h2>1. BACKENDS</h2>
 <ul>
@@ -113,7 +109,6 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-use-specific-ba
 </ul>
 <h2>2. OP_BACKEND_[OP_TYPE]</h2>
 <ul>
-<li>Same as <code>nnfw_set_op_backend</code></li>
 <li>Set backend for specific operator type</li>
 <li>Example<ul>
 <li>Execute <code>Conv2D</code> operator on ruy backend and others on cpu backend <div class="fragment"><div class="line">OP_BACKEND_Conv2D=ruy BACKENDS=&quot;cpu;ruy&quot; ./Product/out/bin/onert_run ...</div>

@@ -363,21 +363,21 @@ $(document).ready(function(){initNavTree('utils_8py_source.html',''); initResiza
 <div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
 </div>
 <div class="foldopen" id="foldopen00242" data-start="" data-end="">
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="namespaceutils.html#a4e122cbb71ddda136c17c89fb244d70e">  242</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceutils.html#a4e122cbb71ddda136c17c89fb244d70e">get_arg_parser</a>(target: Optional[str], cmd: str) -&gt; Optional[ArgumentParser]:</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> target:</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="comment"># for python module naming convention</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    target_name = target.replace(<span class="stringliteral">&#39;-&#39;</span>, <span class="stringliteral">&#39;_&#39;</span>)</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    command_schema_path = dir_path + f<span class="stringliteral">&#39;/../../backends/command/{cmd}/{target_name}.py&#39;</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="namespaceutils.html#a02aca4db1f40aafc0dc5c0a037dd0864">  242</a></span><span class="keyword">def </span><a class="code hl_function" href="namespaceutils.html#a02aca4db1f40aafc0dc5c0a037dd0864">get_arg_parser</a>(backend: Optional[str], cmd: str,</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                   target: Optional[str]) -&gt; Optional[ArgumentParser]:</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> backend:</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="comment"># for python module naming convention</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    command_schema_path = dir_path + f<span class="stringliteral">&#39;/../../backends/command/{backend}/{cmd}.py&#39;</span></div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(command_schema_path):</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="comment"># https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    spec = importlib.util.spec_from_file_location(target_name, command_schema_path)</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    spec = importlib.util.spec_from_file_location(cmd, command_schema_path)</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    module = importlib.util.module_from_spec(spec)</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    sys.modules[target_name] = module</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    sys.modules[cmd] = module</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    spec.loader.exec_module(module)</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(module, <span class="stringliteral">&quot;command_schema&quot;</span>):</div>
@@ -420,10 +420,10 @@ $(document).ready(function(){initNavTree('utils_8py_source.html',''); initResiza
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>            <span class="keywordflow">pass</span></div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
 </div>
+<div class="ttc" id="anamespaceutils_html_a02aca4db1f40aafc0dc5c0a037dd0864"><div class="ttname"><a href="namespaceutils.html#a02aca4db1f40aafc0dc5c0a037dd0864">utils.get_arg_parser</a></div><div class="ttdeci">Optional[ArgumentParser] get_arg_parser(Optional[str] backend, str cmd, Optional[str] target)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00242">utils.py:243</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a16b0548ce93d9261bb2c3c61cd09ec21"><div class="ttname"><a href="namespaceutils.html#a16b0548ce93d9261bb2c3c61cd09ec21">utils.add_default_arg_no_CS</a></div><div class="ttdeci">add_default_arg_no_CS(parser)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00054">utils.py:54</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a1a4f8082a07c3c321517c652ca02b766"><div class="ttname"><a href="namespaceutils.html#a1a4f8082a07c3c321517c652ca02b766">utils.remove_suffix</a></div><div class="ttdeci">remove_suffix(str, suffix)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00195">utils.py:195</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a37a200d7b4b3fad24a2ec512c6fd4bd5"><div class="ttname"><a href="namespaceutils.html#a37a200d7b4b3fad24a2ec512c6fd4bd5">utils.get_config_parser</a></div><div class="ttdeci">configparser.ConfigParser get_config_parser()</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00088">utils.py:88</a></div></div>
-<div class="ttc" id="anamespaceutils_html_a4e122cbb71ddda136c17c89fb244d70e"><div class="ttname"><a href="namespaceutils.html#a4e122cbb71ddda136c17c89fb244d70e">utils.get_arg_parser</a></div><div class="ttdeci">Optional[ArgumentParser] get_arg_parser(Optional[str] target, str cmd)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00242">utils.py:242</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a61d940a9a4805d3f6ce89aab6e4ffaaf"><div class="ttname"><a href="namespaceutils.html#a61d940a9a4805d3f6ce89aab6e4ffaaf">utils.is_accumulated_arg</a></div><div class="ttdeci">is_accumulated_arg(arg, driver)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00073">utils.py:73</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a6d2447e5424375e6dd8b2f2e64bf57b2"><div class="ttname"><a href="namespaceutils.html#a6d2447e5424375e6dd8b2f2e64bf57b2">utils.get_optimization_list</a></div><div class="ttdeci">get_optimization_list(get_name=False)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00201">utils.py:201</a></div></div>
 <div class="ttc" id="anamespaceutils_html_a730a70dc37937d14a9d89a195d6e8c2a"><div class="ttname"><a href="namespaceutils.html#a730a70dc37937d14a9d89a195d6e8c2a">utils.print_version_and_exit</a></div><div class="ttdeci">print_version_and_exit(file_path)</div><div class="ttdef"><b>Definition</b> <a href="utils_8py_source.html#l00137">utils.py:137</a></div></div>

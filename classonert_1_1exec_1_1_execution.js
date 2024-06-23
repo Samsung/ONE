@@ -3,6 +3,7 @@ var classonert_1_1exec_1_1_execution =
     [ "Execution", "classonert_1_1exec_1_1_execution.html#a0b367d2f78dd8d8eaea381c4d62a49e4", null ],
     [ "changeInputShape", "classonert_1_1exec_1_1_execution.html#a31e54cdedbb32e0489df1f115c364679", null ],
     [ "execute", "classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5", null ],
+    [ "executionOptions", "classonert_1_1exec_1_1_execution.html#abf366de1fbf1d8d57b633492d548ad65", null ],
     [ "getInputShape", "classonert_1_1exec_1_1_execution.html#ab59baec016c3eca8bd8d6d0c48ee8911", null ],
     [ "getInputTotalSize", "classonert_1_1exec_1_1_execution.html#aa41e5549fee5cbf8d25868c6342a68c2", null ],
     [ "getLoss", "classonert_1_1exec_1_1_execution.html#a8c7a7f10c660a46513f8fef62e831087", null ],

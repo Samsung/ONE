@@ -1,13 +1,15 @@
 <map id="onert::exec::ExecutorBase" name="onert::exec::ExecutorBase">
-<area shape="rect" id="Node000001" title=" " alt="" coords="461,79,631,104"/>
-<area shape="rect" id="Node000002" href="$structonert_1_1exec_1_1_i_executor.html" title="Struct to define interface of Executor." alt="" coords="180,5,323,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="337,32,438,56,505,76,504,81,437,61,336,37"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1_exec_observers.html" title=" " alt="" coords="163,55,340,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="356,73,461,82,461,87,356,79"/>
-<area shape="rect" id="Node000004" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="200,104,304,130"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="319,110,437,101,461,99,461,104,438,106,319,116"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="500,104,670,130"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1exec_1_1_i_executor.html" title="Struct to define interface of Executor." alt="" coords="187,5,330,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="346,28,411,42,477,61,523,80,562,101,560,106,521,85,475,66,409,47,345,33"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1_exec_observers.html" title=" " alt="" coords="170,55,347,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="363,78,477,94,515,101,514,106,476,99,362,83"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1ir_1_1_graph.html" title=" " alt="" coords="206,104,310,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="326,114,500,114,500,120,326,120"/>
 <area shape="rect" id="Node000005" href="$structonert_1_1ir_1_1_i_graph.html" title=" " alt="" coords="5,104,114,130"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="129,114,199,114,199,120,129,120"/>
-<area shape="rect" id="Node000006" href="$classonert_1_1util_1_1_tracing_ctx.html" title="Class to maintain information about profiling per session." alt="" coords="181,153,322,179"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="337,150,437,128,511,102,513,108,438,133,338,155"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="129,114,205,114,205,120,129,120"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1util_1_1_tracing_ctx.html" title="Class to maintain information about profiling per session." alt="" coords="188,153,329,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="344,153,476,135,515,128,516,133,477,140,345,159"/>
+<area shape="rect" id="Node000007" href="$structonert_1_1exec_1_1_execution_options.html" title=" " alt="" coords="163,203,353,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="365,197,420,184,475,168,521,148,560,128,563,132,524,153,477,173,422,189,366,202"/>
 </map>

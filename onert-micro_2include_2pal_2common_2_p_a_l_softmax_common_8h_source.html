@@ -128,62 +128,124 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2common_2_p_
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>pal</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#afeb5fc0a6a1aaded64afaecccaefc556">   32</a></span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#afeb5fc0a6a1aaded64afaecccaefc556">Softmax</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structonert__micro_1_1core_1_1_softmax_params.html">core::SoftmaxParams</a> &amp;params, <span class="keyword">const</span> <span class="keywordtype">float</span> *input_data, <span class="keywordtype">float</span> *output_data)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> outer_size = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a2bc423e4202f6906cb4170d4b77e4ae5">num_rows</a>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> depth = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a91848f6c522752de8b151b103443e5c3">row_size</a>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> beta = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#affc664491f9b683a970c156fe5e1aeef">beta</a>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outer_size; ++i)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// Find max element value which we&#39;ll use to ensure numerical stability</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// taking advantage of the following equality:</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="comment">// exp(x[i])/sum(exp(x[i])) == exp(x[i]+C)/sum(exp(x[i]+C))</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      max = std::max(max, input_data[i * depth + c]);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="comment">// Compute sum.</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">float</span> sum = 0.f;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> U&gt;</div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a2230eee1844cbc1545392967b2fcec42">   33</a></span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a2230eee1844cbc1545392967b2fcec42">Softmax</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structonert__micro_1_1core_1_1_softmax_params.html">core::SoftmaxParams</a> &amp;params, <span class="keyword">const</span> T *input_data, U *output_data)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> outer_size = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a2bc423e4202f6906cb4170d4b77e4ae5">num_rows</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> depth = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a91848f6c522752de8b151b103443e5c3">row_size</a>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> beta = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#affc664491f9b683a970c156fe5e1aeef">beta</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> input_scale = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a5e4ade3681505b6ba6ee94689482903b">input_scale</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> output_scale = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a9d967d056233c299060f0062b507388e">output_scale</a>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_zp = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a5719ceac9a8432c4ceed2f50d37b5d5a">input_zp</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_zp = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#adc41fcbf2ef774c4ca02f52b01745b56">output_zp</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outer_size; ++i)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// Find max element value which we&#39;ll use to ensure numerical stability</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="comment">// taking advantage of the following equality:</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="comment">// exp(x[i])/sum(exp(x[i])) == exp(x[i]+C)/sum(exp(x[i]+C))</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> exp_c = std::exp((input_data[i * depth + c] - max) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(beta));</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      output_data[i * depth + c] = exp_c;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      sum += exp_c;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    assert(sum != 0);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">if</span> (sum == 0)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// Compute result.</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    {</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      output_data[i * depth + c] = output_data[i * depth + c] / sum;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keyword">auto</span> t = input_data[i * depth + c] - input_zp;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      <span class="keyword">auto</span> t_f = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(input_data[i * depth + c] - input_zp);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordtype">float</span> cur_val = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(input_data[i * depth + c] - input_zp) * input_scale;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      max = std::max(max, cur_val);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t min_val = std::numeric_limits&lt;U&gt;::min();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t max_val = std::numeric_limits&lt;U&gt;::max();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Compute sum.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordtype">float</span> sum = 0.f;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordtype">float</span> cur_val = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(input_data[i * depth + c] - input_zp) * input_scale;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keyword">const</span> <span class="keyword">auto</span> exp_c = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(std::exp((cur_val - max) * beta));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      sum += exp_c;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// Compute result.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordtype">float</span> cur_val = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(input_data[i * depth + c] - input_zp) * input_scale;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      <span class="keyword">const</span> <span class="keyword">auto</span> exp_c = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(std::exp((cur_val - max) * beta));</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <span class="keywordtype">float</span> softmax_val = exp_c / sum;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keyword">auto</span> unclamped = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round(softmax_val / output_scale) +</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                                            <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_zp));</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>      output_data[i * depth + c] = <span class="keyword">static_cast&lt;</span>U<span class="keyword">&gt;</span>(clamped);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <span class="comment">// namespace pal</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">// namespace execute</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_SOFTMAX_COMMON_H</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a1a493b393913e1bca93f7623a489c0f8">   86</a></span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a1a493b393913e1bca93f7623a489c0f8">Softmax&lt;float, float&gt;</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structonert__micro_1_1core_1_1_softmax_params.html">core::SoftmaxParams</a> &amp;params, <span class="keyword">const</span> <span class="keywordtype">float</span> *input_data,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                               <span class="keywordtype">float</span> *output_data)</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> outer_size = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a2bc423e4202f6906cb4170d4b77e4ae5">num_rows</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> depth = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#a91848f6c522752de8b151b103443e5c3">row_size</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> beta = params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_softmax_params.html#affc664491f9b683a970c156fe5e1aeef">beta</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outer_size; ++i)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// Find max element value which we&#39;ll use to ensure numerical stability</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// taking advantage of the following equality:</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// exp(x[i])/sum(exp(x[i])) == exp(x[i]+C)/sum(exp(x[i]+C))</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">float</span> max = std::numeric_limits&lt;float&gt;::lowest();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      max = std::max(max, input_data[i * depth + c]);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// Compute sum.</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">float</span> sum = 0.f;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> exp_c = std::exp((input_data[i * depth + c] - max) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(beta));</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      output_data[i * depth + c] = exp_c;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      sum += exp_c;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    assert(sum != 0);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordflow">if</span> (sum == 0)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// Compute result.</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      output_data[i * depth + c] = output_data[i * depth + c] / sum;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
+</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>} <span class="comment">// namespace pal</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>} <span class="comment">// namespace execute</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_SOFTMAX_COMMON_H</span></div>
 <div class="ttc" id="a_o_m_kernel_data_8h_html"><div class="ttname"><a href="_o_m_kernel_data_8h.html">OMKernelData.h</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_afeb5fc0a6a1aaded64afaecccaefc556"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#afeb5fc0a6a1aaded64afaecccaefc556">onert_micro::execute::pal::Softmax</a></div><div class="ttdeci">OMStatus Softmax(const core::SoftmaxParams &amp;params, const float *input_data, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00032">PALSoftmaxCommon.h:32</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a1a493b393913e1bca93f7623a489c0f8"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a1a493b393913e1bca93f7623a489c0f8">onert_micro::execute::pal::Softmax&lt; float, float &gt;</a></div><div class="ttdeci">OMStatus Softmax&lt; float, float &gt;(const core::SoftmaxParams &amp;params, const float *input_data, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00086">PALSoftmaxCommon.h:86</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a2230eee1844cbc1545392967b2fcec42"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a2230eee1844cbc1545392967b2fcec42">onert_micro::execute::pal::Softmax</a></div><div class="ttdeci">OMStatus Softmax(const core::SoftmaxParams &amp;params, const T *input_data, U *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">PALSoftmaxCommon.h:33</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00024">OMMemoryManager.h:25</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html">onert_micro::core::SoftmaxParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00045">OMKernelData.h:46</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_a2bc423e4202f6906cb4170d4b77e4ae5"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#a2bc423e4202f6906cb4170d4b77e4ae5">onert_micro::core::SoftmaxParams::num_rows</a></div><div class="ttdeci">int num_rows</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00051">OMKernelData.h:51</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_a5719ceac9a8432c4ceed2f50d37b5d5a"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#a5719ceac9a8432c4ceed2f50d37b5d5a">onert_micro::core::SoftmaxParams::input_zp</a></div><div class="ttdeci">int32_t input_zp</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00053">OMKernelData.h:53</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_a5e4ade3681505b6ba6ee94689482903b"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#a5e4ade3681505b6ba6ee94689482903b">onert_micro::core::SoftmaxParams::input_scale</a></div><div class="ttdeci">float input_scale</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00055">OMKernelData.h:55</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_a91848f6c522752de8b151b103443e5c3"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#a91848f6c522752de8b151b103443e5c3">onert_micro::core::SoftmaxParams::row_size</a></div><div class="ttdeci">int row_size</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00052">OMKernelData.h:52</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_a9d967d056233c299060f0062b507388e"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#a9d967d056233c299060f0062b507388e">onert_micro::core::SoftmaxParams::output_scale</a></div><div class="ttdeci">float output_scale</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00056">OMKernelData.h:56</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_adc41fcbf2ef774c4ca02f52b01745b56"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#adc41fcbf2ef774c4ca02f52b01745b56">onert_micro::core::SoftmaxParams::output_zp</a></div><div class="ttdeci">int32_t output_zp</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00054">OMKernelData.h:54</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html_affc664491f9b683a970c156fe5e1aeef"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html#affc664491f9b683a970c156fe5e1aeef">onert_micro::core::SoftmaxParams::beta</a></div><div class="ttdeci">float beta</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00047">OMKernelData.h:47</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
