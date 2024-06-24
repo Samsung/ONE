@@ -34,16 +34,11 @@ public:
   using OneStepData =
     std::vector<std::vector<uint8_t>>; // An input/output's data list to be used in one step
   using DataSet = std::tuple<std::vector<OneStepData>,
-                             std::vector<OneStepData>>; // inputs dataset, outputs dataset
+                             std::vector<OneStepData>>; // inputs dataset, expects dataset
 
 public:
   /**
-   * @brief A vector of expects buffers
-   */
-  std::vector<std::vector<uint8_t>> expects;
-
-  /**
-   * @brief A dataset of inputs/outputs
+   * @brief A dataset of inputs/expects
    */
   DataSet dataset;
 
@@ -69,29 +64,17 @@ public:
   }
 
   /**
-   * @brief Append vector data list of outputs that are used in one step
+   * @brief Append vector data list of expects that are used in one step
    *
-   * @tparam T Data type of outputs
-   * @param outputs Outputs that are used in one step
+   * @tparam T Data type of expects
+   * @param expects Expects that are used in one step
    */
-  template <typename T> TrainCaseData &addOutputs(const std::vector<std::vector<T>> &outputs)
+  template <typename T> TrainCaseData &addExpects(const std::vector<std::vector<T>> &expects)
   {
-    auto &[unused, outputs_dataset] = dataset;
+    auto &[unused, expects_dataset] = dataset;
     (void)unused;
-    addData(outputs_dataset.emplace_back(), outputs);
+    addData(expects_dataset.emplace_back(), expects);
 
-    return *this;
-  }
-
-  /**
-   * @brief Append vector data to expects
-   *
-   * @tparam T Data type
-   * @param data vector data array
-   */
-  template <typename T> TrainCaseData &addExpects(const std::vector<T> &data)
-  {
-    addData(expects, data);
     return *this;
   }
 
@@ -186,7 +169,7 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &
   for (const auto &data : expects_dataset)
   {
     assert(data.size() == losses.size());
-    ret.addOutputs<T>(data);
+    ret.addExpects<T>(data);
   }
   ret.setLosses(losses);
   return ret;
