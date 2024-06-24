@@ -175,7 +175,6 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &
                                 const std::vector<std::vector<float>> &losses)
 {
   assert(inputs_dataset.size() == expects_dataset.size());
-  assert(expects_dataset.size() == losses.size());
 
   TrainCaseData ret;
   for (const auto &data : inputs_dataset)
@@ -376,6 +375,7 @@ protected:
 
         // Prepare expected losses
         const auto &ref_losses = train_case.losses;
+        ASSERT_EQ(ref_losses.size(), num_epoch);
         std::vector<float> actual_losses(num_expecteds, 0.f);
         for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
         {
