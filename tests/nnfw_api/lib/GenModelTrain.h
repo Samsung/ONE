@@ -43,9 +43,9 @@ public:
   DataSet dataset;
 
   /**
-   * @brief A vector of loss buffer
+   * @brief A vector of loss buffers
    */
-  std::vector<float> losses;
+  std::vector<std::vector<float>> losses;
 
   /**
    * @brief Append vector data list of inputs that are used in one step
@@ -84,10 +84,9 @@ public:
    * @tparam T Data type
    * @param data vector data array
    */
-  TrainCaseData &setLosses(std::vector<float> losses)
+  TrainCaseData &addLosses(const std::vector<float> &loss)
   {
-    this->losses = losses;
-
+    addLoss(losses, loss);
     return *this;
   }
 
@@ -132,6 +131,17 @@ private:
     std::memcpy(dest.back().data(), data.data(), size);
   }
 
+  /**
+   * @brief Add float data to a vector
+   *
+   * @param dest Destination to store vector data
+   * @param data A vector data to be stored
+   */
+  void addLoss(std::vector<std::vector<float>> &dest, const std::vector<float> &data)
+  {
+    dest.emplace_back(data);
+  }
+
   bool _expected_fail_run = false;
 };
 
@@ -159,7 +169,7 @@ inline void TrainCaseData::addData<bool>(OneStepData &dest, const std::vector<bo
 template <typename T>
 static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &inputs_dataset,
                                 const std::vector<std::vector<std::vector<T>>> &expects_dataset,
-                                const std::vector<float> &losses)
+                                const std::vector<std::vector<float>> &losses)
 {
   assert(inputs_dataset.size() == expects_dataset.size());
 
@@ -167,11 +177,9 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &
   for (const auto &data : inputs_dataset)
     ret.addInputs<T>(data);
   for (const auto &data : expects_dataset)
-  {
-    assert(data.size() == losses.size());
     ret.addExpects<T>(data);
-  }
-  ret.setLosses(losses);
+  for (const auto &loss : losses)
+    ret.addLosses(loss);
   return ret;
 }
 
@@ -360,6 +368,7 @@ protected:
 
         // Prepare expected losses
         const auto &ref_losses = train_case.losses;
+        ASSERT_EQ(ref_losses.size(), num_epoch);
         std::vector<float> actual_losses(num_expecteds, 0.f);
         for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
         {
@@ -410,14 +419,17 @@ protected:
           {
             actual_losses[i] /= num_step;
           }
-        }
 
-        // TODO better way for handling FP error?
-        for (uint32_t i = 0; i < actual_losses.size(); i++)
-        {
-          const float actual = actual_losses[i];
-          const float expected = ref_losses[i];
-          EXPECT_NEAR(expected, actual, 0.001) << "Loss #" << i;
+          ASSERT_EQ(ref_losses[epoch].size(), actual_losses.size());
+
+          // TODO better way for handling FP error?
+          for (uint32_t i = 0; i < actual_losses.size(); i++)
+          {
+            const float actual = actual_losses[i];
+            const float expected = ref_losses[epoch][i];
+            EXPECT_NEAR(expected, actual, 0.001)
+              << "Loss " << epoch + 1 << "/" << num_epoch << " #" << i;
+          }
         }
       }
 
