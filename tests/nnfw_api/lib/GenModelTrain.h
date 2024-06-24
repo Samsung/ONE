@@ -178,12 +178,6 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &
   assert(expects_dataset.size() == losses.size());
 
   TrainCaseData ret;
-  // for (const auto &[input, expect, loss] : [inputs_dataset, expects_dataset, losses])
-  // {
-  //   ret.addInputs<T>(input);
-  //   ret.addExpects<T>(expect);
-  //   ret.addLosses(loss);
-  // }
   for (const auto &data : inputs_dataset)
     ret.addInputs<T>(data);
   for (const auto &data : expects_dataset)
