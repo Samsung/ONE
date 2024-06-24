@@ -475,11 +475,33 @@ private:
     }
 
     tri.batch_size = circle_model->batch_size();
-
-    tri.trainble_ops_size = circle_model->trainable_ops()->size();
-    for (size_t i = 0; i < circle_model->trainable_ops()->size(); ++i)
+    if (circle_model->trainable_ops()->size() > 0)
     {
-      tri.trainble_ops_idx[i] = circle_model->trainable_ops()->Get(i);
+      const uint32_t first_trainable_idx = *circle_model->trainable_ops()->cbegin();
+      const uint32_t last_trainable_idx = *circle_model->trainable_ops()->crbegin();
+      const uint32_t trainable_indexes_range = last_trainable_idx - first_trainable_idx + 1;
+      const uint32_t ops_size =
+        circle::GetModel(_context->cbuf().buffer())->subgraphs()->Get(0)->operators()->size();
+      std::cout << "ops_size: " << ops_size << "\n";
+      std::cout << "trainable_indexes_range: " << trainable_indexes_range << "\n";
+
+      if (last_trainable_idx == ops_size - 1 &&
+          trainable_indexes_range == circle_model->trainable_ops()->size())
+      {
+        // check if all ops are trainable
+        if (0 == first_trainable_idx)
+        {
+          tri.num_of_trainable_ops = 0;
+        }
+        else
+        {
+          tri.num_of_trainable_ops = trainable_indexes_range;
+        }
+      }
+      else
+      {
+        throw std::runtime_error("Operations to be trained must be from the top of the model");
+      }
     }
 
     return tri;

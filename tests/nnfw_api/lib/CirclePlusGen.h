@@ -38,13 +38,11 @@ public:
     circle::LossFn loss_fn;
     circle::LossReductionType loss_reduction_type;
     int32_t batch_size;
-    std::vector<int32_t> trainable_ops;
+    int32_t num_of_trainable_ops = -1;
   };
 
 public:
   void addTrainInfo(const TrainInfo &info);
-
-  void markAllOpsAsTrainable();
 
   // NOTE: this is overriden from CircleGen::finish()
   CircleBuffers finish();

@@ -1226,14 +1226,33 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
     info->loss_info.loss = convertLossCode(loss.loss_code);
     info->loss_info.reduction_type = convertLossReduction(loss.reduction_type);
     info->opt = convertOptimizerCode(optim.optim_code);
+
+    if (_train_info->getTrainableOps().size() > 0)
     {
-      assert(_train_info->getTrainableOps().size() < NNFW_TRAINABLE_OPS_MAX_SIZE);
-      size_t pos = 0;
-      for (auto const &train_op_idx : _train_info->getTrainableOps())
+      const uint32_t first_trainable_idx = _train_info->getTrainableOps().cbegin()->value();
+      const uint32_t last_trainable_idx = _train_info->getTrainableOps().crbegin()->value();
+      const uint32_t ops_size = primary_subgraph()->operations().size();
+      const uint32_t trainable_indexes_range = last_trainable_idx - first_trainable_idx + 1;
+
+      // check if trainable ops set contains continuous indexes on the back of the set
+      if (last_trainable_idx == ops_size - 1 &&
+          trainable_indexes_range == _train_info->getTrainableOps().size())
       {
-        info->trainble_ops_idx[pos++] = train_op_idx.value();
+        // check if all ops are trainable
+        if (0 == first_trainable_idx)
+        {
+          info->num_of_trainable_ops = 0;
+        }
+        else
+        {
+          info->num_of_trainable_ops = trainable_indexes_range;
+        }
       }
-      info->trainble_ops_size = _train_info->getTrainableOps().size();
+      else
+      {
+        // conversion from set of trainable ops to num_of_trainable_ops is impossible
+        info->num_of_trainable_ops = -1;
+      }
     }
   }
   catch (const std::exception &e)
@@ -1303,16 +1322,38 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
     _train_info->setLossInfo(loss_info);
     _train_info->setOptimizerInfo(opt_info);
 
-    std::set<onert::ir::OperationIndex> trainable_ops;
-    for (uint32_t idx = 0; idx < info->trainble_ops_size; ++idx)
+    if (-1 == info->num_of_trainable_ops)
     {
-      if (info->trainble_ops_idx[idx] >= primary_subgraph()->operations().size())
+      std::cerr << "Error during nnfw_session::train_set_traininfo: provided num_of_trainable_ops "
+                   "has incorrect value -1"
+                << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    const uint32_t ops_size = primary_subgraph()->operations().size();
+    std::set<onert::ir::OperationIndex> trainable_ops;
+
+    if (0 == info->num_of_trainable_ops)
+    {
+      for (uint32_t idx = 0; idx < ops_size; ++idx)
       {
-        std::cerr << "Error during nnfw_session::train_set_traininfo: provided op_index=" << idx
-                  << " is out of operators range" << std::endl;
+        trainable_ops.emplace(idx);
+      }
+    }
+    else
+    {
+      if (static_cast<uint32_t>(info->num_of_trainable_ops) > ops_size)
+      {
+        std::cerr
+          << "Error during nnfw_session::train_set_traininfo: provided num_of_trainable_ops="
+          << info->num_of_trainable_ops << " is out of operators range equals: " << ops_size
+          << std::endl;
         return NNFW_STATUS_ERROR;
       }
-      trainable_ops.emplace(onert::ir::OperationIndex{info->trainble_ops_idx[idx]});
+      for (uint32_t i = 1; i <= static_cast<uint32_t>(info->num_of_trainable_ops); ++i)
+      {
+        trainable_ops.emplace(ops_size - i);
+      }
     }
     _train_info->setTrainableOps(trainable_ops);
   }

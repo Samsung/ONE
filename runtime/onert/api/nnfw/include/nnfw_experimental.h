@@ -212,11 +212,6 @@ typedef struct nnfw_loss_info
 } nnfw_loss_info;
 
 /**
- * @brief Maximum numer of trainable operations
- */
-#define NNFW_TRAINABLE_OPS_MAX_SIZE (256)
-
-/**
  * @brief Training information to prepare training
  * @todo  Add more training information
  *        (e.g. optimizer, loss function, ...)
@@ -233,9 +228,9 @@ typedef struct nnfw_train_info
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 
-  /** indexes of trainable operations */
-  uint32_t trainble_ops_size = 0;
-  uint32_t trainble_ops_idx[NNFW_TRAINABLE_OPS_MAX_SIZE];
+  /** Number of layers to be trained from the back.
+   *  "0" means that all layers should be trained. Negative value means error. */
+  int32_t num_of_trainable_ops = 0;
 } nnfw_train_info;
 
 /**

@@ -16,12 +16,9 @@
 
 #include "GenModelTrain.h"
 
-namespace
-{
-CirclePlusGen gen_conv2d_test_model()
+TEST_F(GenModelTrain, OneOp_Conv2D)
 {
   CirclePlusGen cgen;
-
   uint32_t weight_buf = cgen.addBuffer(std::vector<float>(2 * 3 * 3, 0.f));
   uint32_t bias_buf = cgen.addBuffer(std::vector<float>(2, 0.f));
   int in = cgen.addTensor({{1, 5, 5, 1}, circle::TensorType::TensorType_FLOAT32});
@@ -36,16 +33,7 @@ CirclePlusGen gen_conv2d_test_model()
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-
-  return cgen;
-}
-} // namespace
-
-TEST_F(GenModelTrain, OneOp_Conv2D_training_enabled)
-{
-  auto cgen = gen_conv2d_test_model();
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
@@ -58,25 +46,6 @@ TEST_F(GenModelTrain, OneOp_Conv2D_training_enabled)
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
   _context->setEpoch(2);
-
-  SUCCEED();
-}
-
-TEST_F(GenModelTrain, OneOp_Conv2D_training_disabled)
-{
-  auto cgen = gen_conv2d_test_model();
-  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
-  _context->addTrainCase(
-    uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
-                         1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
-                      {{{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11,
-                         4}}},   // expected dataset
-                      {403.333f} // gain of loss after each epoch is const (equal 403.333)
-                      ));
-
-  _context->setBackends({"train"});
-  // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(10);
 
   SUCCEED();
 }

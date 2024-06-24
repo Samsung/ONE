@@ -35,8 +35,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
@@ -67,8 +66,7 @@ TEST_F(GenModelTrain, OneOp_FullyConnected_OptionalBias)
   int32_t batch_size = 2;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
@@ -102,8 +100,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_FourOperand)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -130,8 +127,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_InvalidWeightShape)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -155,8 +151,7 @@ TEST_F(GenModelTrain, neg_OneOp_FullyConnected_NoBias)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
