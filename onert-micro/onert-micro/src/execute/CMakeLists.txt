@@ -15,6 +15,7 @@ set(SOURCES
         OMRuntimeKernel.cpp
         OMUtils.cpp
         kernels/ConvolutionCommon.cpp
+        kernels/PoolingCommon.cpp
         )
 
 # Add configure kernels
