@@ -18,7 +18,7 @@ FROM ubuntu:jammy
 RUN apt-get update && apt-get -qqy install software-properties-common
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git
 
 # Additonal tools
 RUN apt-get update && \
@@ -33,9 +33,9 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
 RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
 RUN apt-get update && apt-get install -qqy clang-format-16
 
-# Install java for gradle and android sdk
+# Install java for gradle and android sdk (and file for NDK internally used)
 ARG OPENJDK_VERSION=11
-RUN apt-get install -y openjdk-${OPENJDK_VERSION}-jdk
+RUN apt-get install -y openjdk-${OPENJDK_VERSION}-jdk file
 ENV JAVA_HOME /usr/lib/jvm/java-${OPENJDK_VERSION}-openjdk-amd64
 
 # Setup user to match host user, and give superuser permissions
@@ -83,7 +83,7 @@ RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=
 # Env variable for android build (ndk, gradle)
 ENV NDK_DIR ${ANDROID_HOME}/ndk/${NDK_VERSION}
 ENV GRADLE_HOME /home/ubuntu/gradle
-ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/cmdline-tools/10.0/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 # setup adb server
 EXPOSE 5037

@@ -14,8 +14,6 @@
 
 FROM ubuntu:20.04
 
-ARG UBUNTU_MIRROR
-
 # Install 'add-apt-repository'
 RUN apt-get update && apt-get -qqy install software-properties-common
 
@@ -44,21 +42,9 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
 RUN add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
 RUN apt-get update && apt-get install -qqy clang-format-16
 
-# Install google test (source)
-RUN apt-get update && apt-get -qqy install libgtest-dev
-
-# Install gbs & sdb
+# Install gbs
 RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_20.04/ /' | cat >> /etc/apt/sources.list
 RUN apt-get update && apt-get -qqy install gbs
-RUN wget http://download.tizen.org/sdk/tizenstudio/official/binary/sdb_4.2.25_ubuntu-64.zip -O sdb.zip
-RUN unzip -d tmp sdb.zip && rm sdb.zip
-RUN cp tmp/data/tools/sdb /usr/bin/. && rm -rf tmp/*
-
-# ARM none eabi build tool
-RUN apt-get update && apt-get -qqy install gcc-arm-none-eabi
-
-# Env for ko encoding build
-ENV LC_ALL "C.UTF-8"
 
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
