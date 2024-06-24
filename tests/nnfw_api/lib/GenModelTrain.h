@@ -132,10 +132,10 @@ private:
   }
 
   /**
-   * @brief Add float data to a vector
+   * @brief Add loss data as a float vector
    *
-   * @param dest Destination to store vector data
-   * @param data A vector data to be stored
+   * @param dest Destination where loss data will be stored
+   * @param data A loss data to be stored
    */
   void addLoss(std::vector<std::vector<float>> &dest, const std::vector<float> &data)
   {
