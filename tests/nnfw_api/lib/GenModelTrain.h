@@ -43,9 +43,9 @@ public:
   DataSet dataset;
 
   /**
-   * @brief A vector of loss buffer
+   * @brief A vector of loss buffers
    */
-  std::vector<float> losses;
+  std::vector<std::vector<float>> losses;
 
   /**
    * @brief Append vector data list of inputs that are used in one step
@@ -84,10 +84,9 @@ public:
    * @tparam T Data type
    * @param data vector data array
    */
-  TrainCaseData &setLosses(std::vector<float> losses)
+  TrainCaseData &addLosses(const std::vector<float> &loss)
   {
-    this->losses = losses;
-
+    addLoss(losses, loss);
     return *this;
   }
 
@@ -132,6 +131,20 @@ private:
     std::memcpy(dest.back().data(), data.data(), size);
   }
 
+  /**
+   * @brief Add float data to a vector
+   *
+   * @param dest Destination to store vector data
+   * @param data A vector data to be stored
+   */
+  void addLoss(std::vector<std::vector<float>> &dest, const std::vector<float> &data)
+  {
+    size_t size = data.size() * sizeof(float);
+    dest.emplace_back();
+    dest.back().resize(size);
+    std::memcpy(dest.back().data(), data.data(), size);
+  }
+
   bool _expected_fail_run = false;
 };
 
@@ -159,19 +172,28 @@ inline void TrainCaseData::addData<bool>(OneStepData &dest, const std::vector<bo
 template <typename T>
 static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &inputs_dataset,
                                 const std::vector<std::vector<std::vector<T>>> &expects_dataset,
-                                const std::vector<float> &losses)
+                                const std::vector<std::vector<float>> &losses)
 {
   assert(inputs_dataset.size() == expects_dataset.size());
+  assert(expects_dataset.size() == losses.size());
 
   TrainCaseData ret;
+  // for (const auto &[input, expect, loss] : [inputs_dataset, expects_dataset, losses])
+  // {
+  //   ret.addInputs<T>(input);
+  //   ret.addExpects<T>(expect);
+  //   ret.addLosses(loss);
+  // }
   for (const auto &data : inputs_dataset)
     ret.addInputs<T>(data);
   for (const auto &data : expects_dataset)
   {
-    assert(data.size() == losses.size());
     ret.addExpects<T>(data);
   }
-  ret.setLosses(losses);
+  for (const auto &loss : losses)
+  {
+    ret.addLosses(loss);
+  }
   return ret;
 }
 
@@ -410,14 +432,17 @@ protected:
           {
             actual_losses[i] /= num_step;
           }
-        }
 
-        // TODO better way for handling FP error?
-        for (uint32_t i = 0; i < actual_losses.size(); i++)
-        {
-          const float actual = actual_losses[i];
-          const float expected = ref_losses[i];
-          EXPECT_NEAR(expected, actual, 0.001) << "Loss #" << i;
+          // TODO better way for handling FP error?
+          for (uint32_t i = 0; i < actual_losses.size(); i++)
+          {
+            const float actual = actual_losses[i];
+            const auto &expected_loss = ref_losses[epoch];
+            float expected =
+              *(reinterpret_cast<const float *>(expected_loss.data() + i * sizeof(float)));
+            EXPECT_NEAR(expected, actual, 0.001)
+              << "Loss " << epoch + 1 << "/" << num_epoch << " #" << i;
+          }
         }
       }
 
