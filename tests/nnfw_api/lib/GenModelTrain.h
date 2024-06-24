@@ -139,10 +139,7 @@ private:
    */
   void addLoss(std::vector<std::vector<float>> &dest, const std::vector<float> &data)
   {
-    size_t size = data.size() * sizeof(float);
-    dest.emplace_back();
-    dest.back().resize(size);
-    std::memcpy(dest.back().data(), data.data(), size);
+    dest.emplace_back(data);
   }
 
   bool _expected_fail_run = false;
@@ -180,13 +177,9 @@ static TrainCaseData uniformTCD(const std::vector<std::vector<std::vector<T>>> &
   for (const auto &data : inputs_dataset)
     ret.addInputs<T>(data);
   for (const auto &data : expects_dataset)
-  {
     ret.addExpects<T>(data);
-  }
   for (const auto &loss : losses)
-  {
     ret.addLosses(loss);
-  }
   return ret;
 }
 
@@ -427,13 +420,13 @@ protected:
             actual_losses[i] /= num_step;
           }
 
+          ASSERT_EQ(ref_losses[epoch].size(), actual_losses.size());
+
           // TODO better way for handling FP error?
           for (uint32_t i = 0; i < actual_losses.size(); i++)
           {
             const float actual = actual_losses[i];
-            const auto &expected_loss = ref_losses[epoch];
-            float expected =
-              *(reinterpret_cast<const float *>(expected_loss.data() + i * sizeof(float)));
+            const float expected = ref_losses[epoch][i];
             EXPECT_NEAR(expected, actual, 0.001)
               << "Loss " << epoch + 1 << "/" << num_epoch << " #" << i;
           }
