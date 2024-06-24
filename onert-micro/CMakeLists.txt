@@ -11,6 +11,7 @@ if (NOT ARM_C_COMPILER_PATH)
 endif ()
 
 set(OM_CIRCLE_SCHEMA onert_micro_circle_schema)
+set(OM_TRAININFO_SCHEMA onert_micro_traininfo_schema)
 
 if (NOT_BUILD_EXTERNALS)
     message(STATUS "USE LOCAL EXTERNAL")
@@ -49,6 +50,23 @@ else()
             SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
             SCHEMA_FILES "schema.fbs"
             )
+
+    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/runtime/libs/circle-schema/include/circle_traininfo.fbs")
+
+    # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
+    add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/traininfo.fbs"
+            COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" traininfo.fbs
+            WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            DEPENDS "${SCHEMA_FILE}"
+            )
+
+    FlatBuffers_Target(${OM_TRAININFO_SCHEMA}
+            OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/circle-generated/circle"
+            INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
+            SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
+            SCHEMA_FILES "traininfo.fbs"
+            )
+
     set(Flatbuffers_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers")
     set(EXT_OVERLAY_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../overlay")
     set(GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen")
