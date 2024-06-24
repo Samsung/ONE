@@ -35,7 +35,7 @@ public:
   {
     // Set user defined training settings
     const uint32_t training_epochs = 10;
-    const float lambda = 0.01f;
+    const float lambda = 0.1f;
     const uint32_t batch_size = 1;
     // Train all layers
     const uint32_t num_train_layers = 0;
