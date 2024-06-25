@@ -49,7 +49,7 @@ TEST_F(GenModelTrain, NonTrainableOps_FC_Relu6_FC)
     _context->addTrainCase(
       uniformTCD<float>({{{1, 3}}, {{2, 1}}},                                     // inputs
                         {{{2, 0, 6, 5, 2, 1, 6, 5}}, {{2, 1, 6, 5, 0, 1, 6, 6}}}, // expected
-                        {16.3412f}                                                // loss
+                        {{16.8338f}, {16.6680f}, {16.5038f}, {16.3412f}}          // loss
                         ));
 
     _context->setBackends({"train"});

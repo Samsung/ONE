@@ -40,9 +40,9 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D)
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
-    uniformTCD<float>({{{1, 2, 7, 8, 3, 4, 9, 1, 5, 6, 11, 2}}}, // input dataset
-                      {{{1, -4, 1, -3, 2, -2, 2, -4}}},          // expected dataset
-                      {1.1701f}                                  // last losses
+    uniformTCD<float>({{{1, 2, 7, 8, 3, 4, 9, 1, 5, 6, 11, 2}}},   // input dataset
+                      {{{1, -4, 1, -3, 2, -2, 2, -4}}},            // expected dataset
+                      {{6.8750f}, {2.5275f}, {1.6320f}, {1.1701f}} // losses
                       ));
 
   _context->setBackends({"train"});
@@ -76,7 +76,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier)
   _context->addTrainCase(
     uniformTCD<float>({{{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}}}, // input dataset
                       {{{6.5f, 7.5f, 8.5f, 3.5f, 8.5f, 5.5f, 2.5f, 3.5f}}}, // expected dataset
-                      {15.5431f}                                            // last losses
+                      {{38.0000f}, {26.6868f}, {19.8101f}, {15.5431f}}      // losses
                       ));
 
   _context->setBackends({"train"});
@@ -110,7 +110,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_No_Multiplier_RELU6)
   _context->addTrainCase(
     uniformTCD<float>({{{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}}}, // input dataset
                       {{{6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f, 6.0f}}}, // expected dataset
-                      {36.0000f}                                            // last losses
+                      {{36.0000f}, {36.0000f}, {36.0000f}, {36.0000f}}      // losses
                       ));
 
   _context->setBackends({"train"});
@@ -144,7 +144,7 @@ TEST_F(GenModelTrain, OneOp_DepthwiseConv2D_3x3)
   _context->addTrainCase(uniformTCD<float>(
     {{{0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f}}},       // input dataset
     {{{6.0f, 16.0f, 8.0f, 16.0f, 10.0f, 16.0f, 12.0f, 16.0f}}}, // expected dataset
-    {13.7338f}                                                  // last losses
+    {{171.0000f}, {69.5150f}, {29.9159f}, {13.7338f}}           // losses
     ));
 
   _context->setBackends({"train"});

@@ -45,7 +45,8 @@ TEST_F(GenModelTrain, NonTrainableOps_FC_Mean)
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(uniformTCD<float>({{{1, 3}}, {{2, 1}}}, // inputs
                                              {{{5}}, {{3}}},       // expected
-                                             {13.3691f}            // loss
+                                             {{16.7778f}, {15.5544f}, {14.4203f}, {13.3691f}}
+                                             // loss
                                              ));
 
     _context->setBackends({"train"});

@@ -39,13 +39,13 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                          1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // input dataset
                       {{{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11,
-                         4}}},    // expected dataset
-                      {324.0978f} // last losses
+                         4}}},                                             // expected dataset
+                      {{403.3333f}, {324.0978f}, {267.7882f}, {226.5260f}} // losses
                       ));
 
   _context->setBackends({"train"});
   // To apply backward to loss, epoch should be >= 2
-  _context->setEpoch(2);
+  _context->setEpoch(4);
 
   SUCCEED();
 }

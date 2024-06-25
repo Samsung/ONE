@@ -37,32 +37,20 @@ void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Ten
                           const circle::Tensor *input2, const circle::Tensor *output,
                           circle::ActivationFunctionType act)
 {
-  assert(input1->quantization() != nullptr); // Fix caller
-  assert(input2->quantization() != nullptr); // Fix caller
-  assert(output->quantization() != nullptr); // Fix caller
+  long input1_zp;
+  long input2_zp;
+  long output_zp;
 
-  assert(input1->quantization()->scale() != nullptr and
-         input1->quantization()->scale()->size() == 1); // Fix caller
-  assert(input2->quantization()->scale() != nullptr and
-         input2->quantization()->scale()->size() == 1); // Fix caller
-  assert(output->quantization()->scale() != nullptr and
-         output->quantization()->scale()->size() == 1); // Fix caller
+  float input1_scale;
+  float input2_scale;
+  float output_scale;
 
-  assert(input1->quantization()->zero_point() != nullptr and
-         input1->quantization()->zero_point()->size() == 1); // Fix caller
-  assert(input2->quantization()->zero_point() != nullptr and
-         input2->quantization()->zero_point()->size() == 1); // Fix caller
-  assert(output->quantization()->zero_point() != nullptr and
-         output->quantization()->zero_point()->size() == 1); // Fix caller
-
-  // 8bit -> 8bit general quantized path, with general rescalings
-  const auto input1_zp = input1->quantization()->zero_point()->operator[](0);
-  const auto input2_zp = input2->quantization()->zero_point()->operator[](0);
-  const auto output_zp = output->quantization()->zero_point()->operator[](0);
-
-  const auto input1_scale = input1->quantization()->scale()->operator[](0);
-  const auto input2_scale = input2->quantization()->scale()->operator[](0);
-  const auto output_scale = output->quantization()->scale()->operator[](0);
+  // Read input1 quant params
+  readQuantParams(input1, input1_zp, input1_scale);
+  // Read input2 quant params
+  readQuantParams(input2, input2_zp, input2_scale);
+  // Read output quant params
+  readQuantParams(output, output_zp, output_scale);
 
   params.input1_offset = -static_cast<int32_t>(input1_zp);
   params.input2_offset = -static_cast<int32_t>(input2_zp);

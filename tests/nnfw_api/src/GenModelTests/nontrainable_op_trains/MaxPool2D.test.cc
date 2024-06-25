@@ -61,7 +61,7 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D)
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                            1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}},            // inputs
                         {{{1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1}}}, // expected
-                        {24.0089f}                                                  // loss
+                        {{31.6667f}, {28.6837f}, {26.1765f}, {24.0089f}}            // loss
                         ));
 
     _context->setBackends({"train"});
@@ -108,7 +108,7 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Depth1_Filter2)
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                            1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // inputs
                         {{{1, 2, 3, 4, 5, 6, 7, 8, 9}}},                 // expected
-                        {8.4666}                                         // loss
+                        {{31.6667f}, {25.9453f}, {15.4067f}, {8.4666f}}  // loss
                         ));
 
     _context->setBackends({"train"});
@@ -155,7 +155,7 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Depth2_Filter2)
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                            1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}},            // inputs
                         {{{1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 8, 7, 6, 5, 4, 3, 2, 1}}}, // expected
-                        {9.3556f}                                                   // loss
+                        {{31.6667f}, {27.8823f}, {16.9743f}, {9.3556f}}             // loss
                         ));
 
     _context->setBackends({"train"});
@@ -205,7 +205,7 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Stride2Filter2)
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
                            1, -2, 2,  4, -4, 2, 2,  0, 4,  -1, -2, 4}}}, // inputs
                         {{{1, 2, 3, 4, 5, 6, 7, 8}}},                    // expected
-                        {9.0784f}                                        // loss
+                        {{25.5000f}, {19.2126f}, {12.9202f}, {9.0784f}}  // loss
                         ));
 
     _context->setBackends({"train"});

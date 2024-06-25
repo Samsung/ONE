@@ -47,7 +47,7 @@ TEST_F(GenModelTrain, BranchOps_FC_Add)
     _context->addTrainCase(uniformTCD<float>(
       {{{1, 3}, {0, 1, 2, 3, 4, 5, 6, 7}}, {{2, 1}, {7, 6, 5, 4, 3, 2, 1, 0}}}, // inputs
       {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}},                 // expected
-      {8.4678f}                                                                 // loss
+      {{9.2218f}, {8.9554f}, {8.7044f}, {8.4678f}}                              // loss
       ));
 
     _context->setBackends({"train"});
@@ -88,7 +88,7 @@ TEST_F(GenModelTrain, BranchOps_FC_Sub)
     _context->addTrainCase(uniformTCD<float>(
       {{{0, 1, 2, 3, 4, 5, 1, 3}, {6, 7}}, {{5, 4, 3, 2, 1, 0, 2, 1}, {7, 6}}}, // inputs
       {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}},                 // expected
-      {3.2863f}                                                                 // loss
+      {{7.3265f}, {4.6811f}, {3.6735f}, {3.2863f}}                              // loss
       ));
 
     _context->setBackends({"train"});
@@ -141,7 +141,7 @@ TEST_F(GenModelTrain, BranchOps_FC_Mul)
     _context->addTrainCase(
       uniformTCD<float>({{{0, 3}, {6, 7}}, {{5, 4}, {7, 6}}},                     // inputs
                         {{{3, 2, 1, 2, 5, 6, 1, 0}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
-                        {12.2822f}                                                // loss
+                        {{12.5488f}, {12.4590f}, {12.3701f}, {12.2822f}}          // loss
                         ));
 
     _context->setBackends({"train"});

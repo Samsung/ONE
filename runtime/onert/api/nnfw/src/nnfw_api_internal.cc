@@ -898,13 +898,10 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   if (!dir)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
-  if (isStatePreparedOrFinishedRun())
+  if (!isStateInitialized())
     return NNFW_STATUS_INVALID_STATE;
 
   _coptions->workspace_dir = std::string(dir);
-
-  // TODO Set workspace dir to workspace user (ex. compiler, quantization manager, etc)
-  //      if model is already loaded
 
   return NNFW_STATUS_NO_ERROR;
 }
@@ -1724,7 +1721,7 @@ NNFW_STATUS nnfw_session::set_quantization_type(NNFW_QUANTIZE_TYPE qtype)
   using onert::odc::QuantizeType;
   try
   {
-    if (!isStateModelLoaded())
+    if (isStateInitialized() || isStateRunning())
     {
       std::cerr << "invalid state" << std::endl;
       return NNFW_STATUS_INVALID_STATE;
@@ -1763,7 +1760,7 @@ NNFW_STATUS nnfw_session::set_quantized_model_path(const char *path)
 {
   try
   {
-    if (!isStateModelLoaded())
+    if (isStateInitialized() || isStateRunning())
     {
       std::cerr << "invalid state" << std::endl;
       return NNFW_STATUS_INVALID_STATE;
@@ -1784,7 +1781,7 @@ NNFW_STATUS nnfw_session::quantize()
 {
   try
   {
-    if (!isStateModelLoaded())
+    if (isStateInitialized() || isStateRunning())
     {
       std::cerr << "invalid state" << std::endl;
       return NNFW_STATUS_INVALID_STATE;
@@ -1815,7 +1812,7 @@ NNFW_STATUS nnfw_session::set_codegen_model_path(const char *path)
 {
   try
   {
-    if (!isStateModelLoaded())
+    if (isStateInitialized() || isStateRunning())
     {
       std::cerr << "invalid state" << std::endl;
       return NNFW_STATUS_INVALID_STATE;
@@ -1837,7 +1834,7 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
 {
   try
   {
-    if (!isStateModelLoaded())
+    if (isStateInitialized() || isStateRunning())
     {
       std::cerr << "Error during nnfw_session::codegen : Invalid state" << std::endl;
       return NNFW_STATUS_INVALID_STATE;
