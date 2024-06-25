@@ -438,16 +438,26 @@ int main(const int argc, char **argv)
     if (!args.getDumpFilename().empty())
     {
       std::vector<TensorShape> output_shapes;
+      auto output_shape_map = args.getOutputShapeMap();
       for (uint32_t i = 0; i < num_outputs; i++)
       {
         nnfw_tensorinfo ti;
         NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
 
-        TensorShape shape;
-        for (uint32_t j = 0; j < ti.rank; j++)
-          shape.emplace_back(ti.dims[j]);
+        auto found = output_shape_map.find(i);
 
-        output_shapes.emplace_back(shape);
+        if (found != output_shape_map.end())
+        {
+          output_shapes.emplace_back(found->second);
+        }
+        else
+        {
+          TensorShape shape;
+          for (uint32_t j = 0; j < ti.rank; j++)
+            shape.emplace_back(ti.dims[j]);
+
+          output_shapes.emplace_back(shape);
+        }
       }
 
       H5Formatter().dumpOutputs(args.getDumpFilename(), outputs, output_shapes);

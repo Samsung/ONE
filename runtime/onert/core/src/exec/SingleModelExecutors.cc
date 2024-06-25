@@ -16,7 +16,9 @@
 
 #include "SingleModelExecutors.h"
 
+#include "../backend/builtin/EdgeTensor.h"
 #include "../backend/builtin/UserTensor.h"
+#include "IPermuteFunction.h"
 
 #include <array>
 
@@ -53,10 +55,35 @@ const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index
 
 void SingleModelExecutors::execute(const ExecutionContext &ctx)
 {
+  class PermuteLayer : public exec::IPermuteFunction
+  {
+  public:
+    PermuteLayer(const std::vector<backend::ITensor *> &inputs,
+                 const std::vector<backend::ITensor *> &outputs)
+    {
+      assert(inputs.size() == outputs.size());
+      _src_tensors = inputs;
+      _dst_tensors = outputs;
+    }
+    virtual ~PermuteLayer() {}
+    void optimize() override {}
+  };
+
   // Create Input/Output UserTensors
   std::vector<std::unique_ptr<backend::builtin::UserTensor>> tensorpool;
+  std::vector<std::unique_ptr<backend::builtin::EdgeTensor>> qtensorpool;
+
+  // Vector for executor I/O
   std::vector<backend::IPortableTensor *> inputs(ctx.desc.inputs.size());
   std::vector<backend::IPortableTensor *> outputs(ctx.desc.outputs.size());
+
+  // Vector for input quantization I/O
+  std::vector<backend::ITensor *> input_tensors;
+  std::vector<backend::ITensor *> input_qtensors;
+
+  // Vector for output dequantization I/O
+  std::vector<backend::ITensor *> output_qtensors;
+  std::vector<backend::ITensor *> output_tensors;
 
   for (uint32_t i = 0; i < inputs.size(); i++)
   {
@@ -68,8 +95,26 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
       desc->info, desc->layout, static_cast<const uint8_t *>(desc->buffer), desc->size));
-    inputs[i] = tensorpool.back().get();
+
+    auto user_type = desc->info.typeInfo().type();
+    auto &model_info = entryExecutor()->inputInfo(i).typeInfo();
+    auto model_type = model_info.type();
+    if (user_type != model_type && user_type == ir::DataType::FLOAT32)
+    {
+      auto quantized_info = desc->info;
+      quantized_info.typeInfo(model_info);
+      qtensorpool.emplace_back(std::make_unique<backend::builtin::EdgeTensor>(
+        quantized_info, entryExecutor()->inputLayout(i)));
+      qtensorpool.back()->allocate_buffer();
+
+      input_tensors.push_back(tensorpool.back().get());
+      input_qtensors.push_back(qtensorpool.back().get());
+      inputs[i] = qtensorpool.back().get();
+    }
+    else
+      inputs[i] = tensorpool.back().get();
   }
+
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
     auto &desc = ctx.desc.outputs[i];
@@ -80,10 +125,41 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
       desc->info, desc->layout, static_cast<const uint8_t *>(desc->buffer), desc->size));
-    outputs[i] = tensorpool.back().get();
+
+    auto user_type = desc->info.typeInfo().type();
+    auto &model_info = entryExecutor()->outputInfo(i).typeInfo();
+    auto model_type = model_info.type();
+    if (user_type != model_type && user_type == ir::DataType::FLOAT32)
+    {
+      auto quantized_info = desc->info;
+      quantized_info.typeInfo(model_info);
+      qtensorpool.emplace_back(std::make_unique<backend::builtin::EdgeTensor>(
+        quantized_info, entryExecutor()->outputLayout(i)));
+      qtensorpool.back()->allocate_buffer();
+
+      output_qtensors.push_back(qtensorpool.back().get());
+      output_tensors.push_back(tensorpool.back().get());
+      outputs[i] = qtensorpool.back().get();
+    }
+    else
+      outputs[i] = tensorpool.back().get();
+  }
+
+  if (input_tensors.size() > 0)
+  {
+    auto input_quantize_layer = PermuteLayer(input_tensors, input_qtensors);
+    input_quantize_layer.prepare();
+    input_quantize_layer.run();
   }
 
   entryExecutor()->execute(inputs, outputs, ctx.options);
+
+  if (output_tensors.size() != 0)
+  {
+    auto output_dequantize_layer = PermuteLayer(output_qtensors, output_tensors);
+    output_dequantize_layer.prepare();
+    output_dequantize_layer.run();
+  }
 
   // Get dynamic shape inference result
   for (uint32_t i = 0; i < outputs.size(); i++)

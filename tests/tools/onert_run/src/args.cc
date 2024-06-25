@@ -231,6 +231,18 @@ void Args::Initialize(void)
     }
   };
 
+  auto process_output_shape = [&](const std::string &shape_str) {
+    try
+    {
+      handleShapeJsonParam(_output_shape, shape_str);
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "error with '--shape_prepare' option: " << shape_str << std::endl;
+      exit(1);
+    }
+  };
+
   auto process_shape_run = [&](const std::string &shape_str) {
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     if (shape_str == "H5" || shape_str == "h5")
@@ -298,6 +310,10 @@ void Args::Initialize(void)
 #endif
          "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()\n"
          )
+    ("output_shape", po::value<std::string>()->default_value("[]")->notifier(process_output_shape),
+         "Set output shape for dump.\n"
+         "Size should be same.\n"
+         "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [] (scalar).\n")
     ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }),
          "Verbose level\n"
          "0: prints the only result. Messages btw run don't print\n"
