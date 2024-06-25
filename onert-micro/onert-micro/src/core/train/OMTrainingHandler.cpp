@@ -54,8 +54,6 @@ OMStatus OMTrainingHandler::handleError(const OMConfig &config, OMRuntimeStorage
     // Get calculated data
     uint8_t *calculated_data = nullptr;
     OMStatus status = forward_storage.getDataByTensorIndex(&calculated_data, forward_output_index);
-    if (status != Ok)
-      return status;
     assert(calculated_data != nullptr);
 
     // Get target data
