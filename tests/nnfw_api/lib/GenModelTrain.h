@@ -483,8 +483,6 @@ private:
       const uint32_t trainable_indexes_range = last_trainable_idx - first_trainable_idx + 1;
       const uint32_t ops_size =
         circle::GetModel(_context->cbuf().buffer())->subgraphs()->Get(0)->operators()->size();
-      std::cout << "ops_size: " << ops_size << "\n";
-      std::cout << "trainable_indexes_range: " << trainable_indexes_range << "\n";
 
       if (last_trainable_idx == ops_size - 1 &&
           trainable_indexes_range == circle_model->trainable_ops()->size())
