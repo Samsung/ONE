@@ -56,7 +56,7 @@ OMStatus Split(const core::SplitParams &params, const core::OMRuntimeShape &inpu
   }
 
   assert(input_data != nullptr);
-  for (uint32_t k = 0; k < outer_size; ++k)
+  for (int64_t k = 0; k < outer_size; ++k)
   {
     for (uint32_t i = 0; i < output_count; ++i)
     {
@@ -65,7 +65,7 @@ OMStatus Split(const core::SplitParams &params, const core::OMRuntimeShape &inpu
       const auto copy_size = output_shape.dims(axis_value) * base_inner_size;
       T *output_ptr = output_data + k * copy_size;
       assert(output_ptr != nullptr);
-      for (uint32_t j = 0; j < copy_size; ++j)
+      for (int64_t j = 0; j < copy_size; ++j)
         output_ptr[j] = input_data[j];
       input_data += copy_size;
     }
