@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import ntpath
 from types import SimpleNamespace
 from typing import List, Tuple, Union, Type
 import shutil
@@ -45,6 +46,20 @@ class ArgumentParser():
         self._actions: List[Tuple[str, Action, Union[Type[str], Type[bool]]]] = list()
         self.driver: str = None
         self.target: str = None
+
+    def print_help(self):
+        backends_list = backends.get_list(self.driver)
+        driver_path = None
+        for cand in backends_list:
+            if ntpath.basename(cand) == self.driver:
+                driver_path = cand
+        if not driver_path:
+            driver_path = shutil.which(self.driver)
+
+        if not driver_path:
+            raise FileNotFoundError(self.driver + ' not found')
+
+        oneutils.run([driver_path, '-h'], err_prefix=self.driver)
 
     def add_argument(self, *args, **kwargs):
         if not 'action' in kwargs:
@@ -80,6 +95,7 @@ class ArgumentParser():
         # use first driver
         driver_path = driver_list[0]
         cmd: List = [driver_path]
+        invalid_options = list(cfg_args.__dict__.keys())
         # traverse the action in order and make commands
         for action in self._actions:
             arg, act, dtype = action
@@ -94,7 +110,6 @@ class ArgumentParser():
 
             if act == NormalOption:
                 if not oneutils.is_valid_attr(cfg_args, option_name):
-                    # TODO raise error when invalid option is given in the cfg file.
                     continue
                 if dtype == bool and getattr(cfg_args, option_name).lower() == "false":
                     continue
@@ -106,4 +121,8 @@ class ArgumentParser():
                 assert act == NormalOption
                 if dtype == str:
                     cmd += [getattr(cfg_args, option_name)]
+                    invalid_options.remove(option_name)
+        if len(invalid_options):
+            print(f'WARNING: there are invalid options {invalid_options}')
+            self.print_help()
         return cmd
