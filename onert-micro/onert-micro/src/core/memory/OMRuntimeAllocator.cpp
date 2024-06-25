@@ -139,8 +139,6 @@ OMStatus OMRuntimeAllocator::allocateGraphInputs(OMRuntimeContext *context,
     uint8_t *allocated_data = nullptr;
     // First clear if already allocated
     status = storage->getDataByTensorIndex(&allocated_data, tensor_index);
-    if (status != Ok)
-      return status;
 
     OMMemoryManager::deallocateMemory(allocated_data);
 
