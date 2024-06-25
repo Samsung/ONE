@@ -31,6 +31,7 @@ OMStatus AddN<int8_t>(const size_t flat_size, const size_t num_inputs,
                       const int8_t *const *input_data, int8_t *output_data)
 {
   assert(false && "Not IMPL yet");
+  return UnsupportedOp;
 }
 
 template <>
@@ -38,6 +39,7 @@ OMStatus AddN<int16_t>(const size_t flat_size, const size_t num_inputs,
                        const int16_t *const *input_data, int16_t *output_data)
 {
   assert(false && "Not IMPL yet");
+  return UnsupportedOp;
 }
 
 } // namespace pal
