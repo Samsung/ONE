@@ -219,8 +219,6 @@ OMStatus OMTrainingHandler::evaluateMetric(OMMetrics metric, void *metric_val,
     // Get calculated data
     uint8_t *calculated_data = nullptr;
     OMStatus status = storage.getDataByTensorIndex(&calculated_data, forward_output_index);
-    if (status != Ok)
-      return status;
     assert(calculated_data != nullptr);
 
     // Get target data
