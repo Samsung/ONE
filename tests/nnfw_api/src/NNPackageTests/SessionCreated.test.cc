@@ -124,3 +124,27 @@ TEST_F(ValidationTestSessionCreated, neg_internal_set_config)
   // All arguments are valid, but the session state is wrong
   ASSERT_EQ(nnfw_set_config(_session, "GRAPH_DOT_DUMP", "0"), NNFW_STATUS_INVALID_STATE);
 }
+
+TEST_F(ValidationTestSessionCreated, set_workspace)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_workspace(_session, "."));
+  SUCCEED();
+}
+
+TEST_F(ValidationTestSessionCreated, neg_set_workspace)
+{
+  ASSERT_EQ(nnfw_set_workspace(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+}
+
+TEST_F(ValidationTestSessionCreated, neg_set_execute_config_with_no_workspace)
+{
+  NNFW_ENSURE_SUCCESS(nnfw_set_workspace(_session, ""));
+  auto cbuf = genAddModel();
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(_session, cbuf.buffer(), cbuf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
+
+  // Some execution config requires workspace
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr),
+            NNFW_STATUS_ERROR);
+  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr), NNFW_STATUS_ERROR);
+}
