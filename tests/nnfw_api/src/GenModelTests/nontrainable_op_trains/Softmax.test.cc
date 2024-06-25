@@ -45,7 +45,7 @@ TEST_F(GenModelTrain, NonTrainableOps_FC_Softmax)
     _context->addTrainCase(
       uniformTCD<float>({{{1, 3}}, {{2, 1}}},                                     // inputs
                         {{{0, 1, 0, 0, 0, 0, 0, 0}}, {{0, 0, 0, 0, 0, 1, 0, 0}}}, // expected
-                        {0.1092f}                                                 // loss
+                        {{0.1094f}, {0.1093f}, {0.1092f}, {0.1092f}}              // loss
                         ));
 
     _context->setBackends({"train"});
