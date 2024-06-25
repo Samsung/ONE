@@ -141,6 +141,11 @@ void StridedSlice::execute() const
                                           getTensorData<int32_t>(input()), getTensorShape(output()),
                                           getTensorData<int32_t>(output()));
       break;
+    case DataType::BOOL:
+      tflite::reference_ops::StridedSlice(op_params, getTensorShape(input()),
+                                          getTensorData<bool>(input()), getTensorShape(output()),
+                                          getTensorData<bool>(output()));
+      break;
     default:
       throw std::runtime_error("luci-intp StridedSlice Unsupported type.");
   }
