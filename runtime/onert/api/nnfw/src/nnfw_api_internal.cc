@@ -1758,8 +1758,9 @@ NNFW_STATUS nnfw_session::quantize()
     auto model = loadModel(_quant_manager->exportModelPath(), "circle");
     if (model == nullptr)
       return NNFW_STATUS_ERROR;
-    // TODO: Update _model_path if necessary
     _nnpkg->replaceModel(std::move(model));
+    _state = State::MODEL_LOADED;
+    _model_path = _quant_manager->exportModelPath();
   }
   catch (const std::exception &e)
   {
@@ -1865,8 +1866,9 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
     if (model == nullptr)
       return NNFW_STATUS_ERROR;
 
-    // TODO: Update _model_path if necessary
     _nnpkg->replaceModel(std::move(model));
+    _state = State::MODEL_LOADED;
+    _model_path = export_model_path;
   }
   catch (const std::exception &e)
   {
