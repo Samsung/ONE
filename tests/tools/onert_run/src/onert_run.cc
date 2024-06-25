@@ -137,6 +137,11 @@ int main(const int argc, char **argv)
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
 
+    uint32_t num_inputs;
+    uint32_t num_outputs;
+    NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
+    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
+
     // Quantize model
     auto quantize = args.getQuantize();
     if (!quantize.empty())
@@ -150,6 +155,47 @@ int main(const int argc, char **argv)
         quantize_type = NNFW_QUANTIZE_TYPE_WO_I8_SYM;
       if (quantize == "int16_wo")
         quantize_type = NNFW_QUANTIZE_TYPE_WO_I16_SYM;
+
+      if ((quantize_type == NNFW_QUANTIZE_TYPE_U8_ASYM ||
+           quantize_type == NNFW_QUANTIZE_TYPE_I16_SYM) &&
+          args.getMinmaxRuns() > 0)
+      {
+        // Collect min/max data
+        std::vector<Allocation> inputs(num_inputs);
+        std::vector<Allocation> outputs(num_outputs);
+
+        NNPR_ENSURE_STATUS(nnfw_prepare(session));
+        for (uint32_t i = 0; i < num_inputs; i++)
+        {
+          nnfw_tensorinfo ti;
+          NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session, i, &ti));
+          auto input_size_in_bytes = bufsize_for(&ti);
+          inputs[i].alloc(input_size_in_bytes, ti.dtype);
+          NNPR_ENSURE_STATUS(
+            nnfw_set_input(session, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
+          NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+        }
+        for (uint32_t i = 0; i < num_outputs; i++)
+        {
+          nnfw_tensorinfo ti;
+          NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+          uint64_t output_size_in_bytes = bufsize_for(&ti);
+          outputs[i].alloc(output_size_in_bytes, ti.dtype);
+          NNPR_ENSURE_STATUS(
+            nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
+          NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
+        }
+
+        auto random_generator = RandomGenerator();
+        nnfw_set_execute_config(session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr);
+        for (uint32_t i = 0; i < args.getMinmaxRuns(); i++)
+        {
+          random_generator.generate(inputs);
+          NNPR_ENSURE_STATUS(nnfw_run(session));
+        }
+        nnfw_reset_execute_config(session);
+      }
+
       NNPR_ENSURE_STATUS(nnfw_set_quantization_type(session, quantize_type));
 
       if (args.getQuantizedModelPath() != "")
@@ -182,11 +228,6 @@ int main(const int argc, char **argv)
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
 
-    uint32_t num_inputs;
-    uint32_t num_outputs;
-    NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
-    NNPR_ENSURE_STATUS(nnfw_output_size(session, &num_outputs));
-
     // verify input and output
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
@@ -211,7 +252,6 @@ int main(const int argc, char **argv)
         exit(-1);
       }
     }
-
     std::vector<Allocation> inputs(num_inputs);
     std::vector<Allocation> outputs(num_outputs);
 
