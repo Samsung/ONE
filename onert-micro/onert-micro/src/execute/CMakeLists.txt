@@ -17,6 +17,7 @@ set(SOURCES
         kernels/ConvolutionCommon.cpp
         kernels/PoolingCommon.cpp
         kernels/ReshapeCommon.cpp
+        kernels/SpacesBatchesNDCommon.cpp
         )
 
 # Add configure kernels
