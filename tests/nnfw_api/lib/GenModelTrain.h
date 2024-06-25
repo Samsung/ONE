@@ -86,7 +86,7 @@ public:
    */
   TrainCaseData &addLosses(const std::vector<float> &loss)
   {
-    addLoss(losses, loss);
+    losses.emplace_back(loss);
     return *this;
   }
 
@@ -129,17 +129,6 @@ private:
     size_t size = data.size() * sizeof(T);
     dest.emplace_back().resize(size);
     std::memcpy(dest.back().data(), data.data(), size);
-  }
-
-  /**
-   * @brief Add loss data as a float vector
-   *
-   * @param dest Destination where loss data will be stored
-   * @param data A loss data to be stored
-   */
-  void addLoss(std::vector<std::vector<float>> &dest, const std::vector<float> &data)
-  {
-    dest.emplace_back(data);
   }
 
   bool _expected_fail_run = false;
