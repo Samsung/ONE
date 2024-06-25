@@ -14,89 +14,13 @@
  * limitations under the License.
  */
 
-#include "OMStatus.h"
-
-#include "core/OMUtils.h"
-#include "core/OMKernelData.h"
-
-#include "import/OMKernelConfigureBuilder.h"
-
-#include "execute/OMRuntimeKernel.h"
-#include "execute/OMUtils.h"
+#include "import/helpers/OMPooingCommon.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-namespace
-{
-
-constexpr uint32_t inputTensorIdx = 0;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
-
 OMStatus
 onert_micro::import::configure_kernel_CircleAveragePool2D(const OMConfigureArgs &config_args)
 {
-  OMRuntimeContext &runtime_context = config_args.runtime_context;
-  uint16_t op_index = config_args.kernel_index;
-
-  onert_micro::execute::OMRuntimeKernel runtime_kernel;
-
-  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-  if (status != Ok)
-    return status;
-
-  const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input != nullptr);
-  assert(output != nullptr);
-
-  status = utils::checkCondition(input->type() == output->type());
-  if (status != Ok)
-    return status;
-
-  OMRuntimeShape input_shape(input);
-  OMRuntimeShape output_shape(output);
-
-  status = utils::checkCondition(input_shape.dimensionsCount() == output_shape.dimensionsCount());
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input_shape.dimensionsCount() == 4);
-
-  auto option = runtime_kernel.first_operator->builtin_options_as_Pool2DOptions();
-
-  if (option == nullptr)
-    return UnknownError;
-
-  assert(option != nullptr);
-
-  if (input->type() != circle::TensorType_INT8 and input->type() != circle::TensorType_INT16)
-    return status;
-
-  // Check quantization params
-  if (input->quantization() == nullptr)
-  {
-    return NoQuantization;
-  }
-
-  if (input->quantization()->scale()->size() != 1)
-  {
-    return UnsupportedType;
-  }
-
-  // Check quantization params
-  if (output->quantization() == nullptr)
-  {
-    return NoQuantization;
-  }
-
-  if (output->quantization()->scale()->size() != 1)
-  {
-    return UnsupportedType;
-  }
-
-  return status;
+  return import::helpers::configure_pooling_kernel_common(config_args);
 }
