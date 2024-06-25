@@ -119,14 +119,20 @@ void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
 
 void Execution::setInputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
 {
-  _ctx.desc.inputs.at(index.value())->info.typeInfo(typeInfo);
-  _ctx.shape_updated = true;
+  if (typeInfo.type() != _ctx.desc.inputs.at(index.value())->info.typeInfo().type())
+  {
+    _ctx.desc.inputs.at(index.value())->info.typeInfo(typeInfo);
+    _ctx.shape_updated = true;
+  }
 }
 
 void Execution::setOutputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
 {
-  _ctx.desc.outputs.at(index.value())->info.typeInfo(typeInfo);
-  _ctx.shape_updated = true;
+  if (typeInfo.type() != _ctx.desc.outputs.at(index.value())->info.typeInfo().type())
+  {
+    _ctx.desc.outputs.at(index.value())->info.typeInfo(typeInfo);
+    _ctx.shape_updated = true;
+  }
 }
 
 void Execution::execute()

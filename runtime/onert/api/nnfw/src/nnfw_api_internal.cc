@@ -548,7 +548,7 @@ NNFW_STATUS nnfw_session::await()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const void *buffer,
+NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *buffer,
                                     size_t length)
 {
   if (!isStatePreparedOrFinishedRun())
@@ -568,6 +568,10 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
   try
   {
     _execution->setInput(onert::ir::IOIndex(index), buffer, length);
+    // Allow float input internal quantization only
+    if (type == NNFW_TYPE_TENSOR_FLOAT32)
+      _execution->setInputType(onert::ir::IOIndex(index),
+                               onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
   {
@@ -577,8 +581,7 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const vo
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
-                                     size_t length)
+NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length)
 {
   if (!isStatePreparedOrFinishedRun())
   {
@@ -597,6 +600,10 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *b
   try
   {
     _execution->setOutput(onert::ir::IOIndex(index), buffer, length);
+    // Allow float output internal dequantization only
+    if (type == NNFW_TYPE_TENSOR_FLOAT32)
+      _execution->setOutputType(onert::ir::IOIndex(index),
+                                onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
   {

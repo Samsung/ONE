@@ -273,6 +273,7 @@ void Args::Initialize(void)
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n")
     ("num_runs,r", po::value<int>()->default_value(1)->notifier([&](const auto &v) { _num_runs = v; }), "The number of runs")
     ("fixed_input", "Use same random input data on each run (avaliable on random input)")
+    ("force_float", "Ignore model's input and output type and use float type buffer")
     ("warmup_runs,w", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _warmup_runs = v; }), "The number of warmup runs")
     ("minmax_runs", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _minmax_runs = v; }), "The number of minmax recording runs before full quantization")
     ("run_delay,t", po::value<int>()->default_value(-1)->notifier([&](const auto &v) { _run_delay = v; }), "Delay time(us) between runs (as default no delay")
@@ -371,9 +372,9 @@ void Args::Parse(const int argc, char **argv)
   }
 
   if (vm.count("fixed_input"))
-  {
     _fixed_input = true;
-  }
+  if (vm.count("force_float"))
+    _force_float = true;
 
   try
   {

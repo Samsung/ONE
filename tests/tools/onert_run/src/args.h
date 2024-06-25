@@ -59,6 +59,7 @@ public:
   const std::string &getLoadRawFilename(void) const { return _load_raw_filename; }
   const int getNumRuns(void) const { return _num_runs; }
   const bool getFixedInput(void) const { return _fixed_input; }
+  const bool getForceFloat(void) const { return _force_float; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
   const int getMinmaxRuns(void) const { return _minmax_runs; }
   const int getRunDelay(void) const { return _run_delay; }
@@ -99,6 +100,7 @@ private:
   TensorShapeMap _shape_run;
   int _num_runs;
   bool _fixed_input = false;
+  bool _force_float = false;
   int _warmup_runs;
   int _minmax_runs;
   int _run_delay;
