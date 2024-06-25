@@ -8,6 +8,7 @@ set(SOURCES
         helpers/OMPadCommon.cpp
         helpers/OMConfigureTISOKernel.cpp
         helpers/OMPoolingCommon.cpp
+        helpers/OMArgCommon.cpp
         )
 
 # Add configure kernels
