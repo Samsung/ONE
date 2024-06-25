@@ -17,6 +17,7 @@
 #include "CirclePlusGen.h"
 
 #include <numeric>
+#include <nnfw_experimental.h> // for NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES
 
 CircleBuffers CirclePlusGen::finish()
 {
@@ -73,7 +74,7 @@ CircleBuffer CirclePlusGen::createModelTraining()
 
   const uint32_t ops_size = getCurrentSubgraphOpsSize();
   std::vector<int32_t> trainable_ops;
-  if (0 == _info.num_of_trainable_ops)
+  if (NNFW_TRAIN_TRAINABLE_ALL == _info.num_of_trainable_ops)
   {
     for (uint32_t idx = 0; idx < ops_size; ++idx)
     {
@@ -85,7 +86,7 @@ CircleBuffer CirclePlusGen::createModelTraining()
     {
       trainable_ops.push_back(ops_size - i);
     }
-  else
+  else if (_info.num_of_trainable_ops <= NNFW_TRAIN_TRAINABLE_INCORRECT_STATE)
   {
     throw std::invalid_argument("Incorrect negative value of num_of_trainable_ops");
   }

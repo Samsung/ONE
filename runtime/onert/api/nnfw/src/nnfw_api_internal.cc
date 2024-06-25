@@ -1238,7 +1238,7 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
         // check if all ops are trainable
         if (0 == first_trainable_idx)
         {
-          info->num_of_trainable_ops = 0;
+          info->num_of_trainable_ops = NNFW_TRAIN_TRAINABLE_ALL;
         }
         else
         {
@@ -1247,9 +1247,16 @@ NNFW_STATUS nnfw_session::train_get_traininfo(nnfw_train_info *info)
       }
       else
       {
-        // conversion from set of trainable ops to num_of_trainable_ops is impossible
-        info->num_of_trainable_ops = -1;
+        info->num_of_trainable_ops = NNFW_TRAIN_TRAINABLE_INCORRECT_STATE;
+        std::cerr << "conversion from set of trainable ops to num_of_trainable_ops is impossible"
+                  << std::endl;
+        return NNFW_STATUS_INVALID_STATE;
       }
+    }
+    else
+    {
+      // no layer will be trained
+      info->num_of_trainable_ops = NNFW_TRAIN_TRAINABLE_NONE;
     }
   }
   catch (const std::exception &e)
@@ -1319,18 +1326,18 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
     _train_info->setLossInfo(loss_info);
     _train_info->setOptimizerInfo(opt_info);
 
-    if (-1 == info->num_of_trainable_ops)
+    if (info->num_of_trainable_ops < -1)
     {
       std::cerr << "Error during nnfw_session::train_set_traininfo: provided num_of_trainable_ops "
-                   "has incorrect value -1"
-                << std::endl;
+                   "has incorrect value: "
+                << info->num_of_trainable_ops << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
     const uint32_t ops_size = primary_subgraph()->operations().size();
     std::set<onert::ir::OperationIndex> trainable_ops;
 
-    if (0 == info->num_of_trainable_ops)
+    if (NNFW_TRAIN_TRAINABLE_ALL == info->num_of_trainable_ops)
     {
       for (uint32_t idx = 0; idx < ops_size; ++idx)
       {
@@ -1352,6 +1359,7 @@ NNFW_STATUS nnfw_session::train_set_traininfo(const nnfw_train_info *info)
         trainable_ops.emplace(ops_size - i);
       }
     }
+    // Note that possible setting an empty trainable_ops set (for NNFW_TRAIN_TRAINABLE_NONE value)
     _train_info->setTrainableOps(trainable_ops);
   }
   catch (const std::exception &e)

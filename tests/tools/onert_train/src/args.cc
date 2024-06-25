@@ -291,7 +291,8 @@ void Args::Initialize(void)
         "If not given, the model's output sizes are used\n"
         "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.")
     ("num_of_trainable_ops", po::value<int>()->notifier([&](const auto &ops_num) { _num_of_trainable_ops = ops_num; }),
-        "Number of the layers to be trained from the back of the model. \"0\" means that all layers should be trained.")
+        "Number of the layers to be trained from the back of the model. \"-1\" means that all layers will be trained. "
+        "\"0\" means that no layer will be trained.")
     ;
   // clang-format on
 

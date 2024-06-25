@@ -33,7 +33,8 @@ TEST_F(GenModelTrain, OneOp_Conv2D)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                     NNFW_TRAIN_TRAINABLE_ALL});
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(
     uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,

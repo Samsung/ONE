@@ -119,7 +119,7 @@ private:
   bool _print_version = false;
   int _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
-  uint32_t _num_of_trainable_ops;
+  int32_t _num_of_trainable_ops;
 };
 
 } // end of namespace onert_train

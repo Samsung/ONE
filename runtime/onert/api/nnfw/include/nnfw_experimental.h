@@ -212,6 +212,21 @@ typedef struct nnfw_loss_info
 } nnfw_loss_info;
 
 /**
+ * @brief Special values of num_of_trainable_ops.
+ *        Positive values are used to indicate layers to be trained from the back of the graph.
+ */
+typedef enum
+{
+  /** Error value of number of trainable ops */
+  NNFW_TRAIN_TRAINABLE_INCORRECT_STATE = -2,
+  /** All layers will be trained */
+  NNFW_TRAIN_TRAINABLE_ALL = -1,
+  /** No layer will be trained */
+  NNFW_TRAIN_TRAINABLE_NONE = 0,
+
+} NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES;
+
+/**
  * @brief Training information to prepare training
  * @todo  Add more training information
  *        (e.g. optimizer, loss function, ...)
@@ -228,8 +243,8 @@ typedef struct nnfw_train_info
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 
-  /** Number of layers to be trained from the back.
-   *  "0" means that all layers should be trained. Negative value means error. */
+  /** Number of layers to be trained from the back. "-1" means that all layers will be trained.
+   * "0" means that no layer will be trained. Negative value less than -1 means error. */
   int32_t num_of_trainable_ops = 0;
 } nnfw_train_info;
 

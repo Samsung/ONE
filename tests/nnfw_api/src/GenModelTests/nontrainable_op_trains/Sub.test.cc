@@ -32,7 +32,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Sub_InvalidShape)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                     NNFW_TRAIN_TRAINABLE_ALL});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
@@ -52,7 +53,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Sub_InvalidType)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                     NNFW_TRAIN_TRAINABLE_ALL});
 
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});

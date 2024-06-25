@@ -49,7 +49,7 @@ CirclePlusGen gen_test_model(const int32_t num_of_trainable_ops)
 
 TEST_F(GenModelTrain, TestModel_Trainability_full_training_enabled)
 {
-  auto cgen = gen_test_model(0);
+  auto cgen = gen_test_model(NNFW_TRAIN_TRAINABLE_ALL);
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(uniformTCD<float>(
     {{{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4},
@@ -69,6 +69,25 @@ TEST_F(GenModelTrain, TestModel_Trainability_full_training_enabled)
 TEST_F(GenModelTrain, TestModel_Trainability_one_op_training_enabled)
 {
   auto cgen = gen_test_model(1);
+  _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+  _context->addTrainCase(uniformTCD<float>(
+    {{{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4},
+      std::vector<float>(1 * 3 * 3 * 2, 2.0f)}}, // input dataset
+    {{{47, -4, -25, 9, 10, 10, -13, 11, -14, -26, -12, 26, 20, 40, 1, 3, 11,
+       4}}},                                             // expected dataset
+    {{385.5555f}, {385.5555f}, {385.5555f}, {385.5555f}} // losses
+    ));
+
+  _context->setBackends({"train"});
+  // To apply backward to loss, epoch should be >= 2
+  _context->setEpoch(4);
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTrain, TestModel_Trainability_one_op_training_disabled)
+{
+  auto cgen = gen_test_model(NNFW_TRAIN_TRAINABLE_NONE);
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->addTrainCase(uniformTCD<float>(
     {{{4, 0, -5, 1, 0, 4, -1, 1, -1, -3, 3, -2, -4, 1, -2, 2, 4, -4, 2, 2, 0, 4, -1, -2, 4},

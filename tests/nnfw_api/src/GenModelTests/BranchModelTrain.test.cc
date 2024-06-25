@@ -39,9 +39,10 @@ TEST_F(GenModelTrain, BranchOps_FC_Add)
 
     float learning_rate = 0.01f;
     int32_t batch_size = 1;
-    cgen.addTrainInfo(
-      {circle::Optimizer::Optimizer_SGD, learning_rate, circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(uniformTCD<float>(
@@ -80,9 +81,10 @@ TEST_F(GenModelTrain, BranchOps_FC_Sub)
 
     float learning_rate = 0.01f;
     int32_t batch_size = 1;
-    cgen.addTrainInfo(
-      {circle::Optimizer::Optimizer_SGD, learning_rate, circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(uniformTCD<float>(
@@ -133,9 +135,10 @@ TEST_F(GenModelTrain, BranchOps_FC_Mul)
 
     float learning_rate = 0.01f;
     int32_t batch_size = 1;
-    cgen.addTrainInfo(
-      {circle::Optimizer::Optimizer_SGD, learning_rate, circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size, 0});
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
