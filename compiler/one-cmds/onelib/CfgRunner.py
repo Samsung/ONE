@@ -118,7 +118,7 @@ class CfgRunner:
                 options.append('--verbose')
             if (section == 'one-codegen' or section == 'one-profile') and self.backend:
                 options += ['-b', self.backend]
-            if self.target:
+            if (section == 'one-codegen' or section == 'one-profile') and self.target:
                 options += ['-T', self.target]
             driver_path = os.path.join(working_dir, section)
             cmd = [driver_path] + options
