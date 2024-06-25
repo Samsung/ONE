@@ -27,9 +27,6 @@ OMStatus OMMemoryManager::allocateMemory(uint32_t size, uint8_t **data)
 
   *data = data_tmp;
 
-  if (*data == nullptr)
-    return UnknownError;
-
   return Ok;
 }
 
