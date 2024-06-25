@@ -84,11 +84,13 @@ OMStatus isInplaceOperation(const circle::Operator *op, core::OMRuntimeContext &
           break;
         default:
           is_inplace = false;
+          break;
       }
     }
 #endif
     default:
       is_inplace = false;
+      break;
   }
   return status;
 }
