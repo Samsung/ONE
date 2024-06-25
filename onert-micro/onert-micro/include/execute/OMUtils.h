@@ -27,6 +27,7 @@ namespace onert_micro
 namespace execute
 {
 
+void readQuantParams(const circle::Tensor *tensor, long &zero_point, float &scale);
 template <typename T>
 OMStatus calculateActivationRange(circle::ActivationFunctionType activation, T *activation_min,
                                   T *activation_max)

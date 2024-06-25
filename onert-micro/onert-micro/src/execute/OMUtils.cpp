@@ -139,3 +139,19 @@ OMStatus onert_micro::execute::calculateActivationRangeQuantized(
   return calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output_zero_point,
                                                output_scale, activation_min, activation_max);
 }
+
+void onert_micro::execute::readQuantParams(const circle::Tensor *tensor, long &zero_point,
+                                           float &scale)
+{
+  // additional check
+  assert(tensor->quantization() != nullptr); // Fix caller
+  assert(tensor->quantization()->scale() != nullptr and
+         tensor->quantization()->scale()->size() == 1); // Fix caller
+  assert(tensor->quantization()->zero_point() != nullptr and
+         tensor->quantization()->zero_point()->size() == 1); // Fix caller
+
+  // read zero point
+  zero_point = tensor->quantization()->zero_point()->operator[](0);
+  // read scale
+  scale = tensor->quantization()->scale()->operator[](0);
+}
