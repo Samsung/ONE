@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-#include "execute/kernels/ReshapeCommon.h"
+#ifndef ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
+#define ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
 
-using namespace onert_micro;
-using namespace onert_micro::execute;
+#include "OMStatus.h"
 
-namespace
+#include "core/OMUtils.h"
+#include "core/OMKernelData.h"
+#include "core/OMDataType.h"
+
+#include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMUtils.h"
+#include "execute/OMRuntimeKernel.h"
+#include <functional>
+
+namespace onert_micro
+{
+namespace execute
 {
 
-constexpr uint32_t inputTensorIdx = 0;
-constexpr uint32_t outputTensorIdx = 0;
+OMStatus execute_reshape_common(const OMExecuteArgs &execute_args);
 
-} // namespace
+} // namespace execute
+} // namespace onert_micro
 
-// NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleReshape(const OMExecuteArgs &execute_args)
-{
-  return execute_reshape_common(execute_args);
-}
+#endif // ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
