@@ -63,6 +63,11 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
   assert(input_data != nullptr);
   assert(output_data != nullptr);
 
+  float alpha = 0.f;
+  auto options = runtime_kernel.first_operator->builtin_options_as_LeakyReluOptions();
+  if (options != nullptr)
+    alpha = options->alpha();
+
   switch (input->type())
   {
 #ifndef DIS_FLOAT
@@ -77,7 +82,7 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
       assert(output_data_float);
       const int flat_size = input_shape.flatSize();
 
-      status = pal::ReLUCommon(flat_size, input_data_float, output_data_float, 0.0f, is_relu_6);
+      status = pal::ReLUCommon(flat_size, input_data_float, output_data_float, alpha, is_relu_6);
     }
     break;
 #endif // DIS_FLOAT
@@ -85,6 +90,7 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
     {
       status = UnsupportedType;
       assert(false && "Unsupported type.");
+      break;
     }
   }
 
