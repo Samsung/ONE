@@ -199,7 +199,7 @@ OMStatus checkInplaceOp(core::OMRuntimeContext &context, const circle::Operator 
 OMStatus findInplaceOp(core::OMRuntimeStorage &storage, core::OMRuntimeContext &context,
                        const OMConfig &configs, bool &is_changed)
 {
-  OMStatus status;
+  OMStatus status = Ok;
 
   const core::reader::CircleOperators *operators = context.getCircleOperators();
 
