@@ -76,7 +76,7 @@ Offset<Vector<Offset<OperatorCode>>>
 encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode, uint32_t> &opcodes)
 {
   std::vector<Offset<OperatorCode>> operator_codes_vec(opcodes.size());
-  for (auto it : opcodes)
+  for (const auto &it : opcodes)
   {
     uint32_t idx = it.second;
     int8_t dep_code = 127; // BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES
