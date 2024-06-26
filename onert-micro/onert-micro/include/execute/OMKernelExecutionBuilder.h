@@ -103,11 +103,7 @@ public:
     }
     const auto builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);
     builder_id_opcode -= builder_id_offset - 1;
-    if (builder_id_opcode < 0)
-    {
-      *execute_func = nullptr;
-      return UnknownError;
-    }
+
     *execute_func = _operator_execute[builder_id_opcode];
     return Ok;
   }
