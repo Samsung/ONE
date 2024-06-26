@@ -177,7 +177,10 @@ struct QuantizeWithPredecessor final : public luci::CircleNodeMutableVisitor<boo
       }
     }
 
-    assert(max_scale_node);
+    if (max_scale_node == nullptr)
+    {
+      throw std::runtime_error{"Invalid max_scale_node"};
+    }
 
     return quantize_with_same_qparam(max_scale_node, node);
   }
