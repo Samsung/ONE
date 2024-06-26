@@ -61,6 +61,7 @@ OMStatus isInplaceOperation(const circle::Operator *op, core::OMRuntimeContext &
       is_inplace = true;
       break;
     }
+#if 0 // FIXME: Enable after custom operation is introduced
     case circle::BuiltinOperator_CUSTOM:
     {
       core::OMBuilderCustomID custom_id;
@@ -85,6 +86,7 @@ OMStatus isInplaceOperation(const circle::Operator *op, core::OMRuntimeContext &
           is_inplace = false;
       }
     }
+#endif
     default:
       is_inplace = false;
   }
@@ -212,9 +214,7 @@ OMStatus findInplaceOp(core::OMRuntimeStorage &storage, core::OMRuntimeContext &
     auto cur_op = operators->operator[](i);
 
     bool is_inplace = false;
-    status = isInplaceOperation(cur_op, context, is_inplace);
-    if (status != Ok)
-      return status;
+    isInplaceOperation(cur_op, context, is_inplace);
 
     if (is_inplace == false)
       continue;
