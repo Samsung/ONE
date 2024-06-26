@@ -230,6 +230,11 @@ bool ReduceDimensionsForBroadcast(const core::OMRuntimeShape &input1_shape,
   bool broadcast_input1 = false;
   bool broadcast_input2 = false;
   bool first_nonunit = true;
+
+  if (input1_shape.dimensionsCount() < 0 || input2_shape.dimensionsCount() < 0)
+  {
+    return false;
+  }
   const size_t num_input1_dims = input1_shape.dimensionsCount();
   const size_t num_input2_dims = input2_shape.dimensionsCount();
   const int32_t *input1_dims = input1_shape.dimsData();
@@ -237,6 +242,10 @@ bool ReduceDimensionsForBroadcast(const core::OMRuntimeShape &input1_shape,
   const size_t num_common_dims = std::min(num_input1_dims, num_input2_dims);
   for (size_t i = 1; i <= num_common_dims; i++)
   {
+    if (input1_dims[num_input1_dims - i] < 0 || input2_dims[num_input2_dims - i] < 0)
+    {
+      return false;
+    }
     const size_t input1_dim = input1_dims[num_input1_dims - i];
     const size_t input2_dim = input2_dims[num_input2_dims - i];
     if (input1_dim == 0 || input2_dim == 0)
@@ -294,6 +303,8 @@ bool ReduceDimensionsForBroadcast(const core::OMRuntimeShape &input1_shape,
     }
     for (size_t i = 0; i < num_input1_dims - num_input2_dims; i++)
     {
+      if (input1_dims[i] < 0)
+        return false;
       const size_t input1_dim = input1_dims[i];
       if (input1_dim == 0)
       {
@@ -311,6 +322,8 @@ bool ReduceDimensionsForBroadcast(const core::OMRuntimeShape &input1_shape,
     }
     for (size_t i = 0; i < num_input2_dims - num_input1_dims; i++)
     {
+      if (input2_dims[i] < 0)
+        return false;
       const size_t input2_dim = input2_dims[i];
       if (input2_dim == 0)
       {
