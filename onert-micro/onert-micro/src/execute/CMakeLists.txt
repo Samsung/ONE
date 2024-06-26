@@ -14,6 +14,7 @@ set(SOURCES
         OMKernelExecutionBuilder.cpp
         OMRuntimeKernel.cpp
         OMUtils.cpp
+        kernels/ReluCommon.cpp
         kernels/ConvolutionCommon.cpp
         kernels/PoolingCommon.cpp
         kernels/ReadKernelDataCommon.cpp
