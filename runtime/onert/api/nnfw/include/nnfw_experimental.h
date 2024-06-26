@@ -243,9 +243,12 @@ typedef struct nnfw_train_info
   /** optimizer type */
   NNFW_TRAIN_OPTIMIZER opt = NNFW_TRAIN_OPTIMIZER_SGD;
 
-  /** Number of layers to be trained from the back. "-1" means that all layers will be trained.
-   * "0" means that no layer will be trained. Negative value less than -1 means error. */
-  int32_t num_of_trainable_ops = 0;
+  /** Number of layers to be trained from the back of the graph.
+   *  Note that some values have special meaning. "-1" means that all layers will be trained.
+   * "0" means that no layer will be trained. Negative value less than -1 means error.
+   *  The special values are collected in NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES enum.
+   */
+  int32_t num_of_trainable_ops = NNFW_TRAIN_TRAINABLE_NONE;
 } nnfw_train_info;
 
 /**
