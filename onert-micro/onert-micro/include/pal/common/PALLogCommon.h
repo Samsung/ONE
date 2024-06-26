@@ -34,8 +34,22 @@ template <typename T>
 inline OMStatus Log(const core::OMRuntimeShape &input_shape, const T *input_data,
                     const core::OMRuntimeShape &output_shape, T *output_data)
 {
-  return SISOOperation<T>(input_shape, input_data, output_shape, output_data,
-                          [](T arg) -> T { return std::log(arg); });
+  const uint32_t flat_size = input_shape.flatSize();
+
+  if (flat_size == -1)
+    return UnknownError;
+
+  assert(input_data != nullptr);
+  assert(output_data != nullptr);
+
+  assert(input_shape == output_shape);
+
+  for (int i = 0; i < flat_size; i++)
+  {
+    output_data[i] = std::log(input_data[i]);
+  }
+
+  return Ok;
 }
 } // namespace pal
 } // namespace execute
