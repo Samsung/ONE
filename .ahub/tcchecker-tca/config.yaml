@@ -12,10 +12,12 @@ test:
       - /tests/nnfw_api
 
     testFile:
-      - extension: test.cpp
-        any: true
-      - extension: test.cc
-        any: true
+      - extension: cpp
+        ends:
+          - .test
+      - extension: cc
+        ends:
+          - .test
     testCase:
       - condition:
         - functionName:
