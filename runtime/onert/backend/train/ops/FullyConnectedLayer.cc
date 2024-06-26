@@ -54,7 +54,7 @@ namespace ops
 
 FullyConnectedLayer::FullyConnectedLayer()
   : cpu::ops::FullyConnectedLayer{}, _grad_weights{nullptr}, _grad_bias{nullptr},
-    _back_prop_input{nullptr}, _back_prop_output{nullptr}, _transposed_weights{nullptr},
+    _back_prop_input{nullptr}, _back_prop_output{nullptr}, 
     _transposed_input{nullptr}, _transposed_back_prop_output{nullptr},
     _act_back_prop_output{nullptr}
 {
@@ -84,10 +84,7 @@ void FullyConnectedLayer::configureBackward(
       back_prop_output->get_info().shape().rank() != 2)
     throw std::runtime_error{
       "train FullyConnectedLayer: Input other ranks than 2 are not supported."};
-
-  _transposed_weights = createTransposedTensor(weights);
-  _transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
-
+  
   _transposed_input = createTransposedTensor(input);
   _transposed_input->setBuffer(std::make_shared<basic::Allocator>(input->total_size()));
 
@@ -158,15 +155,19 @@ void FullyConnectedLayer::backwardFloat32()
 
   // Transpose and compute gradient for input
   // ∂L/∂X = fc(Incoming gradient, transposed W)
-  auto transposed_weights = _transposed_weights.get();
-  assert(transposed_weights->getShape().rank() == 2);
-  nnfw::cker::Transpose(transpose_param, getShape(_weights), getBuffer<float>(_weights),
-                        getShape(transposed_weights), getBuffer<float>(transposed_weights));
+  {
+    auto transposed_weights = createTransposedTensor(_weights);
+    transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
 
-  nnfw::cker::FullyConnected(op_params, getShape(backprop_act), getBuffer<float>(backprop_act),
-                             getShape(transposed_weights), getBuffer<float>(transposed_weights),
-                             getShape(nullptr), nullptr, getShape(_back_prop_input),
-                             getBuffer<float>(_back_prop_input));
+    assert(transposed_weights->getShape().rank() == 2);
+    nnfw::cker::Transpose(transpose_param, getShape(_weights), getBuffer<float>(_weights),
+                          getShape(transposed_weights), getBuffer<float>(transposed_weights));
+
+    nnfw::cker::FullyConnected(op_params, getShape(backprop_act), getBuffer<float>(backprop_act),
+                               getShape(transposed_weights), getBuffer<float>(transposed_weights),
+                               getShape(nullptr), nullptr, getShape(_back_prop_input),
+                               getBuffer<float>(_back_prop_input));
+  } // transposed_weights tensor deleted 
 
   // Transpose and compute gradient for weights
   // ∂L/∂W = fc(transposed incomming gradient, transposed X)

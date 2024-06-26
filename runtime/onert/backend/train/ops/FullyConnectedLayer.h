@@ -59,7 +59,6 @@ private:
   const IPortableTensor *_back_prop_output;
 
   // TODO Optimize memory
-  std::unique_ptr<Tensor> _transposed_weights;
   std::unique_ptr<Tensor> _transposed_input;
   std::unique_ptr<Tensor> _transposed_back_prop_output;
   std::unique_ptr<Tensor> _act_back_prop_output;
