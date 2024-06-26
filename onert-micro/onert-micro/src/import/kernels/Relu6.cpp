@@ -19,14 +19,6 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-namespace
-{
-
-constexpr uint32_t inputTensorIdx = 0;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
-
 OMStatus onert_micro::import::configure_kernel_CircleRelu6(const OMConfigureArgs &config_args)
 {
 

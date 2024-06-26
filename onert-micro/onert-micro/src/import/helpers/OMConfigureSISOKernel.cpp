@@ -29,31 +29,43 @@ constexpr uint32_t outputTensorIdx = 0;
 
 OMStatus onert_micro::import::helpers::configure_SISO_kernel(const OMConfigureArgs &config_args)
 {
-  {
-    OMRuntimeContext &runtime_context = config_args.runtime_context;
-    uint16_t op_index = config_args.kernel_index;
+  OMRuntimeContext &runtime_context = config_args.runtime_context;
+  uint16_t op_index = config_args.kernel_index;
 
-    onert_micro::execute::OMRuntimeKernel runtime_kernel;
+  onert_micro::execute::OMRuntimeKernel runtime_kernel;
 
-    OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-    if (status != Ok)
-      return status;
-
-    const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
-    const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-    assert(input != nullptr);
-    assert(output != nullptr);
-
-    status = utils::checkCondition(input->type() == output->type());
-    if (status != Ok)
-      return status;
-
-    OMRuntimeShape input_shape(input);
-    OMRuntimeShape output_shape(output);
-
-    status = utils::checkCondition(input_shape == output_shape);
-
+  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
+  if (status != Ok)
     return status;
-  }
+
+  const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
+  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
+
+  assert(input != nullptr);
+  assert(output != nullptr);
+
+  status = utils::checkCondition(input->type() == output->type());
+  if (status != Ok)
+    return status;
+
+  OMRuntimeShape input_shape(input);
+  OMRuntimeShape output_shape(output);
+
+  status = utils::checkCondition(input_shape == output_shape);
+
+  if (input->type() != circle::TensorType_INT8 and input->type() != circle::TensorType_INT16)
+    return status;
+
+  // Check quantized version
+  if (input->quantization() == nullptr or output->quantization() == nullptr)
+    return NoQuantization;
+
+  if (output->quantization()->scale() == nullptr or output->quantization()->scale()->size() != 1)
+    return UnsupportedQuantizationType;
+
+  if (input->quantization()->zero_point() == nullptr or
+      input->quantization()->zero_point()->size() != 1)
+    return UnsupportedQuantizationType;
+
+  return status;
 }
