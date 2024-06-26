@@ -14,12 +14,28 @@
  * limitations under the License.
  */
 
-#include "import/helpers/OMPooingCommon.h"
+#ifndef ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
+#define ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
 
-using namespace onert_micro;
-using namespace onert_micro::core;
+#include "OMStatus.h"
 
-OMStatus onert_micro::import::configure_kernel_CircleL2Pool2D(const OMConfigureArgs &config_args)
+#include "core/OMUtils.h"
+#include "core/OMKernelData.h"
+#include "core/OMDataType.h"
+
+#include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMUtils.h"
+#include "execute/OMRuntimeKernel.h"
+#include <functional>
+
+namespace onert_micro
 {
-  return helpers::configure_pooling_kernel_common(config_args);
-}
+namespace execute
+{
+
+OMStatus execute_reshape_common(const OMExecuteArgs &execute_args);
+
+} // namespace execute
+} // namespace onert_micro
+
+#endif // ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H

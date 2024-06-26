@@ -255,6 +255,10 @@ def main():
                     if oneutils.is_valid_attr(cfg_args, 'command'):
                         given_backends = [given_backend]
                         setattr(cfg_args, given_backend, cfg_args.command)
+                        # If "command" key exists with target option, command schema is not used. ${BACKEND}-profile will be run as before.
+                        print(
+                            "WARNING: 'command' key in the [one-profile] will be deprecated as of September 1, 2025."
+                        )
                     else:
                         # DO NOTHING
                         pass

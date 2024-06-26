@@ -257,15 +257,10 @@ TEST_F(ValidationTestAddModelLoaded, neg_debug_get_config)
   ASSERT_EQ(nnfw_get_config(_session, "BAD_KEY", buf, sizeof(buf)), NNFW_STATUS_ERROR);
 }
 
-TEST_F(ValidationTestAddModelLoaded, set_workspace)
-{
-  NNFW_ENSURE_SUCCESS(nnfw_set_workspace(_session, "."));
-  SUCCEED();
-}
-
 TEST_F(ValidationTestAddModelLoaded, neg_set_workspace)
 {
-  ASSERT_EQ(nnfw_set_workspace(_session, nullptr), NNFW_STATUS_UNEXPECTED_NULL);
+  // Call after prepare
+  EXPECT_EQ(nnfw_set_workspace(_session, "."), NNFW_STATUS_INVALID_STATE);
 }
 
 TEST_F(ValidationTestAddModelLoaded, set_prepare_config)
@@ -282,15 +277,4 @@ TEST_F(ValidationTestAddModelLoaded, neg_set_execute_config)
             NNFW_STATUS_INVALID_STATE);
   EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_PROFILE, nullptr),
             NNFW_STATUS_INVALID_STATE);
-}
-
-TEST_F(ValidationTestAddModelLoaded, neg_set_execute_config_with_no_workspace)
-{
-  NNFW_ENSURE_SUCCESS(nnfw_set_workspace(_session, ""));
-  NNFW_ENSURE_SUCCESS(nnfw_prepare(_session));
-
-  // Some execution config requires workspace
-  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr),
-            NNFW_STATUS_ERROR);
-  EXPECT_EQ(nnfw_set_execute_config(_session, NNFW_RUN_CONFIG_TRACE, nullptr), NNFW_STATUS_ERROR);
 }

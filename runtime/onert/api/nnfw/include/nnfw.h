@@ -511,7 +511,7 @@ NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t
  * <p>This function sets the directory to be used as a workspace.
  * System should allow read and write access to the directory for the runtime.
  * Default workspace is running directory of the application.
- * This function should be called before {@link nnfw_prepare} is invoked.</p>
+ * This function should be called before {@link nnfw_load_model_from_file} is invoked.</p>
  *
  * @param[in] session session to be queried on.
  * @param[in] dir     workspace directory path

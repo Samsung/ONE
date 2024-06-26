@@ -9,14 +9,15 @@ The json file consists of **a single JSON object** containing the following keys
 {
   "optimizer" : {...}, 
   "loss" : {...},
-  "batchSize" : 32, 
+  "batchSize" : 32,
+  "fineTuning" : 0, 
 }
 ```
 
 - "optimizer" : refer [optimizer](#optimizer) for writing corresponding value
 - "loss" : refer [loss](#loss) for writing corresponding value
 - "batchSize" : a number of examples processeed during each iteration 
-
+- "fineTuning" : refer [fineTuning] for writing corresponding value
 
 ## optimizer
 
@@ -82,3 +83,12 @@ An object describing the loss function. This should include two keys :
   * sparse categorical crossentropy 
   * categorical crossentropy  
   * mean squared error 
+
+## fineTuning
+
+An integer value, describing how many number of operations will be trained.
+
+Also, 0 and 1 can be used to indicate the following meanings:
+
+* 0 : entire model will be trained
+* -1 : entire model will NOT be trained, This can be used for inference

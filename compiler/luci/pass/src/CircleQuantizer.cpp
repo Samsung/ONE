@@ -444,7 +444,7 @@ void CircleQuantizer::quantize(loco::Graph *g) const
     }
 
     // Clear existing quantparams before doing fake quantization
-    for (auto node : loco::active_nodes(loco::output_nodes(g)))
+    for (auto &node : loco::active_nodes(loco::output_nodes(g)))
     {
       auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       if (circle_node->quantparam() != nullptr)

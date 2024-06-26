@@ -506,7 +506,7 @@ encodeSparsityParameters(FlatBufferBuilder &builder, luci::SparsityParam *sparsi
 
   std::vector<flatbuffers::Offset<circle::DimensionMetadata>> dim_metadata_vec;
   auto luci_dim_metadata = sparsityparam->dim_metadata;
-  for (auto it : luci_dim_metadata)
+  for (const auto &it : luci_dim_metadata)
   {
     // array_segments
     auto circle_array_segments = to_circle_sparse_index_vector(builder, it.array_segments());

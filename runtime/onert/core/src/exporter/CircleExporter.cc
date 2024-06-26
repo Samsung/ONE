@@ -41,7 +41,7 @@ CircleExporter::CircleExporter(const std::string &source, const std::string &pat
     src.seekg(0, std::ios::end);
     _data.resize(src.tellg());
     src.seekg(0, std::ios::beg);
-    src.read(&_data[0], _data.size());
+    src.read(&_data[0], static_cast<std::streamsize>(_data.size()));
     src.close();
   }
 
@@ -145,7 +145,8 @@ void CircleExporter::finish()
   builder.Finish(::circle::Model::Pack(builder, _model.get()), ::circle::ModelIdentifier());
 
   std::ofstream dst(_path.c_str(), std::ios::binary);
-  dst.write(reinterpret_cast<const char *>(builder.GetBufferPointer()), builder.GetSize());
+  dst.write(reinterpret_cast<const char *>(builder.GetBufferPointer()),
+            static_cast<std::streamsize>(builder.GetSize()));
   dst.close();
 }
 } // namespace exporter

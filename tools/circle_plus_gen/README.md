@@ -49,7 +49,8 @@ cat example/train_tparam.json
 #           "reduction": "sum over batch size"
 #       }
 #   },
-#   "batchSize": 32
+#   "batchSize": 32,
+#   "fineFuning": 0
 # }
 ```
 
@@ -67,7 +68,8 @@ python3 main.py example/sample.circle example/train_tparam.json out.circle
 #         "args": {
 #          ... 
 #     },
-#     "batchSize": 32
+#     "batchSize": 32,
+#     "fineFuning": 0
 # }
 # succesfully add hyperparameters to the circle file
 # saved in out.circle
@@ -110,7 +112,8 @@ python3 main.py example/sample_tparam.circle
 #             "reduction": "SumOverBatchSize"
 #         }
 #     },
-#     "batchSize": 64
+#     "batchSize": 64,
+#    "fineTuning": -1
 # }
 ```
 

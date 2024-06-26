@@ -26,8 +26,18 @@
 
 int main(int argc, char **argv)
 {
-  if (argc != 6)
+  if (argc != 2 and argc != 6)
     return EXIT_FAILURE;
+  if (argc == 2)
+  {
+    std::string help_o{"-h"};
+    std::string argv_1{argv[1]};
+    if (help_o != argv_1)
+      return EXIT_FAILURE;
+
+    std::cout << "HELP MESSAGE!!" << std::endl;
+    return EXIT_SUCCESS;
+  }
   std::string target_name{argv[2]};
   std::string output_name{argv[5]};
 

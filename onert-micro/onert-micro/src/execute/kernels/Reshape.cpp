@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-#include "OMStatus.h"
-
-#include "core/OMUtils.h"
-#include "core/OMDataType.h"
-
-#include "execute/OMKernelExecutionBuilder.h"
-#include "execute/OMRuntimeKernel.h"
+#include "execute/kernels/ReshapeCommon.h"
 
 using namespace onert_micro;
 using namespace onert_micro::execute;
@@ -36,41 +30,5 @@ constexpr uint32_t outputTensorIdx = 0;
 // NOTE: doesnt currently support dynamic shapes
 OMStatus onert_micro::execute::execute_kernel_CircleReshape(const OMExecuteArgs &execute_args)
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
-
-  OMRuntimeKernel runtime_kernel;
-  runtime_kernel.readKernel(op_index, runtime_context);
-
-  const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input != nullptr);
-  assert(output != nullptr);
-
-  OMStatus status = Ok;
-
-  status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
-  if (status != Ok)
-    return status;
-
-  uint8_t *input_data = runtime_kernel.inputs_data[inputTensorIdx];
-  uint8_t *output_data = runtime_kernel.outputs_data[outputTensorIdx];
-
-  assert(input_data != nullptr);
-  assert(output_data != nullptr);
-
-  // Check is it inplace kernel
-  if (input_data == output_data)
-    return Ok;
-
-  const core::OMRuntimeShape shape(input);
-
-  const size_t element_size =
-    static_cast<uint32_t>(getOMDataTypeSize(core::onertMicroDatatype(input->type())));
-  const int32_t num_elements = shape.flatSize();
-  std::memcpy(output_data, input_data, num_elements * element_size);
-
-  return status;
+  return execute_reshape_common(execute_args);
 }

@@ -13,7 +13,72 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+This is for the command schema feature.
 
+_one-cmds_ has lots of tools such as one-import, one-optimize, etc.
+They have their own section in the configuration file and users can 
+ give arguments with key-value pairs.
+ 
+But, backend tools such as one-codegen and one-profile hasn't the same
+ mechanism. Rather, they should pass all the arguments with `command` key
+ because _onecc_ can't know the backends' interface in advance.
+
+The command schema has been introduced for resolving these difficulties.
+If users provide _onecc_ with the command schema that describes the interface 
+ of the backend, users can give arguments with key-value paris like other tools.
+
+NOTE. Command schema feature works only when target option is given.
+
+[AS-IS]
+
+# example.cfg
+[backend]
+target=my_target
+
+[one-codegen]
+backend=my_backend
+commnad=--output sample.tvn sample.circle
+
+[TO-BE]
+
+# /usr/share/one/backends/command/my_backend/codegen.py
+from onelib import argumentparse
+from onelib.argumentparse import DriverName, NormalOption, TargetOption
+
+
+def command_schema():
+    parser = argumentparse.ArgumentParser()
+    parser.add_argument("my_backend-compile", action=DriverName)
+    parser.add_argument("--output", action=NormalOption)
+    parser.add_argument("input", action=NormalOption)
+
+    return parser
+
+# /usr/share/one/target/my_target.ini
+TARGET=my_target
+BACKEND=my_backend
+
+# example.cfg
+[one-codegen]
+output=sample.tvn
+input=sample.circle
+
+
+---
+
+Command schema file should define `command_schema` function. And, you can add
+ arguments by calling `add_argument`. You should specify an action according to
+the option category.
+
+[Action List]
+- DriverName: the name of backend driver
+- TargetOption: the target option of the drvier.
+- NormalOption: the option of the driver. Starting with dash('-') implies the option
+ is optional rather than positional one.
+"""
+
+import ntpath
 from types import SimpleNamespace
 from typing import List, Tuple, Union, Type
 import shutil
@@ -45,6 +110,20 @@ class ArgumentParser():
         self._actions: List[Tuple[str, Action, Union[Type[str], Type[bool]]]] = list()
         self.driver: str = None
         self.target: str = None
+
+    def print_help(self):
+        backends_list = backends.get_list(self.driver)
+        driver_path = None
+        for cand in backends_list:
+            if ntpath.basename(cand) == self.driver:
+                driver_path = cand
+        if not driver_path:
+            driver_path = shutil.which(self.driver)
+
+        if not driver_path:
+            raise FileNotFoundError(self.driver + ' not found')
+
+        oneutils.run([driver_path, '-h'], err_prefix=self.driver)
 
     def add_argument(self, *args, **kwargs):
         if not 'action' in kwargs:
@@ -80,6 +159,7 @@ class ArgumentParser():
         # use first driver
         driver_path = driver_list[0]
         cmd: List = [driver_path]
+        invalid_options = list(cfg_args.__dict__.keys())
         # traverse the action in order and make commands
         for action in self._actions:
             arg, act, dtype = action
@@ -94,7 +174,6 @@ class ArgumentParser():
 
             if act == NormalOption:
                 if not oneutils.is_valid_attr(cfg_args, option_name):
-                    # TODO raise error when invalid option is given in the cfg file.
                     continue
                 if dtype == bool and getattr(cfg_args, option_name).lower() == "false":
                     continue
@@ -106,4 +185,8 @@ class ArgumentParser():
                 assert act == NormalOption
                 if dtype == str:
                     cmd += [getattr(cfg_args, option_name)]
+                    invalid_options.remove(option_name)
+        if len(invalid_options):
+            print(f'WARNING: there are invalid options {invalid_options}')
+            self.print_help()
         return cmd
