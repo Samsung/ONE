@@ -25,7 +25,8 @@ namespace onert
 namespace odc
 {
 
-bool CodegenManager::codegen(const char *target, CodegenPreference pref)
+bool CodegenManager::codegen(const std::string &model_path, const char *target,
+                             CodegenPreference pref)
 {
   if (target == nullptr)
     throw std::runtime_error("Target string is not set");
@@ -33,7 +34,7 @@ bool CodegenManager::codegen(const char *target, CodegenPreference pref)
   if (_export_model_path.empty())
     throw std::runtime_error("Export model path is not set");
 
-  if (_model_path.empty())
+  if (model_path.empty())
     throw std::runtime_error("Model path does not exist");
 
   // codegen function is thread-unsafe
@@ -45,7 +46,7 @@ bool CodegenManager::codegen(const char *target, CodegenPreference pref)
   const auto code_generator = codegen_loader.get();
   // TODO Use compile preference
   UNUSED_RELEASE(pref);
-  const auto result = code_generator->codegen(_model_path.c_str(), _export_model_path.c_str());
+  const auto result = code_generator->codegen(model_path.c_str(), _export_model_path.c_str());
   codegen_loader.unloadLibrary();
 
   return (result == 0);

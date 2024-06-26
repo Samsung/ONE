@@ -244,7 +244,8 @@ uint64_t getBufSize(const nnfw_tensorinfo *info)
 nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
-    _train_info{nullptr}, _quant_manager{nullptr}, _codegen_manager{nullptr}, _model_path{""}
+    _train_info{nullptr}, _quant_manager{std::make_unique<onert::odc::QuantizeManager>()},
+    _codegen_manager{std::make_unique<onert::odc::CodegenManager>()}, _model_path{""}
 {
   // DO NOTHING
 }
@@ -313,11 +314,6 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     std::cerr << "Model file path is null." << std::endl;
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
-
-  // Create quantize manager
-  _quant_manager = std::make_unique<onert::odc::QuantizeManager>(std::string(model_file_path));
-  // Create codegen manager
-  _codegen_manager = std::make_unique<onert::odc::CodegenManager>(std::string{model_file_path});
 
   std::string filename{model_file_path};
   // TODO: Use std::filesystem::path when we can use c++17.
@@ -412,13 +408,6 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       return NNFW_STATUS_ERROR;
     }
 
-    // Create quantize manager
-    // TODO Support multiple models
-    auto const model_filename = package_path + std::string("/") + models[0].asString();
-    _quant_manager = std::make_unique<onert::odc::QuantizeManager>(model_filename);
-    // Create codegen manager
-    _codegen_manager = std::make_unique<onert::odc::CodegenManager>(model_filename);
-
     for (uint16_t i = 0; i < num_models; ++i)
     {
       auto model_file_path = package_path + std::string("/") + models[i].asString();
@@ -426,7 +415,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
       auto model = loadModel(model_file_path, model_type);
       if (model == nullptr)
         return NNFW_STATUS_ERROR;
-      _model_path = std::string(model_file_path);
+      _model_path = std::string(model_file_path); // TODO Support multiple models
       model->bindKernelBuilder(_kernel_registry->getBuilder());
       _nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
     }
@@ -1746,7 +1735,7 @@ NNFW_STATUS nnfw_session::quantize()
       return NNFW_STATUS_INVALID_STATE;
     }
 
-    auto result = _quant_manager->quantize();
+    auto result = _quant_manager->quantize(_model_path);
     if (!result)
       return NNFW_STATUS_INVALID_STATE;
 
@@ -1844,7 +1833,7 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
       _codegen_manager->exportModelPath(export_model_path);
     }
 
-    _codegen_manager->codegen(target, codegen_pref);
+    _codegen_manager->codegen(_model_path, target, codegen_pref);
 
     // Replace model
     // TODO Support buffer replace, not file reload
@@ -1866,6 +1855,8 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
     _nnpkg->replaceModel(std::move(model));
     _state = State::MODEL_LOADED;
     _model_path = export_model_path;
+    _compiler_artifact.reset();
+    _execution.reset();
   }
   catch (const std::exception &e)
   {
