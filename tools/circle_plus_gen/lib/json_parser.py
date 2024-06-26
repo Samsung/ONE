@@ -1,5 +1,5 @@
 import re
-from typing import Tuple
+from typing import Tuple, List, Union
 
 from lib import utils
 from schema import circle_traininfo_generated as ctr_gen
@@ -148,3 +148,23 @@ def load_loss_reduction(s: str):
         raise ValueError(f"not supported loss.args.reduction={s}")
 
     return type
+
+
+def load_fine_tuning(n: int, num_op: int) -> List[int]:
+    '''Return [int] to set ModelTrainingT.trainableOps
+    '''
+    if n == 0:  # full training
+        return list(range(0, num_op))
+
+    elif n == -1:  # not training
+        return []
+
+    elif 0 < n and n <= num_op:  # fine tuning
+        start_idx = num_op - n
+        return list(range(start_idx, num_op))
+
+    elif n > num_op:
+        raise ValueError(f"number of operators({num_op}) < fine_tuning({n})")
+
+    else:
+        raise ValueError(f"not supported train {s}")

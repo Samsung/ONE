@@ -28,11 +28,12 @@ def print_training_hparameters(circle_model: CirclePlus):
     if circle_model has training hyperparameters, print it out
     '''
     tinfo: typing.Union[TrainParam, None] = circle_model.get_train_param()
+    num_op = circle_model.get_number_of_operators()
 
     if tinfo == None:
         print("No hyperparameters")
     else:
-        print(tinfo.dump_as_json())
+        print(tinfo.dump_as_json(num_op))
         # TODO print list of trainable operators
 
 
@@ -44,8 +45,9 @@ def inject_hparams(in_file, hparams_file, out_file=None) -> None:
     if out_file is None:
         out_file = in_file
 
-    tparams: TrainParam = TrainParam.from_json(hparams_file)
     circle_model: CirclePlus = CirclePlus.from_file(in_file)
+    num_op = circle_model.get_number_of_operators()
+    tparams: TrainParam = TrainParam.from_json(hparams_file, num_op)
     circle_model.set_train_param(tparams)
     print("succesfully add hyperparameters to the circle file")
 
