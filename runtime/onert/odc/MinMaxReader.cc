@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <stdexcept>
+#include <limits>
 
 namespace
 {
@@ -99,6 +100,10 @@ MinMaxVectors MinMaxReader::readOP(uint32_t model_idx, uint32_t subg_idx, uint32
   float minmax[2];
   const int64_t data_size = sizeof(float) * 2 + sizeof(uint32_t) * 3;
 
+  // Check num_run overflow
+  if (num_run > std::numeric_limits<uint32_t>::max() / data_size)
+    throw std::runtime_error("num_run overflow");
+
   for (uint32_t r = 0; r < num_run; ++r)
   {
     // Read num of operations and num of inputs
@@ -106,6 +111,13 @@ MinMaxVectors MinMaxReader::readOP(uint32_t model_idx, uint32_t subg_idx, uint32
     readMMFile(&num_op, sizeof(uint32_t), 1, file, "Cannot read num of operations");
     uint32_t num_input = 0;
     readMMFile(&num_input, sizeof(uint32_t), 1, file, "Cannot read num of inputs");
+
+    // Check num_op overflow
+    if (num_op > std::numeric_limits<uint32_t>::max() / data_size / num_run)
+      throw std::runtime_error("num_op overflow");
+    // Check num_input overflow
+    if (num_input > std::numeric_limits<uint32_t>::max() / data_size / num_run)
+      throw std::runtime_error("num_input overflow");
 
     // Find operation
     for (uint32_t i = 0; i < num_op; ++i)
@@ -165,6 +177,10 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
   float minmax[2];
   const int64_t data_size = sizeof(float) * 2 + sizeof(uint32_t) * 3;
 
+  // Check num_run overflow
+  if (num_run > std::numeric_limits<uint32_t>::max() / data_size)
+    throw std::runtime_error("num_run overflow");
+
   for (uint32_t r = 0; r < num_run; ++r)
   {
     // Read num of operations and num of inputs
@@ -172,6 +188,13 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
     readMMFile(&num_op, sizeof(uint32_t), 1, file, "Cannot read num of operations");
     uint32_t num_input = 0;
     readMMFile(&num_input, sizeof(uint32_t), 1, file, "Cannot read num of inputs");
+
+    // Check num_op overflow
+    if (num_op > std::numeric_limits<uint32_t>::max() / data_size / num_run)
+      throw std::runtime_error("num_op overflow");
+    // Check num_input overflow
+    if (num_input > std::numeric_limits<uint32_t>::max() / data_size / num_run)
+      throw std::runtime_error("num_input overflow");
 
     // Skip operation minmax data
     seekMMFile(file, static_cast<int64_t>(data_size * num_op), SEEK_CUR,
