@@ -15,6 +15,8 @@
  */
 
 #include "ir/train/TrainableGraph.h"
+
+#include "DefUseInitializer.h"
 #include "util/Utils.h"
 #include "util/Set.h"
 
@@ -33,7 +35,8 @@ namespace train
 TrainableGraph::TrainableGraph() : _graph{} {}
 
 TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
-  : _graph{tgraph._graph}, _backward_operands{tgraph._backward_operands}, _losses{tgraph._losses}
+  : _graph{tgraph._graph}, _backward_operands{tgraph._backward_operands},
+    _training_defuses{tgraph._training_defuses}, _losses{tgraph._losses}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
@@ -115,6 +118,8 @@ void TrainableGraph::verify(void) const
       throw std::runtime_error("TrainableGraph: " + op.name() + " is not a trainable operation");
     }
   });
+
+  // TODO Add verification of training def-uses
 }
 
 void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
@@ -132,6 +137,16 @@ void TrainableGraph::enableBackward(const OperationIndex &index)
   auto op = dynamic_cast<ir::train::ITrainableOperation *>(&_graph.operations().at(index));
   assert(op);
   op->enableBackward();
+}
+
+void TrainableGraph::setTrainingDefUses(const DefUseChains &training_defuses)
+{
+  _training_defuses.clear();
+  // TODO Replace this loop with `std::unordered_map::insert_range` since C++23
+  for (const auto &defuse_chain : training_defuses)
+  {
+    _training_defuses.emplace(defuse_chain.first, defuse_chain.second);
+  }
 }
 
 void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> order,
@@ -281,6 +296,16 @@ OperandIndex TrainableGraph::getLossIndex(const IOIndex &pred_ioind) const
 {
   auto itr = _losses.find(pred_ioind);
   return (itr == _losses.end()) ? OperandIndex{} : itr->second;
+}
+
+void TrainableGraph::initializeTrainingUseDef()
+{
+  _graph.verify();
+
+  // Initialize training defuses
+  DefUseInitializer{*this}();
+
+  // TODO Verify training defuses
 }
 
 } // namespace train

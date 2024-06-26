@@ -23,6 +23,8 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
+#include <utility>
+
 namespace onert
 {
 namespace backend
