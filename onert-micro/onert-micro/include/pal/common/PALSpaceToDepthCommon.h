@@ -34,6 +34,11 @@ inline OMStatus SpaceToDepth(const int32_t block_size,
                              const T *input_data,
                              const core::OMRuntimeShape &unextended_output_shape, T *output_data)
 {
+  if (block_size == 0)
+  {
+    return FailedCheckCondition;
+  }
+
   const core::OMRuntimeShape input_shape =
     core::OMRuntimeShape::extendedShape(4, unextended_input_shape);
   const core::OMRuntimeShape output_shape =
