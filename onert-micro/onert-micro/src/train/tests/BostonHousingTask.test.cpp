@@ -105,7 +105,7 @@ TEST_F(BostonHousingTaskTest, ADAM_MSE_P)
   EXPECT_LE(mae_metric_after_training, golden_mae_metric);
 }
 
-TEST_F(BostonHousingTaskTest, Wrong_Loss_N)
+TEST_F(BostonHousingTaskTest, Wrong_Loss_NEG)
 {
   // Create BostonHousing data handler
   BostonHousingTask<float> bostonTask;

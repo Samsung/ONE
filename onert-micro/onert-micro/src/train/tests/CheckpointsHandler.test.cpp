@@ -84,7 +84,7 @@ TEST_F(CheckpointsHandlerTest, Load_check_P)
 }
 
 // Check load functionality
-TEST_F(CheckpointsHandlerTest, Wrong_magic_num_N)
+TEST_F(CheckpointsHandlerTest, Wrong_magic_num_NEG)
 {
   // Create BostonHousing data handler
   config.model_ptr = reinterpret_cast<char *>(models::checkpoint_simple_example_model_data);
