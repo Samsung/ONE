@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_DEFUSE_HAINS_H__
+#ifndef __ONERT_IR_TRAIN_DEFUSECHAINS_H__
 #define __ONERT_IR_TRAIN_DEFUSECHAINS_H__
 
 #include "ir/train/DefUseChain.h"
@@ -34,4 +34,4 @@ using DefUseChains = std::unordered_map<TrainingOperandIndex, DefUseChain>;
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_DEF_USE_CHAINS_H__
+#endif // __ONERT_IR_TRAIN_DEFUSECHAINS_H__
