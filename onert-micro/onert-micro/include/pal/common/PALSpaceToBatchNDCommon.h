@@ -48,11 +48,10 @@ inline core::OMRuntimeShape extendShapeSpaceToBatch(const core::OMRuntimeShape &
 
 template <typename T>
 inline OMStatus
-SpaceToBatchND(const int32_t pad_value, const core::OMRuntimeShape &unextended_input1_shape,
-               const T *input1_data, const core::OMRuntimeShape &unextended_input2_shape,
-               const int32_t *block_shape_data, const core::OMRuntimeShape &unextended_input3_shape,
-               const int32_t *paddings_data, const core::OMRuntimeShape &unextended_output_shape,
-               T *output_data)
+SpaceToBatchND(const core::OMRuntimeShape &unextended_input1_shape, const T *input1_data,
+               const core::OMRuntimeShape &unextended_input2_shape, const int32_t *block_shape_data,
+               const core::OMRuntimeShape &unextended_input3_shape, const int32_t *paddings_data,
+               const core::OMRuntimeShape &unextended_output_shape, T *output_data)
 {
   // Extends the input/output shape from 3D to 4D if needed, NHC -> NH1C.
   const core::OMRuntimeShape input1_shape = extendShapeSpaceToBatch(unextended_input1_shape);
@@ -72,6 +71,8 @@ SpaceToBatchND(const int32_t pad_value, const core::OMRuntimeShape &unextended_i
     unextended_input1_shape.dimensionsCount() == 4 ? block_shape_data[1] : 1;
   const int padding_top = paddings_data[0];
   const int padding_left = unextended_input1_shape.dimensionsCount() == 4 ? paddings_data[2] : 0;
+
+  const int32_t pad_value = 0;
 
   for (int out_b = 0; out_b < output_batch_size; ++out_b)
   {

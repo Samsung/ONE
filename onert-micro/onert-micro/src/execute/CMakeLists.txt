@@ -19,6 +19,7 @@ set(SOURCES
         kernels/PoolingCommon.cpp
         kernels/ReadKernelDataCommon.cpp
         kernels/ReshapeCommon.cpp
+        kernels/SpacesBatchesNDCommon.cpp
         )
 
 # Add configure kernels

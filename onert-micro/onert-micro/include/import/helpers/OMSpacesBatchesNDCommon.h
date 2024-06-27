@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-#include "import/helpers/OMSpacesBatchesNDCommon.h"
+#ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_SPACES_BATCHES_ND_COMMON_H
+#define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_SPACES_BATCHES_ND_COMMON_H
 
-using namespace onert_micro;
-using namespace onert_micro::core;
+#include "import/OMKernelConfigureBuilder.h"
+#include "core/OMUtils.h"
+#include "OMStatus.h"
+#include "execute/OMRuntimeKernel.h"
 
-OMStatus onert_micro::import::configure_kernel_CircleBatchToSpaceND(
-  const onert_micro::import::OMConfigureArgs &config_args)
+namespace onert_micro
 {
-  return helpers::configure_spaces_batches_nd_kernel_common(config_args);
-}
+namespace import
+{
+namespace helpers
+{
+
+OMStatus configure_spaces_batches_nd_kernel_common(const OMConfigureArgs &config_args);
+
+} // namespace helpers
+} // namespace import
+} // namespace onert_micro
+
+#endif // ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_SPACES_BATCHES_ND_COMMON_H

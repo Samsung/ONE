@@ -7,6 +7,7 @@ set(SOURCES
         helpers/OMConfigureSISOKernel.cpp
         helpers/OMPadCommon.cpp
         helpers/OMConfigureTISOKernel.cpp
+        helpers/OMSpacesBatchesNDCommon.cpp
         helpers/OMPoolingCommon.cpp
         )
 
