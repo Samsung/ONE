@@ -14,41 +14,32 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_EXECUTE_PAL_NEG_COMMON_H
-#define ONERT_MICRO_EXECUTE_PAL_NEG_COMMON_H
+#ifndef ONERT_MICRO_EXECUTE_KERNELS_MATH_COMMON_H
+#define ONERT_MICRO_EXECUTE_KERNELS_MATH_COMMON_H
 
-#include "PALSISOOperation.h"
+#include "OMStatus.h"
+
+#include "core/OMUtils.h"
+#include "core/OMKernelData.h"
+#include "core/OMDataType.h"
+
+#include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMUtils.h"
+#include "execute/OMRuntimeKernel.h"
+#include <functional>
 
 namespace onert_micro
 {
 namespace execute
 {
-namespace pal
-{
 
-template <typename T>
-inline OMStatus Neg(const core::OMRuntimeShape &input_shape, const T *input_data,
-                    const core::OMRuntimeShape &output_shape, T *output_data)
-{
-  const uint32_t flat_size = input_shape.flatSize();
+OMStatus execute_math_common(
+  const OMExecuteArgs &execute_args,
+  const std::function<OMStatus(const core::OMRuntimeShape &input_shape, const float *input_data,
+                               const core::OMRuntimeShape &output_shape, float *output_data)>
+    &f_float);
 
-  if (flat_size == -1)
-    return UnknownError;
-
-  assert(input_data != nullptr);
-  assert(output_data != nullptr);
-
-  assert(input_shape == output_shape);
-
-  for (int i = 0; i < flat_size; i++)
-  {
-    output_data[i] = -(input_data[i]);
-  }
-
-  return Ok;
-}
-} // namespace pal
 } // namespace execute
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_EXECUTE_PAL_NEG_COMMON_H
+#endif // ONERT_MICRO_EXECUTE_KERNELS_MATH_COMMON_H

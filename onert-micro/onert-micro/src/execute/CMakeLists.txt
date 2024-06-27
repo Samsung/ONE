@@ -16,6 +16,7 @@ set(SOURCES
         OMUtils.cpp
         kernels/ReluCommon.cpp
         kernels/ConvolutionCommon.cpp
+        kernels/MathCommon.cpp
         kernels/PoolingCommon.cpp
         kernels/ReadKernelDataCommon.cpp
         kernels/ReshapeCommon.cpp

@@ -28,11 +28,6 @@ using namespace onert_micro::core;
 // NOTE: doesnt currently support dynamic shapes
 OMStatus onert_micro::execute::execute_kernel_CircleFloorDiv(const OMExecuteArgs &execute_args)
 {
-
-  const float *cast_input_data1 = nullptr;
-  const float *cast_input_data2 = nullptr;
-  float *cast_output_data = nullptr;
-
   uint8_t *input_data1;
   uint8_t *input_data2;
   uint8_t *output_data;
