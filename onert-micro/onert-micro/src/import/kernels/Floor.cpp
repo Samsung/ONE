@@ -14,63 +14,12 @@
  * limitations under the License.
  */
 
-#include "import/OMKernelConfigureBuilder.h"
-#include "core/OMUtils.h"
-#include "OMStatus.h"
-#include "execute/OMRuntimeKernel.h"
+#include "import/helpers/OMConfigureSISOKernel.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-namespace
-{
-
-constexpr uint32_t inputTensorIdx = 0;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
-
 OMStatus onert_micro::import::configure_kernel_CircleFloor(const OMConfigureArgs &config_args)
 {
-  OMRuntimeContext &runtime_context = config_args.runtime_context;
-  uint16_t op_index = config_args.kernel_index;
-
-  onert_micro::execute::OMRuntimeKernel runtime_kernel;
-
-  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-  if (status != Ok)
-    return status;
-
-  const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input != nullptr);
-  assert(output != nullptr);
-
-  status = utils::checkCondition(input->type() == output->type());
-  if (status != Ok)
-    return status;
-
-  OMRuntimeShape input_shape(input);
-  OMRuntimeShape output_shape(output);
-
-  // check that input and output dimensions are equal
-  int N = input_shape.dimensionsCount();
-  status = utils::checkCondition(N == output_shape.dimensionsCount());
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input_shape.flatSize() == output_shape.flatSize());
-  if (status != Ok)
-    return status;
-
-  // check that sizes of all dimensions are equal
-  for (int i = 0; i < N; ++i)
-  {
-    status = utils::checkCondition(input_shape.dims(i) == output_shape.dims(i));
-    if (status != Ok)
-      return status;
-  }
-
-  return status;
+  return onert_micro::import::helpers::configure_SISO_kernel(config_args);
 }
