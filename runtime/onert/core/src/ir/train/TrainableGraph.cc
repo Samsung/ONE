@@ -19,6 +19,7 @@
 #include "DefUseInitializer.h"
 #include "util/Utils.h"
 #include "util/Set.h"
+#include "../verifier/Verifier.h"
 
 #include <algorithm>
 #include <set>
@@ -119,7 +120,7 @@ void TrainableGraph::verify(void) const
     }
   });
 
-  // TODO Add verification of training def-uses
+  verifyTrainingDefUses();
 }
 
 void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
@@ -203,6 +204,13 @@ void TrainableGraph::validateBackwardTopologicalOrder(
   const std::vector<ir::OperationIndex> &order) const
 {
   validateTopologicalOrder(order, false);
+}
+
+void TrainableGraph::verifyTrainingDefUses() const
+{
+  if (!verifier::DAGChecker().verify(_training_defuses))
+    throw std::runtime_error{"The training def-uses is cyclic."};
+  assert(verifier::EdgeChecker().verify(_training_defuses));
 }
 
 std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const
@@ -305,7 +313,7 @@ void TrainableGraph::initializeTrainingUseDef()
   // Initialize training defuses
   DefUseInitializer{*this}();
 
-  // TODO Verify training defuses
+  verifyTrainingDefUses();
 }
 
 } // namespace train

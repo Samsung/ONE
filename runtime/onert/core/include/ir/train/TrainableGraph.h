@@ -135,6 +135,7 @@ private:
   void validateTopologicalOrder(std::vector<ir::OperationIndex> order, bool is_forward) const;
   void validateForwardTopologicalOrder(const std::vector<ir::OperationIndex> &order) const;
   void validateBackwardTopologicalOrder(const std::vector<ir::OperationIndex> &order) const;
+  void verifyTrainingDefUses() const;
 
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
