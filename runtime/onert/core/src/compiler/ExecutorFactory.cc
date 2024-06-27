@@ -750,9 +750,15 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     pair.second->genTensors();
   }
 
+  // [idea1] : Generate Extra Tensors using visitor - by traversing operations
+  //
+  // While traversing operations, register and generate extra tensors based on *Layer requests
+  // While generating kernels, pass the extra tensors pointer to the kernel
+
   for (auto &&pair : tbackend_contexts)
   {
     auto tctx = pair.second.get();
+    // In train backend's genTrainingTensors, Extra tensors will be registered
     tctx->genTrainingTensors();
   }
 
@@ -866,6 +872,16 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         {op_ind, train::TrainableCodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
     }
   }
+
+  // [idea2] : Generate Extra Tensors by traversing code_map
+
+  // Problem 1 :
+  // Since code_map lost its' backend context,
+  // it is hard to specify where estra tensor should be registered.
+
+  // Problme 2:
+  // Since ITrainableFunction is in exec area, it isn't a good idea to use member function of *Layer
+  // here, Istead of exec area interface, we have to implement another backend interface
 
   if (order.size() != code_map.size())
   {

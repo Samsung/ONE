@@ -19,7 +19,12 @@
 
 #include <backend/basic/MemoryManager.h>
 
+#include "ExtraTensorIndex.h"
 #include "DisposableTensorIndex.h"
+
+#include "MemoryPlannerFactory.h"
+#include <util/ConfigSource.h>
+#include <cassert>
 
 namespace onert
 {
@@ -44,29 +49,32 @@ private:
   uint32_t _optim_vars_count;
 };
 
-class DisposableMemoryManager
+template <typename Index> class TrainMemoryManager
 {
 public:
-  DisposableMemoryManager();
-  DisposableMemoryManager(const std::string planner_id);
+  TrainMemoryManager();
+  TrainMemoryManager(const std::string planner_id);
 
   void allocate(void);
-  uint8_t *getBuffer(const DisposableTensorIndex &ind) const;
+  uint8_t *getBuffer(const Index &ind) const;
   void deallocate(void) { _mem_alloc->release(); }
 
-  void claimPlan(const DisposableTensorIndex &ind, uint32_t size);
-  void releasePlan(const DisposableTensorIndex &ind);
+  void claimPlan(const Index &ind, uint32_t size);
+  void releasePlan(const Index &ind);
 
   std::shared_ptr<basic::Allocator> getMemAlloc() { return _mem_alloc; }
 
 private:
-  basic::IMemoryPlanner<DisposableTensorIndex> *createMemoryPlanner();
-  basic::IMemoryPlanner<DisposableTensorIndex> *createMemoryPlanner(const std::string planner_id);
+  basic::IMemoryPlanner<Index> *createMemoryPlanner();
+  basic::IMemoryPlanner<Index> *createMemoryPlanner(const std::string planner_id);
 
 private:
-  std::shared_ptr<basic::IMemoryPlanner<DisposableTensorIndex>> _mem_planner;
+  std::shared_ptr<basic::IMemoryPlanner<Index>> _mem_planner;
   std::shared_ptr<basic::Allocator> _mem_alloc;
 };
+
+using DisposableMemoryManager = TrainMemoryManager<DisposableTensorIndex>;
+using ExtraMemoryManager = TrainMemoryManager<ExtraTensorIndex>;
 
 } // namespace train
 } // namespace backend

@@ -53,51 +53,59 @@ uint8_t *GradientMemoryManager::getOptVarBuffer(const ir::OperandIndex &ind, uin
   return _var_mem_alloc->base() + var_offset + mem_blk.offset;
 }
 
-DisposableMemoryManager::DisposableMemoryManager() : _mem_planner{createMemoryPlanner()}
+template <typename Index>
+TrainMemoryManager<Index>::TrainMemoryManager() : _mem_planner{createMemoryPlanner()}
 {
   // DO NOTHING
 }
 
-DisposableMemoryManager::DisposableMemoryManager(const std::string planner_id)
+template <typename Index>
+TrainMemoryManager<Index>::TrainMemoryManager(const std::string planner_id)
   : _mem_planner{createMemoryPlanner(planner_id)}
 {
   // DO NOTHING
 }
 
-basic::IMemoryPlanner<DisposableTensorIndex> *DisposableMemoryManager::createMemoryPlanner()
+template <typename Index>
+basic::IMemoryPlanner<Index> *TrainMemoryManager<Index>::createMemoryPlanner()
 {
   auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-  return MemoryPlannerFactory::get().create(planner_id);
+  return MemoryPlannerFactory<Index>::get().create(planner_id);
 }
 
-basic::IMemoryPlanner<DisposableTensorIndex> *
-DisposableMemoryManager::createMemoryPlanner(const std::string planner_id)
+template <typename Index>
+basic::IMemoryPlanner<Index> *
+TrainMemoryManager<Index>::createMemoryPlanner(const std::string planner_id)
 {
-  return MemoryPlannerFactory::get().create(planner_id);
+  return MemoryPlannerFactory<Index>::get().create(planner_id);
 }
 
-void DisposableMemoryManager::claimPlan(const DisposableTensorIndex &ind, uint32_t size)
+template <typename Index> void TrainMemoryManager<Index>::claimPlan(const Index &ind, uint32_t size)
 {
   _mem_planner->claim(ind, size);
 }
 
-void DisposableMemoryManager::releasePlan(const DisposableTensorIndex &ind)
+template <typename Index> void TrainMemoryManager<Index>::releasePlan(const Index &ind)
 {
   _mem_planner->release(ind);
 }
 
-void DisposableMemoryManager::allocate(void)
+template <typename Index> void TrainMemoryManager<Index>::allocate(void)
 {
   _mem_alloc = std::make_shared<basic::Allocator>(_mem_planner->capacity());
   assert(_mem_alloc->base());
 }
 
-uint8_t *DisposableMemoryManager::getBuffer(const DisposableTensorIndex &ind) const
+template <typename Index> uint8_t *TrainMemoryManager<Index>::getBuffer(const Index &ind) const
 {
   assert(_mem_planner->memory_plans().find(ind) != _mem_planner->memory_plans().end());
   const auto &mem_blk = _mem_planner->memory_plans().at(ind);
   return _mem_alloc->base() + mem_blk.offset;
 }
+
+// specialization
+template class TrainMemoryManager<DisposableTensorIndex>;
+template class TrainMemoryManager<ExtraTensorIndex>;
 
 } // namespace train
 } // namespace backend

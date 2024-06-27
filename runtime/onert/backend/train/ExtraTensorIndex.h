@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef __ONERT_BACKEND_TRAIN_EXTRA_TENSOR_INDEX_H__
+#define __ONERT_BACKEND_TRAIN_EXTRA_TENSOR_INDEX_H__
+
+#include <cassert>
+#include <functional>
+#include <unordered_map>
+
+#include "ir/Index.h"
+
+namespace onert
+{
+namespace backend
+{
+namespace train
+{
+
+class ExtraTensorIndex
+{
+public:
+  ExtraTensorIndex(ir::OperationIndex op, uint32_t sub) : op_index(op), sub_index(sub) {}
+
+  ir::OperationIndex op_index;
+  uint32_t sub_index;
+
+  bool operator==(const ExtraTensorIndex &other) const
+  {
+    return op_index == other.op_index && sub_index == other.sub_index;
+  }
+};
+
+inline std::ostream &operator<<(std::ostream &o, const ExtraTensorIndex &i)
+{
+  o << i.op_index;
+  o << " - " << i.sub_index;
+  return o;
+}
+
+} // namespace train
+} // namespace backend
+} // namespace onert
+
+namespace std
+{
+
+template <> struct hash<onert::backend::train::ExtraTensorIndex>
+{
+  size_t operator()(const onert::backend::train::ExtraTensorIndex &index) const noexcept
+  {
+    const auto op_index = index.op_index;
+    const auto sub_index = index.sub_index;
+
+    return (static_cast<size_t>(op_index.value())) << 16 | static_cast<size_t>(sub_index);
+  }
+};
+
+} // namespace std
+
+#endif // __ONERT_BACKEND_TRAIN_EXTRA_TENSOR_INDEX_H__

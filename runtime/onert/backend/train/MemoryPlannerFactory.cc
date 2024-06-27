@@ -15,6 +15,8 @@
  */
 
 #include "MemoryPlannerFactory.h"
+#include "DisposableTensorIndex.h"
+#include "ExtraTensorIndex.h"
 
 namespace onert
 {
@@ -23,28 +25,32 @@ namespace backend
 namespace train
 {
 
-MemoryPlannerFactory &MemoryPlannerFactory::get()
+template <typename Index> MemoryPlannerFactory<Index> &MemoryPlannerFactory<Index>::get()
 {
   static MemoryPlannerFactory instance;
   return instance;
 }
 
-basic::IMemoryPlanner<DisposableTensorIndex> *MemoryPlannerFactory::create(const std::string &key)
+template <typename Index>
+basic::IMemoryPlanner<Index> *MemoryPlannerFactory<Index>::create(const std::string &key)
 {
   if (key == "FirstFit")
   {
-    return new FirstFitPlanner;
+    return new FirstFitPlanner<Index>;
   }
   else if (key == "Bump")
   {
-    return new BumpPlanner;
+    return new BumpPlanner<Index>;
   }
   else if (key == "WIC")
   {
-    return new WICPlanner;
+    return new WICPlanner<Index>;
   }
-  return new FirstFitPlanner; // Default Planner
+  return new FirstFitPlanner<Index>; // Default Planner
 }
+
+template class MemoryPlannerFactory<DisposableTensorIndex>;
+template class MemoryPlannerFactory<ExtraTensorIndex>;
 
 } // namespace train
 } // namespace backend

@@ -61,7 +61,8 @@ TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
     _back_prop_mgr{new MemoryManager(planner_id)},
     _gradient_mgr{new GradientMemoryManager(planner_id, optim_vars_count)},
     // TODO Find a suitable planner of disposable tensors to reduce peak memory usage
-    _disposable_back_prop_mgr{new DisposableMemoryManager(std::string("WIC"))}, _tensors{reg}
+    _disposable_back_prop_mgr{new DisposableMemoryManager(std::string("WIC"))},
+    _extra_mgr{new ExtraMemoryManager(std::string("WIC"))}, _tensors{reg}
 {
   // DO NOTHING
 }
@@ -109,6 +110,11 @@ void TensorManager::allocateDisposableBackPropTensors()
 {
   allocateMemory(_disposable_back_prop_mgr.get(), _tensors->disposable_back_prop_tensors(),
                  std::string{"DISPOSABLE BACK_PROP TENSOR "});
+}
+
+void TensorManager::allocateExtraTensors()
+{
+  allocateMemory(_extra_mgr.get(), _tensors->extra_tensors(), std::string{"      EXTRA TENOSR "});
 }
 
 void TensorManager::claimNonConstPlan(const ir::OperandIndex &index)
@@ -190,6 +196,19 @@ void TensorManager::releaseDisposableBackPropPlan(const DisposableTensorIndex &i
          !_tensors->getDisposableBackPropTensor(index)->is_dynamic());
 
   _disposable_back_prop_mgr->releasePlan(index);
+}
+
+void TensorManager::claimExtraPlan(const ExtraTensorIndex &index)
+{
+  const auto tensor = _tensors->getExtraTensor(index);
+
+  auto size = alignedSize(tensor->total_size(), _align);
+  _extra_mgr->claimPlan(index, size);
+}
+
+void TensorManager::releaseExtraPlan(const ExtraTensorIndex &index)
+{
+  _extra_mgr->releasePlan(index);
 }
 
 } // namespace train

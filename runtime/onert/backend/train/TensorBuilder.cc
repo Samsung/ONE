@@ -105,6 +105,16 @@ void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorI
   _disposable_backprops.add(index);
 }
 
+void TensorBuilder::registerExtraTensorInfo(const ExtraTensorIndex &index,
+                                            const ir::OperandInfo &info, ir::Layout layout)
+{
+  assert(layout == ir::Layout::NHWC);
+  assert(!info.isDynamic());
+
+  auto extra_tensor = std::make_unique<ExtraTensor>(info, layout);
+  _tensor_reg->setExtraTensor(index, std::move(extra_tensor));
+}
+
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &index)
 {
   // TODO Support momory plan
@@ -146,6 +156,16 @@ void TensorBuilder::notifyDisposableBackPropLastUse(const DisposableTensorIndex 
   _tensor_mgr->releaseDisposableBackPropPlan(index);
 }
 
+void TensorBuilder::notifyFirstUse(const ExtraTensorIndex &index)
+{
+  _tensor_mgr->claimExtraPlan(index);
+}
+
+void TensorBuilder::notifyLastUse(const ExtraTensorIndex &index)
+{
+  _tensor_mgr->releaseExtraPlan(index);
+}
+
 bool TensorBuilder::isRegistered(const ir::OperandIndex &index) const
 {
   return _tensor_info_map.find(index) != _tensor_info_map.end();
@@ -172,6 +192,7 @@ void TensorBuilder::allocateBackward(void)
   _tensor_mgr->allocateBackPropTensors();
   _tensor_mgr->allocateGradientTensors();
   _tensor_mgr->allocateDisposableBackPropTensors();
+  _tensor_mgr->allocateExtraTensors();
 }
 
 } // namespace train

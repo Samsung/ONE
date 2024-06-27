@@ -20,6 +20,7 @@
 #include <backend/train/ITensorRegistry.h>
 
 #include "DisposableTensorIndex.h"
+#include "ExtraTensorIndex.h"
 #include "Tensor.h"
 
 namespace onert
@@ -60,9 +61,35 @@ public:
     return _disposable_back_prop;
   }
 
+  ExtraTensor *getExtraTensor(const ExtraTensorIndex &index)
+  {
+    auto itr = _extra.find(index);
+    if (itr != _extra.end())
+      return itr->second.get();
+
+    return nullptr;
+  }
+
+  void setExtraTensor(const ExtraTensorIndex &index, std::unique_ptr<ExtraTensor> tensor)
+  {
+    assert(tensor != nullptr);
+    auto itr = _extra.find(index);
+    if (itr != _extra.end())
+      throw std::runtime_error{
+        "Tried to set a extra tensor but another extra tensor already exists."};
+
+    _extra[index] = std::move(tensor);
+  }
+
+  const std::unordered_map<ExtraTensorIndex, std::unique_ptr<ExtraTensor>> &extra_tensors()
+  {
+    return _extra;
+  }
+
 private:
   // Disposable Tensors to be accumulated to BackPropTensor
   std::unordered_map<DisposableTensorIndex, std::unique_ptr<BackPropTensor>> _disposable_back_prop;
+  std::unordered_map<ExtraTensorIndex, std::unique_ptr<ExtraTensor>> _extra;
 };
 
 } // namespace train

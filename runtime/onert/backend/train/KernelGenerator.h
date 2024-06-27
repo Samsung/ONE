@@ -63,6 +63,8 @@ private:
                                  const ir::OperandIndex &operand_index);
   IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
 
+  std::vector<ExtraTensor *> getExtraTensors(const ir::Operation &);
+
 private:
   ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;

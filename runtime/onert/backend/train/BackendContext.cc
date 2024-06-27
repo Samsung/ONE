@@ -18,6 +18,7 @@
 
 #include "TensorBuilder.h"
 #include "KernelGenerator.h"
+#include "ExtraTensorGenerator.h"
 #include "ops/BackPropInitializer.h"
 
 #include <backend/basic/train/TrainableBackendContextHelpers.h>
@@ -143,6 +144,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
   }
 
   planBackwardTensors();
+  planDisposableBackPropTensors();
 
   tensor_builder->allocateBackward();
 

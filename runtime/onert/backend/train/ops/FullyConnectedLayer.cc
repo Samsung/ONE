@@ -28,6 +28,7 @@ namespace
 
 using namespace onert;
 
+/*
 std::unique_ptr<backend::train::Tensor>
 createTransposedTensor(const backend::IPortableTensor *origin_tensor)
 {
@@ -39,6 +40,29 @@ createTransposedTensor(const backend::IPortableTensor *origin_tensor)
   transposed_info.shape(transposed_shape);
 
   return std::make_unique<backend::train::Tensor>(transposed_info, origin_tensor->layout());
+}
+*/
+
+ir::OperandInfo transposeOperandInfo(const ir::OperandInfo &origin_info)
+{
+  const auto &origin_shape = origin_info.shape();
+  assert(origin_shape.rank() == 2);
+
+  auto transposed_info = ir::OperandInfo(origin_info);
+  auto transposed_shape = ir::Shape{origin_shape.dim(1), origin_shape.dim(0)};
+  transposed_info.shape(transposed_shape);
+
+  return transposed_info;
+}
+
+backend::train::ExtraTensorRequest
+createTransposeTenosrRequest(const backend::IPortableTensor *origin)
+{
+  backend::train::ExtraTensorRequest r = {.info = transposeOperandInfo(origin->get_info()),
+                                          .layout = origin->layout(),
+                                          .lifetime =
+                                            backend::train::ExtraTensorLifeTime::BACKWARD};
+  return r;
 }
 
 } // namespace
@@ -85,23 +109,58 @@ void FullyConnectedLayer::configureBackward(
     throw std::runtime_error{
       "train FullyConnectedLayer: Input other ranks than 2 are not supported."};
 
-  _transposed_weights = createTransposedTensor(weights);
-  _transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
-
-  _transposed_input = createTransposedTensor(input);
-  _transposed_input->setBuffer(std::make_shared<basic::Allocator>(input->total_size()));
-
-  _transposed_back_prop_output = createTransposedTensor(back_prop_output);
-  _transposed_back_prop_output->setBuffer(
-    std::make_shared<basic::Allocator>(back_prop_output->total_size()));
+  // Move to requestExtraTensors & configureExtraTensors
+  //_transposed_weights = createTransposedTensor(weights);
+  //_transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
+  //
+  //_transposed_input = createTransposedTensor(input);
+  //_transposed_input->setBuffer(std::make_shared<basic::Allocator>(input->total_size()));
+  //
+  //_transposed_back_prop_output = createTransposedTensor(back_prop_output);
+  //_transposed_back_prop_output->setBuffer(
+  // std::make_shared<basic::Allocator>(back_prop_output->total_size()));
+  //
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output =
-      std::make_unique<Tensor>(_back_prop_output->get_info(), _back_prop_output->layout());
-    _act_back_prop_output->setBuffer(
-      std::make_shared<basic::Allocator>(_back_prop_output->total_size()));
+    //  _act_back_prop_output =
+    //    std::make_unique<Tensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    //  _act_back_prop_output->setBuffer(
+    //    std::make_shared<basic::Allocator>(_back_prop_output->total_size()));
   }
+}
+
+ExtraTensorRequests FullyConnectedLayer::requestExtraTensors(
+  const IPortableTensor *weights, const IPortableTensor *input,
+  const IPortableTensor *back_prop_output, ir::Activation activation)
+{
+  ExtraTensorRequests requests;
+
+  ExtraTensorRequest transposed_weight = createTransposeTenosrRequest(weights);
+  requests.push_back(transposed_weight);
+
+  ExtraTensorRequest transposed_input = createTransposeTenosrRequest(input);
+  requests.push_back(transposed_input);
+
+  ExtraTensorRequest transpose_back_prop_output = createTransposeTenosrRequest(back_prop_output);
+  requests.push_back(transpose_back_prop_output);
+
+  if (activation != ir::Activation::NONE)
+    requests.push_back(ExtraTensorRequest::createRequestLike(back_prop_output));
+
+  return requests;
+}
+
+void FullyConnectedLayer::configureExtraTensors(std::vector<Tensor *> extra_tensors)
+{
+  _transposed_weights = extra_tensors[0];
+  _transposed_input = extra_tensors[1];
+  _transposed_back_prop_output = extra_tensors[2];
+
+  if (extra_tensors.size() == 4)
+    _act_back_prop_output = extra_tensors[3];
+
+  return;
 }
 
 void FullyConnectedLayer::forward(bool) { cpu::ops::FullyConnectedLayer::run(); }
@@ -131,7 +190,7 @@ void FullyConnectedLayer::backwardFloat32()
   try
   {
     backprop_act =
-      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output.get());
+      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output);
   }
   catch (const std::exception &e)
   {
@@ -158,8 +217,8 @@ void FullyConnectedLayer::backwardFloat32()
 
   // Transpose and compute gradient for input
   // ∂L/∂X = fc(Incoming gradient, transposed W)
-  auto transposed_weights = _transposed_weights.get();
-  assert(transposed_weights->getShape().rank() == 2);
+  assert(_transposed_weights->getShape().rank() == 2);
+  auto transposed_weights = _transposed_weights;
   nnfw::cker::Transpose(transpose_param, getShape(_weights), getBuffer<float>(_weights),
                         getShape(transposed_weights), getBuffer<float>(transposed_weights));
 
@@ -170,12 +229,12 @@ void FullyConnectedLayer::backwardFloat32()
 
   // Transpose and compute gradient for weights
   // ∂L/∂W = fc(transposed incomming gradient, transposed X)
-  auto transposed_input = _transposed_input.get();
-  assert(transposed_input->getShape().rank() == 2);
+  assert(_transposed_input->getShape().rank() == 2);
+  auto transposed_input = _transposed_input;
   nnfw::cker::Transpose(transpose_param, getShape(_input), getBuffer<float>(_input),
                         getShape(transposed_input), getBuffer<float>(transposed_input));
 
-  auto transposed_back_prop_output = _transposed_back_prop_output.get();
+  auto transposed_back_prop_output = _transposed_back_prop_output;
   assert(transposed_back_prop_output->getShape().rank() == 2);
   nnfw::cker::Transpose(transpose_param, getShape(backprop_act), getBuffer<float>(backprop_act),
                         getShape(transposed_back_prop_output),
