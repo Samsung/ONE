@@ -37,7 +37,7 @@ class CodegenManager
 {
 public:
   // Non-copyable
-  CodegenManager(const std::string &model_path) : _model_path(model_path) {}
+  CodegenManager() = default;
   CodegenManager(CodegenManager const &) = delete;
   CodegenManager &operator=(CodegenManager const &) = delete;
 
@@ -59,19 +59,19 @@ public:
   /**
    * @brief Execute code generator
    *
-   * @param target  Target backend name
-   *                This target string will be used to find a backend library.
-   *                The name of target backend library should follow the following rules:
-   *                  'lib' + {backend extension} + '-gen' + {lib extension}
-   *                And the target string should be a name except 'lib' and {lib extension}.
-   *                For example, if the backend extension is 'aaa', the backend library name
-   *                should be 'libaaa-gen.so', and the target string should be 'aaa-gen'.
-   * @param pref    @c CodegenPreference Codegen preference
+   * @param model[in]   Model to be compiled
+   * @param target[in]  Target backend name
+   *                    This target string will be used to find a backend library.
+   *                    The name of target backend library should follow the following rules:
+   *                      'lib' + {backend extension} + '-gen' + {lib extension}
+   *                    And the target string should be a name except 'lib' and {lib extension}.
+   *                    For example, if the backend extension is 'aaa', the backend library name
+   *                    should be 'libaaa-gen.so', and the target string should be 'aaa-gen'.
+   * @param pref        @c CodegenPreference Codegen preference
    */
-  bool codegen(const char *target, CodegenPreference pref);
+  bool codegen(const std::string &model_path, const char *target, CodegenPreference pref);
 
 private:
-  std::string _model_path = "";
   std::string _export_model_path = "";
 };
 

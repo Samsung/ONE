@@ -25,9 +25,9 @@ namespace onert
 namespace odc
 {
 
-bool QuantizeManager::quantize()
+bool QuantizeManager::quantize(const std::string &model_path)
 {
-  if (_model_path.empty() || _export_model_path.empty())
+  if (model_path.empty() || _export_model_path.empty())
     return false;
 
   // Compile function is thread-unsafe
@@ -39,7 +39,7 @@ bool QuantizeManager::quantize()
     return false;
 
   auto quantizer = quantize_loader.get();
-  auto result = quantizer->quantize(_model_path.c_str(), _export_model_path.c_str(), _qtype);
+  auto result = quantizer->quantize(model_path.c_str(), _export_model_path.c_str(), _qtype);
 
   // TODO Unload quantize library to reduce memory usage
 

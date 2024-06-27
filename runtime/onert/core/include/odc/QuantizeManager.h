@@ -34,8 +34,7 @@ class QuantizeManager
 {
 public:
   // Non-copyable
-  QuantizeManager() = delete;
-  QuantizeManager(const std::string &model_path) : _model_path(model_path) {}
+  QuantizeManager() = default;
   QuantizeManager(QuantizeManager const &) = delete;
   QuantizeManager &operator=(QuantizeManager const &) = delete;
 
@@ -64,14 +63,13 @@ public:
   void quantizeType(QuantizeType qtype) { _qtype = qtype; }
 
   /**
-   * @brief  Quantize model
-   *
-   * @return  true if success, otherwise false
+   * @brief     Quantize model
+   * @param[in] model_path  Model path to quantize
+   * @return    @c true if success, otherwise @c false
    */
-  bool quantize();
+  bool quantize(const std::string &model_path);
 
 private:
-  std::string _model_path = "";
   std::string _export_model_path = "";
   QuantizeType _qtype = ODC_QTYPE_NOT_SET;
 };
