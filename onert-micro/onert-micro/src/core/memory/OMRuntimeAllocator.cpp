@@ -18,6 +18,7 @@
 #include "core/memory/OMMemoryManager.h"
 
 #include "core/OMDataType.h"
+#include <limits>
 
 using namespace onert_micro::core::memory;
 using namespace onert_micro;
@@ -66,7 +67,10 @@ OMStatus OMRuntimeAllocator::allocate(size_t kernel_index, OMRuntimeContext *con
     const auto casted_num_elements = static_cast<uint32_t>(num_elements);
     const auto type_size =
       static_cast<uint32_t>(getOMDataTypeSize(onertMicroDatatype(tensor->type())));
-
+    if (casted_num_elements > std::numeric_limits<uint32_t>::max() / type_size)
+    {
+      return FailedCheckCondition;
+    }
     // allocate data
     uint8_t *allocated_data = nullptr;
     assert(storage->getDataByTensorIndex(&allocated_data, tensor_index) == Ok &&
