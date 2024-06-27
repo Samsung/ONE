@@ -384,6 +384,8 @@ TEST(CKer_Operation, ConvGrad)
     ConvVerifier<float>::verifyInputGradExpected(params, incoming_shape, incoming.data(),
                                                  filter_shape, filter.data(), padding_bottom,
                                                  padding_right, input_shape);
+
+    SUCCEED();
   }
 }
 

@@ -238,6 +238,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidShape)
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidType)
@@ -259,4 +261,6 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidType)
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
+
+  SUCCEED();
 }

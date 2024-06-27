@@ -1,3 +1,16 @@
+one (1.27.0) bionic focal; urgency=medium
+
+  * Support more Op(s): CircleGRU, CircleRelu0To1
+  *  Support more optimization option(s): `resolve_former_customop`, `--forward_transpose_op`,
+    `fold_shape`, `remove_gather_guard`, `fuse_add_with_conv`, `fold_squeeze`, `fuse_rsqrt`
+  * Support INT4, UINT4 data types
+  * Support 4bit quantization of ONNX fake quantize model
+  * Introduce global configuration target feature
+  * Introduce command schema feature
+  * Use C++17
+
+ -- seongwoo <seongwoo@sw>  Thu, 27 Jun 2024 10:44:00 +0900
+
 one (1.26.0) bionic; urgency=medium
 
   * Support more Op(s): HardSwish, CumSum, BroadcastTo

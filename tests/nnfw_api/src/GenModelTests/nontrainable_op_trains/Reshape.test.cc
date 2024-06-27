@@ -82,6 +82,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Reshape_InvalidShape)
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTrain, neg_NonTrainableOps_Reshape_InvalidType)
@@ -106,4 +108,6 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Reshape_InvalidType)
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
+
+  SUCCEED();
 }

@@ -14,75 +14,13 @@
  * limitations under the License.
  */
 
-#include "import/OMKernelConfigureBuilder.h"
-#include "core/OMUtils.h"
-#include "OMStatus.h"
-#include "execute/OMRuntimeKernel.h"
+#include "import/helpers/OMSpacesBatchesNDCommon.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-namespace
-{
-
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t input3TensorIdx = 2;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
 OMStatus onert_micro::import::configure_kernel_CircleBatchToSpaceND(
   const onert_micro::import::OMConfigureArgs &config_args)
 {
-  OMRuntimeContext &runtime_context = config_args.runtime_context;
-  uint16_t op_index = config_args.kernel_index;
-
-  onert_micro::execute::OMRuntimeKernel runtime_kernel;
-
-  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-  if (status != Ok)
-    return status;
-
-  const circle::Tensor *input1 = runtime_kernel.inputs[input1TensorIdx];
-  const circle::Tensor *input2 = runtime_kernel.inputs[input2TensorIdx];
-  const circle::Tensor *input3 = runtime_kernel.inputs[input3TensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  core::OMRuntimeShape input1_shape(input1);
-  core::OMRuntimeShape output_shape(output);
-
-  assert(input1 != nullptr);
-  assert(input2 != nullptr);
-  assert(input3 != nullptr);
-  assert(output != nullptr);
-
-  status = utils::checkCondition(input1->type() == output->type());
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input2->type() == circle::TensorType_INT32);
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input3->type() == circle::TensorType_INT32);
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(output_shape.dimensionsCount() >= 3);
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input1_shape.dimensionsCount() >= 3);
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(output_shape.dimensionsCount() <= 4);
-  if (status != Ok)
-    return status;
-
-  status = utils::checkCondition(input1_shape.dimensionsCount() <= 4);
-  if (status != Ok)
-    return status;
-
-  return status;
+  return helpers::configure_spaces_batches_nd_kernel_common(config_args);
 }

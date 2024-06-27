@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-#include "execute/kernels/ReluCommon.h"
+#ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_SPACES_BATCHES_ND_COMMON_H
+#define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_SPACES_BATCHES_ND_COMMON_H
 
-using namespace onert_micro;
-using namespace onert_micro::execute;
+#include "import/OMKernelConfigureBuilder.h"
+#include "core/OMUtils.h"
+#include "OMStatus.h"
+#include "execute/OMRuntimeKernel.h"
 
-// NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleRelu(const OMExecuteArgs &execute_args)
+namespace onert_micro
 {
-  bool is_relu_6 = false;
-  return execute_relu_common(execute_args, is_relu_6);
-}
+namespace import
+{
+namespace helpers
+{
+
+OMStatus configure_spaces_batches_nd_kernel_common(const OMConfigureArgs &config_args);
+
+} // namespace helpers
+} // namespace import
+} // namespace onert_micro
+
+#endif // ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_SPACES_BATCHES_ND_COMMON_H

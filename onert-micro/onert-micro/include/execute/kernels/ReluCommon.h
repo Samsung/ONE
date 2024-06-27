@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-#include "execute/kernels/ReluCommon.h"
+#ifndef ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
+#define ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H
 
-using namespace onert_micro;
-using namespace onert_micro::execute;
+#include "OMStatus.h"
+#include "core/OMUtils.h"
 
-// NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleRelu(const OMExecuteArgs &execute_args)
+#include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMRuntimeKernel.h"
+
+namespace onert_micro
 {
-  bool is_relu_6 = false;
-  return execute_relu_common(execute_args, is_relu_6);
-}
+namespace execute
+{
+
+OMStatus execute_relu_common(const OMExecuteArgs &execute_args, bool is_relu_6);
+
+} // namespace execute
+} // namespace onert_micro
+
+#endif // ONERT_MICRO_EXECUTE_KERNELS_RESHAPE_COMMON_H

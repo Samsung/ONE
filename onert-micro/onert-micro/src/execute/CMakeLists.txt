@@ -14,10 +14,13 @@ set(SOURCES
         OMKernelExecutionBuilder.cpp
         OMRuntimeKernel.cpp
         OMUtils.cpp
+        kernels/ReluCommon.cpp
         kernels/ConvolutionCommon.cpp
         kernels/PoolingCommon.cpp
         kernels/ArgCommon.cpp
+        kernels/ReadKernelDataCommon.cpp
         kernels/ReshapeCommon.cpp
+        kernels/SpacesBatchesNDCommon.cpp
         )
 
 # Add configure kernels

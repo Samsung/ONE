@@ -23,68 +23,32 @@
 #include "execute/OMKernelExecutionBuilder.h"
 #include "execute/OMUtils.h"
 #include "execute/OMRuntimeKernel.h"
+#include "execute/kernels/ReadKernelDataCommon.h"
 #include "PALGatherND.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
 using namespace onert_micro::execute;
 
-namespace
-{
-
-constexpr uint32_t inputTensorIdx = 0;
-constexpr uint32_t positionsTensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
-
 // NOTE: doesn't currently support dynamic shapes
 OMStatus onert_micro::execute::execute_kernel_CircleGatherND(const OMExecuteArgs &execute_args)
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
-
-  const circle::Tensor *input;
-  const circle::Tensor *position;
-  const circle::Tensor *output;
 
   uint8_t *input_data;
   uint8_t *position_data;
   uint8_t *output_data;
 
-  // Read kernel
-  {
-    execute::OMRuntimeKernel runtime_kernel;
-    OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-    if (status != Ok)
-      return status;
+  core::OMRuntimeShape input_shape;
+  core::OMRuntimeShape position_shape;
+  core::OMRuntimeShape output_shape;
 
-    input = runtime_kernel.inputs[inputTensorIdx];
-    position = runtime_kernel.inputs[positionsTensorIdx];
-    output = runtime_kernel.outputs[outputTensorIdx];
-    assert(input != nullptr);
-    assert(position != nullptr);
-    assert(output != nullptr);
+  circle::TensorType inputType;
 
-    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
-    if (status != Ok)
-      return status;
+  OMStatus status =
+    execute::readKernelDataTISO(execute_args, input_data, position_data, output_data, input_shape,
+                                position_shape, output_shape, inputType);
 
-    input_data = runtime_kernel.inputs_data[inputTensorIdx];
-    position_data = runtime_kernel.inputs_data[positionsTensorIdx];
-    output_data = runtime_kernel.outputs_data[outputTensorIdx];
-    assert(input_data != nullptr);
-    assert(position_data != nullptr);
-    assert(output_data != nullptr);
-  }
-
-  OMStatus status = Ok;
-
-  OMRuntimeShape input_shape(input);
-  OMRuntimeShape position_shape(position);
-
-  switch (input->type())
+  switch (inputType)
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:

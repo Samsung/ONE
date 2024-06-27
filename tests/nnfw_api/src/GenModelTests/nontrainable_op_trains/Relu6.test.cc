@@ -80,6 +80,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Relu6_InvalidShape)
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTrain, neg_NonTrainableOps_Relu6_InvalidType)
@@ -102,4 +104,6 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_Relu6_InvalidType)
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailModelLoad();
+
+  SUCCEED();
 }

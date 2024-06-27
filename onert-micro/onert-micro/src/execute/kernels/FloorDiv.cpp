@@ -17,89 +17,58 @@
 #include "execute/OMKernelExecutionBuilder.h"
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
+#include "execute/kernels/ReadKernelDataCommon.h"
+#include "PALComparisons.h"
 #include "core/OMUtils.h"
 #include "PALFloorDiv.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-namespace
-{
-
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
-
-} // namespace
-
 // NOTE: doesnt currently support dynamic shapes
 OMStatus onert_micro::execute::execute_kernel_CircleFloorDiv(const OMExecuteArgs &execute_args)
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
 
-  const circle::Tensor *input1 = nullptr;
-  const circle::Tensor *input2 = nullptr;
-  const circle::Tensor *output = nullptr;
+  const float *cast_input_data1 = nullptr;
+  const float *cast_input_data2 = nullptr;
+  float *cast_output_data = nullptr;
 
-  uint8_t *input_data1 = nullptr;
-  uint8_t *input_data2 = nullptr;
-  uint8_t *output_data = nullptr;
+  uint8_t *input_data1;
+  uint8_t *input_data2;
+  uint8_t *output_data;
 
-  OMStatus status = Ok;
+  core::OMRuntimeShape input_shape1;
+  core::OMRuntimeShape input_shape2;
+  core::OMRuntimeShape output_shape;
 
-  {
-    OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
+  circle::TensorType input1_type;
 
-    input1 = runtime_kernel.inputs[input1TensorIdx];
-    input2 = runtime_kernel.inputs[input2TensorIdx];
-    output = runtime_kernel.outputs[outputTensorIdx];
+  OMStatus status =
+    execute::readKernelDataTISO(execute_args, input_data1, input_data2, output_data, input_shape1,
+                                input_shape2, output_shape, input1_type);
 
-    assert(input1 != nullptr);
-    assert(input2 != nullptr);
-    assert(output != nullptr);
-
-    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
-    if (status != Ok)
-      return status;
-
-    input_data1 = runtime_kernel.inputs_data[input1TensorIdx];
-    input_data2 = runtime_kernel.inputs_data[input2TensorIdx];
-    output_data = runtime_kernel.outputs_data[outputTensorIdx];
-  }
-
-  assert(input_data1 != nullptr);
-  assert(input_data2 != nullptr);
-  assert(output_data != nullptr);
-
-  core::OMRuntimeShape input1_shape(input1);
-  core::OMRuntimeShape input2_shape(input2);
-  core::OMRuntimeShape output_shape(output);
-
-  switch (input1->type())
+  switch (input1_type)
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
       // Check the denominator
-      for (int i = 0; i < input2_shape.flatSize(); ++i)
+      for (int i = 0; i < input_shape2.flatSize(); ++i)
       {
         utils::checkCondition(core::utils::castInputData<float>(input_data2)[i] != 0);
       }
       // check that input and output dimensions are equal
-      if (input1_shape == input2_shape)
+      if (input_shape1 == input_shape2)
       {
-        const int flat_size = input1_shape.flatSize();
+        const int flat_size = input_shape1.flatSize();
         pal::FloorDiv(flat_size, core::utils::castInputData<float>(input_data1),
                       core::utils::castInputData<float>(input_data2),
                       core::utils::castOutputData<float>(output_data));
       }
       else
       {
-        pal::BroadcastFloorDiv4DSlow(input1_shape, core::utils::castInputData<float>(input_data1),
-                                     input2_shape, core::utils::castInputData<float>(input_data2),
+        pal::BroadcastFloorDiv4DSlow(input_shape1, core::utils::castInputData<float>(input_data1),
+                                     input_shape2, core::utils::castInputData<float>(input_data2),
                                      output_shape, core::utils::castOutputData<float>(output_data));
       }
     }
