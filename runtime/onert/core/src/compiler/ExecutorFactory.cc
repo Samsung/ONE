@@ -706,6 +706,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         external_operands.remove(index);
     }
 
+    // Initialize training def-uses
+    tgraph->initializeTrainingDefUses();
+    tgraph->verify();
+
     // Set trainable context data
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);

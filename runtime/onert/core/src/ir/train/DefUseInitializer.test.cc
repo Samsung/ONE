@@ -139,7 +139,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -314,7 +314,7 @@ TEST(DefUseInitializer, one_op)
       addConv2DOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_conv2d_index{conv2d_index, true};
@@ -452,7 +452,7 @@ TEST(DefUseInitializer, one_op)
       addDepthwiseConv2DOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_depthwise_conv2d_index{depthwise_conv2d_index, true};
@@ -600,7 +600,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -758,7 +758,7 @@ TEST(DefUseInitializer, one_op)
       addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -903,7 +903,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1091,7 +1091,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1263,7 +1263,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1448,7 +1448,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1630,7 +1630,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDef());
+    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};

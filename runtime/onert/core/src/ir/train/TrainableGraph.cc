@@ -306,7 +306,7 @@ OperandIndex TrainableGraph::getLossIndex(const IOIndex &pred_ioind) const
   return (itr == _losses.end()) ? OperandIndex{} : itr->second;
 }
 
-void TrainableGraph::initializeTrainingUseDef()
+void TrainableGraph::initializeTrainingDefUses()
 {
   _graph.verify();
 

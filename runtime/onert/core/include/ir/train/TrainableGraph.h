@@ -146,7 +146,7 @@ public:
   truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const;
 
 public:
-  void initializeTrainingUseDef();
+  void initializeTrainingDefUses();
 
 private:
   Graph _graph;
