@@ -58,9 +58,11 @@ OMStatus AveragePool(const core::Pool2DParams &params, const core::OMRuntimeShap
           // Compute the boundaries of the filter region clamped so as to
           // ensure that the filter window fits in the input array.
           const int filter_x_start = std::max(0, -in_x_origin);
-          const int filter_x_end = std::min(params.filter_w, input_width - in_x_origin);
+          const int filter_x_end = std::min(static_cast<int32_t>(params.filter_w),
+                                            static_cast<int32_t>(input_width - in_x_origin));
           const int filter_y_start = std::max(0, -in_y_origin);
-          const int filter_y_end = std::min(params.filter_h, input_height - in_y_origin);
+          const int filter_y_end = std::min(static_cast<int32_t>(params.filter_h),
+                                            static_cast<int32_t>(input_height - in_y_origin));
           int32_t acc = 0;
           int filter_count = 0;
           for (int filter_y = filter_y_start; filter_y < filter_y_end; ++filter_y)
