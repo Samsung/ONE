@@ -17,6 +17,7 @@
 #include "CirclePlusGen.h"
 
 #include <numeric>
+#include <nnfw_experimental.h> // for NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES
 
 CircleBuffers CirclePlusGen::finish()
 {
@@ -27,12 +28,6 @@ CircleBuffers CirclePlusGen::finish()
 }
 
 void CirclePlusGen::addTrainInfo(const TrainInfo &info) { _info = info; }
-
-void CirclePlusGen::markAllOpsAsTrainable()
-{
-  _info.trainable_ops.resize(getCurrentSubgraphOpsSize());
-  std::iota(std::begin(_info.trainable_ops), std::end(_info.trainable_ops), 0);
-}
 
 CircleBuffer CirclePlusGen::createModelTraining()
 {
@@ -77,12 +72,29 @@ CircleBuffer CirclePlusGen::createModelTraining()
 
   int32_t batch_size = _info.batch_size;
 
-  auto trainable_ops = _fbb_plus.CreateVector(_info.trainable_ops);
+  const uint32_t ops_size = getCurrentSubgraphOpsSize();
+  std::vector<int32_t> trainable_ops;
+  if (NNFW_TRAIN_TRAINABLE_ALL == _info.num_of_trainable_ops)
+  {
+    for (uint32_t idx = 0; idx < ops_size; ++idx)
+    {
+      trainable_ops.push_back(idx);
+    }
+  }
+  else if (_info.num_of_trainable_ops > 0)
+    for (uint32_t i = 1; i <= static_cast<uint32_t>(_info.num_of_trainable_ops); ++i)
+    {
+      trainable_ops.push_back(ops_size - i);
+    }
+  else if (_info.num_of_trainable_ops <= NNFW_TRAIN_TRAINABLE_INCORRECT_STATE)
+  {
+    throw std::invalid_argument("Incorrect negative value of num_of_trainable_ops");
+  }
 
   // NOTE: epochs will be removed
   auto model_training = circle::CreateModelTraining(
     _fbb_plus, 0, optimizer, optimizer_opt_type, optimizer_opt, lossfn, lossfn_opt_type, lossfn_opt,
-    0, batch_size, loss_reduction_type, trainable_ops);
+    0, batch_size, loss_reduction_type, _fbb_plus.CreateVector(trainable_ops));
   _fbb_plus.Finish(model_training, circle::ModelTrainingIdentifier());
 
   return CircleBuffer{std::move(_fbb_plus)};

@@ -55,8 +55,8 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D)
     int32_t batch_size = 1;
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-    cgen.markAllOpsAsTrainable();
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
@@ -103,8 +103,8 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Depth1_Filter2)
     int32_t batch_size = 1;
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-    cgen.markAllOpsAsTrainable();
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
@@ -151,8 +151,8 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Depth2_Filter2)
     int32_t batch_size = 1;
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-    cgen.markAllOpsAsTrainable();
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
       uniformTCD<float>({{{4, 0,  -5, 1, 0,  4, -1, 1, -1, -3, 3,  -2, -4,
@@ -200,8 +200,8 @@ TEST_F(GenModelTrain, NonTrainableOps_Conv2D_MaxPool2D_Stride2Filter2)
     int32_t batch_size = 1;
     cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                        circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-    cgen.markAllOpsAsTrainable();
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
 
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
@@ -233,8 +233,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidShape)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                     NNFW_TRAIN_TRAINABLE_ALL});
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
@@ -256,8 +256,8 @@ TEST_F(GenModelTrain, neg_NonTrainableOps_MaxPool2D_InvalidType)
   int32_t batch_size = 1;
   cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
                      circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
-                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size});
-  cgen.markAllOpsAsTrainable();
+                     circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                     NNFW_TRAIN_TRAINABLE_ALL});
   _context = std::make_unique<GenModelTrainContext>(cgen.finish());
   _context->setBackends({"train"});
   _context->expectFailCompile();
