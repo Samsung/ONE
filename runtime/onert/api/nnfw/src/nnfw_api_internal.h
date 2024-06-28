@@ -201,6 +201,7 @@ private:
   const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
   uint32_t getOutputSize();
+  NNFW_STATUS loadModelFile(const std::string &model_file_path, const std::string &model_type);
 
   bool isStateInitialized();
   bool isStateModelLoaded();

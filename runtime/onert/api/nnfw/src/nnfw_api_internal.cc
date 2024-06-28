@@ -326,20 +326,13 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
   std::string model_type = filename.substr(dotidx + 1); // + 1 to exclude dot
   try
   {
-    auto model = loadModel(filename, model_type);
-    if (model == nullptr)
-      return NNFW_STATUS_ERROR;
-    _model_path = std::string(model_file_path);
-    _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
-    _train_info = loadTrainingInfo(_nnpkg->primary_model());
-    _state = State::MODEL_LOADED;
+    return loadModelFile(filename, model_type);
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during model loading : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
@@ -977,6 +970,23 @@ uint32_t nnfw_session::getOutputSize()
 
   // Session is prepared (general inference)
   return _compiler_artifact->_executors->outputSize();
+}
+
+NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,
+                                        const std::string &model_type)
+{
+  auto model = loadModel(model_file_path, model_type);
+  if (model == nullptr)
+    return NNFW_STATUS_ERROR;
+
+  _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
+  _model_path = model_file_path;
+  _compiler_artifact.reset();
+  _execution.reset();
+  _train_info = loadTrainingInfo(_nnpkg->primary_model());
+  _state = State::MODEL_LOADED;
+
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::get_config(const char *key, char *value, size_t value_size)
@@ -1790,20 +1800,13 @@ NNFW_STATUS nnfw_session::quantize()
 
     // Replace model
     // TODO Support buffer replace, not file reload
-    auto model = loadModel(_quant_manager->exportModelPath(), "circle");
-    if (model == nullptr)
-      return NNFW_STATUS_ERROR;
-    _nnpkg->replaceModel(std::move(model));
-    _state = State::MODEL_LOADED;
-    _model_path = _quant_manager->exportModelPath();
+    return loadModelFile(_quant_manager->exportModelPath(), "circle");
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::quantize : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
-  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_codegen_model_path(const char *path)
@@ -1897,23 +1900,16 @@ NNFW_STATUS nnfw_session::codegen(const char *target, NNFW_CODEGEN_PREF pref)
     }
 
     std::string model_type = export_model_path.substr(dotidx + 1); // + 1 to exclude dot
-    auto model = loadModel(export_model_path, model_type);
-    if (model == nullptr)
-      return NNFW_STATUS_ERROR;
 
-    _nnpkg->replaceModel(std::move(model));
-    _state = State::MODEL_LOADED;
-    _model_path = export_model_path;
-    _compiler_artifact.reset();
-    _execution.reset();
+    // Replace model
+    // TODO Support buffer replace, not file reload
+    return loadModelFile(export_model_path, model_type);
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::compile : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
-
-  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *)
