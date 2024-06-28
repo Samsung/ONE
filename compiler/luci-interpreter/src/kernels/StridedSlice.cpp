@@ -141,6 +141,11 @@ void StridedSlice::execute() const
                                           getTensorData<int32_t>(input()), getTensorShape(output()),
                                           getTensorData<int32_t>(output()));
       break;
+    case DataType::S64:
+      tflite::reference_ops::StridedSlice(op_params, getTensorShape(input()),
+                                          getTensorData<int64_t>(input()), getTensorShape(output()),
+                                          getTensorData<int64_t>(output()));
+      break;
     case DataType::BOOL:
       tflite::reference_ops::StridedSlice(op_params, getTensorShape(input()),
                                           getTensorData<bool>(input()), getTensorShape(output()),
