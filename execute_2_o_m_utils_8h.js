@@ -8,5 +8,6 @@ var execute_2_o_m_utils_8h =
     [ "getQuantizedConvolutionMultipler", "execute_2_o_m_utils_8h.html#a0c2fd479509da8a95b7cd84652f01e38", null ],
     [ "getQuantizedConvolutionMultiplers", "execute_2_o_m_utils_8h.html#a3e0bf080a0023117641415c6eec4417d", null ],
     [ "quantizeMultiplier", "execute_2_o_m_utils_8h.html#a08c8cab72e9c82644f03ab9e6d4af1ee", null ],
-    [ "quantizeMultiplierSmallerThanOneExp", "execute_2_o_m_utils_8h.html#a6b3b2086437cf9875010e5c914dbde38", null ]
+    [ "quantizeMultiplierSmallerThanOneExp", "execute_2_o_m_utils_8h.html#a6b3b2086437cf9875010e5c914dbde38", null ],
+    [ "readQuantParams", "execute_2_o_m_utils_8h.html#a40e42e3586514350a03c2b8b7f3b3f22", null ]
 ];

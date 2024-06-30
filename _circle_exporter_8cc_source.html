@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('_circle_exporter_8cc_source.html','');
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    src.seekg(0, std::ios::end);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    _data.resize(src.tellg());</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    src.seekg(0, std::ios::beg);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    src.read(&amp;_data[0], _data.size());</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    src.read(&amp;_data[0], <span class="keyword">static_cast&lt;</span>std::streamsize<span class="keyword">&gt;</span>(_data.size()));</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    src.close();</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  }</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
@@ -250,11 +250,12 @@ $(document).ready(function(){initNavTree('_circle_exporter_8cc_source.html','');
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  builder.Finish(::circle::Model::Pack(builder, _model.get()), ::circle::ModelIdentifier());</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  std::ofstream dst(_path.c_str(), std::ios::binary);</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  dst.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(builder.GetBufferPointer()), builder.GetSize());</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  dst.close();</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>}</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>} <span class="comment">// namespace exporter</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  dst.write(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(builder.GetBufferPointer()),</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keyword">static_cast&lt;</span>std::streamsize<span class="keyword">&gt;</span>(builder.GetSize()));</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  dst.close();</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>}</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>} <span class="comment">// namespace exporter</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_execution_8h_html"><div class="ttname"><a href="_execution_8h.html">Execution.h</a></div><div class="ttdoc">This file defines execution.</div></div>
 <div class="ttc" id="a_train_info_builder_8h_html"><div class="ttname"><a href="_train_info_builder_8h.html">TrainInfoBuilder.h</a></div></div>
 <div class="ttc" id="a_training_info_8h_html"><div class="ttname"><a href="_training_info_8h.html">TrainingInfo.h</a></div></div>

@@ -119,7 +119,7 @@ var namespaceonert__micro_1_1execute_1_1pal =
     [ "Softmax", "namespaceonert__micro_1_1execute_1_1pal.html#a2230eee1844cbc1545392967b2fcec42", null ],
     [ "Softmax< float, float >", "namespaceonert__micro_1_1execute_1_1pal.html#a1a493b393913e1bca93f7623a489c0f8", null ],
     [ "Softmax< int8_t, int8_t >", "namespaceonert__micro_1_1execute_1_1pal.html#a57e6028f149ae079374549922aabdef1", null ],
-    [ "SpaceToBatchND", "namespaceonert__micro_1_1execute_1_1pal.html#ac1a4ef0eaebf9a475974245937d59358", null ],
+    [ "SpaceToBatchND", "namespaceonert__micro_1_1execute_1_1pal.html#afd54c1796dcc61a5920755ed2484f275", null ],
     [ "SpaceToDepth", "namespaceonert__micro_1_1execute_1_1pal.html#a61b0ffba91f0e86ae18f37e2f369acfc", null ],
     [ "Split", "namespaceonert__micro_1_1execute_1_1pal.html#a4ff900ad5b6f94af3f850e9939b3bbbe", null ],
     [ "Sqrt", "namespaceonert__micro_1_1execute_1_1pal.html#a3667a3acdb3b6d196a856e77cd16b619", null ],

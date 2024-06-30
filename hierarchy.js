@@ -3539,14 +3539,15 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataWrongSizeTypeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_size_type_slice.html", null ]
     ] ],
     [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
+    [ "nnfw_adam_option", "structnnfw__adam__option.html", null ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", null ],
     [ "nnfw_operand", "structnnfw__operand.html", null ],
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],

@@ -125,39 +125,40 @@ $(document).ready(function(){initNavTree('_codegen_manager_8cc_source.html','');
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classonert_1_1odc_1_1_codegen_manager.html#a3d38fcf85c884b41cb2cb2d098d22c0d">   28</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_manager.html#a3d38fcf85c884b41cb2cb2d098d22c0d">CodegenManager::codegen</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *target, <a class="code hl_enumeration" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1">CodegenPreference</a> pref)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordflow">if</span> (target == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Target string is not set&quot;</span>);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">if</span> (_export_model_path.empty())</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Export model path is not set&quot;</span>);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (_model_path.empty())</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model path does not exist&quot;</span>);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// codegen function is thread-unsafe</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">static</span> std::mutex lock;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  std::lock_guard&lt;std::mutex&gt; guard(lock);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">auto</span> &amp;codegen_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a8ef9790da8f6958590ad20bd2f5acd73">CodegenLoader::instance</a>();</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  codegen_loader.loadLibrary(target);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> code_generator = codegen_loader.get();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// TODO Use compile preference</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(pref);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keyword">auto</span> result = code_generator-&gt;codegen(_model_path.c_str(), _export_model_path.c_str());</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  codegen_loader.unloadLibrary();</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">return</span> (result == 0);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classonert_1_1odc_1_1_codegen_manager.html#abb03597abed8fd90989c3042cf2f38f1">   28</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_manager.html#abb03597abed8fd90989c3042cf2f38f1">CodegenManager::codegen</a>(<span class="keyword">const</span> std::string &amp;model_path, <span class="keyword">const</span> <span class="keywordtype">char</span> *target,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                             <a class="code hl_enumeration" href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1">CodegenPreference</a> pref)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">if</span> (target == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Target string is not set&quot;</span>);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">if</span> (_export_model_path.empty())</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Export model path is not set&quot;</span>);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> (model_path.empty())</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model path does not exist&quot;</span>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// codegen function is thread-unsafe</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">static</span> std::mutex lock;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  std::lock_guard&lt;std::mutex&gt; guard(lock);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">auto</span> &amp;codegen_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a8ef9790da8f6958590ad20bd2f5acd73">CodegenLoader::instance</a>();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  codegen_loader.loadLibrary(target);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> code_generator = codegen_loader.get();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// TODO Use compile preference</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(pref);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">const</span> <span class="keyword">auto</span> result = code_generator-&gt;codegen(model_path.c_str(), _export_model_path.c_str());</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  codegen_loader.unloadLibrary();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">return</span> (result == 0);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
 </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>} <span class="comment">// namespace odc</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>} <span class="comment">// namespace odc</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_codegen_loader_8h_html"><div class="ttname"><a href="_codegen_loader_8h.html">CodegenLoader.h</a></div></div>
 <div class="ttc" id="a_codegen_manager_8h_html"><div class="ttname"><a href="_codegen_manager_8h.html">CodegenManager.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a8ef9790da8f6958590ad20bd2f5acd73"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a8ef9790da8f6958590ad20bd2f5acd73">onert::odc::CodegenLoader::instance</a></div><div class="ttdeci">static CodegenLoader &amp; instance()</div><div class="ttdoc">Get singleton instance of CodegenLoader.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8cc_source.html#l00035">CodegenLoader.cc:35</a></div></div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_manager_html_a3d38fcf85c884b41cb2cb2d098d22c0d"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_manager.html#a3d38fcf85c884b41cb2cb2d098d22c0d">onert::odc::CodegenManager::codegen</a></div><div class="ttdeci">bool codegen(const char *target, CodegenPreference pref)</div><div class="ttdoc">Execute code generator.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_manager_8cc_source.html#l00028">CodegenManager.cc:28</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_manager_html_abb03597abed8fd90989c3042cf2f38f1"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_manager.html#abb03597abed8fd90989c3042cf2f38f1">onert::odc::CodegenManager::codegen</a></div><div class="ttdeci">bool codegen(const std::string &amp;model_path, const char *target, CodegenPreference pref)</div><div class="ttdoc">Execute code generator.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_manager_8cc_source.html#l00028">CodegenManager.cc:28</a></div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1odc_html_abc20a817f7c150a3eadeac4e65b015c1"><div class="ttname"><a href="namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1">onert::odc::CodegenPreference</a></div><div class="ttdeci">CodegenPreference</div><div class="ttdef"><b>Definition</b> <a href="_codegen_manager_8h_source.html#l00027">CodegenManager.h:28</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>

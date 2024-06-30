@@ -546,7 +546,7 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_circle_quantizer_8cp
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>    }</div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span> </div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>    <span class="comment">// Clear existing quantparams before doing fake quantization</span></div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    {</div>
 <div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>      <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>      <span class="keywordflow">if</span> (circle_node-&gt;quantparam() != <span class="keyword">nullptr</span>)</div>

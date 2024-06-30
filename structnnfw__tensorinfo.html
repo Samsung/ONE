@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('structnnfw__tensorinfo.html',''); init
 <p>tensor info describes the type and shape of tensors  
  <a href="structnnfw__tensorinfo.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="nnfw_8h_source.html">nnfw.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="onert-micro_8h_source.html">onert-micro.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for nnfw_tensorinfo:</div>
 <div class="dyncontent">
@@ -116,32 +116,32 @@ Data Fields</h2></td></tr>
 <tr class="separator:a2ab71fcd11fac2161eb2e704b3cd9292"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87b52cdfd8e93c94e21e7cba235fedab" id="r_a87b52cdfd8e93c94e21e7cba235fedab"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a></td></tr>
 <tr class="separator:a87b52cdfd8e93c94e21e7cba235fedab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a702458a1d73a5c90f00b7214d0fce0ce" id="r_a702458a1d73a5c90f00b7214d0fce0ce"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__tensorinfo.html#a702458a1d73a5c90f00b7214d0fce0ce">dims</a> [<a class="el" href="nnfw_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>]</td></tr>
-<tr class="separator:a702458a1d73a5c90f00b7214d0fce0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5150bc6daf4934c2412fb1effad9b5a" id="r_af5150bc6daf4934c2412fb1effad9b5a"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a> [<a class="el" href="nnfw_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>]</td></tr>
+<tr class="separator:af5150bc6daf4934c2412fb1effad9b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>tensor info describes the type and shape of tensors </p>
 <p>This structure is used to describe input and output tensors. Application can get input and output tensor type and shape described in model by using <code><a class="el" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a></code> and <code><a class="el" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a></code></p>
 <p>Maximum rank is 6 (NNFW_MAX_RANK). And tensor's dimension value is filled in 'dims' field from index 0. For example, if tensor's rank is 4, application can get dimension value from dims[0], dims[1], dims[2], and dims[3] </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00177">177</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_8h_source.html#l00123">123</a> of file <a class="el" href="onert-micro_8h_source.html">onert-micro.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
-<a id="a702458a1d73a5c90f00b7214d0fce0ce" name="a702458a1d73a5c90f00b7214d0fce0ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a702458a1d73a5c90f00b7214d0fce0ce">&#9670;&#160;</a></span>dims</h2>
+<a id="af5150bc6daf4934c2412fb1effad9b5a" name="af5150bc6daf4934c2412fb1effad9b5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5150bc6daf4934c2412fb1effad9b5a">&#9670;&#160;</a></span>dims</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t nnfw_tensorinfo::dims[<a class="el" href="nnfw_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>]</td>
+          <td class="memname">int32_t nnfw_tensorinfo::dims</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK). </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00187">187</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_8h_source.html#l00133">133</a> of file <a class="el" href="onert-micro_8h_source.html">onert-micro.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00217">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00230">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l00728">nnfw_session::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00179">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00217">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00230">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l00710">nnfw_session::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00179">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
 </div>
 </div>
@@ -158,7 +158,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The data type </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00180">180</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_8h_source.html#l00126">126</a> of file <a class="el" href="onert-micro_8h_source.html">onert-micro.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00217">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00230">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00131">NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00179">NNFW_SESSION::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00145">NNFW_SESSION::set_output()</a>.</p>
 
@@ -177,13 +177,14 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>The number of dimensions (rank) </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw_8h_source.html#l00182">182</a> of file <a class="el" href="nnfw_8h_source.html">nnfw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_8h_source.html#l00128">128</a> of file <a class="el" href="onert-micro_8h_source.html">onert-micro.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00217">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00230">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l00728">nnfw_session::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00179">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_custom_kernel_8cc_source.html#l00037">onert::api::APIConverter::convertType()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00217">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00129">num_elems()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00230">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__internal_8cc_source.html#l00710">nnfw_session::set_input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00179">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>onert-micro/onert-micro/include/<a class="el" href="onert-micro_8h_source.html">onert-micro.h</a></li>
 <li>runtime/onert/api/nnfw/include/<a class="el" href="nnfw_8h_source.html">nnfw.h</a></li>
 </ul>
 </div><!-- contents -->

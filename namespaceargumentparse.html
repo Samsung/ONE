@@ -108,7 +108,70 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_target_option.html">TargetOption</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><pre class="fragment">This is for the command schema feature.
+
+_one-cmds_ has lots of tools such as one-import, one-optimize, etc.
+They have their own section in the configuration file and users can 
+ give arguments with key-value pairs.
+ 
+But, backend tools such as one-codegen and one-profile hasn't the same
+ mechanism. Rather, they should pass all the arguments with `command` key
+ because _onecc_ can't know the backends' interface in advance.
+
+The command schema has been introduced for resolving these difficulties.
+If users provide _onecc_ with the command schema that describes the interface 
+ of the backend, users can give arguments with key-value paris like other tools.
+
+NOTE. Command schema feature works only when target option is given.
+
+[AS-IS]
+
+# example.cfg
+[backend]
+target=my_target
+
+[one-codegen]
+backend=my_backend
+commnad=--output sample.tvn sample.circle
+
+[TO-BE]
+
+# /usr/share/one/backends/command/my_backend/codegen.py
+from onelib import argumentparse
+from onelib.argumentparse import DriverName, NormalOption, TargetOption
+
+
+def command_schema():
+    parser = argumentparse.ArgumentParser()
+    parser.add_argument("my_backend-compile", action=DriverName)
+    parser.add_argument("--output", action=NormalOption)
+    parser.add_argument("input", action=NormalOption)
+
+    return parser
+
+# /usr/share/one/target/my_target.ini
+TARGET=my_target
+BACKEND=my_backend
+
+# example.cfg
+[one-codegen]
+output=sample.tvn
+input=sample.circle
+
+
+---
+
+Command schema file should define `command_schema` function. And, you can add
+ arguments by calling `add_argument`. You should specify an action according to
+the option category.
+
+[Action List]
+- DriverName: the name of backend driver
+- TargetOption: the target option of the drvier.
+- NormalOption: the option of the driver. Starting with dash('-') implies the option
+ is optional rather than positional one.
+</pre> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

@@ -605,7 +605,7 @@ $(document).ready(function(){initNavTree('luci_2export_2src_2_circle_tensor_expo
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span> </div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>  std::vector&lt;flatbuffers::Offset&lt;circle::DimensionMetadata&gt;&gt; dim_metadata_vec;</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>  <span class="keyword">auto</span> luci_dim_metadata = sparsityparam-&gt;<a class="code hl_variable" href="structluci_1_1_sparsity_param.html#a297492c853933fe641d7f047971b61c3">dim_metadata</a>;</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : luci_dim_metadata)</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;it : luci_dim_metadata)</div>
 <div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>  {</div>
 <div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>    <span class="comment">// array_segments</span></div>
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>    <span class="keyword">auto</span> circle_array_segments = <a class="code hl_function" href="namespaceluci.html#a0636044ee702bafa7341008a89346717">to_circle_sparse_index_vector</a>(builder, it.array_segments());</div>

@@ -1,5 +1,7 @@
 <map id="nnfw_train_info" name="nnfw_train_info">
-<area shape="rect" id="Node000001" title="Training information to prepare training." alt="" coords="5,94,115,120"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="33,5,87,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,47,63,94,57,94,57,47"/>
+<area shape="rect" id="Node000001" title="Training information to prepare training." alt="" coords="23,109,133,135"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="31,46,31,66,36,84,45,96,58,106,54,111,42,100,31,86,26,66,25,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="93,5,153,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="114,46,96,86,86,110,81,108,91,84,109,44"/>
 </map>

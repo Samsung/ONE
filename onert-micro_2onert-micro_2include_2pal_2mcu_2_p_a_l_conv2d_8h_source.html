@@ -145,8 +145,8 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2include_2pal
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_height = params.pad_h;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">const</span> int32_t output_offset = params.output_offset;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;output_multiplier = params.per_channel_output_multiplier;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;output_shift = params.per_channel_output_shift;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_multiplier = params.per_channel_output_multiplier;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_shift = params.per_channel_output_shift;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// Set min and max value of the output.</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">const</span> int32_t output_activation_min = params.quantized_activation_min;</div>

@@ -5,7 +5,6 @@ var nnfw__experimental_8h =
     [ "custom_kernel_registration_info", "structcustom__kernel__registration__info.html", "structcustom__kernel__registration__info" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
-    [ "NNFW_TRAINABLE_OPS_MAX_SIZE", "nnfw__experimental_8h.html#a0c2ee48d319b519d389ced5bec94783c", null ],
     [ "nnfw_custom_eval", "nnfw__experimental_8h.html#a300b163aa909a1decc6f41d9d46a20e1", null ],
     [ "nnfw_loss_info", "nnfw__experimental_8h.html#a880f87813a0082373ae5b64f1b66606a", null ],
     [ "nnfw_train_info", "nnfw__experimental_8h.html#a559e509a0e2416d37475a67466c48975", null ],
@@ -39,6 +38,11 @@ var nnfw__experimental_8h =
       [ "NNFW_TRAIN_LOSS_REDUCTION_UNDEFINED", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a0996dd501d936515a5b78b94c4e27c60", null ],
       [ "NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17", null ],
       [ "NNFW_TRAIN_LOSS_REDUCTION_SUM", "nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a7808216909158cb1fa361585e3e168df", null ]
+    ] ],
+    [ "NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES", "nnfw__experimental_8h.html#a78852bb190ed919014dc43ad291e618d", [
+      [ "NNFW_TRAIN_TRAINABLE_INCORRECT_STATE", "nnfw__experimental_8h.html#a78852bb190ed919014dc43ad291e618dabba8b25e8956acdbdb161b47cd5fc263", null ],
+      [ "NNFW_TRAIN_TRAINABLE_ALL", "nnfw__experimental_8h.html#a78852bb190ed919014dc43ad291e618daa62d1a99657e379a77886d20d8a9a8a7", null ],
+      [ "NNFW_TRAIN_TRAINABLE_NONE", "nnfw__experimental_8h.html#a78852bb190ed919014dc43ad291e618da45e2b8b94f31040bd8f74e17fd2124bf", null ]
     ] ],
     [ "NNFW_TRAIN_OPTIMIZER", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4", [
       [ "NNFW_TRAIN_OPTIMIZER_UNDEFINED", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4ad3a82ddf1a404074a085730e16fd2cbb", null ],

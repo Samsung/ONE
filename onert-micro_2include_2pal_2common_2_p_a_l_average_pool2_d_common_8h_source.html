@@ -155,52 +155,54 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2common_2_p_
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>          <span class="comment">// Compute the boundaries of the filter region clamped so as to</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>          <span class="comment">// ensure that the filter window fits in the input array.</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_x_start = std::max(0, -in_x_origin);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_x_end = std::min(params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#adc7aab0b0f2f16e73b4ec4edf9dc62a2">filter_w</a>, input_width - in_x_origin);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_start = std::max(0, -in_y_origin);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_end = std::min(params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#afec3cd21821021d468f8f82bdf3235f7">filter_h</a>, input_height - in_y_origin);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>          <span class="keywordtype">float</span> total = 0.f;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>          <span class="keywordtype">float</span> filter_count = 0;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_y = filter_y_start; filter_y &lt; filter_y_end; ++filter_y)</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>          {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_x = filter_x_start; filter_x &lt; filter_x_end; ++filter_x)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_x = in_x_origin + filter_x;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_y = in_y_origin + filter_y;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> input_data_offset =</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                ((batch * input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(1) + in_y) * input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(2) + in_x) *</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                  input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(3) +</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                channel;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>              total += input_data[input_data_offset];</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>              filter_count++;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>          }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> output_data_offset =</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            ((batch * <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1) + out_y) * <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2) + out_x) *</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>              <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3) +</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            channel;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>          assert(filter_count != 0);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> average = total / filter_count;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>          output_data[output_data_offset] =</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            std::min(std::max(average, params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#aeb6a0366d4e5cc996f8ea1f32d7a1144">activation_min</a>), params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#ac6e00322fbbaf9933e86620532d063c1">activation_max</a>);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_x_end = std::min(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#adc7aab0b0f2f16e73b4ec4edf9dc62a2">filter_w</a>),</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                                            <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(input_width - in_x_origin));</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_start = std::max(0, -in_y_origin);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_end = std::min(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#afec3cd21821021d468f8f82bdf3235f7">filter_h</a>),</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                            <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(input_height - in_y_origin));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>          <span class="keywordtype">float</span> total = 0.f;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>          <span class="keywordtype">float</span> filter_count = 0;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_y = filter_y_start; filter_y &lt; filter_y_end; ++filter_y)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>          {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_x = filter_x_start; filter_x &lt; filter_x_end; ++filter_x)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_x = in_x_origin + filter_x;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_y = in_y_origin + filter_y;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> input_data_offset =</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                ((batch * input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(1) + in_y) * input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(2) + in_x) *</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                  input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(3) +</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                channel;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>              total += input_data[input_data_offset];</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>              filter_count++;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>          }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> output_data_offset =</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            ((batch * <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(1) + out_y) * <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(2) + out_x) *</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>              <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3) +</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            channel;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>          assert(filter_count != 0);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>          <span class="keyword">const</span> <span class="keywordtype">float</span> average = total / filter_count;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>          output_data[output_data_offset] =</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            std::min(std::max(average, params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#aeb6a0366d4e5cc996f8ea1f32d7a1144">activation_min</a>), params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_pool2_d_params.html#ac6e00322fbbaf9933e86620532d063c1">activation_max</a>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>      }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
 </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>} <span class="comment">// namespace pal</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>} <span class="comment">// namespace execute</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_AVERAGE_POOL_2D_COMMON_H</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} <span class="comment">// namespace pal</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>} <span class="comment">// namespace execute</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_AVERAGE_POOL_2D_COMMON_H</span></div>
 <div class="ttc" id="a_o_m_kernel_data_8h_html"><div class="ttname"><a href="_o_m_kernel_data_8h.html">OMKernelData.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_shape_8h_html"><div class="ttname"><a href="_o_m_runtime_shape_8h.html">OMRuntimeShape.h</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a21afbf00a49a9fb5b67c40f78e408b23"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">luci_interpreter::RuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">Tensor.h:108</a></div></div>

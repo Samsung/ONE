@@ -20,11 +20,18 @@ var namespaceonert__micro_1_1execute =
     [ "createConvParams", "namespaceonert__micro_1_1execute.html#aed25f47a3ee005c4c5cf14bc488f8eea", null ],
     [ "evalComparisonGeneric", "namespaceonert__micro_1_1execute.html#aaeb8636803a5020701dd2565e98a4728", null ],
     [ "evalQuantizedComparisonGeneric", "namespaceonert__micro_1_1execute.html#ae6286a7b10df60824b289f6baf289029", null ],
+    [ "execute_math_common", "namespaceonert__micro_1_1execute.html#ac23aed336a427289a712ad0bed333118", null ],
+    [ "execute_pooling_common", "namespaceonert__micro_1_1execute.html#a9fb9e08df4155b8e17dcb86ce734cb12", null ],
+    [ "execute_relu_common", "namespaceonert__micro_1_1execute.html#a7bf4fc7bd9abd874f5cbfd28a9f4cec8", null ],
+    [ "execute_reshape_common", "namespaceonert__micro_1_1execute.html#a1555dfae3a0f1f11c428c1c542692d85", null ],
+    [ "execute_spaces_batches_nd_common", "namespaceonert__micro_1_1execute.html#ae1fa5ab9769631baed910b99b8d34fb0", null ],
     [ "getQuantizedConvolutionMultipler", "namespaceonert__micro_1_1execute.html#a0c2fd479509da8a95b7cd84652f01e38", null ],
     [ "getQuantizedConvolutionMultiplers", "namespaceonert__micro_1_1execute.html#a3e0bf080a0023117641415c6eec4417d", null ],
     [ "quantizeMultiplier", "namespaceonert__micro_1_1execute.html#a08c8cab72e9c82644f03ab9e6d4af1ee", null ],
     [ "quantizeMultiplierSmallerThanOneExp", "namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38", null ],
     [ "readDataKernel", "namespaceonert__micro_1_1execute.html#a20e362151b5cbe06c7c8c9e5b54ec543", null ],
+    [ "readKernelDataTISO", "namespaceonert__micro_1_1execute.html#aae8042c5195cffff37e348a20caca812", null ],
+    [ "readQuantParams", "namespaceonert__micro_1_1execute.html#a40e42e3586514350a03c2b8b7f3b3f22", null ],
     [ "kernel_builtin_execute", "namespaceonert__micro_1_1execute.html#a628d7ac02011d8c04aff4375f9803240", null ],
     [ "kernel_custom_execute", "namespaceonert__micro_1_1execute.html#a9d940352336b4e93813c268fbc8e59ee", null ]
 ];

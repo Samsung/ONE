@@ -128,11 +128,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00079">79</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span>                                                    : _filepath(filepath)</div>
-<div class="line"><span class="lineno">   80</span>{</div>
-<div class="line"><span class="lineno">   81</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   82</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00080">80</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>                                                    : _filepath(filepath)</div>
+<div class="line"><span class="lineno">   81</span>{</div>
+<div class="line"><span class="lineno">   82</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   83</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -172,70 +172,81 @@ Public Member Functions</h2></td></tr>
 <p>Returns minmax recording for input {model_idx, subg_idx, input_idx}. </p>
 <dl class="section return"><dt>Returns</dt><dd>MinMaxVectors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00150">150</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  152</span>{</div>
-<div class="line"><span class="lineno">  153</span>  <span class="comment">// Find file to read</span></div>
-<div class="line"><span class="lineno">  154</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a> = std::fopen(_filepath.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
-<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">if</span> (!file)</div>
-<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file: &quot;</span> + _filepath);</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  checkHeader(file);</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>  <span class="comment">// Read num_run</span></div>
-<div class="line"><span class="lineno">  161</span>  uint32_t num_run = 0;</div>
-<div class="line"><span class="lineno">  162</span>  readMMFile(&amp;num_run, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num_run from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>  MinMaxVectors mmv;</div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordtype">float</span> minmax[2];</div>
-<div class="line"><span class="lineno">  166</span>  <span class="keyword">const</span> int64_t data_size = <span class="keyword">sizeof</span>(float) * 2 + <span class="keyword">sizeof</span>(uint32_t) * 3;</div>
-<div class="line"><span class="lineno">  167</span> </div>
-<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">for</span> (uint32_t r = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> &lt; num_run; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a>)</div>
-<div class="line"><span class="lineno">  169</span>  {</div>
-<div class="line"><span class="lineno">  170</span>    <span class="comment">// Read num of operations and num of inputs</span></div>
-<div class="line"><span class="lineno">  171</span>    uint32_t num_op = 0;</div>
-<div class="line"><span class="lineno">  172</span>    readMMFile(&amp;num_op, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of operations&quot;</span>);</div>
-<div class="line"><span class="lineno">  173</span>    uint32_t num_input = 0;</div>
-<div class="line"><span class="lineno">  174</span>    readMMFile(&amp;num_input, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of inputs&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00162">162</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  164</span>{</div>
+<div class="line"><span class="lineno">  165</span>  <span class="comment">// Find file to read</span></div>
+<div class="line"><span class="lineno">  166</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a> = std::fopen(_filepath.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">if</span> (!file)</div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file: &quot;</span> + _filepath);</div>
+<div class="line"><span class="lineno">  169</span> </div>
+<div class="line"><span class="lineno">  170</span>  checkHeader(file);</div>
+<div class="line"><span class="lineno">  171</span> </div>
+<div class="line"><span class="lineno">  172</span>  <span class="comment">// Read num_run</span></div>
+<div class="line"><span class="lineno">  173</span>  uint32_t num_run = 0;</div>
+<div class="line"><span class="lineno">  174</span>  readMMFile(&amp;num_run, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num_run from file&quot;</span>);</div>
 <div class="line"><span class="lineno">  175</span> </div>
-<div class="line"><span class="lineno">  176</span>    <span class="comment">// Skip operation minmax data</span></div>
-<div class="line"><span class="lineno">  177</span>    seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * num_op), SEEK_CUR,</div>
-<div class="line"><span class="lineno">  178</span>               <span class="stringliteral">&quot;Cannot skip operation minmax data&quot;</span>);</div>
+<div class="line"><span class="lineno">  176</span>  MinMaxVectors mmv;</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keywordtype">float</span> minmax[2];</div>
+<div class="line"><span class="lineno">  178</span>  <span class="keyword">const</span> int64_t data_size = <span class="keyword">sizeof</span>(float) * 2 + <span class="keyword">sizeof</span>(uint32_t) * 3;</div>
 <div class="line"><span class="lineno">  179</span> </div>
-<div class="line"><span class="lineno">  180</span>    <span class="comment">// Find operation</span></div>
-<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_input; ++i)</div>
-<div class="line"><span class="lineno">  182</span>    {</div>
-<div class="line"><span class="lineno">  183</span>      uint32_t model_id_from_file = 0;</div>
-<div class="line"><span class="lineno">  184</span>      uint32_t subg_idx_from_file = 0;</div>
-<div class="line"><span class="lineno">  185</span>      uint32_t input_idx_from_file = 0;</div>
-<div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>      readMMFile(&amp;model_id_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read model_id from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  188</span>      readMMFile(&amp;subg_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read subg_idx from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  189</span>      readMMFile(&amp;input_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file,</div>
-<div class="line"><span class="lineno">  190</span>                 <span class="stringliteral">&quot;Cannot read input_idx from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  180</span>  <span class="comment">// Check num_run overflow</span></div>
+<div class="line"><span class="lineno">  181</span>  <span class="keywordflow">if</span> (num_run &gt; std::numeric_limits&lt;uint32_t&gt;::max() / data_size)</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_run overflow&quot;</span>);</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">for</span> (uint32_t r = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> &lt; num_run; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a>)</div>
+<div class="line"><span class="lineno">  185</span>  {</div>
+<div class="line"><span class="lineno">  186</span>    <span class="comment">// Read num of operations and num of inputs</span></div>
+<div class="line"><span class="lineno">  187</span>    uint32_t num_op = 0;</div>
+<div class="line"><span class="lineno">  188</span>    readMMFile(&amp;num_op, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of operations&quot;</span>);</div>
+<div class="line"><span class="lineno">  189</span>    uint32_t num_input = 0;</div>
+<div class="line"><span class="lineno">  190</span>    readMMFile(&amp;num_input, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of inputs&quot;</span>);</div>
 <div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>      <span class="keywordflow">if</span> (model_id_from_file == model_idx &amp;&amp; subg_idx_from_file == subg_idx &amp;&amp;</div>
-<div class="line"><span class="lineno">  193</span>          input_idx_from_file == input_idx)</div>
-<div class="line"><span class="lineno">  194</span>      {</div>
-<div class="line"><span class="lineno">  195</span>        <span class="comment">// Read minmax data</span></div>
-<div class="line"><span class="lineno">  196</span>        readMMFile(minmax, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file, <span class="stringliteral">&quot;Cannot read minmax data from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  197</span>        mmv.min_vector.emplace_back(minmax[0]);</div>
-<div class="line"><span class="lineno">  198</span>        mmv.max_vector.emplace_back(minmax[1]);</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>        <span class="comment">// Skip remain input minmax data</span></div>
-<div class="line"><span class="lineno">  201</span>        <span class="keyword">const</span> uint32_t remain_elem = num_input - i - 1;</div>
-<div class="line"><span class="lineno">  202</span>        seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * remain_elem), SEEK_CUR,</div>
-<div class="line"><span class="lineno">  203</span>                   <span class="stringliteral">&quot;Cannot skip remain minmax data from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  204</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  205</span>      }</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>      <span class="comment">// Skip minmax data</span></div>
-<div class="line"><span class="lineno">  208</span>      seekMMFile(file, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * 2, SEEK_CUR, <span class="stringliteral">&quot;Cannot skip minmax data from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  209</span>    }</div>
-<div class="line"><span class="lineno">  210</span>  }</div>
-<div class="line"><span class="lineno">  211</span> </div>
-<div class="line"><span class="lineno">  212</span>  std::fclose(file);</div>
-<div class="line"><span class="lineno">  213</span>  <span class="keywordflow">return</span> mmv;</div>
-<div class="line"><span class="lineno">  214</span>}</div>
+<div class="line"><span class="lineno">  192</span>    <span class="comment">// Check num_op overflow</span></div>
+<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">if</span> (num_op &gt; std::numeric_limits&lt;uint32_t&gt;::max() / data_size / num_run)</div>
+<div class="line"><span class="lineno">  194</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_op overflow&quot;</span>);</div>
+<div class="line"><span class="lineno">  195</span>    <span class="comment">// Check num_input overflow</span></div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">if</span> (num_input &gt; std::numeric_limits&lt;uint32_t&gt;::max() / data_size / num_run)</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_input overflow&quot;</span>);</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>    <span class="comment">// Skip operation minmax data</span></div>
+<div class="line"><span class="lineno">  200</span>    seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * num_op), SEEK_CUR,</div>
+<div class="line"><span class="lineno">  201</span>               <span class="stringliteral">&quot;Cannot skip operation minmax data&quot;</span>);</div>
+<div class="line"><span class="lineno">  202</span> </div>
+<div class="line"><span class="lineno">  203</span>    <span class="comment">// Find operation</span></div>
+<div class="line"><span class="lineno">  204</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_input; ++i)</div>
+<div class="line"><span class="lineno">  205</span>    {</div>
+<div class="line"><span class="lineno">  206</span>      uint32_t model_id_from_file = 0;</div>
+<div class="line"><span class="lineno">  207</span>      uint32_t subg_idx_from_file = 0;</div>
+<div class="line"><span class="lineno">  208</span>      uint32_t input_idx_from_file = 0;</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>      readMMFile(&amp;model_id_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read model_id from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  211</span>      readMMFile(&amp;subg_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read subg_idx from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  212</span>      readMMFile(&amp;input_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file,</div>
+<div class="line"><span class="lineno">  213</span>                 <span class="stringliteral">&quot;Cannot read input_idx from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  214</span> </div>
+<div class="line"><span class="lineno">  215</span>      <span class="keywordflow">if</span> (model_id_from_file == model_idx &amp;&amp; subg_idx_from_file == subg_idx &amp;&amp;</div>
+<div class="line"><span class="lineno">  216</span>          input_idx_from_file == input_idx)</div>
+<div class="line"><span class="lineno">  217</span>      {</div>
+<div class="line"><span class="lineno">  218</span>        <span class="comment">// Read minmax data</span></div>
+<div class="line"><span class="lineno">  219</span>        readMMFile(minmax, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file, <span class="stringliteral">&quot;Cannot read minmax data from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  220</span>        mmv.min_vector.emplace_back(minmax[0]);</div>
+<div class="line"><span class="lineno">  221</span>        mmv.max_vector.emplace_back(minmax[1]);</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>        <span class="comment">// Skip remain input minmax data</span></div>
+<div class="line"><span class="lineno">  224</span>        <span class="keyword">const</span> uint32_t remain_elem = num_input - i - 1;</div>
+<div class="line"><span class="lineno">  225</span>        seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * remain_elem), SEEK_CUR,</div>
+<div class="line"><span class="lineno">  226</span>                   <span class="stringliteral">&quot;Cannot skip remain minmax data from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  227</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  228</span>      }</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span>      <span class="comment">// Skip minmax data</span></div>
+<div class="line"><span class="lineno">  231</span>      seekMMFile(file, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * 2, SEEK_CUR, <span class="stringliteral">&quot;Cannot skip minmax data from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  232</span>    }</div>
+<div class="line"><span class="lineno">  233</span>  }</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span>  std::fclose(file);</div>
+<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">return</span> mmv;</div>
+<div class="line"><span class="lineno">  237</span>}</div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a58a5106a4f3aa3bddd71f4ace1245a0c"><div class="ttname"><a href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">jpeg2hdf5.r</a></div><div class="ttdeci">r</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_abe660e9c50ccb26ca3f53160f59fabb7"><div class="ttname"><a href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">tf2tfliteV2.file</a></div><div class="ttdeci">file</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00300">tf2tfliteV2.py:300</a></div></div>
 </div><!-- fragment -->
@@ -278,70 +289,81 @@ Public Member Functions</h2></td></tr>
 <p>Returns minmax recording for op {model_idx, subg_idx, op_idx}. </p>
 <dl class="section return"><dt>Returns</dt><dd>MinMaxVectors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00085">85</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span>  <span class="comment">// Find file to read</span></div>
-<div class="line"><span class="lineno">   88</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a> = std::fopen(_filepath.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">if</span> (!file)</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file: &quot;</span> + _filepath);</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>  checkHeader(file);</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <span class="comment">// Read num_run</span></div>
-<div class="line"><span class="lineno">   95</span>  uint32_t num_run = 0;</div>
-<div class="line"><span class="lineno">   96</span>  readMMFile(&amp;num_run, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num_run from file&quot;</span>);</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>  MinMaxVectors mmv;</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordtype">float</span> minmax[2];</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> int64_t data_size = <span class="keyword">sizeof</span>(float) * 2 + <span class="keyword">sizeof</span>(uint32_t) * 3;</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">for</span> (uint32_t r = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> &lt; num_run; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a>)</div>
-<div class="line"><span class="lineno">  103</span>  {</div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">// Read num of operations and num of inputs</span></div>
-<div class="line"><span class="lineno">  105</span>    uint32_t num_op = 0;</div>
-<div class="line"><span class="lineno">  106</span>    readMMFile(&amp;num_op, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of operations&quot;</span>);</div>
-<div class="line"><span class="lineno">  107</span>    uint32_t num_input = 0;</div>
-<div class="line"><span class="lineno">  108</span>    readMMFile(&amp;num_input, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of inputs&quot;</span>);</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="comment">// Find operation</span></div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_op; ++i)</div>
-<div class="line"><span class="lineno">  112</span>    {</div>
-<div class="line"><span class="lineno">  113</span>      uint32_t model_id_from_file = 0;</div>
-<div class="line"><span class="lineno">  114</span>      uint32_t subg_idx_from_file = 0;</div>
-<div class="line"><span class="lineno">  115</span>      uint32_t op_idx_from_file = 0;</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>      readMMFile(&amp;model_id_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read model_id from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  118</span>      readMMFile(&amp;subg_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read subg_idx from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  119</span>      readMMFile(&amp;op_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read op_idx from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">if</span> (model_id_from_file == model_idx &amp;&amp; subg_idx_from_file == subg_idx &amp;&amp;</div>
-<div class="line"><span class="lineno">  122</span>          op_idx_from_file == op_idx)</div>
-<div class="line"><span class="lineno">  123</span>      {</div>
-<div class="line"><span class="lineno">  124</span>        <span class="comment">// Read minmax data</span></div>
-<div class="line"><span class="lineno">  125</span>        readMMFile(minmax, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file, <span class="stringliteral">&quot;Cannot read minmax data from file&quot;</span>);</div>
-<div class="line"><span class="lineno">  126</span>        mmv.min_vector.emplace_back(minmax[0]);</div>
-<div class="line"><span class="lineno">  127</span>        mmv.max_vector.emplace_back(minmax[1]);</div>
+<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00086">86</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>  <span class="comment">// Find file to read</span></div>
+<div class="line"><span class="lineno">   89</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a> = std::fopen(_filepath.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">if</span> (!file)</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file: &quot;</span> + _filepath);</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>  checkHeader(file);</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  <span class="comment">// Read num_run</span></div>
+<div class="line"><span class="lineno">   96</span>  uint32_t num_run = 0;</div>
+<div class="line"><span class="lineno">   97</span>  readMMFile(&amp;num_run, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num_run from file&quot;</span>);</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>  MinMaxVectors mmv;</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordtype">float</span> minmax[2];</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keyword">const</span> int64_t data_size = <span class="keyword">sizeof</span>(float) * 2 + <span class="keyword">sizeof</span>(uint32_t) * 3;</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>  <span class="comment">// Check num_run overflow</span></div>
+<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> (num_run &gt; std::numeric_limits&lt;uint32_t&gt;::max() / data_size)</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_run overflow&quot;</span>);</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">for</span> (uint32_t r = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> &lt; num_run; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a>)</div>
+<div class="line"><span class="lineno">  108</span>  {</div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment">// Read num of operations and num of inputs</span></div>
+<div class="line"><span class="lineno">  110</span>    uint32_t num_op = 0;</div>
+<div class="line"><span class="lineno">  111</span>    readMMFile(&amp;num_op, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of operations&quot;</span>);</div>
+<div class="line"><span class="lineno">  112</span>    uint32_t num_input = 0;</div>
+<div class="line"><span class="lineno">  113</span>    readMMFile(&amp;num_input, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num of inputs&quot;</span>);</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>    <span class="comment">// Check num_op overflow</span></div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">if</span> (num_op &gt; std::numeric_limits&lt;uint32_t&gt;::max() / data_size / num_run)</div>
+<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_op overflow&quot;</span>);</div>
+<div class="line"><span class="lineno">  118</span>    <span class="comment">// Check num_input overflow</span></div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">if</span> (num_input &gt; std::numeric_limits&lt;uint32_t&gt;::max() / data_size / num_run)</div>
+<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_input overflow&quot;</span>);</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>    <span class="comment">// Find operation</span></div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_op; ++i)</div>
+<div class="line"><span class="lineno">  124</span>    {</div>
+<div class="line"><span class="lineno">  125</span>      uint32_t model_id_from_file = 0;</div>
+<div class="line"><span class="lineno">  126</span>      uint32_t subg_idx_from_file = 0;</div>
+<div class="line"><span class="lineno">  127</span>      uint32_t op_idx_from_file = 0;</div>
 <div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>        <span class="comment">// Skip remain operation minmax data</span></div>
-<div class="line"><span class="lineno">  130</span>        <span class="keyword">const</span> uint32_t remain_elem = num_op - i - 1;</div>
-<div class="line"><span class="lineno">  131</span>        seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * remain_elem), SEEK_CUR,</div>
-<div class="line"><span class="lineno">  132</span>                   <span class="stringliteral">&quot;Failed to skip remain minmax data&quot;</span>);</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  135</span>      }</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>      <span class="comment">// Skip minmax data</span></div>
-<div class="line"><span class="lineno">  138</span>      seekMMFile(file, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * 2, SEEK_CUR, <span class="stringliteral">&quot;Failed to skip minmax data&quot;</span>);</div>
-<div class="line"><span class="lineno">  139</span>    }</div>
+<div class="line"><span class="lineno">  129</span>      readMMFile(&amp;model_id_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read model_id from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  130</span>      readMMFile(&amp;subg_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read subg_idx from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  131</span>      readMMFile(&amp;op_idx_from_file, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read op_idx from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>      <span class="keywordflow">if</span> (model_id_from_file == model_idx &amp;&amp; subg_idx_from_file == subg_idx &amp;&amp;</div>
+<div class="line"><span class="lineno">  134</span>          op_idx_from_file == op_idx)</div>
+<div class="line"><span class="lineno">  135</span>      {</div>
+<div class="line"><span class="lineno">  136</span>        <span class="comment">// Read minmax data</span></div>
+<div class="line"><span class="lineno">  137</span>        readMMFile(minmax, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file, <span class="stringliteral">&quot;Cannot read minmax data from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  138</span>        mmv.min_vector.emplace_back(minmax[0]);</div>
+<div class="line"><span class="lineno">  139</span>        mmv.max_vector.emplace_back(minmax[1]);</div>
 <div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>    <span class="comment">// Skip input minmax data</span></div>
-<div class="line"><span class="lineno">  142</span>    seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * num_input), SEEK_CUR,</div>
-<div class="line"><span class="lineno">  143</span>               <span class="stringliteral">&quot;Failed to skip input minmax data&quot;</span>);</div>
-<div class="line"><span class="lineno">  144</span>  }</div>
+<div class="line"><span class="lineno">  141</span>        <span class="comment">// Skip remain operation minmax data</span></div>
+<div class="line"><span class="lineno">  142</span>        <span class="keyword">const</span> uint32_t remain_elem = num_op - i - 1;</div>
+<div class="line"><span class="lineno">  143</span>        seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * remain_elem), SEEK_CUR,</div>
+<div class="line"><span class="lineno">  144</span>                   <span class="stringliteral">&quot;Failed to skip remain minmax data&quot;</span>);</div>
 <div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>  std::fclose(file);</div>
-<div class="line"><span class="lineno">  147</span>  <span class="keywordflow">return</span> mmv;</div>
-<div class="line"><span class="lineno">  148</span>}</div>
+<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  147</span>      }</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>      <span class="comment">// Skip minmax data</span></div>
+<div class="line"><span class="lineno">  150</span>      seekMMFile(file, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>) * 2, SEEK_CUR, <span class="stringliteral">&quot;Failed to skip minmax data&quot;</span>);</div>
+<div class="line"><span class="lineno">  151</span>    }</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>    <span class="comment">// Skip input minmax data</span></div>
+<div class="line"><span class="lineno">  154</span>    seekMMFile(file, <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(data_size * num_input), SEEK_CUR,</div>
+<div class="line"><span class="lineno">  155</span>               <span class="stringliteral">&quot;Failed to skip input minmax data&quot;</span>);</div>
+<div class="line"><span class="lineno">  156</span>  }</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>  std::fclose(file);</div>
+<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">return</span> mmv;</div>
+<div class="line"><span class="lineno">  160</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_min_max_reader_8h_source.html#l00055">onert::odc::MinMaxVectors::max_vector</a>, and <a class="el" href="_min_max_reader_8h_source.html#l00054">onert::odc::MinMaxVectors::min_vector</a>.</p>
 

@@ -612,6 +612,11 @@ var namespaces_dup =
     [ "souschef", "namespacesouschef.html", "namespacesouschef" ],
     [ "sparsity", "namespacesparsity.html", "namespacesparsity" ],
     [ "std", "namespacestd.html", "namespacestd" ],
+    [ "TensorIndexTISO", "namespace_tensor_index_t_i_s_o.html", [
+      [ "input1TensorIdx", "namespace_tensor_index_t_i_s_o.html#a999f55140d3a16df07774d1649048f1b", null ],
+      [ "input2TensorIdx", "namespace_tensor_index_t_i_s_o.html#af1820f85e6bd73854c0c31cbfc3abeb0", null ],
+      [ "outputTensorIdx", "namespace_tensor_index_t_i_s_o.html#aab3f03771cfc223b000c637cff9fdd39", null ]
+    ] ],
     [ "test_circle_part_value", "namespacetest__circle__part__value.html", [
       [ "part_eval", "namespacetest__circle__part__value.html#a1990c4eeb7448a9f2c934e626e53d915", null ],
       [ "test_circle_part_value", "namespacetest__circle__part__value.html#afd7b9cb962f4a7110c210e3b56c5bece", null ]
