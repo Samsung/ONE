@@ -30,9 +30,10 @@ namespace builtin
 IOTensor::~IOTensor() {}
 
 IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
-  : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
+  : IPortableTensor{info}, _is_dynamic{false}, _tensor{nullptr},
+    _orig{std::make_unique<UserTensor>(info, layout, (uint8_t *)nullptr, 0)}
 {
-  setUserTensor(nullptr, 0);
+  _tensor = _orig.get();
 }
 
 void IOTensor::setTensor(IPortableTensor *tensor)
@@ -40,15 +41,16 @@ void IOTensor::setTensor(IPortableTensor *tensor)
   assert(tensor);
   assert(tensor != this);
   // TODO Handle when layout was changed
-  assert(tensor->layout() == _orig_layout); // Changing layout is not considered yet
-  _user_tensor.reset();
+  assert(tensor->layout() == _orig->layout()); // Changing layout is not considered yet
   _tensor = tensor;
-}
-
-void IOTensor::setUserTensor(uint8_t *buffer, size_t size)
-{
-  _user_tensor = std::make_unique<UserTensor>(_orig_info, _orig_layout, buffer, size);
-  _tensor = _user_tensor.get();
+  if (_orig->getShape() != tensor->getShape())
+  {
+    _orig->setShape(tensor->getShape());
+    _orig->set_dynamic();
+    _is_dynamic = true;
+  }
+  else
+    _is_dynamic = false;
 }
 
 } // namespace builtin

@@ -42,7 +42,7 @@ public:
 
   virtual ~IPortableTensor();
   virtual const ir::Sparsity *sparsity() const { return nullptr; }
-  const ir::OperandInfo &get_info() const { return _info; }
+  virtual const ir::OperandInfo &get_info() const { return _info; }
   float data_scale() const override { return _info.typeInfo().scale(); }
   int32_t data_zero_point() const override { return _info.typeInfo().zero_point(); }
   const std::vector<float> &data_scales() const override { return _info.typeInfo().scales(); }

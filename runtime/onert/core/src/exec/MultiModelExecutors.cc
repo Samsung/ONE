@@ -79,7 +79,10 @@ public:
     //      is using tensor that does not inherit IPortableTensor, Permute operation is added
     //      and all inputs/outputs become IPortableTensor at compile stage.
     //      This allows user's buffers to be set to inputs/outputs of executors.
-    setUserTensor(_buffer.get(), total_size);
+    _user_tensor = std::make_unique<backend::builtin::UserTensor>(orig_info(), orig_layout(),
+                                                                  _buffer.get(), total_size);
+    // setUserTensor(_buffer.get(), total_size);
+    setTensor(_user_tensor.get());
   }
 
   void increase_ref() { _ref_count++; }
@@ -91,11 +94,13 @@ public:
     if (_ref_count == 0)
     {
       _buffer.reset();
-      setUserTensor(nullptr, orig_info().total_size());
+      _user_tensor = nullptr;
+      // setUserTensor(nullptr, orig_info().total_size());
     }
   }
 
 private:
+  std::unique_ptr<backend::builtin::UserTensor> _user_tensor;
   std::unique_ptr<uint8_t[]> _buffer;
   int32_t _ref_count;
 };
@@ -438,6 +443,8 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
     throw std::runtime_error{"Cannot find edge for model input"};
   };
 
+  std::vector<std::unique_ptr<backend::builtin::UserTensor>> tensorpool;
+
   // Execute each model
   // NOTE May be better to use vector instead of unordered_map for _executors
   for (auto model_index = ir::ModelIndex{0}; model_index.value() < model_count; model_index++)
@@ -480,8 +487,10 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
         // Set buffer of IOTensor
         auto input_desc = desc.inputs[input_pkg_index].get();
         // TODO Remove const_cast (we need const_cast as ITensor is writable)
-        _pkg_input_tensors[input_io_desc]->setUserTensor(
-          reinterpret_cast<uint8_t *>(const_cast<void *>(input_desc->buffer)), input_desc->size);
+        tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
+          input_desc->info, input_desc->layout, static_cast<const uint8_t *>(input_desc->buffer),
+          input_desc->size));
+        _pkg_input_tensors[input_io_desc]->setTensor(tensorpool.back().get());
       }
       else
       {
@@ -529,8 +538,10 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
 
         // Set buffer of IOTensor
         auto output_desc = desc.outputs[output_pkg_index].get();
-        _pkg_output_tensors[output_io_desc]->setUserTensor(
-          reinterpret_cast<uint8_t *>(output_desc->buffer), output_desc->size);
+        tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
+          output_desc->info, output_desc->layout, static_cast<const uint8_t *>(output_desc->buffer),
+          output_desc->size));
+        _pkg_output_tensors[output_io_desc]->setTensor(tensorpool.back().get());
       }
       else
       {

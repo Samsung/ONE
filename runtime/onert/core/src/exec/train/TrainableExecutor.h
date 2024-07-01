@@ -56,7 +56,7 @@ public:
 public:
   const ir::Graph &graph() const final { return _trainable_graph.graph(); }
 
-  void execute(const ExecutionContext &ctx) override { forward(ctx, false); };
+  void execute(const ExecutionContext &ctx) { forward(ctx, false); };
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs,

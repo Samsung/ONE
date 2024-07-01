@@ -46,11 +46,21 @@ public:
 
 public:
   void setTensor(IPortableTensor *tensor);
-  void setUserTensor(uint8_t *buffer, size_t size);
-  const ir::OperandInfo &orig_info() const { return _orig_info; }
-  ir::Layout orig_layout() const { return _orig_layout; }
+  const ir::OperandInfo &orig_info() const { return _orig->get_info(); }
+  ir::Layout orig_layout() const { return _orig->layout(); }
 
 public:
+  // Some methods can be called before execution start: on compile phase
+  // After compilation and before actual I/O tensor assignment by setTensor(tensor), we should use
+  // above orig_xxx() methods
+  const ir::OperandInfo &get_info() const override { return _tensor->get_info(); }
+  float data_scale() const override { return _tensor->data_scale(); }
+  int32_t data_zero_point() const override { return _tensor->data_zero_point(); }
+  const std::vector<float> &data_scales() const override { return _tensor->data_scales(); }
+  const std::vector<int32_t> &data_zero_points() const override
+  {
+    return _tensor->data_zero_points();
+  }
   uint8_t *buffer() const override { return _tensor->buffer(); }
   size_t total_size() const override { return _tensor->total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override
@@ -61,33 +71,27 @@ public:
   ir::DataType data_type() const override { return _tensor->data_type(); }
   bool is_dynamic() const override
   {
-    return _is_dynamic || _orig_info.isDynamic() || (_tensor && _tensor->is_dynamic());
+    return _is_dynamic || _orig->is_dynamic() || _tensor->is_dynamic();
   }
-  void set_dynamic() override { _is_dynamic = true; }
+  void set_dynamic() override { _tensor->set_dynamic(); }
   ir::Shape getShape() const override { return _tensor->getShape(); }
   void setShape(const ir::Shape &shape) override
   {
-    // Workaround for IPortableTensor holds _info as its member
-    _info.shape(shape);
     _tensor->setShape(shape);
+    _orig->setShape(shape);
   }
   bool is_constant() const override { return _tensor->is_constant(); }
-  bool applyShape(const ir::Shape &shape) override
-  {
-    // Workaround for IPortableTensor holds _info as its member
-    _info.shape(shape);
-    return _tensor->applyShape(shape);
-  }
-
-public:
-  void setShapeOfIPortableTensor(const ir::Shape &shape) { _info.shape(shape); }
+  bool applyShape(const ir::Shape &shape) override { return _tensor->applyShape(shape); }
 
 private:
-  const ir::OperandInfo _orig_info;
-  const ir::Layout _orig_layout;
-  bool _is_dynamic{false};
-  IPortableTensor *_tensor{nullptr};        //< The actual tensor that is indirected
-  std::unique_ptr<UserTensor> _user_tensor; //< If it is a user tensor, it is managed by this object
+  // IPortableTensor's info is not used
+  bool _is_dynamic{false};           // < Represent dynamic by updated model input shape
+  IPortableTensor *_tensor{nullptr}; //< The actual tensor that is indirected
+  // Before 1st inference, "_orig" has original tensor's info with nullptr buffer
+  // After 1st setTensor(tensor) call, "_orig" has latest shape info with nullptr buffer
+  // We can use IPortableTensor's info for tensor info cache, but we use nullptr
+  // UserTensor for simple method implementation
+  std::unique_ptr<UserTensor> _orig;
 };
 
 } // namespace builtin

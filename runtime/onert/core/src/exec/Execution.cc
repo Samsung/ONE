@@ -134,6 +134,7 @@ void Execution::execute()
   VERBOSE(Execution) << "Start execution" << std::endl;
 
   _executors->execute(_ctx);
+
   finished = true;
 
   VERBOSE(Execution) << "Execution finished" << std::endl;

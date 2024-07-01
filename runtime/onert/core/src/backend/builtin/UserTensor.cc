@@ -45,6 +45,7 @@ bool UserTensor::applyShape(const ir::Shape &new_shape)
   if (total_size() < new_size)
     throw InsufficientBufferSizeException{"User given buffer size is too small."};
   setShape(new_shape);
+  set_dynamic(); // set to show shape is updated
   return true;
 }
 

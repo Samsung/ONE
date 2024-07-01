@@ -71,6 +71,8 @@ void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
   std::lock_guard<std::mutex> lock(_mutex);
   _current_options = ctx.options;
 
+  std::vector<std::unique_ptr<backend::builtin::UserTensor>> tensorpool;
+
   auto &desc = ctx.desc;
   // TODO Update IO tensors if desc has dynamic input
   // Set input(s)
@@ -79,10 +81,13 @@ void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
   {
     auto tensor = _input_tensors[i];
 
+    tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
+      desc.inputs[i]->info, desc.inputs[i]->layout,
+      static_cast<const uint8_t *>(desc.inputs[i]->buffer), desc.inputs[i]->size));
+
     // TODO Check if (desc.inputs[i] == nullptr)
     // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
-    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
-                          desc.inputs[i]->size);
+    tensor->setTensor(tensorpool.back().get());
   }
 
   // Set output(s)
@@ -93,7 +98,12 @@ void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
 
     assert(desc.outputs[i] != nullptr);
     if (desc.outputs[i]->buffer != nullptr && desc.outputs[i]->size != 0)
-      tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+    {
+      tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
+        desc.outputs[i]->info, desc.outputs[i]->layout,
+        static_cast<const uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size));
+    }
+    tensor->setTensor(tensorpool.back().get());
   }
 
   // Create observee

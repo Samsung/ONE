@@ -39,19 +39,14 @@ class UserTensor : public IPortableTensor
 {
 public:
   UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size)
-    : IPortableTensor{info}, _layout{layout}, _buffer{buffer}, _size{size}, _dynamic{false}
+    : IPortableTensor{info}, _layout{layout}, _buffer{buffer}, _size{size}
   {
   }
 
-  UserTensor(const ir::OperandInfo &info, ir::Layout layout) : UserTensor{info, layout, nullptr, 0}
+  // TODO Better design for UserTensor? (we need const_cast as UserTensor is writable)
+  UserTensor(const ir::OperandInfo &info, ir::Layout layout, const uint8_t *buffer, size_t size)
+    : IPortableTensor{info}, _layout{layout}, _buffer{const_cast<uint8_t *>(buffer)}, _size{size}
   {
-  }
-
-public:
-  void setBuffer(uint8_t *buffer, size_t size)
-  {
-    _buffer = buffer;
-    _size = size;
   }
 
 public:
@@ -60,8 +55,8 @@ public:
   size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
   ir::DataType data_type() const override { return _info.typeInfo().type(); }
-  bool is_dynamic() const override { return _dynamic; }
-  void set_dynamic() override { _dynamic = true; }
+  bool is_dynamic() const override { return _info.isDynamic(); }
+  void set_dynamic() override { _info.setDynamic(); }
   ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
   bool is_constant() const override { return false; }
@@ -71,7 +66,6 @@ private:
   ir::Layout _layout;
   uint8_t *_buffer;
   size_t _size;
-  bool _dynamic;
 };
 
 } // namespace builtin

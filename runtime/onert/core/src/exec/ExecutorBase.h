@@ -53,8 +53,6 @@ public:
 
   const ir::Graph &graph() const final { return _graph; }
 
-  void execute(const ExecutionContext &ctx) final;
-
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs,
                const ExecutionOptions &options) override;
