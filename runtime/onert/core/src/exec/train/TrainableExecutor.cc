@@ -18,6 +18,7 @@
 #ifdef RUY_PROFILER
 #include "ruy/profiler/instrumentation.h"
 #endif
+#include "../../backend/builtin/UserTensor.h"
 
 #include <misc/polymorphic_downcast.h>
 

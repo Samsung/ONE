@@ -15,9 +15,10 @@
  */
 
 #include "SingleModelExecutors.h"
-#include <array>
 
-#include "../backend/builtin/IOTensor.h"
+#include "../backend/builtin/UserTensor.h"
+
+#include <array>
 
 namespace onert
 {
@@ -36,24 +37,18 @@ IExecutor *SingleModelExecutors::at(const ir::ModelIndex &,
   return _executors.at(subg_index).get();
 }
 
-uint32_t SingleModelExecutors::inputSize() const
-{
-  return entryExecutor()->getInputTensors().size();
-}
+uint32_t SingleModelExecutors::inputSize() const { return entryExecutor()->inputSize(); }
 
-uint32_t SingleModelExecutors::outputSize() const
-{
-  return entryExecutor()->getOutputTensors().size();
-}
+uint32_t SingleModelExecutors::outputSize() const { return entryExecutor()->outputSize(); }
 
 const ir::OperandInfo &SingleModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getInputTensors().at(index.value())->orig_info();
+  return entryExecutor()->inputInfo(index.value());
 }
 
 const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
+  return entryExecutor()->outputInfo(index.value());
 }
 
 void SingleModelExecutors::execute(const ExecutionContext &ctx)

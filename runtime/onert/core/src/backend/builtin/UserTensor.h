@@ -51,15 +51,9 @@ public:
 
 public:
   uint8_t *buffer() const override { return _buffer; }
-  size_t total_size() const override { return _size; }
-  size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
-  ir::DataType data_type() const override { return _info.typeInfo().type(); }
-  bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
-  ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
-  bool is_constant() const override { return false; }
   bool applyShape(const ir::Shape &) override;
 
 private:

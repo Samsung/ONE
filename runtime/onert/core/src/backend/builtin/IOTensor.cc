@@ -15,6 +15,7 @@
  */
 
 #include "IOTensor.h"
+#include "UserTensor.h"
 
 #include <assert.h>
 
@@ -30,7 +31,7 @@ namespace builtin
 IOTensor::~IOTensor() {}
 
 IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
-  : IPortableTensor{info}, _is_dynamic{false}, _tensor{nullptr},
+  : IPortableTensor{info}, _tensor{nullptr},
     _orig{std::make_unique<UserTensor>(info, layout, (uint8_t *)nullptr, 0)}
 {
   _tensor = _orig.get();
@@ -43,14 +44,17 @@ void IOTensor::setTensor(IPortableTensor *tensor)
   // TODO Handle when layout was changed
   assert(tensor->layout() == _orig->layout()); // Changing layout is not considered yet
   _tensor = tensor;
-  if (_orig->getShape() != tensor->getShape())
+  if (_info.shape() != tensor->getShape())
   {
-    _orig->setShape(tensor->getShape());
-    _orig->set_dynamic();
-    _is_dynamic = true;
+    _info.shape(tensor->getShape());
+
+    // If input tensor shape is updated, other effective buffers use dynamic memory manager.
+    // Dynamic memory manager deallocate allcoated memory after each execution.
+    // So we should remain input tensor as dynamic if we mark it dynamic at least once.
+    // If dynamic memory manager maintains allocated memory after execution is finished,
+    // we may need to reset it as static for each setTensor call.
+    _info.setDynamic();
   }
-  else
-    _is_dynamic = false;
 }
 
 } // namespace builtin

@@ -81,15 +81,9 @@ public:
    *       W : dimension(2)
    *       C : dimension(3)
    */
-  size_t total_size() const override { return _info.total_size(); }
-  size_t calcOffset(const ir::Coordinates &coords) const override;
   ir::Layout layout() const override { return _layout; }
-  ir::DataType data_type() const override { return _info.typeInfo().type(); }
-  bool is_constant() const override { return _info.isConstant(); }
-  bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override { _info.setDynamic(); }
   bool applyShape(const ir::Shape &new_shape) override;
-  const ir::Sparsity *sparsity() const override { return _info.typeInfo().sparsity(); }
 
   virtual void increase_ref()
   {
@@ -140,7 +134,6 @@ public:
   virtual int32_t num_references() { return _num_references; }
 
   void setShape(const ir::Shape &new_shape) override;
-  ir::Shape getShape() const override;
 
 protected:
   ir::Layout _layout;
@@ -199,8 +192,6 @@ public:
 public:
   uint8_t *buffer() const override { return _buffer; }
 
-  bool is_constant() const override { return true; }
-  bool is_dynamic() const override { return false; }
   void set_dynamic() override
   {
     throw std::runtime_error("This tensor does not support changing dynamic");

@@ -16,8 +16,6 @@
 
 #include "TrainableExecutors.h"
 
-#include "../../backend/builtin/IOTensor.h"
-
 #include <misc/polymorphic_downcast.h>
 
 namespace onert
@@ -41,21 +39,18 @@ TrainableExecutor *TrainableExecutors::at(const ir::ModelIndex &,
   return _executors.at(subg_index).get();
 }
 
-uint32_t TrainableExecutors::inputSize() const { return entryExecutor()->getInputTensors().size(); }
+uint32_t TrainableExecutors::inputSize() const { return entryExecutor()->inputSize(); }
 
-uint32_t TrainableExecutors::outputSize() const
-{
-  return entryExecutor()->getOutputTensors().size();
-}
+uint32_t TrainableExecutors::outputSize() const { return entryExecutor()->outputSize(); }
 
 const ir::OperandInfo &TrainableExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getInputTensors().at(index.value())->orig_info();
+  return entryExecutor()->inputInfo(index.value());
 }
 
 const ir::OperandInfo &TrainableExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
+  return entryExecutor()->outputInfo(index.value());
 }
 
 void TrainableExecutors::execute(const ExecutionContext &ctx)

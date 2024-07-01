@@ -44,34 +44,6 @@ public:
     std::copy(data.begin(), data.end(), _data.begin());
   }
 
-  size_t total_size() const override
-  {
-    size_t total_size = _info.shape().num_elements();
-    total_size *= sizeOfDataType(data_type());
-    return total_size;
-  }
-
-  size_t calcOffset(const ir::Coordinates &coords) const override
-  {
-    const auto &shape = _info.shape();
-    std::vector<size_t> strides(shape.rank());
-
-    size_t stride = 1;
-    for (int32_t i = shape.rank() - 1; i >= 0; --i)
-    {
-      strides.at(i) = stride;
-      stride = stride * shape.dim(i);
-    }
-
-    size_t offset = 0;
-    for (int32_t i = 0; i < shape.rank(); ++i)
-    {
-      offset += (strides[i] * coords[i]);
-    }
-    offset *= sizeOfDataType(data_type());
-    return offset;
-  }
-
   uint8_t *buffer() const override
   {
     if (_data.size() != total_size())
@@ -83,10 +55,6 @@ public:
   template <typename T> const std::vector<T> &data() const { return _data; }
 
   ir::Layout layout() const override { return ir::Layout::NHWC; }
-  ir::DataType data_type() const override { return _info.typeInfo().type(); }
-
-  bool is_dynamic() const override { return false; }
-  Shape getShape() const override { return _info.shape(); }
 
 private:
   using ITensor::setShape;
@@ -113,34 +81,6 @@ public:
     std::copy(data.begin(), data.end(), _data.begin());
   }
 
-  size_t total_size() const override
-  {
-    size_t total_size = _info.shape().num_elements();
-    total_size *= sizeOfDataType(data_type());
-    return total_size;
-  }
-
-  size_t calcOffset(const ir::Coordinates &coords) const override
-  {
-    const auto &shape = _info.shape();
-    std::vector<size_t> strides(shape.rank());
-
-    size_t stride = 1;
-    for (int32_t i = shape.rank() - 1; i >= 0; --i)
-    {
-      strides.at(i) = stride;
-      stride = stride * shape.dim(i);
-    }
-
-    size_t offset = 0;
-    for (int32_t i = 0; i < shape.rank(); ++i)
-    {
-      offset += (strides[i] * coords[i]);
-    }
-    offset *= sizeOfDataType(data_type());
-    return offset;
-  }
-
   uint8_t *buffer() const override
   {
     if (_data.size() != total_size())
@@ -150,10 +90,6 @@ public:
   }
 
   ir::Layout layout() const override { return ir::Layout::NHWC; }
-  ir::DataType data_type() const override { return _info.typeInfo().type(); }
-
-  bool is_dynamic() const override { return false; }
-  Shape getShape() const override { return _info.shape(); }
 
 public:
   std::vector<ITensor *> optVars() override

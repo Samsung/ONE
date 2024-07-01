@@ -17,9 +17,11 @@
 #ifndef __ONERT_EXEC_EXECUTORS_H__
 #define __ONERT_EXEC_EXECUTORS_H__
 
+#include "IPermuteFunction.h"
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
-#include "IPermuteFunction.h"
+#include "../backend/builtin/EdgeTensor.h"
+#include "../backend/builtin/UserTensor.h"
 
 namespace std
 {
@@ -102,8 +104,6 @@ private:
     void optimize() override {}
   };
 
-  class EdgeTensor;
-
 private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>
     _executors;
@@ -130,7 +130,7 @@ private:
   // A: these tensors are currently created depending on the type of `to`
   // TODO Unify tensors with the same `from` tensor and same type
   // NOTE The incomplete type 'EdgeTensor' cannot be declared as unique_ptr.
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _edge_quant_tensors;
+  std::unordered_map<ir::IODesc, std::shared_ptr<backend::builtin::EdgeTensor>> _edge_quant_tensors;
 
   /**
    * @brief Tensors for edges between executors that are not related to type-aware quantization
@@ -139,7 +139,7 @@ private:
   // Q: Why is Key `from` IODesc
   // A: `from` can be connected to multiple `to`
   // NOTE The incomplete type 'EdgeTensor' cannot be declared as unique_ptr.
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _edge_tensors;
+  std::unordered_map<ir::IODesc, std::shared_ptr<backend::builtin::EdgeTensor>> _edge_tensors;
   /**
    * @brief Whether type-aware quantization layers for edges between executors are created
    *
@@ -155,11 +155,13 @@ private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
     _pkg_output_quant_layers;
   // Edge tensors of nnpkg inputs/outputs for type-aware quantization
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_input_quant_tensors;
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_output_quant_tensors;
+  std::unordered_map<ir::IODesc, std::shared_ptr<backend::builtin::EdgeTensor>>
+    _pkg_input_quant_tensors;
+  std::unordered_map<ir::IODesc, std::shared_ptr<backend::builtin::EdgeTensor>>
+    _pkg_output_quant_tensors;
   // IOTensors for user buffer
-  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>> _pkg_input_tensors;
-  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>> _pkg_output_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_input_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_output_tensors;
 };
 
 } // namespace exec
