@@ -9,6 +9,7 @@ set(SOURCES
         helpers/OMConfigureTISOKernel.cpp
         helpers/OMSpacesBatchesNDCommon.cpp
         helpers/OMPoolingCommon.cpp
+        helpers/OMArgCommon.cpp
         )
 
 # Add configure kernels

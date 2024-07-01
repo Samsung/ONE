@@ -18,6 +18,7 @@ set(SOURCES
         kernels/ConvolutionCommon.cpp
         kernels/MathCommon.cpp
         kernels/PoolingCommon.cpp
+        kernels/ArgCommon.cpp
         kernels/ReadKernelDataCommon.cpp
         kernels/ReshapeCommon.cpp
         kernels/SpacesBatchesNDCommon.cpp
