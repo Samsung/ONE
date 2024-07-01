@@ -234,6 +234,7 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
       loss_idx = index;
     }
   });
+  assert(loss_idx.valid()); // Should be loss op in trainable graph
 
   std::function<void(const ir::OperationIndex &, const ir::IOperation &)> dfs =
     [&](const ir::OperationIndex &index, const ir::IOperation &op) -> void {
