@@ -172,7 +172,7 @@ inline uint32_t size(OMDataType data_type)
     default:
       // TODO Support remaining data types.
       assert(false);
-      return UINT32_MAX; // Avoid compiler warning.
+      return 1; // Avoid compiler warning.
   }
 }
 

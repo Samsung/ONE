@@ -194,6 +194,7 @@ NNFW_STATUS nnfw_session::loadOptimizerInfo(const circle::ModelTraining *circle_
 NNFW_STATUS nnfw_session::loadLossInfo(const circle::ModelTraining *circle_model)
 {
   assert(circle_model != nullptr);
+  NNFW_RETURN_ERROR_IF_NULL(circle_model);
 
   const circle::LossFn circle_loss = circle_model->lossfn();
 
@@ -219,6 +220,7 @@ NNFW_STATUS nnfw_session::loadLossInfo(const circle::ModelTraining *circle_model
 NNFW_STATUS nnfw_session::loadTrainableOps(const circle::ModelTraining *circle_model, int num_ops)
 {
   assert(circle_model != nullptr);
+  NNFW_RETURN_ERROR_IF_NULL(circle_model);
 
   auto ops_list = circle_model->trainable_ops();
   if (ops_list != nullptr)
@@ -245,12 +247,22 @@ NNFW_STATUS nnfw_session::loadTrainingInfo(char *buf)
         continue;
       data = (model->buffers()->Get(metadata->buffer()))->data()->data();
     }
+    NNFW_RETURN_ERROR_IF_NULL(data);
+
     const circle::ModelTraining *traininfo_model =
       circle::GetModelTraining(static_cast<const void *>(data));
     _config.training_context.batch_size = traininfo_model->batch_size();
-    loadOptimizerInfo(traininfo_model);
-    loadLossInfo(traininfo_model);
-    loadTrainableOps(traininfo_model, num_ops);
+    NNFW_STATUS status = loadOptimizerInfo(traininfo_model);
+    if (status != NNFW_STATUS_NO_ERROR)
+      return status;
+
+    status = loadLossInfo(traininfo_model);
+    if (status != NNFW_STATUS_NO_ERROR)
+      return status;
+
+    status = loadTrainableOps(traininfo_model, num_ops);
+    if (status != NNFW_STATUS_NO_ERROR)
+      return status;
   }
   return NNFW_STATUS_NO_ERROR;
 }

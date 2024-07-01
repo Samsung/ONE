@@ -57,8 +57,8 @@ public:
   int32_t inputs_index[maxInputSize] = {-1};
   int32_t outputs_index[maxOutputSize] = {-1};
 
-  uint32_t outputs_num = -1;
-  uint32_t inputs_num = -1;
+  uint32_t outputs_num = 0;
+  uint32_t inputs_num = 0;
 
   const circle::Operator *first_operator = nullptr;
 };

@@ -50,7 +50,9 @@ OMStatus onert_micro::execute::execute_kernel_CircleFloorDiv(const OMExecuteArgs
       // Check the denominator
       for (int i = 0; i < input_shape2.flatSize(); ++i)
       {
-        utils::checkCondition(core::utils::castInputData<float>(input_data2)[i] != 0);
+        status = utils::checkCondition(core::utils::castInputData<float>(input_data2)[i] != 0);
+        if (status != Ok)
+          return status;
       }
       // check that input and output dimensions are equal
       if (input_shape1 == input_shape2)
