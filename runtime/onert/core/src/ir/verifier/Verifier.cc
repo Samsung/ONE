@@ -27,56 +27,56 @@ namespace
 using namespace onert::ir;
 
 std::set<train::TrainingOperationIndex>
-extractOperations(const train::DefUseChains &training_defuses)
+extractOperations(const train::UseDefChains &training_usedefs)
 {
-  // Extract TrainingOperations from training_defuses
+  // Extract TrainingOperations from training_usedefs
   std::set<train::TrainingOperationIndex> operations;
-  for (const auto &pair : training_defuses)
+  for (const auto &pair : training_usedefs)
   {
     const auto &output = pair.first;
-    const auto &defuses = pair.second;
-    const auto &node_index = defuses.getTrainingDef();
-    if (node_index.valid() && output.valid())
-      operations.insert(node_index);
+    const auto &usedefs = pair.second;
+    const auto &defs = usedefs.getTrainingDefs();
+    for (const auto &node_index : defs)
+      if (node_index.valid() && output.valid())
+        operations.insert(node_index);
   }
 
   return operations;
 }
 
 std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
-extractNodeInputs(const train::DefUseChains &training_defuses)
+extractNodeInputs(const train::UseDefChains &training_usedefs)
 {
-  // Extract inputs of TrainingOperations from training_defuses
+  // Extract inputs of TrainingOperations from training_usedefs
   std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
     node_inputs;
-  for (const auto &pair : training_defuses)
+  for (const auto &pair : training_usedefs)
   {
     const auto &input = pair.first;
-    const auto &defuses = pair.second;
-    const auto &uses = defuses.getTrainingUses();
+    const auto &usedefs = pair.second;
+    const auto &uses = usedefs.getTrainingUses();
     for (const auto &node_index : uses)
-    {
       if (node_index.valid() && input.valid())
         node_inputs[node_index].emplace_back(input);
-    }
   }
 
   return node_inputs;
 }
 
 std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
-extractNodeOutputs(const train::DefUseChains &training_defuses)
+extractNodeOutputs(const train::UseDefChains &training_usedefs)
 {
-  // Extract outputs of TrainingOperations from training_defuses
+  // Extract outputs of TrainingOperations from training_usedefs
   std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
     node_outputs;
-  for (const auto &pair : training_defuses)
+  for (const auto &pair : training_usedefs)
   {
     const auto &output = pair.first;
-    const auto &defuses = pair.second;
-    const auto &node_index = defuses.getTrainingDef();
-    if (node_index.valid() && output.valid())
-      node_outputs[node_index].emplace_back(output);
+    const auto &usedefs = pair.second;
+    const auto &defs = usedefs.getTrainingDefs();
+    for (const auto &node_index : defs)
+      if (node_index.valid() && output.valid())
+        node_outputs[node_index].emplace_back(output);
   }
 
   return node_outputs;
@@ -131,11 +131,11 @@ bool DAGChecker::verify(const Graph &graph) const noexcept
   return !cyclic;
 }
 
-bool DAGChecker::verify(const train::DefUseChains &training_defuses) const noexcept
+bool DAGChecker::verify(const train::UseDefChains &training_usedefs) const noexcept
 {
   bool cyclic = false;
-  const auto operations = extractOperations(training_defuses);
-  auto outputs_map = extractNodeOutputs(training_defuses);
+  const auto operations = extractOperations(training_usedefs);
+  auto outputs_map = extractNodeOutputs(training_usedefs);
 
   std::unordered_map<train::TrainingOperationIndex, bool> visited;
   for (const auto &node_index : operations)
@@ -154,7 +154,7 @@ bool DAGChecker::verify(const train::DefUseChains &training_defuses) const noexc
     auto &node_outputs = outputs_map[index];
     for (const auto &output : node_outputs)
     {
-      const auto &uses = training_defuses.at(output).getTrainingUses();
+      const auto &uses = training_usedefs.at(output).getTrainingUses();
       for (const auto &use : uses)
       {
         dfs_recursive(use);
@@ -227,20 +227,20 @@ bool EdgeChecker::verify(const Graph &graph) const noexcept
   return errors == 0;
 }
 
-bool EdgeChecker::verify(const train::DefUseChains &training_defuses) const noexcept
+bool EdgeChecker::verify(const train::UseDefChains &training_usedefs) const noexcept
 {
-  const auto operations = extractOperations(training_defuses);
-  auto inputs_map = extractNodeInputs(training_defuses);
-  auto outputs_map = extractNodeOutputs(training_defuses);
+  const auto operations = extractOperations(training_usedefs);
+  auto inputs_map = extractNodeInputs(training_usedefs);
+  auto outputs_map = extractNodeOutputs(training_usedefs);
   uint32_t errors = 0;
   for (const auto &index : operations)
   {
     const auto &node_inputs = inputs_map[index];
-    for (auto &&operand_index : node_inputs)
+    for (const auto &operand_index : node_inputs)
     {
       try
       {
-        const auto &uses = training_defuses.at(operand_index).getTrainingUses();
+        const auto &uses = training_usedefs.at(operand_index).getTrainingUses();
         bool operand_has_use = (uses.find(index) != uses.end());
         if (!operand_has_use)
         {
@@ -259,12 +259,13 @@ bool EdgeChecker::verify(const train::DefUseChains &training_defuses) const noex
     }
 
     const auto &node_outputs = outputs_map[index];
-    for (auto &&operand_index : node_outputs)
+    for (const auto &operand_index : node_outputs)
     {
       try
       {
-        const auto &defuses = training_defuses.at(operand_index);
-        if (defuses.getTrainingDef() != index)
+        const auto &defs = training_usedefs.at(operand_index).getTrainingDefs();
+        bool operand_has_def = (defs.find(index) != defs.end());
+        if (!operand_has_def)
         {
           VERBOSE(EdgeChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
                                << operand_index << " to Operation " << index << std::endl;

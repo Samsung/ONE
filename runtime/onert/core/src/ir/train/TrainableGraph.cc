@@ -16,7 +16,7 @@
 
 #include "ir/train/TrainableGraph.h"
 
-#include "DefUseInitializer.h"
+#include "UseDefInitializer.h"
 #include "util/Utils.h"
 #include "util/Set.h"
 #include "../verifier/Verifier.h"
@@ -120,7 +120,7 @@ void TrainableGraph::verify(void) const
     }
   });
 
-  verifyTrainingDefUses();
+  verifyTrainingUseDefs();
 }
 
 void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
@@ -140,7 +140,7 @@ void TrainableGraph::enableBackward(const OperationIndex &index)
   op->enableBackward();
 }
 
-void TrainableGraph::setTrainingDefUses(const DefUseChains &training_defuses)
+void TrainableGraph::setTrainingUseDefs(const UseDefChains &training_defuses)
 {
   _training_defuses.clear();
   // TODO Replace this loop with `std::unordered_map::insert_range` since C++23
@@ -206,7 +206,7 @@ void TrainableGraph::validateBackwardTopologicalOrder(
   validateTopologicalOrder(order, false);
 }
 
-void TrainableGraph::verifyTrainingDefUses() const
+void TrainableGraph::verifyTrainingUseDefs() const
 {
   if (!verifier::DAGChecker().verify(_training_defuses))
     throw std::runtime_error{"The training def-uses is cyclic."};
@@ -306,14 +306,14 @@ OperandIndex TrainableGraph::getLossIndex(const IOIndex &pred_ioind) const
   return (itr == _losses.end()) ? OperandIndex{} : itr->second;
 }
 
-void TrainableGraph::initializeTrainingDefUses()
+void TrainableGraph::initializeTrainingUseDefs()
 {
   _graph.verify();
 
   // Initialize training defuses
-  DefUseInitializer{*this}();
+  UseDefInitializer{*this}();
 
-  verifyTrainingDefUses();
+  verifyTrainingUseDefs();
 }
 
 } // namespace train

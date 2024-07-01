@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_DEFUSECHAINS_H__
-#define __ONERT_IR_TRAIN_DEFUSECHAINS_H__
+#ifndef __ONERT_IR_TRAIN_USEDEFCHAINS_H__
+#define __ONERT_IR_TRAIN_USEDEFCHAINS_H__
 
-#include "ir/train/DefUseChain.h"
+#include "ir/train/UseDefChain.h"
 #include "ir/train/Index.h"
 #include "util/ObjectManager.h"
 
@@ -28,10 +28,10 @@ namespace ir
 namespace train
 {
 
-using DefUseChains = std::unordered_map<TrainingOperandIndex, DefUseChain>;
+using UseDefChains = std::unordered_map<TrainingOperandIndex, UseDefChain>;
 
 } // namespace train
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_DEFUSECHAINS_H__
+#endif // __ONERT_IR_TRAIN_USEDEFCHAINS_H__

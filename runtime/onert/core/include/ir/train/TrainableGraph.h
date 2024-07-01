@@ -21,7 +21,7 @@
 #include <unordered_map>
 
 #include "ir/Graph.h"
-#include "ir/train/DefUseChains.h"
+#include "ir/train/UseDefChains.h"
 #include "ir/train/ITrainableOperation.h"
 
 namespace onert
@@ -111,7 +111,7 @@ public:
   void setOutputs(OperandIndexSequence outputs,
                   std::unordered_map<std::string, IOIndex> name_to_output);
   void enableBackward(const OperationIndex &index);
-  void setTrainingDefUses(const DefUseChains &training_defuses);
+  void setTrainingUseDefs(const UseDefChains &training_defuses);
 
   // Accessors
 public:
@@ -129,13 +129,13 @@ public:
 
 public:
   const ITrainableOperation &operation(OperationIndex index) const;
-  const DefUseChains &trainingDefUses() const { return _training_defuses; }
+  const UseDefChains &trainingUseDefs() const { return _training_defuses; }
 
 private:
   void validateTopologicalOrder(std::vector<ir::OperationIndex> order, bool is_forward) const;
   void validateForwardTopologicalOrder(const std::vector<ir::OperationIndex> &order) const;
   void validateBackwardTopologicalOrder(const std::vector<ir::OperationIndex> &order) const;
-  void verifyTrainingDefUses() const;
+  void verifyTrainingUseDefs() const;
 
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
@@ -146,12 +146,12 @@ public:
   truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const;
 
 public:
-  void initializeTrainingDefUses();
+  void initializeTrainingUseDefs();
 
 private:
   Graph _graph;
   Operands _backward_operands;
-  DefUseChains _training_defuses;
+  UseDefChains _training_defuses;
 
   std::unordered_map<IOIndex, OperandIndex> _losses;
 };

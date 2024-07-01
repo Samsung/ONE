@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "DefUseInitializer.h"
+#include "UseDefInitializer.h"
 
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/Operations.Include.h"
@@ -74,25 +74,24 @@ OperationIndex addLossOperation(train::TrainableGraph &tgraph, const OperandInde
   return tgraph.addOperation(std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}));
 }
 
-train::DefUseChain createDefUseChain(const Operand &operand,
+train::UseDefChain createUseDefChain(const Operand &operand,
                                      std::vector<train::TrainingOperationIndex> uses,
-                                     std::vector<train::TrainingOperationIndex> def)
+                                     std::vector<train::TrainingOperationIndex> defs)
 {
-  train::DefUseChain defuses{operand};
+  train::UseDefChain usedefs{operand};
 
   for (const auto &use : uses)
-    defuses.insertTrainingUse(use);
+    usedefs.insertTrainingUse(use);
 
-  assert(def.size() <= 1);
-  if (!def.empty())
-    defuses.setTrainingDef(def.at(0));
+  for (const auto &def : defs)
+    usedefs.insertTrainingDef(def);
 
-  return defuses;
+  return usedefs;
 }
 
 } // namespace
 
-TEST(DefUseInitializer, one_op)
+TEST(UseDefInitializer, one_op)
 {
   // BinaryArtihmetic - Add
   {
@@ -139,7 +138,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -152,14 +151,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -168,47 +167,47 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_ba_input1_def{
       forwarding_fc_index};
     const auto expected_forwarding_ba_input1 =
-      createDefUseChain(tgraph.operands().at(ba_input1), expected_forwarding_ba_input1_uses,
+      createUseDefChain(tgraph.operands().at(ba_input1), expected_forwarding_ba_input1_uses,
                         expected_forwarding_ba_input1_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_ba_input2_uses{
       forwarding_ba_index, backwarding_ba_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_ba_input2_def{};
     const auto expected_forwarding_ba_input2 =
-      createDefUseChain(tgraph.operands().at(ba_input2), expected_forwarding_ba_input2_uses,
+      createUseDefChain(tgraph.operands().at(ba_input2), expected_forwarding_ba_input2_uses,
                         expected_forwarding_ba_input2_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{forwarding_ba_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_ba_input1_uses{
@@ -216,13 +215,13 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_ba_input1_def{
       backwarding_ba_index};
     const auto expected_backwarding_ba_input1 =
-      createDefUseChain(tgraph.operands().at(ba_input1), expected_backwarding_ba_input1_uses,
+      createUseDefChain(tgraph.operands().at(ba_input1), expected_backwarding_ba_input1_uses,
                         expected_backwarding_ba_input1_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_ba_input2_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_ba_input2_def{};
     const auto expected_backwarding_ba_input2 =
-      createDefUseChain(tgraph.operands().at(ba_input2), expected_backwarding_ba_input2_uses,
+      createUseDefChain(tgraph.operands().at(ba_input2), expected_backwarding_ba_input2_uses,
                         expected_backwarding_ba_input2_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -230,7 +229,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -238,47 +237,47 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_ba_input1 ==
-                training_defuses.at(train::TrainingOperandIndex{ba_input1, true}));
+                training_usedefs.at(train::TrainingOperandIndex{ba_input1, true}));
     EXPECT_TRUE(expected_forwarding_ba_input2 ==
-                training_defuses.at(train::TrainingOperandIndex{ba_input2, true}));
+                training_usedefs.at(train::TrainingOperandIndex{ba_input2, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_ba_input1 ==
-                training_defuses.at(train::TrainingOperandIndex{ba_input1, false}));
+                training_usedefs.at(train::TrainingOperandIndex{ba_input1, false}));
     EXPECT_TRUE(expected_backwarding_ba_input2 ==
-                training_defuses.at(train::TrainingOperandIndex{ba_input2, false}));
+                training_usedefs.at(train::TrainingOperandIndex{ba_input2, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // Conv2D
@@ -314,7 +313,7 @@ TEST(DefUseInitializer, one_op)
       addConv2DOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_conv2d_index{conv2d_index, true};
@@ -325,14 +324,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{
       forwarding_conv2d_index, backwarding_conv2d_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_conv2d_index, backwarding_conv2d_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -341,34 +340,34 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{
       forwarding_conv2d_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{
       backwarding_conv2d_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_conv2d_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -376,7 +375,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -384,39 +383,39 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // DepthwiseConv2D
@@ -452,7 +451,7 @@ TEST(DefUseInitializer, one_op)
       addDepthwiseConv2DOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_depthwise_conv2d_index{depthwise_conv2d_index, true};
@@ -463,14 +462,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{
       forwarding_depthwise_conv2d_index, backwarding_depthwise_conv2d_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_depthwise_conv2d_index, backwarding_depthwise_conv2d_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -479,34 +478,34 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{
       forwarding_depthwise_conv2d_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{
       backwarding_depthwise_conv2d_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_depthwise_conv2d_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -514,7 +513,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -522,39 +521,39 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // ElementwiseActivation
@@ -600,7 +599,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -613,14 +612,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -629,40 +628,40 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_ea_input_def{
       forwarding_fc_index};
     const auto expected_forwarding_ea_input =
-      createDefUseChain(tgraph.operands().at(ea_input), expected_forwarding_ea_input_uses,
+      createUseDefChain(tgraph.operands().at(ea_input), expected_forwarding_ea_input_uses,
                         expected_forwarding_ea_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
       forwarding_loss_index, backwarding_ea_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{forwarding_ea_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_ea_input_uses{
@@ -670,7 +669,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_ea_input_def{
       backwarding_ea_index};
     const auto expected_backwarding_ea_input =
-      createDefUseChain(tgraph.operands().at(ea_input), expected_backwarding_ea_input_uses,
+      createUseDefChain(tgraph.operands().at(ea_input), expected_backwarding_ea_input_uses,
                         expected_backwarding_ea_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -678,7 +677,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -686,43 +685,43 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_ea_input ==
-                training_defuses.at(train::TrainingOperandIndex{ea_input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{ea_input, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_ea_input ==
-                training_defuses.at(train::TrainingOperandIndex{ea_input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{ea_input, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // FullyConnected
@@ -758,7 +757,7 @@ TEST(DefUseInitializer, one_op)
       addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -769,14 +768,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -784,33 +783,33 @@ TEST(DefUseInitializer, one_op)
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{forwarding_fc_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -818,7 +817,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -826,39 +825,39 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // Pad
@@ -903,7 +902,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -916,14 +915,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -932,47 +931,47 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_pad_input_def{
       forwarding_fc_index};
     const auto expected_forwarding_pad_input =
-      createDefUseChain(tgraph.operands().at(pad_input), expected_forwarding_pad_input_uses,
+      createUseDefChain(tgraph.operands().at(pad_input), expected_forwarding_pad_input_uses,
                         expected_forwarding_pad_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_padding_uses{
       forwarding_pad_index, backwarding_pad_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_padding_def{};
     const auto expected_forwarding_padding =
-      createDefUseChain(tgraph.operands().at(padding), expected_forwarding_padding_uses,
+      createUseDefChain(tgraph.operands().at(padding), expected_forwarding_padding_uses,
                         expected_forwarding_padding_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{forwarding_pad_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_pad_input_uses{
@@ -980,13 +979,13 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_pad_input_def{
       backwarding_pad_index};
     const auto expected_backwarding_pad_input =
-      createDefUseChain(tgraph.operands().at(pad_input), expected_backwarding_pad_input_uses,
+      createUseDefChain(tgraph.operands().at(pad_input), expected_backwarding_pad_input_uses,
                         expected_backwarding_pad_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_padding_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_padding_def{};
     const auto expected_backwarding_padding =
-      createDefUseChain(tgraph.operands().at(padding), expected_backwarding_padding_uses,
+      createUseDefChain(tgraph.operands().at(padding), expected_backwarding_padding_uses,
                         expected_backwarding_padding_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -994,7 +993,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -1002,47 +1001,47 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_pad_input ==
-                training_defuses.at(train::TrainingOperandIndex{pad_input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{pad_input, true}));
     EXPECT_TRUE(expected_forwarding_padding ==
-                training_defuses.at(train::TrainingOperandIndex{padding, true}));
+                training_usedefs.at(train::TrainingOperandIndex{padding, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_pad_input ==
-                training_defuses.at(train::TrainingOperandIndex{pad_input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{pad_input, false}));
     EXPECT_TRUE(expected_backwarding_padding ==
-                training_defuses.at(train::TrainingOperandIndex{padding, false}));
+                training_usedefs.at(train::TrainingOperandIndex{padding, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // Pool2D - Max
@@ -1091,7 +1090,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1104,14 +1103,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -1120,7 +1119,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_pool_input_def{
       forwarding_fc_index};
     const auto expected_forwarding_pool_input =
-      createDefUseChain(tgraph.operands().at(pool_input), expected_forwarding_pool_input_uses,
+      createUseDefChain(tgraph.operands().at(pool_input), expected_forwarding_pool_input_uses,
                         expected_forwarding_pool_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
@@ -1128,33 +1127,33 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{
       forwarding_pool_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_pool_input_uses{
@@ -1162,7 +1161,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_pool_input_def{
       backwarding_pool_index};
     const auto expected_backwarding_pool_input =
-      createDefUseChain(tgraph.operands().at(pool_input), expected_backwarding_pool_input_uses,
+      createUseDefChain(tgraph.operands().at(pool_input), expected_backwarding_pool_input_uses,
                         expected_backwarding_pool_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -1170,7 +1169,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -1178,43 +1177,43 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_pool_input ==
-                training_defuses.at(train::TrainingOperandIndex{pool_input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{pool_input, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_pool_input ==
-                training_defuses.at(train::TrainingOperandIndex{pool_input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{pool_input, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // Reduce - Mean
@@ -1263,7 +1262,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1276,14 +1275,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -1292,12 +1291,12 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_mean_input_def{
       forwarding_fc_index};
     const auto expected_forwarding_mean_input =
-      createDefUseChain(tgraph.operands().at(mean_input), expected_forwarding_mean_input_uses,
+      createUseDefChain(tgraph.operands().at(mean_input), expected_forwarding_mean_input_uses,
                         expected_forwarding_mean_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_axis_uses{forwarding_mean_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_axis_def{};
-    const auto expected_forwarding_axis = createDefUseChain(
+    const auto expected_forwarding_axis = createUseDefChain(
       tgraph.operands().at(axis), expected_forwarding_axis_uses, expected_forwarding_axis_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
@@ -1305,33 +1304,33 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{
       forwarding_mean_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_mean_input_uses{
@@ -1339,12 +1338,12 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_mean_input_def{
       backwarding_mean_index};
     const auto expected_backwarding_mean_input =
-      createDefUseChain(tgraph.operands().at(mean_input), expected_backwarding_mean_input_uses,
+      createUseDefChain(tgraph.operands().at(mean_input), expected_backwarding_mean_input_uses,
                         expected_backwarding_mean_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_axis_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_axis_def{};
-    const auto expected_backwarding_axis = createDefUseChain(
+    const auto expected_backwarding_axis = createUseDefChain(
       tgraph.operands().at(axis), expected_backwarding_axis_uses, expected_backwarding_axis_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -1352,7 +1351,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -1360,47 +1359,47 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_mean_input ==
-                training_defuses.at(train::TrainingOperandIndex{mean_input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{mean_input, true}));
     EXPECT_TRUE(expected_forwarding_axis ==
-                training_defuses.at(train::TrainingOperandIndex{axis, true}));
+                training_usedefs.at(train::TrainingOperandIndex{axis, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_mean_input ==
-                training_defuses.at(train::TrainingOperandIndex{mean_input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{mean_input, false}));
     EXPECT_TRUE(expected_backwarding_axis ==
-                training_defuses.at(train::TrainingOperandIndex{axis, false}));
+                training_usedefs.at(train::TrainingOperandIndex{axis, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // Reshape
@@ -1448,7 +1447,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1461,14 +1460,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -1477,13 +1476,13 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_reshape_input_def{
       forwarding_fc_index};
     const auto expected_forwarding_reshape_input =
-      createDefUseChain(tgraph.operands().at(reshape_input), expected_forwarding_reshape_input_uses,
+      createUseDefChain(tgraph.operands().at(reshape_input), expected_forwarding_reshape_input_uses,
                         expected_forwarding_reshape_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_shape_uses{
       forwarding_reshape_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_shape_def{};
-    const auto expected_forwarding_axis = createDefUseChain(
+    const auto expected_forwarding_axis = createUseDefChain(
       tgraph.operands().at(shape), expected_forwarding_shape_uses, expected_forwarding_shape_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
@@ -1491,46 +1490,46 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{
       forwarding_reshape_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_reshape_input_uses{
       backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_backwarding_reshape_input_def{
       backwarding_reshape_index};
-    const auto expected_backwarding_reshape_input = createDefUseChain(
+    const auto expected_backwarding_reshape_input = createUseDefChain(
       tgraph.operands().at(reshape_input), expected_backwarding_reshape_input_uses,
       expected_backwarding_reshape_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_shape_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_shape_def{};
-    const auto expected_backwarding_axis = createDefUseChain(
+    const auto expected_backwarding_axis = createUseDefChain(
       tgraph.operands().at(shape), expected_backwarding_shape_uses, expected_backwarding_shape_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
@@ -1538,7 +1537,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -1546,47 +1545,47 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_reshape_input ==
-                training_defuses.at(train::TrainingOperandIndex{reshape_input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{reshape_input, true}));
     EXPECT_TRUE(expected_forwarding_axis ==
-                training_defuses.at(train::TrainingOperandIndex{shape, true}));
+                training_usedefs.at(train::TrainingOperandIndex{shape, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_reshape_input ==
-                training_defuses.at(train::TrainingOperandIndex{reshape_input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{reshape_input, false}));
     EXPECT_TRUE(expected_backwarding_axis ==
-                training_defuses.at(train::TrainingOperandIndex{shape, false}));
+                training_usedefs.at(train::TrainingOperandIndex{shape, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 
   // Softmax
@@ -1630,7 +1629,7 @@ TEST(DefUseInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingDefUses());
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1643,14 +1642,14 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
                                                                               backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
-    const auto expected_forwarding_input = createDefUseChain(
+    const auto expected_forwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
       forwarding_fc_index, backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
     const auto expected_forwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
                         expected_forwarding_weights_def);
 
     // forwarding output of FC is not used in backwarding if activation is none
@@ -1659,7 +1658,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_softmax_input_def{
       forwarding_fc_index};
     const auto expected_forwarding_softmax_input =
-      createDefUseChain(tgraph.operands().at(softmax_input), expected_forwarding_softmax_input_uses,
+      createUseDefChain(tgraph.operands().at(softmax_input), expected_forwarding_softmax_input_uses,
                         expected_forwarding_softmax_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
@@ -1667,40 +1666,40 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{
       forwarding_softmax_index};
     const auto expected_forwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
                         expected_forwarding_y_pred_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
       forwarding_loss_index, backwarding_loss_index};
     std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
     const auto expected_forwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
                         expected_forwarding_y_true_def);
 
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
       forwarding_loss_index};
     const auto expected_forwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
                         expected_forwarding_output_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
-    const auto expected_backwarding_input = createDefUseChain(
+    const auto expected_backwarding_input = createUseDefChain(
       tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
       backwarding_fc_index};
     const auto expected_backwarding_weights =
-      createDefUseChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
                         expected_backwarding_weights_def);
 
     std::vector<train::TrainingOperationIndex> expected_backwarding_softmax_input_uses{
       backwarding_fc_index};
     std::vector<train::TrainingOperationIndex> expected_backwarding_softmax_input_def{
       backwarding_softmax_index};
-    const auto expected_backwarding_softmax_input = createDefUseChain(
+    const auto expected_backwarding_softmax_input = createUseDefChain(
       tgraph.operands().at(softmax_input), expected_backwarding_softmax_input_uses,
       expected_backwarding_softmax_input_def);
 
@@ -1709,7 +1708,7 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_pred =
-      createDefUseChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
                         expected_backwarding_y_pred_def);
 
     // backwarding_y_true is not defined and not used by any operation
@@ -1717,47 +1716,245 @@ TEST(DefUseInitializer, one_op)
     std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
       backwarding_loss_index};
     const auto expected_backwarding_y_true =
-      createDefUseChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
                         expected_backwarding_y_true_def);
 
     // backwarding_output is not defined and not used by any operation
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
     std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
     const auto expected_backwarding_output =
-      createDefUseChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
                         expected_backwarding_output_def);
 
-    const auto &training_defuses = tgraph.trainingDefUses();
+    const auto &training_usedefs = tgraph.trainingUseDefs();
 
     EXPECT_TRUE(expected_forwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
     EXPECT_TRUE(expected_forwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, true}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
     EXPECT_TRUE(expected_forwarding_softmax_input ==
-                training_defuses.at(train::TrainingOperandIndex{softmax_input, true}));
+                training_usedefs.at(train::TrainingOperandIndex{softmax_input, true}));
     EXPECT_TRUE(expected_forwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
     EXPECT_TRUE(expected_forwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, true}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
     EXPECT_TRUE(expected_forwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, true}));
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
 
     EXPECT_TRUE(expected_backwarding_input ==
-                training_defuses.at(train::TrainingOperandIndex{input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
     EXPECT_TRUE(expected_backwarding_weights ==
-                training_defuses.at(train::TrainingOperandIndex{weights, false}));
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
     EXPECT_TRUE(expected_backwarding_softmax_input ==
-                training_defuses.at(train::TrainingOperandIndex{softmax_input, false}));
+                training_usedefs.at(train::TrainingOperandIndex{softmax_input, false}));
     EXPECT_TRUE(expected_backwarding_y_pred ==
-                training_defuses.at(train::TrainingOperandIndex{y_pred, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
     EXPECT_TRUE(expected_backwarding_y_true ==
-                training_defuses.at(train::TrainingOperandIndex{y_true, false}));
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
     EXPECT_TRUE(expected_backwarding_output ==
-                training_defuses.at(train::TrainingOperandIndex{output, false}));
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
+  }
+
+  // Branch ops
+  {
+    train::TrainableGraph tgraph;
+
+    Shape shape{2, 2};
+    TypeInfo type{DataType::FLOAT32};
+    std::vector<float> data(4, 0.f);
+
+    /*
+     (input) ⎼[FC]⎼> (fc_out) ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼[BA]⎼> (y_pred)
+             ╱               ╲               ╱               ╲
+    (weights)                 [EA]⎼> (ea_out)                 [Loss]⎼> (output)
+                                                             ╱
+                                                     (y_true)
+    */
+
+    const auto input = tgraph.addOperand(shape, type);
+    const auto weights = tgraph.addOperand(shape, type);
+    const auto fc_out = tgraph.addOperand(shape, type);
+    const auto ea_out = tgraph.addOperand(shape, type);
+    const auto y_pred = tgraph.addOperand(shape, type);
+    const auto y_true = tgraph.addOperand(shape, type);
+    const auto output = tgraph.addOperand(shape, type);
+
+    tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+
+    tgraph.addInput({input});
+    tgraph.addInput({y_true});
+    tgraph.addOutput({output});
+
+    const auto fc_index =
+      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {fc_out});
+
+    operation::ElementwiseActivation::Param ea_param;
+    ea_param.op_type = operation::ElementwiseActivation::Type::RELU;
+    ea_param.alpha = std::numeric_limits<float>::infinity();
+    ea_param.beta == 0.f;
+    const auto ea_op = operation::ElementwiseActivation({fc_out}, {ea_out}, ea_param);
+    const auto ea_index =
+      tgraph.addOperation(std::make_unique<train::operation::ElementwiseActivation>(ea_op));
+
+    operation::BinaryArithmetic::Param ba_param;
+    ba_param.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+    ba_param.activation = Activation::NONE;
+    const auto ba_op = operation::BinaryArithmetic({fc_out, ea_out}, {y_pred}, ba_param);
+    const auto ba_index =
+      tgraph.addOperation(std::make_unique<train::operation::BinaryArithmetic>(ba_op));
+
+    const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.verify());
+
+    train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
+    train::TrainingOperationIndex forwarding_ea_index{ea_index, true};
+    train::TrainingOperationIndex forwarding_ba_index{ba_index, true};
+    train::TrainingOperationIndex forwarding_loss_index{loss_index, true};
+    train::TrainingOperationIndex backwarding_fc_index{fc_index, false};
+    train::TrainingOperationIndex backwarding_ea_index{ea_index, false};
+    train::TrainingOperationIndex backwarding_ba_index{ba_index, false};
+    train::TrainingOperationIndex backwarding_loss_index{loss_index, false};
+
+    std::vector<train::TrainingOperationIndex> expected_forwarding_input_uses{forwarding_fc_index,
+                                                                              backwarding_fc_index};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_input_def{};
+    const auto expected_forwarding_input = createUseDefChain(
+      tgraph.operands().at(input), expected_forwarding_input_uses, expected_forwarding_input_def);
+
+    std::vector<train::TrainingOperationIndex> expected_forwarding_weights_uses{
+      forwarding_fc_index, backwarding_fc_index};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_weights_def{};
+    const auto expected_forwarding_weights =
+      createUseDefChain(tgraph.operands().at(weights), expected_forwarding_weights_uses,
+                        expected_forwarding_weights_def);
+
+    // forwarding output of FC is not used in backwarding if activation is none
+    std::vector<train::TrainingOperationIndex> expected_forwarding_fc_out_uses{
+      forwarding_ea_index, forwarding_ba_index, backwarding_ba_index};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_fc_out_def{forwarding_fc_index};
+    const auto expected_forwarding_fc_out =
+      createUseDefChain(tgraph.operands().at(fc_out), expected_forwarding_fc_out_uses,
+                        expected_forwarding_fc_out_def);
+
+    std::vector<train::TrainingOperationIndex> expected_forwarding_ea_out_uses{
+      forwarding_ba_index, backwarding_ea_index, backwarding_ba_index};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_ea_out_def{forwarding_ea_index};
+    const auto expected_forwarding_ea_out =
+      createUseDefChain(tgraph.operands().at(ea_out), expected_forwarding_ea_out_uses,
+                        expected_forwarding_ea_out_def);
+
+    std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_uses{
+      forwarding_loss_index, backwarding_loss_index};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_y_pred_def{forwarding_ba_index};
+    const auto expected_forwarding_y_pred =
+      createUseDefChain(tgraph.operands().at(y_pred), expected_forwarding_y_pred_uses,
+                        expected_forwarding_y_pred_def);
+
+    std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_uses{
+      forwarding_loss_index, backwarding_loss_index};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_y_true_def{};
+    const auto expected_forwarding_y_true =
+      createUseDefChain(tgraph.operands().at(y_true), expected_forwarding_y_true_uses,
+                        expected_forwarding_y_true_def);
+
+    std::vector<train::TrainingOperationIndex> expected_forwarding_output_uses{};
+    std::vector<train::TrainingOperationIndex> expected_forwarding_output_def{
+      forwarding_loss_index};
+    const auto expected_forwarding_output =
+      createUseDefChain(tgraph.operands().at(output), expected_forwarding_output_uses,
+                        expected_forwarding_output_def);
+
+    std::vector<train::TrainingOperationIndex> expected_backwarding_input_uses{};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_input_def{backwarding_fc_index};
+    const auto expected_backwarding_input = createUseDefChain(
+      tgraph.operands().at(input), expected_backwarding_input_uses, expected_backwarding_input_def);
+
+    std::vector<train::TrainingOperationIndex> expected_backwarding_weights_uses{};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_weights_def{
+      backwarding_fc_index};
+    const auto expected_backwarding_weights =
+      createUseDefChain(tgraph.operands().at(weights), expected_backwarding_weights_uses,
+                        expected_backwarding_weights_def);
+
+    std::vector<train::TrainingOperationIndex> expected_backwarding_fc_out_uses{
+      backwarding_fc_index};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_fc_out_def{
+      backwarding_ea_index, backwarding_ba_index};
+    const auto expected_backwarding_fc_out =
+      createUseDefChain(tgraph.operands().at(fc_out), expected_backwarding_fc_out_uses,
+                        expected_backwarding_fc_out_def);
+
+    std::vector<train::TrainingOperationIndex> expected_backwarding_ea_out_uses{
+      backwarding_ea_index};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_ea_out_def{
+      backwarding_ba_index};
+    const auto expected_backwarding_ea_out =
+      createUseDefChain(tgraph.operands().at(ea_out), expected_backwarding_ea_out_uses,
+                        expected_backwarding_ea_out_def);
+
+    std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_uses{
+      backwarding_ba_index};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_y_pred_def{
+      backwarding_loss_index};
+    const auto expected_backwarding_y_pred =
+      createUseDefChain(tgraph.operands().at(y_pred), expected_backwarding_y_pred_uses,
+                        expected_backwarding_y_pred_def);
+
+    // backwarding_y_true is not defined and not used by any operation
+    std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_uses{};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_y_true_def{
+      backwarding_loss_index};
+    const auto expected_backwarding_y_true =
+      createUseDefChain(tgraph.operands().at(y_true), expected_backwarding_y_true_uses,
+                        expected_backwarding_y_true_def);
+
+    // backwarding_output is not defined and not used by any operation
+    std::vector<train::TrainingOperationIndex> expected_backwarding_output_uses{};
+    std::vector<train::TrainingOperationIndex> expected_backwarding_output_def{};
+    const auto expected_backwarding_output =
+      createUseDefChain(tgraph.operands().at(output), expected_backwarding_output_uses,
+                        expected_backwarding_output_def);
+
+    const auto &training_usedefs = tgraph.trainingUseDefs();
+
+    const auto &usedefs = training_usedefs.at(train::TrainingOperandIndex{ea_out, true});
+
+    EXPECT_TRUE(expected_forwarding_input ==
+                training_usedefs.at(train::TrainingOperandIndex{input, true}));
+    EXPECT_TRUE(expected_forwarding_weights ==
+                training_usedefs.at(train::TrainingOperandIndex{weights, true}));
+    EXPECT_TRUE(expected_forwarding_fc_out ==
+                training_usedefs.at(train::TrainingOperandIndex{fc_out, true}));
+    EXPECT_TRUE(expected_forwarding_ea_out ==
+                training_usedefs.at(train::TrainingOperandIndex{ea_out, true}));
+    EXPECT_TRUE(expected_forwarding_y_pred ==
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, true}));
+    EXPECT_TRUE(expected_forwarding_y_true ==
+                training_usedefs.at(train::TrainingOperandIndex{y_true, true}));
+    EXPECT_TRUE(expected_forwarding_output ==
+                training_usedefs.at(train::TrainingOperandIndex{output, true}));
+
+    EXPECT_TRUE(expected_backwarding_input ==
+                training_usedefs.at(train::TrainingOperandIndex{input, false}));
+    EXPECT_TRUE(expected_backwarding_weights ==
+                training_usedefs.at(train::TrainingOperandIndex{weights, false}));
+    EXPECT_TRUE(expected_backwarding_fc_out ==
+                training_usedefs.at(train::TrainingOperandIndex{fc_out, false}));
+    EXPECT_TRUE(expected_backwarding_ea_out ==
+                training_usedefs.at(train::TrainingOperandIndex{ea_out, false}));
+    EXPECT_TRUE(expected_backwarding_y_pred ==
+                training_usedefs.at(train::TrainingOperandIndex{y_pred, false}));
+    EXPECT_TRUE(expected_backwarding_y_true ==
+                training_usedefs.at(train::TrainingOperandIndex{y_true, false}));
+    EXPECT_TRUE(expected_backwarding_output ==
+                training_usedefs.at(train::TrainingOperandIndex{output, false}));
   }
 }
 
-// TEST(DefUseInitializer, softmax)
+// TEST(UseDefInitializer, softmax)
 // {
 
 // }

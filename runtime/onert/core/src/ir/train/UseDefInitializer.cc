@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "DefUseInitializer.h"
+#include "UseDefInitializer.h"
 
 #include "ir/train/Index.h"
 #include "../verifier/Verifier.h"
@@ -31,8 +31,8 @@ namespace ir
 namespace train
 {
 
-DefUseInitializer::DefUseInitializer(TrainableGraph &tgraph)
-  : _tgraph{tgraph}, _node_to_idx{}, _training_defuses{}
+UseDefInitializer::UseDefInitializer(TrainableGraph &tgraph)
+  : _tgraph{tgraph}, _node_to_idx{}, _training_usedefs{}
 {
   for (const auto &index : _tgraph.topolSortOperations())
   {
@@ -42,17 +42,17 @@ DefUseInitializer::DefUseInitializer(TrainableGraph &tgraph)
   }
 }
 
-void DefUseInitializer::operator()()
+void UseDefInitializer::operator()()
 {
   const auto &graph = _tgraph.graph();
   assert(ir::verifier::EdgeChecker().verify(graph));
 
-  _training_defuses.clear();
+  _training_usedefs.clear();
   graph.operands().iterate([&](const ir::OperandIndex &idx, const ir::Operand &operand) {
-    // Initialize as emtpy DefUseChain
-    const auto empty_defuse_chain = DefUseChain{operand};
-    _training_defuses.emplace(TrainingOperandIndex{idx, true}, empty_defuse_chain);
-    _training_defuses.emplace(TrainingOperandIndex{idx, false}, empty_defuse_chain);
+    // Initialize as emtpy UseDefChain
+    const auto empty_usedef_chain = UseDefChain{operand};
+    _training_usedefs.emplace(TrainingOperandIndex{idx, true}, empty_usedef_chain);
+    _training_usedefs.emplace(TrainingOperandIndex{idx, false}, empty_usedef_chain);
   });
 
   // Initialize training def-uses of forwarding operands for only forwarding nodes
@@ -63,10 +63,14 @@ void DefUseInitializer::operator()()
     const auto forwarding_operand_index = TrainingOperandIndex{idx, is_forward};
 
     const auto def = operand.getDef();
-    auto &defuse_chain = _training_defuses.at(forwarding_operand_index);
-    defuse_chain.setTrainingDef(TrainingOperationIndex{def, is_forward});
+    if (def.valid())
+    {
+      insertDef(forwarding_operand_index, TrainingOperationIndex{def, is_forward});
+      auto &usedef_chain = _training_usedefs.at(forwarding_operand_index);
+      usedef_chain.insertTrainingDef(TrainingOperationIndex{def, is_forward});
+    }
 
-    assert(_training_defuses.at(forwarding_operand_index).getTrainingUses().size() == 0);
+    assert(_training_usedefs.at(forwarding_operand_index).getTrainingUses().size() == 0);
     const auto uses = operand.getUses();
     for (const auto &use : uses)
       insertUse(forwarding_operand_index, TrainingOperationIndex{use, is_forward});
@@ -85,7 +89,7 @@ void DefUseInitializer::operator()()
     {
       if (node.getOutputs().size() > 1)
         throw std::runtime_error(
-          "DefUseInitializer does not support multiple outputs of training operation");
+          "UseDefInitializer does not support multiple outputs of training operation");
 
       const auto &output = node.getOutputs().at(0);
       const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
@@ -98,10 +102,10 @@ void DefUseInitializer::operator()()
     node.accept(*this);
   }
 
-  _tgraph.setTrainingDefUses(_training_defuses);
+  _tgraph.setTrainingUseDefs(_training_usedefs);
 }
 
-void DefUseInitializer::visit(const train::operation::BinaryArithmetic &node)
+void UseDefInitializer::visit(const train::operation::BinaryArithmetic &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -123,11 +127,11 @@ void DefUseInitializer::visit(const train::operation::BinaryArithmetic &node)
 
     // Set def of backwarding(backprop) inputs
     const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-    setBackPropDef(in_back_prop_index, backwarding_op_index);
+    insertBackPropDef(in_back_prop_index, backwarding_op_index);
   }
 }
 
-void DefUseInitializer::visit(const train::operation::Conv2D &node)
+void UseDefInitializer::visit(const train::operation::Conv2D &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -153,20 +157,20 @@ void DefUseInitializer::visit(const train::operation::Conv2D &node)
 
   // Set def of backwarding inputs
   const auto in_backwarding_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_backwarding_index, backwarding_op_index);
+  insertBackPropDef(in_backwarding_index, backwarding_op_index);
 
   const auto weights_backwarding_index = TrainingOperandIndex{weights_index, false};
-  setDef(weights_backwarding_index, backwarding_op_index);
+  insertDef(weights_backwarding_index, backwarding_op_index);
 
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
   if (bias_index.valid())
   {
     const auto bias_backwarding_index = TrainingOperandIndex{bias_index, false};
-    setDef(bias_backwarding_index, backwarding_op_index);
+    insertDef(bias_backwarding_index, backwarding_op_index);
   }
 }
 
-void DefUseInitializer::visit(const train::operation::DepthwiseConv2D &node)
+void UseDefInitializer::visit(const train::operation::DepthwiseConv2D &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -192,24 +196,24 @@ void DefUseInitializer::visit(const train::operation::DepthwiseConv2D &node)
 
   // Set def of backwarding inputs
   const auto in_backwarding_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_backwarding_index, backwarding_op_index);
+  insertBackPropDef(in_backwarding_index, backwarding_op_index);
 
   const auto weights_backwarding_index = TrainingOperandIndex{weights_index, false};
-  setDef(weights_backwarding_index, backwarding_op_index);
+  insertDef(weights_backwarding_index, backwarding_op_index);
 
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
   if (bias_index.valid())
   {
     const auto bias_backwarding_index = TrainingOperandIndex{bias_index, false};
-    setDef(bias_backwarding_index, backwarding_op_index);
+    insertDef(bias_backwarding_index, backwarding_op_index);
   }
 }
 
-void DefUseInitializer::visit(const train::operation::ElementwiseActivation &node)
+void UseDefInitializer::visit(const train::operation::ElementwiseActivation &node)
 {
   if (node.param().op_type != operation::ElementwiseActivation::Type::RELU)
   {
-    throw std::runtime_error{"DefUseInitializer: Not yet supported activation type"};
+    throw std::runtime_error{"UseDefInitializer: Not yet supported activation type"};
   }
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -224,11 +228,11 @@ void DefUseInitializer::visit(const train::operation::ElementwiseActivation &nod
   for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
     const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-    setBackPropDef(in_back_prop_index, backwarding_op_index);
+    insertBackPropDef(in_back_prop_index, backwarding_op_index);
   }
 }
 
-void DefUseInitializer::visit(const train::operation::FullyConnected &node)
+void UseDefInitializer::visit(const train::operation::FullyConnected &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -254,20 +258,20 @@ void DefUseInitializer::visit(const train::operation::FullyConnected &node)
 
   // Set def of backwarding inputs
   const auto in_backwarding_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_backwarding_index, backwarding_op_index);
+  insertBackPropDef(in_backwarding_index, backwarding_op_index);
 
   const auto weights_backwarding_index = TrainingOperandIndex{weights_index, false};
-  setDef(weights_backwarding_index, backwarding_op_index);
+  insertDef(weights_backwarding_index, backwarding_op_index);
 
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
   if (bias_index.valid())
   {
     const auto bias_backwarding_index = TrainingOperandIndex{bias_index, false};
-    setDef(bias_backwarding_index, backwarding_op_index);
+    insertDef(bias_backwarding_index, backwarding_op_index);
   }
 }
 
-void DefUseInitializer::visit(const train::operation::Loss &node)
+void UseDefInitializer::visit(const train::operation::Loss &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -284,22 +288,22 @@ void DefUseInitializer::visit(const train::operation::Loss &node)
   const auto &y_pred_index = node.getInputs().at(train::operation::Loss::Input::Y_PRED);
   assert(!_tgraph.operands().at(y_pred_index).isConstant());
   const auto y_pred_back_prop_index = TrainingOperandIndex{y_pred_index, false};
-  setBackPropDef(y_pred_back_prop_index, backwarding_op_index);
+  insertBackPropDef(y_pred_back_prop_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) y_true
   const auto &y_true_index = node.getInputs().at(train::operation::Loss::Input::Y_TRUE);
   assert(!_tgraph.operands().at(y_true_index).isConstant());
   const auto y_true_back_prop_index = TrainingOperandIndex{y_true_index, false};
-  setBackPropDef(y_true_back_prop_index, backwarding_op_index);
+  insertBackPropDef(y_true_back_prop_index, backwarding_op_index);
 
   // Remove use of backwarding output
   const auto &out_index = node.getOutputs().at(0);
   const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  auto &defuse_chain = _training_defuses.at(out_backwarding_index);
-  defuse_chain.removeTrainingUse(backwarding_op_index);
+  auto &usedef_chain = _training_usedefs.at(out_backwarding_index);
+  usedef_chain.removeTrainingUse(backwarding_op_index);
 }
 
-void DefUseInitializer::visit(const train::operation::Pad &node)
+void UseDefInitializer::visit(const train::operation::Pad &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -318,14 +322,14 @@ void DefUseInitializer::visit(const train::operation::Pad &node)
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Pad::Input::INPUT);
   const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_back_prop_index, backwarding_op_index);
+  insertBackPropDef(in_back_prop_index, backwarding_op_index);
 }
 
-void DefUseInitializer::visit(const train::operation::Pool2D &node)
+void UseDefInitializer::visit(const train::operation::Pool2D &node)
 {
   if (node.param().op_type != ir::operation::Pool2D::PoolType::MAX)
   {
-    throw std::runtime_error{"DefUseInitializer: Not yet supported pool type"};
+    throw std::runtime_error{"UseDefInitializer: Not yet supported pool type"};
   }
 
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
@@ -348,14 +352,14 @@ void DefUseInitializer::visit(const train::operation::Pool2D &node)
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Pool2D::Input::INPUT);
   const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_back_prop_index, backwarding_op_index);
+  insertBackPropDef(in_back_prop_index, backwarding_op_index);
 }
 
-void DefUseInitializer::visit(const train::operation::Reduce &node)
+void UseDefInitializer::visit(const train::operation::Reduce &node)
 {
   if (node.param().reduce_type != ir::operation::Reduce::ReduceType::MEAN)
   {
-    throw std::runtime_error{"DefUseInitializer: Not yet supported reduce type"};
+    throw std::runtime_error{"UseDefInitializer: Not yet supported reduce type"};
   }
 
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
@@ -370,10 +374,10 @@ void DefUseInitializer::visit(const train::operation::Reduce &node)
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Reduce::Input::INPUT);
   const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_back_prop_index, backwarding_op_index);
+  insertBackPropDef(in_back_prop_index, backwarding_op_index);
 }
 
-void DefUseInitializer::visit(const train::operation::Reshape &node)
+void UseDefInitializer::visit(const train::operation::Reshape &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -391,10 +395,10 @@ void DefUseInitializer::visit(const train::operation::Reshape &node)
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Reduce::Input::INPUT);
   const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_back_prop_index, backwarding_op_index);
+  insertBackPropDef(in_back_prop_index, backwarding_op_index);
 }
 
-void DefUseInitializer::visit(const train::operation::Softmax &node)
+void UseDefInitializer::visit(const train::operation::Softmax &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -412,35 +416,35 @@ void DefUseInitializer::visit(const train::operation::Softmax &node)
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Reduce::Input::INPUT);
   const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  setBackPropDef(in_back_prop_index, backwarding_op_index);
+  insertBackPropDef(in_back_prop_index, backwarding_op_index);
 }
 
-void DefUseInitializer::insertUse(const TrainingOperandIndex &operand_index,
+void UseDefInitializer::insertUse(const TrainingOperandIndex &operand_index,
                                   const TrainingOperationIndex &op_index)
 {
-  assert(_training_defuses.find(operand_index) != _training_defuses.end());
-  auto &defuse_chain = _training_defuses.at(operand_index);
-  defuse_chain.insertTrainingUse(op_index);
+  assert(_training_usedefs.find(operand_index) != _training_usedefs.end());
+  auto &usedef_chain = _training_usedefs.at(operand_index);
+  usedef_chain.insertTrainingUse(op_index);
 }
 
-void DefUseInitializer::setDef(const TrainingOperandIndex &operand_index,
-                               const TrainingOperationIndex &op_index)
+void UseDefInitializer::insertDef(const TrainingOperandIndex &operand_index,
+                                  const TrainingOperationIndex &op_index)
 {
   assert(operand_index.valid());
 
-  auto &defuse_chain = _training_defuses.at(operand_index);
-  assert(!defuse_chain.getTrainingDef().valid());
-  defuse_chain.setTrainingDef(op_index);
+  assert(_training_usedefs.find(operand_index) != _training_usedefs.end());
+  auto &usedef_chain = _training_usedefs.at(operand_index);
+  usedef_chain.insertTrainingDef(op_index);
 }
 
-void DefUseInitializer::setBackPropDef(const TrainingOperandIndex &operand_index,
-                                       const TrainingOperationIndex &op_index)
+void UseDefInitializer::insertBackPropDef(const TrainingOperandIndex &operand_index,
+                                          const TrainingOperationIndex &op_index)
 {
   // NOTE There is no need to set def of constant backwarding(backprop) inputs
   //      because it won't be back-propagated.
   if (!_tgraph.operands().at(operand_index.index()).isConstant())
   {
-    setDef(operand_index, op_index);
+    insertDef(operand_index, op_index);
   }
 }
 

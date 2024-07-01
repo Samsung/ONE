@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_DEFUSECHAIN_H__
-#define __ONERT_IR_TRAIN_DEFUSECHAIN_H__
+#ifndef __ONERT_IR_TRAIN_USEDEFCHAIN_H__
+#define __ONERT_IR_TRAIN_USEDEFCHAIN_H__
 
 #include "ir/Operand.h"
 #include "ir/train/Index.h"
@@ -29,40 +29,40 @@ namespace ir
 namespace train
 {
 
-class DefUseChain
+class UseDefChain
 {
 public:
-  explicit DefUseChain(const Operand &operand) : _operand{operand}
+  explicit UseDefChain(const Operand &operand) : _operand{operand}
   {
     // DO NOTHING
   }
-  explicit DefUseChain(const DefUseChain &other)
-    : _operand{other._operand}, _uses{other._uses}, _def{other._def}
+  explicit UseDefChain(const UseDefChain &other)
+    : _operand{other._operand}, _uses{other._uses}, _defs{other._defs}
   {
     // DO NOTHING
   }
-  DefUseChain(DefUseChain &&other)
-    : _operand{other._operand}, _uses{std::move(other._uses)}, _def{std::move(other._def)}
+  UseDefChain(UseDefChain &&other)
+    : _operand{other._operand}, _uses{std::move(other._uses)}, _defs{std::move(other._defs)}
   {
     // DO NOTHING
   }
-  ~DefUseChain() = default;
+  ~UseDefChain() = default;
 
 public:
-  DefUseChain &operator=(const DefUseChain &other) = delete;
-  DefUseChain &operator=(DefUseChain &&other) = delete;
+  UseDefChain &operator=(const UseDefChain &other) = delete;
+  UseDefChain &operator=(UseDefChain &&other) = delete;
 
 public:
-  bool operator==(const DefUseChain &other) const;
+  bool operator==(const UseDefChain &other) const;
 
 public:
   const std::set<TrainingOperationIndex> &getTrainingUses() const { return _uses; }
-  TrainingOperationIndex getTrainingDef() const { return _def; }
+  const std::set<TrainingOperationIndex> getTrainingDefs() const { return _defs; }
   void insertTrainingUse(const TrainingOperationIndex &idx);
   void removeTrainingUse(const TrainingOperationIndex &idx);
-  void setTrainingDef(const TrainingOperationIndex &idx);
-  void unsetTrainingDef();
-  void clearTrainingDefUse();
+  void insertTrainingDef(const TrainingOperationIndex &idx);
+  void removeTrainingDef(const TrainingOperationIndex &idx);
+  void clearTrainingUseDefs();
 
 public:
   const Operand &operand() const { return _operand; };
@@ -72,11 +72,11 @@ private:
 
 private:
   std::set<TrainingOperationIndex> _uses;
-  TrainingOperationIndex _def;
+  std::set<TrainingOperationIndex> _defs;
 };
 
 } // namespace train
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_DEFUSECHAIN_H__
+#endif // __ONERT_IR_TRAIN_USEDEFCHAIN_H__

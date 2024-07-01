@@ -707,7 +707,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     }
 
     // Initialize training def-uses
-    tgraph->initializeTrainingDefUses();
+    tgraph->initializeTrainingUseDefs();
     tgraph->verify();
 
     // Set trainable context data

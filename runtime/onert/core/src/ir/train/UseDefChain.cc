@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ir/train/DefUseChain.h"
+#include "ir/train/UseDefChain.h"
 
 #include <algorithm>
 #include <memory>
@@ -26,23 +26,28 @@ namespace ir
 namespace train
 {
 
-void DefUseChain::insertTrainingUse(const TrainingOperationIndex &idx) { _uses.insert(idx); }
+void UseDefChain::insertTrainingUse(const TrainingOperationIndex &idx) { _uses.insert(idx); }
 
-void DefUseChain::removeTrainingUse(const TrainingOperationIndex &idx) { _uses.erase(idx); }
+void UseDefChain::removeTrainingUse(const TrainingOperationIndex &idx) { _uses.erase(idx); }
 
-void DefUseChain::setTrainingDef(const TrainingOperationIndex &idx) { _def = idx; }
-
-void DefUseChain::unsetTrainingDef() { _def = TrainingOperationIndex{}; }
-
-void DefUseChain::clearTrainingDefUse()
+void UseDefChain::insertTrainingDef(const TrainingOperationIndex &idx)
 {
-  unsetTrainingDef();
-  _uses.clear();
+  // defs must be valid
+  assert(idx.valid());
+  _defs.insert(idx);
 }
 
-bool DefUseChain::operator==(const DefUseChain &other) const
+void UseDefChain::removeTrainingDef(const TrainingOperationIndex &idx) { _defs.erase(idx); }
+
+void UseDefChain::clearTrainingUseDefs()
 {
-  return _uses == other._uses && _def == other._def;
+  _uses.clear();
+  _defs.clear();
+}
+
+bool UseDefChain::operator==(const UseDefChain &other) const
+{
+  return _uses == other._uses && _defs == other._defs;
 }
 
 } // namespace train

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_TRAIN_DEFUSEINITIALIZER_H__
-#define __ONERT_IR_TRAIN_DEFUSEINITIALIZER_H__
+#ifndef __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
+#define __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
 
 #include "ir/train/TrainableOperationVisitor.h"
 
-#include "ir/train/DefUseChains.h"
+#include "ir/train/UseDefChains.h"
 #include "ir/train/Operations.Include.h"
 #include "ir/train/TrainableGraph.h"
 
@@ -30,25 +30,25 @@ namespace ir
 namespace train
 {
 
-struct DefUseInitializerBase : public TrainableOperationVisitor
+struct UseDefInitializerBase : public TrainableOperationVisitor
 {
-  virtual ~DefUseInitializerBase() = default;
+  virtual ~UseDefInitializerBase() = default;
 
 protected:
 #define OP(InternalName)                                                                  \
   virtual void visit(const operation::InternalName &) override                            \
   {                                                                                       \
-    throw std::runtime_error("DefUseInitializer: NYI for operation '" #InternalName "'"); \
+    throw std::runtime_error("UseDefInitializer: NYI for operation '" #InternalName "'"); \
   }
 #include "ir/train/Operations.lst"
 #undef OP
 };
 
-class DefUseInitializer : public DefUseInitializerBase
+class UseDefInitializer : public UseDefInitializerBase
 {
 public:
-  DefUseInitializer(void) = delete;
-  DefUseInitializer(TrainableGraph &tgraph);
+  UseDefInitializer(void) = delete;
+  UseDefInitializer(TrainableGraph &tgraph);
 
 public:
   void operator()();
@@ -68,18 +68,18 @@ public:
 
 private:
   void insertUse(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
-  void setDef(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
-  void setBackPropDef(const TrainingOperandIndex &operand_index,
-                      const TrainingOperationIndex &op_index);
+  void insertDef(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
+  void insertBackPropDef(const TrainingOperandIndex &operand_index,
+                         const TrainingOperationIndex &op_index);
 
 private:
   TrainableGraph &_tgraph;
   std::unordered_map<const ITrainableOperation *, OperationIndex> _node_to_idx;
-  DefUseChains _training_defuses;
+  UseDefChains _training_usedefs;
 };
 
 } // namespace train
 } // namespace ir
 } // namespace onert
 
-#endif // __ONERT_IR_TRAIN_DEFUSEINITIALIZER_H__
+#endif // __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
