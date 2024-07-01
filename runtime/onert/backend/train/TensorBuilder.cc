@@ -135,6 +135,11 @@ void TensorBuilder::notifyBackwardFirstUse(const ir::OperandIndex &index)
   }
 }
 
+void TensorBuilder::notifyBackwardLastUse(const ir::OperandIndex &)
+{
+  // TODO Support momory plan
+}
+
 void TensorBuilder::notifyDisposableBackPropFirstUse(const DisposableTensorIndex &index)
 {
   _tensor_mgr->claimDisposableBackPropPlan(index);

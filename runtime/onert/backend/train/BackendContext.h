@@ -80,6 +80,8 @@ public:
 
   const exec::train::optimizer::Optimizer *optimizer() const { return _optimizer.get(); }
 
+  std::shared_ptr<TensorBuilder> tensor_builder() { return _tensor_builder; }
+
 private:
   FunctionMap generateFunctionMap();
 

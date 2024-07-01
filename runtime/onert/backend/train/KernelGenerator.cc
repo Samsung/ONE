@@ -111,6 +111,8 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
+  // NOTE This function is related to planning tensors. If you change this function, you should
+  //      also consider to change planning tensors.
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
 
   const auto &op = _tgraph.operation(idx);
