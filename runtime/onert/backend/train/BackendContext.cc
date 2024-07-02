@@ -123,10 +123,13 @@ void planConstTensors(BackendContext &ctx)
     const auto &operand_usedefs = pair.second;
     const auto &operand = operand_usedefs.operand();
 
+    if (!operand_index.valid())
+      continue;
+
     if (operand.isConstant() && operand_index.is_forward())
     {
-      const auto &info = operand.info();
-      tensor_builder->registerTensorInfo(operand_index.index(), info, ir::Layout::NHWC);
+      // const auto &info = operand.info();
+      // tensor_builder->registerTensorInfo(operand_index.index(), info, ir::Layout::NHWC);
 
       uses_map[operand_index] = 0;
       const auto &defs = operand_usedefs.getTrainingDefs();
@@ -142,8 +145,9 @@ void planConstTensors(BackendContext &ctx)
   for (const auto &index : constants)
   {
     assert(index.is_forward());
-    if (!tensor_builder->isRegistered(index.index()))
+    if (tensor_builder->isRegistered(index.index()))
     {
+      uses_map[index]++;
       tensor_builder->notifyFirstUse(index.index());
     }
   }
@@ -152,7 +156,7 @@ void planConstTensors(BackendContext &ctx)
   for (const auto &index : constants)
   {
     assert(index.is_forward());
-    if (!tensor_builder->isRegistered(index.index()))
+    if (tensor_builder->isRegistered(index.index()))
     {
       uses_map[index]--;
       tensor_builder->notifyLastUse(index.index());
@@ -254,12 +258,12 @@ void planNonConstTensors(BackendContext &ctx)
     // Define outputs
     for (const auto &output : op_outputs)
     {
-      const auto output_index = ir::train::TrainingOperandIndex{output, true};
-      if (ctx.external_operands().contains(output_index.index()))
+      if (ctx.external_operands().contains(output))
         continue;
-      if (!tensor_builder->isRegistered(output_index.index()))
+      if (!tensor_builder->isRegistered(output))
         continue;
 
+      const auto output_index = ir::train::TrainingOperandIndex{output, true};
       assert(defs_map.find(output_index) != defs_map.end());
       defs_map[output_index] = 0;
       tensor_builder->notifyFirstUse(output_index.index());
@@ -271,24 +275,31 @@ void planNonConstTensors(BackendContext &ctx)
     // However, train backend does not support variable tensors yet
     for (const auto &input : op_inputs)
     {
-      const auto input_index = ir::train::TrainingOperandIndex{input, true};
-      if (ctx.external_operands().contains(input_index.index()))
+      if (ctx.external_operands().contains(input))
         continue;
-      if (!tensor_builder->isRegistered(input_index.index()))
+      if (!tensor_builder->isRegistered(input))
+        continue;
+
+      const auto input_index = ir::train::TrainingOperandIndex{input, true};
+      const auto &operand = training_usedefs.at(input_index).operand();
+      if (operand.isConstant())
         continue;
 
       assert(training_usedefs.find(input_index) != training_usedefs.end());
-      const auto &operand = training_usedefs.at(input_index).operand();
       if (operand.info().isVariable())
         throw std::runtime_error("The train backend does not support variable tensors");
     }
 
     for (const auto &input : op_inputs)
     {
-      const auto input_index = ir::train::TrainingOperandIndex{input, true};
-      if (ctx.external_operands().contains(input_index.index()))
+      if (ctx.external_operands().contains(input))
         continue;
-      if (!tensor_builder->isRegistered(input_index.index()))
+      if (!tensor_builder->isRegistered(input))
+        continue;
+
+      const auto input_index = ir::train::TrainingOperandIndex{input, true};
+      const auto &operand = training_usedefs.at(input_index).operand();
+      if (operand.isConstant())
         continue;
 
       assert(uses_map.find(input_index) != uses_map.end());
@@ -310,19 +321,21 @@ void planNonConstTensors(BackendContext &ctx)
 
     for (const auto &index : op_inputs + op_outputs)
     {
-      const auto operand_index = ir::train::TrainingOperandIndex{index, true};
-      if (ctx.external_operands().contains(operand_index.index()))
+      if (ctx.external_operands().contains(index))
         continue;
-      if (!tensor_builder->isRegistered(operand_index.index()))
+      if (!tensor_builder->isRegistered(index))
+        continue;
+
+      const auto operand_index = ir::train::TrainingOperandIndex{index, true};
+      assert(training_usedefs.find(operand_index) != training_usedefs.end());
+      const auto &operand_usedefs = training_usedefs.at(operand_index);
+      const auto &operand = operand_usedefs.operand();
+      if (operand.isConstant())
         continue;
 
       const auto &training_op_index = ir::train::TrainingOperationIndex{op_index, false};
-
-      assert(training_usedefs.find(operand_index) != training_usedefs.end());
-      const auto &operand_usedefs = training_usedefs.at(operand_index);
-
-      const auto &defs = operand_usedefs.getTrainingDefs();
-      assert(defs.find(training_op_index) == defs.end());
+      assert(operand_usedefs.getTrainingDefs().find(training_op_index) ==
+             operand_usedefs.getTrainingDefs().end());
 
       const auto &uses = operand_usedefs.getTrainingUses();
       if (uses.find(training_op_index) != uses.end())
@@ -378,14 +391,19 @@ void planGradientTensors(BackendContext &ctx)
     // Only inputs can be candidates for def of backwarding tensors
     for (const auto &input : op_inputs)
     {
+      if (ctx.external_operands().contains(input))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(input))
+        continue;
+
       const auto input_index = ir::train::TrainingOperandIndex{input, false};
       const auto &training_usedefs = tgraph.trainingUseDefs();
       const auto &usedefs = training_usedefs.at(input_index);
       const auto &operand = usedefs.operand();
-      // TODO GradientTensor never has mulitple defs
       const auto &defs = usedefs.getTrainingDefs();
       if (operand.isConstant() && defs.find(backwarding_op_index) != defs.end())
       {
+        assert(defs.size() == 1);
         tensor_builder->notifyBackwardFirstUse(input);
         cur_seq.emplace_back(input_index);
       }
@@ -416,6 +434,9 @@ void planBackPropTensors(BackendContext &ctx)
     const auto &operand = operand_usedefs.operand();
 
     if (ctx.external_operands().contains(operand_index.index()))
+      continue;
+
+    if (!tensor_builder->isRegisteredBackward(operand_index.index()))
       continue;
 
     if (operand_index.is_forward() || operand.isConstant())
@@ -558,7 +579,7 @@ void planBackPropTensors(BackendContext &ctx)
 
   for (const auto &index : operands_last_until_end)
   {
-    tensor_builder->notifyLastUse(index.index());
+    tensor_builder->notifyBackwardLastUse(index.index());
   }
 
   assert(std::all_of(
@@ -579,6 +600,9 @@ backend::ITensorRegistry *BackendContext::genTensors()
   tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &obj) {
     if (external_operands().contains(index))
       return;
+    if (!index.valid())
+      return;
+
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
     _tensor_builder->registerTensorInfo(index, obj.info(), ir::Layout::NHWC);
@@ -609,6 +633,13 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
         continue;
       if (external_operands().contains(ind))
         continue;
+
+      const auto &training_usedefs = tgraph.trainingUseDefs();
+      const auto &usedefs = training_usedefs.at(ir::train::TrainingOperandIndex{ind, false});
+      const bool not_used = usedefs.getTrainingDefs().empty() && usedefs.getTrainingUses().empty();
+      if (not_used)
+        continue;
+
       // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
       assert(tgraph.layout() != ir::Layout::NCHW);
 
@@ -617,6 +648,9 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
                                                  ir::Layout::NHWC);
     }
   });
+  // TODO Remove registered and back-propagated incoming tensors of op
+  //      where isRequiredForBackward() is false first in backwarding
+  //      because they are not used
 
   // Plan tensors only in backwarding to reduce peak memory usage
   planGradientTensors(*this);

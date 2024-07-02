@@ -57,7 +57,7 @@ public:
 
 public:
   const std::set<TrainingOperationIndex> &getTrainingUses() const { return _uses; }
-  const std::set<TrainingOperationIndex> getTrainingDefs() const { return _defs; }
+  const std::set<TrainingOperationIndex> &getTrainingDefs() const { return _defs; }
   void insertTrainingUse(const TrainingOperationIndex &idx);
   void removeTrainingUse(const TrainingOperationIndex &idx);
   void insertTrainingDef(const TrainingOperationIndex &idx);
