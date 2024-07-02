@@ -70,6 +70,11 @@ void Transpose::execute() const
                                        getTensorData<float>(input()), getTensorShape(output()),
                                        getTensorData<float>(output()));
       break;
+    case DataType::S64:
+      tflite::reference_ops::Transpose(params, getTensorShape(input()),
+                                       getTensorData<int64_t>(input()), getTensorShape(output()),
+                                       getTensorData<int64_t>(output()));
+      break;
     case DataType::U8:
       tflite::reference_ops::Transpose(params, getTensorShape(input()),
                                        getTensorData<uint8_t>(input()), getTensorShape(output()),
