@@ -1,6 +1,6 @@
 # Transfer Learning
 
-Let's clasify dogs and cats using the pre-trained model. It will be `mobilenet v2` in our case.
+Let's classify dogs and cats using the pre-trained model. It will be `mobilenet v2` in our case.
 
 ## Preparing dataset
 The first step is conversion dataset (input data and expected outputs) to the binary format accepted by `ONE`. Note, that for many cases it can be achieved via [tf_dataset_converter](https://github.com/Samsung/ONE/tree/master/tools/generate_datafile/tf_dataset_converter).
