@@ -23,7 +23,7 @@ try:
     print(f"Created directory '{package_directory}'...")
 
     # copy *py files to package_directory
-    PY_DIR = os.path.join(THIS_FILE_DIR, '../../../runtime/onert/python/package')
+    PY_DIR = os.path.join(THIS_FILE_DIR, '../../../runtime/onert/api/python/package')
     for py_file in os.listdir(PY_DIR):
         if py_file.endswith(".py"):
             src_path = os.path.join(PY_DIR, py_file)
