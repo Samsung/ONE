@@ -26,8 +26,35 @@ import sys
 
 from typing import Union, Optional
 
-import onelib.constant as _constant
 from onelib.argumentparse import ArgumentParser
+"""
+Support commands in the one-cmds.
+
+{ 
+  ${GROUP} : {
+    ${CMD} : EXPLANATIONS
+  }
+}
+"""
+ONE_CMD = {
+    'compile': {
+        'import': 'Convert given model to circle',
+        'optimize': 'Optimize circle model',
+        'quantize': 'Quantize circle model',
+    },
+    'package': {
+        'pack': 'Package circle and metadata into nnpackage',
+    },
+    'backend': {
+        'codegen': 'Code generation tool',
+        'profile': 'Profile backend model file',
+        'infer': 'Infer backend model file'
+    },
+}
+
+
+def one_cmd_list():
+    return [cmd for group, cmds in ONE_CMD.items() for cmd in cmds.keys()]
 
 
 def add_default_arg(parser):
@@ -154,14 +181,22 @@ def safemain(main, mainpath):
         sys.exit(255)
 
 
-def run(cmd, err_prefix=None, logfile=None):
+def run(cmd, *, one_cmd: str = None, err_prefix=None, logfile=None):
     """Execute command in subprocess
 
     Args:
+        one_cmd: subtool name to execute with given `cmd`
         cmd: command to be executed in subprocess
         err_prefix: prefix to be put before every stderr lines
         logfile: file stream to which both of stdout and stderr lines will be written
     """
+    if one_cmd:
+        assert one_cmd in one_cmd_list(), f'Invalid ONE COMMAND: {one_cmd}'
+        dir_path = os.path.dirname(os.path.dirname(
+            os.path.realpath(__file__)))  # bin = onelib/../
+        driver_path = os.path.join(dir_path, f'one-{one_cmd}')
+        cmd = [driver_path] + cmd
+
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
         import select
         inputs = set([p.stdout, p.stderr])

@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+from typing import Optional
 import warnings
 
 import onelib.utils as oneutils
@@ -74,7 +75,9 @@ class CfgRunner:
             'onecc', driver)) or (self.cfgparser.has_option('one-build', driver)
                                   and self.cfgparser.getboolean('one-build', driver))
 
-    def add_opt(self, opt):
+    def add_opt(self, opt: Optional[str]):
+        if not opt:
+            return
         self.optparser = oneutils.get_config_parser()
         opt_book = dict(
             zip(oneutils.get_optimization_list(get_name=True),
@@ -89,10 +92,10 @@ class CfgRunner:
             )
         self.opt = opt
 
-    def set_backend(self, backend: str):
+    def set_backend(self, backend: Optional[str]):
         self.backend = backend
 
-    def set_target(self, target: str):
+    def set_target(self, target: Optional[str]):
         self.target = target
 
     def detect_import_drivers(self, dir):
