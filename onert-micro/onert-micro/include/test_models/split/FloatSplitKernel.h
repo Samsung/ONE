@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_TEST_MODELS_FLOAT_SQRT_KERNEL_H
-#define ONERT_MICRO_TEST_MODELS_FLOAT_SQRT_KERNEL_H
+#ifndef ONERT_MICRO_TEST_MODELS_FLOAT_SPLIT_KERNEL_H
+#define ONERT_MICRO_TEST_MODELS_FLOAT_SPLIT_KERNEL_H
 
 #include "TestDataSplitBase.h"
 
@@ -100,4 +100,4 @@ public:
 } // namespace test_model
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_TEST_MODELS_FLOAT_SQRT_KERNEL_H
+#endif // ONERT_MICRO_TEST_MODELS_FLOAT_SPLIT_KERNEL_H
