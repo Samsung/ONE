@@ -30,25 +30,35 @@ namespace builtin
 IOTensor::~IOTensor() {}
 
 IOTensor::IOTensor(const ir::OperandInfo &info, ir::Layout layout)
-  : IPortableTensor{info}, _orig_info{info}, _orig_layout{layout}
+  : IPortableTensor{info}, _tensor{nullptr},
+    _orig{std::make_unique<UserTensor>(info, layout, (uint8_t *)nullptr, 0)}
 {
-  setUserTensor(nullptr, 0);
+  _tensor = _orig.get();
 }
 
 void IOTensor::setTensor(IPortableTensor *tensor)
 {
   assert(tensor);
   assert(tensor != this);
-  // TODO Handle when layout was changed
-  assert(tensor->layout() == _orig_layout); // Changing layout is not considered yet
-  _user_tensor.reset();
+  assert(tensor->layout() == _orig->layout()); // Changing layout is not considered yet
   _tensor = tensor;
+  if (_info.shape() != tensor->getShape())
+  {
+    _info.shape(tensor->getShape());
+
+    // If input tensor shape is updated, other effective buffers use dynamic memory manager.
+    // Dynamic memory manager deallocate allcoated memory after each execution.
+    // So we should remain input tensor as dynamic if we mark it dynamic at least once.
+    // If dynamic memory manager maintains allocated memory after execution is finished,
+    // we may need to reset it as static for each setTensor call.
+    _info.setDynamic();
+  }
 }
 
 void IOTensor::setUserTensor(uint8_t *buffer, size_t size)
 {
-  _user_tensor = std::make_unique<UserTensor>(_orig_info, _orig_layout, buffer, size);
-  _tensor = _user_tensor.get();
+  _orig = std::make_unique<UserTensor>(_info, _orig->layout(), buffer, size);
+  setTensor(_orig.get());
 }
 
 } // namespace builtin

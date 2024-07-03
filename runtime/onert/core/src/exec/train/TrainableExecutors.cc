@@ -50,12 +50,12 @@ uint32_t TrainableExecutors::outputSize() const
 
 const ir::OperandInfo &TrainableExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getInputTensors().at(index.value())->orig_info();
+  return entryExecutor()->getInputTensors().at(index.value())->get_info();
 }
 
 const ir::OperandInfo &TrainableExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
+  return entryExecutor()->getOutputTensors().at(index.value())->get_info();
 }
 
 void TrainableExecutors::execute(const ExecutionContext &ctx)

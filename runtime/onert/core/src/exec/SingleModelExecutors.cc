@@ -47,12 +47,12 @@ uint32_t SingleModelExecutors::outputSize() const
 
 const ir::OperandInfo &SingleModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getInputTensors().at(index.value())->orig_info();
+  return entryExecutor()->getInputTensors().at(index.value())->get_info();
 }
 
 const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  return entryExecutor()->getOutputTensors().at(index.value())->orig_info();
+  return entryExecutor()->getOutputTensors().at(index.value())->get_info();
 }
 
 void SingleModelExecutors::execute(const ExecutionContext &ctx) { entryExecutor()->execute(ctx); }

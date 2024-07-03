@@ -66,8 +66,8 @@ void WhileLayer::run()
   assert(cond_exec->getOutputTensors().size() == 1);
   auto cond_output_tensor = [&]() {
     auto cond_output = cond_exec->getOutputTensors().at(0);
-    auto tensor = std::make_unique<Tensor>(cond_output->orig_info(), cond_output->orig_layout(),
-                                           _dyn_memory_manager);
+    auto tensor =
+      std::make_unique<Tensor>(cond_output->get_info(), cond_output->layout(), _dyn_memory_manager);
     tensor->set_dynamic();
     tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
     return tensor;
@@ -99,8 +99,8 @@ void WhileLayer::run()
   std::vector<IPortableTensor *> temp_outputs;
   for (auto &&io_tensor : body_exec->getOutputTensors())
   {
-    auto tensor = std::make_unique<Tensor>(io_tensor->orig_info(), io_tensor->orig_layout(),
-                                           _dyn_memory_manager);
+    auto tensor =
+      std::make_unique<Tensor>(io_tensor->get_info(), io_tensor->layout(), _dyn_memory_manager);
     tensor->set_dynamic();
     tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
     temp_outputs.push_back(tensor.get());
