@@ -1,14 +1,40 @@
 from setuptools import setup, find_packages
 import os
 import shutil
+import sys
 
 architecture_directory = ['x86_64', 'armv7l', 'aarch64']
 package_directory = 'nnfwapi'
-packaging_directory = ['build', 'dist', package_directory + '.egg-info']
+packaging_directory = ['build', package_directory + '.egg-info']
 THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 so_list = []
+so_files = []
+target_arch = 'none'
 
 try:
+    # check argument "--plat-name" includes one of architecture_directory to find target architecture
+    for arg in sys.argv:
+        if arg.startswith('--plat-name'):
+            arg_split = arg.split('=')
+            arg_arch = ''
+            if len(arg_split) == 2:
+                arg_arch = arg_split[1]
+            else:
+                arch_idx = sys.argv.index('--plat-name')
+                arg_arch = sys.argv[arch_idx + 1]
+
+            for arch in architecture_directory:
+                if arch in arg_arch:
+                    target_arch = arch
+                    print(f"Target architecture: {target_arch}")
+            if target_arch == 'none':
+                print(f"Unsupported target platform: {target_arch}")
+                sys.exit(1)
+
+    if target_arch == 'none':
+        print(f"Need to set target platform by '--plat-name'")
+        sys.exit(1)
+
     # remove packaging directory
     for packaging_dir in packaging_directory:
         if os.path.exists(packaging_dir):
@@ -33,31 +59,53 @@ try:
 
     # remove architecture directory
     if os.path.exists(package_directory):
-        for arch_dir in architecture_directory:
-            arch_path = os.path.join(package_directory, arch_dir)
-            if os.path.exists(arch_path):
-                print(f"Deleting existing directory '{arch_path}'...")
-                shutil.rmtree(arch_path)
+        arch_path = os.path.join(package_directory, target_arch)
+        if os.path.exists(arch_path):
+            print(f"Deleting existing directory '{arch_path}'...")
+            shutil.rmtree(arch_path)
 
         # make architecture_directory and copy .so files to the directories
-        for arch_dir in architecture_directory:
-            arch_path = os.path.join(package_directory, arch_dir)
-            os.makedirs(arch_path)
-            print(f"Created directory '{arch_path}'")
+        arch_path = os.path.join(package_directory, 'onert')
+        os.makedirs(arch_path)
+        print(f"Created directory '{arch_path}'")
 
-            so_dir = os.path.join(THIS_FILE_DIR, '../../../Product')
-            so_dir = os.path.join(so_dir, arch_dir + '-linux.release/out/lib')
+        product_dir = os.path.join(THIS_FILE_DIR, '../../../Product')
 
-            for so in os.listdir(so_dir):
+        # onert core library
+        so_core_dir = os.path.join(product_dir, target_arch + '-linux.release/out/lib')
+        for so in os.listdir(so_core_dir):
+            if so.endswith(".so"):
+                so_list.append('onert/' + so)
+                src_path = os.path.join(so_core_dir, so)
+                tgt_path = os.path.join(arch_path, so)
+                shutil.copy(src_path, tgt_path)
+                print(f"Copied {src_path} to {tgt_path}")
+
+        # onert backend library
+        so_backend_dir = os.path.join(so_core_dir, 'nnfw/backend')
+        if os.path.exists(so_backend_dir):
+            so_backend_tgt_dir = os.path.join(arch_path, 'nnfw/backend')
+            os.makedirs(so_backend_tgt_dir)
+            for so in os.listdir(so_backend_dir):
                 if so.endswith(".so"):
-                    so_list.append(arch_dir + '/' + so)
+                    so_list.append('onert/nnfw/backend/' + so)
+                    src_path = os.path.join(so_backend_dir, so)
+                    tgt_path = os.path.join(so_backend_tgt_dir, so)
+                    shutil.copy(src_path, tgt_path)
+                    print(f"Copied {src_path} to {tgt_path}")
 
-            so_files = [f for f in os.listdir(so_dir) if f.endswith(".so")]
-
-            for so_file in so_files:
-                src_path = os.path.join(so_dir, so_file)
-                shutil.copy(src_path, arch_path)
-                print(f"Copied {so_file} to {arch_path}")
+        # onert odc library
+        so_odc_dir = os.path.join(so_core_dir, 'nnfw/odc')
+        if os.path.exists(so_odc_dir):
+            so_odc_tgt_dir = os.path.join(arch_path, 'nnfw/odc')
+            os.makedirs(so_odc_tgt_dir)
+            for so in os.listdir(so_odc_dir):
+                if so.endswith(".so"):
+                    so_list.append('onert/nnfw/odc/' + so)
+                    src_path = os.path.join(so_odc_dir, so)
+                    tgt_path = os.path.join(so_odc_tgt_dir, so)
+                    shutil.copy(src_path, tgt_path)
+                    print(f"Copied {src_path} to {tgt_path}")
 
     print("Operation completed successfully.")
 
