@@ -165,6 +165,10 @@ def verify_arg(parser: ArgumentParser, args):
     if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(
             args, 'workflow'):
         parser.error('\'backend\' option can be used only with \'config\' option')
+    if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(args, 'target'):
+        parser.error(
+            '\'backend\' and \'target\' are mutually exclusive option. \'target\' option automatically set a backend.'
+        )
 
     if oneutils.is_valid_attr(args, 'backend'):
         verify_backend_args(parser, args)
