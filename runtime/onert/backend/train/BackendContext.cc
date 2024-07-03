@@ -70,35 +70,67 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
       unvisited.add(index);
   });
 
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.getEssentialBackwardOrder())
   {
     assert(fn_map.find(op_index) != fn_map.end());
 
     auto &tn_seq = fn_map.at(op_index);
 
-    // The function added lastest is executed first in a sequence during backwarding.
+    // The function added latest is executed first in a sequence during backwarding.
     std::vector<BackPropTensor *> back_props;
     const auto &op = tgraph.operation(op_index);
     for (const auto &back_prop_index :
          op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
     {
-      if (op.isRequiredForBackward())
+      assert(op.isRequiredForBackward());
+      if (unvisited.contains(back_prop_index))
       {
-        if (unvisited.contains(back_prop_index))
-        {
-          auto back_prop_tensor = tensor_reg.getBackPropTensor(back_prop_index);
-          assert(back_prop_tensor != nullptr);
-          back_props.emplace_back(back_prop_tensor);
-          unvisited.remove(back_prop_index);
-        }
+        auto back_prop_tensor = tensor_reg.getBackPropTensor(back_prop_index);
+        assert(back_prop_tensor != nullptr);
+        back_props.emplace_back(back_prop_tensor);
+        unvisited.remove(back_prop_index);
       }
     }
+
     if (back_props.size() != 0)
     {
       auto initializer = std::make_unique<ops::BackPropInitializer>(back_props);
       tn_seq->append(std::move(initializer));
     }
   }
+}
+
+std::set<ir::train::TrainingOperandIndex>
+getBackwardTensorList(const ir::train::TrainableGraph &tgraph, const BackendContext &ctx)
+{
+  std::set<ir::train::TrainingOperandIndex> ret;
+
+  // TODO Reuse registered tensors when they are planned for memory optimization.
+  auto border = tgraph.getEssentialBackwardOrder();
+  for (const auto op_index : border)
+  {
+    const auto &trainable_op = tgraph.operation(op_index);
+    assert(trainable_op.isRequiredForBackward());
+    // This assumes that back-propagated tensors of loss outputs are not used
+    for (const auto &ind :
+         trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    {
+      if (ctx.external_operands().contains(ind))
+        continue;
+
+      const auto &operand_index = ir::train::TrainingOperandIndex{ind, false};
+
+      const auto &training_usedefs = tgraph.trainingUseDefs();
+      const auto &usedefs = training_usedefs.at(ir::train::TrainingOperandIndex{ind, false});
+      const bool not_used = usedefs.getTrainingDefs().empty() && usedefs.getTrainingUses().empty();
+      if (not_used)
+        continue;
+
+      ret.insert(operand_index);
+    }
+  }
+
+  return ret;
 }
 
 /**
@@ -185,6 +217,9 @@ void planNonConstTensors(BackendContext &ctx)
   ir::OperandIndexSequence nonconstants;
 
   // Prepare scanning
+  // uses_map and defs_map must have size of TrainindOperandIndex list of only registered tensors
+  // TrainingOperationIndex in forwarding are always used
+  // const auto used_backward_indices = getBackwardTensorList(tgraph, ctx);
   for (const auto &pair : training_usedefs)
   {
     const auto &operand_index = pair.first;
@@ -243,12 +278,8 @@ void planNonConstTensors(BackendContext &ctx)
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, throw an exception (not supported yet)
   // 3. Scan USE of inputs/outputs. Decrease the USE and deallocate if the USE is 0
-  // TODO Use merge instead of concat
   const auto &order = ctx.data()->op_order;
   assert(order == tgraph.topolSortOperations());
-  auto border = tgraph.btopolSortOperations();
-  border = tgraph.truncateBackwardOrder(border);
-
   for (const auto &op_index : order)
   {
     const auto &op = tgraph.operations().at(op_index);
@@ -313,6 +344,7 @@ void planNonConstTensors(BackendContext &ctx)
     }
   }
 
+  const auto border = tgraph.getEssentialBackwardOrder();
   for (const auto &op_index : border)
   {
     const auto &op = tgraph.operations().at(op_index);
@@ -376,7 +408,7 @@ void planGradientTensors(BackendContext &ctx)
   auto tensor_builder = ctx.tensor_builder();
 
   std::vector<ir::train::TrainingOperandIndex> prev_seq;
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.getEssentialBackwardOrder())
   {
     for (const auto &operand_index : prev_seq)
     {
@@ -500,8 +532,7 @@ void planBackPropTensors(BackendContext &ctx)
   tgraph.operands().iterate(
     [&](const ir::OperandIndex &index, const ir::Operand &) { unallocated.insert(index); });
 
-  auto border = tgraph.btopolSortOperations();
-  border = tgraph.truncateBackwardOrder(border);
+  const auto border = tgraph.getEssentialBackwardOrder();
   for (const auto &op_ind : border)
   {
     const auto &op = tgraph.operations().at(op_ind);
@@ -509,25 +540,25 @@ void planBackPropTensors(BackendContext &ctx)
     auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
     // Allocate back-propagated tensors in first def
-    for (const auto &backprop : op_inputs)
+    for (const auto &outgoing : op_inputs)
     {
-      const auto operand_index = ir::train::TrainingOperandIndex{backprop, false};
-      const auto &operand = tgraph.operands().at(backprop);
-      if (ctx.external_operands().contains(backprop))
+      const auto operand_index = ir::train::TrainingOperandIndex{outgoing, false};
+      const auto &operand = tgraph.operands().at(outgoing);
+      if (ctx.external_operands().contains(outgoing))
         continue;
-      if (!tensor_builder->isRegisteredBackward(backprop))
+      if (!tensor_builder->isRegisteredBackward(outgoing))
         continue;
       if (operand.isConstant())
         continue;
 
       if (defs_map.find(operand_index) != defs_map.end())
       {
-        if (unallocated.find(backprop) != unallocated.end())
+        if (unallocated.find(outgoing) != unallocated.end())
         {
           // First Def
-          unallocated.erase(backprop);
+          unallocated.erase(outgoing);
           defs_map[operand_index]--;
-          tensor_builder->notifyBackwardFirstUse(backprop);
+          tensor_builder->notifyBackwardFirstUse(outgoing);
         }
         else
         {
@@ -541,13 +572,13 @@ void planBackPropTensors(BackendContext &ctx)
     // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
     // non-constant because of less memory usage by memory planning in here
     // However, train backend does not support variable tensors yet
-    for (const auto &backprop : op_inputs)
+    for (const auto &outgoing : op_inputs)
     {
-      if (ctx.external_operands().contains(backprop))
+      if (ctx.external_operands().contains(outgoing))
         continue;
-      if (!tensor_builder->isRegisteredBackward(backprop))
+      if (!tensor_builder->isRegisteredBackward(outgoing))
         continue;
-      const auto &operand = tgraph.operands().at(backprop);
+      const auto &operand = tgraph.operands().at(outgoing);
       if (operand.info().isVariable())
         throw std::runtime_error("The train backend does not support variable tensors");
     }
@@ -561,7 +592,7 @@ void planBackPropTensors(BackendContext &ctx)
       if (!tensor_builder->isRegisteredBackward(incoming))
         continue;
 
-      // There is no case where an op's incoming tensors have the coresponding op def yet
+      // NOTE There is no case where an op's incoming tensors have the coresponding op def yet
       assert(defs_map.find(incoming_index) != defs_map.end());
 
       if (uses_map.find(incoming_index) != uses_map.end())
@@ -620,14 +651,27 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
   auto tensor_builder = _tensor_builder;
-  tgraph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
-    const auto trainable_op = dynamic_cast<const ir::train::TrainableOperation *>(&op);
-    assert(trainable_op);
-    if (!trainable_op->isRequiredForBackward())
-    {
-      return;
-    }
-    for (const auto &ind : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+
+  const auto operand_indices = getBackwardTensorList(tgraph, *this);
+  for (const auto &operand_index : operand_indices)
+  {
+    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+    assert(tgraph.layout() != ir::Layout::NCHW);
+    assert(!operand_index.is_forward());
+    const auto &operand = tgraph.operands().at(operand_index.index());
+    tensor_builder->registerBackwardTensorInfo(operand_index.index(),
+                                               createBackwardTensorInfo(operand), ir::Layout::NHWC);
+  }
+
+  // TODO Reuse registered tensors when they are planned for memory optimization.
+  const auto border = tgraph.getEssentialBackwardOrder();
+  for (const auto op_index : border)
+  {
+    const auto &trainable_op = tgraph.operation(op_index);
+    assert(trainable_op.isRequiredForBackward());
+    // This assumes that back-propagated tensors of loss outputs are not used
+    for (const auto &ind :
+         trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
       if (tensor_builder->isRegisteredBackward(ind))
         continue;
@@ -647,16 +691,13 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand),
                                                  ir::Layout::NHWC);
     }
-  });
-  // TODO Remove registered and back-propagated incoming tensors of op
-  //      where isRequiredForBackward() is false first in backwarding
-  //      because they are not used
+  }
 
   // Plan tensors only in backwarding to reduce peak memory usage
   planGradientTensors(*this);
   planBackPropTensors(*this);
 
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.getEssentialBackwardOrder())
   {
     const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
     for (const auto &back_prop_index : back_prop_seq)
@@ -681,7 +722,7 @@ void BackendContext::planDisposableBackPropTensors()
   auto tensor_builder = _tensor_builder;
 
   std::vector<DisposableTensorIndex> prev_seq;
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.getEssentialBackwardOrder())
   {
     for (const auto &index : prev_seq)
     {

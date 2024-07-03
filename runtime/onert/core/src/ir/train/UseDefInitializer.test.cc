@@ -89,6 +89,12 @@ train::UseDefChain createUseDefChain(const Operand &operand,
   return usedefs;
 }
 
+void enableAllBackwarding(train::TrainableGraph &tgraph)
+{
+  tgraph.operations().iterate(
+    [&](const OperationIndex &index, const IOperation &) { tgraph.enableBackward(index); });
+}
+
 } // namespace
 
 TEST(UseDefInitializer, one_op)
@@ -137,6 +143,8 @@ TEST(UseDefInitializer, one_op)
       tgraph.addOperation(std::make_unique<train::operation::BinaryArithmetic>(ba_op));
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    enableAllBackwarding(tgraph);
 
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
@@ -313,6 +321,8 @@ TEST(UseDefInitializer, one_op)
       addConv2DOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
+    enableAllBackwarding(tgraph);
+
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
@@ -450,6 +460,8 @@ TEST(UseDefInitializer, one_op)
     const auto depthwise_conv2d_index =
       addDepthwiseConv2DOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    enableAllBackwarding(tgraph);
 
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
@@ -598,6 +610,8 @@ TEST(UseDefInitializer, one_op)
       tgraph.addOperation(std::make_unique<train::operation::ElementwiseActivation>(ea_op));
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    enableAllBackwarding(tgraph);
 
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
@@ -757,6 +771,8 @@ TEST(UseDefInitializer, one_op)
       addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
+    enableAllBackwarding(tgraph);
+
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
@@ -901,6 +917,8 @@ TEST(UseDefInitializer, one_op)
     const auto pad_index = tgraph.addOperation(std::make_unique<train::operation::Pad>(pad_op));
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    enableAllBackwarding(tgraph);
 
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
@@ -1090,6 +1108,8 @@ TEST(UseDefInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
+    enableAllBackwarding(tgraph);
+
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
@@ -1261,6 +1281,8 @@ TEST(UseDefInitializer, one_op)
       tgraph.addOperation(std::make_unique<train::operation::Reduce>(mean_op));
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    enableAllBackwarding(tgraph);
 
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
@@ -1447,6 +1469,8 @@ TEST(UseDefInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
+    enableAllBackwarding(tgraph);
+
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
@@ -1629,6 +1653,8 @@ TEST(UseDefInitializer, one_op)
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
+    enableAllBackwarding(tgraph);
+
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());
 
@@ -1805,6 +1831,8 @@ TEST(UseDefInitializer, one_op)
       tgraph.addOperation(std::make_unique<train::operation::BinaryArithmetic>(ba_op));
 
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    enableAllBackwarding(tgraph);
 
     EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
     EXPECT_NO_THROW(tgraph.verify());

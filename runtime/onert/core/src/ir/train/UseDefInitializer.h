@@ -21,7 +21,17 @@
 
 #include "ir/train/UseDefChains.h"
 #include "ir/train/Operations.Include.h"
-#include "ir/train/TrainableGraph.h"
+
+namespace onert
+{
+namespace ir
+{
+namespace train
+{
+class TrainableGraph;
+} // namespace train
+} // namespace ir
+} // namespace onert
 
 namespace onert
 {

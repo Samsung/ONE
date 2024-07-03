@@ -16,6 +16,7 @@
 
 #include "UseDefInitializer.h"
 
+#include "ir/train/TrainableGraph.h"
 #include "ir/train/Index.h"
 #include "../verifier/Verifier.h"
 
@@ -34,12 +35,18 @@ namespace train
 UseDefInitializer::UseDefInitializer(TrainableGraph &tgraph)
   : _tgraph{tgraph}, _node_to_idx{}, _training_usedefs{}
 {
-  for (const auto &index : _tgraph.topolSortOperations())
+  const auto order = _tgraph.topolSortOperations();
+  for (const auto &index : order)
   {
     const auto &node = _tgraph.operation(index);
     assert(_node_to_idx.find(&node) == _node_to_idx.end());
     _node_to_idx[&node] = index;
   }
+
+  // Check whether loss exists
+  assert(std::any_of(order.begin(), order.end(), [&](const auto &index) {
+    return _tgraph.operation(index).opcode() == ir::OpCode::Loss;
+  }));
 }
 
 void UseDefInitializer::operator()()
@@ -76,11 +83,9 @@ void UseDefInitializer::operator()()
       insertUse(forwarding_operand_index, TrainingOperationIndex{use, is_forward});
   });
 
+  const auto backward_order = _tgraph.getEssentialBackwardOrder();
   // Initialize training uses of forwarding operands and def-uses of backwarding operands for
   // backwarding nodes (i.e. backwarding nodes that do not have any forwarding node)
-  auto backward_order = _tgraph.btopolSortOperations();
-  // get rid of all nodes not reachable from a node with trainable parameters
-  // backward_order = _tgraph.truncateBackwardOrder(backward_order);
   for (const auto &op_index : backward_order)
   {
     const auto &node = _tgraph.operation(op_index);
@@ -93,12 +98,11 @@ void UseDefInitializer::operator()()
 
       const auto &output = node.getOutputs().at(0);
       const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
-      const auto backwarding_operand_index = TrainingOperandIndex{output, false};
-      insertUse(backwarding_operand_index, backwarding_op_index);
+      const auto incoming_index = TrainingOperandIndex{output, false};
+      insertUse(incoming_index, backwarding_op_index);
     }
 
-    // TODO Apply `node.isRequiredForBackward()`
-    // Insert uses of forwarding operands and set def of backwarding operands
+    // Insert uses of forwarding operands and insert defs of backwarding operands
     node.accept(*this);
   }
 
@@ -126,8 +130,8 @@ void UseDefInitializer::visit(const train::operation::BinaryArithmetic &node)
     insertUse(in_forwarding_index, backwarding_op_index);
 
     // Set def of backwarding(backprop) inputs
-    const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-    insertBackPropDef(in_back_prop_index, backwarding_op_index);
+    const auto outgoing_index = TrainingOperandIndex{in_index, false};
+    insertBackPropDef(outgoing_index, backwarding_op_index);
   }
 }
 
@@ -156,17 +160,17 @@ void UseDefInitializer::visit(const train::operation::Conv2D &node)
   }
 
   // Set def of backwarding inputs
-  const auto in_backwarding_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_backwarding_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 
-  const auto weights_backwarding_index = TrainingOperandIndex{weights_index, false};
-  insertDef(weights_backwarding_index, backwarding_op_index);
+  const auto weights_gradient_index = TrainingOperandIndex{weights_index, false};
+  insertDef(weights_gradient_index, backwarding_op_index);
 
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
   if (bias_index.valid())
   {
-    const auto bias_backwarding_index = TrainingOperandIndex{bias_index, false};
-    insertDef(bias_backwarding_index, backwarding_op_index);
+    const auto bias_gradient_index = TrainingOperandIndex{bias_index, false};
+    insertDef(bias_gradient_index, backwarding_op_index);
   }
 }
 
@@ -195,17 +199,17 @@ void UseDefInitializer::visit(const train::operation::DepthwiseConv2D &node)
   }
 
   // Set def of backwarding inputs
-  const auto in_backwarding_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_backwarding_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 
-  const auto weights_backwarding_index = TrainingOperandIndex{weights_index, false};
-  insertDef(weights_backwarding_index, backwarding_op_index);
+  const auto weights_gradient_index = TrainingOperandIndex{weights_index, false};
+  insertDef(weights_gradient_index, backwarding_op_index);
 
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
   if (bias_index.valid())
   {
-    const auto bias_backwarding_index = TrainingOperandIndex{bias_index, false};
-    insertDef(bias_backwarding_index, backwarding_op_index);
+    const auto bias_gradient_index = TrainingOperandIndex{bias_index, false};
+    insertDef(bias_gradient_index, backwarding_op_index);
   }
 }
 
@@ -227,8 +231,8 @@ void UseDefInitializer::visit(const train::operation::ElementwiseActivation &nod
   // Set def of backwarding(backprop) inputs
   for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
-    const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-    insertBackPropDef(in_back_prop_index, backwarding_op_index);
+    const auto outgoing_index = TrainingOperandIndex{in_index, false};
+    insertBackPropDef(outgoing_index, backwarding_op_index);
   }
 }
 
@@ -257,17 +261,17 @@ void UseDefInitializer::visit(const train::operation::FullyConnected &node)
   }
 
   // Set def of backwarding inputs
-  const auto in_backwarding_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_backwarding_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 
-  const auto weights_backwarding_index = TrainingOperandIndex{weights_index, false};
-  insertDef(weights_backwarding_index, backwarding_op_index);
+  const auto weights_gradient_index = TrainingOperandIndex{weights_index, false};
+  insertDef(weights_gradient_index, backwarding_op_index);
 
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
   if (bias_index.valid())
   {
-    const auto bias_backwarding_index = TrainingOperandIndex{bias_index, false};
-    insertDef(bias_backwarding_index, backwarding_op_index);
+    const auto bias_gradient_index = TrainingOperandIndex{bias_index, false};
+    insertDef(bias_gradient_index, backwarding_op_index);
   }
 }
 
@@ -287,19 +291,19 @@ void UseDefInitializer::visit(const train::operation::Loss &node)
   // Set def of backwarding(backprop) y_pred
   const auto &y_pred_index = node.getInputs().at(train::operation::Loss::Input::Y_PRED);
   assert(!_tgraph.operands().at(y_pred_index).isConstant());
-  const auto y_pred_back_prop_index = TrainingOperandIndex{y_pred_index, false};
-  insertBackPropDef(y_pred_back_prop_index, backwarding_op_index);
+  const auto y_pred_outgoing_index = TrainingOperandIndex{y_pred_index, false};
+  insertBackPropDef(y_pred_outgoing_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) y_true
   const auto &y_true_index = node.getInputs().at(train::operation::Loss::Input::Y_TRUE);
   assert(!_tgraph.operands().at(y_true_index).isConstant());
-  const auto y_true_back_prop_index = TrainingOperandIndex{y_true_index, false};
-  insertBackPropDef(y_true_back_prop_index, backwarding_op_index);
+  const auto y_true_outgoing_index = TrainingOperandIndex{y_true_index, false};
+  insertBackPropDef(y_true_outgoing_index, backwarding_op_index);
 
   // Remove use of backwarding output
   const auto &out_index = node.getOutputs().at(0);
-  const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  auto &usedef_chain = _training_usedefs.at(out_backwarding_index);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  auto &usedef_chain = _training_usedefs.at(incoming_index);
   usedef_chain.removeTrainingUse(backwarding_op_index);
 }
 
@@ -316,13 +320,13 @@ void UseDefInitializer::visit(const train::operation::Pad &node)
 
   // Insert use of backwarding(backprop) output
   const auto &out_index = node.getOutputs().at(0);
-  const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  insertUse(out_backwarding_index, backwarding_op_index);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  insertUse(incoming_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Pad::Input::INPUT);
-  const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_back_prop_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
 void UseDefInitializer::visit(const train::operation::Pool2D &node)
@@ -346,13 +350,13 @@ void UseDefInitializer::visit(const train::operation::Pool2D &node)
 
   // Insert use of backwarding(backprop) output
   const auto &out_index = node.getOutputs().at(0);
-  const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  insertUse(out_backwarding_index, backwarding_op_index);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  insertUse(incoming_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Pool2D::Input::INPUT);
-  const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_back_prop_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
 void UseDefInitializer::visit(const train::operation::Reduce &node)
@@ -368,13 +372,13 @@ void UseDefInitializer::visit(const train::operation::Reduce &node)
 
   // Insert use of backwarding(backprop) output
   const auto &out_index = node.getOutputs().at(0);
-  const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  insertUse(out_backwarding_index, backwarding_op_index);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  insertUse(incoming_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Reduce::Input::INPUT);
-  const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_back_prop_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
 void UseDefInitializer::visit(const train::operation::Reshape &node)
@@ -389,13 +393,13 @@ void UseDefInitializer::visit(const train::operation::Reshape &node)
   insertUse(out_forwarding_index, backwarding_op_index);
 
   // Insert use of backwarding(backprop) output
-  const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  insertUse(out_backwarding_index, backwarding_op_index);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  insertUse(incoming_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Reduce::Input::INPUT);
-  const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_back_prop_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
 void UseDefInitializer::visit(const train::operation::Softmax &node)
@@ -410,13 +414,13 @@ void UseDefInitializer::visit(const train::operation::Softmax &node)
   insertUse(out_forwarding_index, backwarding_op_index);
 
   // Insert use of backwarding(backprop) output
-  const auto out_backwarding_index = TrainingOperandIndex{out_index, false};
-  insertUse(out_backwarding_index, backwarding_op_index);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  insertUse(incoming_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) input
   const auto &in_index = node.getInputs().at(train::operation::Reduce::Input::INPUT);
-  const auto in_back_prop_index = TrainingOperandIndex{in_index, false};
-  insertBackPropDef(in_back_prop_index, backwarding_op_index);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
 void UseDefInitializer::insertUse(const TrainingOperandIndex &operand_index,

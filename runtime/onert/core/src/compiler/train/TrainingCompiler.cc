@@ -173,6 +173,18 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     dot_dumper.dump(*subg, nnfw::misc::str("after_loss_insertion-", subg_index.value()));
   }
 
+  for (auto &pair : trainable_subgraphs)
+  {
+    const auto &subg_index = pair.first;
+    auto &&subg = pair.second;
+
+    subg->initializeTrainingUseDefs();
+    subg->verify();
+
+    dot_dumper.dump(*subg,
+                    nnfw::misc::str("after_initializing_training_usedefs-", subg_index.value()));
+  }
+
   // Change input shape according to batch_size
   for (auto &&pair : trainable_subgraphs)
   {

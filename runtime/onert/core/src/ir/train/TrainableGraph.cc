@@ -26,6 +26,52 @@
 #include <map>
 #include <misc/polymorphic_downcast.h>
 
+namespace
+{
+
+using namespace onert;
+using namespace onert::ir;
+using namespace onert::ir::train;
+
+void updateOperationsByTrainingUseDefs(const UseDefChains &training_usedefs, TrainableGraph &tgraph)
+{
+  // Disable backward nodes that will be unused
+  const auto border = tgraph.btopolSortOperations();
+  for (const auto &op_index : border)
+  {
+    const auto &node = tgraph.operations().at(op_index);
+    const auto &candidates =
+      (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    const bool is_backward_op_used =
+      std::any_of(candidates.begin(), candidates.end(), [&](const OperandIndex &operand) {
+        const auto training_op_index = TrainingOperationIndex{op_index, false};
+        const auto forwarding_index = TrainingOperandIndex{operand, true};
+        const auto &forwarding_uses = training_usedefs.at(forwarding_index).getTrainingUses();
+        const auto backwarding_index = TrainingOperandIndex{operand, false};
+        const auto &backwarding_uses = training_usedefs.at(backwarding_index).getTrainingUses();
+        return forwarding_uses.find(training_op_index) != forwarding_uses.end() ||
+               backwarding_uses.find(training_op_index) != backwarding_uses.end();
+      });
+
+    // NOTE Backward op does not define any incoming operand in backwarding
+    const auto &inputs = node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    const bool is_backward_op_def =
+      std::any_of(inputs.begin(), inputs.end(), [&](const OperandIndex &input) {
+        const auto training_op_index = TrainingOperationIndex{op_index, false};
+        const auto outcoming_index = TrainingOperandIndex{input, false};
+        const auto &backwarding_defs = training_usedefs.at(outcoming_index).getTrainingUses();
+        return backwarding_defs.find(training_op_index) != backwarding_defs.end();
+      });
+
+    if (is_backward_op_used || is_backward_op_def)
+      tgraph.enableBackward(op_index);
+    else
+      tgraph.disableBackward(op_index);
+  }
+}
+
+} // namespace
+
 namespace onert
 {
 namespace ir
@@ -135,9 +181,14 @@ const ITrainableOperation &TrainableGraph::operation(OperationIndex index) const
 
 void TrainableGraph::enableBackward(const OperationIndex &index)
 {
-  auto op = dynamic_cast<ir::train::ITrainableOperation *>(&_graph.operations().at(index));
-  assert(op);
-  op->enableBackward();
+  auto &op = dynamic_cast<ir::train::ITrainableOperation &>(_graph.operations().at(index));
+  op.enableBackward();
+}
+
+void TrainableGraph::disableBackward(const OperationIndex &index)
+{
+  auto &op = dynamic_cast<ir::train::ITrainableOperation &>(_graph.operations().at(index));
+  op.disableBackward();
 }
 
 void TrainableGraph::setTrainingUseDefs(const UseDefChains &training_defuses)
@@ -261,8 +312,20 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
   return ret;
 }
 
-std::vector<ir::OperationIndex>
-TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const
+std::vector<ir::OperationIndex> TrainableGraph::getEssentialBackwardOrder() const
+{
+  auto backward_order = btopolSortOperations();
+  // get rid of all nodes not reachable from a node with trainable parameters
+  backward_order = truncateBackwardOrder(backward_order, [&](const OperationIndex &index) {
+    return operation(index).isRequiredForBackward();
+  });
+
+  return truncateBackwardOrder(backward_order);
+}
+
+std::vector<ir::OperationIndex> TrainableGraph::truncateBackwardOrder(
+  std::vector<ir::OperationIndex> backward_order,
+  std::function<bool(const ir::OperationIndex &)> alive_cond) const
 {
   auto forward_order = backward_order;
   std::reverse(forward_order.begin(), forward_order.end());
@@ -271,20 +334,24 @@ TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_o
 
   for (const auto &index : forward_order)
   {
-    const auto &op = operations().at(index);
-    const auto &trainable_op = dynamic_cast<const ITrainableOperation &>(op);
+    // // Loss operation must exist in truncated graph because loss values are always required
+    // during training. if (op.opcode() == ir::OpCode::Loss)
+    //   alive.insert(index);
 
-    if (trainable_op.hasTrainableParameter())
+    if (alive_cond(index))
       alive.insert(index);
 
     // TODO: replace this with `std::set::contains` after C++20
     if (alive.find(index) != alive.end())
+    {
+      const auto &op = operations().at(index);
       for (const auto &output : op.getOutputs())
       {
         const auto &operand = operands().at(output);
         for (const auto &use : operand.getUses())
           alive.insert(use);
       }
+    }
   }
 
   // TODO: replace this with `std::erase_if(std::vector)` after C++20
@@ -294,6 +361,16 @@ TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_o
     backward_order.end());
 
   return backward_order;
+}
+
+std::vector<ir::OperationIndex>
+TrainableGraph::truncateBackwardOrder(const std::vector<ir::OperationIndex> &backward_order) const
+{
+  return truncateBackwardOrder(backward_order, [&](const ir::OperationIndex &index) {
+    const auto &trainable_op = operation(index);
+
+    return trainable_op.hasTrainableParameter();
+  });
 }
 
 void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)
@@ -311,8 +388,10 @@ void TrainableGraph::initializeTrainingUseDefs()
 {
   _graph.verify();
 
-  // Initialize training defuses
+  // Initialize training usedefs
   UseDefInitializer{*this}();
+
+  updateOperationsByTrainingUseDefs(_training_defuses, *this);
 
   verifyTrainingUseDefs();
 }

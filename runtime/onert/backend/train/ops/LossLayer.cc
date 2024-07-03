@@ -37,7 +37,7 @@ void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *
   assert(y_pred != nullptr);
   assert(y_true != nullptr);
   assert(output != nullptr);
-  assert(back_prop_y_pred != nullptr);
+  // back_prop_y_pred can be nullptr if backwarding is not required
 
   _y_pred = y_pred;
   _y_true = y_true;

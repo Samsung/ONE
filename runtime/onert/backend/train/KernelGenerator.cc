@@ -80,25 +80,6 @@ generateBackPropAccumulator(const IPortableTensor *disposable, BackPropTensor *g
   return update_fn;
 }
 
-void appendBackPropAccumulator(const ir::train::ITrainableOperation &op,
-                               const ir::OperationIndex &op_index, TensorRegistry *tensor_reg,
-                               exec::train::TrainableFnSequence *seq)
-{
-  for (const auto &input_index : (op.getInputs() | ir::Remove::UNDEFINED))
-  {
-    if (op.isRequiredForBackward())
-    {
-      const auto disposable =
-        tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
-      if (disposable != nullptr)
-      {
-        auto back_prop = tensor_reg->getBackPropTensor(input_index);
-        seq->append(generateBackPropAccumulator(disposable, back_prop));
-      }
-    }
-  }
-}
-
 std::unique_ptr<ops::GradientApplier>
 generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
                         const IPortableTensor *gradient, ITrainableTensor *trainable)
@@ -117,9 +98,9 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   const auto &op = _tgraph.operation(idx);
 
-  // NOTE appendBackPropAccumulator() must be called before appending _return_fn to
+  // NOTE appendBackPropAccumulators() must be called before appending _return_fn to
   //      TrainableFnSequence as long as both are appended to the same TrainableFnSequence.
-  appendBackPropAccumulator(op, idx, _tensor_reg.get(), ret.get());
+  appendBackPropAccumulators(idx, ret.get());
 
   op.accept(*this);
   assert(_return_fn);
@@ -608,13 +589,25 @@ void KernelGenerator::visit(const ir::train::operation::Softmax &node)
   _return_fn = std::move(fn);
 }
 
-IPortableTensor *KernelGenerator::getBackPropIn(const ir::Operation &node,
+IPortableTensor *KernelGenerator::getBackPropIn(const ir::train::ITrainableOperation &node,
                                                 const ir::OperandIndex &operand_index)
 {
   const auto &op_index = _node_to_idx[&node];
+  const auto backwarding_operand_index = ir::train::TrainingOperandIndex{operand_index, false};
+
+  const auto &training_defuses = _tgraph.trainingUseDefs().at(backwarding_operand_index);
+  const auto &defs = training_defuses.getTrainingDefs();
+
+  const bool requires_disposable =
+    defs.size() > 1 ||
+    std::any_of(defs.begin(), defs.end(), [&](const ir::train::TrainingOperationIndex &op_index) {
+      return _tgraph.operation(op_index.index()).isRequiredForBackward();
+    });
 
   auto temp_tensor =
-    _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index});
+    requires_disposable
+      ? _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index})
+      : nullptr;
   if (temp_tensor == nullptr)
   {
     temp_tensor = _tensor_reg->getBackPropTensor(operand_index);
@@ -626,6 +619,31 @@ IPortableTensor *KernelGenerator::getBackPropIn(const ir::Operation &node,
 IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_index)
 {
   return _tensor_reg->getBackPropTensor(output_index);
+}
+
+void KernelGenerator::appendBackPropAccumulators(const ir::OperationIndex &op_index,
+                                                 exec::train::TrainableFnSequence *seq)
+{
+  const auto &node = _tgraph.operation(op_index);
+
+  if (!node.isRequiredForBackward())
+    return;
+
+  for (const auto &input_index : (node.getInputs() | ir::Remove::UNDEFINED))
+  {
+    const auto outgoing_index = ir::train::TrainingOperandIndex{input_index, false};
+    const bool is_backprop_used =
+      !_tgraph.trainingUseDefs().at(outgoing_index).getTrainingUses().empty();
+    if (is_backprop_used)
+    {
+      const auto disposable =
+        _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
+      assert(disposable);
+      auto back_prop = _tensor_reg->getBackPropTensor(input_index);
+      assert(back_prop);
+      seq->append(generateBackPropAccumulator(disposable, back_prop));
+    }
+  }
 }
 
 } // namespace train

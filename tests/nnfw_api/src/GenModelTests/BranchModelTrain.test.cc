@@ -56,6 +56,46 @@ TEST_F(GenModelTrain, BranchOps_FC_Add)
 
     SUCCEED();
   }
+
+  // (( Input 0 )) -> [ FC ] -> (fc_out) -----------------------╲
+  //                                 ╲                           |=> [ Add ] -> (( Output 0 ))
+  //                                  ╲-> [ Relu6 ]⎼> (ea_out) -╱
+  {
+    CirclePlusGen cgen;
+
+    uint32_t weight_buf = cgen.addBuffer(std::vector<float>(8 * 2, 0.f));
+    uint32_t bias_buf = cgen.addBuffer(std::vector<float>(8, 0.f));
+    int input0 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
+    int weight = cgen.addTensor({{8, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+    int bias = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+    int fc_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int ea_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    cgen.addOperatorFullyConnected({{input0, weight, bias}, {fc_output}});
+    cgen.addOperatorRelu({{fc_output}, {ea_output}});
+    cgen.addOperatorAdd({{fc_output, ea_output}, {output}},
+                        circle::ActivationFunctionType::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({input0}, {output});
+
+    float learning_rate = 0.01f;
+    int32_t batch_size = 1;
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
+
+    _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+    _context->addTrainCase(
+      uniformTCD<float>({{{1, 3}}, {{2, 1}}},                                     // inputs
+                        {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
+                        {{9.2218f}, {8.9554f}, {8.7044f}, {8.4678f}}              // loss
+                        ));
+
+    _context->setBackends({"train"});
+    _context->setEpoch(4);
+
+    SUCCEED();
+  }
 }
 
 TEST_F(GenModelTrain, BranchOps_FC_Sub)
@@ -92,6 +132,46 @@ TEST_F(GenModelTrain, BranchOps_FC_Sub)
       {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}},                 // expected
       {{7.3265f}, {4.6811f}, {3.6735f}, {3.2863f}}                              // loss
       ));
+
+    _context->setBackends({"train"});
+    _context->setEpoch(4);
+
+    SUCCEED();
+  }
+
+  // (( Input 0 )) -> [ FC ] -> (fc_out) -----------------------╲
+  //                                 ╲                           |=> [ Sub ] -> (( Output 0 ))
+  //                                  ╲-> [ Relu6 ]⎼> (ea_out) -╱
+  {
+    CirclePlusGen cgen;
+
+    uint32_t weight_buf = cgen.addBuffer(std::vector<float>(8 * 2, 0.f));
+    uint32_t bias_buf = cgen.addBuffer(std::vector<float>(8, 0.f));
+    int input0 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
+    int weight = cgen.addTensor({{8, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+    int bias = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+    int fc_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int ea_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    cgen.addOperatorFullyConnected({{input0, weight, bias}, {fc_output}});
+    cgen.addOperatorRelu({{fc_output}, {ea_output}});
+    cgen.addOperatorSub({{fc_output, ea_output}, {output}},
+                        circle::ActivationFunctionType::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({input0}, {output});
+
+    float learning_rate = 0.01f;
+    int32_t batch_size = 1;
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
+
+    _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+    _context->addTrainCase(
+      uniformTCD<float>({{{6, 7}}, {{7, 6}}},                                     // inputs
+                        {{{2, 1, 5, 5, 2, 1, 5, 5}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
+                        {{7.3265f}, {4.6811f}, {3.6735f}, {3.2863f}}              // loss
+                        ));
 
     _context->setBackends({"train"});
     _context->setEpoch(4);
@@ -143,6 +223,46 @@ TEST_F(GenModelTrain, BranchOps_FC_Mul)
     _context = std::make_unique<GenModelTrainContext>(cgen.finish());
     _context->addTrainCase(
       uniformTCD<float>({{{0, 3}, {6, 7}}, {{5, 4}, {7, 6}}},                     // inputs
+                        {{{3, 2, 1, 2, 5, 6, 1, 0}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
+                        {{12.5488f}, {12.4590f}, {12.3701f}, {12.2822f}}          // loss
+                        ));
+
+    _context->setBackends({"train"});
+    _context->setEpoch(4);
+
+    SUCCEED();
+  }
+
+  // (( Input 0 )) -> [ FC ] -> (fc_out) -----------------------╲
+  //                                 ╲                           |=> [ Mul ] -> (( Output 0 ))
+  //                                  ╲-> [ Relu6 ]⎼> (ea_out) -╱
+  {
+    CirclePlusGen cgen;
+
+    uint32_t weight_buf = cgen.addBuffer(std::vector<float>(8 * 2, 0.f));
+    uint32_t bias_buf = cgen.addBuffer(std::vector<float>(8, 0.f));
+    int input0 = cgen.addTensor({{1, 2}, circle::TensorType::TensorType_FLOAT32});
+    int weight = cgen.addTensor({{8, 2}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+    int bias = cgen.addTensor({{8}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+    int fc_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int ea_output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    int output = cgen.addTensor({{1, 8}, circle::TensorType::TensorType_FLOAT32});
+    cgen.addOperatorFullyConnected({{input0, weight, bias}, {fc_output}});
+    cgen.addOperatorRelu({{fc_output}, {ea_output}});
+    cgen.addOperatorMul({{fc_output, ea_output}, {output}},
+                        circle::ActivationFunctionType::ActivationFunctionType_NONE);
+    cgen.setInputsAndOutputs({input0}, {output});
+
+    float learning_rate = 0.01f;
+    int32_t batch_size = 1;
+    cgen.addTrainInfo({circle::Optimizer::Optimizer_SGD, learning_rate,
+                       circle::LossFn::LossFn_MEAN_SQUARED_ERROR,
+                       circle::LossReductionType::LossReductionType_SumOverBatchSize, batch_size,
+                       NNFW_TRAIN_TRAINABLE_ALL});
+
+    _context = std::make_unique<GenModelTrainContext>(cgen.finish());
+    _context->addTrainCase(
+      uniformTCD<float>({{{0, 3}}, {{5, 4}}},                                     // inputs
                         {{{3, 2, 1, 2, 5, 6, 1, 0}}, {{2, 1, 5, 5, 2, 1, 5, 6}}}, // expected
                         {{12.5488f}, {12.4590f}, {12.3701f}, {12.2822f}}          // loss
                         ));

@@ -39,6 +39,7 @@ public:
   virtual bool isWeightsUpdateEnabled() const final { return _trainable; }
 
   void enableBackward() final { _required_for_backward = true; }
+  void disableBackward() final { _required_for_backward = false; }
   virtual bool isRequiredForBackward() const final { return _required_for_backward; }
 
 private:

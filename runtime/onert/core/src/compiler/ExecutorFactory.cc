@@ -714,11 +714,13 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     {
       // Initialize training def-uses
       tgraph->initializeTrainingUseDefs();
+
       tgraph->verify();
     }
 
     // Set trainable context data
     backend::train::TrainableContextData tdata;
+
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
     tdata.external_operands = std::move(external_operands);
@@ -751,9 +753,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   Linear::dump(*lowered_graph, order);
 
   // linearize for backwarding
-  auto backward_order = lowered_graph->trainable_graph().btopolSortOperations();
-  // get rid of all nodes not reachable from a node with trainable parameters
-  backward_order = lowered_graph->trainable_graph().truncateBackwardOrder(backward_order);
+  auto backward_order = lowered_graph->trainable_graph().getEssentialBackwardOrder();
   VERBOSE(ExecutorFactory) << "Linearize for backwarding order" << std::endl;
   Linear::dump(*lowered_graph, backward_order);
 

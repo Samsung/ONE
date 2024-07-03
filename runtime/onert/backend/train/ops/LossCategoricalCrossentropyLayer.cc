@@ -56,6 +56,8 @@ void LossCategoricalCrossentropyLayer::forward(bool)
 
 void LossCategoricalCrossentropyLayer::backward()
 {
+  assert(_back_prop_y_pred != nullptr);
+
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
     nnfw::cker::train::CategoricalCrossEntropyGrad(
