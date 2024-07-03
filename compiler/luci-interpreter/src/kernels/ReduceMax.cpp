@@ -149,6 +149,9 @@ void ReduceMax::execute() const
     case DataType::FLOAT32:
       evalFloat();
       break;
+    case DataType::BOOL:
+      evalBool();
+      break;
     // TODO Support quantized kernels
     default:
       throw std::runtime_error("luci-intp ReduceMax Unsupported type.");
@@ -175,6 +178,28 @@ void ReduceMax::evalFloat() const
     output()->shape().num_dims(), axes_data, num_axes, _params.keep_dims,
     getTensorData<int>(temp_index), getTensorData<int>(resolved_axes), init_value,
     [](const float current, const float in) -> float { return (in > current) ? in : current; });
+}
+
+void ReduceMax::evalBool() const
+{
+  const auto *axes_data = getTensorData<int32_t>(axes());
+  int num_axes = axes()->shape().num_elements();
+
+  auto temp_index = getOutputTensors()[1];
+  auto resolved_axes = getOutputTensors()[2];
+
+  int num_resolved_axis = 0;
+  LUCI_INTERPRETER_CHECK(
+    tflite::reference_ops::ResolveAxis(input()->shape().num_dims(), axes_data, num_axes,
+                                       getTensorData<int>(resolved_axes), &num_resolved_axis));
+
+  bool init_value = std::numeric_limits<bool>::lowest();
+  tflite::reference_ops::ReduceGeneric<bool>(
+    getTensorData<bool>(input()), getTensorShape(input()).DimsData(), input()->shape().num_dims(),
+    getTensorData<bool>(output()), getTensorShape(output()).DimsData(),
+    output()->shape().num_dims(), axes_data, num_axes, _params.keep_dims,
+    getTensorData<int>(temp_index), getTensorData<int>(resolved_axes), init_value,
+    [](const bool current, const bool in) -> bool { return (in > current) ? in : current; });
 }
 
 } // namespace kernels
