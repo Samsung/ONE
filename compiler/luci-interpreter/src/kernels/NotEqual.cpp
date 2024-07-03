@@ -58,6 +58,9 @@ void NotEqual::execute() const
     case DataType::U8:
       evalQuantized();
       break;
+    case DataType::BOOL:
+      evalBool();
+      break;
     default:
       throw std::runtime_error("luci-intp NotEqual Unsupported type.");
   }
@@ -135,6 +138,29 @@ void NotEqual::evalQuantized() const
     tflite::reference_ops::NotEqualWithScaling(op_params, getTensorShape(x()), x_data,
                                                getTensorShape(y()), y_data,
                                                getTensorShape(output()), output_data);
+  }
+}
+
+void NotEqual::evalBool() const
+{
+  const auto x_data = getTensorData<bool>(x());
+  const auto y_data = getTensorData<bool>(y());
+  auto output_data = getTensorData<bool>(output());
+
+  tflite::ComparisonParams op_params;
+  op_params.is_broadcast = x()->shape() != y()->shape();
+
+  if (op_params.is_broadcast)
+  {
+    tflite::reference_ops::Broadcast4DSlowNotEqualNoScaling(op_params, getTensorShape(x()), x_data,
+                                                            getTensorShape(y()), y_data,
+                                                            getTensorShape(output()), output_data);
+  }
+  else
+  {
+    tflite::reference_ops::NotEqualNoScaling(op_params, getTensorShape(x()), x_data,
+                                             getTensorShape(y()), y_data, getTensorShape(output()),
+                                             output_data);
   }
 }
 

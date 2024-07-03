@@ -40,6 +40,7 @@ private:
   void evalFloat() const;
   template <typename T> void evalInteger() const;
   void evalQuantized() const;
+  void evalBool() const;
 
 private:
   int32_t _x_multiplier = 0;

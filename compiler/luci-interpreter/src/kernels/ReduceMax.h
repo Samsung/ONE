@@ -42,6 +42,7 @@ public:
 
 private:
   void evalFloat() const;
+  void evalBool() const;
 };
 
 } // namespace kernels
