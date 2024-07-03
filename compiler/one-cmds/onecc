@@ -79,8 +79,13 @@ def get_parser():
     parser.add_argument(
         '-b', '--backend', type=str, help='generate code for given backend')
 
-    parser.add_argument(
-        '-T', '--target', type=str, help='run with specific target of the backend')
+    target_name_list: List[str] = oneutils.get_target_list(get_name=True)
+    if not target_name_list:
+        target_help_message = '(No available target)'
+    else:
+        target_help_message = '(Available target: ' + ', '.join(target_name_list) + ')'
+    target_help_message = 'run with specific target of the backend ' + target_help_message
+    parser.add_argument('-T', '--target', type=str, help=target_help_message)
 
     # just for help message
     compile_group = parser.add_argument_group('compile to circle model')

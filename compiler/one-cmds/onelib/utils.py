@@ -274,6 +274,43 @@ def get_optimization_list(get_name=False):
     return opt_list
 
 
+def get_target_list(get_name=False):
+    """
+    returns a list of targets. If `get_name` is True,
+    only basename without extension is returned rather than full file path.
+
+    [one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test
+
+    Target configuration files must be placed in `target` folder
+    """
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    # target folder
+    files = [f for f in glob.glob(dir_path + '/../../target/*.ini', recursive=True)]
+    # exclude if the name has space
+    files = [s for s in files if not ' ' in s]
+
+    target_list = []
+    for cand in files:
+        if os.path.isfile(cand) and os.access(cand, os.R_OK):
+            target_list.append(cand)
+
+    if get_name == True:
+        target_list = [ntpath.basename(f) for f in target_list]
+        target_list = [remove_suffix(s, '.ini') for s in target_list]
+
+    return target_list
+
+
 def get_arg_parser(backend: Optional[str], cmd: str,
                    target: Optional[str]) -> Optional[ArgumentParser]:
     if not backend:
