@@ -66,7 +66,7 @@ public: // direct API
   char *buffer(const uint32_t tensor_index);
 
 private:
-  char *_wof_ptr;
+  char *_wof_ptr = nullptr;
 };
 
 } // namespace reader

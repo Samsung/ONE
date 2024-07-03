@@ -23,6 +23,7 @@
 #include "core/OMKernelData.h"
 #include "core/OMRuntimeShape.h"
 #include <cmath>
+#include <iostream>
 namespace onert_micro
 {
 namespace execute
@@ -73,6 +74,11 @@ OMStatus L2Pool(const core::Pool2DParams &params, const core::OMRuntimeShape &in
             }
           }
           assert(filter_count != 0);
+          if (filter_count == 0)
+          {
+            std::cerr << "filter_count is zero" << std::endl;
+            return FailedCheckCondition;
+          }
           const float l2pool_result = std::sqrt(sum_squares / filter_count);
           output_data[offset(output_shape.dimsData(), batch, out_y, out_x, channel)] =
             activationFunctionWithMinMax(l2pool_result, params.activation_min,

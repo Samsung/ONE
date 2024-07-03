@@ -100,10 +100,8 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
       return status;
 
     // 4 - AllocDeallocPlan creation
-    status = import::OMExecutionPlanCreator::createExecutionPlan(runtime_storage, runtime_context,
-                                                                 runtime_allocator, config);
-    if (status != Ok)
-      return status;
+    import::OMExecutionPlanCreator::createExecutionPlan(runtime_storage, runtime_context,
+                                                        runtime_allocator, config);
   }
   for (uint32_t i = 0; i < num_subgraph; ++i)
   {

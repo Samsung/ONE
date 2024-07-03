@@ -87,9 +87,6 @@ OMStatus onert_micro::execute::OMRuntimeKernel::getDataFromStorage(uint16_t op_i
       continue;
     status = storage.getDataByTensorIndex(&outputs_data[i], outputs_index[i]);
 
-    if (status != Ok)
-      return status;
-
     if (storage.getKernelType(op_index) == core::Inplace)
     {
       outputs_data[i] = inputs_data[i];

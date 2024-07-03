@@ -90,7 +90,7 @@ OMStatus onert_micro::execute::execute_kernel_CircleSplit(const OMExecuteArgs &e
   OMRuntimeShape input_shape(input);
   OMRuntimeShape output_shape(output);
 
-  int32_t axis_value = axis_data[0];
+  int32_t axis_value = utils::castInputData<int32_t>(axis_data)[0];
   if (axis_value < 0)
   {
     axis_value += input_shape.dimensionsCount() + 1;

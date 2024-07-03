@@ -18,6 +18,7 @@
 #include "core/memory/OMMemoryManager.h"
 
 #include "core/OMDataType.h"
+#include <limits>
 
 using namespace onert_micro::core::memory;
 using namespace onert_micro;
@@ -66,7 +67,10 @@ OMStatus OMRuntimeAllocator::allocate(size_t kernel_index, OMRuntimeContext *con
     const auto casted_num_elements = static_cast<uint32_t>(num_elements);
     const auto type_size =
       static_cast<uint32_t>(getOMDataTypeSize(onertMicroDatatype(tensor->type())));
-
+    if (casted_num_elements > std::numeric_limits<uint32_t>::max() / type_size)
+    {
+      return FailedCheckCondition;
+    }
     // allocate data
     uint8_t *allocated_data = nullptr;
     assert(storage->getDataByTensorIndex(&allocated_data, tensor_index) == Ok &&
@@ -94,15 +98,14 @@ OMStatus OMRuntimeAllocator::deallocate(size_t kernel_index, OMRuntimeStorage *s
   {
     uint8_t *allocated_data = nullptr;
     OMStatus status = storage->getDataByTensorIndex(&allocated_data, tensor_index);
+    assert(status == Ok); // note that status always 0
+
     // To continue deallocate due to current tensor is not saved in storage
     if (allocated_data == nullptr)
       continue;
-    if (status != Ok)
-      return status;
 
     status = OMMemoryManager::deallocateMemory(allocated_data);
-    if (status != Ok)
-      return status;
+    assert(status == Ok); // note that status always 0
 
     status = storage->removeTensorFromTensorIndexToData(tensor_index);
     if (status != Ok)
@@ -135,8 +138,6 @@ OMStatus OMRuntimeAllocator::allocateGraphInputs(OMRuntimeContext *context,
     uint8_t *allocated_data = nullptr;
     // First clear if already allocated
     status = storage->getDataByTensorIndex(&allocated_data, tensor_index);
-    if (status != Ok)
-      return status;
 
     OMMemoryManager::deallocateMemory(allocated_data);
 
