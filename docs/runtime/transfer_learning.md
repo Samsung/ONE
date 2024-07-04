@@ -61,9 +61,8 @@ base_model.trainable = False
 image_batch = tf.zeros([32, 160, 160, 3])
 feature_batch = base_model(image_batch)
 
-# feature extraction
+# define custom classification layers
 global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
-feature_batch_average = global_average_layer(feature_batch)
 prediction_layer = tf.keras.layers.Dense(1, activation='relu')
 
 # applying preprocessing
@@ -96,8 +95,7 @@ one-import tflite -i customized_mobilenetv2.tflite -o customized_mobilenetv2.cir
 ```
 
 ## Run training
-Let's train the model using `onert_train`. In this case we want to test only 2 last layers: `Mean` and `FullyConnected` (created from `GlobalAveragePooling2D` and `Dense` in TensorFlow) Note that the other possibility is using `circle+` capabilities.
-NOTE TO REMOVE: Due to problems with exporing, the training was launched on https://github.com/Samsung/ONE/pull/13226
+Let's train the model using `onert_train`. In this case we want to test only 2 last layers: `Mean` and `FullyConnected` (created from `GlobalAveragePooling2D` and `Dense` in TensorFlow). Note that the other possibility is using `circle+` capabilities.
 ```bash
 onert_train \
 --modelfile customized_mobilenetv2.circle \
@@ -145,7 +143,7 @@ In this tutorial the inference will be launched via `Python API`.
 ### Convert the trained model to nnpackage format
 The current version of `Python API` expect models in Python nnpackge format. The conversion can be done with `tools/nnpackage_tool/model2nnpkg/model2nnpkg.py` script.
 ```bash
-python model2nnpkg.py -m customized_mobilenetv2_trained.circle
+python model2nnpkg.py -m customized_mobilenetv2_trained.circle -o mobilenet_package_dir
 ```
 ### Run inference via Python API
 PRE: Install nnfwapi package
@@ -159,7 +157,7 @@ import matplotlib.pyplot as plt
 import os
 import tensorflow as tf
 
-nnpackage_path = '/home/m.bencer/workspace/OneLearningNotes/test_models/mobilenetv2/customized_mobilenetv2_trained'
+nnpackage_path = '{mobilenet_package_dir}/customized_mobilenetv2_trained'
 session = nnfw_session(nnpackage_path, 'cpu')
 
 _URL = 'https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip'
