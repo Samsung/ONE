@@ -32,10 +32,7 @@ function(_Boost_Build Boost_PREFIX)
 
   list(APPEND Boost_Options --build-dir=${BoostBuild_DIR})
   list(APPEND Boost_Options --prefix=${BoostInstall_DIR})
-  list(APPEND Boost_Options --with-log)
   list(APPEND Boost_Options --with-program_options)
-  list(APPEND Boost_Options --with-system)
-  list(APPEND Boost_Options --with-filesystem)
 
   if(DEFINED EXTERNALS_BUILD_THREADS)
     set(N ${EXTERNALS_BUILD_THREADS})
@@ -80,7 +77,7 @@ endfunction(_Boost_Build)
 if (NOT BUILD_BOOST)
   # BoostConfig.cmake does not honor QUIET argument at least till cmake 1.70.0.
   # Thus, don't try to find_package if you're not entirely sure you have boost.
-  find_package(Boost 1.58.0 QUIET COMPONENTS log program_options filesystem system)
+  find_package(Boost 1.58.0 QUIET COMPONENTS program_options)
   if(Boost_FOUND)
     return()
   endif()
@@ -99,5 +96,5 @@ if(BUILD_BOOST)
   set(Boost_USE_STATIC_LIBS ON)
 
   # We built boost library so update Boost variables.
-  find_package(Boost 1.58.0 QUIET COMPONENTS log program_options filesystem system)
+  find_package(Boost 1.58.0 QUIET COMPONENTS program_options)
 endif(BUILD_BOOST)

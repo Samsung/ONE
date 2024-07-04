@@ -90,6 +90,8 @@ option(DOWNLOAD_FXDIV "Download fxdiv source" ON)
 option(BUILD_FXDIV "Build fxdiv library from the source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
 option(BUILD_PYTHON_BINDING "Build python binding" OFF)
+option(HDF5_USE_STATIC_LIBRARIES "Determine whether or not static linking for HDF5" ON)
+option(Boost_USE_STATIC_LIBS "Determine whether or not static linking for Boost" ON)
 
 #
 ## Default sample build configuration
