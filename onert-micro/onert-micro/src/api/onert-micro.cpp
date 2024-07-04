@@ -43,7 +43,7 @@ DataBuffer readFile(const char *path)
   {
     std::string errmsg = "Failed to open file";
     std::cerr << errmsg << std::endl;
-    exit(-1); //FIXME: proper way
+    exit(-1); // FIXME: proper way
   }
 
   file.seekg(0, std::ios::end);
@@ -59,7 +59,7 @@ DataBuffer readFile(const char *path)
   {
     std::string errmsg = "Failed to read file";
     std::cerr << errmsg << std::endl;
-    exit(-1); //FIXME: proper way
+    exit(-1); // FIXME: proper way
   }
 
   return model_data;
