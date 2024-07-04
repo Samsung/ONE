@@ -42,7 +42,8 @@ DataBuffer readFile(const char *path)
   if (!file.good())
   {
     std::string errmsg = "Failed to open file";
-    throw std::runtime_error(errmsg.c_str());
+    std::cerr << errmsg << std::endl;
+    exit(-1); //FIXME: proper way
   }
 
   file.seekg(0, std::ios::end);
@@ -57,7 +58,8 @@ DataBuffer readFile(const char *path)
   if (file.fail())
   {
     std::string errmsg = "Failed to read file";
-    throw std::runtime_error(errmsg.c_str());
+    std::cerr << errmsg << std::endl;
+    exit(-1); //FIXME: proper way
   }
 
   return model_data;

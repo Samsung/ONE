@@ -165,11 +165,11 @@ unset(DIS_FLOAT CACHE)
 unset(ENABLE_ONERT_MICRO_TEST CACHE)
 unset(NOT_BUILD_EXTERNALS CACHE)
 
-set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/onert_micro/src/libonert_micro_interpreter.a")
+set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/onert_micro/src/libonert_micro_dev.a")
 
 add_custom_command(
         OUTPUT "${MICRO_ARM_BINARY}"
-        COMMAND "${CMAKE_MAKE_PROGRAM}" onert_micro_interpreter -j ${CPU_COUNT}
+        COMMAND "${CMAKE_MAKE_PROGRAM}" onert_micro_dev -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
         DEPENDS onert_micro_arm_cmake ${OM_CIRCLE_SCHEMA}
         VERBATIM
