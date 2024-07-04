@@ -19,7 +19,6 @@
 
 #include "ir/train/UseDefChain.h"
 #include "ir/train/Index.h"
-#include "util/ObjectManager.h"
 
 namespace onert
 {

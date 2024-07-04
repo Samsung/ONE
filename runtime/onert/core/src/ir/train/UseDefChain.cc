@@ -16,9 +16,6 @@
 
 #include "ir/train/UseDefChain.h"
 
-#include <algorithm>
-#include <memory>
-
 namespace onert
 {
 namespace ir
@@ -47,7 +44,7 @@ void UseDefChain::clearTrainingUseDefs()
 
 bool UseDefChain::operator==(const UseDefChain &other) const
 {
-  return _uses == other._uses && _defs == other._defs;
+  return &_operand == &other._operand && _uses == other._uses && _defs == other._defs;
 }
 
 } // namespace train
