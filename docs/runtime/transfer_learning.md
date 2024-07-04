@@ -40,7 +40,7 @@ with open(current_dir/'cats_and_dogs.input.bin', 'wb') as in_stream:
             out_stream.write(label.numpy().astype(np.float32).tobytes())
 ```
 
-## Feature extraction
+## Prepare model for fine-tuning
 The first step to align the model to our problem is inserting custom operations on the top of the model. The base (with unchanged weights) remains the same.
 
 ```python
