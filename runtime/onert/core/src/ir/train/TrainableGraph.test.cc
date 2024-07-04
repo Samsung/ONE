@@ -410,7 +410,7 @@ TEST(TrainableGraph, essential_backward_topological_order_nonlinear)
     tgraph.enableBackward(fc2);
     tgraph.enableBackward(fc3);
 
-    // This expected indices are base on dfs
+    // These expected indices are base on dfs
     std::vector<OperationIndex> expected_truncation_1{loss, add, fc1, ea1, add1, fc3, fc2};
     std::vector<OperationIndex> expected_truncation_2{loss, add, fc2, fc1, ea1, add1, fc3};
     std::vector<OperationIndex> essential = tgraph.getEssentialBackwardOrder();

@@ -62,49 +62,9 @@ void UseDefInitializer::operator()()
     _training_usedefs.emplace(TrainingOperandIndex{idx, false}, empty_usedef_chain);
   });
 
-  // Initialize training def-uses of forwarding operands for only forwarding nodes
-  // (i.e. forwarding nodes that do not have any backwarding node)
-  graph.operands().iterate([&](const ir::OperandIndex &idx, const ir::Operand &operand) {
-    // Append forwarding def-uses as it is
-    const bool is_forward = true;
-    const auto forwarding_operand_index = TrainingOperandIndex{idx, is_forward};
+  initForForwardingNodes();
 
-    const auto def = operand.getDef();
-    if (def.valid())
-    {
-      insertDef(forwarding_operand_index, TrainingOperationIndex{def, is_forward});
-      auto &usedef_chain = _training_usedefs.at(forwarding_operand_index);
-      usedef_chain.insertTrainingDef(TrainingOperationIndex{def, is_forward});
-    }
-
-    assert(_training_usedefs.at(forwarding_operand_index).getTrainingUses().size() == 0);
-    const auto uses = operand.getUses();
-    for (const auto &use : uses)
-      insertUse(forwarding_operand_index, TrainingOperationIndex{use, is_forward});
-  });
-
-  const auto backward_order = _tgraph.getEssentialBackwardOrder();
-  // Initialize training uses of forwarding operands and def-uses of backwarding operands for
-  // backwarding nodes (i.e. backwarding nodes that do not have any forwarding node)
-  for (const auto &op_index : backward_order)
-  {
-    const auto &node = _tgraph.operation(op_index);
-
-    // Insert use of backwarding operands(only output)
-    {
-      if (node.getOutputs().size() > 1)
-        throw std::runtime_error(
-          "UseDefInitializer does not support multiple outputs of training operation");
-
-      const auto &output = node.getOutputs().at(0);
-      const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
-      const auto incoming_index = TrainingOperandIndex{output, false};
-      insertUse(incoming_index, backwarding_op_index);
-    }
-
-    // Insert uses of forwarding operands and insert defs of backwarding operands
-    node.accept(*this);
-  }
+  initForBackwardingNodes();
 
   _tgraph.setTrainingUseDefs(_training_usedefs);
 }
@@ -449,6 +409,56 @@ void UseDefInitializer::insertBackPropDef(const TrainingOperandIndex &operand_in
   if (!_tgraph.operands().at(operand_index.index()).isConstant())
   {
     insertDef(operand_index, op_index);
+  }
+}
+
+void UseDefInitializer::initForForwardingNodes()
+{
+  // Initialize training def-uses of forwarding operands for only forwarding nodes
+  // (i.e. forwarding nodes that do not have any backwarding node)
+  _tgraph.operands().iterate([&](const ir::OperandIndex &idx, const ir::Operand &operand) {
+    // Append forwarding def-uses as it is
+    const bool is_forward = true;
+    const auto forwarding_operand_index = TrainingOperandIndex{idx, is_forward};
+
+    const auto def = operand.getDef();
+    if (def.valid())
+    {
+      insertDef(forwarding_operand_index, TrainingOperationIndex{def, is_forward});
+      auto &usedef_chain = _training_usedefs.at(forwarding_operand_index);
+      usedef_chain.insertTrainingDef(TrainingOperationIndex{def, is_forward});
+    }
+
+    assert(_training_usedefs.at(forwarding_operand_index).getTrainingUses().size() == 0);
+    const auto uses = operand.getUses();
+    for (const auto &use : uses)
+      insertUse(forwarding_operand_index, TrainingOperationIndex{use, is_forward});
+  });
+}
+
+void UseDefInitializer::initForBackwardingNodes()
+{
+  const auto backward_order = _tgraph.getEssentialBackwardOrder();
+  // Initialize training uses of forwarding operands and def-uses of backwarding operands for
+  // backwarding nodes (i.e. backwarding nodes that do not have any forwarding node)
+  for (const auto &op_index : backward_order)
+  {
+    const auto &node = _tgraph.operation(op_index);
+
+    // Insert use of backwarding operands(only output)
+    {
+      if (node.getOutputs().size() > 1)
+        throw std::runtime_error(
+          "UseDefInitializer does not support multiple outputs of training operation");
+
+      const auto &output = node.getOutputs().at(0);
+      const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
+      const auto incoming_index = TrainingOperandIndex{output, false};
+      insertUse(incoming_index, backwarding_op_index);
+    }
+
+    // Insert uses of forwarding operands and insert defs of backwarding operands
+    node.accept(*this);
   }
 }
 

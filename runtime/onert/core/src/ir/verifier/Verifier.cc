@@ -131,6 +131,7 @@ bool DAGChecker::verify(const Graph &graph) const noexcept
   return !cyclic;
 }
 
+// TODO Merge with the above DAGChecker::verify(const Graph &)
 bool DAGChecker::verify(const train::UseDefChains &training_usedefs) const noexcept
 {
   bool cyclic = false;
@@ -227,6 +228,7 @@ bool EdgeChecker::verify(const Graph &graph) const noexcept
   return errors == 0;
 }
 
+// TODO Merge with the above EdgeChecker::verify(const Graph &)
 bool EdgeChecker::verify(const train::UseDefChains &training_usedefs) const noexcept
 {
   const auto operations = extractOperations(training_usedefs);

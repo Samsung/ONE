@@ -81,6 +81,8 @@ private:
   void insertDef(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
   void insertBackPropDef(const TrainingOperandIndex &operand_index,
                          const TrainingOperationIndex &op_index);
+  void initForForwardingNodes();
+  void initForBackwardingNodes();
 
 private:
   TrainableGraph &_tgraph;

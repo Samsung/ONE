@@ -707,9 +707,10 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     }
 
     const auto backend = pair.first;
-    // The builtin backend does not yet support initializing UseDefs for training
-    // because it's graph does not have loss operation
-    // Without loss opeartion, we cannot call btopolSortOperations()
+    // NOTE The builtin backend does not yet support initializing UseDefs for training
+    //      because it's graph does not have loss operation
+    //      Without loss opeartion, we cannot call btopolSortOperations() or
+    //      getEssentialBackwardOrder()
     if (backend->config()->id() != "builtin")
     {
       // Initialize training def-uses
