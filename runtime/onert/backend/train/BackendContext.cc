@@ -138,6 +138,8 @@ getBackwardTensorList(const ir::train::TrainableGraph &tgraph, const BackendCont
  */
 void planConstTensors(BackendContext &ctx)
 {
+  VERBOSE(BackendContext) << "Start planning constant tensors" << std::endl;
+
   const ir::train::TrainableGraph &tgraph = *ctx.data()->tgraph;
 
   const auto &training_usedefs = tgraph.trainingUseDefs();
@@ -202,10 +204,14 @@ void planConstTensors(BackendContext &ctx)
   assert(std::all_of(
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning constant tensors" << std::endl;
 }
 
 void planNonConstTensors(BackendContext &ctx)
 {
+  VERBOSE(BackendContext) << "Start planning non-constant tensors" << std::endl;
+
   const ir::train::TrainableGraph &tgraph = *ctx.data()->tgraph;
 
   const auto &training_usedefs = tgraph.trainingUseDefs();
@@ -214,7 +220,7 @@ void planNonConstTensors(BackendContext &ctx)
 
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
-  ir::OperandIndexSequence nonconstants;
+  // ir::OperandIndexSequence nonconstants;
 
   // Prepare scanning
   // uses_map and defs_map must have size of TrainindOperandIndex list of only registered tensors
@@ -396,11 +402,14 @@ void planNonConstTensors(BackendContext &ctx)
   assert(std::all_of(
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning non-constant tensors" << std::endl;
 }
 
 // Plan GradientTensors to keep from the corresponding backward layer to the corresponding
 void planGradientTensors(BackendContext &ctx)
 {
+  VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
   // TODO Apply DisposableTensor instead of GradientTensor if possible
   // The corresponding backward layer and the corresponding GradientApplier exist in the same
   // back-propagated operation sequence. So we can use DisposableTensors to plan GradientTensors.
@@ -443,12 +452,14 @@ void planGradientTensors(BackendContext &ctx)
 
     prev_seq = cur_seq;
   }
+  VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
 }
 
 // From the begining of backward to the end of backward,
 // BackProp tensors are available to have multiple defs
 void planBackPropTensors(BackendContext &ctx)
 {
+  VERBOSE(BackendContext) << "Start planning back-propagated tensors" << std::endl;
   const ir::train::TrainableGraph &tgraph = *ctx.data()->tgraph;
 
   auto tensor_builder = ctx.tensor_builder();
@@ -620,6 +631,8 @@ void planBackPropTensors(BackendContext &ctx)
   assert(std::all_of(
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning back-propagated tensors" << std::endl;
 }
 
 } // namespace
@@ -718,6 +731,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
 
 void BackendContext::planDisposableBackPropTensors()
 {
+  VERBOSE(BackendContext) << "Start planning disposable back-prop tensors" << std::endl;
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
   auto tensor_builder = _tensor_builder;
 
@@ -741,6 +755,8 @@ void BackendContext::planDisposableBackPropTensors()
 
     prev_seq = cur_seq;
   }
+
+  VERBOSE(BackendContext) << "Finish planning disposable back-prop tensors" << std::endl;
 }
 
 FunctionMap BackendContext::genKernels()

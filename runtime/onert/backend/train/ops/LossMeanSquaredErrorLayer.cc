@@ -19,6 +19,8 @@
 
 #include <cker/train/operation/Loss.h>
 
+#include <iostream>
+
 namespace onert
 {
 namespace backend
@@ -52,6 +54,14 @@ void LossMeanSquaredErrorLayer::forward(bool)
 void LossMeanSquaredErrorLayer::backward()
 {
   assert(_back_prop_y_pred != nullptr);
+
+  // std::cout << "LossMean y_pred" << std::endl;
+
+  // for (size_t i = 0; i < _y_pred->getShape().num_elements(); ++i)
+  // {
+  //   std::cout << reinterpret_cast<float *>(_y_pred->buffer())[i] << ", ";
+  // }
+  // std::cout << "\n=========================" << std::endl;
 
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
