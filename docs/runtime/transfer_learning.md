@@ -36,14 +36,12 @@ current_dir = pathlib.Path(__file__).parent
 with open(current_dir/'cats_and_dogs.input.bin', 'wb') as in_stream:
     with open(current_dir/'cats_and_dogs.output.bin', 'wb') as out_stream:
         for image,label in train_dataset:
-            # print(image.numpy().dtype)
             in_stream.write(image.numpy().astype(np.float32).tobytes())
-            # print(label)
             out_stream.write(label.numpy().astype(np.float32).tobytes())
 ```
 
 ## Feature extraction
-The first step to align the model to our problem can be inserting customs ops on the top of the model. The base of the model (with unchanged weights) remains the same.
+The first step to align the model to our problem is inserting custom operations on the top of the model. The base (with unchanged weights) remains the same.
 
 ```python
 import tensorflow as tf
@@ -88,14 +86,16 @@ with open('customized_mobilenetv2.tflite', 'wb') as f:
 For more information about feature extraction and fine tuning, please refer to [transfer learning tutorial](https://www.tensorflow.org/tutorials/images/transfer_learning).
 
 ## Convert tflite model to circle model
-In the moment of writing, the `circle+` format is developed so it will the other possibility to handle model training.
-Note that `one-import` can be found in the installaion directory (determined by `-DCMAKE_INSTALL_PREFIX` cmake flag which can be added to `./nnfw configure` command).
+In the moment of writing, the `circle+` format is developed but it will the other possibility to handle model training.
+Note that `one-import` can be found in the installation directory (determined by `-DCMAKE_INSTALL_PREFIX` cmake flag which can be added to `./nnfw configure` command).
 ```bash
 one-import tflite -i customized_mobilenetv2.tflite -o customized_mobilenetv2.circle
 ```
 
 ## Run training
 Let's train the model using `onert_train`. In this case we want to test only 2 last layers: `Mean` and `FullyConnected` (created from `GlobalAveragePooling2D` and `Dense` in TensorFlow). Note that the other possibility is using `circle+` capabilities.
+The crucial here is proper choosing value of `num_of_trainable_ops` to achieve tradeoff between training time and accuracy. It determines how many operations from the back of the graph will be trained. In our case, these are additionally added `Dense` with `Relu` activation, `GlobalAveragePooling` and some previous operations.
+
 ```bash
 onert_train \
 --modelfile customized_mobilenetv2.circle \
@@ -141,12 +141,12 @@ EXECUTE      takes 165537.7600 ms
 ## Test inference
 In this tutorial the inference will be launched via `Python API`.
 ### Convert the trained model to nnpackage format
-The current version of `Python API` expect models in Python nnpackge format. The conversion can be done with `tools/nnpackage_tool/model2nnpkg/model2nnpkg.py` script.
+The current version of `Python API` expect models in Python `nnpackge` format. The conversion can be done with `tools/nnpackage_tool/model2nnpkg/model2nnpkg.py` script.
 ```bash
 python model2nnpkg.py -m customized_mobilenetv2_trained.circle -o mobilenet_package_dir
 ```
 ### Run inference via Python API
-PRE: Install nnfwapi package
+PRE: Install `nnfwapi` package
 ```
 pip install -i https://test.pypi.org/simple/ nnfwapi==0.1.1
 ```
