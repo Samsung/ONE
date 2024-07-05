@@ -43,25 +43,6 @@ ir::OperandInfo createBackwardTensorInfo(const ir::Operand &operand)
                          operand.isConstant()};
 }
 
-// NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
-//      to be updated respectively. So we use a sequence instead of a set.
-// ir::OperandIndexSequence getBackPropSeq(const ir::train::TrainableGraph &tgraph,
-//                                         const ir::OperationIndex &op_index)
-// {
-//   ir::OperandIndexSequence ret;
-
-//   const auto &op = tgraph.operations().at(op_index);
-//   for (const auto &input : (op.getInputs() | ir::Remove::UNDEFINED))
-//   {
-//     const auto &operand = tgraph.operands().at(input);
-//     // TODO Remove other inputs that are not back-propagated
-//     if (!operand.isConstant() && !tgraph.getInputs().contains(input))
-//       ret.append(input);
-//   }
-
-//   return ret;
-// }
-
 void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegistry &tensor_reg,
                              FunctionMap &fn_map)
 {
@@ -169,6 +150,11 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
   const auto operand_indices = getBackwardTensorList(tgraph, *this);
   for (const auto &operand_index : operand_indices)
   {
+    if (external_operands().contains(operand_index.index()))
+      continue;
+
+    assert(operand_index.valid());
+
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(tgraph.layout() != ir::Layout::NCHW);
     assert(!operand_index.is_forward());
@@ -177,63 +163,32 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
                                                createBackwardTensorInfo(operand), ir::Layout::NHWC);
   }
 
-  // TODO Reuse registered tensors when they are planned for memory optimization.
-  const auto border = tgraph.getEssentialBackwardOrder();
-  for (const auto op_index : border)
-  {
-    const auto &trainable_op = tgraph.operation(op_index);
-    assert(trainable_op.isRequiredForBackward());
-    // This assumes that back-propagated tensors of loss outputs are not used
-    for (const auto &back_prop_index :
-         trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
-    {
-      if (tensor_builder->isRegisteredBackward(back_prop_index))
-        continue;
-      if (external_operands().contains(back_prop_index))
-        continue;
-
-      const auto training_back_prop_index = ir::train::TrainingOperandIndex{back_prop_index, false};
-      const auto &training_usedefs = tgraph.trainingUseDefs();
-      const auto &usedefs = training_usedefs.at(training_back_prop_index);
-      const bool not_used = usedefs.getTrainingDefs().empty() && usedefs.getTrainingUses().empty();
-      if (not_used)
-        continue;
-
-      // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-      assert(tgraph.layout() != ir::Layout::NCHW);
-
-      const auto &operand = tgraph.operands().at(back_prop_index);
-      tensor_builder->registerBackwardTensorInfo(back_prop_index, createBackwardTensorInfo(operand),
-                                                 ir::Layout::NHWC);
-    }
-  }
-
   // TODO Register disposable tensor info only when it is necessary
+  const auto border = tgraph.getEssentialBackwardOrder();
   for (const auto &op_index : border)
   {
     // const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
     const auto &trainable_op = tgraph.operation(op_index);
     const auto back_prop_seq =
       trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-    for (const auto &back_prop_index : back_prop_seq)
+    for (const auto &input : back_prop_seq)
     {
-      if (external_operands().contains(back_prop_index))
+      if (external_operands().contains(input))
         continue;
 
-      const auto training_back_prop_index = ir::train::TrainingOperandIndex{back_prop_index, false};
+      const auto backwarding_index = ir::train::TrainingOperandIndex{input, false};
       const auto &training_usedefs = tgraph.trainingUseDefs();
-      const auto &usedefs = training_usedefs.at(training_back_prop_index);
+      const auto &usedefs = training_usedefs.at(backwarding_index);
       const bool not_used = usedefs.getTrainingDefs().empty() && usedefs.getTrainingUses().empty();
       if (not_used)
         continue;
 
-      const auto &operand = tgraph.operands().at(back_prop_index);
-      ;
+      const auto &operand = tgraph.operands().at(input);
       if (!operand.isConstant())
       {
         // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
         assert(tgraph.layout() != ir::Layout::NCHW);
-        DisposableTensorIndex disposable_index{op_index, back_prop_index};
+        DisposableTensorIndex disposable_index{op_index, input};
         tensor_builder->registerDisposableBackwardTensorInfo(
           disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
       }
