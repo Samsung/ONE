@@ -262,6 +262,10 @@ void TrainableGraph::verifyTrainingUseDefs() const
   if (!verifier::DAGChecker().verify(_training_defuses))
     throw std::runtime_error{"The training def-uses is cyclic."};
   assert(verifier::EdgeChecker().verify(_training_defuses));
+
+  // TODO Verify that updated TrainableTensors such as weights are used multiple times
+  //      in forwarding to avoid overwriting multiple times in one step. In other words,
+  //      ConstantInsertionPass should be applied before initializing TrainingUseDefs.
 }
 
 std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const

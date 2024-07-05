@@ -419,6 +419,7 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
 void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 {
   VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
+
   // TODO Apply DisposableTensor instead of GradientTensor if possible
   // The corresponding backward layer and the corresponding GradientApplier exist in the same
   // back-propagated operation sequence. So we can use DisposableTensors to plan GradientTensors.
@@ -459,6 +460,7 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 
     prev_seq = cur_seq;
   }
+
   VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
 }
 
