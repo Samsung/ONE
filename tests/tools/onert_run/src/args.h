@@ -60,6 +60,7 @@ public:
   const int getNumRuns(void) const { return _num_runs; }
   const bool getFixedInput(void) const { return _fixed_input; }
   const int getWarmupRuns(void) const { return _warmup_runs; }
+  const int getMinmaxRuns(void) const { return _minmax_runs; }
   const int getRunDelay(void) const { return _run_delay; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
@@ -99,6 +100,7 @@ private:
   int _num_runs;
   bool _fixed_input = false;
   int _warmup_runs;
+  int _minmax_runs;
   int _run_delay;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
   bool _gpumem_poll;
