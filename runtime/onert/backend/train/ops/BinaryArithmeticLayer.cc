@@ -41,6 +41,24 @@ BinaryArithmeticLayer::BinaryArithmeticLayer()
   // DO NOTHING
 }
 
+ExtraTensorRequests BinaryArithmeticLayer::requestExtraTensor()
+{
+  ExtraTensorRequests req;
+
+  if (_activation != ir::Activation::NONE)
+    req.push_back(ExtraTensorRequest::createRequestLike(_back_prop_output, &_act_back_prop_output));
+
+  return req;
+}
+
+void BinaryArithmeticLayer::configureExtraTensors(std::vector<ExtraTensor *> extra_tensors)
+{
+  if (_activation != ir::Activation::NONE)
+    _act_back_prop_output = extra_tensors[0];
+
+  return;
+}
+
 void BinaryArithmeticLayer::configureBackward(IPortableTensor *back_prop_lhs,
                                               IPortableTensor *back_prop_rhs,
                                               const IPortableTensor *back_prop_output,
@@ -72,7 +90,7 @@ void BinaryArithmeticLayer::backward()
   try
   {
     backprop_act =
-      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output.get());
+      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output);
   }
   catch (const std::exception &e)
   {

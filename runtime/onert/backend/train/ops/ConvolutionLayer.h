@@ -19,6 +19,7 @@
 
 #include <ops/ConvolutionLayer.h>
 
+#include "../ExtraTensorRequest.h"
 #include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>
 
@@ -41,6 +42,9 @@ public:
   void configureBackward(const IPortableTensor *weights, IPortableTensor *back_prop_input,
                          IPortableTensor *grad_weights, IPortableTensor *grad_bias,
                          const IPortableTensor *back_prop_output, const ir::Activation activation);
+
+  ExtraTensorRequests requestExtraTensors() override;
+
   void forward(bool training) override;
   void backward() override;
 
@@ -54,10 +58,10 @@ private:
   const IPortableTensor *_back_prop_output;
 
   // TODO Consider if these tensors should be built in TensorBuilder
-  std::unique_ptr<Tensor> _transposed_weights;
-  std::unique_ptr<BackPropTensor> _conv_back_prop_output;
-  std::unique_ptr<BackPropTensor> _act_back_prop_output;
-  std::unique_ptr<GradientTensor> _transposed_grad_weights;
+  ExtraTensor *_transposed_weights;
+  ExtraTensor *_conv_back_prop_output;
+  ExtraTensor *_transposed_grad_weights;
+  ExtraTensor *_act_back_prop_output;
 };
 
 } // namespace ops

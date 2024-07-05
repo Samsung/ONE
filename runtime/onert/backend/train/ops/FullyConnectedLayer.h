@@ -47,12 +47,7 @@ public:
                          const IPortableTensor *back_prop_output, ir::Activation activation,
                          ir::FullyConnectedWeightsFormat weights_format);
 
-  static ExtraTensorRequests requestExtraTensors(const IPortableTensor *weights,
-                                                 const IPortableTensor *input,
-                                                 const IPortableTensor *back_prop_output,
-                                                 ir::Activation activation);
-  void configureExtraTensors(std::vector<ExtraTensor *> extra_tensors);
-
+  ExtraTensorRequests requestExtraTensors() override;
   void forward(bool training) override;
   void backward() override;
 

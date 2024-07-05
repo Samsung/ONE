@@ -20,6 +20,7 @@
 #include <ops/BinaryArithmeticLayer.h>
 #include <backend/IPortableTensor.h>
 
+#include "../ExtraTensorRequest.h"
 #include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>
 
@@ -50,6 +51,9 @@ public:
   void configureBackward(IPortableTensor *back_prop_lhs, IPortableTensor *back_prop_rhs,
                          const IPortableTensor *back_prop_output, const ir::Activation activation,
                          const ArithmeticType arithmetic_type);
+
+  ExtraTensorRequests requestExtraTensor() override;
+
   void forward(bool training) override;
   void backward() override;
 
@@ -60,7 +64,7 @@ private:
 
   ArithmeticType _arithmetic_type;
   ir::Activation _activation;
-  std::unique_ptr<BackPropTensor> _act_back_prop_output;
+  ExtraTensor *_act_back_prop_output;
 };
 
 } // namespace ops

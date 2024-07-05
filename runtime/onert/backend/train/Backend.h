@@ -60,7 +60,7 @@ public:
                                                            std::move(optimizer));
 
     context->kernel_gen = std::make_shared<train::KernelGenerator>(
-      tgraph, tr, context->external_context(), context->optimizer());
+      tgraph, tr, tb, context->external_context(), context->optimizer());
     return context;
   }
 

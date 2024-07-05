@@ -109,6 +109,14 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
 }
 } // namespace
 
+void KernelGenerator::genExtraTensors(ir::OperationIndex idx,
+                                      onert::exec::train::ITrainableFunction *layer)
+{
+  auto reqs = layer->requestExtraTensors();
+  auto extra_tensors = _extra_tensor_generator->register_requests(idx, reqs);
+  layer->ConfigureExtraTensors(extra_tensors);
+}
+
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
@@ -121,6 +129,8 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   op.accept(*this);
   assert(_return_fn);
+  genExtraTensors(idx, _return_fn.get());
+
   ret->append(std::move(_return_fn));
 
   for (auto &&update_fn : _update_funcs)
@@ -144,12 +154,14 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 }
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
+                                 std::shared_ptr<TensorRegistry> &tensor_reg,
+                                 std::shared_ptr<TensorBuilder> &tensor_builder,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  const exec::train::optimizer::Optimizer *optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer},
-    _update_funcs{}, _node_to_idx{}
+    _update_funcs{}, _node_to_idx{},
+    _extra_tensor_generator{new ExtraTensorGenerator(tgraph, tensor_builder, tensor_reg)}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &idx, const onert::ir::IOperation &op) {
@@ -516,6 +528,9 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
     fn->configureBackward(padding.left, padding.right, padding.top, padding.bottom,
                           stride.horizontal, stride.vertical, kw, kh, activation, pool_type,
                           out_tensor, in_back_prop_tensor, out_back_prop_tensor);
+
+    // auto extra_tensors = getExtraTensors(node);
+    // fn->configureExtraTensors(extra_tensors);
   }
 
   _return_fn = std::move(fn);

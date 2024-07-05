@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_H__
 
 #include "ExternalContext.h"
+#include "ExtraTensorGenerator.h"
 #include "backend/basic/TensorRegistry.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
@@ -40,7 +41,8 @@ class KernelGenerator : public backend::train::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                  const std::shared_ptr<TensorRegistry> &tensor_reg,
+                  std::shared_ptr<TensorRegistry> &tensor_reg,
+                  std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<ExternalContext> &external_context,
                   const exec::train::optimizer::Optimizer *optimizer);
 
@@ -63,7 +65,7 @@ private:
                                  const ir::OperandIndex &operand_index);
   IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
 
-  std::vector<ExtraTensor *> getExtraTensors(const ir::Operation &);
+  void genExtraTensors(ir::OperationIndex idx, onert::exec::train::ITrainableFunction *layer);
 
 private:
   ir::Layout _current_layout;
@@ -72,6 +74,8 @@ private:
   const exec::train::optimizer::Optimizer *_optimizer;
   std::vector<std::unique_ptr<exec::train::IGradientApplier>> _update_funcs;
   std::unordered_map<const ir::IOperation *, ir::OperationIndex> _node_to_idx;
+
+  std::unique_ptr<ExtraTensorGenerator> _extra_tensor_generator;
 };
 
 } // namespace train

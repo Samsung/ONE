@@ -18,6 +18,8 @@
 #define __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 
 #include <cstdint>
+#include "backend/train/ExtraTensorRequest.h"
+#include "backend/train/Tensor.h"
 
 namespace onert
 {
@@ -32,6 +34,9 @@ public:
   virtual ~ITrainableFunction() = default;
   virtual void forward(bool training) = 0;
   virtual void backward() = 0;
+
+  // Implement this if extra tensor is needed
+  virtual backend::train::ExtraTensorRequests requestExtraTensors() {}
 };
 
 } // namespace train

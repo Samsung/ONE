@@ -56,12 +56,13 @@ ir::OperandInfo transposeOperandInfo(const ir::OperandInfo &origin_info)
 }
 
 backend::train::ExtraTensorRequest
-createTransposeTenosrRequest(const backend::IPortableTensor *origin)
+createTransposeTenosrRequest(const backend::IPortableTensor *origin,
+                             backend::train::ExtraTensor **const addr)
 {
   backend::train::ExtraTensorRequest r = {.info = transposeOperandInfo(origin->get_info()),
                                           .layout = origin->layout(),
-                                          .lifetime =
-                                            backend::train::ExtraTensorLifeTime::BACKWARD};
+                                          .lifetime = backend::train::ExtraTensorLifeTime::BACKWARD,
+                                          .address = addr};
   return r;
 }
 
@@ -130,37 +131,26 @@ void FullyConnectedLayer::configureBackward(
   }
 }
 
-ExtraTensorRequests FullyConnectedLayer::requestExtraTensors(
-  const IPortableTensor *weights, const IPortableTensor *input,
-  const IPortableTensor *back_prop_output, ir::Activation activation)
+ExtraTensorRequests FullyConnectedLayer::requestExtraTensors()
 {
   ExtraTensorRequests requests;
 
-  ExtraTensorRequest transposed_weight = createTransposeTenosrRequest(weights);
+  ExtraTensorRequest transposed_weight =
+    createTransposeTenosrRequest(_weights, _transposed_weights);
   requests.push_back(transposed_weight);
 
-  ExtraTensorRequest transposed_input = createTransposeTenosrRequest(input);
+  ExtraTensorRequest transposed_input = createTransposeTenosrRequest(_input, _transposed_input);
   requests.push_back(transposed_input);
 
-  ExtraTensorRequest transpose_back_prop_output = createTransposeTenosrRequest(back_prop_output);
+  ExtraTensorRequest transpose_back_prop_output =
+    createTransposeTenosrRequest(back_prop_output, _transposed_back_prop_output);
   requests.push_back(transpose_back_prop_output);
 
-  if (activation != ir::Activation::NONE)
-    requests.push_back(ExtraTensorRequest::createRequestLike(back_prop_output));
+  if (_activation != ir::Activation::NONE)
+    requests.push_back(
+      ExtraTensorRequest::createRequestLike(back_prop_output, _act_back_prop_output));
 
   return requests;
-}
-
-void FullyConnectedLayer::configureExtraTensors(std::vector<Tensor *> extra_tensors)
-{
-  _transposed_weights = extra_tensors[0];
-  _transposed_input = extra_tensors[1];
-  _transposed_back_prop_output = extra_tensors[2];
-
-  if (extra_tensors.size() == 4)
-    _act_back_prop_output = extra_tensors[3];
-
-  return;
 }
 
 void FullyConnectedLayer::forward(bool) { cpu::ops::FullyConnectedLayer::run(); }

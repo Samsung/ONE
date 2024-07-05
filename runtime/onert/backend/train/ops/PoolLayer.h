@@ -21,6 +21,9 @@
 
 #include <exec/train/ITrainableFunction.h>
 
+#include "../Tensor.h"
+#include "../ExtraTensorRequest.h"
+
 namespace onert
 {
 namespace backend
@@ -60,6 +63,10 @@ public:
                          const ir::Activation activation, const PoolType op_type,
                          IPortableTensor *output, IPortableTensor *back_prop_input,
                          const IPortableTensor *back_prop_output);
+
+  // static ExtraTensorRequests requestExtraTensors(const IPortableTensor *output,
+  //                                                const ir::Activation activation);
+  // void configureExtraTensors(std::vector<ExtraTensor *> extra_tensors);
 
   void forward(bool training) override;
   void backward() override;

@@ -64,19 +64,10 @@ bool is_bwd_or_fwd2bwd(const ExtraTensorLifeTime lifetime)
 
 ExtraTensorGenerator::ExtraTensorGenerator(const ir::train::TrainableGraph &tgraph,
                                            std::shared_ptr<TensorBuilder> &tensor_builder,
-                                           std::shared_ptr<ITensorRegistry> &tensor_registry)
-  : _tgraph(tgraph), _tensor_builder(tensor_builder)
-{
-  _tensor_reg = std::dynamic_pointer_cast<TensorRegistry>(tensor_registry);
+                                           std::shared_ptr<TensorRegistry> &tensor_registry)
+  : _tgraph(tgraph), _tensor_builder(tensor_builder), _tensor_reg(tensor_registry){};
 
-  for (const auto &index : _tgraph.topolSortOperations())
-  {
-    const auto &node = _tgraph.operation(index);
-    _node_to_idx[&node] = index;
-  }
-};
-
-void ExtraTensorGenerator::generate()
+/* void ExtraTensorGenerator::generate()
 {
   _tgraph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
     const auto trainable_op = dynamic_cast<const ir::train::TrainableOperation *>(&op);
@@ -84,7 +75,7 @@ void ExtraTensorGenerator::generate()
   });
 
   handle_requests();
-}
+}*/
 
 void ExtraTensorGenerator::notify_first_use(ir::OperationIndex op_idx,
                                             const ExtraTensorRequests &reqs,
@@ -110,6 +101,24 @@ void ExtraTensorGenerator::notify_last_use(ir::OperationIndex op_idx,
   return;
 }
 
+std::vector<ExtraTensor *> ExtraTensorGenerator::register_requests(ir::OperationIndex op_idx,
+                                                                   const ExtraTensorRequests &reqs)
+{
+  std::vector<ExtraTensor *> registered_tensors;
+
+  // save requests
+  _idx_to_requests[op_idx] = reqs;
+
+  // register tensor
+  for (size_t i = 0; i < reqs.size(); i++)
+  {
+    ExtraTensorIndex tensor_idx(op_idx, i);
+    _tensor_builder->registerExtraTensorInfo(tensor_idx, reqs[i].info, reqs[i].layout);
+    registered_tensors.push_back(_tensor_reg->getExtraTensor(tensor_idx));
+  }
+  return registered_tensors;
+}
+/*
 void ExtraTensorGenerator::handle_requests()
 {
   // register tensor
@@ -166,6 +175,46 @@ void ExtraTensorGenerator::visit(const ir::train::operation::FullyConnected &nod
   _idx_to_requests.emplace(op_idx, requests);
   return;
 }
+
+void ExtraTensorGenerator::visit(const ir::train::operation::Conv2D &node)
+{
+  using ir::train::operation::Conv2D;
+
+  const auto weights_index{node.getInputs().at(Conv2D::Input::KERNEL)};
+  auto weights_tensor = _tensor_reg->getTrainableTensor(weights_index);
+
+  const auto out_index{node.getOutputs().at(0)};
+  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(out_index);
+
+  const auto activation = node.param().activation;
+
+  auto requests =
+    ops::ConvolutionLayer::requestExtraTensors(weights_tensor, out_back_prop_tensor, activation);
+
+  auto op_idx = _node_to_idx[&node];
+  _idx_to_requests.emplace(op_idx, requests);
+
+  return;
+}*/
+
+/*
+void ExtraTensorGenerator::visit(const ir::train::operation::Pool2D &node)
+{
+  using ir::train::operation::Pool2D;
+
+  const auto out_index{node.getOutputs().at(0)};
+  auto out_back_prop_tensor = _tensor_reg->getBackPropTensor(out_index);
+
+  const auto activation = node.param().activation;
+
+  auto requests = ops::ConvolutionLayer::requestExtraTensors(out_back_prop_tensor, activation);
+
+  auto op_idx = _node_to_idx[&node];
+  _idx_to_requests.emplace(op_idx, requests);
+
+  return;
+}
+*/
 
 } // namespace train
 } // namespace backend

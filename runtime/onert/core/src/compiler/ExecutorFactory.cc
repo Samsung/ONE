@@ -871,6 +871,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       code_map.insert(
         {op_ind, train::TrainableCodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
     }
+
+    // allocate extra tensors
   }
 
   // [idea2] : Generate Extra Tensors by traversing code_map

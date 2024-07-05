@@ -41,6 +41,8 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
+  // ExtraTensor *_act_back_prop_output;
+  // ExtraTensor *_arg_max_index;
   std::unique_ptr<Tensor> _act_back_prop_output;
   std::unique_ptr<Tensor> _arg_max_index;
 
@@ -75,6 +77,31 @@ public:
   ~MaxPool2D() {}
 
 public:
+  /*
+  static ExtraTensorRequests requestExtraTensors(const IPortableTensor *output,
+                                                 const ir::Activation activation)
+  {
+    ExtraTensorRequests req;
+
+    req.push_back(ExtraTensorRequest::createRequestLike(output));
+
+    if (activation != ir::Activation::NONE)
+      req.push_back(ExtraTensorRequest::createRequestLike(output));
+
+    return req;
+  }
+
+  void configureExtraTensors(std::vector<ExtraTensor *> extra_tensors)
+  {
+    _arg_max_index = extra_tensors[0];
+
+    if (extra_tensors.size() == 2)
+    {
+      _act_back_prop_output = extra_tensors[1];
+    }
+  }
+  */
+
   void forward(const IPortableTensor *in, IPortableTensor *out)
   {
     assert(in->layout() == ir::Layout::NHWC);
@@ -148,6 +175,26 @@ void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t pad
       throw std::runtime_error("PoolLayer: Unsupported pool type");
   }
 }
+
+/*
+ExtraTensorRequests PoolLayer::requestExtraTensors(const IPortableTensor *output,
+                                                          const ir::Activation activation)
+{
+  auto maxpool = dynamic_cast<MaxPool2D *>(_kernel.get());
+
+  if (maxpool != nullptr)
+    return maxpool->requestExtraTensors(output, activation);
+
+  return;
+}
+
+void PoolLayer::configureExtraTensors(std::vector<ExtraTensor *> extra_tensors)
+{
+  auto maxpool = dynamic_cast<MaxPool2D *>(_kernel.get());
+  maxpool->configureExtraTensors(extra_tensors);
+  return;
+}
+*/
 
 void PoolLayer::forward(bool training)
 {
