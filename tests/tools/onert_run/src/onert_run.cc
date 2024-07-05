@@ -295,6 +295,9 @@ int main(const int argc, char **argv)
         // Allocate memory for input data and set buffer
         if (allocate)
         {
+          if (args.getForceFloat())
+            ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
+
           auto input_size_in_bytes = bufsize_for(&ti);
           inputs[i].alloc(input_size_in_bytes, ti.dtype);
 
@@ -359,6 +362,9 @@ int main(const int argc, char **argv)
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
+      if (args.getForceFloat())
+        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
+
       uint64_t output_size_in_bytes = bufsize_for(&ti);
       {
         auto found = output_sizes.find(i);
