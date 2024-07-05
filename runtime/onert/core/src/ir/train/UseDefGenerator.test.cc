@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "UseDefInitializer.h"
+#include "UseDefGenerator.h"
 
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/Operations.Include.h"
@@ -97,7 +97,7 @@ void enableAllBackwarding(train::TrainableGraph &tgraph)
 
 } // namespace
 
-TEST(UseDefInitializer, one_op)
+TEST(UseDefGenerator, one_op)
 {
   // BinaryArtihmetic - Add
   {
@@ -146,7 +146,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -323,7 +323,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_conv2d_index{conv2d_index, true};
@@ -463,7 +463,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_depthwise_conv2d_index{depthwise_conv2d_index, true};
@@ -613,7 +613,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -773,7 +773,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -920,7 +920,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1110,7 +1110,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1284,7 +1284,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1471,7 +1471,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1655,7 +1655,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1834,7 +1834,7 @@ TEST(UseDefInitializer, one_op)
 
     enableAllBackwarding(tgraph);
 
-    EXPECT_NO_THROW(tgraph.initializeTrainingUseDefs());
+    EXPECT_NO_THROW(tgraph.setTrainingUseDefs(train::UseDefGenerator{tgraph}()));
     EXPECT_NO_THROW(tgraph.verify());
 
     train::TrainingOperationIndex forwarding_fc_index{fc_index, true};
@@ -1982,7 +1982,7 @@ TEST(UseDefInitializer, one_op)
   }
 }
 
-// TEST(UseDefInitializer, softmax)
+// TEST(UseDefGenerator, softmax)
 // {
 
 // }

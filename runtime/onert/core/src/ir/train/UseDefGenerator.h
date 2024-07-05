@@ -40,28 +40,28 @@ namespace ir
 namespace train
 {
 
-struct UseDefInitializerBase : public TrainableOperationVisitor
+struct UseDefGeneratorBase : public TrainableOperationVisitor
 {
-  virtual ~UseDefInitializerBase() = default;
+  virtual ~UseDefGeneratorBase() = default;
 
 protected:
-#define OP(InternalName)                                                                  \
-  virtual void visit(const operation::InternalName &) override                            \
-  {                                                                                       \
-    throw std::runtime_error("UseDefInitializer: NYI for operation '" #InternalName "'"); \
+#define OP(InternalName)                                                                \
+  virtual void visit(const operation::InternalName &) override                          \
+  {                                                                                     \
+    throw std::runtime_error("UseDefGenerator: NYI for operation '" #InternalName "'"); \
   }
 #include "ir/train/Operations.lst"
 #undef OP
 };
 
-class UseDefInitializer : public UseDefInitializerBase
+class UseDefGenerator : public UseDefGeneratorBase
 {
 public:
-  UseDefInitializer(void) = delete;
-  UseDefInitializer(TrainableGraph &tgraph);
+  UseDefGenerator(void) = delete;
+  UseDefGenerator(const TrainableGraph &tgraph);
 
 public:
-  void operator()();
+  UseDefChains operator()();
 
 public:
   void visit(const train::operation::BinaryArithmetic &node) override;
@@ -85,7 +85,7 @@ private:
   void initForBackwardingNodes();
 
 private:
-  TrainableGraph &_tgraph;
+  const TrainableGraph &_tgraph;
   std::unordered_map<const ITrainableOperation *, OperationIndex> _node_to_idx;
   UseDefChains _training_usedefs;
 };

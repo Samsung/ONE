@@ -16,7 +16,7 @@
 
 #include "ir/train/TrainableGraph.h"
 
-#include "UseDefInitializer.h"
+#include "UseDefGenerator.h"
 #include "util/Utils.h"
 #include "util/Set.h"
 #include "../verifier/Verifier.h"
@@ -389,7 +389,7 @@ void TrainableGraph::initializeTrainingUseDefs()
   _graph.verify();
 
   // Initialize training usedefs
-  UseDefInitializer{*this}();
+  setTrainingUseDefs(UseDefGenerator{*this}());
 
   updateOperationsByTrainingUseDefs(_training_defuses, *this);
 

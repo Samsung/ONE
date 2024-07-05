@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "UseDefInitializer.h"
+#include "UseDefGenerator.h"
 
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/Index.h"
@@ -32,7 +32,7 @@ namespace ir
 namespace train
 {
 
-UseDefInitializer::UseDefInitializer(TrainableGraph &tgraph)
+UseDefGenerator::UseDefGenerator(const TrainableGraph &tgraph)
   : _tgraph{tgraph}, _node_to_idx{}, _training_usedefs{}
 {
   const auto order = _tgraph.topolSortOperations();
@@ -49,7 +49,7 @@ UseDefInitializer::UseDefInitializer(TrainableGraph &tgraph)
   }));
 }
 
-void UseDefInitializer::operator()()
+UseDefChains UseDefGenerator::operator()()
 {
   const auto &graph = _tgraph.graph();
   assert(ir::verifier::EdgeChecker().verify(graph));
@@ -66,10 +66,10 @@ void UseDefInitializer::operator()()
 
   initForBackwardingNodes();
 
-  _tgraph.setTrainingUseDefs(_training_usedefs);
+  return _training_usedefs;
 }
 
-void UseDefInitializer::visit(const train::operation::BinaryArithmetic &node)
+void UseDefGenerator::visit(const train::operation::BinaryArithmetic &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -95,7 +95,7 @@ void UseDefInitializer::visit(const train::operation::BinaryArithmetic &node)
   }
 }
 
-void UseDefInitializer::visit(const train::operation::Conv2D &node)
+void UseDefGenerator::visit(const train::operation::Conv2D &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -134,7 +134,7 @@ void UseDefInitializer::visit(const train::operation::Conv2D &node)
   }
 }
 
-void UseDefInitializer::visit(const train::operation::DepthwiseConv2D &node)
+void UseDefGenerator::visit(const train::operation::DepthwiseConv2D &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -173,11 +173,11 @@ void UseDefInitializer::visit(const train::operation::DepthwiseConv2D &node)
   }
 }
 
-void UseDefInitializer::visit(const train::operation::ElementwiseActivation &node)
+void UseDefGenerator::visit(const train::operation::ElementwiseActivation &node)
 {
   if (node.param().op_type != operation::ElementwiseActivation::Type::RELU)
   {
-    throw std::runtime_error{"UseDefInitializer: Not yet supported activation type"};
+    throw std::runtime_error{"UseDefGenerator: Not yet supported activation type"};
   }
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -196,7 +196,7 @@ void UseDefInitializer::visit(const train::operation::ElementwiseActivation &nod
   }
 }
 
-void UseDefInitializer::visit(const train::operation::FullyConnected &node)
+void UseDefGenerator::visit(const train::operation::FullyConnected &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -235,7 +235,7 @@ void UseDefInitializer::visit(const train::operation::FullyConnected &node)
   }
 }
 
-void UseDefInitializer::visit(const train::operation::Loss &node)
+void UseDefGenerator::visit(const train::operation::Loss &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -267,7 +267,7 @@ void UseDefInitializer::visit(const train::operation::Loss &node)
   usedef_chain.removeTrainingUse(backwarding_op_index);
 }
 
-void UseDefInitializer::visit(const train::operation::Pad &node)
+void UseDefGenerator::visit(const train::operation::Pad &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -289,11 +289,11 @@ void UseDefInitializer::visit(const train::operation::Pad &node)
   insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
-void UseDefInitializer::visit(const train::operation::Pool2D &node)
+void UseDefGenerator::visit(const train::operation::Pool2D &node)
 {
   if (node.param().op_type != ir::operation::Pool2D::PoolType::MAX)
   {
-    throw std::runtime_error{"UseDefInitializer: Not yet supported pool type"};
+    throw std::runtime_error{"UseDefGenerator: Not yet supported pool type"};
   }
 
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
@@ -319,11 +319,11 @@ void UseDefInitializer::visit(const train::operation::Pool2D &node)
   insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
-void UseDefInitializer::visit(const train::operation::Reduce &node)
+void UseDefGenerator::visit(const train::operation::Reduce &node)
 {
   if (node.param().reduce_type != ir::operation::Reduce::ReduceType::MEAN)
   {
-    throw std::runtime_error{"UseDefInitializer: Not yet supported reduce type"};
+    throw std::runtime_error{"UseDefGenerator: Not yet supported reduce type"};
   }
 
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
@@ -341,7 +341,7 @@ void UseDefInitializer::visit(const train::operation::Reduce &node)
   insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
-void UseDefInitializer::visit(const train::operation::Reshape &node)
+void UseDefGenerator::visit(const train::operation::Reshape &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -362,7 +362,7 @@ void UseDefInitializer::visit(const train::operation::Reshape &node)
   insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
-void UseDefInitializer::visit(const train::operation::Softmax &node)
+void UseDefGenerator::visit(const train::operation::Softmax &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
   const auto &op_index = _node_to_idx.at(&node);
@@ -383,16 +383,16 @@ void UseDefInitializer::visit(const train::operation::Softmax &node)
   insertBackPropDef(outgoing_index, backwarding_op_index);
 }
 
-void UseDefInitializer::insertUse(const TrainingOperandIndex &operand_index,
-                                  const TrainingOperationIndex &op_index)
+void UseDefGenerator::insertUse(const TrainingOperandIndex &operand_index,
+                                const TrainingOperationIndex &op_index)
 {
   assert(_training_usedefs.find(operand_index) != _training_usedefs.end());
   auto &usedef_chain = _training_usedefs.at(operand_index);
   usedef_chain.insertTrainingUse(op_index);
 }
 
-void UseDefInitializer::insertDef(const TrainingOperandIndex &operand_index,
-                                  const TrainingOperationIndex &op_index)
+void UseDefGenerator::insertDef(const TrainingOperandIndex &operand_index,
+                                const TrainingOperationIndex &op_index)
 {
   assert(operand_index.valid());
 
@@ -401,8 +401,8 @@ void UseDefInitializer::insertDef(const TrainingOperandIndex &operand_index,
   usedef_chain.insertTrainingDef(op_index);
 }
 
-void UseDefInitializer::insertBackPropDef(const TrainingOperandIndex &operand_index,
-                                          const TrainingOperationIndex &op_index)
+void UseDefGenerator::insertBackPropDef(const TrainingOperandIndex &operand_index,
+                                        const TrainingOperationIndex &op_index)
 {
   // NOTE There is no need to set def of constant backwarding(backprop) inputs
   //      because it won't be back-propagated.
@@ -412,7 +412,7 @@ void UseDefInitializer::insertBackPropDef(const TrainingOperandIndex &operand_in
   }
 }
 
-void UseDefInitializer::initForForwardingNodes()
+void UseDefGenerator::initForForwardingNodes()
 {
   // Initialize training def-uses of forwarding operands for only forwarding nodes
   // (i.e. forwarding nodes that do not have any backwarding node)
@@ -436,7 +436,7 @@ void UseDefInitializer::initForForwardingNodes()
   });
 }
 
-void UseDefInitializer::initForBackwardingNodes()
+void UseDefGenerator::initForBackwardingNodes()
 {
   const auto backward_order = _tgraph.getEssentialBackwardOrder();
   // Initialize training uses of forwarding operands and def-uses of backwarding operands for
@@ -449,7 +449,7 @@ void UseDefInitializer::initForBackwardingNodes()
     {
       if (node.getOutputs().size() > 1)
         throw std::runtime_error(
-          "UseDefInitializer does not support multiple outputs of training operation");
+          "UseDefGenerator does not support multiple outputs of training operation");
 
       const auto &output = node.getOutputs().at(0);
       const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
