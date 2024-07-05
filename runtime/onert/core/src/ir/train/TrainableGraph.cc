@@ -237,30 +237,45 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
   return ret;
 }
 
-std::vector<ir::OperationIndex>
-TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const
+std::vector<ir::OperationIndex> TrainableGraph::essentialBackwardOrder() const
+{
+  auto backward_order = btopolSortOperations();
+  // get rid of all nodes not reachable from a node with trainable parameters
+  backward_order = truncateBackwardOrder(backward_order, [&](const OperationIndex &index) {
+    return operation(index).isRequiredForBackward();
+  });
+
+  return truncateBackwardOrder(backward_order);
+}
+
+std::vector<ir::OperationIndex> TrainableGraph::truncateBackwardOrder(
+  std::vector<ir::OperationIndex> backward_order,
+  std::function<bool(const ir::OperationIndex &)> alive_cond) const
 {
   auto forward_order = backward_order;
   std::reverse(forward_order.begin(), forward_order.end());
-
   std::set<ir::OperationIndex> alive;
 
   for (const auto &index : forward_order)
   {
-    const auto &op = operations().at(index);
-    const auto &trainable_op = dynamic_cast<const ITrainableOperation &>(op);
+    // // Loss operation must exist in truncated graph because loss values are always required
+    // during training. if (op.opcode() == ir::OpCode::Loss)
+    //   alive.insert(index);
 
-    if (trainable_op.hasTrainableParameter())
+    if (alive_cond(index))
       alive.insert(index);
 
     // TODO: replace this with `std::set::contains` after C++20
     if (alive.find(index) != alive.end())
+    {
+      const auto &op = operations().at(index);
       for (const auto &output : op.getOutputs())
       {
         const auto &operand = operands().at(output);
         for (const auto &use : operand.getUses())
           alive.insert(use);
       }
+    }
   }
 
   // TODO: replace this with `std::erase_if(std::vector)` after C++20
@@ -268,8 +283,17 @@ TrainableGraph::truncateBackwardOrder(std::vector<ir::OperationIndex> backward_o
     std::remove_if(backward_order.begin(), backward_order.end(),
                    [&](const auto &index) { return alive.find(index) == alive.end(); }),
     backward_order.end());
-
   return backward_order;
+}
+
+std::vector<ir::OperationIndex>
+TrainableGraph::truncateBackwardOrder(const std::vector<ir::OperationIndex> &backward_order) const
+{
+  return truncateBackwardOrder(backward_order, [&](const ir::OperationIndex &index) {
+    const auto &trainable_op = operation(index);
+
+    return trainable_op.hasTrainableParameter();
+  });
 }
 
 void TrainableGraph::addLoss(const OperandIndex &loss_ind, const IOIndex &pred_ioind)
