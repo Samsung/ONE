@@ -4,14 +4,20 @@
 
 This package includes the nnfw python API module resulting from runtime build.
 
-It is provided separately for each architecture(x86_64, armv7l, aarch64) from `nnfwapi/libnnfw_api_pybind.py` interface.
+It is provided separate package for each architecture(x86_64, armv7l, aarch64).
+
+It uses `nnfwapi/libnnfw_api_pybind.py` interface.
 
 ## Packaging
 Execute this command, then the tasks such as copying modules, and packaging.
 
 ```
-$ python3 setup.py sdist bdist_wheel
+$ python3 setup.py sdist bdist_wheel --plat-name manylinux_x_y_arch
 ```
+
+x_y is the glibc version of manylinux.
+
+arch is supported target architecture: aarch64, x86_64, armv7l
 
 ## Publishing
 
@@ -20,7 +26,7 @@ To publish the package, twine should be installed.
 ```
 $ sudo apt install twine
 ```
-This command is for TestPyPI only and it will be changed to PyPI.  
+This command is for TestPyPI only and it will be changed to PyPI.
 Additionally, a private token is required for publishing.
 
 ```
@@ -47,5 +53,3 @@ This definition has to be set at the top of the script using nnfw python API.
 ```
 from nnfwapi.libnnfw_api_pybind import *
 ```
-
-
