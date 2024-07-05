@@ -17,6 +17,8 @@
 #ifndef __ONERT_GRAPH_VERIFIER_VERIFIER_H__
 #define __ONERT_GRAPH_VERIFIER_VERIFIER_H__
 
+#include "ir/train/UseDefChains.h"
+
 namespace onert
 {
 namespace ir
@@ -53,12 +55,14 @@ class DAGChecker : public IVerifier
 {
 public:
   bool verify(const Graph &graph) const noexcept override;
+  bool verify(const train::UseDefChains &training_defuses) const noexcept;
 };
 
 class EdgeChecker : public IVerifier
 {
 public:
   bool verify(const Graph &graph) const noexcept override;
+  bool verify(const train::UseDefChains &training_defuses) const noexcept;
 };
 
 /**

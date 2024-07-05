@@ -20,6 +20,8 @@
 #include "ir/train/UseDefChain.h"
 #include "ir/train/Index.h"
 
+#include <unordered_map>
+
 namespace onert
 {
 namespace ir
