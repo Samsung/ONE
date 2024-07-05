@@ -82,10 +82,11 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
   }
 }
 
-std::set<ir::train::TrainingOperandIndex>
-getBackwardTensorList(const ir::train::TrainableGraph &tgraph, const BackendContext &ctx)
+util::Set<ir::train::TrainingOperandIndex>
+getBackwardTensorList(const ir::train::TrainableGraph &tgraph,
+                      const util::Set<ir::OperandIndex> &external_operands)
 {
-  std::set<ir::train::TrainingOperandIndex> ret;
+  util::Set<ir::train::TrainingOperandIndex> ret;
 
   // TODO Reuse registered tensors when they are planned for memory optimization.
   auto border = tgraph.getEssentialBackwardOrder();
@@ -97,7 +98,7 @@ getBackwardTensorList(const ir::train::TrainableGraph &tgraph, const BackendCont
     for (const auto &ind :
          trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
     {
-      if (ctx.external_operands().contains(ind))
+      if (external_operands.contains(ind))
         continue;
 
       const auto &operand_index = ir::train::TrainingOperandIndex{ind, false};
@@ -108,8 +109,30 @@ getBackwardTensorList(const ir::train::TrainableGraph &tgraph, const BackendCont
       if (not_used)
         continue;
 
-      ret.insert(operand_index);
+      ret.add(operand_index);
     }
+  }
+
+  return ret;
+}
+
+util::Set<DisposableTensorIndex>
+getDisposableBackPropTensorList(const ir::train::TrainableGraph &tgraph,
+                                const util::Set<ir::OperandIndex> &external_operands)
+{
+  util::Set<DisposableTensorIndex> ret;
+
+  const auto candidates = getBackwardTensorList(tgraph, external_operands);
+  for (const auto &backwarding_operand_index : candidates)
+  {
+    const auto &operand = tgraph.operands().at(backwarding_operand_index.index());
+    const auto &training_usedefs = tgraph.trainingUseDefs();
+    const auto &usedefs = training_usedefs.at(backwarding_operand_index);
+    // if (!operand.isConstant())
+    const bool is_multiple_defs = usedefs.getTrainingDefs().size() > 1;
+    if (!operand.isConstant() && is_multiple_defs)
+      for (const auto &def : usedefs.getTrainingDefs())
+        ret.add(DisposableTensorIndex{def.index(), backwarding_operand_index.index()});
   }
 
   return ret;
@@ -147,7 +170,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
   auto tensor_builder = _tensor_builder;
 
-  const auto operand_indices = getBackwardTensorList(tgraph, *this);
+  const auto operand_indices = getBackwardTensorList(tgraph, external_operands());
   for (const auto &operand_index : operand_indices)
   {
     if (external_operands().contains(operand_index.index()))
@@ -163,37 +186,45 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
                                                createBackwardTensorInfo(operand), ir::Layout::NHWC);
   }
 
-  // TODO Register disposable tensor info only when it is necessary
-  const auto border = tgraph.getEssentialBackwardOrder();
-  for (const auto &op_index : border)
+  const auto disposable_indices = getDisposableBackPropTensorList(tgraph, external_operands());
+  for (const auto &disposable_index : disposable_indices)
   {
-    // const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
-    const auto &trainable_op = tgraph.operation(op_index);
-    const auto back_prop_seq =
-      trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-    for (const auto &input : back_prop_seq)
-    {
-      if (external_operands().contains(input))
-        continue;
-
-      const auto backwarding_index = ir::train::TrainingOperandIndex{input, false};
-      const auto &training_usedefs = tgraph.trainingUseDefs();
-      const auto &usedefs = training_usedefs.at(backwarding_index);
-      const bool not_used = usedefs.getTrainingDefs().empty() && usedefs.getTrainingUses().empty();
-      if (not_used)
-        continue;
-
-      const auto &operand = tgraph.operands().at(input);
-      if (!operand.isConstant())
-      {
-        // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-        assert(tgraph.layout() != ir::Layout::NCHW);
-        DisposableTensorIndex disposable_index{op_index, input};
-        tensor_builder->registerDisposableBackwardTensorInfo(
-          disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
-      }
-    }
+    const auto &operand = tgraph.operands().at(disposable_index.operand_index());
+    tensor_builder->registerDisposableBackwardTensorInfo(
+      disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
   }
+
+  // // TODO Register disposable tensor info only when it is necessary
+  // const auto border = tgraph.getEssentialBackwardOrder();
+  // for (const auto &op_index : border)
+  // {
+  //   // const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
+  //   const auto &trainable_op = tgraph.operation(op_index);
+  //   const auto back_prop_seq =
+  //     trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+  //   for (const auto &input : back_prop_seq)
+  //   {
+  //     if (external_operands().contains(input))
+  //       continue;
+
+  //     const auto backwarding_index = ir::train::TrainingOperandIndex{input, false};
+  //     const auto &training_usedefs = tgraph.trainingUseDefs();
+  //     const auto &usedefs = training_usedefs.at(backwarding_index);
+  //     const bool not_used = usedefs.getTrainingDefs().empty() &&
+  //     usedefs.getTrainingUses().empty(); if (not_used)
+  //       continue;
+
+  //     const auto &operand = tgraph.operands().at(input);
+  //     if (!operand.isConstant())
+  //     {
+  //       // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
+  //       assert(tgraph.layout() != ir::Layout::NCHW);
+  //       DisposableTensorIndex disposable_index{op_index, input};
+  //       tensor_builder->registerDisposableBackwardTensorInfo(
+  //         disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
+  //     }
+  //   }
+  // }
 
   // Plan tensors only in backwarding to reduce peak memory usage
   const auto ctx_data = data();

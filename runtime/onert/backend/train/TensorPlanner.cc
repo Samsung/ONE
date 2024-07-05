@@ -18,48 +18,6 @@
 
 #include <util/logging.h>
 
-namespace
-{
-
-using namespace onert;
-
-// NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
-//      to be updated respectively. So we use a sequence instead of a set.
-// ir::OperandIndexSequence getOutgoingBackPropSeq(const ir::train::TrainableGraph &tgraph,
-//                                                 const util::Set<ir::OperandIndex>
-//                                                 &external_operands, const ir::OperationIndex
-//                                                 &op_index)
-// {
-//   ir::OperandIndexSequence ret;
-
-// //   const auto &op = tgraph.operations().at(op_index);
-// //   for (const auto &input : (op.getInputs() | ir::Remove::UNDEFINED))
-// //   {
-// //     const auto &operand = tgraph.operands().at(input);
-// //     // TODO Remove other inputs that are not back-propagated
-// //     if (!operand.isConstant() && !tgraph.getInputs().contains(input))
-// //       ret.append(input);
-// //   }
-
-//   const auto &op = tgraph.operation(op_index);
-//   for (const auto &input : (op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED))
-//   {
-//     if (external_operands.contains(input))
-//         continue;
-//     if (!tensor_builder->isRegistered(input))
-//         continue;
-
-//       const auto input_index = ir::train::TrainingOperandIndex{input, true};
-//       const auto &operand = training_usedefs.at(input_index).operand();
-//       if (operand.isConstant())
-//         continue;
-//   }
-
-//   return ret;
-// }
-
-} // namespace
-
 namespace onert
 {
 namespace backend
@@ -83,7 +41,6 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   // NOTE The uses_map and defs_map must have size of only registered tensors
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
-  // ir::OperandIndexSequence nonconstants;
 
   // Prepare scanning
   // This assumes TrainingOperationIndex in forwarding are always used
@@ -103,8 +60,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
     defs_map[operand_index] = operand_usedefs.getTrainingDefs().size();
   }
 
-  // TODO Remove this or find the reason why it is needed
   // Start scanning to do notify{First|Last}Use for each tensor
+  // TODO Remove this or find the reason why it is needed
   // Q. Why is notifyFirstUse() called if the operand's def count is 0? Is it not a constant
   // operand?
   //    What does it mean when def count is 0?
@@ -324,7 +281,6 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
 
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
-  // ir::OperandIndexSequence constants;
 
   // Prepare scanning
   const auto &training_usedefs = _tgraph.trainingUseDefs();
@@ -343,44 +299,11 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
     if (operand_index.is_forward() || operand.isConstant())
       continue;
 
-    // TODO Check if we need to handle unused tensors
-
     uses_map[operand_index] = operand_usedefs.getTrainingUses().size();
     defs_map[operand_index] = operand_usedefs.getTrainingDefs().size();
-
-    //   if ((operand_index.is_forward() && !tensor_builder->isRegistered(operand_index.index())) &&
-    //       (!operand_index.is_forward() &&
-    //       !tensor_builder->isRegisteredBackward(operand_index.index())))
-    //   {
-    //     // These tensors do not exist in any  (No use and def)
-    //     const auto &info = operand.info();
-    //     // NOTE Currently we only support NHWC tensors for cpu-common tensors.
-    //     //      There is no way to get the layout info from the backend context for now.
-    //     //      When we support NCHW tensors as well, we also need to change tensor info to be
-    //     //      permuted shape.
-    //     assert(ctx.operand_layouts().at(operand_index.index()) == ir::Layout::NHWC);
-    //     tensor_builder->registerTensorInfo(operand_index.index(), info, ir::Layout::NHWC);
-    //   }
   }
 
   // Start scanning to do notify{First|Last}Use for each tensor
-
-  // If a tensor is a constant, increase the use of the tensor and allocate it first.
-  // Increasing use count here makes the tensor never be deallocated, i.e it they will be
-  // deallocated last.
-  // for (const auto &index : constants)
-  // {
-  //   uses_map[ir::train::TrainingOperandIndex{index, true}]++;
-  //   tensor_builder->notifyFirstUse(index);
-  // }
-
-  // for (const auto &pair : defs_map)
-  // {
-  //   const auto &index = pair.first;
-  //   const auto def_count = pair.second;
-  //   if (def_count == 0)
-  //     tensor_builder->notifyFirstUse(index);
-  // }
 
   // This is a workaround to keep the operands over the execution
   // (the operands look like they are unused)
@@ -521,16 +444,16 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
       if (!tensor_builder->isRegisteredBackward(input))
         continue;
 
-      const auto input_index = ir::train::TrainingOperandIndex{input, false};
+      const auto gradient_index = ir::train::TrainingOperandIndex{input, false};
       const auto &training_usedefs = _tgraph.trainingUseDefs();
-      const auto &usedefs = training_usedefs.at(input_index);
+      const auto &usedefs = training_usedefs.at(gradient_index);
       const auto &operand = usedefs.operand();
       const auto &defs = usedefs.getTrainingDefs();
       if (operand.isConstant() && defs.find(backwarding_op_index) != defs.end())
       {
         assert(defs.size() == 1);
         tensor_builder->notifyBackwardFirstUse(input);
-        cur_seq.emplace_back(input_index);
+        cur_seq.emplace_back(gradient_index);
       }
     }
 
@@ -546,24 +469,28 @@ void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
   std::vector<DisposableTensorIndex> prev_seq;
   for (const auto &op_index : _tgraph.getEssentialBackwardOrder())
   {
-    for (const auto &index : prev_seq)
+    // NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
+    //      to be updated respectively. So we use a sequence instead of a set.
+    const auto &inputs = _tgraph.operation(op_index).getInputs();
+    if (!(inputs == (inputs | ir::Remove::DUPLICATED)))
+      throw std::runtime_error("TensorPlanner: DispoableBackProp tensor does not support duplicate "
+                               "inputs of an operation");
+
+    for (const auto &prev_index : prev_seq)
     {
-      tensor_builder->notifyDisposableBackPropLastUse(index);
+      tensor_builder->notifyDisposableBackPropLastUse(prev_index);
     }
 
     std::vector<DisposableTensorIndex> cur_seq;
-    // const auto back_prop_indices = getBackPropSeq(_tgraph, op_index);
     const auto back_prop_indices = getOutgoingBackPropSeq(op_index, tensor_builder);
-    // const auto &op = _tgraph.operation(op_index);
-    // NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
-    //      to be updated respectively. So we use a sequence instead of a set.
-    // auto back_prop_indices = op.getInputs() | ir::Remove::UNDEFINED;
     for (const auto &back_prop_index : back_prop_indices)
     {
       DisposableTensorIndex cur_index{op_index, back_prop_index};
-      tensor_builder->notifyDisposableBackPropFirstUse(cur_index);
-
-      cur_seq.emplace_back(cur_index);
+      if (tensor_builder->isRegisteredDisposableBackwardTensor(cur_index))
+      {
+        tensor_builder->notifyDisposableBackPropFirstUse(cur_index);
+        cur_seq.emplace_back(cur_index);
+      }
     }
 
     prev_seq = cur_seq;

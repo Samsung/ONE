@@ -102,6 +102,8 @@ void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorI
 
   auto disposable_tensor = std::make_unique<BackPropTensor>(info, layout);
   _tensor_reg->setDisposableBackPropTensor(index, std::move(disposable_tensor));
+
+  _disposable_backprops.add(index);
 }
 
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &index)
@@ -170,6 +172,11 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &index) const
 bool TensorBuilder::isRegisteredBackward(const ir::OperandIndex &index) const
 {
   return _backward_tensor_info_map.find(index) != _backward_tensor_info_map.end();
+}
+
+bool TensorBuilder::isRegisteredDisposableBackwardTensor(const DisposableTensorIndex &index) const
+{
+  return _disposable_backprops.contains(index);
 }
 
 void TensorBuilder::allocate(void)

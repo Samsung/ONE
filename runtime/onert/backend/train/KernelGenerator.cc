@@ -631,14 +631,10 @@ void KernelGenerator::appendBackPropAccumulators(const ir::OperationIndex &op_in
 
   for (const auto &input_index : (node.getInputs() | ir::Remove::UNDEFINED))
   {
-    const auto outgoing_index = ir::train::TrainingOperandIndex{input_index, false};
-    const bool is_backprop_used =
-      !_tgraph.trainingUseDefs().at(outgoing_index).getTrainingUses().empty();
-    if (is_backprop_used)
+    const auto disposable =
+      _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
+    if (disposable)
     {
-      const auto disposable =
-        _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
-      assert(disposable);
       auto back_prop = _tensor_reg->getBackPropTensor(input_index);
       assert(back_prop);
       seq->append(generateBackPropAccumulator(disposable, back_prop));
