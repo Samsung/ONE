@@ -1,4 +1,8 @@
 # Don't cache HDF5_*. Otherwise it will use the cached value without searching.
+if (HDF5_INCLUDE_DIRS AND HDF5_CXX_LIBRARIES AND HDF5_FOUND)
+  return()
+endif()
+
 unset(HDF5_DIR CACHE)
 unset(HDF5_INCLUDE_DIRS CACHE)
 unset(HDF5_CXX_LIBRARY_hdf5 CACHE)
@@ -62,11 +66,17 @@ else()
     return()
   endif()
 
-  # We can use "hdf5" and "hdf5_cpp" to use the same file founded with above.
-  list(APPEND HDF5_CXX_LIBRARIES ${HDF5_CXX_LIBRARY_hdf5} ${HDF5_CXX_LIBRARY_hdf5_cpp} "sz" "z" "dl" "m")
+  find_library(HDF5_DEP_sz NAMES sz ONLY_CMAKE_FIND_ROOT_PATH)
+  list(APPEND HDF5_CXX_LIBRARY_DEPS ${HDF5_DEP_sz})
 
-  # Append missing libaec which is required by libsz, which is required by libhdf5
-  list(APPEND HDF5_CXX_LIBRARIES "aec")
+  find_library(HDF5_DEP_z NAMES z ONLY_CMAKE_FIND_ROOT_PATH)
+  list(APPEND HDF5_CXX_LIBRARY_DEPS ${HDF5_DEP_z})
+
+  find_library(HDF5_DEP_m NAMES m ONLY_CMAKE_FIND_ROOT_PATH)
+  list(APPEND HDF5_CXX_LIBRARY_DEPS ${HDF5_DEP_m})
+
+  ### Caution: You must keep appending order for static linking
+  list(APPEND HDF5_CXX_LIBRARIES ${HDF5_CXX_LIBRARY_hdf5_cpp} ${HDF5_CXX_LIBRARY_hdf5} ${HDF5_CXX_LIBRARY_DEPS})
 
   set(HDF5_FOUND TRUE)
 endif()
