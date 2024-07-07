@@ -98,6 +98,68 @@ TEST_F(ReduceMaxTest, FloatKeepDims)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
 }
 
+TEST_F(ReduceMaxTest, BoolNotKeepDims)
+{
+  std::vector<uint8_t> input_data = {true, true,  false, false, true, false, false, true,
+                                     true, true,  false, false, true, true,  false, true,
+                                     true, false, true,  false, true, false, false, true};
+
+  std::vector<int32_t> axis_data{1, 0, -3, -3};
+  Tensor input_tensor =
+    makeInputTensor<DataType::BOOL>({4, 3, 2}, input_data, _memory_manager.get());
+  Tensor axis_tensor = makeInputTensor<DataType::S32>({4}, axis_data, _memory_manager.get());
+  Tensor temp_index(DataType::S32, Shape({}), {}, "");
+  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  ReducerParams params{};
+  params.keep_dims = false;
+
+  ReduceMax kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes,
+                   params);
+  kernel.configure();
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  std::vector<bool> ref_output_data{true, true};
+  std::initializer_list<int32_t> ref_output_shape{2};
+  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST_F(ReduceMaxTest, BoolKeepDims)
+{
+  std::vector<uint8_t> input_data = {true, true,  false, false, true, false, false, true,
+                                     true, true,  false, false, true, true,  false, true,
+                                     true, false, true,  false, true, false, false, true};
+
+  std::vector<int32_t> axis_data{0, 2};
+  Tensor input_tensor =
+    makeInputTensor<DataType::BOOL>({4, 3, 2}, input_data, _memory_manager.get());
+  Tensor axis_tensor = makeInputTensor<DataType::S32>({2}, axis_data, _memory_manager.get());
+  Tensor temp_index(DataType::S32, Shape({}), {}, "");
+  Tensor resolved_axes(DataType::S32, Shape({}), {}, "");
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  ReducerParams params{};
+  params.keep_dims = true;
+
+  ReduceMax kernel(&input_tensor, &axis_tensor, &output_tensor, &temp_index, &resolved_axes,
+                   params);
+  kernel.configure();
+  _memory_manager->allocate_memory(temp_index);
+  _memory_manager->allocate_memory(resolved_axes);
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  std::vector<bool> ref_output_data{true, true, true};
+  std::initializer_list<int32_t> ref_output_shape{1, 3, 1};
+  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

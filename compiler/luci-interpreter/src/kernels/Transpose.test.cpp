@@ -51,7 +51,7 @@ template <typename T> class TransposeTest : public ::testing::Test
 {
 };
 
-using DataTypes = ::testing::Types<float, uint8_t>;
+using DataTypes = ::testing::Types<float, int64_t, uint8_t>;
 TYPED_TEST_SUITE(TransposeTest, DataTypes);
 
 TYPED_TEST(TransposeTest, Small3D)

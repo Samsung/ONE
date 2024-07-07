@@ -99,6 +99,36 @@ TEST_F(NotEqualTest, FloatBroardcast)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({4, 3}));
 }
 
+TEST_F(NotEqualTest, BoolSimple)
+{
+  std::vector<uint8_t> x_data{
+    true,  false, false, // Row 1
+    false, true,  true,  // Row 2
+  };
+
+  std::vector<uint8_t> y_data{
+    false, false, true,  // Row 1
+    true,  true,  false, // Row 2
+  };
+
+  std::vector<bool> ref_output_data{
+    true, false, true, // Row 1
+    true, false, true, // Row 2
+  };
+
+  Tensor x_tensor = makeInputTensor<DataType::BOOL>({2, 3}, x_data, _memory_manager.get());
+  Tensor y_tensor = makeInputTensor<DataType::BOOL>({2, 3}, y_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<bool>(output_tensor), ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({2, 3}));
+}
+
 template <loco::DataType DType>
 void checkIntegerSimple(luci_interpreter::IMemoryManager *memory_manager)
 {
@@ -275,6 +305,17 @@ TEST_F(NotEqualTest, Float_Broadcast_NEG)
 {
   Tensor x_tensor = makeInputTensor<DataType::FLOAT32>({2}, {1.f, 2.f}, _memory_manager.get());
   Tensor y_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1.f, 2.f, 3.f}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::BOOL);
+
+  NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
+  ASSERT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(NotEqualTest, Bool_Broadcast_NEG)
+{
+  Tensor x_tensor = makeInputTensor<DataType::BOOL>({2}, {true, true}, _memory_manager.get());
+  Tensor y_tensor =
+    makeInputTensor<DataType::BOOL>({3}, {true, false, false}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::BOOL);
 
   NotEqual kernel(&x_tensor, &y_tensor, &output_tensor);
