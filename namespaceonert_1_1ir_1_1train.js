@@ -8,7 +8,12 @@ var namespaceonert_1_1ir_1_1train =
     [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
     [ "TrainableOperation", "classonert_1_1ir_1_1train_1_1_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_trainable_operation" ],
     [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ],
+    [ "TrainingIndex", "classonert_1_1ir_1_1train_1_1_training_index.html", "classonert_1_1ir_1_1train_1_1_training_index" ],
     [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ],
+    [ "UseDefChain", "classonert_1_1ir_1_1train_1_1_use_def_chain.html", "classonert_1_1ir_1_1train_1_1_use_def_chain" ],
+    [ "TrainingOperandIndex", "namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467", null ],
+    [ "TrainingOperationIndex", "namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36", null ],
+    [ "UseDefChains", "namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b", null ],
     [ "LossCode", "namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52", [
       [ "Undefined", "namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360", null ],
       [ "MeanSquaredError", "namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb", null ],
@@ -24,6 +29,8 @@ var namespaceonert_1_1ir_1_1train =
       [ "SGD", "namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2", null ],
       [ "Adam", "namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1", null ]
     ] ],
+    [ "operator<<", "namespaceonert_1_1ir_1_1train.html#afac74e8a012afc9b4b442583475163ed", null ],
+    [ "operator<<", "namespaceonert_1_1ir_1_1train.html#a0f1ff669f9f00f930d6c605291730e9f", null ],
     [ "toString", "namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b", null ],
     [ "toString", "namespaceonert_1_1ir_1_1train.html#a3b1cf34f72baebbcd6f6ce8b735071fe", null ]
 ];

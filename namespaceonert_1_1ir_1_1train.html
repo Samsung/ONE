@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1ir_1_1train.html',''
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">onert::ir::train Namespace Reference</div></div>
@@ -119,8 +120,24 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html">TrainableOperationVisitor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_training_index.html">TrainingIndex</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that provides index of tensor for training.  <a href="classonert_1_1ir_1_1train_1_1_training_index.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_training_info.html">TrainingInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_use_def_chain.html">UseDefChain</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a8ed2e6419427588f8c889991a20bfc36" id="r_a8ed2e6419427588f8c889991a20bfc36"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a> = <a class="el" href="classonert_1_1ir_1_1train_1_1_training_index.html">TrainingIndex</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a> &gt;</td></tr>
+<tr class="memdesc:a8ed2e6419427588f8c889991a20bfc36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that provides index of operation node for training.  <br /></td></tr>
+<tr class="separator:a8ed2e6419427588f8c889991a20bfc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01421faf4f0a8b648c3d044198288467" id="r_a01421faf4f0a8b648c3d044198288467"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a> = <a class="el" href="classonert_1_1ir_1_1train_1_1_training_index.html">TrainingIndex</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &gt;</td></tr>
+<tr class="memdesc:a01421faf4f0a8b648c3d044198288467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that provides index of operand for training.  <br /></td></tr>
+<tr class="separator:a01421faf4f0a8b648c3d044198288467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a669183193457524aaaf2a88bc1deea2b" id="r_a669183193457524aaaf2a88bc1deea2b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">UseDefChains</a> = std::unordered_map&lt; <a class="el" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>, <a class="el" href="classonert_1_1ir_1_1train_1_1_use_def_chain.html">UseDefChain</a> &gt;</td></tr>
+<tr class="separator:a669183193457524aaaf2a88bc1deea2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -142,6 +159,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a0f1ff669f9f00f930d6c605291730e9f" id="r_a0f1ff669f9f00f930d6c605291730e9f"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a0f1ff669f9f00f930d6c605291730e9f">operator&lt;&lt;</a> (std::ostream &amp;o, const <a class="el" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a> &amp;i)</td></tr>
+<tr class="separator:a0f1ff669f9f00f930d6c605291730e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afac74e8a012afc9b4b442583475163ed" id="r_afac74e8a012afc9b4b442583475163ed"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#afac74e8a012afc9b4b442583475163ed">operator&lt;&lt;</a> (std::ostream &amp;o, const <a class="el" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a> &amp;i)</td></tr>
+<tr class="separator:afac74e8a012afc9b4b442583475163ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebfbfb608742622c99e8b6b88a7df17b" id="r_aebfbfb608742622c99e8b6b88a7df17b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html#aebfbfb608742622c99e8b6b88a7df17b">toString</a> (<a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52">LossCode</a> opcode)</td></tr>
 <tr class="memdesc:aebfbfb608742622c99e8b6b88a7df17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the optimizer code to the name.  <br /></td></tr>
 <tr class="separator:aebfbfb608742622c99e8b6b88a7df17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +170,61 @@ Functions</h2></td></tr>
 <tr class="memdesc:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the optimizer code to the name.  <br /></td></tr>
 <tr class="separator:a3b1cf34f72baebbcd6f6ce8b735071fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a01421faf4f0a8b648c3d044198288467" name="a01421faf4f0a8b648c3d044198288467"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01421faf4f0a8b648c3d044198288467">&#9670;&#160;</a></span>TrainingOperandIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">onert::ir::train::TrainingOperandIndex</a> = typedef <a class="el" href="classonert_1_1ir_1_1train_1_1_training_index.html">TrainingIndex</a>&lt;<a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type that provides index of operand for training. </p>
+<dl class="section note"><dt>Note</dt><dd>TrainingOperandIndex can be index of an operand used in forwarding if the member "_is_forward" of TrainingIndex is true TrainingOperandIndex can be index of an operand used in backwarding if the member "_is_forward" of TrainingIndex is false </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00132">132</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
+
+</div>
+</div>
+<a id="a8ed2e6419427588f8c889991a20bfc36" name="a8ed2e6419427588f8c889991a20bfc36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ed2e6419427588f8c889991a20bfc36">&#9670;&#160;</a></span>TrainingOperationIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">onert::ir::train::TrainingOperationIndex</a> = typedef <a class="el" href="classonert_1_1ir_1_1train_1_1_training_index.html">TrainingIndex</a>&lt;<a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type that provides index of operation node for training. </p>
+<dl class="section note"><dt>Note</dt><dd>TrainingOperationIndex can be index of a forwarding node if the member "_is_forward" of TrainingIndex is true TrainingOperationIndex can be index of a backwarding node if the membwr "_is_forward" of TrainingIndex is false </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00123">123</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
+
+</div>
+</div>
+<a id="a669183193457524aaaf2a88bc1deea2b" name="a669183193457524aaaf2a88bc1deea2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a669183193457524aaaf2a88bc1deea2b">&#9670;&#160;</a></span>UseDefChains</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">onert::ir::train::UseDefChains</a> = typedef std::unordered_map&lt;<a class="el" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>, <a class="el" href="classonert_1_1ir_1_1train_1_1_use_def_chain.html">UseDefChain</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_use_def_chains_8h_source.html#l00030">30</a> of file <a class="el" href="_use_def_chains_8h_source.html">UseDefChains.h</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a2cdc7e5960a14869ceeefc3320b35e52" name="a2cdc7e5960a14869ceeefc3320b35e52"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2cdc7e5960a14869ceeefc3320b35e52">&#9670;&#160;</a></span>LossCode</h2>
@@ -257,6 +333,96 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="afac74e8a012afc9b4b442583475163ed" name="afac74e8a012afc9b4b442583475163ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afac74e8a012afc9b4b442583475163ed">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; onert::ir::train::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>i</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00139">139</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
+<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="circledump_2include_2circledump_2_dump_8h.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">operator&lt;&lt;</a>(o, i.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_training_index.html#ae3c44e57588618f5a934deefa632204c">index</a>());</div>
+<div class="line"><span class="lineno">  142</span>}</div>
+<div class="ttc" id="acircledump_2include_2circledump_2_dump_8h_html_a5c8cbbf61e0997b7df5ce080e0ae5bf6"><div class="ttname"><a href="circledump_2include_2circledump_2_dump_8h.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00463">Dump.cpp:463</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_training_index_html_ae3c44e57588618f5a934deefa632204c"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_training_index.html#ae3c44e57588618f5a934deefa632204c">onert::ir::train::TrainingIndex::index</a></div><div class="ttdeci">const T &amp; index() const</div><div class="ttdoc">Get index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00067">Index.h:67</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00067">onert::ir::train::TrainingIndex&lt; T &gt;::index()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00134">operator&lt;&lt;()</a>.</p>
+
+</div>
+</div>
+<a id="a0f1ff669f9f00f930d6c605291730e9f" name="a0f1ff669f9f00f930d6c605291730e9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f1ff669f9f00f930d6c605291730e9f">&#9670;&#160;</a></span>operator&lt;&lt;() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; onert::ir::train::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>i</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00134">134</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  135</span>{</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="circledump_2include_2circledump_2_dump_8h.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">operator&lt;&lt;</a>(o, i.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_training_index.html#ae3c44e57588618f5a934deefa632204c">index</a>());</div>
+<div class="line"><span class="lineno">  137</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00067">onert::ir::train::TrainingIndex&lt; T &gt;::index()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00134">operator&lt;&lt;()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00139">operator&lt;&lt;()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00134">operator&lt;&lt;()</a>.</p>
+
+</div>
+</div>
 <a id="aebfbfb608742622c99e8b6b88a7df17b" name="aebfbfb608742622c99e8b6b88a7df17b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebfbfb608742622c99e8b6b88a7df17b">&#9670;&#160;</a></span>toString() <span class="overload">[1/2]</span></h2>
 

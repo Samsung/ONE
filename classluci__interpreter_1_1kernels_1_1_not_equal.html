@@ -276,10 +276,13 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">case</span> DataType::U8:</div>
 <div class="line"><span class="lineno">   59</span>      evalQuantized();</div>
 <div class="line"><span class="lineno">   60</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp NotEqual Unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
-<div class="line"><span class="lineno">   64</span>}</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">case</span> DataType::BOOL:</div>
+<div class="line"><span class="lineno">   62</span>      evalBool();</div>
+<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp NotEqual Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-interpreter_2src_2kernels_2_not_equal_8h_source.html#l00032">x()</a>.</p>
 

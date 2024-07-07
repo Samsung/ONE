@@ -47,9 +47,10 @@ var searchData=
   ['updatequeue_44',['UpdateQueue',['../classmoco_1_1_update_queue.html',1,'moco']]],
   ['updater_45',['Updater',['../structcoco_1_1_bag_1_1_updater.html',1,'coco::Bag']]],
   ['use_46',['use',['../classcoco_1_1_use.html',1,'coco::Use'],['../classloco_1_1_use.html',1,'loco::Use'],['../structmir_1_1_operation_1_1_use.html',1,'mir::Operation::Use']]],
-  ['userdata_47',['Userdata',['../structonert_1_1ir_1_1operation_1_1_custom_1_1_userdata.html',1,'onert::ir::operation::Custom']]],
-  ['userexn_48',['UserExn',['../classoops_1_1_user_exn.html',1,'oops']]],
-  ['usersettings_49',['UserSettings',['../structluci_1_1_user_settings.html',1,'luci']]],
-  ['usersettingsimpl_50',['UserSettingsImpl',['../classluci_1_1_user_settings_impl.html',1,'luci']]],
-  ['usertensor_51',['UserTensor',['../classonert_1_1backend_1_1builtin_1_1_user_tensor.html',1,'onert::backend::builtin']]]
+  ['usedefchain_47',['UseDefChain',['../classonert_1_1ir_1_1train_1_1_use_def_chain.html',1,'onert::ir::train']]],
+  ['userdata_48',['Userdata',['../structonert_1_1ir_1_1operation_1_1_custom_1_1_userdata.html',1,'onert::ir::operation::Custom']]],
+  ['userexn_49',['UserExn',['../classoops_1_1_user_exn.html',1,'oops']]],
+  ['usersettings_50',['UserSettings',['../structluci_1_1_user_settings.html',1,'luci']]],
+  ['usersettingsimpl_51',['UserSettingsImpl',['../classluci_1_1_user_settings_impl.html',1,'luci']]],
+  ['usertensor_52',['UserTensor',['../classonert_1_1backend_1_1builtin_1_1_user_tensor.html',1,'onert::backend::builtin']]]
 ];

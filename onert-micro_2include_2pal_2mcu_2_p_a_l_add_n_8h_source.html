@@ -131,28 +131,31 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2mcu_2_p_a_l
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                      <span class="keyword">const</span> int8_t *<span class="keyword">const</span> *input_data, int8_t *output_data)</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Not IMPL yet&quot;</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>}</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351">UnsupportedOp</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
 </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a2e10d58b07a960e0f725d7145dc48830">   37</a></span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a2e10d58b07a960e0f725d7145dc48830">AddN&lt;int16_t&gt;</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> flat_size, <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_inputs,</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                       <span class="keyword">const</span> int16_t *<span class="keyword">const</span> *input_data, int16_t *output_data)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Not IMPL yet&quot;</span>);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a2e10d58b07a960e0f725d7145dc48830">   38</a></span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a2e10d58b07a960e0f725d7145dc48830">AddN&lt;int16_t&gt;</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> flat_size, <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_inputs,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                       <span class="keyword">const</span> int16_t *<span class="keyword">const</span> *input_data, int16_t *output_data)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Not IMPL yet&quot;</span>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351">UnsupportedOp</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>} <span class="comment">// namespace pal</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>} <span class="comment">// namespace execute</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_ADD_N_H</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace pal</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace execute</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_ADD_N_H</span></div>
 <div class="ttc" id="a_p_a_l_add_n_common_8h_html"><div class="ttname"><a href="_p_a_l_add_n_common_8h.html">PALAddNCommon.h</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a2e10d58b07a960e0f725d7145dc48830"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a2e10d58b07a960e0f725d7145dc48830">onert_micro::execute::pal::AddN&lt; int16_t &gt;</a></div><div class="ttdeci">OMStatus AddN&lt; int16_t &gt;(const size_t flat_size, const size_t num_inputs, const int16_t *const *input_data, int16_t *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_add_n_8h_source.html#l00037">PALAddN.h:37</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a2e10d58b07a960e0f725d7145dc48830"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a2e10d58b07a960e0f725d7145dc48830">onert_micro::execute::pal::AddN&lt; int16_t &gt;</a></div><div class="ttdeci">OMStatus AddN&lt; int16_t &gt;(const size_t flat_size, const size_t num_inputs, const int16_t *const *input_data, int16_t *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_add_n_8h_source.html#l00038">PALAddN.h:38</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_aa32ce39a7833fcf9f619d3fbd2569b23"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#aa32ce39a7833fcf9f619d3fbd2569b23">onert_micro::execute::pal::AddN&lt; int8_t &gt;</a></div><div class="ttdeci">OMStatus AddN&lt; int8_t &gt;(const size_t flat_size, const size_t num_inputs, const int8_t *const *input_data, int8_t *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_add_n_8h_source.html#l00030">PALAddN.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00024">OMMemoryManager.h:25</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba922260576d20deea701cac11c67db351">onert_micro::UnsupportedOp</a></div><div class="ttdeci">@ UnsupportedOp</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00029">OMStatus.h:29</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

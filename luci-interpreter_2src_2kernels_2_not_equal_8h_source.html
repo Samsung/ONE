@@ -140,19 +140,20 @@ $(document).ready(function(){initNavTree('luci-interpreter_2src_2kernels_2_not_e
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span> evalFloat() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keywordtype">void</span> evalInteger() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">void</span> evalQuantized() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  int32_t _x_multiplier = 0;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">int</span> _x_shift = 0;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  int32_t _y_multiplier = 0;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">int</span> _y_shift = 0;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">void</span> evalBool() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  int32_t _x_multiplier = 0;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">int</span> _x_shift = 0;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  int32_t _y_multiplier = 0;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">int</span> _y_shift = 0;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace kernels</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace luci_interpreter</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_KERNELS_NOT_EQUAL_H</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace kernels</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace luci_interpreter</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="preprocessor">#endif </span><span class="comment">// LUCI_INTERPRETER_KERNELS_NOT_EQUAL_H</span></div>
 <div class="ttc" id="a_kernel_8h_html"><div class="ttname"><a href="_kernel_8h.html">Kernel.h</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_kernel_html"><div class="ttname"><a href="classluci__interpreter_1_1_kernel.html">luci_interpreter::Kernel</a></div><div class="ttdef"><b>Definition</b> <a href="_kernel_8h_source.html#l00028">Kernel.h:29</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_kernel_html_a69247fbdedf01b531955a388a43f2ef8"><div class="ttname"><a href="classluci__interpreter_1_1_kernel.html#a69247fbdedf01b531955a388a43f2ef8">luci_interpreter::Kernel::_inputs</a></div><div class="ttdeci">const std::vector&lt; const Tensor * &gt; _inputs</div><div class="ttdef"><b>Definition</b> <a href="_kernel_8h_source.html#l00052">Kernel.h:52</a></div></div>

@@ -4,5 +4,6 @@ var dir_e4e0ac3c515543dce30bfdd2cc8168d5 =
     [ "LossCode.cc", "_loss_code_8cc.html", "_loss_code_8cc" ],
     [ "OptimizerCode.cc", "_optimizer_code_8cc.html", "_optimizer_code_8cc" ],
     [ "TrainableGraph.cc", "_trainable_graph_8cc.html", null ],
-    [ "TrainingInfo.cc", "_training_info_8cc.html", null ]
+    [ "TrainingInfo.cc", "_training_info_8cc.html", null ],
+    [ "UseDefChain.cc", "_use_def_chain_8cc.html", null ]
 ];

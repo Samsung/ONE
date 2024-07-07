@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2include_2pal
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">for</span> (uint32_t k = 0; k &lt; outer_size; ++k)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">for</span> (int64_t k = 0; k &lt; outer_size; ++k)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; output_count; ++i)</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    {</div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2include_2pal
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keyword">const</span> <span class="keyword">auto</span> copy_size = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(axis_value) * base_inner_size;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      T *output_ptr = output_data + k * copy_size;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      assert(output_ptr != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">for</span> (uint32_t j = 0; j &lt; copy_size; ++j)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; copy_size; ++j)</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        output_ptr[j] = input_data[j];</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      input_data += copy_size;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    }</div>

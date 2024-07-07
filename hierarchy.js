@@ -2284,6 +2284,7 @@ var hierarchy =
     [ "std::hash< exo::tflite_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4.html", null ],
     [ "std::hash< onert::ir::Layout >", "structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html", null ],
     [ "std::hash< onert::ir::OpCode >", "structstd_1_1hash_3_01onert_1_1ir_1_1_op_code_01_4.html", null ],
+    [ "std::hash< onert::ir::train::TrainingOperandIndex >", "structstd_1_1hash_3_01onert_1_1ir_1_1train_1_1_training_operand_index_01_4.html", null ],
     [ "std::hash< std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex > >", "structstd_1_1hash_3_01std_1_1pair_3_1_1onert_1_1ir_1_1_model_index_00_01_1_1onert_1_1ir_1_1_subgraph_index_01_4_01_4.html", null ],
     [ "dio::hdf5::HDF5Importer", "classdio_1_1hdf5_1_1_h_d_f5_importer.html", null ],
     [ "coco::DLinkedList< Child, Parent >::Head", "classcoco_1_1_d_linked_list_1_1_head.html", null ],
@@ -5897,6 +5898,7 @@ var hierarchy =
       [ "onert::compiler::train::StaticBackwardShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html", null ]
     ] ],
     [ "onert::exporter::TrainInfoBuilder", "classonert_1_1exporter_1_1_train_info_builder.html", null ],
+    [ "onert::ir::train::TrainingIndex< T >", "classonert_1_1ir_1_1train_1_1_training_index.html", null ],
     [ "onert::ir::train::TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", null ],
     [ "onert::backend::train::ops::TrainingKernelRegistry", "classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html", null ],
     [ "luci_interpreter::TransposeConvParams", "structluci__interpreter_1_1_transpose_conv_params.html", null ],
@@ -5990,6 +5992,7 @@ var hierarchy =
     [ "coco::Use", "classcoco_1_1_use.html", null ],
     [ "loco::Use", "classloco_1_1_use.html", null ],
     [ "mir::Operation::Use", "structmir_1_1_operation_1_1_use.html", null ],
+    [ "onert::ir::train::UseDefChain", "classonert_1_1ir_1_1train_1_1_use_def_chain.html", null ],
     [ "onert::ir::operation::Custom::Userdata", "structonert_1_1ir_1_1operation_1_1_custom_1_1_userdata.html", null ],
     [ "luci::UserSettings", "structluci_1_1_user_settings.html", [
       [ "luci::UserSettingsImpl", "classluci_1_1_user_settings_impl.html", null ]

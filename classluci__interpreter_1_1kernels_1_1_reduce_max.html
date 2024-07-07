@@ -352,11 +352,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  149</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
 <div class="line"><span class="lineno">  150</span>      evalFloat();</div>
 <div class="line"><span class="lineno">  151</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  152</span>    <span class="comment">// TODO Support quantized kernels</span></div>
-<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp ReduceMax Unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">  155</span>  }</div>
-<div class="line"><span class="lineno">  156</span>}</div>
+<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> DataType::BOOL:</div>
+<div class="line"><span class="lineno">  153</span>      evalBool();</div>
+<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  155</span>    <span class="comment">// TODO Support quantized kernels</span></div>
+<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  157</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp ReduceMax Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  158</span>  }</div>
+<div class="line"><span class="lineno">  159</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-interpreter_2src_2kernels_2_reduce_max_8h_source.html#l00036">input()</a>.</p>
 

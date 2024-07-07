@@ -3239,7 +3239,9 @@ var annotated_dup =
           [ "TrainableGraph", "classonert_1_1ir_1_1train_1_1_trainable_graph.html", "classonert_1_1ir_1_1train_1_1_trainable_graph" ],
           [ "TrainableOperation", "classonert_1_1ir_1_1train_1_1_trainable_operation.html", "classonert_1_1ir_1_1train_1_1_trainable_operation" ],
           [ "TrainableOperationVisitor", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html", "structonert_1_1ir_1_1train_1_1_trainable_operation_visitor" ],
-          [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ]
+          [ "TrainingIndex", "classonert_1_1ir_1_1train_1_1_training_index.html", "classonert_1_1ir_1_1train_1_1_training_index" ],
+          [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ],
+          [ "UseDefChain", "classonert_1_1ir_1_1train_1_1_use_def_chain.html", "classonert_1_1ir_1_1train_1_1_use_def_chain" ]
         ] ],
         [ "verifier", "namespaceonert_1_1ir_1_1verifier.html", [
           [ "DAGChecker", "classonert_1_1ir_1_1verifier_1_1_d_a_g_checker.html", "classonert_1_1ir_1_1verifier_1_1_d_a_g_checker" ],
@@ -3799,6 +3801,7 @@ var annotated_dup =
       [ "hash< exo::tflite_detail::OpCode >", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4.html", "structstd_1_1hash_3_01exo_1_1tflite__detail_1_1_op_code_01_4" ],
       [ "hash< onert::ir::Layout >", "structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html", "structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4" ],
       [ "hash< onert::ir::OpCode >", "structstd_1_1hash_3_01onert_1_1ir_1_1_op_code_01_4.html", "structstd_1_1hash_3_01onert_1_1ir_1_1_op_code_01_4" ],
+      [ "hash< onert::ir::train::TrainingOperandIndex >", "structstd_1_1hash_3_01onert_1_1ir_1_1train_1_1_training_operand_index_01_4.html", "structstd_1_1hash_3_01onert_1_1ir_1_1train_1_1_training_operand_index_01_4" ],
       [ "hash< std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex > >", "structstd_1_1hash_3_01std_1_1pair_3_1_1onert_1_1ir_1_1_model_index_00_01_1_1onert_1_1ir_1_1_subgraph_index_01_4_01_4.html", "structstd_1_1hash_3_01std_1_1pair_3_1_1onert_1_1ir_1_1_model_index_00_01_1_1onert_1_1ir_1_1_subgraph_index_01_4_01_4" ]
     ] ],
     [ "test_utils", "namespacetest__utils.html", [
