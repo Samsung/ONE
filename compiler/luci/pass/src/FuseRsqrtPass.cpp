@@ -26,6 +26,25 @@
 namespace
 {
 
+/**
+ *  Fuse Sqrt + Div to Rsqrt (1/Sqrt -> Rsqrt)
+ *
+ *  BEFORE
+ *                 |
+ *            [CircleSqrt]
+ *   [CircleConst] |          where Const has value 1.0
+ *             |   |
+ *          [CircleDiv]
+ *              |
+ *
+ *  AFTER
+ *             |
+ *             |               [CircleSqrt]
+ *        [CircleRsqrt]   [CircleConst] |
+ *             |                    |   |
+ *             |                  [CircleDiv]
+ */
+
 // Float comparison
 bool same(float a, float b) { return fabs(a - b) < 1e-5; }
 
