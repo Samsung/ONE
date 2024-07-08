@@ -75,6 +75,7 @@ public:
 
 public:
   std::vector<ITensor *> optVars() override;
+  void setOptVarBuffer(uint8_t *buffer, size_t pos) { _opt_vars.at(pos)->setBuffer(buffer); }
   void appendOptVar(std::unique_ptr<Tensor> opt_var) { _opt_vars.emplace_back(std::move(opt_var)); }
 
 public:

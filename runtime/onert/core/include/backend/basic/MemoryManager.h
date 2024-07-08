@@ -49,7 +49,7 @@ private:
   IMemoryPlanner<ir::OperandIndex> *createMemoryPlanner();
   IMemoryPlanner<ir::OperandIndex> *createMemoryPlanner(const std::string);
 
-private:
+protected:
   std::unordered_map<ir::OperandIndex, Block> _tensor_mem_map;
   std::shared_ptr<IMemoryPlanner<ir::OperandIndex>> _mem_planner;
   std::shared_ptr<Allocator> _mem_alloc;
