@@ -59,7 +59,7 @@ Requires(postun): /sbin/ldconfig
 %if %{test_build} == 1
 BuildRequires:  pkgconfig(boost)
 BuildRequires:  pkgconfig(tensorflow2-lite)
-BuildRequires:  hdf5-devel
+BuildRequires:  hdf5-devel-static
 BuildRequires:  libaec-devel
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(libjpeg)
