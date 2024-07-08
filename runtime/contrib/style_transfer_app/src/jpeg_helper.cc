@@ -61,6 +61,13 @@ int JpegHelper::readJpeg(const std::string filename, std::vector<float> &raw_ima
   assert(cinfo.output_width == width);
   assert(cinfo.output_height == height);
 
+  // Size limitation: 16 x 1024 x 1024
+  if (cinfo.output_width * cinfo.output_height * cinfo.num_components > 16 * 1024 * 1024)
+  {
+    printf("Image size is too large\n");
+    return -1;
+  }
+
   raw_image.resize(cinfo.output_width * cinfo.output_height * cinfo.num_components);
 
   unsigned char *ptr = new unsigned char[cinfo.output_width * cinfo.num_components];
