@@ -423,15 +423,8 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
   // TODO Apply DisposableTensor instead of GradientTensor if possible
   // The corresponding backward layer and the corresponding GradientApplier exist in the same
   // back-propagated operation sequence. So we can use DisposableTensors to plan GradientTensors.
-
-  std::vector<ir::train::TrainingOperandIndex> prev_seq;
   for (const auto &op_index : _tgraph.getEssentialBackwardOrder())
   {
-    for (const auto &operand_index : prev_seq)
-    {
-      tensor_builder->notifyBackwardLastUse(operand_index.index());
-    }
-
     std::vector<ir::train::TrainingOperandIndex> cur_seq;
     const auto &op = _tgraph.operations().at(op_index);
     const auto backwarding_op_index = ir::train::TrainingOperationIndex{op_index, false};
@@ -458,7 +451,10 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
       }
     }
 
-    prev_seq = cur_seq;
+    for (const auto &operand_index : cur_seq)
+    {
+      tensor_builder->notifyBackwardLastUse(operand_index.index());
+    }
   }
 
   VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
@@ -468,7 +464,6 @@ void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
 {
   VERBOSE(BackendContext) << "Start planning disposable back-prop tensors" << std::endl;
 
-  std::vector<DisposableTensorIndex> prev_seq;
   for (const auto &op_index : _tgraph.getEssentialBackwardOrder())
   {
     // NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
@@ -477,11 +472,6 @@ void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
     if (!(inputs == (inputs | ir::Remove::DUPLICATED)))
       throw std::runtime_error("TensorPlanner: DispoableBackProp tensor does not support duplicate "
                                "inputs of an operation");
-
-    for (const auto &prev_index : prev_seq)
-    {
-      tensor_builder->notifyDisposableBackPropLastUse(prev_index);
-    }
 
     std::vector<DisposableTensorIndex> cur_seq;
     const auto back_prop_indices = getOutgoingBackPropSeq(op_index, tensor_builder);
@@ -495,7 +485,10 @@ void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
       }
     }
 
-    prev_seq = cur_seq;
+    for (const auto &cur_index : cur_seq)
+    {
+      tensor_builder->notifyDisposableBackPropLastUse(cur_index);
+    }
   }
 
   VERBOSE(BackendContext) << "Finish planning disposable back-prop tensors" << std::endl;
