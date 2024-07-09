@@ -71,7 +71,7 @@ public:
 
   void allocate_buffer()
   {
-    const auto total_size = orig_info().total_size();
+    const auto total_size = get_info().total_size();
     _buffer = std::make_unique<uint8_t[]>(total_size);
     _ref_count = 1;
 
@@ -91,7 +91,7 @@ public:
     if (_ref_count == 0)
     {
       _buffer.reset();
-      setUserTensor(nullptr, orig_info().total_size());
+      setUserTensor(nullptr, get_info().total_size());
     }
   }
 
@@ -124,7 +124,7 @@ const ir::OperandInfo &MultiModelExecutors::inputInfo(const ir::IOIndex &index) 
   auto const subg_index = std::get<1>(desc);
   auto const io_index = std::get<2>(desc);
   auto const executor = at(model_index, subg_index);
-  return executor->getInputTensors().at(io_index.value())->orig_info();
+  return executor->getInputTensors().at(io_index.value())->get_info();
 }
 
 const ir::OperandInfo &MultiModelExecutors::outputInfo(const ir::IOIndex &index) const
@@ -134,7 +134,7 @@ const ir::OperandInfo &MultiModelExecutors::outputInfo(const ir::IOIndex &index)
   auto const subg_index = std::get<1>(desc);
   auto const io_index = std::get<2>(desc);
   auto const executor = at(model_index, subg_index);
-  return executor->getOutputTensors().at(io_index.value())->orig_info();
+  return executor->getOutputTensors().at(io_index.value())->get_info();
 }
 
 // Allow below edges only
@@ -218,8 +218,8 @@ void MultiModelExecutors::createEdgeQuantLayers()
     const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
     const auto from_tensor = from_executor->getOutputTensors().at(from_io_index.value());
 
-    const auto &from_info = from_tensor->orig_info();
-    const auto from_layout = from_tensor->orig_layout();
+    const auto &from_info = from_tensor->get_info();
+    const auto from_layout = from_tensor->layout();
     _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info, from_layout);
   }
 
@@ -255,8 +255,8 @@ void MultiModelExecutors::createEdgeQuantLayers()
           {
             assert(inputs.size() == outputs.size());
             const auto &to_info =
-              to_executor->getInputTensors().at(to_io_index.value())->orig_info();
-            const auto to_layout = to_tensor->orig_layout();
+              to_executor->getInputTensors().at(to_io_index.value())->get_info();
+            const auto to_layout = to_tensor->layout();
             inputs.emplace_back(from_tensor);
 
             auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info, to_layout);
@@ -343,10 +343,10 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
       // Create EdgeTensor for nnpkg input if type is different
       const auto input_tensor =
         executor->getInputTensors().at(std::get<ir::IOIndex>(pkg_input).value());
-      const auto &orig_info = input_tensor->orig_info();
-      if (input_desc->info.typeInfo().type() != input_tensor->orig_info().typeInfo().type())
+      const auto &orig_info = input_tensor->get_info();
+      if (input_desc->info.typeInfo().type() != input_tensor->get_info().typeInfo().type())
       {
-        const auto orig_layout = input_tensor->orig_layout();
+        const auto orig_layout = input_tensor->layout();
         auto pkg_input_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
         _pkg_input_quant_tensors[pkg_input] = std::move(pkg_input_edge_tensor);
 
@@ -386,10 +386,10 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
       // Create EdgeTensor for nnpkg output if type is different
       const auto output_tensor =
         executor->getOutputTensors().at(std::get<ir::IOIndex>(pkg_output).value());
-      const auto &orig_info = output_tensor->orig_info();
-      if (output_desc->info.typeInfo().type() != output_tensor->orig_info().typeInfo().type())
+      const auto &orig_info = output_tensor->get_info();
+      if (output_desc->info.typeInfo().type() != output_tensor->get_info().typeInfo().type())
       {
-        const auto orig_layout = output_tensor->orig_layout();
+        const auto orig_layout = output_tensor->layout();
         auto pkg_output_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
         _pkg_output_quant_tensors[pkg_output] = std::move(pkg_output_edge_tensor);
 
