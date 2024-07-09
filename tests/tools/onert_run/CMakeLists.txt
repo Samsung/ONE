@@ -12,7 +12,6 @@ list(APPEND ONERT_RUN_SRCS "src/nnfw_util.cc")
 list(APPEND ONERT_RUN_SRCS "src/randomgen.cc")
 list(APPEND ONERT_RUN_SRCS "src/rawformatter.cc")
 
-nnfw_find_package(Boost REQUIRED program_options)
 nnfw_find_package(Ruy QUIET)
 nnfw_find_package(HDF5 QUIET)
 
@@ -31,11 +30,10 @@ else()
 endif(HDF5_FOUND)
 
 target_include_directories(onert_run PRIVATE src)
-target_include_directories(onert_run PRIVATE ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(onert_run nnfw_lib_tflite jsoncpp)
 target_link_libraries(onert_run nnfw-dev)
-target_link_libraries(onert_run ${Boost_PROGRAM_OPTIONS_LIBRARY})
+target_link_libraries(onert_run arser)
 target_link_libraries(onert_run nnfw_lib_benchmark)
 if(Ruy_FOUND AND PROFILE_RUY)
   target_link_libraries(onert_run ruy_instrumentation)
