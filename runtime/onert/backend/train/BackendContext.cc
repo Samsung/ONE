@@ -142,6 +142,17 @@ getDisposableBackPropTensorList(const ir::train::TrainableGraph &tgraph,
 
 backend::ITensorRegistry *BackendContext::genTensors()
 {
+  genForwardTensors();
+  genBackwardTensors();
+
+  _tensor_builder->allocate();
+  _tensor_builder->allocateBackward();
+
+  return _tensor_registry.get();
+}
+
+void BackendContext::genForwardTensors()
+{
   const auto &tgraph = *trainable_graph();
 
   tgraph.operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &obj) {
@@ -159,15 +170,15 @@ backend::ITensorRegistry *BackendContext::genTensors()
   TensorPlanner tensor_planner{*ctx_data->tgraph.get(), ctx_data->external_operands};
   tensor_planner.planTrainableTensors(_tensor_builder.get());
   tensor_planner.planNonConstTensors(_tensor_builder.get());
-
-  _tensor_builder->allocate();
-
-  return _tensor_registry.get();
 }
 
-backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
+void BackendContext::genBackwardTensors()
 {
   const ir::train::TrainableGraph &tgraph = *trainable_graph();
+
+  // if (!tgraph.isEnabledBackward())
+  //   return;
+
   auto tensor_builder = _tensor_builder;
 
   const auto operand_indices = getBackwardTensorList(tgraph, external_operands());
@@ -194,48 +205,12 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
   }
 
-  // // TODO Register disposable tensor info only when it is necessary
-  // const auto border = tgraph.getEssentialBackwardOrder();
-  // for (const auto &op_index : border)
-  // {
-  //   // const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
-  //   const auto &trainable_op = tgraph.operation(op_index);
-  //   const auto back_prop_seq =
-  //     trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-  //   for (const auto &input : back_prop_seq)
-  //   {
-  //     if (external_operands().contains(input))
-  //       continue;
-
-  //     const auto backwarding_index = ir::train::TrainingOperandIndex{input, false};
-  //     const auto &training_usedefs = tgraph.trainingUseDefs();
-  //     const auto &usedefs = training_usedefs.at(backwarding_index);
-  //     const bool not_used = usedefs.getTrainingDefs().empty() &&
-  //     usedefs.getTrainingUses().empty(); if (not_used)
-  //       continue;
-
-  //     const auto &operand = tgraph.operands().at(input);
-  //     if (!operand.isConstant())
-  //     {
-  //       // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-  //       assert(tgraph.layout() != ir::Layout::NCHW);
-  //       DisposableTensorIndex disposable_index{op_index, input};
-  //       tensor_builder->registerDisposableBackwardTensorInfo(
-  //         disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
-  //     }
-  //   }
-  // }
-
   // Plan tensors only in backwarding to reduce peak memory usage
   const auto ctx_data = data();
   TensorPlanner tensor_planner{*ctx_data->tgraph.get(), ctx_data->external_operands};
   tensor_planner.planGradientTensors(tensor_builder.get());
   tensor_planner.planBackPropTensors(tensor_builder.get());
   tensor_planner.planDisposableBackPropTensors(tensor_builder.get());
-
-  tensor_builder->allocateBackward();
-
-  return _tensor_registry.get();
 }
 
 FunctionMap BackendContext::genKernels()

@@ -71,7 +71,10 @@ public:
 
 public:
   backend::ITensorRegistry *genTensors() override;
-  backend::train::ITensorRegistry *genTrainingTensors() override;
+
+private:
+  void genForwardTensors();
+  void genBackwardTensors();
 
 public:
   FunctionMap genKernels() override;
