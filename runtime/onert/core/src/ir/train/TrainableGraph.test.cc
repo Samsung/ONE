@@ -174,102 +174,205 @@ TEST(TrainableGraph, neg_topological_sort_cycle)
   EXPECT_ANY_THROW(tgraph.btopolSortOperations());
 }
 
-TEST(TrainableGraph, truncating_backward_topological_order_linear)
-{
-  train::TrainableGraph tgraph;
-
-  Shape shape{1, 2, 2, 1};
-  TypeInfo type{DataType::FLOAT32};
-
-  /*
-  (input) ⎼[EA]⎼> (u)
-                     ╲
-            (weight) ⎼[FC]⎼> (y_pred)
-                     ╱               ╲
-               (bias)                 [Loss]⎼> (output)
-                                     ╱
-                             (y_true)
-  */
-
-  auto input = tgraph.addOperand(shape, type);
-  auto u = tgraph.addOperand(shape, type);
-  auto weight = tgraph.addOperand(shape, type);
-  auto bias = tgraph.addOperand(shape, type);
-  auto y_pred = tgraph.addOperand(shape, type);
-  auto y_true = tgraph.addOperand(shape, type);
-  auto output = tgraph.addOperand(shape, type);
-
-  tgraph.addInput({input});
-  tgraph.addInput({weight});
-  tgraph.addInput({bias});
-  tgraph.addInput({y_true});
-  tgraph.addOutput({output});
-
-  auto ea = addElementwiseActivationOperation(tgraph, {input}, {u});
-  auto fc = addFullyConnectedOperation(tgraph, {u, weight, bias}, {y_pred});
-  auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
-
-  std::vector<OperationIndex> expected_truncation{loss, fc};
-  std::vector<OperationIndex> truncation =
-    tgraph.truncateBackwardOrder(tgraph.btopolSortOperations());
-
-  ASSERT_EQ(truncation, expected_truncation);
-}
-
 TEST(TrainableGraph, truncating_backward_topological_order_nonlinear)
 {
-  train::TrainableGraph tgraph;
+  {
+    train::TrainableGraph tgraph;
 
-  Shape shape{1, 2, 2, 1};
-  TypeInfo type{DataType::FLOAT32};
+    Shape shape{1, 2, 2, 1};
+    TypeInfo type{DataType::FLOAT32};
 
-  /*
-            [EA1]⎼> (u)
-           ╱           ╲
-          ╱  (weight1) ⎼[FC1]⎼> (v)
-         ╱             ╱           ╲
-        ╱       (bias1)             [Add]⎼> (y_pred)
- (input)                           ╱                ╲
-        ╲                         ╱                  [Loss]⎼> (output)
-         [EA2]⎼> (w)             ╱                  ╱
-                    ╲           ╱           (y_true)
-          (weight2) ⎼[FC2]⎼> (x)
-                    ╱
-            (bias2)
-  */
+    /*
+              [EA1]⎼> (u)
+             ╱           ╲
+            ╱  (weight1) ⎼[FC1]⎼> (v)
+           ╱             ╱           ╲
+          ╱       (bias1)             [Add]⎼> (y_pred)
+   (input)                           ╱                ╲
+          ╲                         ╱                  [Loss]⎼> (output)
+           [EA2]⎼> (w)             ╱                  ╱
+                      ╲           ╱           (y_true)
+            (weight2) ⎼[FC2]⎼> (x)
+                      ╱
+              (bias2)
+    */
 
-  auto input = tgraph.addOperand(shape, type);
-  auto u = tgraph.addOperand(shape, type);
-  auto weight1 = tgraph.addOperand(shape, type);
-  auto bias1 = tgraph.addOperand(shape, type);
-  auto v = tgraph.addOperand(shape, type);
-  auto w = tgraph.addOperand(shape, type);
-  auto weight2 = tgraph.addOperand(shape, type);
-  auto bias2 = tgraph.addOperand(shape, type);
-  auto x = tgraph.addOperand(shape, type);
-  auto y_pred = tgraph.addOperand(shape, type);
-  auto y_true = tgraph.addOperand(shape, type);
-  auto output = tgraph.addOperand(shape, type);
+    auto input = tgraph.addOperand(shape, type);
+    auto u = tgraph.addOperand(shape, type);
+    auto weight1 = tgraph.addOperand(shape, type);
+    auto bias1 = tgraph.addOperand(shape, type);
+    auto v = tgraph.addOperand(shape, type);
+    auto w = tgraph.addOperand(shape, type);
+    auto weight2 = tgraph.addOperand(shape, type);
+    auto bias2 = tgraph.addOperand(shape, type);
+    auto x = tgraph.addOperand(shape, type);
+    auto y_pred = tgraph.addOperand(shape, type);
+    auto y_true = tgraph.addOperand(shape, type);
+    auto output = tgraph.addOperand(shape, type);
 
-  tgraph.addInput({input});
-  tgraph.addInput({weight1});
-  tgraph.addInput({bias1});
-  tgraph.addInput({weight2});
-  tgraph.addInput({bias2});
-  tgraph.addInput({y_true});
-  tgraph.addOutput({output});
+    tgraph.addInput({input});
+    tgraph.addInput({weight1});
+    tgraph.addInput({bias1});
+    tgraph.addInput({weight2});
+    tgraph.addInput({bias2});
+    tgraph.addInput({y_true});
+    tgraph.addOutput({output});
 
-  auto ea1 = addElementwiseActivationOperation(tgraph, {input}, {u});
-  auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
-  auto ea2 = addElementwiseActivationOperation(tgraph, {input}, {w});
-  auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
-  auto add = addAddOperation(tgraph, {v, x}, {y_pred});
-  auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
+    auto ea1 = addElementwiseActivationOperation(tgraph, {input}, {u});
+    auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
+    auto ea2 = addElementwiseActivationOperation(tgraph, {input}, {w});
+    auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
+    auto add = addAddOperation(tgraph, {v, x}, {y_pred});
+    auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
-  std::vector<OperationIndex> expected_truncation_1{loss, add, fc1, fc2};
-  std::vector<OperationIndex> expected_truncation_2{loss, add, fc2, fc1};
-  std::vector<OperationIndex> truncation =
-    tgraph.truncateBackwardOrder(tgraph.btopolSortOperations());
+    std::vector<OperationIndex> expected_truncation_1{loss, add, fc1, fc2};
+    std::vector<OperationIndex> expected_truncation_2{loss, add, fc2, fc1};
+    std::vector<OperationIndex> truncation =
+      tgraph.truncateBackwardOrder(tgraph.btopolSortOperations());
 
-  ASSERT_TRUE(truncation == expected_truncation_1 || truncation == expected_truncation_2);
+    ASSERT_TRUE(truncation == expected_truncation_1 || truncation == expected_truncation_2);
+  }
+
+  {
+    train::TrainableGraph tgraph;
+
+    Shape shape{1, 2, 2, 1};
+    TypeInfo type{DataType::FLOAT32};
+
+    /*
+   (input1) ⎼[FC3]⎼> (r) ⎼⎼[Add]⎼> (s) ⎼[EA1]⎼> (u)
+            ╱             ╱                       ╲
+   (weight3)             ╱              (weight1) ⎼[FC1]⎼> (v)
+                        ╱                         ╱           ╲
+                       ╱                         ╱             ╲
+                      ╱                   (bias1)               [Add]⎼> (y_pred)
+               (input)                                         ╱                ╲
+                      ╲                                       ╱                  [Loss]⎼> (output)
+                       ╲                                     ╱                  ╱
+                        [Add]⎼> (t) ⎼[EA2]⎼> (w)            ╱                  ╱
+                       ╱                       ╲           ╱           (y_true)
+               (input2)              (weight2) ⎼[FC2]⎼> (x)
+                                               ╱
+                                        (bias2)
+    */
+
+    auto input1 = tgraph.addOperand(shape, type);
+    auto weight3 = tgraph.addOperand(shape, type);
+    auto r = tgraph.addOperand(shape, type);
+    auto input = tgraph.addOperand(shape, type);
+    auto s = tgraph.addOperand(shape, type);
+    auto input2 = tgraph.addOperand(shape, type);
+    auto t = tgraph.addOperand(shape, type);
+    auto u = tgraph.addOperand(shape, type);
+    auto weight1 = tgraph.addOperand(shape, type);
+    auto bias1 = tgraph.addOperand(shape, type);
+    auto v = tgraph.addOperand(shape, type);
+    auto w = tgraph.addOperand(shape, type);
+    auto weight2 = tgraph.addOperand(shape, type);
+    auto bias2 = tgraph.addOperand(shape, type);
+    auto x = tgraph.addOperand(shape, type);
+    auto y_pred = tgraph.addOperand(shape, type);
+    auto y_true = tgraph.addOperand(shape, type);
+    auto output = tgraph.addOperand(shape, type);
+
+    tgraph.addInput({input});
+    tgraph.addInput({weight1});
+    tgraph.addInput({bias1});
+    tgraph.addInput({weight2});
+    tgraph.addInput({bias2});
+    tgraph.addInput({y_true});
+    tgraph.addOutput({output});
+
+    auto fc3 = addFullyConnectedOperation(tgraph, {input1, weight3}, {r});
+    auto add1 = addAddOperation(tgraph, {r, input}, {s});
+    auto add2 = addAddOperation(tgraph, {input, input2}, {t});
+    auto ea1 = addElementwiseActivationOperation(tgraph, {s}, {u});
+    auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
+    auto ea2 = addElementwiseActivationOperation(tgraph, {t}, {w});
+    auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
+    auto add = addAddOperation(tgraph, {v, x}, {y_pred});
+    auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    // This expected indices are base on dfs
+    std::vector<OperationIndex> expected_truncation_1{loss, add, fc1, ea1, add1, fc3, fc2};
+    std::vector<OperationIndex> expected_truncation_2{loss, add, fc2, fc1, ea1, add1, fc3};
+    std::vector<OperationIndex> truncation =
+      tgraph.truncateBackwardOrder(tgraph.btopolSortOperations());
+
+    ASSERT_TRUE(truncation == expected_truncation_1 || truncation == expected_truncation_2);
+  }
+}
+
+TEST(TrainableGraph, essential_backward_topological_order_nonlinear)
+{
+  {
+    train::TrainableGraph tgraph;
+
+    Shape shape{1, 2, 2, 1};
+    TypeInfo type{DataType::FLOAT32};
+
+    /*
+   (input1) ⎼[FC3]⎼> (r) ⎼⎼[Add]⎼> (s) ⎼[EA1]⎼> (u)
+            ╱             ╱                       ╲
+   (weight3)             ╱              (weight1) ⎼[FC1]⎼> (v)
+                        ╱                         ╱           ╲
+                       ╱                         ╱             ╲
+                      ╱                   (bias1)               [Add]⎼> (y_pred)
+               (input)                                         ╱                ╲
+                      ╲                                       ╱                  [Loss]⎼> (output)
+                       ╲                                     ╱                  ╱
+                        [Add]⎼> (t) ⎼[EA2]⎼> (w)            ╱                  ╱
+                       ╱                       ╲           ╱           (y_true)
+               (input2)              (weight2) ⎼[FC2]⎼> (x)
+                                               ╱
+                                        (bias2)
+    */
+
+    auto input1 = tgraph.addOperand(shape, type);
+    auto weight3 = tgraph.addOperand(shape, type);
+    auto r = tgraph.addOperand(shape, type);
+    auto input = tgraph.addOperand(shape, type);
+    auto s = tgraph.addOperand(shape, type);
+    auto input2 = tgraph.addOperand(shape, type);
+    auto t = tgraph.addOperand(shape, type);
+    auto u = tgraph.addOperand(shape, type);
+    auto weight1 = tgraph.addOperand(shape, type);
+    auto bias1 = tgraph.addOperand(shape, type);
+    auto v = tgraph.addOperand(shape, type);
+    auto w = tgraph.addOperand(shape, type);
+    auto weight2 = tgraph.addOperand(shape, type);
+    auto bias2 = tgraph.addOperand(shape, type);
+    auto x = tgraph.addOperand(shape, type);
+    auto y_pred = tgraph.addOperand(shape, type);
+    auto y_true = tgraph.addOperand(shape, type);
+    auto output = tgraph.addOperand(shape, type);
+
+    tgraph.addInput({input});
+    tgraph.addInput({weight1});
+    tgraph.addInput({bias1});
+    tgraph.addInput({weight2});
+    tgraph.addInput({bias2});
+    tgraph.addInput({y_true});
+    tgraph.addOutput({output});
+
+    auto fc3 = addFullyConnectedOperation(tgraph, {input1, weight3}, {r});
+    auto add1 = addAddOperation(tgraph, {r, input}, {s});
+    auto add2 = addAddOperation(tgraph, {input, input2}, {t});
+    auto ea1 = addElementwiseActivationOperation(tgraph, {s}, {u});
+    auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
+    auto ea2 = addElementwiseActivationOperation(tgraph, {t}, {w});
+    auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
+    auto add = addAddOperation(tgraph, {v, x}, {y_pred});
+    auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
+
+    tgraph.enableBackward(fc2);
+    tgraph.enableBackward(fc3);
+
+    // These expected indices are base on dfs
+    std::vector<OperationIndex> expected_truncation_1{loss, add, fc1, ea1, add1, fc3, fc2};
+    std::vector<OperationIndex> expected_truncation_2{loss, add, fc2, fc1, ea1, add1, fc3};
+    std::vector<OperationIndex> essential = tgraph.essentialBackwardOrder();
+
+    ASSERT_TRUE(essential == expected_truncation_1 || essential == expected_truncation_2);
+  }
 }

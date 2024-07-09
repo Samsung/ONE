@@ -136,10 +136,24 @@ private:
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
   std::vector<ir::OperationIndex> btopolSortOperations() const;
+  std::vector<ir::OperationIndex> essentialBackwardOrder() const;
 
 public:
+  /**
+   * @brief Truncate the backward order of operations in accordance with the alive condition
+   *        whether the corresponding operation has trainable parameters
+   * @param  backward_order  The order of operations in a backward graph
+   */
   std::vector<ir::OperationIndex>
-  truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order) const;
+  truncateBackwardOrder(const std::vector<ir::OperationIndex> &backward_order) const;
+  /**
+   * @brief Truncate the backward order of operations in accordance with the given alive condition.
+   * @param  backward_order  The order of operations in a backward graph
+   * @param  alive_cond The alive condition to stop the backward order
+   */
+  std::vector<ir::OperationIndex>
+  truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order,
+                        std::function<bool(const ir::OperationIndex &)> truncating_cond) const;
 
 private:
   Graph _graph;
