@@ -146,6 +146,16 @@ void TrainableGraph::disableBackward(const OperationIndex &index)
   op.disableBackward();
 }
 
+void TrainableGraph::setTrainingUseDefs(const UseDefChains &training_defuses)
+{
+  _training_defuses.clear();
+  // TODO Replace this loop with `std::unordered_map::insert_range` since C++23
+  for (const auto &defuse_chain : training_defuses)
+  {
+    _training_defuses.emplace(defuse_chain.first, defuse_chain.second);
+  }
+}
+
 void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> order,
                                               bool is_forward) const
 {
