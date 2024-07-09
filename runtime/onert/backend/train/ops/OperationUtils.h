@@ -31,10 +31,17 @@ namespace ops
 using OperandType = onert::ir::DataType;
 using cpu::ops::getBuffer;
 using cpu::ops::getPaddingType;
-using cpu::ops::getShape;
 using cpu::ops::getNumberOfDimensions;
 using cpu::ops::getNumberOfElements;
 using cpu::ops::getSizeOfDimension;
+
+/**
+ * @brief Get shape of tensor
+ *
+ * @param tensor tensor to get shape
+ * @return Shape to be used in cker
+ */
+nnfw::cker::Shape getShape(const IPortableTensor *tensor);
 
 /**
  * @brief backpropagate acitvation
