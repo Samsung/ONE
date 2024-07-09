@@ -168,9 +168,9 @@ void Args::Initialize(void)
   _arser.add_argument("--load:raw").type(arser::DataType::STR).help("Raw Input filename");
   _arser.add_argument("--output_sizes")
     .type(arser::DataType::STR)
-    .help("The output buffer size in JSON 1D array\n"
-          "If not given, the model's output sizes are used\n"
-          "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80.\n");
+    .help({"The output buffer size in JSON 1D array",
+           "If not given, the model's output sizes are used",
+           "e.g. '[0, 40, 2, 80]' to set 0th tensor to 40 and 2nd tensor to 80."});
   _arser.add_argument("--num_runs", "-r")
     .type(arser::DataType::INT32)
     .default_value(1)
@@ -206,28 +206,25 @@ void Args::Initialize(void)
   _arser.add_argument("--write_report", "-p")
     .nargs(0)
     .default_value(false)
-    .help("Write report\n"
-          "{exec}-{nnpkg|modelfile}-{backend}.csv will be generated.\n"
-          "e.g. onert_run-UNIT_Add_000-acl_cl.csv.\n"
-          "{nnpkg|modelfile} name may be changed to realpath if you use symbolic-link.");
+    .help({"Write report", "{exec}-{nnpkg|modelfile}-{backend}.csv will be generated.",
+           "e.g. onert_run-UNIT_Add_000-acl_cl.csv.",
+           "{nnpkg|modelfile} name may be changed to realpath if you use symbolic-link."});
   _arser.add_argument("--shape_prepare")
     .type(arser::DataType::STR)
     .default_value("")
     .help("Please refer to the description of 'shape_run'");
-  _arser.add_argument("--shape_run")
-    .type(arser::DataType::STR)
-    .default_value("")
-    .help(
-      "'--shape_prepare: set shape of tensors before compilation (before calling nnfw_prepare()).\n"
-      "'--shape_run: set shape of tensors before running (before calling nnfw_run()).\n"
-      "Allowed value:.\n"
-      "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [] (scalar).\n"
+  _arser.add_argument("--shape_run").type(arser::DataType::STR).default_value("").help({
+    "--shape_prepare: set shape of tensors before compilation (before calling nnfw_prepare()).",
+      "--shape_run: set shape of tensors before running (before calling nnfw_run()).",
+      "Allowed value:.",
+      "'[0, [1, 2], 2, []]': set 0th tensor to [1, 2] and 2nd tensor to [] (scalar).",
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
-      "'h5': read shape(s) from H5 input file. '--load' should also be provided.\n"
-      "if '--load' option is provided but '--shape_prepare' or '--shape_run' is not provided,\n"
-      "'--shape_run h5' will be used by default.\n"
+      "'h5': read shape(s) from H5 input file. '--load' should also be provided.",
+      "if '--load' option is provided but '--shape_prepare' or '--shape_run' is not provided,",
+      "'--shape_run h5' will be used by default.",
 #endif
-      "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()\n");
+      "For detailed description, please consutl the description of nnfw_set_input_tensorinfo()"
+  });
   _arser.add_argument("--output_shape")
     .type(arser::DataType::STR)
     .default_value("")
@@ -236,32 +233,28 @@ void Args::Initialize(void)
   _arser.add_argument("--verbose_level", "-v")
     .type(arser::DataType::INT32)
     .default_value(0)
-    .help("Verbose level\n"
-          "0: prints the only result. Messages btw run don't print\n"
-          "1: prints result and message btw run\n"
-          "2: prints all of messages to print\n");
+    .help({"Verbose level", "0: prints the only result. Messages btw run don't print",
+           "1: prints result and message btw run", "2: prints all of messages to print"});
   _arser.add_argument("--quantize", "-q")
     .type(arser::DataType::STR)
-    .help("Request quantization with type\n"
-          "uint8, int16: full quantization\n"
-          "int8_wo, int16_wo: weight only quantization\n");
+    .help({"Request quantization with type", "uint8, int16: full quantization",
+           "int8_wo, int16_wo: weight only quantization"});
   _arser.add_argument("--qpath")
     .type(arser::DataType::STR)
-    .help("Path to export quantized model.\n"
-          "If it is not set, the quantized model will be exported to the same directory of the "
-          "original model/package with q8/q16 suffix.");
+    .help({"Path to export quantized model.",
+           "If it is not set, the quantized model will be exported to the same directory of the "
+           "original model/package with q8/q16 suffix."});
   _arser.add_argument("--codegen", "-c")
     .type(arser::DataType::STR)
-    .help("Target backend name for code generation\n"
-          "The target string will be used to find a backend library.\n"
-          "This string should be in the following format:\n"
-          "{backend extension} + '-gen'.\n"
-          "For detailed description, please see the description of nnfw_codegen()");
+    .help({"Target backend name for code generation",
+           "The target string will be used to find a backend library.",
+           "This string should be in the following format:", "{backend extension} + '-gen'.",
+           "For detailed description, please see the description of nnfw_codegen()"});
   _arser.add_argument("--cpath")
     .type(arser::DataType::STR)
-    .help("Path to export target-dependent model.\n"
-          "If it is not set, the generated model will be exported to the same directory of the "
-          "original model/package with target backend extension.");
+    .help({"Path to export target-dependent model.",
+           "If it is not set, the generated model will be exported to the same directory of the "
+           "original model/package with target backend extension."});
 }
 
 void Args::Parse(const int argc, char **argv)

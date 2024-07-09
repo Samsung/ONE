@@ -76,10 +76,8 @@ void Args::Initialize(void)
     _arser.add_argument("--verbose_level", "-v")
       .type(arser::DataType::INT32)
       .default_value(0)
-      .help("Verbose level\n"
-            "0: prints the only result. Messages btw run don't print\n"
-            "1: prints result and message btw run\n"
-            "2: prints all of messages to print\n");
+      .help({"Verbose level", "0: prints the only result. Messages btw run don't print",
+             "1: prints result and message btw run", "2: prints all of messages to print"});
     _arser.add_argument("tflite").type(arser::DataType::STR);
   }
   catch (const std::runtime_error &err)
