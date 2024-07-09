@@ -153,6 +153,7 @@ struct ConvQuant
   int32_t quantized_activation_min;
   int32_t quantized_activation_max;
   int32_t depth_multiplier;
+  int32_t compressed_weight_size;
   std::vector<int32_t> per_channel_output_multiplier;
   std::vector<int> per_channel_output_shift;
 };
