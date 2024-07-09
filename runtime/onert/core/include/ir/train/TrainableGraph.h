@@ -22,6 +22,7 @@
 
 #include "ir/Graph.h"
 #include "ir/train/ITrainableOperation.h"
+#include "ir/train/UseDefChains.h"
 
 namespace onert
 {
@@ -30,6 +31,7 @@ namespace ir
 namespace train
 {
 
+// TODO Add Phase enum
 class TrainableGraph : public IGraph
 {
 public:
@@ -110,6 +112,7 @@ public:
   void setOutputs(OperandIndexSequence outputs,
                   std::unordered_map<std::string, IOIndex> name_to_output);
   void enableBackward(const OperationIndex &index);
+  void setTrainingUseDefs(const UseDefChains &training_defuses);
 
   // Accessors
 public:
@@ -127,11 +130,13 @@ public:
 
 public:
   const ITrainableOperation &operation(OperationIndex index) const;
+  const UseDefChains &trainingUseDefs() const { return _training_defuses; }
 
 private:
   void validateTopologicalOrder(std::vector<ir::OperationIndex> order, bool is_forward) const;
   void validateForwardTopologicalOrder(const std::vector<ir::OperationIndex> &order) const;
   void validateBackwardTopologicalOrder(const std::vector<ir::OperationIndex> &order) const;
+  void verifyTrainingUseDefs() const;
 
 public:
   std::vector<ir::OperationIndex> topolSortOperations() const;
@@ -158,6 +163,7 @@ public:
 private:
   Graph _graph;
   Operands _backward_operands;
+  UseDefChains _training_defuses;
 
   std::unordered_map<IOIndex, OperandIndex> _losses;
 };

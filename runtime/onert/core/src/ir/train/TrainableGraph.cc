@@ -15,8 +15,11 @@
  */
 
 #include "ir/train/TrainableGraph.h"
+
+#include "ir/OperandIndexMap.h"
 #include "util/Utils.h"
 #include "util/Set.h"
+#include "../verifier/Verifier.h"
 
 #include <algorithm>
 #include <set>
@@ -33,7 +36,8 @@ namespace train
 TrainableGraph::TrainableGraph() : _graph{} {}
 
 TrainableGraph::TrainableGraph(const TrainableGraph &tgraph)
-  : _graph{tgraph._graph}, _backward_operands{tgraph._backward_operands}, _losses{tgraph._losses}
+  : _graph{tgraph._graph}, _backward_operands{tgraph._backward_operands},
+    _training_defuses{tgraph._training_defuses}, _losses{tgraph._losses}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &index, const onert::ir::IOperation &op) {
@@ -115,6 +119,8 @@ void TrainableGraph::verify(void) const
       throw std::runtime_error("TrainableGraph: " + op.name() + " is not a trainable operation");
     }
   });
+
+  verifyTrainingUseDefs();
 }
 
 void TrainableGraph::removeOperand(const OperandIndex &ind) { _graph.removeOperand(ind); }
@@ -188,6 +194,13 @@ void TrainableGraph::validateBackwardTopologicalOrder(
   const std::vector<ir::OperationIndex> &order) const
 {
   validateTopologicalOrder(order, false);
+}
+
+void TrainableGraph::verifyTrainingUseDefs() const
+{
+  if (!verifier::DAGChecker().verify(_training_defuses))
+    throw std::runtime_error{"The training def-uses is cyclic."};
+  assert(verifier::EdgeChecker().verify(_training_defuses));
 }
 
 std::vector<ir::OperationIndex> TrainableGraph::topolSortOperations() const

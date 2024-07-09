@@ -21,6 +21,69 @@
 
 #include "util/logging.h"
 
+namespace
+{
+
+using namespace onert::ir;
+
+std::set<train::TrainingOperationIndex>
+extractOperations(const train::UseDefChains &training_usedefs)
+{
+  // Extract TrainingOperations from training_usedefs
+  std::set<train::TrainingOperationIndex> operations;
+  for (const auto &pair : training_usedefs)
+  {
+    const auto &output = pair.first;
+    const auto &usedefs = pair.second;
+    const auto &defs = usedefs.getTrainingDefs();
+    for (const auto &node_index : defs)
+      if (node_index.valid() && output.valid())
+        operations.insert(node_index);
+  }
+
+  return operations;
+}
+
+std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
+extractNodeInputs(const train::UseDefChains &training_usedefs)
+{
+  // Extract inputs of TrainingOperations from training_usedefs
+  std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
+    node_inputs;
+  for (const auto &pair : training_usedefs)
+  {
+    const auto &input = pair.first;
+    const auto &usedefs = pair.second;
+    const auto &uses = usedefs.getTrainingUses();
+    for (const auto &node_index : uses)
+      if (node_index.valid() && input.valid())
+        node_inputs[node_index].emplace_back(input);
+  }
+
+  return node_inputs;
+}
+
+std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
+extractNodeOutputs(const train::UseDefChains &training_usedefs)
+{
+  // Extract outputs of TrainingOperations from training_usedefs
+  std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
+    node_outputs;
+  for (const auto &pair : training_usedefs)
+  {
+    const auto &output = pair.first;
+    const auto &usedefs = pair.second;
+    const auto &defs = usedefs.getTrainingDefs();
+    for (const auto &node_index : defs)
+      if (node_index.valid() && output.valid())
+        node_outputs[node_index].emplace_back(output);
+  }
+
+  return node_outputs;
+}
+
+} // namespace
+
 namespace onert
 {
 namespace ir
@@ -64,6 +127,46 @@ bool DAGChecker::verify(const Graph &graph) const noexcept
   };
 
   operations.iterate(dfs_recursive);
+
+  return !cyclic;
+}
+
+// TODO Merge with the above DAGChecker::verify(const Graph &)
+bool DAGChecker::verify(const train::UseDefChains &training_usedefs) const noexcept
+{
+  bool cyclic = false;
+  const auto operations = extractOperations(training_usedefs);
+  auto outputs_map = extractNodeOutputs(training_usedefs);
+
+  std::unordered_map<train::TrainingOperationIndex, bool> visited;
+  for (const auto &node_index : operations)
+    visited[node_index] = false;
+  auto on_stack = visited; // Copy from visited
+
+  std::function<void(const train::TrainingOperationIndex &index)> dfs_recursive =
+    [&](const train::TrainingOperationIndex &index) -> void {
+    if (on_stack[index])
+      cyclic = true;
+    if (visited[index])
+      return;
+    visited[index] = true;
+    on_stack[index] = true;
+
+    auto &node_outputs = outputs_map[index];
+    for (const auto &output : node_outputs)
+    {
+      const auto &uses = training_usedefs.at(output).getTrainingUses();
+      for (const auto &use : uses)
+      {
+        dfs_recursive(use);
+      }
+    }
+
+    on_stack[index] = false;
+  };
+
+  for (const auto &node_index : operations)
+    dfs_recursive(node_index);
 
   return !cyclic;
 }
@@ -137,6 +240,67 @@ bool InputOutputChecker::verify(const Graph &graph) const noexcept
     }
   }
   return true;
+}
+
+// TODO Merge with the above EdgeChecker::verify(const Graph &)
+bool EdgeChecker::verify(const train::UseDefChains &training_usedefs) const noexcept
+{
+  const auto operations = extractOperations(training_usedefs);
+  auto inputs_map = extractNodeInputs(training_usedefs);
+  auto outputs_map = extractNodeOutputs(training_usedefs);
+  uint32_t errors = 0;
+  for (const auto &index : operations)
+  {
+    const auto &node_inputs = inputs_map[index];
+    for (const auto &operand_index : node_inputs)
+    {
+      try
+      {
+        const auto &uses = training_usedefs.at(operand_index).getTrainingUses();
+        bool operand_has_use = (uses.find(index) != uses.end());
+        if (!operand_has_use)
+        {
+          VERBOSE(EdgeChecker) << "[ERROR] EDGE MISMATCH : Missing USE edge - Operand "
+                               << operand_index << " to Operation " << index << std::endl;
+          errors += 1;
+        }
+      }
+      catch (const std::out_of_range &e)
+      {
+        VERBOSE(EdgeChecker) << "[ERROR] OPEARAND NOT FOUND : Operation " << index
+                             << " has Operand " << operand_index
+                             << ", but the operand object is not present in the graph" << std::endl;
+        errors += 1;
+      }
+    }
+
+    const auto &node_outputs = outputs_map[index];
+    for (const auto &operand_index : node_outputs)
+    {
+      try
+      {
+        const auto &defs = training_usedefs.at(operand_index).getTrainingDefs();
+        bool operand_has_def = (defs.find(index) != defs.end());
+        if (!operand_has_def)
+        {
+          VERBOSE(EdgeChecker) << "[ERROR] EDGE MISMATCH : Missing DEF edge - Operand"
+                               << operand_index << " to Operation " << index << std::endl;
+          errors += 1;
+        }
+      }
+      catch (const std::out_of_range &e)
+      {
+        VERBOSE(EdgeChecker) << "[ERROR] OPEARAND NOT FOUND : Operation " << index
+                             << " has Operand " << operand_index
+                             << ", but the operand object is not present in the graph" << std::endl;
+        errors += 1;
+      }
+    }
+  }
+
+  VERBOSE(EdgeChecker) << "Total Number of errors : " << errors << std::endl;
+
+  return errors == 0;
 }
 
 } // namespace verifier
