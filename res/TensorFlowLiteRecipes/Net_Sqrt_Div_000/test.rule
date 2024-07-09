@@ -1,0 +1,8 @@
+# To check if Sqrt-Div is transformed to Rsqrt-Mul ops
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "RSQRT_EXIST"             $(op_count RSQRT) '=' 1
+RULE    "MUL_EXIST"               $(op_count MUL) '=' 1
+RULE    "SQRT_NOT_EXIST"          $(op_count SQRT) '=' 0
+RULE    "DIV_NOT_EXIST"           $(op_count DIV) '=' 0
