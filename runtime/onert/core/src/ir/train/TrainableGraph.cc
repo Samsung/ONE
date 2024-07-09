@@ -258,10 +258,6 @@ std::vector<ir::OperationIndex> TrainableGraph::truncateBackwardOrder(
 
   for (const auto &index : forward_order)
   {
-    // // Loss operation must exist in truncated graph because loss values are always required
-    // during training. if (op.opcode() == ir::OpCode::Loss)
-    //   alive.insert(index);
-
     if (alive_cond(index))
       alive.insert(index);
 

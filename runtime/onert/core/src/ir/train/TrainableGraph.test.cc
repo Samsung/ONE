@@ -174,7 +174,7 @@ TEST(TrainableGraph, neg_topological_sort_cycle)
   EXPECT_ANY_THROW(tgraph.btopolSortOperations());
 }
 
-TEST(TrainableGraph, truncating_backward_topological_order_linear)
+TEST(TrainableGraph, truncating_backward_topological_order_nonlinear)
 {
   {
     train::TrainableGraph tgraph;
