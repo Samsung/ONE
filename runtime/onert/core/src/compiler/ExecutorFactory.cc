@@ -741,9 +741,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   Linear::dump(*lowered_graph, order);
 
   // linearize for backwarding
-  auto backward_order = lowered_graph->trainable_graph().btopolSortOperations();
-  // get rid of all nodes not reachable from a node with trainable parameters
-  backward_order = lowered_graph->trainable_graph().truncateBackwardOrder(backward_order);
+  auto backward_order = lowered_graph->trainable_graph().essentialBackwardOrder();
   VERBOSE(ExecutorFactory) << "Linearize for backwarding order" << std::endl;
   Linear::dump(*lowered_graph, backward_order);
 

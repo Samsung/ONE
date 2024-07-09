@@ -69,27 +69,25 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
       unvisited.add(index);
   });
 
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.essentialBackwardOrder())
   {
     assert(fn_map.find(op_index) != fn_map.end());
 
     auto &tn_seq = fn_map.at(op_index);
 
-    // The function added lastest is executed first in a sequence during backwarding.
+    // The function added latest is executed first in a sequence during backwarding.
     std::vector<BackPropTensor *> back_props;
     const auto &op = tgraph.operation(op_index);
     for (const auto &back_prop_index :
          op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
     {
-      if (op.isRequiredForBackward())
+      assert(op.isRequiredForBackward());
+      if (unvisited.contains(back_prop_index))
       {
-        if (unvisited.contains(back_prop_index))
-        {
-          auto back_prop_tensor = tensor_reg.getBackPropTensor(back_prop_index);
-          assert(back_prop_tensor != nullptr);
-          back_props.emplace_back(back_prop_tensor);
-          unvisited.remove(back_prop_index);
-        }
+        auto back_prop_tensor = tensor_reg.getBackPropTensor(back_prop_index);
+        assert(back_prop_tensor != nullptr);
+        back_props.emplace_back(back_prop_tensor);
+        unvisited.remove(back_prop_index);
       }
     }
     if (back_props.size() != 0)
@@ -138,7 +136,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       tensor_builder->notifyBackwardFirstUse(ind);
   });
 
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.essentialBackwardOrder())
   {
     const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
     for (const auto &back_prop_index : back_prop_seq)
@@ -163,7 +161,7 @@ void BackendContext::planDisposableBackPropTensors()
   auto tensor_builder = _tensor_builder;
 
   std::vector<DisposableTensorIndex> prev_seq;
-  for (const auto &op_index : tgraph.btopolSortOperations())
+  for (const auto &op_index : tgraph.essentialBackwardOrder())
   {
     for (const auto &index : prev_seq)
     {
