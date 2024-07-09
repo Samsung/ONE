@@ -28,21 +28,6 @@ namespace basic
 
 Tensor::~Tensor() {}
 
-size_t Tensor::calcOffset(const ir::Coordinates &coords) const
-{
-  auto shape = getShape();
-  size_t rank = shape.rank();
-  rank = rank == 0 ? 1 : rank;
-  size_t offset = 0;
-  for (size_t i = 0; i < rank; ++i)
-  {
-    auto dim = shape.rank() == 0 ? 1 : shape.dim(i);
-    offset = offset * dim + coords[i];
-  }
-  offset *= sizeOfDataType(data_type());
-  return offset;
-}
-
 void Tensor::setShape(const ir::Shape &new_shape) { _info.shape(new_shape); }
 
 bool Tensor::applyShape(const ir::Shape &new_shape)
@@ -83,8 +68,6 @@ bool Tensor::applyShape(const ir::Shape &new_shape)
   }
   return true;
 }
-
-ir::Shape Tensor::getShape() const { return _info.shape(); }
 
 void Tensor::deallocBuffer()
 {

@@ -25,5 +25,20 @@ namespace backend
 // With this as a key function, `dynamic_cast` works across dl
 IPortableTensor::~IPortableTensor() {}
 
+size_t IPortableTensor::calcOffset(const ir::Coordinates &coords) const
+{
+  auto shape = _info.shape();
+  size_t rank = shape.rank();
+  rank = rank == 0 ? 1 : rank;
+  size_t offset = 0;
+  for (size_t i = 0; i < rank; ++i)
+  {
+    auto dim = shape.rank() == 0 ? 1 : shape.dim(i);
+    offset = offset * dim + coords[i];
+  }
+  offset *= sizeOfDataType(data_type());
+  return offset;
+}
+
 } // namespace backend
 } // namespace onert
