@@ -117,6 +117,13 @@ endif(ENABLE_COVERAGE)
 
 nnas_include(AddSubdirectories)
 
+# Add arser for test driver
+# TODO: Better way to handle this
+if(ENABLE_TEST)
+  add_library(arser INTERFACE)
+  target_include_directories(arser INTERFACE ${NNAS_PROJECT_SOURCE_DIR}/compiler/arser/include/)
+endif(ENABLE_TEST)
+
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/compute compute)
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/runtime runtime)
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/tests tests)

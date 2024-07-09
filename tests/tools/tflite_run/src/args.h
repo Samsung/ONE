@@ -18,9 +18,7 @@
 #define __TFLITE_RUN_ARGS_H__
 
 #include <string>
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
+#include <arser/arser.h>
 
 namespace TFLiteRun
 {
@@ -42,7 +40,6 @@ public:
   const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
   const bool getMemoryPoll(void) const { return _mem_poll; }
   const bool getWriteReport(void) const { return _write_report; }
-  const bool getModelValidate(void) const { return _tflite_validate; }
   const int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
@@ -50,8 +47,7 @@ private:
   void Parse(const int argc, char **argv);
 
 private:
-  po::positional_options_description _positional;
-  po::options_description _options;
+  arser::Arser _arser;
 
   std::string _tflite_filename;
   std::string _dump_filename;
@@ -64,7 +60,6 @@ private:
   bool _gpumem_poll;
   bool _mem_poll;
   bool _write_report;
-  bool _tflite_validate;
   int _verbose_level;
 };
 

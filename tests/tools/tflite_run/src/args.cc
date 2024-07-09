@@ -16,7 +16,7 @@
 
 #include "args.h"
 
-#include <iostream>
+#include <unistd.h>
 
 namespace TFLiteRun
 {
@@ -37,116 +37,116 @@ Args::Args(const int argc, char **argv) noexcept
 
 void Args::Initialize(void)
 {
-  auto process_input = [&](const std::string &v) {
-    _input_filename = v;
-
-    if (!_input_filename.empty())
-    {
-      if (access(_input_filename.c_str(), F_OK) == -1)
-      {
-        std::cerr << "input image file not found: " << _input_filename << "\n";
-      }
-    }
-  };
-
-  auto process_tflite = [&](const std::string &v) {
-    _tflite_filename = v;
-
-    if (_tflite_filename.empty())
-    {
-      // TODO Print usage instead of the below message
-      std::cerr << "Please specify tflite file. Run with `--help` for usage."
-                << "\n";
-
-      exit(1);
-    }
-    else
-    {
-      if (access(_tflite_filename.c_str(), F_OK) == -1)
-      {
-        std::cerr << "tflite file not found: " << _tflite_filename << "\n";
-        exit(1);
-      }
-    }
-  };
-
   try
   {
-    // General options
-    po::options_description general("General options");
-
-    // clang-format off
-  general.add_options()
-    ("help,h", "Display available options")
-    ("input,i", po::value<std::string>()->default_value("")->notifier(process_input), "Input filename")
-    ("dump,d", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _dump_filename = v; }), "Output filename")
-    ("ishapes", po::value<std::vector<int>>()->multitoken()->notifier([&](const auto &v) { _input_shapes = v; }), "Input shapes")
-    ("compare,c", po::value<std::string>()->default_value("")->notifier([&](const auto &v) { _compare_filename = v; }), "filename to be compared with")
-    ("tflite", po::value<std::string>()->required()->notifier(process_tflite))
-    ("num_runs,r", po::value<int>()->default_value(1)->notifier([&](const auto &v) { _num_runs = v; }), "The number of runs")
-    ("warmup_runs,w", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _warmup_runs = v; }), "The number of warmup runs")
-    ("run_delay,t", po::value<int>()->default_value(-1)->notifier([&](const auto &v) { _run_delay = v; }), "Delay time(ms) between runs (as default no delay)")
-    ("gpumem_poll,g", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _gpumem_poll = v; }), "Check gpu memory polling separately")
-    ("mem_poll,m", po::value<bool>()->default_value(false), "Check memory polling")
-    ("write_report,p", po::value<bool>()->default_value(false)->notifier([&](const auto &v) { _write_report = v; }), "Write report")
-    ("validate", po::value<bool>()->default_value(true)->notifier([&](const auto &v) { _tflite_validate = v; }), "Validate tflite model")
-    ("verbose_level,v", po::value<int>()->default_value(0)->notifier([&](const auto &v) { _verbose_level = v; }), "Verbose level\n"
-         "0: prints the only result. Messages btw run don't print\n"
-         "1: prints result and message btw run\n"
-         "2: prints all of messages to print\n")
-    ;
-    // clang-format on
-
-    _options.add(general);
-    _positional.add("tflite", 1);
+    _arser.add_argument("--input", "-i")
+      .type(arser::DataType::STR)
+      .default_value("")
+      .help("Input filename");
+    _arser.add_argument("--dump", "-d")
+      .type(arser::DataType::STR)
+      .default_value("")
+      .help("Output filename");
+    _arser.add_argument("--ishapes").type(arser::DataType::INT32_VEC).help("Input shapes");
+    _arser.add_argument("--compare", "-c")
+      .type(arser::DataType::STR)
+      .default_value("")
+      .help("Filename to be compared with");
+    _arser.add_argument("--num_runs", "-r")
+      .type(arser::DataType::INT32)
+      .default_value(1)
+      .help("The number of runs");
+    _arser.add_argument("--warmup_runs", "-w")
+      .type(arser::DataType::INT32)
+      .default_value(0)
+      .help("The number of warmup runs");
+    _arser.add_argument("--run_delay", "-t")
+      .type(arser::DataType::INT32)
+      .default_value(-1)
+      .help("Delay time(ms) between runs (as default no delay)");
+    _arser.add_argument("--gpumem_poll", "-g")
+      .nargs(0)
+      .default_value(false)
+      .help("Check gpu memory polling separately");
+    _arser.add_argument("--mem_poll", "-m")
+      .nargs(0)
+      .default_value(false)
+      .help("Check memory polling");
+    _arser.add_argument("--write_report", "-p").nargs(0).default_value(false).help("Write report");
+    _arser.add_argument("--verbose_level", "-v")
+      .type(arser::DataType::INT32)
+      .default_value(0)
+      .help("Verbose level\n"
+            "0: prints the only result. Messages btw run don't print\n"
+            "1: prints result and message btw run\n"
+            "2: prints all of messages to print\n");
+    _arser.add_argument("tflite").type(arser::DataType::STR);
   }
-  catch (const std::bad_cast &e)
+  catch (const std::runtime_error &err)
   {
-    std::cerr << "error by bad cast during initialization of boost::program_options" << e.what()
-              << '\n';
+    std::cerr << err.what() << std::endl;
+    std::cout << _arser;
     exit(1);
   }
 }
 
 void Args::Parse(const int argc, char **argv)
 {
-  po::variables_map vm;
-  po::store(po::command_line_parser(argc, argv).options(_options).positional(_positional).run(),
-            vm);
 
+  try
   {
-    auto conflicting_options = [&](const std::string &o1, const std::string &o2) {
-      if ((vm.count(o1) && !vm[o1].defaulted()) && (vm.count(o2) && !vm[o2].defaulted()))
+    _arser.parse(argc, argv);
+
+    // Get parsed options
+    _input_filename = _arser.get<std::string>("--input");
+    _dump_filename = _arser.get<std::string>("--dump");
+    _input_shapes = _arser.get<std::vector<int>>("--ishapes");
+    _compare_filename = _arser.get<std::string>("--compare");
+    _num_runs = _arser.get<int>("--num_runs");
+    _warmup_runs = _arser.get<int>("--warmup_runs");
+    _run_delay = _arser.get<int>("--run_delay");
+    _gpumem_poll = _arser.get<bool>("--gpumem_poll");
+    _mem_poll = _arser.get<bool>("--mem_poll");
+    _write_report = _arser.get<bool>("--write_report");
+    _verbose_level = _arser.get<int>("--verbose_level");
+    _tflite_filename = _arser.get<std::string>("tflite");
+
+    // Validation check
+    if (!_input_filename.empty())
+    {
+      if (access(_input_filename.c_str(), F_OK) == -1)
       {
-        throw boost::program_options::error(std::string("Two options '") + o1 + "' and '" + o2 +
-                                            "' cannot be given at once.");
+        std::cerr << "Input image file not found: " << _input_filename << std::endl;
+        exit(1);
       }
-    };
+    }
 
-    conflicting_options("input", "compare");
-  }
+    if (!_tflite_filename.empty())
+    {
+      if (access(_tflite_filename.c_str(), F_OK) == -1)
+      {
+        std::cerr << "TFLite file not found: " << _tflite_filename << std::endl;
+        exit(1);
+      }
+    }
 
-  if (vm.count("help"))
-  {
-    std::cout << "tflite_run\n\n";
-    std::cout << "Usage: " << argv[0] << " <.tflite> [<options>]\n\n";
-    std::cout << _options;
-    std::cout << "\n";
+    // Check conflict option
+    if (!_input_filename.empty() && !_compare_filename.empty())
+    {
+      std::cerr << "Two options '--input' and '--compare' cannot be given at once" << std::endl;
+      exit(1);
+    }
 
-    exit(0);
-  }
-
-  po::notify(vm);
-
-  // This must be run after `notify` as `_warm_up_runs` must have been processed before.
-  if (vm.count("mem_poll"))
-  {
-    _mem_poll = vm["mem_poll"].as<bool>();
     // Instead of EXECUTE to avoid overhead, memory polling runs on WARMUP
     if (_mem_poll && _warmup_runs == 0)
     {
       _warmup_runs = 1;
     }
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << e.what() << std::endl;
+    exit(1);
   }
 }
 
