@@ -50,7 +50,7 @@ public:
   const ir::OperandInfo &get_info() const { return _info; }
   const ir::Sparsity *sparsity() const { return _info.typeInfo().sparsity(); }
 
-  // Finailized methods for IPortableTensor by "_info" field read
+  // Finalized methods for IPortableTensor by "_info" field read
   size_t total_size() const override final { return _info.total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const override final;
   ir::DataType data_type() const override final { return _info.typeInfo().type(); }
@@ -65,7 +65,7 @@ public:
   bool is_dynamic() const override final { return _info.isDynamic(); }
   ir::Shape getShape() const override final { return _info.shape(); }
 
-  // Finailized methods for IPortableTensor by no padding
+  // Finalized methods for IPortableTensor by no padding
   bool has_padding() const final { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final { fn(*this); }
 
