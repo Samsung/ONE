@@ -41,17 +41,31 @@ public:
   IPortableTensor(const ir::OperandInfo &info) : _info(info) {}
 
   virtual ~IPortableTensor();
-  virtual const ir::Sparsity *sparsity() const { return nullptr; }
+
+public:
+  // It is introduced to reduce virtual method call overhead on inference
+  // So derived class should maintain actual OperandInfo to "_info" field
+  // Ex. CPU backend getShape() in OperationUtils.h is called frequently on inference
+  //     and it calls get_info()
   const ir::OperandInfo &get_info() const { return _info; }
-  float data_scale() const override { return _info.typeInfo().scale(); }
-  int32_t data_zero_point() const override { return _info.typeInfo().zero_point(); }
-  const std::vector<float> &data_scales() const override { return _info.typeInfo().scales(); }
+  const ir::Sparsity *sparsity() const { return _info.typeInfo().sparsity(); }
+
+  // Finailized methods for IPortableTensor by "_info" field read
+  size_t total_size() const override final { return _info.total_size(); }
+  size_t calcOffset(const ir::Coordinates &coords) const override final;
+  ir::DataType data_type() const override final { return _info.typeInfo().type(); }
+  float data_scale() const override final { return _info.typeInfo().scale(); }
+  int32_t data_zero_point() const override final { return _info.typeInfo().zero_point(); }
+  const std::vector<float> &data_scales() const override final { return _info.typeInfo().scales(); }
   const std::vector<int32_t> &data_zero_points() const override
   {
     return _info.typeInfo().zero_points();
   }
+  bool is_constant() const override final { return _info.isConstant(); }
+  bool is_dynamic() const override final { return _info.isDynamic(); }
+  ir::Shape getShape() const override final { return _info.shape(); }
 
-public:
+  // Finailized methods for IPortableTensor by no padding
   bool has_padding() const final { return false; }
   void access(const std::function<void(ITensor &tensor)> &fn) final { fn(*this); }
 

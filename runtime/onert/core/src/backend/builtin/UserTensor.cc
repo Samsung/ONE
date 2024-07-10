@@ -26,23 +26,11 @@ namespace backend
 namespace builtin
 {
 
-size_t UserTensor::calcOffset(const ir::Coordinates &coords) const
-{
-  size_t rank = getShape().rank();
-  size_t offset = 0;
-  for (size_t i = 0; i < rank; ++i)
-  {
-    offset = offset * getShape().dim(i) + coords[i];
-  }
-  offset *= sizeOfDataType(data_type());
-  return offset;
-}
-
 bool UserTensor::applyShape(const ir::Shape &new_shape)
 {
   // User tensors cannot be reallocated.
   auto new_size = new_shape.num_elements() * ir::sizeOfDataType(data_type());
-  if (total_size() < new_size)
+  if (_size < new_size)
     throw InsufficientBufferSizeException{"User given buffer size is too small."};
   setShape(new_shape);
   return true;

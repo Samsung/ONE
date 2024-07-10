@@ -58,26 +58,17 @@ public:
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
-  size_t total_size() const override { return _info.total_size(); }
-  size_t calcOffset(const ir::Coordinates &coords) const override
-  {
-    return _tensor->calcOffset(coords);
-  }
   ir::Layout layout() const override { return _orig->layout(); }
-  ir::DataType data_type() const override { return _info.typeInfo().type(); }
-  bool is_dynamic() const override { return _info.isDynamic(); }
   void set_dynamic() override
   {
     _info.setDynamic();
     _tensor->set_dynamic();
   }
-  ir::Shape getShape() const override { return _info.shape(); }
   void setShape(const ir::Shape &shape) override
   {
     _info.shape(shape);
     _tensor->setShape(shape);
   }
-  bool is_constant() const override { return _info.isConstant(); }
   bool applyShape(const ir::Shape &shape) override
   {
     auto return_val = _tensor->applyShape(shape);

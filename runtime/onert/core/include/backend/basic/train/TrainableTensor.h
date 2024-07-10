@@ -51,27 +51,7 @@ public:
 
 public:
   uint8_t *buffer() const override { return _tensor.buffer(); }
-  /**
-   * @brief Get dimension by index
-   *
-   * @param index Index to get diemension
-   * @return size_t Dimension at index
-   * @note N : dimension(0)
-   *       H : dimension(1)
-   *       W : dimension(2)
-   *       C : dimension(3)
-   */
-  size_t total_size() const override { return _tensor.total_size(); }
-  size_t calcOffset(const ir::Coordinates &coords) const override
-  {
-    return _tensor.calcOffset(coords);
-  }
   ir::Layout layout() const override { return _tensor.layout(); }
-  ir::DataType data_type() const override { return _tensor.data_type(); }
-  bool is_constant() const override { return _tensor.is_constant(); }
-  bool is_dynamic() const override { return _tensor.is_dynamic(); }
-  ir::Shape getShape() const override { return _tensor.getShape(); };
-  const ir::OperandInfo &get_info() { return _tensor.get_info(); }
 
 public:
   std::vector<ITensor *> optVars() override;
