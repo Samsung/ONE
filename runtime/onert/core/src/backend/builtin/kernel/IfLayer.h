@@ -19,6 +19,7 @@
 
 #include <backend/IPortableTensor.h>
 #include <exec/IExecutors.h>
+#include <exec/IFunction.h>
 #include "../ExternalContext.h"
 
 namespace onert

@@ -59,6 +59,24 @@ public:
                const std::vector<backend::IPortableTensor *> &outputs,
                const ExecutionOptions &options) override;
 
+  uint32_t inputSize() const override { return _input_tensors.size(); }
+
+  uint32_t outputSize() const override { return _output_tensors.size(); }
+
+  const ir::OperandInfo &inputInfo(uint32_t index) const override
+  {
+    return _input_tensors[index]->get_info();
+  }
+
+  const ir::OperandInfo &outputInfo(uint32_t index) const override
+  {
+    return _output_tensors[index]->get_info();
+  }
+
+  ir::Layout inputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
+
+  ir::Layout outputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
+
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
   {
@@ -69,15 +87,6 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _observers.add(std::move(ref)); };
 
-  const std::vector<backend::builtin::IOTensor *> &getInputTensors() const override
-  {
-    return _input_tensors;
-  }
-
-  const std::vector<backend::builtin::IOTensor *> &getOutputTensors() const override
-  {
-    return _output_tensors;
-  }
   backend::BackendContexts &getBackendContexts() { return _backend_contexts; }
 
   const ExecutionOptions &currentOptions() const override { return _current_options; }

@@ -20,6 +20,7 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 #include "IPermuteFunction.h"
+#include "../backend/builtin/IOTensor.h"
 
 namespace std
 {
