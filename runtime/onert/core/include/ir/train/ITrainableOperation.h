@@ -51,6 +51,7 @@ public:
 
   // Mark the node as needed for backward propagation part of the traning
   virtual void enableBackward() = 0;
+  virtual void disableBackward() = 0;
   // Check if the nodes is required for backward propagation part of the traning.
   // If returned false, it means that there are no node before (in topological sense) which is
   // trainable.

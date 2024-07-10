@@ -140,6 +140,12 @@ void TrainableGraph::enableBackward(const OperationIndex &index)
   op->enableBackward();
 }
 
+void TrainableGraph::disableBackward(const OperationIndex &index)
+{
+  auto &op = dynamic_cast<ir::train::ITrainableOperation &>(_graph.operations().at(index));
+  op.disableBackward();
+}
+
 void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> order,
                                               bool is_forward) const
 {
