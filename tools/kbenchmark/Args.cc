@@ -16,6 +16,8 @@
 
 #include "Args.h"
 
+#include <arser/arser.h>
+
 #include <iostream>
 #include <filesystem>
 
@@ -26,46 +28,44 @@ Args::Args(const int argc, char **argv) noexcept { Initialize(argc, argv); }
 
 void Args::Initialize(const int argc, char **argv)
 {
-  // General options
-  po::options_description general("General options");
-  // clang-format off
-  general.add_options()("help,h", "Display available options")
-    ("config,c", po::value<std::string>(&_config)->required(), "Configuration filename")
-    ("kernel,k", po::value<std::vector<std::string>>(&_kernel)->multitoken()->composing()->required(), "Kernel library name, support multiple kernel libraries")
-    ("reporter,r", po::value<std::string>(&_reporter)->default_value("standard"), "Set reporter types(standard, html, junit, csv)")
-    ("filter,f", po::value<std::string>(&_filter)->default_value(".*"), "Only run benchmarks whose name matches the regular expression pattern")
-    ("verbose,v", po::value<int>(&_verbose)->default_value(0)->implicit_value(true), "Show verbose output")
-    ("output,o", po::value<std::string>(&_output)->default_value(""), "Set additional strings for output file name")
-  ;
-  // clang-format on
+  arser::Arser arser;
 
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, general), vm);
+  arser.add_argument("--config", "-c")
+    .type(arser::DataType::STR)
+    .required()
+    .help("Configuration filename");
+  arser.add_argument("--kernel", "-k")
+    .type(arser::DataType::STR)
+    .accumulated()
+    .help("Kernel library name, support multiple kernel libraries");
+  arser.add_argument("--reporter", "-r")
+    .type(arser::DataType::STR)
+    .default_value("standard")
+    .help("Set reporter types(standard, html, junit, csv)");
+  arser.add_argument("--filter", "-f")
+    .type(arser::DataType::STR)
+    .default_value(".*")
+    .help("Only run benchmarks whose name matches the regular expression pattern");
+  arser.add_argument("--verbose", "-v")
+    .type(arser::DataType::INT32)
+    .default_value(0)
+    .help("Show verbose output");
+  arser.add_argument("--output", "-o")
+    .type(arser::DataType::STR)
+    .default_value("")
+    .help("Set additional strings for output file name");
 
   try
   {
-    po::notify(vm);
+    arser.parse(argc, argv);
   }
-  catch (const boost::program_options::required_option &e)
+  catch (const std::runtime_error &err)
   {
-    if (vm.count("help"))
-    {
-      std::cout << general << std::endl;
-      exit(0);
-    }
-    else
-    {
-      throw e;
-    }
-  }
-
-  if (vm.count("help"))
-  {
-    std::cout << general << std::endl;
+    std::cout << err.what() << std::endl;
     exit(0);
   }
 
-  if (vm.count("config"))
+  _config = arser.get<std::string>("--config");
   {
     if (_config.substr(_config.find_last_of(".") + 1) != "config")
     {
@@ -80,7 +80,8 @@ void Args::Initialize(const int argc, char **argv)
     }
   }
 
-  if (vm.count("kernel"))
+  _kernel = arser.get<std::vector<std::string>>("--kernel");
+  if (_kernel.size() > 0)
   {
     for (auto &k : _kernel)
     {
@@ -92,7 +93,8 @@ void Args::Initialize(const int argc, char **argv)
     }
   }
 
-  if (vm.count("reporter"))
+  _reporter = arser.get<std::string>("--reporter");
+  if (!_reporter.empty())
   {
     if (_reporter != "junit" && _reporter != "csv" && _reporter != "html" &&
         _reporter != "standard")
@@ -101,6 +103,10 @@ void Args::Initialize(const int argc, char **argv)
       exit(1);
     }
   }
+
+  _filter = arser.get<std::string>("--filter");
+  _output = arser.get<std::string>("--output");
+  _verbose = arser.get<int>("--verbose");
 }
 
 } // namespace kbenchmark
