@@ -70,6 +70,7 @@ public:
   const bool printVersion(void) const { return _print_version; }
   TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
   TensorShapeMap &getShapeMapForRun() { return _shape_run; }
+  TensorShapeMap &getOutputShapeMap() { return _output_shape; }
   /// @brief Return true if "--shape_run" or "--shape_prepare" is provided
   bool shapeParamProvided();
   const int getVerboseLevel(void) const { return _verbose_level; }
@@ -98,6 +99,7 @@ private:
   std::string _load_raw_filename;
   TensorShapeMap _shape_prepare;
   TensorShapeMap _shape_run;
+  TensorShapeMap _output_shape;
   int _num_runs;
   bool _fixed_input = false;
   bool _force_float = false;
