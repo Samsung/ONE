@@ -30,6 +30,20 @@ namespace train
 
 using MemoryManager = backend::basic::MemoryManager;
 
+class GradientMemoryManager : public MemoryManager
+{
+public:
+  GradientMemoryManager(const std::string planner_id, uint32_t optimizer_vars_count);
+  virtual ~GradientMemoryManager() = default;
+
+  void allocate(void);
+  uint8_t *getOptVarBuffer(const ir::OperandIndex &ind, uint32_t pos_var) const;
+
+private:
+  std::shared_ptr<basic::Allocator> _var_mem_alloc;
+  uint32_t _optim_vars_count;
+};
+
 class DisposableMemoryManager
 {
 public:

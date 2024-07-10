@@ -28,7 +28,8 @@ namespace train
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
                              const exec::train::optimizer::Optimizer *optimizer,
                              const std::string planner_id)
-  : _tensor_reg{tensor_reg}, _tensor_mgr{new TensorManager(tensor_reg, planner_id)},
+  : _tensor_reg{tensor_reg},
+    _tensor_mgr{new TensorManager(tensor_reg, planner_id, optimizer->getVarCount())},
     _optimizer{optimizer}
 {
   /* empty */
@@ -78,9 +79,7 @@ void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
     // Initialize tensors for gradient variables
     for (uint32_t i = 0; i < _optimizer->getVarCount(); ++i)
     {
-      // TODO Optimize memory
       auto tensor = std::make_unique<Tensor>(info, layout);
-      tensor->setBuffer(std::make_shared<basic::Allocator>(tensor->total_size()));
       _tensor_reg->getTrainableTensor(index)->appendOptVar(std::move(tensor));
     }
   }
