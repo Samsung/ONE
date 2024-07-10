@@ -219,6 +219,7 @@ Current transformation options are
 - substitute_transpose_to_reshape : This will convert certain condition Transpose to Reshape.
 - transform_min_max_to_relu6: This will transform Minimum-Maximum pattern to Relu6 operator.
 - transform_min_relu_to_relu6: This will transform Minimum(6)-Relu pattern to Relu6 operator.
+- transform_sqrt_div_to_rsqrt_mul: This will transform Sqrt-Div pattern to Rsqrt-Mul operators.
 
 
 one-quantize
