@@ -75,7 +75,10 @@ public:
 
   ir::Layout inputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
 
-  ir::Layout outputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
+  ir::Layout outputLayout(uint32_t index) const override
+  {
+    return _output_tensors[index]->layout();
+  }
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final

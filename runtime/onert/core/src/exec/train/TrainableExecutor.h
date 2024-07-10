@@ -78,7 +78,10 @@ public:
 
   ir::Layout inputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
 
-  ir::Layout outputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
+  ir::Layout outputLayout(uint32_t index) const override
+  {
+    return _output_tensors[index]->layout();
+  }
 
   void forward(const ExecutionContext &ctx, bool training);
   void backward(const ExecutionContext &ctx, uint32_t training_step);
