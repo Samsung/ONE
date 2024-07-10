@@ -51,6 +51,8 @@ void LossMeanSquaredErrorLayer::forward(bool)
 
 void LossMeanSquaredErrorLayer::backward()
 {
+  assert(_back_prop_y_pred != nullptr);
+
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
     nnfw::cker::train::MSEGrad(getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true),
