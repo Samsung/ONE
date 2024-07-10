@@ -22,6 +22,7 @@ namespace TFLiteRun
 {
 
 Args::Args(const int argc, char **argv) noexcept
+  : _arser("Load tflite model by onert and TFLite, and compare their output")
 {
   Initialize();
   Parse(argc, argv);
@@ -29,59 +30,39 @@ Args::Args(const int argc, char **argv) noexcept
 
 void Args::Initialize(void)
 {
-  // General options
-  po::options_description general("General options");
+  // positional argument
+  _arser.add_argument("tflite")
+    .type(arser::DataType::STR)
+    .help("Input tflite model file for serialization");
 
-  // clang-format off
-  general.add_options()
-    ("help,h", "Display available options")
-    ("tflite", po::value<std::string>()->default_value("")->required(), "Input tflite model file for serialization")
-    ("data,d", po::value<std::vector<std::string>>()->multitoken()->default_value(std::vector<std::string>{}, ""), "Input data file for model");
-  // clang-format on
-
-  _options.add(general);
-  _positional.add("tflite", 1);
+  // optional argument
+  _arser.add_argument("--data", "-d")
+    .type(arser::DataType::STR)
+    .accumulated()
+    .help("Input data file for model");
 }
 
-void Args::print(char **argv)
-{
-  std::cout << "tflite_comparator" << std::endl << std::endl;
-  std::cout << "Load tflite model by onert and TFLite, and compare their output" << std::endl;
-  std::cout << "Usage:" << std::endl;
-  std::cout << argv[0] << " --tflite model_file.tflite --data input_data.dat" << std::endl;
-  std::cout << _options;
-  std::cout << std::endl;
-}
+void Args::print(char **) { std::cout << _arser; }
 
 void Args::Parse(const int argc, char **argv)
 {
-  po::variables_map vm;
-  po::store(po::command_line_parser(argc, argv).options(_options).positional(_positional).run(),
-            vm);
-  po::notify(vm);
-
-  if (vm.count("help"))
-  {
-    print(argv);
-
-    exit(0);
-  }
-
   try
   {
-    if (vm.count("tflite"))
+    _arser.parse(argc, argv);
+
+    if (_arser["tflite"])
     {
-      _tflite_filename = vm["tflite"].as<std::string>();
+      _tflite_filename = _arser.get<std::string>("tflite");
     }
 
-    if (vm.count("data"))
+    if (_arser["--data"])
     {
-      _data_filenames = vm["data"].as<std::vector<std::string>>();
+      _data_filenames = _arser.get<std::vector<std::string>>("--data");
     }
   }
-  catch (const std::bad_cast &e)
+  catch (const std::exception &e)
   {
-    std::cerr << e.what() << '\n';
+    std::cerr << e.what() << std::endl;
     print(argv);
     exit(1);
   }

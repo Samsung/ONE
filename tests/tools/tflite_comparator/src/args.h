@@ -18,9 +18,7 @@
 #define __TFLITE_LOADER_TOOLS_SRC_ARGS_H__
 
 #include <string>
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
+#include <arser/arser.h>
 
 namespace TFLiteRun
 {
@@ -39,8 +37,7 @@ private:
   void Parse(const int argc, char **argv);
 
 private:
-  po::options_description _options;
-  po::positional_options_description _positional;
+  arser::Arser _arser;
 
   std::string _tflite_filename;
   std::vector<std::string> _data_filenames;
