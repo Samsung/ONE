@@ -95,6 +95,7 @@ public:
       RemoveUnnecessaryTranspose,
       TransformMinMaxToRelu6Pass,
       TransformMinReluToRelu6Pass,
+      TransformSqrtDivToRsqrtMul,
       DecomposeHardSwishPass,
       DecomposeSoftmaxPass,
       SubstituteStridedSliceToReshape,
