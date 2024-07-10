@@ -31,8 +31,8 @@ class TrainInfoBuilder
 public:
   TrainInfoBuilder(const std::unique_ptr<ir::train::TrainingInfo> &training_info) : _builder(1024)
   {
-    const auto optimizerInfo = training_info->optimizerInfo();
-    const auto lossInfo = training_info->lossInfo();
+    const auto &optimizerInfo = training_info->optimizerInfo();
+    const auto &lossInfo = training_info->lossInfo();
 
     ::circle::Optimizer optimizer;
     ::circle::OptimizerOptions optimizer_opt_type;
