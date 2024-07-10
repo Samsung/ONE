@@ -195,6 +195,8 @@ int entry(int argc, char **argv)
              "Transform Minimum(6)-Maximum(0) pattern to Relu6 operator");
   add_switch(arser, "--transform_min_relu_to_relu6",
              "Transform Minimum(6)-Relu pattern to Relu6 operator");
+  add_switch(arser, "--transform_sqrt_div_to_rsqrt_mul",
+             "Transform Sqrt-Div pattern to Rsqrt-Mul operators");
   add_switch(arser, "--decompose_hardswish",
              "Decompose HardSwish operator to Add, Mul and Relu6 operators");
   add_switch(arser, "--decompose_softmax",
@@ -391,6 +393,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::TransformMinMaxToRelu6Pass);
   if (arser.get<bool>("--transform_min_relu_to_relu6"))
     options->enable(Algorithms::TransformMinReluToRelu6Pass);
+  if (arser.get<bool>("--transform_sqrt_div_to_rsqrt_mul"))
+    options->enable(Algorithms::TransformSqrtDivToRsqrtMul);
   if (arser.get<bool>("--common_subexpression_elimination"))
     options->enable(Algorithms::CommonSubExpressionElimination);
   if (arser.get<bool>("--decompose_hardswish"))
