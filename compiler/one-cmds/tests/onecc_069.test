@@ -14,8 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# use command key in `one-codegen` section in configuration file
-# TODO deprecate this test
+# Boolean type option has multiple options. 
 
 : '
 This test assumes below directories.
@@ -44,10 +43,10 @@ BACKEND_NAME="dummy"
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
-driver_name="dummy-compile"
-configfile="onecc_065.cfg"
-outputfile="onecc_065.tvn"
-targetfile="onecc_065.ini"
+driver_name="dummy-compiler"
+configfile="onecc_069.cfg"
+outputfile="onecc_069.tvn"
+targetfile="onecc_069.ini"
 
 clean_envir()
 {
@@ -100,14 +99,14 @@ fi
 # copy dummy tools to bin folder
 cp ${driver_name} ../bin/
 cp ${targetfile} ../target/
-cp onecc_065.py "../backends/command/${BACKEND_NAME}/codegen.py"
+cp onecc_069.py "../backends/command/${BACKEND_NAME}/codegen.py"
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
 
 clean_envir
 
-if grep -q "${driver_name} with onecc_065 target" "${outputfile}"; then
+if grep -q "${driver_name} with onecc_069 target" "${outputfile}"; then
   if ! grep -q "HELP MESSAGE!!" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0

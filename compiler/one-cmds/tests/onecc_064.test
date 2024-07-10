@@ -108,8 +108,10 @@ onecc -C ${configfile} > ${filename}.log 2>&1
 clean_envir
 
 if grep -q "${driver_name} with onecc_064 target" "${outputfile}"; then
-  echo "${filename_ext} SUCCESS"
-  exit 0
+  if ! grep -q "HELP MESSAGE!!" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
 fi
 
 trap_err_onexit

@@ -103,11 +103,25 @@ class TargetOption(Action):
     pass
 
 
+class Option():
+    pass
+
+
+class Positional(Option):
+    pass
+
+
+class Optional(Option):
+    pass
+
+
 class ArgumentParser():
-    _SUPPORTED_ACTIONS = [DriverName, NormalOption, TargetOption]
+    _SUPPORTED_ACTION_TYPE = [DriverName, NormalOption, TargetOption]
 
     def __init__(self):
-        self._actions: List[Tuple[str, Action, Union[Type[str], Type[bool]]]] = list()
+        # List[args, action type, data type, option type]
+        self._actions: List[Tuple[Tuple[str], Action, Union[Type[str], Type[
+            bool]]]] = list()
         self.driver: str = None
         self.target: str = None
 
@@ -125,26 +139,42 @@ class ArgumentParser():
 
         oneutils.run([driver_path, '-h'], err_prefix=self.driver)
 
-    def add_argument(self, *args, **kwargs):
+    def check_if_valid_option_name(self, *args, **kwargs):
         if not 'action' in kwargs:
             raise RuntimeError('"action" keyword argument is required')
+
         action = kwargs['action']
-        if not action in self._SUPPORTED_ACTIONS:
+        if not action in self._SUPPORTED_ACTION_TYPE:
             raise RuntimeError('Invalid action')
         if not args:
             raise RuntimeError('Invalid option name')
+        if action == DriverName and len(args) >= 2:
+            raise RuntimeError('onecc doesn\'t support multiple driver name')
+
         dtype = kwargs.get('dtype', str)
-        # use first option.
-        arg = args[0]
         if dtype == bool and action != NormalOption:
             raise RuntimeError('Only normal option can be boolean type')
         if dtype == bool and not all(a.startswith('-') for a in args):
             raise RuntimeError('Boolean type option should start with dash("-")')
 
+    def add_argument(self, *args, **kwargs):
+        self.check_if_valid_option_name(*args, **kwargs)
+
+        action = kwargs['action']
+        dtype = kwargs.get('dtype', str)
         if action == DriverName:
-            self.driver = arg
+            assert len(args) == 1
+            self.driver = args[0]
         else:
-            self._actions.append((arg, kwargs['action'], dtype))
+            if all(a.startswith('-') for a in args):
+                otype = Optional
+            elif all(not a.startswith('-') for a in args):
+                otype = Positional
+            else:
+                raise RuntimeError(
+                    'Invalid option names. Only either of option type is allowed: positional or optional'
+                )
+            self._actions.append((args, kwargs['action'], dtype, otype))
 
     def make_cmd(self, cfg_args: SimpleNamespace) -> List:
         assert self.target, "Target should be set before making commands"
@@ -162,30 +192,41 @@ class ArgumentParser():
         invalid_options = list(cfg_args.__dict__.keys())
         # traverse the action in order and make commands
         for action in self._actions:
-            arg, act, dtype = action
+            args, act, dtype, otype = action
             assert act in [NormalOption, TargetOption]
-            # positional input doesn't have dash(-) in the string
-            option_name = arg
-            # optional input
-            if arg.startswith('--'):
-                option_name = arg[len('--'):]
-            elif arg.startswith('-'):
-                option_name = arg[len('-'):]
+            if otype == Optional:
+                option_names = []
+                for arg in args:
+                    if arg.startswith('--'):
+                        option_names.append(arg[len('--'):])
+                    elif arg.startswith('-'):
+                        option_names.append(arg[len('-'):])
+            elif otype == Positional:
+                option_names = args
+            else:
+                assert False
 
+            given_option = None
             if act == NormalOption:
-                if not oneutils.is_valid_attr(cfg_args, option_name):
+                for option_name in option_names:
+                    if oneutils.is_valid_attr(cfg_args, option_name):
+                        given_option = option_name
+                        break
+                if not given_option:
                     continue
-                if dtype == bool and getattr(cfg_args, option_name).lower() == "false":
+                if dtype == bool and given_option.lower() == "false":
                     continue
-            if arg.startswith('-'):
-                cmd += [arg]
+            if otype == Optional:
+                # use first option
+                cmd += [args[0]]
             if act == TargetOption:
                 cmd += [self.target]
             else:
                 assert act == NormalOption
                 if dtype == str:
-                    cmd += [getattr(cfg_args, option_name)]
-                    invalid_options.remove(option_name)
+                    cmd += [getattr(cfg_args, given_option)]
+                invalid_options.remove(given_option)
+
         if len(invalid_options):
             print(f'WARNING: there are invalid options {invalid_options}')
             self.print_help()
