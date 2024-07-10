@@ -63,11 +63,10 @@ void WhileLayer::run()
   auto body_exec = _executors->at(_model_index, _body_subg_index);
 
   // Need a temp tensor to hold the cond subgraph output
-  assert(cond_exec->getOutputTensors().size() == 1);
+  assert(cond_exec->outputSize() == 1);
   auto cond_output_tensor = [&]() {
-    auto cond_output = cond_exec->getOutputTensors().at(0);
-    auto tensor =
-      std::make_unique<Tensor>(cond_output->get_info(), cond_output->layout(), _dyn_memory_manager);
+    auto tensor = std::make_unique<Tensor>(cond_exec->outputInfo(0), cond_exec->outputLayout(0),
+                                           _dyn_memory_manager);
     tensor->set_dynamic();
     tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
     return tensor;
@@ -97,10 +96,10 @@ void WhileLayer::run()
   // Need some temp tensors to hold the body subgraph output
   std::vector<std::unique_ptr<Tensor>> temp_outputs_o;
   std::vector<IPortableTensor *> temp_outputs;
-  for (auto &&io_tensor : body_exec->getOutputTensors())
+  for (uint32_t i = 0; i < body_exec->outputSize(); i++)
   {
-    auto tensor =
-      std::make_unique<Tensor>(io_tensor->get_info(), io_tensor->layout(), _dyn_memory_manager);
+    auto tensor = std::make_unique<Tensor>(body_exec->outputInfo(i), body_exec->outputLayout(i),
+                                           _dyn_memory_manager);
     tensor->set_dynamic();
     tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
     temp_outputs.push_back(tensor.get());
