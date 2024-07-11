@@ -245,6 +245,67 @@ public:
   ModelEdges edges;
 };
 
+class CompiledMockUpQuantModel
+{
+public:
+  CompiledMockUpQuantModel()
+  {
+    // Model: two elementwise add operation
+    // model input: lhs, rhs1
+    // model output: second add result (result2)
+    // constant: rhs2
+    // result1 <= (lhs + rhs)
+    // result2 <= (result1 + rhs2)
+    // lhs, rhs1, rh2, result1, result2 shape: {1, 2, 2, 1}
+    // activation: none (constant)
+    graph = std::make_shared<Graph>();
+    // 1st add operands (result1 <= lhs + rhs1)
+    Shape shape{1, 2, 2, 1};
+    TypeInfo type{DataType::QUANT_UINT8_ASYMM, 1.0f, 128};
+    static uint8_t rhs2_data[4] = {131, 129, 127, 133};
+    auto operand_lhs = graph->addOperand(shape, type);
+    auto operand_rhs1 = graph->addOperand(shape, type);
+    auto operand_result1 = graph->addOperand(shape, type);
+    auto operand_rhs2 = graph->addOperand(shape, type);
+    auto operand_result2 = graph->addOperand(shape, type);
+    graph->operands()
+      .at(operand_rhs2)
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
+    // 2nd add operations (result2 <= result1 + rhs2)
+    operation::BinaryArithmetic::Param param1;
+    param1.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+    param1.activation = Activation::NONE;
+    auto input_set1 = OperandIndexSequence{operand_lhs, operand_rhs1};
+    auto output_set1 = OperandIndexSequence{operand_result1};
+    graph->addOperation(
+      std::make_unique<operation::BinaryArithmetic>(input_set1, output_set1, param1));
+    operation::BinaryArithmetic::Param param2;
+    param2.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
+    param2.activation = Activation::NONE;
+    auto input_set2 = OperandIndexSequence{operand_result1, operand_rhs2};
+    auto output_set2 = OperandIndexSequence{operand_result2};
+    graph->addOperation(
+      std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
+    // Identify model inputs and outputs
+    graph->addInput(operand_lhs);
+    graph->addInput(operand_rhs1);
+    graph->addOutput(operand_result2);
+    graph->verify();
+
+    // Compile
+    auto model = std::make_shared<onert::ir::Model>();
+    model->push(onert::ir::SubgraphIndex{0}, graph);
+    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+    onert::compiler::Compiler compiler{model, coptions.get()};
+    artifact = compiler.compile();
+  }
+
+public:
+  std::shared_ptr<Graph> graph;
+  std::unique_ptr<onert::compiler::CompilerOptions> coptions;
+  std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
+};
+
 TEST(ExecInstance, simple)
 {
   auto mockup = CompiledMockUpModel();
@@ -271,6 +332,60 @@ TEST(ExecInstance, simple)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);
   }
+}
+
+TEST(ExecInstance, neg_small_outputbuffer)
+{
+  auto mockup = CompiledMockUpModel();
+  auto graph = mockup.graph;
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const float input1_buffer[4] = {1, 0, -1, -2};
+  const float input2_buffer[4] = {1, -3, 2, -4};
+  float output_buffer[2] = {};
+
+  onert::exec::Execution execution{executors};
+
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
+  EXPECT_THROW(execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 8),
+               std::runtime_error);
+}
+
+TEST(ExecInstance, neg_small_inoutsize)
+{
+  auto mockup = CompiledMockUpModel();
+  auto graph = mockup.graph;
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const float input1_buffer[2] = {1, 0};
+  const float input2_buffer[2] = {1, -3};
+  const auto new_shape = onert::ir::Shape({1, 1, 2, 1});
+  float output_buffer[2] = {};
+
+  onert::exec::Execution execution{executors};
+
+  execution.setInput(input1, new_shape, reinterpret_cast<const void *>(input1_buffer), 8);
+  EXPECT_THROW(
+    execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 2),
+    std::runtime_error);
+
+  // Not throw exception because input shape is changed
+  EXPECT_NO_THROW(execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 8));
+
+  execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 8);
+
+  // Throw exception by shape inference because output buffer size is small:
+  // output shape is {1, 2, 2, 1}
+  EXPECT_THROW(execution.execute(), std::exception);
 }
 
 TEST(ExecInstance, twoCompile)
@@ -358,6 +473,37 @@ TEST(ExecInstance, twoExecution)
     EXPECT_EQ(exe1_output_buffer[i], exe1_output_expected[i]);
     EXPECT_EQ(exe2_output_buffer[i], exe2_output_expected[i]);
   }
+}
+
+TEST(ExecInstance, quantModel_floatIO)
+{
+  auto mockup = CompiledMockUpQuantModel();
+  auto graph = mockup.graph;
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const float input1_buffer[4] = {1, 0, -1, -2};
+  const float input2_buffer[4] = {1, -3, 2, -4};
+  float output_buffer[4] = {};
+  const float output_expected[4] = {5, -2, 0, -1};
+
+  onert::exec::Execution execution{executors};
+
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
+  execution.setInputType(input1, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
+  execution.setInputType(input2, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
+  execution.setOutputType(output, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
+  execution.execute();
+
+  EXPECT_EQ(output_buffer[0], output_expected[0]);
+  EXPECT_EQ(output_buffer[1], output_expected[1]);
+  EXPECT_EQ(output_buffer[2], output_expected[2]);
+  EXPECT_EQ(output_buffer[3], output_expected[3]);
 }
 
 class Inference
