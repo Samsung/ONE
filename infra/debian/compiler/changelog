@@ -1,3 +1,10 @@
+one (1.27.1) bionic focal; urgency=medium
+
+  * Command schema supports multiple names.
+  * Fix invalid warning on boolean type option in _onecc_.
+
+ -- seongwoo <mhs4670go@naver.com>  Wed, 10 Jul 2024 16:18:33 +0900
+
 one (1.27.0) bionic focal; urgency=medium
 
   * Support more Op(s): CircleGRU, CircleRelu0To1
