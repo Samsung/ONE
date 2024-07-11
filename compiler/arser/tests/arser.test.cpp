@@ -505,7 +505,7 @@ TEST(HelpMessageTest, MultilineHelp)
   EXPECT_EQ(expected_out, oss.str());
 }
 
-TEST(HelpMessageTest, MultilineHelpEmpty_Neg)
+TEST(HelpMessageTest, MultilineHelpEmpty_NEG)
 {
   /* arrange */
   Arser arser;
