@@ -16,8 +16,6 @@
 
 #include "MultiModelExecutors.h"
 
-#include "../backend/builtin/IOTensor.h"
-
 namespace
 {
 
@@ -60,26 +58,57 @@ namespace onert
 namespace exec
 {
 
-class MultiModelExecutors::EdgeTensor : public backend::builtin::IOTensor
+class MultiModelExecutors::EdgeTensor : public backend::IPortableTensor
 {
 public:
   EdgeTensor(const ir::OperandInfo &info, ir::Layout layout)
-    : backend::builtin::IOTensor(info, layout), _buffer{nullptr}, _ref_count{0}
+    : IPortableTensor(info), _layout{layout}, _buffer{nullptr}, _ref_count{0}
   {
   }
   ~EdgeTensor() = default;
 
+  uint8_t *buffer() const override { return _buffer.get(); }
+  ir::Layout layout() const override { return _layout; }
+  void set_dynamic() override { _info.setDynamic(); }
+
+  // Almost same with basic::Tensor::applyShape() except dynamic memory allocation
+  bool applyShape(const ir::Shape &new_shape) override
+  {
+    bool previously_dynamic = is_dynamic();
+    if (!previously_dynamic || _buffer == nullptr)
+    {
+      // Always set shape - when buffer with same size was already allocated, shape could differ
+      setShape(new_shape);
+      set_dynamic();
+      const auto total_size = get_info().total_size();
+      _buffer = std::make_unique<uint8_t[]>(total_size);
+    }
+    else
+    {
+      auto previous_size = total_size();
+      auto new_size = new_shape.num_elements() * ir::sizeOfDataType(data_type());
+      if (previous_size != new_size)
+      {
+        setShape(new_shape);
+        set_dynamic();
+        const auto total_size = get_info().total_size();
+        _buffer = std::make_unique<uint8_t[]>(total_size);
+      }
+      else
+      { // when buffer with same size was already allocated, shape could differ
+        setShape(new_shape);
+      }
+    }
+    return true;
+  }
+
+  void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
+
   void allocate_buffer()
   {
-    const auto total_size = get_info().total_size();
+    const auto total_size = _info.total_size();
     _buffer = std::make_unique<uint8_t[]>(total_size);
     _ref_count = 1;
-
-    // NOTE Executor's inputs/outputs are always IPortableTensor. If backend of inputs/outputs
-    //      is using tensor that does not inherit IPortableTensor, Permute operation is added
-    //      and all inputs/outputs become IPortableTensor at compile stage.
-    //      This allows user's buffers to be set to inputs/outputs of executors.
-    setUserTensor(_buffer.get(), total_size);
   }
 
   void increase_ref() { _ref_count++; }
@@ -91,11 +120,11 @@ public:
     if (_ref_count == 0)
     {
       _buffer.reset();
-      setUserTensor(nullptr, get_info().total_size());
     }
   }
 
 private:
+  ir::Layout _layout;
   std::unique_ptr<uint8_t[]> _buffer;
   int32_t _ref_count;
 };
@@ -285,8 +314,11 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
     if (input_pkg_index == -1)
       throw std::runtime_error{"Cannot find multi model input index"};
     auto input_desc = desc.inputs[input_pkg_index].get();
-    _pkg_input_tensors[pkg_input] =
-      std::make_unique<backend::builtin::IOTensor>(input_desc->info, input_desc->layout);
+    // TODO Remove const_cast (we need const_cast as ITensor is writable)
+    _pkg_input_tensors[pkg_input] = std::make_unique<backend::builtin::UserTensor>(
+      input_desc->info, input_desc->layout,
+      const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(input_desc->buffer)),
+      input_desc->size);
   }
 
   for (const auto &pkg_output : _model_edges->pkg_outputs)
@@ -300,8 +332,9 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
     if (output_pkg_index == -1)
       throw std::runtime_error{"Cannot find multi model output index"};
     auto output_desc = desc.outputs[output_pkg_index].get();
-    _pkg_output_tensors[pkg_output] =
-      std::make_unique<backend::builtin::IOTensor>(output_desc->info, output_desc->layout);
+    _pkg_output_tensors[pkg_output] = std::make_unique<backend::builtin::UserTensor>(
+      output_desc->info, output_desc->layout, reinterpret_cast<uint8_t *>(output_desc->buffer),
+      output_desc->size);
   }
 }
 
@@ -466,12 +499,6 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
         {
           inputs_inter[i] = _pkg_input_tensors[input_io_desc].get();
         }
-
-        // Set buffer of IOTensor
-        auto input_desc = desc.inputs[input_pkg_index].get();
-        // TODO Remove const_cast (we need const_cast as ITensor is writable)
-        _pkg_input_tensors[input_io_desc]->setUserTensor(
-          reinterpret_cast<uint8_t *>(const_cast<void *>(input_desc->buffer)), input_desc->size);
       }
       else
       {
@@ -512,11 +539,6 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
         {
           outputs_inter[i] = _pkg_output_tensors[output_io_desc].get();
         }
-
-        // Set buffer of IOTensor
-        auto output_desc = desc.outputs[output_pkg_index].get();
-        _pkg_output_tensors[output_io_desc]->setUserTensor(
-          reinterpret_cast<uint8_t *>(output_desc->buffer), output_desc->size);
       }
       else
       {
