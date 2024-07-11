@@ -83,6 +83,7 @@ class CONSTANT:
         'forward_transpose_op',
         'replace_non_const_fc_with_batch_matmul',  # For quantization
         'replace_with_fc_gelu_fc',
+        'transform_sqrt_div_to_rsqrt_mul',
     )
 
     OPTIMIZATION_OPTS = (
@@ -175,6 +176,8 @@ class CONSTANT:
          'convert certain condition Transpose to Reshape'),
         ('transform_min_max_to_relu6', 'transform Minimum-Maximum pattern to Relu6 op'),
         ('transform_min_relu_to_relu6', 'transform Minimum(6)-Relu pattern to Relu6 op'),
+        ('transform_sqrt_div_to_rsqrt_mul',
+         'transform Sqrt-Div pattern to Rsqrt-Mul ops'),
         ('decompose_hardswish', 'decompose the HardSwish op to Add, Mul and Relu6 ops'),
         ('decompose_softmax',
          'decompose the Softmax op to Max, Sub, Exp, Sum, Div and optionally Mul ops'),
