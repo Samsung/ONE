@@ -478,3 +478,38 @@ TEST(BasicTest, AccumulateScalarOptions_WrongType_NEG)
 
   EXPECT_THROW(arser.get<float>("--specify"), std::runtime_error);
 }
+
+TEST(HelpMessageTest, MultilineHelp)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("-v", "--verbose")
+    .nargs(0)
+    .help({"Provides additional details", "Default: No"});
+
+  std::ostringstream oss;
+  std::string expected_out = "Usage: ./arser [-h] [-v] \n"
+                             "\n"
+                             "[Optional argument]\n"
+                             "-h, --help   \tShow help message and exit\n"
+                             "-v, --verbose\tProvides additional details\n"
+                             "             \tDefault: No\n";
+
+  test::Prompt prompt("./arser -v");
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  oss << arser;
+
+  /* assert */
+  EXPECT_EQ(expected_out, oss.str());
+}
+
+TEST(HelpMessageTest, MultilineHelpEmpty_NEG)
+{
+  /* arrange */
+  Arser arser;
+  std::initializer_list<std::string> help_msg = {};
+
+  EXPECT_THROW(arser.add_argument("-v", "--verbose").nargs(0).help(help_msg), std::runtime_error);
+}
