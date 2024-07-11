@@ -252,7 +252,16 @@ public:
 
   Argument &help(std::string help_message)
   {
-    _help_message = help_message;
+    _help_message.emplace_back(help_message);
+    return *this;
+  }
+
+  Argument &help(std::initializer_list<std::string> help_messages)
+  {
+    if (help_messages.size() == 0)
+      throw std::runtime_error("Empty help message list");
+
+    _help_message = help_messages;
     return *this;
   }
 
@@ -304,7 +313,7 @@ private:
   std::string _short_name;
   std::vector<std::string> _names;
   std::string _type = "string";
-  std::string _help_message;
+  std::vector<std::string> _help_message;
   std::function<void(void)> _func;
   uint32_t _nargs{1};
   bool _is_required{false};
@@ -600,11 +609,14 @@ public:
         {
           stream.width(length_of_longest_arg);
           stream << std::left << arser::internal::make_comma_concatenated(arg._names) << "\t";
-          for (size_t i = 0; i < arg._help_message.length(); i += message_width)
+          for (size_t i = 0; i < arg._help_message.size(); i++)
           {
-            if (i)
-              stream << std::string(length_of_longest_arg, ' ') << "\t";
-            stream << arg._help_message.substr(i, message_width) << std::endl;
+            for (size_t j = 0; j < arg._help_message[i].length(); j += message_width)
+            {
+              if (i || j)
+                stream << std::string(length_of_longest_arg, ' ') << "\t";
+              stream << arg._help_message[i].substr(j, message_width) << std::endl;
+            }
           }
         }
         std::cout << std::endl;
