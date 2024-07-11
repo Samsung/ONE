@@ -50,6 +50,16 @@ void CumSum::execute() const
                                     *getTensorData<int32_t>(axis()), params().exclusive,
                                     params().reverse, getTensorData<float>(output()));
       break;
+    case DataType::S32:
+      tflite::optimized_ops::CumSum(getTensorData<int32_t>(input()), getTensorShape(input()),
+                                    *getTensorData<int32_t>(axis()), params().exclusive,
+                                    params().reverse, getTensorData<int32_t>(output()));
+      break;
+    case DataType::S64:
+      tflite::optimized_ops::CumSum(getTensorData<int64_t>(input()), getTensorShape(input()),
+                                    *getTensorData<int32_t>(axis()), params().exclusive,
+                                    params().reverse, getTensorData<int64_t>(output()));
+      break;
     default:
       throw std::runtime_error("luci-intp CumSum Unsupported type.");
   }

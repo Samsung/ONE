@@ -61,6 +61,60 @@ TEST_F(CumSumTest, Float)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }
 
+TEST_F(CumSumTest, Int32)
+{
+  std::vector<int32_t> input_data{1, 2, 3, 4, 5, 6, 7, 8};
+  std::vector<int32_t> axis_data{2};
+  Shape input_shape{1, 1, 2, 4};
+  Shape axis_shape(0);
+  std::vector<int32_t> output_data{1, 2, 3, 4, 6, 8, 10, 12};
+  std::vector<int32_t> output_shape{1, 1, 2, 4};
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::S32>(input_shape, input_data, _memory_manager.get());
+
+  Tensor axis_tensor = makeInputTensor<DataType::S32>(axis_shape, axis_data, _memory_manager.get());
+
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+
+  CumSumParams params{false, false};
+
+  CumSum kernel(&input_tensor, &axis_tensor, &output_tensor, params);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<int32_t>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+}
+
+TEST_F(CumSumTest, Int64)
+{
+  std::vector<int64_t> input_data{1, 2, 3, 4, 5, 6, 7, 8};
+  std::vector<int32_t> axis_data{2};
+  Shape input_shape{1, 1, 2, 4};
+  Shape axis_shape(0);
+  std::vector<int64_t> output_data{1, 2, 3, 4, 6, 8, 10, 12};
+  std::vector<int32_t> output_shape{1, 1, 2, 4};
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::S64>(input_shape, input_data, _memory_manager.get());
+
+  Tensor axis_tensor = makeInputTensor<DataType::S32>(axis_shape, axis_data, _memory_manager.get());
+
+  Tensor output_tensor = makeOutputTensor(DataType::S64);
+
+  CumSumParams params{false, false};
+
+  CumSum kernel(&input_tensor, &axis_tensor, &output_tensor, params);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<int64_t>(output_tensor), ::testing::ElementsAreArray(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+}
+
 TEST_F(CumSumTest, Float_Reverse)
 {
   std::vector<float> input_data{1, 2, 3, 4, 5, 6, 7, 8};
