@@ -46,9 +46,9 @@ public:
   SimpleMnistTask()
   {
     // Set model
-    _train_model_ptr.resize(models::numbers_classification_model_size);
-    std::memcpy(_train_model_ptr.data(), models::numbers_classification_model,
-                models::numbers_classification_model_size);
+    _train_model_ptr.resize(models::simple_mnist_model_size);
+    std::memcpy(_train_model_ptr.data(), models::simple_mnist_model,
+                models::simple_mnist_model_size);
   }
 
   // Get ptr to trained model
