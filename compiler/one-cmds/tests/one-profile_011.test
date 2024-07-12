@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# one-profile -T {target} -- ${command}
+
+: '
+This test assumes below directories.
+
+[one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test # pwd
+'
+
+TARGET_ALREADY_EXIST=true
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+configfile="one-profile_011.cfg"
+inputfile="one-profile_011.tvn"
+targetfile="one-profile_011.ini"
+
+clean_envir()
+{
+  rm -rf ../bin/dummy-profile
+  rm -rf ../target/${targetfile}
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+}
+
+trap_err_onexit()
+{
+  echo "${filename_ext} FAILED"
+  rm -rf ../bin/dummy-profile
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+rm -f ${filename}.log
+
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
+
+# copy dummy-profile to bin folder
+cp dummy-profile ../bin/dummy-profile
+cp ${targetfile} ../target/
+
+# run test
+one-profile -T one-profile_011 -- ${inputfile} > ${filename}.log 2>&1
+
+clean_envir
+
+if grep -q "dummy-profile with one-profile_011 target" "${filename}.log"; then
+  echo "${filename_ext} SUCCESS"
+  exit 0
+fi
+
+trap_err_onexit
