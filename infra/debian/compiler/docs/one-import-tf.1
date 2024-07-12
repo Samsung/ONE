@@ -1,19 +1,21 @@
-.TH ONE-IMPORT-TF "1" "August 2021" "one-import-tf version 1.17.0" "User Commands"
+.TH ONE-IMPORT-TF "1" "July 2024" "one-import-tf version 1.28.0" "User Commands"
 .SH NAME
 one-import-tf \- convert TensorFlow to circle
 .SH DESCRIPTION
 usage: one\-import\-tf [\-h] [\-v] [\-V] [\-C CONFIG] [\-\-v1 | \-\-v2]
 .br
-[\-\-graph_def | \-\-saved_model | \-\-keras_model]
+[\fB\-\-graph_def | \fB\-\-saved_model\fR | \fB\-\-keras_model]\fR
 .br
 [\-i INPUT_PATH] [\-o OUTPUT_PATH] [\-I INPUT_ARRAYS]
 .br
 [\-s INPUT_SHAPES] [\-O OUTPUT_ARRAYS]
 .br
 [\-\-save_intermediate]
+.br
+[\-\-experimental_disable_batchmatmul_unfold]
 .PP
 \fBone\-import\-tf\fR is a command line tool to convert TensorFlow model to circle.
-.SH OPTIONS
+.SS "options:"
 .TP
 \fB\-h\fR, \fB\-\-help\fR
 show this help message and exit
@@ -29,6 +31,10 @@ run with configuation file
 .TP
 \fB\-\-save_intermediate\fR
 Save intermediate files to output folder
+.TP
+\fB\-\-experimental_disable_batchmatmul_unfold\fR
+Experimental disable BatchMatMul unfold
+.SS "converter arguments:"
 .TP
 \fB\-\-v1\fR
 use TensorFlow Lite Converter 1.x
@@ -55,12 +61,12 @@ full filepath of the output file
 names of the input arrays, comma\-separated
 .TP
 \fB\-s\fR INPUT_SHAPES, \fB\-\-input_shapes\fR INPUT_SHAPES
-shapes corresponding to \fB\-\-input_arrays\fR, colon\-separated (ex:"1,4,4,3:1,20,20,3")
+shapes corresponding to \fB\-\-input_arrays\fR, colonseparated (ex:"1,4,4,3:1,20,20,3")
 .TP
 \fB\-O\fR OUTPUT_ARRAYS, \fB\-\-output_arrays\fR OUTPUT_ARRAYS
 names of the output arrays, comma\-separated
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2024 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"

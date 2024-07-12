@@ -1,4 +1,4 @@
-.TH ONE-IMPORT-ONNX "1" "August 2021" "one-import-onnx version 1.17.0" "User Commands"
+.TH ONE-IMPORT-ONNX "1" "July 2024" "one-import-onnx version 1.28.0" "User Commands"
 .SH NAME
 one-import-onnx \- convert ONNX to circle
 .SH DESCRIPTION
@@ -8,12 +8,16 @@ usage: one\-import\-onnx [\-h] [\-v] [\-V] [\-C CONFIG] [\-i INPUT_PATH]
 .br
 [\-\-model_format MODEL_FORMAT]
 .br
-[\-\-converter_version CONVERTER_VERSION]
+[\-\-converter_version CONVERTER_VERSION] [\-\-unroll_rnn]
+.br
+[\-\-unroll_lstm] [\-\-keep_io_order] [\-\-disable_ext]
 .br
 [\-\-save_intermediate]
+.br
+[\-\-experimental_disable_batchmatmul_unfold]
 .PP
 \fBone\-import\-onnx\fR is a command line tool to convert ONNX to circle.
-.SH OPTIONS
+.SS "options:"
 .TP
 \fB\-h\fR, \fB\-\-help\fR
 show this help message and exit
@@ -27,8 +31,26 @@ output additional information to stdout or stderr
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file
 .TP
+\fB\-\-unroll_rnn\fR
+Unroll RNN operators
+.TP
+\fB\-\-unroll_lstm\fR
+Unroll LSTM operators
+.TP
+\fB\-\-keep_io_order\fR
+Ensure generated circle model preserves the I/O order
+of the original onnx model.
+.TP
+\fB\-\-disable_ext\fR
+Disable one\-import\-onnx\-ext and use legacy onnx\-tf
+package
+.TP
 \fB\-\-save_intermediate\fR
 Save intermediate files to output folder
+.TP
+\fB\-\-experimental_disable_batchmatmul_unfold\fR
+Experimental disable BatchMatMul unfold
+.SS "converter arguments:"
 .TP
 \fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
 full filepath of the input file
@@ -46,7 +68,7 @@ names of the output arrays, comma\-separated
 .HP
 \fB\-\-converter_version\fR CONVERTER_VERSION
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2024 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"
