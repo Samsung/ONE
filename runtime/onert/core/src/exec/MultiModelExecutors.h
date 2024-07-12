@@ -20,7 +20,7 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 #include "IPermuteFunction.h"
-#include "../backend/builtin/IOTensor.h"
+#include "../backend/builtin/UserTensor.h"
 
 namespace std
 {
@@ -159,8 +159,8 @@ private:
   std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_input_quant_tensors;
   std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_output_quant_tensors;
   // IOTensors for user buffer
-  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>> _pkg_input_tensors;
-  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::IOTensor>> _pkg_output_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_input_tensors;
+  std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_output_tensors;
 };
 
 } // namespace exec
