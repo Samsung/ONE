@@ -163,8 +163,14 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
 
   set(SCONS_CC "gcc")
   set(SCONS_CXX "g++")
+  # Refer https://android.googlesource.com/platform/external/armnn/+/HEAD/BuildGuideAndroidNDK.md#build-arm-compute-library
   if(ANDROID)
-    list(APPEND SCONS_OPTIONS "toolchain_prefix=${ANDROID_TOOLCHAIN_PREFIX}")
+    if(ANDROID_NDK_MAJOR LESS 22)
+      # Use legacy toolchain
+      list(APPEND SCONS_OPTIONS "toolchain_prefix=${ANDROID_TOOLCHAIN_PREFIX}")
+    else(ANDROID_NDK_MAJOR LESS 22)
+      list(APPEND SCONS_OPTIONS "toolchain_prefix=${ANDROID_TOOLCHAIN_ROOT}/bin/llvm-")
+    endif(ANDROID_NDK_MAJOR LESS 22)
     list(APPEND SCONS_OPTIONS "compiler_prefix=${ANDROID_TOOLCHAIN_ROOT}/bin/aarch64-linux-android${ANDROID_API_LEVEL}-")
     set(SCONS_CC "clang")
     set(SCONS_CXX "clang++")
