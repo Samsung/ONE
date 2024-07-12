@@ -37,7 +37,7 @@ sys.tracebacklimit = 0
 
 
 def _get_parser(backends_list):
-    codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND] [-T TARGET] [--] [COMMANDS FOR BACKEND]'
+    codegen_usage = 'one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] [--] [COMMANDS FOR BACKEND]'
     parser = argparse.ArgumentParser(
         description='command line tool for code generation', usage=codegen_usage)
 
