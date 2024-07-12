@@ -58,6 +58,10 @@ private:
   std::unique_ptr<BackPropTensor> _conv_back_prop_output;
   std::unique_ptr<BackPropTensor> _act_back_prop_output;
   std::unique_ptr<GradientTensor> _transposed_grad_weights;
+
+  nnfw::cker::ConvParams _conv_train_params;
+  nnfw::cker::TransposeParams _transpose_param;
+  nnfw::cker::TransposeParams _transpose_grad_param;
 };
 
 } // namespace ops
