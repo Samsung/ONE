@@ -1,4 +1,4 @@
-.TH ONE-OPTIMIZE "1" "August 2021" "one-optimize version 1.17.0" "User Commands"
+.TH ONE-OPTIMIZE "1" "July 2024" "one-optimize version 1.28.0" "User Commands"
 .SH NAME
 one-optimize \- optimize circle model
 .SH DESCRIPTION
@@ -6,33 +6,55 @@ usage: one\-optimize [\-h] [\-v] [\-V] [\-C CONFIG] [\-p]
 .br
 [\-\-change_outputs CHANGE_OUTPUTS] [\-i INPUT_PATH]
 .br
-[\-o OUTPUT_PATH] [\-\-O1] [\-\-convert_nchw_to_nhwc]
+[\-o OUTPUT_PATH] [\-\-convert_nchw_to_nhwc]
 .br
-[\-\-nchw_to_nhwc_input_shape] [\-\-nchw_to_nhwc_output_shape]
+[\-\-common_subexpression_elimination]
 .br
-[\-\-fold_add_v2] [\-\-fold_cast] [\-\-fold_dequantize]
+[\-\-expand_broadcast_const] [\-\-nchw_to_nhwc_input_shape]
 .br
-[\-\-fold_sparse_to_dense] [\-\-forward_reshape_to_unaryop]
+[\-\-nchw_to_nhwc_output_shape] [\-\-fold_add_v2]
 .br
-[\-\-fuse_add_with_tconv] [\-\-fuse_batchnorm_with_conv]
+[\-\-fold_cast] [\-\-fold_densify] [\-\-fold_dequantize]
+.br
+[\-\-fold_dwconv] [\-\-fold_fully_connected] [\-\-fold_gather]
+.br
+[\-\-fold_reshape] [\-\-fold_shape] [\-\-fold_sparse_to_dense]
+.br
+[\-\-fold_squeeze] [\-\-forward_reshape_to_unaryop]
+.br
+[\-\-forward_transpose_op] [\-\-fuse_add_with_conv]
+.br
+[\-\-fuse_add_with_tconv] [\-\-fuse_add_with_fully_connected]
+.br
+[\-\-fuse_batchnorm_with_conv]
 .br
 [\-\-fuse_batchnorm_with_dwconv]
 .br
-[\-\-fuse_batchnorm_with_tconv] [\-\-fuse_bcq]
+[\-\-fuse_batchnorm_with_tconv] [\-\-fuse_slice_with_tconv]
 .br
-[\-\-fuse_preactivation_batchnorm]
+[\-\-fuse_bcq] [\-\-fuse_preactivation_batchnorm]
+.br
+[\-\-fuse_mean_with_mean] [\-\-fuse_mul_with_conv]
+.br
+[\-\-fuse_mul_with_div] [\-\-fuse_transpose_with_mean]
+.br
+[\-\-fuse_horizontal_fc_layers]
 .br
 [\-\-make_batchnorm_gamma_positive]
 .br
 [\-\-fuse_activation_function] [\-\-fuse_instnorm]
 .br
+[\-\-fuse_prelu] [\-\-fuse_gelu] [\-\-fuse_rsqrt]
+.br
 [\-\-replace_cw_mul_add_with_depthwise_conv]
 .br
-[\-\-remove_fakequant] [\-\-remove_quantdequant]
+[\-\-remove_fakequant] [\-\-remove_gather_guard]
+.br
+[\-\-remove_quantdequant] [\-\-remove_redundant_quantize]
 .br
 [\-\-remove_redundant_reshape]
 .br
-[\-\-remove_redundant_transpose]
+[\-\-remove_redundant_transpose] [\-\-remove_unnecessary_add]
 .br
 [\-\-remove_unnecessary_reshape]
 .br
@@ -40,26 +62,46 @@ usage: one\-optimize [\-h] [\-v] [\-V] [\-C CONFIG] [\-p]
 .br
 [\-\-remove_unnecessary_strided_slice]
 .br
-[\-\-remove_unnecessary_split] [\-\-resolve_customop_add]
+[\-\-remove_unnecessary_split]
 .br
-[\-\-resolve_customop_batchmatmul]
+[\-\-remove_unnecessary_transpose]
+.br
+[\-\-replace_non_const_fc_with_batch_matmul]
+.br
+[\-\-replace_sub_with_add] [\-\-replace_with_fc_gelu_fc]
+.br
+[\-\-resolve_customop_add] [\-\-resolve_customop_batchmatmul]
 .br
 [\-\-resolve_customop_matmul]
 .br
+[\-\-resolve_customop_max_pool_with_argmax]
+.br
+[\-\-resolve_customop_splitv]
+.br
 [\-\-shuffle_weight_to_16x1float32]
 .br
-[\-\-substitute_pack_to_reshape]
+[\-\-substitute_pack_to_reshape] [\-\-substitute_padv2_to_pad]
+.br
+[\-\-substitute_splitv_to_split]
 .br
 [\-\-substitute_squeeze_to_reshape]
+.br
+[\-\-substitute_strided_slice_to_reshape]
 .br
 [\-\-substitute_transpose_to_reshape]
 .br
 [\-\-transform_min_max_to_relu6]
 .br
 [\-\-transform_min_relu_to_relu6]
+.br
+[\-\-transform_sqrt_div_to_rsqrt_mul]
+.br
+[\-\-decompose_hardswish] [\-\-decompose_softmax]
+.br
+[\-\-unroll_unidirseqlstm] [\-\-dynamic_batch_to_single_batch]
 .PP
 \fBone\-optimize\fR is a command line tool to optimize circle model.
-.SH OPTIONS
+.SS "options:"
 .TP
 \fB\-h\fR, \fB\-\-help\fR
 show this help message and exit
@@ -88,12 +130,15 @@ full filepath of the input file
 \fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
 full filepath of the output file
 .TP
-\fB\-\-O1\fR
-enable O1 optimization pass
-.TP
 \fB\-\-convert_nchw_to_nhwc\fR
 Experimental: This will convert NCHW operators to NHWC
 under the assumption that input model is NCHW.
+.TP
+\fB\-\-common_subexpression_elimination\fR
+perform common subexpression elimination
+.TP
+\fB\-\-expand_broadcast_const\fR
+expand broadcastable constant node inputs
 .TP
 \fB\-\-nchw_to_nhwc_input_shape\fR
 convert the input shape of the model (argument for
@@ -109,17 +154,47 @@ fold AddV2 op with constant inputs
 \fB\-\-fold_cast\fR
 fold Cast op with constant input
 .TP
+\fB\-\-fold_densify\fR
+fold Densify op with sparse constant input
+.TP
 \fB\-\-fold_dequantize\fR
 fold Dequantize op
+.TP
+\fB\-\-fold_dwconv\fR
+fold Depthwise Convolution op with constant inputs
+.TP
+\fB\-\-fold_fully_connected\fR
+fold FullyConnected op with constant inputs
+.TP
+\fB\-\-fold_gather\fR
+fold Gather op
+.TP
+\fB\-\-fold_reshape\fR
+fold Reshape op
+.TP
+\fB\-\-fold_shape\fR
+fold Shape op
 .TP
 \fB\-\-fold_sparse_to_dense\fR
 fold SparseToDense op
 .TP
+\fB\-\-fold_squeeze\fR
+fold Squeeze op
+.TP
 \fB\-\-forward_reshape_to_unaryop\fR
 Forward Reshape op
 .TP
+\fB\-\-forward_transpose_op\fR
+Forward Transpose op
+.TP
+\fB\-\-fuse_add_with_conv\fR
+fuse Add op to Convolution op
+.TP
 \fB\-\-fuse_add_with_tconv\fR
-fuse Add op to Transposed Convolution op
+fuse Add op to Transposed
+.TP
+\fB\-\-fuse_add_with_fully_connected\fR
+fuse Add op to FullyConnected op
 .TP
 \fB\-\-fuse_batchnorm_with_conv\fR
 fuse BatchNorm op to Convolution op
@@ -130,12 +205,32 @@ fuse BatchNorm op to Depthwise Convolution op
 \fB\-\-fuse_batchnorm_with_tconv\fR
 fuse BatchNorm op to Transposed Convolution op
 .TP
+\fB\-\-fuse_slice_with_tconv\fR
+fuse Slice op to Transposed Convolution op
+.TP
 \fB\-\-fuse_bcq\fR
 apply Binary Coded Quantization
 .TP
 \fB\-\-fuse_preactivation_batchnorm\fR
 fuse BatchNorm operators of pre\-activations to
 Convolution op
+.TP
+\fB\-\-fuse_mean_with_mean\fR
+fuse two consecutive Mean ops
+.TP
+\fB\-\-fuse_mul_with_conv\fR
+fuse Mul op to Convolution op
+.TP
+\fB\-\-fuse_mul_with_div\fR
+fuse Mul with Div as Div
+.TP
+\fB\-\-fuse_transpose_with_mean\fR
+fuse Mean with a preceding Transpose under certain
+conditions
+.TP
+\fB\-\-fuse_horizontal_fc_layers\fR
+fuse horizontal FullyConnected layers under certain
+conditions
 .TP
 \fB\-\-make_batchnorm_gamma_positive\fR
 make negative gamma of BatchNorm to a small positive
@@ -149,20 +244,40 @@ fuse Activation function to a preceding operator
 \fB\-\-fuse_instnorm\fR
 fuse ops to InstanceNorm operator
 .TP
+\fB\-\-fuse_prelu\fR
+fuse ops to PReLU operator
+.TP
+\fB\-\-fuse_gelu\fR
+fuse ops to GeLU operator
+.TP
+\fB\-\-fuse_rsqrt\fR
+fuse ops to Rsqrt operator
+.TP
 \fB\-\-replace_cw_mul_add_with_depthwise_conv\fR
 replace channel\-wise Mul/Add with DepthwiseConv2D
 .TP
 \fB\-\-remove_fakequant\fR
 remove FakeQuant ops
 .TP
+\fB\-\-remove_gather_guard\fR
+remove Add/FloorMod guards of Gather indices with
+certain conditions. CAUTION: user must guarantee that
+indices are all non\-negative values.
+.TP
 \fB\-\-remove_quantdequant\fR
 remove Quantize\-Dequantize sequence
+.TP
+\fB\-\-remove_redundant_quantize\fR
+remove redundant Quantize ops
 .TP
 \fB\-\-remove_redundant_reshape\fR
 fuse or remove subsequent Reshape ops
 .TP
 \fB\-\-remove_redundant_transpose\fR
 fuse or remove subsequent Transpose ops
+.TP
+\fB\-\-remove_unnecessary_add\fR
+remove unnecessary add ops
 .TP
 \fB\-\-remove_unnecessary_reshape\fR
 remove unnecessary reshape ops
@@ -176,6 +291,19 @@ remove unnecessary strided slice ops
 \fB\-\-remove_unnecessary_split\fR
 remove unnecessary split ops
 .TP
+\fB\-\-remove_unnecessary_transpose\fR
+remove unnecessary transpose ops
+.TP
+\fB\-\-replace_non_const_fc_with_batch_matmul\fR
+replace FullyConnected op with non\-const weights to
+BatchMatMul op
+.TP
+\fB\-\-replace_sub_with_add\fR
+replace Sub op with Add op
+.TP
+\fB\-\-replace_with_fc_gelu_fc\fR
+replace a certain pattern with FC\-Gelu\-FC ops
+.TP
 \fB\-\-resolve_customop_add\fR
 convert Custom(Add) op to Add op
 .TP
@@ -185,6 +313,13 @@ convert Custom(BatchMatmul) op to BatchMatmul op
 \fB\-\-resolve_customop_matmul\fR
 convert Custom(Matmul) op to Matmul op
 .TP
+\fB\-\-resolve_customop_max_pool_with_argmax\fR
+convert Custom(MaxPoolWithArgmax) to net of builtin
+operators
+.TP
+\fB\-\-resolve_customop_splitv\fR
+convert Custom(SplitV) op to SplitV op
+.TP
 \fB\-\-shuffle_weight_to_16x1float32\fR
 convert weight format of FullyConnected op to
 SHUFFLED16x1FLOAT32. Note that it only converts
@@ -193,8 +328,17 @@ weights whose row is a multiple of 16
 \fB\-\-substitute_pack_to_reshape\fR
 convert single input Pack op to Reshape op
 .TP
+\fB\-\-substitute_padv2_to_pad\fR
+convert certain condition PadV2 to Pad
+.TP
+\fB\-\-substitute_splitv_to_split\fR
+convert certain condition SplitV to Split
+.TP
 \fB\-\-substitute_squeeze_to_reshape\fR
 convert certain condition Squeeze to Reshape
+.TP
+\fB\-\-substitute_strided_slice_to_reshape\fR
+convert certain condition StridedSlice to Reshape
 .TP
 \fB\-\-substitute_transpose_to_reshape\fR
 convert certain condition Transpose to Reshape
@@ -204,8 +348,25 @@ transform Minimum\-Maximum pattern to Relu6 op
 .TP
 \fB\-\-transform_min_relu_to_relu6\fR
 transform Minimum(6)\-Relu pattern to Relu6 op
+.TP
+\fB\-\-transform_sqrt_div_to_rsqrt_mul\fR
+transform Sqrt\-Div pattern to Rsqrt\-Mul ops
+.TP
+\fB\-\-decompose_hardswish\fR
+decompose the HardSwish op to Add, Mul and Relu6 ops
+.TP
+\fB\-\-decompose_softmax\fR
+decompose the Softmax op to Max, Sub, Exp, Sum, Div
+and optionally Mul ops
+.TP
+\fB\-\-unroll_unidirseqlstm\fR
+unroll UnidirectionalSequenceLSTM op
+.TP
+\fB\-\-dynamic_batch_to_single_batch\fR
+convert dynamic batch size (first dimension) of inputs
+to 1
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2024 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"
