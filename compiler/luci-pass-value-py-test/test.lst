@@ -2,13 +2,14 @@
 # Format:
 #   eval(MODEL PASS)
 # MODEL: tflite model file name in build/compiler/common-artifacts folder.
-# PASS: Optimization Pass to test. Supports only one Pass for now.
+# PASS: Optimization Pass to test. Supports one or Passes.
 #
 
 # eval(Net_Preactivation_BN_000 fuse_preactivation_batchnorm) : value diff exist
 # --> https://github.com/Samsung/ONE/issues/5782
 eval(FullyConnected_007 replace_non_const_fc_with_batch_matmul)
 eval(HardSwish_001 decompose_hardswish)
+eval(Mul_002 fold_mul)
 eval(Net_Add_FloorMod_Gather_000 remove_gather_guard)
 eval(Net_Add_FullyConnected_000 fuse_add_to_fullyconnected_bias)
 eval(Net_Add_FullyConnected_001 fuse_add_to_fullyconnected_bias)

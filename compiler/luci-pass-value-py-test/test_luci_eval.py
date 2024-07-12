@@ -95,8 +95,13 @@ def luci_eval_verify(test_name,
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
         elif output_details["dtype"] == np.float32:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32), err_msg
+            diff_comp = np.allclose(
+                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32)
+            if not diff_comp:
+                print("\r\ntflite:\r\n", intp_output_data, flush=True)
+                print("\r\ncircle:\r\n", luci_output_data, flush=True)
+                print("\r\nDiff:\r\n", intp_output_data - luci_output_data, flush=True)
+                assert diff_comp, err_msg
         elif output_details["dtype"] == np.int64:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg

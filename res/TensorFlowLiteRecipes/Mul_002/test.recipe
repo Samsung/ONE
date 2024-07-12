@@ -1,0 +1,35 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 5 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 5 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 5 }
+}
+operation {
+  type: "Mul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  mul_options {
+    activation: NONE
+  }
+}
+output: "ofm"
