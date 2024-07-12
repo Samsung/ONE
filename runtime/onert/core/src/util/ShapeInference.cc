@@ -185,7 +185,6 @@ ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> 
   else
   {
     // Calculates size of reducing axis.
-    int num_reduce_axis = num_axis;
     for (int i = 0; i < num_axis; ++i)
     {
       int current = axes[i];
@@ -204,14 +203,12 @@ ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> 
         }
         if (current == previous)
         {
-          --num_reduce_axis;
           break;
         }
       }
     }
     // Determines output dimensions.
     ir::Shape out_shape;
-    int num_skip_axis = 0;
     for (int idx = 0; idx < input_num_dims; ++idx)
     {
       bool is_axis = false;
@@ -219,7 +216,6 @@ ir::Shape inferReduceShape(const ir::Shape &input_shape, const std::vector<int> 
       {
         if (axes[axis_idx] == idx || axes[axis_idx] + input_num_dims == idx)
         {
-          ++num_skip_axis;
           is_axis = true;
           break;
         }
