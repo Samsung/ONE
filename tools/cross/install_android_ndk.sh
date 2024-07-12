@@ -19,13 +19,13 @@
 usage()
 {
     echo "Usage: $0 [--ndk-version=NDKVersion] [--install-dir=InstallDir]"
-    echo "  NDKVersion : r20(default) or higher"
+    echo "  NDKVersion : r26d(default) or other version"
     echo "  InstallDir : Path to be installed"
     exit 1
 }
 
 __CrossDir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-__NDKVersion=r20
+__NDKVersion=r26d
 __UnprocessedBuildArgs=
 
 while [[ $# -gt 0 ]]

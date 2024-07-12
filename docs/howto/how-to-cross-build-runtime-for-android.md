@@ -14,7 +14,7 @@ Or you can use `tools/cross/install_android_sdk.sh` script to prepare Android SD
 
 ### Host Environment Requirements
 
-CMake 3.6.0 or later is required for Android NDK r20 CMake support.
+CMake 3.6.0 or later is required for Android NDK r26d CMake support.
 So if you want to use Docker, please use `infra/docker/android-sdk/Dockerfile`.
 
 ```
