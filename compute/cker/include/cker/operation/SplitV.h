@@ -34,8 +34,6 @@ void SplitV(const SplitVParams &params, const Shape &input_shape, const Scalar *
   int axis = params.axis < 0 ? params.axis + split_dimensions : params.axis;
   int outputs_count = params.num_split;
 
-  int64_t split_size = 0;
-
   for (int i = 0; i < outputs_count; i++)
   {
     // TFLITE_DCHECK_EQ(output_shapes[i]->DimensionsCount(), split_dimensions);
@@ -46,7 +44,6 @@ void SplitV(const SplitVParams &params, const Shape &input_shape, const Scalar *
         MatchingDim(output_shapes[i], j, input_shape, j);
       }
     }
-    split_size += output_shapes[i].Dims(axis);
   }
 
   int64_t outer_size = 1;
