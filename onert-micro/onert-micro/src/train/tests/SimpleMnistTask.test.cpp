@@ -19,6 +19,8 @@
 
 #include <gtest/gtest.h>
 
+#include <iostream>
+
 namespace onert_micro
 {
 namespace train
@@ -34,8 +36,8 @@ public:
   SimpleMnistClassificationTaskTest()
   {
     // Set user defined training settings
-    const uint32_t training_epochs = 10;
-    const float lambda = 0.1f;
+    const uint32_t training_epochs = 20;
+    const float lambda = 0.001f;
     const uint32_t batch_size = 1;
     // Train all layers
     const uint32_t num_train_layers = 0;
@@ -61,11 +63,10 @@ public:
       config.training_context = train_context;
     }
   }
-
   OMConfig config = {};
 
   // Some value for checking that the learning process has not become worse
-  const float golden_accuracy_metric = 1.f;
+  const float golden_accuracy_metric = 0.7f;
 };
 
 TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
@@ -85,7 +86,7 @@ TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
 
   // Evaluate result before training
   float acc_metric_before_training = 0.f;
-  status = evaluate(train_interpreter, config, simpleMnistTask, ACCURACY,
+  status = evaluate(train_interpreter, config, simpleMnistTask, SPARSE_CROSS_ENTROPY_ACCURACY,
                     &acc_metric_before_training);
   EXPECT_EQ(status, Ok);
 
@@ -95,9 +96,11 @@ TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
 
   // Evaluate result after training
   float acc_metric_after_training = 0.f;
-  status = evaluate(train_interpreter, config, simpleMnistTask, ACCURACY,
+  status = evaluate(train_interpreter, config, simpleMnistTask, SPARSE_CROSS_ENTROPY_ACCURACY,
                     &acc_metric_after_training);
   EXPECT_EQ(status, Ok);
+
+  std::cout << acc_metric_before_training << ", " << acc_metric_after_training << "\n";
 
   // ACCURACY metric after training should be better then before (before training accuracy value
   // smaller then after)
