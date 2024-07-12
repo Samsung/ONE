@@ -1,4 +1,4 @@
-.TH ONE-QUANTIZE "1" "August 2021" "one-quantize version 1.17.0" "User Commands"
+.TH ONE-QUANTIZE "1" "July 2024" "one-quantize version 1.28.0" "User Commands"
 .SH NAME
 one-quantize \- quantize circle model
 .SH DESCRIPTION
@@ -6,18 +6,58 @@ usage: one\-quantize [\-h] [\-v] [\-V] [\-C CONFIG] [\-i INPUT_PATH] [\-d INPUT_
 .br
 [\-f INPUT_DATA_FORMAT] [\-o OUTPUT_PATH] [\-p]
 .br
-[\-\-input_dtype INPUT_DTYPE]
+[\-\-save_intermediate] [\-\-input_dtype INPUT_DTYPE]
+.br
+[\-\-input_model_dtype INPUT_MODEL_DTYPE]
 .br
 [\-\-quantized_dtype QUANTIZED_DTYPE]
 .br
-[\-\-granularity GRANULARITY]
+[\-\-granularity GRANULARITY] [\-\-input_type INPUT_TYPE]
+.br
+[\-\-output_type OUTPUT_TYPE]
 .br
 [\-\-min_percentile MIN_PERCENTILE]
 .br
-[\-\-max_percentile MAX_PERCENTILE] [\-\-mode MODE]
+[\-\-max_percentile MAX_PERCENTILE]
+.br
+[\-\-moving_avg_batch MOVING_AVG_BATCH]
+.br
+[\-\-moving_avg_const MOVING_AVG_CONST] [\-\-mode MODE]
+.br
+[\-\-TF\-style_maxpool] [\-\-save_min_max]
+.br
+[\-\-quant_config QUANT_CONFIG] [\-\-evaluate_result]
+.br
+[\-\-test_data TEST_DATA] [\-\-print_mae] [\-\-print_mape]
+.br
+[\-\-print_mpeir] [\-\-print_top1_match] [\-\-print_top5_match]
+.br
+[\-\-print_mse] [\-\-force_quantparam]
+.br
+[\-\-tensor_name TENSOR_NAME] [\-\-scale SCALE]
+.br
+[\-\-zero_point ZERO_POINT] [\-\-copy_quantparam]
+.br
+[\-\-src_tensor_name SRC_TENSOR_NAME]
+.br
+[\-\-dst_tensor_name DST_TENSOR_NAME] [\-\-fake_quantize]
+.br
+[\-\-requantize] [\-\-ampq]
+.br
+[\-\-ampq_qerror_ratio AMPQ_QERROR_RATIO]
+.br
+[\-\-ampq_algorithm AMPQ_ALGORITHM]
+.br
+[\-\-bisection_type BISECTION_TYPE]
+.br
+[\-\-u8_layernorm_with_s16_variance]
+.br
+[\-\-u8_softmax_with_s16_sub_exp]
+.br
+[\-\-ampq_bisection_visq AMPQ_BISECTION_VISQ]
 .PP
 \fBone\-quantize\fR is a command line tool to quantize circle model.
-.SH OPTIONS
+.SS "options:"
 .TP
 \fB\-h\fR, \fB\-\-help\fR
 show this help message and exit
@@ -32,41 +72,194 @@ output additional information to stdout or stderr
 run with configuation file
 .TP
 \fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
-full filepath of the input file
+full filepath of the input circle model
 .TP
 \fB\-d\fR INPUT_DATA, \fB\-\-input_data\fR INPUT_DATA
-full filepath of the input data file. if not
-specified, run with random input data.
+full filepath of the input data used for post\-training
+quantization. if not specified, run with random input
+data.
+.TP
+\fB\-f\fR INPUT_DATA_FORMAT, \fB\-\-input_data_format\fR INPUT_DATA_FORMAT
+file format of input data. h5/hdf5 (default),
+list/filelist (a text file where a file path of input
+data is written in each line), or dir/directory (a
+directory where input data are saved)
 .TP
 \fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
-full filepath of the output file
+full filepath of the output quantized model
 .TP
 \fB\-p\fR, \fB\-\-generate_profile_data\fR
 generate profiling data
+.TP
+\fB\-\-save_intermediate\fR
+Save intermediate files to output folder
 .SS "arguments for quantization:"
 .TP
 \fB\-\-input_dtype\fR INPUT_DTYPE
-input data type (supported: float32, default=float32)
+input model data type (supported: float32,
+default=float32). Deprecated (Use input_model_dtype)
+.TP
+\fB\-\-input_model_dtype\fR INPUT_MODEL_DTYPE
+input model data type (supported: float32,
+default=float32)
 .TP
 \fB\-\-quantized_dtype\fR QUANTIZED_DTYPE
-output quantized data type (supported: uint8, int16,
-default=uint8)
+data type of output quantized model (supported: uint8,
+int16, default=uint8)
 .TP
 \fB\-\-granularity\fR GRANULARITY
-quantize granularity (supported: layer, channel,
-default=layer)
+weight quantization granularity (supported: layer,
+channel, default=layer). Activation is quantized per
+layer.
+.TP
+\fB\-\-input_type\fR INPUT_TYPE
+data type of inputs of quantized model (supported:
+uint8, int16, float32, default=quantized_dtype).
+QUANTIZE Op will be inserted at the beginning of the
+quantized model if input_type is different from
+quantized_dtype.
+.TP
+\fB\-\-output_type\fR OUTPUT_TYPE
+data type of outputs of quantized model (supported:
+uint8, int16, float32, default=quantized_dtype).
+QUANTIZE Op will be inserted at the end of the
+quantized model if output_type is different from
+quantized_dtype.
 .TP
 \fB\-\-min_percentile\fR MIN_PERCENTILE
-minimum percentile (0.0~100.0, default=1.0)
+minimum percentile (0.0~100.0, default=1.0). Algorithm
+parameter for calibration. This is valid when
+calibration algorithm is percentile.
 .TP
 \fB\-\-max_percentile\fR MAX_PERCENTILE
-maximum percentile (0.0~100.0, default=99.0)
+maximum percentile (0.0~100.0, default=99.0).
+Algorithm parameter for calibration. This is valid
+when calibration algorithm is percentile.
+.TP
+\fB\-\-moving_avg_batch\fR MOVING_AVG_BATCH
+batch size of moving average (default=16). This is
+valid when calibration algorithm is moving_average.
+.TP
+\fB\-\-moving_avg_const\fR MOVING_AVG_CONST
+hyperparameter (C) to compute moving average
+(default=0.1). Update equation: avg <\- avg + C *
+(curr_batch_avg \- avg). This is valid when calibration
+algorithm is moving_average.
 .TP
 \fB\-\-mode\fR MODE
-record mode (supported: percentile/moving_average,
-default=percentile)
+calibration algorithm for post\-training quantization
+(supported: percentile/moving_average,
+default=percentile). 'percentile' mode uses the n\-th
+percentiles as min/max values. 'moving_average' mode
+records the moving average of min/max.
+.TP
+\fB\-\-TF\-style_maxpool\fR
+Force MaxPool Op to have the same input/output
+quantparams. NOTE: This option can degrade accuracy of
+some models.)
+.TP
+\fB\-\-save_min_max\fR
+Save min/max of each tensor. NOTE: Min/max valuse are
+clipped according to calibration algorithms, such as
+percentile or moving average. Nudge adjustment is not
+applied.
+.TP
+\fB\-\-quant_config\fR QUANT_CONFIG
+Path to the quantization configuration file.
+.TP
+\fB\-\-evaluate_result\fR
+Evaluate accuracy of quantized model. Run inference
+for both fp32 model and the quantized model, and
+compare the inference results.
+.TP
+\fB\-\-test_data\fR TEST_DATA
+Path to the test data used for evaluation.
+.TP
+\fB\-\-print_mae\fR
+Print MAE (Mean Absolute Error) of inference results
+between quantized model and fp32 model.
+.TP
+\fB\-\-print_mape\fR
+Print MAPE (Mean Absolute Percentage Error) of
+inference results between quantized model and fp32
+model.
+.TP
+\fB\-\-print_mpeir\fR
+Print MPEIR (Mean Peak Error to Interval Ratio) of
+inference results between quantized model and fp32
+model.
+.TP
+\fB\-\-print_top1_match\fR
+Print Top\-1 match ratio of inference results between
+quantized model and fp32 model.
+.TP
+\fB\-\-print_top5_match\fR
+Print Top\-5 match ratio of inference results between
+quantized model and fp32 model.
+.TP
+\fB\-\-print_mse\fR
+Print MSE (Mean Squared Error) of inference results
+between quantized model and fp32 model.
+.SS "arguments for force_quantparam option:"
+.TP
+\fB\-\-force_quantparam\fR
+overwrite quantparam (scale, zero_point) to the
+specified tensor in the quantized model.
+.TP
+\fB\-\-tensor_name\fR TENSOR_NAME
+tensor name (string)
+.TP
+\fB\-\-scale\fR SCALE
+scale (float)
+.TP
+\fB\-\-zero_point\fR ZERO_POINT
+zero point (int)
+.SS "arguments for copy_quantparam option:"
+.TP
+\fB\-\-copy_quantparam\fR
+copy quantparam (scale, zero_point) of a tensor to
+another tensor.
+.TP
+\fB\-\-src_tensor_name\fR SRC_TENSOR_NAME
+tensor name (string)
+.TP
+\fB\-\-dst_tensor_name\fR DST_TENSOR_NAME
+tensor name (string)
+.SS "arguments for fake_quantize option:"
+.TP
+\fB\-\-fake_quantize\fR
+convert quantized model to fake\-quantized fp32 model.
+.SS "arguments for requantize option:"
+.TP
+\fB\-\-requantize\fR
+convert quantized model to another\-typed quantized
+model (ex: int8 \-> uin8).
+.SS "arguments for ampq option:"
+.TP
+\fB\-\-ampq\fR
+quantize model using ampq solver.
+.TP
+\fB\-\-ampq_qerror_ratio\fR AMPQ_QERROR_RATIO
+quantization error ratio ([0, 1])
+.TP
+\fB\-\-ampq_algorithm\fR AMPQ_ALGORITHM
+type of algorithm (bisection, pattern)
+.TP
+\fB\-\-bisection_type\fR BISECTION_TYPE
+one of 'auto', 'i16_front', 'i16_back'
+.TP
+\fB\-\-u8_layernorm_with_s16_variance\fR
+Use int16 for computing variance in uint8 layer
+normalization
+.TP
+\fB\-\-u8_softmax_with_s16_sub_exp\fR
+Use int16 for computing Sub and Exp nodes in uint8
+Softmax
+.TP
+\fB\-\-ampq_bisection_visq\fR AMPQ_BISECTION_VISQ
+\&.visq.json file path with quantization errors
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2024 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"
