@@ -254,6 +254,7 @@ void checkOutputSize(const StridedSliceParams &op_params, const Shape &input_sha
   }
 
   assert(output_shape.DimensionsCount() == shape_size);
+  UNUSED_RELEASE(shape_size);
 }
 
 template <typename T>
