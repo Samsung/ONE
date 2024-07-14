@@ -2784,13 +2784,12 @@ var hierarchy =
           [ "onert::backend::basic::ExternalTensor", "classonert_1_1backend_1_1basic_1_1_external_tensor.html", null ],
           [ "onert::backend::train::Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", null ]
         ] ],
-        [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", [
-          [ "onert::exec::MultiModelExecutors::EdgeTensor", "classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor.html", null ]
-        ] ],
+        [ "onert::backend::builtin::IOTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html", null ],
         [ "onert::backend::builtin::UserTensor", "classonert_1_1backend_1_1builtin_1_1_user_tensor.html", null ],
         [ "onert::backend::train::ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", [
           [ "onert::backend::basic::train::TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html", null ]
-        ] ]
+        ] ],
+        [ "onert::exec::MultiModelExecutors::EdgeTensor", "classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor.html", null ]
       ] ],
       [ "onert::backend::acl_common::IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html", [
         [ "onert::backend::acl_cl::operand::ICLTensor", "classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html", [
@@ -3184,7 +3183,9 @@ var hierarchy =
       [ "MappedMemory", "class_mapped_memory.html", null ]
     ] ],
     [ "enco::MemoryContext", "classenco_1_1_memory_context.html", null ],
-    [ "onert::backend::basic::MemoryManager", "classonert_1_1backend_1_1basic_1_1_memory_manager.html", null ],
+    [ "onert::backend::basic::MemoryManager", "classonert_1_1backend_1_1basic_1_1_memory_manager.html", [
+      [ "onert::backend::train::GradientMemoryManager", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager.html", null ]
+    ] ],
     [ "onert::backend::basic::MemoryPlannerFactory", "classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html", null ],
     [ "onert::backend::train::MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", null ],
     [ "MemoryTracker", "class_memory_tracker.html", null ],
@@ -4193,6 +4194,10 @@ var hierarchy =
       [ "onert::backend::train::optimizer::SGD", "classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html", null ]
     ] ],
     [ "onert::ir::train::OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", null ],
+    [ "argumentparse.Option", "classargumentparse_1_1_option.html", [
+      [ "argumentparse.Optional", "classargumentparse_1_1_optional.html", null ],
+      [ "argumentparse.Positional", "classargumentparse_1_1_positional.html", null ]
+    ] ],
     [ "OptionBuilder.OptionBuilder", "class_option_builder_1_1_option_builder.html", null ],
     [ "luci::CircleOptimizer::Options", "structluci_1_1_circle_optimizer_1_1_options.html", null ],
     [ "luci::CircleQuantizer::Options", "structluci_1_1_circle_quantizer_1_1_options.html", null ],
@@ -4563,6 +4568,7 @@ var hierarchy =
       [ "luci::SubstituteTransposeToReshapePass", "structluci_1_1_substitute_transpose_to_reshape_pass.html", null ],
       [ "luci::TransformMinMaxToRelu6Pass", "structluci_1_1_transform_min_max_to_relu6_pass.html", null ],
       [ "luci::TransformMinReluToRelu6Pass", "structluci_1_1_transform_min_relu_to_relu6_pass.html", null ],
+      [ "luci::TransformSqrtDivToRsqrtMulPass", "structluci_1_1_transform_sqrt_div_to_rsqrt_mul_pass.html", null ],
       [ "luci::UnrollUnidirectionalSequenceLSTMPass", "structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html", null ],
       [ "luci::XpSepActFromTransposeConvPass", "structluci_1_1_xp_sep_act_from_transpose_conv_pass.html", null ],
       [ "moco::ConstantFoldAdd", "classmoco_1_1_constant_fold_add.html", null ],

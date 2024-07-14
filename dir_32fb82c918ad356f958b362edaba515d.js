@@ -11,5 +11,6 @@ var dir_32fb82c918ad356f958b362edaba515d =
     [ "OMInterpreter.h", "_o_m_interpreter_8h.html", "_o_m_interpreter_8h" ],
     [ "OMStatus.h", "_o_m_status_8h.html", "_o_m_status_8h" ],
     [ "OMTrainingInterpreter.h", "_o_m_training_interpreter_8h.html", "_o_m_training_interpreter_8h" ],
+    [ "onert-micro-version.h", "onert-micro_2include_2onert-micro-version_8h.html", "onert-micro_2include_2onert-micro-version_8h" ],
     [ "onert-micro.h", "onert-micro_8h.html", "onert-micro_8h" ]
 ];

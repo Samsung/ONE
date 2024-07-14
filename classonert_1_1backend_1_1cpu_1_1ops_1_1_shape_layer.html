@@ -212,15 +212,15 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_shape_layer_8cc_source.html#l00050">50</a> of file <a class="el" href="_shape_layer_8cc_source.html">ShapeLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::UINT32)</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::UINT32)</div>
 <div class="line"><span class="lineno">   53</span>  {</div>
 <div class="line"><span class="lineno">   54</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;uint32_t&gt;(_output));</div>
 <div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
 <div class="line"><span class="lineno">   57</span>  {</div>
 <div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;int32_t&gt;(_output));</div>
 <div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::INT64)</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
 <div class="line"><span class="lineno">   61</span>  {</div>
 <div class="line"><span class="lineno">   62</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">GetRawShape</a>(_input, getBuffer&lt;int64_t&gt;(_output));</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
@@ -229,10 +229,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   66</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;NYI : not supported output type for ShapeLayer&quot;</span>};</div>
 <div class="line"><span class="lineno">   67</span>  }</div>
 <div class="line"><span class="lineno">   68</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a64a12e50438b6ce7454d211f672bd307"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a64a12e50438b6ce7454d211f672bd307">onert::backend::cpu::ops::GetRawShape</a></div><div class="ttdeci">void GetRawShape(const IPortableTensor *input, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_shape_layer_8cc_source.html#l00035">ShapeLayer.cc:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, and <a class="el" href="_shape_layer_8cc_source.html#l00035">onert::backend::cpu::ops::GetRawShape()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="_shape_layer_8cc_source.html#l00035">onert::backend::cpu::ops::GetRawShape()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00060">package.libnnfw_api_pybind.nnfw_session_wrapper::inference()</a>.</p>
 

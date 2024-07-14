@@ -103,6 +103,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab2efed3c4e4585a34195f252065762a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82739210f45a5effe017bdd5a06e5594" id="r_a82739210f45a5effe017bdd5a06e5594"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_argument_parser.html#a82739210f45a5effe017bdd5a06e5594">print_help</a> (self)</td></tr>
 <tr class="separator:a82739210f45a5effe017bdd5a06e5594"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81a5f8437644e590e0ab66957ff6e553" id="r_a81a5f8437644e590e0ab66957ff6e553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_argument_parser.html#a81a5f8437644e590e0ab66957ff6e553">check_if_valid_option_name</a> (self, *args, **kwargs)</td></tr>
+<tr class="separator:a81a5f8437644e590e0ab66957ff6e553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a882f4dabaf8422e139ed5602d64ee8b4" id="r_a882f4dabaf8422e139ed5602d64ee8b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_argument_parser.html#a882f4dabaf8422e139ed5602d64ee8b4">add_argument</a> (self, *args, **kwargs)</td></tr>
 <tr class="separator:a882f4dabaf8422e139ed5602d64ee8b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e91505136d0dfeec089e93d8b950030" id="r_a2e91505136d0dfeec089e93d8b950030"><td class="memItemLeft" align="right" valign="top">List&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_argument_parser.html#a2e91505136d0dfeec089e93d8b950030">make_cmd</a> (self, SimpleNamespace cfg_args)</td></tr>
@@ -117,12 +119,12 @@ Data Fields</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
-<tr class="memitem:a2f58bf1662a04ce56f4343651dc0fbd8" id="r_a2f58bf1662a04ce56f4343651dc0fbd8"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_argument_parser.html#a2f58bf1662a04ce56f4343651dc0fbd8">_SUPPORTED_ACTIONS</a> = [<a class="el" href="classargumentparse_1_1_driver_name.html">DriverName</a>, <a class="el" href="classargumentparse_1_1_normal_option.html">NormalOption</a>, <a class="el" href="classargumentparse_1_1_target_option.html">TargetOption</a>]</td></tr>
-<tr class="separator:a2f58bf1662a04ce56f4343651dc0fbd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa02e9e7b51f0110cc28f318aa37fae73" id="r_aa02e9e7b51f0110cc28f318aa37fae73"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classargumentparse_1_1_argument_parser.html#aa02e9e7b51f0110cc28f318aa37fae73">_SUPPORTED_ACTION_TYPE</a> = [<a class="el" href="classargumentparse_1_1_driver_name.html">DriverName</a>, <a class="el" href="classargumentparse_1_1_normal_option.html">NormalOption</a>, <a class="el" href="classargumentparse_1_1_target_option.html">TargetOption</a>]</td></tr>
+<tr class="separator:aa02e9e7b51f0110cc28f318aa37fae73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00106">106</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00118">118</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab2efed3c4e4585a34195f252065762a0" name="ab2efed3c4e4585a34195f252065762a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2efed3c4e4585a34195f252065762a0">&#9670;&#160;</a></span>__init__()</h2>
@@ -140,14 +142,16 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00109">109</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>    <span class="keyword">def </span>__init__(self):</div>
-<div class="line"><span class="lineno">  110</span>        self._actions: List[Tuple[str, Action, Union[Type[str], Type[bool]]]] = list()</div>
-<div class="line"><span class="lineno">  111</span>        self.driver: str = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  112</span>        self.target: str = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  113</span> </div>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00121">121</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>    <span class="keyword">def </span>__init__(self):</div>
+<div class="line"><span class="lineno">  122</span>        <span class="comment"># List[args, action type, data type, option type]</span></div>
+<div class="line"><span class="lineno">  123</span>        self._actions: List[Tuple[Tuple[str], Action, Union[Type[str], Type[</div>
+<div class="line"><span class="lineno">  124</span>            bool]]]] = list()</div>
+<div class="line"><span class="lineno">  125</span>        self.driver: str = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  126</span>        self.target: str = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  127</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00145">argumentparse.ArgumentParser.driver</a>, <a class="el" href="_command_8py_source.html#l00023">Command.Command.driver</a>, <a class="el" href="argumentparse_8py_source.html#l00150">argumentparse.ArgumentParser.target</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00058">CfgRunner.CfgRunner.target</a>.</p>
+<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00167">argumentparse.ArgumentParser.driver</a>, <a class="el" href="_command_8py_source.html#l00023">Command.Command.driver</a>, <a class="el" href="argumentparse_8py_source.html#l00180">argumentparse.ArgumentParser.target</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00058">CfgRunner.CfgRunner.target</a>.</p>
 
 </div>
 </div>
@@ -184,30 +188,86 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00128">128</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>    <span class="keyword">def </span>add_argument(self, *args, **kwargs):</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39;action&#39;</span> <span class="keywordflow">in</span> kwargs:</div>
-<div class="line"><span class="lineno">  130</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;&quot;action&quot; keyword argument is required&#39;</span>)</div>
-<div class="line"><span class="lineno">  131</span>        action = kwargs[<span class="stringliteral">&#39;action&#39;</span>]</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> action <span class="keywordflow">in</span> self._SUPPORTED_ACTIONS:</div>
-<div class="line"><span class="lineno">  133</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Invalid action&#39;</span>)</div>
-<div class="line"><span class="lineno">  134</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> args:</div>
-<div class="line"><span class="lineno">  135</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Invalid option name&#39;</span>)</div>
-<div class="line"><span class="lineno">  136</span>        dtype = kwargs.get(<span class="stringliteral">&#39;dtype&#39;</span>, str)</div>
-<div class="line"><span class="lineno">  137</span>        <span class="comment"># use first option.</span></div>
-<div class="line"><span class="lineno">  138</span>        arg = args[0]</div>
-<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">if</span> dtype == bool <span class="keywordflow">and</span> action != NormalOption:</div>
-<div class="line"><span class="lineno">  140</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Only normal option can be boolean type&#39;</span>)</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">if</span> dtype == bool <span class="keywordflow">and</span> <span class="keywordflow">not</span> all(a.startswith(<span class="stringliteral">&#39;-&#39;</span>) <span class="keywordflow">for</span> a <span class="keywordflow">in</span> args):</div>
-<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Boolean type option should start with dash(&quot;-&quot;)&#39;</span>)</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">if</span> action == DriverName:</div>
-<div class="line"><span class="lineno">  145</span>            self.driver = arg</div>
-<div class="line"><span class="lineno">  146</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  147</span>            self._actions.append((arg, kwargs[<span class="stringliteral">&#39;action&#39;</span>], dtype))</div>
-<div class="line"><span class="lineno">  148</span> </div>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00160">160</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  160</span>    <span class="keyword">def </span>add_argument(self, *args, **kwargs):</div>
+<div class="line"><span class="lineno">  161</span>        self.check_if_valid_option_name(*args, **kwargs)</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>        action = kwargs[<span class="stringliteral">&#39;action&#39;</span>]</div>
+<div class="line"><span class="lineno">  164</span>        dtype = kwargs.get(<span class="stringliteral">&#39;dtype&#39;</span>, str)</div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">if</span> action == DriverName:</div>
+<div class="line"><span class="lineno">  166</span>            <span class="keyword">assert</span> len(args) == 1</div>
+<div class="line"><span class="lineno">  167</span>            self.driver = args[0]</div>
+<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  169</span>            <span class="keywordflow">if</span> all(a.startswith(<span class="stringliteral">&#39;-&#39;</span>) <span class="keywordflow">for</span> a <span class="keywordflow">in</span> args):</div>
+<div class="line"><span class="lineno">  170</span>                otype = Optional</div>
+<div class="line"><span class="lineno">  171</span>            <span class="keywordflow">elif</span> all(<span class="keywordflow">not</span> a.startswith(<span class="stringliteral">&#39;-&#39;</span>) <span class="keywordflow">for</span> a <span class="keywordflow">in</span> args):</div>
+<div class="line"><span class="lineno">  172</span>                otype = Positional</div>
+<div class="line"><span class="lineno">  173</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  174</span>                <span class="keywordflow">raise</span> RuntimeError(</div>
+<div class="line"><span class="lineno">  175</span>                    <span class="stringliteral">&#39;Invalid option names. Only either of option type is allowed: positional or optional&#39;</span></div>
+<div class="line"><span class="lineno">  176</span>                )</div>
+<div class="line"><span class="lineno">  177</span>            self._actions.append((args, kwargs[<span class="stringliteral">&#39;action&#39;</span>], dtype, otype))</div>
+<div class="line"><span class="lineno">  178</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00107">argumentparse.ArgumentParser._SUPPORTED_ACTIONS</a>.</p>
+<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00142">argumentparse.ArgumentParser.check_if_valid_option_name()</a>.</p>
+
+</div>
+</div>
+<a id="a81a5f8437644e590e0ab66957ff6e553" name="a81a5f8437644e590e0ab66957ff6e553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81a5f8437644e590e0ab66957ff6e553">&#9670;&#160;</a></span>check_if_valid_option_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">argumentparse.ArgumentParser.check_if_valid_option_name </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">*&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">**&#160;</td>
+          <td class="paramname"><em>kwargs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00142">142</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>    <span class="keyword">def </span>check_if_valid_option_name(self, *args, **kwargs):</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39;action&#39;</span> <span class="keywordflow">in</span> kwargs:</div>
+<div class="line"><span class="lineno">  144</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;&quot;action&quot; keyword argument is required&#39;</span>)</div>
+<div class="line"><span class="lineno">  145</span> </div>
+<div class="line"><span class="lineno">  146</span>        action = kwargs[<span class="stringliteral">&#39;action&#39;</span>]</div>
+<div class="line"><span class="lineno">  147</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> action <span class="keywordflow">in</span> self._SUPPORTED_ACTION_TYPE:</div>
+<div class="line"><span class="lineno">  148</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Invalid action&#39;</span>)</div>
+<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> args:</div>
+<div class="line"><span class="lineno">  150</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Invalid option name&#39;</span>)</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">if</span> action == DriverName <span class="keywordflow">and</span> len(args) &gt;= 2:</div>
+<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;onecc doesn\&#39;t support multiple driver name&#39;</span>)</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>        dtype = kwargs.get(<span class="stringliteral">&#39;dtype&#39;</span>, str)</div>
+<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">if</span> dtype == bool <span class="keywordflow">and</span> action != NormalOption:</div>
+<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Only normal option can be boolean type&#39;</span>)</div>
+<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">if</span> dtype == bool <span class="keywordflow">and</span> <span class="keywordflow">not</span> all(a.startswith(<span class="stringliteral">&#39;-&#39;</span>) <span class="keywordflow">for</span> a <span class="keywordflow">in</span> args):</div>
+<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;Boolean type option should start with dash(&quot;-&quot;)&#39;</span>)</div>
+<div class="line"><span class="lineno">  159</span> </div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00119">argumentparse.ArgumentParser._SUPPORTED_ACTION_TYPE</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00160">argumentparse.ArgumentParser.add_argument()</a>.</p>
 
 </div>
 </div>
@@ -237,51 +297,62 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00149">149</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  149</span>    <span class="keyword">def </span><a class="code hl_namespace" href="namespacemake__cmd.html">make_cmd</a>(self, cfg_args: SimpleNamespace) -&gt; List:</div>
-<div class="line"><span class="lineno">  150</span>        <span class="keyword">assert</span> self.target, <span class="stringliteral">&quot;Target should be set before making commands&quot;</span></div>
-<div class="line"><span class="lineno">  151</span>        <span class="keyword">assert</span> self.driver, <span class="stringliteral">&quot;Driver should be set before making commands&quot;</span></div>
-<div class="line"><span class="lineno">  152</span>        <span class="comment"># find driver path</span></div>
-<div class="line"><span class="lineno">  153</span>        driver_name = self.driver</div>
-<div class="line"><span class="lineno">  154</span>        driver_list = <a class="code hl_function" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a>(driver_name)</div>
-<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_list:</div>
-<div class="line"><span class="lineno">  156</span>            driver_list = [shutil.which(driver_name)]</div>
-<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_list:</div>
-<div class="line"><span class="lineno">  158</span>                <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&#39;{driver_name} not found&#39;</span>)</div>
-<div class="line"><span class="lineno">  159</span>        <span class="comment"># use first driver</span></div>
-<div class="line"><span class="lineno">  160</span>        driver_path = driver_list[0]</div>
-<div class="line"><span class="lineno">  161</span>        cmd: List = [driver_path]</div>
-<div class="line"><span class="lineno">  162</span>        invalid_options = list(cfg_args.__dict__.keys())</div>
-<div class="line"><span class="lineno">  163</span>        <span class="comment"># traverse the action in order and make commands</span></div>
-<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">for</span> action <span class="keywordflow">in</span> self._actions:</div>
-<div class="line"><span class="lineno">  165</span>            arg, act, dtype = action</div>
-<div class="line"><span class="lineno">  166</span>            <span class="keyword">assert</span> act <span class="keywordflow">in</span> [NormalOption, TargetOption]</div>
-<div class="line"><span class="lineno">  167</span>            <span class="comment"># positional input doesn&#39;t have dash(-) in the string</span></div>
-<div class="line"><span class="lineno">  168</span>            option_name = arg</div>
-<div class="line"><span class="lineno">  169</span>            <span class="comment"># optional input</span></div>
-<div class="line"><span class="lineno">  170</span>            <span class="keywordflow">if</span> arg.startswith(<span class="stringliteral">&#39;--&#39;</span>):</div>
-<div class="line"><span class="lineno">  171</span>                option_name = arg[len(<span class="stringliteral">&#39;--&#39;</span>):]</div>
-<div class="line"><span class="lineno">  172</span>            <span class="keywordflow">elif</span> arg.startswith(<span class="stringliteral">&#39;-&#39;</span>):</div>
-<div class="line"><span class="lineno">  173</span>                option_name = arg[len(<span class="stringliteral">&#39;-&#39;</span>):]</div>
-<div class="line"><span class="lineno">  174</span> </div>
-<div class="line"><span class="lineno">  175</span>            <span class="keywordflow">if</span> act == NormalOption:</div>
-<div class="line"><span class="lineno">  176</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> oneutils.is_valid_attr(cfg_args, option_name):</div>
-<div class="line"><span class="lineno">  177</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  178</span>                <span class="keywordflow">if</span> dtype == bool <span class="keywordflow">and</span> getattr(cfg_args, option_name).lower() == <span class="stringliteral">&quot;false&quot;</span>:</div>
-<div class="line"><span class="lineno">  179</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  180</span>            <span class="keywordflow">if</span> arg.startswith(<span class="stringliteral">&#39;-&#39;</span>):</div>
-<div class="line"><span class="lineno">  181</span>                cmd += [arg]</div>
-<div class="line"><span class="lineno">  182</span>            <span class="keywordflow">if</span> act == TargetOption:</div>
-<div class="line"><span class="lineno">  183</span>                cmd += [self.target]</div>
-<div class="line"><span class="lineno">  184</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  185</span>                <span class="keyword">assert</span> act == NormalOption</div>
-<div class="line"><span class="lineno">  186</span>                <span class="keywordflow">if</span> dtype == str:</div>
-<div class="line"><span class="lineno">  187</span>                    cmd += [getattr(cfg_args, option_name)]</div>
-<div class="line"><span class="lineno">  188</span>                    invalid_options.remove(option_name)</div>
-<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> len(invalid_options):</div>
-<div class="line"><span class="lineno">  190</span>            print(f<span class="stringliteral">&#39;WARNING: there are invalid options {invalid_options}&#39;</span>)</div>
-<div class="line"><span class="lineno">  191</span>            self.print_help()</div>
-<div class="line"><span class="lineno">  192</span>        <span class="keywordflow">return</span> cmd</div>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00179">179</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  179</span>    <span class="keyword">def </span><a class="code hl_namespace" href="namespacemake__cmd.html">make_cmd</a>(self, cfg_args: SimpleNamespace) -&gt; List:</div>
+<div class="line"><span class="lineno">  180</span>        <span class="keyword">assert</span> self.target, <span class="stringliteral">&quot;Target should be set before making commands&quot;</span></div>
+<div class="line"><span class="lineno">  181</span>        <span class="keyword">assert</span> self.driver, <span class="stringliteral">&quot;Driver should be set before making commands&quot;</span></div>
+<div class="line"><span class="lineno">  182</span>        <span class="comment"># find driver path</span></div>
+<div class="line"><span class="lineno">  183</span>        driver_name = self.driver</div>
+<div class="line"><span class="lineno">  184</span>        driver_list = <a class="code hl_function" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a>(driver_name)</div>
+<div class="line"><span class="lineno">  185</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_list:</div>
+<div class="line"><span class="lineno">  186</span>            driver_list = [shutil.which(driver_name)]</div>
+<div class="line"><span class="lineno">  187</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_list:</div>
+<div class="line"><span class="lineno">  188</span>                <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&#39;{driver_name} not found&#39;</span>)</div>
+<div class="line"><span class="lineno">  189</span>        <span class="comment"># use first driver</span></div>
+<div class="line"><span class="lineno">  190</span>        driver_path = driver_list[0]</div>
+<div class="line"><span class="lineno">  191</span>        cmd: List = [driver_path]</div>
+<div class="line"><span class="lineno">  192</span>        invalid_options = list(cfg_args.__dict__.keys())</div>
+<div class="line"><span class="lineno">  193</span>        <span class="comment"># traverse the action in order and make commands</span></div>
+<div class="line"><span class="lineno">  194</span>        <span class="keywordflow">for</span> action <span class="keywordflow">in</span> self._actions:</div>
+<div class="line"><span class="lineno">  195</span>            args, act, dtype, otype = action</div>
+<div class="line"><span class="lineno">  196</span>            <span class="keyword">assert</span> act <span class="keywordflow">in</span> [NormalOption, TargetOption]</div>
+<div class="line"><span class="lineno">  197</span>            <span class="keywordflow">if</span> otype == Optional:</div>
+<div class="line"><span class="lineno">  198</span>                option_names = []</div>
+<div class="line"><span class="lineno">  199</span>                <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> args:</div>
+<div class="line"><span class="lineno">  200</span>                    <span class="keywordflow">if</span> arg.startswith(<span class="stringliteral">&#39;--&#39;</span>):</div>
+<div class="line"><span class="lineno">  201</span>                        option_names.append(arg[len(<span class="stringliteral">&#39;--&#39;</span>):])</div>
+<div class="line"><span class="lineno">  202</span>                    <span class="keywordflow">elif</span> arg.startswith(<span class="stringliteral">&#39;-&#39;</span>):</div>
+<div class="line"><span class="lineno">  203</span>                        option_names.append(arg[len(<span class="stringliteral">&#39;-&#39;</span>):])</div>
+<div class="line"><span class="lineno">  204</span>            <span class="keywordflow">elif</span> otype == Positional:</div>
+<div class="line"><span class="lineno">  205</span>                option_names = args</div>
+<div class="line"><span class="lineno">  206</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  207</span>                <span class="keyword">assert</span> <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">  208</span> </div>
+<div class="line"><span class="lineno">  209</span>            given_option = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  210</span>            <span class="keywordflow">if</span> act == NormalOption:</div>
+<div class="line"><span class="lineno">  211</span>                <span class="keywordflow">for</span> option_name <span class="keywordflow">in</span> option_names:</div>
+<div class="line"><span class="lineno">  212</span>                    <span class="keywordflow">if</span> oneutils.is_valid_attr(cfg_args, option_name):</div>
+<div class="line"><span class="lineno">  213</span>                        given_option = option_name</div>
+<div class="line"><span class="lineno">  214</span>                        <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">  215</span>                <span class="keywordflow">if</span> <span class="keywordflow">not</span> given_option:</div>
+<div class="line"><span class="lineno">  216</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  217</span>                <span class="keywordflow">if</span> dtype == bool <span class="keywordflow">and</span> given_option.lower() == <span class="stringliteral">&quot;false&quot;</span>:</div>
+<div class="line"><span class="lineno">  218</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  219</span>            <span class="keywordflow">if</span> otype == Optional:</div>
+<div class="line"><span class="lineno">  220</span>                <span class="comment"># use first option</span></div>
+<div class="line"><span class="lineno">  221</span>                cmd += [args[0]]</div>
+<div class="line"><span class="lineno">  222</span>            <span class="keywordflow">if</span> act == TargetOption:</div>
+<div class="line"><span class="lineno">  223</span>                cmd += [self.target]</div>
+<div class="line"><span class="lineno">  224</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  225</span>                <span class="keyword">assert</span> act == NormalOption</div>
+<div class="line"><span class="lineno">  226</span>                <span class="keywordflow">if</span> dtype == str:</div>
+<div class="line"><span class="lineno">  227</span>                    cmd += [getattr(cfg_args, given_option)]</div>
+<div class="line"><span class="lineno">  228</span>                invalid_options.remove(given_option)</div>
+<div class="line"><span class="lineno">  229</span> </div>
+<div class="line"><span class="lineno">  230</span>        <span class="keywordflow">if</span> len(invalid_options):</div>
+<div class="line"><span class="lineno">  231</span>            print(f<span class="stringliteral">&#39;WARNING: there are invalid options {invalid_options}&#39;</span>)</div>
+<div class="line"><span class="lineno">  232</span>            self.print_help()</div>
+<div class="line"><span class="lineno">  233</span>        <span class="keywordflow">return</span> cmd</div>
 <div class="ttc" id="anamespacebackends_html_a434b047085c0ef9f50bd5be9edf0d999"><div class="ttname"><a href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a></div><div class="ttdeci">get_list(cmdname)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00042">backends.py:42</a></div></div>
 <div class="ttc" id="anamespacemake__cmd_html"><div class="ttname"><a href="namespacemake__cmd.html">make_cmd</a></div><div class="ttdef"><b>Definition</b> <a href="make__cmd_8py_source.html#l00001">make_cmd.py:1</a></div></div>
 </div><!-- fragment -->
@@ -303,29 +374,29 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00114">114</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>    <span class="keyword">def </span>print_help(self):</div>
-<div class="line"><span class="lineno">  115</span>        backends_list = <a class="code hl_function" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a>(self.driver)</div>
-<div class="line"><span class="lineno">  116</span>        driver_path = <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> backends_list:</div>
-<div class="line"><span class="lineno">  118</span>            <span class="keywordflow">if</span> ntpath.basename(cand) == self.driver:</div>
-<div class="line"><span class="lineno">  119</span>                driver_path = cand</div>
-<div class="line"><span class="lineno">  120</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_path:</div>
-<div class="line"><span class="lineno">  121</span>            driver_path = shutil.which(self.driver)</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_path:</div>
-<div class="line"><span class="lineno">  124</span>            <span class="keywordflow">raise</span> FileNotFoundError(self.driver + <span class="stringliteral">&#39; not found&#39;</span>)</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>        oneutils.run([driver_path, <span class="stringliteral">&#39;-h&#39;</span>], err_prefix=self.driver)</div>
-<div class="line"><span class="lineno">  127</span> </div>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00128">128</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span>    <span class="keyword">def </span>print_help(self):</div>
+<div class="line"><span class="lineno">  129</span>        backends_list = <a class="code hl_function" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a>(self.driver)</div>
+<div class="line"><span class="lineno">  130</span>        driver_path = <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> backends_list:</div>
+<div class="line"><span class="lineno">  132</span>            <span class="keywordflow">if</span> ntpath.basename(cand) == self.driver:</div>
+<div class="line"><span class="lineno">  133</span>                driver_path = cand</div>
+<div class="line"><span class="lineno">  134</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_path:</div>
+<div class="line"><span class="lineno">  135</span>            driver_path = shutil.which(self.driver)</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> driver_path:</div>
+<div class="line"><span class="lineno">  138</span>            <span class="keywordflow">raise</span> FileNotFoundError(self.driver + <span class="stringliteral">&#39; not found&#39;</span>)</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span>        oneutils.run([driver_path, <span class="stringliteral">&#39;-h&#39;</span>], err_prefix=self.driver)</div>
+<div class="line"><span class="lineno">  141</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00145">argumentparse.ArgumentParser.driver</a>, <a class="el" href="_command_8py_source.html#l00023">Command.Command.driver</a>, and <a class="el" href="backends_8py_source.html#l00042">backends.get_list()</a>.</p>
+<p class="reference">References <a class="el" href="argumentparse_8py_source.html#l00167">argumentparse.ArgumentParser.driver</a>, <a class="el" href="_command_8py_source.html#l00023">Command.Command.driver</a>, and <a class="el" href="backends_8py_source.html#l00042">backends.get_list()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
-<a id="a2f58bf1662a04ce56f4343651dc0fbd8" name="a2f58bf1662a04ce56f4343651dc0fbd8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f58bf1662a04ce56f4343651dc0fbd8">&#9670;&#160;</a></span>_SUPPORTED_ACTIONS</h2>
+<a id="aa02e9e7b51f0110cc28f318aa37fae73" name="aa02e9e7b51f0110cc28f318aa37fae73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa02e9e7b51f0110cc28f318aa37fae73">&#9670;&#160;</a></span>_SUPPORTED_ACTION_TYPE</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -334,7 +405,7 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">list argumentparse.ArgumentParser._SUPPORTED_ACTIONS = [<a class="el" href="classargumentparse_1_1_driver_name.html">DriverName</a>, <a class="el" href="classargumentparse_1_1_normal_option.html">NormalOption</a>, <a class="el" href="classargumentparse_1_1_target_option.html">TargetOption</a>]</td>
+          <td class="memname">list argumentparse.ArgumentParser._SUPPORTED_ACTION_TYPE = [<a class="el" href="classargumentparse_1_1_driver_name.html">DriverName</a>, <a class="el" href="classargumentparse_1_1_normal_option.html">NormalOption</a>, <a class="el" href="classargumentparse_1_1_target_option.html">TargetOption</a>]</td>
         </tr>
       </table>
   </td>
@@ -344,9 +415,9 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00107">107</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00119">119</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00128">argumentparse.ArgumentParser.add_argument()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00142">argumentparse.ArgumentParser.check_if_valid_option_name()</a>.</p>
 
 </div>
 </div>
@@ -362,9 +433,9 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00145">145</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00167">167</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00109">argumentparse.ArgumentParser.__init__()</a>, <a class="el" href="argumentparse_8py_source.html#l00114">argumentparse.ArgumentParser.print_help()</a>, and <a class="el" href="_command_8py_source.html#l00052">Command.Command.run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00121">argumentparse.ArgumentParser.__init__()</a>, <a class="el" href="argumentparse_8py_source.html#l00128">argumentparse.ArgumentParser.print_help()</a>, and <a class="el" href="_command_8py_source.html#l00052">Command.Command.run()</a>.</p>
 
 </div>
 </div>
@@ -380,9 +451,9 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00150">150</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="argumentparse_8py_source.html#l00180">180</a> of file <a class="el" href="argumentparse_8py_source.html">argumentparse.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00109">argumentparse.ArgumentParser.__init__()</a>, <a class="el" href="_cfg_runner_8py_source.html#l00104">CfgRunner.CfgRunner.run()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00098">CfgRunner.CfgRunner.set_target()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00121">argumentparse.ArgumentParser.__init__()</a>, <a class="el" href="_cfg_runner_8py_source.html#l00104">CfgRunner.CfgRunner.run()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00098">CfgRunner.CfgRunner.set_target()</a>.</p>
 
 </div>
 </div>

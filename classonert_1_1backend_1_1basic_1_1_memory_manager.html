@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1basic_1_1_mem
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">onert::backend::basic::MemoryManager Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -115,6 +116,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acc7a7ac48fd2842dceac5b68038dbba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add9c9f27bed4f32c0e7f5baff11eea21" id="r_add9c9f27bed4f32c0e7f5baff11eea21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#add9c9f27bed4f32c0e7f5baff11eea21">releasePlan</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind)</td></tr>
 <tr class="separator:add9c9f27bed4f32c0e7f5baff11eea21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:af913722bfab172e80dc3748cb608f957" id="r_af913722bfab172e80dc3748cb608f957"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>, <a class="el" href="structonert_1_1backend_1_1basic_1_1_block.html">Block</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#af913722bfab172e80dc3748cb608f957">_tensor_mem_map</a></td></tr>
+<tr class="separator:af913722bfab172e80dc3748cb608f957"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a9faad48956edef0910fe9da64edc4" id="r_ad9a9faad48956edef0910fe9da64edc4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a></td></tr>
+<tr class="separator:ad9a9faad48956edef0910fe9da64edc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a855c646a5a221ab629a90ffe07256ff3" id="r_a855c646a5a221ab629a90ffe07256ff3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1basic_1_1_allocator.html">Allocator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#a855c646a5a221ab629a90ffe07256ff3">_mem_alloc</a></td></tr>
+<tr class="separator:a855c646a5a221ab629a90ffe07256ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -136,10 +146,11 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00032">32</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>                             : _mem_planner{createMemoryPlanner()}</div>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>                             : <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>{createMemoryPlanner()}</div>
 <div class="line"><span class="lineno">   33</span>{</div>
 <div class="line"><span class="lineno">   34</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   35</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_memory_manager_html_ad9a9faad48956edef0910fe9da64edc4"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">onert::backend::basic::MemoryManager::_mem_planner</a></div><div class="ttdeci">std::shared_ptr&lt; IMemoryPlanner&lt; ir::OperandIndex &gt; &gt; _mem_planner</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00054">MemoryManager.h:54</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -160,7 +171,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00037">37</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>  : _mem_planner{createMemoryPlanner(planner_id)}</div>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>{createMemoryPlanner(planner_id)}</div>
 <div class="line"><span class="lineno">   39</span>{</div>
 <div class="line"><span class="lineno">   40</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   41</span>}</div>
@@ -213,10 +224,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00062">62</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
-<div class="line"><span class="lineno">   64</span>  _mem_alloc = std::make_shared&lt;basic::Allocator&gt;(_mem_planner-&gt;capacity());</div>
-<div class="line"><span class="lineno">   65</span>  assert(_mem_alloc-&gt;base());</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#a855c646a5a221ab629a90ffe07256ff3">_mem_alloc</a> = std::make_shared&lt;basic::Allocator&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>-&gt;capacity());</div>
+<div class="line"><span class="lineno">   65</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#a855c646a5a221ab629a90ffe07256ff3">_mem_alloc</a>-&gt;base());</div>
 <div class="line"><span class="lineno">   66</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_memory_manager_html_a855c646a5a221ab629a90ffe07256ff3"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#a855c646a5a221ab629a90ffe07256ff3">onert::backend::basic::MemoryManager::_mem_alloc</a></div><div class="ttdeci">std::shared_ptr&lt; Allocator &gt; _mem_alloc</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00055">MemoryManager.h:55</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00055">_mem_alloc</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00054">_mem_planner</a>.</p>
+
 </div>
 </div>
 <a id="acc7a7ac48fd2842dceac5b68038dbba2" name="acc7a7ac48fd2842dceac5b68038dbba2"></a>
@@ -247,11 +261,11 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00055">55</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  _mem_planner-&gt;claim(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   57</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>-&gt;claim(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00054">_mem_planner</a>, <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aaac094797bf0270dfc07cadcc4d3ced8">onert::backend::basic::IMemoryPlanner&lt; Index &gt;::claim()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -280,8 +294,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00043">43</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{ _mem_alloc-&gt;release(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#a855c646a5a221ab629a90ffe07256ff3">_mem_alloc</a>-&gt;release(); }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00055">_mem_alloc</a>.</p>
+
 </div>
 </div>
 <a id="afa9689512561633627a8403c6fa353f0" name="afa9689512561633627a8403c6fa353f0"></a>
@@ -302,11 +318,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00068">68</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
-<div class="line"><span class="lineno">   70</span>  assert(_mem_planner-&gt;memory_plans().find(ind) != _mem_planner-&gt;memory_plans().end());</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;mem_blk = _mem_planner-&gt;memory_plans().at(ind);</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">return</span> _mem_alloc-&gt;base() + mem_blk.offset;</div>
+<div class="line"><span class="lineno">   70</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>-&gt;memory_plans().find(ind) != <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>-&gt;memory_plans().end());</div>
+<div class="line"><span class="lineno">   71</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;mem_blk = <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>-&gt;memory_plans().at(ind);</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#a855c646a5a221ab629a90ffe07256ff3">_mem_alloc</a>-&gt;base() + mem_blk.offset;</div>
 <div class="line"><span class="lineno">   73</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00055">_mem_alloc</a>, and <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00054">_mem_planner</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#aa0068e979dc79b8e672e72e2583884b2">~MemoryManager()</a>.</p>
 
 </div>
@@ -328,8 +346,87 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00060">60</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ _mem_planner-&gt;release(ind); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html#ad9a9faad48956edef0910fe9da64edc4">_mem_planner</a>-&gt;release(ind); }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00054">_mem_planner</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="a855c646a5a221ab629a90ffe07256ff3" name="a855c646a5a221ab629a90ffe07256ff3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a855c646a5a221ab629a90ffe07256ff3">&#9670;&#160;</a></span>_mem_alloc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classonert_1_1backend_1_1basic_1_1_allocator.html">Allocator</a>&gt; onert::backend::basic::MemoryManager::_mem_alloc</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00055">55</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00039">onert::backend::train::GradientMemoryManager::allocate()</a>, <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00062">allocate()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00043">deallocate()</a>, and <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00068">getBuffer()</a>.</p>
+
+</div>
+</div>
+<a id="ad9a9faad48956edef0910fe9da64edc4" name="ad9a9faad48956edef0910fe9da64edc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9a9faad48956edef0910fe9da64edc4">&#9670;&#160;</a></span>_mem_planner</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html">IMemoryPlanner</a>&lt;<a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>&gt; &gt; onert::backend::basic::MemoryManager::_mem_planner</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00054">54</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00039">onert::backend::train::GradientMemoryManager::allocate()</a>, <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00062">allocate()</a>, <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00055">claimPlan()</a>, <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00068">getBuffer()</a>, <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00048">onert::backend::train::GradientMemoryManager::getOptVarBuffer()</a>, and <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00060">releasePlan()</a>.</p>
+
+</div>
+</div>
+<a id="af913722bfab172e80dc3748cb608f957" name="af913722bfab172e80dc3748cb608f957"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af913722bfab172e80dc3748cb608f957">&#9670;&#160;</a></span>_tensor_mem_map</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;<a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>, <a class="el" href="structonert_1_1backend_1_1basic_1_1_block.html">Block</a>&gt; onert::backend::basic::MemoryManager::_tensor_mem_map</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

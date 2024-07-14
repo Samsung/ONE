@@ -4,6 +4,7 @@ var classonert_1_1ir_1_1train_1_1_i_trainable_operation =
     [ "accept", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea", null ],
     [ "accept", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#ae16b898bc9069ca025a48357919cc054", null ],
     [ "clone", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#acd0efa445dca5be670a079b17cf88410", null ],
+    [ "disableBackward", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a92ea0343608f4045ba4a3830aee24f02", null ],
     [ "disableWeightsUpdate", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#ae892d701287702c42fd6ae1a429c4882", null ],
     [ "enableBackward", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#aa4ceb386f8fcf750c14890b3c6fee25e", null ],
     [ "enableWeightsUpdate", "classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a6908da219bd953775204fed4195c6c63", null ],

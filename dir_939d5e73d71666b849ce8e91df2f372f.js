@@ -123,6 +123,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "SubstituteTransposeToReshapePass.cpp", "_substitute_transpose_to_reshape_pass_8cpp.html", null ],
     [ "TransformMinMaxToRelu6Pass.cpp", "_transform_min_max_to_relu6_pass_8cpp.html", null ],
     [ "TransformMinReluToRelu6Pass.cpp", "_transform_min_relu_to_relu6_pass_8cpp.html", null ],
+    [ "TransformSqrtDivToRsqrtMulPass.cpp", "_transform_sqrt_div_to_rsqrt_mul_pass_8cpp.html", null ],
     [ "UnrollUnidirectionalSequenceLSTMPass.cpp", "_unroll_unidirectional_sequence_l_s_t_m_pass_8cpp.html", null ],
     [ "VerifyQuantizedBiasScale.cpp", "_verify_quantized_bias_scale_8cpp.html", "_verify_quantized_bias_scale_8cpp" ],
     [ "VerifyQuantizedBiasScale.h", "_verify_quantized_bias_scale_8h.html", "_verify_quantized_bias_scale_8h" ],

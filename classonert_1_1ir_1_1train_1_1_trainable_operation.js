@@ -1,6 +1,7 @@
 var classonert_1_1ir_1_1train_1_1_trainable_operation =
 [
     [ "~TrainableOperation", "classonert_1_1ir_1_1train_1_1_trainable_operation.html#a5950c663c940d285e7274fdea6d83035", null ],
+    [ "disableBackward", "classonert_1_1ir_1_1train_1_1_trainable_operation.html#a32e7a5e93e156443486c1504fb6fbbad", null ],
     [ "disableWeightsUpdate", "classonert_1_1ir_1_1train_1_1_trainable_operation.html#a5dd5834d979827973a9da7c3d56de493", null ],
     [ "enableBackward", "classonert_1_1ir_1_1train_1_1_trainable_operation.html#adba89bb4bdc0f6426cd152cfa321f7d5", null ],
     [ "enableWeightsUpdate", "classonert_1_1ir_1_1train_1_1_trainable_operation.html#a15977b3dcb84859c22f2f8645dde285f", null ],

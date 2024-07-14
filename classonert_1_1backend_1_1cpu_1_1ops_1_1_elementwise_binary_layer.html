@@ -208,11 +208,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  136</span>  <span class="keywordflow">switch</span> (op_type)</div>
 <div class="line"><span class="lineno">  137</span>  {</div>
 <div class="line"><span class="lineno">  138</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a47d7da92f8fee9486cb83971585bb449">ElementwiseBinaryType::kFloorDiv</a>:</div>
-<div class="line"><span class="lineno">  139</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  139</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  140</span>      {</div>
 <div class="line"><span class="lineno">  141</span>        _kernel = FloorDivGeneric&lt;float&gt;;</div>
 <div class="line"><span class="lineno">  142</span>      }</div>
-<div class="line"><span class="lineno">  143</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">  143</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
 <div class="line"><span class="lineno">  144</span>      {</div>
 <div class="line"><span class="lineno">  145</span>        _kernel = FloorDivGeneric&lt;int32_t&gt;;</div>
 <div class="line"><span class="lineno">  146</span>      }</div>
@@ -222,11 +222,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  150</span>      }</div>
 <div class="line"><span class="lineno">  151</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  152</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a43eb898e59655465ff4d56119c78d918">ElementwiseBinaryType::kFloorMod</a>:</div>
-<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  154</span>      {</div>
 <div class="line"><span class="lineno">  155</span>        _kernel = FloorModGeneric&lt;float&gt;;</div>
 <div class="line"><span class="lineno">  156</span>      }</div>
-<div class="line"><span class="lineno">  157</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::INT64)</div>
+<div class="line"><span class="lineno">  157</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT64)</div>
 <div class="line"><span class="lineno">  158</span>      {</div>
 <div class="line"><span class="lineno">  159</span>        _kernel = FloorModGeneric&lt;int64_t&gt;;</div>
 <div class="line"><span class="lineno">  160</span>      }</div>
@@ -236,7 +236,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  164</span>      }</div>
 <div class="line"><span class="lineno">  165</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  166</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a9f14781fea932e09468c5caf0ea3fa20">ElementwiseBinaryType::kLogicalAnd</a>:</div>
-<div class="line"><span class="lineno">  167</span>      <span class="keywordflow">if</span> ((_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::BOOL8) &amp;&amp; (_rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::BOOL8))</div>
+<div class="line"><span class="lineno">  167</span>      <span class="keywordflow">if</span> ((_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::BOOL8) &amp;&amp; (_rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::BOOL8))</div>
 <div class="line"><span class="lineno">  168</span>      {</div>
 <div class="line"><span class="lineno">  169</span>        <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
 <div class="line"><span class="lineno">  170</span>        _kernel = logicalAndGeneric&lt;bool&gt;;</div>
@@ -247,7 +247,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  175</span>      }</div>
 <div class="line"><span class="lineno">  176</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  177</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a042f39505780f220562e878fef7df121">ElementwiseBinaryType::kLogicalOr</a>:</div>
-<div class="line"><span class="lineno">  178</span>      <span class="keywordflow">if</span> ((_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::BOOL8) &amp;&amp; (_rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::BOOL8))</div>
+<div class="line"><span class="lineno">  178</span>      <span class="keywordflow">if</span> ((_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::BOOL8) &amp;&amp; (_rhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::BOOL8))</div>
 <div class="line"><span class="lineno">  179</span>      {</div>
 <div class="line"><span class="lineno">  180</span>        <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
 <div class="line"><span class="lineno">  181</span>        _kernel = logicalOrGeneric&lt;bool&gt;;</div>
@@ -258,7 +258,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  186</span>      }</div>
 <div class="line"><span class="lineno">  187</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  188</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b">ElementwiseBinaryType::kMax</a>:</div>
-<div class="line"><span class="lineno">  189</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  189</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
 <div class="line"><span class="lineno">  190</span>      {</div>
 <div class="line"><span class="lineno">  191</span>        <span class="keywordflow">if</span> (!haveSameQauntInfo(_lhs, _rhs, _output))</div>
 <div class="line"><span class="lineno">  192</span>        {</div>
@@ -266,7 +266,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  194</span>        }</div>
 <div class="line"><span class="lineno">  195</span>        _kernel = maximumGeneric&lt;uint8_t&gt;;</div>
 <div class="line"><span class="lineno">  196</span>      }</div>
-<div class="line"><span class="lineno">  197</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  198</span>      {</div>
 <div class="line"><span class="lineno">  199</span>        _kernel = maximumGeneric&lt;float&gt;;</div>
 <div class="line"><span class="lineno">  200</span>      }</div>
@@ -276,7 +276,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  204</span>      }</div>
 <div class="line"><span class="lineno">  205</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  206</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a8fbc2f6c44a6d70550df79903eb57d48">ElementwiseBinaryType::kMin</a>:</div>
-<div class="line"><span class="lineno">  207</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  207</span>      <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
 <div class="line"><span class="lineno">  208</span>      {</div>
 <div class="line"><span class="lineno">  209</span>        <span class="keywordflow">if</span> (!haveSameQauntInfo(_lhs, _rhs, _output))</div>
 <div class="line"><span class="lineno">  210</span>        {</div>
@@ -284,11 +284,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  212</span>        }</div>
 <div class="line"><span class="lineno">  213</span>        _kernel = minimumGeneric&lt;uint8_t&gt;;</div>
 <div class="line"><span class="lineno">  214</span>      }</div>
-<div class="line"><span class="lineno">  215</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::INT32)</div>
+<div class="line"><span class="lineno">  215</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::INT32)</div>
 <div class="line"><span class="lineno">  216</span>      {</div>
 <div class="line"><span class="lineno">  217</span>        _kernel = minimumGeneric&lt;int32_t&gt;;</div>
 <div class="line"><span class="lineno">  218</span>      }</div>
-<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  220</span>      {</div>
 <div class="line"><span class="lineno">  221</span>        _kernel = minimumGeneric&lt;float&gt;;</div>
 <div class="line"><span class="lineno">  222</span>      }</div>
@@ -301,7 +301,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  229</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;ElementwiseBinary: Unsupported ElementwiseBinary type&quot;</span>};</div>
 <div class="line"><span class="lineno">  230</span>  }</div>
 <div class="line"><span class="lineno">  231</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a6d57b178316225a9e08f1191ce489ad9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type</a></div><div class="ttdeci">virtual ir::DataType data_type() const =0</div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a76beaf5f1eaf7a6eccfd2c624a8143f7a042f39505780f220562e878fef7df121"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a042f39505780f220562e878fef7df121">onert::backend::cpu::ops::ElementwiseBinaryType::kLogicalOr</a></div><div class="ttdeci">@ kLogicalOr</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a76beaf5f1eaf7a6eccfd2c624a8143f7a43eb898e59655465ff4d56119c78d918"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a43eb898e59655465ff4d56119c78d918">onert::backend::cpu::ops::ElementwiseBinaryType::kFloorMod</a></div><div class="ttdeci">@ kFloorMod</div></div>
@@ -310,7 +310,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a76beaf5f1eaf7a6eccfd2c624a8143f7a9f14781fea932e09468c5caf0ea3fa20"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a9f14781fea932e09468c5caf0ea3fa20">onert::backend::cpu::ops::ElementwiseBinaryType::kLogicalAnd</a></div><div class="ttdeci">@ kLogicalAnd</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::cpu::ops::ElementwiseBinaryType::kMax</a></div><div class="ttdeci">@ kMax</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a47d7da92f8fee9486cb83971585bb449">onert::backend::cpu::ops::kFloorDiv</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a43eb898e59655465ff4d56119c78d918">onert::backend::cpu::ops::kFloorMod</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a9f14781fea932e09468c5caf0ea3fa20">onert::backend::cpu::ops::kLogicalAnd</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a042f39505780f220562e878fef7df121">onert::backend::cpu::ops::kLogicalOr</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::cpu::ops::kMax</a>, and <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a8fbc2f6c44a6d70550df79903eb57d48">onert::backend::cpu::ops::kMin</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a47d7da92f8fee9486cb83971585bb449">onert::backend::cpu::ops::kFloorDiv</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a43eb898e59655465ff4d56119c78d918">onert::backend::cpu::ops::kFloorMod</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a9f14781fea932e09468c5caf0ea3fa20">onert::backend::cpu::ops::kLogicalAnd</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a042f39505780f220562e878fef7df121">onert::backend::cpu::ops::kLogicalOr</a>, <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::cpu::ops::kMax</a>, and <a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a8fbc2f6c44a6d70550df79903eb57d48">onert::backend::cpu::ops::kMin</a>.</p>
 
 </div>
 </div>

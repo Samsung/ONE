@@ -121,6 +121,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ee6558102c7cf0979b9bec0b3f1f437" id="r_a6ee6558102c7cf0979b9bec0b3f1f437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a6ee6558102c7cf0979b9bec0b3f1f437">execute</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * &gt; &amp;inputs, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * &gt; &amp;outputs, const <a class="el" href="structonert_1_1exec_1_1_execution_options.html">ExecutionOptions</a> &amp;options) override</td></tr>
 <tr class="memdesc:a6ee6558102c7cf0979b9bec0b3f1f437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute with given input/output tensors.  <br /></td></tr>
 <tr class="separator:a6ee6558102c7cf0979b9bec0b3f1f437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63fd23446555b9447f7b3e46ebed58d2" id="r_a63fd23446555b9447f7b3e46ebed58d2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a63fd23446555b9447f7b3e46ebed58d2">inputSize</a> () const override</td></tr>
+<tr class="memdesc:a63fd23446555b9447f7b3e46ebed58d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input size.  <br /></td></tr>
+<tr class="separator:a63fd23446555b9447f7b3e46ebed58d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bfeb3400991ed7d4b84677d18063329" id="r_a9bfeb3400991ed7d4b84677d18063329"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9bfeb3400991ed7d4b84677d18063329">outputSize</a> () const override</td></tr>
+<tr class="memdesc:a9bfeb3400991ed7d4b84677d18063329"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output size.  <br /></td></tr>
+<tr class="separator:a9bfeb3400991ed7d4b84677d18063329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17313f5f16b979efc46ed53311a420f5" id="r_a17313f5f16b979efc46ed53311a420f5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a17313f5f16b979efc46ed53311a420f5">inputInfo</a> (uint32_t index) const override</td></tr>
+<tr class="memdesc:a17313f5f16b979efc46ed53311a420f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input info at index.  <br /></td></tr>
+<tr class="separator:a17313f5f16b979efc46ed53311a420f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd804936ac6652bb5942bef3caa26252" id="r_afd804936ac6652bb5942bef3caa26252"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#afd804936ac6652bb5942bef3caa26252">outputInfo</a> (uint32_t index) const override</td></tr>
+<tr class="memdesc:afd804936ac6652bb5942bef3caa26252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output info at index.  <br /></td></tr>
+<tr class="separator:afd804936ac6652bb5942bef3caa26252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dc78133db4d042b06cb5488365085e9" id="r_a8dc78133db4d042b06cb5488365085e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a8dc78133db4d042b06cb5488365085e9">inputLayout</a> (uint32_t index) const override</td></tr>
+<tr class="memdesc:a8dc78133db4d042b06cb5488365085e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input layout at index.  <br /></td></tr>
+<tr class="separator:a8dc78133db4d042b06cb5488365085e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affd4d3a12dcac266a46a86d7f5f166ae" id="r_affd4d3a12dcac266a46a86d7f5f166ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#affd4d3a12dcac266a46a86d7f5f166ae">outputLayout</a> (uint32_t index) const override</td></tr>
+<tr class="memdesc:affd4d3a12dcac266a46a86d7f5f166ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output layout at index.  <br /></td></tr>
+<tr class="separator:affd4d3a12dcac266a46a86d7f5f166ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af99aefd594e9ac0bb5f87e0393af45f6" id="r_af99aefd594e9ac0bb5f87e0393af45f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#af99aefd594e9ac0bb5f87e0393af45f6">forward</a> (const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx, bool training)</td></tr>
 <tr class="separator:af99aefd594e9ac0bb5f87e0393af45f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a91e6e07426020d6e46072caf1ebbb6" id="r_a0a91e6e07426020d6e46072caf1ebbb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a0a91e6e07426020d6e46072caf1ebbb6">backward</a> (const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx, uint32_t training_step)</td></tr>
@@ -130,12 +148,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a93ff2e116f919422fcb489c9e70a6d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9572852457ef7f4dd21903c1c7d940f2" id="r_a9572852457ef7f4dd21903c1c7d940f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9572852457ef7f4dd21903c1c7d940f2">addObserver</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1exec_1_1_i_execution_observer.html">IExecutionObserver</a> &gt; ref)</td></tr>
 <tr class="separator:a9572852457ef7f4dd21903c1c7d940f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56d38132e42ee2bd5e6c026f0991453c" id="r_a56d38132e42ee2bd5e6c026f0991453c"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c">getInputTensors</a> () const override</td></tr>
-<tr class="memdesc:a56d38132e42ee2bd5e6c026f0991453c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input tensor objects.  <br /></td></tr>
-<tr class="separator:a56d38132e42ee2bd5e6c026f0991453c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9afbcabb3f3aeee479dc5d963221676e" id="r_a9afbcabb3f3aeee479dc5d963221676e"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e">getOutputTensors</a> () const override</td></tr>
-<tr class="memdesc:a9afbcabb3f3aeee479dc5d963221676e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output tensor objects.  <br /></td></tr>
-<tr class="separator:a9afbcabb3f3aeee479dc5d963221676e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57b4593cbc4db787812a866a45779336" id="r_a57b4593cbc4db787812a866a45779336"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a57b4593cbc4db787812a866a45779336">getLoss</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;pred_io_ind) const</td></tr>
 <tr class="separator:a57b4593cbc4db787812a866a45779336"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02180db1a5cab15c3d030043c5b1e63c" id="r_a02180db1a5cab15c3d030043c5b1e63c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a02180db1a5cab15c3d030043c5b1e63c">iterateTrainableTensors</a> (const std::function&lt; void(const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;, const <a class="el" href="classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html">backend::train::ITrainableTensor</a> *)&gt; &amp;fn) const</td></tr>
@@ -250,11 +262,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>  build_tensor_list(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">getOutputs</a>(), _output_tensors);</div>
 <div class="line"><span class="lineno">   57</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_tensor_registries_html_a5684a01f365ba9cfe32a0767f2cb8d93"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">onert::compiler::train::TensorRegistries::getITensor</a></div><div class="ttdeci">backend::ITensor * getITensor(ir::OperandIndex index) const</div><div class="ttdef"><b>Definition</b> <a href="train_2_tensor_registries_8h_source.html#l00075">TensorRegistries.h:75</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2e175fcdbe7beb275cd2b8a06e690c9f"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">onert::ir::train::TrainableGraph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00117">TrainableGraph.h:117</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a3e00dbf94cf91e49c3c3c76437ec01bc"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc">onert::ir::train::TrainableGraph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00116">TrainableGraph.h:116</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2e175fcdbe7beb275cd2b8a06e690c9f"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">onert::ir::train::TrainableGraph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00121">TrainableGraph.h:121</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a3e00dbf94cf91e49c3c3c76437ec01bc"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc">onert::ir::train::TrainableGraph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00120">TrainableGraph.h:120</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00116">onert::ir::train::TrainableGraph::getInputs()</a>, <a class="el" href="train_2_tensor_registries_8h_source.html#l00075">onert::compiler::train::TensorRegistries::getITensor()</a>, and <a class="el" href="_trainable_graph_8h_source.html#l00117">onert::ir::train::TrainableGraph::getOutputs()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00120">onert::ir::train::TrainableGraph::getInputs()</a>, <a class="el" href="train_2_tensor_registries_8h_source.html#l00075">onert::compiler::train::TensorRegistries::getITensor()</a>, and <a class="el" href="_trainable_graph_8h_source.html#l00121">onert::ir::train::TrainableGraph::getOutputs()</a>.</p>
 
 </div>
 </div>
@@ -283,8 +295,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00074">74</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{ _observers.<a class="code hl_function" href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">add</a>(std::move(ref)); };</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00095">95</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ _observers.<a class="code hl_function" href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">add</a>(std::move(ref)); };</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_exec_observers_html_a975688d45e95f50589a193473c4cd6e6"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">onert::exec::ExecObservers::add</a></div><div class="ttdeci">void add(std::unique_ptr&lt; IExecutionObserver &gt; &amp;&amp;observer)</div><div class="ttdef"><b>Definition</b> <a href="_execution_observers_8h_source.html#l00065">ExecutionObservers.h:65</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_observers_8h_source.html#l00065">onert::exec::ExecObservers::add()</a>.</p>
@@ -333,7 +345,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00079">onert::exec::ExecutionContext::options</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00070">onert::exec::train::TrainableExecutors::train()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00067">onert::exec::train::TrainableExecutors::train()</a>.</p>
 
 </div>
 </div>
@@ -365,8 +377,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00094">94</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{ <span class="keywordflow">return</span> _current_options; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00105">105</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{ <span class="keywordflow">return</span> _current_options; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -541,7 +553,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00077">onert::exec::ExecutionContext::desc</a>, and <a class="el" href="_execution_context_8h_source.html#l00079">onert::exec::ExecutionContext::options</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executor_8h_source.html#l00059">execute()</a>, <a class="el" href="_trainable_executors_8cc_source.html#l00061">onert::exec::train::TrainableExecutors::execute()</a>, and <a class="el" href="_trainable_executors_8cc_source.html#l00070">onert::exec::train::TrainableExecutors::train()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executor_8h_source.html#l00059">execute()</a>, <a class="el" href="_trainable_executors_8cc_source.html#l00058">onert::exec::train::TrainableExecutors::execute()</a>, and <a class="el" href="_trainable_executors_8cc_source.html#l00067">onert::exec::train::TrainableExecutors::train()</a>.</p>
 
 </div>
 </div>
@@ -568,46 +580,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00092">92</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{ <span class="keywordflow">return</span> _backend_contexts; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00103">103</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>{ <span class="keywordflow">return</span> _backend_contexts; }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="a56d38132e42ee2bd5e6c026f0991453c" name="a56d38132e42ee2bd5e6c026f0991453c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56d38132e42ee2bd5e6c026f0991453c">&#9670;&#160;</a></span>getInputTensors()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp; onert::exec::train::TrainableExecutor::getInputTensors </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get input tensor objects. </p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of <code>IOTensor</code> </dd></dl>
-
-<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">onert::exec::IExecutor</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00076">76</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> _input_tensors;</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00051">onert::exec::train::TrainableExecutors::inputInfo()</a>, and <a class="el" href="_trainable_executors_8cc_source.html#l00044">onert::exec::train::TrainableExecutors::inputSize()</a>.</p>
-
 </div>
 </div>
 <a id="a57b4593cbc4db787812a866a45779336" name="a57b4593cbc4db787812a866a45779336"></a>
@@ -643,52 +618,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  221</span>  }</div>
 <div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a>);</div>
 <div class="line"><span class="lineno">  223</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2c486d88036d4c6b8e0e4a20fbc514c9"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9">onert::ir::train::TrainableGraph::getLossIndex</a></div><div class="ttdeci">OperandIndex getLossIndex(const IOIndex &amp;pred_io_ind) const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8cc_source.html#l00280">TrainableGraph.cc:280</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2c486d88036d4c6b8e0e4a20fbc514c9"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9">onert::ir::train::TrainableGraph::getLossIndex</a></div><div class="ttdeci">OperandIndex getLossIndex(const IOIndex &amp;pred_io_ind) const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8cc_source.html#l00329">TrainableGraph.cc:329</a></div></div>
 <div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">mir_caffe2::SupportedCaffe2OpType::sum</a></div><div class="ttdeci">@ sum</div></div>
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::LossReductionType::SumOverBatchSize</a></div><div class="ttdeci">@ SumOverBatchSize</div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a556b7f82e06213c28641a78a7b04cca9"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">onert::ir::train::LossInfo::reduction_type</a></div><div class="ttdeci">LossReductionType reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00045">LossInfo.h:45</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00075">onert::compiler::train::TensorRegistries::getITensor()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00280">onert::ir::train::TrainableGraph::getLossIndex()</a>, <a class="el" href="_loss_info_8h_source.html#l00045">onert::ir::train::LossInfo::reduction_type</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>.</p>
+<p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00075">onert::compiler::train::TensorRegistries::getITensor()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00329">onert::ir::train::TrainableGraph::getLossIndex()</a>, <a class="el" href="_loss_info_8h_source.html#l00045">onert::ir::train::LossInfo::reduction_type</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00080">onert::exec::train::TrainableExecutors::getLoss()</a>.</p>
-
-</div>
-</div>
-<a id="a9afbcabb3f3aeee479dc5d963221676e" name="a9afbcabb3f3aeee479dc5d963221676e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9afbcabb3f3aeee479dc5d963221676e">&#9670;&#160;</a></span>getOutputTensors()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp; onert::exec::train::TrainableExecutor::getOutputTensors </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get output tensor objects. </p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of <code>IOTensor</code> </dd></dl>
-
-<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">onert::exec::IExecutor</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00081">81</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>  {</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> _output_tensors;</div>
-<div class="line"><span class="lineno">   84</span>  }</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00056">onert::exec::train::TrainableExecutors::outputInfo()</a>, and <a class="el" href="_trainable_executors_8cc_source.html#l00046">onert::exec::train::TrainableExecutors::outputSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00077">onert::exec::train::TrainableExecutors::getLoss()</a>.</p>
 
 </div>
 </div>
@@ -722,11 +660,131 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00057">57</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_ae0f4348cfa95e2722c1e721e6324e9a1"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">onert::ir::train::TrainableGraph::graph</a></div><div class="ttdeci">const Graph &amp; graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00126">TrainableGraph.h:126</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_ae0f4348cfa95e2722c1e721e6324e9a1"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">onert::ir::train::TrainableGraph::graph</a></div><div class="ttdeci">const Graph &amp; graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00130">TrainableGraph.h:130</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00126">onert::ir::train::TrainableGraph::graph()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00130">onert::ir::train::TrainableGraph::graph()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
+
+</div>
+</div>
+<a id="a17313f5f16b979efc46ed53311a420f5" name="a17313f5f16b979efc46ed53311a420f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17313f5f16b979efc46ed53311a420f5">&#9670;&#160;</a></span>inputInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp; onert::exec::train::TrainableExecutor::inputInfo </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input info at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of input </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Input operand info </dd></dl>
+
+<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#aaff181d1cdbf93d8b438aee19ddca2b9">onert::exec::IExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00069">69</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> _input_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;get_info();</div>
+<div class="line"><span class="lineno">   72</span>  }</div>
+<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00048">onert::exec::train::TrainableExecutors::inputInfo()</a>.</p>
+
+</div>
+</div>
+<a id="a8dc78133db4d042b06cb5488365085e9" name="a8dc78133db4d042b06cb5488365085e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dc78133db4d042b06cb5488365085e9">&#9670;&#160;</a></span>inputLayout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::exec::train::TrainableExecutor::inputLayout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input layout at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of input </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Input operand layout </dd></dl>
+
+<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#aceb434c8093fd462c9ddbc3dcb5720df">onert::exec::IExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00079">79</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>{ <span class="keywordflow">return</span> _input_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;layout(); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a63fd23446555b9447f7b3e46ebed58d2" name="a63fd23446555b9447f7b3e46ebed58d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63fd23446555b9447f7b3e46ebed58d2">&#9670;&#160;</a></span>inputSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t onert::exec::train::TrainableExecutor::inputSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input size. </p>
+<dl class="section return"><dt>Returns</dt><dd>Input size </dd></dl>
+
+<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a41d1e10f96e8569c1473aeb3ea1d86e6">onert::exec::IExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00065">65</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> _input_tensors.size(); }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00044">onert::exec::train::TrainableExecutors::inputSize()</a>.</p>
 
 </div>
 </div>
@@ -754,7 +812,128 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00097">onert::compiler::train::TensorRegistries::iterateTrainableTensors()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00087">onert::exec::train::TrainableExecutors::iterateTrainableTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00084">onert::exec::train::TrainableExecutors::iterateTrainableTensors()</a>.</p>
+
+</div>
+</div>
+<a id="afd804936ac6652bb5942bef3caa26252" name="afd804936ac6652bb5942bef3caa26252"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd804936ac6652bb5942bef3caa26252">&#9670;&#160;</a></span>outputInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp; onert::exec::train::TrainableExecutor::outputInfo </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output info at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of output </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output operand info </dd></dl>
+
+<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#ae2c9811157634b2162ee924a1c362163">onert::exec::IExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00074">74</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>  {</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> _output_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;get_info();</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00053">onert::exec::train::TrainableExecutors::outputInfo()</a>.</p>
+
+</div>
+</div>
+<a id="affd4d3a12dcac266a46a86d7f5f166ae" name="affd4d3a12dcac266a46a86d7f5f166ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affd4d3a12dcac266a46a86d7f5f166ae">&#9670;&#160;</a></span>outputLayout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::exec::train::TrainableExecutor::outputLayout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output layout at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of output </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output operand layout </dd></dl>
+
+<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a13e17083ea3b634f693d634803e0b270">onert::exec::IExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00081">81</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> _output_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;layout();</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a9bfeb3400991ed7d4b84677d18063329" name="a9bfeb3400991ed7d4b84677d18063329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bfeb3400991ed7d4b84677d18063329">&#9670;&#160;</a></span>outputSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t onert::exec::train::TrainableExecutor::outputSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output size. </p>
+<dl class="section return"><dt>Returns</dt><dd>Output size </dd></dl>
+
+<p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a704945d64b8e0e1918388824f8fad409">onert::exec::IExecutor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00067">67</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> _output_tensors.size(); }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00046">onert::exec::train::TrainableExecutors::outputSize()</a>.</p>
 
 </div>
 </div>
@@ -792,10 +971,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00069">69</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>  {</div>
-<div class="line"><span class="lineno">   71</span>    _indexed_ranks = std::move(ranks);</div>
-<div class="line"><span class="lineno">   72</span>  };</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00090">90</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span>    _indexed_ranks = std::move(ranks);</div>
+<div class="line"><span class="lineno">   93</span>  };</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -214,7 +214,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   38</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   39</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   40</span>  assert(back_prop_y_pred != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   40</span>  <span class="comment">// back_prop_y_pred can be nullptr if backwarding is not required</span></div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">_y_pred</a> = y_pred;</div>
 <div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">_y_true</a> = y_true;</div>

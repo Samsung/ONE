@@ -31,6 +31,9 @@ var annotated_dup =
       [ "ArgumentParser", "classargumentparse_1_1_argument_parser.html", "classargumentparse_1_1_argument_parser" ],
       [ "DriverName", "classargumentparse_1_1_driver_name.html", null ],
       [ "NormalOption", "classargumentparse_1_1_normal_option.html", null ],
+      [ "Option", "classargumentparse_1_1_option.html", null ],
+      [ "Optional", "classargumentparse_1_1_optional.html", null ],
+      [ "Positional", "classargumentparse_1_1_positional.html", null ],
       [ "TargetOption", "classargumentparse_1_1_target_option.html", null ]
     ] ],
     [ "arm_compute", "namespacearm__compute.html", [
@@ -1360,6 +1363,7 @@ var annotated_dup =
       [ "SubstituteTransposeToReshapePass", "structluci_1_1_substitute_transpose_to_reshape_pass.html", "structluci_1_1_substitute_transpose_to_reshape_pass" ],
       [ "TransformMinMaxToRelu6Pass", "structluci_1_1_transform_min_max_to_relu6_pass.html", "structluci_1_1_transform_min_max_to_relu6_pass" ],
       [ "TransformMinReluToRelu6Pass", "structluci_1_1_transform_min_relu_to_relu6_pass.html", "structluci_1_1_transform_min_relu_to_relu6_pass" ],
+      [ "TransformSqrtDivToRsqrtMulPass", "structluci_1_1_transform_sqrt_div_to_rsqrt_mul_pass.html", "structluci_1_1_transform_sqrt_div_to_rsqrt_mul_pass" ],
       [ "TypedNodeBuilder", "classluci_1_1_typed_node_builder.html", "classluci_1_1_typed_node_builder" ],
       [ "TypeMapper", "structluci_1_1_type_mapper.html", null ],
       [ "TypeMapper< float >", "structluci_1_1_type_mapper_3_01float_01_4.html", null ],
@@ -2960,6 +2964,7 @@ var annotated_dup =
           [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
           [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
           [ "FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", "classonert_1_1backend_1_1train_1_1_first_fit_planner" ],
+          [ "GradientMemoryManager", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager.html", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager" ],
           [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],
           [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
           [ "ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor" ],

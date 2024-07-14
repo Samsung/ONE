@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('_loss_layer_8cc_source.html',''); init
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  assert(back_prop_y_pred != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// back_prop_y_pred can be nullptr if backwarding is not required</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">_y_pred</a> = y_pred;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">_y_true</a> = y_true;</div>

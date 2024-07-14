@@ -8,6 +8,7 @@ var classarser_1_1_argument =
     [ "default_value", "classarser_1_1_argument.html#a3b4488b193d2438334f4ec0515978b15", null ],
     [ "default_value", "classarser_1_1_argument.html#a82498df268f69dc348d4d0bc86c27a81", null ],
     [ "exit_with", "classarser_1_1_argument.html#a47ceb65a7a92895efd545d183e883d30", null ],
+    [ "help", "classarser_1_1_argument.html#a23aeefc9800ecae5bca09fb09182e92f", null ],
     [ "help", "classarser_1_1_argument.html#a64befc135bd5e34c0dc971f9ecd4ea8a", null ],
     [ "nargs", "classarser_1_1_argument.html#a5d4e264ab598cb4f3a3989d564b9c81d", null ],
     [ "required", "classarser_1_1_argument.html#ad368fbcb32ece9b5770d72717e658607", null ],

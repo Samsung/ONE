@@ -132,8 +132,8 @@ $(document).ready(function(){initNavTree('_train_info_builder_8h_source.html',''
 <div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classonert_1_1exporter_1_1_train_info_builder.html#a429650a57d631dccedbd8c12b9b094a1">   32</a></span>  <a class="code hl_function" href="classonert_1_1exporter_1_1_train_info_builder.html#a429650a57d631dccedbd8c12b9b094a1">TrainInfoBuilder</a>(<span class="keyword">const</span> std::unique_ptr&lt;ir::train::TrainingInfo&gt; &amp;training_info) : _builder(1024)</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> optimizerInfo = training_info-&gt;optimizerInfo();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> <span class="keyword">auto</span> lossInfo = training_info-&gt;lossInfo();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;optimizerInfo = training_info-&gt;optimizerInfo();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lossInfo = training_info-&gt;lossInfo();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    ::circle::Optimizer optimizer;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    ::circle::OptimizerOptions optimizer_opt_type;</div>

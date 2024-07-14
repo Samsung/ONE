@@ -134,52 +134,49 @@ $(document).ready(function(){initNavTree('compute_2cker_2include_2cker_2operatio
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">int</span> axis = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_v_params.html#a46ea6253a56267004f6d7ea8e281b7ed">axis</a> &lt; 0 ? params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_v_params.html#a46ea6253a56267004f6d7ea8e281b7ed">axis</a> + split_dimensions : params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_v_params.html#a46ea6253a56267004f6d7ea8e281b7ed">axis</a>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">int</span> outputs_count = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_split_v_params.html#a0aec0aa7b9d1e45d1da0bbb935f31c55">num_split</a>;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  int64_t split_size = 0;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outputs_count; i++)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// TFLITE_DCHECK_EQ(output_shapes[i]-&gt;DimensionsCount(), split_dimensions);</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; split_dimensions; j++)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="keywordflow">if</span> (j != axis)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(output_shapes[i], j, input_shape, j);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    split_size += output_shapes[i].Dims(axis);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  int64_t outer_size = 1;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    outer_size *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// For all output arrays,</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// FlatSize() = outer_size * Dims(axis) * base_inner_size;</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  int64_t base_inner_size = 1;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; split_dimensions; ++i)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    base_inner_size *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">const</span> Scalar *input_ptr = input_data;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">int</span> copy_size = 0;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; outer_size; k++)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outputs_count; ++i)</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      copy_size = output_shapes[i].Dims(axis) * base_inner_size;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      memcpy(output_data[i] + k * copy_size, input_ptr, copy_size * <span class="keyword">sizeof</span>(Scalar));</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      input_ptr += copy_size;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outputs_count; i++)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="comment">// TFLITE_DCHECK_EQ(output_shapes[i]-&gt;DimensionsCount(), split_dimensions);</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; split_dimensions; j++)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">if</span> (j != axis)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(output_shapes[i], j, input_shape, j);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  int64_t outer_size = 1;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    outer_size *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// For all output arrays,</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// FlatSize() = outer_size * Dims(axis) * base_inner_size;</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  int64_t base_inner_size = 1;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; split_dimensions; ++i)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    base_inner_size *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">const</span> Scalar *input_ptr = input_data;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">int</span> copy_size = 0;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; outer_size; k++)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; outputs_count; ++i)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      copy_size = output_shapes[i].Dims(axis) * base_inner_size;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      memcpy(output_data[i] + k * copy_size, input_ptr, copy_size * <span class="keyword">sizeof</span>(Scalar));</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      input_ptr += copy_size;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
 </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace cker</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace nnfw</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace cker</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>} <span class="comment">// namespace nnfw</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_SPLIT_V_H__</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_SPLIT_V_H__</span></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>

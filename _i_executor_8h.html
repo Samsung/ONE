@@ -98,14 +98,15 @@ $(document).ready(function(){initNavTree('_i_executor_8h.html',''); initResizabl
 
 <p>This file defines interface of Executor.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;ir/Graph.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="_i_function_8h_source.html">IFunction.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_execution_context_8h_source.html">ExecutionContext.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_execution_context_8h_source.html">ExecutionContext.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_i_portable_tensor_8h_source.html">backend/IPortableTensor.h</a>&quot;</code><br />
+<code>#include &quot;ir/Graph.h&quot;</code><br />
 <code>#include &quot;ir/Index.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="_operand_info_8h_source.html">ir/OperandInfo.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_operation_index_map_8h_source.html">ir/OperationIndexMap.h</a>&quot;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="_i_executor_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -118,10 +119,6 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceonert" id="r_namespaceonert"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert.html">onert</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1backend" id="r_namespaceonert_1_1backend"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend.html">onert::backend</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1backend_1_1builtin" id="r_namespaceonert_1_1backend_1_1builtin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1builtin.html">onert::backend::builtin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert_1_1exec" id="r_namespaceonert_1_1exec"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html">onert::exec</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -120,6 +120,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7dbaa81993c1541193ae8fd167650024"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64befc135bd5e34c0dc971f9ecd4ea8a" id="r_a64befc135bd5e34c0dc971f9ecd4ea8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classarser_1_1_argument.html">Argument</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarser_1_1_argument.html#a64befc135bd5e34c0dc971f9ecd4ea8a">help</a> (std::string help_message)</td></tr>
 <tr class="separator:a64befc135bd5e34c0dc971f9ecd4ea8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23aeefc9800ecae5bca09fb09182e92f" id="r_a23aeefc9800ecae5bca09fb09182e92f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classarser_1_1_argument.html">Argument</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarser_1_1_argument.html#a23aeefc9800ecae5bca09fb09182e92f">help</a> (std::initializer_list&lt; std::string &gt; help_messages)</td></tr>
+<tr class="separator:a23aeefc9800ecae5bca09fb09182e92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47ceb65a7a92895efd545d183e883d30" id="r_a47ceb65a7a92895efd545d183e883d30"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classarser_1_1_argument.html">Argument</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarser_1_1_argument.html#a47ceb65a7a92895efd545d183e883d30">exit_with</a> (const std::function&lt; void(void)&gt; &amp;func)</td></tr>
 <tr class="separator:a47ceb65a7a92895efd545d183e883d30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b4488b193d2438334f4ec0515978b15" id="r_a3b4488b193d2438334f4ec0515978b15"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -359,27 +361,27 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00265">265</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  266</span>  {</div>
-<div class="line"><span class="lineno">  267</span>    <span class="keywordflow">if</span> ((_nargs &lt;= 1 &amp;&amp; <a class="code hl_function" href="structarser_1_1_type_name.html#a28fe991ebc58b6011b4524e6ce8d3ee6">TypeName&lt;T&gt;::Get</a>() == _type) ||</div>
-<div class="line"><span class="lineno">  268</span>        (_nargs &gt; 1 &amp;&amp; TypeName&lt;std::vector&lt;T&gt;&gt;::Get() == _type))</div>
-<div class="line"><span class="lineno">  269</span>      _values.emplace_back(<a class="code hl_function" href="namespacearser_1_1internal.html#a4a8eb5d02beb5836569da6eaa761e2e6">internal::to_string</a>(value));</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  271</span>    {</div>
-<div class="line"><span class="lineno">  272</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Type mismatch. &quot;</span></div>
-<div class="line"><span class="lineno">  273</span>                               <span class="stringliteral">&quot;You called default_value() method with a type different &quot;</span></div>
-<div class="line"><span class="lineno">  274</span>                               <span class="stringliteral">&quot;from the one you specified. &quot;</span></div>
-<div class="line"><span class="lineno">  275</span>                               <span class="stringliteral">&quot;Please check the type of what you specified in &quot;</span></div>
-<div class="line"><span class="lineno">  276</span>                               <span class="stringliteral">&quot;add_argument() method.&quot;</span>);</div>
-<div class="line"><span class="lineno">  277</span>    }</div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  279</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00274">274</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  275</span>  {</div>
+<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">if</span> ((_nargs &lt;= 1 &amp;&amp; <a class="code hl_function" href="structarser_1_1_type_name.html#a28fe991ebc58b6011b4524e6ce8d3ee6">TypeName&lt;T&gt;::Get</a>() == _type) ||</div>
+<div class="line"><span class="lineno">  277</span>        (_nargs &gt; 1 &amp;&amp; TypeName&lt;std::vector&lt;T&gt;&gt;::Get() == _type))</div>
+<div class="line"><span class="lineno">  278</span>      _values.emplace_back(<a class="code hl_function" href="namespacearser_1_1internal.html#a4a8eb5d02beb5836569da6eaa761e2e6">internal::to_string</a>(value));</div>
+<div class="line"><span class="lineno">  279</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  280</span>    {</div>
+<div class="line"><span class="lineno">  281</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Type mismatch. &quot;</span></div>
+<div class="line"><span class="lineno">  282</span>                               <span class="stringliteral">&quot;You called default_value() method with a type different &quot;</span></div>
+<div class="line"><span class="lineno">  283</span>                               <span class="stringliteral">&quot;from the one you specified. &quot;</span></div>
+<div class="line"><span class="lineno">  284</span>                               <span class="stringliteral">&quot;Please check the type of what you specified in &quot;</span></div>
+<div class="line"><span class="lineno">  285</span>                               <span class="stringliteral">&quot;add_argument() method.&quot;</span>);</div>
+<div class="line"><span class="lineno">  286</span>    }</div>
+<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  288</span>  }</div>
 <div class="ttc" id="anamespacearser_1_1internal_html_a4a8eb5d02beb5836569da6eaa761e2e6"><div class="ttname"><a href="namespacearser_1_1internal.html#a4a8eb5d02beb5836569da6eaa761e2e6">arser::internal::to_string</a></div><div class="ttdeci">std::string to_string(const T value)</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00059">arser.h:59</a></div></div>
 <div class="ttc" id="astructarser_1_1_type_name_html_a28fe991ebc58b6011b4524e6ce8d3ee6"><div class="ttname"><a href="structarser_1_1_type_name.html#a28fe991ebc58b6011b4524e6ce8d3ee6">arser::TypeName::Get</a></div><div class="ttdeci">static const char * Get()</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00099">arser.h:99</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="arser_8h_source.html#l00059">arser::internal::to_string()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="arser_8h_source.html#l00281">default_value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="arser_8h_source.html#l00290">default_value()</a>.</p>
 
 </div>
 </div>
@@ -419,27 +421,27 @@ template&lt;typename T , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00281">281</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  282</span>  {</div>
-<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> ((_nargs &lt;= 1 &amp;&amp; <a class="code hl_function" href="structarser_1_1_type_name.html#a28fe991ebc58b6011b4524e6ce8d3ee6">TypeName&lt;T&gt;::Get</a>() == _type) ||</div>
-<div class="line"><span class="lineno">  284</span>        (_nargs &gt; 1 &amp;&amp; TypeName&lt;std::vector&lt;T&gt;&gt;::Get() == _type))</div>
-<div class="line"><span class="lineno">  285</span>    {</div>
-<div class="line"><span class="lineno">  286</span>      _values.emplace_back(<a class="code hl_function" href="namespacearser_1_1internal.html#a4a8eb5d02beb5836569da6eaa761e2e6">internal::to_string</a>(value));</div>
-<div class="line"><span class="lineno">  287</span>      <a class="code hl_function" href="classarser_1_1_argument.html#a3b4488b193d2438334f4ec0515978b15">default_value</a>(values...);</div>
-<div class="line"><span class="lineno">  288</span>    }</div>
-<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  290</span>    {</div>
-<div class="line"><span class="lineno">  291</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Type mismatch. &quot;</span></div>
-<div class="line"><span class="lineno">  292</span>                               <span class="stringliteral">&quot;You called default_value() method with a type different &quot;</span></div>
-<div class="line"><span class="lineno">  293</span>                               <span class="stringliteral">&quot;from the one you specified. &quot;</span></div>
-<div class="line"><span class="lineno">  294</span>                               <span class="stringliteral">&quot;Please check the type of what you specified in &quot;</span></div>
-<div class="line"><span class="lineno">  295</span>                               <span class="stringliteral">&quot;add_argument() method.&quot;</span>);</div>
-<div class="line"><span class="lineno">  296</span>    }</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  298</span>  }</div>
-<div class="ttc" id="aclassarser_1_1_argument_html_a3b4488b193d2438334f4ec0515978b15"><div class="ttname"><a href="classarser_1_1_argument.html#a3b4488b193d2438334f4ec0515978b15">arser::Argument::default_value</a></div><div class="ttdeci">Argument &amp; default_value(const T value)</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00265">arser.h:265</a></div></div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00290">290</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  291</span>  {</div>
+<div class="line"><span class="lineno">  292</span>    <span class="keywordflow">if</span> ((_nargs &lt;= 1 &amp;&amp; <a class="code hl_function" href="structarser_1_1_type_name.html#a28fe991ebc58b6011b4524e6ce8d3ee6">TypeName&lt;T&gt;::Get</a>() == _type) ||</div>
+<div class="line"><span class="lineno">  293</span>        (_nargs &gt; 1 &amp;&amp; TypeName&lt;std::vector&lt;T&gt;&gt;::Get() == _type))</div>
+<div class="line"><span class="lineno">  294</span>    {</div>
+<div class="line"><span class="lineno">  295</span>      _values.emplace_back(<a class="code hl_function" href="namespacearser_1_1internal.html#a4a8eb5d02beb5836569da6eaa761e2e6">internal::to_string</a>(value));</div>
+<div class="line"><span class="lineno">  296</span>      <a class="code hl_function" href="classarser_1_1_argument.html#a3b4488b193d2438334f4ec0515978b15">default_value</a>(values...);</div>
+<div class="line"><span class="lineno">  297</span>    }</div>
+<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  299</span>    {</div>
+<div class="line"><span class="lineno">  300</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Type mismatch. &quot;</span></div>
+<div class="line"><span class="lineno">  301</span>                               <span class="stringliteral">&quot;You called default_value() method with a type different &quot;</span></div>
+<div class="line"><span class="lineno">  302</span>                               <span class="stringliteral">&quot;from the one you specified. &quot;</span></div>
+<div class="line"><span class="lineno">  303</span>                               <span class="stringliteral">&quot;Please check the type of what you specified in &quot;</span></div>
+<div class="line"><span class="lineno">  304</span>                               <span class="stringliteral">&quot;add_argument() method.&quot;</span>);</div>
+<div class="line"><span class="lineno">  305</span>    }</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  307</span>  }</div>
+<div class="ttc" id="aclassarser_1_1_argument_html_a3b4488b193d2438334f4ec0515978b15"><div class="ttname"><a href="classarser_1_1_argument.html#a3b4488b193d2438334f4ec0515978b15">arser::Argument::default_value</a></div><div class="ttdeci">Argument &amp; default_value(const T value)</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00274">arser.h:274</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="arser_8h_source.html#l00265">default_value()</a>, and <a class="el" href="arser_8h_source.html#l00059">arser::internal::to_string()</a>.</p>
+<p class="reference">References <a class="el" href="arser_8h_source.html#l00274">default_value()</a>, and <a class="el" href="arser_8h_source.html#l00059">arser::internal::to_string()</a>.</p>
 
 </div>
 </div>
@@ -467,16 +469,51 @@ template&lt;typename T , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00268">268</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  269</span>  {</div>
+<div class="line"><span class="lineno">  270</span>    _func = func;</div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  272</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a23aeefc9800ecae5bca09fb09182e92f" name="a23aeefc9800ecae5bca09fb09182e92f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23aeefc9800ecae5bca09fb09182e92f">&#9670;&#160;</a></span>help() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classarser_1_1_argument.html">Argument</a> &amp; arser::Argument::help </td>
+          <td>(</td>
+          <td class="paramtype">std::initializer_list&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>help_messages</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00259">259</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  260</span>  {</div>
-<div class="line"><span class="lineno">  261</span>    _func = func;</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  263</span>  }</div>
+<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">if</span> (help_messages.size() == 0)</div>
+<div class="line"><span class="lineno">  262</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Empty help message list&quot;</span>);</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>    _help_message = help_messages;</div>
+<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  266</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <a id="a64befc135bd5e34c0dc971f9ecd4ea8a" name="a64befc135bd5e34c0dc971f9ecd4ea8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64befc135bd5e34c0dc971f9ecd4ea8a">&#9670;&#160;</a></span>help()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a64befc135bd5e34c0dc971f9ecd4ea8a">&#9670;&#160;</a></span>help() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -501,7 +538,7 @@ template&lt;typename T , typename... Ts&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00253">253</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  254</span>  {</div>
-<div class="line"><span class="lineno">  255</span>    _help_message = help_message;</div>
+<div class="line"><span class="lineno">  255</span>    _help_message.emplace_back(help_message);</div>
 <div class="line"><span class="lineno">  256</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><span class="lineno">  257</span>  }</div>
 </div><!-- fragment -->
@@ -690,7 +727,7 @@ template&lt;typename T , typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00315">315</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00324">324</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
 
 </div>
 </div>

@@ -119,22 +119,24 @@ $(document).ready(function(){initNavTree('_use_def_chains_8h_source.html',''); i
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_use_def_chain_8h.html">ir/train/UseDefChain.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h.html">ir/train/Index.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>ir</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>train</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>ir</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">   30</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">UseDefChains</a> = std::unordered_map&lt;TrainingOperandIndex, UseDefChain&gt;;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>train</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>} <span class="comment">// namespace ir</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_TRAIN_USEDEFCHAINS_H__</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">   32</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">UseDefChains</a> = std::unordered_map&lt;TrainingOperandIndex, UseDefChain&gt;;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace ir</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_TRAIN_USEDEFCHAINS_H__</span></div>
 <div class="ttc" id="a_use_def_chain_8h_html"><div class="ttname"><a href="_use_def_chain_8h.html">UseDefChain.h</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a669183193457524aaaf2a88bc1deea2b"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">onert::ir::train::UseDefChains</a></div><div class="ttdeci">std::unordered_map&lt; TrainingOperandIndex, UseDefChain &gt; UseDefChains</div><div class="ttdef"><b>Definition</b> <a href="_use_def_chains_8h_source.html#l00030">UseDefChains.h:30</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a669183193457524aaaf2a88bc1deea2b"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b">onert::ir::train::UseDefChains</a></div><div class="ttdeci">std::unordered_map&lt; TrainingOperandIndex, UseDefChain &gt; UseDefChains</div><div class="ttdef"><b>Definition</b> <a href="_use_def_chains_8h_source.html#l00032">UseDefChains.h:32</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2ir_2train_2_index_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2ir_2train_2_index_8h.html">Index.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

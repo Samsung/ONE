@@ -62,6 +62,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "RemoveUnnecessaryTranspose", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeacda2e68e2de2496f63942c87f258fd85", null ],
       [ "TransformMinMaxToRelu6Pass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab07c62f459ab8588fe6c8cc883cb82ba", null ],
       [ "TransformMinReluToRelu6Pass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea44fd4d363430577ce4e6da2d16f615c8", null ],
+      [ "TransformSqrtDivToRsqrtMul", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aead532b81e5ae6b9ca0fd6c67fa9bf86dc", null ],
       [ "DecomposeHardSwishPass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaa9f42513e499c4f7efead8b73f06f222", null ],
       [ "DecomposeSoftmaxPass", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea736d495e061c9bc96d2eb348b74a1eb5", null ],
       [ "SubstituteStridedSliceToReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea5c5c8797f82b072f3308f00126a1ab82", null ],

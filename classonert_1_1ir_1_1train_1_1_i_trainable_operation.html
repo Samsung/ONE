@@ -127,6 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4e19659b3ae4689687a79b11ae7fa903"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4ceb386f8fcf750c14890b3c6fee25e" id="r_aa4ceb386f8fcf750c14890b3c6fee25e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#aa4ceb386f8fcf750c14890b3c6fee25e">enableBackward</a> ()=0</td></tr>
 <tr class="separator:aa4ceb386f8fcf750c14890b3c6fee25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ea0343608f4045ba4a3830aee24f02" id="r_a92ea0343608f4045ba4a3830aee24f02"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a92ea0343608f4045ba4a3830aee24f02">disableBackward</a> ()=0</td></tr>
+<tr class="separator:a92ea0343608f4045ba4a3830aee24f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68ac7dbb99faf3904ae016a1ea6e45f3" id="r_a68ac7dbb99faf3904ae016a1ea6e45f3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a68ac7dbb99faf3904ae016a1ea6e45f3">isRequiredForBackward</a> () const =0</td></tr>
 <tr class="separator:a68ac7dbb99faf3904ae016a1ea6e45f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structonert_1_1ir_1_1_i_operation"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structonert_1_1ir_1_1_i_operation')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structonert_1_1ir_1_1_i_operation.html">onert::ir::IOperation</a></td></tr>
@@ -262,6 +264,35 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a92ea0343608f4045ba4a3830aee24f02" name="a92ea0343608f4045ba4a3830aee24f02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92ea0343608f4045ba4a3830aee24f02">&#9670;&#160;</a></span>disableBackward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void onert::ir::train::ITrainableOperation::disableBackward </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classonert_1_1ir_1_1train_1_1_trainable_operation.html#a32e7a5e93e156443486c1504fb6fbbad">onert::ir::train::TrainableOperation</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00143">onert::ir::train::TrainableGraph::disableBackward()</a>.</p>
+
+</div>
+</div>
 <a id="ae892d701287702c42fd6ae1a429c4882" name="ae892d701287702c42fd6ae1a429c4882"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae892d701287702c42fd6ae1a429c4882">&#9670;&#160;</a></span>disableWeightsUpdate()</h2>
 
@@ -394,6 +425,8 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classonert_1_1ir_1_1train_1_1_trainable_operation.html#a1744cbc316f1982f9a40e8d251d761b3">onert::ir::train::TrainableOperation</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00269">onert::ir::train::TrainableGraph::essentialBackwardOrder()</a>.</p>
 
 </div>
 </div>

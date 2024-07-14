@@ -461,6 +461,7 @@ var namespaceluci =
     [ "SubstituteTransposeToReshapePass", "structluci_1_1_substitute_transpose_to_reshape_pass.html", "structluci_1_1_substitute_transpose_to_reshape_pass" ],
     [ "TransformMinMaxToRelu6Pass", "structluci_1_1_transform_min_max_to_relu6_pass.html", "structluci_1_1_transform_min_max_to_relu6_pass" ],
     [ "TransformMinReluToRelu6Pass", "structluci_1_1_transform_min_relu_to_relu6_pass.html", "structluci_1_1_transform_min_relu_to_relu6_pass" ],
+    [ "TransformSqrtDivToRsqrtMulPass", "structluci_1_1_transform_sqrt_div_to_rsqrt_mul_pass.html", "structluci_1_1_transform_sqrt_div_to_rsqrt_mul_pass" ],
     [ "TypedNodeBuilder", "classluci_1_1_typed_node_builder.html", "classluci_1_1_typed_node_builder" ],
     [ "TypeMapper", "structluci_1_1_type_mapper.html", null ],
     [ "TypeMapper< float >", "structluci_1_1_type_mapper_3_01float_01_4.html", null ],

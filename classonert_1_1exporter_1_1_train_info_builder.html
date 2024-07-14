@@ -137,8 +137,8 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_train_info_builder_8h_source.html#l00032">32</a> of file <a class="el" href="_train_info_builder_8h_source.html">TrainInfoBuilder.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>                                                                            : _builder(1024)</div>
 <div class="line"><span class="lineno">   33</span>  {</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> optimizerInfo = training_info-&gt;optimizerInfo();</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keyword">const</span> <span class="keyword">auto</span> lossInfo = training_info-&gt;lossInfo();</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;optimizerInfo = training_info-&gt;optimizerInfo();</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lossInfo = training_info-&gt;lossInfo();</div>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>    ::circle::Optimizer optimizer;</div>
 <div class="line"><span class="lineno">   38</span>    ::circle::OptimizerOptions optimizer_opt_type;</div>

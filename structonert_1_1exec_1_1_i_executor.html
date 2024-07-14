@@ -120,12 +120,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a21de67cdbf0c1492734cd8ca941d2114" id="r_a21de67cdbf0c1492734cd8ca941d2114"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a21de67cdbf0c1492734cd8ca941d2114">execute</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * &gt; &amp;inputs, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * &gt; &amp;outputs, const <a class="el" href="structonert_1_1exec_1_1_execution_options.html">ExecutionOptions</a> &amp;options)=0</td></tr>
 <tr class="memdesc:a21de67cdbf0c1492734cd8ca941d2114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute with given input/output tensors.  <br /></td></tr>
 <tr class="separator:a21de67cdbf0c1492734cd8ca941d2114"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2624f04e864973792bfc8ca489b3ac07" id="r_a2624f04e864973792bfc8ca489b3ac07"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a2624f04e864973792bfc8ca489b3ac07">getInputTensors</a> () const =0</td></tr>
-<tr class="memdesc:a2624f04e864973792bfc8ca489b3ac07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input tensor objects.  <br /></td></tr>
-<tr class="separator:a2624f04e864973792bfc8ca489b3ac07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fa47e6e9593c9c7132703ec01a07303" id="r_a8fa47e6e9593c9c7132703ec01a07303"><td class="memItemLeft" align="right" valign="top">virtual const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a8fa47e6e9593c9c7132703ec01a07303">getOutputTensors</a> () const =0</td></tr>
-<tr class="memdesc:a8fa47e6e9593c9c7132703ec01a07303"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output tensor objects.  <br /></td></tr>
-<tr class="separator:a8fa47e6e9593c9c7132703ec01a07303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d1e10f96e8569c1473aeb3ea1d86e6" id="r_a41d1e10f96e8569c1473aeb3ea1d86e6"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a41d1e10f96e8569c1473aeb3ea1d86e6">inputSize</a> () const =0</td></tr>
+<tr class="memdesc:a41d1e10f96e8569c1473aeb3ea1d86e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input size.  <br /></td></tr>
+<tr class="separator:a41d1e10f96e8569c1473aeb3ea1d86e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704945d64b8e0e1918388824f8fad409" id="r_a704945d64b8e0e1918388824f8fad409"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a704945d64b8e0e1918388824f8fad409">outputSize</a> () const =0</td></tr>
+<tr class="memdesc:a704945d64b8e0e1918388824f8fad409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output size.  <br /></td></tr>
+<tr class="separator:a704945d64b8e0e1918388824f8fad409"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff181d1cdbf93d8b438aee19ddca2b9" id="r_aaff181d1cdbf93d8b438aee19ddca2b9"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#aaff181d1cdbf93d8b438aee19ddca2b9">inputInfo</a> (uint32_t index) const =0</td></tr>
+<tr class="memdesc:aaff181d1cdbf93d8b438aee19ddca2b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input info at index.  <br /></td></tr>
+<tr class="separator:aaff181d1cdbf93d8b438aee19ddca2b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2c9811157634b2162ee924a1c362163" id="r_ae2c9811157634b2162ee924a1c362163"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#ae2c9811157634b2162ee924a1c362163">outputInfo</a> (uint32_t index) const =0</td></tr>
+<tr class="memdesc:ae2c9811157634b2162ee924a1c362163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output info at index.  <br /></td></tr>
+<tr class="separator:ae2c9811157634b2162ee924a1c362163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceb434c8093fd462c9ddbc3dcb5720df" id="r_aceb434c8093fd462c9ddbc3dcb5720df"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#aceb434c8093fd462c9ddbc3dcb5720df">inputLayout</a> (uint32_t index) const =0</td></tr>
+<tr class="memdesc:aceb434c8093fd462c9ddbc3dcb5720df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input layout at index.  <br /></td></tr>
+<tr class="separator:aceb434c8093fd462c9ddbc3dcb5720df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13e17083ea3b634f693d634803e0b270" id="r_a13e17083ea3b634f693d634803e0b270"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a13e17083ea3b634f693d634803e0b270">outputLayout</a> (uint32_t index) const =0</td></tr>
+<tr class="memdesc:a13e17083ea3b634f693d634803e0b270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output layout at index.  <br /></td></tr>
+<tr class="separator:a13e17083ea3b634f693d634803e0b270"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af912a0ab9cb71c557f167442ebd5c7d4" id="r_af912a0ab9cb71c557f167442ebd5c7d4"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="structonert_1_1exec_1_1_execution_options.html">ExecutionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">currentOptions</a> () const =0</td></tr>
 <tr class="memdesc:af912a0ab9cb71c557f167442ebd5c7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return current execution configuration.  <br /></td></tr>
 <tr class="separator:af912a0ab9cb71c557f167442ebd5c7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,7 +145,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Struct to define interface of Executor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_executor_8h_source.html#l00052">52</a> of file <a class="el" href="_i_executor_8h_source.html">IExecutor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_executor_8h_source.html#l00042">42</a> of file <a class="el" href="_i_executor_8h_source.html">IExecutor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a61e540628d75a1c5182b43c2a192dbe8" name="a61e540628d75a1c5182b43c2a192dbe8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a61e540628d75a1c5182b43c2a192dbe8">&#9670;&#160;</a></span>IExecutor()</h2>
@@ -257,7 +269,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#ab2424f0eeadda8a749f04517d839bd5b">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9db7c025b579af84be8a30ce3ec3e82d">onert::exec::train::TrainableExecutor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00058">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_if_layer_8cc_source.html#l00041">onert::backend::builtin::kernel::IfLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00142">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_if_layer_8cc_source.html#l00041">onert::backend::builtin::kernel::IfLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -315,70 +327,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2624f04e864973792bfc8ca489b3ac07" name="a2624f04e864973792bfc8ca489b3ac07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2624f04e864973792bfc8ca489b3ac07">&#9670;&#160;</a></span>getInputTensors()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp; onert::exec::IExecutor::getInputTensors </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get input tensor objects. </p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of <code>IOTensor</code> </dd></dl>
-
-<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a05e470e994b82ab0c25e575d2437676d">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a56d38132e42ee2bd5e6c026f0991453c">onert::exec::train::TrainableExecutor</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_multi_model_executors_8cc_source.html#l00409">onert::exec::MultiModelExecutors::execute()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00048">onert::exec::SingleModelExecutors::inputInfo()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00038">onert::exec::SingleModelExecutors::inputSize()</a>.</p>
-
-</div>
-</div>
-<a id="a8fa47e6e9593c9c7132703ec01a07303" name="a8fa47e6e9593c9c7132703ec01a07303"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fa47e6e9593c9c7132703ec01a07303">&#9670;&#160;</a></span>getOutputTensors()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * &gt; &amp; onert::exec::IExecutor::getOutputTensors </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get output tensor objects. </p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of <code>IOTensor</code> </dd></dl>
-
-<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#aac01f002567975ca8819bf36ce75112a">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9afbcabb3f3aeee479dc5d963221676e">onert::exec::train::TrainableExecutor</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00053">onert::exec::SingleModelExecutors::outputInfo()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00043">onert::exec::SingleModelExecutors::outputSize()</a>.</p>
-
-</div>
-</div>
 <a id="a7126c492a92520efacb7bc800474cce1" name="a7126c492a92520efacb7bc800474cce1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7126c492a92520efacb7bc800474cce1">&#9670;&#160;</a></span>graph()</h2>
 
@@ -408,6 +356,222 @@ Public Member Functions</h2></td></tr>
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#ac7b0a4c653fb21dae514d757d0ff4be1">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a4eb1b7b19e14d14db46987d8022df2f6">onert::exec::train::TrainableExecutor</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00085">onert::exec::ProfileObserver::handleJobEnd()</a>, <a class="el" href="_execution_8h_source.html#l00057">onert::exec::Execution::primary_subgraph()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
+
+</div>
+</div>
+<a id="aaff181d1cdbf93d8b438aee19ddca2b9" name="aaff181d1cdbf93d8b438aee19ddca2b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaff181d1cdbf93d8b438aee19ddca2b9">&#9670;&#160;</a></span>inputInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp; onert::exec::IExecutor::inputInfo </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input info at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of input </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Input operand info </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#aaa5c53202691bb38603952fa8e4628cf">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a17313f5f16b979efc46ed53311a420f5">onert::exec::train::TrainableExecutor</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00142">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00132">onert::exec::SingleModelExecutors::inputInfo()</a>.</p>
+
+</div>
+</div>
+<a id="aceb434c8093fd462c9ddbc3dcb5720df" name="aceb434c8093fd462c9ddbc3dcb5720df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceb434c8093fd462c9ddbc3dcb5720df">&#9670;&#160;</a></span>inputLayout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::exec::IExecutor::inputLayout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input layout at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of input </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Input operand layout </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a6005d5084e0ed9fc7f0ec616e5d558af">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a8dc78133db4d042b06cb5488365085e9">onert::exec::train::TrainableExecutor</a>.</p>
+
+</div>
+</div>
+<a id="a41d1e10f96e8569c1473aeb3ea1d86e6" name="a41d1e10f96e8569c1473aeb3ea1d86e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d1e10f96e8569c1473aeb3ea1d86e6">&#9670;&#160;</a></span>inputSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint32_t onert::exec::IExecutor::inputSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get input size. </p>
+<dl class="section return"><dt>Returns</dt><dd>Input size </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a311aa7fd5a14f586ce6c1c54005be9f0">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a63fd23446555b9447f7b3e46ebed58d2">onert::exec::train::TrainableExecutor</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_multi_model_executors_8cc_source.html#l00434">onert::exec::MultiModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00128">onert::exec::SingleModelExecutors::inputSize()</a>.</p>
+
+</div>
+</div>
+<a id="ae2c9811157634b2162ee924a1c362163" name="ae2c9811157634b2162ee924a1c362163"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2c9811157634b2162ee924a1c362163">&#9670;&#160;</a></span>outputInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp; onert::exec::IExecutor::outputInfo </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output info at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of output </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output operand info </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a00d99687cfa41c95258cb1970710da9b">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#afd804936ac6652bb5942bef3caa26252">onert::exec::train::TrainableExecutor</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00142">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00137">onert::exec::SingleModelExecutors::outputInfo()</a>.</p>
+
+</div>
+</div>
+<a id="a13e17083ea3b634f693d634803e0b270" name="a13e17083ea3b634f693d634803e0b270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13e17083ea3b634f693d634803e0b270">&#9670;&#160;</a></span>outputLayout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::exec::IExecutor::outputLayout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output layout at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of output </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output operand layout </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#ac7dd004e2c994632dc55a53c428d2ba4">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#affd4d3a12dcac266a46a86d7f5f166ae">onert::exec::train::TrainableExecutor</a>.</p>
+
+</div>
+</div>
+<a id="a704945d64b8e0e1918388824f8fad409" name="a704945d64b8e0e1918388824f8fad409"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a704945d64b8e0e1918388824f8fad409">&#9670;&#160;</a></span>outputSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint32_t onert::exec::IExecutor::outputSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output size. </p>
+<dl class="section return"><dt>Returns</dt><dd>Output size </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a3072d6b62c27cf2beb3d04dc35031c0d">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9bfeb3400991ed7d4b84677d18063329">onert::exec::train::TrainableExecutor</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00130">onert::exec::SingleModelExecutors::outputSize()</a>.</p>
 
 </div>
 </div>

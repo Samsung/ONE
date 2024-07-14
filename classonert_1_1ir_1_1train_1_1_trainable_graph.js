@@ -15,7 +15,9 @@ var classonert_1_1ir_1_1train_1_1_trainable_graph =
     [ "btopolSortOperations", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a62f1a965853158ed420a2251dd6f9844", null ],
     [ "changeBackwardShape", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#aa3b0d4badc6b4f36e2deb98c24a51618", null ],
     [ "changeShape", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a32e1f89b53054766afc09a9775aa879b", null ],
+    [ "disableBackward", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a64b01fac530f7424f79bfc5da4b7852e", null ],
     [ "enableBackward", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a972e055b0772b202a13852ea34513ba6", null ],
+    [ "essentialBackwardOrder", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a1fd9f5a8c88487e45b284eb2951f6cc5", null ],
     [ "getInputIndex", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a1d4c2bb31889ad1c905fddf4716aca7f", null ],
     [ "getInputs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc", null ],
     [ "getLossIndex", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9", null ],
@@ -32,7 +34,10 @@ var classonert_1_1ir_1_1train_1_1_trainable_graph =
     [ "setInputs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#afcc849c7f5d62242ad9afcc4aff8757f", null ],
     [ "setLayout", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a34bc52654a1b858442e1585315d9be21", null ],
     [ "setOutputs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a66f47389596e8002afb536af93e4d48d", null ],
+    [ "setTrainingUseDefs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#aa498361f1f362f8960a833ff78026a4e", null ],
     [ "topolSortOperations", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#aabab9ab2695dfe2ebccfaa7d9786dce4", null ],
-    [ "truncateBackwardOrder", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#ada0dee326b0a38fd4160a4040460cfe1", null ],
+    [ "trainingUseDefs", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae8395e833e8a321f7086171e3d0d5ff7", null ],
+    [ "truncateBackwardOrder", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a7a8e68fb9d9d87658fb353cc9e5ffd4c", null ],
+    [ "truncateBackwardOrder", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#a60860f58b9884044595835078ad57fdc", null ],
     [ "verify", "classonert_1_1ir_1_1train_1_1_trainable_graph.html#af5d1fd9cdcc982cd5046bce210a4ff85", null ]
 ];
