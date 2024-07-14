@@ -100,10 +100,13 @@ def _get_parser(backends_list):
 def _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_args):
     """verify given arguments"""
     cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
+    cmd_target_exist = oneutils.is_valid_attr(args, 'target')
+    if cmd_backend_exist and cmd_target_exist:
+        parser.error(
+            '\'backend\' option and \'target\' option cannot be used simultaneously.')
     cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
     cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
-    target_exist = oneutils.is_valid_attr(args, 'target') or oneutils.is_valid_attr(
-        cfg_target_args, 'target')
+    target_exist = cmd_target_exist or oneutils.is_valid_attr(cfg_target_args, 'target')
 
     # check if required arguments is given
     missing = []
@@ -116,12 +119,10 @@ def _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_a
             if oneutils.is_valid_attr(args, 'target'):
                 target_to_run = args.target
             given_backend = backends.get_backend_from_target_conf(target_to_run)
-            schema_exist = oneutils.get_arg_parser(
-                given_backend, cmd="profile", target=target_to_run)
-            if not schema_exist:
-                missing.append('-b/--backend')
+            if not given_backend:
+                parser.error(f'Not found {target_to_run} target.')
         else:
-            missing.append('-b/--backend')
+            missing.append('[-b/--backend | -T/--target]')
     if len(missing):
         parser.error('the following arguments are required: ' + ' '.join(missing))
 
@@ -165,11 +166,11 @@ def _parse_arg(parser):
     if len(args) == 0:
         profile_args = parser.parse_args(profile_args)
     # one-profile has two interfaces
-    # 1. one-profile [-h] [-v] [-C CONFIG] [-b BACKEND] [COMMANDS FOR BACKEND]
+    # 1. one-profile [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] [COMMANDS FOR BACKEND]
     if len(args) == 1:
         profile_args = args[0]
         profile_args, unknown_args = parser.parse_known_args(profile_args)
-    # 2. one-profile [-h] [-v] [-C CONFIG] [-b BACKEND] -- [COMMANDS FOR BACKEND]
+    # 2. one-profile [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] -- [COMMANDS FOR BACKEND]
     if len(args) == 2:
         profile_args = args[0]
         backend_args = args[1]
@@ -216,6 +217,8 @@ def main():
     [12] one-profile -C {cfg} (w/ target, w/o command schema)
     [13] one-profile -C {cfg} -T {target} (w/ command schema)
     [14] one-profile -C {cfg} -T {target} (w/o command schema)
+    [15] one-profile -T {target} ${command}
+    [16] one-profile -T {target} -- ${command}
 
     All other cases are not allowed or an undefined behavior.
     '''
@@ -272,10 +275,15 @@ def main():
                     # [4]
                     if oneutils.is_valid_attr(cfg_args, 'backends'):
                         given_backends = cfg_args.backends.split(',')
-    # [5], [6]
     else:
         assert (backend_args or unknown_args)
-        given_backends = [args.backend]
+        # [5], [6]
+        if oneutils.is_valid_attr(args, 'backend'):
+            given_backends = [args.backend]
+        # [15], [16]
+        else:
+            assert oneutils.is_valid_attr(args, 'target')
+            given_backends = [backends.get_backend_from_target_conf(target_to_run)]
 
     # make commands
     # 1. if command schema exists
