@@ -57,7 +57,7 @@ def run_subtools():
 
 
 def get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-b BACKEND] [-W WORKFLOW] [-O OPTIMIZATION] [-T TARGET] [COMMAND <args>]'
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG | -W WORKFLOW] [-b BACKEND | -T TARGET] [-O OPTIMIZATION] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
     parser = ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
