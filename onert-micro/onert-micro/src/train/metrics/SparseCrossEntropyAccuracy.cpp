@@ -15,7 +15,6 @@
  */
 
 #include "train/metrics/SparseCrossEntropyAccuracy.h"
-#include <iostream>
 
 using namespace onert_micro;
 using namespace onert_micro::train;
@@ -34,18 +33,14 @@ float SparseCrossEntropyAccuracy::calculateValue(const uint32_t flat_size, const
   // Find predicted class
   float pred_class = 0.f;
   float pred_max_val = calculated_data[0];
-  std::cout << "PREDICTION: " << std::endl;
   for (uint32_t i = 0; i < flat_size; ++i)
   {
-    std::cout << "\t[" << i << "]: " << calculated_data[i] << ", ";
     if (pred_max_val < calculated_data[i])
     {
       pred_max_val = calculated_data[i];
       pred_class = static_cast<float>(i);
     }
   }
-
-  std::cout << std::endl << "\tTarget: " << target_class << " | Pred: " << pred_class << "\n";
 
   return pred_class == target_class ? 1.0f : 0.0f;
 }

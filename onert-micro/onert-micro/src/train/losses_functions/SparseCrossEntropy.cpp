@@ -17,7 +17,6 @@
 
 #include "train/losses_functions/SparseCrossEntropy.h"
 #include <cmath>
-#include <iostream>
 
 using namespace onert_micro;
 using namespace onert_micro::train;
@@ -39,12 +38,8 @@ void SparseCrossEntropy::calculateErrorBackpropagation(const uint32_t flat_size,
 {
   uint32_t label = static_cast<uint32_t>(target_data[0]);
 
-  // std::cout << "Target: " << label << "\n";
-
   for (uint32_t i = 0; i < flat_size; ++i)
   {
     output_grad[i] = (calculated_data[i] + float(10.0e-32)) - (i == label);
-    // output_grad[i] = (output_grad[i] / sum) - (i == label);
-    // std::cout << "For target[" << i << "]: " << "Calulated: " << calculated_data[i] << ", output_grad: " << output_grad[i] << "\n";
   }
 }

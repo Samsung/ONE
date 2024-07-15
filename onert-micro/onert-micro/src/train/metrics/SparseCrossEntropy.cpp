@@ -37,6 +37,5 @@ float SparseCrossEntropy::calculateValue(const uint32_t flat_size, const float *
   // Sparse Cross Entropy uses target data as a integer label of target class.
   uint32_t label_index = static_cast<uint32_t>(target_data[0]);
   result_value = std::log(calculated_data[label_index] + float(10.0e-32));
-//   result_value = std::log(calculated_data[0] + float(10.0e-32));
   return -result_value;
 }

@@ -236,13 +236,13 @@ OMStatus OMTrainingHandler::evaluateMetric(OMMetrics metric, void *metric_val,
     OMStatus status = storage.getDataByTensorIndex(&calculated_data, forward_output_index);
     assert(calculated_data != nullptr);
 
-    // Get target data
+    /** NOTE:
+     * This offset will always return 0 if the MODEL OUTPUT is returning 1 value of prediction.
+     * (forward_output->size() == length of output vector.)
+     * one-hot: size == target_numbers
+     * Sparse cross : size == 1
+     */
     size_t offset = batch_num * sizeof(core::OMDataType(forward_output_tensor->type())) * flat_size;
-
-    if (metric == SPARSE_CROSS_ENTROPY_METRICS || metric == SPARSE_CROSS_ENTROPY_ACCURACY)
-    {
-      offset = batch_num * sizeof(core::OMDataType(forward_output_tensor->type()));
-    }
 
     uint8_t *target_data = _training_storage.getTargetData(i) + offset;
 

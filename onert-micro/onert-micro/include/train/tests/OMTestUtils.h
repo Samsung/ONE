@@ -22,7 +22,6 @@
 
 #include <vector>
 #include <numeric>
-#include <iostream>
 
 namespace onert_micro
 {
@@ -41,13 +40,16 @@ OMStatus train(OMTrainingInterpreter &train_interpreter, OMConfig &config,
   const uint32_t num_train_data_samples = test_base.getTrainNumSamples();
   const uint32_t batch_size = config.training_context.batch_size;
   const uint32_t input_size = train_interpreter.getInputSizeAt(0);
-  const uint32_t target_size = train_interpreter.getOutputSizeAt(0);
-  std::cout << "[INFO]" << "\n\tNum_train_data_samples: " << num_train_data_samples << "\n\tbatch_size: " << batch_size 
-                        << "\n\tinput_size: " << input_size << "\n\ttarget_size:" << target_size << "\n";
+  uint32_t target_size = train_interpreter.getOutputSizeAt(0);
+
+  // TODO: Need to revisit this to make getOuputSize can get proper output number 
+  // when 'all' target number and output numbers are different
+  if (config.training_context.loss == SPARSE_CROSS_ENTROPY)
+    target_size = 1;
+
   for (uint32_t e = 0; e < training_epochs; ++e)
   {
     config.training_context.num_epoch = e + 1;
-    std::cout << "Epoch " << e+1 << "/" << training_epochs << "\n";
     uint32_t num_steps = num_train_data_samples / batch_size;
     for (int i = 0; i < num_steps; ++i)
     {
@@ -72,7 +74,6 @@ OMStatus train(OMTrainingInterpreter &train_interpreter, OMConfig &config,
       train_interpreter.setInput(reinterpret_cast<uint8_t *>(input_data.data()), 0);
       train_interpreter.setTarget(reinterpret_cast<uint8_t *>(target_data.data()), 0);
 
-      // std:: cout << " [" << i+1 << "]" << std::endl;
       // Train with current batch size
       status = train_interpreter.trainSingleStep(config);
       assert(status == Ok);
@@ -98,6 +99,12 @@ OMStatus evaluate(OMTrainingInterpreter &train_interpreter, OMConfig &config,
   const uint32_t batch_size = 1;
   const uint32_t input_size = train_interpreter.getInputSizeAt(0);
   const uint32_t target_size = train_interpreter.getOutputSizeAt(0);
+
+  // TODO: Need to revisit this to make getOuputSize can get proper output number 
+  // when 'all' target number and output numbers are different
+  if (config.training_context.loss == SPARSE_CROSS_ENTROPY)
+    target_size = 1;
+
   for (int i = 0; i < num_test_data_samples; ++i)
   {
     // Read current input and target data
@@ -124,14 +131,6 @@ OMStatus evaluate(OMTrainingInterpreter &train_interpreter, OMConfig &config,
   // Calculate and save average values
   *metric_res =
     static_cast<U>(std::accumulate(result_v.begin(), result_v.end(), U(0)) / result_v.size());
-
-  std::cout << "WRONG Ans: ";
-  for (int j = 0; j < result_v.size(); ++j)
-  {
-    if (result_v[j] == 0)
-      std::cout << j+1 << ", ";
-  }
-  std::cout << std::endl;
 
   return status;
 }

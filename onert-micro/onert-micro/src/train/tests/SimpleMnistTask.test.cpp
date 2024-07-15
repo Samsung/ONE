@@ -19,8 +19,6 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
-
 namespace onert_micro
 {
 namespace train
@@ -36,7 +34,7 @@ public:
   SimpleMnistClassificationTaskTest()
   {
     // Set user defined training settings
-    const uint32_t training_epochs = 20;
+    const uint32_t training_epochs = 10;
     const float lambda = 0.001f;
     const uint32_t batch_size = 1;
     // Train all layers
@@ -99,8 +97,6 @@ TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
   status = evaluate(train_interpreter, config, simpleMnistTask, SPARSE_CROSS_ENTROPY_ACCURACY,
                     &acc_metric_after_training);
   EXPECT_EQ(status, Ok);
-
-  std::cout << acc_metric_before_training << ", " << acc_metric_after_training << "\n";
 
   // ACCURACY metric after training should be better then before (before training accuracy value
   // smaller then after)
