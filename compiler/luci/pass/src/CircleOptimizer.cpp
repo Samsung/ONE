@@ -33,6 +33,7 @@
 #include "luci/Pass/ForwardReshapeToUnaryOpPass.h"
 #include "luci/Pass/ForwardTransposeOpPass.h"
 #include "luci/Pass/FuseActivationFunctionPass.h"
+#include "luci/Pass/FuseAddToFullyConnectedBiasPass.h"
 #include "luci/Pass/FuseAddWithConvPass.h"
 #include "luci/Pass/FuseAddWithFullyConnectedPass.h"
 #include "luci/Pass/FuseAddWithTConvPass.h"
@@ -316,6 +317,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseSliceWithTConv))
   {
     phase.emplace_back(std::make_unique<FuseSliceWithTConvPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseAddToFullyConnectedBias))
+  {
+    phase.emplace_back(std::make_unique<FuseAddToFullyConnectedBiasPass>());
   }
   if (_options->query(Options::Algorithm::FuseAddWithConv))
   {

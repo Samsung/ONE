@@ -34,6 +34,7 @@ public:
   {
     enum Algorithm
     {
+      FuseAddToFullyConnectedBias,
       FuseAddWithConv,
       FuseAddWithFullyConnected,
       FuseAddWithTConv,
