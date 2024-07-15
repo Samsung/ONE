@@ -19,7 +19,7 @@ SCRIPT_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) # absolute path to
 INSTALL_PATH=$SCRIPT_HOME/android_sdk # path to directory where android sdk will be installed
 PLATFORMS_PACKAGE_VERSION="29" # version of platfroms package which will be installed
 BUILD_TOOLS_PACKAGE_VERSION="29.0.3" # version of build-tools package which will be installed
-NDK_VERSION="20.0.5594570" # version of ndk which will be installed
+NDK_VERSION="26.3.11579264" # version of ndk which will be installed
 COMMAND_LINE_TOOLS_ARCHIVE="commandlinetools-linux-6514223_latest.zip" # command line tools archive name from site https://developer.android.com/studio/#downloads for bootstrap
 COMMAND_LINE_TOOLS_VERSION="10.0" # version of command line tools which will be installed
 
