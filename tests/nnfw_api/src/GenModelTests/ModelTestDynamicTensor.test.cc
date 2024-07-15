@@ -778,8 +778,9 @@ TEST_F(CombinationTest1, neg_combination_of_set_input_tensorinfo_and_nnfw_run)
   cast_in_buf = {10};
   reshape_shape_in_buf = {1, 4};
   expected = {10, 11, 12, 13};
+  setInputOutput(session, cast_in_buf, reshape_shape_in_buf, actual);
   // This should throw an error
-  EXPECT_ANY_THROW(setInputOutput(session, cast_in_buf, reshape_shape_in_buf, actual));
+  EXPECT_EQ(nnfw_run(session), NNFW_STATUS_ERROR);
 
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
 }
@@ -989,7 +990,8 @@ TEST_F(CombinationTest2, neg_combination_set_input_tensorinfo_for_two_inputs)
   expected = {110};                               // wrong
   expected_ti = {NNFW_TYPE_TENSOR_INT32, 1, {1}}; // wrong
   actual.resize(1);                               // wrong
-  EXPECT_ANY_THROW(run_WITHOUT_set_input_tensorinfo(in0, in1, expected_ti, expected, actual));
+  setInputOutput(session, in0, in1, actual);
+  EXPECT_EQ(nnfw_run(session), NNFW_STATUS_ERROR);
 
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
 }

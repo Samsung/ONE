@@ -255,6 +255,7 @@ NNFW_STATUS nnfw_apply_tensorinfo(nnfw_session *session, uint32_t index,
  * When it is called after calling {@link nnfw_prepare} or even after {@link nnfw_run}, this info
  * will be used when {@link nnfw_run}. And the shapes of the tensors are determined on the fly.
  * If this function is called many times for the same index, it is overwritten.
+ * tensor_info's dtype field is ignored.
  *
  * @param[in] session     Session to the input tensor info is to be set
  * @param[in] index       Index of input to be set (0-indexed)
@@ -331,6 +332,9 @@ NNFW_STATUS nnfw_await(nnfw_session *session);
  * reused for many inferences. \p length must be greater or equal than the operand requires. To
  * specify an optional input, you can either not call this for that input or call this with \p
  * buffer of NULL and \p length of 0.
+ * If you set {@link NNFW_TYPE_TENSOR_FLOAT32} type and model has quantized input type on given
+ * index, runtime will set quantized data type model input by converting from float buffer data
+ * internally.
  *
  * @param[in] session Session to the input is to be set
  * @param[in] index   Index of input to be set (0-indexed)
@@ -350,6 +354,9 @@ NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type
  * reused for many inferences. \p length must be greater or equal than the operand requires. An
  * output operand can have unspecified shape and deduced dynamically during the execution. You must
  * provide \p buffer large enough.
+ * If you set {@link NNFW_TYPE_TENSOR_FLOAT32} type and model has quantized output type on given
+ * index, runtime will set dequantized float buffer data from quantize data type model output
+ * internally.
  *
  * @param[in]   session Session from inference output is to be extracted
  * @param[in]   index   Index of output to be set (0-indexed)

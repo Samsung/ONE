@@ -63,17 +63,8 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
 // TODO Remove default parameter
 void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t length)
 {
-  // TODO handle when (!buffer && length != 0) : setting the input as an optional tensor
-
-  // check if size enough for input is passed
-  // if input_shape_sig is set, input_shape_sig overrides shape in info
-  // note: input_shape_sig contains shape passed by nnfw_set_input_tensorinfo()
+  // Length validation in execute(): datatype can be changed by API call
   auto &input_desc = _ctx.desc.inputs.at(index.value());
-  if (length < input_desc->info.total_size())
-  {
-    throw std::runtime_error{"Too small length"};
-  }
-
   input_desc->buffer = buffer;
   input_desc->size = length;
 }
@@ -87,13 +78,10 @@ void Execution::setInput(const ir::IOIndex &index, const ir::Shape &shape, const
 
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
 {
+  // Length validation in execute()
+  // - datatype can be changed by API call
+  // - shape can be changed by dynamic shape inference
   auto &output_desc = _ctx.desc.outputs.at(index.value());
-  // Check lenght when output shape is valid
-  if (!_ctx.shape_updated && length < output_desc->info.total_size())
-  {
-    throw std::runtime_error{"Too small length"};
-  }
-
   output_desc->buffer = buffer;
   output_desc->size = length;
 }
@@ -132,6 +120,23 @@ void Execution::setOutputType(const ir::IOIndex &index, const ir::TypeInfo &type
 void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;
+
+  // Input length validation check
+  for (const auto &input : _ctx.desc.inputs)
+  {
+    if (input->info.total_size() > input->size)
+      throw std::runtime_error{"Too small input buffer length"};
+  }
+
+  // Output length validation check
+  if (!_ctx.shape_updated)
+  {
+    for (const auto &output : _ctx.desc.outputs)
+    {
+      if (output->info.total_size() > output->size)
+        throw std::runtime_error{"Too small output buffer length"};
+    }
+  }
 
   _executors->execute(_ctx);
   finished = true;

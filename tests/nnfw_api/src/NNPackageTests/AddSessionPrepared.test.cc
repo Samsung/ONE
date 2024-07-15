@@ -136,8 +136,8 @@ TEST_F(ValidationTestAddSessionPrepared, neg_set_input_001)
 TEST_F(ValidationTestAddSessionPrepared, neg_set_input_002)
 {
   char input[1]; // buffer size is too small
-  ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
-            NNFW_STATUS_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)));
+  EXPECT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, set_output_001)
@@ -155,8 +155,8 @@ TEST_F(ValidationTestAddSessionPrepared, neg_set_output_001)
 TEST_F(ValidationTestAddSessionPrepared, neg_set_output_002)
 {
   char input[1]; // buffer size is too small
-  ASSERT_EQ(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
-            NNFW_STATUS_ERROR);
+  NNFW_ENSURE_SUCCESS(nnfw_set_output(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)));
+  EXPECT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, neg_get_input_size)

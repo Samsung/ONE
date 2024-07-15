@@ -352,8 +352,8 @@ TEST(ExecInstance, neg_small_outputbuffer)
 
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
-  EXPECT_THROW(execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 8),
-               std::runtime_error);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 8);
+  EXPECT_ANY_THROW(execution.execute());
 }
 
 TEST(ExecInstance, neg_small_inoutsize)
@@ -374,15 +374,15 @@ TEST(ExecInstance, neg_small_inoutsize)
   onert::exec::Execution execution{executors};
 
   execution.setInput(input1, new_shape, reinterpret_cast<const void *>(input1_buffer), 8);
-  EXPECT_THROW(
-    execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 2),
-    std::runtime_error);
+  execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 2);
+  EXPECT_THROW(execution.execute(), std::exception);
 
-  // Not throw exception because input shape is changed
-  EXPECT_NO_THROW(execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 8));
-
+  // Not throw exception because input shape is changed and output buffer is enough
   execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 8);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
+  execution.execute();
 
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 8);
   // Throw exception by shape inference because output buffer size is small:
   // output shape is {1, 2, 2, 1}
   EXPECT_THROW(execution.execute(), std::exception);
