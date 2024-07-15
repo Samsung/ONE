@@ -54,6 +54,7 @@ inline void Concatenation(const ConcatenationParams &params, const Shape *const 
     concat_size += input_shapes[i]->Dims(axis);
   }
   assert(concat_size == output_shape.Dims(axis));
+  UNUSED_RELEASE(concat_size);
   int64_t outer_size = 1;
   for (int i = 0; i < axis; ++i)
   {
@@ -110,6 +111,7 @@ inline void ConcatenationWithScaling(const ConcatenationParams &params,
     concat_size += input_shapes[i]->Dims(axis);
   }
   assert(concat_size == output_shape.Dims(axis));
+  UNUSED_RELEASE(concat_size);
   int64_t outer_size = 1;
   for (int i = 0; i < axis; ++i)
   {
