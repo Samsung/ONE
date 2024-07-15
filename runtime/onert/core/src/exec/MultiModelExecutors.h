@@ -20,6 +20,7 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 #include "IPermuteFunction.h"
+#include "EdgeTensor.h"
 #include "../backend/builtin/UserTensor.h"
 
 namespace std
@@ -86,24 +87,6 @@ private:
   void CreatePkgIOTensors(const IODescription &desc);
   void createPkgIOQuantLayers(const IODescription &desc);
   uint16_t modelCount() const;
-
-private:
-  // TODO Remove this class
-  class PermuteLayer : public exec::IPermuteFunction
-  {
-  public:
-    PermuteLayer(const std::vector<backend::ITensor *> &inputs,
-                 const std::vector<backend::ITensor *> &outputs)
-    {
-      assert(inputs.size() == outputs.size());
-      _src_tensors = inputs;
-      _dst_tensors = outputs;
-    }
-    virtual ~PermuteLayer() {}
-    void optimize() override {}
-  };
-
-  class EdgeTensor;
 
 private:
   std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<IExecutor>>

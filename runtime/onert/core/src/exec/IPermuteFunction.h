@@ -263,6 +263,21 @@ protected:
   std::unordered_map<const backend::ITensor *, std::vector<uint8_t>> _buffers_map;
 };
 
+// Simple PermuteLayer
+class PermuteLayer : public onert::exec::IPermuteFunction
+{
+public:
+  PermuteLayer(const std::vector<onert::backend::ITensor *> &inputs,
+               const std::vector<onert::backend::ITensor *> &outputs)
+  {
+    assert(inputs.size() == outputs.size());
+    _src_tensors = inputs;
+    _dst_tensors = outputs;
+  }
+  virtual ~PermuteLayer() {}
+  void optimize() override {}
+};
+
 } // namespace exec
 } // namespace onert
 

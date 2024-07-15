@@ -16,97 +16,9 @@
 
 #include "SingleModelExecutors.h"
 
+#include "EdgeTensor.h"
 #include "IPermuteFunction.h"
 #include "../backend/builtin/UserTensor.h"
-
-// TODO Share with MultiModelExecutors and remove
-namespace
-{
-
-class EdgeTensor : public onert::backend::IPortableTensor
-{
-public:
-  EdgeTensor(const onert::ir::OperandInfo &info, onert::ir::Layout layout)
-    : onert::backend::IPortableTensor(info), _layout{layout}, _buffer{nullptr}, _ref_count{0}
-  {
-  }
-  ~EdgeTensor() = default;
-
-  uint8_t *buffer() const override { return _buffer.get(); }
-  onert::ir::Layout layout() const override { return _layout; }
-  void set_dynamic() override { _info.setDynamic(); }
-  bool applyShape(const onert::ir::Shape &new_shape) override
-  {
-    bool previously_dynamic = is_dynamic();
-    if (!previously_dynamic || _buffer == nullptr)
-    {
-      // Always set shape - when buffer with same size was already allocated, shape could differ
-      setShape(new_shape);
-      set_dynamic();
-      const auto total_size = get_info().total_size();
-      _buffer = std::make_unique<uint8_t[]>(total_size);
-    }
-    else
-    {
-      auto previous_size = total_size();
-      auto new_size = new_shape.num_elements() * onert::ir::sizeOfDataType(data_type());
-      if (previous_size != new_size)
-      {
-        setShape(new_shape);
-        set_dynamic();
-        const auto total_size = get_info().total_size();
-        _buffer = std::make_unique<uint8_t[]>(total_size);
-      }
-      else
-      { // when buffer with same size was already allocated, shape could differ
-        setShape(new_shape);
-      }
-    }
-    return true;
-  }
-
-  void setShape(const onert::ir::Shape &new_shape) override { _info.shape(new_shape); }
-
-  void allocate_buffer()
-  {
-    const auto total_size = _info.total_size();
-    _buffer = std::make_unique<uint8_t[]>(total_size);
-    _ref_count = 1;
-  }
-
-  void increase_ref() { _ref_count++; }
-
-  void decrease_ref()
-  {
-    assert(_ref_count > 0);
-    _ref_count--;
-    if (_ref_count == 0)
-    {
-      _buffer.reset();
-    }
-  }
-
-private:
-  onert::ir::Layout _layout;
-  std::unique_ptr<uint8_t[]> _buffer;
-  int32_t _ref_count;
-};
-
-class PermuteLayer : public onert::exec::IPermuteFunction
-{
-public:
-  PermuteLayer(const std::vector<onert::backend::ITensor *> &inputs,
-               const std::vector<onert::backend::ITensor *> &outputs)
-  {
-    assert(inputs.size() == outputs.size());
-    _src_tensors = inputs;
-    _dst_tensors = outputs;
-  }
-  virtual ~PermuteLayer() {}
-  void optimize() override {}
-};
-
-} // namespace
 
 namespace onert
 {
