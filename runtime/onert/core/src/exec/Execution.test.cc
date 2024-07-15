@@ -270,7 +270,7 @@ public:
     auto operand_result2 = graph->addOperand(shape, type);
     graph->operands()
       .at(operand_rhs2)
-      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 16));
+      .data(std::make_unique<CachedData>(reinterpret_cast<const uint8_t *>(&rhs2_data), 4));
     // 2nd add operations (result2 <= result1 + rhs2)
     operation::BinaryArithmetic::Param param1;
     param1.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
