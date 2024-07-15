@@ -72,6 +72,10 @@ private:
 
 private:
   std::set<TrainingOperationIndex> _uses;
+  // NOTE Allowing multiple defs is a workaround to support training of branching models.
+  //      Back-prop tensors corresponding to forwarding tensors that are used in multiple nodes
+  //      have multiple defs. Those back-prop tensors would be accumulated during backwarding,
+  //      but current TrainableGraph cannot represent accumulated back-prop tensors.
   std::set<TrainingOperationIndex> _defs;
 };
 
