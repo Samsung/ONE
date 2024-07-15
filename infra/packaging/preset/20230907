@@ -20,7 +20,7 @@ function preset_configure()
   # loco IR and related utilities
   REQUIRED_UNITS+=("loco" "locop" "locomotiv" "logo-core" "logo")
   # Flatbuffer I/O
-  REQUIRED_UNITS+=("mio-tflite2121" "mio-circle08")
+  REQUIRED_UNITS+=("mio-tflite2121" "mio-circle09")
   # Data I/O
   REQUIRED_UNITS+=("dio-hdf5")
   # Compute

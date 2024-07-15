@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include "luci/Import/CircleImporterUtils.h"
 #include "luci/Import/Nodes/CircleConv2D.h"
 
 #include <luci/IR/Nodes/CircleConv2D.h>
-
 #include <loco.h>
 
 #include <cassert>
@@ -49,6 +49,7 @@ CircleNode *CircleConv2DGraphBuilder::build_node(const circle::OperatorT &op,
   node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
   node->dilation()->w(options->dilation_w_factor);
   node->dilation()->h(options->dilation_h_factor);
+  node->weightCompression(from_circle_weightcompressiontype(options->weight_compression_type));
 
   return node;
 }

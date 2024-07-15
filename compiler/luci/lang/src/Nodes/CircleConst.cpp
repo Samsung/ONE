@@ -20,6 +20,17 @@
 
 namespace luci
 {
+template <loco::DataType DT> WeightCompression CircleConst::compression(void) const
+{
+  assert(dtype() == DT);
+  return _compression;
+}
+
+template <loco::DataType DT> void CircleConst::compression(luci::WeightCompression c)
+{
+  assert(dtype() == DT);
+  _compression = c;
+}
 
 template <loco::DataType DT> uint32_t CircleConst::size(void) const
 {
@@ -63,6 +74,8 @@ template <loco::DataType DT> typename loco::DataTypeImpl<DT>::Type &CircleConst:
 }
 
 #define INSTANTIATE(DT)                                                                      \
+  template WeightCompression CircleConst::compression<DT>(void) const;                       \
+  template void CircleConst::compression<DT>(WeightCompression);                             \
   template uint32_t CircleConst::size<DT>(void) const;                                       \
   template void CircleConst::size<DT>(uint32_t);                                             \
   template const typename loco::DataTypeImpl<DT>::Type &CircleConst::at<DT>(uint32_t) const; \

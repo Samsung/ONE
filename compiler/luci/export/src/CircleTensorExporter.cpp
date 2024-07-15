@@ -559,6 +559,8 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
       return has_same_elements<loco::DataType::S4>(lhs, rhs);
 
     case loco::DataType::S8:
+      if (lhs->size<loco::DataType::S8>() != rhs->size<loco::DataType::S8>())
+        return false;
       return has_same_elements<loco::DataType::S8>(lhs, rhs);
 
     case loco::DataType::S16:
@@ -574,6 +576,8 @@ bool has_same_values(luci::CircleConst *lhs, luci::CircleConst *rhs)
       return has_same_elements<loco::DataType::U4>(lhs, rhs);
 
     case loco::DataType::U8:
+      if (lhs->size<loco::DataType::U8>() != rhs->size<loco::DataType::U8>())
+        return false;
       return has_same_elements<loco::DataType::U8>(lhs, rhs);
 
     case loco::DataType::BOOL:

@@ -25,6 +25,26 @@
 namespace luci
 {
 
+circle::WeightCompressionType to_circle_weightcompressiontype(luci::WeightCompression type)
+{
+  switch (type)
+  {
+    case luci::WeightCompression::NONE:
+      return circle::WeightCompressionType_NONE;
+    case luci::WeightCompression::HUFFMAN:
+      return circle::WeightCompressionType_HUFFMAN;
+    case luci::WeightCompression::RLE:
+      return circle::WeightCompressionType_RLE;
+    case luci::WeightCompression::HUFFMAN_RLE:
+      return circle::WeightCompressionType_HUFFMAN_RLE;
+    case luci::WeightCompression::RLE_HUFFMAN:
+      return circle::WeightCompressionType_RLE_HUFFMAN;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::WeightCompression",
+                     oops::to_uint32(type));
+  }
+}
+
 circle::ActivationFunctionType to_circle_actfunc(luci::FusedActFunc func)
 {
   switch (func)
