@@ -56,11 +56,14 @@ public:
 public:
   const ir::Graph &graph() const final { return _trainable_graph.graph(); }
 
-  void execute(const ExecutionContext &ctx) override { forward(ctx, false); };
+  void execute(const ExecutionContext &) override { throw std::runtime_error{"Not supported"}; }
 
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs,
-               const ExecutionOptions &options) override;
+               const ExecutionOptions &options) override
+  {
+    forward(inputs, outputs, options, false);
+  }
 
   uint32_t inputSize() const override { return _input_tensors.size(); }
 
@@ -83,8 +86,10 @@ public:
     return _output_tensors[index]->layout();
   }
 
-  void forward(const ExecutionContext &ctx, bool training);
-  void backward(const ExecutionContext &ctx, uint32_t training_step);
+  void forward(const std::vector<backend::IPortableTensor *> &inputs,
+               const std::vector<backend::IPortableTensor *> &outputs,
+               const ExecutionOptions &options, bool training);
+  void backward(const ExecutionOptions &options, uint32_t training_step);
 
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
