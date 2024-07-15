@@ -84,9 +84,6 @@ void FullyConnected::configure()
   const int32_t batch_size = input_shape.num_elements() / weights_shape.dim(1);
   const int32_t num_units = weights_shape.dim(0);
 
-  if (bias())
-    LUCI_INTERPRETER_CHECK(bias()->shape().num_elements() == weights()->shape().dim(0));
-
   if (params().keep_num_dims == false)
   {
     output()->resize({batch_size, num_units});
