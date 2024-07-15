@@ -64,19 +64,13 @@ struct IExecutor
   virtual void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>>) = 0;
 
   /**
-   * @brief     Execute with user-given input/output description (for primary subgraph)
-   * @param[in] ctx Execution context
-   * @note      This method should be thread-safe
-   */
-  virtual void execute(const ExecutionContext &ctx) = 0;
-
-  /**
    * @brief Execute with given input/output tensors
    *
-   * For non-primary subgraphs, input and output tensors must be given.
+   * Input and output tensors must be given.
    *
-   * @param[in] inputs tensors that are passed as inputs
-   * @param[in] outputs tensors that are passed as outputs
+   * @param[in] inputs  Tensors that are passed as inputs
+   * @param[in] outputs Tensors that are passed as outputs
+   * @param[in] options Execution options
    */
   virtual void execute(const std::vector<backend::IPortableTensor *> &inputs,
                        const std::vector<backend::IPortableTensor *> &outputs,

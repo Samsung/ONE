@@ -55,12 +55,6 @@ void IOTensor::setTensor(IPortableTensor *tensor)
   }
 }
 
-void IOTensor::setUserTensor(uint8_t *buffer, size_t size)
-{
-  _orig = std::make_unique<UserTensor>(_info, _orig->layout(), buffer, size);
-  setTensor(_orig.get());
-}
-
 } // namespace builtin
 } // namespace backend
 } // namespace onert
