@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-codegen -- ${command} without backend option
+# use 'backend' option with 'target' option simultaneously
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "error: the following arguments are required: \[-b/--backend | -T/--target\]" "${filename}.log"; then
+  if grep -q "'backend' and 'target' are mutually exclusive option. 'target' option automatically set a backend." "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
@@ -35,7 +35,7 @@ trap trap_err_onexit ERR
 rm -f ${filename}.log
 
 # run test
-one-codegen -- -o test.tvn test.circle > ${filename}.log 2>&1
+onecc -C "dummy_cfg" -b "dummy_backend" -T "dummy_target" > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
 exit 255

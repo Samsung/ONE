@@ -1,8 +1,8 @@
-.TH ONE-CODEGEN "1" "August 2021" "one-codegen version 1.17.0" "User Commands"
+.TH ONE-CODEGEN "1" "July 2024" "one-codegen version 1.28.0" "User Commands"
 .SH NAME
 one-codegen \- geneate codes
 .SH DESCRIPTION
-usage: one\-codegen [\-h] [\-v] [\-C CONFIG] [\-b BACKEND] [\-\-] [COMMANDS FOR BACKEND]
+usage: one\-codegen [\-h] [\-v] [\-C CONFIG] [\-b BACKEND | \-T TARGET] [\-\-] [COMMANDS FOR BACKEND]
 .PP
 \fBone\-codegen\fR is a command line tool for code generation.
 .SH OPTIONS
@@ -21,8 +21,11 @@ run with configuation file
 .TP
 \fB\-b\fR BACKEND, \fB\-\-backend\fR BACKEND
 backend name to use
+.TP
+\fB\-T\fR TARGET, \fB\-\-target\fR TARGET
+run with specific target of the backend
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2024 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"

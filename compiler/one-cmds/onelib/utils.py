@@ -26,8 +26,35 @@ import sys
 
 from typing import Union, Optional
 
-import onelib.constant as _constant
 from onelib.argumentparse import ArgumentParser
+"""
+Support commands in the one-cmds.
+
+{ 
+  ${GROUP} : {
+    ${CMD} : EXPLANATIONS
+  }
+}
+"""
+ONE_CMD = {
+    'compile': {
+        'import': 'Convert given model to circle',
+        'optimize': 'Optimize circle model',
+        'quantize': 'Quantize circle model',
+    },
+    'package': {
+        'pack': 'Package circle and metadata into nnpackage',
+    },
+    'backend': {
+        'codegen': 'Code generation tool',
+        'profile': 'Profile backend model file',
+        'infer': 'Infer backend model file'
+    },
+}
+
+
+def one_cmd_list():
+    return [cmd for group, cmds in ONE_CMD.items() for cmd in cmds.keys()]
 
 
 def add_default_arg(parser):
@@ -154,14 +181,22 @@ def safemain(main, mainpath):
         sys.exit(255)
 
 
-def run(cmd, err_prefix=None, logfile=None):
+def run(cmd, *, one_cmd: str = None, err_prefix=None, logfile=None):
     """Execute command in subprocess
 
     Args:
+        one_cmd: subtool name to execute with given `cmd`
         cmd: command to be executed in subprocess
         err_prefix: prefix to be put before every stderr lines
         logfile: file stream to which both of stdout and stderr lines will be written
     """
+    if one_cmd:
+        assert one_cmd in one_cmd_list(), f'Invalid ONE COMMAND: {one_cmd}'
+        dir_path = os.path.dirname(os.path.dirname(
+            os.path.realpath(__file__)))  # bin = onelib/../
+        driver_path = os.path.join(dir_path, f'one-{one_cmd}')
+        cmd = [driver_path] + cmd
+
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
         import select
         inputs = set([p.stdout, p.stderr])
@@ -237,6 +272,43 @@ def get_optimization_list(get_name=False):
         opt_list = [remove_suffix(s, '.cfg') for s in opt_list]
 
     return opt_list
+
+
+def get_target_list(get_name=False):
+    """
+    returns a list of targets. If `get_name` is True,
+    only basename without extension is returned rather than full file path.
+
+    [one hierarchy]
+    one
+    ├── backends
+    ├── bin
+    ├── doc
+    ├── include
+    ├── lib
+    ├── optimization
+    ├── target
+    └── test
+
+    Target configuration files must be placed in `target` folder
+    """
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    # target folder
+    files = [f for f in glob.glob(dir_path + '/../../target/*.ini', recursive=True)]
+    # exclude if the name has space
+    files = [s for s in files if not ' ' in s]
+
+    target_list = []
+    for cand in files:
+        if os.path.isfile(cand) and os.access(cand, os.R_OK):
+            target_list.append(cand)
+
+    if get_name == True:
+        target_list = [ntpath.basename(f) for f in target_list]
+        target_list = [remove_suffix(s, '.ini') for s in target_list]
+
+    return target_list
 
 
 def get_arg_parser(backend: Optional[str], cmd: str,

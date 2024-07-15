@@ -19,11 +19,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import argparse
+from argparse import ArgumentParser
+from configparser import ConfigParser
 import os
-import subprocess
 import sys
 from types import SimpleNamespace
+from typing import List
 
 from onelib.CfgRunner import CfgRunner
 from onelib.WorkflowRunner import WorkflowRunner
@@ -32,48 +33,37 @@ import onelib.utils as oneutils
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
 
-subtool_list = {
-    'compile': {
-        'import': 'Convert given model to circle',
-        'optimize': 'Optimize circle model',
-        'quantize': 'Quantize circle model',
-    },
-    'package': {
-        'pack': 'Package circle and metadata into nnpackage',
-    },
-    'backend': {
-        'codegen': 'Code generation tool',
-        'profile': 'Profile backend model file',
-        'infer': 'Infer backend model file'
-    },
-}
+
+def run_subtools():
+    """
+    Run one-cmds tools directly.
+
+    _onecc_ allows users to run one-cmds tools directly as well as using configuraiton files.
+
+    E.g. $ onecc -C ${CFG_FILE}
+         $ onecc import tflite -i ${INPUT} -o ${OUTPUT} ## HERE
+        
+    Please refer to above `subtool_list` for the support list of sub-tools.
+    
+    This function checks if given sub-tool exists and run it directly.
+    """
+    subtool_keys: List[str] = oneutils.one_cmd_list()
+    if len(sys.argv) > 1:
+        one_cmd = sys.argv[1]
+        options: List[str] = sys.argv[2:]
+        if one_cmd in subtool_keys:
+            oneutils.run(options, one_cmd=one_cmd)
+            sys.exit(0)
 
 
-def _call_driver(driver_name, options):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    driver_path = os.path.join(dir_path, driver_name)
-    cmd = [driver_path] + options
-    oneutils.run(cmd)
-
-
-def _check_subtool_exists():
-    """verify given arguments"""
-    subtool_keys = [n for k, v in subtool_list.items() for n in v.keys()]
-    if len(sys.argv) > 1 and sys.argv[1] in subtool_keys:
-        driver_name = 'one-' + sys.argv[1]
-        options = sys.argv[2:]
-        _call_driver(driver_name, options)
-        sys.exit(0)
-
-
-def _get_parser():
-    onecc_usage = 'onecc [-h] [-v] [-C CONFIG] [-b BACKEND] [-W WORKFLOW] [-O OPTIMIZATION] [-T TARGET] [COMMAND <args>]'
+def get_parser():
+    onecc_usage = 'onecc [-h] [-v] [-C CONFIG | -W WORKFLOW] [-b BACKEND | -T TARGET] [-O OPTIMIZATION] [COMMAND <args>]'
     onecc_desc = 'Run ONE driver via several commands or configuration file'
-    parser = argparse.ArgumentParser(description=onecc_desc, usage=onecc_usage)
+    parser = ArgumentParser(description=onecc_desc, usage=onecc_usage)
 
     oneutils.add_default_arg(parser)
 
-    opt_name_list = oneutils.get_optimization_list(get_name=True)
+    opt_name_list: List[str] = oneutils.get_optimization_list(get_name=True)
     opt_name_list = ['-' + s for s in opt_name_list]
     if not opt_name_list:
         opt_help_message = '(No available optimization options)'
@@ -89,26 +79,32 @@ def _get_parser():
     parser.add_argument(
         '-b', '--backend', type=str, help='generate code for given backend')
 
-    parser.add_argument(
-        '-T', '--target', type=str, help='run with specific target of the backend')
+    target_name_list: List[str] = oneutils.get_target_list(get_name=True)
+    if not target_name_list:
+        target_help_message = '(No available target)'
+    else:
+        target_help_message = '(Available target: ' + ', '.join(target_name_list) + ')'
+    target_help_message = 'run with specific target of the backend ' + target_help_message
+    parser.add_argument('-T', '--target', type=str, help=target_help_message)
 
     # just for help message
     compile_group = parser.add_argument_group('compile to circle model')
-    for tool, desc in subtool_list['compile'].items():
+    ONE_CMD = oneutils.ONE_CMD
+    for tool, desc in ONE_CMD['compile'].items():
         compile_group.add_argument(tool, action='store_true', help=desc)
 
     package_group = parser.add_argument_group('package circle model')
-    for tool, desc in subtool_list['package'].items():
+    for tool, desc in ONE_CMD['package'].items():
         package_group.add_argument(tool, action='store_true', help=desc)
 
     backend_group = parser.add_argument_group('run backend tools')
-    for tool, desc in subtool_list['backend'].items():
+    for tool, desc in ONE_CMD['backend'].items():
         backend_group.add_argument(tool, action='store_true', help=desc)
 
     return parser
 
 
-def _parse_arg(parser):
+def parse_arg(parser: ArgumentParser):
     args = parser.parse_args()
     # print version
     if args.version:
@@ -117,13 +113,11 @@ def _parse_arg(parser):
     return args
 
 
-def _verify_backend_args(parser, args):
+def verify_backend_args(parser: ArgumentParser, args):
     """
-    verify one-profile, one-codegen arguments
-
-    This verification logic comes from each drivers' codes.
+    Verify arguments for backend tools.
     """
-    cfgparser = oneutils.get_config_parser()
+    cfgparser: ConfigParser = oneutils.get_config_parser()
     cfgparser.read(args.config)
 
     for driver in ['one-profile', 'one-codegen']:
@@ -158,14 +152,14 @@ def _verify_backend_args(parser, args):
                     parser.error('Not found the command of given backend')
 
 
-def _verify_arg(parser, args):
-    """verify given arguments"""
+def verify_arg(parser: ArgumentParser, args):
+    """Verify given arguments"""
     # check if required arguments is given
     if not oneutils.is_valid_attr(args, 'config') and not oneutils.is_valid_attr(
             args, 'workflow'):
         parser.error('-C/--config or -W/--workflow argument is required')
     # check if given optimization option exists
-    opt_name_list = oneutils.get_optimization_list(get_name=True)
+    opt_name_list: List[str] = oneutils.get_optimization_list(get_name=True)
     opt_name_list = [oneutils.remove_prefix(s, 'O') for s in opt_name_list]
     if oneutils.is_valid_attr(args, 'O'):
         if ' ' in getattr(args, 'O'):
@@ -176,40 +170,29 @@ def _verify_arg(parser, args):
     if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(
             args, 'workflow'):
         parser.error('\'backend\' option can be used only with \'config\' option')
+    if oneutils.is_valid_attr(args, 'backend') and oneutils.is_valid_attr(args, 'target'):
+        parser.error(
+            '\'backend\' and \'target\' are mutually exclusive option. \'target\' option automatically set a backend.'
+        )
 
     if oneutils.is_valid_attr(args, 'backend'):
-        _verify_backend_args(parser, args)
+        verify_backend_args(parser, args)
 
 
 def main():
-    # check if there is subtool argument
-    # if true, it executes subtool with argv
-    # NOTE:
-    # Why call subtool directly without using Argparse?
-    # Because if Argparse is used, options equivalent to onecc including
-    # '--help', '-C' are processed directly onecc itself.
-    # So options cannot be delivered to subtool.
-    _check_subtool_exists()
+    run_subtools()
 
-    # parse arguments
-    # since the configuration file path is required first,
-    # parsing of the configuration file proceeds after this.
-    parser = _get_parser()
-    args = _parse_arg(parser)
-
-    # verify arguments
-    _verify_arg(parser, args)
+    parser: ArgumentParser = get_parser()
+    args = parse_arg(parser)
+    verify_arg(parser, args)
 
     bin_dir = os.path.dirname(os.path.realpath(__file__))
     if oneutils.is_valid_attr(args, 'config'):
         runner = CfgRunner(args.config)
         runner.detect_import_drivers(bin_dir)
-        if oneutils.is_valid_attr(args, 'O'):
-            runner.add_opt(getattr(args, 'O'))
-        if oneutils.is_valid_attr(args, 'backend'):
-            runner.set_backend(args.backend)
-        if oneutils.is_valid_attr(args, 'target'):
-            runner.set_target(args.target)
+        runner.add_opt(getattr(args, 'O', None))
+        runner.set_backend(getattr(args, 'backend', None))
+        runner.set_target(getattr(args, 'target', None))
         runner.run(bin_dir)
     elif oneutils.is_valid_attr(args, 'workflow'):
         runner = WorkflowRunner(args.workflow)

@@ -1,10 +1,10 @@
 .\" Manpage for onecc.
 .\" Contact nnfw@samsung.com to correct errors or typos.
-.TH ONECC "1" "August 2021" "onecc version 1.17.0" "User Commands"
+.TH ONECC "1" "July 2024" "onecc version 1.28.0" "User Commands"
 .SH NAME
 onecc \- run ONE driver via several commands or configuration file
 .SH SYNOPSIS
-\fBonecc\fR [\-h] [\-v] [\-C CONFIG] [COMMAND <args>]
+\fBonecc\fR [\-h] [\-v] [\-C CONFIG | \-W WORKFLOW] [\-b BACKEND | \-T TARGET] [\-O OPTIMIZATION] [COMMAND <args>]
 .SH DESCRIPTION
 \fBonecc\fR is a command line tool to execute ONE driver via several commands or configuration file.
 .SS "Configuration file:"
@@ -24,6 +24,18 @@ output additional information to stdout or stderr
 .TP
 \fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
 run with configuation file
+.TP
+\fB\-O\fR OPTIMIZATION
+optimization name to use
+.TP
+\fB\-W\fR WORKFLOW, \fB\-\-workflow\fR CONFIG
+run with workflow file
+.TP
+\fB\-B\fR BACKEND, \fB\-\-backend\fR CONFIG
+generate code for given backend
+.TP
+\fB\-T\fR TARGET, \fB\-\-target\fR CONFIG
+run with specific target of the backend
 .SS compile to circle model
 .TP
 \fBimport\fR
@@ -45,6 +57,9 @@ Code generation tool. See one-codegen(1) for details.
 .TP
 \fBprofile\fR
 Profile backend model file. See one-profile(1) for details.
+.TP
+\fBinfer\fR
+Infer backend model file. See one-infer(1) for details.
 .SH EXAMPLES
 .SS Use command line interface
 .TP
@@ -71,6 +86,9 @@ generate backend code
 .TP
 \fBonecc profile -b\fR \fIbackend\fR \fB--\fR \fIbackends_arguments\fR
 profile backend model
+.TP
+\fBonecc infer -b\fR \fIbackend\fR \fB--\fR \fIbackends_arguments\fR
+infer backend model
 .PP
 .SS Use configuration file
 .PP
@@ -95,6 +113,8 @@ one-pack=True
 one-codegen=True
 .br
 one-profile=True
+.br
+one-infer=True
 .IP
 [one-import-tf]
 .br
@@ -145,6 +165,12 @@ command=-o sample.out inception_v3.quantized.circle
 backend=dummy
 .br
 command=sample.out
+.IP
+[one-infer]
+.br
+backend=dummy
+.br
+command=sample.out
 .TP
 \fBonecc -C\fR \fIconfiguration file\fR
 Run ONE driver according to configuration section parameter
@@ -152,7 +178,7 @@ Run ONE driver according to configuration section parameter
 \fBonecc\fR section decides whether to use each driver or not.
 If the value is False, even if the corresponding section exists, the driver won't be executed.
 .SH COPYRIGHT
-Copyright \(co 2020\-2021 Samsung Electronics Co., Ltd. All Rights Reserved
+Copyright \(co 2020\-2024 Samsung Electronics Co., Ltd. All Rights Reserved
 Licensed under the Apache License, Version 2.0
 https://github.com/Samsung/ONE
 .SH "SEE ALSO"
