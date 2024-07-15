@@ -20,6 +20,7 @@
 #include "DisposableTensorIndex.h"
 #include "TensorManager.h"
 #include "TensorRegistry.h"
+#include "util/Set.h"
 
 #include <exec/train/optimizer/Optimizer.h>
 
@@ -67,6 +68,7 @@ public:
 
   bool isRegistered(const ir::OperandIndex &) const;
   bool isRegisteredBackward(const ir::OperandIndex &) const;
+  bool isRegisteredDisposableBackwardTensor(const DisposableTensorIndex &index) const;
 
   void allocate(void);
   void allocateBackward(void);
@@ -77,6 +79,7 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
   ir::OperandIndexMap<ir::OperandInfo> _backward_tensor_info_map;
   ir::OperandIndexMap<bool> _as_constants;
+  util::Set<DisposableTensorIndex> _disposable_backprops;
   const exec::train::optimizer::Optimizer *_optimizer;
 };
 
