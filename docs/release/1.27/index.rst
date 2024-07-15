@@ -12,3 +12,4 @@
 
   ./release-note-1.27.0.md
   ./release-note-1.27.1.md
+  ./release-note-1.27.2.md
