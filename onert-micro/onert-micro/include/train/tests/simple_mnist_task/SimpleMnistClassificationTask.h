@@ -36,7 +36,7 @@ namespace
 {
 
 // Note: use only one dataset - train will be also for test
-const size_t NUM_SAMPLES = 40;
+const size_t NUM_SAMPLES = 20;
 
 } // namespace
 

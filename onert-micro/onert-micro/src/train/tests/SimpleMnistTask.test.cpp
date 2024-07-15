@@ -64,7 +64,7 @@ public:
   OMConfig config = {};
 
   // Some value for checking that the learning process has not become worse
-  const float golden_accuracy_metric = 0.7f;
+  const float golden_accuracy_metric = 0.9f;
 };
 
 TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
