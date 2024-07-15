@@ -7,6 +7,7 @@ architecture_directory = ['x86_64', 'armv7l', 'aarch64']
 package_directory = 'nnfwapi'
 packaging_directory = ['build', package_directory + '.egg-info']
 THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_PRODUCT_DIR = "../../../Product"
 so_list = []
 so_files = []
 target_arch = 'none'
@@ -69,10 +70,13 @@ try:
         os.makedirs(arch_path)
         print(f"Created directory '{arch_path}'")
 
-        product_dir = os.path.join(THIS_FILE_DIR, '../../../Product')
+        def get_directories():
+            # If the environment variable is not set, get default one.
+            product_dir = os.environ.get("PRODUCT_DIR", DEFAULT_PRODUCT_DIR)
+            return os.path.join(THIS_FILE_DIR, product_dir), os.path.join(product_dir, "lib/" if product_dir != DEFAULT_PRODUCT_DIR else target_arch + '-linux.release/out/lib')
 
-        # onert core library
-        so_core_dir = os.path.join(product_dir, target_arch + '-linux.release/out/lib')
+        product_dir, so_core_dir = get_directories()
+
         for so in os.listdir(so_core_dir):
             if so.endswith(".so"):
                 so_list.append('onert/' + so)
