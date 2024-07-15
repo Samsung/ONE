@@ -130,12 +130,6 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     }
   });
 
-  // TODO Plan tensor builds to reduce peak memory usage
-  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-    if (tensor_builder->isRegisteredBackward(ind))
-      tensor_builder->notifyBackwardFirstUse(ind);
-  });
-
   for (const auto &op_index : tgraph.essentialBackwardOrder())
   {
     const auto back_prop_seq = getBackPropSeq(tgraph, op_index);
@@ -148,11 +142,30 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     }
   }
 
-  planDisposableBackPropTensors();
+  planBackwardTensors();
 
   tensor_builder->allocateBackward();
 
   return _tensor_registry.get();
+}
+
+void BackendContext::planForwardTensors()
+{
+  // TODO Plan forwarding tensors
+}
+
+void BackendContext::planBackwardTensors()
+{
+  const ir::train::TrainableGraph &tgraph = *trainable_graph();
+  auto tensor_builder = _tensor_builder;
+
+  // TODO Plan tensor builds to reduce peak memory usage
+  tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+    if (tensor_builder->isRegisteredBackward(ind))
+      tensor_builder->notifyBackwardFirstUse(ind);
+  });
+
+  planDisposableBackPropTensors();
 }
 
 void BackendContext::planDisposableBackPropTensors()
