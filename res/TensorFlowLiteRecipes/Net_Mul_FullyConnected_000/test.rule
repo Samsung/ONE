@@ -1,0 +1,8 @@
+# To check FC(Mul(lhs, rhs), filter, bias) is converted to
+# FC(lhs, Mul(filter, rhs), bias) and then Mul is folded to
+# FC(lhs, filter', bias)
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "FC_EXIST"                $(op_count FULLY_CONNECTED) '=' 1

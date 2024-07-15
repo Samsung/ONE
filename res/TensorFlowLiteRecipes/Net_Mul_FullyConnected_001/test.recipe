@@ -1,0 +1,67 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 }
+}
+operand {
+  name: "mul"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 4 }
+}
+operand {
+  name: "mulc"
+  type: FLOAT32
+  shape { dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "fc"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 6 }
+}
+operand {
+  name: "fc_wgt"
+  type: FLOAT32
+  shape { dim: 6 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "fc_bias"
+  type: FLOAT32
+  shape { dim: 6 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operation {
+  type: "Mul"
+  input: "ifm"
+  input: "mulc"
+  output: "mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: RELU
+    keep_num_dims: true
+  }
+  input: "mul"
+  input: "fc_wgt"
+  input: "fc_bias"
+  output: "fc"
+}
+input: "ifm"
+output: "fc"
