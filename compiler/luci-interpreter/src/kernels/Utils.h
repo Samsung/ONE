@@ -137,7 +137,8 @@ Shape calculateShapeForBroadcast(const Shape &input1_shape, const Shape &input2_
 inline double getQuantizedConvolutionMultipler(float input_scale, float filter_scale,
                                                float output_scale)
 {
-  const double input_product_scale = static_cast<double>(input_scale * filter_scale);
+  const double input_product_scale =
+    static_cast<double>(static_cast<double>(input_scale) * static_cast<double>(filter_scale));
   LUCI_INTERPRETER_CHECK(input_product_scale >= 0);
   return input_product_scale / static_cast<double>(output_scale);
 }

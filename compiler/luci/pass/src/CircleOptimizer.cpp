@@ -98,6 +98,7 @@
 #include "luci/Pass/DecomposeSoftmaxPass.h"
 #include "luci/Pass/UnrollUnidirectionalSequenceLSTMPass.h"
 #include "luci/Pass/XpSepActFromTransposeConvPass.h"
+#include "luci/Pass/CompressWeightsPass.h"
 // TODO add more passes
 
 #include "luci/Pass/CircleShapeInferencePass.h"
@@ -313,7 +314,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
-
+  if (_options->query(Options::Algorithm::CompressWeightsHuffman))
+  {
+    phase.emplace_back(std::make_unique<luci::CompressWeightsPass>());
+  }
   // clang-format off
   std::map<Options::Algorithm, std::unique_ptr<logo::Pass> (*)(void)> option_to_pass;
 
@@ -389,7 +393,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] = &createPassInstance<luci::XpSepActFromTransposeConvPass>;
   option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] = &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
   option_to_pass[Options::Algorithm::ForwardTransposeOp] = &createPassInstance<luci::ForwardTransposeOpPass>;
-  // clang-format on 
+  // clang-format on
 
   for (auto const &m : option_to_pass)
   {

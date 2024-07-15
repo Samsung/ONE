@@ -114,6 +114,7 @@ public:
       UnrollUnidirSeqLSTM,
       XpSepActFromTransposeConv,
       RemoveGatherGuard,
+      CompressWeightsHuffman
     };
 
     enum AlgorithmParameters

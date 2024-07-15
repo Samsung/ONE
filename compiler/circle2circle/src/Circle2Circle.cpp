@@ -193,6 +193,8 @@ int entry(int argc, char **argv)
              "This will convert single input Transpose to Reshape");
   add_switch(arser, "--expand_broadcast_const", "This will expand broadcastable constant inputs");
   add_switch(arser, "--unroll_unidirseqlstm", "Unroll UnidirectionalSequenceLSTM operator.");
+  add_switch(arser, "--compress_weights_huffman",
+             "Loseless weights compression with Huffman encoding.");
   add_switch(arser, "--convert_nchw_to_nhwc",
              "Experimental: This will convert NCHW operators to NHWC under the assumption that "
              "input model is NCHW.");
@@ -343,6 +345,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["decompose_softmax"] = Algorithms::DecomposeSoftmaxPass;
   option_str_to_enum["expand_broadcast_const"] = Algorithms::ExpandBroadcastConst;
   option_str_to_enum["unroll_unidirseqlstm"] = Algorithms::UnrollUnidirSeqLSTM;
+  option_str_to_enum["compress_weights_huffman"] = Algorithms::CompressWeightsHuffman;
   // clang-format on
 
   if (arser.get<bool>("--verbose"))

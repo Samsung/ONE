@@ -47,6 +47,8 @@ private:
   void evalQuantizedPerChannel() const;
   void evalQuantizedS8PerChannel() const;
   void evalQuantizedS16() const;
+  void evalQuantizedS8PerChannelHuffman() const;
+  void evalQuantizedU8PerChannelHuffman() const;
 
 private:
   int32_t _padding_height{};

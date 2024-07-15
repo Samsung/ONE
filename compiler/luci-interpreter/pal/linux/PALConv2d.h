@@ -19,6 +19,7 @@
 
 #include <tensorflow/lite/kernels/internal/optimized/legacy_optimized_ops.h>
 #include <tensorflow/lite/kernels/internal/reference/integer_ops/conv.h>
+#include "HuffmanDecoder.h"
 
 namespace luci_interpreter_pal
 {
@@ -84,6 +85,135 @@ static inline void Conv(const tflite::ConvParams &params, const tflite::RuntimeS
                               scratchpad_data, gemmlowp_context.get());
 }
 
+template <typename T>
+void ConvPerChannelHuffman(const tflite::ConvParams &params, const int32_t *mult,
+                           const int32_t *shifts, const tflite::RuntimeShape &input_shape,
+                           const T *input_data, const tflite::RuntimeShape &filter_shape,
+                           const T *filter_data, const tflite::RuntimeShape &bias_shape,
+                           const int32 *bias_data, const tflite::RuntimeShape &output_shape,
+                           T *output_data, const tflite::RuntimeShape &scratchpad_shape,
+                           T *scratchpad_data)
+{
+  (void)scratchpad_shape;
+  (void)scratchpad_data;
+  // Get parameters.
+  const int32_t input_offset = params.input_offset; // r = s(q - Z)
+  const int stride_width = params.stride_width;
+  const int stride_height = params.stride_height;
+  const int dilation_width_factor = params.dilation_width_factor;
+  const int dilation_height_factor = params.dilation_height_factor;
+  const int pad_width = params.padding_values.width;
+  const int pad_height = params.padding_values.height;
+  const int32_t output_offset = params.output_offset;
+  const int32_t filter_offset = params.weights_offset;
+
+  // Set min and max value of the output.
+  const int32_t output_activation_min = params.quantized_activation_min;
+  const int32_t output_activation_max = params.quantized_activation_max;
+
+  // Consistency check.
+  TFLITE_DCHECK_LE(output_activation_min, output_activation_max);
+  TFLITE_DCHECK_EQ(input_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_EQ(filter_shape.DimensionsCount(), 4);
+  TFLITE_DCHECK_EQ(output_shape.DimensionsCount(), 4);
+  const int batches = MatchingDim(input_shape, 0, output_shape, 0);
+  const int input_depth = input_shape.Dims(3);
+  const int output_depth = MatchingDim(filter_shape, 0, output_shape, 3);
+  if (bias_data)
+  {
+    TFLITE_DCHECK_EQ(bias_shape.FlatSize(), output_depth);
+  }
+
+  // Check dimensions of the tensors.
+  const int input_height = input_shape.Dims(1);
+  const int input_width = input_shape.Dims(2);
+  const int filter_height = filter_shape.Dims(1);
+  const int filter_width = filter_shape.Dims(2);
+  const int filter_input_depth = filter_shape.Dims(3);
+  const int groups = input_depth / filter_input_depth;
+  TFLITE_DCHECK_EQ(input_depth % filter_input_depth, 0);
+  const int filters_per_group = output_depth / groups;
+  const int output_height = output_shape.Dims(1);
+  const int output_width = output_shape.Dims(2);
+
+  huffman::HuffmanDecoder<uint8_t> decoder;
+  decoder.init_decoder(reinterpret_cast<const uint8_t *>(filter_data));
+  decoder.reset_decode_idx();
+  for (int out_channel = 0; out_channel < output_depth; ++out_channel)
+  {
+    auto group = out_channel / filters_per_group;
+
+    // extract compressed filter
+    decoder.decode_n(reinterpret_cast<uint8_t *>(&scratchpad_data[0]), scratchpad_shape.FlatSize());
+
+    for (int batch = 0; batch < batches; ++batch)
+    {
+      for (int out_y = 0; out_y < output_height; ++out_y)
+      {
+        const int in_y_origin = (out_y * stride_height) - pad_height;
+        for (int out_x = 0; out_x < output_width; ++out_x)
+        {
+          const int in_x_origin = (out_x * stride_width) - pad_width;
+          int32_t acc = 0;
+
+          for (int in_channel = 0; in_channel < filter_input_depth; ++in_channel)
+          {
+            for (int filter_y = 0; filter_y < filter_height; ++filter_y)
+            {
+              const int in_y = in_y_origin + dilation_height_factor * filter_y;
+              for (int filter_x = 0; filter_x < filter_width; ++filter_x)
+              {
+                const int in_x = in_x_origin + dilation_width_factor * filter_x;
+
+                // Zero padding by omitting the areas outside the image.
+                const bool is_point_inside_image =
+                  (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
+
+                if (!is_point_inside_image)
+                {
+                  continue;
+                }
+
+                int32_t input_val = input_data[Offset(input_shape, batch, in_y, in_x,
+                                                      in_channel + group * filter_input_depth)];
+                int32_t filter_val =
+                  scratchpad_data[(filter_y * filter_height + filter_x) * filter_width +
+                                  in_channel];
+                // Accumulate with 32 bits accumulator.
+                // In the nudging process during model quantization, we force
+                // real value of 0.0 be represented by a quantized value. This
+                // guarantees that the input_offset is a int8_t, even though
+                // it is represented using int32_t. int32_t += int8_t *
+                // (int8_t - int8_t) so the highest value we can get from each
+                // accumulation is [-127, 127] * ([-128, 127] -
+                // [-128, 127]), which is [-32512, 32512]. log2(32512)
+                // = 14.98, which means we can accumulate at least 2^16
+                // multiplications without overflow. The accumulator is
+                // applied to a filter so the accumulation logic will hold as
+                // long as the filter size (filter_y * filter_x * in_channel)
+                // does not exceed 2^16, which is the case in all the models
+                // we have seen so far.
+                // accumulator depth is smaller than 2^16.
+                acc += (filter_val + filter_offset) * (input_val + input_offset);
+              }
+            }
+          }
+
+          if (bias_data)
+          {
+            acc += bias_data[out_channel];
+          }
+          acc = tflite::MultiplyByQuantizedMultiplier(acc, mult[out_channel], shifts[out_channel]);
+          acc += output_offset;
+          acc = std::max(acc, output_activation_min);
+          acc = std::min(acc, output_activation_max);
+          output_data[Offset(output_shape, batch, out_y, out_x, out_channel)] = static_cast<T>(acc);
+        }
+      }
+    }
+  }
+}
+
 static inline void ConvPerChannel(const tflite::ConvParams &params, const int32_t *mult,
                                   const int32_t *shifts, const tflite::RuntimeShape &input_shape,
                                   const int8 *input_data, const tflite::RuntimeShape &filter_shape,
@@ -105,7 +235,8 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
                                          const tflite::ConvParams &params,
                                          const tflite::RuntimeShape &input_shape,
                                          const tflite::RuntimeShape &filter_shape,
-                                         const tflite::RuntimeShape &output_shape)
+                                         const tflite::RuntimeShape &output_shape,
+                                         bool is_compressed = false)
 {
   const int32_t filter_height = filter_shape.Dims(1);
   const int32_t filter_width = filter_shape.Dims(2);
@@ -117,7 +248,7 @@ static inline void SetupScratchpadTensor(luci_interpreter::Tensor *scratchpad,
   const bool need_non_dilated_scratchpad = params.stride_height != 1 || params.stride_width != 1 ||
                                            filter_height != 1 || filter_width != 1;
   auto _need_scratchpad = input_data_type != luci_interpreter::DataType::S16 &&
-                          (need_dilated_scratchpad || need_non_dilated_scratchpad);
+                          (need_dilated_scratchpad || need_non_dilated_scratchpad || is_compressed);
 
   if (_need_scratchpad)
   {

@@ -18,6 +18,7 @@
 #define LUCI_INTERPRETER_CORE_TENSOR_H
 
 #include "luci_interpreter/core/DataType.h"
+#include <luci/IR/AttrWeightCompression.h>
 
 #include <cassert>
 #include <cstddef>
@@ -146,6 +147,8 @@ public:
 
   void resize(const Shape &new_shape);
 
+  void resize(const Shape &new_shape, size_t raw_size);
+
   void set_data_buffer(uint8_t *buffer)
   {
     if (buffer == nullptr)
@@ -173,11 +176,21 @@ public:
 
   void set_offset(int32_t offset) { _offset = offset; }
 
+  luci::CompressionType get_compression() const { return _compression; }
+
+  void set_compression(luci::CompressionType compression) { _compression = compression; }
+
+  size_t get_raw_size(void) const { return _raw_size; }
+  void set_raw_size(size_t size) { _raw_size = size; }
+
 private:
   DataType _element_type;
   Shape _shape;
   AffineQuantization _quantization;
   uint8_t *_data = nullptr;
+  // Used for compressed/sparsed tensors when size != WxHxLxD
+  size_t _raw_size{0};
+
   std::string _name;
   bool _data_allocated = false;
   // Write of tensor is reported to registered Observers only if this tensor is observable
@@ -190,6 +203,8 @@ private:
   // Used by static memory manager.
   // Stores the offset from the beginning of the allocated memory buffer.
   int32_t _offset = -1;
+
+  luci::CompressionType _compression{luci::CompressionType::NONE};
 };
 
 } // namespace luci_interpreter

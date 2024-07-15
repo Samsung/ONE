@@ -29,12 +29,21 @@ void SimpleMemoryManager::allocate_memory(luci_interpreter::Tensor &tensor)
   {
     release_memory(tensor);
   }
-  const auto element_size = getDataTypeSize(tensor.element_type());
+  size_t bytes_to_allocate = 0;
+  if (tensor.get_raw_size() > 0)
+  {
+    bytes_to_allocate = tensor.get_raw_size();
+  }
+  else
+  {
+    const auto element_size = getDataTypeSize(tensor.element_type());
 
-  // Use large_num_elements to avoid overflow
-  const auto num_elements = tensor.shape().large_num_elements();
+    // Use large_num_elements to avoid overflow
+    const auto num_elements = tensor.shape().large_num_elements();
+    bytes_to_allocate = num_elements * element_size;
+  }
 
-  auto *data = new uint8_t[num_elements * element_size];
+  auto *data = new uint8_t[bytes_to_allocate];
   tensor.set_data_buffer(data);
 }
 

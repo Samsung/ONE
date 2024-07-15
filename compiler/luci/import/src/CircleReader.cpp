@@ -15,6 +15,7 @@
  */
 
 #include "luci/Import/CircleReader.h"
+#include <luci/Import/CircleImporterUtils.h>
 
 #include <mio_circle/Helper.h>
 
@@ -288,6 +289,11 @@ void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node)
     auto sparsityparam = luci_sparsityparam(sparsity);
     if (sparsityparam)
       node->sparsityparam(std::move(sparsityparam));
+  }
+  auto const_node = dynamic_cast<CircleConst *>(node);
+  if (const_node)
+  {
+    const_node->compression(luci::from_circle_compressiontype(tensor->compression_type()));
   }
 }
 
