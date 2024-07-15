@@ -1,3 +1,10 @@
+one (1.27.2) bionic focal jammy; urgency=medium
+
+  * Support target option with command args in `one-profile`, `one-codegen`.
+  * Update man pages of `one-cmds` tools.
+
+ -- seongwoo <mhs4670go@naver.com>  Mon, 15 Jul 2024 14:23:49 +0900
+
 one (1.27.1) bionic focal; urgency=medium
 
   * Command schema supports multiple names.
