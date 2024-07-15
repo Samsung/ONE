@@ -85,6 +85,14 @@ public:
       &fn) const;
 
 private:
+  // If you want to use I/O buffer on step, tensorpool should be alive until one step is finished
+  // So this method get tensorpool from outside.
+  // tensorpool is not defined as a member variable to avoid memory access conflict between threads.
+  void forward(const ExecutionContext &ctx,
+               std::vector<std::unique_ptr<backend::builtin::UserTensor>> &tensorpool,
+               bool training);
+
+private:
   // TODO Append model index to ModelIndex
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;
 };

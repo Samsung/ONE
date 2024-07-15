@@ -56,48 +56,39 @@ TrainableExecutor::TrainableExecutor(
   build_tensor_list(_trainable_graph.getOutputs(), _output_tensors);
 }
 
-void TrainableExecutor::execute(const std::vector<backend::IPortableTensor *> &,
-                                const std::vector<backend::IPortableTensor *> &,
-                                const ExecutionOptions &)
-{
-  throw std::runtime_error("TrainableExecutor does not support multiple subgraphs yet");
-}
-
-void TrainableExecutor::forward(const ExecutionContext &ctx, bool training)
+void TrainableExecutor::forward(const std::vector<backend::IPortableTensor *> &inputs,
+                                const std::vector<backend::IPortableTensor *> &outputs,
+                                const ExecutionOptions &options, bool training)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
-  _current_options = ctx.options;
+  _current_options = options;
 
-  auto &desc = ctx.desc;
-  // TODO Update IO tensors if desc has dynamic input
-  // Set input(s)
-  assert(_input_tensors.size() == desc.inputs.size());
+  assert(_input_tensors.size() == inputs.size());
   for (uint32_t i = 0; i < _input_tensors.size(); ++i)
   {
     auto tensor = _input_tensors[i];
-
-    // TODO Check if (desc.inputs[i] == nullptr)
-    // TODO Better design for ITensor? (we need const_cast as ITensor is writable)
-    tensor->setUserTensor(static_cast<uint8_t *>(const_cast<void *>(desc.inputs[i]->buffer)),
-                          desc.inputs[i]->size);
+    const auto input = inputs[i];
+    assert(input->buffer() != nullptr || input->get_info().total_size() == 0);
+    assert(tensor != nullptr);
+    tensor->setTensor(input);
   }
 
   // Set output(s)
-  assert(_output_tensors.size() == desc.outputs.size());
+  assert(_output_tensors.size() == outputs.size());
   for (uint32_t i = 0; i < _output_tensors.size(); ++i)
   {
     auto tensor = _output_tensors[i];
-
-    assert(desc.outputs[i] != nullptr);
-    if (desc.outputs[i]->buffer != nullptr && desc.outputs[i]->size != 0)
-      tensor->setUserTensor(static_cast<uint8_t *>(desc.outputs[i]->buffer), desc.outputs[i]->size);
+    const auto output = outputs[i];
+    // Output may not be used on training, so don't check optional
+    assert(tensor != nullptr);
+    tensor->setTensor(output);
   }
 
   // Create observee
-  ExecutionObservee subject(_observers, ctx.options);
+  ExecutionObservee subject(_observers, options);
 
   forwardImpl(subject, training);
 
@@ -143,16 +134,16 @@ void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool train
   }
 }
 
-void TrainableExecutor::backward(const ExecutionContext &ctx, uint32_t training_step)
+void TrainableExecutor::backward(const ExecutionOptions &options, uint32_t training_step)
 {
   // For thread-safe, use mutex
   // TODO: if all used backends on this executor are thread-safe,
   //       do not need to use mutex (otherwise, use mutex)
   std::lock_guard<std::mutex> lock(_mutex);
-  _current_options = ctx.options;
+  _current_options = options;
 
   // Create observee
-  ExecutionObservee subject(_observers, ctx.options);
+  ExecutionObservee subject(_observers, options);
 
   backwardImpl(subject, training_step);
 }
