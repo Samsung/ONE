@@ -61,6 +61,7 @@ public:
       FoldFullyConnected,
       FoldDequantize,
       FoldGather,
+      FoldMul,
       FoldReshape,
       FoldShape,
       FoldSparseToDense,
