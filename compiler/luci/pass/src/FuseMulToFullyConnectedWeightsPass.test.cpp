@@ -59,7 +59,7 @@ public:
     _mul_s->size<DT>(3);
     for (uint32_t i = 0; i < 3; ++i)
     {
-      _mul_s->at<DT>(0) = 1.0f;
+      _mul_s->at<DT>(i) = 1.0f;
     }
 
     _fc_w->rank(2);
@@ -69,7 +69,7 @@ public:
     _fc_w->size<DT>(4 * 6);
     for (uint32_t i = 0; i < 4 * 6; ++i)
     {
-      _fc_w->at<DT>(0) = 1.0f;
+      _fc_w->at<DT>(i) = 1.0f;
     }
 
     _fc_b->rank(1);
@@ -78,13 +78,13 @@ public:
     _fc_b->size<DT>(6);
     for (uint32_t i = 0; i < 6; ++i)
     {
-      _fc_b->at<DT>(0) = 1.0f;
+      _fc_b->at<DT>(i) = 1.0f;
     }
 
     _mul->x(input());
     _mul->y(_mul_s);
     _fc->input(_mul);
-    _fc->weights(_fc_b);
+    _fc->weights(_fc_w);
     _fc->bias(_fc_b);
 
     output()->from(_fc);
