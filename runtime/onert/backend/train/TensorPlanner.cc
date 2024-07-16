@@ -30,29 +30,32 @@ TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
   : _tgraph{tgraph}, _external_operands{external_operands}
 {
   // DO NOTHING
+  // TODO Remove the following lines
+  UNUSED_RELEASE(_tgraph);
+  UNUSED_RELEASE(_external_operands);
 }
 
-void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
+void TensorPlanner::planNonConstTensors(TensorBuilder *)
 {
   // TODO Plan non-const tensors
 }
 
-void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
+void TensorPlanner::planTrainableTensors(TensorBuilder *)
 {
   // TODO Plan trainable tensors such as weights
 }
 
-void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
+void TensorPlanner::planBackPropTensors(TensorBuilder *)
 {
   // TODO Plan back-propagated tensors
 }
 
-void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
+void TensorPlanner::planGradientTensors(TensorBuilder *)
 {
   // TODO Plan gradient tensors
 }
 
-void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
+void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *)
 {
   // TODO Plan diposable backprop tensors
 }
