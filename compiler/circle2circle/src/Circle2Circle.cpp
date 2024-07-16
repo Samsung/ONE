@@ -81,6 +81,7 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fold_fully_connected",
              "This will fold FullyConnected operator with constant inputs");
   add_switch(arser, "--fold_gather", "This will fold Gather operator");
+  add_switch(arser, "--fold_mul", "This will fold Mul operator");
   add_switch(arser, "--fold_reshape", "This will fold Reshape operator");
   add_switch(arser, "--fold_shape", "This will fold Shape operator");
   add_switch(arser, "--fold_sparse_to_dense", "This will fold SparseToDense operator");
@@ -93,6 +94,8 @@ int entry(int argc, char **argv)
              "This will fuse Activation function to a preceding operator");
   add_switch(arser, "--fuse_horizontal_fc_layers",
              "This will fuse horizontal FullyConnected layers");
+  add_switch(arser, "--fuse_add_to_fullyconnected_bias",
+             "This will fuse Add to following FullyConnected bias");
   add_switch(arser, "--fuse_add_with_conv", "This will fuse Add operator to Convolution operator");
   add_switch(arser, "--fuse_add_with_fully_connected",
              "This will fuse Add operator to FullyConnected operator");
@@ -109,6 +112,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fuse_mean_with_mean",
              "This will fuse two Mean operations when they follow one by one. This will fold them "
              "into one operation and merge reduction indices.");
+  add_switch(arser, "--fuse_mul_to_fullyconnected_weights",
+             "This will fuse Mul to following FullyConnected weights");
   add_switch(arser, "--fuse_mul_with_conv",
              "This will fuse Mul operation with a preceding Conv if possible.");
   add_switch(arser, "--fuse_mul_with_div",
@@ -275,6 +280,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FoldFullyConnected);
   if (arser.get<bool>("--fold_gather"))
     options->enable(Algorithms::FoldGather);
+  if (arser.get<bool>("--fold_mul"))
+    options->enable(Algorithms::FoldMul);
   if (arser.get<bool>("--fold_reshape"))
     options->enable(Algorithms::FoldReshape);
   if (arser.get<bool>("--fold_shape"))
@@ -293,6 +300,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseHorizontalFullyConnected);
   if (arser.get<bool>("--fuse_batchnorm_with_conv"))
     options->enable(Algorithms::FuseBatchNormWithConv);
+  if (arser.get<bool>("--fuse_add_to_fullyconnected_bias"))
+    options->enable(Algorithms::FuseAddToFullyConnectedBias);
   if (arser.get<bool>("--fuse_add_with_conv"))
     options->enable(Algorithms::FuseAddWithConv);
   if (arser.get<bool>("--fuse_add_with_fully_connected"))
@@ -303,6 +312,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBatchNormWithDwConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
     options->enable(Algorithms::FuseBatchNormWithTConv);
+  if (arser.get<bool>("--fuse_mul_to_fullyconnected_weights"))
+    options->enable(Algorithms::FuseMulToFullyConnectedWeights);
   if (arser.get<bool>("--fuse_slice_with_tconv"))
     options->enable(Algorithms::FuseSliceWithTConv);
   if (arser.get<bool>("--fuse_bcq"))
