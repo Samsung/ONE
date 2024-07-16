@@ -54,7 +54,6 @@ public:
 
 public:
   void setTensor(IPortableTensor *tensor);
-  void setUserTensor(uint8_t *buffer, size_t size);
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
@@ -69,6 +68,26 @@ public:
     _info.shape(shape);
     _tensor->setShape(shape);
   }
+
+  /*
+   * Changes tensor shape and allocate memory since its shape was changed
+   * perhaps by nnfw_set_input_tensorinfo()
+   *
+   * Cases are:
+   * 1) static operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
+   *                                                 (a)          (b)
+   *
+   * at (a), operand is static, tensor is static - memory dealloc is not needed
+   *   (DynamicTensorManager cannot dealloc memory allocated by StaticTensorManager)
+   * at (b), operand is static, tensor is dynamic - memory dealloc is needed
+   *
+   * 2) dynamic operand -> nnfw_set_input_tensorinfo() -> execute() -> execute()
+   *                                                  (a)          (b)
+   *
+   * at (a), operand is dynamic, tensor is dynamic - memory dealloc is not needed
+   *                                       since it has not been allocated yet
+   * at (b), operand is dynamic, tensor is dynamic - memory dealloc is needed
+   */
   bool applyShape(const ir::Shape &shape) override
   {
     auto return_val = _tensor->applyShape(shape);

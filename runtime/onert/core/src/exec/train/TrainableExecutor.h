@@ -56,8 +56,6 @@ public:
 public:
   const ir::Graph &graph() const final { return _trainable_graph.graph(); }
 
-  void execute(const ExecutionContext &) override { throw std::runtime_error{"Not supported"}; }
-
   void execute(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs,
                const ExecutionOptions &options) override
