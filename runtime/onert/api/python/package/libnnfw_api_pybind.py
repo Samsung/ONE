@@ -13,15 +13,11 @@ def num_elems(tensor_info):
     return n
 
 
-class nnfw_session_wrapper(libnnfw_api_pybind.nnfw_session):
+class nnfw_session(libnnfw_api_pybind.nnfw_session):
     """Class inherited nnfw_session for easily processing input/output"""
 
-    def __init__(self, nnpackage_path, backends="cpu", operations=""):
-        if operations:
-            super().__init__(nnpackage_path, operations, backends)
-        else:
-            super().__init__(nnpackage_path, backends)
-
+    def __init__(self, nnpackage_path, backends="cpu"):
+        super().__init__(nnpackage_path, backends)
         self.inputs = []
         self.outputs = []
         self.set_outputs(self.output_size())
@@ -62,16 +58,6 @@ class nnfw_session_wrapper(libnnfw_api_pybind.nnfw_session):
         self.run()
 
         return self.outputs
-
-
-def nnfw_session(nnpackage_path, backends="cpu", operations=""):
-    if operations == "":
-        return nnfw_session_wrapper(nnpackage_path, backends)
-    elif operations:
-        return nnfw_session_wrapper(nnpackage_path, backends, operations)
-    else:
-        print("Syntax Error")
-        return
 
 
 def tensorinfo():
