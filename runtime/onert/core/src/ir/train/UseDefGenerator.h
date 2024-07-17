@@ -1,0 +1,87 @@
+/*
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
+#define __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
+
+#include "ir/train/TrainableOperationVisitor.h"
+
+#include "ir/train/UseDefChains.h"
+#include "ir/train/Operations.Include.h"
+
+namespace onert
+{
+namespace ir
+{
+namespace train
+{
+class TrainableGraph;
+} // namespace train
+} // namespace ir
+} // namespace onert
+
+namespace onert
+{
+namespace ir
+{
+namespace train
+{
+
+struct UseDefGeneratorBase : public TrainableOperationVisitor
+{
+  virtual ~UseDefGeneratorBase() = default;
+
+protected:
+#define OP(InternalName)                                                                \
+  virtual void visit(const operation::InternalName &) override                          \
+  {                                                                                     \
+    throw std::runtime_error("UseDefGenerator: NYI for operation '" #InternalName "'"); \
+  }
+#include "ir/train/Operations.lst"
+#undef OP
+};
+
+class UseDefGenerator : public UseDefGeneratorBase
+{
+public:
+  UseDefGenerator(void) = delete;
+  UseDefGenerator(const TrainableGraph &tgraph);
+
+public:
+  UseDefChains operator()();
+
+public:
+  void visit(const train::operation::Loss &node) override;
+
+private:
+  void insertUse(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
+  void insertDef(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
+  void insertBackPropDef(const TrainingOperandIndex &operand_index,
+                         const TrainingOperationIndex &op_index);
+  void initForForwardingNodes();
+  void initForBackwardingNodes();
+
+private:
+  const TrainableGraph &_tgraph;
+  std::unordered_map<const ITrainableOperation *, OperationIndex> _node_to_idx;
+  UseDefChains _training_usedefs;
+};
+
+} // namespace train
+} // namespace ir
+} // namespace onert
+
+#endif // __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
