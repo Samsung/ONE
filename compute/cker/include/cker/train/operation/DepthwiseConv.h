@@ -48,6 +48,35 @@ public:
   }
 
   template <typename T>
+  void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape,
+                       const T *input_data, const Shape &filter_shape, const T *filter_data,
+                       T *padded_filter_data, bool pad_filter, T* filter_buffers_data,
+                       const Shape &output_shape, T* output_data)
+  {
+    if (params.stride_height != params.stride_width)
+      throw std::runtime_error("Not support different length strides");
+
+    const int batch = MatchingDim(input_shape, 0, output_shape, 0);
+    const int input_depth = input_shape.Dims(3);
+    const int output_depth = output_shape.Dims(3);
+    const int input_height = input_shape.Dims(1);
+    const int input_width = input_shape.Dims(2);
+    const int filter_height = filter_shape.Dims(1);
+    const int filter_width = filter_shape.Dims(2);
+    const int output_height = output_shape.Dims(1);
+    const int output_width = output_shape.Dims(2);
+    const int stride = params.stride_height;
+    const int depth_multiplier = params.depth_multiplier;
+    const int pad_height = params.padding_values.height;
+    const int pad_width = params.padding_values.width;
+
+    depthwise_conv_op::LaunchDepthwiseConvOp<Eigen::ThreadPoolDevice, T>()(
+      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
+      stride, pad_height, pad_width, output_height, output_width, output_depth, input_data,
+      filter_data, padded_filter_data, pad_filter, filter_buffers_data, output_data);
+  }
+
+  template <typename T>
   void backpropInput(const DepthwiseConvParams &params, const Shape &incoming_shape,
                      const T *incoming_data, const Shape &filter_shape, const T *filter_data,
                      T *padded_filter_data, const Shape &grad_shape, T *grad_data, bool pad_filter,

@@ -6,6 +6,12 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(${LIB_ONERT_BACKEND_TRAIN} SHARED ${SOURCES})
 
+# NOTE
+# We publish public headers into developer package.
+# To avoid mistake using private header in public header, do not define
+# private target_include_directories scope for src/ directory.
+target_include_directories(${LIB_ONERT_BACKEND_TRAIN} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE ${LIB_ONERT_BACKEND_CPU})
 target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE nnfw_lib_cker nnfw_lib_misc)

@@ -22,6 +22,8 @@
 #include "../ExternalContext.h"
 
 #include <exec/IFunction.h>
+#include <cker/train/operation/DepthwiseConv.h>
+#include "../Tensor.h"
 
 namespace onert
 {
@@ -36,6 +38,7 @@ class DepthwiseConvolutionLayer : public ::onert::exec::IFunction
 {
 public:
   DepthwiseConvolutionLayer() = default;
+  virtual ~DepthwiseConvolutionLayer() = default;
 
 public:
   void convFloat32();
@@ -61,6 +64,7 @@ private:
   void prepareQ8uPerChannel();
   void prepareQ8iHybridPerChannel();
   void ensureQ8iHybridPerChannel();
+  void prepareFloat32();
 
 protected:
   const IPortableTensor *_input{nullptr};
@@ -82,6 +86,11 @@ protected:
   uint32_t _dilationHeight{1};
 
   ir::Activation _activation{ir::Activation::NONE};
+
+  bool _use_padded_filter{false};
+  std::unique_ptr<Tensor> _padded_filter{nullptr};
+  std::unique_ptr<Tensor> _filter_buffers{nullptr};
+  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel{std::make_unique<nnfw::cker::train::DepthwiseConv>()};
 
 private:
   std::shared_ptr<ExternalContext> _external_context;

@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 
-#include <cker/train/operation/DepthwiseConv.h>
+// #include <cker/train/operation/DepthwiseConv.h>
 #include <ops/DepthwiseConvolutionLayer.h>
 #include <backend/basic/Allocator.h>
 
@@ -57,12 +57,12 @@ private:
 
   // TODO Consider if these tensors should be built in TensorBuilder
   std::unique_ptr<BackPropTensor> _act_back_prop_output;
-  bool _use_padded_filter;
-  std::unique_ptr<Tensor> _padded_filter;
-  std::unique_ptr<Tensor> _filter_buffers;
+  // bool _use_padded_filter;
+  // std::unique_ptr<Tensor> _padded_filter;
+  // std::unique_ptr<Tensor> _filter_buffers;
   std::unique_ptr<Tensor> _filter_dim_buffers;
 
-  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
+  // std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
 };
 
 } // namespace ops

@@ -33,6 +33,14 @@ namespace cker
 namespace depthwise_conv_op
 {
 
+template <typename Device, typename T>
+struct LaunchDepthwiseConvOp {
+  void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
+                  int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
+                  int out_rows, int out_cols, int out_depth, const T *input, const T *depthwise_filter,
+                  T *padded_filter_data, bool pad_filter, T *in_buf, T *output);
+};
+
 template <typename Device, typename T> struct LaunchDepthwiseConvBackpropInputOp
 {
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
@@ -316,6 +324,7 @@ template <typename T> struct DepthwiseInputCopyOp
 } // namespace cker
 } // namespace nnfw
 
+// From tensorflow/core/kernels/depthwise_conv_op.cc
 // From tensorflow/core/kernels/depthwise_conv_grad_op.cc
 namespace nnfw
 {
@@ -326,6 +335,174 @@ namespace depthwise_conv_op
 
 // Enable CPUDevice only for depthwise_conv_op
 using CPUDevice = Eigen::ThreadPoolDevice;
+
+// Computes the vectorized product of 'input_buffer' and 'filter' and stores
+// result in 'output' at location specified by 'out_r' and 'out_c'.
+//
+// EX:
+//   in_depth = 3, depth_multiplier = 2, filter [2, 2], register_width = 4
+//   Both 'input_buffer' and 'filter' are padded to register-width boundaries.
+//
+//   input_buffer [rows, cols, in_depth, depth_multiplier]
+//     [a0, a0, a1, a1] [a2, a2, 0, 0] [b0, b0, b1, b1] [b2, b2, 0, 0]
+//     [e0, e0, e1, e1] [e2, e2, 0, 0] [f0, f0, f1, f1] [f2, f2, 0, 0]
+//
+//   filter [rows, cols, in_depth, depth_multiplier]
+//     [u0, v0, w0, x0] [y0, z0, 0, 0] [u1, v1, w1, x1] [y1, z1, 0, 0]
+//     [u2, v2, w2, x2] [y2, z2, 0, 0] [u3, v3, w3, x3] [y3, z3, 0, 0]
+//
+//   First output register [in_depth, depth_multiplier]
+//     [q0, q1, q2, q3] = ([a0, a0, a1, a1] x [u0, v0, w0, x0]) +
+//                        ([b0, b0, b1, b1] x [u1, v1, w1, x1]) +
+//                        ([e0, e0, e1, e1] x [u2, v2, w2, x2]) +
+//                        ([f0, f0, f1, f1] x [u3, v3, w3, x3])
+//
+// TODO(andydavis) Experiment with processing multiple inputs per input buffer.
+template <typename T>
+struct DepthwiseConv2DKernel {
+  static void Run(int , int , int , int , int filter_rows,
+                  int filter_cols, int , int , int , int ,
+                  int , int out_cols, int out_depth,
+                  const int64_t padded_filter_inner_dim_size,
+                  const int64_t out_r, const int64_t out_c, const T* filter,
+                  const T* input_buffer, T* output) {
+    typedef typename Eigen::internal::packet_traits<T>::type Packet;
+    static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
+
+    const int64_t filter_spatial_size = filter_rows * filter_cols;
+    const int64_t output_scalar_size = out_depth % kPacketSize;
+    const int64_t output_vectorized_size =
+        (out_depth / kPacketSize) * kPacketSize;
+    const int64_t base_output_index =
+        (out_r * out_cols + out_c) * out_depth;
+
+    for (int i = 0; i < output_vectorized_size; i += kPacketSize) {
+      // Reset accumulator.
+      auto vaccum = Eigen::internal::pset1<Packet>(static_cast<T>(0));
+      for (int j = 0; j < filter_spatial_size; ++j) {
+        // Calculate index.
+        const int64_t index = i + j * padded_filter_inner_dim_size;
+        // Load filter.
+        // TODO(andydavis) Unroll 'out_c' loop in caller so we can load
+        // multiple inputs here to amortize the cost of each filter block load.
+        const auto filter_block =
+            Eigen::internal::ploadu<Packet>(filter + index);
+        // Load input.
+        const auto data_block =
+            Eigen::internal::ploadu<Packet>(input_buffer + index);
+        // Vector multiply-add.
+        vaccum =
+            Eigen::internal::pmadd<Packet>(filter_block, data_block, vaccum);
+      }
+      // Store vector accumulator to output.
+      Eigen::internal::pstoreu<T>(output + base_output_index + i, vaccum);
+    }
+
+    if (output_scalar_size > 0) {
+      auto vaccum = Eigen::internal::pset1<Packet>(static_cast<T>(0));
+      for (int j = 0; j < filter_spatial_size; ++j) {
+        const int64_t index =
+            output_vectorized_size + j * padded_filter_inner_dim_size;
+        const auto filter_block =
+            Eigen::internal::ploadu<Packet>(filter + index);
+        const auto data_block =
+            Eigen::internal::ploadu<Packet>(input_buffer + index);
+        vaccum =
+            Eigen::internal::pmadd<Packet>(filter_block, data_block, vaccum);
+      }
+      // Load accumulator into an array and loop through output.
+      T out_buf[kPacketSize];
+      Eigen::internal::pstoreu<T>(out_buf, vaccum);
+      const int64_t last_output_index =
+          base_output_index + output_vectorized_size;
+      for (int j = 0; j < output_scalar_size; ++j) {
+        output[last_output_index + j] = out_buf[j];
+      }
+    }
+  }
+};
+
+// Computes the depthwise conv2d of 'input' by 'depthwise_filter' and stores
+// the result in 'output'. This implementation trades off copying small patches
+// of the input to achieve better data alignment, which enables vectorized
+// load/store and multiply-add operations (see comments at InputBufferCopyOp and
+// DepthwiseConv2DKernel for details).
+//
+// TODO(andydavis) Evaluate the performance of processing multiple input
+// patches in the inner loop.
+// TODO(andydavis) Consider a zero-copy implementation for the case when
+// 'in_depth' is a multiple of register width, and 'depth_multipler' is one.
+// TODO(andydavis) Evaluate the performance of alternative implementations.
+template <typename T>
+struct LaunchDepthwiseConvOp<CPUDevice, T> {
+  typedef typename Eigen::internal::packet_traits<T>::type Packet;
+
+  void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
+                  int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
+                  int out_rows, int out_cols, int out_depth, const T *input, const T *depthwise_filter,
+                  T *padded_filter_data, bool pad_filter, T *in_buf, T *output) {
+
+    const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
+
+    // Pad 'depthwise_filter' to vector register width (if needed).
+    if (pad_filter)
+    {
+      // Write out padded filter.
+      functor::DepthwiseFilterPadOp<T>()(
+        batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+        pad_rows, pad_cols, out_rows, out_cols, out_depth, depthwise_filter, padded_filter_data);
+    }
+    const T *filter_data = pad_filter ? padded_filter_data : depthwise_filter;
+
+    // Computes one shard of depthwise conv2d output.
+    auto shard = [d, in_rows, in_cols, in_depth, out_rows, out_cols, out_depth, batch, filter_rows,
+                  filter_cols, depth_multiplier, stride, pad_rows, pad_cols, input,
+                  filter_data, in_buf, output](
+                     int64_t start, int64_t limit) {
+      static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
+
+      int cur_id = d.currentThreadId() + 1;
+      assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
+
+      const int64_t input_image_size = in_rows * in_cols * in_depth;
+      const int64_t output_image_size = out_rows * out_cols * out_depth;
+      const int64_t filter_spatial_size = filter_rows * filter_cols;
+      const int64_t padded_filter_inner_dim_size =
+          ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+      const int64_t padded_filter_size = filter_spatial_size * padded_filter_inner_dim_size;
+
+      T *input_buffer_data = in_buf + cur_id * padded_filter_size;
+
+      for (int64_t i = start; i < limit; ++i) {
+        const int64_t b = i / out_rows;
+        const int64_t in_base = b * input_image_size;
+        const int64_t out_base = b * output_image_size;
+
+        const int64_t out_r = i % out_rows;
+
+        for (int64_t out_c = 0; out_c < out_cols; ++out_c) {
+          // Populate 'input_buffer_data' with data from local input region.
+          functor::DepthwiseInputCopyOp<T>()(batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size,
+                                             out_r, out_c, input + in_base,
+                                             input_buffer_data);
+
+          // Process buffered input across all filters and store to output.
+          DepthwiseConv2DKernel<T>::Run(
+              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size, out_r, out_c, filter_data,
+              input_buffer_data, output + out_base);
+        }
+      }
+    };
+
+    const int64_t input_bytes = in_rows * in_cols * in_depth * sizeof(T);
+    const int64_t output_bytes = out_rows * out_cols * out_depth * sizeof(T);
+    const int64_t compute_cycles = out_rows * out_cols * out_depth * batch;
+    const Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);
+    d.parallelFor(batch, cost, shard);
+  }
+};
 
 // Copies data from local region in 'out_backprop' into 'buffer'.
 // The local region coordinates are calculated as the set of output points which
@@ -626,6 +803,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
         }
       }
     };
+
 
     const int64_t input_bytes = out_rows * out_cols * out_depth * sizeof(T);
     const int64_t output_bytes = in_rows * in_cols * in_depth * sizeof(T);

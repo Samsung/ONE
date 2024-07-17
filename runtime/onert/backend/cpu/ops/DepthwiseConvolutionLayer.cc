@@ -28,6 +28,38 @@ namespace cpu
 namespace ops
 {
 
+void DepthwiseConvolutionLayer::prepareFloat32()
+{
+  const int64_t k_packet_size = _dconv_kernel->kPacketSize<float>();
+
+  const auto out_shape = getShape(_output);
+  const auto filter_shape = getShape(_kernel);
+  const int batch = out_shape.Dims(0);
+  const int out_depth = out_shape.Dims(3);
+  const int filter_rows = filter_shape.Dims(1);
+  const int filter_cols = filter_shape.Dims(2);
+
+  const int filter_spatial_size = filter_rows * filter_cols;
+  const int padded_filter_inner_dim_size =
+    ((out_depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
+
+  _use_padded_filter = (out_depth % k_packet_size) == 0 ? false : true;
+
+  // prepare padded_filter buffer for cker
+  auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+  padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
+  _padded_filter = std::make_unique<Tensor>(padded_filter_info, _kernel->layout(), nullptr);
+  _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
+
+  // prepare out_bprop and in_bprop buffer for cker
+  const int thread_count = _dconv_kernel->getThreadCount();
+
+  auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
+  filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
+  _filter_buffers = std::make_unique<Tensor>(filter_buffers_info, _kernel->layout(), nullptr);
+  _filter_buffers->setBuffer(std::make_shared<basic::Allocator>(_filter_buffers->total_size()));
+}
+
 void DepthwiseConvolutionLayer::convFloat32()
 {
   float output_activation_min = 0, output_activation_max = 0;
@@ -48,6 +80,12 @@ void DepthwiseConvolutionLayer::convFloat32()
     op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
     getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias), getShape(_output),
     getBuffer<float>(_output), _external_context->ruy_context());
+
+  // _dconv_kernel->DepthwiseConvOp<float>(
+  //   op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
+  //   getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), _use_padded_filter,
+  //   getBuffer<float>(_filter_buffers.get()),
+  //   getShape(_output), getBuffer<float>(_output));
 }
 
 void DepthwiseConvolutionLayer::convQ8uPerTensor()
@@ -259,7 +297,11 @@ void DepthwiseConvolutionLayer::configure(
   _is_hybrid = _input->data_type() == OperandType::FLOAT32 &&
                _kernel->data_type() == OperandType::QUANT_INT8_SYMM;
 
-  if (_is_hybrid)
+  if (_input->data_type() == OperandType::FLOAT32)
+  {
+    prepareFloat32();
+  }
+  else if (_is_hybrid)
   {
     ensureQ8iHybridPerChannel();
     prepareQ8iHybridPerChannel();
