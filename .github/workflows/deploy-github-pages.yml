@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: 'Generate HTML'
         uses: mattnotmitt/doxygen-action@v1.9
         with:
@@ -28,7 +28,7 @@ jobs:
       - name: 'Tar artifact'
         run: tar -zcf doxygen.tar.gz -C doxygen/html ./
       - name: 'Generate artifact'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: doxygen-html
           path: doxygen.tar.gz
