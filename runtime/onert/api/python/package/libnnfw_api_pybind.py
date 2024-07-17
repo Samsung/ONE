@@ -37,7 +37,8 @@ class nnfw_session_wrapper(libnnfw_api_pybind.nnfw_session):
                 print(
                     f"model's input size is {size} but given inputs_array size is {len(inputs_array)}.\n{i}-th index input is replaced by an array filled with 0."
                 )
-                input_array = np.zeros((num_elems(input_tensorinfo)), dtype=input_tensorinfo.dtype)
+                input_array = np.zeros(
+                    (num_elems(input_tensorinfo)), dtype=input_tensorinfo.dtype)
 
             self.set_input(i, input_array)
             self.inputs.append(input_array)
@@ -46,7 +47,8 @@ class nnfw_session_wrapper(libnnfw_api_pybind.nnfw_session):
         """Set outputs for each index"""
         for i in range(size):
             output_tensorinfo = self.output_tensorinfo(i)
-            output_array = np.zeros((num_elems(output_tensorinfo)), dtype=output_tensorinfo.dtype)
+            output_array = np.zeros(
+                (num_elems(output_tensorinfo)), dtype=output_tensorinfo.dtype)
             self.set_output(i, output_array)
             self.outputs.append(output_array)
 
