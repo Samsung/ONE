@@ -141,6 +141,28 @@ void UseDefGenerator::visit(const train::operation::Loss &node)
   usedef_chain.removeTrainingUse(backwarding_op_index);
 }
 
+void UseDefGenerator::visit(const train::operation::Pad &node)
+{
+  assert(_node_to_idx.find(&node) != _node_to_idx.end());
+  const auto &op_index = _node_to_idx.at(&node);
+  const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
+
+  // Insert use of forwarding pad
+  const auto &pad_index = node.getInputs().at(train::operation::Pad::Input::PAD);
+  const auto pad_forwarding_index = TrainingOperandIndex{pad_index, true};
+  insertUse(pad_forwarding_index, backwarding_op_index);
+
+  // Insert use of backwarding(backprop) output
+  const auto &out_index = node.getOutputs().at(0);
+  const auto incoming_index = TrainingOperandIndex{out_index, false};
+  insertUse(incoming_index, backwarding_op_index);
+
+  // Set def of backwarding(backprop) input
+  const auto &in_index = node.getInputs().at(train::operation::Pad::Input::INPUT);
+  const auto outgoing_index = TrainingOperandIndex{in_index, false};
+  insertBackPropDef(outgoing_index, backwarding_op_index);
+}
+
 void UseDefGenerator::visit(const train::operation::Reshape &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
