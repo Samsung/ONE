@@ -67,6 +67,7 @@ public:
   void visit(const train::operation::Conv2D &node) override;
   void visit(const train::operation::DepthwiseConv2D &node) override;
   void visit(const train::operation::ElementwiseActivation &node) override;
+  void visit(const train::operation::FullyConnected &node) override;
   void visit(const train::operation::Loss &node) override;
   void visit(const train::operation::Pad &node) override;
   void visit(const train::operation::Pool2D &node) override;
