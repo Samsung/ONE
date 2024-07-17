@@ -67,6 +67,7 @@ public:
   void visit(const train::operation::Conv2D &node) override;
   void visit(const train::operation::Loss &node) override;
   void visit(const train::operation::Reshape &node) override;
+  void visit(const train::operation::Softmax &node) override;
 
 private:
   void insertUse(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
