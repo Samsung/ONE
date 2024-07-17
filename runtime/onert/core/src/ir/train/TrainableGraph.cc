@@ -17,6 +17,7 @@
 #include "ir/train/TrainableGraph.h"
 
 #include "ir/OperandIndexMap.h"
+#include "UseDefGenerator.h"
 #include "util/Utils.h"
 #include "util/Set.h"
 #include "../verifier/Verifier.h"
@@ -25,6 +26,52 @@
 #include <set>
 #include <map>
 #include <misc/polymorphic_downcast.h>
+
+namespace
+{
+
+using namespace onert;
+using namespace onert::ir;
+using namespace onert::ir::train;
+
+void disableUnusedBackwardNodes(const UseDefChains &training_usedefs, TrainableGraph &tgraph)
+{
+  // Disable backward nodes that will be unused
+  const auto border = tgraph.btopolSortOperations();
+  for (const auto &op_index : border)
+  {
+    const auto &node = tgraph.operations().at(op_index);
+    const auto &candidates =
+      (node.getInputs() + node.getOutputs()) | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    const bool is_backward_op_used =
+      std::any_of(candidates.begin(), candidates.end(), [&](const OperandIndex &operand) {
+        const auto training_op_index = TrainingOperationIndex{op_index, false};
+        const auto forwarding_index = TrainingOperandIndex{operand, true};
+        const auto &forwarding_uses = training_usedefs.at(forwarding_index).getTrainingUses();
+        const auto backwarding_index = TrainingOperandIndex{operand, false};
+        const auto &backwarding_uses = training_usedefs.at(backwarding_index).getTrainingUses();
+        return forwarding_uses.find(training_op_index) != forwarding_uses.end() ||
+               backwarding_uses.find(training_op_index) != backwarding_uses.end();
+      });
+
+    // NOTE Backward op does not define any incoming operand in backwarding
+    const auto &inputs = node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    const bool is_backward_op_def =
+      std::any_of(inputs.begin(), inputs.end(), [&](const OperandIndex &input) {
+        const auto training_op_index = TrainingOperationIndex{op_index, false};
+        const auto outcoming_index = TrainingOperandIndex{input, false};
+        const auto &backwarding_defs = training_usedefs.at(outcoming_index).getTrainingUses();
+        return backwarding_defs.find(training_op_index) != backwarding_defs.end();
+      });
+
+    if (is_backward_op_used || is_backward_op_def)
+      tgraph.enableBackward(op_index);
+    else
+      tgraph.disableBackward(op_index);
+  }
+}
+
+} // namespace
 
 namespace onert
 {
@@ -330,6 +377,18 @@ OperandIndex TrainableGraph::getLossIndex(const IOIndex &pred_ioind) const
 {
   auto itr = _losses.find(pred_ioind);
   return (itr == _losses.end()) ? OperandIndex{} : itr->second;
+}
+
+void TrainableGraph::updateGraphDependency()
+{
+  _graph.verify();
+
+  // Initialize training usedefs
+  setTrainingUseDefs(UseDefGenerator{*this}());
+
+  disableUnusedBackwardNodes(_training_defuses, *this);
+
+  verifyTrainingUseDefs();
 }
 
 } // namespace train
