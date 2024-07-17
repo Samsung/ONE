@@ -71,6 +71,32 @@ UseDefChains UseDefGenerator::operator()()
   return _training_usedefs;
 }
 
+void UseDefGenerator::visit(const train::operation::BinaryArithmetic &node)
+{
+  assert(_node_to_idx.find(&node) != _node_to_idx.end());
+  const auto &op_index = _node_to_idx.at(&node);
+  const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
+
+  // Insert uses of forwarding output
+  if (node.param().activation != ir::Activation::NONE)
+  {
+    const auto &out_index = node.getOutputs().at(0);
+    const auto out_forwarding_index = TrainingOperandIndex{out_index, true};
+    insertUse(out_forwarding_index, backwarding_op_index);
+  }
+
+  for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  {
+    // Insert use of forwarding inputs
+    const auto in_forwarding_index = TrainingOperandIndex{in_index, true};
+    insertUse(in_forwarding_index, backwarding_op_index);
+
+    // Set def of backwarding(backprop) inputs
+    const auto outgoing_index = TrainingOperandIndex{in_index, false};
+    insertBackPropDef(outgoing_index, backwarding_op_index);
+  }
+}
+
 void UseDefGenerator::visit(const train::operation::Conv2D &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
