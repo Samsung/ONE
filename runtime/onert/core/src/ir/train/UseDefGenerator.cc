@@ -147,6 +147,29 @@ void UseDefGenerator::visit(const train::operation::DepthwiseConv2D &node)
   }
 }
 
+void UseDefGenerator::visit(const train::operation::ElementwiseActivation &node)
+{
+  if (node.param().op_type != operation::ElementwiseActivation::Type::RELU)
+  {
+    throw std::runtime_error{"UseDefGenerator: Not yet supported activation type"};
+  }
+  assert(_node_to_idx.find(&node) != _node_to_idx.end());
+  const auto &op_index = _node_to_idx.at(&node);
+  const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
+
+  // Insert use of forwarding output
+  const auto &out_index = node.getOutputs().at(0);
+  const auto out_forwarding_index = TrainingOperandIndex{out_index, true};
+  insertUse(out_forwarding_index, backwarding_op_index);
+
+  // Set def of backwarding(backprop) inputs
+  for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  {
+    const auto outgoing_index = TrainingOperandIndex{in_index, false};
+    insertBackPropDef(outgoing_index, backwarding_op_index);
+  }
+}
+
 void UseDefGenerator::visit(const train::operation::Loss &node)
 {
   assert(_node_to_idx.find(&node) != _node_to_idx.end());
