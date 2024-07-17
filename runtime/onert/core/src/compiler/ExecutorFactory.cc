@@ -875,16 +875,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     // allocate extra tensors
   }
 
-  // [idea2] : Generate Extra Tensors by traversing code_map
-
-  // Problem 1 :
-  // Since code_map lost its' backend context,
-  // it is hard to specify where estra tensor should be registered.
-
-  // Problme 2:
-  // Since ITrainableFunction is in exec area, it isn't a good idea to use member function of *Layer
-  // here, Istead of exec area interface, we have to implement another backend interface
-
   if (order.size() != code_map.size())
   {
     throw std::runtime_error("ExecutorFactory: Some kernels are not generated");

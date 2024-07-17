@@ -50,14 +50,12 @@ private:
                        bool (*cond)(const ExtraTensorLifeTime));
 
 public:
-  std::vector<ExtraTensor *> register_requests(ir::OperationIndex idx,
-                                               const ExtraTensorRequests &requests);
+  void generate_extra_tensor(ir::OperationIndex idx, const ExtraTensorRequests &requests);
 
 private:
   const ir::train::TrainableGraph &_tgraph;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<TensorRegistry> _tensor_reg;
-  // std::unordered_map<const ir::train::ITrainableOperation *, ir::OperationIndex> _node_to_idx;
   std::unordered_map<ir::OperationIndex, ExtraTensorRequests> _idx_to_requests;
 };
 

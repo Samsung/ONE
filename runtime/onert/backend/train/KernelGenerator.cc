@@ -113,8 +113,7 @@ void KernelGenerator::genExtraTensors(ir::OperationIndex idx,
                                       onert::exec::train::ITrainableFunction *layer)
 {
   auto reqs = layer->requestExtraTensors();
-  auto extra_tensors = _extra_tensor_generator->register_requests(idx, reqs);
-  layer->ConfigureExtraTensors(extra_tensors);
+  _extra_tensor_generator->generate_extra_tensor(idx, reqs);
 }
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)

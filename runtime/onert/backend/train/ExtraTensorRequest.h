@@ -36,18 +36,21 @@ enum class ExtraTensorLifeTime
 
 struct ExtraTensorRequest
 {
-  static ExtraTensorRequest createRequestLike(const IPortableTensor *origin)
+  static ExtraTensorRequest createRequestLike(const IPortableTensor *origin,
+                                              ExtraTensor **const addr)
   {
     ExtraTensorRequest r = {.info = origin->get_info(),
                             .layout = origin->layout(),
                             .lifetime =
-                              ExtraTensorLifeTime::BACKWARD}; // default lifetime is BACKWARD
+                              ExtraTensorLifeTime::BACKWARD, // < default lifetime is BACWKARD
+                            .address = addr};
     return r;
   }
 
   ir::OperandInfo info;
   ir::Layout layout;
   ExtraTensorLifeTime lifetime;
+  ExtraTensor **address;
 };
 
 using ExtraTensorRequests = std::vector<ExtraTensorRequest>;
