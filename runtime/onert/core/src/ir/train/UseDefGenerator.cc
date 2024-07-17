@@ -109,12 +109,8 @@ void UseDefGenerator::visit(const train::operation::Reshape &node)
   const auto &op_index = _node_to_idx.at(&node);
   const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
 
-  // Insert uses of forwarding output
-  const auto &out_index = node.getOutputs().at(0);
-  const auto out_forwarding_index = TrainingOperandIndex{out_index, true};
-  insertUse(out_forwarding_index, backwarding_op_index);
-
   // Insert use of backwarding(backprop) output
+  const auto &out_index = node.getOutputs().at(0);
   const auto incoming_index = TrainingOperandIndex{out_index, false};
   insertUse(incoming_index, backwarding_op_index);
 
