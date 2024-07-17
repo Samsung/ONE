@@ -70,6 +70,7 @@ public:
   void visit(const train::operation::Loss &node) override;
   void visit(const train::operation::Pad &node) override;
   void visit(const train::operation::Pool2D &node) override;
+  void visit(const train::operation::Reduce &node) override;
   void visit(const train::operation::Reshape &node) override;
 
 private:
