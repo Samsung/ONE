@@ -42,7 +42,7 @@ set_version() {
 
   IFS=. read M m p <<< "$version"
   hex=$(printf '0x%08x' $(( (($M << 24)) | (($m << 8)) | $p )))
-  perl -pi -e "s/^#define NNFW_VERSION.*/#define NNFW_VERSION $hex/" ${nnfw_root}/runtime/onert/api/include/nnfw_version.h
+  perl -pi -e "s/^#define NNFW_VERSION.*/#define NNFW_VERSION $hex/" ${nnfw_root}/runtime/onert/api/nnfw/include/nnfw_version.h
 
   perl -pi -e "s/versionName .*$/versionName \"$version\"/" ${nnfw_root}/runtime/contrib/android/api/build.gradle
 }
