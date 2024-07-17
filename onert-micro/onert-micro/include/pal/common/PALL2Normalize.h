@@ -47,7 +47,7 @@ inline OMStatus L2Normalization(const core::L2NormalizationParams &params, const
       squared_l2_norm += val * val;
     }
     float l2_norm = std::sqrt(squared_l2_norm);
-    l2_norm = std::fmax(l2_norm, epsilon);
+    l2_norm = std::max(l2_norm, static_cast<float>(epsilon));
     for (int c = 0; c < depth; ++c)
     {
       output_data[depth * i + c] = input_data[depth * i + c] / l2_norm;
