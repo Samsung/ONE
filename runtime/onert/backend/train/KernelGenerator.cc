@@ -473,7 +473,7 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
 
   if (ifm_shape.rank() != 4)
   {
-    std::runtime_error(node.name() + " only supports 4D tensor as input");
+    throw std::runtime_error(node.name() + " only supports 4D tensor as input");
   }
 
   // calcualate padding
