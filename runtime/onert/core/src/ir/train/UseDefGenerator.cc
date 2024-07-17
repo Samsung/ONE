@@ -184,7 +184,6 @@ void UseDefGenerator::visit(const train::operation::FullyConnected &node)
   const auto &weights_index = node.getInputs().at(train::operation::FullyConnected::Input::WEIGHT);
   const auto weights_forwarding_index = TrainingOperandIndex{weights_index, true};
   insertUse(weights_forwarding_index, backwarding_op_index);
-  // Bias is not used in backwarding op
 
   // Insert uses of forwarding output
   if (node.param().activation != ir::Activation::NONE)
