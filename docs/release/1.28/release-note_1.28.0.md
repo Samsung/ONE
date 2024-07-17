@@ -12,6 +12,10 @@
 - Support on-device training with circle model
   - Training parameter can be passed to _onert_ via _onert_`s experimental API or loading new model format including training information: _circle_plus_
   - Trained model can be exported to _circle_ model via experimental API `nnfw_train_export_circle`
+  - Supporting Transfer learning from a pre-trained circle model
+- Introduce _circle_plus_gen_ tool
+  - Generates a _circle_plus_ model file with a given training hyperparameters
+  - Shows a _circle_plus model details
 
 ### Runtime configuration API
 - _onert_ supports runtime configuration API for prepare and execution phase via experimental APIs
