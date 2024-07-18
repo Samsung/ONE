@@ -40,9 +40,69 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *)
   // TODO Plan non-const tensors
 }
 
-void TensorPlanner::planTrainableTensors(TensorBuilder *)
+void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan trainable tensors such as weights
+  VERBOSE(BackendContext) << "Start planning constant tensors" << std::endl;
+
+  const auto &training_usedefs = _tgraph.trainingUseDefs();
+
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
+  std::vector<ir::train::TrainingOperandIndex> constants;
+
+  // Prepare scanning
+  for (const auto &pair : training_usedefs)
+  {
+    const auto &operand_index = pair.first;
+    const auto &operand_usedefs = pair.second;
+    const auto &operand = operand_usedefs.operand();
+
+    if (!operand_index.valid())
+      continue;
+
+    if (operand.isConstant() && operand_index.is_forward())
+    {
+      uses_map[operand_index] = 0;
+      const auto &defs = operand_usedefs.getTrainingDefs();
+      defs_map[operand_index] = defs.size(); // It means def_map's values are 0
+      constants.emplace_back(operand_index);
+    }
+  }
+
+  // Start scanning to do notify{First|Last}Use for each tensor
+  // If a tensor is a constant, increase the use of the tensor and allocate it first.
+  // Increasing use count here makes the tensor never be deallocated, i.e it they will be
+  // deallocated last.
+  for (const auto &index : constants)
+  {
+    assert(index.is_forward());
+    if (tensor_builder->isRegistered(index.index()))
+    {
+      uses_map[index]++;
+      tensor_builder->notifyFirstUse(index.index());
+    }
+  }
+
+  // Dispose and validate
+  for (const auto &index : constants)
+  {
+    assert(index.is_forward());
+    if (tensor_builder->isRegistered(index.index()))
+    {
+      uses_map[index]--;
+      tensor_builder->notifyLastUse(index.index());
+    }
+  }
+
+  assert(std::all_of(
+    uses_map.begin(), uses_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  assert(std::all_of(
+    defs_map.begin(), defs_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning constant tensors" << std::endl;
 }
 
 void TensorPlanner::planBackPropTensors(TensorBuilder *)
