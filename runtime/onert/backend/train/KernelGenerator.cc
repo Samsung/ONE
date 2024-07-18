@@ -476,7 +476,7 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
     throw std::runtime_error(node.name() + " only supports 4D tensor as input");
   }
 
-  // calcualate padding
+  // calculate padding
   const auto stride = node.param().stride;
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
