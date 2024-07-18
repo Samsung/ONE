@@ -6,10 +6,6 @@ if(NOT BUILD_ONERT)
   return()
 endif(NOT BUILD_ONERT)
 
-# Use C++17 for style_transfer_app
-# TODO Remove this when we use C++17 for all runtime directories
-set(CMAKE_CXX_STANDARD 17)
-
 find_package(JPEG)
 if(JPEG_FOUND)
   add_definitions(-DNNFW_ST_APP_JPEG_SUPPORTED)
