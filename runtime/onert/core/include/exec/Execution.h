@@ -25,6 +25,7 @@
 #include "ir/Layout.h"
 #include "exec/IExecutors.h"
 #include "ExecutionContext.h"
+#include "odc/OdcInfo.h"
 
 #include <thread>
 #include <deque>
@@ -175,6 +176,9 @@ public:
   ir::Shape getOutputShape(ir::IOIndex ind) const;
   size_t getInputTotalSize(ir::IOIndex ind) const;
   size_t getOutputTotalSize(ir::IOIndex ind) const;
+
+  const void *getInputBuffer(ir::IOIndex ind) const;
+  void *getOutputBuffer(ir::IOIndex ind);
 
   ExecutionOptions &executionOptions() { return _ctx.options; }
 

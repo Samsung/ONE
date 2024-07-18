@@ -88,6 +88,11 @@ public:
 
   void addObserver(std::unique_ptr<IExecutionObserver> ref) { _observers.add(std::move(ref)); };
 
+  IExecutionObserver *getObserver(onert::exec::ObserverType observer_type)
+  {
+    return _observers.get(observer_type);
+  };
+
   backend::BackendContexts &getBackendContexts() { return _backend_contexts; }
 
   const ExecutionOptions &currentOptions() const override { return _current_options; }

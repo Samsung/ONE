@@ -51,8 +51,8 @@ MinMaxDumper::MinMaxDumper(const std::string &filepath) : Dumper(filepath)
   ensureGroup(root_grp, h5_value_grpname);
 }
 
-void MinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
-                        const exec::OpMinMaxMap &op_minmax) const
+uint32_t MinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
+                            const exec::OpMinMaxMap &op_minmax) const
 {
   auto val_grp = _file.openGroup(h5_value_grpname);
   auto num_run = val_grp.getNumObjs();
@@ -80,6 +80,8 @@ void MinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
                                           H5::PredType::IEEE_F32BE, dspace);
     op_dset.write(e.second.data, H5::PredType::NATIVE_FLOAT);
   }
+
+  return num_run;
 }
 
 } // namespace h5
