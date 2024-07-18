@@ -35,9 +35,184 @@ TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
   UNUSED_RELEASE(_external_operands);
 }
 
-void TensorPlanner::planNonConstTensors(TensorBuilder *)
+void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan non-const tensors
+  VERBOSE(BackendContext) << "Start planning non-constant tensors" << std::endl;
+
+  const auto &training_usedefs = _tgraph.trainingUseDefs();
+
+  // NOTE The uses_map and defs_map must have size of only registered tensors
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
+
+  // Prepare scanning
+  // This assumes TrainingOperationIndex in forwarding are always used
+  for (const auto &pair : training_usedefs)
+  {
+    const auto &operand_index = pair.first;
+    const auto &operand_usedefs = pair.second;
+    const auto &operand = operand_usedefs.operand();
+
+    if (_external_operands.contains(operand_index.index()))
+      continue;
+
+    if (!operand_index.is_forward() || operand.isConstant())
+      continue;
+
+    uses_map[operand_index] = operand_usedefs.getTrainingUses().size();
+    defs_map[operand_index] = operand_usedefs.getTrainingDefs().size();
+  }
+
+  // Start scanning to do notify{First|Last}Use for each tensor
+  // TODO Remove this or find the reason why it is needed
+  // Q. Why is notifyFirstUse() called if operand's def count is 0?
+  //    It's neither an external operand or a constant operand
+  //    What does it mean when def count is 0?
+  // A. Not yet found the reason to need it yet.
+  for (const auto &pair : defs_map)
+  {
+    const auto &operand_index = pair.first;
+    const auto def_count = pair.second;
+    if (def_count == 0)
+      tensor_builder->notifyFirstUse(operand_index.index());
+  }
+
+  // This is a workaround to keep the operands over the execution
+  // (the operands look like they are unused)
+  std::vector<ir::train::TrainingOperandIndex> operands_last_until_end;
+  for (const auto &pair : uses_map)
+  {
+    const auto &operand_index = pair.first;
+    const auto use_count = pair.second;
+    if (use_count == 0)
+      operands_last_until_end.push_back(operand_index);
+  }
+
+  // Plan used or defined tensors in forwarding nodes
+  // At each operation,
+  // 1. Scan DEF of outputs. If the DEF, allocate it
+  // 2. Scan DEF of inputs. If variable tensor, throw an exception (not supported yet)
+  // 3. Scan USE of inputs/outputs. Decrease the USE and deallocate if the USE is 0
+  const auto order = _tgraph.topolSortOperations();
+  for (const auto &op_index : order)
+  {
+    const auto &op = _tgraph.operations().at(op_index);
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    // Define outputs
+    for (const auto &output : op_outputs)
+    {
+      if (_external_operands.contains(output))
+        continue;
+      if (!tensor_builder->isRegistered(output))
+        continue;
+
+      const auto output_index = ir::train::TrainingOperandIndex{output, true};
+      assert(defs_map.find(output_index) != defs_map.end());
+      defs_map[output_index] = 0;
+      tensor_builder->notifyFirstUse(output_index.index());
+    }
+
+    // Scan variable tensors
+    // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
+    // non-constant because of less memory usage by memory planning in here
+    // However, train backend does not support variable tensors yet
+    for (const auto &input : op_inputs)
+    {
+      if (_external_operands.contains(input))
+        continue;
+      if (!tensor_builder->isRegistered(input))
+        continue;
+
+      const auto input_index = ir::train::TrainingOperandIndex{input, true};
+      const auto &operand = training_usedefs.at(input_index).operand();
+      if (operand.isConstant())
+        continue;
+
+      assert(training_usedefs.find(input_index) != training_usedefs.end());
+      if (operand.info().isVariable())
+        throw std::runtime_error("The train backend does not support variable tensors");
+    }
+
+    for (const auto &input : op_inputs)
+    {
+      if (_external_operands.contains(input))
+        continue;
+      if (!tensor_builder->isRegistered(input))
+        continue;
+
+      const auto input_index = ir::train::TrainingOperandIndex{input, true};
+      const auto &operand = training_usedefs.at(input_index).operand();
+      if (operand.isConstant())
+        continue;
+
+      assert(uses_map.find(input_index) != uses_map.end());
+      assert(uses_map[input_index] > 0);
+      uses_map[input_index]--;
+      if (uses_map[input_index] == 0)
+      {
+        // plan for deallocation of static tensor node
+        tensor_builder->notifyLastUse(input_index.index());
+      }
+    }
+  }
+
+  // Plan used tensors in backwarding nodes
+  const auto border = _tgraph.essentialBackwardOrder();
+  for (const auto &op_index : border)
+  {
+    const auto &op = _tgraph.operations().at(op_index);
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    for (const auto &index : op_inputs + op_outputs)
+    {
+      if (_external_operands.contains(index))
+        continue;
+      if (!tensor_builder->isRegistered(index))
+        continue;
+
+      const auto operand_index = ir::train::TrainingOperandIndex{index, true};
+      assert(training_usedefs.find(operand_index) != training_usedefs.end());
+      const auto &operand_usedefs = training_usedefs.at(operand_index);
+      const auto &operand = operand_usedefs.operand();
+      if (operand.isConstant())
+        continue;
+
+      const auto &training_op_index = ir::train::TrainingOperationIndex{op_index, false};
+      assert(operand_usedefs.getTrainingDefs().find(training_op_index) ==
+             operand_usedefs.getTrainingDefs().end());
+
+      const auto &uses = operand_usedefs.getTrainingUses();
+      if (uses.find(training_op_index) != uses.end())
+      {
+        assert(uses_map.find(operand_index) != uses_map.end());
+        assert(uses_map[operand_index] > 0);
+        uses_map[operand_index]--;
+        if (uses_map[operand_index] == 0)
+        {
+          // plan for deallocation of static tensor node
+          tensor_builder->notifyLastUse(operand_index.index());
+        }
+      }
+    }
+  }
+
+  for (const auto &operand_index : operands_last_until_end)
+  {
+    tensor_builder->notifyLastUse(operand_index.index());
+  }
+
+  assert(std::all_of(
+    uses_map.begin(), uses_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  assert(std::all_of(
+    defs_map.begin(), defs_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning non-constant tensors" << std::endl;
 }
 
 void TensorPlanner::planTrainableTensors(TensorBuilder *)
