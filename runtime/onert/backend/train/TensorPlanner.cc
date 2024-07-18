@@ -281,9 +281,141 @@ void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
   VERBOSE(BackendContext) << "Finish planning constant tensors" << std::endl;
 }
 
-void TensorPlanner::planBackPropTensors(TensorBuilder *)
+void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan back-propagated tensors
+  VERBOSE(BackendContext) << "Start planning back-propagated tensors" << std::endl;
+
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
+
+  // Prepare scanning
+  const auto &training_usedefs = _tgraph.trainingUseDefs();
+  for (const auto &[operand_index, operand_usedefs] : training_usedefs)
+  {
+    const auto &operand = operand_usedefs.operand();
+
+    if (_external_operands.contains(operand_index.index()))
+      continue;
+
+    if (!tensor_builder->isRegisteredBackward(operand_index.index()))
+      continue;
+
+    if (operand_index.is_forward() || operand.isConstant())
+      continue;
+
+    uses_map[operand_index] = operand_usedefs.getTrainingUses().size();
+    defs_map[operand_index] = operand_usedefs.getTrainingDefs().size();
+  }
+
+  // Start scanning to do notify{First|Last}Use for each tensor
+
+  // This is a workaround to keep the operands over the execution
+  // (the operands look like they are unused)
+  std::vector<ir::train::TrainingOperandIndex> operands_last_until_end;
+  for (const auto &[ind, use_count] : uses_map)
+  {
+    if (use_count == 0)
+      operands_last_until_end.push_back(ind);
+  }
+
+  // At each operation,
+  // 1. Scan DEF of outgoing tnesors. If the first DEF, allocate it
+  // 2. Scan DEF of inputs. If variable tensor, throw an exception (not supported yet)
+  // 3. Scan USE of incoming tensors. Decrease the USE and deallocate if the USE is 0
+  std::set<ir::OperandIndex> unallocated;
+  _tgraph.operands().iterate(
+    [&](const ir::OperandIndex &index, const ir::Operand &) { unallocated.insert(index); });
+
+  const auto border = _tgraph.essentialBackwardOrder();
+  for (const auto &op_ind : border)
+  {
+    const auto &op = _tgraph.operations().at(op_ind);
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    // Allocate back-propagated tensors in first def
+    for (const auto &outgoing : op_inputs)
+    {
+      const auto operand_index = ir::train::TrainingOperandIndex{outgoing, false};
+      const auto &operand = _tgraph.operands().at(outgoing);
+      if (_external_operands.contains(outgoing))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(outgoing))
+        continue;
+      if (operand.isConstant())
+        continue;
+
+      if (defs_map.find(operand_index) != defs_map.end())
+      {
+        if (unallocated.find(outgoing) != unallocated.end())
+        {
+          // First Def
+          unallocated.erase(outgoing);
+          defs_map[operand_index]--;
+          tensor_builder->notifyBackwardFirstUse(outgoing);
+        }
+        else
+        {
+          assert(defs_map[operand_index] > 0);
+          defs_map[operand_index]--;
+        }
+      }
+    }
+
+    // Scan variable tensors
+    // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
+    // non-constant because of less memory usage by memory planning in here
+    // However, train backend does not support variable tensors yet
+    for (const auto &outgoing : op_inputs)
+    {
+      if (_external_operands.contains(outgoing))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(outgoing))
+        continue;
+      const auto &operand = _tgraph.operands().at(outgoing);
+      if (operand.info().isVariable())
+        throw std::runtime_error("The train backend does not support variable tensors");
+    }
+
+    for (const auto &incoming : op_outputs)
+    {
+      const auto incoming_index = ir::train::TrainingOperandIndex{incoming, false};
+
+      if (_external_operands.contains(incoming))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(incoming))
+        continue;
+
+      // NOTE There is no case where an op's incoming tensors have the coresponding op def yet
+      assert(defs_map.find(incoming_index) != defs_map.end());
+
+      if (uses_map.find(incoming_index) != uses_map.end())
+      {
+        assert(uses_map[incoming_index] > 0);
+        uses_map[incoming_index]--;
+        if (uses_map[incoming_index] == 0)
+        {
+          // plan for deallocation of static tensornode
+          tensor_builder->notifyBackwardLastUse(incoming);
+        }
+      }
+    }
+  }
+
+  for (const auto &index : operands_last_until_end)
+  {
+    tensor_builder->notifyBackwardLastUse(index.index());
+  }
+
+  assert(std::all_of(
+    uses_map.begin(), uses_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  assert(std::all_of(
+    defs_map.begin(), defs_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning back-propagated tensors" << std::endl;
 }
 
 void TensorPlanner::planGradientTensors(TensorBuilder *)
