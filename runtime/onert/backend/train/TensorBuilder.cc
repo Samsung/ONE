@@ -136,6 +136,18 @@ void TensorBuilder::notifyBackwardFirstUse(const ir::OperandIndex &index)
   }
 }
 
+void TensorBuilder::notifyBackwardLastUse(const ir::OperandIndex &index)
+{
+  if (_as_constants[index])
+  {
+    _tensor_mgr->releaseGradientPlan(index);
+  }
+  else
+  {
+    _tensor_mgr->releaseBackPropPlan(index);
+  }
+}
+
 void TensorBuilder::notifyDisposableBackPropFirstUse(const DisposableTensorIndex &index)
 {
   _tensor_mgr->claimDisposableBackPropPlan(index);
