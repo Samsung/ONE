@@ -15,6 +15,8 @@
  */
 
 #include "exec/Execution.h"
+#include "LinearExecutor.h"
+#include "MinMaxRecorder.h"
 
 #include "ir/DataType.h"
 #include "train/TrainableExecutors.h"
@@ -221,6 +223,52 @@ size_t Execution::getInputTotalSize(ir::IOIndex ind) const
 size_t Execution::getOutputTotalSize(ir::IOIndex ind) const
 {
   return _ctx.desc.outputs.at(ind.value())->info.total_size();
+}
+
+const void *Execution::getInputBuffer(ir::IOIndex ind) const
+{
+  return _ctx.desc.inputs.at(ind.value())->buffer;
+}
+
+void *Execution::getOutputBuffer(ir::IOIndex ind)
+{
+  return _ctx.desc.outputs.at(ind.value())->buffer;
+}
+
+bool Execution::deleteMinMaxFile()
+{
+  auto entry_executor = dynamic_cast<onert::exec::LinearExecutor *>(_executors->entryExecutor());
+
+  if (entry_executor != nullptr)
+  {
+    auto observer = entry_executor->getObserver(ObserverType::MINMAX_DUMP);
+    if (observer != nullptr)
+    {
+      auto mmrecorder = dynamic_cast<MinMaxRecorder *>(observer);
+      if (mmrecorder != nullptr)
+        return mmrecorder->deleteMinMaxFile();
+    }
+  }
+  return false;
+}
+
+void Execution::updateOdcInfo(odc::OdcInfo *_odc_info)
+{
+  assert(_odc_info != nullptr);
+
+  // Update OdcInfo
+  auto entry_executor = dynamic_cast<onert::exec::LinearExecutor *>(_executors->entryExecutor());
+
+  if (entry_executor != nullptr)
+  {
+    auto observer = entry_executor->getObserver(ObserverType::MINMAX_DUMP);
+    if (observer != nullptr)
+    {
+      auto mmrecorder = dynamic_cast<MinMaxRecorder *>(observer);
+      if (mmrecorder != nullptr)
+        _odc_info->setMinMaxRecordsCount(mmrecorder->getMinMaxRecordsCount());
+    }
+  }
 }
 
 } // namespace exec

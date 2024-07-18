@@ -25,6 +25,7 @@
 #include "ir/Layout.h"
 #include "exec/IExecutors.h"
 #include "ExecutionContext.h"
+#include "odc/OdcInfo.h"
 
 #include <thread>
 #include <deque>
@@ -171,10 +172,27 @@ public:
     const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)>
       &fn) const;
 
+  /**
+   * @brief     Update information about current state of on-device compiler
+   *
+   * @param[in] OdcInfo for updating
+   */
+  void updateOdcInfo(odc::OdcInfo *_odc_info);
+
+  /**
+   * @brief     Delete MinMax File of on-device compiler
+   *
+   * @return    Return true if file removed successfully
+   */
+  bool deleteMinMaxFile();
+
   ir::Shape getInputShape(ir::IOIndex ind) const;
   ir::Shape getOutputShape(ir::IOIndex ind) const;
   size_t getInputTotalSize(ir::IOIndex ind) const;
   size_t getOutputTotalSize(ir::IOIndex ind) const;
+
+  const void *getInputBuffer(ir::IOIndex ind) const;
+  void *getOutputBuffer(ir::IOIndex ind);
 
   ExecutionOptions &executionOptions() { return _ctx.options; }
 
@@ -187,6 +205,8 @@ private:
   ExecutionContext _ctx;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
+  // Information about current state of on-device compiler
+  // odc::OdcInfo _odc_info;
 };
 
 } // namespace exec
