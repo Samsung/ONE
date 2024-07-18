@@ -30,9 +30,11 @@
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
 #include "ir/train/TrainingInfo.h"
+#include "ir/Shape.h"
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
 #include "odc/CodegenManager.h"
+#include "odc/OdcInfo.h"
 
 #include <fstream>
 #include <iostream>
@@ -245,7 +247,8 @@ nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{std::make_unique<onert::odc::QuantizeManager>()},
-    _codegen_manager{std::make_unique<onert::odc::CodegenManager>()}, _model_path{""}
+    _codegen_manager{std::make_unique<onert::odc::CodegenManager>()},
+    _odc_info{std::make_unique<onert::odc::OdcInfo>()}, _model_path{""}
 {
   // DO NOTHING
 }
@@ -1975,6 +1978,7 @@ NNFW_STATUS nnfw_session::set_execute_config(const NNFW_RUN_CONFIG key, const ch
     case NNFW_RUN_CONFIG_PROFILE:
       _execution->executionOptions().profile = true;
       break;
+
     default:
       return NNFW_STATUS_ERROR;
   }
@@ -1993,6 +1997,286 @@ NNFW_STATUS nnfw_session::reset_execute_config()
   _execution->executionOptions().dump_minmax = false;
   _execution->executionOptions().trace = false;
   _execution->executionOptions().profile = false;
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_odc_param_minmax_records_count(int minmax_records_count)
+{
+  if (isStateInitialized() || isStateRunning())
+  {
+    std::cerr << "invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  _odc_info->setMinMaxCountForQuantization(minmax_records_count);
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::delete_odc_minmax_file()
+{
+
+  if (_execution->deleteMinMaxFile())
+    return NNFW_STATUS_NO_ERROR;
+  else
+    return NNFW_STATUS_ERROR;
+}
+
+// run with auto compilation
+NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_CODEGEN_PREF pref)
+{
+
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::run : "
+              << "run should be run after prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // Odc: auto compilation with hidden switching mechanizm
+  // Check is model already quantized or compiled
+  std::ifstream file_quantized_model(_quant_manager->exportModelPath());
+  std::ifstream file_compiled_model(_codegen_manager->exportModelPath());
+
+  if (!file_quantized_model.good() && !file_compiled_model.good())
+  {
+    // Run float model and try to qunatize it
+    {
+      // Save execution options
+      auto saved_options = _execution->executionOptions();
+      // turn on minmax recording
+      _execution->executionOptions().dump_minmax = true;
+
+      if (!isStatePreparedOrFinishedRun())
+      {
+        std::cerr << "Error during nnfw_session::run : "
+                  << "run should be run after prepare" << std::endl;
+        return NNFW_STATUS_INVALID_STATE;
+      }
+
+      try
+      {
+        _execution->execute();
+      }
+      catch (const onert::InsufficientBufferSizeException &e)
+      {
+        // Currently insufficient buffer always means output buffer.
+        std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+        return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+      }
+      catch (const std::exception &e)
+      {
+        std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+
+      _state = State::FINISHED_RUN;
+
+      // restore min_max option
+      _execution->executionOptions().dump_minmax = saved_options.dump_minmax;
+
+      // get the runs count
+      _execution->updateOdcInfo(_odc_info.get());
+      int runs_count = _odc_info->getMinMaxRecordsCount();
+
+      const bool is_statistics_collected =
+        (runs_count >= _odc_info->getMinMaxCountForQuantization());
+      if (is_statistics_collected)
+      {
+        try
+        {
+          if (isStateInitialized() || isStateRunning())
+          {
+            std::cerr << "invalid state" << std::endl;
+            return NNFW_STATUS_INVALID_STATE;
+          }
+
+          auto result = _quant_manager->quantize(_model_path);
+          if (!result)
+            return NNFW_STATUS_INVALID_STATE;
+        }
+        catch (const std::exception &e)
+        {
+          std::cerr << "Error during nnfw_session::quantize : " << e.what() << std::endl;
+          return NNFW_STATUS_ERROR;
+        }
+      }
+    }
+  }
+  else
+  {
+
+    // run compiled or quantized model
+    NNFW_STATUS status;
+
+    // save initial buffers if quantized model or compiled model is not loaded
+    if (!_odc_info->isQuantizedModelLoaded() && !_odc_info->isCompiledModelLoaded())
+    {
+      auto dotidx = _codegen_manager->exportModelPath().rfind('.');
+      if (dotidx == std::string::npos)
+      {
+        std::cerr << "Error during nnfw_session::run_with_auto_compilation : Invalid compiled "
+                     "model path. Please use a "
+                     "path that includes the extension."
+                  << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+
+      std::string compiled_model_type =
+        _codegen_manager->exportModelPath().substr(dotidx + 1); // + 1 to exclude dot
+
+      dotidx = _quant_manager->exportModelPath().rfind('.');
+      if (dotidx == std::string::npos)
+      {
+        std::cerr << "Error during nnfw_session::run_with_auto_compilation : Invalid quantized "
+                     "model path. Please use a "
+                     "path that includes the extension."
+                  << std::endl;
+        return NNFW_STATUS_ERROR;
+      }
+      std::string quantized_model_type =
+        _quant_manager->exportModelPath().substr(dotidx + 1); // + 1 to exclude dot
+
+      // Save initial (float) input and output buffers
+      auto input_size = _compiler_artifact->_executors->inputSize();
+      auto output_size = _compiler_artifact->_executors->outputSize();
+
+      std::vector<const void *> _input_buffers;
+      std::vector<void *> _output_buffers;
+
+      // Save Inputs buffers
+      for (size_t input_index = 0; input_index < input_size; input_index++)
+      {
+        auto io_input_index = onert::ir::IOIndex(input_index);
+        auto input_Shape = _execution->getInputShape(io_input_index);
+        auto input_buffer = _execution->getInputBuffer(io_input_index);
+
+        _input_buffers.push_back(input_buffer);
+      }
+
+      // Save Outputs buffers
+      for (size_t output_index = 0; output_index < output_size; output_index++)
+      {
+        auto io_output_index = onert::ir::IOIndex(output_index);
+
+        auto output_Shape = _execution->getOutputShape(io_output_index);
+        auto output_buffer = _execution->getOutputBuffer(io_output_index);
+
+        _output_buffers.push_back(output_buffer);
+      }
+
+      // Save execution options
+      auto saved_options = _execution->executionOptions();
+
+      // if there is compiled model - try to load it
+      if (file_compiled_model.good())
+      {
+        // load compiled model
+        status = loadModelFile(_codegen_manager->exportModelPath(), compiled_model_type);
+        if (status == NNFW_STATUS_NO_ERROR)
+        {
+          _odc_info->setCompiledModelLoaded(true);
+        }
+      }
+      else // there is no compiled model - try to compile and load it
+      {
+
+        // avoiding code duplication use existing "codegen" function. Set up _model_path for the
+        // codegen function.
+        // TODO: change it if codegen function will be generalized
+        _model_path = _quant_manager->exportModelPath();
+
+        // try to compile and load compiled model
+        status = codegen(target, pref);
+        if (status == NNFW_STATUS_NO_ERROR)
+        {
+          _odc_info->setCompiledModelLoaded(true);
+          // TODO delete quantized model
+        }
+      }
+
+      // loading compiled model is fail - try to load quantized model
+      if (!_odc_info->isCompiledModelLoaded())
+      {
+        // load quantized model
+        status = loadModelFile(_quant_manager->exportModelPath(), quantized_model_type);
+        if (status != NNFW_STATUS_NO_ERROR)
+          return status;
+        else
+          _odc_info->setQuantizedModelLoaded(true);
+      }
+
+      status = prepare();
+      if (status != NNFW_STATUS_NO_ERROR)
+        return status;
+
+      // Restore execution options
+      _execution->executionOptions() = saved_options;
+
+      // Restore inputs to the quantized or compiled model
+      for (uint32_t input_index = 0; input_index < _input_buffers.size(); input_index++)
+      {
+        nnfw_tensorinfo ti;
+        status = input_tensorinfo(input_index, &ti);
+        if (status != NNFW_STATUS_NO_ERROR)
+          return status;
+
+        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
+        auto input_size_in_bytes = getBufSize(&ti);
+
+        status = set_input(input_index, ti.dtype, _input_buffers[input_index], input_size_in_bytes);
+
+        if (status != NNFW_STATUS_NO_ERROR)
+          return status;
+      }
+
+      // Restore outputs to the quantized or compiled model
+      for (uint32_t output_index = 0; output_index < _output_buffers.size(); output_index++)
+      {
+
+        nnfw_tensorinfo ti;
+        status = output_tensorinfo(output_index, &ti);
+        if (status != NNFW_STATUS_NO_ERROR)
+          return status;
+
+        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
+
+        uint64_t output_size_in_bytes = getBufSize(&ti);
+
+        status =
+          set_output(output_index, ti.dtype, _output_buffers[output_index], output_size_in_bytes);
+        if (status != NNFW_STATUS_NO_ERROR)
+          return status;
+      }
+    }
+
+    // Run quantized model
+    if (!isStatePreparedOrFinishedRun())
+    {
+      std::cerr << "Error during nnfw_session::run : "
+                << "run should be run after prepare" << std::endl;
+      return NNFW_STATUS_INVALID_STATE;
+    }
+
+    try
+    {
+      _execution->execute();
+    }
+    catch (const onert::InsufficientBufferSizeException &e)
+    {
+      // Currently insufficient buffer always means output buffer.
+      std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+      return NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE;
+    }
+    catch (const std::exception &e)
+    {
+      std::cerr << "Error during nnfw_session::run : " << e.what() << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    _state = State::FINISHED_RUN;
+  }
 
   return NNFW_STATUS_NO_ERROR;
 }

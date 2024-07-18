@@ -530,6 +530,66 @@ NNFW_STATUS nnfw_set_codegen_model_path(nnfw_session *session, const char *path)
  */
 NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref);
 
+/**
+ * @brief Set quantization type
+ *
+ * This function should be called before {@link nnfw_quantize} is invoked.
+ *
+ * @param[in] session nnfw_session to set quantization type
+ * @param[in] pref @c NNFW_QUANTIZE_TYPE
+ * @return    @c NNFW_STATUS_NO_ERROR if successful,
+ *            @c NNFW_STATUS_UNEXPECTED_NULL if session is null,
+ *            otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype);
+
+/**
+ * @brief  Set MinMax records count in auto compilation mode with on-device compiler
+ *
+ * This function set MinMax records count for quantization in auto compilation mode.
+ * To enable automatic compilation mode, use  {@link nnfw_run_with_auto_compilation}
+ *
+ * @param[in] session nnfw_session
+ * @param[in] minmax_records_count    minmax records count
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_odc_param_minmax_records_count(nnfw_session *session,
+                                                    int minmax_records_count);
+
+/**
+ * @brief  Delete MinMax file for auto compilation mode
+ *
+ * @param[in] session nnfw_session
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session);
+
+/**
+ * @brief  Run inference with auto compilation 
+ *
+ * <p>This function runs inference with automatic compilation and replaces 
+ *  the original model with a quantized or compiled model inside.
+ * On-device compiler (ODC) provides quantization and compilation functionality.
+ * Function should be called after model is loaded by {@link nnfw_load_model_from_file},
+ * session is prepared for inference by {@link nnfw_prepare}, set input and output buffers
+ * by {@link nnfw_set_input} and {@link nnfw_set_output}.
+ *
+ * Additionaly the following parameters should be set up :
+ * 1. Quantization type {@link nnfw_set_quantization_type }
+ * 2. Quantizated model path {@link  nnfw_set_quantized_model_path }  
+ * 3. MinMax records count for quantization {@link nnfw_set_odc_param_minmax_records_count }
+ * 4. File with minMax statistics can be removed by {@link nnfw_odc_delete_minmax_file}
+ * 5. Compiled model path {@link  nnfw_set_codegen_model_path}
+ * </p>
+ *
+ * @param[in] session nnfw_session
+ * @param[in] target  Target backend to generate code as in {@link nnfw_codegen}
+ * @param[in] pref @c NNFW_CODEGEN_PREF
+ 
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_run_with_auto_compilation(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref);
+
 //////////////////////////////////////////////
 // APIs for configuration
 //////////////////////////////////////////////
@@ -589,6 +649,7 @@ typedef enum
    * TODO: Use workspace
    */
   NNFW_RUN_CONFIG_PROFILE,
+
 } NNFW_RUN_CONFIG;
 
 /**
