@@ -50,8 +50,8 @@ public:
   template <typename T>
   void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape,
                        const T *input_data, const Shape &filter_shape, const T *filter_data,
-                       T *padded_filter_data, bool pad_filter, T* filter_buffers_data,
-                       const Shape &output_shape, T* output_data)
+                       T *padded_filter_data, bool pad_filter, T *filter_buffers_data,
+                       const Shape &output_shape, T *output_data)
   {
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");

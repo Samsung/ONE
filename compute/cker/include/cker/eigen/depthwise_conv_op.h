@@ -33,12 +33,13 @@ namespace cker
 namespace depthwise_conv_op
 {
 
-template <typename Device, typename T>
-struct LaunchDepthwiseConvOp {
+template <typename Device, typename T> struct LaunchDepthwiseConvOp
+{
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
-                  int out_rows, int out_cols, int out_depth, const T *input, const T *depthwise_filter,
-                  T *padded_filter_data, bool pad_filter, T *in_buf, T *output);
+                  int out_rows, int out_cols, int out_depth, const T *input,
+                  const T *depthwise_filter, T *padded_filter_data, bool pad_filter, T *in_buf,
+                  T *output);
 };
 
 template <typename Device, typename T> struct LaunchDepthwiseConvBackpropInputOp
@@ -358,64 +359,58 @@ using CPUDevice = Eigen::ThreadPoolDevice;
 //                        ([f0, f0, f1, f1] x [u3, v3, w3, x3])
 //
 // TODO(andydavis) Experiment with processing multiple inputs per input buffer.
-template <typename T>
-struct DepthwiseConv2DKernel {
-  static void Run(int , int , int , int , int filter_rows,
-                  int filter_cols, int , int , int , int ,
-                  int , int out_cols, int out_depth,
-                  const int64_t padded_filter_inner_dim_size,
-                  const int64_t out_r, const int64_t out_c, const T* filter,
-                  const T* input_buffer, T* output) {
+template <typename T> struct DepthwiseConv2DKernel
+{
+  static void Run(int, int, int, int, int filter_rows, int filter_cols, int, int, int, int, int,
+                  int out_cols, int out_depth, const int64_t padded_filter_inner_dim_size,
+                  const int64_t out_r, const int64_t out_c, const T *filter, const T *input_buffer,
+                  T *output)
+  {
     typedef typename Eigen::internal::packet_traits<T>::type Packet;
     static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
     const int64_t filter_spatial_size = filter_rows * filter_cols;
     const int64_t output_scalar_size = out_depth % kPacketSize;
-    const int64_t output_vectorized_size =
-        (out_depth / kPacketSize) * kPacketSize;
-    const int64_t base_output_index =
-        (out_r * out_cols + out_c) * out_depth;
+    const int64_t output_vectorized_size = (out_depth / kPacketSize) * kPacketSize;
+    const int64_t base_output_index = (out_r * out_cols + out_c) * out_depth;
 
-    for (int i = 0; i < output_vectorized_size; i += kPacketSize) {
+    for (int i = 0; i < output_vectorized_size; i += kPacketSize)
+    {
       // Reset accumulator.
       auto vaccum = Eigen::internal::pset1<Packet>(static_cast<T>(0));
-      for (int j = 0; j < filter_spatial_size; ++j) {
+      for (int j = 0; j < filter_spatial_size; ++j)
+      {
         // Calculate index.
         const int64_t index = i + j * padded_filter_inner_dim_size;
         // Load filter.
         // TODO(andydavis) Unroll 'out_c' loop in caller so we can load
         // multiple inputs here to amortize the cost of each filter block load.
-        const auto filter_block =
-            Eigen::internal::ploadu<Packet>(filter + index);
+        const auto filter_block = Eigen::internal::ploadu<Packet>(filter + index);
         // Load input.
-        const auto data_block =
-            Eigen::internal::ploadu<Packet>(input_buffer + index);
+        const auto data_block = Eigen::internal::ploadu<Packet>(input_buffer + index);
         // Vector multiply-add.
-        vaccum =
-            Eigen::internal::pmadd<Packet>(filter_block, data_block, vaccum);
+        vaccum = Eigen::internal::pmadd<Packet>(filter_block, data_block, vaccum);
       }
       // Store vector accumulator to output.
       Eigen::internal::pstoreu<T>(output + base_output_index + i, vaccum);
     }
 
-    if (output_scalar_size > 0) {
+    if (output_scalar_size > 0)
+    {
       auto vaccum = Eigen::internal::pset1<Packet>(static_cast<T>(0));
-      for (int j = 0; j < filter_spatial_size; ++j) {
-        const int64_t index =
-            output_vectorized_size + j * padded_filter_inner_dim_size;
-        const auto filter_block =
-            Eigen::internal::ploadu<Packet>(filter + index);
-        const auto data_block =
-            Eigen::internal::ploadu<Packet>(input_buffer + index);
-        vaccum =
-            Eigen::internal::pmadd<Packet>(filter_block, data_block, vaccum);
+      for (int j = 0; j < filter_spatial_size; ++j)
+      {
+        const int64_t index = output_vectorized_size + j * padded_filter_inner_dim_size;
+        const auto filter_block = Eigen::internal::ploadu<Packet>(filter + index);
+        const auto data_block = Eigen::internal::ploadu<Packet>(input_buffer + index);
+        vaccum = Eigen::internal::pmadd<Packet>(filter_block, data_block, vaccum);
       }
       // Load accumulator into an array and loop through output.
       T out_buf[kPacketSize];
       Eigen::internal::pstoreu<T>(out_buf, vaccum);
-      const int64_t last_output_index =
-          base_output_index + output_vectorized_size;
-      for (int j = 0; j < output_scalar_size; ++j) {
+      const int64_t last_output_index = base_output_index + output_vectorized_size;
+      for (int j = 0; j < output_scalar_size; ++j)
+      {
         output[last_output_index + j] = out_buf[j];
       }
     }
@@ -433,14 +428,16 @@ struct DepthwiseConv2DKernel {
 // TODO(andydavis) Consider a zero-copy implementation for the case when
 // 'in_depth' is a multiple of register width, and 'depth_multipler' is one.
 // TODO(andydavis) Evaluate the performance of alternative implementations.
-template <typename T>
-struct LaunchDepthwiseConvOp<CPUDevice, T> {
+template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
+{
   typedef typename Eigen::internal::packet_traits<T>::type Packet;
 
   void operator()(int batch, int in_rows, int in_cols, int in_depth, int filter_rows,
                   int filter_cols, int depth_multiplier, int stride, int pad_rows, int pad_cols,
-                  int out_rows, int out_cols, int out_depth, const T *input, const T *depthwise_filter,
-                  T *padded_filter_data, bool pad_filter, T *in_buf, T *output) {
+                  int out_rows, int out_cols, int out_depth, const T *input,
+                  const T *depthwise_filter, T *padded_filter_data, bool pad_filter, T *in_buf,
+                  T *output)
+  {
 
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
 
@@ -456,9 +453,8 @@ struct LaunchDepthwiseConvOp<CPUDevice, T> {
 
     // Computes one shard of depthwise conv2d output.
     auto shard = [d, in_rows, in_cols, in_depth, out_rows, out_cols, out_depth, batch, filter_rows,
-                  filter_cols, depth_multiplier, stride, pad_rows, pad_cols, input,
-                  filter_data, in_buf, output](
-                     int64_t start, int64_t limit) {
+                  filter_cols, depth_multiplier, stride, pad_rows, pad_cols, input, filter_data,
+                  in_buf, output](int64_t start, int64_t limit) {
       static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
       int cur_id = d.currentThreadId() + 1;
@@ -468,30 +464,35 @@ struct LaunchDepthwiseConvOp<CPUDevice, T> {
       const int64_t output_image_size = out_rows * out_cols * out_depth;
       const int64_t filter_spatial_size = filter_rows * filter_cols;
       const int64_t padded_filter_inner_dim_size =
-          ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
       const int64_t padded_filter_size = filter_spatial_size * padded_filter_inner_dim_size;
 
       T *input_buffer_data = in_buf + cur_id * padded_filter_size;
 
-      for (int64_t i = start; i < limit; ++i) {
+      for (int64_t i = start; i < limit; ++i)
+      {
         const int64_t b = i / out_rows;
         const int64_t in_base = b * input_image_size;
         const int64_t out_base = b * output_image_size;
 
-        const int64_t out_r = i % out_rows;
+        // const int64_t out_r = i % out_rows;
 
-        for (int64_t out_c = 0; out_c < out_cols; ++out_c) {
-          // Populate 'input_buffer_data' with data from local input region.
-          functor::DepthwiseInputCopyOp<T>()(batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
-              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size,
-                                             out_r, out_c, input + in_base,
-                                             input_buffer_data);
-
-          // Process buffered input across all filters and store to output.
-          DepthwiseConv2DKernel<T>::Run(
+        for (int64_t out_r = 0; out_r < out_rows; ++out_r)
+        {
+          for (int64_t out_c = 0; out_c < out_cols; ++out_c)
+          {
+            // Populate 'input_buffer_data' with data from local input region.
+            functor::DepthwiseInputCopyOp<T>()(
               batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
-              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size, out_r, out_c, filter_data,
-              input_buffer_data, output + out_base);
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size,
+              out_r, out_c, input + in_base, input_buffer_data);
+
+            // Process buffered input across all filters and store to output.
+            DepthwiseConv2DKernel<T>::Run(
+              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size,
+              out_r, out_c, filter_data, input_buffer_data, output + out_base);
+          }
         }
       }
     };
@@ -803,7 +804,6 @@ template <typename T> struct LaunchDepthwiseConvBackpropInputOp<CPUDevice, T>
         }
       }
     };
-
 
     const int64_t input_bytes = out_rows * out_cols * out_depth * sizeof(T);
     const int64_t output_bytes = in_rows * in_cols * in_depth * sizeof(T);

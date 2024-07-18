@@ -34,8 +34,8 @@ DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
     _back_prop_input{nullptr}, _back_prop_output{nullptr}, _act_back_prop_output{nullptr},
     //  _use_padded_filter{false}, _padded_filter{nullptr}, _filter_buffers{nullptr},
     // _filter_buffers{nullptr},
-    _filter_dim_buffers{nullptr}//,
-    // _dconv_kernel{std::make_unique<nnfw::cker::train::DepthwiseConv>()}
+    _filter_dim_buffers{nullptr} //,
+// _dconv_kernel{std::make_unique<nnfw::cker::train::DepthwiseConv>()}
 {
   // DO NOTHING
 }
@@ -150,8 +150,6 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.padding_values.width = _paddingLeft;
   dconv_params.padding_values.height = _paddingTop;
   dconv_params.depth_multiplier = _multiplier;
-
-  memset(_filter_buffers->buffer(), 0, _filter_buffers->total_size());
 
   // Calculate gradient for input
   _dconv_kernel->backpropInput(

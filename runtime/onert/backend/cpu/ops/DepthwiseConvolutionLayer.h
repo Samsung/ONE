@@ -41,6 +41,7 @@ public:
   virtual ~DepthwiseConvolutionLayer() = default;
 
 public:
+  void dconvFloat32();
   void convFloat32();
 
   void convQ8uPerTensor();
@@ -90,7 +91,8 @@ protected:
   bool _use_padded_filter{false};
   std::unique_ptr<Tensor> _padded_filter{nullptr};
   std::unique_ptr<Tensor> _filter_buffers{nullptr};
-  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel{std::make_unique<nnfw::cker::train::DepthwiseConv>()};
+  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel{
+    std::make_unique<nnfw::cker::train::DepthwiseConv>()};
 
 private:
   std::shared_ptr<ExternalContext> _external_context;

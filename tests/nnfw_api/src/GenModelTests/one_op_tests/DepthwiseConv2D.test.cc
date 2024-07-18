@@ -39,6 +39,29 @@ TEST_F(GenModelTest, OneOp_DepthwiseConv2D)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_DepthwiseConv2D_No_Bias)
+{
+  CircleGen cgen;
+  std::vector<float> weight_data{1, 2, 3, 4, -9, 10, -11, 12, 5, 6, 7, 8, 13, -14, 15, -16};
+  uint32_t weight_buf = cgen.addBuffer(weight_data);
+  std::vector<float> bias_data{0, 0, 0, 0};
+  uint32_t bias_buf = cgen.addBuffer(bias_data);
+  int in = cgen.addTensor({{1, 3, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int weight = cgen.addTensor({{1, 2, 2, 4}, circle::TensorType::TensorType_FLOAT32, weight_buf});
+  int bias = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32, bias_buf});
+  int out = cgen.addTensor({{1, 2, 1, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorDepthwiseConv2D({{in, weight, bias}, {out}}, circle::Padding_VALID, 1, 1, 2,
+                                  circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 7, 8, 3, 4, 9, 10, 5, 6, 11, 12}},
+                                          {{70, -36, 96, -24, 90, -28, 124, -8}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu", "xnnpack"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_DepthwiseConv2D_No_Multiplier)
 {
   CircleGen cgen;

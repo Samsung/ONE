@@ -18,6 +18,7 @@
 
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
+#include <cker/eigen/bias_op.h>
 
 namespace onert
 {
@@ -60,6 +61,44 @@ void DepthwiseConvolutionLayer::prepareFloat32()
   _filter_buffers->setBuffer(std::make_shared<basic::Allocator>(_filter_buffers->total_size()));
 }
 
+void DepthwiseConvolutionLayer::dconvFloat32()
+{
+  nnfw::cker::DepthwiseConvParams op_params;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.depth_multiplier = _multiplier;
+
+  memset(_padded_filter->buffer(), 0, _padded_filter->total_size());
+  memset(_filter_buffers->buffer(), 0, _filter_buffers->total_size());
+
+  _dconv_kernel->DepthwiseConvOp<float>(
+    op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
+    getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), _use_padded_filter,
+    getBuffer<float>(_filter_buffers.get()), getShape(_output), getBuffer<float>(_output));
+
+  if (getBuffer<float>(_bias))
+  {
+    if (_activation == ir::Activation::NONE)
+    {
+      nnfw::cker::bias_op::biasHelper(getShape(_output), getBuffer<float>(_output), getShape(_bias),
+                                      getBuffer<float>(_bias), getShape(_output),
+                                      getBuffer<float>(_output));
+    }
+    else
+    {
+      float output_activation_min = 0, output_activation_max = 0;
+      CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+      nnfw::cker::bias_op::biasActivationHelper(
+        getShape(_output), getBuffer<float>(_output), getShape(_bias), getBuffer<float>(_bias),
+        getShape(_output), getBuffer<float>(_output), output_activation_min, output_activation_max);
+    }
+  }
+}
+
 void DepthwiseConvolutionLayer::convFloat32()
 {
   float output_activation_min = 0, output_activation_max = 0;
@@ -80,12 +119,6 @@ void DepthwiseConvolutionLayer::convFloat32()
     op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
     getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias), getShape(_output),
     getBuffer<float>(_output), _external_context->ruy_context());
-
-  // _dconv_kernel->DepthwiseConvOp<float>(
-  //   op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
-  //   getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), _use_padded_filter,
-  //   getBuffer<float>(_filter_buffers.get()),
-  //   getShape(_output), getBuffer<float>(_output));
 }
 
 void DepthwiseConvolutionLayer::convQ8uPerTensor()
@@ -297,15 +330,16 @@ void DepthwiseConvolutionLayer::configure(
   _is_hybrid = _input->data_type() == OperandType::FLOAT32 &&
                _kernel->data_type() == OperandType::QUANT_INT8_SYMM;
 
-  if (_input->data_type() == OperandType::FLOAT32)
-  {
-    prepareFloat32();
-  }
-  else if (_is_hybrid)
+  if (_is_hybrid)
   {
     ensureQ8iHybridPerChannel();
     prepareQ8iHybridPerChannel();
     _prepared = true;
+  }
+  else if (_input->data_type() == OperandType::FLOAT32 &&
+           (_dilationHeight == 1 && _dilationWidth == 1))
+  {
+    prepareFloat32();
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
@@ -335,7 +369,10 @@ void DepthwiseConvolutionLayer::run()
   }
   else if (_input->data_type() == OperandType::FLOAT32)
   {
-    convFloat32();
+    if (_dilationHeight == 1 && _dilationWidth == 1)
+      dconvFloat32();
+    else
+      convFloat32();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {
