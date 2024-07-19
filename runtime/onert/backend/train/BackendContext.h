@@ -61,11 +61,9 @@ public:
       kernel_gen{kernel_gen}, _external_context(new ExternalContext),
       _tensor_builder{tensor_builder}, _optimizer{std::move(optimizer)}
   {
-    _extra_tensor_generator = std::make_unique<ExtraTensorGenerator>(
-      tdata->tgraph, tensor_builder, tensor_registry
-    );
+    _extra_tensor_generator =
+      std::make_unique<ExtraTensorGenerator>(tdata->tgraph, tensor_builder, tensor_registry);
   }
-
   BackendContext(const BackendContext &) = delete;
   ~BackendContext() = default;
 

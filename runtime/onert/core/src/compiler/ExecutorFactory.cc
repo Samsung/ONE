@@ -860,6 +860,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
+    pair.second->genExtraTensors();
+
     for (auto &&pair : codes)
     {
       auto &op_ind = pair.first;

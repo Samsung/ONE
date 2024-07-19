@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_H__
 
 #include "ExternalContext.h"
-#include "ExtraTensorGenerator.h"
 #include "backend/basic/TensorRegistry.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
@@ -41,8 +40,7 @@ class KernelGenerator : public backend::train::KernelGeneratorBase
 {
 public:
   KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                  std::shared_ptr<TensorRegistry> &tensor_reg,
-                  std::shared_ptr<TensorBuilder> &tensor_builder,
+                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context,
                   const exec::train::optimizer::Optimizer *optimizer);
 

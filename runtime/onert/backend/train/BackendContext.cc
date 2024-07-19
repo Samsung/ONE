@@ -220,8 +220,6 @@ FunctionMap BackendContext::genKernels()
       trainable_tensor->fillBuffer(data);
     });
 
-  
-
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)
     .operands()

@@ -144,14 +144,12 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 }
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
-                                 std::shared_ptr<TensorRegistry> &tensor_reg,
-                                 std::shared_ptr<TensorBuilder> &tensor_builder,
+                                 const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  const exec::train::optimizer::Optimizer *optimizer)
   : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
     _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer},
-    _update_funcs{}, _node_to_idx{},
-    _extra_tensor_generator{new ExtraTensorGenerator(tgraph, tensor_builder, tensor_reg)}
+    _update_funcs{}, _node_to_idx{}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &idx, const onert::ir::IOperation &op) {
@@ -380,9 +378,6 @@ void KernelGenerator::visit(const ir::train::operation::FullyConnected &node)
                           weights_grad_tensor, bias_grad_tensor, out_back_prop_tensor, activation,
                           weights_format);
 
-    auto extra_tensors = getExtraTensors(node);
-    fn->configureExtraTensors(extra_tensors);
-
     // Generate GradientAppliers
     if (bias_tensor)
       _update_funcs.emplace_back(
@@ -518,9 +513,6 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
     fn->configureBackward(padding.left, padding.right, padding.top, padding.bottom,
                           stride.horizontal, stride.vertical, kw, kh, activation, pool_type,
                           out_tensor, in_back_prop_tensor, out_back_prop_tensor);
-
-    // auto extra_tensors = getExtraTensors(node);
-    // fn->configureExtraTensors(extra_tensors);
   }
 
   _return_fn = std::move(fn);
@@ -632,24 +624,6 @@ IPortableTensor *KernelGenerator::getBackPropIn(const ir::Operation &node,
 IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_index)
 {
   return _tensor_reg->getBackPropTensor(output_index);
-}
-
-std::vector<ExtraTensor *> KernelGenerator::getExtraTensors(const ir::Operation &node)
-{
-  const auto &op_index = _node_to_idx[&node];
-
-  std::vector<ExtraTensor *> ret;
-
-  uint32_t sub = 0;
-  auto tensor = _tensor_reg->getExtraTensor(ExtraTensorIndex(op_index, sub));
-  while (tensor != nullptr)
-  {
-    ret.push_back(tensor);
-    sub++;
-    tensor = _tensor_reg->getExtraTensor(ExtraTensorIndex(op_index, sub));
-  }
-
-  return ret;
 }
 
 } // namespace train
