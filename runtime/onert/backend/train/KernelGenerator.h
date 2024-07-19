@@ -65,8 +65,6 @@ private:
                                  const ir::OperandIndex &operand_index);
   IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
 
-  void genExtraTensors(ir::OperationIndex idx, onert::exec::train::ITrainableFunction *layer);
-
 private:
   ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;
@@ -74,8 +72,6 @@ private:
   const exec::train::optimizer::Optimizer *_optimizer;
   std::vector<std::unique_ptr<exec::train::IGradientApplier>> _update_funcs;
   std::unordered_map<const ir::IOperation *, ir::OperationIndex> _node_to_idx;
-
-  std::unique_ptr<ExtraTensorGenerator> _extra_tensor_generator;
 };
 
 } // namespace train

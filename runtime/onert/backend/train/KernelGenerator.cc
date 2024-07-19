@@ -109,13 +109,6 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
 }
 } // namespace
 
-void KernelGenerator::genExtraTensors(ir::OperationIndex idx,
-                                      onert::exec::train::ITrainableFunction *layer)
-{
-  auto reqs = layer->requestExtraTensors();
-  _extra_tensor_generator->generate_extra_tensor(idx, reqs);
-}
-
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
@@ -128,8 +121,6 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   op.accept(*this);
   assert(_return_fn);
-  genExtraTensors(idx, _return_fn.get());
-
   ret->append(std::move(_return_fn));
 
   for (auto &&update_fn : _update_funcs)

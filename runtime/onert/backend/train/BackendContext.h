@@ -20,6 +20,7 @@
 #include <backend/train/TrainableBackendContext.h>
 
 #include "ExternalContext.h"
+#include "ExtraTensorGenerator.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
@@ -60,7 +61,11 @@ public:
       kernel_gen{kernel_gen}, _external_context(new ExternalContext),
       _tensor_builder{tensor_builder}, _optimizer{std::move(optimizer)}
   {
+    _extra_tensor_generator = std::make_unique<ExtraTensorGenerator>(
+      tdata->tgraph, tensor_builder, tensor_registry
+    );
   }
+
   BackendContext(const BackendContext &) = delete;
   ~BackendContext() = default;
 
@@ -103,6 +108,7 @@ private:
 
 private:
   std::unique_ptr<exec::train::optimizer::Optimizer> _optimizer;
+  std::unique_ptr<ExtraTensorGenerator> _extra_tensor_generator;
 };
 
 } // namespace train
