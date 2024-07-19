@@ -61,8 +61,11 @@ public:
       kernel_gen{kernel_gen}, _external_context(new ExternalContext),
       _tensor_builder{tensor_builder}, _optimizer{std::move(optimizer)}
   {
+
+    auto tensor_reg = std::dynamic_pointer_cast<TensorRegistry>(tensor_registry);
+
     _extra_tensor_generator =
-      std::make_unique<ExtraTensorGenerator>(tdata->tgraph, tensor_builder, tensor_registry);
+      std::make_unique<ExtraTensorGenerator>(tdata->tgraph.get(), tensor_builder, tensor_reg);
   }
   BackendContext(const BackendContext &) = delete;
   ~BackendContext() = default;

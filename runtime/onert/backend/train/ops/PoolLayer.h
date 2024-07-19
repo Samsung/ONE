@@ -19,10 +19,10 @@
 
 #include <ops/PoolLayer.h>
 
+#include <backend/train/ExtraTensorRequest.h>
 #include <exec/train/ITrainableFunction.h>
 
 #include "../Tensor.h"
-#include "../ExtraTensorRequest.h"
 
 namespace onert
 {

@@ -19,9 +19,9 @@
 
 #include <ops/ConvolutionLayer.h>
 
-#include "../ExtraTensorRequest.h"
 #include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>
+#include <backend/train/ExtraTensorRequest.h>
 
 namespace onert
 {

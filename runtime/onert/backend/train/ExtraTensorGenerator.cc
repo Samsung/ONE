@@ -40,7 +40,7 @@ namespace train
 
 namespace
 {
-
+/*
 bool is_fwd(const ExtraTensorLifeTime lifetime) { return lifetime == ExtraTensorLifeTime::FORWARD; }
 
 bool is_bwd(const ExtraTensorLifeTime lifetime)
@@ -59,13 +59,14 @@ bool is_bwd_or_fwd2bwd(const ExtraTensorLifeTime lifetime)
   return lifetime == ExtraTensorLifeTime::BACKWARD ||
          lifetime == ExtraTensorLifeTime::FORWARD_TO_BACKWARD;
 }
-
+*/
 } // namespace
 
-ExtraTensorGenerator::ExtraTensorGenerator(const ir::train::TrainableGraph &tgraph,
+ExtraTensorGenerator::ExtraTensorGenerator(const ir::train::TrainableGraph* tgraph,
                                            std::shared_ptr<TensorBuilder> &tensor_builder,
                                            std::shared_ptr<TensorRegistry> &tensor_registry)
-  : _tgraph(tgraph), _tensor_builder(tensor_builder), _tensor_reg(tensor_registry){};
+                                           :_tgraph(tgraph), _tensor_builder(tensor_builder), _tensor_reg(tensor_registry)
+                                           {};
 
 void ExtraTensorGenerator::notify_first_use(ir::OperationIndex op_idx,
                                             const ExtraTensorRequests &reqs,
@@ -91,8 +92,7 @@ void ExtraTensorGenerator::notify_last_use(ir::OperationIndex op_idx,
   return;
 }
 
-void ExtraTensorGenerator::generate_extra_tensor(ir::OperationIndex op_idx,
-                                                 const ExtraTensorRequests &reqs)
+void ExtraTensorGenerator::generate(ir::OperationIndex op_idx, const ExtraTensorRequests &reqs)
 {
   // save request, _idx_to_reuqests used for memory planning
   _idx_to_requests[op_idx] = reqs;

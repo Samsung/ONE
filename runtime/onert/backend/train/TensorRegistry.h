@@ -18,10 +18,10 @@
 #define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY__
 
 #include <backend/train/ITensorRegistry.h>
+#include <backend/train/Tensor.h>
 
 #include "DisposableTensorIndex.h"
 #include "ExtraTensorIndex.h"
-#include "Tensor.h"
 
 namespace onert
 {

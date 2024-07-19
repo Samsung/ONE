@@ -750,11 +750,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     pair.second->genTensors();
   }
 
-  // [idea1] : Generate Extra Tensors using visitor - by traversing operations
-  //
-  // While traversing operations, register and generate extra tensors based on *Layer requests
-  // While generating kernels, pass the extra tensors pointer to the kernel
-
   for (auto &&pair : tbackend_contexts)
   {
     auto tctx = pair.second.get();
@@ -860,8 +855,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    pair.second->genExtraTensors();
-
     for (auto &&pair : codes)
     {
       auto &op_ind = pair.first;
@@ -873,8 +866,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       code_map.insert(
         {op_ind, train::TrainableCodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
     }
-
-    // allocate extra tensors
   }
 
   if (order.size() != code_map.size())

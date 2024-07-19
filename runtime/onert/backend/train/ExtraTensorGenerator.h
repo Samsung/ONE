@@ -17,12 +17,7 @@
 #ifndef __ONERT_BACKEND_EXTRA_TENSOR_GENERATOR_H__
 #define __ONERT_BACKEND_EXTRA_TENSOR_GENERATOR_H__
 
-// to construct vsitior
-#include "ir/train/TrainableOperationVisitor.h"
-#include "ir/train/Operations.Include.h"
-
-// ...
-#include "ExtraTensorRequest.h"
+#include "backend/train/ExtraTensorRequest.h"
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/ITrainableOperation.h"
 #include "ir/Index.h"
@@ -39,7 +34,7 @@ class ExtraTensorGenerator
 {
 public:
   ExtraTensorGenerator() = delete;
-  ExtraTensorGenerator(const ir::train::TrainableGraph &tgraph,
+  ExtraTensorGenerator(const ir::train::TrainableGraph* tgraph,
                        std::shared_ptr<TensorBuilder> &tensor_builder,
                        std::shared_ptr<TensorRegistry> &tensor_registry);
 
@@ -50,10 +45,10 @@ private:
                        bool (*cond)(const ExtraTensorLifeTime));
 
 public:
-  void generate_extra_tensor(ir::OperationIndex idx, const ExtraTensorRequests &requests);
+  void generate(ir::OperationIndex idx, const ExtraTensorRequests &requests);
 
 private:
-  const ir::train::TrainableGraph &_tgraph;
+  const ir::train::TrainableGraph *_tgraph;
   std::shared_ptr<TensorBuilder> _tensor_builder;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   std::unordered_map<ir::OperationIndex, ExtraTensorRequests> _idx_to_requests;

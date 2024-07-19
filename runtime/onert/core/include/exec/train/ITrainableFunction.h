@@ -19,7 +19,6 @@
 
 #include <cstdint>
 #include "backend/train/ExtraTensorRequest.h"
-#include "backend/train/Tensor.h"
 
 namespace onert
 {
@@ -35,8 +34,11 @@ public:
   virtual void forward(bool training) = 0;
   virtual void backward() = 0;
 
-  // Implement this if extra tensor is needed
-  virtual backend::train::ExtraTensorRequests requestExtraTensors() {}
+  virtual backend::train::ExtraTensorRequests requestExtraTensors() {
+    // Implement this if extra tensor is needed
+    backend::train::ExtraTensorRequests r;
+    return r;
+  }
 };
 
 } // namespace train

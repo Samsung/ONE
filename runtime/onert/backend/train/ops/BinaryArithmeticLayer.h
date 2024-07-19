@@ -19,8 +19,8 @@
 
 #include <ops/BinaryArithmeticLayer.h>
 #include <backend/IPortableTensor.h>
+#include <backend/train/ExtraTensorRequest.h>
 
-#include "../ExtraTensorRequest.h"
 #include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>
 
@@ -52,7 +52,7 @@ public:
                          const IPortableTensor *back_prop_output, const ir::Activation activation,
                          const ArithmeticType arithmetic_type);
 
-  ExtraTensorRequests requestExtraTensor() override;
+  ExtraTensorRequests requestExtraTensors() override;
 
   void forward(bool training) override;
   void backward() override;

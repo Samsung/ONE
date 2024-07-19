@@ -17,12 +17,11 @@
 #ifndef __ONERT_BACKEND_TRAIN_TENSOR_H__
 #define __ONERT_BACKEND_TRAIN_TENSOR_H__
 
+/*
 #include <backend/basic/Tensor.h>
 #include <backend/basic/train/TrainableTensor.h>
 
 namespace onert
-{
-namespace backend
 {
 namespace train
 {
@@ -52,5 +51,5 @@ using ExtraTensor = Tensor;
 } // namespace train
 } // namespace backend
 } // namespace onert
-
+*/
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_H__
