@@ -1,5 +1,7 @@
 message(STATUS "ONERT MICRO CORE BUILD BEGIN")
 
+add_definitions(-DOM_MEMORY_ESTIMATE)
+
 set(SOURCES
         OMKernelType.cpp
         OMRuntimeContext.cpp
@@ -16,7 +18,8 @@ set(SOURCES
         memory/OMMemoryManager.cpp
         memory/OMRuntimeAllocator.cpp
         reader/OMCircleReader.cpp
-        reader/OMWeightOnlyFormatReader.cpp)
+        reader/OMWeightOnlyFormatReader.cpp
+        reader/OMTrainingConfigFileReader.cpp)
 
 add_library(${OM_CORE_LIB} STATIC ${SOURCES})
 

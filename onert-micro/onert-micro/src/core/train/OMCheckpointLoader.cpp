@@ -130,7 +130,6 @@ OMStatus OMCheckpointLoader::loadBuffers(core::OMRuntimeContext &context,
   {
     adam_opt = train_storage.getAdam();
     assert(adam_opt != nullptr);
-
     adam_opt->fullReset();
   }
 

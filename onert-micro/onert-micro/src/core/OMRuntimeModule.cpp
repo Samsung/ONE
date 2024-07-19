@@ -94,14 +94,30 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
     if (config.wof_ptr != nullptr)
       runtime_context.setWofFile(config.wof_ptr);
 
+    // Parse and validate Train Config File if it is exists
+    // WARNING: setTrainConfigFile method of RuntimeContext should follow after setModel.
+    if (config.train_mode and config.training_context.training_config_info_data != nullptr)
+      runtime_context.setTrainConfigFile(config.training_context.training_config_info_data);
+
     // Third - optimize it until can
     status = optimize::OMOptimizer::optimize(runtime_storage, runtime_context, config);
     if (status != Ok)
       return status;
 
     // 4 - AllocDeallocPlan creation
-    status = import::OMExecutionPlanCreator::createExecutionPlan(runtime_storage, runtime_context,
-                                                                 runtime_allocator, config);
+    if (not config.train_mode)
+    {
+      // Non trainable mode
+      status = import::OMExecutionPlanCreator::createExecutionPlan(runtime_storage, runtime_context,
+                                                                   runtime_allocator, config);
+    }
+    else
+    {
+
+      // Trainable mode
+      status = import::OMExecutionPlanCreator::createForwardExecutionPlan(
+        runtime_storage, runtime_context, runtime_allocator, config);
+    }
     if (status != Ok)
       return status;
   }

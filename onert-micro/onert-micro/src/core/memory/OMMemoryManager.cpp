@@ -16,14 +16,27 @@
 
 #include "core/memory/OMMemoryManager.h"
 
+#include <algorithm>
+
 using namespace onert_micro::core::memory;
 using namespace onert_micro;
+
+size_t OMMemoryManager::peak_memory_allocated = 0;
+size_t OMMemoryManager::cur_memory_allocated = 0;
 
 OMStatus OMMemoryManager::allocateMemory(uint32_t size, uint8_t **data)
 {
   if (size == 0)
     return UnknownError;
   auto data_tmp = new uint8_t[size];
+
+#ifdef OM_MEMORY_ESTIMATE
+
+  cur_memory_allocated += size;
+
+  peak_memory_allocated = std::max(cur_memory_allocated, peak_memory_allocated);
+
+#endif // OM_MEMORY_ESTIMATE
 
   *data = data_tmp;
 
@@ -32,6 +45,18 @@ OMStatus OMMemoryManager::allocateMemory(uint32_t size, uint8_t **data)
 
   return Ok;
 }
+
+#ifdef OM_MEMORY_ESTIMATE
+OMStatus OMMemoryManager::deallocateMemory(uint32_t size, uint8_t *data)
+{
+  if (int32_t(cur_memory_allocated) - int32_t(size) < 0 and data != nullptr)
+    peak_memory_allocated = std::max(cur_memory_allocated, peak_memory_allocated);
+  cur_memory_allocated -= data != nullptr ? size : 0;
+
+  delete[] data;
+  return Ok;
+}
+#endif // OM_MEMORY_ESTIMATE
 
 OMStatus OMMemoryManager::deallocateMemory(uint8_t *data)
 {

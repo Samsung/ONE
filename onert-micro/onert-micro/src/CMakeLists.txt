@@ -15,11 +15,10 @@ set(OM_SOURCE_TRAIN_DIR "${OM_SOURCE_DIR}/train")
 set(OM_INCLUDE_TRAIN_DIR "${OM_INCLUDE_DIR}/train")
 #define train path
 set(OM_SOURCE_DEV_DIR "${OM_SOURCE_DIR}/api")
-
 #OM_Interpreter lib binary name
-set(OM_INTERPRETER_LIB "onert_micro_interpreter")
+set(OM_INTERPRETER_LIB "onert_micro_interpreter${OM_SUFFIX}")
 #OM_Training_Interpreter lib binary name
-set(OM_TRAINING_INTERPRETER_LIB "onert_micro_training_interpreter")
+set(OM_TRAINING_INTERPRETER_LIB "onert_micro_training_interpreter${OM_SUFFIX}")
 #Core lib binary name
 set(OM_CORE_LIB "onert_micro_core${OM_SUFFIX}")
 #Execute lib binary name

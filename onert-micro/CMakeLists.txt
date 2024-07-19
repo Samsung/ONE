@@ -178,6 +178,7 @@ add_custom_command(
 add_custom_target(onert_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
 add_subdirectory(eval-driver)
+add_subdirectory(training-configure-tool)
 
 # Should be after add_subdirectory
 unset(ENABLE_ONERT_MICRO_TRAINING CACHE)

@@ -4,6 +4,7 @@ set(SOURCES
         OMExecutionPlanCreator.cpp
         OMKernelConfiguration.cpp
         OMKernelConfigureBuilder.cpp
+        OMDynamicShapesHandler.cpp
         helpers/OMConfigureSISOKernel.cpp
         helpers/OMPadCommon.cpp
         helpers/OMConfigureTISOKernel.cpp

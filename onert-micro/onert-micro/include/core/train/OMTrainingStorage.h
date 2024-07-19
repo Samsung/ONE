@@ -51,6 +51,9 @@ class OMTrainingStorage
   // Note: initial its null
   std::unique_ptr<onert_micro::train::optimizers::Adam> _adam_optimizer = nullptr;
 
+  // Save tensor indexes and its train ranks
+  std::unordered_map<uint16_t, core::OpTrainableRankType> _tensor_index_to_train_rank;
+
 public:
   OMTrainingStorage() = default;
   OMTrainingStorage(const OMTrainingStorage &) = delete;
@@ -70,6 +73,18 @@ public:
     _target_index_to_target_data[target_index] = data;
   }
 
+  // Add train ranks to current tensor index
+  void addTrainRank(uint16_t tensor_index, core::OpTrainableRankType train_rank)
+  {
+    _tensor_index_to_train_rank[tensor_index] = train_rank;
+  }
+
+  // Get train rank by tensor index
+  std::unordered_map<uint16_t, core::OpTrainableRankType> &getTensorIndexToRankTypeTable()
+  {
+    return _tensor_index_to_train_rank;
+  }
+
   // Choose and set optimizer defined in config
   OMStatus setOptimizer(const OMConfig &config);
 
@@ -87,6 +102,13 @@ public:
   {
     return _target_index_to_target_data[target_index];
   }
+
+#ifdef OM_MEMORY_ESTIMATE
+
+  // Reset and deallocate all states
+  void reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage);
+
+#endif // OM_MEMORY_ESTIMATE
 
   // Reset and deallocate all states
   void reset();

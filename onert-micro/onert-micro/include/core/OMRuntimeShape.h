@@ -55,6 +55,8 @@ public:
   // vector.
   inline int flatSize() const
   {
+    if (_size == 0)
+      return 0;
     int buffer_size = 1;
     const int *dims_data = reinterpret_cast<const int *>(dimsData());
     for (int i = 0; i < _size; i++)
