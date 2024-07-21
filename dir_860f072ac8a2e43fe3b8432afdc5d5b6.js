@@ -22,6 +22,8 @@ var dir_860f072ac8a2e43fe3b8432afdc5d5b6 =
     [ "TensorBuilder.h", "backend_2train_2_tensor_builder_8h.html", "backend_2train_2_tensor_builder_8h" ],
     [ "TensorManager.cc", "_tensor_manager_8cc.html", null ],
     [ "TensorManager.h", "train_2_tensor_manager_8h.html", "train_2_tensor_manager_8h" ],
+    [ "TensorPlanner.cc", "_tensor_planner_8cc.html", null ],
+    [ "TensorPlanner.h", "_tensor_planner_8h.html", "_tensor_planner_8h" ],
     [ "TensorRegistry.h", "backend_2train_2_tensor_registry_8h.html", "backend_2train_2_tensor_registry_8h" ],
     [ "train.cc", "train_8cc.html", "train_8cc" ]
 ];

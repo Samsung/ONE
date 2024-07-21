@@ -31,7 +31,7 @@ var searchData=
   ['unique_5fptr_3c_20std_3a_3astring_20_3e_28',['unique_ptr&lt; std::string &gt;',['../classflatbuffers_1_1unique__ptr.html',1,'flatbuffers']]],
   ['uniquechef_29',['UniqueChef',['../class_unique_chef.html',1,'']]],
   ['uniquecheffactory_30',['UniqueChefFactory',['../struct_unique_chef_factory.html',1,'']]],
-  ['uniqueprinter_31',['uniqueprinter',['../classcircledump_1_1_unique_printer.html',1,'circledump::UniquePrinter'],['../classtfldump_1_1_unique_printer.html',1,'tfldump::UniquePrinter']]],
+  ['uniqueprinter_31',['uniqueprinter',['../classtfldump_1_1_unique_printer.html',1,'tfldump::UniquePrinter'],['../classcircledump_1_1_unique_printer.html',1,'circledump::UniquePrinter']]],
   ['unpack_32',['unpack',['../classluci__interpreter_1_1kernels_1_1_unpack.html',1,'luci_interpreter::kernels::Unpack'],['../classonert_1_1ir_1_1operation_1_1_unpack.html',1,'onert::ir::operation::Unpack']]],
   ['unpackchef_33',['UnpackChef',['../class_unpack_chef.html',1,'']]],
   ['unpackcheffactory_34',['UnpackChefFactory',['../struct_unpack_chef_factory.html',1,'']]],
@@ -48,9 +48,11 @@ var searchData=
   ['updater_45',['Updater',['../structcoco_1_1_bag_1_1_updater.html',1,'coco::Bag']]],
   ['use_46',['use',['../classcoco_1_1_use.html',1,'coco::Use'],['../classloco_1_1_use.html',1,'loco::Use'],['../structmir_1_1_operation_1_1_use.html',1,'mir::Operation::Use']]],
   ['usedefchain_47',['UseDefChain',['../classonert_1_1ir_1_1train_1_1_use_def_chain.html',1,'onert::ir::train']]],
-  ['userdata_48',['Userdata',['../structonert_1_1ir_1_1operation_1_1_custom_1_1_userdata.html',1,'onert::ir::operation::Custom']]],
-  ['userexn_49',['UserExn',['../classoops_1_1_user_exn.html',1,'oops']]],
-  ['usersettings_50',['UserSettings',['../structluci_1_1_user_settings.html',1,'luci']]],
-  ['usersettingsimpl_51',['UserSettingsImpl',['../classluci_1_1_user_settings_impl.html',1,'luci']]],
-  ['usertensor_52',['UserTensor',['../classonert_1_1backend_1_1builtin_1_1_user_tensor.html',1,'onert::backend::builtin']]]
+  ['usedefgenerator_48',['UseDefGenerator',['../classonert_1_1ir_1_1train_1_1_use_def_generator.html',1,'onert::ir::train']]],
+  ['usedefgeneratorbase_49',['UseDefGeneratorBase',['../structonert_1_1ir_1_1train_1_1_use_def_generator_base.html',1,'onert::ir::train']]],
+  ['userdata_50',['Userdata',['../structonert_1_1ir_1_1operation_1_1_custom_1_1_userdata.html',1,'onert::ir::operation::Custom']]],
+  ['userexn_51',['UserExn',['../classoops_1_1_user_exn.html',1,'oops']]],
+  ['usersettings_52',['UserSettings',['../structluci_1_1_user_settings.html',1,'luci']]],
+  ['usersettingsimpl_53',['UserSettingsImpl',['../classluci_1_1_user_settings_impl.html',1,'luci']]],
+  ['usertensor_54',['UserTensor',['../classonert_1_1backend_1_1builtin_1_1_user_tensor.html',1,'onert::backend::builtin']]]
 ];

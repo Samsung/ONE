@@ -11,6 +11,8 @@ var namespaceonert_1_1ir_1_1train =
     [ "TrainingIndex", "classonert_1_1ir_1_1train_1_1_training_index.html", "classonert_1_1ir_1_1train_1_1_training_index" ],
     [ "TrainingInfo", "classonert_1_1ir_1_1train_1_1_training_info.html", "classonert_1_1ir_1_1train_1_1_training_info" ],
     [ "UseDefChain", "classonert_1_1ir_1_1train_1_1_use_def_chain.html", "classonert_1_1ir_1_1train_1_1_use_def_chain" ],
+    [ "UseDefGenerator", "classonert_1_1ir_1_1train_1_1_use_def_generator.html", "classonert_1_1ir_1_1train_1_1_use_def_generator" ],
+    [ "UseDefGeneratorBase", "structonert_1_1ir_1_1train_1_1_use_def_generator_base.html", "structonert_1_1ir_1_1train_1_1_use_def_generator_base" ],
     [ "TrainingOperandIndex", "namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467", null ],
     [ "TrainingOperationIndex", "namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36", null ],
     [ "UseDefChains", "namespaceonert_1_1ir_1_1train.html#a669183193457524aaaf2a88bc1deea2b", null ],

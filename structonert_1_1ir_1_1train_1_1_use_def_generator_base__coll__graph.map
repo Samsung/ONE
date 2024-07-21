@@ -1,0 +1,5 @@
+<map id="onert::ir::train::UseDefGeneratorBase" name="onert::ir::train::UseDefGeneratorBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="10,94,154,135"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1ir_1_1train_1_1_trainable_operation_visitor.html" title=" " alt="" coords="5,5,159,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,62,85,94,79,94,79,62"/>
+</map>

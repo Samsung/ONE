@@ -1,6 +1,5 @@
 var classonert_1_1exec_1_1_multi_model_executors =
 [
-    [ "EdgeTensor", "classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor.html", "classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor" ],
     [ "MultiModelExecutors", "classonert_1_1exec_1_1_multi_model_executors.html#ac1fc90fa9109da1208ace71bd7d5bdf1", null ],
     [ "MultiModelExecutors", "classonert_1_1exec_1_1_multi_model_executors.html#a473b134f14fcb7dbeb70ec439a23cfb1", null ],
     [ "MultiModelExecutors", "classonert_1_1exec_1_1_multi_model_executors.html#a84be608c7ccbf1f40de963c527b6db0a", null ],

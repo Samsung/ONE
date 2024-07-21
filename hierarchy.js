@@ -2482,7 +2482,8 @@ var hierarchy =
       [ "onert::exec::IPermuteFunction", "classonert_1_1exec_1_1_i_permute_function.html", [
         [ "onert::backend::builtin::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html", [
           [ "onert::backend::builtin::train::kernel::PermuteLayer", "classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html", null ]
-        ] ]
+        ] ],
+        [ "onert::exec::PermuteLayer", "classonert_1_1exec_1_1_permute_layer.html", null ]
       ] ],
       [ "onert::exec::NopFunction", "classonert_1_1exec_1_1_nop_function.html", null ]
     ] ],
@@ -2789,7 +2790,7 @@ var hierarchy =
         [ "onert::backend::train::ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", [
           [ "onert::backend::basic::train::TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html", null ]
         ] ],
-        [ "onert::exec::MultiModelExecutors::EdgeTensor", "classonert_1_1exec_1_1_multi_model_executors_1_1_edge_tensor.html", null ]
+        [ "onert::exec::EdgeTensor", "classonert_1_1exec_1_1_edge_tensor.html", null ]
       ] ],
       [ "onert::backend::acl_common::IACLTensor", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html", [
         [ "onert::backend::acl_cl::operand::ICLTensor", "classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html", [
@@ -3548,8 +3549,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4490,6 +4491,7 @@ var hierarchy =
       [ "luci::FoldDequantizePass", "structluci_1_1_fold_dequantize_pass.html", null ],
       [ "luci::FoldFullyConnectedPass", "structluci_1_1_fold_fully_connected_pass.html", null ],
       [ "luci::FoldGatherPass", "structluci_1_1_fold_gather_pass.html", null ],
+      [ "luci::FoldMulPass", "structluci_1_1_fold_mul_pass.html", null ],
       [ "luci::FoldReshapePass", "structluci_1_1_fold_reshape_pass.html", null ],
       [ "luci::FoldShapePass", "structluci_1_1_fold_shape_pass.html", null ],
       [ "luci::FoldSparseToDensePass", "structluci_1_1_fold_sparse_to_dense_pass.html", null ],
@@ -4498,6 +4500,7 @@ var hierarchy =
       [ "luci::ForwardReshapeToUnaryOpPass", "structluci_1_1_forward_reshape_to_unary_op_pass.html", null ],
       [ "luci::ForwardTransposeOpPass", "structluci_1_1_forward_transpose_op_pass.html", null ],
       [ "luci::FuseActivationFunctionPass", "structluci_1_1_fuse_activation_function_pass.html", null ],
+      [ "luci::FuseAddToFullyConnectedBiasPass", "structluci_1_1_fuse_add_to_fully_connected_bias_pass.html", null ],
       [ "luci::FuseAddWithConvPass", "structluci_1_1_fuse_add_with_conv_pass.html", null ],
       [ "luci::FuseAddWithFullyConnectedPass", "structluci_1_1_fuse_add_with_fully_connected_pass.html", null ],
       [ "luci::FuseAddWithTConvPass", "structluci_1_1_fuse_add_with_t_conv_pass.html", null ],
@@ -4508,6 +4511,7 @@ var hierarchy =
       [ "luci::FuseHorizontalFullyConnectedPass", "structluci_1_1_fuse_horizontal_fully_connected_pass.html", null ],
       [ "luci::FuseInstanceNormPass", "structluci_1_1_fuse_instance_norm_pass.html", null ],
       [ "luci::FuseMeanWithMeanPass", "structluci_1_1_fuse_mean_with_mean_pass.html", null ],
+      [ "luci::FuseMulToFullyConnectedWeightsPass", "structluci_1_1_fuse_mul_to_fully_connected_weights_pass.html", null ],
       [ "luci::FuseMulWithConvPass", "structluci_1_1_fuse_mul_with_conv_pass.html", null ],
       [ "luci::FuseMulWithDivPass", "structluci_1_1_fuse_mul_with_div_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
@@ -4810,6 +4814,7 @@ var hierarchy =
     [ "npud::core::Server", "classnpud_1_1core_1_1_server.html", null ],
     [ "locomotiv::Session", "classlocomotiv_1_1_session.html", null ],
     [ "onert::util::Set< Element >", "classonert_1_1util_1_1_set.html", null ],
+    [ "onert::util::Set< onert::backend::train::DisposableTensorIndex >", "classonert_1_1util_1_1_set.html", null ],
     [ "onert::util::Set< onert::util::Index >", "classonert_1_1util_1_1_set.html", null ],
     [ "onert::util::Set< PermuteFactor >", "classonert_1_1util_1_1_set.html", null ],
     [ "nnfw::cker::functor::SetZeroFunctor< Device, T >", "structnnfw_1_1cker_1_1functor_1_1_set_zero_functor.html", null ],
@@ -5024,6 +5029,7 @@ var hierarchy =
     [ "moco::TensorName", "structmoco_1_1_tensor_name.html", null ],
     [ "moco::TensorNameCompare", "structmoco_1_1_tensor_name_compare.html", null ],
     [ "moco::TensorPackEnumerator", "classmoco_1_1_tensor_pack_enumerator.html", null ],
+    [ "onert::backend::train::TensorPlanner", "classonert_1_1backend_1_1train_1_1_tensor_planner.html", null ],
     [ "onert::compiler::TensorRegistries", "classonert_1_1compiler_1_1_tensor_registries.html", null ],
     [ "onert::compiler::train::TensorRegistries", "classonert_1_1compiler_1_1train_1_1_tensor_registries.html", null ],
     [ "nnkit::support::onnx::TensorSet", "classnnkit_1_1support_1_1onnx_1_1_tensor_set.html", null ],
@@ -5901,7 +5907,10 @@ var hierarchy =
         [ "onert::backend::builtin::train::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html", null ],
         [ "onert::backend::train::KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", null ]
       ] ],
-      [ "onert::compiler::train::StaticBackwardShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html", null ]
+      [ "onert::compiler::train::StaticBackwardShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html", null ],
+      [ "onert::ir::train::UseDefGeneratorBase", "structonert_1_1ir_1_1train_1_1_use_def_generator_base.html", [
+        [ "onert::ir::train::UseDefGenerator", "classonert_1_1ir_1_1train_1_1_use_def_generator.html", null ]
+      ] ]
     ] ],
     [ "onert::exporter::TrainInfoBuilder", "classonert_1_1exporter_1_1_train_info_builder.html", null ],
     [ "onert::ir::train::TrainingIndex< T >", "classonert_1_1ir_1_1train_1_1_training_index.html", null ],

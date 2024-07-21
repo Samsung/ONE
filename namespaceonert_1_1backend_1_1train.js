@@ -21,6 +21,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", "classonert_1_1backend_1_1train_1_1_tensor" ],
     [ "TensorBuilder", "classonert_1_1backend_1_1train_1_1_tensor_builder.html", "classonert_1_1backend_1_1train_1_1_tensor_builder" ],
     [ "TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html", "classonert_1_1backend_1_1train_1_1_tensor_manager" ],
+    [ "TensorPlanner", "classonert_1_1backend_1_1train_1_1_tensor_planner.html", "classonert_1_1backend_1_1train_1_1_tensor_planner" ],
     [ "TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_tensor_registry" ],
     [ "TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", "classonert_1_1backend_1_1train_1_1_trainable_backend_context" ],
     [ "TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", "structonert_1_1backend_1_1train_1_1_trainable_context_data" ],

@@ -5804,7 +5804,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   47</span>      squared_l2_norm += val * val;</div>
 <div class="line"><span class="lineno">   48</span>    }</div>
 <div class="line"><span class="lineno">   49</span>    <span class="keywordtype">float</span> l2_norm = std::sqrt(squared_l2_norm);</div>
-<div class="line"><span class="lineno">   50</span>    l2_norm = std::fmax(l2_norm, epsilon);</div>
+<div class="line"><span class="lineno">   50</span>    l2_norm = std::max(l2_norm, <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(epsilon));</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
 <div class="line"><span class="lineno">   52</span>    {</div>
 <div class="line"><span class="lineno">   53</span>      output_data[depth * i + c] = input_data[depth * i + c] / l2_norm;</div>

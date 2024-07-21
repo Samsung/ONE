@@ -4623,7 +4623,8 @@ template&lt;typename... Ts&gt; </div>
 <div class="line"><span class="lineno">  254</span>  }</div>
 <div class="line"><span class="lineno">  255</span> </div>
 <div class="line"><span class="lineno">  256</span>  assert(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() == shape_size);</div>
-<div class="line"><span class="lineno">  257</span>}</div>
+<div class="line"><span class="lineno">  257</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(shape_size);</div>
+<div class="line"><span class="lineno">  258</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a5c829eb7fea132576c12f6f5401d19aa"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">nnfw::cker::StopForAxis</a></div><div class="ttdeci">int StopForAxis(const StridedSliceParams &amp;params, const Shape &amp;input_shape, int axis, int start_for_axis)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00126">StridedSlice.h:126</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_adb32b47564bd9c48ae6881fef4229d24"><div class="ttname"><a href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">nnfw::cker::StartForAxis</a></div><div class="ttdeci">int StartForAxis(const StridedSliceParams &amp;params, const Shape &amp;input_shape, int axis)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00083">StridedSlice.h:83</a></div></div>
 </div><!-- fragment -->
@@ -5239,30 +5240,31 @@ template&lt;typename Scalar &gt; </div>
 <div class="line"><span class="lineno">   54</span>    concat_size += input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis);</div>
 <div class="line"><span class="lineno">   55</span>  }</div>
 <div class="line"><span class="lineno">   56</span>  assert(concat_size == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(axis));</div>
-<div class="line"><span class="lineno">   57</span>  int64_t outer_size = 1;</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    outer_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span>  <span class="comment">// For all input arrays,</span></div>
-<div class="line"><span class="lineno">   63</span>  <span class="comment">// FlatSize() = outer_size * Dims(axis) * base_inner_size;</span></div>
-<div class="line"><span class="lineno">   64</span>  int64_t base_inner_size = 1;</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; concat_dimensions; ++i)</div>
-<div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    base_inner_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
-<div class="line"><span class="lineno">   68</span>  }</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  Scalar *output_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; outer_size; k++)</div>
-<div class="line"><span class="lineno">   72</span>  {</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; ++i)</div>
-<div class="line"><span class="lineno">   74</span>    {</div>
-<div class="line"><span class="lineno">   75</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> copy_size = input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis) * base_inner_size;</div>
-<div class="line"><span class="lineno">   76</span>      memcpy(output_ptr, input_data[i] + k * copy_size, copy_size * <span class="keyword">sizeof</span>(Scalar));</div>
-<div class="line"><span class="lineno">   77</span>      output_ptr += copy_size;</div>
-<div class="line"><span class="lineno">   78</span>    }</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-<div class="line"><span class="lineno">   80</span>}</div>
+<div class="line"><span class="lineno">   57</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(concat_size);</div>
+<div class="line"><span class="lineno">   58</span>  int64_t outer_size = 1;</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    outer_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
+<div class="line"><span class="lineno">   63</span>  <span class="comment">// For all input arrays,</span></div>
+<div class="line"><span class="lineno">   64</span>  <span class="comment">// FlatSize() = outer_size * Dims(axis) * base_inner_size;</span></div>
+<div class="line"><span class="lineno">   65</span>  int64_t base_inner_size = 1;</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; concat_dimensions; ++i)</div>
+<div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    base_inner_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  Scalar *output_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; outer_size; k++)</div>
+<div class="line"><span class="lineno">   73</span>  {</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; ++i)</div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> copy_size = input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis) * base_inner_size;</div>
+<div class="line"><span class="lineno">   77</span>      memcpy(output_ptr, input_data[i] + k * copy_size, copy_size * <span class="keyword">sizeof</span>(Scalar));</div>
+<div class="line"><span class="lineno">   78</span>      output_ptr += copy_size;</div>
+<div class="line"><span class="lineno">   79</span>    }</div>
+<div class="line"><span class="lineno">   80</span>  }</div>
+<div class="line"><span class="lineno">   81</span>}</div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_concatenation_params_html_a71f555b874f1c5fcfd4436438576e752"><div class="ttname"><a href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">nnfw::cker::ConcatenationParams::inputs_count</a></div><div class="ttdeci">uint16_t inputs_count</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00218">Types.h:218</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_concatenation_params_html_ae0fe9eaca1f73abaf2bf6600bec35a53"><div class="ttname"><a href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">nnfw::cker::ConcatenationParams::axis</a></div><div class="ttdeci">int8_t axis</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00215">Types.h:215</a></div></div>
 </div><!-- fragment -->
@@ -5322,72 +5324,73 @@ template&lt;typename Scalar &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_concatenation_8h_source.html#l00084">84</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_concatenation_8h_source.html">Concatenation.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordtype">int</span> axis = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">axis</a>;</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keyword">const</span> int32_t *input_zeropoint = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a13ebc9bf09498326d0e62211f67bd674">input_zeropoint</a>;</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *input_scale = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a72a27c58d5584fdfb8b802b108d10af3">input_scale</a>;</div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordtype">int</span> inputs_count = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">inputs_count</a>;</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keyword">const</span> int32_t output_zeropoint = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae2be61cdb0514ad6fcf19c5ce09b9386">output_zeropoint</a>;</div>
-<div class="line"><span class="lineno">   94</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> output_scale = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a79e65e91c1b7dd6df981a58ee22f5903">output_scale</a>;</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> concat_dimensions = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount();</div>
-<div class="line"><span class="lineno">   97</span>  assert(axis &lt;= concat_dimensions);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>  int64_t concat_size = 0;</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; i++)</div>
-<div class="line"><span class="lineno">  101</span>  {</div>
-<div class="line"><span class="lineno">  102</span>    assert(input_shapes[i]-&gt;DimensionsCount() == concat_dimensions);</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; concat_dimensions; j++)</div>
-<div class="line"><span class="lineno">  104</span>    {</div>
-<div class="line"><span class="lineno">  105</span>      <span class="keywordflow">if</span> (j != axis)</div>
-<div class="line"><span class="lineno">  106</span>      {</div>
-<div class="line"><span class="lineno">  107</span>        assert(input_shapes[i]-&gt;<a class="code hl_struct" href="struct_dims.html">Dims</a>(j) == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(j));</div>
-<div class="line"><span class="lineno">  108</span>      }</div>
-<div class="line"><span class="lineno">  109</span>    }</div>
-<div class="line"><span class="lineno">  110</span>    concat_size += input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis);</div>
-<div class="line"><span class="lineno">  111</span>  }</div>
-<div class="line"><span class="lineno">  112</span>  assert(concat_size == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(axis));</div>
-<div class="line"><span class="lineno">  113</span>  int64_t outer_size = 1;</div>
-<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
-<div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    outer_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
-<div class="line"><span class="lineno">  118</span>  <span class="comment">// For all input arrays,</span></div>
-<div class="line"><span class="lineno">  119</span>  <span class="comment">// FlatSize() = outer_size * Dims(axis) * base_inner_size;</span></div>
-<div class="line"><span class="lineno">  120</span>  int64_t base_inner_size = 1;</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; concat_dimensions; ++i)</div>
-<div class="line"><span class="lineno">  122</span>  {</div>
-<div class="line"><span class="lineno">  123</span>    base_inner_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
-<div class="line"><span class="lineno">  124</span>  }</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> inverse_output_scale = 1.f / output_scale;</div>
-<div class="line"><span class="lineno">  127</span>  uint8_t *output_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
-<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; outer_size; k++)</div>
-<div class="line"><span class="lineno">  129</span>  {</div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; ++i)</div>
-<div class="line"><span class="lineno">  131</span>    {</div>
-<div class="line"><span class="lineno">  132</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> copy_size = input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis) * base_inner_size;</div>
-<div class="line"><span class="lineno">  133</span>      <span class="keyword">const</span> uint8_t *input_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[i] + k * copy_size;</div>
-<div class="line"><span class="lineno">  134</span>      <span class="keywordflow">if</span> (input_zeropoint[i] == output_zeropoint &amp;&amp; input_scale[i] == output_scale)</div>
-<div class="line"><span class="lineno">  135</span>      {</div>
-<div class="line"><span class="lineno">  136</span>        memcpy(output_ptr, input_ptr, copy_size);</div>
-<div class="line"><span class="lineno">  137</span>      }</div>
-<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  139</span>      {</div>
-<div class="line"><span class="lineno">  140</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = input_scale[i] * inverse_output_scale;</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = -input_zeropoint[i] * <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
-<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; copy_size; ++j)</div>
-<div class="line"><span class="lineno">  143</span>        {</div>
-<div class="line"><span class="lineno">  144</span>          <span class="keyword">const</span> int32_t value =</div>
-<div class="line"><span class="lineno">  145</span>            <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round(input_ptr[j] * scale + bias)) + output_zeropoint;</div>
-<div class="line"><span class="lineno">  146</span>          output_ptr[j] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::max(std::min(255, value), 0));</div>
-<div class="line"><span class="lineno">  147</span>        }</div>
-<div class="line"><span class="lineno">  148</span>      }</div>
-<div class="line"><span class="lineno">  149</span>      output_ptr += copy_size;</div>
-<div class="line"><span class="lineno">  150</span>    }</div>
-<div class="line"><span class="lineno">  151</span>  }</div>
-<div class="line"><span class="lineno">  152</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_concatenation_8h_source.html#l00085">85</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_concatenation_8h_source.html">Concatenation.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordtype">int</span> axis = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae0fe9eaca1f73abaf2bf6600bec35a53">axis</a>;</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keyword">const</span> int32_t *input_zeropoint = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a13ebc9bf09498326d0e62211f67bd674">input_zeropoint</a>;</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *input_scale = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a72a27c58d5584fdfb8b802b108d10af3">input_scale</a>;</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordtype">int</span> inputs_count = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a71f555b874f1c5fcfd4436438576e752">inputs_count</a>;</div>
+<div class="line"><span class="lineno">   94</span>  <span class="keyword">const</span> int32_t output_zeropoint = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#ae2be61cdb0514ad6fcf19c5ce09b9386">output_zeropoint</a>;</div>
+<div class="line"><span class="lineno">   95</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> output_scale = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_concatenation_params.html#a79e65e91c1b7dd6df981a58ee22f5903">output_scale</a>;</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> concat_dimensions = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount();</div>
+<div class="line"><span class="lineno">   98</span>  assert(axis &lt;= concat_dimensions);</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  int64_t concat_size = 0;</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; i++)</div>
+<div class="line"><span class="lineno">  102</span>  {</div>
+<div class="line"><span class="lineno">  103</span>    assert(input_shapes[i]-&gt;DimensionsCount() == concat_dimensions);</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; concat_dimensions; j++)</div>
+<div class="line"><span class="lineno">  105</span>    {</div>
+<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">if</span> (j != axis)</div>
+<div class="line"><span class="lineno">  107</span>      {</div>
+<div class="line"><span class="lineno">  108</span>        assert(input_shapes[i]-&gt;<a class="code hl_struct" href="struct_dims.html">Dims</a>(j) == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(j));</div>
+<div class="line"><span class="lineno">  109</span>      }</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span>    concat_size += input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis);</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
+<div class="line"><span class="lineno">  113</span>  assert(concat_size == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(axis));</div>
+<div class="line"><span class="lineno">  114</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(concat_size);</div>
+<div class="line"><span class="lineno">  115</span>  int64_t outer_size = 1;</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
+<div class="line"><span class="lineno">  117</span>  {</div>
+<div class="line"><span class="lineno">  118</span>    outer_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
+<div class="line"><span class="lineno">  120</span>  <span class="comment">// For all input arrays,</span></div>
+<div class="line"><span class="lineno">  121</span>  <span class="comment">// FlatSize() = outer_size * Dims(axis) * base_inner_size;</span></div>
+<div class="line"><span class="lineno">  122</span>  int64_t base_inner_size = 1;</div>
+<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; concat_dimensions; ++i)</div>
+<div class="line"><span class="lineno">  124</span>  {</div>
+<div class="line"><span class="lineno">  125</span>    base_inner_size *= <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(i);</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> inverse_output_scale = 1.f / output_scale;</div>
+<div class="line"><span class="lineno">  129</span>  uint8_t *output_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; outer_size; k++)</div>
+<div class="line"><span class="lineno">  131</span>  {</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; ++i)</div>
+<div class="line"><span class="lineno">  133</span>    {</div>
+<div class="line"><span class="lineno">  134</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> copy_size = input_shapes[i]-&gt;<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(axis) * base_inner_size;</div>
+<div class="line"><span class="lineno">  135</span>      <span class="keyword">const</span> uint8_t *input_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[i] + k * copy_size;</div>
+<div class="line"><span class="lineno">  136</span>      <span class="keywordflow">if</span> (input_zeropoint[i] == output_zeropoint &amp;&amp; input_scale[i] == output_scale)</div>
+<div class="line"><span class="lineno">  137</span>      {</div>
+<div class="line"><span class="lineno">  138</span>        memcpy(output_ptr, input_ptr, copy_size);</div>
+<div class="line"><span class="lineno">  139</span>      }</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  141</span>      {</div>
+<div class="line"><span class="lineno">  142</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a> = input_scale[i] * inverse_output_scale;</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = -input_zeropoint[i] * <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; copy_size; ++j)</div>
+<div class="line"><span class="lineno">  145</span>        {</div>
+<div class="line"><span class="lineno">  146</span>          <span class="keyword">const</span> int32_t value =</div>
+<div class="line"><span class="lineno">  147</span>            <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round(input_ptr[j] * scale + bias)) + output_zeropoint;</div>
+<div class="line"><span class="lineno">  148</span>          output_ptr[j] = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(std::max(std::min(255, value), 0));</div>
+<div class="line"><span class="lineno">  149</span>        }</div>
+<div class="line"><span class="lineno">  150</span>      }</div>
+<div class="line"><span class="lineno">  151</span>      output_ptr += copy_size;</div>
+<div class="line"><span class="lineno">  152</span>    }</div>
+<div class="line"><span class="lineno">  153</span>  }</div>
+<div class="line"><span class="lineno">  154</span>}</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
@@ -5397,7 +5400,7 @@ template&lt;typename Scalar &gt; </div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_concatenation_params_html_a79e65e91c1b7dd6df981a58ee22f5903"><div class="ttname"><a href="structnnfw_1_1cker_1_1_concatenation_params.html#a79e65e91c1b7dd6df981a58ee22f5903">nnfw::cker::ConcatenationParams::output_scale</a></div><div class="ttdeci">float output_scale</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00220">Types.h:220</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_concatenation_params_html_ae2be61cdb0514ad6fcf19c5ce09b9386"><div class="ttname"><a href="structnnfw_1_1cker_1_1_concatenation_params.html#ae2be61cdb0514ad6fcf19c5ce09b9386">nnfw::cker::ConcatenationParams::output_zeropoint</a></div><div class="ttdeci">int32_t output_zeropoint</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00219">Types.h:219</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00215">nnfw::cker::ConcatenationParams::axis</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00217">nnfw::cker::ConcatenationParams::input_scale</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00216">nnfw::cker::ConcatenationParams::input_zeropoint</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00218">nnfw::cker::ConcatenationParams::inputs_count</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00220">nnfw::cker::ConcatenationParams::output_scale</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00219">nnfw::cker::ConcatenationParams::output_zeropoint</a>.</p>
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00215">nnfw::cker::ConcatenationParams::axis</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00217">nnfw::cker::ConcatenationParams::input_scale</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00216">nnfw::cker::ConcatenationParams::input_zeropoint</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00218">nnfw::cker::ConcatenationParams::inputs_count</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00220">nnfw::cker::ConcatenationParams::output_scale</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00219">nnfw::cker::ConcatenationParams::output_zeropoint</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_concat_layer_8cc_source.html#l00066">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8()</a>.</p>
 
@@ -9618,7 +9621,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  190</span>  <span class="keywordflow">return</span> stride &gt; 0 ? index &gt;= stop : index &lt;= stop;</div>
 <div class="line"><span class="lineno">  191</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00260">StridedSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00261">StridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -12399,7 +12402,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00117">nnfw::cker::Shape::DimsDataUpTo4D()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00106">AveragePool16()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00242">AveragePool32()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00399">AveragePool&lt; int8_t &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h_source.html#l00050">BatchToSpaceND()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00192">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00163">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00079">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00120">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00194">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00109">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_depth_to_space_8h_source.html#l00030">DepthToSpace()</a>, <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel()</a>, <a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html#l00031">nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00121">nnfw::cker::optimized::DilatedIm2col()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00034">nnfw::cker::optimized::ExtractPatchIntoBufferColumn()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00316">nnfw::cker::reference::HybridConvPerChannel()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html#l00031">InstanceNorm()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00098">MaxPool&lt; uint8_t &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00235">MeanAxis1And2()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00252">Offset()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00285">ResizeBilinear()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00118">ResizeBilinearGeneric()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00171">ResizeBilinearGenericSmallChannel()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00030">ResizeBilinearKernel2x2()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_slice_8h_source.html#l00031">Slice()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_space_to_batch_n_d_8h_source.html#l00030">SpaceToBatchND()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_space_to_depth_8h_source.html#l00030">SpaceToDepth()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00260">StridedSlice()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_transpose_conv_8h_source.html#l00030">TransposeConv()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00033">nnfw::cker::reference::TransposeImpl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00106">AveragePool16()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00242">AveragePool32()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00399">AveragePool&lt; int8_t &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h_source.html#l00050">BatchToSpaceND()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00192">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00163">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00079">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00120">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00194">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00109">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_depth_to_space_8h_source.html#l00030">DepthToSpace()</a>, <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel()</a>, <a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html#l00031">nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00121">nnfw::cker::optimized::DilatedIm2col()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00034">nnfw::cker::optimized::ExtractPatchIntoBufferColumn()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00316">nnfw::cker::reference::HybridConvPerChannel()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html#l00031">InstanceNorm()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00098">MaxPool&lt; uint8_t &gt;()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00235">MeanAxis1And2()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00252">Offset()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00285">ResizeBilinear()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00118">ResizeBilinearGeneric()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00171">ResizeBilinearGenericSmallChannel()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00030">ResizeBilinearKernel2x2()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_slice_8h_source.html#l00031">Slice()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_space_to_batch_n_d_8h_source.html#l00030">SpaceToBatchND()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_space_to_depth_8h_source.html#l00030">SpaceToDepth()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00261">StridedSlice()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_transpose_conv_8h_source.html#l00030">TransposeConv()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00033">nnfw::cker::reference::TransposeImpl()</a>.</p>
 
 </div>
 </div>
@@ -18513,7 +18516,7 @@ template&lt;typename T , int N&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00358">nnfw::cker::StridedSliceParams::begin_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00032">Clamp()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00352">nnfw::cker::StridedSliceParams::start_indices</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00356">nnfw::cker::StridedSliceParams::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00224">checkOutputSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00260">StridedSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00224">checkOutputSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00261">StridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -18719,7 +18722,7 @@ template&lt;typename T , int N&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00032">Clamp()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00360">nnfw::cker::StridedSliceParams::end_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00362">nnfw::cker::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00354">nnfw::cker::StridedSliceParams::stop_indices</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00356">nnfw::cker::StridedSliceParams::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00224">checkOutputSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00260">StridedSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00224">checkOutputSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00261">StridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -18777,78 +18780,78 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00260">260</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html">StridedSlice.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  262</span>{</div>
-<div class="line"><span class="lineno">  263</span>  assert(unextended_input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() &lt;= 4);</div>
-<div class="line"><span class="lineno">  264</span>  assert(unextended_output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() &lt;= 4);</div>
-<div class="line"><span class="lineno">  265</span> </div>
-<div class="line"><span class="lineno">  266</span>  <span class="keywordtype">bool</span> optimize = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordtype">int</span> st_count = op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_strided_slice_params.html#ab3f4f754de656043b8d62fb6ce2656db">strides_count</a>;</div>
-<div class="line"><span class="lineno">  268</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; st_count - 1; idx++)</div>
-<div class="line"><span class="lineno">  269</span>  {</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> axis_size = unextended_input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(idx);</div>
-<div class="line"><span class="lineno">  271</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> start = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(op_params, unextended_input_shape, idx);</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(op_params, unextended_input_shape, idx, start);</div>
-<div class="line"><span class="lineno">  273</span>    <span class="keywordflow">if</span> ((axis_size != 1) &amp;&amp; (start != 0 || stop != 0))</div>
-<div class="line"><span class="lineno">  274</span>    {</div>
-<div class="line"><span class="lineno">  275</span>      optimize = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  277</span>    }</div>
-<div class="line"><span class="lineno">  278</span>  }</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">if</span> (optimize)</div>
-<div class="line"><span class="lineno">  281</span>  {</div>
-<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">if</span> (op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_strided_slice_params.html#a39366a25ed393dcb6aae8c9bbf741876">strides</a>[st_count - 1] == 1)</div>
-<div class="line"><span class="lineno">  283</span>    {</div>
-<div class="line"><span class="lineno">  284</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> start = StartForAxis(op_params, unextended_input_shape, st_count - 1);</div>
-<div class="line"><span class="lineno">  285</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> end = StopForAxis(op_params, unextended_input_shape, st_count - 1, start);</div>
-<div class="line"><span class="lineno">  286</span> </div>
-<div class="line"><span class="lineno">  287</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; end - start; idx++)</div>
-<div class="line"><span class="lineno">  288</span>      {</div>
-<div class="line"><span class="lineno">  289</span>        output_data[idx] = input_data[idx + start];</div>
-<div class="line"><span class="lineno">  290</span>      }</div>
-<div class="line"><span class="lineno">  291</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  292</span>    }</div>
-<div class="line"><span class="lineno">  293</span>  }</div>
-<div class="line"><span class="lineno">  294</span> </div>
-<div class="line"><span class="lineno">  295</span>  <span class="comment">// Note that the output_shape is not used herein.</span></div>
-<div class="line"><span class="lineno">  296</span>  StridedSliceParams params_copy = op_params;</div>
-<div class="line"><span class="lineno">  297</span> </div>
-<div class="line"><span class="lineno">  298</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> input_shape = Shape::ExtendedShape(4, unextended_input_shape);</div>
-<div class="line"><span class="lineno">  299</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = Shape::ExtendedShape(4, unextended_output_shape);</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>  <span class="comment">// Reverse and pad to 4 dimensions because that is what the runtime code</span></div>
-<div class="line"><span class="lineno">  302</span>  <span class="comment">// requires (ie. all shapes must be 4D and are given backwards).</span></div>
-<div class="line"><span class="lineno">  303</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a5ff133f6e9a6a679eebe83d1580a02ea">StridedSlicePadIndices</a>(&amp;params_copy, 4);</div>
-<div class="line"><span class="lineno">  304</span> </div>
-<div class="line"><span class="lineno">  305</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_b = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 0);</div>
-<div class="line"><span class="lineno">  306</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_b = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 0, start_b);</div>
-<div class="line"><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_h = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 1);</div>
-<div class="line"><span class="lineno">  308</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_h = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 1, start_h);</div>
-<div class="line"><span class="lineno">  309</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_w = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 2);</div>
-<div class="line"><span class="lineno">  310</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_w = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 2, start_w);</div>
-<div class="line"><span class="lineno">  311</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_d = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 3);</div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_d = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 3, start_d);</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>  T *out_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
-<div class="line"><span class="lineno">  315</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_b = start_b; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_b, stop_b, params_copy.strides[0]);</div>
-<div class="line"><span class="lineno">  316</span>       in_b += params_copy.strides[0])</div>
-<div class="line"><span class="lineno">  317</span>  {</div>
-<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_h = start_h; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_h, stop_h, params_copy.strides[1]);</div>
-<div class="line"><span class="lineno">  319</span>         in_h += params_copy.strides[1])</div>
-<div class="line"><span class="lineno">  320</span>    {</div>
-<div class="line"><span class="lineno">  321</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_w = start_w; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_w, stop_w, params_copy.strides[2]);</div>
-<div class="line"><span class="lineno">  322</span>           in_w += params_copy.strides[2])</div>
-<div class="line"><span class="lineno">  323</span>      {</div>
-<div class="line"><span class="lineno">  324</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_d = start_d; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_d, stop_d, params_copy.strides[3]);</div>
-<div class="line"><span class="lineno">  325</span>             in_d += params_copy.strides[3])</div>
-<div class="line"><span class="lineno">  326</span>        {</div>
-<div class="line"><span class="lineno">  327</span>          *out_ptr++ = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, in_b, in_h, in_w, in_d)];</div>
-<div class="line"><span class="lineno">  328</span>        }</div>
-<div class="line"><span class="lineno">  329</span>      }</div>
-<div class="line"><span class="lineno">  330</span>    }</div>
-<div class="line"><span class="lineno">  331</span>  }</div>
-<div class="line"><span class="lineno">  332</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00261">261</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html">StridedSlice.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  263</span>{</div>
+<div class="line"><span class="lineno">  264</span>  assert(unextended_input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() &lt;= 4);</div>
+<div class="line"><span class="lineno">  265</span>  assert(unextended_output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() &lt;= 4);</div>
+<div class="line"><span class="lineno">  266</span> </div>
+<div class="line"><span class="lineno">  267</span>  <span class="keywordtype">bool</span> optimize = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  268</span>  <span class="keywordtype">int</span> st_count = op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_strided_slice_params.html#ab3f4f754de656043b8d62fb6ce2656db">strides_count</a>;</div>
+<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; st_count - 1; idx++)</div>
+<div class="line"><span class="lineno">  270</span>  {</div>
+<div class="line"><span class="lineno">  271</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> axis_size = unextended_input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(idx);</div>
+<div class="line"><span class="lineno">  272</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> start = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(op_params, unextended_input_shape, idx);</div>
+<div class="line"><span class="lineno">  273</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(op_params, unextended_input_shape, idx, start);</div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">if</span> ((axis_size != 1) &amp;&amp; (start != 0 || stop != 0))</div>
+<div class="line"><span class="lineno">  275</span>    {</div>
+<div class="line"><span class="lineno">  276</span>      optimize = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  278</span>    }</div>
+<div class="line"><span class="lineno">  279</span>  }</div>
+<div class="line"><span class="lineno">  280</span> </div>
+<div class="line"><span class="lineno">  281</span>  <span class="keywordflow">if</span> (optimize)</div>
+<div class="line"><span class="lineno">  282</span>  {</div>
+<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">if</span> (op_params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_strided_slice_params.html#a39366a25ed393dcb6aae8c9bbf741876">strides</a>[st_count - 1] == 1)</div>
+<div class="line"><span class="lineno">  284</span>    {</div>
+<div class="line"><span class="lineno">  285</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> start = StartForAxis(op_params, unextended_input_shape, st_count - 1);</div>
+<div class="line"><span class="lineno">  286</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> end = StopForAxis(op_params, unextended_input_shape, st_count - 1, start);</div>
+<div class="line"><span class="lineno">  287</span> </div>
+<div class="line"><span class="lineno">  288</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; end - start; idx++)</div>
+<div class="line"><span class="lineno">  289</span>      {</div>
+<div class="line"><span class="lineno">  290</span>        output_data[idx] = input_data[idx + start];</div>
+<div class="line"><span class="lineno">  291</span>      }</div>
+<div class="line"><span class="lineno">  292</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  293</span>    }</div>
+<div class="line"><span class="lineno">  294</span>  }</div>
+<div class="line"><span class="lineno">  295</span> </div>
+<div class="line"><span class="lineno">  296</span>  <span class="comment">// Note that the output_shape is not used herein.</span></div>
+<div class="line"><span class="lineno">  297</span>  StridedSliceParams params_copy = op_params;</div>
+<div class="line"><span class="lineno">  298</span> </div>
+<div class="line"><span class="lineno">  299</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> input_shape = Shape::ExtendedShape(4, unextended_input_shape);</div>
+<div class="line"><span class="lineno">  300</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = Shape::ExtendedShape(4, unextended_output_shape);</div>
+<div class="line"><span class="lineno">  301</span> </div>
+<div class="line"><span class="lineno">  302</span>  <span class="comment">// Reverse and pad to 4 dimensions because that is what the runtime code</span></div>
+<div class="line"><span class="lineno">  303</span>  <span class="comment">// requires (ie. all shapes must be 4D and are given backwards).</span></div>
+<div class="line"><span class="lineno">  304</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a5ff133f6e9a6a679eebe83d1580a02ea">StridedSlicePadIndices</a>(&amp;params_copy, 4);</div>
+<div class="line"><span class="lineno">  305</span> </div>
+<div class="line"><span class="lineno">  306</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_b = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 0);</div>
+<div class="line"><span class="lineno">  307</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_b = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 0, start_b);</div>
+<div class="line"><span class="lineno">  308</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_h = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 1);</div>
+<div class="line"><span class="lineno">  309</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_h = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 1, start_h);</div>
+<div class="line"><span class="lineno">  310</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_w = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 2);</div>
+<div class="line"><span class="lineno">  311</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_w = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 2, start_w);</div>
+<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> start_d = <a class="code hl_function" href="namespacennfw_1_1cker.html#adb32b47564bd9c48ae6881fef4229d24">StartForAxis</a>(params_copy, input_shape, 3);</div>
+<div class="line"><span class="lineno">  313</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stop_d = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5c829eb7fea132576c12f6f5401d19aa">StopForAxis</a>(params_copy, input_shape, 3, start_d);</div>
+<div class="line"><span class="lineno">  314</span> </div>
+<div class="line"><span class="lineno">  315</span>  T *out_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_b = start_b; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_b, stop_b, params_copy.strides[0]);</div>
+<div class="line"><span class="lineno">  317</span>       in_b += params_copy.strides[0])</div>
+<div class="line"><span class="lineno">  318</span>  {</div>
+<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_h = start_h; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_h, stop_h, params_copy.strides[1]);</div>
+<div class="line"><span class="lineno">  320</span>         in_h += params_copy.strides[1])</div>
+<div class="line"><span class="lineno">  321</span>    {</div>
+<div class="line"><span class="lineno">  322</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_w = start_w; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_w, stop_w, params_copy.strides[2]);</div>
+<div class="line"><span class="lineno">  323</span>           in_w += params_copy.strides[2])</div>
+<div class="line"><span class="lineno">  324</span>      {</div>
+<div class="line"><span class="lineno">  325</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_d = start_d; !<a class="code hl_function" href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">LoopCondition</a>(in_d, stop_d, params_copy.strides[3]);</div>
+<div class="line"><span class="lineno">  326</span>             in_d += params_copy.strides[3])</div>
+<div class="line"><span class="lineno">  327</span>        {</div>
+<div class="line"><span class="lineno">  328</span>          *out_ptr++ = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, in_b, in_h, in_w, in_d)];</div>
+<div class="line"><span class="lineno">  329</span>        }</div>
+<div class="line"><span class="lineno">  330</span>      }</div>
+<div class="line"><span class="lineno">  331</span>    }</div>
+<div class="line"><span class="lineno">  332</span>  }</div>
+<div class="line"><span class="lineno">  333</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a0492d3ef04801c4489ea7232c0762409"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0492d3ef04801c4489ea7232c0762409">nnfw::cker::LoopCondition</a></div><div class="ttdeci">bool LoopCondition(int index, int stop, int stride)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00187">StridedSlice.h:187</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a5ff133f6e9a6a679eebe83d1580a02ea"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5ff133f6e9a6a679eebe83d1580a02ea">nnfw::cker::StridedSlicePadIndices</a></div><div class="ttdeci">void StridedSlicePadIndices(StridedSliceParams *p, int dim_count)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00042">StridedSlice.h:42</a></div></div>
 </div><!-- fragment -->
@@ -18930,7 +18933,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00358">nnfw::cker::StridedSliceParams::begin_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00359">nnfw::cker::StridedSliceParams::ellipsis_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00360">nnfw::cker::StridedSliceParams::end_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00361">nnfw::cker::StridedSliceParams::new_axis_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00362">nnfw::cker::StridedSliceParams::shrink_axis_mask</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00352">nnfw::cker::StridedSliceParams::start_indices</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00351">nnfw::cker::StridedSliceParams::start_indices_count</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00354">nnfw::cker::StridedSliceParams::stop_indices</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00353">nnfw::cker::StridedSliceParams::stop_indices_count</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00356">nnfw::cker::StridedSliceParams::strides</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00355">nnfw::cker::StridedSliceParams::strides_count</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00260">StridedSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00261">StridedSlice()</a>.</p>
 
 </div>
 </div>

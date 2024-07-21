@@ -7,6 +7,5 @@ var classonert_1_1backend_1_1builtin_1_1_i_o_tensor =
     [ "layout", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c", null ],
     [ "set_dynamic", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad08039ec1be9173cf8e24a80ab1733b3", null ],
     [ "setShape", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#af51a935f6b7663fe8fcbe98bc2194d9c", null ],
-    [ "setTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997", null ],
-    [ "setUserTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ae6dcb2f67ad5ca53b62b5143309442ad", null ]
+    [ "setTensor", "classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997", null ]
 ];

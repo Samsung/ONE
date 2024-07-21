@@ -135,6 +135,10 @@ var NAVTREEINDEX8 =
 "_dynamic_shape_inferer_8h_source.html":[37,0,4,2,2,0,2,1],
 "_dynamic_tensor_manager_8cc.html":[37,0,4,2,2,1,0,0,3],
 "_dynamic_tensor_manager_8cc_source.html":[37,0,4,2,2,1,0,0,3],
+"_edge_tensor_8cc.html":[37,0,4,2,2,1,3,6],
+"_edge_tensor_8cc_source.html":[37,0,4,2,2,1,3,6],
+"_edge_tensor_8h.html":[37,0,4,2,2,1,3,7],
+"_edge_tensor_8h_source.html":[37,0,4,2,2,1,3,7],
 "_eigen_support_8h.html":[37,0,1,1,0,0,0,7],
 "_eigen_support_8h.html#a47d5fc0e946a35bb5a67b2ecb86f52f3":[37,0,1,1,0,0,0,7,3],
 "_eigen_support_8h.html#a78670a103d0a007ffe0e739ce262ac62":[37,0,1,1,0,0,0,7,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "_eltwise_sub_converter_8h_source.html":[37,0,0,38,1,1,22],
 "_elu_op_8h.html":[37,0,0,73,0,0,0,13],
 "_elu_op_8h_source.html":[37,0,0,73,0,0,0,13],
-"_embedder_8cc.html":[37,0,4,2,4,0],
-"_embedder_8cc_source.html":[37,0,4,2,4,0],
-"_embedder_8cpp.html":[37,0,0,61,2,1],
-"_embedder_8cpp_source.html":[37,0,0,61,2,1],
-"_embedding_lookup_8cc.html":[37,0,4,2,2,1,5,0,22]
+"_embedder_8cc.html":[37,0,4,2,4,0]
 };

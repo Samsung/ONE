@@ -537,9 +537,9 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  272</span>{</div>
 <div class="line"><span class="lineno">  273</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_apply_tensorinfo: Deprecated&quot;</span>);</div>
 <div class="line"><span class="lineno">  274</span>}</div>
-<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__internal_8cc_source.html#l00891">nnfw_api_internal.cc:891</a></div></div>
+<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__internal_8cc_source.html#l00898">nnfw_api_internal.cc:898</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00891">nnfw_session::deprecated()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00898">nnfw_session::deprecated()</a>.</p>
 
 </div>
 </div>
@@ -1196,7 +1196,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set input buffer. </p>
-<p>This function must be called after <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, <code>buffer</code> given to this function can be reused for many inferences. <code>length</code> must be greater or equal than the operand requires. To specify an optional input, you can either not call this for that input or call this with <code>buffer</code> of NULL and <code>length</code> of 0.</p>
+<p>This function must be called after <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, <code>buffer</code> given to this function can be reused for many inferences. <code>length</code> must be greater or equal than the operand requires. To specify an optional input, you can either not call this for that input or call this with <code>buffer</code> of NULL and <code>length</code> of 0. If you set <code><a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE_TENSOR_FLOAT32</a></code> type and model has quantized input type on given index, runtime will set quantized data type model input by converting from float buffer data internally.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session to the input is to be set </td></tr>
@@ -1310,7 +1310,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set input model's tensor info for resizing. </p>
-<p>This function can be called at any time after calling <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code>. Changing input tensor's shape will cause shape inference for the model. There are two different types of shape inference - static and dynamic. Which one to use is depend on the current state of the session. When it is called after calling <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> and before calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>. And it will perform static shape inference for all tensors. When it is called after calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> or even after <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>. And the shapes of the tensors are determined on the fly. If this function is called many times for the same index, it is overwritten.</p>
+<p>This function can be called at any time after calling <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code>. Changing input tensor's shape will cause shape inference for the model. There are two different types of shape inference - static and dynamic. Which one to use is depend on the current state of the session. When it is called after calling <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> and before calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>. And it will perform static shape inference for all tensors. When it is called after calling <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> or even after <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this info will be used when <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>. And the shapes of the tensors are determined on the fly. If this function is called many times for the same index, it is overwritten. tensor_info's dtype field is ignored.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session to the input tensor info is to be set </td></tr>
@@ -1393,7 +1393,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  306</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_set_op_backend: Deprecated&quot;</span>);</div>
 <div class="line"><span class="lineno">  307</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00891">nnfw_session::deprecated()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00898">nnfw_session::deprecated()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>.</p>
 
@@ -1444,7 +1444,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set output buffer. </p>
-<p>This function must be called after <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, <code>buffer</code> given to this function can be reused for many inferences. <code>length</code> must be greater or equal than the operand requires. An output operand can have unspecified shape and deduced dynamically during the execution. You must provide <code>buffer</code> large enough.</p>
+<p>This function must be called after <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, <code>buffer</code> given to this function can be reused for many inferences. <code>length</code> must be greater or equal than the operand requires. An output operand can have unspecified shape and deduced dynamically during the execution. You must provide <code>buffer</code> large enough. If you set <code><a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE_TENSOR_FLOAT32</a></code> type and model has quantized output type on given index, runtime will set dequantized float buffer data from quantize data type model output internally.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session from inference output is to be extracted </td></tr>

@@ -2,11 +2,10 @@ var classonert_1_1exec_1_1train_1_1_trainable_executor =
 [
     [ "TrainableExecutor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a679302ca1cbaa5278fc4b3325e1a0222", null ],
     [ "addObserver", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9572852457ef7f4dd21903c1c7d940f2", null ],
-    [ "backward", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a0a91e6e07426020d6e46072caf1ebbb6", null ],
+    [ "backward", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a77d8a172efc33e50b46dc7ec17b5f843", null ],
     [ "currentOptions", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#ae5c2d8d72b8bb9d314e4b034e595ea15", null ],
-    [ "execute", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9db7c025b579af84be8a30ce3ec3e82d", null ],
     [ "execute", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a6ee6558102c7cf0979b9bec0b3f1f437", null ],
-    [ "forward", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#af99aefd594e9ac0bb5f87e0393af45f6", null ],
+    [ "forward", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a1619e2a671523a2561245ff3a7b98ec0", null ],
     [ "getBackendContexts", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#aed211e15e9ba61eb0847c2d66ae9478c", null ],
     [ "getLoss", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a57b4593cbc4db787812a866a45779336", null ],
     [ "graph", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a4eb1b7b19e14d14db46987d8022df2f6", null ],

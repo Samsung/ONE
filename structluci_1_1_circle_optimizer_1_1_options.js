@@ -1,12 +1,14 @@
 var structluci_1_1_circle_optimizer_1_1_options =
 [
     [ "Algorithm", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043ae", [
+      [ "FuseAddToFullyConnectedBias", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea87ddf9cb83a59c54a93e2e9324f32f5d", null ],
       [ "FuseAddWithConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea08e7ec3c05fdac7477471e1144f71daa", null ],
       [ "FuseAddWithFullyConnected", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeace3e6de9e1824ec704d3675a3e38c7ed", null ],
       [ "FuseAddWithTConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeadb00bf59560a5d2d712dfcaca963c15b", null ],
       [ "FuseBatchNormWithConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2d0eec8eb8e74374f86696e117c8a458", null ],
       [ "FuseBatchNormWithDwConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea7a5c0656ac6e04ce4d021651e8d6263e", null ],
       [ "FuseBatchNormWithTConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeae0fd40e934330520b7e63748bc2b43ff", null ],
+      [ "FuseMulToFullyConnectedWeights", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea8c60f653443ae18b9c86581ec4d490f4", null ],
       [ "FuseSliceWithTConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeacd2501cbda0b49fca86cbc9c9ddbe7b2", null ],
       [ "FuseBCQ", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeab190e7e0b0eb8a209790e806e851bd11", null ],
       [ "FuseHorizontalFullyConnected", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeae8e1fc40efd14f9cda59344e7b9a44a8", null ],
@@ -28,6 +30,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "FoldFullyConnected", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaf9477ea8dfd5925764d1422fe0c62cf4", null ],
       [ "FoldDequantize", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea23b9df3af72103d0bf7fc4a1412144cb", null ],
       [ "FoldGather", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaa7de78cdafc3f834d1464ccb3cf2ec75", null ],
+      [ "FoldMul", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea5e7216b19b79919c8318dcd452c0d34a", null ],
       [ "FoldReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeac98bb3001bf0120400cb5947abb58f6e", null ],
       [ "FoldShape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaf9452bd26cbc617873efca34f780db17", null ],
       [ "FoldSparseToDense", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aead9c4d4bc9ee1d208b693999349bd2696", null ],

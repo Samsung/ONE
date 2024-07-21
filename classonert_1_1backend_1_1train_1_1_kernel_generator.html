@@ -844,10 +844,10 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  473</span> </div>
 <div class="line"><span class="lineno">  474</span>  <span class="keywordflow">if</span> (ifm_shape.rank() != 4)</div>
 <div class="line"><span class="lineno">  475</span>  {</div>
-<div class="line"><span class="lineno">  476</span>    std::runtime_error(node.name() + <span class="stringliteral">&quot; only supports 4D tensor as input&quot;</span>);</div>
+<div class="line"><span class="lineno">  476</span>    <span class="keywordflow">throw</span> std::runtime_error(node.name() + <span class="stringliteral">&quot; only supports 4D tensor as input&quot;</span>);</div>
 <div class="line"><span class="lineno">  477</span>  }</div>
 <div class="line"><span class="lineno">  478</span> </div>
-<div class="line"><span class="lineno">  479</span>  <span class="comment">// calcualate padding</span></div>
+<div class="line"><span class="lineno">  479</span>  <span class="comment">// calculate padding</span></div>
 <div class="line"><span class="lineno">  480</span>  <span class="keyword">const</span> <span class="keyword">auto</span> stride = node.param().stride;</div>
 <div class="line"><span class="lineno">  481</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kh = node.param().kh;</div>
 <div class="line"><span class="lineno">  482</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kw = node.param().kw;</div>

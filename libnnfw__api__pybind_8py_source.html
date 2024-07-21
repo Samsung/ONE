@@ -135,71 +135,66 @@ $(document).ready(function(){initNavTree('libnnfw__api__pybind_8py_source.html',
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="stringliteral">&quot;&quot;&quot;Set inputs for each index&quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(size):</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            input_tensorinfo = self.input_tensorinfo(i)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            ti_dtype = input_tensorinfo.dtype</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            <span class="keywordflow">if</span> len(inputs_array) &gt; i:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                input_array = inputs_array[i]</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                print(</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                    f<span class="stringliteral">&quot;model&#39;s input size is {size} but given inputs_array size is {len(inputs_array)}.\n{i}-th index input is replaced by an array filled with 0.&quot;</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                )</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                input_array = [0.] * <a class="code hl_function" href="namespacepackage_1_1libnnfw__api__pybind.html#ab60b5bbc6fb431db19e191ab669a977e">num_elems</a>(input_tensorinfo)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>            <span class="keywordflow">if</span> len(inputs_array) &gt; i:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                input_array = np.array(inputs_array[i], dtype=input_tensorinfo.dtype)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                print(</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                    f<span class="stringliteral">&quot;model&#39;s input size is {size} but given inputs_array size is {len(inputs_array)}.\n{i}-th index input is replaced by an array filled with 0.&quot;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                )</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                input_array = np.zeros(</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                    (<a class="code hl_function" href="namespacepackage_1_1libnnfw__api__pybind.html#ab60b5bbc6fb431db19e191ab669a977e">num_elems</a>(input_tensorinfo)), dtype=input_tensorinfo.dtype)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            input_array = np.array(input_array, dtype=ti_dtype)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            self.set_input(i, input_array)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            self.set_input(i, input_array)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            self.<a class="code hl_variable" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a83bf225fabc81fe7f00a46bfeb70b3a6">inputs</a>.append(input_array)</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            self.<a class="code hl_variable" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a83bf225fabc81fe7f00a46bfeb70b3a6">inputs</a>.append(input_array)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 </div>
-<div class="foldopen" id="foldopen00048" data-start="" data-end="">
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a76f53f5501b893d1f4c4bdad181bda53">   48</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a76f53f5501b893d1f4c4bdad181bda53">set_outputs</a>(self, size):</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="stringliteral">&quot;&quot;&quot;Set outputs for each index&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(size):</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            output_tensorinfo = self.output_tensorinfo(i)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            ti_dtype = output_tensorinfo.dtype</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            output_array = [0.] * <a class="code hl_function" href="namespacepackage_1_1libnnfw__api__pybind.html#ab60b5bbc6fb431db19e191ab669a977e">num_elems</a>(output_tensorinfo)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            output_array = np.array(output_array, dtype=ti_dtype)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            self.set_output(i, output_array)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            self.<a class="code hl_variable" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a2c4a75393c3be09af3672f2c7c26ff3b">outputs</a>.append(output_array)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="foldopen" id="foldopen00046" data-start="" data-end="">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a76f53f5501b893d1f4c4bdad181bda53">   46</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a76f53f5501b893d1f4c4bdad181bda53">set_outputs</a>(self, size):</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="stringliteral">&quot;&quot;&quot;Set outputs for each index&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(size):</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            output_tensorinfo = self.output_tensorinfo(i)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            output_array = np.zeros(</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                (<a class="code hl_function" href="namespacepackage_1_1libnnfw__api__pybind.html#ab60b5bbc6fb431db19e191ab669a977e">num_elems</a>(output_tensorinfo)), dtype=output_tensorinfo.dtype)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            self.set_output(i, output_array)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            self.<a class="code hl_variable" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a2c4a75393c3be09af3672f2c7c26ff3b">outputs</a>.append(output_array)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 </div>
-<div class="foldopen" id="foldopen00060" data-start="" data-end="">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a621711e6a60f2cb68a26c7b3ed11673c">   60</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a621711e6a60f2cb68a26c7b3ed11673c">inference</a>(self):</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="stringliteral">&quot;&quot;&quot;Inference model and get outputs&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        self.run()</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> self.<a class="code hl_variable" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a2c4a75393c3be09af3672f2c7c26ff3b">outputs</a></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="" data-end="">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a621711e6a60f2cb68a26c7b3ed11673c">   55</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a621711e6a60f2cb68a26c7b3ed11673c">inference</a>(self):</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="stringliteral">&quot;&quot;&quot;Inference model and get outputs&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        self.run()</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">return</span> self.<a class="code hl_variable" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a2c4a75393c3be09af3672f2c7c26ff3b">outputs</a></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 </div>
 </div>
-<div class="foldopen" id="foldopen00067" data-start="" data-end="">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespacepackage_1_1libnnfw__api__pybind.html#a1f1cf0301ad0867753cfe2e2f91653f6">   67</a></span><span class="keyword">def </span><a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;):</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">if</span> operations == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html">nnfw_session_wrapper</a>(nnpackage_path, backends)</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">elif</span> operations:</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html">nnfw_session_wrapper</a>(nnpackage_path, backends, operations)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        print(<span class="stringliteral">&quot;Syntax Error&quot;</span>)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="" data-end="">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="namespacepackage_1_1libnnfw__api__pybind.html#a1f1cf0301ad0867753cfe2e2f91653f6">   62</a></span><span class="keyword">def </span><a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;):</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">if</span> operations == <span class="stringliteral">&quot;&quot;</span>:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html">nnfw_session_wrapper</a>(nnpackage_path, backends)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">elif</span> operations:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html">nnfw_session_wrapper</a>(nnpackage_path, backends, operations)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        print(<span class="stringliteral">&quot;Syntax Error&quot;</span>)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 </div>
-<div class="foldopen" id="foldopen00077" data-start="" data-end="">
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">   77</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">tensorinfo</a>():</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> libnnfw_api_pybind.nnfw_tensorinfo()</div>
+<div class="foldopen" id="foldopen00072" data-start="" data-end="">
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">   72</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">tensorinfo</a>():</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">return</span> libnnfw_api_pybind.nnfw_tensorinfo()</div>
 </div>
 <div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html">package.libnnfw_api_pybind.nnfw_session_wrapper</a></div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00016">libnnfw_api_pybind.py:16</a></div></div>
 <div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a2c4a75393c3be09af3672f2c7c26ff3b"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a2c4a75393c3be09af3672f2c7c26ff3b">package.libnnfw_api_pybind.nnfw_session_wrapper.outputs</a></div><div class="ttdeci">outputs</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00026">libnnfw_api_pybind.py:26</a></div></div>
-<div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a621711e6a60f2cb68a26c7b3ed11673c"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a621711e6a60f2cb68a26c7b3ed11673c">package.libnnfw_api_pybind.nnfw_session_wrapper.inference</a></div><div class="ttdeci">inference(self)</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00060">libnnfw_api_pybind.py:60</a></div></div>
-<div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a76f53f5501b893d1f4c4bdad181bda53"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a76f53f5501b893d1f4c4bdad181bda53">package.libnnfw_api_pybind.nnfw_session_wrapper.set_outputs</a></div><div class="ttdeci">set_outputs(self, size)</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00048">libnnfw_api_pybind.py:48</a></div></div>
+<div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a621711e6a60f2cb68a26c7b3ed11673c"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a621711e6a60f2cb68a26c7b3ed11673c">package.libnnfw_api_pybind.nnfw_session_wrapper.inference</a></div><div class="ttdeci">inference(self)</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00055">libnnfw_api_pybind.py:55</a></div></div>
+<div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a76f53f5501b893d1f4c4bdad181bda53"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a76f53f5501b893d1f4c4bdad181bda53">package.libnnfw_api_pybind.nnfw_session_wrapper.set_outputs</a></div><div class="ttdeci">set_outputs(self, size)</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00046">libnnfw_api_pybind.py:46</a></div></div>
 <div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a83bf225fabc81fe7f00a46bfeb70b3a6"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a83bf225fabc81fe7f00a46bfeb70b3a6">package.libnnfw_api_pybind.nnfw_session_wrapper.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00025">libnnfw_api_pybind.py:25</a></div></div>
 <div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_a952b08952acbf6f3a4dd029cfb09de89"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#a952b08952acbf6f3a4dd029cfb09de89">package.libnnfw_api_pybind.nnfw_session_wrapper.set_inputs</a></div><div class="ttdeci">set_inputs(self, size, inputs_array=[])</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00029">libnnfw_api_pybind.py:29</a></div></div>
 <div class="ttc" id="aclasspackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper_html_aebfcb675a6e746553cdc5a07c5683d2b"><div class="ttname"><a href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html#aebfcb675a6e746553cdc5a07c5683d2b">package.libnnfw_api_pybind.nnfw_session_wrapper.__init__</a></div><div class="ttdeci">__init__(self, nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00019">libnnfw_api_pybind.py:19</a></div></div>
 <div class="ttc" id="anamespacepackage_1_1libnnfw__api__pybind_html_ab60b5bbc6fb431db19e191ab669a977e"><div class="ttname"><a href="namespacepackage_1_1libnnfw__api__pybind.html#ab60b5bbc6fb431db19e191ab669a977e">package.libnnfw_api_pybind.num_elems</a></div><div class="ttdeci">num_elems(tensor_info)</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00008">libnnfw_api_pybind.py:8</a></div></div>
-<div class="ttc" id="anamespacepackage_1_1libnnfw__api__pybind_html_abcdb9704a81f200b6c776dfe00e8e10c"><div class="ttname"><a href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">package.libnnfw_api_pybind.tensorinfo</a></div><div class="ttdeci">tensorinfo()</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00077">libnnfw_api_pybind.py:77</a></div></div>
+<div class="ttc" id="anamespacepackage_1_1libnnfw__api__pybind_html_abcdb9704a81f200b6c776dfe00e8e10c"><div class="ttname"><a href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">package.libnnfw_api_pybind.tensorinfo</a></div><div class="ttdeci">tensorinfo()</div><div class="ttdef"><b>Definition</b> <a href="libnnfw__api__pybind_8py_source.html#l00072">libnnfw_api_pybind.py:72</a></div></div>
 <div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00068">onert-micro.cpp:69</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
