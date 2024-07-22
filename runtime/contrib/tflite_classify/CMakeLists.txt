@@ -2,10 +2,6 @@ if(NOT BUILD_TFLITE_CLASSIFY_APP)
   return()
 endif(NOT BUILD_TFLITE_CLASSIFY_APP)
 
-# Use C++17 for tflite_classify
-# TODO Remove this when we use C++17 for all runtime directories
-set(CMAKE_CXX_STANDARD 17)
-
 list(APPEND SOURCES "src/tflite_classify.cc")
 list(APPEND SOURCES "src/ImageClassifier.cc")
 list(APPEND SOURCES "src/InferenceInterface.cc")
