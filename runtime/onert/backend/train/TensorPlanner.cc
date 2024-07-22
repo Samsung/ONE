@@ -41,7 +41,7 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 
   const auto &training_usedefs = _tgraph.trainingUseDefs();
 
-  // NOTE The uses_map and defs_map must have size of only registered tensors
+  // NOTE The uses_map and defs_map must have the size of only registered tensors
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
 
