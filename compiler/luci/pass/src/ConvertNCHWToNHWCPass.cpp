@@ -139,7 +139,7 @@ DataFormat get_data_format(loco::Node *node)
 
 bool has_data_format(loco::Node *node) { return node->annot<DataFormatAnnotation>() != nullptr; }
 
-bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> indices)
+bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> &indices)
 {
   assert(indices.size() == 4);
 
@@ -171,7 +171,7 @@ bool check_4d_transpose(loco::Node *node, const std::vector<int32_t> indices)
 }
 
 luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
-                                           const std::vector<int32_t> indices)
+                                           const std::vector<int32_t> &indices)
 {
   assert(indices.size() == 4);
 
@@ -211,7 +211,7 @@ luci::CircleTranspose *create_4d_transpose(luci::CircleNode *node,
 }
 
 luci::CircleTranspose *create_Nd_transpose(luci::CircleNode *node,
-                                           const std::vector<int32_t> indices)
+                                           const std::vector<int32_t> &indices)
 {
   auto name = node->name();
   assert(name.length() > 0);
