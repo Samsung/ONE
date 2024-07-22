@@ -110,6 +110,7 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 
       const auto output_index = ir::train::TrainingOperandIndex{output, true};
       assert(defs_map.find(output_index) != defs_map.end());
+      assert(defs_map.at(output_index) == 1);
       defs_map[output_index] = 0;
       tensor_builder->notifyFirstUse(output_index.index());
     }
