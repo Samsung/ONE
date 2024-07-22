@@ -116,7 +116,6 @@ private:
 
 public:
   NNFW_SESSION(const char *package_file_path, const char *backends);
-  NNFW_SESSION(const char *package_file_path, const char *op, const char *backend);
   ~NNFW_SESSION();
 
   void close_session();
