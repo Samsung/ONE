@@ -122,7 +122,7 @@ public:
   void set_input_tensorinfo(uint32_t index, const tensorinfo *tensor_info);
   void run();
   void run_async();
-  void await();
+  void wait();
   /**
    * @brief   process input array according to data type of numpy array sent by Python
    *          (int, float, uint8_t, bool, int64_t, int8_t, int16_t)

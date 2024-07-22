@@ -50,7 +50,7 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
          "\ttensor_info (tensorinfo): Tensor info to be set")
     .def("run", &NNFW_SESSION::run, "Run inference")
     .def("run_async", &NNFW_SESSION::run_async, "Run inference asynchronously")
-    .def("await", &NNFW_SESSION::await, "Wait for asynchronous run to finish")
+    .def("wait", &NNFW_SESSION::wait, "Wait for asynchronous run to finish")
     .def(
       "set_input",
       [](NNFW_SESSION &session, uint32_t index, py::array_t<float> &buffer) {
