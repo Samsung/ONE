@@ -40,9 +40,27 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
     auto &object = _graph.operands().at(input);
 
     const auto key = ReplaceKey{input, factor};
-    if (object.isConstant() && (object.getUses().size() >= 2 ||
-                                _replace_operands_map.find(key) != _replace_operands_map.end()))
+
+    // Skip if the operand is not constant or not shared constant
+    if (!object.isConstant() || object.getUses().size() < 2)
+      continue;
+
+    // 1st use of shared constant operand. Keep using original operand without insertion of new one
+    // Register original operand into keep_operand map for later reuse on same PermuteFactor
+    if (_keep_operands_map.find(input) == _keep_operands_map.end())
     {
+      _keep_operands_map.emplace(input, factor);
+      continue;
+    }
+
+    // Same PermuteFactor with original operand usage. Keep using original operand
+    if (_keep_operands_map.at(input) == factor)
+      continue;
+
+    // Different PermuteFactor with original operand
+    {
+      // Check operand is already created for current input's PermuteFactor
+      // If not, create new operand and register to _replace_operands_map
       if (_replace_operands_map.count(key) == 0)
       {
         ir::Operand new_object(object);
@@ -68,13 +86,8 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
       assert(!object.getDef().valid());
       object.removeUse(node_index);
 
-      // Remove origin operand
-      if (object.getUses().size() == 0)
-      {
-        _graph.removeOperand(input);
-        VERBOSE(ConstInsertPass) << "Original operand " << input << " removed - no uses"
-                                 << std::endl;
-      }
+      // Remain uses by _keep_operands_map
+      assert(object.getUses().size() != 0);
     }
   }
 
