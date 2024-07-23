@@ -28,7 +28,7 @@ namespace backend
 namespace train
 {
 
-class MemoryPlannerFactory
+template <typename Index> class MemoryPlannerFactory
 {
 public:
   static MemoryPlannerFactory &get();
@@ -38,7 +38,7 @@ private:
 
 public:
   // Currently, only the memory planner for DisposableTensor is supported
-  basic::IMemoryPlanner<DisposableTensorIndex> *create(const std::string &key);
+  basic::IMemoryPlanner<Index> *create(const std::string &key);
 };
 
 } // namespace train

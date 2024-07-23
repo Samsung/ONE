@@ -38,6 +38,8 @@ class TrainingKernelRegistry
 public:
   virtual void forward(const IPortableTensor *in, IPortableTensor *out) = 0;
   virtual void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) = 0;
+  virtual ExtraTensorRequests requestExtraTensors() = 0;
+
   TrainingKernelRegistry() = default;
   virtual ~TrainingKernelRegistry() = default;
 };
@@ -61,6 +63,7 @@ public:
                          IPortableTensor *output, IPortableTensor *back_prop_input,
                          const IPortableTensor *back_prop_output);
 
+  ExtraTensorRequests requestExtraTensors() override;
   void forward(bool training) override;
   void backward() override;
 

@@ -16,6 +16,8 @@
 
 #include "MemoryPlannerFactory.h"
 
+#include "DisposableTensorIndex.h"
+#include "ExtraTensorIndex.h"
 namespace onert
 {
 namespace backend
@@ -23,28 +25,46 @@ namespace backend
 namespace train
 {
 
-MemoryPlannerFactory &MemoryPlannerFactory::get()
+template <typename Index> MemoryPlannerFactory<Index> &MemoryPlannerFactory<Index>::get()
 {
-  static MemoryPlannerFactory instance;
+  static MemoryPlannerFactory<Index> instance;
   return instance;
 }
 
-basic::IMemoryPlanner<DisposableTensorIndex> *MemoryPlannerFactory::create(const std::string &key)
+template <typename Index>
+basic::IMemoryPlanner<Index> *MemoryPlannerFactory<Index>::create(const std::string &key)
 {
   if (key == "FirstFit")
   {
-    return new FirstFitPlanner;
+    return new FirstFitPlanner<Index>();
   }
   else if (key == "Bump")
   {
-    return new BumpPlanner;
+    return new BumpPlanner<Index>();
   }
   else if (key == "WIC")
   {
-    return new WICPlanner;
+    return new WICPlanner<Index>();
   }
-  return new FirstFitPlanner; // Default Planner
+  return new FirstFitPlanner<Index>(); // Default Planner
 }
+
+// is this necessary?
+/**
+/usr/bin/ld: libbackend_train.so: undefined reference to
+`onert::backend::train::MemoryPlannerFactory<onert::backend::train::DisposableTensorIndex>::create(std::__cxx11::basic_string<char,
+std::char_traits<char>, std::allocator<char> > const&)' /usr/bin/ld: libbackend_train.so: undefined
+reference to
+`onert::backend::train::MemoryPlannerFactory<onert::backend::train::ExtraTensorIndex>::create(std::__cxx11::basic_string<char,
+std::char_traits<char>, std::allocator<char> > const&)' /usr/bin/ld: libbackend_train.so: undefined
+reference to
+`onert::backend::train::MemoryPlannerFactory<onert::backend::train::DisposableTensorIndex>::get()'
+/usr/bin/ld: libbackend_train.so: undefined reference to
+`onert::backend::train::MemoryPlannerFactory<onert::backend::train::ExtraTensorIndex>::get()'
+collect2: error: ld returned 1 exit status
+ */
+template class MemoryPlannerFactory<DisposableTensorIndex>;
+template class MemoryPlannerFactory<ExtraTensorIndex>;
 
 } // namespace train
 } // namespace backend
