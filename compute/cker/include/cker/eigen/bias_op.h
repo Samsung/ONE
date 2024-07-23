@@ -55,46 +55,23 @@ void MaybeWith32BitIndexing(Func func, Args &&...args)
 }
 
 // Functor used by BiasOp to do the computations.
+// NOTE Apply activation to Bias
 template <typename Device, typename T> struct Bias
 {
   // Add "bias" to "input", repeating "bias".
   void operator()(const Device &d, typename TTypes<T>::ConstFlat input,
-                  typename TTypes<T>::ConstVec bias, typename TTypes<T>::Flat output)
-  {
-    const Eigen::Index rest_size = input.size() / bias.dimension(0);
-    Eigen::DSizes<Eigen::Index, 1> bcast(rest_size);
-    MaybeWith32BitIndexing<Device>(
-      [&](auto input32, auto bias32, auto output32, const auto &bcast32) {
-        output32.device(d) = input32 + bias32.broadcast(bcast32);
-      },
-      input, bias, output, bcast);
-  }
-};
-
-// Functor used by BiasOp to do the computations.
-template <typename Device, typename T> struct BiasActivation
-{
-  // Add "bias" to "input", repeating "bias".
-  void operator()(const Device &d, typename TTypes<T>::ConstFlat input,
                   typename TTypes<T>::ConstVec bias, typename TTypes<T>::Flat output,
-                  int activation_min, int activation_max)
+                  T activation_min, T activation_max)
   {
     const Eigen::Index rest_size = input.size() / bias.dimension(0);
     Eigen::DSizes<Eigen::Index, 1> bcast(rest_size);
     MaybeWith32BitIndexing<Device>(
       [&](auto input32, auto bias32, typename TTypes<T>::Flat output32, const auto &bcast32,
-          int activation_min, int activation_max) {
+          T activation_min, T activation_max) {
         output32.device(d) =
           (input32 + bias32.broadcast(bcast32))
             .template cwiseMax<Eigen::PropagateNaN>(static_cast<T>(activation_min))
             .template cwiseMin<Eigen::PropagateNaN>(static_cast<T>(activation_max));
-        // if (temp < activation_min)
-        //   temp = activation_min;
-        // if (temp > activation_max)
-        //     temp = activation_max;
-        // output32.device(d) = temp;
-        // output32.device(d) = input32 + bias32.broadcast(bcast32);
-        // output32.device(d) = output32.cwiseMin(activation_min).cwiseMax(activation_max);
       },
       input, bias, output, bcast, activation_min, activation_max);
   }
@@ -116,40 +93,21 @@ namespace bias_op
 // Enable CPUDevice only for depthwise_conv_op
 using Device = Eigen::ThreadPoolDevice;
 
-void biasHelper(const Shape &input_shape, const float *input_data, const Shape &bias_shape,
-                const float *bias_data, const Shape &output_shape, float *output_data)
+template <typename T>
+void biasHelper(const Shape &bias_shape, const T *bias_data, const Shape &input_shape,
+                T *input_data, T activation_min, T activation_max)
 {
   assert(input_shape.Dims(3) == bias_shape.Dims(0));
   assert(input_data);
   assert(bias_data);
 
-  Tensor input{input_shape, const_cast<float *>(input_data)};
-  Tensor bias{bias_shape, const_cast<float *>(bias_data)};
-  Tensor output{output_shape, output_data};
+  Tensor bias{bias_shape, const_cast<T *>(bias_data)};
+  Tensor input{input_shape, input_data};
 
-  functor::Bias<Device, float> functor;
+  functor::Bias<Device, T> functor;
   const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
-  functor(d, static_cast<const Tensor &>(input).flat<float>(),
-          static_cast<const Tensor &>(bias).flat<float>(), output.flat<float>());
-}
-
-void biasActivationHelper(const Shape &input_shape, const float *input_data,
-                          const Shape &bias_shape, const float *bias_data,
-                          const Shape &output_shape, float *output_data, int activation_min,
-                          int activation_max)
-{
-  assert(input_shape.Dims(3) == bias_shape.Dims(0));
-  assert(input_data);
-  assert(bias_data);
-
-  Tensor input{input_shape, const_cast<float *>(input_data)};
-  Tensor bias{bias_shape, const_cast<float *>(bias_data)};
-  Tensor output{output_shape, output_data};
-
-  functor::BiasActivation<Device, float> functor;
-  const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
-  functor(d, static_cast<const Tensor &>(input).flat<float>(),
-          static_cast<const Tensor &>(bias).flat<float>(), output.flat<float>(), activation_min,
+  functor(d, static_cast<const Tensor &>(input).flat<T>(),
+          static_cast<const Tensor &>(bias).flat<T>(), input.flat<T>(), activation_min,
           activation_max);
 }
 

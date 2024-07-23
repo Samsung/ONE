@@ -18,7 +18,6 @@
 
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
-#include <cker/eigen/bias_op.h>
 
 namespace onert
 {
@@ -63,6 +62,9 @@ void DepthwiseConvolutionLayer::prepareFloat32()
 
 void DepthwiseConvolutionLayer::dconvFloat32()
 {
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
   nnfw::cker::DepthwiseConvParams op_params;
   op_params.stride_width = _strideWidth;
   op_params.stride_height = _strideHeight;
@@ -71,32 +73,17 @@ void DepthwiseConvolutionLayer::dconvFloat32()
   op_params.padding_values.width = _paddingLeft;
   op_params.padding_values.height = _paddingTop;
   op_params.depth_multiplier = _multiplier;
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
 
-  memset(_padded_filter->buffer(), 0, _padded_filter->total_size());
-  memset(_filter_buffers->buffer(), 0, _filter_buffers->total_size());
+  // memset(_padded_filter->buffer(), 0, _padded_filter->total_size());
+  // memset(_filter_buffers->buffer(), 0, _filter_buffers->total_size());
 
   _dconv_kernel->DepthwiseConvOp<float>(
     op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
-    getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), _use_padded_filter,
+    getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias),
+    getBuffer<float>(_padded_filter.get()), _use_padded_filter,
     getBuffer<float>(_filter_buffers.get()), getShape(_output), getBuffer<float>(_output));
-
-  if (getBuffer<float>(_bias))
-  {
-    if (_activation == ir::Activation::NONE)
-    {
-      nnfw::cker::bias_op::biasHelper(getShape(_output), getBuffer<float>(_output), getShape(_bias),
-                                      getBuffer<float>(_bias), getShape(_output),
-                                      getBuffer<float>(_output));
-    }
-    else
-    {
-      float output_activation_min = 0, output_activation_max = 0;
-      CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
-      nnfw::cker::bias_op::biasActivationHelper(
-        getShape(_output), getBuffer<float>(_output), getShape(_bias), getBuffer<float>(_bias),
-        getShape(_output), getBuffer<float>(_output), output_activation_min, output_activation_max);
-    }
-  }
 }
 
 void DepthwiseConvolutionLayer::convFloat32()

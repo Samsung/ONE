@@ -18,6 +18,7 @@
 #define __NNFW_CKER_TRAIN_OPERATION_DEPTHWISECONV_H__
 
 #include "cker/eigen/depthwise_conv_op.h"
+#include "cker/eigen/bias_op.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 
@@ -50,8 +51,9 @@ public:
   template <typename T>
   void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape,
                        const T *input_data, const Shape &filter_shape, const T *filter_data,
-                       T *padded_filter_data, bool pad_filter, T *filter_buffers_data,
-                       const Shape &output_shape, T *output_data)
+                       const Shape &bias_shape, const T *bias_data, T *padded_filter_data,
+                       bool pad_filter, T *filter_buffers_data, const Shape &output_shape,
+                       T *output_data)
   {
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");
@@ -69,11 +71,19 @@ public:
     const int depth_multiplier = params.depth_multiplier;
     const int pad_height = params.padding_values.height;
     const int pad_width = params.padding_values.width;
+    const T activation_min = params.float_activation_min;
+    const T activation_max = params.float_activation_max;
 
     depthwise_conv_op::LaunchDepthwiseConvOp<Eigen::ThreadPoolDevice, T>()(
       batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
       stride, pad_height, pad_width, output_height, output_width, output_depth, input_data,
       filter_data, padded_filter_data, pad_filter, filter_buffers_data, output_data);
+
+    if (bias_data != nullptr)
+    {
+      bias_op::biasHelper<T>(bias_shape, bias_data, output_shape, output_data, activation_min,
+                             activation_max);
+    }
   }
 
   template <typename T>
