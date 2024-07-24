@@ -64,6 +64,7 @@ public:
   UseDefChains operator()();
 
 public:
+  void visit(const train::operation::BinaryArithmetic &node) override;
   void visit(const train::operation::Conv2D &node) override;
   void visit(const train::operation::DepthwiseConv2D &node) override;
   void visit(const train::operation::ElementwiseActivation &node) override;
