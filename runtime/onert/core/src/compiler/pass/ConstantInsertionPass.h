@@ -66,6 +66,7 @@ private:
   };
 
   std::unordered_map<ReplaceKey, ir::OperandIndex, KeyHasher> _replace_operands_map;
+  std::unordered_map<ir::OperandIndex, PermuteFactor> _keep_operands_map;
 };
 
 } // namespace pass
