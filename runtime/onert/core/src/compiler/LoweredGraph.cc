@@ -129,11 +129,8 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
       throw std::runtime_error{"Fail to find backend for " + op.name() + " operation"};
     }
 
-    auto frontend_layout = _graph.layout();
-
-    // The layout of each backend should be set at another place
-    // TODO Change setting layout of each backend at another place
-    auto backend_layout = backend->config()->supportLayout(op, frontend_layout);
+    // TODO Remove this
+    auto backend_layout = ir::Layout::NHWC;
 
     for (auto &&ind : op.getInputs() | ir::Remove::UNDEFINED)
     {

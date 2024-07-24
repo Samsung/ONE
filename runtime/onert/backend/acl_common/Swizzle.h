@@ -47,33 +47,13 @@ private:
 
 // Convert axis in acl order
 inline ARMComputeAxis ToARMComputeAxis(uint32_t rank, uint32_t axis,
-                                       const ir::Layout org_layout = ir::Layout::UNKNOWN,
-                                       const ir::Layout acl_layout = ir::Layout::UNKNOWN)
+                                       const ir::Layout org_layout = ir::Layout::UNKNOWN)
 {
   assert(rank > axis);
 
   const ARMComputeAxis reversed{(rank - axis) - 1};
 
-  if (rank >= 4 && org_layout == ir::Layout::NHWC && acl_layout == ir::Layout::NCHW)
-  {
-    // NHWC -> WHCN
-    // DEPTH
-    if (0 == reversed.value())
-    {
-      return ARMComputeAxis{2};
-    }
-    // WIDTH
-    if (1 == reversed.value())
-    {
-      return ARMComputeAxis{0};
-    }
-    // HEIGHT
-    if (2 == reversed.value())
-    {
-      return ARMComputeAxis{1};
-    }
-  }
-  if (rank >= 4 && org_layout == ir::Layout::NCHW && acl_layout == ir::Layout::NHWC)
+  if (rank >= 4 && org_layout == ir::Layout::NCHW)
   {
     // NCHW -> CWHN
     // WIDTH
@@ -97,8 +77,7 @@ inline ARMComputeAxis ToARMComputeAxis(uint32_t rank, uint32_t axis,
 }
 
 inline ::arm_compute::Coordinates
-getARMComputeAxises(uint32_t rank, const ir::Layout org_layout = ir::Layout::UNKNOWN,
-                    const ir::Layout acl_layout = ir::Layout::UNKNOWN)
+getARMComputeAxises(uint32_t rank, const ir::Layout org_layout = ir::Layout::UNKNOWN)
 {
   ::arm_compute::Coordinates res{};
 
@@ -106,7 +85,7 @@ getARMComputeAxises(uint32_t rank, const ir::Layout org_layout = ir::Layout::UNK
 
   for (uint32_t axis = 0; axis < rank; ++axis)
   {
-    res.set(axis, ToARMComputeAxis(rank, axis, org_layout, acl_layout).value());
+    res.set(axis, ToARMComputeAxis(rank, axis, org_layout).value());
   }
 
   return res;
@@ -115,19 +94,18 @@ getARMComputeAxises(uint32_t rank, const ir::Layout org_layout = ir::Layout::UNK
 // Restructure runtime_permutationVector to ACL_permutationVector
 inline ::arm_compute::PermutationVector
 getARMComputePermutationVector(uint32_t rank, const std::vector<int32_t> runtime_pv,
-                               const ir::Layout org_layout = ir::Layout::UNKNOWN,
-                               const ir::Layout acl_layout = ir::Layout::UNKNOWN)
+                               const ir::Layout org_layout = ir::Layout::UNKNOWN)
 {
   // rank upto 4 is supported
   assert(rank <= 4);
   assert(runtime_pv.size() > 0);
 
   int new_pv[4] = {0};
-  ::arm_compute::Coordinates axises = getARMComputeAxises(rank, org_layout, acl_layout);
+  ::arm_compute::Coordinates axises = getARMComputeAxises(rank, org_layout);
 
   for (uint32_t i = 0; i < rank; ++i)
   {
-    new_pv[axises[i]] = ToARMComputeAxis(rank, runtime_pv[i], org_layout, acl_layout).value();
+    new_pv[axises[i]] = ToARMComputeAxis(rank, runtime_pv[i], org_layout).value();
   }
 
   ::arm_compute::PermutationVector ACL_PV =
@@ -138,15 +116,13 @@ getARMComputePermutationVector(uint32_t rank, const std::vector<int32_t> runtime
 }
 
 template <typename T>
-inline T ReorderBits(T in, size_t numOfBits, const ir::Layout org_layout = ir::Layout::UNKNOWN,
-                     const ir::Layout acl_layout = ir::Layout::UNKNOWN)
+inline T ReorderBits(T in, size_t numOfBits, const ir::Layout org_layout = ir::Layout::UNKNOWN)
 {
   assert(numOfBits > 0);
   T out = 0;
   for (int32_t i = numOfBits - 1; i >= 0; --i)
   {
-    const uint32_t toShift =
-      numOfBits - ToARMComputeAxis(numOfBits, i, org_layout, acl_layout).value() - 1;
+    const uint32_t toShift = numOfBits - ToARMComputeAxis(numOfBits, i, org_layout).value() - 1;
     out += ((in & 1) << toShift);
     in >>= 1;
   }

@@ -98,8 +98,7 @@ protected:
     constant_initializer->run();
   }
 
-  virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                  ir::Layout backend_layout) = 0;
+  virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info) = 0;
 
   void planTensors()
   {
@@ -122,9 +121,8 @@ protected:
       {
         // These tensors do not exist in any operation (No use and def)
         const auto &info = obj.info();
-        const auto layout = _data.operand_layouts.at(ind);
         // TODO Change tensor info to have permuted shape
-        registerTensorInfo(ind, info, layout);
+        registerTensorInfo(ind, info);
       }
     });
 

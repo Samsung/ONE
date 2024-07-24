@@ -572,22 +572,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
   auto indices_tensor = _tensor_reg->getPortableTensor(indices_index);
 
-  const auto backend_layout = output_tensor->layout();
-  UNUSED_RELEASE(backend_layout);
-
-  // NOTE The frontend layout and backend layout must be the same for this operation.
-  //      If not the same, we have to add a stage(?) to perform permutation of output tensor. It
-  //      is not not efficient even if it works well. If so, it would be better to set the
-  //      layout of these backend tensors to the same layout.
-  //      There is also one thing we have to think about. This operation depends on the layout of
-  //      a model. For example, if a model in NHWC has this operation as output rank == 4, indices
-  //      rank == 2 and axis == 2, this operation should work as the axis W and C, but the axis W
-  //      and C are not sequential in NCHW. So the backend in NCHW cannot handle this case.
-  assert(backend_layout == input_tensor->layout());
-  assert(backend_layout == indices_tensor->layout());
   const auto &input_shape = _ctx.at(input_index).shape();
-  UNUSED_RELEASE(input_shape);
-  assert(input_shape.rank() < 4 || _current_layout == backend_layout);
 
   const auto axis_raw = node.param().axis;
   const auto axis_value = (axis_raw < 0 ? (input_shape.rank() + axis_raw) : axis_raw);

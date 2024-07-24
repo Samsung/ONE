@@ -27,21 +27,6 @@ namespace acl_neon
 
 bool Config::initialize() { return true; }
 
-ir::Layout Config::supportLayout(const ir::IOperation &, ir::Layout frontend_layout)
-{
-  const std::string acl_layout_str = util::getConfigString(util::config::ACL_LAYOUT);
-  if (acl_layout_str == "NHWC")
-  {
-    return ir::Layout::NHWC;
-  }
-  else if (acl_layout_str == "NCHW")
-  {
-    return ir::Layout::NCHW;
-  }
-
-  return frontend_layout;
-}
-
 } // namespace acl_neon
 } // namespace backend
 } // namespace onert
