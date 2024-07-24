@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+''''export ONE_BIN_PATH="/usr/share/one/bin" # '''
+''''export PY_PATH=${ONE_BIN_PATH}/venv/bin/python                          # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                         # '''
+''''echo "Error: ${PY_PATH} not found."                                     # '''
+''''echo "Please install one-compiler and run 'one-prepare-venv' command."  # '''
+''''exit 255                                                                # '''
+
+# Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import subprocess
+import tempfile
+import os
+import sys
+from typing import Optional
+
+from pathlib import Path
+
+
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='Command line tool to equalize feature map (FM) value distribution')
+    parser.add_argument(
+        "-i", "--input", type=str, help="Path to the input circle model.", required=True)
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        help="Path to the output circle model.",
+        required=True)
+    parser.add_argument(
+        "-f",
+        "--fme_patterns",
+        type=str,
+        help="Path to the json file that includes the detected equalization patterns.",
+        required=False)
+    parser.add_argument(
+        "-d",
+        "--data",
+        type=str,
+        help=
+        "Path to the data used for FM equalization. Random data will be used if this option is not given.",
+        required=False)
+    parser.add_argument(
+        "--allow_dup_op",
+        action='store_true',
+        help="Allow to create duplicate operations when a feature map matches "
+        "with multiple equalization patterns. This can increase the size of "
+        "the model. Default is false.")
+    parser.add_argument('--verbose', action='store_true', help='Print logs')
+
+    return parser
+
+
+def _run_cmd(cmd: str, verbose: bool):
+    try:
+        subprocess.run(cmd, capture_output=(not verbose), check=True)
+    except subprocess.CalledProcessError as e:
+        print('Error raised while running the below command')
+        print(' '.join(cmd))
+        print(e.output)
+        print(e.stderr)
+        raise
+
+
+def _run_dalgona(model: str, data: Optional[str], analysis: str, save_dir: str,
+                 verbose: bool):
+    dir_path = os.getenv('ONE_BIN_PATH')
+    assert dir_path != None
+    dalgona_path = os.path.join(dir_path, 'dalgona')
+    cmd = [dalgona_path]
+    cmd += ['--input_model', model]
+    cmd += ['--analysis', analysis]
+    if data != None:
+        cmd += ['--input_data', data]
+    cmd += ['--analysis_args', save_dir]
+
+    # silence=True to avoid verbose logs
+    _run_cmd(cmd, verbose)
+
+
+def _run_fme_detect(input_model: str, fme_patterns: str, verbose: bool,
+                    allow_dup_op: bool):
+    dir_path = Path(__file__).parent.resolve()
+    fme_detect_path = os.path.join(dir_path, 'fme-detect')
+    cmd = [fme_detect_path]
+    cmd += ['--input', input_model]
+    cmd += ['--output', fme_patterns]
+    if allow_dup_op:
+        cmd += ['--allow_dup_op']
+
+    _run_cmd(cmd, verbose)
+
+
+def _run_fme_apply(input_model: str, fme_patterns: str, output_model: str, verbose: bool):
+    dir_path = Path(__file__).parent.resolve()
+    fme_apply_path = os.path.join(dir_path, 'fme-apply')
+    cmd = [fme_apply_path]
+    cmd += ['--input', input_model]
+    cmd += ['--fme_patterns', fme_patterns]
+    cmd += ['--output', output_model]
+
+    _run_cmd(cmd, verbose)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = parser.parse_args()
+
+    input_model = args.input
+    output_model = args.output
+    data = args.data
+    verbose = args.verbose
+    allow_dup_op = args.allow_dup_op
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        fme_patterns = os.path.join(
+            tmp_dir,
+            Path(output_model).with_suffix('.fme_patterns.json').name)
+
+        # Step 1. Run fme-detect to find equalization patterns
+        _run_fme_detect(
+            str(input_model),
+            str(fme_patterns),
+            verbose=verbose,
+            allow_dup_op=allow_dup_op)
+
+        # Copy fme_patterns to the given path
+        if args.fme_patterns != None:
+            os.system(f'cp {fme_patterns} {args.fme_patterns}')
+
+        # TODO Step 2. Run dalgona
+        # _run_dalgona
+
+        # Copy fme_patterns to the given path
+        # Why copy twice? To observe the result of fme-detect too
+        if args.fme_patterns != None:
+            os.system(f'cp {fme_patterns} {args.fme_patterns}')
+
+        # Step 3. Run fme-apply
+        _run_fme_apply(
+            str(input_model), str(fme_patterns), str(output_model), verbose=verbose)
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception as e:
+        prog_name = os.path.basename(__file__)
+        print(f"{prog_name}: {type(e).__name__}: " + str(e), file=sys.stderr)
+        sys.exit(1)
