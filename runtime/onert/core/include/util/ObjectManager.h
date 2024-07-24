@@ -185,9 +185,9 @@ public:
    */
   void iterate(const std::function<void(const Index &, const Object &)> &fn) const
   {
-    for (const auto &e : _objects)
+    for (const auto &[index, obj] : _objects)
     {
-      fn(e.first, *e.second);
+      fn(index, *obj);
     }
   }
   /**

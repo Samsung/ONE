@@ -97,11 +97,11 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
   std::fwrite(&input_count, sizeof(uint32_t), 1, file);
 
   // For each op
-  for (auto &&elem : op_minmax)
+  for (auto &&[index, minmax] : op_minmax)
   {
     const uint32_t model_idx = 0;
-    const uint32_t subg_idx = elem.first.first.value();
-    const uint32_t op_idx = elem.first.second.value();
+    const uint32_t subg_idx = index.first.value();
+    const uint32_t op_idx = index.second.value();
 
     // Write model/subg/op index
     std::fwrite(&model_idx, sizeof(uint32_t), 1, file);
@@ -109,15 +109,15 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
     std::fwrite(&op_idx, sizeof(uint32_t), 1, file);
 
     // Write min/max
-    std::fwrite(elem.second.data, sizeof(float), 2, file);
+    std::fwrite(minmax.data, sizeof(float), 2, file);
   }
 
   // For each input
-  for (auto &&elem : input_minmax)
+  for (auto &&[index, minmax] : input_minmax)
   {
     const uint32_t model_idx = 0;
-    const uint32_t subg_idx = elem.first.first.value();
-    const uint32_t input_idx = elem.first.second.value();
+    const uint32_t subg_idx = index.first.value();
+    const uint32_t input_idx = index.second.value();
 
     // Write model/subg/input index
     std::fwrite(&model_idx, sizeof(uint32_t), 1, file);
@@ -125,7 +125,7 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
     std::fwrite(&input_idx, sizeof(uint32_t), 1, file);
 
     // Write min/max
-    std::fwrite(elem.second.data, sizeof(float), 2, file);
+    std::fwrite(minmax.data, sizeof(float), 2, file);
   }
 
   std::fclose(file);

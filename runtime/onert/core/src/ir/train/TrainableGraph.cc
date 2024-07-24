@@ -150,9 +150,9 @@ void TrainableGraph::setTrainingUseDefs(const UseDefChains &training_defuses)
 {
   _training_defuses.clear();
   // TODO Replace this loop with `std::unordered_map::insert_range` since C++23
-  for (const auto &defuse_chain : training_defuses)
+  for (const auto &[training_index, usedef] : training_defuses)
   {
-    _training_defuses.emplace(defuse_chain.first, defuse_chain.second);
+    _training_defuses.emplace(training_index, usedef);
   }
 }
 

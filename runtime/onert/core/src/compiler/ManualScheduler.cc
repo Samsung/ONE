@@ -64,9 +64,9 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
 
   // 2. Backend per operation type
   std::unordered_map<ir::OpCode, backend::Backend *> op_type_map;
-  for (const auto &pair : manual_options.opcode_to_backend)
+  for (const auto &[op_code, backend_name] : manual_options.opcode_to_backend)
   {
-    op_type_map.emplace(pair.first, BackendManager::get().get(pair.second));
+    op_type_map.emplace(op_code, BackendManager::get().get(backend_name));
   }
   // By default, Custom uses cpu backend
   op_type_map[ir::OpCode::Custom] = BackendManager::get().get("cpu");
@@ -80,11 +80,8 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   });
 
   // 3. Backend per operation
-  for (const auto &pair : manual_options.index_to_backend)
+  for (const auto &[key, val] : manual_options.index_to_backend)
   {
-    const auto &key = pair.first;
-    const auto &val = pair.second;
-
     try
     {
       graph.operations().at(key); // Check if exist, or this will throw

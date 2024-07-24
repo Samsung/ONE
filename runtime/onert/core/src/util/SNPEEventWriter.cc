@@ -114,10 +114,8 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
     }
 
     auto &mem = exec_data["memory"] = Json::Value{Json::objectValue};
-    for (const auto &kv : mem_stats)
+    for (const auto &[key, val] : mem_stats)
     {
-      auto &key = kv.first;
-      auto &val = kv.second;
       mem[key]["Avg_Size"] = val.sum / val.count;
       mem[key]["Max_Size"] = val.max;
       mem[key]["Min_Size"] = val.min;
@@ -165,15 +163,11 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
         if (kv2.second != 0)
           throw std::runtime_error{"Invalid Data - B and E pair does not match."};
 
-    for (const auto &kv : stats)
+    for (const auto &[tid, stat_map] : stats)
     {
-      const auto &tid = kv.first;
-      const auto &map = kv.second;
       auto &json_tid = exec_data[tid] = Json::Value{Json::objectValue};
-      for (const auto &kv : map)
+      for (const auto &[name, val] : stat_map)
       {
-        auto &name = kv.first;
-        auto &val = kv.second;
         json_tid[name]["Avg_Time"] = val.sum / val.count;
         json_tid[name]["Max_Time"] = val.max;
         json_tid[name]["Min_Time"] = val.min;

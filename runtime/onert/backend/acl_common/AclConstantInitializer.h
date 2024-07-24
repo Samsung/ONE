@@ -176,11 +176,8 @@ public:
   void run()
   {
     assert(_tensor_reg);
-    for (const auto &it : _init_map)
+    for (const auto &[ind, fn] : _init_map)
     {
-      const auto &ind = it.first;
-      const auto &fn = it.second;
-
       const auto &model_obj = _operands.at(ind);
       auto tensor_obj = _tensor_reg->getNativeITensor(ind);
       assert(tensor_obj != nullptr);

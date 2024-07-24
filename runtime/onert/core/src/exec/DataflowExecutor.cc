@@ -117,8 +117,8 @@ DataflowExecutor::DataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lower
       });
     }
   });
-  for (const auto &s : op_to_job)
-    _job_to_op.emplace(s.second, s.first);
+  for (const auto &[op_ind, job_ind] : op_to_job)
+    _job_to_op.emplace(job_ind, op_ind);
 
   _input_info = _initial_input_info;
 }

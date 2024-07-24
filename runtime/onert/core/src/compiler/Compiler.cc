@@ -118,10 +118,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   _model.reset();
 
-  for (const auto &pair : lowered_subgs)
+  for (const auto &[subg_index, lowered_subg] : lowered_subgs)
   {
-    const auto &subg_index = pair.first;
-    const auto &lowered_subg = pair.second;
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
@@ -159,11 +157,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
   auto executors = std::make_shared<exec::SingleModelExecutors>();
-  for (auto &&pair : lowered_subgs)
+  for (auto &&[subg_index, lowered_subg] : lowered_subgs)
   {
     auto const model_index = ir::ModelIndex{0};
-    auto const subg_index = pair.first;
-    auto &lowered_subg = pair.second;
     auto const indexed_ranks = lowered_subg->indexed_ranks();
 
     ir::OperationDumper dumper("Executor generation of Subgraph " +

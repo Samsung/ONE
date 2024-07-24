@@ -38,10 +38,10 @@ public:
 
   TensorRegistries(const onert::backend::BackendContexts &backend_contexts, bool include_builtin)
   {
-    for (const auto &e : backend_contexts)
+    for (const auto &[backend, ctx] : backend_contexts)
     {
-      auto tensor_reg = e.second->tensor_registry;
-      if (e.first->config()->id() == backend::builtin::Config::ID)
+      auto tensor_reg = ctx->tensor_registry;
+      if (backend->config()->id() == backend::builtin::Config::ID)
       {
         _builtin_tensor_reg =
           std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(tensor_reg);

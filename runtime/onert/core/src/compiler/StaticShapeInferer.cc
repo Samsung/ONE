@@ -196,19 +196,14 @@ StaticShapeInferer::createStaticShapeInferers(
 {
   // Allocate StaticShapeInferer per each subgraph
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>> inferers;
-  for (auto &&pair : lowered_subgs)
+  for (auto &&[subg_index, lowered_subg] : lowered_subgs)
   {
-    const auto &subg_index = pair.first;
-    auto &lowered_subg = pair.second;
     inferers[subg_index] = std::make_unique<StaticShapeInferer>(lowered_subg);
   }
 
   // Append observers in all StaticShapeInferers
-  for (auto &&pair : lowered_subgs)
+  for (auto &&[subg_index, lowered_subg] : lowered_subgs)
   {
-    const auto &subg_index = pair.first;
-    auto &lowered_subg = pair.second;
-
     // TODO: Change this iteration for all to controlflow iteration
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::IOperation &op) {

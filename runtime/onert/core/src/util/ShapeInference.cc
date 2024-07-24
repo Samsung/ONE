@@ -334,10 +334,10 @@ ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape
   auto kf_shape = ker_shape.asFeature(layout);
   assert(ifm_shape.C == kf_shape.C);
 
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
-                                                  param.padding, param.stride, param.dilation);
+  const auto [out_h, out_w] = calcConvLikeHeightAndWidth(
+    ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W, param.padding, param.stride, param.dilation);
 
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.N};
+  return ir::Shape{ifm_shape.N, out_h, out_w, kf_shape.N};
 }
 
 ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
@@ -355,10 +355,10 @@ ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &
   assert(kf_shape.C == static_cast<int32_t>(ifm_shape.C * param.multiplier));
   assert(kf_shape.N == 1);
 
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W,
-                                                  param.padding, param.stride, param.dilation);
+  const auto [out_h, out_w] = calcConvLikeHeightAndWidth(
+    ifm_shape.H, ifm_shape.W, kf_shape.H, kf_shape.W, param.padding, param.stride, param.dilation);
 
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, kf_shape.C};
+  return ir::Shape{ifm_shape.N, out_h, out_w, kf_shape.C};
 }
 
 ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis)
@@ -554,10 +554,10 @@ ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D:
 
   assert(layout == ir::Layout::NHWC);
   auto ifm_shape = in_shape.asFeature(layout);
-  const auto out_h_w = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh, param.kw,
-                                                  param.padding, param.stride);
+  const auto [out_h, out_w] = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh,
+                                                         param.kw, param.padding, param.stride);
   // Pooling don't change number of channels and batch size
-  return ir::Shape{ifm_shape.N, out_h_w.first, out_h_w.second, ifm_shape.C};
+  return ir::Shape{ifm_shape.N, out_h, out_w, ifm_shape.C};
 }
 
 ir::Shape inferResizeBilinearShape(const ir::Shape &in_shape, const int32_t output_height,

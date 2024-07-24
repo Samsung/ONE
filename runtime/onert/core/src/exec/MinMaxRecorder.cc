@@ -108,8 +108,8 @@ void MinMaxRecorder::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_idx,
 
   // Otherwise, dump!
   assert(tensor->data_type() == ir::DataType::FLOAT32);
-  auto minmax = minmaxFrom(tensor);
-  _op_minmax.append({subg_idx, op_idx}, minmax.first, minmax.second);
+  auto [min, max] = minmaxFrom(tensor);
+  _op_minmax.append({subg_idx, op_idx}, min, max);
 }
 
 void MinMaxRecorder::handleSubgraphBegin(ir::SubgraphIndex subg_idx)
@@ -117,12 +117,12 @@ void MinMaxRecorder::handleSubgraphBegin(ir::SubgraphIndex subg_idx)
   // Make sure there is only cpu backend except for builtin backend
   std::set<std::string> backend_names;
   backend::ITensorRegistry *tensor_reg = nullptr;
-  for (const auto &pair : _backend_contexts)
+  for (const auto &[backend, bctx] : _backend_contexts)
   {
-    backend_names.insert(pair.first->config()->id());
-    if (pair.first->config()->id() == "cpu")
+    backend_names.insert(backend->config()->id());
+    if (backend->config()->id() == "cpu")
     {
-      tensor_reg = pair.second->tensor_registry.get();
+      tensor_reg = bctx->tensor_registry.get();
     }
   }
   if (backend_names != std::set<std::string>{"builtin", "cpu"})

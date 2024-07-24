@@ -28,10 +28,8 @@ void allocateMemory(MemoryManager *mgr, const TensorMap &tensors, const std::str
 {
   mgr->allocate();
 
-  for (auto &&pair : tensors)
+  for (auto &&[index, tensor] : tensors)
   {
-    const auto &index = pair.first;
-    auto tensor = pair.second.get();
     assert(!tensor->is_dynamic());
 
     auto *buffer = mgr->getBuffer(index);
