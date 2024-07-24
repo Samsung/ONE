@@ -74,6 +74,7 @@ public:
   void visit(const train::operation::Pool2D &node) override;
   void visit(const train::operation::Reduce &node) override;
   void visit(const train::operation::Reshape &node) override;
+  void visit(const train::operation::Softmax &node) override;
 
 private:
   void insertUse(const TrainingOperandIndex &operand_index, const TrainingOperationIndex &op_index);
