@@ -32,12 +32,8 @@ def _channelwiseMinMax(tensors: Tensors, channel: int) -> Tuple[List[float], Lis
     channel_wise_min = []
     channel_wise_max = []
     for c in range(channel):
-        cw_data = []
-        for activation in tensors:
-            cw_data.append(activation[:, :, :, c])
-        cw_min = np.min(np.array(cw_data))
-        cw_max = np.max(np.array(cw_data))
-        assert cw_max >= cw_min
-        channel_wise_min.append(float(cw_min))
-        channel_wise_max.append(float(cw_max))
+        min_act = min(tensors, key=lambda activation: np.min(activation[:, :, :, c]))
+        max_act = max(tensors, key=lambda activation: np.max(activation[:, :, :, c]))
+        channel_wise_min.append(float(np.min(min_act[:, :, :, c])))
+        channel_wise_max.append(float(np.max(max_act[:, :, :, c])))
     return channel_wise_min, channel_wise_max
