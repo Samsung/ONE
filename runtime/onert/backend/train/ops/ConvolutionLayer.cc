@@ -42,7 +42,7 @@ std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *
     ir::Shape{origin_shape.dim(1), origin_shape.dim(2), origin_shape.dim(3), origin_shape.dim(0)};
   transposed_info.shape(transposed_shape);
 
-  return std::make_unique<Tensor>(transposed_info, origin_weights->layout());
+  return std::make_unique<Tensor>(transposed_info);
 }
 
 } // namespace
@@ -84,8 +84,7 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
   _transposed_weights->setBuffer(
     std::make_shared<basic::Allocator>(_transposed_weights->total_size()));
 
-  _conv_back_prop_output =
-    std::make_unique<BackPropTensor>(back_prop_output->get_info(), back_prop_output->layout());
+  _conv_back_prop_output = std::make_unique<BackPropTensor>(back_prop_output->get_info());
   _conv_back_prop_output->setBuffer(
     std::make_shared<basic::Allocator>(_conv_back_prop_output->total_size()));
 
@@ -95,8 +94,7 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output =
-      std::make_unique<BackPropTensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    _act_back_prop_output = std::make_unique<BackPropTensor>(_back_prop_output->get_info());
     _act_back_prop_output->setBuffer(
       std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
   }

@@ -35,37 +35,32 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
   /* empty */
 }
 
-void TensorBuilder::registerTensorInfo(const ir::OperandIndex &index, const ir::OperandInfo &info,
-                                       ir::Layout layout)
+void TensorBuilder::registerTensorInfo(const ir::OperandIndex &index, const ir::OperandInfo &info)
 {
   _tensor_info_map.emplace(index, info);
   _as_constants[index] = info.isConstant();
 
-  // Train backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
   assert(!info.isDynamic());
 
   // NOTE For now, whether or not to build operands to trainable tensor depends on whether
   //      the corresponding operand is constant.
   if (_as_constants[index])
   {
-    auto tensor = std::make_unique<TrainableTensor>(info, layout);
+    auto tensor = std::make_unique<TrainableTensor>(info);
     _tensor_reg->setTrainableTensor(index, std::move(tensor));
   }
   else
   {
-    auto tensor = std::make_unique<Tensor>(info, layout);
+    auto tensor = std::make_unique<Tensor>(info);
     _tensor_reg->setNonConstTensor(index, std::move(tensor));
   }
 }
 
 void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
-                                               const ir::OperandInfo &info, ir::Layout layout)
+                                               const ir::OperandInfo &info)
 {
   _backward_tensor_info_map.emplace(index, info);
 
-  // Train backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
   assert(!info.isDynamic());
 
   // NOTE For now, whether or not to build operands to trainable tensor depends on whether
@@ -73,33 +68,30 @@ void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
   assert(_as_constants[index] == info.isConstant());
   if (_as_constants[index])
   {
-    auto tensor = std::make_unique<GradientTensor>(info, layout);
+    auto tensor = std::make_unique<GradientTensor>(info);
     _tensor_reg->setGradientTensor(index, std::move(tensor));
 
     // Initialize tensors for gradient variables
     for (uint32_t i = 0; i < _optimizer->getVarCount(); ++i)
     {
-      auto tensor = std::make_unique<Tensor>(info, layout);
+      auto tensor = std::make_unique<Tensor>(info);
       _tensor_reg->getTrainableTensor(index)->appendOptVar(std::move(tensor));
     }
   }
   else
   {
-    auto tensor = std::make_unique<BackPropTensor>(info, layout);
+    auto tensor = std::make_unique<BackPropTensor>(info);
     _tensor_reg->setBackPropTensor(index, std::move(tensor));
   }
 }
 
 void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorIndex &index,
-                                                         const ir::OperandInfo &info,
-                                                         ir::Layout layout)
+                                                         const ir::OperandInfo &info)
 {
-  // Train backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
   assert(!info.isDynamic());
   assert(!_as_constants[index.operand_index()]);
 
-  auto disposable_tensor = std::make_unique<BackPropTensor>(info, layout);
+  auto disposable_tensor = std::make_unique<BackPropTensor>(info);
   _tensor_reg->setDisposableBackPropTensor(index, std::move(disposable_tensor));
 
   _disposable_backprops.add(index);

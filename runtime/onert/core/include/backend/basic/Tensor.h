@@ -32,6 +32,7 @@ namespace basic
 
 class DynamicMemoryManager;
 
+// Always NHWC layout
 class Tensor : public IPortableTensor
 {
 public:
@@ -39,9 +40,8 @@ public:
   virtual ~Tensor();
 
 public:
-  Tensor(const ir::OperandInfo &info, const ir::Layout layout,
-         DynamicMemoryManager *dynamic_mem_mgr)
-    : IPortableTensor(info), _layout(layout), _buffer(nullptr), _num_references(0),
+  Tensor(const ir::OperandInfo &info, DynamicMemoryManager *dynamic_mem_mgr)
+    : IPortableTensor(info), _layout(ir::Layout::NHWC), _buffer(nullptr), _num_references(0),
       _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
@@ -126,7 +126,7 @@ public:
   void setShape(const ir::Shape &new_shape) override;
 
 protected:
-  ir::Layout _layout;
+  const ir::Layout _layout;
   uint8_t *_buffer;
   int32_t _num_references;
   DynamicMemoryManager *_dynamic_mem_mgr;
@@ -143,10 +143,10 @@ private:
 
 /**
  * @brief Class that uses data from external memory that is not managed by a backend
- *        instead of allocating and copying the data. ExternalTensor's data pointer points to
- *        an address of memory such as where memory is already allocated, or mmapped area.
- *        This is meaning that ExternalTensor can take all of types' ir::Data.
- *        To support this, assume below things no padding, always NHWC layout,
+ *        instead of allocating and copying the data. (ex. constant data from model file)
+ *        ExternalTensor's data pointer points to an address of memory such as where memory is
+ *        already allocated, or mmapped area. This is meaning that ExternalTensor can take all of
+ *        types' ir::Data. To support this, assume below things no padding, always NHWC layout,
  *        constant tensor and not dynamic.
  */
 class ExternalTensor : public Tensor
@@ -156,10 +156,8 @@ public:
   virtual ~ExternalTensor();
 
 public:
-  ExternalTensor(const ir::OperandInfo &info, const ir::Layout layout)
-    : Tensor(info, layout, nullptr)
+  ExternalTensor(const ir::OperandInfo &info) : Tensor(info, nullptr)
   {
-    assert(_layout == ir::Layout::NHWC);
     assert(_info.isConstant());
     assert(_info.isDynamic() == false);
   }

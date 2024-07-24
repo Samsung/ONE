@@ -33,11 +33,10 @@ DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry>
 }
 
 void DynamicTensorManager::buildTensor(const ir::OperandIndex &ind,
-                                       const ir::OperandInfo &tensor_info,
-                                       ir::Layout backend_layout)
+                                       const ir::OperandInfo &tensor_info)
 {
   assert(_tensors->getNativeTensor(ind) == nullptr);
-  auto tensor = std::make_unique<Tensor>(tensor_info, backend_layout, _dynamic_mem_mgr.get());
+  auto tensor = std::make_unique<Tensor>(tensor_info, _dynamic_mem_mgr.get());
   _tensors->setNativeTensor(ind, std::move(tensor));
 }
 

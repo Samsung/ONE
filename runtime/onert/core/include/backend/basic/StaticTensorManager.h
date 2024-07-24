@@ -45,8 +45,7 @@ public:
   void allocateNonconsts(void);
   void deallocateNonconsts(void);
 
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                   ir::Layout backend_layout, bool as_const);
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info, bool as_const);
 
   void claimPlan(const ir::OperandIndex &ind, uint32_t size);
   void releasePlan(const ir::OperandIndex &ind);

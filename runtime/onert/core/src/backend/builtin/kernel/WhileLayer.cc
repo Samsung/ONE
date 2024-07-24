@@ -65,8 +65,7 @@ void WhileLayer::run()
   // Need a temp tensor to hold the cond subgraph output
   assert(cond_exec->outputSize() == 1);
   auto cond_output_tensor = [&]() {
-    auto tensor = std::make_unique<Tensor>(cond_exec->outputInfo(0), cond_exec->outputLayout(0),
-                                           _dyn_memory_manager);
+    auto tensor = std::make_unique<Tensor>(cond_exec->outputInfo(0), _dyn_memory_manager);
     tensor->set_dynamic();
     tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
     return tensor;
@@ -98,8 +97,7 @@ void WhileLayer::run()
   std::vector<IPortableTensor *> temp_outputs;
   for (uint32_t i = 0; i < body_exec->outputSize(); i++)
   {
-    auto tensor = std::make_unique<Tensor>(body_exec->outputInfo(i), body_exec->outputLayout(i),
-                                           _dyn_memory_manager);
+    auto tensor = std::make_unique<Tensor>(body_exec->outputInfo(i), _dyn_memory_manager);
     tensor->set_dynamic();
     tensor->setBuffer(_dyn_memory_manager->allocate(tensor.get(), tensor->total_size()));
     temp_outputs.push_back(tensor.get());
