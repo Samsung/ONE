@@ -55,6 +55,7 @@ void Pad::configure()
     const int32_t padding_after = paddings_data[i * 2 + 1];
     assert(padding_before >= 0 && padding_after >= 0);
     output_shape.dim(i) = input_shape.dim(i) + padding_before + padding_after;
+    printf("!!! Pad %d %d %d\r\n", i, input_shape.dim(i), output_shape.dim(i));
   }
 
   output()->resize(output_shape);

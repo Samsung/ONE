@@ -18,7 +18,8 @@ def luci_eval_verify(test_name,
     atolint = int(atolf32)
 
     # Build TFLite interpreter.
-    interpreter = tf.lite.Interpreter(tflite_model)
+    interpreter = tf.lite.Interpreter(
+        tflite_model, experimental_preserve_all_tensors=True)
     interpreter.allocate_tensors()
 
     # Read SignatureDef and get output tensor id orders for remapping
@@ -87,16 +88,30 @@ def luci_eval_verify(test_name,
         output_shape = [int(i) for i in shape_file.read().split(',')]
         luci_output_data = np.reshape(output_data, output_shape)
         output_tensor = output_details["index"]
+        print("!!! output_tensor 1", output_tensor)
         if full_signatures_outputs_remap != None:
             output_tensor = full_signatures_outputs_remap[idx]
+            print("!!! output_tensor 2", idx, output_tensor)
         intp_output_data = interpreter.get_tensor(output_tensor)
+
+        print("!!! ", tflite_model, ":", output_tensor, intp_output_data.shape)
+        print("!!! ", circle_model, ":", output_shape)
+
         err_msg = "Execution result of " + tflite_model + " does not match with " + circle_model
         if output_details["dtype"] == np.uint8:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
         elif output_details["dtype"] == np.float32:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32), err_msg
+            print("!!! float32")
+            print(intp_output_data.shape)
+            print(luci_output_data.shape)
+            res = np.allclose(
+                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32)
+            if not res:
+                diff = np.isclose(
+                    luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32)
+                print(diff)
+                assert res, err_msg
         elif output_details["dtype"] == np.int64:
             assert np.allclose(
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
