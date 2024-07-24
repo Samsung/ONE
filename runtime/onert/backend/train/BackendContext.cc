@@ -125,8 +125,7 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
       assert(tgraph.layout() != ir::Layout::NCHW);
 
       const auto &operand = tgraph.operands().at(ind);
-      tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand),
-                                                 ir::Layout::NHWC);
+      tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand));
     }
   });
 
@@ -137,8 +136,8 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
     {
       DisposableTensorIndex disposable_index{op_index, back_prop_index};
       const auto &operand = tgraph.operands().at(back_prop_index);
-      tensor_builder->registerDisposableBackwardTensorInfo(
-        disposable_index, createBackwardTensorInfo(operand), ir::Layout::NHWC);
+      tensor_builder->registerDisposableBackwardTensorInfo(disposable_index,
+                                                           createBackwardTensorInfo(operand));
     }
   }
 

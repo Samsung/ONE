@@ -49,7 +49,7 @@ namespace builtin
 class IOTensor : public IPortableTensor
 {
 public:
-  IOTensor(const ir::OperandInfo &info, ir::Layout layout);
+  IOTensor(const ir::OperandInfo &info);
   ~IOTensor();
 
 public:

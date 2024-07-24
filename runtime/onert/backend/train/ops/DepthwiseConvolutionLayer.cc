@@ -55,8 +55,7 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output =
-      std::make_unique<BackPropTensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    _act_back_prop_output = std::make_unique<BackPropTensor>(_back_prop_output->get_info());
     _act_back_prop_output->setBuffer(
       std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
   }
@@ -90,7 +89,7 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
   // prepare padded_filter buffer for cker
   auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
   padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
-  _padded_filter = std::make_unique<Tensor>(padded_filter_info, _kernel->layout());
+  _padded_filter = std::make_unique<Tensor>(padded_filter_info);
   _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
 
   // prepare out_bprop and in_bprop buffer for cker
@@ -98,13 +97,12 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
 
   auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
   filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
-  _filter_buffers = std::make_unique<Tensor>(filter_buffers_info, _kernel->layout());
+  _filter_buffers = std::make_unique<Tensor>(filter_buffers_info);
   _filter_buffers->setBuffer(std::make_shared<basic::Allocator>(_filter_buffers->total_size()));
 
   auto filter_dim_buffers_info = ir::OperandInfo(_back_prop_input->get_info());
   filter_dim_buffers_info.shape({thread_count, padded_filter_inner_dim_size});
-  _filter_dim_buffers =
-    std::make_unique<Tensor>(filter_dim_buffers_info, _back_prop_input->layout());
+  _filter_dim_buffers = std::make_unique<Tensor>(filter_dim_buffers_info);
   _filter_dim_buffers->setBuffer(
     std::make_shared<basic::Allocator>(_filter_dim_buffers->total_size()));
 }

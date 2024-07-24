@@ -62,12 +62,12 @@ public:
                                       &_op_params.float_activation_max);
     }
 
-    _arg_max_index = std::make_unique<Tensor>(_output->get_info(), _output->layout());
+    _arg_max_index = std::make_unique<Tensor>(_output->get_info());
     _arg_max_index->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
 
     if (activation != ir::Activation::NONE)
     {
-      _act_back_prop_output = std::make_unique<Tensor>(_output->get_info(), _output->layout());
+      _act_back_prop_output = std::make_unique<Tensor>(_output->get_info());
       _act_back_prop_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
     }
   };

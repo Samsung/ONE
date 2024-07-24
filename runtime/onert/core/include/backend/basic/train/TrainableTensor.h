@@ -37,8 +37,8 @@ public:
   virtual ~TrainableTensor() = default;
 
 public:
-  TrainableTensor(const ir::OperandInfo &info, const ir::Layout layout)
-    : ITrainableTensor{info}, _tensor{info, layout, nullptr}, _opt_vars{}
+  TrainableTensor(const ir::OperandInfo &info)
+    : ITrainableTensor{info}, _tensor{info, nullptr}, _opt_vars{}
   {
     // DO NOTHING
   }
