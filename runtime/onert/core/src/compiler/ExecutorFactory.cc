@@ -231,24 +231,27 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   auto whole_op_order = lgraph.graph().topolSortOperations();
   for (auto &&[backend, data] : context_data_map)
   {
+    auto graph = data.graph.get();
+    auto &external_operands = data.external_operands;
     // Handle graph input/outputs or external tensors
-    data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
       if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
-        data.external_operands.add(ind);
+        external_operands.add(ind);
       // Inputs are either "graph input" or "no def op and non-constant"
       if (whole_graph.getInputs().contains(ind) ||
           (!operand.getDef().valid() && !operand.isConstant()))
         // Outputs are either "graph output" or "no uses"
-        data.graph->addInput(ind);
+        graph->addInput(ind);
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
-        data.graph->addOutput(ind);
+        graph->addOutput(ind);
     });
     VERBOSE(ExecutorFactory) << "createBackendContexts: partial graph for backend="
                              << backend->config()->id() << std::endl;
     dumper::text::dumpGraph(*data.graph);
 
-    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
-                 [&](const auto &ind) { return data.graph->operations().exist(ind); });
+    auto &op_order = data.op_order;
+    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(op_order),
+                 [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
     data.custom_kernel_builder = custom_kernel_builder;
     contexts.emplace(backend, backend->newContext(std::move(data)));

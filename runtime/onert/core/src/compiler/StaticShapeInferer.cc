@@ -202,8 +202,11 @@ StaticShapeInferer::createStaticShapeInferers(
   }
 
   // Append observers in all StaticShapeInferers
-  for (auto &&[subg_index, lowered_subg] : lowered_subgs)
+  for (auto &&pair : lowered_subgs)
   {
+    const auto &subg_index = pair.first;
+    auto &lowered_subg = pair.second;
+
     // TODO: Change this iteration for all to controlflow iteration
     lowered_subg->graph().operations().iterate(
       [&](const ir::OperationIndex &, const ir::IOperation &op) {
