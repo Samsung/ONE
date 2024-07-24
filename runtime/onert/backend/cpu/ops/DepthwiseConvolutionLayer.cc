@@ -28,6 +28,64 @@ namespace cpu
 namespace ops
 {
 
+void DepthwiseConvolutionLayer::prepareFloat32()
+{
+  const int64_t k_packet_size = _dconv_kernel->kPacketSize<float>();
+
+  const auto out_shape = getShape(_output);
+  const auto filter_shape = getShape(_kernel);
+  const int batch = out_shape.Dims(0);
+  const int out_depth = out_shape.Dims(3);
+  const int filter_rows = filter_shape.Dims(1);
+  const int filter_cols = filter_shape.Dims(2);
+
+  const int filter_spatial_size = filter_rows * filter_cols;
+  const int padded_filter_inner_dim_size =
+    ((out_depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
+
+  _use_padded_filter = (out_depth % k_packet_size) == 0 ? false : true;
+
+  // prepare padded_filter buffer for cker
+  auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+  padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
+  _padded_filter = std::make_unique<Tensor>(padded_filter_info, _kernel->layout(), nullptr);
+  _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
+
+  // prepare out_bprop and in_bprop buffer for cker
+  const int thread_count = _dconv_kernel->getThreadCount();
+
+  auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
+  filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
+  _filter_buffers = std::make_unique<Tensor>(filter_buffers_info, _kernel->layout(), nullptr);
+  _filter_buffers->setBuffer(std::make_shared<basic::Allocator>(_filter_buffers->total_size()));
+}
+
+void DepthwiseConvolutionLayer::dconvFloat32()
+{
+  float output_activation_min = 0, output_activation_max = 0;
+  CalculateActivationRange(_activation, &output_activation_min, &output_activation_max);
+
+  nnfw::cker::DepthwiseConvParams op_params;
+  op_params.stride_width = _strideWidth;
+  op_params.stride_height = _strideHeight;
+  op_params.dilation_width_factor = _dilationWidth;
+  op_params.dilation_height_factor = _dilationHeight;
+  op_params.padding_values.width = _paddingLeft;
+  op_params.padding_values.height = _paddingTop;
+  op_params.depth_multiplier = _multiplier;
+  op_params.float_activation_min = output_activation_min;
+  op_params.float_activation_max = output_activation_max;
+
+  // memset(_padded_filter->buffer(), 0, _padded_filter->total_size());
+  // memset(_filter_buffers->buffer(), 0, _filter_buffers->total_size());
+
+  _dconv_kernel->DepthwiseConvOp<float>(
+    op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
+    getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias),
+    getBuffer<float>(_padded_filter.get()), _use_padded_filter,
+    getBuffer<float>(_filter_buffers.get()), getShape(_output), getBuffer<float>(_output));
+}
+
 void DepthwiseConvolutionLayer::convFloat32()
 {
   float output_activation_min = 0, output_activation_max = 0;
@@ -265,6 +323,11 @@ void DepthwiseConvolutionLayer::configure(
     prepareQ8iHybridPerChannel();
     _prepared = true;
   }
+  else if (_input->data_type() == OperandType::FLOAT32 &&
+           (_dilationHeight == 1 && _dilationWidth == 1))
+  {
+    prepareFloat32();
+  }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {
     if (_kernel->is_constant() && !_input->is_dynamic() && !_output->is_dynamic())
@@ -293,7 +356,10 @@ void DepthwiseConvolutionLayer::run()
   }
   else if (_input->data_type() == OperandType::FLOAT32)
   {
-    convFloat32();
+    if (_dilationHeight == 1 && _dilationWidth == 1)
+      dconvFloat32();
+    else
+      convFloat32();
   }
   else if (_input->data_type() == OperandType::QUANT_UINT8_ASYMM)
   {

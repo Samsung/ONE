@@ -79,10 +79,27 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
   if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
     throw std::runtime_error("train ConvolutionLayer: Unsupported dilation yet");
 
+  // Initialize conv params for training kernels
+  _conv_train_params.padding_type = getPaddingType(_paddingType);
+  _conv_train_params.padding_values.width = _paddingLeft;
+  _conv_train_params.padding_values.height = _paddingTop;
+  _conv_train_params.stride_width = _strideWidth;
+  _conv_train_params.stride_height = _strideHeight;
+  _conv_train_params.dilation_width_factor = _dilationWidthFactor;
+  _conv_train_params.dilation_height_factor = _dilationHeightFactor;
+
   // TODO Optimize transposed tensors
   _transposed_weights = createTransposedWeights<Tensor>(weights);
   _transposed_weights->setBuffer(
     std::make_shared<basic::Allocator>(_transposed_weights->total_size()));
+
+  // Transpose weights from OHWI to HWIO
+  assert(_transposed_weights->getShape().rank() == 4);
+  _transpose_param.perm_count = _transposed_weights->getShape().rank();
+  _transpose_param.perm[0] = 1;
+  _transpose_param.perm[1] = 2;
+  _transpose_param.perm[2] = 3;
+  _transpose_param.perm[3] = 0;
 
   _conv_back_prop_output =
     std::make_unique<BackPropTensor>(back_prop_output->get_info(), back_prop_output->layout());
@@ -92,6 +109,13 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
   _transposed_grad_weights = createTransposedWeights<GradientTensor>(weights);
   _transposed_grad_weights->setBuffer(
     std::make_shared<basic::Allocator>(_transposed_grad_weights->total_size()));
+
+  // Transpose weights'gradient from HWIO to OHWI
+  _transpose_grad_param.perm_count = _transposed_grad_weights->getShape().rank();
+  _transpose_grad_param.perm[0] = 3;
+  _transpose_grad_param.perm[1] = 0;
+  _transpose_grad_param.perm[2] = 1;
+  _transpose_grad_param.perm[3] = 2;
 
   if (activation != ir::Activation::NONE)
   {
@@ -135,31 +159,13 @@ void ConvolutionLayer::backwardFloat32()
   }
   assert(backprop_act != nullptr);
 
-  // Initialize conv params for training kernels
-  nnfw::cker::ConvParams conv_train_params;
-  conv_train_params.padding_type = getPaddingType(_paddingType);
-  conv_train_params.padding_values.width = _paddingLeft;
-  conv_train_params.padding_values.height = _paddingTop;
-  conv_train_params.stride_width = _strideWidth;
-  conv_train_params.stride_height = _strideHeight;
-  conv_train_params.dilation_width_factor = _dilationWidthFactor;
-  conv_train_params.dilation_height_factor = _dilationHeightFactor;
-
-  // Transpose weights from OHWI to HWIO
   auto transposed_weights = _transposed_weights.get();
-  assert(transposed_weights->getShape().rank() == 4);
-  nnfw::cker::TransposeParams transpose_param;
-  transpose_param.perm_count = transposed_weights->getShape().rank();
-  transpose_param.perm[0] = 1;
-  transpose_param.perm[1] = 2;
-  transpose_param.perm[2] = 3;
-  transpose_param.perm[3] = 0;
-  nnfw::cker::Transpose(transpose_param, getShape(_kernel), getBuffer<float>(_kernel),
+  nnfw::cker::Transpose(_transpose_param, getShape(_kernel), getBuffer<float>(_kernel),
                         getShape(transposed_weights), getBuffer<float>(transposed_weights));
 
   // Calculate gradient for input
   nnfw::cker::train::ConvInputGrad(
-    conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act),
+    _conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act),
     getShape(transposed_weights), getBuffer<float>(transposed_weights), _paddingBottom,
     _paddingRight, getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
 
@@ -168,18 +174,11 @@ void ConvolutionLayer::backwardFloat32()
   assert(_grad_weights->getShape().rank() == 4);
   assert(transposed_grad_weights->getShape().rank() == 4);
   nnfw::cker::train::ConvFilterGrad(
-    conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
+    _conv_train_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), _paddingBottom, _paddingRight, getShape(transposed_grad_weights),
     getBuffer<float>(transposed_grad_weights));
 
-  // Transpose weights'gradient from HWIO to OHWI
-  nnfw::cker::TransposeParams transpose_grad_param;
-  transpose_grad_param.perm_count = transposed_grad_weights->getShape().rank();
-  transpose_grad_param.perm[0] = 3;
-  transpose_grad_param.perm[1] = 0;
-  transpose_grad_param.perm[2] = 1;
-  transpose_grad_param.perm[3] = 2;
-  nnfw::cker::Transpose(transpose_grad_param, getShape(transposed_grad_weights),
+  nnfw::cker::Transpose(_transpose_grad_param, getShape(transposed_grad_weights),
                         getBuffer<float>(transposed_grad_weights), getShape(_grad_weights),
                         getBuffer<float>(_grad_weights));
 

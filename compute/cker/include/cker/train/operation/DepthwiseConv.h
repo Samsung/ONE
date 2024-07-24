@@ -18,6 +18,7 @@
 #define __NNFW_CKER_TRAIN_OPERATION_DEPTHWISECONV_H__
 
 #include "cker/eigen/depthwise_conv_op.h"
+#include "cker/eigen/bias_op.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 
@@ -45,6 +46,44 @@ public:
     // Therefore, it needs to add an additional memory buffer for main thread.
     const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
     return d.numThreads() + 1;
+  }
+
+  template <typename T>
+  void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape,
+                       const T *input_data, const Shape &filter_shape, const T *filter_data,
+                       const Shape &bias_shape, const T *bias_data, T *padded_filter_data,
+                       bool pad_filter, T *filter_buffers_data, const Shape &output_shape,
+                       T *output_data)
+  {
+    if (params.stride_height != params.stride_width)
+      throw std::runtime_error("Not support different length strides");
+
+    const int batch = MatchingDim(input_shape, 0, output_shape, 0);
+    const int input_depth = input_shape.Dims(3);
+    const int output_depth = output_shape.Dims(3);
+    const int input_height = input_shape.Dims(1);
+    const int input_width = input_shape.Dims(2);
+    const int filter_height = filter_shape.Dims(1);
+    const int filter_width = filter_shape.Dims(2);
+    const int output_height = output_shape.Dims(1);
+    const int output_width = output_shape.Dims(2);
+    const int stride = params.stride_height;
+    const int depth_multiplier = params.depth_multiplier;
+    const int pad_height = params.padding_values.height;
+    const int pad_width = params.padding_values.width;
+    const T activation_min = params.float_activation_min;
+    const T activation_max = params.float_activation_max;
+
+    depthwise_conv_op::LaunchDepthwiseConvOp<Eigen::ThreadPoolDevice, T>()(
+      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
+      stride, pad_height, pad_width, output_height, output_width, output_depth, input_data,
+      filter_data, padded_filter_data, pad_filter, filter_buffers_data, output_data);
+
+    if (bias_data != nullptr)
+    {
+      bias_op::biasHelper<T>(bias_shape, bias_data, output_shape, output_data, activation_min,
+                             activation_max);
+    }
   }
 
   template <typename T>
