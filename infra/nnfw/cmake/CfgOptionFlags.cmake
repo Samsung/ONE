@@ -29,8 +29,6 @@ option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
-option(BUILD_NPUD "Build NPU daemon" OFF)
-option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
 #
 # Default build configuration for contrib
@@ -47,6 +45,8 @@ option(BUILD_UBEN "Build micro-benchmark (uben) suite" OFF)
 option(BUILD_MLAPSE "Build mlapse benchmark toolkit" OFF)
 option(BUILD_GPU_CL "Build gpu_cl backend" OFF)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" OFF)
+option(BUILD_NPUD "Build NPU daemon" OFF)
+option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 #
 # Default build configuration for tools
 #
