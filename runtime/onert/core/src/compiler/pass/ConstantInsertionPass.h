@@ -42,6 +42,11 @@ public:
   void callback(const ir::OperationIndex &index, ir::IOperation &node) final;
 
 private:
+  ir::OperandIndex insertNewOperand(const ir::Operand &object);
+  void updateUseDef(const ir::OperandIndex &old_index, const ir::OperandIndex &new_index,
+                    const ir::OperationIndex &node_index);
+
+private:
   struct ReplaceKey
   {
     ir::OperandIndex index;
@@ -64,9 +69,6 @@ private:
       return hash<ir::OperandIndex>()(key.index) ^ (hash<PermuteFactor>()(key.factor) << 1);
     }
   };
-
-  std::unordered_map<ReplaceKey, ir::OperandIndex, KeyHasher> _replace_operands_map;
-  std::unordered_map<ir::OperandIndex, PermuteFactor> _keep_operands_map;
 };
 
 } // namespace pass

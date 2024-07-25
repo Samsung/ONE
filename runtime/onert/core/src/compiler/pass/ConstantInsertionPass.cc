@@ -30,11 +30,6 @@ namespace pass
 
 void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
 {
-  const auto op_lower_info = _lowered_graph.lower_info().operation.getRawPtr(node_index);
-  const auto backend = op_lower_info->backend();
-  const auto layout = op_lower_info->layout();
-  const auto factor = PermuteFactor{backend, layout};
-
   for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
   {
     auto &object = _graph.operands().at(input);
@@ -43,50 +38,22 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
     if (!object.isConstant() || object.getUses().size() < 2)
       continue;
 
-    // 1st use of shared constant operand. Keep using original operand without insertion of new one
-    // Register original operand into keep_operand map for later reuse on same PermuteFactor
-    if (_keep_operands_map.find(input) == _keep_operands_map.end())
+    // Insert new operands for shared constant except for the current node.
+    const auto uses = object.getUses();
+    for (const auto &use_index : uses)
     {
-      _keep_operands_map.emplace(input, factor);
-      continue;
+      if (use_index == node_index)
+        continue;
+
+      // NOTE The PermuteFactor(backend and layout) of the current node and the use node may be
+      //      different. But there is no problem because both nodes' constant operand will have
+      //      only one use node.
+      const auto new_index = insertNewOperand(object);
+      updateUseDef(input, new_index, use_index);
     }
 
-    // Same PermuteFactor with original operand usage. Keep using original operand
-    if (_keep_operands_map.at(input) == factor)
-      continue;
-
-    // Different PermuteFactor with original operand
-
-    // Check operand is already created for current input's PermuteFactor
-    // If not, create new operand and register to _replace_operands_map
-    const auto key = ReplaceKey{input, factor};
-    if (_replace_operands_map.count(key) == 0)
-    {
-      ir::Operand new_object(object);
-      new_object.clearDefUse();
-      const auto new_index = _graph.operands().emplace(new_object);
-      _replace_operands_map[key] = new_index;
-    }
-
-    const auto replaced_input = _replace_operands_map[key];
-
-    // Update the same inputs of a node at once because inputs of an operation have the same
-    // PermuteFactor
-    node.replaceInputs(input, replaced_input);
-
-    // Update operand
-    auto &replaced_object = _graph.operands().at(replaced_input);
-    replaced_object.insertUse(node_index);
-
-    VERBOSE(ConstInsertPass) << "New operand " << replaced_input << " added(copy of " << input
-                             << ") for " << factor << std::endl;
-    // Remove this node from uses of origin operand
-    // Constant operand has no def.
-    assert(!object.getDef().valid());
-    object.removeUse(node_index);
-
-    // Remain uses by _keep_operands_map
-    assert(object.getUses().size() != 0);
+    // The input of the current node will have one use as the current node
+    assert(object.getUses().size() == 1 && object.getUses().contains(node_index));
   }
 
   // Now this runtime does not support the node making output as constant
@@ -95,6 +62,41 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
     UNUSED_RELEASE(output);
     assert(!_graph.operands().at(output).isConstant());
   }
+}
+
+ir::OperandIndex ConstantInsertionPass::insertNewOperand(const ir::Operand &object)
+{
+  ir::Operand new_object(object);
+  new_object.clearDefUse();
+  return _graph.operands().emplace(new_object);
+}
+
+void ConstantInsertionPass::updateUseDef(const ir::OperandIndex &old_index,
+                                         const ir::OperandIndex &new_index,
+                                         const ir::OperationIndex &node_index)
+{
+  const auto op_lower_info = _lowered_graph.lower_info().operation.getRawPtr(node_index);
+  const auto backend = op_lower_info->backend();
+  const auto layout = op_lower_info->layout();
+  const auto factor = PermuteFactor{backend, layout};
+
+  // Update the same inputs of a node at once because inputs of an operation have the same
+  // PermuteFactor
+  auto &target_node = _graph.operations().at(node_index);
+  target_node.replaceInputs(old_index, new_index);
+
+  // Update the new operand
+  auto &new_object = _graph.operands().at(new_index);
+  new_object.insertUse(node_index);
+
+  VERBOSE(ConstInsertPass) << "New operand " << new_index << " added(copy of " << old_index
+                           << ") for " << factor << std::endl;
+
+  // Remove the use node from uses of origin operand
+  // Constant operand has no def.
+  auto &old_object = _graph.operands().at(old_index);
+  assert(!old_object.getDef().valid());
+  old_object.removeUse(node_index);
 }
 
 } // namespace pass
