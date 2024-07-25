@@ -59,6 +59,7 @@ public:
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);
   void notifyBackwardFirstUse(const ir::OperandIndex &);
+  void notifyBackwardLastUse(const ir::OperandIndex &);
   void notifyDisposableBackPropFirstUse(const DisposableTensorIndex &);
   void notifyDisposableBackPropLastUse(const DisposableTensorIndex &);
 
