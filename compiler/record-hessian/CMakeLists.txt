@@ -1,12 +1,14 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+<<<<<<< HEAD
 file(GLOB_RECURSE TESTS "src/*.test.cpp")
 list(REMOVE_ITEM SOURCES ${TESTS})
+=======
+>>>>>>> [record-hessian] Introduce record-hessian for quantization
 
 add_library(record-hessian STATIC ${SOURCES})
 
 target_include_directories(record-hessian PUBLIC include)
 target_include_directories(record-hessian PRIVATE src)
-
 target_link_libraries(record-hessian luci_import)
 target_link_libraries(record-hessian luci_env)
 target_link_libraries(record-hessian luci_export)
