@@ -26,6 +26,7 @@
 #include "../../backend/builtin/Config.h"
 #include "../../dumper/text/GraphDumper.h"
 #include "../../ir/verifier/Verifier.h"
+#include "pass/TrainableConstantInsertionPass.h"
 #include "TrainableOperationConverter.h"
 
 #include "backend/Backend.h"
@@ -99,6 +100,7 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
   // Mandatory passes - kind of legalization(?)
   compiler::pass::PassRunner{}
     .append(std::make_unique<compiler::pass::ConstantInsertionPass>(*this))
+    .append(std::make_unique<compiler::train::pass::TrainableConstantInsertionPass>(*this))
     .append(std::make_unique<compiler::pass::ConstantLoweringPass>(*this))
     .append(std::make_unique<compiler::pass::PermutationOperationPass>(*this))
     .append(std::make_unique<compiler::pass::PermutationInsertionPass>(*this))
