@@ -274,7 +274,6 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   const auto weight_tensor = tensor_reg->getAclTensor(weight_index);
   const auto bias_tensor = bias_index.undefined() ? nullptr : tensor_reg->getAclTensor(bias_index);
   const auto frontend_layout = layout;
-  const auto acl_layout = output_tensor->handle()->info()->data_layout();
 
   typename T_ACLLayer::KernelType kernel_type = T_ACLLayer::KernelType::GENERAL;
   if (operands.at(weight_index).isConstant())
@@ -286,8 +285,7 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   auto fn = generateLayer<T_ACLLayer>(
     tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
     weight_tensor->handle(), bias_tensor != nullptr ? bias_tensor->handle() : nullptr,
-    output_tensor->handle(), needs_reshape,
-    asTensorShape(reshape, frontend_layout, asRuntimeLayout(acl_layout)), kernel_type);
+    output_tensor->handle(), needs_reshape, asTensorShape(reshape, frontend_layout), kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
