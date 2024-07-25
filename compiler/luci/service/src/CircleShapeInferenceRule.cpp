@@ -215,11 +215,12 @@ template <class CIRCLENODE>
 loco::NodeShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *paddings)
 {
   const loco::DataType S32 = loco::DataType::S32;
+  const loco::DataType S64 = loco::DataType::S64;
 
   auto input_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
 
   // TODO support other data type
-  LUCI_ASSERT(paddings->dtype() == S32, "Only support int 32 for now");
+  LUCI_ASSERT(paddings->dtype() == S32 || paddings->dtype() == S64, "Support int 32/64 for now");
   LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2")
 
   int32_t n = paddings->dim(0).value();
@@ -236,8 +237,24 @@ loco::NodeShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *pa
   {
     int32_t idx = ni * 2;
     int value = input_shape.dim(ni).value();
-    value += paddings->at<S32>(idx + 0); // left
-    value += paddings->at<S32>(idx + 1); // right
+    if (paddings->dtype() == S32)
+    {
+      value += paddings->at<S32>(idx + 0); // left
+      value += paddings->at<S32>(idx + 1); // right
+    }
+    else
+    {
+      auto pl = paddings->at<S64>(idx + 0);
+      auto pr = paddings->at<S64>(idx + 1);
+      auto max = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
+      auto low = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
+      LUCI_ASSERT(pl <= max, "paddings is over 32 bit limit");
+      LUCI_ASSERT(pl >= low, "paddings is over 32 bit limit");
+      LUCI_ASSERT(pr <= max, "paddings is over 32 bit limit");
+      LUCI_ASSERT(pr >= low, "paddings is over 32 bit limit");
+      value += static_cast<int32_t>(pl); // left
+      value += static_cast<int32_t>(pr); // right
+    }
     output_shape.dim(ni) = value;
   }
 
