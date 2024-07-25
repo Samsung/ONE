@@ -613,6 +613,55 @@ public:
   luci::CircleConst *limit = nullptr;
 };
 
+class MirrorPadGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    pad = g.nodes()->create<luci::CircleMirrorPad>();
+    paddings = g.nodes()->create<luci::CircleConst>();
+
+    pad->dtype(loco::DataType::FLOAT32);
+    paddings->dtype(loco::DataType::S32);
+
+    uint32_t channel_size = 16;
+    pad->shape({1, channel_size, 4, 4});
+    paddings->shape({4, 2});
+
+    pad->mode(luci::MirrorPadMode::REFLECT);
+
+    // paddings data (NCHW)
+    // [[0,0], [0,0], [1,1], [2,2]]
+    paddings->size<loco::DataType::S32>(8);
+    for (uint32_t dim = 0; dim < 4; dim++)
+    {
+      for (uint32_t i = 0; i < 2; i++)
+      {
+        int32_t data = 0;
+
+        if (dim == 2)
+          data = 1;
+        else if (dim == 3)
+          data = 2;
+
+        paddings->at<loco::DataType::S32>(dim * 2 + i) = data;
+      }
+    }
+
+    pad->input(input);
+    pad->paddings(paddings);
+
+    pad->name("pad");
+    paddings->name("paddings");
+
+    return pad;
+  }
+
+public:
+  luci::CircleMirrorPad *pad = nullptr;
+  luci::CircleConst *paddings = nullptr;
+};
+
 class MulGraph final : public SimpleGraph
 {
 protected:
@@ -1604,6 +1653,40 @@ TEST(ConvertNCHWToNHWC, Minimum_non_scalar_NEG)
 
   luci::ConvertNCHWToNHWCPass pass(true, true);
   EXPECT_FALSE(pass.run(&g.g));
+}
+
+TEST(ConvertNCHWToNHWC, MirrorPad)
+{
+  MirrorPadGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.pad->input());
+
+  auto pad_succs = loco::succs(g.pad);
+  EXPECT_EQ(1, pad_succs.size());
+  check_post_trans(*pad_succs.begin());
+
+  auto new_paddings = dynamic_cast<luci::CircleConst *>(g.pad->paddings());
+  EXPECT_NE(nullptr, new_paddings);
+  EXPECT_EQ(2, new_paddings->rank());
+  EXPECT_EQ(4, new_paddings->dim(0).value());
+  EXPECT_EQ(2, new_paddings->dim(1).value());
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(0));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(1));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S32>(2));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S32>(3));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(4));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(5));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(6));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(7));
+
+  check_pre_trans(g.output->from());
 }
 
 TEST(ConvertNCHWToNHWC, Mul)
