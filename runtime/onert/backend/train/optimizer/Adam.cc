@@ -38,10 +38,9 @@ double Adam::getLearningRate(uint32_t training_step) const
 
 void Adam::applyGradient(const UpdateFactors &factors) const
 {
-  const auto training_step = std::get<size_t>(factors);
-  const auto &grad_tensor = std::get<const backend::IPortableTensor &>(factors);
-  auto &trainable_tensor = std::get<backend::train::ITrainableTensor &>(factors);
+  auto [grad_tensor, trainable_tensor, training_step] = factors;
   assert(trainable_tensor.data_type() == grad_tensor.data_type());
+
   const auto opt_vars = trainable_tensor.optVars();
   assert(opt_vars.size() == 2);
   // Get the variable for exponential moving average of the gradient

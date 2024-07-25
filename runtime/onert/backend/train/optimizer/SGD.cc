@@ -37,9 +37,7 @@ double SGD::getLearningRate(uint32_t) const
 
 void SGD::applyGradient(const UpdateFactors &factors) const
 {
-  const auto lr = getLearningRate(std::get<size_t>(factors));
-  const auto &grad_tensor = std::get<const backend::IPortableTensor &>(factors);
-  auto &trainable_tensor = std::get<backend::train::ITrainableTensor &>(factors);
+  auto [grad_tensor, trainable_tensor, training_step] = factors;
   assert(trainable_tensor.data_type() == grad_tensor.data_type());
 
   if (trainable_tensor.getShape() != grad_tensor.getShape())
@@ -47,6 +45,7 @@ void SGD::applyGradient(const UpdateFactors &factors) const
     throw std::runtime_error("SGD: Invalid gradient tensor");
   }
 
+  const auto lr = getLearningRate(training_step);
   switch (grad_tensor.data_type())
   {
     case ir::DataType::FLOAT32:
