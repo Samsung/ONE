@@ -113,10 +113,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_unique<backend::builtin::IOTensor>(
-      operand.info(),
-      ir::Layout::NHWC /* FIXME find operation for this operand and use frontend_layout */
-    );
+    assert(lowered_graph.graph().layout() == ir::Layout::NHWC);
+    auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
     builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));
@@ -143,10 +141,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    auto tensor = std::make_unique<backend::builtin::IOTensor>(
-      operand.info(),
-      ir::Layout::NHWC /* FIXME find operation for this operand and use frontend_layout */
-    );
+    assert(lowered_graph.graph().layout() == ir::Layout::NHWC);
+    auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
     builtin_tensor_reg->setNativeIOTensor(ind, std::move(tensor));

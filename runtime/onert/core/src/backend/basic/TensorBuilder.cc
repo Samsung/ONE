@@ -42,20 +42,17 @@ TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
   /* empty */
 }
 
-void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                       ir::Layout layout)
+void TensorBuilder::registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info)
 {
   _tensor_info_map.emplace(ind, info);
 
-  // CPU backend supports only one layout as NHWC
-  assert(layout == ir::Layout::NHWC);
   if (info.isDynamic())
   {
-    _dynamic_tensor_mgr->buildTensor(ind, info, layout);
+    _dynamic_tensor_mgr->buildTensor(ind, info);
   }
   else
   {
-    _static_tensor_mgr->buildTensor(ind, info, layout, info.isConstant());
+    _static_tensor_mgr->buildTensor(ind, info, info.isConstant());
   }
 }
 

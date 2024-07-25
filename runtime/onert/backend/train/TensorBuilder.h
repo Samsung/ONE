@@ -42,22 +42,18 @@ public:
    * @brief     Register tensor information to allocate on train backend
    * @param[in] ind    Operand index
    * @param[in] info   Operand information
-   * @param[in] layout Operand data layout
    */
-  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                          ir::Layout backend_layout);
+  void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info);
 
   /**
    * @brief     Register informations of tensor used only in backward to allocate on train backend
    * @param[in] ind    Operand index
    * @param[in] info   Operand information
-   * @param[in] layout Operand data layout
    */
-  void registerBackwardTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info,
-                                  ir::Layout backend_layout);
+  void registerBackwardTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info);
 
   void registerDisposableBackwardTensorInfo(const DisposableTensorIndex &index,
-                                            const ir::OperandInfo &info, ir::Layout layout);
+                                            const ir::OperandInfo &info);
 
   // TODO Support memory plan of all tensors
   void notifyFirstUse(const ir::OperandIndex &);

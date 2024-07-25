@@ -66,7 +66,7 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
       //      When we support NCHW tensors as well, we also need to change tensor info to be
       //      permuted shape.
       assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC);
-      tensor_builder->registerTensorInfo(ind, info, ir::Layout::NHWC);
+      tensor_builder->registerTensorInfo(ind, info);
     }
   });
 
@@ -196,7 +196,7 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
       return;
     // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
     assert(graph.layout() != ir::Layout::NCHW);
-    tensor_builder->registerTensorInfo(ind, obj.info(), ir::Layout::NHWC);
+    tensor_builder->registerTensorInfo(ind, obj.info());
   });
 
   // TODO Get compiler options from compiler, and use it rather than getting it from Env

@@ -38,7 +38,7 @@ createTransposedTensor(const backend::IPortableTensor *origin_tensor)
   auto transposed_shape = ir::Shape{origin_shape.dim(1), origin_shape.dim(0)};
   transposed_info.shape(transposed_shape);
 
-  return std::make_unique<backend::train::Tensor>(transposed_info, origin_tensor->layout());
+  return std::make_unique<backend::train::Tensor>(transposed_info);
 }
 
 } // namespace
@@ -97,8 +97,7 @@ void FullyConnectedLayer::configureBackward(
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output =
-      std::make_unique<Tensor>(_back_prop_output->get_info(), _back_prop_output->layout());
+    _act_back_prop_output = std::make_unique<Tensor>(_back_prop_output->get_info());
     _act_back_prop_output->setBuffer(
       std::make_shared<basic::Allocator>(_back_prop_output->total_size()));
   }

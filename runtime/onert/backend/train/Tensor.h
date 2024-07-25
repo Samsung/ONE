@@ -34,8 +34,7 @@ public:
   Tensor() = delete;
 
 public:
-  Tensor(const ir::OperandInfo &info, const ir::Layout layout)
-    : basic::Tensor{info, layout, nullptr}
+  Tensor(const ir::OperandInfo &info) : basic::Tensor{info, nullptr}
   {
     // DO NOTHING
   }

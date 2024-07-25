@@ -45,8 +45,7 @@ public:
 
   virtual ~DynamicTensorManager() = default;
 
-  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info,
-                   ir::Layout backend_layout);
+  void buildTensor(const ir::OperandIndex &ind, const ir::OperandInfo &tensor_info);
 
   std::shared_ptr<DynamicMemoryManager> dynamic_mem_mgr() { return _dynamic_mem_mgr; }
 
