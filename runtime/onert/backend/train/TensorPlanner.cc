@@ -47,10 +47,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 
   // Prepare scanning
   // This assumes TrainingOperationIndex in forwarding are always used
-  for (const auto &pair : training_usedefs)
+  for (const auto &[operand_index, operand_usedefs] : training_usedefs)
   {
-    const auto &operand_index = pair.first;
-    const auto &operand_usedefs = pair.second;
     const auto &operand = operand_usedefs.operand();
 
     if (_external_operands.contains(operand_index.index()))
@@ -69,10 +67,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   //    It's neither an external operand or a constant operand
   //    What does it mean when def count is 0?
   // A. Not yet found the reason to need it yet.
-  for (const auto &pair : defs_map)
+  for (const auto &[operand_index, def_count] : defs_map)
   {
-    const auto &operand_index = pair.first;
-    const auto def_count = pair.second;
     if (def_count == 0)
       tensor_builder->notifyFirstUse(operand_index.index());
   }
@@ -80,10 +76,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   // This is a workaround to keep the operands over the execution
   // (the operands look like they are unused)
   std::vector<ir::train::TrainingOperandIndex> operands_last_until_end;
-  for (const auto &pair : uses_map)
+  for (const auto &[operand_index, use_count] : uses_map)
   {
-    const auto &operand_index = pair.first;
-    const auto use_count = pair.second;
     if (use_count == 0)
       operands_last_until_end.push_back(operand_index);
   }

@@ -207,9 +207,7 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::allocate(void)
 
   for (const auto &entry : lifetime_map)
   {
-    const auto &use = entry.second;
-    const auto &use_type = use.first;
-    const auto &use_index = use.second;
+    const auto &[use_type, use_index] = entry.second;
     assert(use_index.valid());
     if (use_type == UsesType::FIRST)
       _tensor_mgr->startLifetime(use_index);
@@ -242,13 +240,11 @@ void AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::buildTensors(void)
   assert(_tensor_mgr->nonconstTensors().size() == 0);
 
   // Normal tensors
-  for (const auto &entry : _tensor_info_map)
+  for (const auto &[ind, info] : _tensor_info_map)
   {
-    const auto &ind = entry.first;
     if (_parent_map.count(ind) > 0)
       continue;
 
-    const auto &info = entry.second;
     auto tensor_info = asTensorInfo(info.shape(), info.typeInfo(), ir::Layout::UNKNOWN, true);
     _tensor_mgr->buildTensor(ind, tensor_info, info.shape().rank(), info.isConstant(),
                              _uses_count_map[ind]);

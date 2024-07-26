@@ -125,6 +125,7 @@ void JSON::readOperation(const std::string &backend, const std::string &operatio
     }
   }
 }
+
 void JSON::printOperation(const std::map<uint32_t, int64_t> &operation_info,
                           std::ofstream &stream) const
 {
@@ -145,19 +146,19 @@ void JSON::storeOperationsExecTime() const
   else
   {
     stream << "{";
-    for (const auto &backend : _measurements)
+    for (const auto &[backend, op_map] : _measurements)
     {
-      printString(backend.first->config()->id(), stream);
+      printString(backend->config()->id(), stream);
       stream << ": {";
-      for (const auto &operation : backend.second)
+      for (const auto &[op_name, quant_map] : op_map)
       {
-        printString(operation.first, stream);
+        printString(op_name, stream);
         stream << ": {";
-        for (const auto &type : operation.second)
+        for (const auto &[is_quant, op_time_info_map] : quant_map)
         {
-          printBool(type.first, stream);
+          printBool(is_quant, stream);
           stream << ": [";
-          printOperation(type.second, stream);
+          printOperation(op_time_info_map, stream);
           stream << "], ";
         }
         stream.seekp(-2, std::ofstream::end);

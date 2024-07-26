@@ -98,10 +98,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 {
   // TODO Store builtin backend in BackendContext
   std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
-  for (const auto &e : backend_contexts)
+  for (auto &&[backend, context] : backend_contexts)
   {
-    auto backend = e.first;
-    auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
       builtin_tensor_reg =
@@ -126,10 +124,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const ir::OperandIndexSequence &indices)
 {
   std::shared_ptr<backend::builtin::train::TensorRegistry> builtin_tensor_reg;
-  for (const auto &e : backend_contexts)
+  for (auto &&[backend, context] : backend_contexts)
   {
-    auto backend = e.first;
-    auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
       builtin_tensor_reg = std::dynamic_pointer_cast<backend::builtin::train::TensorRegistry>(
@@ -233,28 +229,29 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
-  for (auto &&pair : context_data_map)
+  for (auto &&[backend, data] : context_data_map)
   {
-    auto backend = pair.first;
-    auto &data = pair.second;
+    auto graph = data.graph.get();
+    auto &external_operands = data.external_operands;
     // Handle graph input/outputs or external tensors
-    data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
       if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
-        data.external_operands.add(ind);
+        external_operands.add(ind);
       // Inputs are either "graph input" or "no def op and non-constant"
       if (whole_graph.getInputs().contains(ind) ||
           (!operand.getDef().valid() && !operand.isConstant()))
         // Outputs are either "graph output" or "no uses"
-        data.graph->addInput(ind);
+        graph->addInput(ind);
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
-        data.graph->addOutput(ind);
+        graph->addOutput(ind);
     });
     VERBOSE(ExecutorFactory) << "createBackendContexts: partial graph for backend="
                              << backend->config()->id() << std::endl;
     dumper::text::dumpGraph(*data.graph);
 
-    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
-                 [&](const auto &ind) { return data.graph->operations().exist(ind); });
+    auto &op_order = data.op_order;
+    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(op_order),
+                 [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
     data.custom_kernel_builder = custom_kernel_builder;
     contexts.emplace(backend, backend->newContext(std::move(data)));
@@ -268,16 +265,16 @@ std::deque<std::pair<const backend::Backend *, Context *>> orderBackendContext(
 {
   std::deque<std::pair<const backend::Backend *, Context *>> ordered_contexts;
 
-  for (auto &&pair : tbackend_contexts)
+  for (auto &&[backend, context] : tbackend_contexts)
   {
     // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
     // different ITensor objects for the input and the output. And it requires all other backends'
     // tensors are ready to use.
-    if (pair.first->config()->id() == "builtin")
-      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    if (backend->config()->id() == "builtin")
+      ordered_contexts.emplace_back(backend, context.get());
     else
-      ordered_contexts.emplace_front(pair.first, pair.second.get());
+      ordered_contexts.emplace_front(backend, context.get());
   }
 
   return ordered_contexts;
@@ -363,16 +360,16 @@ std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
 ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_contexts)
 {
   std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
-  for (auto &&pair : backend_contexts)
+  for (auto &&[backend, context] : backend_contexts)
   {
     // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
     // different ITensor objects for the input and the output. And it requires all other backends'
     // tensors are ready to use.
-    if (pair.first->config()->id() == "builtin")
-      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    if (backend->config()->id() == "builtin")
+      ordered_contexts.emplace_back(backend, context.get());
     else
-      ordered_contexts.emplace_front(pair.first, pair.second.get());
+      ordered_contexts.emplace_front(backend, context.get());
   }
   return ordered_contexts;
 }
@@ -474,10 +471,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &&pair : codes)
+    for (auto &&[op_ind, fn_seq] : codes)
     {
-      auto &op_ind = pair.first;
-      auto &fn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
       if (options->he_profiling_mode)
@@ -547,10 +542,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &&pair : codes)
+    for (auto &&[op_ind, fn_seq] : codes)
     {
-      auto &op_ind = pair.first;
-      auto &fn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
       if (options->he_profiling_mode)
@@ -850,10 +843,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &&pair : codes)
+    for (auto &&[op_ind, tn_seq] : codes)
     {
-      auto &op_ind = pair.first;
-      auto &tn_seq = pair.second;
       auto &op = lowered_graph->trainable_graph().operation(op_ind);
       auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
 

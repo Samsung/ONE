@@ -41,8 +41,8 @@ createStaticShapeInferers(
   const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraphType>> &lowered_subgs)
 {
   std::unordered_map<ir::SubgraphIndex, ILoweredGraph *> lsubgs;
-  for (auto &&e : lowered_subgs)
-    lsubgs[e.first] = e.second.get();
+  for (auto &&[subg_index, lowered_subg] : lowered_subgs)
+    lsubgs[subg_index] = lowered_subg.get();
   return StaticShapeInferer::createStaticShapeInferers(lsubgs);
 }
 

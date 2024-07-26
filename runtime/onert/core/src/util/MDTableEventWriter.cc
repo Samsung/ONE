@@ -227,10 +227,8 @@ struct MDTableBuilder
 
   MDTableBuilder &build()
   {
-    for (const auto &it : divideGraph())
+    for (const auto &[begin_idx, end_idx] : divideGraph())
     {
-      size_t begin_idx = it.first;
-      size_t end_idx = it.second;
       std::map<std::string, Operation> name_to_op;
       for (size_t i = begin_idx + 1; i < end_idx; ++i)
       {
@@ -314,12 +312,12 @@ struct MDTableBuilder
     graph.end_ts = std::stoull(_duration_events[end_idx]->ts);
     graph.setOperations(name_to_op);
 
-    for (const auto &arg : _duration_events[end_idx]->args)
+    for (const auto &[key, val] : _duration_events[end_idx]->args)
     {
-      if (arg.first == "session")
-        graph.session_index = arg.second;
-      if (arg.first == "subgraph")
-        graph.subgraph_index = arg.second;
+      if (key == "session")
+        graph.session_index = val;
+      if (key == "subgraph")
+        graph.subgraph_index = val;
     }
 
 #ifdef DEBUG

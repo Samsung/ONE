@@ -114,9 +114,9 @@ std::string object(const CounterEvent &evt)
 
   fill(content, evt);
 
-  for (auto it = evt.values.begin(); it != evt.values.end(); ++it)
+  for (const auto &[key, val] : evt.values)
   {
-    content.args.emplace_back(it->first, it->second);
+    content.args.emplace_back(key, val);
   }
 
   return ::object(content);
