@@ -14,6 +14,7 @@ set(SOURCES
         OMBackpropExecutionBuilder.cpp
         losses_functions/MSE.cpp
         losses_functions/CrossEntropy.cpp
+        losses_functions/SparseCrossEntropy.cpp
         metrics/CrossEntropy.cpp
         metrics/MAE.cpp
         metrics/MSE.cpp
