@@ -23,6 +23,7 @@
 #include "train/metrics/CrossEntropy.h"
 #include "train/metrics/Accuracy.h"
 #include "train/metrics/MAE.h"
+#include "train/metrics/SparseCrossEntropyAccuracy.h"
 
 using namespace onert_micro::core::train;
 using namespace onert_micro::core;
@@ -222,6 +223,12 @@ OMStatus OMTrainingHandler::evaluateMetric(OMMetrics metric, void *metric_val,
     assert(calculated_data != nullptr);
 
     // Get target data
+    /** NOTE:
+     * This offset will always return 0 if the MODEL OUTPUT is returning 1 value of prediction.
+     * (forward_output->size() == length of output vector.)
+     * one-hot: size == target_numbers
+     * Sparse cross : size == 1
+     */
     size_t offset = batch_num * sizeof(core::OMDataType(forward_output_tensor->type())) * flat_size;
     uint8_t *target_data = _training_storage.getTargetData(i) + offset;
 
@@ -259,6 +266,14 @@ OMStatus OMTrainingHandler::evaluateMetric(OMMetrics metric, void *metric_val,
         *f_metric_val +=
           metrics::Accuracy::calculateValue(flat_size, reinterpret_cast<float *>(calculated_data),
                                             reinterpret_cast<float *>(target_data));
+        break;
+      }
+      case SPARSE_CROSS_ENTROPY_ACCURACY:
+      {
+        // Note: sum up new calculated value for current sample
+        *f_metric_val += metrics::SparseCrossEntropyAccuracy::calculateValue(
+          flat_size, reinterpret_cast<float *>(calculated_data),
+          reinterpret_cast<float *>(target_data));
         break;
       }
       default:
