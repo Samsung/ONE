@@ -435,6 +435,54 @@ public:
   luci::CircleConst *input2 = nullptr;
 };
 
+class DivGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    div = g.nodes()->create<luci::CircleDiv>();
+    constant = g.nodes()->create<luci::CircleConst>();
+
+    div->dtype(loco::DataType::FLOAT32);
+    constant->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    div->shape({1, channel_size, 4, 4});
+    constant->shape({1, channel_size, 1, 1});
+
+    constant->size<loco::DataType::FLOAT32>(channel_size);
+    for (uint32_t i = 0; i < channel_size; i++)
+    {
+      constant->at<loco::DataType::FLOAT32>(i) = i;
+    }
+
+    div->x(input);
+    div->y(constant);
+
+    div->name("div");
+    constant->name("constant");
+
+    return div;
+  }
+
+public:
+  void update_const_shape_to_nchw(void)
+  {
+    uint32_t channel_size = 16;
+    constant->shape({1, channel_size, 4, 4});
+
+    constant->size<loco::DataType::FLOAT32>(channel_size * 4 * 4);
+    for (uint32_t i = 0; i < channel_size; i++)
+    {
+      constant->at<loco::DataType::FLOAT32>(i) = i;
+    }
+  }
+
+public:
+  luci::CircleDiv *div = nullptr;
+  luci::CircleConst *constant = nullptr;
+};
+
 class EluGraph final : public SimpleGraph
 {
 protected:
@@ -1380,6 +1428,35 @@ TEST(ConvertNCHWToNHWC, Concatenation)
   EXPECT_EQ(4, g.concat->dim(2).value());
   EXPECT_EQ(32, g.concat->dim(3).value());
   EXPECT_EQ(3, g.concat->axis());
+}
+
+TEST(ConvertNCHWToNHWC, Div)
+{
+  DivGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.div->x());
+
+  auto div_succs = loco::succs(g.div);
+  EXPECT_EQ(1, div_succs.size());
+  check_post_trans(*div_succs.begin());
+
+  uint32_t channel_size = 16;
+  auto new_constant = dynamic_cast<luci::CircleConst *>(g.div->y());
+  EXPECT_NE(nullptr, new_constant);
+  EXPECT_EQ(4, new_constant->rank());
+  EXPECT_EQ(1, new_constant->dim(0).value());
+  EXPECT_EQ(1, new_constant->dim(1).value());
+  EXPECT_EQ(1, new_constant->dim(2).value());
+  EXPECT_EQ(channel_size, new_constant->dim(3).value());
+
+  check_pre_trans(g.output->from());
 }
 
 TEST(ConvertNCHWToNHWC, Elu)

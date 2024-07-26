@@ -609,6 +609,40 @@ bool is_NCHW_with_const(const luci::CircleMul *node, luci::CircleNode *&pred_nod
   return true;
 }
 
+// TODO Merge this function with other elementwise Ops
+bool is_NCHW_with_const(const luci::CircleDiv *node, luci::CircleNode *&pred_node,
+                        luci::CircleConst *&const_node)
+{
+  auto x = dynamic_cast<luci::CircleConst *>(node->x());
+  auto y = dynamic_cast<luci::CircleConst *>(node->y());
+
+  if (x != nullptr && y == nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->y());
+    const_node = x;
+  }
+  else if (x == nullptr && y != nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+    const_node = y;
+  }
+  else
+  {
+    // Ignore if MUL does not have a const_node input.
+    return false;
+  }
+
+  if (pred_node->rank() != 4)
+    return false;
+
+  if (not broadcastable(const_node, node))
+    return false;
+
+  const_node = expand_to_rank_4(const_node);
+
+  return true;
+}
+
 // We assume ADD with const input is NCHW if,
 // Input shape: (N, C, H, W)
 // Output shape: (N, C, H, W)
@@ -869,6 +903,58 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
 
     post_trans->a(node);
 
+    return true;
+  }
+
+  bool visit(luci::CircleDiv *node)
+  {
+    LOGGER(l);
+
+    luci::CircleNode *pred_node = nullptr;
+    luci::CircleConst *constant = nullptr;
+
+    if (is_NCHW_with_const(node, pred_node, constant))
+    {
+      assert(constant->rank() == 4); // FIX is_NCHW_with_const unless
+      auto nhwc_const = create_NHWC_from_NCHW(constant);
+      if (nhwc_const == nullptr)
+        return false;
+      node->y(nhwc_const);
+
+      auto pre_trans = create_pre_transpose(node);
+      pre_trans->a(pred_node);
+      node->x(pre_trans);
+    }
+    else if (constant == nullptr)
+    {
+      // Only support for input rank 4
+      auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
+      if (input_x->rank() != 4)
+        return false;
+      auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
+      if (input_y->rank() != 4)
+        return false;
+
+      auto pre_trans_x = create_pre_transpose(node);
+      pre_trans_x->a(input_x);
+      node->x(pre_trans_x);
+
+      auto pre_trans_y = create_pre_transpose(node);
+      pre_trans_y->a(input_y);
+      node->y(pre_trans_y);
+    }
+    else
+    {
+      return false;
+    }
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    auto post_trans = create_post_transpose(node);
+    loco::replace(node).with(post_trans);
+
+    post_trans->a(node);
     return true;
   }
 
@@ -1578,6 +1664,7 @@ bool ConvertNCHWToNHWCPass::run(loco::Graph *g)
       // tflite/circle assumes the last channel is always axis
       case luci::CircleOpcode::ADD:
       case luci::CircleOpcode::CONCATENATION:
+      case luci::CircleOpcode::DIV:
       case luci::CircleOpcode::ELU:
       case luci::CircleOpcode::GELU:
       case luci::CircleOpcode::LEAKY_RELU:
