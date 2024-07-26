@@ -695,6 +695,20 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         external_operands.remove(index);
     }
 
+    const auto backend = pair.first;
+    // NOTE The builtin backend does not yet support initializing UseDefs for training
+    //      because it's graph does not have loss operation
+    //      Without loss opeartion, we cannot call btopolSortOperations() or
+    //      getEssentialBackwardOrder()
+    // TODO Modify checking the condition to check whether loss op exists
+    if (backend->config()->id() != "builtin")
+    {
+      // Initialize training def-uses
+      tgraph->updateGraphDependency();
+
+      tgraph->verify();
+    }
+
     // Set trainable context data
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);
@@ -706,7 +720,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.optim_info = training_info.optimizerInfo();
 
     // TODO Remove dynamic_cast
-    const auto backend = pair.first;
     const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
     if (!tbackend)
     {

@@ -161,6 +161,9 @@ public:
   truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order,
                         std::function<bool(const ir::OperationIndex &)> truncating_cond) const;
 
+public:
+  void updateGraphDependency();
+
 private:
   Graph _graph;
   Operands _backward_operands;
