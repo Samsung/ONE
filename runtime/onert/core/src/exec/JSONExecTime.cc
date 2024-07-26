@@ -125,6 +125,7 @@ void JSON::readOperation(const std::string &backend, const std::string &operatio
     }
   }
 }
+
 void JSON::printOperation(const std::map<uint32_t, int64_t> &operation_info,
                           std::ofstream &stream) const
 {
@@ -135,9 +136,6 @@ void JSON::printOperation(const std::map<uint32_t, int64_t> &operation_info,
   stream.seekp(-2, std::ofstream::end);
 }
 
-using MeasurementData = std::unordered_map<
-  const backend::Backend *,
-  std::unordered_map<std::string, std::unordered_map<bool, std::map<uint32_t, int64_t>>>>;
 void JSON::storeOperationsExecTime() const
 {
   std::ofstream stream(_measurement_file);
