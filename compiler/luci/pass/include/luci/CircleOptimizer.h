@@ -41,6 +41,7 @@ public:
       FuseBatchNormWithConv,
       FuseBatchNormWithDwConv,
       FuseBatchNormWithTConv,
+      FuseMulWithFullyConnected,
       FuseMulToFullyConnectedWeights,
       FuseSliceWithTConv,
       FuseBCQ,

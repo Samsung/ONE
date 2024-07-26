@@ -171,6 +171,7 @@ Current transformation options are
 - fuse_batchnorm_with_conv : This fuses BatchNorm operator to convolution operator
 - fuse_batchnorm_with_dwconv : This fuses BatchNorm operator to depthwise convolution operator
 - fuse_batchnorm_with_tconv : This fuses BatchNorm operator to transpose convolution operator
+- fuse_mul_with_fully_connected: This fuses Mul operator with the preceding FullyConnected operator if possible
 - fuse_mul_to_fullyconnected_weights : This fuses Mul operator to following FullyConnected operator weights
 - fuse_mul_with_conv: This fuses Mul with a preceding Convolution op if possible.
 - fuse_mul_with_div: This fuses Mul and Div op as Div.

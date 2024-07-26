@@ -42,6 +42,7 @@
 #include "luci/Pass/FuseBatchNormWithDwConvPass.h"
 #include "luci/Pass/FuseBatchNormWithTConvPass.h"
 #include "luci/Pass/FuseBCQPass.h"
+#include "luci/Pass/FuseMulWithFullyConnectedPass.h"
 #include "luci/Pass/FuseMulToFullyConnectedWeightsPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
 #include "luci/Pass/FuseMeanWithMeanPass.h"
@@ -260,6 +261,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
+  if (_options->query(Options::Algorithm::FuseMulWithFullyConnected))
+  {
+    phase.emplace_back(std::make_unique<FuseMulWithFullyConnectedPass>());
+  }
   if (_options->query(Options::Algorithm::CommonSubExpressionElimination))
   {
     phase.emplace_back(std::make_unique<luci::CommonSubExpressionEliminationPass>());

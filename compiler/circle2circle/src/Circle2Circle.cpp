@@ -112,6 +112,8 @@ int entry(int argc, char **argv)
   add_switch(arser, "--fuse_mean_with_mean",
              "This will fuse two Mean operations when they follow one by one. This will fold them "
              "into one operation and merge reduction indices.");
+  add_switch(arser, "--fuse_mul_with_fully_connected",
+             "This will fuse Mul operator to FullyConnected operator");
   add_switch(arser, "--fuse_mul_to_fullyconnected_weights",
              "This will fuse Mul to following FullyConnected weights");
   add_switch(arser, "--fuse_mul_with_conv",
@@ -312,6 +314,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseBatchNormWithDwConv);
   if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
     options->enable(Algorithms::FuseBatchNormWithTConv);
+  if (arser.get<bool>("--fuse_mul_with_fully_connected"))
+    options->enable(Algorithms::FuseMulWithFullyConnected);
   if (arser.get<bool>("--fuse_mul_to_fullyconnected_weights"))
     options->enable(Algorithms::FuseMulToFullyConnectedWeights);
   if (arser.get<bool>("--fuse_slice_with_tconv"))
