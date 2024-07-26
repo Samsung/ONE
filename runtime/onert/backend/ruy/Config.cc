@@ -25,8 +25,6 @@ namespace ruy
 
 bool Config::initialize() { return true; }
 
-ir::Layout Config::supportLayout(const ir::IOperation &, ir::Layout) { return ir::Layout::NHWC; }
-
 } // namespace ruy
 } // namespace backend
 } // namespace onert
