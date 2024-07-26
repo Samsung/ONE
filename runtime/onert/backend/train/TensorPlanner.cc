@@ -386,7 +386,7 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
       if (!tensor_builder->isRegisteredBackward(incoming))
         continue;
 
-      // NOTE There is no case where an op's incoming tensors have the coresponding op def yet
+      // NOTE There is no case where an op's incoming tensors don't have the corresponding op def
       assert(defs_map.find(incoming_index) != defs_map.end());
 
       if (uses_map.find(incoming_index) != uses_map.end())
