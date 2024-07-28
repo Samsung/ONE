@@ -16,6 +16,7 @@
 
 #include "luci/CircleOptimizer.h"
 
+#include "luci/Pass/CanonicalizePass.h"
 #include "luci/Pass/ConvertNCHWToNHWCPass.h"
 #include "luci/Pass/CommonSubExpressionEliminationPass.h"
 #include "luci/Pass/ExpandBroadcastConstPass.h"
@@ -259,6 +260,9 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+  // Run canonicalization
+  phase.emplace_back(std::make_unique<luci::CanonicalizePass>());
 
   if (_options->query(Options::Algorithm::CommonSubExpressionElimination))
   {
