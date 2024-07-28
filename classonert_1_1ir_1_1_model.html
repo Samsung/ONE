@@ -635,9 +635,9 @@ template&lt;typename <a class="el" href="classonert_1_1ir_1_1_graph.html">Graph<
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00106">106</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html">Model.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  107</span>  {</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;e : _subgraphs)</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[subg_idx, subg] : _subgraphs)</div>
 <div class="line"><span class="lineno">  109</span>    {</div>
-<div class="line"><span class="lineno">  110</span>      fn(e.first, *e.second);</div>
+<div class="line"><span class="lineno">  110</span>      fn(subg_idx, *subg);</div>
 <div class="line"><span class="lineno">  111</span>    }</div>
 <div class="line"><span class="lineno">  112</span>  }</div>
 </div><!-- fragment -->
@@ -678,9 +678,9 @@ template&lt;typename <a class="el" href="classonert_1_1ir_1_1_graph.html">Graph<
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00120">120</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html">Model.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  121</span>  {</div>
-<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;e : _subgraphs)</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[subg_idx, subg] : _subgraphs)</div>
 <div class="line"><span class="lineno">  123</span>    {</div>
-<div class="line"><span class="lineno">  124</span>      fn(e.first, *e.second);</div>
+<div class="line"><span class="lineno">  124</span>      fn(subg_idx, *subg);</div>
 <div class="line"><span class="lineno">  125</span>    }</div>
 <div class="line"><span class="lineno">  126</span>  }</div>
 </div><!-- fragment -->

@@ -225,8 +225,8 @@ $(document).ready(function(){initNavTree('_dataflow_executor_8cc_source.html',''
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      });</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  });</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;s : op_to_job)</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#afc25b647902842d6b73d49f3e4aca458">_job_to_op</a>.emplace(s.second, s.first);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[op_ind, job_ind] : op_to_job)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#afc25b647902842d6b73d49f3e4aca458">_job_to_op</a>.emplace(job_ind, op_ind);</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#a9dbea41b0e3e1ef6ffadf313e0329f80">_input_info</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_dataflow_executor.html#af7e4cea778c16709c172b2c9e3fcbe09">_initial_input_info</a>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>

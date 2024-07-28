@@ -158,12 +158,12 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00108">108</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>  : _initialized(<span class="keyword">false</span>), _capacity(0), _mem_plans(), _live_operands(), _interference_graph(),</div>
-<div class="line"><span class="lineno">  110</span>    _operands()</div>
-<div class="line"><span class="lineno">  111</span>{</div>
-<div class="line"><span class="lineno">  112</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  113</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00107">107</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>  : _initialized(<span class="keyword">false</span>), _capacity(0), _mem_plans(), _live_operands(), _interference_graph(),</div>
+<div class="line"><span class="lineno">  109</span>    _operands()</div>
+<div class="line"><span class="lineno">  110</span>{</div>
+<div class="line"><span class="lineno">  111</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  112</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -250,19 +250,19 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#aaac094797bf0270dfc07cadcc4d3ced8">onert::backend::basic::IMemoryPlanner&lt; ir::OperandIndex &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00115">115</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
-<div class="line"><span class="lineno">  117</span>  _operands.emplace(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, ind);</div>
-<div class="line"><span class="lineno">  118</span>  _interference_graph[ind].insert(_interference_graph[ind].end(), _live_operands.cbegin(),</div>
-<div class="line"><span class="lineno">  119</span>                                  _live_operands.cend());</div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;live_operand : _live_operands)</div>
-<div class="line"><span class="lineno">  121</span>  {</div>
-<div class="line"><span class="lineno">  122</span>    _interference_graph[live_operand].emplace_back(ind);</div>
-<div class="line"><span class="lineno">  123</span>  }</div>
-<div class="line"><span class="lineno">  124</span>  _live_operands.emplace(ind);</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(WIC_PLANNER) &lt;&lt; <span class="stringliteral">&quot;claim(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): [&quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;sz]&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  127</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00114">114</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>{</div>
+<div class="line"><span class="lineno">  116</span>  _operands.emplace(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, ind);</div>
+<div class="line"><span class="lineno">  117</span>  _interference_graph[ind].insert(_interference_graph[ind].end(), _live_operands.cbegin(),</div>
+<div class="line"><span class="lineno">  118</span>                                  _live_operands.cend());</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;live_operand : _live_operands)</div>
+<div class="line"><span class="lineno">  120</span>  {</div>
+<div class="line"><span class="lineno">  121</span>    _interference_graph[live_operand].emplace_back(ind);</div>
+<div class="line"><span class="lineno">  122</span>  }</div>
+<div class="line"><span class="lineno">  123</span>  _live_operands.emplace(ind);</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(WIC_PLANNER) &lt;&lt; <span class="stringliteral">&quot;claim(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): [&quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;sz]&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  126</span>}</div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
@@ -298,12 +298,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a41a044a591ead5a0074b5b63869df065">onert::backend::basic::IMemoryPlanner&lt; ir::OperandIndex &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00199">199</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
-<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">if</span> (!_initialized)</div>
-<div class="line"><span class="lineno">  202</span>    buildMemoryPlans();</div>
-<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">return</span> _mem_plans;</div>
-<div class="line"><span class="lineno">  204</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00194">194</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">if</span> (!_initialized)</div>
+<div class="line"><span class="lineno">  197</span>    buildMemoryPlans();</div>
+<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">return</span> _mem_plans;</div>
+<div class="line"><span class="lineno">  199</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -341,11 +341,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1basic_1_1_i_memory_planner.html#a5683e212f4896e4ba7e46d997aa2580d">onert::backend::basic::IMemoryPlanner&lt; ir::OperandIndex &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00129">129</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span>{</div>
-<div class="line"><span class="lineno">  131</span>  _live_operands.erase(ind);</div>
-<div class="line"><span class="lineno">  132</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(WIC_PLANNER) &lt;&lt; <span class="stringliteral">&quot;release(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  133</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html#l00128">128</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
+<div class="line"><span class="lineno">  130</span>  _live_operands.erase(ind);</div>
+<div class="line"><span class="lineno">  131</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(WIC_PLANNER) &lt;&lt; <span class="stringliteral">&quot;release(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  132</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 

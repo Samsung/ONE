@@ -159,6 +159,9 @@ var namespaces_dup =
     ] ],
     [ "flatbuffers", "namespaceflatbuffers.html", "namespaceflatbuffers" ],
     [ "flexbuffers", "namespaceflexbuffers.html", "namespaceflexbuffers" ],
+    [ "fme_apply", "namespacefme__apply.html", "namespacefme__apply" ],
+    [ "fme_detect", "namespacefme__detect.html", "namespacefme__detect" ],
+    [ "fmelib", "namespacefmelib.html", "namespacefmelib" ],
     [ "foder", "namespacefoder.html", "namespacefoder" ],
     [ "gen_h5_explicit_inputs_all", "namespacegen__h5__explicit__inputs__all.html", [
       [ "chunks", "namespacegen__h5__explicit__inputs__all.html#a176edb67a15277eabbe46b5dd1b43855", null ],

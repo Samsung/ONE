@@ -1,0 +1,5 @@
+<map id="fme_apply::ForwardPreScalePass" name="fme_apply::ForwardPreScalePass">
+<area shape="rect" id="Node000001" title="Pass to forward CircleCustom(PreScale) to succeeding Op." alt="" coords="5,79,222,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="73,5,154,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,46,116,79,111,79,111,46"/>
+</map>

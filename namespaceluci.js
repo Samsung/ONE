@@ -8,6 +8,7 @@ var namespaceluci =
     [ "BuiltinOperatorMappingRule", "classluci_1_1_builtin_operator_mapping_rule.html", "classluci_1_1_builtin_operator_mapping_rule" ],
     [ "BuiltinOptionsExtractor", "classluci_1_1_builtin_options_extractor.html", "classluci_1_1_builtin_options_extractor" ],
     [ "BuiltinOptionsMappingRule", "classluci_1_1_builtin_options_mapping_rule.html", "classluci_1_1_builtin_options_mapping_rule" ],
+    [ "CanonicalizePass", "structluci_1_1_canonicalize_pass.html", "structluci_1_1_canonicalize_pass" ],
     [ "CircleAbs", "classluci_1_1_circle_abs.html", "classluci_1_1_circle_abs" ],
     [ "CircleAbsGraphBuilder", "classluci_1_1_circle_abs_graph_builder.html", "classluci_1_1_circle_abs_graph_builder" ],
     [ "CircleAdd", "classluci_1_1_circle_add.html", "classluci_1_1_circle_add" ],

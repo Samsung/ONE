@@ -157,8 +157,8 @@ Data Fields</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:abee92dc57704a6131d49cbbfb2a8ea63" id="r_abee92dc57704a6131d49cbbfb2a8ea63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#abee92dc57704a6131d49cbbfb2a8ea63">initConsts</a> ()</td></tr>
 <tr class="separator:abee92dc57704a6131d49cbbfb2a8ea63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4fc65b50cb3f21e6c76a1ebd926141e" id="r_ac4fc65b50cb3f21e6c76a1ebd926141e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#ac4fc65b50cb3f21e6c76a1ebd926141e">registerTensorInfo</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> backend_layout)=0</td></tr>
-<tr class="separator:ac4fc65b50cb3f21e6c76a1ebd926141e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bb5fd1b0a147090cedc89da483c1ca6" id="r_a3bb5fd1b0a147090cedc89da483c1ca6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a3bb5fd1b0a147090cedc89da483c1ca6">registerTensorInfo</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)=0</td></tr>
+<tr class="separator:a3bb5fd1b0a147090cedc89da483c1ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31d48e67c72cb245b93d78dbb90376c7" id="r_a31d48e67c72cb245b93d78dbb90376c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a31d48e67c72cb245b93d78dbb90376c7">planTensors</a> ()</td></tr>
 <tr class="separator:a31d48e67c72cb245b93d78dbb90376c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -245,9 +245,9 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_a2104ac8b3e1ae28ea2dfbb7ca00e2806"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#a2104ac8b3e1ae28ea2dfbb7ca00e2806">onert::backend::BackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00078">BackendContext.h:78</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_aa223fd1bf5600d4bbb67b271bce4c635"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#aa223fd1bf5600d4bbb67b271bce4c635">onert::backend::BackendContext::data</a></div><div class="ttdeci">const ContextData &amp; data() const</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00068">BackendContext.h:68</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_ac0620e7943be6ba675cf35b6392e39a2"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#ac0620e7943be6ba675cf35b6392e39a2">onert::backend::BackendContext::backend</a></div><div class="ttdeci">const Backend * backend() const</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00064">BackendContext.h:64</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a0f1b966e5ceab410b4445ebd7dc5e3fe"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">onert::backend::cl_common::BackendContext::tensor_builder</a></div><div class="ttdeci">std::shared_ptr&lt; T_TensorBuilder &gt; tensor_builder</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">BackendContext.h:227</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a870b4e3ab3e48c59dc11ff29638b2b72"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a870b4e3ab3e48c59dc11ff29638b2b72">onert::backend::cl_common::BackendContext::constant_initializer</a></div><div class="ttdeci">std::shared_ptr&lt; T_ConstantInitializer &gt; constant_initializer</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00228">BackendContext.h:228</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a987398d9315bc7b5b773b9923b9ba968"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a987398d9315bc7b5b773b9923b9ba968">onert::backend::cl_common::BackendContext::kernel_gen</a></div><div class="ttdeci">std::shared_ptr&lt; T_KernelGenerator &gt; kernel_gen</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00229">BackendContext.h:229</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a0f1b966e5ceab410b4445ebd7dc5e3fe"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">onert::backend::cl_common::BackendContext::tensor_builder</a></div><div class="ttdeci">std::shared_ptr&lt; T_TensorBuilder &gt; tensor_builder</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00225">BackendContext.h:225</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a870b4e3ab3e48c59dc11ff29638b2b72"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a870b4e3ab3e48c59dc11ff29638b2b72">onert::backend::cl_common::BackendContext::constant_initializer</a></div><div class="ttdeci">std::shared_ptr&lt; T_ConstantInitializer &gt; constant_initializer</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00226">BackendContext.h:226</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a987398d9315bc7b5b773b9923b9ba968"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a987398d9315bc7b5b773b9923b9ba968">onert::backend::cl_common::BackendContext::kernel_gen</a></div><div class="ttdeci">std::shared_ptr&lt; T_KernelGenerator &gt; kernel_gen</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">BackendContext.h:227</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,7 +316,7 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00035">Index.h:35</a></div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1_context_data_html_abcd4c866e5e71af551c9511c4d08ed68"><div class="ttname"><a href="structonert_1_1backend_1_1_context_data.html#abcd4c866e5e71af551c9511c4d08ed68">onert::backend::ContextData::graph</a></div><div class="ttdeci">std::unique_ptr&lt; ir::Graph &gt; graph</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00040">BackendContext.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00075">onert::backend::BackendContext::_data</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00040">onert::backend::ContextData::graph</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00081">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00229">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::kernel_gen</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00042">onert::backend::ContextData::op_order</a>, <a class="el" href="_i_function_8h_source.html#l00030">onert::exec::IFunction::prepare()</a>, and <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::tensor_builder</a>.</p>
+<p class="reference">References <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00075">onert::backend::BackendContext::_data</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00040">onert::backend::ContextData::graph</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00081">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::kernel_gen</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00042">onert::backend::ContextData::op_order</a>, <a class="el" href="_i_function_8h_source.html#l00030">onert::exec::IFunction::prepare()</a>, and <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00225">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::tensor_builder</a>.</p>
 
 </div>
 </div>
@@ -370,7 +370,7 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
 <div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">Index.h:32</a></div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1_context_data_html_ad06628db6c302cdb96e2ccddce878493"><div class="ttname"><a href="structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493">onert::backend::ContextData::external_operands</a></div><div class="ttdeci">util::Set&lt; ir::OperandIndex &gt; external_operands</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00044">BackendContext.h:44</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00075">onert::backend::BackendContext::_data</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation::accept()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00228">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::constant_initializer</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00044">onert::backend::ContextData::external_operands</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00040">onert::backend::ContextData::graph</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00065">onert::backend::BackendContext::graph()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00079">onert::ir::Operand::isConstant()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">onert::ir::Graph::operands()</a>.</p>
+<p class="reference">References <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00075">onert::backend::BackendContext::_data</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation::accept()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00226">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::constant_initializer</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00044">onert::backend::ContextData::external_operands</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00040">onert::backend::ContextData::graph</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00065">onert::backend::BackendContext::graph()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00079">onert::ir::Operand::isConstant()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">onert::ir::Graph::operands()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00049">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::genKernels()</a>.</p>
 
@@ -401,143 +401,143 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">104</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>  {</div>
-<div class="line"><span class="lineno">  106</span>    ir::OperandIndexMap&lt;uint32_t&gt; uses_map;</div>
-<div class="line"><span class="lineno">  107</span>    ir::OperandIndexMap&lt;uint32_t&gt; def_map;</div>
-<div class="line"><span class="lineno">  108</span>    ir::OperandIndexSequence constants;</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="comment">// Prepare scanning</span></div>
-<div class="line"><span class="lineno">  111</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#abcd4c866e5e71af551c9511c4d08ed68">graph</a>-&gt;operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> ir::Operand &amp;obj) {</div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493">external_operands</a>.contains(ind))</div>
-<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>      uses_map[ind] = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.getUses().size();</div>
-<div class="line"><span class="lineno">  116</span>      def_map[ind] = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.getDef().valid() ? 1 : 0;</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.isConstant())</div>
-<div class="line"><span class="lineno">  119</span>        constants.append(ind);</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  122</span>      {</div>
-<div class="line"><span class="lineno">  123</span>        <span class="comment">// These tensors do not exist in any operation (No use and def)</span></div>
-<div class="line"><span class="lineno">  124</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.info();</div>
-<div class="line"><span class="lineno">  125</span>        <span class="keyword">const</span> <span class="keyword">auto</span> layout = <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#a06fb0afdae05176300eee3fd62e4ed7a">operand_layouts</a>.at(ind);</div>
-<div class="line"><span class="lineno">  126</span>        <span class="comment">// TODO Change tensor info to have permuted shape</span></div>
-<div class="line"><span class="lineno">  127</span>        <a class="code hl_function" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#ac4fc65b50cb3f21e6c76a1ebd926141e">registerTensorInfo</a>(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">  128</span>      }</div>
-<div class="line"><span class="lineno">  129</span>    });</div>
+<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00103">103</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>  {</div>
+<div class="line"><span class="lineno">  105</span>    ir::OperandIndexMap&lt;uint32_t&gt; uses_map;</div>
+<div class="line"><span class="lineno">  106</span>    ir::OperandIndexMap&lt;uint32_t&gt; def_map;</div>
+<div class="line"><span class="lineno">  107</span>    ir::OperandIndexSequence constants;</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment">// Prepare scanning</span></div>
+<div class="line"><span class="lineno">  110</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#abcd4c866e5e71af551c9511c4d08ed68">graph</a>-&gt;operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> ir::Operand &amp;obj) {</div>
+<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#ad06628db6c302cdb96e2ccddce878493">external_operands</a>.contains(ind))</div>
+<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>      uses_map[ind] = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.getUses().size();</div>
+<div class="line"><span class="lineno">  115</span>      def_map[ind] = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.getDef().valid() ? 1 : 0;</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.isConstant())</div>
+<div class="line"><span class="lineno">  118</span>        constants.append(ind);</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  121</span>      {</div>
+<div class="line"><span class="lineno">  122</span>        <span class="comment">// These tensors do not exist in any operation (No use and def)</span></div>
+<div class="line"><span class="lineno">  123</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a> = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.info();</div>
+<div class="line"><span class="lineno">  124</span>        assert(<a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#a06fb0afdae05176300eee3fd62e4ed7a">operand_layouts</a>.at(ind) == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
+<div class="line"><span class="lineno">  125</span>        <a class="code hl_function" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a3bb5fd1b0a147090cedc89da483c1ca6">registerTensorInfo</a>(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  126</span>      }</div>
+<div class="line"><span class="lineno">  127</span>    });</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>    <span class="comment">// Start scanning to do notify{First|Last}Use for each tensor</span></div>
 <div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>    <span class="comment">// Start scanning to do notify{First|Last}Use for each tensor</span></div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>    <span class="comment">// If a tensor is a constant, increase the use of the tensor and allocate it first.</span></div>
-<div class="line"><span class="lineno">  134</span>    <span class="comment">// Increasing use count here makes the tensor never be deallocated, i.e it they will be</span></div>
-<div class="line"><span class="lineno">  135</span>    <span class="comment">// deallocated last.</span></div>
-<div class="line"><span class="lineno">  136</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(<a class="code hl_function" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a31d48e67c72cb245b93d78dbb90376c7">planTensors</a>) &lt;&lt; <span class="stringliteral">&quot;TENSORS as CONSTANT&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : constants)</div>
-<div class="line"><span class="lineno">  138</span>    {</div>
-<div class="line"><span class="lineno">  139</span>      uses_map[ind]++;</div>
-<div class="line"><span class="lineno">  140</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">  141</span>    }</div>
-<div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>    <span class="comment">// At each operation,</span></div>
-<div class="line"><span class="lineno">  144</span>    <span class="comment">// 1. Scan DEF of outputs. If the DEF, allocate it</span></div>
-<div class="line"><span class="lineno">  145</span>    <span class="comment">// 2. Scan DEF of inputs. If variable tensor, allocate it</span></div>
-<div class="line"><span class="lineno">  146</span>    <span class="comment">// 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0</span></div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.op_order)</div>
-<div class="line"><span class="lineno">  148</span>    {</div>
-<div class="line"><span class="lineno">  149</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(op_ind);</div>
-<div class="line"><span class="lineno">  150</span>      <span class="keyword">auto</span> op_inputs = op.getInputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">ir::Remove::DUPLICATED</a> | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>;</div>
-<div class="line"><span class="lineno">  151</span>      <span class="keyword">auto</span> op_outputs = op.getOutputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">ir::Remove::DUPLICATED</a> | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>;</div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>      <span class="comment">// Define outputs</span></div>
-<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_outputs)</div>
-<div class="line"><span class="lineno">  155</span>      {</div>
-<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  157</span>          <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  158</span>        assert(def_map.find(ind) != def_map.end());</div>
-<div class="line"><span class="lineno">  159</span>        <span class="keywordflow">if</span> (def_map[ind])</div>
-<div class="line"><span class="lineno">  160</span>        {</div>
-<div class="line"><span class="lineno">  161</span>          def_map[ind] = 0;</div>
-<div class="line"><span class="lineno">  162</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">  163</span>        }</div>
-<div class="line"><span class="lineno">  164</span>      }</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>      <span class="comment">// Scan variable tensors</span></div>
-<div class="line"><span class="lineno">  167</span>      <span class="comment">// This tensor has features like constant. But OperandInfo and LowerInfo treat them as</span></div>
-<div class="line"><span class="lineno">  168</span>      <span class="comment">// non-constant because of less memory usage by memory planning in here</span></div>
-<div class="line"><span class="lineno">  169</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
-<div class="line"><span class="lineno">  170</span>      {</div>
-<div class="line"><span class="lineno">  171</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  172</span>          <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  173</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = <a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
-<div class="line"><span class="lineno">  174</span>        <span class="keywordflow">if</span> (operand.info().isVariable())</div>
-<div class="line"><span class="lineno">  175</span>        {</div>
-<div class="line"><span class="lineno">  176</span>          <span class="comment">// The variable tensor with buffer is not supported yet</span></div>
-<div class="line"><span class="lineno">  177</span>          assert(operand.data() == <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  178</span>          assert(operand.getUses().size() == 1 &amp;&amp; !operand.getDef().valid());</div>
-<div class="line"><span class="lineno">  179</span>          assert(uses_map[ind] == 1 &amp;&amp; def_map[ind] == 0);</div>
-<div class="line"><span class="lineno">  180</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyFirstUse(ind);</div>
-<div class="line"><span class="lineno">  181</span>        }</div>
-<div class="line"><span class="lineno">  182</span>      }</div>
-<div class="line"><span class="lineno">  183</span> </div>
-<div class="line"><span class="lineno">  184</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
-<div class="line"><span class="lineno">  185</span>      {</div>
-<div class="line"><span class="lineno">  186</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
-<div class="line"><span class="lineno">  187</span>          <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  188</span>        assert(uses_map.find(ind) != uses_map.end());</div>
-<div class="line"><span class="lineno">  189</span>        assert(uses_map[ind] &gt; 0);</div>
-<div class="line"><span class="lineno">  190</span>        uses_map[ind]--;</div>
-<div class="line"><span class="lineno">  191</span>        <span class="keywordflow">if</span> (uses_map[ind] == 0)</div>
-<div class="line"><span class="lineno">  192</span>        {</div>
-<div class="line"><span class="lineno">  193</span>          <span class="comment">// plan for deallocation of static tensornode</span></div>
-<div class="line"><span class="lineno">  194</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyLastUse(ind);</div>
-<div class="line"><span class="lineno">  195</span>        }</div>
-<div class="line"><span class="lineno">  196</span>      }</div>
-<div class="line"><span class="lineno">  197</span>    }</div>
-<div class="line"><span class="lineno">  198</span> </div>
-<div class="line"><span class="lineno">  199</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#abcd4c866e5e71af551c9511c4d08ed68">graph</a>-&gt;operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> ir::Operand &amp;) {</div>
-<div class="line"><span class="lineno">  200</span>      <span class="keywordflow">if</span> (uses_map[ind] == 0)</div>
-<div class="line"><span class="lineno">  201</span>      {</div>
-<div class="line"><span class="lineno">  202</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyLastUse(ind);</div>
-<div class="line"><span class="lineno">  203</span>      }</div>
-<div class="line"><span class="lineno">  204</span>    });</div>
-<div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>    <span class="comment">// Dispose and validate</span></div>
-<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : constants)</div>
-<div class="line"><span class="lineno">  208</span>    {</div>
-<div class="line"><span class="lineno">  209</span>      --uses_map[ind];</div>
-<div class="line"><span class="lineno">  210</span>      <span class="keywordflow">if</span> (uses_map[ind] == 0) <span class="comment">// To prevent notifyLastUse from being called twice</span></div>
-<div class="line"><span class="lineno">  211</span>      {</div>
-<div class="line"><span class="lineno">  212</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyLastUse(ind);</div>
-<div class="line"><span class="lineno">  213</span>      }</div>
-<div class="line"><span class="lineno">  214</span>    }</div>
-<div class="line"><span class="lineno">  215</span> </div>
-<div class="line"><span class="lineno">  216</span>    assert(</div>
-<div class="line"><span class="lineno">  217</span>      std::all_of(uses_map.begin(), uses_map.end(),</div>
-<div class="line"><span class="lineno">  218</span>                  [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>    assert(</div>
-<div class="line"><span class="lineno">  221</span>      std::all_of(def_map.begin(), def_map.end(),</div>
-<div class="line"><span class="lineno">  222</span>                  [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
-<div class="line"><span class="lineno">  223</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a31d48e67c72cb245b93d78dbb90376c7"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a31d48e67c72cb245b93d78dbb90376c7">onert::backend::cl_common::BackendContext::planTensors</a></div><div class="ttdeci">void planTensors()</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">BackendContext.h:104</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_ac4fc65b50cb3f21e6c76a1ebd926141e"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#ac4fc65b50cb3f21e6c76a1ebd926141e">onert::backend::cl_common::BackendContext::registerTensorInfo</a></div><div class="ttdeci">virtual void registerTensorInfo(const ir::OperandIndex &amp;ind, const ir::OperandInfo &amp;info, ir::Layout backend_layout)=0</div></div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment">// If a tensor is a constant, increase the use of the tensor and allocate it first.</span></div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment">// Increasing use count here makes the tensor never be deallocated, i.e it they will be</span></div>
+<div class="line"><span class="lineno">  133</span>    <span class="comment">// deallocated last.</span></div>
+<div class="line"><span class="lineno">  134</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(<a class="code hl_function" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a31d48e67c72cb245b93d78dbb90376c7">planTensors</a>) &lt;&lt; <span class="stringliteral">&quot;TENSORS as CONSTANT&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : constants)</div>
+<div class="line"><span class="lineno">  136</span>    {</div>
+<div class="line"><span class="lineno">  137</span>      uses_map[ind]++;</div>
+<div class="line"><span class="lineno">  138</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">  139</span>    }</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>    <span class="comment">// At each operation,</span></div>
+<div class="line"><span class="lineno">  142</span>    <span class="comment">// 1. Scan DEF of outputs. If the DEF, allocate it</span></div>
+<div class="line"><span class="lineno">  143</span>    <span class="comment">// 2. Scan DEF of inputs. If variable tensor, allocate it</span></div>
+<div class="line"><span class="lineno">  144</span>    <span class="comment">// 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0</span></div>
+<div class="line"><span class="lineno">  145</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.op_order)</div>
+<div class="line"><span class="lineno">  146</span>    {</div>
+<div class="line"><span class="lineno">  147</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(op_ind);</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keyword">auto</span> op_inputs = op.getInputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">ir::Remove::DUPLICATED</a> | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>;</div>
+<div class="line"><span class="lineno">  149</span>      <span class="keyword">auto</span> op_outputs = op.getOutputs() | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">ir::Remove::DUPLICATED</a> | <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">ir::Remove::UNDEFINED</a>;</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>      <span class="comment">// Define outputs</span></div>
+<div class="line"><span class="lineno">  152</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_outputs)</div>
+<div class="line"><span class="lineno">  153</span>      {</div>
+<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  155</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  156</span>        assert(def_map.find(ind) != def_map.end());</div>
+<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">if</span> (def_map[ind])</div>
+<div class="line"><span class="lineno">  158</span>        {</div>
+<div class="line"><span class="lineno">  159</span>          def_map[ind] = 0;</div>
+<div class="line"><span class="lineno">  160</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">  161</span>        }</div>
+<div class="line"><span class="lineno">  162</span>      }</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>      <span class="comment">// Scan variable tensors</span></div>
+<div class="line"><span class="lineno">  165</span>      <span class="comment">// This tensor has features like constant. But OperandInfo and LowerInfo treat them as</span></div>
+<div class="line"><span class="lineno">  166</span>      <span class="comment">// non-constant because of less memory usage by memory planning in here</span></div>
+<div class="line"><span class="lineno">  167</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
+<div class="line"><span class="lineno">  168</span>      {</div>
+<div class="line"><span class="lineno">  169</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  170</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  171</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = <a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
+<div class="line"><span class="lineno">  172</span>        <span class="keywordflow">if</span> (operand.info().isVariable())</div>
+<div class="line"><span class="lineno">  173</span>        {</div>
+<div class="line"><span class="lineno">  174</span>          <span class="comment">// The variable tensor with buffer is not supported yet</span></div>
+<div class="line"><span class="lineno">  175</span>          assert(operand.data() == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  176</span>          assert(operand.getUses().size() == 1 &amp;&amp; !operand.getDef().valid());</div>
+<div class="line"><span class="lineno">  177</span>          assert(uses_map[ind] == 1 &amp;&amp; def_map[ind] == 0);</div>
+<div class="line"><span class="lineno">  178</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyFirstUse(ind);</div>
+<div class="line"><span class="lineno">  179</span>        }</div>
+<div class="line"><span class="lineno">  180</span>      }</div>
+<div class="line"><span class="lineno">  181</span> </div>
+<div class="line"><span class="lineno">  182</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : op_inputs)</div>
+<div class="line"><span class="lineno">  183</span>      {</div>
+<div class="line"><span class="lineno">  184</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;isRegistered(ind))</div>
+<div class="line"><span class="lineno">  185</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  186</span>        assert(uses_map.find(ind) != uses_map.end());</div>
+<div class="line"><span class="lineno">  187</span>        assert(uses_map[ind] &gt; 0);</div>
+<div class="line"><span class="lineno">  188</span>        uses_map[ind]--;</div>
+<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (uses_map[ind] == 0)</div>
+<div class="line"><span class="lineno">  190</span>        {</div>
+<div class="line"><span class="lineno">  191</span>          <span class="comment">// plan for deallocation of static tensornode</span></div>
+<div class="line"><span class="lineno">  192</span>          <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyLastUse(ind);</div>
+<div class="line"><span class="lineno">  193</span>        }</div>
+<div class="line"><span class="lineno">  194</span>      }</div>
+<div class="line"><span class="lineno">  195</span>    }</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_backend_context.html#a98851d7e919dc808d3ee4a8210572d6a">_data</a>.<a class="code hl_variable" href="structonert_1_1backend_1_1_context_data.html#abcd4c866e5e71af551c9511c4d08ed68">graph</a>-&gt;operands().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> ir::Operand &amp;) {</div>
+<div class="line"><span class="lineno">  198</span>      <span class="keywordflow">if</span> (uses_map[ind] == 0)</div>
+<div class="line"><span class="lineno">  199</span>      {</div>
+<div class="line"><span class="lineno">  200</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyLastUse(ind);</div>
+<div class="line"><span class="lineno">  201</span>      }</div>
+<div class="line"><span class="lineno">  202</span>    });</div>
+<div class="line"><span class="lineno">  203</span> </div>
+<div class="line"><span class="lineno">  204</span>    <span class="comment">// Dispose and validate</span></div>
+<div class="line"><span class="lineno">  205</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind : constants)</div>
+<div class="line"><span class="lineno">  206</span>    {</div>
+<div class="line"><span class="lineno">  207</span>      --uses_map[ind];</div>
+<div class="line"><span class="lineno">  208</span>      <span class="keywordflow">if</span> (uses_map[ind] == 0) <span class="comment">// To prevent notifyLastUse from being called twice</span></div>
+<div class="line"><span class="lineno">  209</span>      {</div>
+<div class="line"><span class="lineno">  210</span>        <a class="code hl_variable" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a0f1b966e5ceab410b4445ebd7dc5e3fe">tensor_builder</a>-&gt;notifyLastUse(ind);</div>
+<div class="line"><span class="lineno">  211</span>      }</div>
+<div class="line"><span class="lineno">  212</span>    }</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>    assert(</div>
+<div class="line"><span class="lineno">  215</span>      std::all_of(uses_map.begin(), uses_map.end(),</div>
+<div class="line"><span class="lineno">  216</span>                  [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>    assert(</div>
+<div class="line"><span class="lineno">  219</span>      std::all_of(def_map.begin(), def_map.end(),</div>
+<div class="line"><span class="lineno">  220</span>                  [](std::pair&lt;const ir::OperandIndex, uint32_t&gt; it) { return it.second == 0; }));</div>
+<div class="line"><span class="lineno">  221</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a31d48e67c72cb245b93d78dbb90376c7"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a31d48e67c72cb245b93d78dbb90376c7">onert::backend::cl_common::BackendContext::planTensors</a></div><div class="ttdeci">void planTensors()</div><div class="ttdef"><b>Definition</b> <a href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00103">BackendContext.h:103</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cl__common_1_1_backend_context_html_a3bb5fd1b0a147090cedc89da483c1ca6"><div class="ttname"><a href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a3bb5fd1b0a147090cedc89da483c1ca6">onert::backend::cl_common::BackendContext::registerTensorInfo</a></div><div class="ttdeci">virtual void registerTensorInfo(const ir::OperandIndex &amp;ind, const ir::OperandInfo &amp;info)=0</div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">Graph.h:115</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::Remove::UNDEFINED</a></div><div class="ttdeci">@ UNDEFINED</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::Remove::DUPLICATED</a></div><div class="ttdeci">@ DUPLICATED</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 <div class="ttc" id="astructonert_1_1backend_1_1_context_data_html_a06fb0afdae05176300eee3fd62e4ed7a"><div class="ttname"><a href="structonert_1_1backend_1_1_context_data.html#a06fb0afdae05176300eee3fd62e4ed7a">onert::backend::ContextData::operand_layouts</a></div><div class="ttdeci">ir::OperandIndexMap&lt; ir::Layout &gt; operand_layouts</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00046">BackendContext.h:46</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00075">onert::backend::BackendContext::_data</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00045">onert::ir::OperandIndexSequence::append()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::DUPLICATED</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00044">onert::backend::ContextData::external_operands</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00040">onert::backend::ContextData::graph</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00065">onert::backend::BackendContext::graph()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00042">onert::backend::ContextData::op_order</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00046">onert::backend::ContextData::operand_layouts</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">onert::ir::Graph::operands()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">onert::ir::Graph::operations()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, <a class="el" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#ac4fc65b50cb3f21e6c76a1ebd926141e">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::registerTensorInfo()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::tensor_builder</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::UNDEFINED</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00075">onert::backend::BackendContext::_data</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00045">onert::ir::OperandIndexSequence::append()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::DUPLICATED</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00044">onert::backend::ContextData::external_operands</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00040">onert::backend::ContextData::graph</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00065">onert::backend::BackendContext::graph()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00042">onert::backend::ContextData::op_order</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00046">onert::backend::ContextData::operand_layouts</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">onert::ir::Graph::operands()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">onert::ir::Graph::operations()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00103">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, <a class="el" href="classonert_1_1backend_1_1cl__common_1_1_backend_context.html#a3bb5fd1b0a147090cedc89da483c1ca6">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::registerTensorInfo()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00225">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::tensor_builder</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::UNDEFINED</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_acl_backend_context_8h_source.html#l00055">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, and <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_acl_backend_context_8h_source.html#l00055">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, and <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00103">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>.</p>
 
 </div>
 </div>
-<a id="ac4fc65b50cb3f21e6c76a1ebd926141e" name="ac4fc65b50cb3f21e6c76a1ebd926141e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4fc65b50cb3f21e6c76a1ebd926141e">&#9670;&#160;</a></span>registerTensorInfo()</h2>
+<a id="a3bb5fd1b0a147090cedc89da483c1ca6" name="a3bb5fd1b0a147090cedc89da483c1ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bb5fd1b0a147090cedc89da483c1ca6">&#9670;&#160;</a></span>registerTensorInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -557,13 +557,7 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>info</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>backend_layout</em>&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -578,9 +572,9 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_acl_backend_context.html#a077ed8f363a9b495b3fd32e7f15bcebf">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_acl_backend_context.html#a0067114c51db1a561b4049e89b7ac1a6">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00103">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>.</p>
 
 </div>
 </div>
@@ -599,7 +593,7 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00228">228</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00226">226</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00081">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>.</p>
 
@@ -619,7 +613,7 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00229">229</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">227</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00049">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::genKernels()</a>.</p>
 
@@ -639,9 +633,9 @@ template&lt;typename T_TensorBuilder , typename T_ConstantInitializer , typename
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00227">227</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00225">225</a> of file <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00049">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::genKernels()</a>, <a class="el" href="_acl_backend_context_8h_source.html#l00055">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00104">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, and <a class="el" href="_acl_backend_context_8h_source.html#l00091">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::registerTensorInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00049">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::genKernels()</a>, <a class="el" href="_acl_backend_context_8h_source.html#l00055">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00103">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, and <a class="el" href="_acl_backend_context_8h_source.html#l00090">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::registerTensorInfo()</a>.</p>
 
 </div>
 </div>

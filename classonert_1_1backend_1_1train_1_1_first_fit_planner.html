@@ -227,34 +227,33 @@ Additional Inherited Members</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
 <div class="line"><span class="lineno">   61</span>  <span class="comment">// Find the right position for claiming</span></div>
 <div class="line"><span class="lineno">   62</span>  uint32_t next_offset = 0;</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;mem_claim : _claim_table)</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[claimed_base_offset, claimed_index] : _claim_table)</div>
 <div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keyword">auto</span> claimed_base_offset = mem_claim.first;</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keyword">auto</span> claimed_size = _mem_plans[mem_claim.second].size;</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">if</span> (next_offset + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;= claimed_base_offset)</div>
-<div class="line"><span class="lineno">   68</span>    {</div>
-<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   70</span>    }</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   72</span>    {</div>
-<div class="line"><span class="lineno">   73</span>      next_offset = claimed_base_offset + claimed_size;</div>
-<div class="line"><span class="lineno">   74</span>    }</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <span class="comment">// Now next_offset is set to the proper offset</span></div>
-<div class="line"><span class="lineno">   78</span>  <span class="comment">// std::map&#39;s operator[] requires default constructor of value</span></div>
-<div class="line"><span class="lineno">   79</span>  <span class="comment">// _claim_table[next_offset] = ind;</span></div>
-<div class="line"><span class="lineno">   80</span>  _claim_table.emplace(std::make_pair(next_offset, ind));</div>
-<div class="line"><span class="lineno">   81</span>  _mem_plans[ind] = {next_offset, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>};</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(FF_PLANNER) &lt;&lt; <span class="stringliteral">&quot;claim(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): [+&quot;</span> &lt;&lt; next_offset &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;sz]&quot;</span></div>
-<div class="line"><span class="lineno">   84</span>                      &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">if</span> (_capacity &lt; next_offset + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</div>
-<div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    _capacity = next_offset + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>}</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keyword">auto</span> claimed_size = _mem_plans[claimed_index].size;</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (next_offset + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;= claimed_base_offset)</div>
+<div class="line"><span class="lineno">   67</span>    {</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   69</span>    }</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   71</span>    {</div>
+<div class="line"><span class="lineno">   72</span>      next_offset = claimed_base_offset + claimed_size;</div>
+<div class="line"><span class="lineno">   73</span>    }</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>  <span class="comment">// Now next_offset is set to the proper offset</span></div>
+<div class="line"><span class="lineno">   77</span>  <span class="comment">// std::map&#39;s operator[] requires default constructor of value</span></div>
+<div class="line"><span class="lineno">   78</span>  <span class="comment">// _claim_table[next_offset] = ind;</span></div>
+<div class="line"><span class="lineno">   79</span>  _claim_table.emplace(std::make_pair(next_offset, ind));</div>
+<div class="line"><span class="lineno">   80</span>  _mem_plans[ind] = {next_offset, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>};</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(FF_PLANNER) &lt;&lt; <span class="stringliteral">&quot;claim(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): [+&quot;</span> &lt;&lt; next_offset &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;sz]&quot;</span></div>
+<div class="line"><span class="lineno">   83</span>                      &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">if</span> (_capacity &lt; next_offset + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</div>
+<div class="line"><span class="lineno">   86</span>  {</div>
+<div class="line"><span class="lineno">   87</span>    _capacity = next_offset + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
+<div class="line"><span class="lineno">   89</span>}</div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
@@ -327,24 +326,24 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_planner_8cc_source.html#l00092">92</a> of file <a class="el" href="backend_2train_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{</div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = _claim_table.cbegin(); it != _claim_table.cend(); ++it)</div>
-<div class="line"><span class="lineno">   95</span>  {</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">if</span> (it-&gt;second == ind)</div>
-<div class="line"><span class="lineno">   97</span>    {</div>
-<div class="line"><span class="lineno">   98</span>      uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = it-&gt;first;</div>
-<div class="line"><span class="lineno">   99</span>      uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = _mem_plans[ind].size;</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>      _claim_table.erase(it);</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(FF_PLANNER) &lt;&lt; <span class="stringliteral">&quot;release(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): [+&quot;</span> &lt;&lt; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;sz]&quot;</span></div>
-<div class="line"><span class="lineno">  104</span>                          &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  105</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  106</span>    }</div>
-<div class="line"><span class="lineno">  107</span>  }</div>
-<div class="line"><span class="lineno">  108</span>  assert(!<span class="stringliteral">&quot;Cannot release for given index. It has been not claimed or released already.&quot;</span>);</div>
-<div class="line"><span class="lineno">  109</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_planner_8cc_source.html#l00091">91</a> of file <a class="el" href="backend_2train_2_memory_planner_8cc_source.html">MemoryPlanner.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = _claim_table.cbegin(); it != _claim_table.cend(); ++it)</div>
+<div class="line"><span class="lineno">   94</span>  {</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> (it-&gt;second == ind)</div>
+<div class="line"><span class="lineno">   96</span>    {</div>
+<div class="line"><span class="lineno">   97</span>      uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = it-&gt;first;</div>
+<div class="line"><span class="lineno">   98</span>      uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = _mem_plans[ind].size;</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>      _claim_table.erase(it);</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(FF_PLANNER) &lt;&lt; <span class="stringliteral">&quot;release(&quot;</span> &lt;&lt; ind &lt;&lt; <span class="stringliteral">&quot;): [+&quot;</span> &lt;&lt; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;sz]&quot;</span></div>
+<div class="line"><span class="lineno">  103</span>                          &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  105</span>    }</div>
+<div class="line"><span class="lineno">  106</span>  }</div>
+<div class="line"><span class="lineno">  107</span>  assert(!<span class="stringliteral">&quot;Cannot release for given index. It has been not claimed or released already.&quot;</span>);</div>
+<div class="line"><span class="lineno">  108</span>}</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>

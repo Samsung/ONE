@@ -7,5 +7,5 @@ var classonert_1_1backend_1_1builtin_1_1_tensor_builder =
     [ "nativeOwnTensorAt", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#ae50f3838fd20568bffa0d27236386284", null ],
     [ "notifyFirstUse", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#abc24e8db4a0bc473c47ce93222ab18aa", null ],
     [ "notifyLastUse", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#a2cd8108f5a05b2fad07f25e90d175ba9", null ],
-    [ "registerTensorInfo", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#ac3607ce909163d10e755070787ecb592", null ]
+    [ "registerTensorInfo", "classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#a943ffde47da3f8ab45c658415adb2ca3", null ]
 ];

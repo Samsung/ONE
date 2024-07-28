@@ -143,10 +143,10 @@ $(document).ready(function(){initNavTree('onert_2core_2src_2util_2_config_source
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">auto</span> configsrc = std::make_unique&lt;GeneralConfigSource&gt;();</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = keyValues.begin(); it != keyValues.end(); ++it)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[key, val] : keyValues)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNPKG_CONFIGS) &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; it-&gt;first &lt;&lt; <span class="stringliteral">&quot;) = (&quot;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    configsrc-&gt;set(it-&gt;first, it-&gt;second);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNPKG_CONFIGS) &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;) = (&quot;</span> &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    configsrc-&gt;set(key, val);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a6f59f44f1a1032cc96ed81219ae01f57">onert::util::config_source_ext</a>(std::move(configsrc));</div>

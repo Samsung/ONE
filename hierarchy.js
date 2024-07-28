@@ -1326,6 +1326,7 @@ var hierarchy =
     [ "nnfw::cker::BCastList< 2 >", "classnnfw_1_1cker_1_1_b_cast_list.html", [
       [ "nnfw::cker::BCast", "classnnfw_1_1cker_1_1_b_cast.html", null ]
     ] ],
+    [ "nnfw::cker::bias_op::functor::Bias< Device, T >", "structnnfw_1_1cker_1_1bias__op_1_1functor_1_1_bias.html", null ],
     [ "loco::BiasAdd< D >", "classloco_1_1_bias_add.html", null ],
     [ "loco::BiasShape", "classloco_1_1_bias_shape.html", null ],
     [ "onert_micro::core::BinaryArithmeticBroadcastParams", "structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html", null ],
@@ -1587,6 +1588,7 @@ var hierarchy =
     [ "onert::backend::cpu::ops::ConstDataPtr", "uniononert_1_1backend_1_1cpu_1_1ops_1_1_const_data_ptr.html", null ],
     [ "ConstGenLayer", "struct_const_gen_layer.html", null ],
     [ "circle_eval_diff::CircleEvalDiff::Context", "structcircle__eval__diff_1_1_circle_eval_diff_1_1_context.html", null ],
+    [ "fme_detect::EqualizePatternFinder::Context", "structfme__detect_1_1_equalize_pattern_finder_1_1_context.html", null ],
     [ "GraphBuilder::Context", "class_graph_builder_1_1_context.html", null ],
     [ "kuma::Context< Alg >", "classkuma_1_1_context.html", null ],
     [ "loco::ShapeInferenceRule::Context", "structloco_1_1_shape_inference_rule_1_1_context.html", null ],
@@ -1878,6 +1880,9 @@ var hierarchy =
     [ "hermes::EnvConfig< Format >", "classhermes_1_1_env_config.html", null ],
     [ "nnfw::misc::EnvVar", "classnnfw_1_1misc_1_1_env_var.html", null ],
     [ "mir_interpreter::EqualImpl< T >", "structmir__interpreter_1_1_equal_impl.html", null ],
+    [ "fme_apply::EqualizePattern", "structfme__apply_1_1_equalize_pattern.html", null ],
+    [ "fme_detect::EqualizePattern", "structfme__detect_1_1_equalize_pattern.html", null ],
+    [ "fme_detect::EqualizePatternFinder", "classfme__detect_1_1_equalize_pattern_finder.html", null ],
     [ "loco::ErrorDetail< Code >", "classloco_1_1_error_detail.html", null ],
     [ "loco::ErrorDetail< ErrorCategory::MissingArgument >", "classloco_1_1_error_detail_3_01_error_category_1_1_missing_argument_01_4.html", null ],
     [ "mpqsolver::core::ErrorMetric", "classmpqsolver_1_1core_1_1_error_metric.html", [
@@ -2000,6 +2005,7 @@ var hierarchy =
     [ "onert_micro::execute::pal::FloorDivFn< T, >", "structonert__micro_1_1execute_1_1pal_1_1_floor_div_fn.html", null ],
     [ "luci_interpreter_pal::FloorModFn< T, >", "structluci__interpreter__pal_1_1_floor_mod_fn.html", null ],
     [ "onert_micro::execute::pal::FloorModFn< T, >", "structonert__micro_1_1execute_1_1pal_1_1_floor_mod_fn.html", null ],
+    [ "fme_apply::FMEqualizer", "classfme__apply_1_1_f_m_equalizer.html", null ],
     [ "flatbuffers::FnvTraits< T >", "structflatbuffers_1_1_fnv_traits.html", null ],
     [ "flatbuffers::FnvTraits< uint32_t >", "structflatbuffers_1_1_fnv_traits_3_01uint32__t_01_4.html", null ],
     [ "flatbuffers::FnvTraits< uint64_t >", "structflatbuffers_1_1_fnv_traits_3_01uint64__t_01_4.html", null ],
@@ -2591,6 +2597,7 @@ var hierarchy =
     [ "exo::InputHandler< CanonicalT, TFLT >", "classexo_1_1_input_handler.html", null ],
     [ "InputLayer", "struct_input_layer.html", null ],
     [ "nnfw::cker::InputTensor< T >", "structnnfw_1_1cker_1_1_input_tensor.html", null ],
+    [ "fme_apply::InsertScaleShift", "classfme__apply_1_1_insert_scale_shift.html", null ],
     [ "luci_interpreter::InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", null ],
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", null ],
     [ "InstrBuilder", "class_instr_builder.html", null ],
@@ -3176,6 +3183,7 @@ var hierarchy =
     [ "mir_interpreter::MaxPool2DImpl< T >", "structmir__interpreter_1_1_max_pool2_d_impl.html", null ],
     [ "mir_interpreter::MaxPool2DImpl< uint8_t >", "structmir__interpreter_1_1_max_pool2_d_impl_3_01uint8__t_01_4.html", null ],
     [ "mir::MaxPool2DOpAttributes", "structmir_1_1_max_pool2_d_op_attributes.html", null ],
+    [ "nnfw::cker::bias_op::functor::internal::MaybeWith32BitIndexingImpl< Device >", "structnnfw_1_1cker_1_1bias__op_1_1functor_1_1internal_1_1_maybe_with32_bit_indexing_impl.html", null ],
     [ "luci_interpreter_pal::MeanParams", "structluci__interpreter__pal_1_1_mean_params.html", null ],
     [ "Memory", "struct_memory.html", [
       [ "AllocatedMemory", "class_allocated_memory.html", [
@@ -3546,11 +3554,9 @@ var hierarchy =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", null ],
     [ "nnfw_operand", "structnnfw__operand.html", null ],
-    [ "libnnfw_api_pybind.nnfw_session", null, [
-      [ "package.libnnfw_api_pybind.nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", null ]
-    ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "package.libnnfw_api_pybind.nnfw_session", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4467,6 +4473,12 @@ var hierarchy =
       [ "exo::ShapeInferencePass", "classexo_1_1_shape_inference_pass.html", null ],
       [ "exo::TensorBroadcastConverter", "classexo_1_1_tensor_broadcast_converter.html", null ],
       [ "exo::TypeInferencePass", "classexo_1_1_type_inference_pass.html", null ],
+      [ "fme_apply::ForwardPreScalePass", "classfme__apply_1_1_forward_pre_scale_pass.html", null ],
+      [ "fme_apply::ForwardPreShiftPass", "classfme__apply_1_1_forward_pre_shift_pass.html", null ],
+      [ "fme_apply::FusePostScalePass", "classfme__apply_1_1_fuse_post_scale_pass.html", null ],
+      [ "fme_apply::FusePostShiftPass", "classfme__apply_1_1_fuse_post_shift_pass.html", null ],
+      [ "fme_apply::FusePreScalePass", "classfme__apply_1_1_fuse_pre_scale_pass.html", null ],
+      [ "fme_apply::FusePreShiftPass", "classfme__apply_1_1_fuse_pre_shift_pass.html", null ],
       [ "logo::ConstantFoldingPass", "classlogo_1_1_constant_folding_pass.html", null ],
       [ "logo::RemoveDeadNodePass", "structlogo_1_1_remove_dead_node_pass.html", null ],
       [ "logo::RemoveDeadNodeWithQueryPass", "structlogo_1_1_remove_dead_node_with_query_pass.html", null ],
@@ -4476,6 +4488,7 @@ var hierarchy =
       [ "logo::ResolveDuplicateReshapePass", "classlogo_1_1_resolve_duplicate_reshape_pass.html", null ],
       [ "logo::ResolveRedundantReshapePass", "classlogo_1_1_resolve_redundant_reshape_pass.html", null ],
       [ "logo::SimplifyDomainConversionPass", "structlogo_1_1_simplify_domain_conversion_pass.html", null ],
+      [ "luci::CanonicalizePass", "structluci_1_1_canonicalize_pass.html", null ],
       [ "luci::CommonSubExpressionEliminationPass", "classluci_1_1_common_sub_expression_elimination_pass.html", null ],
       [ "luci::ConvertNCHWToNHWCPass", "structluci_1_1_convert_n_c_h_w_to_n_h_w_c_pass.html", null ],
       [ "luci::ConvertToFakeQuantizedModelPass", "structluci_1_1_convert_to_fake_quantized_model_pass.html", null ],
@@ -4629,6 +4642,7 @@ var hierarchy =
     [ "logo::PhaseEventInfo< PhaseEvent::PhaseEnd >", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_phase_end_01_4.html", null ],
     [ "logo::PhaseEventListener", "structlogo_1_1_phase_event_listener.html", [
       [ "exo::ProgressReporter", "classexo_1_1_progress_reporter.html", null ],
+      [ "fme_apply::ProgressReporter", "classfme__apply_1_1_progress_reporter.html", null ],
       [ "luci::ModuleProgressReporter", "classluci_1_1_module_progress_reporter.html", null ],
       [ "luci::ProgressReporter", "classluci_1_1_progress_reporter.html", null ],
       [ "luci::ProgressReporter", "classluci_1_1_progress_reporter.html", null ],

@@ -3,6 +3,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "helpers", "dir_8eb997c25aff2b991481fca99d0b7f04.html", "dir_8eb997c25aff2b991481fca99d0b7f04" ],
     [ "BatchNormPatternFinder.cpp", "_batch_norm_pattern_finder_8cpp.html", "_batch_norm_pattern_finder_8cpp" ],
     [ "BatchNormPatternFinder.h", "_batch_norm_pattern_finder_8h.html", "_batch_norm_pattern_finder_8h" ],
+    [ "CanonicalizePass.cpp", "_canonicalize_pass_8cpp.html", "_canonicalize_pass_8cpp" ],
     [ "CircleOptimizer.cpp", "_circle_optimizer_8cpp.html", null ],
     [ "CircleQuantizer.cpp", "luci_2pass_2src_2_circle_quantizer_8cpp.html", null ],
     [ "CircleShapeInferencePass.cpp", "_circle_shape_inference_pass_8cpp.html", null ],

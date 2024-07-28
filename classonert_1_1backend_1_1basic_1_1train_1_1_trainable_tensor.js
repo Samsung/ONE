@@ -2,7 +2,7 @@ var classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor =
 [
     [ "TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a04ddc61aef51de79675137f046c53b6d", null ],
     [ "~TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a52f466036e215cf2a4e47dcc8b026c74", null ],
-    [ "TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a9052d0aa75162c87533c288c533fea1f", null ],
+    [ "TrainableTensor", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#ad3540f874a072fabbb93487d30d5c7f9", null ],
     [ "appendOptVar", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a18a60603ec9bc335f9aec0195af34962", null ],
     [ "buffer", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#aa887913261678fa14833d23c9c1b0d76", null ],
     [ "fillBuffer", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a44ef3400ba1df4653ac97efe47669ca7", null ],

@@ -141,48 +141,47 @@ $(document).ready(function(){initNavTree('_adam_8cc_source.html',''); initResiza
 <div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a00d0fe8536c9fe41e62ea6ed7a5b5ce2">   39</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a00d0fe8536c9fe41e62ea6ed7a5b5ce2">Adam::applyGradient</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a1be0baa550db556ebd58e880e829732c">UpdateFactors</a> &amp;factors)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> training_step = std::get&lt;size_t&gt;(factors);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;grad_tensor = std::get&lt;const backend::IPortableTensor &amp;&gt;(factors);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">auto</span> &amp;trainable_tensor = std::get&lt;backend::train::ITrainableTensor &amp;&gt;(factors);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  assert(trainable_tensor.data_type() == grad_tensor.data_type());</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opt_vars = trainable_tensor.optVars();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  assert(opt_vars.size() == 2);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">// Get the variable for exponential moving average of the gradient</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">auto</span> m_tensor = nnfw::misc::polymorphic_downcast&lt;IPortableTensor *&gt;(opt_vars.at(0));</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// Get the variable for exponential moving average of the squared_gradient</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">auto</span> v_tensor = nnfw::misc::polymorphic_downcast&lt;IPortableTensor *&gt;(opt_vars.at(1));</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> <span class="keyword">auto</span> beta1_power = std::pow(_props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a3a15b4381148bac96ad20a345eacf34f">beta1</a>, training_step + 1);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">const</span> <span class="keyword">auto</span> beta2_power = std::pow(_props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a80de5832f883ede769a7400a5cb13681">beta2</a>, training_step + 1);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="comment">// TODO Support nesterov</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> use_nesterov = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">if</span> (trainable_tensor.getShape() != grad_tensor.getShape())</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Adam: Invalid gradient tensor&quot;</span>);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">switch</span> (grad_tensor.data_type())</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41">nnfw::cker::train::Adam</a>(</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        ops::getShape(&amp;trainable_tensor), ops::getBuffer&lt;float&gt;(&amp;trainable_tensor),</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        ops::getShape(&amp;grad_tensor), ops::getBuffer&lt;float&gt;(&amp;grad_tensor), ops::getShape(m_tensor),</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        ops::getBuffer&lt;float&gt;(m_tensor), ops::getShape(v_tensor), ops::getBuffer&lt;float&gt;(v_tensor),</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        beta1_power, beta2_power, _learning_rate, _props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a3a15b4381148bac96ad20a345eacf34f">beta1</a>, _props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a80de5832f883ede769a7400a5cb13681">beta2</a>, _props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a23efb81b278dbce1f8ba7a433ce2932d">epsilon</a>,</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        use_nesterov);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Adam: Not supported data type&quot;</span>);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">auto</span> [grad_tensor, trainable_tensor, training_step] = factors;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  assert(trainable_tensor.data_type() == grad_tensor.data_type());</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opt_vars = trainable_tensor.optVars();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  assert(opt_vars.size() == 2);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="comment">// Get the variable for exponential moving average of the gradient</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">auto</span> m_tensor = nnfw::misc::polymorphic_downcast&lt;IPortableTensor *&gt;(opt_vars.at(0));</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="comment">// Get the variable for exponential moving average of the squared_gradient</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">auto</span> v_tensor = nnfw::misc::polymorphic_downcast&lt;IPortableTensor *&gt;(opt_vars.at(1));</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keyword">auto</span> beta1_power = std::pow(_props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a3a15b4381148bac96ad20a345eacf34f">beta1</a>, training_step + 1);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> <span class="keyword">auto</span> beta2_power = std::pow(_props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a80de5832f883ede769a7400a5cb13681">beta2</a>, training_step + 1);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">// TODO Support nesterov</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> use_nesterov = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">if</span> (trainable_tensor.getShape() != grad_tensor.getShape())</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Adam: Invalid gradient tensor&quot;</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">switch</span> (grad_tensor.data_type())</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41">nnfw::cker::train::Adam</a>(</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        ops::getShape(&amp;trainable_tensor), ops::getBuffer&lt;float&gt;(&amp;trainable_tensor),</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        ops::getShape(&amp;grad_tensor), ops::getBuffer&lt;float&gt;(&amp;grad_tensor), ops::getShape(m_tensor),</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        ops::getBuffer&lt;float&gt;(m_tensor), ops::getShape(v_tensor), ops::getBuffer&lt;float&gt;(v_tensor),</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        beta1_power, beta2_power, _learning_rate, _props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a3a15b4381148bac96ad20a345eacf34f">beta1</a>, _props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a80de5832f883ede769a7400a5cb13681">beta2</a>, _props.<a class="code hl_variable" href="structonert_1_1backend_1_1train_1_1optimizer_1_1_adam_1_1_property.html#a23efb81b278dbce1f8ba7a433ce2932d">epsilon</a>,</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        use_nesterov);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Adam: Not supported data type&quot;</span>);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
 </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace optimizer</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace optimizer</span></div>
 </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_adam_html_a00d0fe8536c9fe41e62ea6ed7a5b5ce2"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a00d0fe8536c9fe41e62ea6ed7a5b5ce2">onert::backend::train::optimizer::Adam::applyGradient</a></div><div class="ttdeci">void applyGradient(const UpdateFactors &amp;factors) const override</div><div class="ttdoc">Apply gradient to a trainable tensor.</div><div class="ttdef"><b>Definition</b> <a href="_adam_8cc_source.html#l00039">Adam.cc:39</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_adam_html_a1be0baa550db556ebd58e880e829732c"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#a1be0baa550db556ebd58e880e829732c">onert::backend::train::optimizer::Adam::UpdateFactors</a></div><div class="ttdeci">exec::train::optimizer::UpdateFactors UpdateFactors</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2train_2optimizer_2_adam_8h_source.html#l00041">Adam.h:41</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_adam_html_ab62d20c84c76f37456c9df3d5cc15138"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html#ab62d20c84c76f37456c9df3d5cc15138">onert::backend::train::optimizer::Adam::getLearningRate</a></div><div class="ttdeci">double getLearningRate(uint32_t training_step) const override</div><div class="ttdoc">Get the Learning Rate.</div><div class="ttdef"><b>Definition</b> <a href="_adam_8cc_source.html#l00033">Adam.cc:33</a></div></div>

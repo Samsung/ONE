@@ -135,8 +135,8 @@ $(document).ready(function(){initNavTree('_compiler_helpers_8h_source.html','');
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> std::unordered_map&lt;<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, std::unique_ptr&lt;LoweredGraphType&gt;&gt; &amp;lowered_subgs)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::unordered_map&lt;ir::SubgraphIndex, ILoweredGraph *&gt; lsubgs;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;e : lowered_subgs)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    lsubgs[e.first] = e.second.<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[subg_index, lowered_subg] : lowered_subgs)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    lsubgs[subg_index] = lowered_subg.<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a8ad5e5e37fe1b6b3857686525b0e1470">StaticShapeInferer::createStaticShapeInferers</a>(lsubgs);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>

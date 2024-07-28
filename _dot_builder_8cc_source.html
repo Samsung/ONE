@@ -152,9 +152,9 @@ $(document).ready(function(){initNavTree('_dot_builder_8cc_source.html',''); ini
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  _dot &lt;&lt; node.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a3a9c5547f5d84471d87d8400961d7ff1">id</a>();</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  std::stringstream ss;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  _dot &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;attr : node.attributes())</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[attr_key, attr_val] : node.attributes())</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    _dot &lt;&lt; attr.first &lt;&lt; <span class="stringliteral">&quot;=\&quot;&quot;</span> &lt;&lt; attr.second &lt;&lt; <span class="stringliteral">&quot;\&quot; &quot;</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    _dot &lt;&lt; attr_key &lt;&lt; <span class="stringliteral">&quot;=\&quot;&quot;</span> &lt;&lt; attr_val &lt;&lt; <span class="stringliteral">&quot;\&quot; &quot;</span>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  _dot &lt;&lt; <span class="stringliteral">&quot;];\n&quot;</span>;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>

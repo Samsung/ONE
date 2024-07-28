@@ -98,66 +98,17 @@ $(document).ready(function(){initNavTree('namespacepackage_1_1libnnfw__api__pybi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html">nnfw_session_wrapper</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html">nnfw_session</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab60b5bbc6fb431db19e191ab669a977e" id="r_ab60b5bbc6fb431db19e191ab669a977e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1libnnfw__api__pybind.html#ab60b5bbc6fb431db19e191ab669a977e">num_elems</a> (tensor_info)</td></tr>
 <tr class="separator:ab60b5bbc6fb431db19e191ab669a977e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f1cf0301ad0867753cfe2e2f91653f6" id="r_a1f1cf0301ad0867753cfe2e2f91653f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1libnnfw__api__pybind.html#a1f1cf0301ad0867753cfe2e2f91653f6">nnfw_session</a> (nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;)</td></tr>
-<tr class="separator:a1f1cf0301ad0867753cfe2e2f91653f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcdb9704a81f200b6c776dfe00e8e10c" id="r_abcdb9704a81f200b6c776dfe00e8e10c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1libnnfw__api__pybind.html#abcdb9704a81f200b6c776dfe00e8e10c">tensorinfo</a> ()</td></tr>
 <tr class="separator:abcdb9704a81f200b6c776dfe00e8e10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a1f1cf0301ad0867753cfe2e2f91653f6" name="a1f1cf0301ad0867753cfe2e2f91653f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f1cf0301ad0867753cfe2e2f91653f6">&#9670;&#160;</a></span>nnfw_session()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">package.libnnfw_api_pybind.nnfw_session </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>nnpackage_path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>backends</em> = <code>&quot;cpu&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>operations</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="libnnfw__api__pybind_8py_source.html#l00062">62</a> of file <a class="el" href="libnnfw__api__pybind_8py_source.html">libnnfw_api_pybind.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span><span class="keyword">def </span><a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;):</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> operations == <span class="stringliteral">&quot;&quot;</span>:</div>
-<div class="line"><span class="lineno">   64</span>        <span class="keywordflow">return</span> nnfw_session_wrapper(nnpackage_path, backends)</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">elif</span> operations:</div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">return</span> nnfw_session_wrapper(nnpackage_path, backends, operations)</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   68</span>        print(<span class="stringliteral">&quot;Syntax Error&quot;</span>)</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00068">onert-micro.cpp:69</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="ab60b5bbc6fb431db19e191ab669a977e" name="ab60b5bbc6fb431db19e191ab669a977e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab60b5bbc6fb431db19e191ab669a977e">&#9670;&#160;</a></span>num_elems()</h2>
 
@@ -185,7 +136,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   15</span> </div>
 <div class="ttc" id="annfw__api__wrapper_8h_html_ab58aba1368b0c5f5b8219480d1b4e558"><div class="ttname"><a href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a></div><div class="ttdeci">uint64_t num_elems(const nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get the total number of elements in nnfw_tensorinfo-&gt;dims.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00129">nnfw_api_wrapper.cc:129</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00029">package.libnnfw_api_pybind.nnfw_session_wrapper.set_inputs()</a>, and <a class="el" href="libnnfw__api__pybind_8py_source.html#l00046">package.libnnfw_api_pybind.nnfw_session_wrapper.set_outputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="libnnfw__api__pybind_8py_source.html#l00025">package.libnnfw_api_pybind.nnfw_session.set_inputs()</a>, and <a class="el" href="libnnfw__api__pybind_8py_source.html#l00042">package.libnnfw_api_pybind.nnfw_session.set_outputs()</a>.</p>
 
 </div>
 </div>
@@ -204,9 +155,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="libnnfw__api__pybind_8py_source.html#l00072">72</a> of file <a class="el" href="libnnfw__api__pybind_8py_source.html">libnnfw_api_pybind.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span><span class="keyword">def </span><a class="code hl_struct" href="structtensorinfo.html">tensorinfo</a>():</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> libnnfw_api_pybind.nnfw_tensorinfo()</div>
+<p class="definition">Definition at line <a class="el" href="libnnfw__api__pybind_8py_source.html#l00058">58</a> of file <a class="el" href="libnnfw__api__pybind_8py_source.html">libnnfw_api_pybind.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span><span class="keyword">def </span><a class="code hl_struct" href="structtensorinfo.html">tensorinfo</a>():</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> libnnfw_api_pybind.nnfw_tensorinfo()</div>
 <div class="ttc" id="astructtensorinfo_html"><div class="ttname"><a href="structtensorinfo.html">tensorinfo</a></div><div class="ttdoc">tensor info describes the type and shape of tensors</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00036">nnfw_api_wrapper.h:37</a></div></div>
 </div><!-- fragment -->
 </div>

@@ -2,7 +2,7 @@ var classonert_1_1backend_1_1basic_1_1_tensor =
 [
     [ "Tensor", "classonert_1_1backend_1_1basic_1_1_tensor.html#a9d04eab605cf6eb139527cf81dc818b6", null ],
     [ "~Tensor", "classonert_1_1backend_1_1basic_1_1_tensor.html#a55df2819c974d0979b1bd0f47c4e3a17", null ],
-    [ "Tensor", "classonert_1_1backend_1_1basic_1_1_tensor.html#a98bd1fea1a8933ce4b1e47bac436424c", null ],
+    [ "Tensor", "classonert_1_1backend_1_1basic_1_1_tensor.html#a8e78c57befcc3f1ed9825e52f4cbb9ad", null ],
     [ "applyShape", "classonert_1_1backend_1_1basic_1_1_tensor.html#a0ef72abd6f89e7e2b9e4f689a79a9c9b", null ],
     [ "buffer", "classonert_1_1backend_1_1basic_1_1_tensor.html#ab7851984acfa15c64d110c5acb6a95ab", null ],
     [ "deallocBuffer", "classonert_1_1backend_1_1basic_1_1_tensor.html#a3c0dd872c78208e99d7f1587a7a1e73b", null ],
@@ -17,6 +17,6 @@ var classonert_1_1backend_1_1basic_1_1_tensor =
     [ "setShape", "classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a", null ],
     [ "_buffer", "classonert_1_1backend_1_1basic_1_1_tensor.html#a287a6fe72cbbfa77b788565238b88303", null ],
     [ "_dynamic_mem_mgr", "classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d", null ],
-    [ "_layout", "classonert_1_1backend_1_1basic_1_1_tensor.html#a991e1659d26c205af30808407271ed0e", null ],
+    [ "_layout", "classonert_1_1backend_1_1basic_1_1_tensor.html#af16b07d54a320204eac8fb6adc1ffb0e", null ],
     [ "_num_references", "classonert_1_1backend_1_1basic_1_1_tensor.html#acc1e59e576d37d0de71411e132c92a3a", null ]
 ];

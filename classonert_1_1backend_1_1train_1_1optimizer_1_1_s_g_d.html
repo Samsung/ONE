@@ -332,27 +332,26 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_s_g_d_8cc_source.html#l00038">38</a> of file <a class="el" href="_s_g_d_8cc_source.html">SGD.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lr = <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">getLearningRate</a>(std::get&lt;size_t&gt;(factors));</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;grad_tensor = std::get&lt;const backend::IPortableTensor &amp;&gt;(factors);</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> &amp;trainable_tensor = std::get&lt;backend::train::ITrainableTensor &amp;&gt;(factors);</div>
-<div class="line"><span class="lineno">   43</span>  assert(trainable_tensor.data_type() == grad_tensor.data_type());</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (trainable_tensor.getShape() != grad_tensor.getShape())</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Invalid gradient tensor&quot;</span>);</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">switch</span> (grad_tensor.data_type())</div>
-<div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">   53</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a36f9531730e397d0a135dc4881b18fd0">nnfw::cker::train::GradientDescent</a>(</div>
-<div class="line"><span class="lineno">   54</span>        ops::getShape(&amp;trainable_tensor), ops::getBuffer&lt;float&gt;(&amp;trainable_tensor),</div>
-<div class="line"><span class="lineno">   55</span>        ops::getShape(&amp;grad_tensor), ops::getBuffer&lt;float&gt;(&amp;grad_tensor), lr);</div>
-<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Not supported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keyword">auto</span> [grad_tensor, trainable_tensor, training_step] = factors;</div>
+<div class="line"><span class="lineno">   41</span>  assert(trainable_tensor.data_type() == grad_tensor.data_type());</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (trainable_tensor.getShape() != grad_tensor.getShape())</div>
+<div class="line"><span class="lineno">   44</span>  {</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Invalid gradient tensor&quot;</span>);</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lr = <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">getLearningRate</a>(training_step);</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">switch</span> (grad_tensor.data_type())</div>
+<div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">   52</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1train.html#a36f9531730e397d0a135dc4881b18fd0">nnfw::cker::train::GradientDescent</a>(</div>
+<div class="line"><span class="lineno">   53</span>        ops::getShape(&amp;trainable_tensor), ops::getBuffer&lt;float&gt;(&amp;trainable_tensor),</div>
+<div class="line"><span class="lineno">   54</span>        ops::getShape(&amp;grad_tensor), ops::getBuffer&lt;float&gt;(&amp;grad_tensor), lr);</div>
+<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;SGD: Not supported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
+<div class="line"><span class="lineno">   59</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d_html_a64821688ea953ef9f632c4f24892a4eb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html#a64821688ea953ef9f632c4f24892a4eb">onert::backend::train::optimizer::SGD::getLearningRate</a></div><div class="ttdeci">double getLearningRate(uint32_t iteration=0) const override</div><div class="ttdoc">Get the Learning Rate.</div><div class="ttdef"><b>Definition</b> <a href="_s_g_d_8cc_source.html#l00032">SGD.cc:32</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a36f9531730e397d0a135dc4881b18fd0"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a36f9531730e397d0a135dc4881b18fd0">nnfw::cker::train::GradientDescent</a></div><div class="ttdeci">void GradientDescent(const Shape &amp;output_shape, float *output_data, const Shape &amp;grad_shape, const float *grad_data, float learning_rate)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2train_2optimizer_2_s_g_d_8h_source.html#l00033">SGD.h:33</a></div></div>
 </div><!-- fragment -->

@@ -149,9 +149,9 @@ $(document).ready(function(){initNavTree('_backend_resolver_8h_source.html','');
 <div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_backend_resolver.html#a00e8e8526fd7df7a287ac50845447f23">   45</a></span>  <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_resolver.html#a00e8e8526fd7df7a287ac50845447f23">iterate</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> &amp;)&gt; &amp;fn)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;e : _gen_map)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[op_index, backend] : _gen_map)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      fn(e.first, *e.second);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      fn(op_index, *backend);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
 </div>

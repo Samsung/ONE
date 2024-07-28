@@ -237,11 +237,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   97</span>  std::fwrite(&amp;input_count, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
 <div class="line"><span class="lineno">   98</span> </div>
 <div class="line"><span class="lineno">   99</span>  <span class="comment">// For each op</span></div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;elem : op_minmax)</div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[index, minmax] : op_minmax)</div>
 <div class="line"><span class="lineno">  101</span>  {</div>
 <div class="line"><span class="lineno">  102</span>    <span class="keyword">const</span> uint32_t model_idx = 0;</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keyword">const</span> uint32_t subg_idx = elem.first.first.value();</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keyword">const</span> uint32_t op_idx = elem.first.second.value();</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keyword">const</span> uint32_t subg_idx = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.first.value();</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keyword">const</span> uint32_t op_idx = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.second.value();</div>
 <div class="line"><span class="lineno">  105</span> </div>
 <div class="line"><span class="lineno">  106</span>    <span class="comment">// Write model/subg/op index</span></div>
 <div class="line"><span class="lineno">  107</span>    std::fwrite(&amp;model_idx, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
@@ -249,15 +249,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  109</span>    std::fwrite(&amp;op_idx, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
 <div class="line"><span class="lineno">  110</span> </div>
 <div class="line"><span class="lineno">  111</span>    <span class="comment">// Write min/max</span></div>
-<div class="line"><span class="lineno">  112</span>    std::fwrite(elem.second.data, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file);</div>
+<div class="line"><span class="lineno">  112</span>    std::fwrite(minmax.data, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file);</div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span> </div>
 <div class="line"><span class="lineno">  115</span>  <span class="comment">// For each input</span></div>
-<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;elem : input_minmax)</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[index, minmax] : input_minmax)</div>
 <div class="line"><span class="lineno">  117</span>  {</div>
 <div class="line"><span class="lineno">  118</span>    <span class="keyword">const</span> uint32_t model_idx = 0;</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keyword">const</span> uint32_t subg_idx = elem.first.first.value();</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keyword">const</span> uint32_t input_idx = elem.first.second.value();</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">const</span> uint32_t subg_idx = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.first.value();</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keyword">const</span> uint32_t input_idx = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.second.value();</div>
 <div class="line"><span class="lineno">  121</span> </div>
 <div class="line"><span class="lineno">  122</span>    <span class="comment">// Write model/subg/input index</span></div>
 <div class="line"><span class="lineno">  123</span>    std::fwrite(&amp;model_idx, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
@@ -265,11 +265,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  125</span>    std::fwrite(&amp;input_idx, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
 <div class="line"><span class="lineno">  126</span> </div>
 <div class="line"><span class="lineno">  127</span>    <span class="comment">// Write min/max</span></div>
-<div class="line"><span class="lineno">  128</span>    std::fwrite(elem.second.data, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file);</div>
+<div class="line"><span class="lineno">  128</span>    std::fwrite(minmax.data, <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>), 2, file);</div>
 <div class="line"><span class="lineno">  129</span>  }</div>
 <div class="line"><span class="lineno">  130</span> </div>
 <div class="line"><span class="lineno">  131</span>  std::fclose(file);</div>
 <div class="line"><span class="lineno">  132</span>}</div>
+<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_abe660e9c50ccb26ca3f53160f59fabb7"><div class="ttname"><a href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">tf2tfliteV2.file</a></div><div class="ttdeci">file</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00300">tf2tfliteV2.py:300</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="util_2_min_max_map_8h_source.html#l00039">onert::util::MinMaxMap&lt; N, Hash &gt;::size()</a>.</p>

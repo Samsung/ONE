@@ -212,8 +212,8 @@ $(document).ready(function(){initNavTree('_min_max_recorder_8cc_source.html','')
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="comment">// Otherwise, dump!</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  assert(tensor-&gt;data_type() == ir::DataType::FLOAT32);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">auto</span> minmax = <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(tensor);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  _op_minmax.<a class="code hl_function" href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">append</a>({subg_idx, op_idx}, minmax.first, minmax.second);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">auto</span> [min, max] = <a class="code hl_function" href="namespaceonert_1_1exec.html#a066a36efca45963d0e0d80fadace30e2">minmaxFrom</a>(tensor);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  _op_minmax.<a class="code hl_function" href="classonert_1_1util_1_1_min_max_map.html#a5092165820baf57f2b1892d671d4b814">append</a>({subg_idx, op_idx}, min, max);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>}</div>
 </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
@@ -223,12 +223,12 @@ $(document).ready(function(){initNavTree('_min_max_recorder_8cc_source.html','')
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">// Make sure there is only cpu backend except for builtin backend</span></div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  std::set&lt;std::string&gt; backend_names;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <a class="code hl_struct" href="structonert_1_1backend_1_1_i_tensor_registry.html">backend::ITensorRegistry</a> *tensor_reg = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : _backend_contexts)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[backend, bctx] : _backend_contexts)</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  {</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    backend_names.insert(pair.first-&gt;config()-&gt;id());</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">if</span> (pair.first-&gt;config()-&gt;id() == <span class="stringliteral">&quot;cpu&quot;</span>)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    backend_names.insert(backend-&gt;config()-&gt;id());</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">if</span> (backend-&gt;config()-&gt;id() == <span class="stringliteral">&quot;cpu&quot;</span>)</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    {</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      tensor_reg = pair.second-&gt;tensor_registry.get();</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      tensor_reg = bctx-&gt;tensor_registry.get();</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  }</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordflow">if</span> (backend_names != std::set&lt;std::string&gt;{<span class="stringliteral">&quot;builtin&quot;</span>, <span class="stringliteral">&quot;cpu&quot;</span>})</div>

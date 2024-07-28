@@ -1,0 +1,5 @@
+<map id="fme_apply::FusePostShiftPass" name="fme_apply::FusePostShiftPass">
+<area shape="rect" id="Node000001" title="Pass to fuse CircleCustom(PostShift) to preceding Ops." alt="" coords="5,79,205,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="64,5,146,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,46,108,79,102,79,102,46"/>
+</map>

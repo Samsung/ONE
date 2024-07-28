@@ -134,34 +134,32 @@ $(document).ready(function(){initNavTree('_dynamic_tensor_manager_8cc_source.htm
 </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a85980101fc5455b0de49ec3948af7016">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a85980101fc5455b0de49ec3948af7016">DynamicTensorManager::buildTensor</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind,</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                       <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;tensor_info,</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                                       <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> backend_layout)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  assert(_tensors-&gt;getNativeTensor(ind) == <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">auto</span> tensor = std::make_unique&lt;Tensor&gt;(tensor_info, backend_layout, _dynamic_mem_mgr.get());</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  _tensors-&gt;setNativeTensor(ind, std::move(tensor));</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a0ed5eabe82d22effc0366c39c9d8da43">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a0ed5eabe82d22effc0366c39c9d8da43">DynamicTensorManager::buildTensor</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind,</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                                       <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;tensor_info)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  assert(_tensors-&gt;getNativeTensor(ind) == <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">auto</span> tensor = std::make_unique&lt;Tensor&gt;(tensor_info, _dynamic_mem_mgr.get());</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  _tensors-&gt;setNativeTensor(ind, std::move(tensor));</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
 </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *DynamicTensorManager::getRawITensor(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> ind)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">auto</span> ptr = _tensors-&gt;getITensor(ind);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  assert(ptr);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">return</span> ptr;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace basic</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_i_tensor.html">ITensor</a> *DynamicTensorManager::getRawITensor(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> ind)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>{</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">auto</span> ptr = _tensors-&gt;getITensor(ind);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  assert(ptr);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">return</span> ptr;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace basic</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a></div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_8h_source.html#l00036">ITensor.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_memory_manager_html"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html">onert::backend::basic::DynamicMemoryManager</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h_source.html#l00058">MemoryManager.h:59</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager_html_a85980101fc5455b0de49ec3948af7016"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a85980101fc5455b0de49ec3948af7016">onert::backend::basic::DynamicTensorManager::buildTensor</a></div><div class="ttdeci">void buildTensor(const ir::OperandIndex &amp;ind, const ir::OperandInfo &amp;tensor_info, ir::Layout backend_layout)</div><div class="ttdef"><b>Definition</b> <a href="_dynamic_tensor_manager_8cc_source.html#l00035">DynamicTensorManager.cc:35</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager_html_a0ed5eabe82d22effc0366c39c9d8da43"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a0ed5eabe82d22effc0366c39c9d8da43">onert::backend::basic::DynamicTensorManager::buildTensor</a></div><div class="ttdeci">void buildTensor(const ir::OperandIndex &amp;ind, const ir::OperandInfo &amp;tensor_info)</div><div class="ttdef"><b>Definition</b> <a href="_dynamic_tensor_manager_8cc_source.html#l00035">DynamicTensorManager.cc:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager_html_a99342feff21ed2a20e9cb7d043ed2bc9"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html#a99342feff21ed2a20e9cb7d043ed2bc9">onert::backend::basic::DynamicTensorManager::DynamicTensorManager</a></div><div class="ttdeci">DynamicTensorManager(const std::shared_ptr&lt; TensorRegistry &gt; &amp;reg)</div><div class="ttdef"><b>Definition</b> <a href="_dynamic_tensor_manager_8cc_source.html#l00029">DynamicTensorManager.cc:29</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html">onert::ir::OperandInfo</a></div><div class="ttdoc">Class to save tensor's shape and type.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00055">OperandInfo.h:56</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperandIndexTag &gt;</a></div></div>
 <div class="ttc" id="ainclude_2backend_2basic_2_dynamic_tensor_manager_8h_html"><div class="ttname"><a href="include_2backend_2basic_2_dynamic_tensor_manager_8h.html">DynamicTensorManager.h</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">onert::ir::Layout</a></div><div class="ttdeci">Layout</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00029">Layout.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>
 <div class="ttc" id="apolymorphic__downcast_8h_html"><div class="ttname"><a href="polymorphic__downcast_8h.html">polymorphic_downcast.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

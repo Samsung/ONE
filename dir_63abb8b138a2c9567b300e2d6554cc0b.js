@@ -7,7 +7,6 @@ var dir_63abb8b138a2c9567b300e2d6554cc0b =
     [ "BackendContext.h", "core_2src_2backend_2builtin_2_backend_context_8h.html", "core_2src_2backend_2builtin_2_backend_context_8h" ],
     [ "Config.cc", "core_2src_2backend_2builtin_2_config_8cc.html", null ],
     [ "Config.h", "runtime_2onert_2core_2src_2backend_2builtin_2_config_8h.html", "runtime_2onert_2core_2src_2backend_2builtin_2_config_8h" ],
-    [ "ConstantInitializer.h", "core_2src_2backend_2builtin_2_constant_initializer_8h.html", "core_2src_2backend_2builtin_2_constant_initializer_8h" ],
     [ "DynamicTensorManager.h", "src_2backend_2builtin_2_dynamic_tensor_manager_8h.html", "src_2backend_2builtin_2_dynamic_tensor_manager_8h" ],
     [ "ExternalContext.h", "core_2src_2backend_2builtin_2_external_context_8h.html", "core_2src_2backend_2builtin_2_external_context_8h" ],
     [ "IOTensor.cc", "_i_o_tensor_8cc.html", null ],

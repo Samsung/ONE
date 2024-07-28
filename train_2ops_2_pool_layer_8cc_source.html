@@ -161,12 +161,12 @@ $(document).ready(function(){initNavTree('train_2ops_2_pool_layer_8cc_source.htm
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                      &amp;<a class="code hl_variable" href="cpu_2ops_2_binary_arithmetic_layer_8cc.html#a3c2839aef66813def3869d5fb9ec8ef2">_op_params</a>.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#ac8fdfaa8e3b43c341a0128857d3bcf20">float_activation_max</a>);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    _arg_max_index = std::make_unique&lt;Tensor&gt;(_output-&gt;get_info(), _output-&gt;layout());</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    _arg_max_index = std::make_unique&lt;Tensor&gt;(_output-&gt;get_info());</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    _arg_max_index-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(_output-&gt;total_size()));</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">if</span> (activation != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      _act_back_prop_output = std::make_unique&lt;Tensor&gt;(_output-&gt;get_info(), _output-&gt;layout());</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      _act_back_prop_output = std::make_unique&lt;Tensor&gt;(_output-&gt;get_info());</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      _act_back_prop_output-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(_output-&gt;total_size()));</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  };</div>

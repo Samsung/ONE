@@ -116,8 +116,8 @@ Collaboration diagram for onert::backend::builtin::IOTensor:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac951aab4c7ed2c7acdca50663e11d4f6" id="r_ac951aab4c7ed2c7acdca50663e11d4f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ac951aab4c7ed2c7acdca50663e11d4f6">IOTensor</a> (const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">layout</a>)</td></tr>
-<tr class="separator:ac951aab4c7ed2c7acdca50663e11d4f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ba9d36964fb775886f66b254a7473db" id="r_a9ba9d36964fb775886f66b254a7473db"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a9ba9d36964fb775886f66b254a7473db">IOTensor</a> (const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
+<tr class="separator:a9ba9d36964fb775886f66b254a7473db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aa0173c02c92869e776dd62ac00118d" id="r_a6aa0173c02c92869e776dd62ac00118d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a6aa0173c02c92869e776dd62ac00118d">~IOTensor</a> ()</td></tr>
 <tr class="separator:a6aa0173c02c92869e776dd62ac00118d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fc40e86f47e87c09ad4bf9f23ee2997" id="r_a2fc40e86f47e87c09ad4bf9f23ee2997"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997">setTensor</a> (<a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
@@ -205,8 +205,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00049">49</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac951aab4c7ed2c7acdca50663e11d4f6" name="ac951aab4c7ed2c7acdca50663e11d4f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac951aab4c7ed2c7acdca50663e11d4f6">&#9670;&#160;</a></span>IOTensor()</h2>
+<a id="a9ba9d36964fb775886f66b254a7473db" name="a9ba9d36964fb775886f66b254a7473db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ba9d36964fb775886f66b254a7473db">&#9670;&#160;</a></span>IOTensor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,31 +215,21 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">onert::backend::builtin::IOTensor::IOTensor </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>info</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>info</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>layout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_i_o_tensor_8cc_source.html#l00032">32</a> of file <a class="el" href="_i_o_tensor_8cc_source.html">IOTensor.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   33</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">IPortableTensor</a>{<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>}, _tensor{<span class="keyword">nullptr</span>},</div>
-<div class="line"><span class="lineno">   34</span>    _orig{std::make_unique&lt;UserTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">layout</a>, (uint8_t *)<span class="keyword">nullptr</span>, 0)}</div>
+<div class="line"><span class="lineno">   34</span>    _orig{std::make_unique&lt;UserTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>, (uint8_t *)<span class="keyword">nullptr</span>, 0)}</div>
 <div class="line"><span class="lineno">   35</span>{</div>
 <div class="line"><span class="lineno">   36</span>  _tensor = _orig.get();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a9697cc6ef0eba77d6604c2d21d4f07ca"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">onert::backend::IPortableTensor::IPortableTensor</a></div><div class="ttdeci">IPortableTensor(const ir::OperandInfo &amp;info)</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00041">IPortableTensor.h:41</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_a25bcc7bdd78fcde02d602bcfd1fbd53c"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">onert::backend::builtin::IOTensor::layout</a></div><div class="ttdeci">ir::Layout layout() const override</div><div class="ttdef"><b>Definition</b> <a href="_i_o_tensor_8h_source.html#l00060">IOTensor.h:60</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
 </div>
 </div>

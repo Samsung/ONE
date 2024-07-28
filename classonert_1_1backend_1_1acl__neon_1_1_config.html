@@ -115,9 +115,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1fbd9cf10a2266ed671232ad6ccd2b9c" id="r_a1fbd9cf10a2266ed671232ad6ccd2b9c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_config.html#a1fbd9cf10a2266ed671232ad6ccd2b9c">initialize</a> () override</td></tr>
 <tr class="memdesc:a1fbd9cf10a2266ed671232ad6ccd2b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the backend. This is called as soon as the backend is loaded.  <br /></td></tr>
 <tr class="separator:a1fbd9cf10a2266ed671232ad6ccd2b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5a3c6be19f5410c3df583e2bec74475" id="r_ad5a3c6be19f5410c3df583e2bec74475"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_config.html#ad5a3c6be19f5410c3df583e2bec74475">supportLayout</a> (const <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;node, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> frontend_layout) override</td></tr>
-<tr class="memdesc:ad5a3c6be19f5410c3df583e2bec74475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns supported layout for the given <code>node</code> and <code>frontend_layout</code>.  <br /></td></tr>
-<tr class="separator:ad5a3c6be19f5410c3df583e2bec74475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fc65b7cafe08c01ea7dcb98d5906c31" id="r_a9fc65b7cafe08c01ea7dcb98d5906c31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_config.html#a9fc65b7cafe08c01ea7dcb98d5906c31">supportPermutation</a> () override</td></tr>
 <tr class="separator:a9fc65b7cafe08c01ea7dcb98d5906c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4aa3612f5510a0b596485821c90eb66" id="r_af4aa3612f5510a0b596485821c90eb66"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_config.html#af4aa3612f5510a0b596485821c90eb66">supportDynamicTensor</a> () override</td></tr>
@@ -231,8 +228,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#a73be9cb51bb0da4ef5f718350a78e282">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00037">37</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -261,77 +258,9 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#afaf8c9c1f8488338e8488b92ca595114">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00039">39</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="ad5a3c6be19f5410c3df583e2bec74475" name="ad5a3c6be19f5410c3df583e2bec74475"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5a3c6be19f5410c3df583e2bec74475">&#9670;&#160;</a></span>supportLayout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::backend::acl_neon::Config::supportLayout </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>frontend_layout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns supported layout for the given <code>node</code> and <code>frontend_layout</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>IOperation </td></tr>
-    <tr><td class="paramname">frontend_layout</td><td>The layout defined in the model </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>ir::Layout The layout that the backend kernel actually uses </dd></dl>
-
-<p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#ae7d538f8a548641c82f38f16db672b03">onert::backend::IConfig</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="backend_2acl__neon_2_config_8cc_source.html#l00030">30</a> of file <a class="el" href="backend_2acl__neon_2_config_8cc_source.html">Config.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keyword">const</span> std::string acl_layout_str = <a class="code hl_function" href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">util::getConfigString</a>(util::config::ACL_LAYOUT);</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (acl_layout_str == <span class="stringliteral">&quot;NHWC&quot;</span>)</div>
-<div class="line"><span class="lineno">   34</span>  {</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>;</div>
-<div class="line"><span class="lineno">   36</span>  }</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (acl_layout_str == <span class="stringliteral">&quot;NCHW&quot;</span>)</div>
-<div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">ir::Layout::NCHW</a>;</div>
-<div class="line"><span class="lineno">   40</span>  }</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">return</span> frontend_layout;</div>
-<div class="line"><span class="lineno">   43</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::Layout::NCHW</a></div><div class="ttdeci">@ NCHW</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
-<div class="ttc" id="anamespaceonert_1_1util_html_a7e5e582c0b8f79d797f44f6df9765727"><div class="ttname"><a href="namespaceonert_1_1util.html#a7e5e582c0b8f79d797f44f6df9765727">onert::util::getConfigString</a></div><div class="ttdeci">std::string getConfigString(const std::string &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00130">ConfigSource.cc:130</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert_2core_2src_2util_2_config_source_8cc_source.html#l00130">onert::util::getConfigString()</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::NCHW</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>
-
 </div>
 </div>
 <a id="a9fc65b7cafe08c01ea7dcb98d5906c31" name="a9fc65b7cafe08c01ea7dcb98d5906c31"></a>
@@ -359,8 +288,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#a95139ee87b80374d2667c679667f9e54">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00037">37</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00036">36</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -392,8 +321,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Reimplemented from <a class="el" href="structonert_1_1backend_1_1_i_config.html#aa0428b6ed9418fc378917f911f5835f4">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> std::make_unique&lt;util::CPUTimer&gt;(); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html#l00040">40</a> of file <a class="el" href="runtime_2onert_2backend_2acl__neon_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> std::make_unique&lt;util::CPUTimer&gt;(); }</div>
 </div><!-- fragment -->
 </div>
 </div>

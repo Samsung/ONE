@@ -594,6 +594,22 @@ var annotated_dup =
       [ "TypedVector", "classflexbuffers_1_1_typed_vector.html", "classflexbuffers_1_1_typed_vector" ],
       [ "Vector", "classflexbuffers_1_1_vector.html", "classflexbuffers_1_1_vector" ]
     ] ],
+    [ "fme_apply", "namespacefme__apply.html", [
+      [ "EqualizePattern", "structfme__apply_1_1_equalize_pattern.html", "structfme__apply_1_1_equalize_pattern" ],
+      [ "FMEqualizer", "classfme__apply_1_1_f_m_equalizer.html", "classfme__apply_1_1_f_m_equalizer" ],
+      [ "ForwardPreScalePass", "classfme__apply_1_1_forward_pre_scale_pass.html", "classfme__apply_1_1_forward_pre_scale_pass" ],
+      [ "ForwardPreShiftPass", "classfme__apply_1_1_forward_pre_shift_pass.html", "classfme__apply_1_1_forward_pre_shift_pass" ],
+      [ "FusePostScalePass", "classfme__apply_1_1_fuse_post_scale_pass.html", "classfme__apply_1_1_fuse_post_scale_pass" ],
+      [ "FusePostShiftPass", "classfme__apply_1_1_fuse_post_shift_pass.html", "classfme__apply_1_1_fuse_post_shift_pass" ],
+      [ "FusePreScalePass", "classfme__apply_1_1_fuse_pre_scale_pass.html", "classfme__apply_1_1_fuse_pre_scale_pass" ],
+      [ "FusePreShiftPass", "classfme__apply_1_1_fuse_pre_shift_pass.html", "classfme__apply_1_1_fuse_pre_shift_pass" ],
+      [ "InsertScaleShift", "classfme__apply_1_1_insert_scale_shift.html", "classfme__apply_1_1_insert_scale_shift" ],
+      [ "ProgressReporter", "classfme__apply_1_1_progress_reporter.html", "classfme__apply_1_1_progress_reporter" ]
+    ] ],
+    [ "fme_detect", "namespacefme__detect.html", [
+      [ "EqualizePattern", "structfme__detect_1_1_equalize_pattern.html", "structfme__detect_1_1_equalize_pattern" ],
+      [ "EqualizePatternFinder", "classfme__detect_1_1_equalize_pattern_finder.html", "classfme__detect_1_1_equalize_pattern_finder" ]
+    ] ],
     [ "foder", "namespacefoder.html", [
       [ "FileLoader", "classfoder_1_1_file_loader.html", "classfoder_1_1_file_loader" ]
     ] ],
@@ -910,6 +926,7 @@ var annotated_dup =
       [ "BuiltinOperatorMappingRule", "classluci_1_1_builtin_operator_mapping_rule.html", "classluci_1_1_builtin_operator_mapping_rule" ],
       [ "BuiltinOptionsExtractor", "classluci_1_1_builtin_options_extractor.html", "classluci_1_1_builtin_options_extractor" ],
       [ "BuiltinOptionsMappingRule", "classluci_1_1_builtin_options_mapping_rule.html", "classluci_1_1_builtin_options_mapping_rule" ],
+      [ "CanonicalizePass", "structluci_1_1_canonicalize_pass.html", "structluci_1_1_canonicalize_pass" ],
       [ "CircleAbs", "classluci_1_1_circle_abs.html", "classluci_1_1_circle_abs" ],
       [ "CircleAbsGraphBuilder", "classluci_1_1_circle_abs_graph_builder.html", "classluci_1_1_circle_abs_graph_builder" ],
       [ "CircleAdd", "classluci_1_1_circle_add.html", "classluci_1_1_circle_add" ],
@@ -2456,6 +2473,14 @@ var annotated_dup =
     ] ],
     [ "nnfw", "namespacennfw.html", [
       [ "cker", "namespacennfw_1_1cker.html", [
+        [ "bias_op", "namespacennfw_1_1cker_1_1bias__op.html", [
+          [ "functor", "namespacennfw_1_1cker_1_1bias__op_1_1functor.html", [
+            [ "internal", "namespacennfw_1_1cker_1_1bias__op_1_1functor_1_1internal.html", [
+              [ "MaybeWith32BitIndexingImpl", "structnnfw_1_1cker_1_1bias__op_1_1functor_1_1internal_1_1_maybe_with32_bit_indexing_impl.html", "structnnfw_1_1cker_1_1bias__op_1_1functor_1_1internal_1_1_maybe_with32_bit_indexing_impl" ]
+            ] ],
+            [ "Bias", "structnnfw_1_1cker_1_1bias__op_1_1functor_1_1_bias.html", "structnnfw_1_1cker_1_1bias__op_1_1functor_1_1_bias" ]
+          ] ]
+        ] ],
         [ "depthwise_conv_op", "namespacennfw_1_1cker_1_1depthwise__conv__op.html", [
           [ "functor", "namespacennfw_1_1cker_1_1depthwise__conv__op_1_1functor.html", [
             [ "DepthwiseFilterPadOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op" ],
@@ -3708,7 +3733,7 @@ var annotated_dup =
     ] ],
     [ "package", "namespacepackage.html", [
       [ "libnnfw_api_pybind", "namespacepackage_1_1libnnfw__api__pybind.html", [
-        [ "nnfw_session_wrapper", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper.html", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session__wrapper" ]
+        [ "nnfw_session", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session" ]
       ] ]
     ] ],
     [ "Pad_000", "namespace_pad__000.html", [
@@ -4299,8 +4324,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

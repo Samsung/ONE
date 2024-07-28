@@ -8,7 +8,7 @@ var dir_aa4669bf2bab8c2f75fdb409fe404ab8 =
     [ "Config.cc", "backend_2acl__cl_2_config_8cc.html", null ],
     [ "Config.h", "runtime_2onert_2backend_2acl__cl_2_config_8h.html", "runtime_2onert_2backend_2acl__cl_2_config_8h" ],
     [ "ConstantInitializer.cc", "acl__cl_2_constant_initializer_8cc.html", null ],
-    [ "ConstantInitializer.h", "backend_2acl__cl_2_constant_initializer_8h.html", "backend_2acl__cl_2_constant_initializer_8h" ],
+    [ "ConstantInitializer.h", "acl__cl_2_constant_initializer_8h.html", "acl__cl_2_constant_initializer_8h" ],
     [ "KernelGenerator.cc", "backend_2acl__cl_2_kernel_generator_8cc.html", "backend_2acl__cl_2_kernel_generator_8cc" ],
     [ "KernelGenerator.h", "backend_2acl__cl_2_kernel_generator_8h.html", "backend_2acl__cl_2_kernel_generator_8h" ],
     [ "Optimizer.cc", "acl__cl_2_optimizer_8cc.html", null ],

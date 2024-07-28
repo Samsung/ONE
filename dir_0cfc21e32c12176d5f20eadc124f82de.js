@@ -1,5 +1,6 @@
 var dir_0cfc21e32c12176d5f20eadc124f82de =
 [
+    [ "CanonicalizePass.h", "_canonicalize_pass_8h.html", "_canonicalize_pass_8h" ],
     [ "CircleShapeInferencePass.h", "_circle_shape_inference_pass_8h.html", "_circle_shape_inference_pass_8h" ],
     [ "CircleTypeInferencePass.h", "_circle_type_inference_pass_8h.html", "_circle_type_inference_pass_8h" ],
     [ "CommonSubExpressionEliminationPass.h", "_common_sub_expression_elimination_pass_8h.html", "_common_sub_expression_elimination_pass_8h" ],

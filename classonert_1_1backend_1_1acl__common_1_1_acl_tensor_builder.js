@@ -13,6 +13,6 @@ var classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder =
     [ "parent_map", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#ab05377c1f4d6a20241b1feb2cafd4eab", null ],
     [ "postFunctionPrepare", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a2cccf917605bb768b119fe542d6aacba", null ],
     [ "prepare", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a768da0b2507d4ea9a419e299c85e2f17", null ],
-    [ "registerTensorInfo", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a6f7ae7edb6759666634b02e069bea657", null ],
+    [ "registerTensorInfo", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a02b2d49c441ef2178d50c021e94f66ff", null ],
     [ "setUsesCount", "classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#ae0fb694348c0c82c6413bb2e6535c92d", null ]
 ];

@@ -103,9 +103,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a461ea136abc828145cdb586f6f294eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9cc355f1a72996b250fc293a8458bf7" id="r_ab9cc355f1a72996b250fc293a8458bf7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#ab9cc355f1a72996b250fc293a8458bf7">TensorBuilder</a> (const std::shared_ptr&lt; <a class="el" href="namespaceonert_1_1backend_1_1basic.html#a50c36d28c81cb8c597b3b3b694ed28b4">TensorRegistry</a> &gt; &amp;tensor_reg, const std::string planner_id)</td></tr>
 <tr class="separator:ab9cc355f1a72996b250fc293a8458bf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26cd77a5cc54e0dfbbc1b6d948eb7b6f" id="r_a26cd77a5cc54e0dfbbc1b6d948eb7b6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#a26cd77a5cc54e0dfbbc1b6d948eb7b6f">registerTensorInfo</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> backend_layout)</td></tr>
-<tr class="memdesc:a26cd77a5cc54e0dfbbc1b6d948eb7b6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register tensor information to allocate on CPU backend.  <br /></td></tr>
-<tr class="separator:a26cd77a5cc54e0dfbbc1b6d948eb7b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68b30b7eb416625ea32b48d15fb05e08" id="r_a68b30b7eb416625ea32b48d15fb05e08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#a68b30b7eb416625ea32b48d15fb05e08">registerTensorInfo</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
+<tr class="memdesc:a68b30b7eb416625ea32b48d15fb05e08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register tensor information to allocate on CPU backend.  <br /></td></tr>
+<tr class="separator:a68b30b7eb416625ea32b48d15fb05e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaac3efa19acb78718bcdd8bde09dc2e" id="r_aeaac3efa19acb78718bcdd8bde09dc2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#aeaac3efa19acb78718bcdd8bde09dc2e">notifyFirstUse</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)</td></tr>
 <tr class="separator:aeaac3efa19acb78718bcdd8bde09dc2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8186a364b9286518788231b18e570b31" id="r_a8186a364b9286518788231b18e570b31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor_builder.html#a8186a364b9286518788231b18e570b31">notifyLastUse</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)</td></tr>
@@ -200,8 +200,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00087">87</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   87</span>{ _static_tensor_mgr-&gt;allocateNonconsts(); }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00084">84</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{ _static_tensor_mgr-&gt;allocateNonconsts(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -229,8 +229,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2include_2backend_2basic_2_tensor_builder_8h_source.html#l00059">59</a> of file <a class="el" href="core_2include_2backend_2basic_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> _dynamic_tensor_mgr.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="core_2include_2backend_2basic_2_tensor_builder_8h_source.html#l00057">57</a> of file <a class="el" href="core_2include_2backend_2basic_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> _dynamic_tensor_mgr.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -250,10 +250,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00082">82</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{</div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">return</span> _tensor_info_map.find(ind) != _tensor_info_map.end();</div>
-<div class="line"><span class="lineno">   85</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00079">79</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">return</span> _tensor_info_map.find(ind) != _tensor_info_map.end();</div>
+<div class="line"><span class="lineno">   82</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -273,17 +273,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00062">62</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
-<div class="line"><span class="lineno">   64</span>  assert(_tensor_info_map.find(ind) != _tensor_info_map.end());</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_info = _tensor_info_map.at(ind);</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (!_tensor_reg-&gt;getNativeTensor(ind)-&gt;is_dynamic())</div>
-<div class="line"><span class="lineno">   68</span>  {</div>
-<div class="line"><span class="lineno">   69</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = tensor_info.total_size();</div>
-<div class="line"><span class="lineno">   70</span>    _static_tensor_mgr-&gt;claimPlan(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">   71</span>  }</div>
-<div class="line"><span class="lineno">   72</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00059">59</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>  assert(_tensor_info_map.find(ind) != _tensor_info_map.end());</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tensor_info = _tensor_info_map.at(ind);</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">if</span> (!_tensor_reg-&gt;getNativeTensor(ind)-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">   65</span>  {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = tensor_info.total_size();</div>
+<div class="line"><span class="lineno">   67</span>    _static_tensor_mgr-&gt;claimPlan(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
@@ -306,18 +306,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00074">74</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">if</span> (!_tensor_reg-&gt;getNativeTensor(ind)-&gt;is_dynamic())</div>
-<div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    _static_tensor_mgr-&gt;releasePlan(ind);</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-<div class="line"><span class="lineno">   80</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00071">71</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (!_tensor_reg-&gt;getNativeTensor(ind)-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">   74</span>  {</div>
+<div class="line"><span class="lineno">   75</span>    _static_tensor_mgr-&gt;releasePlan(ind);</div>
+<div class="line"><span class="lineno">   76</span>  }</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a26cd77a5cc54e0dfbbc1b6d948eb7b6f" name="a26cd77a5cc54e0dfbbc1b6d948eb7b6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26cd77a5cc54e0dfbbc1b6d948eb7b6f">&#9670;&#160;</a></span>registerTensorInfo()</h2>
+<a id="a68b30b7eb416625ea32b48d15fb05e08" name="a68b30b7eb416625ea32b48d15fb05e08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68b30b7eb416625ea32b48d15fb05e08">&#9670;&#160;</a></span>registerTensorInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -332,13 +332,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>info</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>backend_layout</em>&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -353,30 +347,26 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ind</td><td>Operand index </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">info</td><td>Operand information </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">layout</td><td>Operand data layout </td></tr>
   </table>
   </dd>
 </dl>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html#l00045">45</a> of file <a class="el" href="core_2src_2backend_2basic_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
-<div class="line"><span class="lineno">   48</span>  _tensor_info_map.emplace(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="comment">// CPU backend supports only one layout as NHWC</span></div>
-<div class="line"><span class="lineno">   51</span>  assert(layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isDynamic())</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    _dynamic_tensor_mgr-&gt;buildTensor(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout);</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    _static_tensor_mgr-&gt;buildTensor(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, layout, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant());</div>
-<div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
+<div class="line"><span class="lineno">   47</span>  _tensor_info_map.emplace(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isDynamic())</div>
+<div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    _dynamic_tensor_mgr-&gt;buildTensor(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">   52</span>  }</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    _static_tensor_mgr-&gt;buildTensor(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant());</div>
+<div class="line"><span class="lineno">   56</span>  }</div>
+<div class="line"><span class="lineno">   57</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>
+<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
 
 </div>
 </div>

@@ -107,9 +107,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9bb4e402d3b8b548fd62eb43b05e6d69" id="r_a9bb4e402d3b8b548fd62eb43b05e6d69"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1_i_config.html#a9bb4e402d3b8b548fd62eb43b05e6d69">initialize</a> ()=0</td></tr>
 <tr class="memdesc:a9bb4e402d3b8b548fd62eb43b05e6d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the backend. This is called as soon as the backend is loaded.  <br /></td></tr>
 <tr class="separator:a9bb4e402d3b8b548fd62eb43b05e6d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7d538f8a548641c82f38f16db672b03" id="r_ae7d538f8a548641c82f38f16db672b03"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1_i_config.html#ae7d538f8a548641c82f38f16db672b03">supportLayout</a> (const <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;node, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> frontend_layout)=0</td></tr>
-<tr class="memdesc:ae7d538f8a548641c82f38f16db672b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns supported layout for the given <code>node</code> and <code>frontend_layout</code>.  <br /></td></tr>
-<tr class="separator:ae7d538f8a548641c82f38f16db672b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9832d23dcabcd4ea15575f80d0ecb24a" id="r_a9832d23dcabcd4ea15575f80d0ecb24a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1backend_1_1_i_config.html#a9832d23dcabcd4ea15575f80d0ecb24a">sync</a> () const</td></tr>
 <tr class="memdesc:a9832d23dcabcd4ea15575f80d0ecb24a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that is called after each Operation run on profiling mode. This may be useful for profiling GPU-based or special computing units.  <br /></td></tr>
 <tr class="separator:a9832d23dcabcd4ea15575f80d0ecb24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -269,54 +266,6 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 </div>
 </div>
-<a id="ae7d538f8a548641c82f38f16db672b03" name="ae7d538f8a548641c82f38f16db672b03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7d538f8a548641c82f38f16db672b03">&#9670;&#160;</a></span>supportLayout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::backend::IConfig::supportLayout </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structonert_1_1ir_1_1_i_operation.html">ir::IOperation</a> &amp;&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>frontend_layout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns supported layout for the given <code>node</code> and <code>frontend_layout</code>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>IOperation </td></tr>
-    <tr><td class="paramname">frontend_layout</td><td>The layout defined in the model </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>ir::Layout The layout that the backend kernel actually uses </dd></dl>
-
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ad5f1d54eb8cec2224c3ce0831e950424">onert::backend::acl_cl::Config</a>, <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_config.html#ad5a3c6be19f5410c3df583e2bec74475">onert::backend::acl_neon::Config</a>, <a class="el" href="classonert_1_1backend_1_1cpu_1_1_config.html#ac50d7413dcffb986cecd5426db1c6230">onert::backend::cpu::Config</a>, <a class="el" href="classonert_1_1backend_1_1ruy_1_1_config.html#af1f9ac6896c0bb8af7235be28e0587ad">onert::backend::ruy::Config</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1_config.html#af2a0a04a755a1f6acf95a0857947bcdf">onert::backend::train::Config</a>, <a class="el" href="classonert_1_1backend_1_1trix_1_1_config.html#a33916dda8c26c271620396a73d56b599">onert::backend::trix::Config</a>, <a class="el" href="classonert_1_1backend_1_1xnnpack_1_1_config.html#a05daec7bc19102af25a0ef6a95392dee">onert::backend::xnnpack::Config</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1_config.html#a1cb217d6e95997f17b73eac30739d4fd">onert::backend::builtin::Config</a>.</p>
-
-</div>
-</div>
 <a id="a95139ee87b80374d2667c679667f9e54" name="a95139ee87b80374d2667c679667f9e54"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a95139ee87b80374d2667c679667f9e54">&#9670;&#160;</a></span>supportPermutation()</h2>
 
@@ -371,8 +320,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#a950b097ead2fb0221b392b2a50cf5cfe">onert::backend::acl_cl::Config</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_config_8h_source.html#l00060">60</a> of file <a class="el" href="_i_config_8h_source.html">IConfig.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="_i_config_8h_source.html#l00052">52</a> of file <a class="el" href="_i_config_8h_source.html">IConfig.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -404,8 +353,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#a259657e86b63448ec701c6ec420b230b">onert::backend::acl_cl::Config</a>, <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1_config.html#a0b92f31e550cb2a9898fd299335d41b1">onert::backend::acl_neon::Config</a>, <a class="el" href="classonert_1_1backend_1_1cpu_1_1_config.html#aa01a10b1d00634509529ab55053fdc83">onert::backend::cpu::Config</a>, <a class="el" href="classonert_1_1backend_1_1ruy_1_1_config.html#a470ad8d925a50ce3988b202bbebbd624">onert::backend::ruy::Config</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1_config.html#a35fc88693543648bab1e6430f17530ea">onert::backend::train::Config</a>, <a class="el" href="classonert_1_1backend_1_1trix_1_1_config.html#a10cdbbbcbfa30f9d57fe2ebfe5e5679f">onert::backend::trix::Config</a>, <a class="el" href="classonert_1_1backend_1_1xnnpack_1_1_config.html#add22c87707d4f8d363fd4fb3022ad981">onert::backend::xnnpack::Config</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1_config.html#ac2d8bd7620b8f877f5e0aa684e6116cb">onert::backend::builtin::Config</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_config_8h_source.html#l00067">67</a> of file <a class="el" href="_i_config_8h_source.html">IConfig.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> <span class="keyword">nullptr</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_i_config_8h_source.html#l00059">59</a> of file <a class="el" href="_i_config_8h_source.html">IConfig.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> <span class="keyword">nullptr</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
