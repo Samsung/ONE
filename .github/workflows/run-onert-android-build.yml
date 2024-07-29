@@ -14,7 +14,7 @@ on:
       - 'infra/**'
       - '!infra/debian/**'
       - '!infra/docker/**'
-      - '!infra/doxygen/**''
+      - '!infra/doxygen/**'
       - '!infra/git-hooks/**'
       - '!infra/nncc/**'
       - '!infra/onert-micro/**'
