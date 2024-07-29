@@ -89,3 +89,5 @@ eval(CSE_Transpose_000 common_subexpression_elimination)
 # test for canonicalization, with any optimization
 # TODO enable Pad_001 when TF version up supports INT4 paddings
 # eval(Pad_001 fuse_instnorm) --> tflite(v2.12.1) does not support INT64 paddings
+# TODO enable PadV2_002 when TF version up supports INT4 paddings
+# eval(PadV2_002 fuse_instnorm) --> tflite(v2.12.1) does not support INT64 paddings
