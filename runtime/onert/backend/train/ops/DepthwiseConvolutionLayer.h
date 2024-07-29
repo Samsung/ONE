@@ -17,7 +17,6 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 
-#include <cker/train/operation/DepthwiseConv.h>
 #include <ops/DepthwiseConvolutionLayer.h>
 #include <backend/basic/Allocator.h>
 
@@ -61,8 +60,6 @@ private:
   std::unique_ptr<Tensor> _padded_filter;
   std::unique_ptr<Tensor> _filter_buffers;
   std::unique_ptr<Tensor> _filter_dim_buffers;
-
-  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
 };
 
 } // namespace ops
