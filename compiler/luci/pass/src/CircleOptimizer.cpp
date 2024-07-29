@@ -217,6 +217,21 @@ CircleOptimizer::Options *CircleOptimizer::options(void)
   return _options.get();
 }
 
+void CircleOptimizer::canonicalize(loco::Graph *g) const
+{
+  logo::Phase phase;
+
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CanonicalizePass>());
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+
+  ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+}
+
 void CircleOptimizer::optimize(luci::Module *m) const
 {
   luci::Phase phase;
@@ -238,6 +253,8 @@ void CircleOptimizer::optimize(luci::Module *m) const
 
 void CircleOptimizer::optimize(loco::Graph *g) const
 {
+  canonicalize(g);
+
   logo::Phase phase;
 
   // Conversion from NCHW to NHWC is done first to avoid interference with other optimizations.
@@ -260,9 +277,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // Following passes are needed everytime when other passes create new node or modify some nodes.
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
-
-  // Run canonicalization
-  phase.emplace_back(std::make_unique<luci::CanonicalizePass>());
 
   if (_options->query(Options::Algorithm::CommonSubExpressionElimination))
   {

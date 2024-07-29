@@ -148,6 +148,8 @@ public:
   void sparsify(loco::Graph *) const;
 
 private:
+  void canonicalize(loco::Graph *) const;
+
   std::unique_ptr<Options> _options;
 };
 
