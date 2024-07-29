@@ -138,7 +138,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
         else if (alpha == 6.f && beta == 0.f)
         {
           _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU6(getShape(input), getBuffer<float>(input), getBuffer<float>(output));
+            nnfw::cker::ReLU6(getShape(input), getBuffer<float>(input), getShape(output),
+                              getBuffer<float>(output));
           };
         }
         else
