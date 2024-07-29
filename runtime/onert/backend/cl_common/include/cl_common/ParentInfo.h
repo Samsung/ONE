@@ -33,7 +33,6 @@ namespace cl_common
 struct ParentInfo
 {
   ir::OperandIndex parent;
-  ir::Layout frontend_layout;
   ir::Coordinates coordinates;
 };
 

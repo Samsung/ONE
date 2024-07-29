@@ -227,7 +227,7 @@ template <typename T_FunctionWrapper, typename T_Tensor, typename T_ACLLayer,
 std::unique_ptr<exec::IFunction>
 kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Operands &operands,
                         const std::shared_ptr<T_TensorBuilder> &tensor_builder,
-                        const std::shared_ptr<T_TensorRegistry> &tensor_reg, ir::Layout layout)
+                        const std::shared_ptr<T_TensorRegistry> &tensor_reg)
 {
   using ir::operation::FullyConnected;
 
@@ -273,7 +273,6 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   const auto input_tensor = tensor_reg->getAclTensor(input_index);
   const auto weight_tensor = tensor_reg->getAclTensor(weight_index);
   const auto bias_tensor = bias_index.undefined() ? nullptr : tensor_reg->getAclTensor(bias_index);
-  const auto frontend_layout = layout;
 
   typename T_ACLLayer::KernelType kernel_type = T_ACLLayer::KernelType::GENERAL;
   if (operands.at(weight_index).isConstant())
@@ -285,7 +284,7 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   auto fn = generateLayer<T_ACLLayer>(
     tensor_builder->acl_tensor_manager()->internal_buffer_manager(), input_tensor->handle(),
     weight_tensor->handle(), bias_tensor != nullptr ? bias_tensor->handle() : nullptr,
-    output_tensor->handle(), needs_reshape, asTensorShape(reshape, frontend_layout), kernel_type);
+    output_tensor->handle(), needs_reshape, asTensorShape(reshape), kernel_type);
 
   return std::make_unique<T_FunctionWrapper>(std::move(fn));
 }
@@ -293,14 +292,14 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
 template <typename T_ACLLayer, typename T_PoolOp, typename T_AclTensorRegistry>
 std::unique_ptr<::arm_compute::IFunction>
 kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
-                const std::shared_ptr<T_AclTensorRegistry> &tensor_reg, ir::Layout layout,
+                const std::shared_ptr<T_AclTensorRegistry> &tensor_reg,
                 ::arm_compute::PoolingType pooling_type)
 {
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(0)};
 
-  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(layout);
-  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(layout);
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
 
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;

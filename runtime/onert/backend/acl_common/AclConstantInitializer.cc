@@ -25,7 +25,7 @@ namespace acl_common
 
 AclConstantInitializer::AclConstantInitializer(const ir::Operands &operands,
                                                const std::shared_ptr<ITensorRegistry> &tensor_reg)
-  : _operands{operands}, _tensor_reg{tensor_reg}, _current_layout{ir::Layout::UNKNOWN}
+  : _operands{operands}, _tensor_reg{tensor_reg}
 {
   // DO NOTHING
 }
@@ -40,15 +40,6 @@ void AclConstantInitializer::copyInputInitialize(const ir::Operation &node, uint
     const auto &input_obj = _operands.at(input_index);
     registerCopyInitializer(input_index, input_obj);
   }
-}
-
-void AclConstantInitializer::permuteInputInitialize(const ir::Operation &node, uint32_t index)
-{
-  assert(node.getInputs().size() > index);
-
-  const auto &input_index = node.getInputs().at(index);
-  const auto &input_obj = _operands.at(input_index);
-  registerPermuteInitializer(input_index, input_obj);
 }
 
 void AclConstantInitializer::visit(const ir::operation::BatchToSpaceND &node)
@@ -78,13 +69,13 @@ void AclConstantInitializer::visit(const ir::operation::BatchToSpaceND &node)
 
 void AclConstantInitializer::visit(const ir::operation::Conv2D &node)
 {
-  permuteInputInitialize(node, ir::operation::Conv2D::KERNEL);
+  copyInputInitialize(node, ir::operation::Conv2D::KERNEL);
   copyInputInitialize(node, ir::operation::Conv2D::BIAS);
 }
 
 void AclConstantInitializer::visit(const ir::operation::DepthwiseConv2D &node)
 {
-  permuteInputInitialize(node, ir::operation::DepthwiseConv2D::KERNEL);
+  copyInputInitialize(node, ir::operation::DepthwiseConv2D::KERNEL);
   copyInputInitialize(node, ir::operation::DepthwiseConv2D::BIAS);
 }
 
@@ -123,7 +114,7 @@ void AclConstantInitializer::visit(const ir::operation::RNN &node)
 
 void AclConstantInitializer::visit(const ir::operation::TransposeConv &node)
 {
-  permuteInputInitialize(node, ir::operation::TransposeConv::KERNEL);
+  copyInputInitialize(node, ir::operation::TransposeConv::KERNEL);
 }
 
 // NOTE Workaround for 16b float type. Here, this is enough since only the size of bytes matters.
@@ -164,49 +155,6 @@ void AclConstantInitializer::registerCopyInitializer(const ir::OperandIndex &ind
       break;
     case DataType::INT64:
       _init_map[index] = copyInit<int64_t>;
-      break;
-    default:
-      throw std::runtime_error("Not supported, yet");
-      break;
-  }
-}
-
-void AclConstantInitializer::registerPermuteInitializer(const ir::OperandIndex &index,
-                                                        const ir::Operand &obj)
-{
-  // For only CONSTANTS
-  // TODO Add to check if tensor has been allocated
-  if (!obj.isConstant())
-    return;
-
-  const auto type = obj.typeInfo().type();
-  using ir::DataType;
-  using namespace std::placeholders;
-
-  switch (type)
-  {
-    case DataType::FLOAT32:
-      _init_map[index] = std::bind(permuteInit<float>, _1, _2, _current_layout);
-      break;
-    case DataType::INT32:
-      _init_map[index] = std::bind(permuteInit<int32_t>, _1, _2, _current_layout);
-      break;
-    case DataType::UINT32:
-      _init_map[index] = std::bind(permuteInit<uint32_t>, _1, _2, _current_layout);
-      break;
-    case DataType::BOOL8:
-    case DataType::QUANT_UINT8_ASYMM:
-      _init_map[index] = std::bind(permuteInit<uint8_t>, _1, _2, _current_layout);
-      break;
-    case DataType::QUANT_INT8_SYMM:
-    case DataType::QUANT_INT8_ASYMM:
-      _init_map[index] = std::bind(permuteInit<int8_t>, _1, _2, _current_layout);
-      break;
-    case DataType::FLOAT16:
-      _init_map[index] = std::bind(permuteInit<float16>, _1, _2, _current_layout);
-      break;
-    case DataType::INT64:
-      _init_map[index] = std::bind(permuteInit<int64_t>, _1, _2, _current_layout);
       break;
     default:
       throw std::runtime_error("Not supported, yet");
