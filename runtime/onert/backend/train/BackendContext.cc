@@ -121,8 +121,6 @@ backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
         continue;
       if (external_operands().contains(ind))
         continue;
-      // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-      assert(tgraph.layout() != ir::Layout::NCHW);
 
       const auto &operand = tgraph.operands().at(ind);
       tensor_builder->registerBackwardTensorInfo(ind, createBackwardTensorInfo(operand));
