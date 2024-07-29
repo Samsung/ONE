@@ -141,7 +141,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    assert(lowered_graph.graph().layout() == ir::Layout::NHWC);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
@@ -160,7 +159,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   auto init_context_data = [&](const backend::Backend *backend) {
     auto &data = context_data_map[backend];
     auto graph = std::make_unique<ir::Graph>();
-    graph->setLayout(lgraph.graph().layout());
     data.graph = std::move(graph);
   };
 
