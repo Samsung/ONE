@@ -416,7 +416,7 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 {
   VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
 
-  // TODO Use DisposableTensor instread of GradientTensor to plan them together if possible
+  // TODO Use DisposableTensor instead of GradientTensor to plan them together if possible
   //      Backward layers and the corresponding GradientApplier exist in the same back-propagated
   //      operation sequence. So we can use DisposableTensors to plan GradientTensors.
   for (const auto &op_index : _tgraph.essentialBackwardOrder())
