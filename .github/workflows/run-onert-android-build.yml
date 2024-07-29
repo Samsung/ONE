@@ -1,0 +1,49 @@
+name: Run ONERT Android Release Build
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-android-build.yml'
+      - 'nnas'
+      - 'nnfw'
+      - 'Makefile.template'
+      - 'compute/**'
+      - 'infra/**'
+      - 'nnpackage/**'
+      - 'runtime/**'
+      - 'tests/**'
+    paths-ignore:
+      - '**.md'
+      - 'infra/debian/**'
+      - 'infra/docker/**'
+      - 'infra/doxygen/**''
+      - 'infra/git-hooks/**'
+      - 'infra/nncc/**'
+      - 'infra/onert-micro/**'
+      - 'infra/packaging/**'
+      - 'nnpackage/spec/**'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      TARGET_ARCH: aarch64
+      TARGET_OS: android
+      CROSS_BUILD: 1
+      BUILD_TYPE: release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build onert
+        run: |
+          # ANDROID_NDK_LATEST_HOME: 26.3.11579264
+          export NDK_DIR=${ANDROID_NDK_LATEST_HOME}
+          make -f Makefile.template
