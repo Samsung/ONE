@@ -105,17 +105,6 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
     RETURN_FALSE_UNLESS(multiplication->size<loco::DataType::FLOAT32>() != 0);
   }
 
-  // Update weights accordingly.
-  // Create new weights to be updated with values:
-  auto fused_weights = luci::clone(weights);
-  RETURN_FALSE_UNLESS(fused_weights->size<loco::DataType::FLOAT32>() ==
-                      weights->size<loco::DataType::FLOAT32>());
-
-  update_values(fused_weights, multiplication);
-
-  fc->weights(fused_weights);
-
-  // Update bias accordingly.
   // Only supports:
   // (1) constant bias
   // (2) no bias
@@ -131,14 +120,23 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   RETURN_FALSE_UNLESS(fused_bias->size<loco::DataType::FLOAT32>() ==
                       const_bias->size<loco::DataType::FLOAT32>());
 
-  update_values(fused_bias, multiplication);
+  // Create new weights to be updated with values:
+  auto fused_weights = luci::clone(weights);
+  RETURN_FALSE_UNLESS(fused_weights->size<loco::DataType::FLOAT32>() ==
+                      weights->size<loco::DataType::FLOAT32>());
 
+  // Update bias accordingly:
+  update_values(fused_bias, multiplication);
   // Here fused_bias's shape is either [1, 1, ..., N] or [N]
   // where N is weights->dim(0).
   // The shape is normalized to [N] to become the bias of FullyConected.
   fused_bias->rank(1);
   fused_bias->dim(0) = weights->dim(0);
+  // Update weights accordingly:
+  update_values(fused_weights, multiplication);
 
+  // Replace weights and bias:
+  fc->weights(fused_weights);
   fc->bias(fused_bias);
 
   // Set origin and copy Activation Function if exisitng:
