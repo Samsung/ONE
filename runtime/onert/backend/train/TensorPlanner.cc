@@ -456,9 +456,67 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
   VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
 }
 
-void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *)
+void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan diposable backprop tensors
+  VERBOSE(BackendContext) << "Start planning disposable back-prop tensors" << std::endl;
+
+  for (const auto &op_index : _tgraph.essentialBackwardOrder())
+  {
+    // NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
+    //      to be updated respectively. So we use a sequence instead of a set.
+    const auto &inputs = _tgraph.operation(op_index).getInputs();
+    if (!(inputs == (inputs | ir::Remove::DUPLICATED)))
+      throw std::runtime_error("TensorPlanner: DispoableBackProp tensor does not support duplicate "
+                               "inputs of an operation");
+
+    std::vector<DisposableTensorIndex> cur_seq;
+    const auto back_prop_indices = getOutgoingBackPropSeq(op_index, tensor_builder);
+    for (const auto &back_prop_index : back_prop_indices)
+    {
+      DisposableTensorIndex cur_index{op_index, back_prop_index};
+      if (tensor_builder->isRegisteredDisposableBackwardTensor(cur_index))
+      {
+        tensor_builder->notifyDisposableBackPropFirstUse(cur_index);
+        cur_seq.emplace_back(cur_index);
+      }
+    }
+
+    for (const auto &cur_index : cur_seq)
+    {
+      tensor_builder->notifyDisposableBackPropLastUse(cur_index);
+    }
+  }
+
+  VERBOSE(BackendContext) << "Finish planning disposable back-prop tensors" << std::endl;
+}
+
+ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::OperationIndex &op_index,
+                                                               const TensorBuilder *tensor_builder)
+{
+  ir::OperandIndexSequence ret;
+
+  const auto &op = _tgraph.operation(op_index);
+  for (const auto &input : (op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED))
+  {
+    if (_external_operands.contains(input))
+      continue;
+    if (!tensor_builder->isRegisteredBackward(input))
+      continue;
+
+    const auto input_index = ir::train::TrainingOperandIndex{input, false};
+    const auto training_op_index = ir::train::TrainingOperationIndex{op_index, false};
+    const auto &training_usedefs = _tgraph.trainingUseDefs();
+    const auto &usedefs = training_usedefs.at(input_index);
+    if (usedefs.operand().isConstant())
+      continue;
+
+    if (usedefs.getTrainingDefs().find(training_op_index) == usedefs.getTrainingDefs().end())
+      continue;
+
+    ret.append(input);
+  }
+
+  return ret;
 }
 
 } // namespace train
