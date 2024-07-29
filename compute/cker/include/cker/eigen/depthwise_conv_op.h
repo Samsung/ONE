@@ -473,32 +473,38 @@ template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
         const int64_t in_base = b * input_image_size;
         const int64_t out_base = b * output_image_size;
 
-        // const int64_t out_r = i % out_rows;
+        const int64_t out_r = i % out_rows;
 
-        for (int64_t out_r = 0; out_r < out_rows; ++out_r)
+        for (int64_t out_c = 0; out_c < out_cols; ++out_c)
         {
-          for (int64_t out_c = 0; out_c < out_cols; ++out_c)
-          {
-            // Populate 'input_buffer_data' with data from local input region.
-            functor::DepthwiseInputCopyOp<T>()(
-              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
-              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size,
-              out_r, out_c, input + in_base, input_buffer_data);
+          // Populate 'input_buffer_data' with data from local input region.
+          functor::DepthwiseInputCopyOp<T>()(
+            batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
+            pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size, out_r,
+            out_c, input + in_base, input_buffer_data);
 
-            // Process buffered input across all filters and store to output.
-            DepthwiseConv2DKernel<T>::Run(filter_rows, filter_cols, out_cols, out_depth,
-                                          padded_filter_inner_dim_size, out_r, out_c, filter_data,
-                                          input_buffer_data, output + out_base);
-          }
+          // Process buffered input across all filters and store to output.
+          DepthwiseConv2DKernel<T>::Run(filter_rows, filter_cols, out_cols, out_depth,
+                                        padded_filter_inner_dim_size, out_r, out_c, filter_data,
+                                        input_buffer_data, output + out_base);
         }
       }
     };
 
+    const int64_t total_shards = batch * out_rows;
+
+    // Empirically tested to give reasonable performance boosts at batch size 1
+    // without reducing throughput at batch size 32.
+    const float kCostMultiplier = 2.5f;
+
+    // TODO(andydavis): Estimate shard cost (in cycles) based on the number of
+    // flops/loads/stores required to compute one shard.
+    const int64_t shard_cost = kCostMultiplier * out_cols * out_depth;
+
     const int64_t input_bytes = in_rows * in_cols * in_depth * sizeof(T);
     const int64_t output_bytes = out_rows * out_cols * out_depth * sizeof(T);
-    const int64_t compute_cycles = out_rows * out_cols * out_depth * batch;
-    const Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);
-    d.parallelFor(batch, cost, shard);
+    const Eigen::TensorOpCost cost(input_bytes, output_bytes, shard_cost);
+    d.parallelFor(total_shards, cost, shard);
   }
 };
 
@@ -1029,7 +1035,7 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
 
     const int64_t input_bytes = in_rows * in_cols * in_depth * sizeof(T);
     const int64_t output_bytes = out_rows * out_cols * out_depth * sizeof(T);
-    const int64_t compute_cycles = out_rows * out_cols * out_depth * batch;
+    const int64_t compute_cycles = out_rows * out_cols * out_depth;
     const Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);
     d.parallelFor(batch, cost, shard);
 
