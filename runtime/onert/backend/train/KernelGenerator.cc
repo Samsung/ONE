@@ -595,25 +595,22 @@ IPortableTensor *KernelGenerator::getBackPropIn(const ir::train::ITrainableOpera
   const auto &op_index = _node_to_idx[&node];
   const auto backwarding_operand_index = ir::train::TrainingOperandIndex{operand_index, false};
 
-  const auto &training_defuses = _tgraph.trainingUseDefs().at(backwarding_operand_index);
-  const auto &defs = training_defuses.getTrainingDefs();
-
-  const bool requires_disposable =
-    defs.size() > 1 ||
-    std::any_of(defs.begin(), defs.end(), [&](const ir::train::TrainingOperationIndex &op_index) {
-      return _tgraph.operation(op_index.index()).isRequiredForBackward();
-    });
-
-  auto temp_tensor =
-    requires_disposable
-      ? _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index})
-      : nullptr;
-  if (temp_tensor == nullptr)
+  const auto disposable_tensor =
+    _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index});
+  if (disposable_tensor != nullptr)
   {
-    temp_tensor = _tensor_reg->getBackPropTensor(operand_index);
-  }
+    const auto &training_defuses = _tgraph.trainingUseDefs().at(backwarding_operand_index);
+    UNUSED_RELEASE(training_defuses);
+    assert(std::count_if(training_defuses.getTrainingDefs().begin(),
+                         training_defuses.getTrainingDefs().end(),
+                         [&](const ir::train::TrainingOperationIndex &op_index) {
+                           return _tgraph.operation(op_index.index()).isRequiredForBackward();
+                         }) > 1);
 
-  return temp_tensor;
+    return disposable_tensor;
+  }
+  else
+    return _tensor_reg->getBackPropTensor(operand_index);
 }
 
 IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_index)

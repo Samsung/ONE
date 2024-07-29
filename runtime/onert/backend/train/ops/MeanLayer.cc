@@ -60,15 +60,15 @@ void MeanLayer::backward()
   }
   else
   {
-    keep_dim_shape.ReplaceWith(getShape(_back_prop_input));
+    keep_dim_shape.ReplaceWith(getShape(_back_prop_output));
   }
 
   switch (_back_prop_output->data_type())
   {
     case OperandType::FLOAT32:
     {
-      nnfw::cker::train::MeanGrad(getShape(_back_prop_output), getBuffer<float>(_back_prop_output),
-                                  keep_dim_shape, getBuffer<float>(_back_prop_input));
+      nnfw::cker::train::MeanGrad(keep_dim_shape, getBuffer<float>(_back_prop_output),
+                                  getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
       break;
     }
     default:
