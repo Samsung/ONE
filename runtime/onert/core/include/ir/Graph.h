@@ -92,7 +92,6 @@ public:
   void addOutput(const OperandIndex &ind, const std::string &name = "");
   void verify(void) const;
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
-  void setLayout(Layout layout) { _layout = layout; }
 
 private:
   bool checkOperandsForOperation(const IOperation &operation);

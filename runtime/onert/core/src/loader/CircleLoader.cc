@@ -116,9 +116,6 @@ private:
       CircleLoader::loadOperation(op, *subg);
     }
 
-    // TODO Remove frontend layout feature
-    subg->setLayout(ir::Layout::NHWC);
-
     subg->verify();
 
     return subg;

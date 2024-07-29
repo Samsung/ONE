@@ -106,7 +106,6 @@ public:
   void addLoss(const OperandIndex &loss_ind, const IOIndex &pred_io_ind);
   void verify() const;
   void removeOperand(const OperandIndex &ind);
-  void setLayout(Layout layout);
   void setInputs(OperandIndexSequence inputs,
                  std::unordered_map<std::string, IOIndex> name_to_input);
   void setOutputs(OperandIndexSequence outputs,
