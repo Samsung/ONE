@@ -147,6 +147,8 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.padding_values.width = _paddingLeft;
   dconv_params.padding_values.height = _paddingTop;
   dconv_params.depth_multiplier = _multiplier;
+  dconv_params.dilation_height_factor = _dilationHeight;
+  dconv_params.dilation_width_factor = _dilationWidth;
 
   // Calculate gradient for input
   _dconv_kernel->backpropInput(
