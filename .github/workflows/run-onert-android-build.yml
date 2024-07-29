@@ -12,19 +12,18 @@ on:
       - 'Makefile.template'
       - 'compute/**'
       - 'infra/**'
+      - '!infra/debian/**'
+      - '!infra/docker/**'
+      - '!infra/doxygen/**''
+      - '!infra/git-hooks/**'
+      - '!infra/nncc/**'
+      - '!infra/onert-micro/**'
+      - '!infra/packaging/**'
       - 'nnpackage/**'
+      - '!nnpackage/spec/**'
       - 'runtime/**'
       - 'tests/**'
-    paths-ignore:
-      - '**.md'
-      - 'infra/debian/**'
-      - 'infra/docker/**'
-      - 'infra/doxygen/**''
-      - 'infra/git-hooks/**'
-      - 'infra/nncc/**'
-      - 'infra/onert-micro/**'
-      - 'infra/packaging/**'
-      - 'nnpackage/spec/**'
+      - '!**.md'
 
 defaults:
   run:
