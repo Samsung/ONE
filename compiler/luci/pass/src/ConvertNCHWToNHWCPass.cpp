@@ -530,6 +530,42 @@ bool is_scalar_const(const loco::Node *node)
   return false;
 }
 
+template <class T>
+bool with_broadcastable_const(const T *node, luci::CircleNode *&pred_node,
+                              luci::CircleConst *&constant)
+{
+  auto x = dynamic_cast<luci::CircleConst *>(node->x());
+  auto y = dynamic_cast<luci::CircleConst *>(node->y());
+
+  if (x != nullptr && y == nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->y());
+    constant = x;
+  }
+  else if (x == nullptr && y != nullptr)
+  {
+    pred_node = loco::must_cast<luci::CircleNode *>(node->x());
+    constant = y;
+  }
+  else
+  {
+    // Not support if node's inputs are both non-const, or both const.
+    return false;
+  }
+
+  if (pred_node->rank() != 4)
+    return false;
+
+  if (not broadcastable(constant, node))
+    return false;
+
+  constant = expand_to_rank_4(constant);
+
+  return true;
+}
+
+// TODO Remove unused code
+#if 0
 // NOTE Following conditions can be extended later
 //
 // Find MUL with an NCHW pattern described below
@@ -682,6 +718,7 @@ bool is_NCHW_with_const(const luci::CircleSub *node, const luci::CircleNode *pre
   else
     return false;
 }
+#endif
 
 template <class T> bool convert_unary_features(T *node)
 {
@@ -734,6 +771,65 @@ template <class T> bool convert_unary_logits(T *node)
 
   post_trans->a(node);
 
+  return true;
+}
+
+template <class T> bool convert_eltwise_binary(T *node)
+{
+  LOGGER(l);
+
+  luci::CircleNode *pred_node = nullptr;
+  luci::CircleConst *constant = nullptr;
+  if (with_broadcastable_const(node, pred_node, constant))
+  {
+    assert(constant->rank() == 4); // FIX is_NCHW_with_const unless
+    auto nhwc_const = create_NHWC_from_NCHW(constant);
+    if (nhwc_const == nullptr)
+      return false;
+
+    if (node->x() == constant)
+      node->x(nhwc_const);
+    else
+      node->y(nhwc_const);
+
+    auto pre_trans = create_pre_transpose(node);
+    pre_trans->a(pred_node);
+
+    if (node->x() == pred_node)
+      node->x(pre_trans);
+    else
+      node->y(pre_trans);
+  }
+  else if (constant == nullptr)
+  {
+    // Only support for input rank 4
+    auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
+    if (input_x->rank() != 4)
+      return false;
+    auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
+    if (input_y->rank() != 4)
+      return false;
+
+    auto pre_trans_x = create_pre_transpose(node);
+    pre_trans_x->a(input_x);
+    node->x(pre_trans_x);
+
+    auto pre_trans_y = create_pre_transpose(node);
+    pre_trans_y->a(input_y);
+    node->y(pre_trans_y);
+  }
+  else
+  {
+    return false;
+  }
+
+  // Do shape inference for this node again.
+  node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+  auto post_trans = create_post_transpose(node);
+  loco::replace(node).with(post_trans);
+
+  post_trans->a(node);
   return true;
 }
 
@@ -797,50 +893,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
-  bool visit(luci::CircleAdd *node)
-  {
-    luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *beta = nullptr;
-
-    if (is_NCHW_with_const(node, pred_node, beta))
-    {
-      assert(beta->rank() == 4); // FIX is_NCHW_with_const unless
-      auto nhwc_const = create_NHWC_from_NCHW(beta);
-      if (nhwc_const == nullptr)
-        return false;
-      node->y(nhwc_const);
-
-      auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
-      node->x(pre_trans);
-    }
-    else if (beta == nullptr)
-    {
-      // Both inputs are not constant.
-      // In this case, we cannot distinguish NCHW from NHWC,
-      // so just insert Transpose Ops.
-      auto pre_trans_x = create_pre_transpose(node);
-      pre_trans_x->a(node->x());
-      node->x(pre_trans_x);
-
-      auto pre_trans_y = create_pre_transpose(node);
-      pre_trans_y->a(node->y());
-      node->y(pre_trans_y);
-    }
-    else
-    {
-      return false;
-    }
-
-    // Do shape inference for this node again.
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-    return true;
-  }
+  bool visit(luci::CircleAdd *node) { return convert_eltwise_binary<luci::CircleAdd>(node); }
 
   bool visit(luci::CircleConcatenation *node)
   {
@@ -866,57 +919,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
-  bool visit(luci::CircleDiv *node)
-  {
-    LOGGER(l);
-
-    luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *constant = nullptr;
-
-    if (is_NCHW_with_const(node, pred_node, constant))
-    {
-      assert(constant->rank() == 4); // FIX is_NCHW_with_const unless
-      auto nhwc_const = create_NHWC_from_NCHW(constant);
-      if (nhwc_const == nullptr)
-        return false;
-      node->y(nhwc_const);
-
-      auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
-      node->x(pre_trans);
-    }
-    else if (constant == nullptr)
-    {
-      // Only support for input rank 4
-      auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
-      if (input_x->rank() != 4)
-        return false;
-      auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
-      if (input_y->rank() != 4)
-        return false;
-
-      auto pre_trans_x = create_pre_transpose(node);
-      pre_trans_x->a(input_x);
-      node->x(pre_trans_x);
-
-      auto pre_trans_y = create_pre_transpose(node);
-      pre_trans_y->a(input_y);
-      node->y(pre_trans_y);
-    }
-    else
-    {
-      return false;
-    }
-
-    // Do shape inference for this node again.
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-    return true;
-  }
+  bool visit(luci::CircleDiv *node) { return convert_eltwise_binary<luci::CircleDiv>(node); }
 
   bool visit(luci::CircleElu *node) { return convert_unary_features<luci::CircleElu>(node); }
 
@@ -1099,57 +1102,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
-  bool visit(luci::CircleMul *node)
-  {
-    LOGGER(l);
-
-    luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *multiplier = nullptr;
-
-    if (is_NCHW_with_const(node, pred_node, multiplier))
-    {
-      assert(multiplier->rank() == 4); // FIX is_NCHW_with_const unless
-      auto nhwc_const = create_NHWC_from_NCHW(multiplier);
-      if (nhwc_const == nullptr)
-        return false;
-      node->y(nhwc_const);
-
-      auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
-      node->x(pre_trans);
-    }
-    else if (multiplier == nullptr)
-    {
-      // Only support for input rank 4
-      auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
-      if (input_x->rank() != 4)
-        return false;
-      auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
-      if (input_y->rank() != 4)
-        return false;
-
-      auto pre_trans_x = create_pre_transpose(node);
-      pre_trans_x->a(input_x);
-      node->x(pre_trans_x);
-
-      auto pre_trans_y = create_pre_transpose(node);
-      pre_trans_y->a(input_y);
-      node->y(pre_trans_y);
-    }
-    else
-    {
-      return false;
-    }
-
-    // Do shape inference for this node again.
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-    return true;
-  }
+  bool visit(luci::CircleMul *node) { return convert_eltwise_binary<luci::CircleMul>(node); }
 
   bool visit(luci::CircleNeg *node) { return convert_unary_x<luci::CircleNeg>(node); }
 
@@ -1433,88 +1386,7 @@ class ConvertNCHWToNHWC final : public luci::CircleNodeMutableVisitor<bool>
     return true;
   }
 
-  bool visit(luci::CircleSub *node)
-  {
-    luci::CircleNode *pred_node = nullptr;
-    luci::CircleConst *subtract = nullptr;
-
-    auto const_x = dynamic_cast<luci::CircleConst *>(node->x());
-    auto const_y = dynamic_cast<luci::CircleConst *>(node->y());
-
-    if (const_x != nullptr && const_y == nullptr)
-    {
-      // case of subtract - pred_node
-      pred_node = loco::must_cast<luci::CircleNode *>(node->y());
-      subtract = const_x;
-
-      if (!is_NCHW_with_const(node, pred_node, subtract))
-        return false;
-
-      auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
-
-      if (subtract->rank() == 4)
-      {
-        auto nhwc_const = create_NHWC_from_NCHW(subtract);
-        if (nhwc_const == nullptr)
-          return false;
-        node->x(nhwc_const);
-      }
-      node->y(pre_trans);
-    }
-    else if (const_x == nullptr && const_y != nullptr)
-    {
-      // case of pred_node - subtract
-      pred_node = loco::must_cast<luci::CircleNode *>(node->x());
-      subtract = const_y;
-
-      if (!is_NCHW_with_const(node, pred_node, subtract))
-        return false;
-
-      auto pre_trans = create_pre_transpose(node);
-      pre_trans->a(pred_node);
-
-      if (subtract->rank() == 4)
-      {
-        auto nhwc_const = create_NHWC_from_NCHW(subtract);
-        if (nhwc_const == nullptr)
-          return false;
-        node->y(nhwc_const);
-      }
-
-      node->x(pre_trans);
-    }
-    else if (const_x == nullptr && const_y == nullptr)
-    {
-      // Both inputs are not constant.
-      // In this case, we cannot distinguish NCHW from NHWC,
-      // so just insert Transpose Ops.
-      // Only support for input rank 4.
-      auto input_x = loco::must_cast<luci::CircleNode *>(node->x());
-      if (input_x->rank() != 4)
-        return false;
-      auto input_y = loco::must_cast<luci::CircleNode *>(node->y());
-      if (input_y->rank() != 4)
-        return false;
-
-      auto pre_trans_x = create_pre_transpose(node);
-      pre_trans_x->a(input_x);
-      node->x(pre_trans_x);
-
-      auto pre_trans_y = create_pre_transpose(node);
-      pre_trans_y->a(input_y);
-      node->y(pre_trans_y);
-    }
-
-    // Do shape inference for this node again.
-    node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-    auto post_trans = create_post_transpose(node);
-    loco::replace(node).with(post_trans);
-
-    post_trans->a(node);
-    return true;
-  }
+  bool visit(luci::CircleSub *node) { return convert_eltwise_binary<luci::CircleSub>(node); }
 };
 
 } // namespace
