@@ -56,6 +56,9 @@ public:
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");
 
+    if (params.dilation_height_factor != 1 || params.dilation_width_factor != 1)
+      throw std::runtime_error{"Not support dilation other than 1."};
+
     const int batch = MatchingDim(incoming_shape, 0, grad_shape, 0);
     const int input_depth = grad_shape.Dims(3);
     const int output_depth = incoming_shape.Dims(3);
@@ -85,6 +88,9 @@ public:
   {
     if (params.stride_height != params.stride_width)
       throw std::runtime_error("Not support different length strides");
+
+    if (params.dilation_height_factor != 1 || params.dilation_width_factor != 1)
+      throw std::runtime_error{"Not support dilation other than 1."};
 
     const int batch = MatchingDim(incoming_shape, 0, input_shape, 0);
     const int input_depth = input_shape.Dims(3);
