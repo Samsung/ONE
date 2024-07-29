@@ -42,7 +42,7 @@ void configure_kernel_CircleExpandDims(const circle::Operator *cur_op,
   auto axis_data = runtime_graph->getConstDataByTensor(axis);
   assert(axis_data != nullptr);
 
-  int32_t axis_value;
+  int32_t axis_value = -1;
 
   switch (Tensor::element_type(axis))
   {

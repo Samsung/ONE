@@ -417,6 +417,7 @@ uint8_t *RuntimeGraph::getConstDataByTensor(const circle::Tensor *raw_tensor)
 #endif // ENABLE_TRAINING
 
   auto const &buffer = wrap(_reader->buffers()[raw_tensor->buffer()]->data());
+  assert(buffer.data() != nullptr);
 
   return const_cast<uint8_t *>(buffer.data());
 }

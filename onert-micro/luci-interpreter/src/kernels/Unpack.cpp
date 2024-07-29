@@ -69,6 +69,7 @@ void UnpackImpl(const circle::Operator *cur_op, const circle::Tensor *input, int
     const auto t = runtime_graph->getCircleTensorByIndex(output_index);
     assert(output0 != nullptr);
     T *output_data = kernels::getTensorData<T>(runtime_graph->getDataByTensor(t));
+    assert(output_data != nullptr);
     for (int k = 0; k < outer_size; ++k)
     {
       T *output_ptr = output_data + copy_size * k;
