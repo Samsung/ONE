@@ -628,7 +628,7 @@ bool is_NCHW_with_const(const luci::CircleDiv *node, luci::CircleNode *&pred_nod
   }
   else
   {
-    // Ignore if MUL does not have a const_node input.
+    // Ignore if DIV does not have a const_node input.
     return false;
   }
 
