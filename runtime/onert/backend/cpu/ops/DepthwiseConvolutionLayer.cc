@@ -17,7 +17,8 @@
 #include "DepthwiseConvolutionLayer.h"
 
 #include "cker/PortableTensorUtils.h"
-#include <cker/operation/DepthwiseConv.h>
+#include "cker/eigen/EigenSupport.h"
+#include "cker/operation/DepthwiseConv.h"
 
 namespace onert
 {
@@ -30,7 +31,7 @@ namespace ops
 
 void DepthwiseConvolutionLayer::prepareFloat32()
 {
-  const int64_t k_packet_size = _dconv_kernel->kPacketSize<float>();
+  const int64_t k_packet_size = nnfw::cker::eigen_support::kPacketSize<float>();
 
   const auto out_shape = getShape(_output);
   const auto filter_shape = getShape(_kernel);
@@ -52,7 +53,7 @@ void DepthwiseConvolutionLayer::prepareFloat32()
   _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
 
   // prepare out_bprop and in_bprop buffer for cker
-  const int thread_count = _dconv_kernel->getThreadCount();
+  const int thread_count = nnfw::cker::eigen_support::getThreadCount();
 
   auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
   filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
@@ -79,7 +80,7 @@ void DepthwiseConvolutionLayer::dconvFloat32()
   // memset(_padded_filter->buffer(), 0, _padded_filter->total_size());
   // memset(_filter_buffers->buffer(), 0, _filter_buffers->total_size());
 
-  _dconv_kernel->DepthwiseConvOp<float>(
+  nnfw::cker::DepthwiseConvOp<float>(
     op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
     getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias),
     getBuffer<float>(_padded_filter.get()), _use_padded_filter,

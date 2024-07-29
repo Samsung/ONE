@@ -18,6 +18,8 @@
 
 #include "OperationUtils.h"
 
+#include <cker/eigen/EigenSupport.h>
+#include <cker/train/operation/DepthwiseConv.h>
 #include <cker/train/operation/ReLU.h>
 
 namespace onert
@@ -68,7 +70,7 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
     {
       case OperandType::FLOAT32:
       {
-        return _dconv_kernel->kPacketSize<float>();
+        return nnfw::cker::eigen_support::kPacketSize<float>();
       }
       default:
         throw std::runtime_error("train DepthwiseConvolutionLayer: unsupported data type");
@@ -95,7 +97,7 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
   // _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
 
   // prepare out_bprop and in_bprop buffer for cker
-  const int thread_count = _dconv_kernel->getThreadCount();
+  const int thread_count = nnfw::cker::eigen_support::getThreadCount();
 
   // auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
   // filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
@@ -150,16 +152,18 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   dconv_params.padding_values.width = _paddingLeft;
   dconv_params.padding_values.height = _paddingTop;
   dconv_params.depth_multiplier = _multiplier;
+  dconv_params.dilation_height_factor = _dilationHeight;
+  dconv_params.dilation_width_factor = _dilationWidth;
 
   // Calculate gradient for input
-  _dconv_kernel->backpropInput(
+  nnfw::cker::train::backpropInput<float>(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
     getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
     getBuffer<float>(_back_prop_input), _use_padded_filter, getBuffer<float>(_filter_buffers.get()),
     getBuffer<float>(_filter_dim_buffers.get()));
 
   // Calculate gradient for weights
-  _dconv_kernel->backpropFilter(
+  nnfw::cker::train::backpropFilter<float>(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights),
     getBuffer<float>(_padded_filter.get()), getBuffer<float>(_filter_buffers.get()));

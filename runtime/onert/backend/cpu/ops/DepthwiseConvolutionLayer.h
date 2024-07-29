@@ -22,7 +22,7 @@
 #include "../ExternalContext.h"
 
 #include <exec/IFunction.h>
-#include <cker/train/operation/DepthwiseConv.h>
+#include <cker/operation/DepthwiseConv.h>
 #include "../Tensor.h"
 
 namespace onert
@@ -91,8 +91,6 @@ protected:
   bool _use_padded_filter{false};
   std::unique_ptr<Tensor> _padded_filter{nullptr};
   std::unique_ptr<Tensor> _filter_buffers{nullptr};
-  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel{
-    std::make_unique<nnfw::cker::train::DepthwiseConv>()};
 
 private:
   std::shared_ptr<ExternalContext> _external_context;

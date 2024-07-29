@@ -61,8 +61,6 @@ private:
   // std::unique_ptr<Tensor> _padded_filter;
   // std::unique_ptr<Tensor> _filter_buffers;
   std::unique_ptr<Tensor> _filter_dim_buffers;
-
-  // std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
 };
 
 } // namespace ops

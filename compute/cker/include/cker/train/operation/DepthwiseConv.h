@@ -18,7 +18,6 @@
 #define __NNFW_CKER_TRAIN_OPERATION_DEPTHWISECONV_H__
 
 #include "cker/eigen/depthwise_conv_op.h"
-#include "cker/eigen/bias_op.h"
 #include "cker/Shape.h"
 #include "cker/Types.h"
 
@@ -29,122 +28,70 @@ namespace cker
 namespace train
 {
 
-class DepthwiseConv
+template <typename T>
+void backpropInput(const DepthwiseConvParams &params, const Shape &incoming_shape,
+                   const T *incoming_data, const Shape &filter_shape, const T *filter_data,
+                   T *padded_filter_data, const Shape &grad_shape, T *grad_data, bool pad_filter,
+                   T *filter_buffers_data, T *filter_dim_buffers_data)
 {
-public:
-  DepthwiseConv() = default;
+  if (params.stride_height != params.stride_width)
+    throw std::runtime_error("Not support different length strides");
 
-  template <typename T> int64_t kPacketSize() const
-  {
-    typedef typename Eigen::internal::packet_traits<T>::type Packet;
-    return sizeof(Packet) / sizeof(T);
-  }
+  if (params.dilation_height_factor != 1 || params.dilation_width_factor != 1)
+    throw std::runtime_error{"Not support dilation other than 1."};
 
-  int getThreadCount() const
-  {
-    // NOTE The Eigen library uses both main thread as well as a thread pool.
-    // Therefore, it needs to add an additional memory buffer for main thread.
-    const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
-    return d.numThreads() + 1;
-  }
+  const int batch = MatchingDim(incoming_shape, 0, grad_shape, 0);
+  const int input_depth = grad_shape.Dims(3);
+  const int output_depth = incoming_shape.Dims(3);
+  const int incoming_height = incoming_shape.Dims(1);
+  const int incoming_width = incoming_shape.Dims(2);
+  const int grad_height = grad_shape.Dims(1);
+  const int grad_width = grad_shape.Dims(2);
+  const int stride = params.stride_height;
+  const int depth_multiplier = params.depth_multiplier;
+  const int filter_height = filter_shape.Dims(1);
+  const int filter_width = filter_shape.Dims(2);
+  const int pad_height = params.padding_values.height;
+  const int pad_width = params.padding_values.width;
 
-  template <typename T>
-  void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape,
-                       const T *input_data, const Shape &filter_shape, const T *filter_data,
-                       const Shape &bias_shape, const T *bias_data, T *padded_filter_data,
-                       bool pad_filter, T *filter_buffers_data, const Shape &output_shape,
-                       T *output_data)
-  {
-    if (params.stride_height != params.stride_width)
-      throw std::runtime_error("Not support different length strides");
+  depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, T>()(
+    batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
+    stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
+    filter_data, padded_filter_data, grad_data, pad_filter, filter_buffers_data,
+    filter_dim_buffers_data);
+}
 
-    const int batch = MatchingDim(input_shape, 0, output_shape, 0);
-    const int input_depth = input_shape.Dims(3);
-    const int output_depth = output_shape.Dims(3);
-    const int input_height = input_shape.Dims(1);
-    const int input_width = input_shape.Dims(2);
-    const int filter_height = filter_shape.Dims(1);
-    const int filter_width = filter_shape.Dims(2);
-    const int output_height = output_shape.Dims(1);
-    const int output_width = output_shape.Dims(2);
-    const int stride = params.stride_height;
-    const int depth_multiplier = params.depth_multiplier;
-    const int pad_height = params.padding_values.height;
-    const int pad_width = params.padding_values.width;
-    const T activation_min = params.float_activation_min;
-    const T activation_max = params.float_activation_max;
+template <typename T>
+void backpropFilter(const DepthwiseConvParams &params, const Shape &incoming_shape,
+                    const T *incoming_data, const Shape &input_shape, const T *input_data,
+                    const Shape &filter_grad_shape, T *filter_grad_data, T *padded_filter_data,
+                    T *filter_buffers_data)
+{
+  if (params.stride_height != params.stride_width)
+    throw std::runtime_error("Not support different length strides");
 
-    depthwise_conv_op::LaunchDepthwiseConvOp<Eigen::ThreadPoolDevice, T>()(
-      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
-      stride, pad_height, pad_width, output_height, output_width, output_depth, input_data,
-      filter_data, padded_filter_data, pad_filter, filter_buffers_data, output_data);
+  if (params.dilation_height_factor != 1 || params.dilation_width_factor != 1)
+    throw std::runtime_error{"Not support dilation other than 1."};
 
-    if (bias_data != nullptr)
-    {
-      bias_op::biasHelper<T>(bias_shape, bias_data, output_shape, output_data, activation_min,
-                             activation_max);
-    }
-  }
+  const int batch = MatchingDim(incoming_shape, 0, input_shape, 0);
+  const int input_depth = input_shape.Dims(3);
+  const int output_depth = incoming_shape.Dims(3);
+  const int incoming_height = incoming_shape.Dims(1);
+  const int incoming_width = incoming_shape.Dims(2);
+  const int input_height = input_shape.Dims(1);
+  const int input_width = input_shape.Dims(2);
+  const int stride = params.stride_height;
+  const int depth_multiplier = params.depth_multiplier;
+  const int filter_height = filter_grad_shape.Dims(1);
+  const int filter_width = filter_grad_shape.Dims(2);
+  const int pad_height = params.padding_values.height;
+  const int pad_width = params.padding_values.width;
 
-  template <typename T>
-  void backpropInput(const DepthwiseConvParams &params, const Shape &incoming_shape,
-                     const T *incoming_data, const Shape &filter_shape, const T *filter_data,
-                     T *padded_filter_data, const Shape &grad_shape, T *grad_data, bool pad_filter,
-                     T *filter_buffers_data, T *filter_dim_buffers_data)
-  {
-    if (params.stride_height != params.stride_width)
-      throw std::runtime_error("Not support different length strides");
-
-    const int batch = MatchingDim(incoming_shape, 0, grad_shape, 0);
-    const int input_depth = grad_shape.Dims(3);
-    const int output_depth = incoming_shape.Dims(3);
-    const int incoming_height = incoming_shape.Dims(1);
-    const int incoming_width = incoming_shape.Dims(2);
-    const int grad_height = grad_shape.Dims(1);
-    const int grad_width = grad_shape.Dims(2);
-    const int stride = params.stride_height;
-    const int depth_multiplier = params.depth_multiplier;
-    const int filter_height = filter_shape.Dims(1);
-    const int filter_width = filter_shape.Dims(2);
-    const int pad_height = params.padding_values.height;
-    const int pad_width = params.padding_values.width;
-
-    depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp<Eigen::ThreadPoolDevice, T>()(
-      batch, grad_height, grad_width, input_depth, filter_height, filter_width, depth_multiplier,
-      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
-      filter_data, padded_filter_data, grad_data, pad_filter, filter_buffers_data,
-      filter_dim_buffers_data);
-  }
-
-  template <typename T>
-  void backpropFilter(const DepthwiseConvParams &params, const Shape &incoming_shape,
-                      const T *incoming_data, const Shape &input_shape, const T *input_data,
-                      const Shape &filter_grad_shape, T *filter_grad_data, T *padded_filter_data,
-                      T *filter_buffers_data)
-  {
-    if (params.stride_height != params.stride_width)
-      throw std::runtime_error("Not support different length strides");
-
-    const int batch = MatchingDim(incoming_shape, 0, input_shape, 0);
-    const int input_depth = input_shape.Dims(3);
-    const int output_depth = incoming_shape.Dims(3);
-    const int incoming_height = incoming_shape.Dims(1);
-    const int incoming_width = incoming_shape.Dims(2);
-    const int input_height = input_shape.Dims(1);
-    const int input_width = input_shape.Dims(2);
-    const int stride = params.stride_height;
-    const int depth_multiplier = params.depth_multiplier;
-    const int filter_height = filter_grad_shape.Dims(1);
-    const int filter_width = filter_grad_shape.Dims(2);
-    const int pad_height = params.padding_values.height;
-    const int pad_width = params.padding_values.width;
-
-    depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp<Eigen::ThreadPoolDevice, T>()(
-      batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
-      stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
-      input_data, filter_grad_data, padded_filter_data, filter_buffers_data);
-  }
-};
+  depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp<Eigen::ThreadPoolDevice, T>()(
+    batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
+    stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,
+    input_data, filter_grad_data, padded_filter_data, filter_buffers_data);
+}
 
 } // namespace train
 } // namespace cker

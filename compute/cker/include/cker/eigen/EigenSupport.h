@@ -113,6 +113,20 @@ inline const Eigen::ThreadPoolDevice *GetThreadPoolDevice()
   return ctx.device.get();
 }
 
+template <typename T> int64_t kPacketSize()
+{
+  typedef typename Eigen::internal::packet_traits<T>::type Packet;
+  return sizeof(Packet) / sizeof(T);
+}
+
+inline int getThreadCount()
+{
+  // NOTE The Eigen library uses both main thread as well as a thread pool.
+  // Therefore, it needs to add an additional memory buffer for main thread.
+  const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
+  return d.numThreads() + 1;
+}
+
 } // namespace eigen_support
 } // namespace cker
 } // namespace nnfw
