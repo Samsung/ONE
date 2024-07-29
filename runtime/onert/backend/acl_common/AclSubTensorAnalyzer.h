@@ -45,8 +45,6 @@ public:
   }
 
 public:
-  void setLayout(ir::Layout layout) { _current_op_layout = layout; }
-
   void setUsePadding() { usePadding = true; }
 
   void visit(const ir::operation::Concat &node) override
@@ -95,8 +93,7 @@ public:
       }
       coordinate_info.set(axis, axis_point);
 
-      _parent_map.emplace(input_index,
-                          cl_common::ParentInfo{output_index, _current_op_layout, coordinate_info});
+      _parent_map.emplace(input_index, cl_common::ParentInfo{output_index, coordinate_info});
 
       axis_point += input_shape.dim(axis);
     }
@@ -110,7 +107,6 @@ public:
 private:
   const ir::Graph &_graph;
   std::unordered_map<ir::OperandIndex, cl_common::ParentInfo> _parent_map;
-  ir::Layout _current_op_layout{ir::Layout::UNKNOWN};
   bool usePadding{false};
 };
 
