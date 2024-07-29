@@ -412,9 +412,48 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
   VERBOSE(BackendContext) << "Finish planning back-propagated tensors" << std::endl;
 }
 
-void TensorPlanner::planGradientTensors(TensorBuilder *)
+void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan gradient tensors
+  VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
+
+  // TODO Use DisposableTensor instread of GradientTensor to plan them together if possible
+  //      Backward layers and the corresponding GradientApplier exist in the same back-propagated
+  //      operation sequence. So we can use DisposableTensors to plan GradientTensors.
+  for (const auto &op_index : _tgraph.essentialBackwardOrder())
+  {
+    std::vector<ir::train::TrainingOperandIndex> cur_seq;
+    const auto &op = _tgraph.operations().at(op_index);
+    const auto backwarding_op_index = ir::train::TrainingOperationIndex{op_index, false};
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    // Only inputs can be candidates for def of backwarding tensors
+    for (const auto &input : op_inputs)
+    {
+      if (_external_operands.contains(input))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(input))
+        continue;
+
+      const auto gradient_index = ir::train::TrainingOperandIndex{input, false};
+      const auto &training_usedefs = _tgraph.trainingUseDefs();
+      const auto &usedefs = training_usedefs.at(gradient_index);
+      const auto &operand = usedefs.operand();
+      const auto &defs = usedefs.getTrainingDefs();
+      if (operand.isConstant() && defs.find(backwarding_op_index) != defs.end())
+      {
+        assert(defs.size() == 1);
+        tensor_builder->notifyBackwardFirstUse(input);
+        cur_seq.emplace_back(gradient_index);
+      }
+    }
+
+    for (const auto &operand_index : cur_seq)
+    {
+      tensor_builder->notifyBackwardLastUse(operand_index.index());
+    }
+  }
+
+  VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
 }
 
 void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *)
