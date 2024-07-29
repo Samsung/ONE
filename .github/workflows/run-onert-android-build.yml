@@ -1,0 +1,55 @@
+name: Run ONERT Android Release Build
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-android-build.yml'
+      - 'nnas'
+      - 'nnfw'
+      - 'Makefile.template'
+      - 'compute/**'
+      - 'infra/**'
+      - '!infra/debian/**'
+      - '!infra/docker/**'
+      - '!infra/doxygen/**'
+      - '!infra/git-hooks/**'
+      - '!infra/nncc/**'
+      - '!infra/onert-micro/**'
+      - '!infra/packaging/**'
+      - 'nnpackage/**'
+      - '!nnpackage/spec/**'
+      - 'runtime/**'
+      - 'tests/**'
+      - '!**.md'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      TARGET_ARCH: aarch64
+      TARGET_OS: android
+      CROSS_BUILD: 1
+      BUILD_TYPE: release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # numpy: test build
+      # scons: arm compute library build
+      - name: Install packages
+        run: |
+          pip3 install numpy
+          sudo apt-get update && sudo apt-get -qqy install scons
+
+      # Use NDK 26.3.11579264
+      - name: Build onert
+        run: |
+          export NDK_DIR=/usr/local/lib/android/sdk/ndk/26.3.11579264
+          make -f Makefile.template
