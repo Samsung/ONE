@@ -106,8 +106,6 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   }
 
   // Update weights accordingly.
-  RETURN_FALSE_UNLESS(weights->opcode() == luci::CircleOpcode::CIRCLECONST or
-                      weights->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
   // Create new weights to be updated with values:
   auto fused_weights = luci::clone(weights);
   RETURN_FALSE_UNLESS(fused_weights->size<loco::DataType::FLOAT32>() ==
