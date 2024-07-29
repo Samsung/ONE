@@ -361,10 +361,9 @@ using CPUDevice = Eigen::ThreadPoolDevice;
 // TODO(andydavis) Experiment with processing multiple inputs per input buffer.
 template <typename T> struct DepthwiseConv2DKernel
 {
-  static void Run(int, int, int, int, int filter_rows, int filter_cols, int, int, int, int, int,
-                  int out_cols, int out_depth, const int64_t padded_filter_inner_dim_size,
-                  const int64_t out_r, const int64_t out_c, const T *filter, const T *input_buffer,
-                  T *output)
+  static void Run(int filter_rows, int filter_cols, int out_cols, int out_depth,
+                  const int64_t padded_filter_inner_dim_size, const int64_t out_r,
+                  const int64_t out_c, const T *filter, const T *input_buffer, T *output)
   {
     typedef typename Eigen::internal::packet_traits<T>::type Packet;
     static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
@@ -455,11 +454,10 @@ template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
     auto shard = [d, in_rows, in_cols, in_depth, out_rows, out_cols, out_depth, batch, filter_rows,
                   filter_cols, depth_multiplier, stride, pad_rows, pad_cols, input, filter_data,
                   in_buf, output](int64_t start, int64_t limit) {
-      static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
-
       int cur_id = d.currentThreadId() + 1;
       assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
 
+      static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
       const int64_t filter_spatial_size = filter_rows * filter_cols;
@@ -488,10 +486,9 @@ template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
               out_r, out_c, input + in_base, input_buffer_data);
 
             // Process buffered input across all filters and store to output.
-            DepthwiseConv2DKernel<T>::Run(
-              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
-              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_filter_inner_dim_size,
-              out_r, out_c, filter_data, input_buffer_data, output + out_base);
+            DepthwiseConv2DKernel<T>::Run(filter_rows, filter_cols, out_cols, out_depth,
+                                          padded_filter_inner_dim_size, out_r, out_c, filter_data,
+                                          input_buffer_data, output + out_base);
           }
         }
       }

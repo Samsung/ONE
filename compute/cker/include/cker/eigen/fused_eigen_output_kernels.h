@@ -35,7 +35,8 @@ namespace cker
 namespace fused_eigen_output_kernels
 {
 
-enum class FusedComputationType {
+enum class FusedComputationType
+{
   kUndefined,
   kBiasAdd,
   kBiasAddWithRelu,
@@ -76,64 +77,67 @@ enum class FusedComputationType {
 // Type alias for the tensor contraction output mapper.
 template <typename Scalar, typename StorageIndex>
 using ContractionOutputMapper =
-    Eigen::internal::blas_data_mapper<Scalar, StorageIndex, Eigen::ColMajor>;
+  Eigen::internal::blas_data_mapper<Scalar, StorageIndex, Eigen::ColMajor>;
 
 // Returns input expression without any transformations.
-struct Identity {
-  template <typename XprType>
-  static auto apply(XprType expr) -> XprType {
-    return expr;
-  };
+struct Identity
+{
+  template <typename XprType> static auto apply(XprType expr) -> XprType { return expr; };
 };
 
 // Applies `Relu` to the passed input expression.
-struct Relu {
+struct Relu
+{
   template <typename XprType>
   static auto apply(XprType expr)
-      -> decltype(expr.cwiseMax(std::declval<typename XprType::Scalar>())) {
+    -> decltype(expr.cwiseMax(std::declval<typename XprType::Scalar>()))
+  {
     return expr.cwiseMax(static_cast<typename XprType::Scalar>(0));
   };
 };
 
 // Applies `Relu6` to the passed input expression.
-struct Relu6 {
+struct Relu6
+{
   template <typename XprType>
   static auto apply(XprType expr)
-      -> decltype(expr.cwiseMax(std::declval<typename XprType::Scalar>())
-                      .cwiseMin(std::declval<typename XprType::Scalar>())) {
+    -> decltype(expr.cwiseMax(std::declval<typename XprType::Scalar>())
+                  .cwiseMin(std::declval<typename XprType::Scalar>()))
+  {
     return expr.cwiseMax(static_cast<typename XprType::Scalar>(0))
-        .cwiseMin(static_cast<typename XprType::Scalar>(6));
+      .cwiseMin(static_cast<typename XprType::Scalar>(6));
   };
 };
 
 // Applies `Tanh` to the passed input expression.
-struct Tanh {
-  template <typename XprType>
-  static auto apply(XprType expr) -> decltype(expr.tanh()) {
+struct Tanh
+{
+  template <typename XprType> static auto apply(XprType expr) -> decltype(expr.tanh())
+  {
     return expr.tanh();
   };
 };
 
 // Applies `Sigmoid` to the passed input expression.
-struct Sigmoid {
-  template <typename XprType>
-  static auto apply(XprType expr) -> decltype(expr.sigmoid()) {
+struct Sigmoid
+{
+  template <typename XprType> static auto apply(XprType expr) -> decltype(expr.sigmoid())
+  {
     return expr.sigmoid();
   };
 };
 
 // Applies `Elu` to the passed input expression.
-struct Elu {
+struct Elu
+{
   template <typename XprType>
-  static auto apply(XprType expr) -> decltype(
-      (expr < std::declval<typename XprType::Scalar>())
-          .select(expr.exp() -
-                      expr.constant(std::declval<typename XprType::Scalar>()),
-                  expr)) {
+  static auto apply(XprType expr)
+    -> decltype((expr < std::declval<typename XprType::Scalar>())
+                  .select(expr.exp() - expr.constant(std::declval<typename XprType::Scalar>()),
+                          expr))
+  {
     return (expr < static_cast<typename XprType::Scalar>(0))
-        .select(expr.exp() -
-                    expr.constant(static_cast<typename XprType::Scalar>(1)),
-                expr);
+      .select(expr.exp() - expr.constant(static_cast<typename XprType::Scalar>(1)), expr);
   };
 };
 
@@ -152,20 +156,21 @@ struct Elu {
 //   };
 // };
 
-template <typename T>
-struct BiasAddArgs {
-  const T* bias_add_data = nullptr;
+template <typename T> struct BiasAddArgs
+{
+  const T *bias_add_data = nullptr;
   // float leakyrelu_alpha;
 
-  static bool IsSupported(FusedComputationType fusion) {
+  static bool IsSupported(FusedComputationType fusion)
+  {
     return fusion == FusedComputationType::kBiasAdd ||
            fusion == FusedComputationType::kBiasAddWithRelu ||
            fusion == FusedComputationType::kBiasAddWithRelu6 ||
            fusion == FusedComputationType::kBiasAddWithTanh ||
            fusion == FusedComputationType::kBiasAddWithSigmoid ||
            fusion == FusedComputationType::kBiasAddWithElu;
-          //   ||
-          //  fusion == FusedComputationType::kBiasAddWithLeakyRelu;
+    //   ||
+    //  fusion == FusedComputationType::kBiasAddWithLeakyRelu;
   }
 };
 
@@ -203,28 +208,32 @@ struct BiasAddArgs {
 
 // Output kernel that fuses BiasAdd operation into the output of tensor
 // contraction + activation function defined by Activation.
-template <typename T, typename Activation = Identity>
-struct BiasAddOutputKernel {
-  explicit BiasAddOutputKernel(const BiasAddArgs<T>& args)
-      : bias_data(args.bias_add_data) {}
+template <typename T, typename Activation = Identity> struct BiasAddOutputKernel
+{
+  explicit BiasAddOutputKernel(const BiasAddArgs<T> &args) : bias_data(args.bias_add_data) {}
 
   template <typename StorageIndex, typename Scalar>
-  EIGEN_ALWAYS_INLINE void operator()(
-      const ContractionOutputMapper<Scalar, StorageIndex>& output_mapper,
-      const Eigen::TensorContractionParams& params, StorageIndex i,
-      StorageIndex j, StorageIndex num_rows, StorageIndex num_cols) const {
+  EIGEN_ALWAYS_INLINE void
+  operator()(const ContractionOutputMapper<Scalar, StorageIndex> &output_mapper,
+             const Eigen::TensorContractionParams &params, StorageIndex i, StorageIndex j,
+             StorageIndex num_rows, StorageIndex num_cols) const
+  {
     DCHECK(params.swapped_arguments);
 
-    const T* bias_base = bias_data + i;
+    const T *bias_base = bias_data + i;
     typename TTypes<T>::UnalignedConstTensor bias(bias_base, num_rows);
 
-    for (int col = 0; col < num_cols; ++col) {
-      Scalar* output_base = &output_mapper(0, col);
+    for (int col = 0; col < num_cols; ++col)
+    {
+      Scalar *output_base = &output_mapper(0, col);
       typename TTypes<Scalar>::UnalignedTensor output(output_base, num_rows);
-      if constexpr (std::is_same_v<Scalar, T>) {
+      if constexpr (std::is_same_v<Scalar, T>)
+      {
         const auto expr = output + bias;
         output = Activation::template apply<decltype(expr)>(expr);
-      } else {
+      }
+      else
+      {
         const auto bias_expr = bias.template cast<Scalar>();
         const auto expr = output + bias_expr;
         output = Activation::template apply<decltype(expr)>(expr);
@@ -232,8 +241,8 @@ struct BiasAddOutputKernel {
     }
   }
 
- private:
-  const T* bias_data;
+private:
+  const T *bias_data;
 };
 
 // template <typename T>
@@ -274,18 +283,12 @@ struct BiasAddOutputKernel {
 
 // Type aliases for the output kernels, purely for the sake of better launch
 // dispatching code readability.
-template <typename T>
-using WithBiasAdd = BiasAddOutputKernel<T>;
-template <typename T>
-using WithBiasAddAndRelu = BiasAddOutputKernel<T, Relu>;
-template <typename T>
-using WithBiasAddAndRelu6 = BiasAddOutputKernel<T, Relu6>;
-template <typename T>
-using WithBiasAddAndTanh = BiasAddOutputKernel<T, Tanh>;
-template <typename T>
-using WithBiasAddAndSigmoid = BiasAddOutputKernel<T, Sigmoid>;
-template <typename T>
-using WithBiasAddAndElu = BiasAddOutputKernel<T, Elu>;
+template <typename T> using WithBiasAdd = BiasAddOutputKernel<T>;
+template <typename T> using WithBiasAddAndRelu = BiasAddOutputKernel<T, Relu>;
+template <typename T> using WithBiasAddAndRelu6 = BiasAddOutputKernel<T, Relu6>;
+template <typename T> using WithBiasAddAndTanh = BiasAddOutputKernel<T, Tanh>;
+template <typename T> using WithBiasAddAndSigmoid = BiasAddOutputKernel<T, Sigmoid>;
+template <typename T> using WithBiasAddAndElu = BiasAddOutputKernel<T, Elu>;
 // template <typename T>
 // using WithBiasAddAndLeakyRelu = BiasAddOutputKernel<T, LeakyRelu>;
 
