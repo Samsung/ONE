@@ -29,7 +29,7 @@ using namespace onert::ir;
 OperationIndex addConv2DOperation(train::TrainableGraph &tgraph, const OperandIndexSequence inputs,
                                   const OperandIndexSequence outputs)
 {
-  // Add "FullyConnected" operation
+  // Add "Conv2D" operation
   operation::Conv2D::Param param;
   param.padding = PaddingType::SAME;
   param.dilation = Dilation{1, 1};
@@ -43,7 +43,7 @@ OperationIndex addDepthwiseConv2DOperation(train::TrainableGraph &tgraph,
                                            const OperandIndexSequence inputs,
                                            const OperandIndexSequence outputs)
 {
-  // Add "FullyConnected" operation
+  // Add "DepthwiseConv2D" operation
   operation::DepthwiseConv2D::Param param;
   param.padding = PaddingType::SAME;
   param.dilation = Dilation{1, 1};
