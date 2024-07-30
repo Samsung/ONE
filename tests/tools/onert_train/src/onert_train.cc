@@ -28,7 +28,6 @@
 #include "rawdataloader.h"
 #include "metrics.h"
 
-#include <boost/program_options.hpp>
 #include <cassert>
 #include <chrono>
 #include <cstdlib>
@@ -383,11 +382,6 @@ int main(const int argc, char **argv)
     measure.printResult();
 
     return 0;
-  }
-  catch (boost::program_options::error &e)
-  {
-    std::cerr << "E: " << e.what() << std::endl;
-    exit(-1);
   }
   catch (std::runtime_error &e)
   {
