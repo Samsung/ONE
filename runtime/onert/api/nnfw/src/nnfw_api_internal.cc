@@ -26,6 +26,7 @@
 #include "loader/TFLiteLoader.h"
 #include "loader/TrainInfoLoader.h"
 #include "exporter/CircleExporter.h"
+#include "exporter/CheckpointExporter.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
@@ -1747,9 +1748,8 @@ NNFW_STATUS nnfw_session::train_export_checkpoint(const char *path)
 
   try
   {
-    // onert::exporter::CircleExporter exporter(_model_path, std::string{path});
-    // exporter.updateWeight(_execution);
-    // exporter.updateMetadata(_train_info);
+    onert::exporter::CheckpointExporter exporter(_train_info, _execution);
+    exporter.save(std::string{path});
   }
   catch (const std::exception &e)
   {
