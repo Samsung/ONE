@@ -39,8 +39,6 @@ ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
   tgraph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(tgraph.layout() != ir::Layout::NCHW);
     tensor_builder->registerTensorInfo(ind, obj.info());
   });
 

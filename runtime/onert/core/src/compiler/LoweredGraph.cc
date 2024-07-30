@@ -148,7 +148,7 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
 
   // Handle graph inputs and outputs
   const auto builtin_backend = BackendManager::get().getBuiltin();
-  auto factor = PermuteFactor{builtin_backend, _graph.layout()};
+  auto factor = PermuteFactor{builtin_backend, ir::Layout::NHWC};
   for (auto &&index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);

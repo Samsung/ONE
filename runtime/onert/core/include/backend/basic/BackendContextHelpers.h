@@ -190,8 +190,6 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;
-    // NOTE Assuming there is no layout changes (Always assume NHWC or UNKNOWN)
-    assert(graph.layout() != ir::Layout::NCHW);
     tensor_builder->registerTensorInfo(ind, obj.info());
   });
 

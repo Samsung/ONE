@@ -323,15 +323,15 @@ ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat:
 }
 
 ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                           const ir::operation::Conv2D::Param &param, ir::Layout layout)
+                           const ir::operation::Conv2D::Param &param)
 {
   if (param.stride.horizontal == 0 || param.stride.vertical == 0)
     throw std::runtime_error{"Conv2D: stride values must be positive"};
 
-  auto ifm_shape = in_shape.asFeature(layout);
+  auto ifm_shape = in_shape.asFeature(ir::Layout::NHWC);
 
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in]
-  auto kf_shape = ker_shape.asFeature(layout);
+  auto kf_shape = ker_shape.asFeature(ir::Layout::NHWC);
   assert(ifm_shape.C == kf_shape.C);
 
   const auto [out_h, out_w] = calcConvLikeHeightAndWidth(
@@ -341,17 +341,15 @@ ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape
 }
 
 ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                                    const ir::operation::DepthwiseConv2D::Param &param,
-                                    ir::Layout layout)
+                                    const ir::operation::DepthwiseConv2D::Param &param)
 {
   if (param.stride.horizontal == 0 || param.stride.vertical == 0)
     throw std::runtime_error{"DepthwiseConv2D: stride values must be positive"};
 
-  assert(layout == ir::Layout::NHWC);
-  auto ifm_shape = in_shape.asFeature(layout);
+  auto ifm_shape = in_shape.asFeature(ir::Layout::NHWC);
 
   // Kernel format is [1, kernel_height, kernel_width, depth_out]
-  auto kf_shape = ker_shape.asFeature(layout);
+  auto kf_shape = ker_shape.asFeature(ir::Layout::NHWC);
   assert(kf_shape.C == static_cast<int32_t>(ifm_shape.C * param.multiplier));
   assert(kf_shape.N == 1);
 
@@ -546,14 +544,12 @@ ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const
   return ret;
 }
 
-ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param,
-                         const ir::Layout layout)
+ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param)
 {
   if (param.stride.horizontal == 0 || param.stride.vertical == 0)
     throw std::runtime_error{"Pool2D: stride values must be positive"};
 
-  assert(layout == ir::Layout::NHWC);
-  auto ifm_shape = in_shape.asFeature(layout);
+  auto ifm_shape = in_shape.asFeature(ir::Layout::NHWC);
   const auto [out_h, out_w] = calcConvLikeHeightAndWidth(ifm_shape.H, ifm_shape.W, param.kh,
                                                          param.kw, param.padding, param.stride);
   // Pooling don't change number of channels and batch size

@@ -27,7 +27,6 @@
 #include "ir/operation/StridedSlice.h"
 #include "compiler/LoweredGraph.h"
 #include "ir/Index.h"
-#include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
 #include "backend/ITensor.h"
 #include "backend/ITensorRegistry.h"
@@ -58,12 +57,10 @@ ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shp_bu
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);
 
 ir::Shape inferConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                           const ir::operation::Conv2D::Param &param,
-                           ir::Layout layout = ir::Layout::NHWC);
+                           const ir::operation::Conv2D::Param &param);
 
 ir::Shape inferDepthwiseConv2DShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                                    const ir::operation::DepthwiseConv2D::Param &param,
-                                    ir::Layout layout = ir::Layout::NHWC);
+                                    const ir::operation::DepthwiseConv2D::Param &param);
 
 ir::Shape inferEltwiseShape(const ir::Shape &lhs_shape, const ir::Shape &rhs_shape);
 
@@ -82,8 +79,7 @@ ir::Shape inferPackShape(const ir::Shape &input_shape, int axis, int rank, int n
 
 ir::Shape inferPadShape(const ir::Shape &in_shape, const int32_t *pad_buf, const size_t num_pads);
 
-ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param,
-                         ir::Layout layout = ir::Layout::NHWC);
+ir::Shape inferPoolShape(const ir::Shape &in_shape, const ir::operation::Pool2D::Param &param);
 
 template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delta_val);
 
