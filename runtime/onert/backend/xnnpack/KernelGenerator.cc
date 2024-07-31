@@ -105,8 +105,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
   const auto dilation = node.param().dilation;
   auto fn = std::make_unique<ops::ConvolutionLayer>(_external_context);
 
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature();
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature();
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -133,8 +133,8 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
 
   const auto stride = node.param().stride;
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature();
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature();
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);

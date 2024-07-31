@@ -228,8 +228,8 @@ void ConvolutionLayer::run()
   prepare();
   if (_input->is_dynamic() || _kernel->is_dynamic())
   {
-    const auto ifm_shape = _input->getShape().asFeature(_input->layout());
-    const auto ofm_shape = _output->getShape().asFeature(_input->layout());
+    const auto ifm_shape = _input->getShape().asFeature();
+    const auto ofm_shape = _output->getShape().asFeature();
     // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
     const auto ker_shape = _kernel->getShape();
     const auto ker_height = ker_shape.dim(1);

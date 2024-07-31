@@ -114,8 +114,8 @@ void KernelGenerator::visit(const ir::operation::Conv2D &node)
     _return_fn = std::move(fn);
     return;
   }
-  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
-  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature();
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature();
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = _ctx.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);

@@ -210,8 +210,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   auto fn = std::make_unique<ops::ConvolutionLayer>();
 
   auto &operands = _tgraph.operands();
-  const auto ifm_shape = operands.at(in_index).shape().asFeature(ir::Layout::NHWC);
-  const auto ofm_shape = operands.at(out_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ifm_shape = operands.at(in_index).shape().asFeature();
+  const auto ofm_shape = operands.at(out_index).shape().asFeature();
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = operands.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -265,8 +265,8 @@ void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
 
   const auto stride = node.param().stride;
   const auto &operands = _tgraph.operands();
-  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
-  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature();
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature();
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = operands.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -479,9 +479,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   const auto stride = node.param().stride;
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
-  const auto padding =
-    ir::calculatePadding(node.param().padding, ifm_shape.asFeature(ir::Layout::NHWC),
-                         ofm_shape.asFeature(ir::Layout::NHWC), stride, kw, kh);
+  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape.asFeature(),
+                                            ofm_shape.asFeature(), stride, kw, kh);
 
   auto out_tensor = _tensor_reg->getPortableTensor(output_index);
   auto in_tensor = _tensor_reg->getPortableTensor(input_index);
