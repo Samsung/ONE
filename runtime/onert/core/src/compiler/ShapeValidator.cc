@@ -82,9 +82,8 @@ void ShapeValidator::visit(const ir::operation::BatchToSpaceND &node)
   const auto block_size_index{
     node.getInputs().at(ir::operation::BatchToSpaceND::Input::BLOCK_SIZE)};
 
-  const auto frontend_layout = _graph.layout();
-  const auto input_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
-  const auto output_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto input_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto output_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
 
   // All requirement as per NNAPI specification.
   OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
@@ -392,9 +391,8 @@ void ShapeValidator::visit(const ir::operation::SpaceToBatchND &node)
     node.getInputs().at(ir::operation::SpaceToBatchND::Input::BLOCK_SIZE)};
   const auto paddings_index{node.getInputs().at(ir::operation::SpaceToBatchND::Input::PADDINGS)};
 
-  const auto frontend_layout = _graph.layout();
-  const auto input_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
-  const auto output_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto input_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto output_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
 
   // All requirement as per NNAPI specification.
   OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
@@ -418,9 +416,8 @@ void ShapeValidator::visit(const ir::operation::SpaceToDepth &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::SpaceToDepth::Input::INPUT)};
 
-  const auto frontend_layout = _graph.layout();
-  const auto input_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
-  const auto output_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
+  const auto input_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto output_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
   const auto block_size = node.param().block_size;
 
   // All assertions as per NNAPI specification.
@@ -540,9 +537,8 @@ void ShapeValidator::visit(const ir::operation::TransposeConv &node)
   OP_REQUIRES(operands.at(ofm_index).shape().rank() == operands.at(ifm_index).shape().rank());
   OP_REQUIRES(operands.at(ofm_index).shape().rank() == operands.at(ker_index).shape().rank());
 
-  const auto frontend_layout = _graph.layout();
-  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(frontend_layout);
-  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(frontend_layout);
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
   // The kernel has only IHWO layout on frontend
   // So ker_shape is treated here below
   // I -> N
@@ -587,9 +583,8 @@ void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 
   const auto input_index{node.getInputs().at(ir::operation::DepthToSpace::Input::INPUT)};
 
-  const auto frontend_layout = _graph.layout();
-  const auto output_shape = operands.at(output_index).shape().asFeature(frontend_layout);
-  const auto input_shape = operands.at(input_index).shape().asFeature(frontend_layout);
+  const auto output_shape = operands.at(output_index).shape().asFeature(ir::Layout::NHWC);
+  const auto input_shape = operands.at(input_index).shape().asFeature(ir::Layout::NHWC);
 
   OP_REQUIRES(operands.at(input_index).shape().rank() == 4);
   OP_REQUIRES(operands.at(output_index).shape().rank() == 4);

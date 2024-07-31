@@ -178,7 +178,7 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
 
   // Handle graph inputs and outputs
   const auto builtin_backend = BackendManager::get().getBuiltin();
-  auto factor = PermuteFactor{builtin_backend, _trainable_graph.layout()};
+  auto factor = PermuteFactor{builtin_backend, ir::Layout::NHWC};
   for (auto &&index : _trainable_graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);

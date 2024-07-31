@@ -43,7 +43,7 @@ void PermutationOperationPass::applyExpandRanks(const Operation &node)
 
   assert(output.getDef().valid());
   const auto node_index = output.getDef();
-  const auto frontend_layout = _graph.layout();
+  const auto frontend_layout = ir::Layout::NHWC;
   const auto backend_layout = _lowered_graph.lower_info().operation.getRawPtr(node_index)->layout();
 
   if (frontend_layout == backend_layout)
@@ -86,7 +86,7 @@ void PermutationOperationPass::changeToKeepLayout(const Operation &node)
 
   auto &operation_li_map = _lowered_graph.lower_info().operation;
   auto &operand_li_map = _lowered_graph.lower_info().operand;
-  const auto frontend_layout = _graph.layout();
+  const auto frontend_layout = ir::Layout::NHWC;
   const auto backend_layout = operation_li_map.getRawPtr(node_index)->layout();
 
   if (frontend_layout == backend_layout)

@@ -125,7 +125,6 @@ public:
   const Operations &operations() const override { return _graph.operations(); }
   const Operands &backward_operands() const { return _backward_operands; }
   OperandIndex getLossIndex(const IOIndex &pred_io_ind) const;
-  Layout layout() const { return _graph.layout(); }
   const Graph &graph() const { return _graph; }
 
 public:
