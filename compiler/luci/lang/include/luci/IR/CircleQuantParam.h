@@ -28,6 +28,7 @@ struct CircleQuantParam
   std::vector<float> min;
   std::vector<float> max;
   std::vector<float> scale;
+  std::vector<float> hessian;
   std::vector<int64_t> zerop;
   int32_t quantized_dimension{0};
 };
