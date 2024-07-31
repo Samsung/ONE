@@ -22,7 +22,6 @@
 #include "../pass/PassRunner.h"
 #include "../pass/PermutationEliminationPass.h"
 #include "../pass/PermutationInsertionPass.h"
-#include "../pass/PermutationOperationPass.h"
 #include "../../backend/builtin/Config.h"
 #include "../../dumper/text/GraphDumper.h"
 #include "../../ir/verifier/Verifier.h"
@@ -102,7 +101,6 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
     .append(std::make_unique<compiler::pass::ConstantInsertionPass>(*this))
     .append(std::make_unique<compiler::train::pass::TrainableConstantInsertionPass>(*this))
     .append(std::make_unique<compiler::pass::ConstantLoweringPass>(*this))
-    .append(std::make_unique<compiler::pass::PermutationOperationPass>(*this))
     .append(std::make_unique<compiler::pass::PermutationInsertionPass>(*this))
     .run();
 
