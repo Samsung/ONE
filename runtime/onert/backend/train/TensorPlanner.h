@@ -47,6 +47,10 @@ public:
   void planDisposableBackPropTensors(TensorBuilder *tensor_builder);
 
 private:
+  ir::OperandIndexSequence getOutgoingBackPropSeq(const ir::OperationIndex &op_index,
+                                                  const TensorBuilder *tensor_builder);
+
+private:
   const ir::train::TrainableGraph &_tgraph;
   const util::Set<ir::OperandIndex> &_external_operands;
 };
