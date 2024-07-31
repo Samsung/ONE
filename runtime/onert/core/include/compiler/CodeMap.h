@@ -17,11 +17,12 @@
 #ifndef __ONERT_COMPILER_CODE_MAP_H__
 #define __ONERT_COMPILER_CODE_MAP_H__
 
-#include <unordered_map>
+#include "backend/Backend.h"
+#include "exec/FunctionSequence.h"
 #include "ir/Index.h"
 #include "ir/IOperation.h"
-#include "exec/FunctionSequence.h"
-#include "OperationLowerInfo.h"
+
+#include <unordered_map>
 
 namespace onert
 {
@@ -32,13 +33,12 @@ struct CodeAndInfo
 {
   ir::OperationIndex op_ind;
   const ir::IOperation *op;
-  const OperationLowerInfo *lower_info;
+  const backend::Backend *op_backend;
   std::unique_ptr<exec::FunctionSequence> fn_seq;
 
   CodeAndInfo(const ir::OperationIndex op_ind, const ir::IOperation *op,
-              const OperationLowerInfo *lower_info,
-              std::unique_ptr<exec::FunctionSequence> &&fn_seq)
-    : op_ind{op_ind}, op{op}, lower_info{lower_info}, fn_seq{std::move(fn_seq)}
+              const backend::Backend *op_backend, std::unique_ptr<exec::FunctionSequence> &&fn_seq)
+    : op_ind{op_ind}, op{op}, op_backend{op_backend}, fn_seq{std::move(fn_seq)}
   {
   }
 };

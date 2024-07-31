@@ -153,7 +153,7 @@ void DataflowExecutor::executeImpl(const ExecutionObservee &subject)
     VERBOSE(DataflowExecutor) << "Run job " << job_index << std::endl;
 
     auto op_ind = _job_to_op[job_index];
-    const backend::Backend *backend = _lowered_graph->lower_info().operation.at(op_ind).backend();
+    const auto backend = _lowered_graph->lower_info().operation.at(op_ind);
 
     subject.notifyJobBegin(this, profiling_subg_index, op_ind, backend);
 

@@ -121,7 +121,7 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
   // Set operand lower info using assigned backends to operations
   _graph.operations().iterate([&](const ir::OperationIndex &op_ind, const ir::IOperation &) {
     const ir::IOperation &op = _graph.operations().at(op_ind);
-    auto backend = backend_resolver.getBackend(op_ind);
+    const auto backend = backend_resolver.getBackend(op_ind);
     if (!backend)
     {
       throw std::runtime_error{"Fail to find backend for " + op.name() + " operation"};
@@ -140,8 +140,7 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
       auto &operand_li = lower_info().operand.at(ind);
       operand_li.addDefPermuteFactor(PermuteFactor{backend, backend_layout});
     }
-    lower_info().operation.set(
-      op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
+    lower_info().operation.emplace(op_ind, backend);
   });
 
   // Handle graph inputs and outputs

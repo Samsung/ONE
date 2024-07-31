@@ -30,10 +30,8 @@ namespace pass
 
 void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
 {
-  const auto op_lower_info = _lowered_graph.lower_info().operation.getRawPtr(node_index);
-  const auto backend = op_lower_info->backend();
-  const auto layout = op_lower_info->layout();
-  const auto factor = PermuteFactor{backend, layout};
+  const auto backend = _lowered_graph.lower_info().operation.at(node_index);
+  const auto factor = PermuteFactor{backend, ir::Layout::NHWC};
 
   for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
   {

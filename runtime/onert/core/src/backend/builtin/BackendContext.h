@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_BUILTIN_BACKEND_CONTEXT_H__
 #define __ONERT_BACKEND_BUILTIN_BACKEND_CONTEXT_H__
 
-#include <backend/BackendContext.h>
-#include "TensorBuilder.h"
-#include "KernelGenerator.h"
 #include "ExternalContext.h"
+#include "KernelGenerator.h"
+#include "TensorBuilder.h"
+#include "backend/BackendContext.h"
+#include "compiler/GraphLowerInfo.h"
 
 namespace onert
 {

@@ -19,7 +19,6 @@
 
 #include "../../backend/builtin/Config.h"
 
-#include "compiler/OperationLowerInfo.h"
 #include "ir/operation/Permute.h"
 #include "util/logging.h"
 
@@ -82,14 +81,11 @@ void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Opera
         continue;
 
       auto &operation = _graph.operations().at(use);
-      auto op_li = _lowered_graph.lower_info().operation.getRawPtr(use);
-      assert(op_li);
-      const auto op_layout = op_li->layout();
-      const backend::Backend *backend = op_li->backend();
+      const auto backend = _lowered_graph.lower_info().operation.at(use);
       assert(backend);
       assert(operation.getInputs().contains(index));
 
-      auto new_index = factor_to_index.at({backend, op_layout});
+      auto new_index = factor_to_index.at({backend, ir::Layout::NHWC});
       if (index != new_index)
       {
         // Update from operation
@@ -194,8 +190,7 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   // Operation LowerInfo
   {
     auto &operation_li_map = _lowered_graph.lower_info().operation;
-    operation_li_map.set(node_index, std::make_unique<compiler::OperationLowerInfo>(
-                                       permute_node_backend, permute_node_layout));
+    operation_li_map.emplace(node_index, permute_node_backend);
   }
 
   // Update Use/Def info
