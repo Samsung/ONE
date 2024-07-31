@@ -186,7 +186,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   whole_graph.operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &operation) {
       auto &op_li = lgraph.lower_info().operation;
-      auto backend = op_li.at(op_ind).backend();
+      const auto backend = op_li.at(op_ind);
       if (context_data_map.find(backend) == context_data_map.end())
         init_context_data(backend);
 
@@ -315,8 +315,8 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
-      auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
-      auto &backend_ctx = backend_contexts.at(lower_info->backend());
+      const auto backend = lowered_graph.lower_info().operation.at(op_ind);
+      auto &backend_ctx = backend_contexts.at(backend);
       for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
@@ -471,12 +471,12 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     for (auto &&[op_ind, fn_seq] : codes)
     {
       auto &op = lowered_graph->graph().operations().at(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
       if (options->he_profiling_mode)
-        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+        fn_seq->wrap<SyncFunction>(backend->config());
       if (!dealloc_list_map[op_ind].empty())
         fn_seq->append(std::make_unique<DeallocFunction>(dealloc_list_map[op_ind]));
-      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
+      builder.append(op_ind, {op_ind, &op, backend, std::move(fn_seq)});
     }
   }
 
@@ -542,10 +542,10 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
     for (auto &&[op_ind, fn_seq] : codes)
     {
       auto &op = lowered_graph->graph().operations().at(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
       if (options->he_profiling_mode)
-        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
+        fn_seq->wrap<SyncFunction>(backend->config());
+      builder.append(op_ind, {op_ind, &op, backend, std::move(fn_seq)});
     }
   }
 
@@ -608,8 +608,8 @@ void ExecutorFactory::prepareMigrantTensors(
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
-      auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
-      auto &backend_ctx = backend_contexts.at(lower_info->backend());
+      const auto backend = lowered_graph.lower_info().operation.at(op_ind);
+      auto &backend_ctx = backend_contexts.at(backend);
       for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
@@ -856,11 +856,11 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     for (auto &&[op_ind, tn_seq] : codes)
     {
       auto &op = lowered_graph->trainable_graph().operation(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
 
       assert(code_map.find(op_ind) == code_map.end());
       code_map.insert(
-        {op_ind, train::TrainableCodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
+        {op_ind, train::TrainableCodeAndInfo{op_ind, &op, backend, std::move(tn_seq)}});
     }
   }
 

@@ -170,8 +170,7 @@ void LoweredTrainableGraph::makeLowerInfo(const compiler::BackendResolver &backe
         auto &operand_li = lower_info().operand.at(ind);
         operand_li.addDefPermuteFactor(PermuteFactor{backend, backend_layout});
       }
-      lower_info().operation.set(
-        op_ind, std::make_unique<compiler::OperationLowerInfo>(backend, backend_layout));
+      lower_info().operation.emplace(op_ind, backend);
     });
 
   // Handle graph inputs and outputs

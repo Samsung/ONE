@@ -158,11 +158,11 @@ void update_lower_info(const compiler::ILoweredGraph &lowered_graph,
 {
   const auto &operations = lowered_graph.graph().operations();
   operations.iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
-    const auto lower_info = lowered_graph.lower_info().operation.getRawPtr(index);
-    if (lower_info)
+    const auto backend = lowered_graph.lower_info().operation.at(index);
+    if (backend)
     {
-      auto fillcolor = backend_to_fillcolor(lower_info->backend());
-      std::string backend_label = "[" + lower_info->backend()->config()->id() + "]";
+      auto fillcolor = backend_to_fillcolor(backend);
+      std::string backend_label = "[" + backend->config()->id() + "]";
       auto itr = dot_operations->find(index);
       if (itr != dot_operations->end())
       {

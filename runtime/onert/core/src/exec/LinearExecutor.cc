@@ -33,7 +33,7 @@ void LinearExecutor::executeImpl(const ExecutionObservee &subject)
     subject.notifySubgraphBegin(profiling_subg_index);
     for (auto &&code : _code)
     {
-      const auto backend = code.lower_info->backend();
+      const auto backend = code.op_backend;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
