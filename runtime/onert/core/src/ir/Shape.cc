@@ -31,42 +31,21 @@ int32_t const Shape::kUnspecifiedDim = -1;
 // NNFW_MAX_RANK is 6
 int32_t const Shape::kMaxRank = 6;
 
-FeatureShape Shape::asFeature(Layout layout) const
+FeatureShape Shape::asFeature() const
 {
   assert(rank() == 4);
 
-  if (layout == Layout::NHWC)
-  {
-    // Feature Map in NHWC layout
-    //  - Dimension(0) -> Batch
-    //  - Dimension(1) -> Height
-    //  - Dimension(2) -> Width
-    //  - Dimension(3) -> Depth
-    const auto batch = dim(0);
-    const auto depth = dim(3);
-    const auto height = dim(1);
-    const auto width = dim(2);
+  // Feature Map in NHWC layout
+  //  - Dimension(0) -> Batch
+  //  - Dimension(1) -> Height
+  //  - Dimension(2) -> Width
+  //  - Dimension(3) -> Depth
+  const auto batch = dim(0);
+  const auto depth = dim(3);
+  const auto height = dim(1);
+  const auto width = dim(2);
 
-    return {batch, depth, height, width};
-  }
-  else if (layout == Layout::NCHW)
-  {
-    // Feature Map in NHWC layout
-    //  - Dimension(0) -> Batch
-    //  - Dimension(1) -> Depth
-    //  - Dimension(2) -> Height
-    //  - Dimension(3) -> Width
-    const auto batch = dim(0);
-    const auto depth = dim(1);
-    const auto height = dim(2);
-    const auto width = dim(3);
-
-    return {batch, depth, height, width};
-  }
-  else
-  {
-    throw std::runtime_error("Wrong Layout");
-  }
+  return {batch, depth, height, width};
 }
 
 // Extended dimension is filled with 1.

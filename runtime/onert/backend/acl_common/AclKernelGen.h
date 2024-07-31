@@ -298,8 +298,8 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   const auto ofm_index{node.getOutputs().at(0)};
   const auto ifm_index{node.getInputs().at(0)};
 
-  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(ir::Layout::NHWC);
-  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(ir::Layout::NHWC);
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature();
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature();
 
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;

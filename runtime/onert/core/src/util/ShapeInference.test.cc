@@ -51,20 +51,20 @@ TEST(ShapeInference, Pool2DNodeSame)
   auto infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 20);
 
   operation::Pool2D::Param max_pool_param{
     operation::Pool2D::PoolType::MAX, 3, 6, stride, padding, Activation::NONE};
   infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 20);
 }
 
 TEST(ShapeInference, Pool2DNodeValid)
@@ -78,20 +78,20 @@ TEST(ShapeInference, Pool2DNodeValid)
   auto infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 1);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 20);
 
   operation::Pool2D::Param max_pool_param{
     operation::Pool2D::PoolType::MAX, 3, 6, stride, padding, Activation::NONE};
   infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 1);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 20);
 }
 
 TEST(ShapeInference, Pool2DNodeExplicit)
@@ -106,20 +106,20 @@ TEST(ShapeInference, Pool2DNodeExplicit)
   auto infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, avg_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 1);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 20);
 
   operation::Pool2D::Param max_pool_param{
     operation::Pool2D::PoolType::MAX, 3, 6, stride, padding, Activation::NONE};
   infered_out_shape = onert::shape_inference::inferPoolShape(in_shape, max_pool_param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 20);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 1);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 20);
 }
 
 TEST(ShapeInference, neg_Pool2DNode_InvalidStride)
@@ -144,30 +144,30 @@ TEST(ShapeInference, Conv2D)
   auto infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 1);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 30);
 
   param = operation::Conv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, Activation::NONE,
                                    Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 30);
 
   param =
     operation::Conv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, Activation::NONE, Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 3);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 30);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 3);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 30);
 }
 
 TEST(ShapeInference, neg_Conv2D_InvalidStride)
@@ -192,30 +192,30 @@ TEST(ShapeInference, DepthwiseConv2D)
     onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 1);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 1);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 60);
 
   param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{PaddingType::SAME}, 3,
                                             Activation::NONE, Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 60);
 
   param = operation::DepthwiseConv2D::Param{Stride{3, 7}, Padding{4, 3, 2, 1}, 3, Activation::NONE,
                                             Dilation{1, 1}};
   infered_out_shape = onert::shape_inference::inferDepthwiseConv2DShape(in_shape, ker_shape, param);
 
   ASSERT_EQ(infered_out_shape.rank(), 4);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).N, 10);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).H, 3);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).W, 2);
-  ASSERT_EQ(infered_out_shape.asFeature(Layout::NHWC).C, 60);
+  ASSERT_EQ(infered_out_shape.asFeature().N, 10);
+  ASSERT_EQ(infered_out_shape.asFeature().H, 3);
+  ASSERT_EQ(infered_out_shape.asFeature().W, 2);
+  ASSERT_EQ(infered_out_shape.asFeature().C, 60);
 }
 
 TEST(ShapeInference, neg_DepthwiseConv2D_InvalidSride)

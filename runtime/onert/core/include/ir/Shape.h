@@ -98,7 +98,7 @@ public:
   uint64_t num_elements() const;
 
 public:
-  FeatureShape asFeature(Layout layout) const;
+  FeatureShape asFeature() const;
 
   /**
    * @brief Add dimension to the beginning
