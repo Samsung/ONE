@@ -1,0 +1,50 @@
+name: Run ONERT Tizen GBS Build
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-gbs-build.yml'
+      - 'nncc'
+      - 'nnfw'
+      - 'compiler/luci/**'
+      - 'compiler/loco/**'
+      - 'compiler/logo/**'
+      - 'compute/**'
+      - 'infra/**'
+      - '!infra/debian/**'
+      - '!infra/docker/**'
+      - '!infra/doxygen/**'
+      - '!infra/git-hooks/**'
+      - '!infra/nncc/**'
+      - '!infra/onert-micro/**'
+      - '!infra/packaging/**'
+      - '!infra/scripts/**'
+      - 'runtime/**'
+      - 'tests/**'
+      - '!**.md'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # - name: Install GBS
+      #   run: |
+      #     echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_22.04/ /' | sudo cat >> /etc/apt/sources.list
+      #     sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get -qqy install gbs
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          docker run --rm -v $PWD:$PWD -u root --privileged -w $PWD nnfw/one-devtools:focal gbs -c infra/nnfw/config/gbs.conf build -A armv7l --profile=profile.tizen_8
