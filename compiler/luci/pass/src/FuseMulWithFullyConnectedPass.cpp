@@ -29,21 +29,38 @@ namespace
   if (not(cond))                  \
     return false;
 
-inline void update_values(luci::CircleConst *fused_node, luci::CircleConst *multiplication)
+inline void update_values(luci::CircleConst *fused_node, luci::CircleConst *multiplication, bool is_weights)
 {
   auto node_size = fused_node->size<loco::DataType::FLOAT32>();
-  // Scalar:
+  auto mul_size = multiplication->size<loco::DataType::FLOAT32>();
+  // Scalar multiplication:
   if (multiplication->rank() == 1 ||
-      multiplication->rank() == 0 && multiplication->size<loco::DataType::FLOAT32>() == 1)
+      multiplication->rank() == 0 && mul_size == 1)
   {
     for (uint32_t i = 0; i < node_size; i++)
       fused_node->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(0);
   }
-  // N-size:
+  // N-size multiplication:
   else
   {
-    for (uint32_t i = 0; i < node_size; i++)
-      fused_node->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(i);
+    // Go along channels, multiplication size is ensured to be compatible with channels.
+    if (is_weights)  // weights 2-D
+    {
+      auto count = fused_node->dim(0).value();
+      auto size = fused_node->dim(fused_node->rank() - 1).value();
+      float val;
+      for (uint32_t c = 0; c < count; c++) {
+        val = multiplication->at<loco::DataType::FLOAT32>(c);
+        for (uint32_t i = 0; i < size; i++) {
+          fused_node->at<loco::DataType::FLOAT32>(c * size + i) *= val;
+        }
+      }
+    }
+    else  // bias 1-D
+    {
+      for (uint32_t i = 0; i < node_size; i++)
+        fused_node->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(i);
+    }
   }
 }
 
@@ -98,6 +115,8 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
     // Check channel-wise broadcasting:
     for (uint32_t i = 0; i < rank - 1; i++)
       RETURN_FALSE_UNLESS(multiplication->dim(i).value() == 1);
+    // Check the last dimesion of Mul is the same with the first dimension of FullyConnected
+    RETURN_FALSE_UNLESS(multiplication->dim(rank - 1) == weights->dim(0));
   }
   // Scalar case:
   else if (multiplication->rank() == 1 || multiplication->rank() == 0)
@@ -126,14 +145,9 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
                       weights->size<loco::DataType::FLOAT32>());
 
   // Update bias accordingly:
-  update_values(fused_bias, multiplication);
-  // Here fused_bias's shape is either [1, 1, ..., N] or [N]
-  // where N is weights->dim(0).
-  // The shape is normalized to [N] to become the bias of FullyConected.
-  fused_bias->rank(1);
-  fused_bias->dim(0) = weights->dim(0);
+  update_values(fused_bias, multiplication, false);
   // Update weights accordingly:
-  update_values(fused_weights, multiplication);
+  update_values(fused_weights, multiplication, true);
 
   // Replace weights and bias:
   fc->weights(fused_weights);
