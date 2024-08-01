@@ -295,7 +295,8 @@ uint32_t cal_offset(const loco::TensorShape &dimension, const uint32_t *indices)
          indices[2] * dimension.dim(3).value() + indices[3];
 }
 
-luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
+template <loco::DataType T>
+luci::CircleConst *create_NHWC_paddings_impl(luci::CircleConst *paddings)
 {
   // paddings shape is (4,2) (it was checked by is_NCHW)
   assert(paddings != nullptr);
@@ -304,19 +305,19 @@ luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
   assert(paddings->dim(1).value() == 2);
 
   // paddings for idx 0~3 are 0 (checked by is_NCHW)
-  assert(paddings->at<loco::DataType::S32>(0) == 0);
-  assert(paddings->at<loco::DataType::S32>(1) == 0);
-  assert(paddings->at<loco::DataType::S32>(2) == 0);
-  assert(paddings->at<loco::DataType::S32>(3) == 0);
+  assert(paddings->at<T>(0) == 0);
+  assert(paddings->at<T>(1) == 0);
+  assert(paddings->at<T>(2) == 0);
+  assert(paddings->at<T>(3) == 0);
 
   auto name = paddings->name();
   assert(name.length() > 0);
 
   auto nhwc_paddings = paddings->graph()->nodes()->create<luci::CircleConst>();
-  nhwc_paddings->dtype(loco::DataType::S32);
+  nhwc_paddings->dtype(T);
   nhwc_paddings->shape({4, 2});
   nhwc_paddings->shape_status(luci::ShapeStatus::VALID);
-  nhwc_paddings->size<loco::DataType::S32>(4 * 2);
+  nhwc_paddings->size<T>(4 * 2);
   nhwc_paddings->name(name + "_NHWC");
 
   for (uint32_t dim = 0; dim < 4; dim++)
@@ -328,18 +329,33 @@ luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
       if (dim == 1)
       {
         // get third dimension (H in NCHW)
-        data = paddings->at<loco::DataType::S32>(2 * 2 + i);
+        data = paddings->at<T>(2 * 2 + i);
       }
       else if (dim == 2)
       {
         // get fourth dimension (W in NCHW)
-        data = paddings->at<loco::DataType::S32>(3 * 2 + i);
+        data = paddings->at<T>(3 * 2 + i);
       }
 
-      nhwc_paddings->at<loco::DataType::S32>(dim * 2 + i) = data;
+      nhwc_paddings->at<T>(dim * 2 + i) = data;
     }
   }
   return nhwc_paddings;
+}
+
+luci::CircleConst *create_NHWC_paddings(luci::CircleConst *paddings)
+{
+  assert(paddings != nullptr);
+
+  switch (paddings->dtype())
+  {
+    case loco::DataType::S32:
+      return create_NHWC_paddings_impl<loco::DataType::S32>(paddings);
+    case loco::DataType::S64:
+      return create_NHWC_paddings_impl<loco::DataType::S64>(paddings);
+    default:
+      throw std::runtime_error("Unsupported datatype");
+  }
 }
 
 luci::CircleConst *create_NHWC_rindices(luci::CircleConst *rindices)
@@ -447,6 +463,23 @@ bool is_NCHW(const luci::CirclePad *node)
   return true;
 }
 
+template <loco::DataType T> bool check_NC_padding_zero(const luci::CircleConst *node)
+{
+  assert(node->dtype() == T); // FIX_CALLER_UNLESS
+
+  for (uint32_t dim = 0; dim < 2; dim++)
+  {
+    for (uint32_t i = 0; i < 2; i++)
+    {
+      auto data = node->at<T>(dim * 2 + i);
+      if (data != 0)
+        return false;
+    }
+  }
+
+  return true;
+}
+
 // NOTE Copied from is_NCHW(CirclePad)
 bool is_NCHW(const luci::CirclePadV2 *node)
 {
@@ -461,15 +494,20 @@ bool is_NCHW(const luci::CirclePadV2 *node)
   if (paddings->dim(0).value() != 4 || paddings->dim(1).value() != 2)
     return false;
 
-  // Only check the first two dimensions
-  for (uint32_t dim = 0; dim < 2; dim++)
+  switch (paddings->dtype())
   {
-    for (uint32_t i = 0; i < 2; i++)
-    {
-      auto data = paddings->at<loco::DataType::S32>(dim * 2 + i);
-      if (data != 0)
+    // Only support if N (batch), C(channel) dimension's paddings are zero
+    case loco::DataType::S32:
+      if (not check_NC_padding_zero<loco::DataType::S32>(paddings))
         return false;
-    }
+      break;
+    case loco::DataType::S64:
+      if (not check_NC_padding_zero<loco::DataType::S64>(paddings))
+        return false;
+      break;
+    default:
+      // Unsupported dtype
+      return false;
   }
 
   return true;
