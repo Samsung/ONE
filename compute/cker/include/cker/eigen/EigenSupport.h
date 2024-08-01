@@ -113,6 +113,18 @@ inline const Eigen::ThreadPoolDevice *GetThreadPoolDevice()
   return ctx.device.get();
 }
 
+template <typename T> int64_t kPacketSize()
+{
+  typedef typename Eigen::internal::packet_traits<T>::type Packet;
+  return sizeof(Packet) / sizeof(T);
+}
+
+inline int getThreadCount()
+{
+  const Eigen::ThreadPoolDevice &d = *eigen_support::GetThreadPoolDevice();
+  return d.numThreads();
+}
+
 } // namespace eigen_support
 } // namespace cker
 } // namespace nnfw

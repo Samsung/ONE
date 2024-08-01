@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <cker/eigen/EigenSupport.h>
 #include <cker/train/operation/DepthwiseConv.h>
 
 #include <gtest/gtest.h>
@@ -25,14 +26,11 @@ namespace
 template <typename T> class DepthwiseConvVerifier
 {
 public:
-  DepthwiseConvVerifier() : _dconv_kernel{new nnfw::cker::train::DepthwiseConv()}
-  {
-    _dconv_kernel = std::make_unique<nnfw::cker::train::DepthwiseConv>();
-  }
+  DepthwiseConvVerifier() = default;
 
   void prepare(const nnfw::cker::Shape &incoming_shape, const nnfw::cker::Shape &filter_shape)
   {
-    const int k_packet_size = _dconv_kernel->kPacketSize<T>();
+    const int k_packet_size = nnfw::cker::eigen_support::kPacketSize<T>();
     const int batch = incoming_shape.Dims(0);
     const int out_depth = incoming_shape.Dims(3);
     const int filter_rows = filter_shape.Dims(1);
@@ -49,7 +47,9 @@ public:
     }
 
     {
-      const int thread_count = _dconv_kernel->getThreadCount();
+      // NOTE The Eigen library uses both main thread as well as a thread pool.
+      // Therefore, it needs to add an additional memory buffer for main thread.
+      const int thread_count = nnfw::cker::eigen_support::getThreadCount() + 1;
 
       nnfw::cker::Shape filter_buffer_shape(
         {thread_count, filter_spatial_size, padded_filter_inner_dim_size});
@@ -71,10 +71,10 @@ public:
     calculateInputGradExpected(params, incoming_shape, incoming_data, filter_shape, filter_data,
                                grad_shape, expected.data());
 
-    _dconv_kernel->backpropInput(params, incoming_shape, incoming_data, filter_shape, filter_data,
-                                 _padded_filter.data(), grad_shape, gradient.data(),
-                                 _use_padded_filter, _filter_buffers.data(),
-                                 _filter_dim_buffers.data());
+    nnfw::cker::train::backpropInput(params, incoming_shape, incoming_data, filter_shape,
+                                     filter_data, _padded_filter.data(), grad_shape,
+                                     gradient.data(), _use_padded_filter, _filter_buffers.data(),
+                                     _filter_dim_buffers.data());
 
     for (size_t i = 0; i < gradient.size(); ++i)
       EXPECT_NEAR(gradient[i], expected[i], 1e-3f);
@@ -87,7 +87,7 @@ public:
   {
     std::vector<T> gradient(grad_shape.FlatSize(), static_cast<T>(0));
 
-    EXPECT_ANY_THROW(_dconv_kernel->backpropInput(
+    EXPECT_ANY_THROW(nnfw::cker::train::backpropInput(
       params, incoming_shape, incoming_data, filter_shape, filter_data, _padded_filter.data(),
       grad_shape, gradient.data(), _use_padded_filter, _filter_buffers.data(),
       _filter_dim_buffers.data()));
@@ -104,9 +104,9 @@ public:
     calculateFilterGradExpected(params, incoming_shape, incoming_data, input_shape, input_data,
                                 filter_grad_shape, expected.data());
 
-    _dconv_kernel->backpropFilter(params, incoming_shape, incoming_data, input_shape, input_data,
-                                  filter_grad_shape, gradient.data(), _padded_filter.data(),
-                                  _filter_buffers.data());
+    nnfw::cker::train::backpropFilter(params, incoming_shape, incoming_data, input_shape,
+                                      input_data, filter_grad_shape, gradient.data(),
+                                      _padded_filter.data(), _filter_buffers.data());
 
     for (size_t i = 0; i < gradient.size(); ++i)
       EXPECT_NEAR(gradient[i], expected[i], 1e-3f);
@@ -119,7 +119,7 @@ public:
   {
     std::vector<T> gradient(filter_grad_shape.FlatSize(), static_cast<T>(0));
 
-    EXPECT_ANY_THROW(_dconv_kernel->backpropFilter(
+    EXPECT_ANY_THROW(nnfw::cker::train::backpropFilter(
       params, incoming_shape, incoming_data, input_shape, input_data, filter_grad_shape,
       gradient.data(), _padded_filter.data(), _filter_buffers.data()));
   }
@@ -186,7 +186,6 @@ private:
   }
 
 private:
-  std::unique_ptr<nnfw::cker::train::DepthwiseConv> _dconv_kernel;
   bool _use_padded_filter;
   std::vector<T> _padded_filter;
   std::vector<T> _filter_buffers;
