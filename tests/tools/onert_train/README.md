@@ -22,7 +22,6 @@ You could train your model using the command like below.
 
 ```bash
 onert_train \
---path [circle file or nnpackage] \
 --load_input:raw [training input data] \
 --load_expected:raw [training output data] \
 --batch_size 32 \
@@ -30,8 +29,9 @@ onert_train \
 --optimizer 1 \             # sgd
 --learning_rate 0.01 \
 --loss 2 \                  # cateogrical crossentropy
---loss_reduction_type 1     # sum over batch size
---num_of_trainable_ops 30    # number of operations to be trained from the back
+--loss_reduction_type 1 \    # sum over batch size
+--num_of_trainable_ops 30 \    # number of operations to be trained from the back
+[circle file or nnpackage]
 ```
 
 `onert_train --help` would help you to set each parameter.
@@ -78,7 +78,7 @@ If you start with tensorflow code, you could first save it as saved format and t
 
 ### Run onert_train
 Now you're ready to run `onert_train`. <br/>
-Please pass your model file as argument and data files with `--load_input:raw` and `--load_expected:raw` option. <br/>
+Please pass your model file as argument and data files with `--load_input:raw` and `--load_expected:raw` options. <br/>
 Also, you could set training parameter using options like `--batch_size`, `--epoch`.. etc.
 Please pay special attention for `num_of_trainable_ops` to determine number of operations to be trained from the back..
 
