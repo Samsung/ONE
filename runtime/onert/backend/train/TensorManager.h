@@ -65,9 +65,9 @@ public:
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
-  std::unique_ptr<MemoryManager> _trainable_mgr;
+  std::unique_ptr<TrainableMemoryManager> _trainable_mgr;
   std::unique_ptr<MemoryManager> _back_prop_mgr;
-  std::unique_ptr<GradientMemoryManager> _gradient_mgr;
+  std::unique_ptr<MemoryManager> _gradient_mgr;
   std::unique_ptr<DisposableMemoryManager> _disposable_back_prop_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 };
