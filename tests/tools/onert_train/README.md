@@ -18,17 +18,17 @@ sudo apt install -y libhdf5-dev libboost-program-options-dev
 
 ## Usage
 
-You could train your model using the command like below.  
+You could train your model using the command like below.
 
 ```bash
 onert_train \
 --path [circle file or nnpackage] \
 --load_input:raw [training input data] \
 --load_expected:raw [training output data] \
---batch_size 32 \ 
+--batch_size 32 \
 --epoch 5 \
 --optimizer 1 \             # sgd
---learning_rate 0.01 \   
+--learning_rate 0.01 \
 --loss 2 \                  # cateogrical crossentropy
 --loss_reduction_type 1     # sum over batch size
 --num_of_trainable_ops 30    # number of operations to be trained from the back
@@ -38,7 +38,7 @@ onert_train \
 
 ## Example
 
-To deliver a quick insight to use `onert_train`, let's train a simple mnist model. You could get a mnist tensroflow model code from [here](https://www.kaggle.com/code/amyjang/tensorflow-mnist-cnn-tutorial). 
+To deliver a quick insight to use `onert_train`, let's train a simple mnist model. You could get a mnist tensroflow model code from [here](https://www.kaggle.com/code/amyjang/tensorflow-mnist-cnn-tutorial).
 
 Before using `onert_train`, training data files and a model file have to be ready.
 
@@ -49,17 +49,17 @@ For convenience, we provide a tool([tf dataset convert](https://github.com/Samsu
 
 You could use the tool like this. For detailed usage, please refer [here](https://github.com/Samsung/ONE/tree/master/tools/generate_datafile/tf_dataset_converter#readme).
 ```bash
-# Move to tf_dataset_convert directory 
+# Move to tf_dataset_convert directory
 $ cd ONE/tools/generate_datafile/tf_dataset_converter
 
 # install prerequisites
 $ pip3 install -r requirements.txt
 
 # generate binary data files
-$ python3 main.py \ 
---dataset-name mnist \ 
---prefix-name mnist \ 
---model mnist 
+$ python3 main.py \
+--dataset-name mnist \
+--prefix-name mnist \
+--model mnist
 
 # check data files are generated
 # There are 'mnist.train.input.1000.bin' and 'mnist.train.output.1000.bin'
@@ -70,28 +70,28 @@ $ tree out
 
 `onert_train` use a `*.circle` file or a nnpackage as input. <br/>
 
-<!-- This readme is for the ONE developers, so they might know the onecc usage.--> 
-You could convert tf/tflite/onnx model file into circle file using [`onecc`](https://github.com/Samsung/ONE/tree/master/compiler/one-cmds). <br/> 
-If you start with tensorflow code, you could first save it as saved format and then convert it to a circle file by using `onecc`. 
+<!-- This readme is for the ONE developers, so they might know the onecc usage.-->
+You could convert tf/tflite/onnx model file into circle file using [`onecc`](https://github.com/Samsung/ONE/tree/master/compiler/one-cmds). <br/>
+If you start with tensorflow code, you could first save it as saved format and then convert it to a circle file by using `onecc`.
 
 <!--TODO : Add how to inject training parameter in the circle model -->
- 
+
 ### Run onert_train
 Now you're ready to run `onert_train`. <br/>
-Please pass your model file to `--modelfile` and data files to `--load_input:raw` and `--load_expected:raw`. <br/>
+Please pass your model file as argument and data files with `--load_input:raw` and `--load_expected:raw` option. <br/>
 Also, you could set training parameter using options like `--batch_size`, `--epoch`.. etc.
 Please pay special attention for `num_of_trainable_ops` to determine number of operations to be trained from the back..
 
-```bash 
+```bash
 $ onert_train \
---modelfile mnist.circle \
 --load_input:raw mnist.train.input.1000.bin \
 --load_expected:raw mnist.train.output.1000.bin \
---batch_size 32 \ 
+--batch_size 32 \
 --epoch 5 \
---optimizer 2 \          # adam
+--optimizer 2 \           # adam
 --learning_rate 0.001 \
---loss 2 \               # cateogrical crossentropy
---loss_reduction_type 1  # sum over batch size
---num_of_trainable_ops 10
+--loss 2 \                # cateogrical crossentropy
+--loss_reduction_type 1 \ # sum over batch size
+--num_of_trainable_ops 10 \
+mnist.circle
 ```
