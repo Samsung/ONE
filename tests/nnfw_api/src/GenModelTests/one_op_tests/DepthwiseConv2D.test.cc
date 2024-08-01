@@ -19,8 +19,7 @@
 TEST_F(GenModelTest, OneOp_DepthwiseConv2D)
 {
   CircleGen cgen;
-  std::vector<float> weight_data{1.0f, 2.0f, 3.0f, 4.0f, -9.0f, 10.0f,  -11.0f, 12.0f,
-                                 5.0f, 6.0f, 7.0f, 8.0f, 13.0f, -14.0f, 15.0f,  -16};
+  std::vector<float> weight_data{1.0f, 2.0f, 3.0f, 4.0f, -9.0f, 10.0f, -11.0f, 12.0f};
   uint32_t weight_buf = cgen.addBuffer(weight_data);
   std::vector<float> bias_data{0.0f, 0.0f};
   uint32_t bias_buf = cgen.addBuffer(bias_data);
