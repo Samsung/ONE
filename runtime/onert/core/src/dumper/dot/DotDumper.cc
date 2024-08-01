@@ -139,13 +139,13 @@ void update_lower_info(const compiler::ILoweredGraph &lowered_graph,
       std::string label = node->getAttribute("label");
       std::string fillcolor = node->getAttribute("fillcolor");
       auto lower_info = lowered_graph.lower_info().operand.getRawPtr(index);
-      const auto &def_factors = lower_info->def_factors();
-      if (def_factors.size() > 0)
+      const auto &backends = lower_info->def_backends();
+      if (backends.size() > 0)
       {
         label += "\\n[";
-        label += def_factors.getOnlyElement().backend()->config()->id();
+        label += backends.getOnlyElement()->config()->id();
         label += "]";
-        fillcolor = backend_to_fillcolor(lower_info->def_factors().getOnlyElement().backend());
+        fillcolor = backend_to_fillcolor(backends.getOnlyElement());
       }
       node->setAttribute("label", label);
       node->setAttribute("fillcolor", fillcolor);
@@ -158,11 +158,11 @@ void update_lower_info(const compiler::ILoweredGraph &lowered_graph,
 {
   const auto &operations = lowered_graph.graph().operations();
   operations.iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
-    const auto lower_info = lowered_graph.lower_info().operation.getRawPtr(index);
-    if (lower_info)
+    const auto backend = lowered_graph.lower_info().operation.at(index);
+    if (backend)
     {
-      auto fillcolor = backend_to_fillcolor(lower_info->backend());
-      std::string backend_label = "[" + lower_info->backend()->config()->id() + "]";
+      auto fillcolor = backend_to_fillcolor(backend);
+      std::string backend_label = "[" + backend->config()->id() + "]";
       auto itr = dot_operations->find(index);
       if (itr != dot_operations->end())
       {

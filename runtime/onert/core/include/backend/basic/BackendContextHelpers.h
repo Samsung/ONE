@@ -61,11 +61,6 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
     {
       // These tensors do not exist in any  (No use and def)
       const auto &info = obj.info();
-      // NOTE Currently we only support NHWC tensors for cpu-common tensors.
-      //      There is no way to get the layout info from the backend context for now.
-      //      When we support NCHW tensors as well, we also need to change tensor info to be
-      //      permuted shape.
-      assert(ctx.operand_layouts().at(ind) == ir::Layout::NHWC);
       tensor_builder->registerTensorInfo(ind, info);
     }
   });

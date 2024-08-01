@@ -105,7 +105,7 @@ void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool train
     for (auto &&index : _forward_order)
     {
       const auto &code = _code_map.at(index);
-      const auto backend = code.lower_info->backend();
+      const auto backend = code.op_backend;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());
@@ -162,7 +162,7 @@ void TrainableExecutor::backwardImpl(const ExecutionObservee &subject, uint32_t 
       {
         continue;
       }
-      const auto backend = code.lower_info->backend();
+      const auto backend = code.op_backend;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
       ruy::profiler::ScopeLabel label(code.op->name());

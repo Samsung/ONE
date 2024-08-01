@@ -17,13 +17,13 @@
 #ifndef __ONERT_COMPILER_GRAPH_LOWER_INFO_H__
 #define __ONERT_COMPILER_GRAPH_LOWER_INFO_H__
 
+#include "backend/Backend.h"
+#include "compiler/OperandLowerInfo.h"
+#include "ir/Index.h"
+#include "util/ObjectManager.h"
+
 #include <memory>
 #include <unordered_map>
-
-#include "compiler/OperandLowerInfo.h"
-#include "compiler/OperationLowerInfo.h"
-#include "util/ObjectManager.h"
-#include "ir/Index.h"
 
 namespace onert
 {
@@ -32,7 +32,7 @@ namespace compiler
 
 struct GraphLowerInfo
 {
-  util::ObjectManager<ir::OperationIndex, OperationLowerInfo> operation;
+  std::unordered_map<ir::OperationIndex, const backend::Backend *> operation;
   util::ObjectManager<ir::OperandIndex, OperandLowerInfo> operand;
 };
 
