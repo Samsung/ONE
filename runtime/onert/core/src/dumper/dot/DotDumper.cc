@@ -139,13 +139,13 @@ void update_lower_info(const compiler::ILoweredGraph &lowered_graph,
       std::string label = node->getAttribute("label");
       std::string fillcolor = node->getAttribute("fillcolor");
       auto lower_info = lowered_graph.lower_info().operand.getRawPtr(index);
-      const auto &def_factors = lower_info->def_factors();
-      if (def_factors.size() > 0)
+      const auto &backends = lower_info->def_backends();
+      if (backends.size() > 0)
       {
         label += "\\n[";
-        label += def_factors.getOnlyElement().backend()->config()->id();
+        label += backends.getOnlyElement()->config()->id();
         label += "]";
-        fillcolor = backend_to_fillcolor(lower_info->def_factors().getOnlyElement().backend());
+        fillcolor = backend_to_fillcolor(backends.getOnlyElement());
       }
       node->setAttribute("label", label);
       node->setAttribute("fillcolor", fillcolor);

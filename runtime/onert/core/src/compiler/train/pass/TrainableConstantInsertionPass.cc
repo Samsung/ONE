@@ -70,7 +70,6 @@ void TrainableConstantInsertionPass::updateUseDef(const ir::OperandIndex &old_in
                                                   const ir::OperationIndex &node_index)
 {
   const auto backend = _lowered_graph.lower_info().operation.at(node_index);
-  const auto factor = PermuteFactor{backend, ir::Layout::NHWC};
 
   // Update the same inputs of a node at once because inputs of an operation have the same
   // PermuteFactor
@@ -82,7 +81,7 @@ void TrainableConstantInsertionPass::updateUseDef(const ir::OperandIndex &old_in
   new_object.insertUse(node_index);
 
   VERBOSE(TrainConstInsertPass) << "New operand " << new_index << " added(copy of " << old_index
-                                << ") for " << factor << std::endl;
+                                << ") for " << backend->config()->id() << std::endl;
 
   // Remove the use node from uses of origin operand
   // Constant operand has no def.
