@@ -17,10 +17,11 @@
 #ifndef __ONERT_COMPILER_TRAIN_TRAINABLE_CODE_MAP_H__
 #define __ONERT_COMPILER_TRAIN_TRAINABLE_CODE_MAP_H__
 
-#include <unordered_map>
-#include "compiler/OperationLowerInfo.h"
+#include "backend/Backend.h"
 #include "exec/train/TrainableFnSequence.h"
 #include "ir/train/ITrainableOperation.h"
+
+#include <unordered_map>
 
 namespace onert
 {
@@ -33,14 +34,14 @@ struct TrainableCodeAndInfo
 {
   ir::OperationIndex op_ind;
   const ir::train::ITrainableOperation *op;
-  const OperationLowerInfo *lower_info;
+  const backend::Backend *op_backend;
   // TODO Change to TrainableFnSequence
   std::unique_ptr<exec::train::TrainableFnSequence> tn_seq;
 
   TrainableCodeAndInfo(const ir::OperationIndex op_ind, const ir::train::ITrainableOperation *op,
-                       const OperationLowerInfo *lower_info,
+                       const backend::Backend *op_backend,
                        std::unique_ptr<exec::train::TrainableFnSequence> &&tn_seq)
-    : op_ind{op_ind}, op{op}, lower_info{lower_info}, tn_seq{std::move(tn_seq)}
+    : op_ind{op_ind}, op{op}, op_backend{op_backend}, tn_seq{std::move(tn_seq)}
   {
   }
 };
