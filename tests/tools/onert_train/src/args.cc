@@ -146,10 +146,6 @@ void Args::Initialize(void)
     .nargs(0)
     .default_value(false)
     .help("Print version and exit immediately");
-  _arser.add_argument("--nnpackage")
-    .type(arser::DataType::STR)
-    .help("NN Package file(directory) name");
-  _arser.add_argument("--modelfile").type(arser::DataType::STR).help("NN Model filename");
   _arser.add_argument("--export_circle").type(arser::DataType::STR).help("Path to export circle");
   _arser.add_argument("--export_circleplus")
     .type(arser::DataType::STR)
@@ -218,32 +214,6 @@ void Args::Parse(const int argc, char **argv)
     {
       _print_version = true;
       return;
-    }
-
-    // Require modelfile, nnpackage, or path
-    if (!_arser["--nnpackage"] && !_arser["--modelfile"] && !_arser["path"])
-    {
-      std::cerr << "Require one of options modelfile, nnpackage, or path." << std::endl;
-      exit(1);
-    }
-
-    // Cannot use both single model file and nnpackage at once
-    if (_arser["--nnpackage"] && _arser["--modelfile"])
-    {
-      std::cerr << "Cannot use both single model file and nnpackage at once." << std::endl;
-      exit(1);
-    }
-
-    if (_arser["--nnpackage"])
-    {
-      std::cout << "Package Filename " << _package_filename << std::endl;
-      _package_filename = _arser.get<std::string>("--nnpackage");
-    }
-
-    if (_arser["--modelfile"])
-    {
-      std::cout << "Model Filename " << _model_filename << std::endl;
-      _model_filename = _arser.get<std::string>("--modelfile");
     }
 
     if (_arser["path"])

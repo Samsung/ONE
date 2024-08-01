@@ -301,7 +301,7 @@ Assume `mobilenet_v2_1.4_224` nnpackage is already copied to
 
 ```
 sh-3.2# BACKENDS="cpu" Product/out/bin/onert_run \
---nnpackage /opt/usr/home/owner/media/models/mobilenet_v2_1.4_224
+/opt/usr/home/owner/media/models/mobilenet_v2_1.4_224
 
 Package Filename /opt/usr/home/owner/media/models/mobilenet_v2_1.4_224
 ===================================

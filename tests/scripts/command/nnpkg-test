@@ -85,9 +85,9 @@ dumped="$outdir/$tcname".out.h5
 echo -n "[  Run  ] $nnpkg "
 
 if $nnpkg_run \
---nnpackage "$nnpkg" \
 --load "$nnpkg/metadata/tc/input.h5" \
---dump "$dumped" >& /dev/null > "$dumped.log" 2>&1 ; then
+--dump "$dumped" \
+"$nnpkg" >& /dev/null > "$dumped.log" 2>&1 ; then
   echo -e "\tPass"
   rm "$dumped.log"
 else
