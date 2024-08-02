@@ -41,6 +41,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onert-ndk26
+          restore-keys: |
+            external-onert-ndk
+            external-onert-
+            external-
+
       # numpy: test build
       # scons: arm compute library build
       - name: Install packages
