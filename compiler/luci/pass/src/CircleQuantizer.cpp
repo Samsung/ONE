@@ -26,6 +26,7 @@
 #include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
+#include "luci/Pass/QuantizeWeightsWithGPTQPass.h"
 #include "luci/Pass/QuantizeWeightsPass.h"
 #include "luci/Pass/QuantizeOnnxFakeQuantModelPass.h"
 
@@ -390,6 +391,60 @@ CircleQuantizer::Options *CircleQuantizer::options(void)
 
 void CircleQuantizer::quantize_dequantize_weight(loco::Graph *g) const
 {
+
+  // GPTQ quantization of weights
+  if (_options->query(Options::Algorithm::QuantizeWeightsWithGPTQ))
+  {
+
+    static const std::vector<std::string> gptq_supported_input_model_dtype{"float32"};
+    static const std::vector<std::string> gptq_supported_output_model_dtype{"uint4", "uint8"};
+    static const std::vector<std::string> gptq_supported_granularity{"channel"};
+
+    auto input_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
+    auto output_model_dtype =
+      _options->param(Options::AlgorithmParameters::Quantize_output_model_dtype);
+    auto granularity = _options->param(Options::AlgorithmParameters::Quantize_granularity);
+    auto layer_params = _options->layer_params(Options::AlgorithmParameters::Quantize_layer_params);
+    auto layer_params_set = _options->layer_params_set();
+
+    if (!in_array(to_lower_case(input_model_dtype), gptq_supported_input_model_dtype))
+      throw std::runtime_error("Unsupported input type. List of supported input type: " +
+                               to_string(gptq_supported_input_model_dtype));
+    if (!in_array(to_lower_case(output_model_dtype), gptq_supported_output_model_dtype))
+      throw std::runtime_error("Unsupported output type. List of supported output type: " +
+                               to_string(gptq_supported_output_model_dtype));
+    if (!in_array(to_lower_case(granularity), gptq_supported_granularity))
+      throw std::runtime_error("Unsupported granularity. List of supported granularity: " +
+                               to_string(gptq_supported_granularity));
+
+    if (layer_params_set.size() > 1u)
+    {
+      layer_params = find_valid_params(g, layer_params_set);
+    }
+
+    auto ctx = std::make_unique<luci::QuantizeWeightsWithGPTQPass::Context>();
+    {
+      ctx->input_model_dtype = str_to_dtype(input_model_dtype);
+      ctx->output_model_dtype = str_to_dtype(output_model_dtype);
+      // ctx->granularity = str_to_granularity(granularity);
+
+      for (auto layer_param : layer_params)
+      {
+        LayerInfo info;
+        {
+          info.name = layer_param->name;
+          info.dtype = str_to_dtype(layer_param->dtype);
+          info.granularity = str_to_granularity(layer_param->granularity);
+        }
+        ctx->layers_info.emplace_back(info);
+      }
+    }
+
+    luci::QuantizeWeightsWithGPTQPass gptq_quantizer(std::move(ctx));
+
+    gptq_quantizer.run(g);
+  }
   // Fake quantization of weights
   if (_options->query(Options::Algorithm::QuantizeDequantizeWeights))
   {

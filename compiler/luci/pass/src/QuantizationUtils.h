@@ -53,6 +53,7 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension,
 
 // Calculate offset of the given indices in dimension
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
+uint32_t cal_offset_2d(loco::TensorShape &dimension, uint32_t *indices);
 
 // Backward propagation of concatenation qparam
 void propagate_concat_quantparam(luci::CircleConcatenation *concat);
@@ -63,7 +64,6 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2);
 // Return true if the node is quantized
 bool is_quantized(const CircleNode *node);
 
-// Cast a floating-point number to an unsigned 8-bit integer
 uint8_t fp32_to_uint8_cast(float f);
 
 // Return true if the node is fp32
