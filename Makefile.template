@@ -73,10 +73,6 @@ ifneq ($(TFLITE_MODEL_PATH),)
   OPTIONS+= -DTFLITE_MODEL_PATH=$(TFLITE_MODEL_PATH)
 endif
 
-ifneq ($(ANDROID_BOOST_ROOT),)
-  OPTIONS+= -DANDROID_BOOST_ROOT=$(ANDROID_BOOST_ROOT)
-endif
-
 ifeq ($(HOST_OS),linux)
 	NPROCS?=$(shell grep -c ^processor /proc/cpuinfo)
 else
