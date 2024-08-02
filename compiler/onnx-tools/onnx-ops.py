@@ -35,8 +35,8 @@ def main():
     if len(sys.argv) < 2:
         _help_exit(os.path.basename(sys.argv[0]))
 
+    onnx.checker.check_model(sys.argv[1])
     onnx_model = onnx.load(sys.argv[1])
-    onnx.checker.check_model(onnx_model)
 
     _dump_operators(onnx_model)
 
