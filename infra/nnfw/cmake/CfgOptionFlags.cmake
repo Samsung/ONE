@@ -34,7 +34,6 @@ option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
 # Default build configuration for contrib
 #
 option(BUILD_ANDROID_BENCHMARK_APP "Enable Android Benchmark App" OFF)
-option(BUILD_BENCHMARK_ACL "Build ARM Compute Library Benchmarks" OFF)
 option(BUILD_DETECTION_APP "Build detection example app" OFF)
 option(BUILD_HEAP_TRACE "Build heap trace tool" OFF)
 option(BUILD_LABS "Build lab projects" OFF)
