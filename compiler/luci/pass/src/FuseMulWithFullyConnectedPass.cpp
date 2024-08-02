@@ -29,13 +29,13 @@ namespace
   if (not(cond))                  \
     return false;
 
-inline void update_values(luci::CircleConst *fused_node, luci::CircleConst *multiplication, bool is_weights)
+inline void update_values(luci::CircleConst *fused_node, luci::CircleConst *multiplication,
+                          bool is_weights)
 {
   auto node_size = fused_node->size<loco::DataType::FLOAT32>();
   auto mul_size = multiplication->size<loco::DataType::FLOAT32>();
   // Scalar multiplication:
-  if (multiplication->rank() == 1 ||
-      multiplication->rank() == 0 && mul_size == 1)
+  if (multiplication->rank() == 1 || multiplication->rank() == 0 && mul_size == 1)
   {
     for (uint32_t i = 0; i < node_size; i++)
       fused_node->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(0);
@@ -44,22 +44,25 @@ inline void update_values(luci::CircleConst *fused_node, luci::CircleConst *mult
   else
   {
     // Go along channels, multiplication size is ensured to be compatible with channels.
-    if (is_weights)  // weights 2-D
+    if (is_weights) // weights 2-D
     {
       auto count = fused_node->dim(0).value();
       auto size = fused_node->dim(fused_node->rank() - 1).value();
       float val;
-      for (uint32_t c = 0; c < count; c++) {
+      for (uint32_t c = 0; c < count; c++)
+      {
         val = multiplication->at<loco::DataType::FLOAT32>(c);
-        for (uint32_t i = 0; i < size; i++) {
+        for (uint32_t i = 0; i < size; i++)
+        {
           fused_node->at<loco::DataType::FLOAT32>(c * size + i) *= val;
         }
       }
     }
-    else  // bias 1-D
+    else // bias 1-D
     {
       for (uint32_t i = 0; i < node_size; i++)
-        fused_node->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(i);
+        fused_node->at<loco::DataType::FLOAT32>(i) *=
+          multiplication->at<loco::DataType::FLOAT32>(i);
     }
   }
 }

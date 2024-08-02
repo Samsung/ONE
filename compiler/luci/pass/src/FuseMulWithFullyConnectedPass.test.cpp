@@ -74,12 +74,15 @@ public:
 
     std::vector<float> mul_values;
 
-    if(is_mul_scalar) {
+    if (is_mul_scalar)
+    {
       mul_values.push_back(static_cast<float>(MUL_VAL));
       _mul_c = luci::create_const_node(g, loco::DataType::FLOAT32, {1}, mul_values);
     }
-    else {
-      for (uint32_t i = 0; i < DIM_ONE; i++) {
+    else
+    {
+      for (uint32_t i = 0; i < DIM_ONE; i++)
+      {
         mul_values.push_back(static_cast<float>(i));
       }
       _mul_c = luci::create_const_node(g, loco::DataType::FLOAT32, {1, 1, 1, DIM_ONE}, mul_values);
@@ -90,10 +93,12 @@ public:
     _mul->y(_mul_c);
     _mul->fusedActivationFunction(luci::FusedActFunc::RELU);
     _mul->dtype(loco::DataType::FLOAT32);
-    if(is_mul_scalar) {
+    if (is_mul_scalar)
+    {
       _mul->shape({1});
     }
-    else {
+    else
+    {
       _mul->shape({1, DIM_ONE});
     }
     _mul->name("mul");
@@ -151,8 +156,8 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_not_scalar)
   EXPECT_NE(nullptr, fc);
 
   auto weights = loco::must_cast<luci::CircleConst *>(g.fc()->weights());
-  auto weights_n =  weights->dim(0).value();
-  auto weights_m =  weights->dim(1).value();
+  auto weights_n = weights->dim(0).value();
+  auto weights_m = weights->dim(1).value();
   uint32_t offset = 0;
   for (uint32_t i = 0; i < weights_n; i++)
   {
@@ -180,8 +185,8 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_is_scalar)
   EXPECT_NE(nullptr, fc);
 
   auto weights = loco::must_cast<luci::CircleConst *>(g.fc()->weights());
-  auto weights_n =  weights->dim(0).value();
-  auto weights_m =  weights->dim(1).value();
+  auto weights_n = weights->dim(0).value();
+  auto weights_m = weights->dim(1).value();
   uint32_t offset = 0;
   for (uint32_t i = 0; i < weights_n; i++)
   {
@@ -215,4 +220,4 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_activation_NEG)
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
-}
+} // namespace
