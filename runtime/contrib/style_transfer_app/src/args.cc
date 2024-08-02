@@ -31,62 +31,33 @@ Args::Args(const int argc, char **argv) noexcept
 void Args::Initialize(void)
 {
   // General options
-  po::options_description general("General options");
-
-  // clang-format off
-  general.add_options()
-    ("help,h", "Display available options")
-    ("nnpackage", po::value<std::string>()->required(), "nnpackage path")
-    ("input,i", po::value<std::string>()->required(), "Input image path")
-    ("output,o", po::value<std::string>()->required(), "Output image path");
-  // clang-format on
-
-  _options.add(general);
-  _positional.add("nnpackage", 1);
+  _arser.add_argument("nnpackage").type(arser::DataType::STR).help("nnpackage path");
+  _arser.add_argument("--input", "-i")
+    .type(arser::DataType::STR)
+    .required()
+    .help("Input image path");
+  _arser.add_argument("--output", "-o")
+    .type(arser::DataType::STR)
+    .required()
+    .help("Output image path");
 }
 
 void Args::Parse(const int argc, char **argv)
 {
-
-  po::variables_map vm;
   try
   {
-    po::store(po::command_line_parser(argc, argv).options(_options).positional(_positional).run(),
-              vm);
+    _arser.parse(argc, argv);
 
-    if (vm.count("help"))
+    _input_filename = _arser.get<std::string>("--input");
+    _output_filename = _arser.get<std::string>("--output");
+
+    _package_filename = _arser.get<std::string>("nnpackage");
+    if (!std::filesystem::exists(_package_filename))
     {
-      std::cout << "style_transfer_app\n\n";
-      std::cout << "Usage: " << argv[0] << " path to nnpackage root directory [<options>]\n\n";
-      std::cout << _options;
-      std::cout << "\n";
-
-      exit(0);
-    }
-
-    po::notify(vm);
-
-    if (vm.count("input"))
-    {
-      _input_filename = vm["input"].as<std::string>();
-    }
-
-    if (vm.count("output"))
-    {
-      _output_filename = vm["output"].as<std::string>();
-    }
-
-    if (vm.count("nnpackage"))
-    {
-      _package_filename = vm["nnpackage"].as<std::string>();
-
-      if (!std::filesystem::exists(_package_filename))
-      {
-        std::cerr << "nnpackage not found: " << _package_filename << "\n";
-      }
+      std::cerr << "nnpackage not found: " << _package_filename << "\n";
     }
   }
-  catch (const boost::program_options::required_option &e)
+  catch (const std::exception &e)
   {
     std::cerr << e.what() << std::endl;
     return exit(-1);
