@@ -877,7 +877,7 @@ public:
   luci::CircleConst *paddings = nullptr;
 };
 
-class PadV2Graph final : public SimpleGraph
+template <loco::DataType PaddingType> class PadV2Graph final : public SimpleGraph
 {
 protected:
   loco::Node *insertGraphBody(loco::Node *input) override
@@ -887,7 +887,7 @@ protected:
     const_value = g.nodes()->create<luci::CircleConst>();
 
     pad->dtype(loco::DataType::FLOAT32);
-    paddings->dtype(loco::DataType::S32);
+    paddings->dtype(PaddingType);
     const_value->dtype(loco::DataType::FLOAT32);
 
     uint32_t channel_size = 16;
@@ -897,7 +897,7 @@ protected:
 
     // paddings data (NCHW)
     // [[0,0], [0,0], [1,1], [2,2]]
-    paddings->size<loco::DataType::S32>(8);
+    paddings->size<PaddingType>(8);
     for (uint32_t dim = 0; dim < 4; dim++)
     {
       for (uint32_t i = 0; i < 2; i++)
@@ -909,7 +909,7 @@ protected:
         else if (dim == 3)
           data = 2;
 
-        paddings->at<loco::DataType::S32>(dim * 2 + i) = data;
+        paddings->at<PaddingType>(dim * 2 + i) = data;
       }
     }
 
@@ -1922,9 +1922,9 @@ TEST(ConvertNCHWToNHWC, Pad)
   check_pre_trans(g.output->from());
 }
 
-TEST(ConvertNCHWToNHWC, PadV2)
+TEST(ConvertNCHWToNHWC, PadV2_s32)
 {
-  PadV2Graph g;
+  PadV2Graph<loco::DataType::S32> g;
   g.init();
 
   run_phase(&g.g, false, false);
@@ -1948,6 +1948,34 @@ TEST(ConvertNCHWToNHWC, PadV2)
   EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(5));
   EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(6));
   EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(7));
+}
+
+TEST(ConvertNCHWToNHWC, PadV2_s64)
+{
+  PadV2Graph<loco::DataType::S64> g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  check_pre_trans(g.pad->input());
+
+  auto pad_succs = loco::succs(g.pad);
+  EXPECT_EQ(1, pad_succs.size());
+  check_post_trans(*pad_succs.begin());
+
+  auto new_paddings = dynamic_cast<luci::CircleConst *>(g.pad->paddings());
+  EXPECT_NE(nullptr, new_paddings);
+  EXPECT_EQ(2, new_paddings->rank());
+  EXPECT_EQ(4, new_paddings->dim(0).value());
+  EXPECT_EQ(2, new_paddings->dim(1).value());
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(0));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(1));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S64>(2));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S64>(3));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S64>(4));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S64>(5));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(6));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(7));
 }
 
 TEST(ConvertNCHWToNHWC, Unknown_Shape_NEG)
