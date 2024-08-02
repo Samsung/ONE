@@ -26,8 +26,8 @@ namespace backend
 namespace train
 {
 
-// ExtraTensor is a tensor that is accessed only within one opeartion layer.
-// In other word, the scope of the extra tensor is confined to one specific layer.
+// ExtraTensor is a tensor that is accessed within one operation layer.
+// In other words, the scope of the extra tensor is confined to one specific layer.
 class ExtraTensor final : public basic::Tensor
 {
 public:
