@@ -97,7 +97,7 @@ template <typename T>
 void biasHelper(const Shape &bias_shape, const T *bias_data, const Shape &input_shape,
                 T *input_data, T activation_min, T activation_max)
 {
-  int channel_dim = input_shape.DimensionsCount() - 1;
+  [[maybe_unused]] int channel_dim = input_shape.DimensionsCount() - 1;
 
   assert(input_shape.Dims(channel_dim) == bias_shape.Dims(0));
   assert(input_data);
