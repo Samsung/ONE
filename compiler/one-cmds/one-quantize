@@ -277,6 +277,12 @@ def _get_parser():
         '--ampq_bisection_visq',
         type=str,
         help='.visq.json file path with quantization errors')
+    
+    # arguments for gptq option
+    gptq_quant_group = parser.add_argument_group('arguments for gptq option')
+    # gptq
+    gptq_quant_group.add_argument(
+        '--gptq', action='store_true', help='quantize model using gptq solver.')
 
     return parser
 
@@ -371,6 +377,19 @@ def _verify_arg(parser, args):
         if len(tensors) != len(scales) or len(tensors) != len(zerops):
             parser.error(
                 'The same number of tensor_name, scale, and zero_point should be given.')
+    if oneutils.is_valid_attr(args, 'gptq'):
+        granularity = getattr(args, 'granularity')
+        quantized_dtype = getattr(args, 'quantized_dtype')
+        if granularity != "channel":
+            parser.error(
+                'GPTQ only supports channel wise granularity. Please set --granularity channel.')    
+        if quantized_dtype != "uint8":
+            parser.error(
+                'GPTQ only supports unit8 quantized data format.')
+        if not oneutils.is_valid_attr(args, 'quant_config'):
+            parser.error(
+                'GPTQ requires quant_config file. Please enable --quant_config Option.')
+
     if oneutils.is_valid_attr(args, 'copy_quantparam'):
         src_tensors = getattr(args, 'src_tensor_name')
         dst_tensors = getattr(args, 'dst_tensor_name')
@@ -416,6 +435,10 @@ def _parse_arg(parser):
 def _quantize(args):
     if oneutils.is_valid_attr(args, 'ampq'):
         _ampq_solve(args)
+        return
+
+    if oneutils.is_valid_attr(args, 'gptq'):
+        _gptq_solve(args)
         return
 
     if oneutils.is_valid_attr(args, 'force_quantparam'):
@@ -861,6 +884,181 @@ def _ampq_solve(args):
         # run ampq
         oneutils.run(ampq_quantize_cmd, err_prefix="circle_mpqsolver", logfile=f)
 
+def _gptq_solve(args):
+    # get file path to log
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    logfile_path = os.path.realpath(args.output_path) + '.log'
+    try:
+        with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
+            if oneutils.is_valid_attr(args, 'save_intermediate'):
+                tmpdir = os.path.dirname(logfile_path)
+            # get driver path
+            circle_quantizer_path = os.path.join(dir_path, 'circle-quantizer')
+            record_minmax_path = os.path.join(dir_path, 'record-minmax')
+            # ./build/install/bin/circle-quantizer 
+            # --quantize_weights_with_gptq float32 int8 channel 
+            # --config efficientformer_l1.qconf_triv.json 
+            # --input_data dataset.0.h5 
+            # efficientformer_l1.opt.circle 
+            # efficientformer_l1.opt.circle
+
+            ###################################################
+            # Circle Quantize FQ -> Circle Quantize GPTQ
+            ###################################################
+
+            ## make a command to quantize and dequantize the weights of the model
+            circle_quantizer_cmd = [circle_quantizer_path]
+            # verbose
+            if oneutils.is_valid_attr(args, 'verbose'):
+                circle_quantizer_cmd.append('--verbose')
+            # quantize_dequantize_weights
+            circle_quantizer_cmd.append('--quantize_dequantize_weights_with_gptq')
+            # Use input_model_dtype if it exists. Use input_dtype otherwise.    
+            if oneutils.is_valid_attr(args, 'input_model_dtype'):
+                circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+            elif oneutils.is_valid_attr(args, 'input_dtype'):
+                circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
+            if oneutils.is_valid_attr(args, 'quantized_dtype'):
+                circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
+            if oneutils.is_valid_attr(args, 'granularity'):
+                circle_quantizer_cmd.append(getattr(args, 'granularity'))
+            
+            if oneutils.is_valid_attr(args, 'input_data'):
+                circle_quantizer_cmd.append('--input_data')
+                circle_quantizer_cmd.append(getattr(args, 'input_data'))
+            
+            if oneutils.is_valid_attr(args, 'quant_config'):
+                # NOTE --config conflicts with --config option in onecc, so
+                # we use quant_config for one-quantize
+                circle_quantizer_cmd.append('--config')
+                circle_quantizer_cmd.append(getattr(args, 'quant_config'))
+            # input and output path
+            if oneutils.is_valid_attr(args, 'input_path'):
+                circle_quantizer_cmd.append(getattr(args, 'input_path'))
+            tmp_weights_fake_quant_path = os.path.join(
+                tmpdir,
+                os.path.splitext(os.path.basename(
+                    args.input_path))[0]) + '.weights_fake_quant.circle'
+            circle_quantizer_cmd.append(tmp_weights_fake_quant_path)
+            # profiling
+            if oneutils.is_valid_attr(args, 'generate_profile_data'):
+                circle_quantizer_cmd.append('--generate_profile_data')
+
+            f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+            # run circle-quantizer
+            # print((' '.join(circle_quantizer_cmd) + '\n'))
+            oneutils.run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+            ###################################################
+            # Record MinMax
+            ###################################################
+
+            tmp_minmax_recorded_path = os.path.join(
+                tmpdir,
+                os.path.splitext(os.path.basename(
+                    args.input_path))[0]) + '.minmax_recorded.circle'
+
+            ## make a command to record min-max value of each tensor while running the representative dataset
+            record_minmax_cmd = Command(record_minmax_path, args, f)
+            record_minmax_cmd.add_noarg_option_if_valid_arg('--verbose', 'verbose') \
+                .add_option_with_values('--input_model', [tmp_weights_fake_quant_path]) \
+                .add_option_with_values('--output_model', [tmp_minmax_recorded_path]) \
+                .add_option_with_valid_args('--input_data', ['input_data']) \
+                .add_option_with_valid_args('--input_data_format', ['input_data_format']) \
+                .add_option_with_valid_args('--min_percentile', ['min_percentile']) \
+                .add_option_with_valid_args('--max_percentile', ['max_percentile']) \
+                .add_option_with_valid_args('--moving_avg_batch', ['moving_avg_batch']) \
+                .add_option_with_valid_args('--moving_avg_const', ['moving_avg_const']) \
+                .add_option_with_valid_args('--mode', ['mode']) \
+                .add_noarg_option_if_valid_arg('--generate_profile_data', 'generate_profile_data') \
+                .run()
+
+            ###################################################
+            # Circle Quantize 
+            ###################################################
+
+            ## make a second command to quantize the model using the embedded information
+            circle_quantizer_cmd = [circle_quantizer_path]
+            # verbose
+            if oneutils.is_valid_attr(args, 'verbose'):
+                circle_quantizer_cmd.append('--verbose')
+            # quantize_dequantize_weights
+            circle_quantizer_cmd.append('--quantize_with_minmax')
+            # Use input_model_dtype if it exists. Use input_dtype otherwise.
+            if oneutils.is_valid_attr(args, 'input_model_dtype'):
+                circle_quantizer_cmd.append(getattr(args, 'input_model_dtype'))
+            elif oneutils.is_valid_attr(args, 'input_dtype'):
+                circle_quantizer_cmd.append(getattr(args, 'input_dtype'))
+            if oneutils.is_valid_attr(args, 'quantized_dtype'):
+                circle_quantizer_cmd.append(getattr(args, 'quantized_dtype'))
+            if oneutils.is_valid_attr(args, 'granularity'):
+                circle_quantizer_cmd.append(getattr(args, 'granularity'))
+            if oneutils.is_valid_attr(args, 'TF-style_maxpool'):
+                circle_quantizer_cmd.append('--TF-style_maxpool')
+            if oneutils.is_valid_attr(args, 'save_min_max'):
+                circle_quantizer_cmd.append('--save_min_max')
+            if oneutils.is_valid_attr(args, 'input_type'):
+                circle_quantizer_cmd.append('--input_type')
+                circle_quantizer_cmd.append(getattr(args, 'input_type'))
+            if oneutils.is_valid_attr(args, 'output_type'):
+                circle_quantizer_cmd.append('--output_type')
+                circle_quantizer_cmd.append(getattr(args, 'output_type'))
+            if oneutils.is_valid_attr(args, 'quant_config'):
+                # NOTE --config conflicts with --config option in onecc, so
+                # we use quant_config for one-quantize
+                circle_quantizer_cmd.append('--config')
+                circle_quantizer_cmd.append(getattr(args, 'quant_config'))
+            # input and output path
+            circle_quantizer_cmd.append(tmp_minmax_recorded_path)
+            if oneutils.is_valid_attr(args, 'output_path'):
+                circle_quantizer_cmd.append(getattr(args, 'output_path'))
+            # profiling
+            if oneutils.is_valid_attr(args, 'generate_profile_data'):
+                circle_quantizer_cmd.append('--generate_profile_data')
+
+            f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
+
+            # run circle-quantizer
+            oneutils.run(circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+
+            ###################################################
+            # Eval
+            ###################################################
+
+            # evaluate
+            if oneutils.is_valid_attr(args, 'evaluate_result'):
+                circle_eval_diff_path = os.path.join(dir_path, 'circle-eval-diff')
+                quant_model = ""
+                if oneutils.is_valid_attr(args, 'output_path'):
+                    quant_model = getattr(args, 'output_path')
+                tmp_fake_quant_model = os.path.join(
+                    tmpdir,
+                    os.path.splitext(os.path.basename(
+                        args.input_path))[0]) + '.fake_quant.circle'
+
+                # do fake quantization
+                fake_quantize_cmd = Command(circle_quantizer_path, args, f)
+                fake_quantize_cmd.add_noarg_option_if_valid_arg('--verbose', 'verbose') \
+                    .add_option_with_values('--fake_quantize', [quant_model, tmp_fake_quant_model]) \
+                    .run()
+
+                # compare fake-quant model and fp32 model
+                circle_eval_diff_cmd = Command(circle_eval_diff_path, args, f)
+                circle_eval_diff_cmd.add_option_with_valid_args('--first_model', ['input_path']) \
+                    .add_option_with_values('--second_model', [tmp_fake_quant_model]) \
+                    .add_option_with_valid_args('--first_input_data', ['test_data']) \
+                    .add_option_with_valid_args('--second_input_data', ['test_data']) \
+                    .add_option_with_valid_args('--input_data_format', ['input_data_format']) \
+                    .add_noarg_option_if_valid_arg('--print_mae', 'print_mae') \
+                    .add_noarg_option_if_valid_arg('--print_mape', 'print_mape') \
+                    .add_noarg_option_if_valid_arg('--print_mpeir', 'print_mpeir') \
+                    .add_noarg_option_if_valid_arg('--print_top1_match', 'print_top1_match') \
+                    .add_noarg_option_if_valid_arg('--print_top5_match', 'print_top5_match') \
+                    .add_noarg_option_if_valid_arg('--print_mse', 'print_mse') \
+                    .run()
+
+    except Exception as e:
+        print("Error: ",e)
+
 
 def _requantize(args):
     # get file path to log
@@ -913,7 +1111,7 @@ def main():
 
     # verify arguments
     _verify_arg(parser, args)
-
+    
     # quantize
     _quantize(args)
 
