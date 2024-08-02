@@ -161,18 +161,17 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   // Separate operands into partial graphs
   whole_graph.operands().iterate([&](const ir::OperandIndex &operand_ind, ir::Operand &operand) {
     auto &operand_li = lgraph.lower_info().operand;
-    const auto &def_factors = operand_li.at(operand_ind).def_factors();
-    if (def_factors.size() == 0) // Ignore unused tensor
+    const auto &def_backends = operand_li.at(operand_ind).def_backends();
+    if (def_backends.size() == 0) // Ignore unused tensor
       return;
-    const auto &def_factor = def_factors.getOnlyElement();
-    const auto backend = def_factor.backend();
+    const auto backend = def_backends.getOnlyElement();
     if (context_data_map.find(backend) == context_data_map.end())
       init_context_data(backend);
 
     auto &partial_graph = *context_data_map[backend].graph;
     auto &operand_layouts = context_data_map[backend].operand_layouts;
     assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-    operand_layouts[operand_ind] = def_factor.layout();
+    operand_layouts[operand_ind] = ir::Layout::NHWC;
 
     // Copy the operand and insert it to the partial graph
     auto new_operand = std::make_unique<ir::Operand>(operand);
@@ -211,10 +210,8 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           UNUSED_RELEASE(new_operand_ind);
           assert(new_operand_ind == operand_ind);
 
-          auto layout =
-            lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
           assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-          operand_layouts[operand_ind] = layout;
+          operand_layouts[operand_ind] = ir::Layout::NHWC;
           external_operands.add(operand_ind);
         }
 

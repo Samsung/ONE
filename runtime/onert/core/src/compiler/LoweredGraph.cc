@@ -127,35 +127,31 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
       throw std::runtime_error{"Fail to find backend for " + op.name() + " operation"};
     }
 
-    // Backend layout is always NHWC
-    auto backend_layout = ir::Layout::NHWC;
-
     for (auto &&ind : op.getInputs() | ir::Remove::UNDEFINED)
     {
       auto &operand_li = lower_info().operand.at(ind);
-      operand_li.addUsePermuteFactor(PermuteFactor{backend, backend_layout});
+      operand_li.addUseBackend(backend);
     }
     for (auto &&ind : op.getOutputs() | ir::Remove::UNDEFINED)
     {
       auto &operand_li = lower_info().operand.at(ind);
-      operand_li.addDefPermuteFactor(PermuteFactor{backend, backend_layout});
+      operand_li.addDefBackend(backend);
     }
     lower_info().operation.emplace(op_ind, backend);
   });
 
   // Handle graph inputs and outputs
   const auto builtin_backend = BackendManager::get().getBuiltin();
-  auto factor = PermuteFactor{builtin_backend, ir::Layout::NHWC};
   for (auto &&index : _graph.getInputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);
-    assert(operand_li.def_factors().empty());
-    operand_li.addDefPermuteFactor(factor);
+    assert(operand_li.def_backends().empty());
+    operand_li.addDefBackend(builtin_backend);
   }
   for (auto &&index : _graph.getOutputs() | ir::Remove::UNDEFINED)
   {
     auto &operand_li = lower_info().operand.at(index);
-    operand_li.addUsePermuteFactor(factor);
+    operand_li.addUseBackend(builtin_backend);
   }
 
   // Handle variable tensors
@@ -169,8 +165,8 @@ void LoweredGraph::makeLowerInfo(const compiler::BackendResolver &backend_resolv
       assert(operand.data() == nullptr);
       assert(operand.getUses().size() == 1 && !operand.getDef().valid());
       auto operand_li = lower_info().operand.at(index);
-      assert(operand_li.def_factors().empty());
-      operand_li.addDefPermuteFactor(operand_li.use_factors().getOnlyElement());
+      assert(operand_li.def_backends().empty());
+      operand_li.addDefBackend(operand_li.use_backends().getOnlyElement());
     }
   });
 }
@@ -185,7 +181,7 @@ void LoweredGraph::dumpLowerInfo()
   _graph.operands().iterate([&](const ir::OperandIndex &index, ir::Operand &object) {
     const auto operand_lower_info = lower_info().operand.getRawPtr(index);
     assert(operand_lower_info);
-    if (!operand_lower_info->def_factors().empty() || !operand_lower_info->use_factors().empty())
+    if (!operand_lower_info->def_backends().empty() || !operand_lower_info->use_backends().empty())
     {
       auto shape_to_string = [](const ir::Shape &shape) {
         std::stringstream sstream;
@@ -196,12 +192,11 @@ void LoweredGraph::dumpLowerInfo()
         return sstream.str();
       };
 
-      auto factors_to_string = [](const PermuteFactorSet &factors) {
+      auto backends_to_string = [](const BackendSet &backends) {
         std::string str;
-        for (auto &&factor : factors)
+        for (auto &&backend : backends)
         {
-          str += factor.backend()->config()->id();
-          str += "(" + to_string(factor.layout()) + ")";
+          str += backend->config()->id();
           str += " ";
         }
         return "{ " + str + "}";
@@ -223,8 +218,8 @@ void LoweredGraph::dumpLowerInfo()
       std::string shape_str = shape_to_string(object.shape());
       std::string def_op = operation_index_set_to_string({object.getDef()});
       std::string use_ops = operation_index_set_to_string(object.getUses());
-      std::string def_factors = factors_to_string(operand_lower_info->def_factors());
-      std::string use_factors = factors_to_string(operand_lower_info->use_factors());
+      std::string def_factors = backends_to_string(operand_lower_info->def_backends());
+      std::string use_factors = backends_to_string(operand_lower_info->use_backends());
       std::stringstream sstream;
       sstream << "Operand " << index << " Info" << std::endl;
       sstream << "  - Shape     : " << shape_str << std::endl;

@@ -40,11 +40,13 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
   // Check if two tensors are both portable if not, we can't eliminate the node
   {
     auto &operand_li_map = _lowered_graph.lower_info().operand;
-    auto in_def_factor = operand_li_map.getRawPtr(in_operand)->def_factors().getOnlyElement();
-    auto out_def_factor = operand_li_map.getRawPtr(out_operand)->def_factors().getOnlyElement();
+    const auto in_def_backend =
+      operand_li_map.getRawPtr(in_operand)->def_backends().getOnlyElement();
+    const auto out_def_backend =
+      operand_li_map.getRawPtr(out_operand)->def_backends().getOnlyElement();
 
-    auto in_config = in_def_factor.backend()->config();
-    auto out_config = out_def_factor.backend()->config();
+    const auto in_config = in_def_backend->config();
+    const auto out_config = out_def_backend->config();
 
     // FIXME Supporting dynamic tensor does not exactly mean those are portable.
     //       It may need to have another config option for checking if each uses `IPortableTensor`.
