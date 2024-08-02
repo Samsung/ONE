@@ -42,19 +42,20 @@ class CheckpointExporter
 {
 public:
   CheckpointExporter(std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
-                     std::unique_ptr<onert::exec::Execution> &execution);
+                     std::unique_ptr<onert::exec::Execution> &exec);
 
   void save(const std::string &path);
 
 private:
-  uint32_t getTotalSize();
+  void setReservedData();
+  void setAdamOffset(uint32_t m_offset, uint32_t v_offset);
+  void setTensorData(std::unique_ptr<onert::exec::Execution> &exec);
 
 private:
-  const uint16_t MAGIC_NUMBER = 429;
-  const uint8_t SCHEMA_VERSION = 1;
-  const uint8_t RESERVED = 0;
+  const uint32_t RESERVED_SIZE = 16;
 
-  std::vector<char> _data;
+  std::vector<char> _reserved;
+  std::vector<char> _buffers;
   std::mutex _mutex;
 };
 

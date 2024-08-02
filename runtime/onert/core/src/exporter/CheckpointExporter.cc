@@ -21,6 +21,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <numeric>
 
 namespace onert
 {
@@ -30,42 +31,111 @@ namespace exporter
 CheckpointExporter::CheckpointExporter(std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
                                        std::unique_ptr<onert::exec::Execution> &execution)
 {
-  uint32_t total_size = getTotalSize();
-  _data.resize(total_size);
-
-  // Point to start of the buffer
-  char *ptr = _data.data();
-
-  // Write MAGIC NUMBER
-  std::memcpy(ptr, &MAGIC_NUMBER, sizeof(MAGIC_NUMBER));
-  ptr += sizeof(MAGIC_NUMBER);
-
-  // Write SCHEMA VERSION
-  std::memcpy(ptr, &SCHEMA_VERSION, sizeof(SCHEMA_VERSION));
-  ptr += sizeof(SCHEMA_VERSION);
-
-  // Reserved
-  ptr += sizeof(RESERVED);
+  setReservedData();
+  setTensorData(execution);
 
   UNUSED_RELEASE(train_info);
-  UNUSED_RELEASE(execution);
 }
 
 void CheckpointExporter::save(const std::string &path)
 {
+  if (_reserved.size() != RESERVED_SIZE)
+    throw std::runtime_error{"Invalid reserved buffer"};
+
   std::ofstream dst(path.c_str(), std::ios::binary | std::ios::trunc);
   if (!dst.is_open())
     throw std::runtime_error{"Failed to save checkpoint: " + path};
 
-  dst.write(_data.data(), _data.size());
+  dst.write(_reserved.data(), _reserved.size());
+  dst.write(_buffers.data(), _buffers.size());
   dst.close();
 }
 
-uint32_t CheckpointExporter::getTotalSize()
+void CheckpointExporter::setReservedData()
 {
-  uint32_t size = 0;
-  size += (sizeof(MAGIC_NUMBER) + sizeof(SCHEMA_VERSION) + sizeof(RESERVED));
-  return size;
+  // Reserved - 16 bytes
+  // magic number for 2 bytes
+  // schema version for 1 byte
+  // reserved for 1 byte
+  // offset for 4 * 3 bytes
+  // (moving average, value, other parameters offset)
+
+  _reserved.resize(RESERVED_SIZE);
+
+  // Pointer to the start address of the buffer
+  char *ptr = _reserved.data();
+
+  // Write MAGIC NUMBER
+  const uint16_t MAGIC_NUMBER = 429;
+  std::memcpy(ptr, &MAGIC_NUMBER, sizeof(MAGIC_NUMBER));
+  ptr += sizeof(MAGIC_NUMBER);
+
+  // Write SCHEMA VERSION
+  const uint8_t SCHEMA_VERSION = 1;
+  std::memcpy(ptr, &SCHEMA_VERSION, sizeof(SCHEMA_VERSION));
+}
+
+void CheckpointExporter::setAdamOffset(uint32_t m_offset, uint32_t v_offset)
+{
+  if (_reserved.size() != RESERVED_SIZE)
+    throw std::runtime_error{"Invalid reserved buffer"};
+
+  // Pointer to the start address of the buffer
+  char *ptr = _reserved.data();
+  ptr += 4; // magic number(2) + schema version(1) + reserved(1)
+
+  // Write Adam M offset
+  memcpy(ptr, &m_offset, sizeof(m_offset));
+  ptr += sizeof(m_offset);
+
+  // Write Adam V offset
+  memcpy(ptr, &v_offset, sizeof(v_offset));
+}
+
+void CheckpointExporter::setTensorData(std::unique_ptr<onert::exec::Execution> &exec)
+{
+  // Tensor Buffers
+  // number of buffers for 4 bytes
+  // 1..N offset for 4 * N bytes
+  // buffers for buf_1 size + buf_2 size + .. buf_N size bytes
+
+  // get Tensor count
+  std::vector<uint32_t> sizes;
+  exec->iterateTrainableTensors(
+    [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
+      sizes.emplace_back(tensor->total_size());
+    });
+
+  uint32_t count = sizes.size();
+  uint32_t total_size = std::accumulate(sizes.begin(), sizes.end(), 0);
+  auto buf_size = sizeof(uint32_t) + sizeof(uint32_t) * count + total_size;
+  _buffers.resize(buf_size);
+
+  // Pointer to the start address of the buffer
+  char *ptr = _buffers.data();
+
+  // Write n_buffers
+  std::memcpy(ptr, &count, sizeof(count));
+  ptr += sizeof(count);
+
+  // Write offset
+  uint32_t buf_offset = RESERVED_SIZE + sizeof(count) + sizeof(uint32_t) * count;
+  for (uint32_t v : sizes)
+  {
+    std::memcpy(ptr, &buf_offset, sizeof(buf_offset));
+    ptr += sizeof(buf_offset);
+
+    buf_offset += v;
+  }
+
+  // Write tensor buffers
+  [[maybe_unused]] auto vindex = 0;
+  exec->iterateTrainableTensors(
+    [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
+      assert(sizes[vindex++] == tensor->total_size());
+      std::memcpy(ptr, tensor->buffer(), tensor->total_size());
+      ptr += tensor->total_size();
+    });
 }
 
 } // namespace exporter
