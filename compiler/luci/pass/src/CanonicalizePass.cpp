@@ -33,7 +33,7 @@ namespace
 /**
  * Convert S64 CircleConst paddings to S32
  */
-bool paddings_to_s32(luci::CirclePad *pad)
+template <class PAD> bool paddings_to_s32(PAD *pad)
 {
   // check conditions
   auto paddings = dynamic_cast<luci::CircleConst *>(pad->paddings());
@@ -51,7 +51,7 @@ bool paddings_to_s32(luci::CirclePad *pad)
     CHECK_OR_FALSE(v64 >= lval);
   }
 
-  auto paddings_s32 = pad->graph()->nodes()->create<luci::CircleConst>();
+  auto paddings_s32 = pad->graph()->nodes()->template create<luci::CircleConst>();
   paddings_s32->name(paddings->name() + "_S32");
   paddings_s32->dtype(loco::DataType::S32);
   paddings_s32->rank(paddings->rank());
@@ -60,11 +60,11 @@ bool paddings_to_s32(luci::CirclePad *pad)
   paddings_s32->shape_status(luci::ShapeStatus::VALID);
   luci::add_origin(paddings_s32, luci::get_origin(paddings));
 
-  paddings_s32->size<loco::DataType::S32>(num_elements);
+  paddings_s32->template size<loco::DataType::S32>(num_elements);
   for (uint32_t i = 0; i < num_elements; i++)
   {
     auto v64 = paddings->at<loco::DataType::S64>(i);
-    paddings_s32->at<loco::DataType::S32>(i) = static_cast<int32_t>(v64);
+    paddings_s32->template at<loco::DataType::S32>(i) = static_cast<int32_t>(v64);
   }
 
   // replace paddings with S32 dtype
@@ -72,51 +72,6 @@ bool paddings_to_s32(luci::CirclePad *pad)
 
   return true;
 }
-
-/**
- * Convert S64 CircleConst paddings to S32
- */
-bool paddings_to_s32(luci::CirclePadV2 *padv2)
-{
-  // check conditions
-  auto paddings = dynamic_cast<luci::CircleConst *>(padv2->paddings());
-  CHECK_OR_FALSE(paddings);
-  CHECK_OR_FALSE(paddings->dtype() == loco::DataType::S64);
-
-  // TODO relocate to helpers/CreateCircleConst.h when necessary
-  auto num_elements = paddings->size<loco::DataType::S64>();
-  auto hval = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
-  auto lval = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
-  for (uint32_t i = 0; i < num_elements; i++)
-  {
-    auto v64 = paddings->at<loco::DataType::S64>(i);
-    CHECK_OR_FALSE(v64 <= hval);
-    CHECK_OR_FALSE(v64 >= lval);
-  }
-
-  auto paddings_s32 = padv2->graph()->nodes()->create<luci::CircleConst>();
-  paddings_s32->name(paddings->name() + "_S32");
-  paddings_s32->dtype(loco::DataType::S32);
-  paddings_s32->rank(paddings->rank());
-  for (uint32_t i = 0; i < paddings->rank(); i++)
-    paddings_s32->dim(i).set(paddings->dim(i).value());
-  paddings_s32->shape_status(luci::ShapeStatus::VALID);
-  luci::add_origin(paddings_s32, luci::get_origin(paddings));
-
-  paddings_s32->size<loco::DataType::S32>(num_elements);
-  for (uint32_t i = 0; i < num_elements; i++)
-  {
-    auto v64 = paddings->at<loco::DataType::S64>(i);
-    paddings_s32->at<loco::DataType::S32>(i) = static_cast<int32_t>(v64);
-  }
-
-  // replace paddings with S32 dtype
-  padv2->paddings(paddings_s32);
-
-  return true;
-}
-
-// TODO merge both paddings_to_s32 with template
 
 } // namespace
 
