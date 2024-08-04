@@ -1,9 +1,12 @@
 var depthwise__conv__op_8h =
 [
+    [ "nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvOp< Device, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op" ],
     [ "nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp< Device, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op" ],
     [ "nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp< Device, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op" ],
     [ "nnfw::cker::depthwise_conv_op::functor::DepthwiseFilterPadOp< T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op" ],
     [ "nnfw::cker::depthwise_conv_op::functor::DepthwiseInputCopyOp< T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_input_copy_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_input_copy_op" ],
+    [ "nnfw::cker::depthwise_conv_op::DepthwiseConv2DKernel< T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_depthwise_conv2_d_kernel.html", null ],
+    [ "nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4" ],
     [ "nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropInputOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4" ],
     [ "nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4" ],
     [ "EIGEN_USE_THREADS", "depthwise__conv__op_8h.html#a86a59fe12b00dac8ede2329ebba1d766", null ],

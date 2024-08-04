@@ -105,6 +105,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_depthwise_conv2_d_kernel.html">DepthwiseConv2DKernel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op.html">LaunchDepthwiseConvBackpropFilterOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html">LaunchDepthwiseConvBackpropFilterOp&lt; CPUDevice, T &gt;</a></td></tr>
@@ -112,6 +114,10 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op.html">LaunchDepthwiseConvBackpropInputOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4.html">LaunchDepthwiseConvBackpropInputOp&lt; CPUDevice, T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op.html">LaunchDepthwiseConvOp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4.html">LaunchDepthwiseConvOp&lt; CPUDevice, T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -150,7 +156,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00328">328</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00338">338</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
 
 </div>
 </div>
@@ -285,81 +291,81 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00717">717</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  722</span>{</div>
-<div class="line"><span class="lineno">  723</span>  <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
-<div class="line"><span class="lineno">  724</span>  <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  725</span>  <span class="comment">// Calculate vectorized size of &#39;padded_out_depth_size&#39;.</span></div>
-<div class="line"><span class="lineno">  726</span>  <span class="keyword">const</span> int64_t out_depth = out_depth_;</div>
-<div class="line"><span class="lineno">  727</span>  <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
-<div class="line"><span class="lineno">  728</span>  <span class="keyword">const</span> int64_t output_vectorized_size = (padded_out_depth_size / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  729</span>  <span class="keyword">const</span> int64_t base_output_index = (out_r * out_cols + out_c) * out_depth;</div>
-<div class="line"><span class="lineno">  730</span>  <span class="comment">// Determine whether we can execute fast or slow code path.</span></div>
-<div class="line"><span class="lineno">  731</span>  <span class="keyword">const</span> int64_t output_image_size = out_rows * out_cols * out_depth;</div>
-<div class="line"><span class="lineno">  732</span>  <span class="keyword">const</span> int64_t output_last_vector_index =</div>
-<div class="line"><span class="lineno">  733</span>    output_image_size - (filter_spatial_size * padded_out_depth_size);</div>
-<div class="line"><span class="lineno">  734</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> fast_path = base_output_index &lt;= output_last_vector_index;</div>
-<div class="line"><span class="lineno">  735</span> </div>
-<div class="line"><span class="lineno">  736</span>  <span class="keywordflow">if</span> (fast_path)</div>
-<div class="line"><span class="lineno">  737</span>  {</div>
-<div class="line"><span class="lineno">  738</span>    <span class="comment">// TODO(andydavis) Process multiple inputs in &#39;input_buffer&#39; so we can</span></div>
-<div class="line"><span class="lineno">  739</span>    <span class="comment">// amortize the cost of &#39;output_buffer&#39; load store in the loop below.</span></div>
-<div class="line"><span class="lineno">  740</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_vectorized_size; i += kPacketSize)</div>
-<div class="line"><span class="lineno">  741</span>    {</div>
-<div class="line"><span class="lineno">  742</span>      <span class="comment">// Load vector register from &#39;out_backprop&#39;.</span></div>
-<div class="line"><span class="lineno">  743</span>      <span class="keyword">const</span> <span class="keyword">auto</span> out_bprop_block =</div>
-<div class="line"><span class="lineno">  744</span>        Eigen::internal::ploadu&lt;Packet&gt;(out_backprop + base_output_index + i);</div>
-<div class="line"><span class="lineno">  745</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
-<div class="line"><span class="lineno">  746</span>      {</div>
-<div class="line"><span class="lineno">  747</span>        <span class="keyword">const</span> int64_t index = i + j * padded_out_depth_size;</div>
-<div class="line"><span class="lineno">  748</span>        <span class="comment">// Load vector register from &#39;input_buffer&#39;.</span></div>
-<div class="line"><span class="lineno">  749</span>        <span class="keyword">const</span> <span class="keyword">auto</span> input_block = Eigen::internal::ploadu&lt;Packet&gt;(input_buffer + index);</div>
-<div class="line"><span class="lineno">  750</span>        <span class="comment">// Load output block into vector register.</span></div>
-<div class="line"><span class="lineno">  751</span>        <span class="keyword">auto</span> out_block_data = output_buffer + index;</div>
-<div class="line"><span class="lineno">  752</span>        <span class="keyword">auto</span> out_block = Eigen::internal::ploadu&lt;Packet&gt;(out_block_data);</div>
-<div class="line"><span class="lineno">  753</span>        <span class="comment">// Vector multiply-add.</span></div>
-<div class="line"><span class="lineno">  754</span>        out_block = Eigen::internal::pmadd&lt;Packet&gt;(out_bprop_block, input_block, out_block);</div>
-<div class="line"><span class="lineno">  755</span>        <span class="comment">// Store &#39;out_block&#39; back to memory.</span></div>
-<div class="line"><span class="lineno">  756</span>        Eigen::internal::pstoreu&lt;T&gt;(out_block_data, out_block);</div>
-<div class="line"><span class="lineno">  757</span>      }</div>
-<div class="line"><span class="lineno">  758</span>    }</div>
-<div class="line"><span class="lineno">  759</span>  }</div>
-<div class="line"><span class="lineno">  760</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  761</span>  {</div>
-<div class="line"><span class="lineno">  762</span>    <span class="comment">// Slow path (cant do vector reads from non-padded &#39;out_backprop&#39;.</span></div>
-<div class="line"><span class="lineno">  763</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_vectorized_size; i += kPacketSize)</div>
-<div class="line"><span class="lineno">  764</span>    {</div>
-<div class="line"><span class="lineno">  765</span>      <span class="comment">// Calculate safe read size from &#39;out_backprop&#39;.</span></div>
-<div class="line"><span class="lineno">  766</span>      <span class="keyword">const</span> int64_t out_bprop_index = base_output_index + i;</div>
-<div class="line"><span class="lineno">  767</span>      <span class="keyword">const</span> int64_t out_bprop_limit = std::min(output_image_size, out_bprop_index + kPacketSize);</div>
-<div class="line"><span class="lineno">  768</span>      T out_buf[kPacketSize];</div>
-<div class="line"><span class="lineno">  769</span>      memset(&amp;out_buf, 0, kPacketSize * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  770</span>      <span class="keyword">const</span> int64_t scalar_size = out_bprop_limit - out_bprop_index;</div>
-<div class="line"><span class="lineno">  771</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; scalar_size; ++j)</div>
-<div class="line"><span class="lineno">  772</span>      {</div>
-<div class="line"><span class="lineno">  773</span>        out_buf[j] = out_backprop[out_bprop_index + j];</div>
-<div class="line"><span class="lineno">  774</span>      }</div>
-<div class="line"><span class="lineno">  775</span>      <span class="comment">// Load vector register from &#39;out_buf&#39;.</span></div>
-<div class="line"><span class="lineno">  776</span>      <span class="keyword">const</span> <span class="keyword">auto</span> out_bprop_block = Eigen::internal::ploadu&lt;Packet&gt;(out_buf);</div>
-<div class="line"><span class="lineno">  777</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
-<div class="line"><span class="lineno">  778</span>      {</div>
-<div class="line"><span class="lineno">  779</span>        <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = i + j * padded_out_depth_size;</div>
-<div class="line"><span class="lineno">  780</span>        <span class="comment">// Load vector register from &#39;input_buffer&#39;.</span></div>
-<div class="line"><span class="lineno">  781</span>        <span class="keyword">const</span> <span class="keyword">auto</span> input_block = Eigen::internal::ploadu&lt;Packet&gt;(input_buffer + index);</div>
-<div class="line"><span class="lineno">  782</span>        <span class="comment">// Load output block into vector register.</span></div>
-<div class="line"><span class="lineno">  783</span>        <span class="keyword">auto</span> out_block_data = output_buffer + <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
-<div class="line"><span class="lineno">  784</span>        <span class="keyword">auto</span> out_block = Eigen::internal::ploadu&lt;Packet&gt;(out_block_data);</div>
-<div class="line"><span class="lineno">  785</span>        <span class="comment">// Vector multiply-add.</span></div>
-<div class="line"><span class="lineno">  786</span>        out_block = Eigen::internal::pmadd&lt;Packet&gt;(out_bprop_block, input_block, out_block);</div>
-<div class="line"><span class="lineno">  787</span>        <span class="comment">// Store &#39;out_block&#39; back to memory.</span></div>
-<div class="line"><span class="lineno">  788</span>        Eigen::internal::pstoreu&lt;T&gt;(out_block_data, out_block);</div>
-<div class="line"><span class="lineno">  789</span>      }</div>
-<div class="line"><span class="lineno">  790</span>    }</div>
-<div class="line"><span class="lineno">  791</span>  }</div>
-<div class="line"><span class="lineno">  792</span>}</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00898">898</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  903</span>{</div>
+<div class="line"><span class="lineno">  904</span>  <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
+<div class="line"><span class="lineno">  905</span>  <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  906</span>  <span class="comment">// Calculate vectorized size of &#39;padded_out_depth_size&#39;.</span></div>
+<div class="line"><span class="lineno">  907</span>  <span class="keyword">const</span> int64_t out_depth = out_depth_;</div>
+<div class="line"><span class="lineno">  908</span>  <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  909</span>  <span class="keyword">const</span> int64_t output_vectorized_size = (padded_out_depth_size / kPacketSize) * kPacketSize;</div>
+<div class="line"><span class="lineno">  910</span>  <span class="keyword">const</span> int64_t base_output_index = (out_r * out_cols + out_c) * out_depth;</div>
+<div class="line"><span class="lineno">  911</span>  <span class="comment">// Determine whether we can execute fast or slow code path.</span></div>
+<div class="line"><span class="lineno">  912</span>  <span class="keyword">const</span> int64_t output_image_size = out_rows * out_cols * out_depth;</div>
+<div class="line"><span class="lineno">  913</span>  <span class="keyword">const</span> int64_t output_last_vector_index =</div>
+<div class="line"><span class="lineno">  914</span>    output_image_size - (filter_spatial_size * padded_out_depth_size);</div>
+<div class="line"><span class="lineno">  915</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> fast_path = base_output_index &lt;= output_last_vector_index;</div>
+<div class="line"><span class="lineno">  916</span> </div>
+<div class="line"><span class="lineno">  917</span>  <span class="keywordflow">if</span> (fast_path)</div>
+<div class="line"><span class="lineno">  918</span>  {</div>
+<div class="line"><span class="lineno">  919</span>    <span class="comment">// TODO(andydavis) Process multiple inputs in &#39;input_buffer&#39; so we can</span></div>
+<div class="line"><span class="lineno">  920</span>    <span class="comment">// amortize the cost of &#39;output_buffer&#39; load store in the loop below.</span></div>
+<div class="line"><span class="lineno">  921</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_vectorized_size; i += kPacketSize)</div>
+<div class="line"><span class="lineno">  922</span>    {</div>
+<div class="line"><span class="lineno">  923</span>      <span class="comment">// Load vector register from &#39;out_backprop&#39;.</span></div>
+<div class="line"><span class="lineno">  924</span>      <span class="keyword">const</span> <span class="keyword">auto</span> out_bprop_block =</div>
+<div class="line"><span class="lineno">  925</span>        Eigen::internal::ploadu&lt;Packet&gt;(out_backprop + base_output_index + i);</div>
+<div class="line"><span class="lineno">  926</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
+<div class="line"><span class="lineno">  927</span>      {</div>
+<div class="line"><span class="lineno">  928</span>        <span class="keyword">const</span> int64_t index = i + j * padded_out_depth_size;</div>
+<div class="line"><span class="lineno">  929</span>        <span class="comment">// Load vector register from &#39;input_buffer&#39;.</span></div>
+<div class="line"><span class="lineno">  930</span>        <span class="keyword">const</span> <span class="keyword">auto</span> input_block = Eigen::internal::ploadu&lt;Packet&gt;(input_buffer + index);</div>
+<div class="line"><span class="lineno">  931</span>        <span class="comment">// Load output block into vector register.</span></div>
+<div class="line"><span class="lineno">  932</span>        <span class="keyword">auto</span> out_block_data = output_buffer + index;</div>
+<div class="line"><span class="lineno">  933</span>        <span class="keyword">auto</span> out_block = Eigen::internal::ploadu&lt;Packet&gt;(out_block_data);</div>
+<div class="line"><span class="lineno">  934</span>        <span class="comment">// Vector multiply-add.</span></div>
+<div class="line"><span class="lineno">  935</span>        out_block = Eigen::internal::pmadd&lt;Packet&gt;(out_bprop_block, input_block, out_block);</div>
+<div class="line"><span class="lineno">  936</span>        <span class="comment">// Store &#39;out_block&#39; back to memory.</span></div>
+<div class="line"><span class="lineno">  937</span>        Eigen::internal::pstoreu&lt;T&gt;(out_block_data, out_block);</div>
+<div class="line"><span class="lineno">  938</span>      }</div>
+<div class="line"><span class="lineno">  939</span>    }</div>
+<div class="line"><span class="lineno">  940</span>  }</div>
+<div class="line"><span class="lineno">  941</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  942</span>  {</div>
+<div class="line"><span class="lineno">  943</span>    <span class="comment">// Slow path (cant do vector reads from non-padded &#39;out_backprop&#39;.</span></div>
+<div class="line"><span class="lineno">  944</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_vectorized_size; i += kPacketSize)</div>
+<div class="line"><span class="lineno">  945</span>    {</div>
+<div class="line"><span class="lineno">  946</span>      <span class="comment">// Calculate safe read size from &#39;out_backprop&#39;.</span></div>
+<div class="line"><span class="lineno">  947</span>      <span class="keyword">const</span> int64_t out_bprop_index = base_output_index + i;</div>
+<div class="line"><span class="lineno">  948</span>      <span class="keyword">const</span> int64_t out_bprop_limit = std::min(output_image_size, out_bprop_index + kPacketSize);</div>
+<div class="line"><span class="lineno">  949</span>      T out_buf[kPacketSize];</div>
+<div class="line"><span class="lineno">  950</span>      memset(&amp;out_buf, 0, kPacketSize * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  951</span>      <span class="keyword">const</span> int64_t scalar_size = out_bprop_limit - out_bprop_index;</div>
+<div class="line"><span class="lineno">  952</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; scalar_size; ++j)</div>
+<div class="line"><span class="lineno">  953</span>      {</div>
+<div class="line"><span class="lineno">  954</span>        out_buf[j] = out_backprop[out_bprop_index + j];</div>
+<div class="line"><span class="lineno">  955</span>      }</div>
+<div class="line"><span class="lineno">  956</span>      <span class="comment">// Load vector register from &#39;out_buf&#39;.</span></div>
+<div class="line"><span class="lineno">  957</span>      <span class="keyword">const</span> <span class="keyword">auto</span> out_bprop_block = Eigen::internal::ploadu&lt;Packet&gt;(out_buf);</div>
+<div class="line"><span class="lineno">  958</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
+<div class="line"><span class="lineno">  959</span>      {</div>
+<div class="line"><span class="lineno">  960</span>        <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = i + j * padded_out_depth_size;</div>
+<div class="line"><span class="lineno">  961</span>        <span class="comment">// Load vector register from &#39;input_buffer&#39;.</span></div>
+<div class="line"><span class="lineno">  962</span>        <span class="keyword">const</span> <span class="keyword">auto</span> input_block = Eigen::internal::ploadu&lt;Packet&gt;(input_buffer + index);</div>
+<div class="line"><span class="lineno">  963</span>        <span class="comment">// Load output block into vector register.</span></div>
+<div class="line"><span class="lineno">  964</span>        <span class="keyword">auto</span> out_block_data = output_buffer + <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
+<div class="line"><span class="lineno">  965</span>        <span class="keyword">auto</span> out_block = Eigen::internal::ploadu&lt;Packet&gt;(out_block_data);</div>
+<div class="line"><span class="lineno">  966</span>        <span class="comment">// Vector multiply-add.</span></div>
+<div class="line"><span class="lineno">  967</span>        out_block = Eigen::internal::pmadd&lt;Packet&gt;(out_bprop_block, input_block, out_block);</div>
+<div class="line"><span class="lineno">  968</span>        <span class="comment">// Store &#39;out_block&#39; back to memory.</span></div>
+<div class="line"><span class="lineno">  969</span>        Eigen::internal::pstoreu&lt;T&gt;(out_block_data, out_block);</div>
+<div class="line"><span class="lineno">  970</span>      }</div>
+<div class="line"><span class="lineno">  971</span>    }</div>
+<div class="line"><span class="lineno">  972</span>  }</div>
+<div class="line"><span class="lineno">  973</span>}</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="depthwise__conv__op_8h_source.html#l00798">nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt; CPUDevice, T &gt;::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="depthwise__conv__op_8h_source.html#l00979">nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt; CPUDevice, T &gt;::operator()()</a>.</p>
 
 </div>
 </div>
@@ -499,109 +505,110 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00455">455</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  460</span>{</div>
-<div class="line"><span class="lineno">  461</span>  <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
-<div class="line"><span class="lineno">  462</span>  <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  463</span> </div>
-<div class="line"><span class="lineno">  464</span>  <span class="keyword">const</span> int64_t in_depth = in_depth_;</div>
-<div class="line"><span class="lineno">  465</span>  <span class="keyword">const</span> int64_t depth_multiplier = depth_multiplier_;</div>
-<div class="line"><span class="lineno">  466</span>  <span class="keyword">const</span> int64_t out_depth = out_depth_;</div>
-<div class="line"><span class="lineno">  467</span>  <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
-<div class="line"><span class="lineno">  468</span> </div>
-<div class="line"><span class="lineno">  469</span>  <span class="comment">// Calculate vectorized and scalar lengths of &#39;out_depth&#39;.</span></div>
-<div class="line"><span class="lineno">  470</span>  <span class="keyword">const</span> int64_t output_vectorized_size = (out_depth / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  471</span>  <span class="keyword">const</span> int64_t output_scalar_size = out_depth % kPacketSize;</div>
-<div class="line"><span class="lineno">  472</span> </div>
-<div class="line"><span class="lineno">  473</span>  <span class="comment">// Calculate base index at which to begin writing output.</span></div>
-<div class="line"><span class="lineno">  474</span>  <span class="keyword">const</span> int64_t base_output_index = (in_r * in_cols + in_c) * in_depth;</div>
-<div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span>  <span class="comment">// Calculate vectorized and scalar lengths for &#39;depth_multiplier&#39;. This is</span></div>
-<div class="line"><span class="lineno">  477</span>  <span class="comment">// used to efficiently reduce output when &#39;depth_multiplier&#39; &gt; kPacketSize.</span></div>
-<div class="line"><span class="lineno">  478</span>  <span class="keyword">const</span> int64_t dm_vectorized_size = (depth_multiplier / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  479</span>  <span class="keyword">const</span> int64_t dm_scalar_size = depth_multiplier % kPacketSize;</div>
-<div class="line"><span class="lineno">  480</span> </div>
-<div class="line"><span class="lineno">  481</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_vectorized_size; i += kPacketSize)</div>
-<div class="line"><span class="lineno">  482</span>  {</div>
-<div class="line"><span class="lineno">  483</span>    <span class="comment">// Reset accumulator.</span></div>
-<div class="line"><span class="lineno">  484</span>    <span class="keyword">auto</span> vaccum = Eigen::internal::pset1&lt;Packet&gt;(<span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0));</div>
-<div class="line"><span class="lineno">  485</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
-<div class="line"><span class="lineno">  486</span>    {</div>
-<div class="line"><span class="lineno">  487</span>      <span class="comment">// Calculate index.</span></div>
-<div class="line"><span class="lineno">  488</span>      <span class="keyword">const</span> int64_t index = i + j * padded_filter_inner_dim_size;</div>
-<div class="line"><span class="lineno">  489</span>      <span class="comment">// Load filter.</span></div>
-<div class="line"><span class="lineno">  490</span>      <span class="keyword">const</span> <span class="keyword">auto</span> filter_block = Eigen::internal::ploadu&lt;Packet&gt;(filter + index);</div>
-<div class="line"><span class="lineno">  491</span>      <span class="comment">// Load input.</span></div>
-<div class="line"><span class="lineno">  492</span>      <span class="keyword">const</span> <span class="keyword">auto</span> data_block = Eigen::internal::ploadu&lt;Packet&gt;(buffer + index);</div>
-<div class="line"><span class="lineno">  493</span>      <span class="comment">// Vector multiply-add.</span></div>
-<div class="line"><span class="lineno">  494</span>      vaccum = Eigen::internal::pmadd&lt;Packet&gt;(filter_block, data_block, vaccum);</div>
-<div class="line"><span class="lineno">  495</span>    }</div>
-<div class="line"><span class="lineno">  496</span>    <span class="keywordflow">if</span> (depth_multiplier == 1)</div>
-<div class="line"><span class="lineno">  497</span>    {</div>
-<div class="line"><span class="lineno">  498</span>      <span class="comment">// Write directly to the output.</span></div>
-<div class="line"><span class="lineno">  499</span>      Eigen::internal::pstoreu&lt;T&gt;(output + base_output_index + i, vaccum);</div>
-<div class="line"><span class="lineno">  500</span>    }</div>
-<div class="line"><span class="lineno">  501</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  502</span>    {</div>
-<div class="line"><span class="lineno">  503</span>      <span class="comment">// Buffer output for subsequent reduction step.</span></div>
-<div class="line"><span class="lineno">  504</span>      Eigen::internal::pstoreu&lt;T&gt;(out_buffer + i, vaccum);</div>
-<div class="line"><span class="lineno">  505</span>    }</div>
-<div class="line"><span class="lineno">  506</span>  }</div>
-<div class="line"><span class="lineno">  507</span> </div>
-<div class="line"><span class="lineno">  508</span>  <span class="keywordflow">if</span> (output_scalar_size &gt; 0)</div>
-<div class="line"><span class="lineno">  509</span>  {</div>
-<div class="line"><span class="lineno">  510</span>    <span class="keyword">auto</span> vaccum = Eigen::internal::pset1&lt;Packet&gt;(<span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0));</div>
-<div class="line"><span class="lineno">  511</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
-<div class="line"><span class="lineno">  512</span>    {</div>
-<div class="line"><span class="lineno">  513</span>      <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = output_vectorized_size + j * padded_filter_inner_dim_size;</div>
-<div class="line"><span class="lineno">  514</span>      <span class="keyword">const</span> <span class="keyword">auto</span> filter_block = Eigen::internal::ploadu&lt;Packet&gt;(filter + index);</div>
-<div class="line"><span class="lineno">  515</span>      <span class="keyword">const</span> <span class="keyword">auto</span> data_block = Eigen::internal::ploadu&lt;Packet&gt;(buffer + index);</div>
-<div class="line"><span class="lineno">  516</span>      vaccum = Eigen::internal::pmadd&lt;Packet&gt;(filter_block, data_block, vaccum);</div>
-<div class="line"><span class="lineno">  517</span>    }</div>
-<div class="line"><span class="lineno">  518</span>    <span class="comment">// Load accumulator into an array and loop through output.</span></div>
-<div class="line"><span class="lineno">  519</span>    T out_buf[kPacketSize];</div>
-<div class="line"><span class="lineno">  520</span>    Eigen::internal::pstoreu&lt;T&gt;(out_buf, vaccum);</div>
-<div class="line"><span class="lineno">  521</span>    <span class="keywordflow">if</span> (depth_multiplier == 1)</div>
-<div class="line"><span class="lineno">  522</span>    {</div>
-<div class="line"><span class="lineno">  523</span>      <span class="comment">// Write directly to the output.</span></div>
-<div class="line"><span class="lineno">  524</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_scalar_size; ++j)</div>
-<div class="line"><span class="lineno">  525</span>      {</div>
-<div class="line"><span class="lineno">  526</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>[base_output_index + output_vectorized_size + j] = out_buf[j];</div>
-<div class="line"><span class="lineno">  527</span>      }</div>
-<div class="line"><span class="lineno">  528</span>    }</div>
-<div class="line"><span class="lineno">  529</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  530</span>    {</div>
-<div class="line"><span class="lineno">  531</span>      <span class="comment">// Buffer output for subsequent reduction step.</span></div>
-<div class="line"><span class="lineno">  532</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_scalar_size; ++j)</div>
-<div class="line"><span class="lineno">  533</span>      {</div>
-<div class="line"><span class="lineno">  534</span>        out_buffer[output_vectorized_size + j] = out_buf[j];</div>
-<div class="line"><span class="lineno">  535</span>      }</div>
-<div class="line"><span class="lineno">  536</span>    }</div>
-<div class="line"><span class="lineno">  537</span>  }</div>
-<div class="line"><span class="lineno">  538</span> </div>
-<div class="line"><span class="lineno">  539</span>  <span class="comment">// Iterate over &#39;in_depth&#39;, reduce over &#39;depth_multiplier&#39;, write &#39;output&#39;.</span></div>
-<div class="line"><span class="lineno">  540</span>  <span class="keywordflow">if</span> (depth_multiplier &gt; 1)</div>
-<div class="line"><span class="lineno">  541</span>  {</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">for</span> (int64_t d = 0; d &lt; in_depth; ++d)</div>
-<div class="line"><span class="lineno">  543</span>    {</div>
-<div class="line"><span class="lineno">  544</span>      <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = d * depth_multiplier;</div>
-<div class="line"><span class="lineno">  545</span>      T accum = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0);</div>
-<div class="line"><span class="lineno">  546</span>      <span class="keywordflow">for</span> (int64_t dm = 0; dm &lt; dm_vectorized_size; dm += kPacketSize)</div>
-<div class="line"><span class="lineno">  547</span>      {</div>
-<div class="line"><span class="lineno">  548</span>        <span class="keyword">const</span> <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(out_buffer + index + dm);</div>
-<div class="line"><span class="lineno">  549</span>        accum += Eigen::internal::predux(v);</div>
-<div class="line"><span class="lineno">  550</span>      }</div>
-<div class="line"><span class="lineno">  551</span>      <span class="comment">// Copy scalar portion of replicated output.</span></div>
-<div class="line"><span class="lineno">  552</span>      <span class="keywordflow">for</span> (int64_t dm = 0; dm &lt; dm_scalar_size; ++dm)</div>
-<div class="line"><span class="lineno">  553</span>      {</div>
-<div class="line"><span class="lineno">  554</span>        accum += out_buffer[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> + dm_vectorized_size + dm];</div>
-<div class="line"><span class="lineno">  555</span>      }</div>
-<div class="line"><span class="lineno">  556</span>      <span class="comment">// Copy to output.</span></div>
-<div class="line"><span class="lineno">  557</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>[base_output_index + d] = accum;</div>
-<div class="line"><span class="lineno">  558</span>    }</div>
-<div class="line"><span class="lineno">  559</span>  }</div>
-<div class="line"><span class="lineno">  560</span>}</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00636">636</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  641</span>{</div>
+<div class="line"><span class="lineno">  642</span>  <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
+<div class="line"><span class="lineno">  643</span>  <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  644</span> </div>
+<div class="line"><span class="lineno">  645</span>  <span class="keyword">const</span> int64_t in_depth = in_depth_;</div>
+<div class="line"><span class="lineno">  646</span>  <span class="keyword">const</span> int64_t depth_multiplier = depth_multiplier_;</div>
+<div class="line"><span class="lineno">  647</span>  <span class="keyword">const</span> int64_t out_depth = out_depth_;</div>
+<div class="line"><span class="lineno">  648</span>  <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  649</span> </div>
+<div class="line"><span class="lineno">  650</span>  <span class="comment">// Calculate vectorized and scalar lengths of &#39;out_depth&#39;.</span></div>
+<div class="line"><span class="lineno">  651</span>  <span class="keyword">const</span> int64_t output_vectorized_size = (out_depth / kPacketSize) * kPacketSize;</div>
+<div class="line"><span class="lineno">  652</span>  <span class="keyword">const</span> int64_t output_scalar_size = out_depth % kPacketSize;</div>
+<div class="line"><span class="lineno">  653</span> </div>
+<div class="line"><span class="lineno">  654</span>  <span class="comment">// Calculate base index at which to begin writing output.</span></div>
+<div class="line"><span class="lineno">  655</span>  <span class="keyword">const</span> int64_t base_output_index = (in_r * in_cols + in_c) * in_depth;</div>
+<div class="line"><span class="lineno">  656</span> </div>
+<div class="line"><span class="lineno">  657</span>  <span class="comment">// Calculate vectorized and scalar lengths for &#39;depth_multiplier&#39;. This is</span></div>
+<div class="line"><span class="lineno">  658</span>  <span class="comment">// used to efficiently reduce output when &#39;depth_multiplier&#39; &gt; kPacketSize.</span></div>
+<div class="line"><span class="lineno">  659</span>  <span class="keyword">const</span> int64_t dm_vectorized_size = (depth_multiplier / kPacketSize) * kPacketSize;</div>
+<div class="line"><span class="lineno">  660</span>  <span class="keyword">const</span> int64_t dm_scalar_size = depth_multiplier % kPacketSize;</div>
+<div class="line"><span class="lineno">  661</span> </div>
+<div class="line"><span class="lineno">  662</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_vectorized_size; i += kPacketSize)</div>
+<div class="line"><span class="lineno">  663</span>  {</div>
+<div class="line"><span class="lineno">  664</span>    <span class="comment">// Reset accumulator.</span></div>
+<div class="line"><span class="lineno">  665</span>    <span class="keyword">auto</span> vaccum = Eigen::internal::pset1&lt;Packet&gt;(<span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0));</div>
+<div class="line"><span class="lineno">  666</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
+<div class="line"><span class="lineno">  667</span>    {</div>
+<div class="line"><span class="lineno">  668</span>      <span class="comment">// Calculate index.</span></div>
+<div class="line"><span class="lineno">  669</span>      <span class="keyword">const</span> int64_t index = i + j * padded_filter_inner_dim_size;</div>
+<div class="line"><span class="lineno">  670</span>      <span class="comment">// Load filter.</span></div>
+<div class="line"><span class="lineno">  671</span>      <span class="keyword">const</span> <span class="keyword">auto</span> filter_block = Eigen::internal::ploadu&lt;Packet&gt;(filter + index);</div>
+<div class="line"><span class="lineno">  672</span>      <span class="comment">// Load input.</span></div>
+<div class="line"><span class="lineno">  673</span>      <span class="keyword">const</span> <span class="keyword">auto</span> data_block = Eigen::internal::ploadu&lt;Packet&gt;(buffer + index);</div>
+<div class="line"><span class="lineno">  674</span>      <span class="comment">// Vector multiply-add.</span></div>
+<div class="line"><span class="lineno">  675</span>      vaccum = Eigen::internal::pmadd&lt;Packet&gt;(filter_block, data_block, vaccum);</div>
+<div class="line"><span class="lineno">  676</span>    }</div>
+<div class="line"><span class="lineno">  677</span>    <span class="keywordflow">if</span> (depth_multiplier == 1)</div>
+<div class="line"><span class="lineno">  678</span>    {</div>
+<div class="line"><span class="lineno">  679</span>      <span class="comment">// Write directly to the output.</span></div>
+<div class="line"><span class="lineno">  680</span>      Eigen::internal::pstoreu&lt;T&gt;(output + base_output_index + i, vaccum);</div>
+<div class="line"><span class="lineno">  681</span>    }</div>
+<div class="line"><span class="lineno">  682</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  683</span>    {</div>
+<div class="line"><span class="lineno">  684</span>      <span class="comment">// Buffer output for subsequent reduction step.</span></div>
+<div class="line"><span class="lineno">  685</span>      Eigen::internal::pstoreu&lt;T&gt;(out_buffer + i, vaccum);</div>
+<div class="line"><span class="lineno">  686</span>    }</div>
+<div class="line"><span class="lineno">  687</span>  }</div>
+<div class="line"><span class="lineno">  688</span> </div>
+<div class="line"><span class="lineno">  689</span>  <span class="keywordflow">if</span> (output_scalar_size &gt; 0)</div>
+<div class="line"><span class="lineno">  690</span>  {</div>
+<div class="line"><span class="lineno">  691</span>    <span class="keyword">auto</span> vaccum = Eigen::internal::pset1&lt;Packet&gt;(<span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0));</div>
+<div class="line"><span class="lineno">  692</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; filter_spatial_size; ++j)</div>
+<div class="line"><span class="lineno">  693</span>    {</div>
+<div class="line"><span class="lineno">  694</span>      <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = output_vectorized_size + j * padded_filter_inner_dim_size;</div>
+<div class="line"><span class="lineno">  695</span>      <span class="keyword">const</span> <span class="keyword">auto</span> filter_block = Eigen::internal::ploadu&lt;Packet&gt;(filter + index);</div>
+<div class="line"><span class="lineno">  696</span>      <span class="keyword">const</span> <span class="keyword">auto</span> data_block = Eigen::internal::ploadu&lt;Packet&gt;(buffer + index);</div>
+<div class="line"><span class="lineno">  697</span>      vaccum = Eigen::internal::pmadd&lt;Packet&gt;(filter_block, data_block, vaccum);</div>
+<div class="line"><span class="lineno">  698</span>    }</div>
+<div class="line"><span class="lineno">  699</span>    <span class="comment">// Load accumulator into an array and loop through output.</span></div>
+<div class="line"><span class="lineno">  700</span>    T out_buf[<a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>];</div>
+<div class="line"><span class="lineno">  701</span>    Eigen::internal::pstoreu&lt;T&gt;(out_buf, vaccum);</div>
+<div class="line"><span class="lineno">  702</span>    <span class="keywordflow">if</span> (depth_multiplier == 1)</div>
+<div class="line"><span class="lineno">  703</span>    {</div>
+<div class="line"><span class="lineno">  704</span>      <span class="comment">// Write directly to the output.</span></div>
+<div class="line"><span class="lineno">  705</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_scalar_size; ++j)</div>
+<div class="line"><span class="lineno">  706</span>      {</div>
+<div class="line"><span class="lineno">  707</span>        <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>[base_output_index + output_vectorized_size + j] = out_buf[j];</div>
+<div class="line"><span class="lineno">  708</span>      }</div>
+<div class="line"><span class="lineno">  709</span>    }</div>
+<div class="line"><span class="lineno">  710</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  711</span>    {</div>
+<div class="line"><span class="lineno">  712</span>      <span class="comment">// Buffer output for subsequent reduction step.</span></div>
+<div class="line"><span class="lineno">  713</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_scalar_size; ++j)</div>
+<div class="line"><span class="lineno">  714</span>      {</div>
+<div class="line"><span class="lineno">  715</span>        out_buffer[output_vectorized_size + j] = out_buf[j];</div>
+<div class="line"><span class="lineno">  716</span>      }</div>
+<div class="line"><span class="lineno">  717</span>    }</div>
+<div class="line"><span class="lineno">  718</span>  }</div>
+<div class="line"><span class="lineno">  719</span> </div>
+<div class="line"><span class="lineno">  720</span>  <span class="comment">// Iterate over &#39;in_depth&#39;, reduce over &#39;depth_multiplier&#39;, write &#39;output&#39;.</span></div>
+<div class="line"><span class="lineno">  721</span>  <span class="keywordflow">if</span> (depth_multiplier &gt; 1)</div>
+<div class="line"><span class="lineno">  722</span>  {</div>
+<div class="line"><span class="lineno">  723</span>    <span class="keywordflow">for</span> (int64_t d = 0; d &lt; in_depth; ++d)</div>
+<div class="line"><span class="lineno">  724</span>    {</div>
+<div class="line"><span class="lineno">  725</span>      <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = d * depth_multiplier;</div>
+<div class="line"><span class="lineno">  726</span>      T accum = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0);</div>
+<div class="line"><span class="lineno">  727</span>      <span class="keywordflow">for</span> (int64_t dm = 0; dm &lt; dm_vectorized_size; dm += <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>)</div>
+<div class="line"><span class="lineno">  728</span>      {</div>
+<div class="line"><span class="lineno">  729</span>        <span class="keyword">const</span> <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(out_buffer + index + dm);</div>
+<div class="line"><span class="lineno">  730</span>        accum += Eigen::internal::predux(v);</div>
+<div class="line"><span class="lineno">  731</span>      }</div>
+<div class="line"><span class="lineno">  732</span>      <span class="comment">// Copy scalar portion of replicated output.</span></div>
+<div class="line"><span class="lineno">  733</span>      <span class="keywordflow">for</span> (int64_t dm = 0; dm &lt; dm_scalar_size; ++dm)</div>
+<div class="line"><span class="lineno">  734</span>      {</div>
+<div class="line"><span class="lineno">  735</span>        accum += out_buffer[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> + dm_vectorized_size + dm];</div>
+<div class="line"><span class="lineno">  736</span>      }</div>
+<div class="line"><span class="lineno">  737</span>      <span class="comment">// Copy to output.</span></div>
+<div class="line"><span class="lineno">  738</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>[base_output_index + d] = accum;</div>
+<div class="line"><span class="lineno">  739</span>    }</div>
+<div class="line"><span class="lineno">  740</span>  }</div>
+<div class="line"><span class="lineno">  741</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1eigen__support_html_a71ec3d24ac083e38041c7a0605748a3c"><div class="ttname"><a href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">nnfw::cker::eigen_support::kPacketSize</a></div><div class="ttdeci">int64_t kPacketSize()</div><div class="ttdef"><b>Definition</b> <a href="_eigen_support_8h_source.html#l00116">EigenSupport.h:116</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -729,68 +736,68 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00356">356</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  361</span>{</div>
-<div class="line"><span class="lineno">  362</span>  <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
-<div class="line"><span class="lineno">  363</span>  <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  364</span> </div>
-<div class="line"><span class="lineno">  365</span>  <span class="keyword">const</span> int64_t stride = stride_;</div>
-<div class="line"><span class="lineno">  366</span>  <span class="keyword">const</span> int64_t filter_rows = filter_rows_;</div>
-<div class="line"><span class="lineno">  367</span>  <span class="keyword">const</span> int64_t filter_cols = filter_cols_;</div>
-<div class="line"><span class="lineno">  368</span>  <span class="keyword">const</span> int64_t pad_rows = pad_rows_;</div>
-<div class="line"><span class="lineno">  369</span>  <span class="keyword">const</span> int64_t pad_cols = pad_cols_;</div>
-<div class="line"><span class="lineno">  370</span>  <span class="keyword">const</span> int64_t out_rows = out_rows_;</div>
-<div class="line"><span class="lineno">  371</span>  <span class="keyword">const</span> int64_t out_cols = out_cols_;</div>
-<div class="line"><span class="lineno">  372</span> </div>
-<div class="line"><span class="lineno">  373</span>  <span class="comment">// Calculate the output spatial region which used point (in_r, in_c) as input.</span></div>
-<div class="line"><span class="lineno">  374</span>  <span class="keyword">const</span> int64_t out_r_start =</div>
-<div class="line"><span class="lineno">  375</span>    std::max(<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(0), (in_r - filter_rows + pad_rows + stride) / stride);</div>
-<div class="line"><span class="lineno">  376</span>  <span class="keyword">const</span> int64_t out_r_end = std::min(out_rows - 1, (in_r + pad_rows) / stride);</div>
-<div class="line"><span class="lineno">  377</span>  <span class="keyword">const</span> int64_t out_c_start =</div>
-<div class="line"><span class="lineno">  378</span>    std::max(<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(0), (in_c - filter_cols + pad_cols + stride) / stride);</div>
-<div class="line"><span class="lineno">  379</span>  <span class="keyword">const</span> int64_t out_c_end = std::min(out_cols - 1, (in_c + pad_cols) / stride);</div>
-<div class="line"><span class="lineno">  380</span> </div>
-<div class="line"><span class="lineno">  381</span>  <span class="comment">// Zero-pad &#39;buffer&#39; if output region is smaller than filter spatial size.</span></div>
-<div class="line"><span class="lineno">  382</span>  <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
-<div class="line"><span class="lineno">  383</span>  <span class="keywordflow">if</span> ((out_r_end - out_r_start + 1) &lt; filter_rows || (out_c_end - out_c_start + 1) &lt; filter_cols)</div>
-<div class="line"><span class="lineno">  384</span>  {</div>
-<div class="line"><span class="lineno">  385</span>    memset(buffer, 0, filter_spatial_size * padded_filter_inner_dim_size * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  386</span>  }</div>
-<div class="line"><span class="lineno">  387</span> </div>
-<div class="line"><span class="lineno">  388</span>  <span class="comment">// Calculate vectorized and scalar (residual) lengths for &#39;in_depth&#39;.</span></div>
-<div class="line"><span class="lineno">  389</span>  <span class="keyword">const</span> int64_t vectorized_size = (out_depth / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  390</span>  <span class="keyword">const</span> int64_t scalar_size = out_depth % kPacketSize;</div>
-<div class="line"><span class="lineno">  391</span>  <span class="keyword">const</span> int64_t pad_size = scalar_size &gt; 0 ? kPacketSize - scalar_size : 0;</div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = out_r_start; out_r &lt;= out_r_end; ++out_r)</div>
-<div class="line"><span class="lineno">  394</span>  {</div>
-<div class="line"><span class="lineno">  395</span>    <span class="keyword">const</span> int64_t f_r = in_r + pad_rows - out_r * stride;</div>
-<div class="line"><span class="lineno">  396</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = out_c_start; out_c &lt;= out_c_end; ++out_c)</div>
-<div class="line"><span class="lineno">  397</span>    {</div>
-<div class="line"><span class="lineno">  398</span>      <span class="keyword">const</span> int64_t f_c = in_c + pad_cols - out_c * stride;</div>
-<div class="line"><span class="lineno">  399</span>      <span class="keyword">const</span> int64_t buf_base = (f_r * filter_cols + f_c) * padded_filter_inner_dim_size;</div>
-<div class="line"><span class="lineno">  400</span>      <span class="comment">// Calculate index into &#39;out_backprop&#39; for coordinate (out_r, out_c).</span></div>
-<div class="line"><span class="lineno">  401</span>      <span class="keyword">auto</span> *out_bprop = out_backprop + (out_r * out_cols + out_c) * out_depth;</div>
-<div class="line"><span class="lineno">  402</span> </div>
-<div class="line"><span class="lineno">  403</span>      <span class="comment">// Copy vectorized portion of inner dimension into &#39;buffer&#39;.</span></div>
-<div class="line"><span class="lineno">  404</span>      <span class="keywordflow">for</span> (int64_t d = 0; d &lt; vectorized_size; d += kPacketSize)</div>
-<div class="line"><span class="lineno">  405</span>      {</div>
-<div class="line"><span class="lineno">  406</span>        <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(out_bprop + d);</div>
-<div class="line"><span class="lineno">  407</span>        Eigen::internal::pstoreu&lt;T&gt;(buffer + buf_base + d, v);</div>
-<div class="line"><span class="lineno">  408</span>      }</div>
-<div class="line"><span class="lineno">  409</span>      <span class="comment">// Copy scalar portion of out_bprop to &#39;buffer&#39;</span></div>
-<div class="line"><span class="lineno">  410</span>      <span class="keywordflow">for</span> (int64_t d = 0; d &lt; scalar_size; ++d)</div>
-<div class="line"><span class="lineno">  411</span>      {</div>
-<div class="line"><span class="lineno">  412</span>        buffer[buf_base + vectorized_size + d] = out_bprop[vectorized_size + d];</div>
-<div class="line"><span class="lineno">  413</span>      }</div>
-<div class="line"><span class="lineno">  414</span>      <span class="comment">// Pad to vector-register width (if needed).</span></div>
-<div class="line"><span class="lineno">  415</span>      <span class="keywordflow">for</span> (int64_t d = 0; d &lt; pad_size; ++d)</div>
-<div class="line"><span class="lineno">  416</span>      {</div>
-<div class="line"><span class="lineno">  417</span>        buffer[buf_base + vectorized_size + scalar_size + d] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0);</div>
-<div class="line"><span class="lineno">  418</span>      }</div>
-<div class="line"><span class="lineno">  419</span>    }</div>
-<div class="line"><span class="lineno">  420</span>  }</div>
-<div class="line"><span class="lineno">  421</span>}</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00537">537</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  542</span>{</div>
+<div class="line"><span class="lineno">  543</span>  <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
+<div class="line"><span class="lineno">  544</span>  <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  545</span> </div>
+<div class="line"><span class="lineno">  546</span>  <span class="keyword">const</span> int64_t stride = stride_;</div>
+<div class="line"><span class="lineno">  547</span>  <span class="keyword">const</span> int64_t filter_rows = filter_rows_;</div>
+<div class="line"><span class="lineno">  548</span>  <span class="keyword">const</span> int64_t filter_cols = filter_cols_;</div>
+<div class="line"><span class="lineno">  549</span>  <span class="keyword">const</span> int64_t pad_rows = pad_rows_;</div>
+<div class="line"><span class="lineno">  550</span>  <span class="keyword">const</span> int64_t pad_cols = pad_cols_;</div>
+<div class="line"><span class="lineno">  551</span>  <span class="keyword">const</span> int64_t out_rows = out_rows_;</div>
+<div class="line"><span class="lineno">  552</span>  <span class="keyword">const</span> int64_t out_cols = out_cols_;</div>
+<div class="line"><span class="lineno">  553</span> </div>
+<div class="line"><span class="lineno">  554</span>  <span class="comment">// Calculate the output spatial region which used point (in_r, in_c) as input.</span></div>
+<div class="line"><span class="lineno">  555</span>  <span class="keyword">const</span> int64_t out_r_start =</div>
+<div class="line"><span class="lineno">  556</span>    std::max(<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(0), (in_r - filter_rows + pad_rows + stride) / stride);</div>
+<div class="line"><span class="lineno">  557</span>  <span class="keyword">const</span> int64_t out_r_end = std::min(out_rows - 1, (in_r + pad_rows) / stride);</div>
+<div class="line"><span class="lineno">  558</span>  <span class="keyword">const</span> int64_t out_c_start =</div>
+<div class="line"><span class="lineno">  559</span>    std::max(<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(0), (in_c - filter_cols + pad_cols + stride) / stride);</div>
+<div class="line"><span class="lineno">  560</span>  <span class="keyword">const</span> int64_t out_c_end = std::min(out_cols - 1, (in_c + pad_cols) / stride);</div>
+<div class="line"><span class="lineno">  561</span> </div>
+<div class="line"><span class="lineno">  562</span>  <span class="comment">// Zero-pad &#39;buffer&#39; if output region is smaller than filter spatial size.</span></div>
+<div class="line"><span class="lineno">  563</span>  <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  564</span>  <span class="keywordflow">if</span> ((out_r_end - out_r_start + 1) &lt; filter_rows || (out_c_end - out_c_start + 1) &lt; filter_cols)</div>
+<div class="line"><span class="lineno">  565</span>  {</div>
+<div class="line"><span class="lineno">  566</span>    memset(buffer, 0, filter_spatial_size * padded_filter_inner_dim_size * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  567</span>  }</div>
+<div class="line"><span class="lineno">  568</span> </div>
+<div class="line"><span class="lineno">  569</span>  <span class="comment">// Calculate vectorized and scalar (residual) lengths for &#39;in_depth&#39;.</span></div>
+<div class="line"><span class="lineno">  570</span>  <span class="keyword">const</span> int64_t vectorized_size = (out_depth / kPacketSize) * kPacketSize;</div>
+<div class="line"><span class="lineno">  571</span>  <span class="keyword">const</span> int64_t scalar_size = out_depth % kPacketSize;</div>
+<div class="line"><span class="lineno">  572</span>  <span class="keyword">const</span> int64_t pad_size = scalar_size &gt; 0 ? kPacketSize - scalar_size : 0;</div>
+<div class="line"><span class="lineno">  573</span> </div>
+<div class="line"><span class="lineno">  574</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = out_r_start; out_r &lt;= out_r_end; ++out_r)</div>
+<div class="line"><span class="lineno">  575</span>  {</div>
+<div class="line"><span class="lineno">  576</span>    <span class="keyword">const</span> int64_t f_r = in_r + pad_rows - out_r * stride;</div>
+<div class="line"><span class="lineno">  577</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = out_c_start; out_c &lt;= out_c_end; ++out_c)</div>
+<div class="line"><span class="lineno">  578</span>    {</div>
+<div class="line"><span class="lineno">  579</span>      <span class="keyword">const</span> int64_t f_c = in_c + pad_cols - out_c * stride;</div>
+<div class="line"><span class="lineno">  580</span>      <span class="keyword">const</span> int64_t buf_base = (f_r * filter_cols + f_c) * padded_filter_inner_dim_size;</div>
+<div class="line"><span class="lineno">  581</span>      <span class="comment">// Calculate index into &#39;out_backprop&#39; for coordinate (out_r, out_c).</span></div>
+<div class="line"><span class="lineno">  582</span>      <span class="keyword">auto</span> *out_bprop = out_backprop + (out_r * out_cols + out_c) * out_depth;</div>
+<div class="line"><span class="lineno">  583</span> </div>
+<div class="line"><span class="lineno">  584</span>      <span class="comment">// Copy vectorized portion of inner dimension into &#39;buffer&#39;.</span></div>
+<div class="line"><span class="lineno">  585</span>      <span class="keywordflow">for</span> (int64_t d = 0; d &lt; vectorized_size; d += kPacketSize)</div>
+<div class="line"><span class="lineno">  586</span>      {</div>
+<div class="line"><span class="lineno">  587</span>        <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(out_bprop + d);</div>
+<div class="line"><span class="lineno">  588</span>        Eigen::internal::pstoreu&lt;T&gt;(buffer + buf_base + d, v);</div>
+<div class="line"><span class="lineno">  589</span>      }</div>
+<div class="line"><span class="lineno">  590</span>      <span class="comment">// Copy scalar portion of out_bprop to &#39;buffer&#39;</span></div>
+<div class="line"><span class="lineno">  591</span>      <span class="keywordflow">for</span> (int64_t d = 0; d &lt; scalar_size; ++d)</div>
+<div class="line"><span class="lineno">  592</span>      {</div>
+<div class="line"><span class="lineno">  593</span>        buffer[buf_base + vectorized_size + d] = out_bprop[vectorized_size + d];</div>
+<div class="line"><span class="lineno">  594</span>      }</div>
+<div class="line"><span class="lineno">  595</span>      <span class="comment">// Pad to vector-register width (if needed).</span></div>
+<div class="line"><span class="lineno">  596</span>      <span class="keywordflow">for</span> (int64_t d = 0; d &lt; pad_size; ++d)</div>
+<div class="line"><span class="lineno">  597</span>      {</div>
+<div class="line"><span class="lineno">  598</span>        buffer[buf_base + vectorized_size + scalar_size + d] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0);</div>
+<div class="line"><span class="lineno">  599</span>      }</div>
+<div class="line"><span class="lineno">  600</span>    }</div>
+<div class="line"><span class="lineno">  601</span>  }</div>
+<div class="line"><span class="lineno">  602</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -906,48 +913,48 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00904">904</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  909</span>{</div>
-<div class="line"><span class="lineno">  910</span>  <span class="keywordtype">int</span> num_filter_backprop = filter_rows * filter_cols * in_depth * depth_multiplier;</div>
-<div class="line"><span class="lineno">  911</span>  memset(filter_backprop, 0, num_filter_backprop * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  912</span>  <span class="comment">// Naive for loop as a reference point without concerns about performance.</span></div>
-<div class="line"><span class="lineno">  913</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batch; ++b)</div>
-<div class="line"><span class="lineno">  914</span>  {</div>
-<div class="line"><span class="lineno">  915</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = 0; out_r &lt; out_rows; ++out_r)</div>
-<div class="line"><span class="lineno">  916</span>    {</div>
-<div class="line"><span class="lineno">  917</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = 0; out_c &lt; out_cols; ++out_c)</div>
-<div class="line"><span class="lineno">  918</span>      {</div>
-<div class="line"><span class="lineno">  919</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = 0; out_d &lt; out_depth; ++out_d)</div>
-<div class="line"><span class="lineno">  920</span>        {</div>
-<div class="line"><span class="lineno">  921</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_d = out_d / depth_multiplier;</div>
-<div class="line"><span class="lineno">  922</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> dm = out_d % depth_multiplier;</div>
-<div class="line"><span class="lineno">  923</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_r_start = out_r * stride - pad_rows;</div>
-<div class="line"><span class="lineno">  924</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_c_start = out_c * stride - pad_cols;</div>
-<div class="line"><span class="lineno">  925</span> </div>
-<div class="line"><span class="lineno">  926</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> f_r = 0; f_r &lt; filter_rows; ++f_r)</div>
-<div class="line"><span class="lineno">  927</span>          {</div>
-<div class="line"><span class="lineno">  928</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> f_c = 0; f_c &lt; filter_cols; ++f_c)</div>
-<div class="line"><span class="lineno">  929</span>            {</div>
-<div class="line"><span class="lineno">  930</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_r = in_r_start + f_r;</div>
-<div class="line"><span class="lineno">  931</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_c = in_c_start + f_c;</div>
-<div class="line"><span class="lineno">  932</span> </div>
-<div class="line"><span class="lineno">  933</span>              <span class="keywordflow">if</span> (in_r &gt;= 0 &amp;&amp; in_r &lt; in_rows &amp;&amp; in_c &gt;= 0 &amp;&amp; in_c &lt; in_cols)</div>
-<div class="line"><span class="lineno">  934</span>              {</div>
-<div class="line"><span class="lineno">  935</span>                <span class="keywordtype">int</span> out_backprop_offset =</div>
-<div class="line"><span class="lineno">  936</span>                  out_d + out_depth * (out_c + out_cols * (out_r + out_rows * b));</div>
-<div class="line"><span class="lineno">  937</span>                <span class="keywordtype">int</span> input_offset = in_d + in_depth * (in_c + in_cols * (in_r + in_rows * b));</div>
-<div class="line"><span class="lineno">  938</span>                <span class="keywordtype">int</span> filter_backprop_offset =</div>
-<div class="line"><span class="lineno">  939</span>                  dm + depth_multiplier * (in_d + in_depth * (f_c + filter_cols * f_r));</div>
-<div class="line"><span class="lineno">  940</span>                filter_backprop[filter_backprop_offset] +=</div>
-<div class="line"><span class="lineno">  941</span>                  input[input_offset] * out_backprop[out_backprop_offset];</div>
-<div class="line"><span class="lineno">  942</span>              }</div>
-<div class="line"><span class="lineno">  943</span>            }</div>
-<div class="line"><span class="lineno">  944</span>          }</div>
-<div class="line"><span class="lineno">  945</span>        }</div>
-<div class="line"><span class="lineno">  946</span>      }</div>
-<div class="line"><span class="lineno">  947</span>    }</div>
-<div class="line"><span class="lineno">  948</span>  }</div>
-<div class="line"><span class="lineno">  949</span>}</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l01085">1085</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1090</span>{</div>
+<div class="line"><span class="lineno"> 1091</span>  <span class="keywordtype">int</span> num_filter_backprop = filter_rows * filter_cols * in_depth * depth_multiplier;</div>
+<div class="line"><span class="lineno"> 1092</span>  memset(filter_backprop, 0, num_filter_backprop * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno"> 1093</span>  <span class="comment">// Naive for loop as a reference point without concerns about performance.</span></div>
+<div class="line"><span class="lineno"> 1094</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batch; ++b)</div>
+<div class="line"><span class="lineno"> 1095</span>  {</div>
+<div class="line"><span class="lineno"> 1096</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = 0; out_r &lt; out_rows; ++out_r)</div>
+<div class="line"><span class="lineno"> 1097</span>    {</div>
+<div class="line"><span class="lineno"> 1098</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = 0; out_c &lt; out_cols; ++out_c)</div>
+<div class="line"><span class="lineno"> 1099</span>      {</div>
+<div class="line"><span class="lineno"> 1100</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = 0; out_d &lt; out_depth; ++out_d)</div>
+<div class="line"><span class="lineno"> 1101</span>        {</div>
+<div class="line"><span class="lineno"> 1102</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_d = out_d / depth_multiplier;</div>
+<div class="line"><span class="lineno"> 1103</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> dm = out_d % depth_multiplier;</div>
+<div class="line"><span class="lineno"> 1104</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_r_start = out_r * stride - pad_rows;</div>
+<div class="line"><span class="lineno"> 1105</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_c_start = out_c * stride - pad_cols;</div>
+<div class="line"><span class="lineno"> 1106</span> </div>
+<div class="line"><span class="lineno"> 1107</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> f_r = 0; f_r &lt; filter_rows; ++f_r)</div>
+<div class="line"><span class="lineno"> 1108</span>          {</div>
+<div class="line"><span class="lineno"> 1109</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> f_c = 0; f_c &lt; filter_cols; ++f_c)</div>
+<div class="line"><span class="lineno"> 1110</span>            {</div>
+<div class="line"><span class="lineno"> 1111</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_r = in_r_start + f_r;</div>
+<div class="line"><span class="lineno"> 1112</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> in_c = in_c_start + f_c;</div>
+<div class="line"><span class="lineno"> 1113</span> </div>
+<div class="line"><span class="lineno"> 1114</span>              <span class="keywordflow">if</span> (in_r &gt;= 0 &amp;&amp; in_r &lt; in_rows &amp;&amp; in_c &gt;= 0 &amp;&amp; in_c &lt; in_cols)</div>
+<div class="line"><span class="lineno"> 1115</span>              {</div>
+<div class="line"><span class="lineno"> 1116</span>                <span class="keywordtype">int</span> out_backprop_offset =</div>
+<div class="line"><span class="lineno"> 1117</span>                  out_d + out_depth * (out_c + out_cols * (out_r + out_rows * b));</div>
+<div class="line"><span class="lineno"> 1118</span>                <span class="keywordtype">int</span> input_offset = in_d + in_depth * (in_c + in_cols * (in_r + in_rows * b));</div>
+<div class="line"><span class="lineno"> 1119</span>                <span class="keywordtype">int</span> filter_backprop_offset =</div>
+<div class="line"><span class="lineno"> 1120</span>                  dm + depth_multiplier * (in_d + in_depth * (f_c + filter_cols * f_r));</div>
+<div class="line"><span class="lineno"> 1121</span>                filter_backprop[filter_backprop_offset] +=</div>
+<div class="line"><span class="lineno"> 1122</span>                  input[input_offset] * out_backprop[out_backprop_offset];</div>
+<div class="line"><span class="lineno"> 1123</span>              }</div>
+<div class="line"><span class="lineno"> 1124</span>            }</div>
+<div class="line"><span class="lineno"> 1125</span>          }</div>
+<div class="line"><span class="lineno"> 1126</span>        }</div>
+<div class="line"><span class="lineno"> 1127</span>      }</div>
+<div class="line"><span class="lineno"> 1128</span>    }</div>
+<div class="line"><span class="lineno"> 1129</span>  }</div>
+<div class="line"><span class="lineno"> 1130</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1063,53 +1070,53 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00639">639</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  644</span>{</div>
-<div class="line"><span class="lineno">  645</span>  <span class="comment">// Naive for loop as a reference point without concerns about performance.</span></div>
-<div class="line"><span class="lineno">  646</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batch; ++b)</div>
-<div class="line"><span class="lineno">  647</span>  {</div>
-<div class="line"><span class="lineno">  648</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_r = 0; in_r &lt; in_rows; ++in_r)</div>
-<div class="line"><span class="lineno">  649</span>    {</div>
-<div class="line"><span class="lineno">  650</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_c = 0; in_c &lt; in_cols; ++in_c)</div>
-<div class="line"><span class="lineno">  651</span>      {</div>
-<div class="line"><span class="lineno">  652</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_d = 0; in_d &lt; in_depth; ++in_d)</div>
-<div class="line"><span class="lineno">  653</span>        {</div>
-<div class="line"><span class="lineno">  654</span>          T sum = 0;</div>
-<div class="line"><span class="lineno">  655</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> out_d_start = in_d * depth_multiplier;</div>
-<div class="line"><span class="lineno">  656</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> out_d_end = out_d_start + depth_multiplier;</div>
-<div class="line"><span class="lineno">  657</span> </div>
-<div class="line"><span class="lineno">  658</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = out_d_start; out_d &lt; out_d_end; ++out_d)</div>
-<div class="line"><span class="lineno">  659</span>          {</div>
-<div class="line"><span class="lineno">  660</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> out_r_start = std::max(0, (in_r - filter_rows + pad_rows + stride) / stride);</div>
-<div class="line"><span class="lineno">  661</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> out_r_end = std::min(out_rows - 1, (in_r + pad_rows) / stride);</div>
-<div class="line"><span class="lineno">  662</span> </div>
-<div class="line"><span class="lineno">  663</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = out_r_start; out_r &lt;= out_r_end; ++out_r)</div>
-<div class="line"><span class="lineno">  664</span>            {</div>
-<div class="line"><span class="lineno">  665</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> out_c_start =</div>
-<div class="line"><span class="lineno">  666</span>                std::max(0, (in_c - filter_cols + pad_cols + stride) / stride);</div>
-<div class="line"><span class="lineno">  667</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> out_c_end = std::min(out_cols - 1, (in_c + pad_cols) / stride);</div>
-<div class="line"><span class="lineno">  668</span> </div>
-<div class="line"><span class="lineno">  669</span>              <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = out_c_start; out_c &lt;= out_c_end; ++out_c)</div>
-<div class="line"><span class="lineno">  670</span>              {</div>
-<div class="line"><span class="lineno">  671</span>                <span class="keywordtype">int</span> f_r = in_r + pad_rows - out_r * stride;</div>
-<div class="line"><span class="lineno">  672</span>                <span class="keywordtype">int</span> f_c = in_c + pad_cols - out_c * stride;</div>
-<div class="line"><span class="lineno">  673</span>                <span class="keywordtype">int</span> filter_dm = out_d - out_d_start;</div>
-<div class="line"><span class="lineno">  674</span>                <span class="keywordtype">int</span> out_backprop_offset =</div>
-<div class="line"><span class="lineno">  675</span>                  out_d + out_depth * (out_c + out_cols * (out_r + out_rows * b));</div>
-<div class="line"><span class="lineno">  676</span>                <span class="keywordtype">int</span> filter_offset =</div>
-<div class="line"><span class="lineno">  677</span>                  filter_dm + depth_multiplier * (in_d + in_depth * (f_c + filter_cols * f_r));</div>
-<div class="line"><span class="lineno">  678</span>                sum += out_backprop[out_backprop_offset] * filter[filter_offset];</div>
-<div class="line"><span class="lineno">  679</span>              }</div>
-<div class="line"><span class="lineno">  680</span>            }</div>
-<div class="line"><span class="lineno">  681</span>          }</div>
-<div class="line"><span class="lineno">  682</span> </div>
-<div class="line"><span class="lineno">  683</span>          <span class="keywordtype">int</span> in_backprop_offset = in_d + in_depth * (in_c + in_cols * (in_r + in_rows * b));</div>
-<div class="line"><span class="lineno">  684</span>          in_backprop[in_backprop_offset] = sum;</div>
-<div class="line"><span class="lineno">  685</span>        }</div>
-<div class="line"><span class="lineno">  686</span>      }</div>
-<div class="line"><span class="lineno">  687</span>    }</div>
-<div class="line"><span class="lineno">  688</span>  }</div>
-<div class="line"><span class="lineno">  689</span>}</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00820">820</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  825</span>{</div>
+<div class="line"><span class="lineno">  826</span>  <span class="comment">// Naive for loop as a reference point without concerns about performance.</span></div>
+<div class="line"><span class="lineno">  827</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batch; ++b)</div>
+<div class="line"><span class="lineno">  828</span>  {</div>
+<div class="line"><span class="lineno">  829</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_r = 0; in_r &lt; in_rows; ++in_r)</div>
+<div class="line"><span class="lineno">  830</span>    {</div>
+<div class="line"><span class="lineno">  831</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_c = 0; in_c &lt; in_cols; ++in_c)</div>
+<div class="line"><span class="lineno">  832</span>      {</div>
+<div class="line"><span class="lineno">  833</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_d = 0; in_d &lt; in_depth; ++in_d)</div>
+<div class="line"><span class="lineno">  834</span>        {</div>
+<div class="line"><span class="lineno">  835</span>          T sum = 0;</div>
+<div class="line"><span class="lineno">  836</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> out_d_start = in_d * depth_multiplier;</div>
+<div class="line"><span class="lineno">  837</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> out_d_end = out_d_start + depth_multiplier;</div>
+<div class="line"><span class="lineno">  838</span> </div>
+<div class="line"><span class="lineno">  839</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = out_d_start; out_d &lt; out_d_end; ++out_d)</div>
+<div class="line"><span class="lineno">  840</span>          {</div>
+<div class="line"><span class="lineno">  841</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> out_r_start = std::max(0, (in_r - filter_rows + pad_rows + stride) / stride);</div>
+<div class="line"><span class="lineno">  842</span>            <span class="keyword">const</span> <span class="keywordtype">int</span> out_r_end = std::min(out_rows - 1, (in_r + pad_rows) / stride);</div>
+<div class="line"><span class="lineno">  843</span> </div>
+<div class="line"><span class="lineno">  844</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = out_r_start; out_r &lt;= out_r_end; ++out_r)</div>
+<div class="line"><span class="lineno">  845</span>            {</div>
+<div class="line"><span class="lineno">  846</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> out_c_start =</div>
+<div class="line"><span class="lineno">  847</span>                std::max(0, (in_c - filter_cols + pad_cols + stride) / stride);</div>
+<div class="line"><span class="lineno">  848</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> out_c_end = std::min(out_cols - 1, (in_c + pad_cols) / stride);</div>
+<div class="line"><span class="lineno">  849</span> </div>
+<div class="line"><span class="lineno">  850</span>              <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = out_c_start; out_c &lt;= out_c_end; ++out_c)</div>
+<div class="line"><span class="lineno">  851</span>              {</div>
+<div class="line"><span class="lineno">  852</span>                <span class="keywordtype">int</span> f_r = in_r + pad_rows - out_r * stride;</div>
+<div class="line"><span class="lineno">  853</span>                <span class="keywordtype">int</span> f_c = in_c + pad_cols - out_c * stride;</div>
+<div class="line"><span class="lineno">  854</span>                <span class="keywordtype">int</span> filter_dm = out_d - out_d_start;</div>
+<div class="line"><span class="lineno">  855</span>                <span class="keywordtype">int</span> out_backprop_offset =</div>
+<div class="line"><span class="lineno">  856</span>                  out_d + out_depth * (out_c + out_cols * (out_r + out_rows * b));</div>
+<div class="line"><span class="lineno">  857</span>                <span class="keywordtype">int</span> filter_offset =</div>
+<div class="line"><span class="lineno">  858</span>                  filter_dm + depth_multiplier * (in_d + in_depth * (f_c + filter_cols * f_r));</div>
+<div class="line"><span class="lineno">  859</span>                sum += out_backprop[out_backprop_offset] * filter[filter_offset];</div>
+<div class="line"><span class="lineno">  860</span>              }</div>
+<div class="line"><span class="lineno">  861</span>            }</div>
+<div class="line"><span class="lineno">  862</span>          }</div>
+<div class="line"><span class="lineno">  863</span> </div>
+<div class="line"><span class="lineno">  864</span>          <span class="keywordtype">int</span> in_backprop_offset = in_d + in_depth * (in_c + in_cols * (in_r + in_rows * b));</div>
+<div class="line"><span class="lineno">  865</span>          in_backprop[in_backprop_offset] = sum;</div>
+<div class="line"><span class="lineno">  866</span>        }</div>
+<div class="line"><span class="lineno">  867</span>      }</div>
+<div class="line"><span class="lineno">  868</span>    }</div>
+<div class="line"><span class="lineno">  869</span>  }</div>
+<div class="line"><span class="lineno">  870</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

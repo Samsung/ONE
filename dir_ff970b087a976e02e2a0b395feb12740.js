@@ -40,7 +40,7 @@ var dir_ff970b087a976e02e2a0b395feb12740 =
     [ "NotEqual.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_not_equal_8cpp.html", null ],
     [ "Pack.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_pack_8cpp.html", null ],
     [ "Pad.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_pad_8cpp.html", null ],
-    [ "Relu.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u_8cpp.html", null ],
+    [ "Relu.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_relu_8cpp.html", null ],
     [ "Relu6.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_relu6_8cpp.html", null ],
     [ "Reshape.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_reshape_8cpp.html", null ],
     [ "Round.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_round_8cpp.html", null ],

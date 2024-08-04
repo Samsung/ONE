@@ -24,11 +24,10 @@ var namespaceonert_1_1compiler =
     [ "MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", "classonert_1_1compiler_1_1_multi_model_compiler" ],
     [ "OperandLowerInfo", "classonert_1_1compiler_1_1_operand_lower_info.html", "classonert_1_1compiler_1_1_operand_lower_info" ],
     [ "OperandObserver", "classonert_1_1compiler_1_1_operand_observer.html", "classonert_1_1compiler_1_1_operand_observer" ],
-    [ "OperationLowerInfo", "classonert_1_1compiler_1_1_operation_lower_info.html", "classonert_1_1compiler_1_1_operation_lower_info" ],
     [ "PermuteFactor", "classonert_1_1compiler_1_1_permute_factor.html", "classonert_1_1compiler_1_1_permute_factor" ],
     [ "ShapeValidator", "classonert_1_1compiler_1_1_shape_validator.html", "classonert_1_1compiler_1_1_shape_validator" ],
     [ "StaticShapeInferer", "classonert_1_1compiler_1_1_static_shape_inferer.html", "classonert_1_1compiler_1_1_static_shape_inferer" ],
     [ "TensorRegistries", "classonert_1_1compiler_1_1_tensor_registries.html", "classonert_1_1compiler_1_1_tensor_registries" ],
-    [ "CodeMap", "namespaceonert_1_1compiler.html#aaf581e48fee004c58d11ca806b3495d5", null ],
-    [ "PermuteFactorSet", "namespaceonert_1_1compiler.html#a1ab9bf7f615bf361c347862ef2cbbfbf", null ]
+    [ "BackendSet", "namespaceonert_1_1compiler.html#a1531caf327862e7b6899c52f8250419a", null ],
+    [ "CodeMap", "namespaceonert_1_1compiler.html#aaf581e48fee004c58d11ca806b3495d5", null ]
 ];

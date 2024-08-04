@@ -1,7 +1,7 @@
 var dir_7e9c85684296271996fc90f86c59e5a3 =
 [
     [ "ChromeTracingEventWriter.cc", "_chrome_tracing_event_writer_8cc.html", null ],
-    [ "ConfigSource.cc", "onert_2core_2src_2util_2_config_source_8cc.html", "onert_2core_2src_2util_2_config_source_8cc" ],
+    [ "ConfigSource.cc", "_config_source_8cc.html", "_config_source_8cc" ],
     [ "EventCollector.cc", "_event_collector_8cc.html", "_event_collector_8cc" ],
     [ "EventCollector.h", "_event_collector_8h.html", "_event_collector_8h" ],
     [ "EventRecorder.cc", "_event_recorder_8cc.html", null ],

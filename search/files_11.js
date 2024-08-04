@@ -11,7 +11,7 @@ var searchData=
   ['quantdepthwiseconv2dkernel_2eh_8',['QuantDepthwiseConv2DKernel.h',['../_quant_depthwise_conv2_d_kernel_8h.html',1,'']]],
   ['quantfullyconnectedkernel_2eh_9',['QuantFullyConnectedKernel.h',['../_quant_fully_connected_kernel_8h.html',1,'']]],
   ['quantization_2ecpp_10',['Quantization.cpp',['../_quantization_8cpp.html',1,'']]],
-  ['quantization_2eh_11',['quantization.h',['../mir-interpreter_2src_2ops_2_quantization_8h.html',1,'(Global Namespace)'],['../mir_2include_2mir_2_quantization_8h.html',1,'(Global Namespace)']]],
+  ['quantization_2eh_11',['quantization.h',['../mir_2include_2mir_2_quantization_8h.html',1,'(Global Namespace)'],['../mir-interpreter_2src_2ops_2_quantization_8h.html',1,'(Global Namespace)']]],
   ['quantizationhelpers_2eh_12',['QuantizationHelpers.h',['../_quantization_helpers_8h.html',1,'']]],
   ['quantizationparameters_2eh_13',['QuantizationParameters.h',['../_quantization_parameters_8h.html',1,'']]],
   ['quantizationutils_2ecpp_14',['QuantizationUtils.cpp',['../_quantization_utils_8cpp.html',1,'']]],

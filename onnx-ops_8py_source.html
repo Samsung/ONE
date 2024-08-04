@@ -139,8 +139,8 @@ $(document).ready(function(){initNavTree('onnx-ops_8py_source.html',''); initRes
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">if</span> len(sys.argv) &lt; 2:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <a class="code hl_function" href="namespaceonnx-ops.html#afd4b05a277e970dc671dde08d3968291">_help_exit</a>(os.path.basename(sys.argv[0]))</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    onnx_model = onnx.load(sys.argv[1])</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    onnx.checker.check_model(onnx_model)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    onnx.checker.check_model(sys.argv[1])</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    onnx_model = onnx.load(sys.argv[1])</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_function" href="namespaceonnx-ops.html#a1dd3ac826af809699b0127fbea83a4d1">_dump_operators</a>(onnx_model)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>

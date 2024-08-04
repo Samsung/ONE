@@ -1,10 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"_quantize_onnx_dequantize_linear_pass_8h.html":[37,0,0,55,7,1,75],
-"_quantize_onnx_dequantize_linear_pass_8h_source.html":[37,0,0,55,7,1,75],
-"_quantize_onnx_fake_quant_model_pass_8cpp.html":[37,0,0,55,7,1,76],
-"_quantize_onnx_fake_quant_model_pass_8cpp_source.html":[37,0,0,55,7,1,76],
-"_quantize_onnx_fake_quant_model_pass_8h.html":[37,0,0,55,7,0,0,0,52],
 "_quantize_onnx_fake_quant_model_pass_8h_source.html":[37,0,0,55,7,0,0,0,52],
 "_quantize_onnx_q_d_q_pass_8cpp.html":[37,0,0,55,7,1,77],
 "_quantize_onnx_q_d_q_pass_8cpp_source.html":[37,0,0,55,7,1,77],
@@ -249,5 +244,10 @@ var NAVTREEINDEX24 =
 "_reducer_options_8cpp.html#a5beb1da5ed8b65ea4905adf1ae7a373c":[37,0,0,129,2,0,118,0],
 "_reducer_options_8cpp_source.html":[37,0,0,129,2,0,118],
 "_reducer_options_8h.html":[37,0,0,129,2,0,119],
-"_reducer_options_8h.html#a5beb1da5ed8b65ea4905adf1ae7a373c":[37,0,0,129,2,0,119,0]
+"_reducer_options_8h.html#a5beb1da5ed8b65ea4905adf1ae7a373c":[37,0,0,129,2,0,119,0],
+"_reducer_options_8h_source.html":[37,0,0,129,2,0,119],
+"_region_8h.html":[37,0,0,76,0,0,14],
+"_region_8h_source.html":[37,0,0,76,0,0,14],
+"_relative_epsilon_equal_8cpp.html":[37,0,0,84,1,1],
+"_relative_epsilon_equal_8cpp.html#ac8bad5e576ae5a8bab0dec7cef430d1d":[37,0,0,84,1,1,0]
 };

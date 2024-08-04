@@ -1,5 +1,8 @@
 var NAVTREEINDEX16 =
 {
+"_maximum_canonicalizer_8h.html":[37,0,0,81,1,0,19],
+"_maximum_canonicalizer_8h_source.html":[37,0,0,81,1,0,19],
+"_maximum_minimum_options_8cpp.html":[37,0,0,129,2,0,88],
 "_maximum_minimum_options_8cpp.html#a1da0cfe6cf4927e5e0753ee8f3ff0dcf":[37,0,0,129,2,0,88,0],
 "_maximum_minimum_options_8cpp_source.html":[37,0,0,129,2,0,88],
 "_maximum_minimum_options_8h.html":[37,0,0,129,2,0,89],
@@ -246,8 +249,5 @@ var NAVTREEINDEX16 =
 "_n_e_hashtable_lookup_8h_source.html":[37,0,1,0,0,1,1,0,6],
 "_n_e_hashtable_lookup_kernel_8cpp.html":[37,0,1,0,1,0,1,0,4],
 "_n_e_hashtable_lookup_kernel_8cpp_source.html":[37,0,1,0,1,0,1,0,4],
-"_n_e_hashtable_lookup_kernel_8h.html":[37,0,1,0,0,0,1,0,4],
-"_n_e_hashtable_lookup_kernel_8h_source.html":[37,0,1,0,0,0,1,0,4],
-"_n_e_instance_normalization_layer_ex_8cpp.html":[37,0,1,0,1,1,1,0,7],
-"_n_e_instance_normalization_layer_ex_8cpp_source.html":[37,0,1,0,1,1,1,0,7]
+"_n_e_hashtable_lookup_kernel_8h.html":[37,0,1,0,0,0,1,0,4]
 };

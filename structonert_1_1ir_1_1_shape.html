@@ -127,8 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aba0fdac19a8a53394ee58a19a07c5b8f" id="r_aba0fdac19a8a53394ee58a19a07c5b8f"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#aba0fdac19a8a53394ee58a19a07c5b8f">num_elements</a> () const</td></tr>
 <tr class="memdesc:aba0fdac19a8a53394ee58a19a07c5b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of elements when rank or dim is specified.  <br /></td></tr>
 <tr class="separator:aba0fdac19a8a53394ee58a19a07c5b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8f4433cb2e4e7293f8dd1a11879de21" id="r_ad8f4433cb2e4e7293f8dd1a11879de21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1ir_1_1_feature_shape.html">FeatureShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#ad8f4433cb2e4e7293f8dd1a11879de21">asFeature</a> (<a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">Layout</a> layout) const</td></tr>
-<tr class="separator:ad8f4433cb2e4e7293f8dd1a11879de21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a539d62b0784f1a2768ee267111a2d903" id="r_a539d62b0784f1a2768ee267111a2d903"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1ir_1_1_feature_shape.html">FeatureShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#a539d62b0784f1a2768ee267111a2d903">asFeature</a> () const</td></tr>
+<tr class="separator:a539d62b0784f1a2768ee267111a2d903"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3572611b7410e0abf74cc9db837e3dec" id="r_a3572611b7410e0abf74cc9db837e3dec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#a3572611b7410e0abf74cc9db837e3dec">prepend</a> (int32_t d)</td></tr>
 <tr class="memdesc:a3572611b7410e0abf74cc9db837e3dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add dimension to the beginning.  <br /></td></tr>
 <tr class="separator:a3572611b7410e0abf74cc9db837e3dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,8 +274,8 @@ Static Public Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ad8f4433cb2e4e7293f8dd1a11879de21" name="ad8f4433cb2e4e7293f8dd1a11879de21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8f4433cb2e4e7293f8dd1a11879de21">&#9670;&#160;</a></span>asFeature()</h2>
+<a id="a539d62b0784f1a2768ee267111a2d903" name="a539d62b0784f1a2768ee267111a2d903"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a539d62b0784f1a2768ee267111a2d903">&#9670;&#160;</a></span>asFeature()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,8 +283,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="structonert_1_1ir_1_1_feature_shape.html">FeatureShape</a> Shape::asFeature </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">Layout</a>&#160;</td>
-          <td class="paramname"><em>layout</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -294,46 +293,21 @@ Static Public Attributes</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
 <div class="line"><span class="lineno">   36</span>  assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 4);</div>
 <div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">Layout::NHWC</a>)</div>
-<div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    <span class="comment">// Feature Map in NHWC layout</span></div>
-<div class="line"><span class="lineno">   41</span>    <span class="comment">//  - Dimension(0) -&gt; Batch</span></div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment">//  - Dimension(1) -&gt; Height</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="comment">//  - Dimension(2) -&gt; Width</span></div>
-<div class="line"><span class="lineno">   44</span>    <span class="comment">//  - Dimension(3) -&gt; Depth</span></div>
-<div class="line"><span class="lineno">   45</span>    <span class="keyword">const</span> <span class="keyword">auto</span> batch = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(0);</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keyword">const</span> <span class="keyword">auto</span> depth = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(3);</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keyword">const</span> <span class="keyword">auto</span> height = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(1);</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keyword">const</span> <span class="keyword">auto</span> width = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(2);</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> {batch, depth, height, width};</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">Layout::NCHW</a>)</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="comment">// Feature Map in NHWC layout</span></div>
-<div class="line"><span class="lineno">   55</span>    <span class="comment">//  - Dimension(0) -&gt; Batch</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="comment">//  - Dimension(1) -&gt; Depth</span></div>
-<div class="line"><span class="lineno">   57</span>    <span class="comment">//  - Dimension(2) -&gt; Height</span></div>
-<div class="line"><span class="lineno">   58</span>    <span class="comment">//  - Dimension(3) -&gt; Width</span></div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> batch = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(0);</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> depth = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(1);</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keyword">const</span> <span class="keyword">auto</span> height = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(2);</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keyword">const</span> <span class="keyword">auto</span> width = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(3);</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> {batch, depth, height, width};</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   67</span>  {</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong Layout&quot;</span>);</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
-<div class="line"><span class="lineno">   70</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::Layout::NCHW</a></div><div class="ttdeci">@ NCHW</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// Feature Map in NHWC layout</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">//  - Dimension(0) -&gt; Batch</span></div>
+<div class="line"><span class="lineno">   40</span>  <span class="comment">//  - Dimension(1) -&gt; Height</span></div>
+<div class="line"><span class="lineno">   41</span>  <span class="comment">//  - Dimension(2) -&gt; Width</span></div>
+<div class="line"><span class="lineno">   42</span>  <span class="comment">//  - Dimension(3) -&gt; Depth</span></div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(0);</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> depth = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(3);</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> height = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(1);</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> width = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(2);</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> {batch, depth, height, width};</div>
+<div class="line"><span class="lineno">   49</span>}</div>
 <div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a3c78b1b9d3b66da28ddacb66cd1ea305"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">onert::ir::Shape::dim</a></div><div class="ttdeci">int32_t dim(int i) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00086">Shape.h:86</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a530b621694e26ce618cb936985d9e4de"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">onert::ir::Shape::rank</a></div><div class="ttdeci">int rank() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00082">Shape.h:82</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::NCHW</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>.</p>
-
 </div>
 </div>
 <a id="a918d69012fd4ccdf080e4bb3be69baf8" name="a918d69012fd4ccdf080e4bb3be69baf8"></a>
@@ -451,11 +425,11 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00073">73</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>  assert(to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() &gt;= 0);</div>
-<div class="line"><span class="lineno">   76</span>  _dimensions.insert(_dimensions.cbegin(), to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>(), 1);</div>
-<div class="line"><span class="lineno">   77</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00052">52</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  assert(to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() &gt;= 0);</div>
+<div class="line"><span class="lineno">   55</span>  _dimensions.insert(_dimensions.cbegin(), to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>(), 1);</div>
+<div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -511,16 +485,16 @@ Static Public Attributes</h2></td></tr>
 
 <p>Returns number of elements when rank or dim is specified. </p>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00079">79</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
-<div class="line"><span class="lineno">   81</span>  <span class="comment">// if dimension is 0, it means unspecified and cannot calculate the total number of elements</span></div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">if</span> (std::any_of(_dimensions.begin(), _dimensions.end(),</div>
-<div class="line"><span class="lineno">   83</span>                  [](<span class="keyword">const</span> int32_t &amp;v) { return v == kUnspecifiedDim; }))</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_elements() cannot calculate when any dimension is unspecified&quot;</span>);</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">return</span> std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),</div>
-<div class="line"><span class="lineno">   87</span>                         std::multiplies&lt;uint64_t&gt;());</div>
-<div class="line"><span class="lineno">   88</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00058">58</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
+<div class="line"><span class="lineno">   60</span>  <span class="comment">// if dimension is 0, it means unspecified and cannot calculate the total number of elements</span></div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> (std::any_of(_dimensions.begin(), _dimensions.end(),</div>
+<div class="line"><span class="lineno">   62</span>                  [](<span class="keyword">const</span> int32_t &amp;v) { return v == kUnspecifiedDim; }))</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_elements() cannot calculate when any dimension is unspecified&quot;</span>);</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">return</span> std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),</div>
+<div class="line"><span class="lineno">   66</span>                         std::multiplies&lt;uint64_t&gt;());</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

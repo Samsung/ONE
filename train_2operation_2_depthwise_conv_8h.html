@@ -90,8 +90,8 @@ $(document).ready(function(){initNavTree('train_2operation_2_depthwise_conv_8h.h
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">DepthwiseConv.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -101,11 +101,6 @@ $(document).ready(function(){initNavTree('train_2operation_2_depthwise_conv_8h.h
 </div>
 <p><a href="train_2operation_2_depthwise_conv_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnfw_1_1cker_1_1train_1_1_depthwise_conv.html">nnfw::cker::train::DepthwiseConv</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacennfw" id="r_namespacennfw"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw.html">nnfw</a></td></tr>
@@ -114,6 +109,15 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacennfw_1_1cker_1_1train" id="r_namespacennfw_1_1cker_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html">nnfw::cker::train</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ab5e2c300d9ed295648666756c71feb62" id="r_ab5e2c300d9ed295648666756c71feb62"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab5e2c300d9ed295648666756c71feb62"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#ab5e2c300d9ed295648666756c71feb62">nnfw::cker::train::backpropInput</a> (const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const T *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;filter_shape, const T *filter_data, T *padded_filter_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, T *grad_data, bool pad_filter, T *filter_buffers_data, T *filter_dim_buffers_data)</td></tr>
+<tr class="separator:ab5e2c300d9ed295648666756c71feb62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa557edc3da8f89cd18ec72143ceae8ab" id="r_aa557edc3da8f89cd18ec72143ceae8ab"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aa557edc3da8f89cd18ec72143ceae8ab"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#aa557edc3da8f89cd18ec72143ceae8ab">nnfw::cker::train::backpropFilter</a> (const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const T *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;filter_grad_shape, T *filter_grad_data, T *padded_filter_data, T *filter_buffers_data)</td></tr>
+<tr class="separator:aa557edc3da8f89cd18ec72143ceae8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

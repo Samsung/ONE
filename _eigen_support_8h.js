@@ -7,5 +7,7 @@ var _eigen_support_8h =
     [ "ConstEigenTensor", "_eigen_support_8h.html#adef6074f5f6bd57fd4a603a41790ddc1", null ],
     [ "EigenMatrix", "_eigen_support_8h.html#acf6afdea948d2e16237e5acbc1f7e40b", null ],
     [ "EigenTensor", "_eigen_support_8h.html#a78670a103d0a007ffe0e739ce262ac62", null ],
-    [ "GetThreadPoolDevice", "_eigen_support_8h.html#ad3d8188ac35aa1743753227da5d291c2", null ]
+    [ "getThreadCount", "_eigen_support_8h.html#a0c7e4debfde16ff74547b11134db9d35", null ],
+    [ "GetThreadPoolDevice", "_eigen_support_8h.html#ad3d8188ac35aa1743753227da5d291c2", null ],
+    [ "kPacketSize", "_eigen_support_8h.html#a71ec3d24ac083e38041c7a0605748a3c", null ]
 ];

@@ -7,12 +7,11 @@ var searchData=
   ['nnfw_5fquantize_5ftype_4',['NNFW_QUANTIZE_TYPE',['../nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7',1,'nnfw_experimental.h']]],
   ['nnfw_5frun_5fconfig_5',['NNFW_RUN_CONFIG',['../nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d',1,'nnfw_experimental.h']]],
   ['nnfw_5fstatus_6',['nnfw_status',['../onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9',1,'NNFW_STATUS:&#160;onert-micro.h'],['../nnfw_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9',1,'NNFW_STATUS:&#160;nnfw.h']]],
-  ['nnfw_5ftrain_5floss_7',['nnfw_train_loss',['../onert-micro_8h.html#ade1163c5c3fe306a3abad6b83a4d9660',1,'NNFW_TRAIN_LOSS:&#160;onert-micro.h'],['../nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660',1,'NNFW_TRAIN_LOSS:&#160;nnfw_experimental.h']]],
+  ['nnfw_5ftrain_5floss_7',['nnfw_train_loss',['../nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660',1,'NNFW_TRAIN_LOSS:&#160;nnfw_experimental.h'],['../onert-micro_8h.html#ade1163c5c3fe306a3abad6b83a4d9660',1,'NNFW_TRAIN_LOSS:&#160;onert-micro.h']]],
   ['nnfw_5ftrain_5floss_5freduction_8',['nnfw_train_loss_reduction',['../onert-micro_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1',1,'NNFW_TRAIN_LOSS_REDUCTION:&#160;onert-micro.h'],['../nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1',1,'NNFW_TRAIN_LOSS_REDUCTION:&#160;nnfw_experimental.h']]],
   ['nnfw_5ftrain_5fnum_5fof_5ftrainable_5fops_5fspecial_5fvalues_9',['NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES',['../nnfw__experimental_8h.html#a78852bb190ed919014dc43ad291e618d',1,'nnfw_experimental.h']]],
   ['nnfw_5ftrain_5foptimizer_10',['nnfw_train_optimizer',['../onert-micro_8h.html#a66ead5bca803075bd7324609b3388bf4',1,'NNFW_TRAIN_OPTIMIZER:&#160;onert-micro.h'],['../nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4',1,'NNFW_TRAIN_OPTIMIZER:&#160;nnfw_experimental.h']]],
   ['nnfw_5ftype_11',['nnfw_type',['../onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757',1,'NNFW_TYPE:&#160;onert-micro.h'],['../nnfw_8h.html#ae2dabfc116ea115837d140e7db45c757',1,'NNFW_TYPE:&#160;nnfw.h']]],
   ['nodebuildertype_12',['NodeBuilderType',['../namespaceluci.html#ad2a8941614b11ceb2bee2c1cfdc2adaa',1,'luci']]],
-  ['nodetrait_13',['NodeTrait',['../namespaceloco.html#a8e53ce9f08044e5eb046e5808b9f73a7',1,'loco']]],
-  ['npustatus_14',['NpuStatus',['../namespacenpud_1_1core.html#aa46de468ae27e9ab584304ce7e6de919',1,'npud::core']]]
+  ['nodetrait_13',['NodeTrait',['../namespaceloco.html#a8e53ce9f08044e5eb046e5808b9f73a7',1,'loco']]]
 ];

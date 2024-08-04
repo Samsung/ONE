@@ -491,7 +491,6 @@ var namespaces_dup =
     [ "nnkit", "namespacennkit.html", "namespacennkit" ],
     [ "nnop", "namespacennop.html", "namespacennop" ],
     [ "nnsuite", "namespacennsuite.html", "namespacennsuite" ],
-    [ "npud", "namespacenpud.html", "namespacenpud" ],
     [ "onert", "namespaceonert.html", "namespaceonert" ],
     [ "onert_micro", "namespaceonert__micro.html", "namespaceonert__micro" ],
     [ "onert_test", "namespaceonert__test.html", "namespaceonert__test" ],

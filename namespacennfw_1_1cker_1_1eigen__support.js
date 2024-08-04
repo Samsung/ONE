@@ -7,5 +7,7 @@ var namespacennfw_1_1cker_1_1eigen__support =
     [ "ConstEigenTensor", "namespacennfw_1_1cker_1_1eigen__support.html#adef6074f5f6bd57fd4a603a41790ddc1", null ],
     [ "EigenMatrix", "namespacennfw_1_1cker_1_1eigen__support.html#acf6afdea948d2e16237e5acbc1f7e40b", null ],
     [ "EigenTensor", "namespacennfw_1_1cker_1_1eigen__support.html#a78670a103d0a007ffe0e739ce262ac62", null ],
-    [ "GetThreadPoolDevice", "namespacennfw_1_1cker_1_1eigen__support.html#ad3d8188ac35aa1743753227da5d291c2", null ]
+    [ "getThreadCount", "namespacennfw_1_1cker_1_1eigen__support.html#a0c7e4debfde16ff74547b11134db9d35", null ],
+    [ "GetThreadPoolDevice", "namespacennfw_1_1cker_1_1eigen__support.html#ad3d8188ac35aa1743753227da5d291c2", null ],
+    [ "kPacketSize", "namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c", null ]
 ];

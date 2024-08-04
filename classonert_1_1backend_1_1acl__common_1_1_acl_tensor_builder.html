@@ -264,35 +264,35 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00204">204</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  205</span>{</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keyword">auto</span> lifetime_map = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cl__common.html#a8b47b87d413d0d63c33c70d2e21b6e4e">cl_common::createLifetimeMap</a>(_lifetime_seq, _parent_map);</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
-<div class="line"><span class="lineno">  209</span>  {</div>
-<div class="line"><span class="lineno">  210</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;[use_type, use_index] = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
-<div class="line"><span class="lineno">  211</span>    assert(use_index.valid());</div>
-<div class="line"><span class="lineno">  212</span>    <span class="keywordflow">if</span> (use_type == UsesType::FIRST)</div>
-<div class="line"><span class="lineno">  213</span>      _tensor_mgr-&gt;startLifetime(use_index);</div>
-<div class="line"><span class="lineno">  214</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  215</span>      _tensor_mgr-&gt;finishLifetime(use_index);</div>
-<div class="line"><span class="lineno">  216</span>  }</div>
-<div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>  _tensor_mgr-&gt;allocateConsts();</div>
-<div class="line"><span class="lineno">  219</span> </div>
-<div class="line"><span class="lineno">  220</span>  <span class="comment">// TODO Since `_parent_map` is filled for all Concat nodes even if the node this backend uses</span></div>
-<div class="line"><span class="lineno">  221</span>  <span class="comment">//      After refactoring BackendContext we can uncomment this</span></div>
-<div class="line"><span class="lineno">  222</span>  <span class="comment">// assert(_tensor_info_map.size() ==</span></div>
-<div class="line"><span class="lineno">  223</span>  <span class="comment">//       _tensor_mgr-&gt;nonconstTensors().size() + num of constants of _tensor_info_map +</span></div>
-<div class="line"><span class="lineno">  224</span>  <span class="comment">//       _parent_map.size());</span></div>
-<div class="line"><span class="lineno">  225</span>  _tensor_mgr-&gt;allocateNonconsts();</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>  _tensor_mgr-&gt;allocateInternalBufferManager();</div>
-<div class="line"><span class="lineno">  228</span>}</div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00178">178</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  179</span>{</div>
+<div class="line"><span class="lineno">  180</span>  <span class="keyword">auto</span> lifetime_map = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cl__common.html#a8b47b87d413d0d63c33c70d2e21b6e4e">cl_common::createLifetimeMap</a>(_lifetime_seq, _parent_map);</div>
+<div class="line"><span class="lineno">  181</span> </div>
+<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> : lifetime_map)</div>
+<div class="line"><span class="lineno">  183</span>  {</div>
+<div class="line"><span class="lineno">  184</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;[use_type, use_index] = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>.second;</div>
+<div class="line"><span class="lineno">  185</span>    assert(use_index.valid());</div>
+<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> (use_type == UsesType::FIRST)</div>
+<div class="line"><span class="lineno">  187</span>      _tensor_mgr-&gt;startLifetime(use_index);</div>
+<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  189</span>      _tensor_mgr-&gt;finishLifetime(use_index);</div>
+<div class="line"><span class="lineno">  190</span>  }</div>
+<div class="line"><span class="lineno">  191</span> </div>
+<div class="line"><span class="lineno">  192</span>  _tensor_mgr-&gt;allocateConsts();</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  <span class="comment">// TODO Since `_parent_map` is filled for all Concat nodes even if the node this backend uses</span></div>
+<div class="line"><span class="lineno">  195</span>  <span class="comment">//      After refactoring BackendContext we can uncomment this</span></div>
+<div class="line"><span class="lineno">  196</span>  <span class="comment">// assert(_tensor_info_map.size() ==</span></div>
+<div class="line"><span class="lineno">  197</span>  <span class="comment">//       _tensor_mgr-&gt;nonconstTensors().size() + num of constants of _tensor_info_map +</span></div>
+<div class="line"><span class="lineno">  198</span>  <span class="comment">//       _parent_map.size());</span></div>
+<div class="line"><span class="lineno">  199</span>  _tensor_mgr-&gt;allocateNonconsts();</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>  _tensor_mgr-&gt;allocateInternalBufferManager();</div>
+<div class="line"><span class="lineno">  202</span>}</div>
+<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cl__common_html_a8b47b87d413d0d63c33c70d2e21b6e4e"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cl__common.html#a8b47b87d413d0d63c33c70d2e21b6e4e">onert::backend::cl_common::createLifetimeMap</a></div><div class="ttdeci">LifetimeMap createLifetimeMap(LifetimeSeq &amp;seq, ir::OperandIndexMap&lt; ParentInfo &gt; &amp;parent_map)</div><div class="ttdef"><b>Definition</b> <a href="_lifetime_map_8cc_source.html#l00028">LifetimeMap.cc:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_lifetime_map_8cc_source.html#l00028">onert::backend::cl_common::createLifetimeMap()</a>, and <a class="el" href="compiler_2circle-eval-diff_2driver_2driver_8cpp_source.html#l00053">entry()</a>.</p>
+<p class="reference">References <a class="el" href="_lifetime_map_8cc_source.html#l00028">onert::backend::cl_common::createLifetimeMap()</a>, and <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>.</p>
 
 </div>
 </div>
@@ -324,18 +324,18 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00320">320</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  322</span>{</div>
-<div class="line"><span class="lineno">  323</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;cand : seq)</div>
-<div class="line"><span class="lineno">  324</span>  {</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a8f7a24e6cc3cfaa05f24f57b09584fac">isSubTensorOf</a>(parent, cand))</div>
-<div class="line"><span class="lineno">  326</span>    {</div>
-<div class="line"><span class="lineno">  327</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  328</span>    }</div>
-<div class="line"><span class="lineno">  329</span>  }</div>
-<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  331</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder_html_a8f7a24e6cc3cfaa05f24f57b09584fac"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a8f7a24e6cc3cfaa05f24f57b09584fac">onert::backend::acl_common::AclTensorBuilder::isSubTensorOf</a></div><div class="ttdeci">bool isSubTensorOf(const ir::OperandIndex &amp;parent, const ir::OperandIndex &amp;child)</div><div class="ttdoc">Check child tensor is allocated as subtensor of parent tensor.</div><div class="ttdef"><b>Definition</b> <a href="_acl_tensor_builder_8h_source.html#l00334">AclTensorBuilder.h:334</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00293">293</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  295</span>{</div>
+<div class="line"><span class="lineno">  296</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;cand : seq)</div>
+<div class="line"><span class="lineno">  297</span>  {</div>
+<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a8f7a24e6cc3cfaa05f24f57b09584fac">isSubTensorOf</a>(parent, cand))</div>
+<div class="line"><span class="lineno">  299</span>    {</div>
+<div class="line"><span class="lineno">  300</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  301</span>    }</div>
+<div class="line"><span class="lineno">  302</span>  }</div>
+<div class="line"><span class="lineno">  303</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  304</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder_html_a8f7a24e6cc3cfaa05f24f57b09584fac"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_acl_tensor_builder.html#a8f7a24e6cc3cfaa05f24f57b09584fac">onert::backend::acl_common::AclTensorBuilder::isSubTensorOf</a></div><div class="ttdeci">bool isSubTensorOf(const ir::OperandIndex &amp;parent, const ir::OperandIndex &amp;child)</div><div class="ttdoc">Check child tensor is allocated as subtensor of parent tensor.</div><div class="ttdef"><b>Definition</b> <a href="_acl_tensor_builder_8h_source.html#l00307">AclTensorBuilder.h:307</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -357,10 +357,10 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00191">191</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  193</span>{</div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">return</span> _tensor_info_map.find(ind) != _tensor_info_map.end();</div>
-<div class="line"><span class="lineno">  195</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00165">165</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
+<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">return</span> _tensor_info_map.find(ind) != _tensor_info_map.end();</div>
+<div class="line"><span class="lineno">  169</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -402,16 +402,16 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if child is allocated as subtensor of parent, otherwise <code>false</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00334">334</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  336</span>{</div>
-<div class="line"><span class="lineno">  337</span>  <span class="keyword">auto</span> itr = _parent_map.find(child);</div>
-<div class="line"><span class="lineno">  338</span>  <span class="keywordflow">if</span> (itr == _parent_map.end())</div>
-<div class="line"><span class="lineno">  339</span>  {</div>
-<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  341</span>  }</div>
-<div class="line"><span class="lineno">  342</span> </div>
-<div class="line"><span class="lineno">  343</span>  <span class="keywordflow">return</span> itr-&gt;second.parent == parent;</div>
-<div class="line"><span class="lineno">  344</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00307">307</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  309</span>{</div>
+<div class="line"><span class="lineno">  310</span>  <span class="keyword">auto</span> itr = _parent_map.find(child);</div>
+<div class="line"><span class="lineno">  311</span>  <span class="keywordflow">if</span> (itr == _parent_map.end())</div>
+<div class="line"><span class="lineno">  312</span>  {</div>
+<div class="line"><span class="lineno">  313</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  314</span>  }</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">return</span> itr-&gt;second.parent == parent;</div>
+<div class="line"><span class="lineno">  317</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -433,10 +433,10 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00179">179</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
-<div class="line"><span class="lineno">  181</span>  _lifetime_seq.emplace_back(UsesType::FIRST, ind);</div>
-<div class="line"><span class="lineno">  182</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00153">153</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  154</span>{</div>
+<div class="line"><span class="lineno">  155</span>  _lifetime_seq.emplace_back(UsesType::FIRST, ind);</div>
+<div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -458,10 +458,10 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00185">185</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  186</span>{</div>
-<div class="line"><span class="lineno">  187</span>  _lifetime_seq.emplace_back(UsesType::LAST, ind);</div>
-<div class="line"><span class="lineno">  188</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00159">159</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  160</span>{</div>
+<div class="line"><span class="lineno">  161</span>  _lifetime_seq.emplace_back(UsesType::LAST, ind);</div>
+<div class="line"><span class="lineno">  162</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -521,10 +521,10 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00231">231</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
-<div class="line"><span class="lineno">  233</span>  _tensor_mgr-&gt;tryDeallocConstants();</div>
-<div class="line"><span class="lineno">  234</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00205">205</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  206</span>{</div>
+<div class="line"><span class="lineno">  207</span>  _tensor_mgr-&gt;tryDeallocConstants();</div>
+<div class="line"><span class="lineno">  208</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -546,10 +546,10 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00198">198</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  199</span>{</div>
-<div class="line"><span class="lineno">  200</span>  buildTensors();</div>
-<div class="line"><span class="lineno">  201</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_acl_tensor_builder_8h_source.html#l00172">172</a> of file <a class="el" href="_acl_tensor_builder_8h_source.html">AclTensorBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  173</span>{</div>
+<div class="line"><span class="lineno">  174</span>  buildTensors();</div>
+<div class="line"><span class="lineno">  175</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -598,48 +598,16 @@ template&lt;typename T_ITensor , typename T_Tensor , typename T_SubTensor &gt; <
 <div class="line"><span class="lineno">  142</span> </div>
 <div class="line"><span class="lineno">  143</span>  _uses_count_map[ind] = _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind).getUses().size();</div>
 <div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">if</span> (_parent_map.count(ind) == 0)</div>
-<div class="line"><span class="lineno">  146</span>  {</div>
-<div class="line"><span class="lineno">  147</span>    <span class="comment">// Normal Tensors</span></div>
-<div class="line"><span class="lineno">  148</span>    _tensor_info_map.emplace(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  149</span>  }</div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  151</span>  {</div>
-<div class="line"><span class="lineno">  152</span>    <span class="comment">// SubTensors</span></div>
-<div class="line"><span class="lineno">  153</span>    assert(!<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant() &amp;&amp; <span class="stringliteral">&quot;Subtensors of constants are not supported yet.&quot;</span>);</div>
-<div class="line"><span class="lineno">  154</span> </div>
-<div class="line"><span class="lineno">  155</span>    <span class="comment">// Update offset info and emplace</span></div>
-<div class="line"><span class="lineno">  156</span>    <span class="keyword">auto</span> &amp;parent_info = _parent_map[ind];</div>
-<div class="line"><span class="lineno">  157</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a> = _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
-<div class="line"><span class="lineno">  158</span>    <span class="keyword">auto</span> parent_index = parent_info.parent;</div>
-<div class="line"><span class="lineno">  159</span>    <span class="keyword">auto</span> &amp;<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = parent_info.coordinates;</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keyword">auto</span> frontend_layout = parent_info.frontend_layout;</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>    assert(<a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.shape().rank() &lt;= ir::Shape::kMaxRank);</div>
-<div class="line"><span class="lineno">  163</span>    <span class="keyword">auto</span> shape = <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.shape();</div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">if</span> (_operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(parent_index).shape().rank() &gt;= 4 &amp;&amp; frontend_layout == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">ir::Layout::NCHW</a>)</div>
-<div class="line"><span class="lineno">  165</span>    {</div>
-<div class="line"><span class="lineno">  166</span>      <span class="comment">// Permutation changing layout beyond 4-D is not supported yet</span></div>
-<div class="line"><span class="lineno">  167</span>      <span class="keyword">const</span> <span class="keyword">auto</span> parent_rank = _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(parent_index).shape().rank();</div>
-<div class="line"><span class="lineno">  168</span>      assert(parent_rank == 4);</div>
-<div class="line"><span class="lineno">  169</span>      shape.extendRank(parent_rank);</div>
-<div class="line"><span class="lineno">  170</span>      <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = {<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>[0], <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>[2], <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>[3], <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>[1]};</div>
-<div class="line"><span class="lineno">  171</span>    }</div>
-<div class="line"><span class="lineno">  172</span>    <span class="keyword">auto</span> new_shape = <a class="code hl_function" href="namespaceonert_1_1ir.html#add78de535b4132674c884966f922b6f2">permuteShape</a>(shape, frontend_layout, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">  173</span>    <span class="keyword">auto</span> oi = <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ab39b4dc8b653dfd21ca6a837a7b140df">ir::OperandInfo::createStaticInfo</a>(new_shape, <a class="code hl_enumvalue" href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">obj</a>.typeInfo());</div>
-<div class="line"><span class="lineno">  174</span>    _tensor_info_map.emplace(ind, oi);</div>
-<div class="line"><span class="lineno">  175</span>  }</div>
-<div class="line"><span class="lineno">  176</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ab39b4dc8b653dfd21ca6a837a7b140df"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ab39b4dc8b653dfd21ca6a837a7b140df">onert::ir::OperandInfo::createStaticInfo</a></div><div class="ttdeci">static OperandInfo createStaticInfo(const Shape &amp;shape, const TypeInfo &amp;typeInfo)</div><div class="ttdoc">Create a static OperandInfo object.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00085">OperandInfo.h:85</a></div></div>
+<div class="line"><span class="lineno">  145</span>  <span class="comment">// SubTensors</span></div>
+<div class="line"><span class="lineno">  146</span>  assert((_parent_map.count(ind) == 0 || !<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>.isConstant()) &amp;&amp;</div>
+<div class="line"><span class="lineno">  147</span>         <span class="stringliteral">&quot;Subtensors of constants are not supported yet.&quot;</span>);</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>  _tensor_info_map.emplace(ind, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  150</span>}</div>
 <div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">ObjectManager.h:121</a></div></div>
-<div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
-<div class="ttc" id="anamespacennc_html_ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040"><div class="ttname"><a href="namespacennc.html#ae2631b9af15870ed7af4a3a0fd88d416abe8f80182e0c983916da7338c2c1c040">nnc::ArtifactCallType::obj</a></div><div class="ttdeci">@ obj</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_add78de535b4132674c884966f922b6f2"><div class="ttname"><a href="namespaceonert_1_1ir.html#add78de535b4132674c884966f922b6f2">onert::ir::permuteShape</a></div><div class="ttdeci">Shape permuteShape(const Shape &amp;shape, Layout frontend_layout, Layout backend_layout)</div><div class="ttdef"><b>Definition</b> <a href="_shape_8cc_source.html#l00090">Shape.cc:90</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::Layout::NCHW</a></div><div class="ttdeci">@ NCHW</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00085">onert::ir::OperandInfo::createStaticInfo()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::NCHW</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, and <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
+<p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
 
 </div>
 </div>

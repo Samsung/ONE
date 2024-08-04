@@ -112,7 +112,7 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
     [ "CalculateActivationRangeQuantized", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#aa3ed894d41e9c8473df0db171af23d7d", null ],
     [ "CalculateInputRadius", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a03d14d78d8be88975e381ff1c795bd5c", null ],
     [ "convertActivationType", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0e7672ebf55bbaa7e1d86a46cfd53c5e", null ],
-    [ "getAxis", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a67ea1d68857f675b2e692ef20df42336", null ],
+    [ "getAxis", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a3b1c940d6f1c0299fdc1f44bbb390686", null ],
     [ "getBuffer", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0054916d6bc97916914b4b69c1a398e8", null ],
     [ "getBuffer", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a999ae4f2c6facf7f231d0594a1fcfc7a", null ],
     [ "getBuffer", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a67659c4b1db1cd377445852a8ed53fe6", null ],

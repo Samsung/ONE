@@ -1,7 +1,7 @@
 var dir_5bb485447ae99dedfc578e4bcbffaa4e =
 [
     [ "CalculateActivationRange.h", "_calculate_activation_range_8h.html", "_calculate_activation_range_8h" ],
-    [ "ConfigSource.h", "onert_2core_2include_2util_2_config_source_8h.html", "onert_2core_2include_2util_2_config_source_8h" ],
+    [ "ConfigSource.h", "_config_source_8h.html", "_config_source_8h" ],
     [ "Exceptions.h", "_exceptions_8h.html", "_exceptions_8h" ],
     [ "Index.h", "runtime_2onert_2core_2include_2util_2_index_8h.html", "runtime_2onert_2core_2include_2util_2_index_8h" ],
     [ "ITimer.h", "_i_timer_8h.html", "_i_timer_8h" ],

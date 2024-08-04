@@ -111,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
 struct nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt; CPUDevice, T &gt;</div>
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00794">794</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00975">975</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="abd37cac0dfe9a5c209e1ec8bd20fda13" name="abd37cac0dfe9a5c209e1ec8bd20fda13"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd37cac0dfe9a5c209e1ec8bd20fda13">&#9670;&#160;</a></span>Packet</h2>
@@ -127,7 +127,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00796">796</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00977">977</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
 
 </div>
 </div>
@@ -264,113 +264,114 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00798">798</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  802</span>  {</div>
-<div class="line"><span class="lineno">  803</span>    <span class="keyword">const</span> Eigen::ThreadPoolDevice &amp;d = *<a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#ad3d8188ac35aa1743753227da5d291c2">eigen_support::GetThreadPoolDevice</a>();</div>
-<div class="line"><span class="lineno">  804</span> </div>
-<div class="line"><span class="lineno">  805</span>    <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html#abd37cac0dfe9a5c209e1ec8bd20fda13">Packet</a>) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  806</span> </div>
-<div class="line"><span class="lineno">  807</span>    <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
-<div class="line"><span class="lineno">  808</span>    <span class="keyword">const</span> int64_t padded_out_depth_size =</div>
-<div class="line"><span class="lineno">  809</span>      ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  810</span> </div>
-<div class="line"><span class="lineno">  811</span>    T *output_buffer_data = padded_filter_data;</div>
-<div class="line"><span class="lineno">  812</span> </div>
-<div class="line"><span class="lineno">  813</span>    <span class="comment">// Computes one shard of depthwise conv2d backprop filter.</span></div>
-<div class="line"><span class="lineno">  814</span>    <span class="comment">// auto shard = [&amp;ctx, &amp;args, &amp;out_backprop, &amp;input, &amp;output_buffer_data](</span></div>
-<div class="line"><span class="lineno">  815</span>    <span class="keyword">auto</span> shard = [&amp;](int64_t start, int64_t limit) {</div>
-<div class="line"><span class="lineno">  816</span>      <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html#abd37cac0dfe9a5c209e1ec8bd20fda13">Packet</a>) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  817</span>      <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
-<div class="line"><span class="lineno">  818</span>      <span class="keyword">const</span> int64_t padded_out_depth_size =</div>
-<div class="line"><span class="lineno">  819</span>        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  820</span> </div>
-<div class="line"><span class="lineno">  821</span>      <span class="keywordtype">int</span> cur_id = d.currentThreadId() + 1;</div>
-<div class="line"><span class="lineno">  822</span>      assert(cur_id &gt;= 0 &amp;&amp; cur_id &lt; d.numThreads() + 1);</div>
-<div class="line"><span class="lineno">  823</span> </div>
-<div class="line"><span class="lineno">  824</span>      <span class="keyword">const</span> int64_t input_image_size = in_rows * in_cols * in_depth;</div>
-<div class="line"><span class="lineno">  825</span>      <span class="keyword">const</span> int64_t output_image_size = out_rows * out_cols * out_depth;</div>
-<div class="line"><span class="lineno">  826</span>      <span class="keyword">const</span> int64_t padded_filter_size = filter_spatial_size * padded_out_depth_size;</div>
-<div class="line"><span class="lineno">  827</span> </div>
-<div class="line"><span class="lineno">  828</span>      T *input_buffer_data = in_bprop + cur_id * padded_filter_size;</div>
-<div class="line"><span class="lineno">  829</span> </div>
-<div class="line"><span class="lineno">  830</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = start; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; limit; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
-<div class="line"><span class="lineno">  831</span>      {</div>
-<div class="line"><span class="lineno">  832</span>        <span class="comment">// Initialize &#39;output_buffer&#39; for &#39;b&#39;.</span></div>
-<div class="line"><span class="lineno">  833</span>        <span class="keyword">auto</span> *output_buffer = output_buffer_data + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * padded_filter_size;</div>
-<div class="line"><span class="lineno">  834</span>        memset(output_buffer, 0, padded_filter_size * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  835</span> </div>
-<div class="line"><span class="lineno">  836</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = 0; out_r &lt; out_rows; ++out_r)</div>
-<div class="line"><span class="lineno">  837</span>        {</div>
-<div class="line"><span class="lineno">  838</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = 0; out_c &lt; out_cols; ++out_c)</div>
-<div class="line"><span class="lineno">  839</span>          {</div>
-<div class="line"><span class="lineno">  840</span>            <span class="comment">// Populate &#39;input_buffer_data&#39; with data from local input region.</span></div>
-<div class="line"><span class="lineno">  841</span>            functor::DepthwiseInputCopyOp&lt;T&gt;()(</div>
-<div class="line"><span class="lineno">  842</span>              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,</div>
-<div class="line"><span class="lineno">  843</span>              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_out_depth_size, out_r,</div>
-<div class="line"><span class="lineno">  844</span>              out_c, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * input_image_size, input_buffer_data);</div>
-<div class="line"><span class="lineno">  845</span>            <span class="comment">// Compute depthwise backprop filter.</span></div>
-<div class="line"><span class="lineno">  846</span>            <a class="code hl_function" href="namespacennfw_1_1cker_1_1depthwise__conv__op.html#ac7c6c1b5a3326ddcc6578241a8801705">ComputeBackpropFilter</a>(</div>
-<div class="line"><span class="lineno">  847</span>              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,</div>
-<div class="line"><span class="lineno">  848</span>              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_out_depth_size, out_r,</div>
-<div class="line"><span class="lineno">  849</span>              out_c, out_backprop + b * output_image_size, input_buffer_data, output_buffer);</div>
-<div class="line"><span class="lineno">  850</span>          }</div>
-<div class="line"><span class="lineno">  851</span>        }</div>
-<div class="line"><span class="lineno">  852</span>      }</div>
-<div class="line"><span class="lineno">  853</span>    };</div>
-<div class="line"><span class="lineno">  854</span> </div>
-<div class="line"><span class="lineno">  855</span>    <span class="keyword">const</span> int64_t input_bytes = in_rows * in_cols * in_depth * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><span class="lineno">  856</span>    <span class="keyword">const</span> int64_t output_bytes = out_rows * out_cols * out_depth * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><span class="lineno">  857</span>    <span class="keyword">const</span> int64_t compute_cycles = out_rows * out_cols * out_depth * batch;</div>
-<div class="line"><span class="lineno">  858</span>    <span class="keyword">const</span> Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);</div>
-<div class="line"><span class="lineno">  859</span>    d.parallelFor(batch, cost, shard);</div>
-<div class="line"><span class="lineno">  860</span> </div>
-<div class="line"><span class="lineno">  861</span>    <span class="comment">// Accumulate &#39;output_buffer&#39; from each shard into &#39;output&#39;.</span></div>
-<div class="line"><span class="lineno">  862</span>    <span class="comment">// const int64_t out_depth = out_depth;</span></div>
-<div class="line"><span class="lineno">  863</span>    <span class="keyword">const</span> int64_t vectorized_size = (out_depth / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">  864</span>    <span class="keyword">const</span> int64_t scalar_size = out_depth - vectorized_size;</div>
-<div class="line"><span class="lineno">  865</span>    <span class="keyword">const</span> int64_t padded_filter_size = filter_spatial_size * padded_out_depth_size;</div>
-<div class="line"><span class="lineno">  866</span>    memset(filter_backprop, 0, filter_spatial_size * out_depth * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  867</span> </div>
-<div class="line"><span class="lineno">  868</span>    <span class="keywordflow">for</span> (int64_t i = 0; i &lt; filter_spatial_size; ++i)</div>
-<div class="line"><span class="lineno">  869</span>    {</div>
-<div class="line"><span class="lineno">  870</span>      <span class="keyword">const</span> int64_t buffer_base = i * padded_out_depth_size;</div>
-<div class="line"><span class="lineno">  871</span>      <span class="keyword">const</span> int64_t output_base = i * out_depth;</div>
-<div class="line"><span class="lineno">  872</span>      <span class="comment">// Write vectorized length of filter&#39;s inner dimension to output.</span></div>
-<div class="line"><span class="lineno">  873</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; vectorized_size; j += kPacketSize)</div>
-<div class="line"><span class="lineno">  874</span>      {</div>
-<div class="line"><span class="lineno">  875</span>        <span class="comment">// Load data from &#39;filter_backprop&#39; into vector register.</span></div>
-<div class="line"><span class="lineno">  876</span>        <span class="keyword">auto</span> out_block_data = filter_backprop + output_base + j;</div>
-<div class="line"><span class="lineno">  877</span>        <span class="keyword">auto</span> out_block = Eigen::internal::ploadu&lt;Packet&gt;(out_block_data);</div>
-<div class="line"><span class="lineno">  878</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; batch; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
-<div class="line"><span class="lineno">  879</span>        {</div>
-<div class="line"><span class="lineno">  880</span>          <span class="comment">// Load data from &#39;output_buffer&#39; for &#39;b&#39;.</span></div>
-<div class="line"><span class="lineno">  881</span>          <span class="keyword">const</span> <span class="keyword">auto</span> *output_buffer = output_buffer_data + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * padded_filter_size;</div>
-<div class="line"><span class="lineno">  882</span>          <span class="keyword">const</span> <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(output_buffer + buffer_base + j);</div>
-<div class="line"><span class="lineno">  883</span>          <span class="comment">// Add &#39;v&#39; to &#39;out_block&#39;.</span></div>
-<div class="line"><span class="lineno">  884</span>          out_block = Eigen::internal::padd&lt;Packet&gt;(out_block, v);</div>
-<div class="line"><span class="lineno">  885</span>        }</div>
-<div class="line"><span class="lineno">  886</span>        <span class="comment">// Store &#39;out_block&#39; back to memory.</span></div>
-<div class="line"><span class="lineno">  887</span>        Eigen::internal::pstoreu&lt;T&gt;(out_block_data, out_block);</div>
-<div class="line"><span class="lineno">  888</span>      }</div>
-<div class="line"><span class="lineno">  889</span>      <span class="comment">// Write scalar length of filter&#39;s inner dimension to output.</span></div>
-<div class="line"><span class="lineno">  890</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; scalar_size; ++j)</div>
-<div class="line"><span class="lineno">  891</span>      {</div>
-<div class="line"><span class="lineno">  892</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; batch; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
-<div class="line"><span class="lineno">  893</span>        {</div>
-<div class="line"><span class="lineno">  894</span>          <span class="keyword">const</span> <span class="keyword">auto</span> *output_buffer = output_buffer_data + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * padded_filter_size;</div>
-<div class="line"><span class="lineno">  895</span>          filter_backprop[output_base + vectorized_size + j] +=</div>
-<div class="line"><span class="lineno">  896</span>            output_buffer[buffer_base + vectorized_size + j];</div>
-<div class="line"><span class="lineno">  897</span>        }</div>
-<div class="line"><span class="lineno">  898</span>      }</div>
-<div class="line"><span class="lineno">  899</span>    }</div>
-<div class="line"><span class="lineno">  900</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00979">979</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  983</span>  {</div>
+<div class="line"><span class="lineno">  984</span>    <span class="keyword">const</span> Eigen::ThreadPoolDevice &amp;d = *<a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#ad3d8188ac35aa1743753227da5d291c2">eigen_support::GetThreadPoolDevice</a>();</div>
+<div class="line"><span class="lineno">  985</span> </div>
+<div class="line"><span class="lineno">  986</span>    <span class="keyword">static</span> <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> = (<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html#abd37cac0dfe9a5c209e1ec8bd20fda13">Packet</a>) / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  987</span> </div>
+<div class="line"><span class="lineno">  988</span>    <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  989</span>    <span class="keyword">const</span> int64_t padded_out_depth_size =</div>
+<div class="line"><span class="lineno">  990</span>      ((out_depth + <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> - 1) / kPacketSize) * <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>;</div>
+<div class="line"><span class="lineno">  991</span> </div>
+<div class="line"><span class="lineno">  992</span>    T *output_buffer_data = padded_filter_data;</div>
+<div class="line"><span class="lineno">  993</span> </div>
+<div class="line"><span class="lineno">  994</span>    <span class="comment">// Computes one shard of depthwise conv2d backprop filter.</span></div>
+<div class="line"><span class="lineno">  995</span>    <span class="comment">// auto shard = [&amp;ctx, &amp;args, &amp;out_backprop, &amp;input, &amp;output_buffer_data](</span></div>
+<div class="line"><span class="lineno">  996</span>    <span class="keyword">auto</span> shard = [&amp;](int64_t start, int64_t limit) {</div>
+<div class="line"><span class="lineno">  997</span>      <span class="keyword">static</span> <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> = (<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html#abd37cac0dfe9a5c209e1ec8bd20fda13">Packet</a>) / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  998</span>      <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  999</span>      <span class="keyword">const</span> int64_t padded_out_depth_size =</div>
+<div class="line"><span class="lineno"> 1000</span>        ((out_depth + <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> - 1) / kPacketSize) * <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>;</div>
+<div class="line"><span class="lineno"> 1001</span> </div>
+<div class="line"><span class="lineno"> 1002</span>      <span class="keywordtype">int</span> cur_id = d.currentThreadId() + 1;</div>
+<div class="line"><span class="lineno"> 1003</span>      assert(cur_id &gt;= 0 &amp;&amp; cur_id &lt; d.numThreads() + 1);</div>
+<div class="line"><span class="lineno"> 1004</span> </div>
+<div class="line"><span class="lineno"> 1005</span>      <span class="keyword">const</span> int64_t input_image_size = in_rows * in_cols * in_depth;</div>
+<div class="line"><span class="lineno"> 1006</span>      <span class="keyword">const</span> int64_t output_image_size = out_rows * out_cols * out_depth;</div>
+<div class="line"><span class="lineno"> 1007</span>      <span class="keyword">const</span> int64_t padded_filter_size = filter_spatial_size * padded_out_depth_size;</div>
+<div class="line"><span class="lineno"> 1008</span> </div>
+<div class="line"><span class="lineno"> 1009</span>      T *input_buffer_data = in_bprop + cur_id * padded_filter_size;</div>
+<div class="line"><span class="lineno"> 1010</span> </div>
+<div class="line"><span class="lineno"> 1011</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = start; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; limit; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
+<div class="line"><span class="lineno"> 1012</span>      {</div>
+<div class="line"><span class="lineno"> 1013</span>        <span class="comment">// Initialize &#39;output_buffer&#39; for &#39;b&#39;.</span></div>
+<div class="line"><span class="lineno"> 1014</span>        <span class="keyword">auto</span> *output_buffer = output_buffer_data + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * padded_filter_size;</div>
+<div class="line"><span class="lineno"> 1015</span>        memset(output_buffer, 0, padded_filter_size * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno"> 1016</span> </div>
+<div class="line"><span class="lineno"> 1017</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_r = 0; out_r &lt; out_rows; ++out_r)</div>
+<div class="line"><span class="lineno"> 1018</span>        {</div>
+<div class="line"><span class="lineno"> 1019</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_c = 0; out_c &lt; out_cols; ++out_c)</div>
+<div class="line"><span class="lineno"> 1020</span>          {</div>
+<div class="line"><span class="lineno"> 1021</span>            <span class="comment">// Populate &#39;input_buffer_data&#39; with data from local input region.</span></div>
+<div class="line"><span class="lineno"> 1022</span>            functor::DepthwiseInputCopyOp&lt;T&gt;()(</div>
+<div class="line"><span class="lineno"> 1023</span>              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,</div>
+<div class="line"><span class="lineno"> 1024</span>              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_out_depth_size, out_r,</div>
+<div class="line"><span class="lineno"> 1025</span>              out_c, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * input_image_size, input_buffer_data);</div>
+<div class="line"><span class="lineno"> 1026</span>            <span class="comment">// Compute depthwise backprop filter.</span></div>
+<div class="line"><span class="lineno"> 1027</span>            <a class="code hl_function" href="namespacennfw_1_1cker_1_1depthwise__conv__op.html#ac7c6c1b5a3326ddcc6578241a8801705">ComputeBackpropFilter</a>(</div>
+<div class="line"><span class="lineno"> 1028</span>              batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,</div>
+<div class="line"><span class="lineno"> 1029</span>              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_out_depth_size, out_r,</div>
+<div class="line"><span class="lineno"> 1030</span>              out_c, out_backprop + b * output_image_size, input_buffer_data, output_buffer);</div>
+<div class="line"><span class="lineno"> 1031</span>          }</div>
+<div class="line"><span class="lineno"> 1032</span>        }</div>
+<div class="line"><span class="lineno"> 1033</span>      }</div>
+<div class="line"><span class="lineno"> 1034</span>    };</div>
+<div class="line"><span class="lineno"> 1035</span> </div>
+<div class="line"><span class="lineno"> 1036</span>    <span class="keyword">const</span> int64_t input_bytes = in_rows * in_cols * in_depth * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><span class="lineno"> 1037</span>    <span class="keyword">const</span> int64_t output_bytes = out_rows * out_cols * out_depth * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><span class="lineno"> 1038</span>    <span class="keyword">const</span> int64_t compute_cycles = out_rows * out_cols * out_depth * batch;</div>
+<div class="line"><span class="lineno"> 1039</span>    <span class="keyword">const</span> Eigen::TensorOpCost cost(input_bytes, output_bytes, compute_cycles);</div>
+<div class="line"><span class="lineno"> 1040</span>    d.parallelFor(batch, cost, shard);</div>
+<div class="line"><span class="lineno"> 1041</span> </div>
+<div class="line"><span class="lineno"> 1042</span>    <span class="comment">// Accumulate &#39;output_buffer&#39; from each shard into &#39;output&#39;.</span></div>
+<div class="line"><span class="lineno"> 1043</span>    <span class="comment">// const int64_t out_depth = out_depth;</span></div>
+<div class="line"><span class="lineno"> 1044</span>    <span class="keyword">const</span> int64_t vectorized_size = (out_depth / <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>) * kPacketSize;</div>
+<div class="line"><span class="lineno"> 1045</span>    <span class="keyword">const</span> int64_t scalar_size = out_depth - vectorized_size;</div>
+<div class="line"><span class="lineno"> 1046</span>    <span class="keyword">const</span> int64_t padded_filter_size = filter_spatial_size * padded_out_depth_size;</div>
+<div class="line"><span class="lineno"> 1047</span>    memset(filter_backprop, 0, filter_spatial_size * out_depth * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno"> 1048</span> </div>
+<div class="line"><span class="lineno"> 1049</span>    <span class="keywordflow">for</span> (int64_t i = 0; i &lt; filter_spatial_size; ++i)</div>
+<div class="line"><span class="lineno"> 1050</span>    {</div>
+<div class="line"><span class="lineno"> 1051</span>      <span class="keyword">const</span> int64_t buffer_base = i * padded_out_depth_size;</div>
+<div class="line"><span class="lineno"> 1052</span>      <span class="keyword">const</span> int64_t output_base = i * out_depth;</div>
+<div class="line"><span class="lineno"> 1053</span>      <span class="comment">// Write vectorized length of filter&#39;s inner dimension to output.</span></div>
+<div class="line"><span class="lineno"> 1054</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; vectorized_size; j += <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>)</div>
+<div class="line"><span class="lineno"> 1055</span>      {</div>
+<div class="line"><span class="lineno"> 1056</span>        <span class="comment">// Load data from &#39;filter_backprop&#39; into vector register.</span></div>
+<div class="line"><span class="lineno"> 1057</span>        <span class="keyword">auto</span> out_block_data = filter_backprop + output_base + j;</div>
+<div class="line"><span class="lineno"> 1058</span>        <span class="keyword">auto</span> out_block = Eigen::internal::ploadu&lt;Packet&gt;(out_block_data);</div>
+<div class="line"><span class="lineno"> 1059</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; batch; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
+<div class="line"><span class="lineno"> 1060</span>        {</div>
+<div class="line"><span class="lineno"> 1061</span>          <span class="comment">// Load data from &#39;output_buffer&#39; for &#39;b&#39;.</span></div>
+<div class="line"><span class="lineno"> 1062</span>          <span class="keyword">const</span> <span class="keyword">auto</span> *output_buffer = output_buffer_data + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * padded_filter_size;</div>
+<div class="line"><span class="lineno"> 1063</span>          <span class="keyword">const</span> <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(output_buffer + buffer_base + j);</div>
+<div class="line"><span class="lineno"> 1064</span>          <span class="comment">// Add &#39;v&#39; to &#39;out_block&#39;.</span></div>
+<div class="line"><span class="lineno"> 1065</span>          out_block = Eigen::internal::padd&lt;Packet&gt;(out_block, v);</div>
+<div class="line"><span class="lineno"> 1066</span>        }</div>
+<div class="line"><span class="lineno"> 1067</span>        <span class="comment">// Store &#39;out_block&#39; back to memory.</span></div>
+<div class="line"><span class="lineno"> 1068</span>        Eigen::internal::pstoreu&lt;T&gt;(out_block_data, out_block);</div>
+<div class="line"><span class="lineno"> 1069</span>      }</div>
+<div class="line"><span class="lineno"> 1070</span>      <span class="comment">// Write scalar length of filter&#39;s inner dimension to output.</span></div>
+<div class="line"><span class="lineno"> 1071</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; scalar_size; ++j)</div>
+<div class="line"><span class="lineno"> 1072</span>      {</div>
+<div class="line"><span class="lineno"> 1073</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; batch; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
+<div class="line"><span class="lineno"> 1074</span>        {</div>
+<div class="line"><span class="lineno"> 1075</span>          <span class="keyword">const</span> <span class="keyword">auto</span> *output_buffer = output_buffer_data + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * padded_filter_size;</div>
+<div class="line"><span class="lineno"> 1076</span>          filter_backprop[output_base + vectorized_size + j] +=</div>
+<div class="line"><span class="lineno"> 1077</span>            output_buffer[buffer_base + vectorized_size + j];</div>
+<div class="line"><span class="lineno"> 1078</span>        }</div>
+<div class="line"><span class="lineno"> 1079</span>      }</div>
+<div class="line"><span class="lineno"> 1080</span>    }</div>
+<div class="line"><span class="lineno"> 1081</span>  }</div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1depthwise__conv__op_html_ac7c6c1b5a3326ddcc6578241a8801705"><div class="ttname"><a href="namespacennfw_1_1cker_1_1depthwise__conv__op.html#ac7c6c1b5a3326ddcc6578241a8801705">nnfw::cker::depthwise_conv_op::ComputeBackpropFilter</a></div><div class="ttdeci">void ComputeBackpropFilter(int, int, int, int, int filter_rows, int filter_cols, int, int, int, int, int out_rows, int out_cols, int out_depth_, const int64_t padded_out_depth_size, const int64_t out_r, const int64_t out_c, const T *out_backprop, const T *input_buffer, T *output_buffer)</div><div class="ttdef"><b>Definition</b> <a href="depthwise__conv__op_8h_source.html#l00717">depthwise_conv_op.h:717</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1depthwise__conv__op_html_ac7c6c1b5a3326ddcc6578241a8801705"><div class="ttname"><a href="namespacennfw_1_1cker_1_1depthwise__conv__op.html#ac7c6c1b5a3326ddcc6578241a8801705">nnfw::cker::depthwise_conv_op::ComputeBackpropFilter</a></div><div class="ttdeci">void ComputeBackpropFilter(int, int, int, int, int filter_rows, int filter_cols, int, int, int, int, int out_rows, int out_cols, int out_depth_, const int64_t padded_out_depth_size, const int64_t out_r, const int64_t out_c, const T *out_backprop, const T *input_buffer, T *output_buffer)</div><div class="ttdef"><b>Definition</b> <a href="depthwise__conv__op_8h_source.html#l00898">depthwise_conv_op.h:898</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1eigen__support_html_a71ec3d24ac083e38041c7a0605748a3c"><div class="ttname"><a href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">nnfw::cker::eigen_support::kPacketSize</a></div><div class="ttdeci">int64_t kPacketSize()</div><div class="ttdef"><b>Definition</b> <a href="_eigen_support_8h_source.html#l00116">EigenSupport.h:116</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1eigen__support_html_ad3d8188ac35aa1743753227da5d291c2"><div class="ttname"><a href="namespacennfw_1_1cker_1_1eigen__support.html#ad3d8188ac35aa1743753227da5d291c2">nnfw::cker::eigen_support::GetThreadPoolDevice</a></div><div class="ttdeci">const Eigen::ThreadPoolDevice * GetThreadPoolDevice()</div><div class="ttdef"><b>Definition</b> <a href="_eigen_support_8h_source.html#l00110">EigenSupport.h:110</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4_html_abd37cac0dfe9a5c209e1ec8bd20fda13"><div class="ttname"><a href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html#abd37cac0dfe9a5c209e1ec8bd20fda13">nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt; CPUDevice, T &gt;::Packet</a></div><div class="ttdeci">Eigen::internal::packet_traits&lt; T &gt;::type Packet</div><div class="ttdef"><b>Definition</b> <a href="depthwise__conv__op_8h_source.html#l00796">depthwise_conv_op.h:796</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4_html_abd37cac0dfe9a5c209e1ec8bd20fda13"><div class="ttname"><a href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html#abd37cac0dfe9a5c209e1ec8bd20fda13">nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp&lt; CPUDevice, T &gt;::Packet</a></div><div class="ttdeci">Eigen::internal::packet_traits&lt; T &gt;::type Packet</div><div class="ttdef"><b>Definition</b> <a href="depthwise__conv__op_8h_source.html#l00977">depthwise_conv_op.h:977</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="depthwise__conv__op_8h_source.html#l00717">nnfw::cker::depthwise_conv_op::ComputeBackpropFilter()</a>, and <a class="el" href="_eigen_support_8h_source.html#l00110">nnfw::cker::eigen_support::GetThreadPoolDevice()</a>.</p>
+<p class="reference">References <a class="el" href="depthwise__conv__op_8h_source.html#l00898">nnfw::cker::depthwise_conv_op::ComputeBackpropFilter()</a>, and <a class="el" href="_eigen_support_8h_source.html#l00110">nnfw::cker::eigen_support::GetThreadPoolDevice()</a>.</p>
 
 </div>
 </div>

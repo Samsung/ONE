@@ -1,7 +1,6 @@
 var namespacennfw_1_1cker_1_1train =
 [
     [ "functor", "namespacennfw_1_1cker_1_1train_1_1functor.html", "namespacennfw_1_1cker_1_1train_1_1functor" ],
-    [ "DepthwiseConv", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv.html", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv" ],
     [ "LaunchConv2DBackpropFilterOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op" ],
     [ "LaunchConv2DBackpropInputOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op" ],
     [ "LaunchConv2DBackpropInputOpImpl", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl" ],
@@ -12,6 +11,8 @@ var namespacennfw_1_1cker_1_1train =
       [ "kDiv", "namespacennfw_1_1cker_1_1train.html#a5e75d80aacc1046441d15fd8b96890c9a62ff1bc26aac2154f97b79366b7a8de4", null ]
     ] ],
     [ "Adam", "namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41", null ],
+    [ "backpropFilter", "namespacennfw_1_1cker_1_1train.html#aa557edc3da8f89cd18ec72143ceae8ab", null ],
+    [ "backpropInput", "namespacennfw_1_1cker_1_1train.html#ab5e2c300d9ed295648666756c71feb62", null ],
     [ "BinaryArithmeticGrad", "namespacennfw_1_1cker_1_1train.html#aa7aedda115b13096ec895b04b6c7ef42", null ],
     [ "CategoricalCrossEntropy", "namespacennfw_1_1cker_1_1train.html#a7878621644fcff89f4f06359077ad4d1", null ],
     [ "CategoricalCrossEntropyGrad", "namespacennfw_1_1cker_1_1train.html#a1aed62343258e8bc05dac2924c184f5e", null ],

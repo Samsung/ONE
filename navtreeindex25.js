@@ -1,10 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"_reducer_options_8h_source.html":[37,0,0,129,2,0,119],
-"_region_8h.html":[37,0,0,76,0,0,14],
-"_region_8h_source.html":[37,0,0,76,0,0,14],
-"_relative_epsilon_equal_8cpp.html":[37,0,0,84,1,1],
-"_relative_epsilon_equal_8cpp.html#ac8bad5e576ae5a8bab0dec7cef430d1d":[37,0,0,84,1,1,0],
 "_relative_epsilon_equal_8cpp_source.html":[37,0,0,84,1,1],
 "_relative_epsilon_equal_8h.html":[37,0,0,84,0,0,1],
 "_relative_epsilon_equal_8h.html#ac8bad5e576ae5a8bab0dec7cef430d1d":[37,0,0,84,0,0,1,1],
@@ -249,5 +244,10 @@ var NAVTREEINDEX25 =
 "_reverse_v2_options_8cpp_source.html":[37,0,0,129,2,0,128],
 "_reverse_v2_options_8h.html":[37,0,0,129,2,0,129],
 "_reverse_v2_options_8h.html#a87f726aa82b9c480b45c95f4e422efe1":[37,0,0,129,2,0,129,0],
-"_reverse_v2_options_8h_source.html":[37,0,0,129,2,0,129]
+"_reverse_v2_options_8h_source.html":[37,0,0,129,2,0,129],
+"_rsqrt_canonicalizer_8cpp.html":[37,0,0,81,1,0,38],
+"_rsqrt_canonicalizer_8cpp_source.html":[37,0,0,81,1,0,38],
+"_rsqrt_canonicalizer_8h.html":[37,0,0,81,1,0,39],
+"_rsqrt_canonicalizer_8h_source.html":[37,0,0,81,1,0,39],
+"_runtime_to_i_r_8h.html":[37,0,0,58,2,3,9]
 };

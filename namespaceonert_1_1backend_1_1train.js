@@ -9,6 +9,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "DisposableMemoryManager", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager.html", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager" ],
     [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
     [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
+    [ "ExtraTensor", "classonert_1_1backend_1_1train_1_1_extra_tensor.html", "classonert_1_1backend_1_1train_1_1_extra_tensor" ],
     [ "FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", "classonert_1_1backend_1_1train_1_1_first_fit_planner" ],
     [ "GradientMemoryManager", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager.html", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager" ],
     [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],

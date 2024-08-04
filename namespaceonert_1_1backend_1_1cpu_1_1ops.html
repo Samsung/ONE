@@ -317,8 +317,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1cfb53087f7fc161b9162d65aa5520d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e7672ebf55bbaa7e1d86a46cfd53c5e" id="r_a0e7672ebf55bbaa7e1d86a46cfd53c5e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2">nnfw::cker::FusedActivationFunctionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0e7672ebf55bbaa7e1d86a46cfd53c5e">convertActivationType</a> (const <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a> activation)</td></tr>
 <tr class="separator:a0e7672ebf55bbaa7e1d86a46cfd53c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67ea1d68857f675b2e692ef20df42336" id="r_a67ea1d68857f675b2e692ef20df42336"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a67ea1d68857f675b2e692ef20df42336">getAxis</a> (uint32_t rank, int32_t axis, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> frontend_layout)</td></tr>
-<tr class="separator:a67ea1d68857f675b2e692ef20df42336"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b1c940d6f1c0299fdc1f44bbb390686" id="r_a3b1c940d6f1c0299fdc1f44bbb390686"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a3b1c940d6f1c0299fdc1f44bbb390686">getAxis</a> (uint32_t rank, int32_t axis)</td></tr>
+<tr class="separator:a3b1c940d6f1c0299fdc1f44bbb390686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0054916d6bc97916914b4b69c1a398e8" id="r_a0054916d6bc97916914b4b69c1a398e8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a0054916d6bc97916914b4b69c1a398e8"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a0054916d6bc97916914b4b69c1a398e8">getBuffer</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
 <tr class="separator:a0054916d6bc97916914b4b69c1a398e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -862,8 +862,8 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 
 </div>
 </div>
-<a id="a67ea1d68857f675b2e692ef20df42336" name="a67ea1d68857f675b2e692ef20df42336"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67ea1d68857f675b2e692ef20df42336">&#9670;&#160;</a></span>getAxis()</h2>
+<a id="a3b1c940d6f1c0299fdc1f44bbb390686" name="a3b1c940d6f1c0299fdc1f44bbb390686"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1c940d6f1c0299fdc1f44bbb390686">&#9670;&#160;</a></span>getAxis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -881,13 +881,7 @@ template&lt;typename InputT , typename OutputT &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int32_t&#160;</td>
-          <td class="paramname"><em>axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>frontend_layout</em>&#160;</td>
+          <td class="paramname"><em>axis</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -911,18 +905,9 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 <div class="line"><span class="lineno">  141</span>    ret += rank;</div>
 <div class="line"><span class="lineno">  142</span>  }</div>
 <div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>  <span class="comment">// NCHW -&gt; NHWC</span></div>
-<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">if</span> (frontend_layout == ir::Layout::NCHW)</div>
-<div class="line"><span class="lineno">  146</span>  {</div>
-<div class="line"><span class="lineno">  147</span>    int32_t permutation[4] = {0, 3, 1, 2};</div>
-<div class="line"><span class="lineno">  148</span>    ret = permutation[ret];</div>
-<div class="line"><span class="lineno">  149</span>  }</div>
-<div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">  152</span>}</div>
+<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">  145</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::NCHW</a>.</p>
-
 </div>
 </div>
 <a id="a0054916d6bc97916914b4b69c1a398e8" name="a0054916d6bc97916914b4b69c1a398e8"></a>
@@ -943,14 +928,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00182">182</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
-<div class="line"><span class="lineno">  185</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00175">175</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  176</span>{</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">  178</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00182">getBuffer()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00175">getBuffer()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00182">getBuffer()</a>, and <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00187">getBuffer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00175">getBuffer()</a>, and <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00180">getBuffer()</a>.</p>
 
 </div>
 </div>
@@ -980,13 +965,13 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00192">192</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  193</span>{</div>
-<div class="line"><span class="lineno">  194</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
-<div class="line"><span class="lineno">  195</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">bool</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
-<div class="line"><span class="lineno">  196</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00185">185</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  186</span>{</div>
+<div class="line"><span class="lineno">  187</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">bool</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">  189</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00182">getBuffer()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00175">getBuffer()</a>.</p>
 
 </div>
 </div>
@@ -1008,12 +993,12 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00187">187</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  188</span>{</div>
-<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
-<div class="line"><span class="lineno">  190</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00180">180</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
+<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">  183</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00182">getBuffer()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00175">getBuffer()</a>.</p>
 
 </div>
 </div>
@@ -1043,13 +1028,13 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00198">198</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  199</span>{</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
-<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">bool</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
-<div class="line"><span class="lineno">  202</span>}</div>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00191">191</a> of file <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  192</span>{</div>
+<div class="line"><span class="lineno">  193</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(bool) == 1, <span class="stringliteral">&quot;cpu backend supports bool type which is 1 byte&quot;</span>);</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">bool</span> *<span class="keyword">&gt;</span>(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">  195</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00182">getBuffer()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00175">getBuffer()</a>.</p>
 
 </div>
 </div>

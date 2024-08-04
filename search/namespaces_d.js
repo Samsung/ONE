@@ -62,13 +62,5 @@ var searchData=
   ['nnkit_3a_3asupport_3a_3atftestinfo_59',['tftestinfo',['../namespacennkit_1_1support_1_1tftestinfo.html',1,'nnkit::support']]],
   ['nnop_60',['nnop',['../namespacennop.html',1,'']]],
   ['nnsuite_61',['nnsuite',['../namespacennsuite.html',1,'']]],
-  ['nnsuite_3a_3aconv_62',['conv',['../namespacennsuite_1_1conv.html',1,'nnsuite']]],
-  ['npud_63',['npud',['../namespacenpud.html',1,'']]],
-  ['npud_3a_3abackend_64',['backend',['../namespacenpud_1_1backend.html',1,'npud']]],
-  ['npud_3a_3abackend_3a_3atrix_65',['trix',['../namespacenpud_1_1backend_1_1trix.html',1,'npud::backend']]],
-  ['npud_3a_3acore_66',['core',['../namespacenpud_1_1core.html',1,'npud']]],
-  ['npud_3a_3acore_3a_3air_67',['ir',['../namespacenpud_1_1core_1_1ir.html',1,'npud::core']]],
-  ['npud_3a_3autil_68',['util',['../namespacenpud_1_1util.html',1,'npud']]],
-  ['npud_3a_3autil_3a_3aconfig_69',['config',['../namespacenpud_1_1util_1_1config.html',1,'npud::util']]],
-  ['npud_3a_3autil_3a_3alogging_70',['logging',['../namespacenpud_1_1util_1_1logging.html',1,'npud::util']]]
+  ['nnsuite_3a_3aconv_62',['conv',['../namespacennsuite_1_1conv.html',1,'nnsuite']]]
 ];

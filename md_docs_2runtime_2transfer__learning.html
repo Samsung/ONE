@@ -173,7 +173,6 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2transfer__learning.h
 </div><!-- fragment --><h1>Run training</h1>
 <p>Let's train the model using <code>onert_train</code>. In this case we want to test only 2 last layers: <code>Mean</code> and <code>FullyConnected</code> (created from <code>GlobalAveragePooling2D</code> and <code>Dense</code> in TensorFlow). Note that the other possibility is using <code>circle+</code> capabilities. The crucial here is proper choosing value of <code>num_of_trainable_ops</code> to achieve tradeoff between training time and accuracy. It determines how many operations from the back of the graph will be trained. In our case, these are additionally added <code>Dense</code> with <code>Relu</code> activation, <code>GlobalAveragePooling</code> and some previous operations.</p>
 <div class="fragment"><div class="line">onert_train \</div>
-<div class="line">--modelfile customized_mobilenetv2.circle \</div>
 <div class="line">--epoch 5 \</div>
 <div class="line">--loss 1 \                # mean squared error</div>
 <div class="line">--loss_reduction_type 1 \ # sum over batch size</div>
@@ -183,7 +182,8 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2transfer__learning.h
 <div class="line">--num_of_trainable_ops 5 \</div>
 <div class="line">--load_expected:raw cats_and_dogs.output.bin \</div>
 <div class="line">--load_input:raw cats_and_dogs.input.bin \</div>
-<div class="line">--export_path customized_mobilenetv2_trained.circle</div>
+<div class="line">--export_path customized_mobilenetv2_trained.circle \</div>
+<div class="line">customized_mobilenetv2.circle</div>
 </div><!-- fragment --><p> The result of training: </p><div class="fragment"><div class="line">Model Expected Filename cats_and_dogs.output.bin</div>
 <div class="line">Model Input Filename cats_and_dogs.input.bin</div>
 <div class="line">Model Filename customized_mobilenetv2.circle</div>

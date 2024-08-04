@@ -1,10 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"_pool2_d_common_8h.html#a2ab9012c52ce2de244f6f672d837ada6":[37,0,3,4,2,1,72,0],
-"_pool2_d_common_8h_source.html":[37,0,3,4,2,1,72],
-"_pool2_d_options_8cpp.html":[37,0,0,129,2,0,110],
-"_pool2_d_options_8cpp.html#abd84e1c053cf0d3f28315a7ec405d9fe":[37,0,0,129,2,0,110,0],
-"_pool2_d_options_8cpp_source.html":[37,0,0,129,2,0,110],
 "_pool2_d_options_8h.html":[37,0,0,129,2,0,111],
 "_pool2_d_options_8h.html#abd84e1c053cf0d3f28315a7ec405d9fe":[37,0,0,129,2,0,111,0],
 "_pool2_d_options_8h_source.html":[37,0,0,129,2,0,111],
@@ -249,5 +244,10 @@ var NAVTREEINDEX23 =
 "_quantize_manager_8h.html":[37,0,4,2,2,0,6,3],
 "_quantize_manager_8h_source.html":[37,0,4,2,2,0,6,3],
 "_quantize_onnx_dequantize_linear_pass_8cpp.html":[37,0,0,55,7,1,74],
-"_quantize_onnx_dequantize_linear_pass_8cpp_source.html":[37,0,0,55,7,1,74]
+"_quantize_onnx_dequantize_linear_pass_8cpp_source.html":[37,0,0,55,7,1,74],
+"_quantize_onnx_dequantize_linear_pass_8h.html":[37,0,0,55,7,1,75],
+"_quantize_onnx_dequantize_linear_pass_8h_source.html":[37,0,0,55,7,1,75],
+"_quantize_onnx_fake_quant_model_pass_8cpp.html":[37,0,0,55,7,1,76],
+"_quantize_onnx_fake_quant_model_pass_8cpp_source.html":[37,0,0,55,7,1,76],
+"_quantize_onnx_fake_quant_model_pass_8h.html":[37,0,0,55,7,0,0,0,52]
 };

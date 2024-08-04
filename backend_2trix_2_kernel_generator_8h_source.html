@@ -148,25 +148,24 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8h_so
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operands.html">ir::Operands</a> &amp;_ctx;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_operations.html">ir::Operations</a> &amp;_operations_ctx;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> _current_layout;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  std::shared_ptr&lt;TensorBuilder&gt; _tensor_builder;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  std::shared_ptr&lt;basic::TensorRegistry&gt; _tensor_reg;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">const</span> std::shared_ptr&lt;DevContext&gt; _dev_context;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  std::shared_ptr&lt;TensorBuilder&gt; _tensor_builder;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  std::shared_ptr&lt;basic::TensorRegistry&gt; _tensor_reg;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">const</span> std::shared_ptr&lt;DevContext&gt; _dev_context;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// namespace trix</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_TRIX_KERNEL_GENERATOR_H__</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <span class="comment">// namespace trix</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_TRIX_KERNEL_GENERATOR_H__</span></div>
 <div class="ttc" id="a_dev_context_8h_html"><div class="ttname"><a href="_dev_context_8h.html">DevContext.h</a></div></div>
 <div class="ttc" id="a_operands_8h_html"><div class="ttname"><a href="_operands_8h.html">Operands.h</a></div></div>
 <div class="ttc" id="a_operations_8h_html"><div class="ttname"><a href="_operations_8h.html">Operations.h</a></div></div>
 <div class="ttc" id="abasic_2_kernel_generator_base_8h_html"><div class="ttname"><a href="basic_2_kernel_generator_base_8h.html">KernelGeneratorBase.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_kernel_generator_base_html"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html">onert::backend::basic::KernelGeneratorBase</a></div><div class="ttdef"><b>Definition</b> <a href="basic_2_kernel_generator_base_8h_source.html#l00036">KernelGeneratorBase.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1_kernel_generator_html"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1_kernel_generator.html">onert::backend::trix::KernelGenerator</a></div><div class="ttdef"><b>Definition</b> <a href="backend_2trix_2_kernel_generator_8h_source.html#l00036">KernelGenerator.h:37</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1_kernel_generator_html_a6254caba76291700d9019924fe24144a"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1_kernel_generator.html#a6254caba76291700d9019924fe24144a">onert::backend::trix::KernelGenerator::generate</a></div><div class="ttdeci">std::unique_ptr&lt; exec::FunctionSequence &gt; generate(ir::OperationIndex op_ind) override</div><div class="ttdef"><b>Definition</b> <a href="backend_2trix_2_kernel_generator_8cc_source.html#l00048">KernelGenerator.cc:48</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1trix_1_1_kernel_generator_html_a6254caba76291700d9019924fe24144a"><div class="ttname"><a href="classonert_1_1backend_1_1trix_1_1_kernel_generator.html#a6254caba76291700d9019924fe24144a">onert::backend::trix::KernelGenerator::generate</a></div><div class="ttdeci">std::unique_ptr&lt; exec::FunctionSequence &gt; generate(ir::OperationIndex op_ind) override</div><div class="ttdef"><b>Definition</b> <a href="backend_2trix_2_kernel_generator_8cc_source.html#l00047">KernelGenerator.cc:47</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00033">Graph.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operands_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operands.html">onert::ir::Operands</a></div><div class="ttdef"><b>Definition</b> <a href="_operands_8h_source.html#l00032">Operands.h:33</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operations_html"><div class="ttname"><a href="classonert_1_1ir_1_1_operations.html">onert::ir::Operations</a></div><div class="ttdef"><b>Definition</b> <a href="_operations_8h_source.html#l00029">Operations.h:30</a></div></div>
@@ -174,7 +173,6 @@ $(document).ready(function(){initNavTree('backend_2trix_2_kernel_generator_8h_so
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperationIndexTag &gt;</a></div></div>
 <div class="ttc" id="acore_2include_2backend_2basic_2_tensor_registry_8h_html"><div class="ttname"><a href="core_2include_2backend_2basic_2_tensor_registry_8h.html">TensorRegistry.h</a></div></div>
 <div class="ttc" id="acore_2src_2backend_2builtin_2_tensor_builder_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2_tensor_builder_8h.html">TensorBuilder.h</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">onert::ir::Layout</a></div><div class="ttdeci">Layout</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00029">Layout.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h.html">Tensor.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

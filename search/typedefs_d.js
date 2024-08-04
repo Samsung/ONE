@@ -19,6 +19,5 @@ var searchData=
   ['originindex_16',['OriginIndex',['../namespaceonert_1_1ir.html#a76eeea0b78e47a5b436d031fa784a672',1,'onert::ir']]],
   ['origintable_17',['OriginTable',['../namespaceluci.html#a88979da5eeb3b971f6f042d6bbf0a402',1,'luci']]],
   ['output_18',['output',['../namespacempqsolver_1_1core.html#a09395b02e3c6f5c80a00fa379407810d',1,'mpqsolver::core::Output'],['../namespacerecord__minmax.html#a3d03f63a604eb9c053ce1c9578a7d30f',1,'record_minmax::Output']]],
-  ['outputbuffers_19',['OutputBuffers',['../namespacenpud_1_1core.html#af35d486d3bc0329e28dc714b68c27a3c',1,'npud::core']]],
-  ['outputlist_20',['outputlist',['../namespacecoco.html#a1a6c8ff5513ef45a9f110ab01329d073',1,'coco::OutputList'],['../namespaceann.html#a0295dbdda8c4d20354132e8ce2d864b0',1,'ann::OutputList']]]
+  ['outputlist_19',['outputlist',['../namespacecoco.html#a1a6c8ff5513ef45a9f110ab01329d073',1,'coco::OutputList'],['../namespaceann.html#a0295dbdda8c4d20354132e8ce2d864b0',1,'ann::OutputList']]]
 ];

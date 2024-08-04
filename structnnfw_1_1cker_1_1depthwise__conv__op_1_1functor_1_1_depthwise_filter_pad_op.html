@@ -105,7 +105,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
 struct nnfw::cker::depthwise_conv_op::functor::DepthwiseFilterPadOp&lt; T &gt;</div>
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00073">73</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00082">82</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab0b562d08aacf71e35ae5540d9289c58" name="ab0b562d08aacf71e35ae5540d9289c58"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab0b562d08aacf71e35ae5540d9289c58">&#9670;&#160;</a></span>operator()()</h2>
@@ -221,43 +221,44 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00075">75</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>  {</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
-<div class="line"><span class="lineno">   79</span>    <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="comment">// Calculate vectorized and scalar lengths of filter&#39;s inner dimension.</span></div>
-<div class="line"><span class="lineno">   82</span>    <span class="keyword">const</span> int64_t filter_inner_dim_size = out_depth;</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keyword">const</span> int64_t vectorized_size = (filter_inner_dim_size / kPacketSize) * kPacketSize;</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keyword">const</span> int64_t scalar_size = filter_inner_dim_size - vectorized_size;</div>
-<div class="line"><span class="lineno">   85</span>    <span class="comment">// Calculate required padding and padded output buffer stride.</span></div>
-<div class="line"><span class="lineno">   86</span>    <span class="keyword">const</span> int64_t pad_size = scalar_size &gt; 0 ? kPacketSize - scalar_size : 0;</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keyword">const</span> int64_t padded_filter_stride = vectorized_size + kPacketSize;</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>    <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">for</span> (int64_t i = 0; i &lt; filter_spatial_size; ++i)</div>
-<div class="line"><span class="lineno">   91</span>    {</div>
-<div class="line"><span class="lineno">   92</span>      <span class="keyword">const</span> int64_t input_base = i * filter_inner_dim_size;</div>
-<div class="line"><span class="lineno">   93</span>      <span class="keyword">const</span> int64_t output_base = i * padded_filter_stride;</div>
-<div class="line"><span class="lineno">   94</span>      <span class="comment">// Write vectorized length of filter&#39;s inner dimension to output.</span></div>
-<div class="line"><span class="lineno">   95</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; vectorized_size; j += kPacketSize)</div>
-<div class="line"><span class="lineno">   96</span>      {</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keyword">const</span> <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(filter + input_base + j);</div>
-<div class="line"><span class="lineno">   98</span>        Eigen::internal::pstoreu&lt;T&gt;(padded_filter + output_base + j, v);</div>
-<div class="line"><span class="lineno">   99</span>      }</div>
-<div class="line"><span class="lineno">  100</span>      <span class="comment">// Write scalar length of filter&#39;s inner dimension to output.</span></div>
-<div class="line"><span class="lineno">  101</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; scalar_size; ++j)</div>
-<div class="line"><span class="lineno">  102</span>      {</div>
-<div class="line"><span class="lineno">  103</span>        padded_filter[output_base + vectorized_size + j] = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">filter</a>[input_base + vectorized_size + j];</div>
-<div class="line"><span class="lineno">  104</span>      }</div>
-<div class="line"><span class="lineno">  105</span>      <span class="comment">// Pad the remainder of output to vector-register boundary.</span></div>
-<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; pad_size; ++j)</div>
-<div class="line"><span class="lineno">  107</span>      {</div>
-<div class="line"><span class="lineno">  108</span>        padded_filter[output_base + vectorized_size + scalar_size + j] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0);</div>
-<div class="line"><span class="lineno">  109</span>      }</div>
-<div class="line"><span class="lineno">  110</span>    }</div>
-<div class="line"><span class="lineno">  111</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="depthwise__conv__op_8h_source.html#l00084">84</a> of file <a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keyword">static</span> <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>    <span class="comment">// Calculate vectorized and scalar lengths of filter&#39;s inner dimension.</span></div>
+<div class="line"><span class="lineno">   91</span>    <span class="keyword">const</span> int64_t filter_inner_dim_size = out_depth;</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keyword">const</span> int64_t vectorized_size = (filter_inner_dim_size / <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>) * kPacketSize;</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> int64_t scalar_size = filter_inner_dim_size - vectorized_size;</div>
+<div class="line"><span class="lineno">   94</span>    <span class="comment">// Calculate required padding and padded output buffer stride.</span></div>
+<div class="line"><span class="lineno">   95</span>    <span class="keyword">const</span> int64_t pad_size = scalar_size &gt; 0 ? <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> - scalar_size : 0;</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keyword">const</span> int64_t padded_filter_stride = vectorized_size + <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>;</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>    <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">for</span> (int64_t i = 0; i &lt; filter_spatial_size; ++i)</div>
+<div class="line"><span class="lineno">  100</span>    {</div>
+<div class="line"><span class="lineno">  101</span>      <span class="keyword">const</span> int64_t input_base = i * filter_inner_dim_size;</div>
+<div class="line"><span class="lineno">  102</span>      <span class="keyword">const</span> int64_t output_base = i * padded_filter_stride;</div>
+<div class="line"><span class="lineno">  103</span>      <span class="comment">// Write vectorized length of filter&#39;s inner dimension to output.</span></div>
+<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; vectorized_size; j += <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>)</div>
+<div class="line"><span class="lineno">  105</span>      {</div>
+<div class="line"><span class="lineno">  106</span>        <span class="keyword">const</span> <span class="keyword">auto</span> v = Eigen::internal::ploadu&lt;Packet&gt;(filter + input_base + j);</div>
+<div class="line"><span class="lineno">  107</span>        Eigen::internal::pstoreu&lt;T&gt;(padded_filter + output_base + j, v);</div>
+<div class="line"><span class="lineno">  108</span>      }</div>
+<div class="line"><span class="lineno">  109</span>      <span class="comment">// Write scalar length of filter&#39;s inner dimension to output.</span></div>
+<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; scalar_size; ++j)</div>
+<div class="line"><span class="lineno">  111</span>      {</div>
+<div class="line"><span class="lineno">  112</span>        padded_filter[output_base + vectorized_size + j] = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">filter</a>[input_base + vectorized_size + j];</div>
+<div class="line"><span class="lineno">  113</span>      }</div>
+<div class="line"><span class="lineno">  114</span>      <span class="comment">// Pad the remainder of output to vector-register boundary.</span></div>
+<div class="line"><span class="lineno">  115</span>      <span class="keywordflow">for</span> (int64_t j = 0; j &lt; pad_size; ++j)</div>
+<div class="line"><span class="lineno">  116</span>      {</div>
+<div class="line"><span class="lineno">  117</span>        padded_filter[output_base + vectorized_size + scalar_size + j] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0);</div>
+<div class="line"><span class="lineno">  118</span>      }</div>
+<div class="line"><span class="lineno">  119</span>    }</div>
+<div class="line"><span class="lineno">  120</span>  }</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">mir_caffe::CaffeOpType::filter</a></div><div class="ttdeci">@ filter</div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1eigen__support_html_a71ec3d24ac083e38041c7a0605748a3c"><div class="ttname"><a href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">nnfw::cker::eigen_support::kPacketSize</a></div><div class="ttdeci">int64_t kPacketSize()</div><div class="ttdef"><b>Definition</b> <a href="_eigen_support_8h_source.html#l00116">EigenSupport.h:116</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

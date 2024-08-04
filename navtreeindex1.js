@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"_attr_dilation_8h.html":[37,0,0,55,3,0,0,0,1],
 "_attr_dilation_8h_source.html":[37,0,0,55,3,0,0,0,1],
 "_attr_filter_8cpp.html":[37,0,0,55,3,1,2],
 "_attr_filter_8cpp_source.html":[37,0,0,55,3,1,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "_block_index_8h.html":[37,0,0,27,0,0,0,1,5],
 "_block_index_8h_source.html":[37,0,0,27,0,0,0,1,5],
 "_block_manager_8cpp.html":[37,0,0,27,0,1,1,5],
-"_block_manager_8cpp_source.html":[37,0,0,27,0,1,1,5]
+"_block_manager_8cpp_source.html":[37,0,0,27,0,1,1,5],
+"_block_manager_8h.html":[37,0,0,27,0,0,0,1,6]
 };

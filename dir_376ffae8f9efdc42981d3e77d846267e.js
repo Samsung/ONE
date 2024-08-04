@@ -13,7 +13,6 @@ var dir_376ffae8f9efdc42981d3e77d846267e =
     [ "ILoweredGraph.h", "_i_lowered_graph_8h.html", "_i_lowered_graph_8h" ],
     [ "LoweredGraph.h", "_lowered_graph_8h.html", "_lowered_graph_8h" ],
     [ "OperandLowerInfo.h", "_operand_lower_info_8h.html", "_operand_lower_info_8h" ],
-    [ "OperationLowerInfo.h", "_operation_lower_info_8h.html", "_operation_lower_info_8h" ],
     [ "PermuteFactor.h", "_permute_factor_8h.html", "_permute_factor_8h" ],
     [ "StaticShapeInferer.h", "_static_shape_inferer_8h.html", "_static_shape_inferer_8h" ]
 ];

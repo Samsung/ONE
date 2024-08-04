@@ -10,7 +10,5 @@ var searchData=
   ['nodedepthtype_7',['NodeDepthType',['../namespacempqsolver_1_1bisection.html#a286c973e6531a1759bb45c77ca65d0a0',1,'mpqsolver::bisection']]],
   ['nodename_8',['nodename',['../namespaceluci.html#a269f72042ae95fc05af9c022011b519c',1,'luci::NodeName'],['../namespacemoco.html#a21a1e8ddb00f8f7f382fad01155f75c7',1,'moco::NodeName']]],
   ['nodepair_9',['NodePair',['../namespacemoco_1_1tf_1_1eltwise_1_1binary.html#ab8e1eda974932511117c377c522f48b6',1,'moco::tf::eltwise::binary']]],
-  ['nodesummary_10',['NodeSummary',['../namespacelocop.html#a387ee1cce78b5796d258e5e786c84b7d',1,'locop']]],
-  ['npualloc_11',['NpuAlloc',['../namespacenpud_1_1core.html#a33acc5541771b5187284f8e8103e9f49',1,'npud::core']]],
-  ['npudealloc_12',['NpuDealloc',['../namespacenpud_1_1core.html#a560b02ec6bc0583759fc62da56abb722',1,'npud::core']]]
+  ['nodesummary_10',['NodeSummary',['../namespacelocop.html#a387ee1cce78b5796d258e5e786c84b7d',1,'locop']]]
 ];

@@ -155,8 +155,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_operand_observer.html">OperandObserver</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that observe and update operands.  <a href="classonert_1_1compiler_1_1_operand_observer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_operation_lower_info.html">OperationLowerInfo</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_permute_factor.html">PermuteFactor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that has factors of permutation.  <a href="classonert_1_1compiler_1_1_permute_factor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,10 +170,26 @@ Data Structures</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:aaf581e48fee004c58d11ca806b3495d5" id="r_aaf581e48fee004c58d11ca806b3495d5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1compiler.html#aaf581e48fee004c58d11ca806b3495d5">CodeMap</a> = std::unordered_map&lt; <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a>, <a class="el" href="structonert_1_1compiler_1_1_code_and_info.html">CodeAndInfo</a> &gt;</td></tr>
 <tr class="separator:aaf581e48fee004c58d11ca806b3495d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ab9bf7f615bf361c347862ef2cbbfbf" id="r_a1ab9bf7f615bf361c347862ef2cbbfbf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1compiler.html#a1ab9bf7f615bf361c347862ef2cbbfbf">PermuteFactorSet</a> = <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; <a class="el" href="classonert_1_1compiler_1_1_permute_factor.html">PermuteFactor</a> &gt;</td></tr>
-<tr class="separator:a1ab9bf7f615bf361c347862ef2cbbfbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1531caf327862e7b6899c52f8250419a" id="r_a1531caf327862e7b6899c52f8250419a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1compiler.html#a1531caf327862e7b6899c52f8250419a">BackendSet</a> = <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> * &gt;</td></tr>
+<tr class="separator:a1531caf327862e7b6899c52f8250419a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a1531caf327862e7b6899c52f8250419a" name="a1531caf327862e7b6899c52f8250419a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1531caf327862e7b6899c52f8250419a">&#9670;&#160;</a></span>BackendSet</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceonert_1_1compiler.html#a1531caf327862e7b6899c52f8250419a">onert::compiler::BackendSet</a> = typedef <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt;const <a class="el" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_operand_lower_info_8h_source.html#l00028">28</a> of file <a class="el" href="_operand_lower_info_8h_source.html">OperandLowerInfo.h</a>.</p>
+
+</div>
+</div>
 <a id="aaf581e48fee004c58d11ca806b3495d5" name="aaf581e48fee004c58d11ca806b3495d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf581e48fee004c58d11ca806b3495d5">&#9670;&#160;</a></span>CodeMap</h2>
 
@@ -189,22 +203,6 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_code_map_8h_source.html#l00046">46</a> of file <a class="el" href="_code_map_8h_source.html">CodeMap.h</a>.</p>
-
-</div>
-</div>
-<a id="a1ab9bf7f615bf361c347862ef2cbbfbf" name="a1ab9bf7f615bf361c347862ef2cbbfbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ab9bf7f615bf361c347862ef2cbbfbf">&#9670;&#160;</a></span>PermuteFactorSet</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespaceonert_1_1compiler.html#a1ab9bf7f615bf361c347862ef2cbbfbf">onert::compiler::PermuteFactorSet</a> = typedef <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt;<a class="el" href="classonert_1_1compiler_1_1_permute_factor.html">PermuteFactor</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_operand_lower_info_8h_source.html#l00039">39</a> of file <a class="el" href="_operand_lower_info_8h_source.html">OperandLowerInfo.h</a>.</p>
 
 </div>
 </div>

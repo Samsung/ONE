@@ -185,7 +185,7 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="bias__op_8h_source.html#l00097">97</a> of file <a class="el" href="bias__op_8h_source.html">bias_op.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   99</span>{</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordtype">int</span> channel_dim = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() - 1;</div>
+<div class="line"><span class="lineno">  100</span>  [[maybe_unused]] <span class="keywordtype">int</span> channel_dim = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() - 1;</div>
 <div class="line"><span class="lineno">  101</span> </div>
 <div class="line"><span class="lineno">  102</span>  assert(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(channel_dim) == bias_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0));</div>
 <div class="line"><span class="lineno">  103</span>  assert(input_data);</div>

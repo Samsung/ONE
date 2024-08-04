@@ -2486,10 +2486,13 @@ var annotated_dup =
             [ "DepthwiseFilterPadOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_filter_pad_op" ],
             [ "DepthwiseInputCopyOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_input_copy_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1functor_1_1_depthwise_input_copy_op" ]
           ] ],
+          [ "DepthwiseConv2DKernel", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_depthwise_conv2_d_kernel.html", null ],
           [ "LaunchDepthwiseConvBackpropFilterOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op" ],
           [ "LaunchDepthwiseConvBackpropFilterOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_3_01_c_p_u_device_00_01_t_01_4" ],
           [ "LaunchDepthwiseConvBackpropInputOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op" ],
-          [ "LaunchDepthwiseConvBackpropInputOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4" ]
+          [ "LaunchDepthwiseConvBackpropInputOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_input_op_3_01_c_p_u_device_00_01_t_01_4" ],
+          [ "LaunchDepthwiseConvOp", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op" ],
+          [ "LaunchDepthwiseConvOp< CPUDevice, T >", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4" ]
         ] ],
         [ "detail", "namespacennfw_1_1cker_1_1detail.html", [
           [ "GemmImplUsingEigen", "structnnfw_1_1cker_1_1detail_1_1_gemm_impl_using_eigen.html", null ]
@@ -2569,7 +2572,6 @@ var annotated_dup =
             [ "SpatialConvolutionBackwardInputFunc", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func.html", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_func" ],
             [ "SpatialConvolutionBackwardInputWithExplicitPaddingFunc", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func.html", "structnnfw_1_1cker_1_1train_1_1functor_1_1_spatial_convolution_backward_input_with_explicit_padding_func" ]
           ] ],
-          [ "DepthwiseConv", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv.html", "classnnfw_1_1cker_1_1train_1_1_depthwise_conv" ],
           [ "LaunchConv2DBackpropFilterOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_filter_op" ],
           [ "LaunchConv2DBackpropInputOp", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op" ],
           [ "LaunchConv2DBackpropInputOpImpl", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl.html", "structnnfw_1_1cker_1_1train_1_1_launch_conv2_d_backprop_input_op_impl" ]
@@ -2750,38 +2752,6 @@ var annotated_dup =
       [ "conv", "namespacennsuite_1_1conv.html", [
         [ "Model", "structnnsuite_1_1conv_1_1_model.html", "structnnsuite_1_1conv_1_1_model" ],
         [ "RandomModel", "classnnsuite_1_1conv_1_1_random_model.html", "classnnsuite_1_1conv_1_1_random_model" ]
-      ] ]
-    ] ],
-    [ "npud", "namespacenpud.html", [
-      [ "backend", "namespacenpud_1_1backend.html", [
-        [ "trix", "namespacenpud_1_1backend_1_1trix.html", [
-          [ "TrixBackend", "classnpud_1_1backend_1_1trix_1_1_trix_backend.html", "classnpud_1_1backend_1_1trix_1_1_trix_backend" ],
-          [ "TrixDevice", "structnpud_1_1backend_1_1trix_1_1_trix_device.html", "structnpud_1_1backend_1_1trix_1_1_trix_device" ],
-          [ "TrixModelInfo", "structnpud_1_1backend_1_1trix_1_1_trix_model_info.html", "structnpud_1_1backend_1_1trix_1_1_trix_model_info" ],
-          [ "TrixRequestInfo", "structnpud_1_1backend_1_1trix_1_1_trix_request_info.html", "structnpud_1_1backend_1_1trix_1_1_trix_request_info" ]
-        ] ]
-      ] ],
-      [ "core", "namespacenpud_1_1core.html", [
-        [ "Backend", "classnpud_1_1core_1_1_backend.html", "classnpud_1_1core_1_1_backend" ],
-        [ "Context", "structnpud_1_1core_1_1_context.html", "structnpud_1_1core_1_1_context" ],
-        [ "ContextManager", "classnpud_1_1core_1_1_context_manager.html", "classnpud_1_1core_1_1_context_manager" ],
-        [ "Core", "classnpud_1_1core_1_1_core.html", "classnpud_1_1core_1_1_core" ],
-        [ "DBus", "classnpud_1_1core_1_1_d_bus.html", "classnpud_1_1core_1_1_d_bus" ],
-        [ "Device", "structnpud_1_1core_1_1_device.html", "structnpud_1_1core_1_1_device" ],
-        [ "DevManager", "classnpud_1_1core_1_1_dev_manager.html", "classnpud_1_1core_1_1_dev_manager" ],
-        [ "DynamicLoader", "classnpud_1_1core_1_1_dynamic_loader.html", "classnpud_1_1core_1_1_dynamic_loader" ],
-        [ "GenericBuffer", "structnpud_1_1core_1_1_generic_buffer.html", "structnpud_1_1core_1_1_generic_buffer" ],
-        [ "GenericBuffers", "structnpud_1_1core_1_1_generic_buffers.html", "structnpud_1_1core_1_1_generic_buffers" ],
-        [ "NpuContext", "structnpud_1_1core_1_1_npu_context.html", "structnpud_1_1core_1_1_npu_context" ],
-        [ "Server", "classnpud_1_1core_1_1_server.html", "classnpud_1_1core_1_1_server" ],
-        [ "Signal", "classnpud_1_1core_1_1_signal.html", "classnpud_1_1core_1_1_signal" ],
-        [ "TensorDataInfo", "structnpud_1_1core_1_1_tensor_data_info.html", "structnpud_1_1core_1_1_tensor_data_info" ],
-        [ "TensorDataInfos", "structnpud_1_1core_1_1_tensor_data_infos.html", "structnpud_1_1core_1_1_tensor_data_infos" ]
-      ] ],
-      [ "util", "namespacenpud_1_1util.html", [
-        [ "logging", "namespacenpud_1_1util_1_1logging.html", [
-          [ "Context", "classnpud_1_1util_1_1logging_1_1_context.html", "classnpud_1_1util_1_1logging_1_1_context" ]
-        ] ]
       ] ]
     ] ],
     [ "onert", "namespaceonert.html", [
@@ -2991,6 +2961,7 @@ var annotated_dup =
           [ "DisposableMemoryManager", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager.html", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager" ],
           [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
           [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
+          [ "ExtraTensor", "classonert_1_1backend_1_1train_1_1_extra_tensor.html", "classonert_1_1backend_1_1train_1_1_extra_tensor" ],
           [ "FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", "classonert_1_1backend_1_1train_1_1_first_fit_planner" ],
           [ "GradientMemoryManager", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager.html", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager" ],
           [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],
@@ -3057,13 +3028,13 @@ var annotated_dup =
           [ "PassRunner", "classonert_1_1compiler_1_1pass_1_1_pass_runner.html", "classonert_1_1compiler_1_1pass_1_1_pass_runner" ],
           [ "PermutationEliminationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass" ],
           [ "PermutationInsertionPass", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass" ],
-          [ "PermutationOperationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_operation_pass" ],
           [ "UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass" ]
         ] ],
         [ "train", "namespaceonert_1_1compiler_1_1train.html", [
           [ "pass", "namespaceonert_1_1compiler_1_1train_1_1pass.html", [
             [ "LossInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass" ],
-            [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ]
+            [ "Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass" ],
+            [ "TrainableConstantInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_trainable_constant_insertion_pass.html", "classonert_1_1compiler_1_1train_1_1pass_1_1_trainable_constant_insertion_pass" ]
           ] ],
           [ "LoweredTrainableGraph", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html", "classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph" ],
           [ "StaticBackwardShapeInferer", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer.html", "classonert_1_1compiler_1_1train_1_1_static_backward_shape_inferer" ],
@@ -3095,7 +3066,6 @@ var annotated_dup =
         [ "MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", "classonert_1_1compiler_1_1_multi_model_compiler" ],
         [ "OperandLowerInfo", "classonert_1_1compiler_1_1_operand_lower_info.html", "classonert_1_1compiler_1_1_operand_lower_info" ],
         [ "OperandObserver", "classonert_1_1compiler_1_1_operand_observer.html", "classonert_1_1compiler_1_1_operand_observer" ],
-        [ "OperationLowerInfo", "classonert_1_1compiler_1_1_operation_lower_info.html", "classonert_1_1compiler_1_1_operation_lower_info" ],
         [ "PermuteFactor", "classonert_1_1compiler_1_1_permute_factor.html", "classonert_1_1compiler_1_1_permute_factor" ],
         [ "ShapeValidator", "classonert_1_1compiler_1_1_shape_validator.html", "classonert_1_1compiler_1_1_shape_validator" ],
         [ "StaticShapeInferer", "classonert_1_1compiler_1_1_static_shape_inferer.html", "classonert_1_1compiler_1_1_static_shape_inferer" ],

@@ -4,7 +4,7 @@ var searchData=
   ['backend_5fdestroy_5ft_1',['backend_destroy_t',['../classonert_1_1compiler_1_1_backend_manager.html#a3a0be2e6523767990a9b6e1d9cfbe9b6',1,'onert::compiler::BackendManager']]],
   ['backendcontext_2',['backendcontext',['../namespaceonert_1_1backend_1_1acl__cl.html#ace222bac587e5e2b57816736b97909e3',1,'onert::backend::acl_cl::BackendContext'],['../namespaceonert_1_1backend_1_1acl__neon.html#a309a2ebd9f348b47fc2dbf7de6ed4a5a',1,'onert::backend::acl_neon::BackendContext']]],
   ['backendcontexts_3',['BackendContexts',['../namespaceonert_1_1backend.html#ae138503c939b99456da0092d81727e62',1,'onert::backend']]],
-  ['backendset_4',['BackendSet',['../namespaceonert_1_1exec.html#a54edf28856f9caa5c269b5004cd0ae82',1,'onert::exec']]],
+  ['backendset_4',['backendset',['../namespaceonert_1_1exec.html#a54edf28856f9caa5c269b5004cd0ae82',1,'onert::exec::BackendSet'],['../namespaceonert_1_1compiler.html#a1531caf327862e7b6899c52f8250419a',1,'onert::compiler::BackendSet']]],
   ['backproptensor_5',['backproptensor',['../namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745',1,'onert::backend::train::BackPropTensor'],['../namespaceonert_1_1backend_1_1builtin_1_1train.html#a621b9829221118dd8051ca27f3df73c1',1,'onert::backend::builtin::train::BackPropTensor']]],
   ['baseruntimegraph_6',['BaseRuntimeGraph',['../namespaceluci__interpreter.html#a536f70436969ec0208abfe68640bfc71',1,'luci_interpreter']]],
   ['basetensorregistry_7',['BaseTensorRegistry',['../namespaceonert_1_1backend_1_1builtin_1_1train.html#a03cc4affcb32e5ad86902e9fbabd7396',1,'onert::backend::builtin::train']]],

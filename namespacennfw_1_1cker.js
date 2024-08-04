@@ -333,7 +333,7 @@ var namespacennfw_1_1cker =
     [ "ReduceMeanImpl", "namespacennfw_1_1cker.html#a8c8bc57eef14dd4d6e30250d8a9a911a", null ],
     [ "ReduceSumQuantImpl", "namespacennfw_1_1cker.html#a7d1f8da4e9496f3def13685aeeb733f7", null ],
     [ "ReLU", "namespacennfw_1_1cker.html#aa7dafd5f43f7cf04008da8416f94d0d5", null ],
-    [ "ReLU6", "namespacennfw_1_1cker.html#aa3a1779dd7902a4cf5186a5231fcf429", null ],
+    [ "ReLU6", "namespacennfw_1_1cker.html#a82564e90d8c58eef1e17133cff6e7dc5", null ],
     [ "Requantize", "namespacennfw_1_1cker.html#a370789a061f0885017a913b15b7b3119", null ],
     [ "Requantize< int8_t, uint8_t >", "namespacennfw_1_1cker.html#a3ad71bab48b0fcf4a3e540e7ca0b58c6", null ],
     [ "Requantize< uint8_t, int8_t >", "namespacennfw_1_1cker.html#af9872cd57a5ec52950cf7214ee97b785", null ],

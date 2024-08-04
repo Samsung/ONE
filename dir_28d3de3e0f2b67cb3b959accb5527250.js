@@ -50,7 +50,7 @@ var dir_28d3de3e0f2b67cb3b959accb5527250 =
     [ "QuantizationHelpers.h", "_quantization_helpers_8h.html", "_quantization_helpers_8h" ],
     [ "ReduceMean.cpp", "mir-interpreter_2src_2ops_2_reduce_mean_8cpp.html", "mir-interpreter_2src_2ops_2_reduce_mean_8cpp" ],
     [ "ReduceMean.h", "compiler_2mir-interpreter_2src_2ops_2_reduce_mean_8h.html", "compiler_2mir-interpreter_2src_2ops_2_reduce_mean_8h" ],
-    [ "ReLU.cpp", "compiler_2mir-interpreter_2src_2ops_2_re_l_u_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_re_l_u_8cpp" ],
+    [ "ReLU.cpp", "compiler_2mir-interpreter_2src_2ops_2_relu_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_relu_8cpp" ],
     [ "ReLU.h", "compiler_2mir-interpreter_2src_2ops_2_re_l_u_8h.html", "compiler_2mir-interpreter_2src_2ops_2_re_l_u_8h" ],
     [ "Reshape.cpp", "compiler_2mir-interpreter_2src_2ops_2_reshape_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_reshape_8cpp" ],
     [ "Reshape.h", "compiler_2mir-interpreter_2src_2ops_2_reshape_8h.html", "compiler_2mir-interpreter_2src_2ops_2_reshape_8h" ],

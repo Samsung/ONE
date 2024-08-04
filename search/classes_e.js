@@ -161,11 +161,11 @@ var searchData=
   ['nnfw_5fcustom_5fkernel_5fparams_158',['nnfw_custom_kernel_params',['../structnnfw__custom__kernel__params.html',1,'']]],
   ['nnfw_5floss_5finfo_159',['nnfw_loss_info',['../structnnfw__loss__info.html',1,'']]],
   ['nnfw_5foperand_160',['nnfw_operand',['../structnnfw__operand.html',1,'']]],
-  ['nnfw_5fsession_161',['nnfw_session',['../classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html',1,'package.libnnfw_api_pybind.nnfw_session'],['../class_n_n_f_w___s_e_s_s_i_o_n.html',1,'NNFW_SESSION'],['../structnnfw__session.html',1,'nnfw_session']]],
+  ['nnfw_5fsession_161',['nnfw_session',['../classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html',1,'package.libnnfw_api_pybind.nnfw_session'],['../structnnfw__session.html',1,'nnfw_session'],['../class_n_n_f_w___s_e_s_s_i_o_n.html',1,'NNFW_SESSION']]],
   ['nnfw_5ftensorinfo_162',['nnfw_tensorinfo',['../structnnfw__tensorinfo.html',1,'']]],
   ['nnfw_5ftrain_5finfo_163',['nnfw_train_info',['../structnnfw__train__info.html',1,'']]],
   ['nnpkg_164',['NNPkg',['../classonert_1_1ir_1_1_n_n_pkg.html',1,'onert::ir']]],
-  ['node_165',['node',['../classonert_1_1dumper_1_1dot_1_1_node.html',1,'onert::dumper::dot::Node'],['../structnest_1_1stmt_1_1_node.html',1,'nest::stmt::Node'],['../structnest_1_1expr_1_1_node.html',1,'nest::expr::Node'],['../classloco_1_1_node.html',1,'loco::Node'],['../classcoco_1_1_d_linked_list_1_1_node.html',1,'coco::DLinkedList&lt; Child, Parent &gt;::Node']]],
+  ['node_165',['node',['../classcoco_1_1_d_linked_list_1_1_node.html',1,'coco::DLinkedList&lt; Child, Parent &gt;::Node'],['../classloco_1_1_node.html',1,'loco::Node'],['../structnest_1_1expr_1_1_node.html',1,'nest::expr::Node'],['../structnest_1_1stmt_1_1_node.html',1,'nest::stmt::Node'],['../classonert_1_1dumper_1_1dot_1_1_node.html',1,'onert::dumper::dot::Node']]],
   ['nodeannotation_166',['NodeAnnotation',['../structloco_1_1_node_annotation.html',1,'loco']]],
   ['nodebuilderbase_167',['NodeBuilderBase',['../classluci_1_1_node_builder_base.html',1,'luci']]],
   ['nodeconverterregistry_168',['NodeConverterRegistry',['../classmir__onnx_1_1_node_converter_registry.html',1,'mir_onnx']]],
@@ -200,8 +200,7 @@ var searchData=
   ['notequal_197',['NotEqual',['../classluci__interpreter_1_1kernels_1_1_not_equal.html',1,'luci_interpreter::kernels']]],
   ['notequalchef_198',['NotEqualChef',['../class_not_equal_chef.html',1,'']]],
   ['notequalcheffactory_199',['NotEqualChefFactory',['../struct_not_equal_chef_factory.html',1,'']]],
-  ['npucontext_200',['NpuContext',['../structnpud_1_1core_1_1_npu_context.html',1,'npud::core']]],
-  ['nullopt_5fholder_201',['nullopt_holder',['../structflatbuffers_1_1internal_1_1nullopt__holder.html',1,'flatbuffers::internal']]],
-  ['nullopt_5ft_202',['nullopt_t',['../structflatbuffers_1_1nullopt__t.html',1,'flatbuffers']]],
-  ['numeric_5flimits_203',['numeric_limits',['../classflatbuffers_1_1numeric__limits.html',1,'flatbuffers']]]
+  ['nullopt_5fholder_200',['nullopt_holder',['../structflatbuffers_1_1internal_1_1nullopt__holder.html',1,'flatbuffers::internal']]],
+  ['nullopt_5ft_201',['nullopt_t',['../structflatbuffers_1_1nullopt__t.html',1,'flatbuffers']]],
+  ['numeric_5flimits_202',['numeric_limits',['../classflatbuffers_1_1numeric__limits.html',1,'flatbuffers']]]
 ];

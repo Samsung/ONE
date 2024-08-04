@@ -1,5 +1,8 @@
 var NAVTREEINDEX15 =
 {
+"_lifetime_map_8h.html#ab4ee6fc7d6b32b5a20f3c1db60f8038c":[37,0,4,2,1,3,0,0,1,0],
+"_lifetime_map_8h.html#acdab219e6d88b142b51acc571b4ab477":[37,0,4,2,1,3,0,0,1,1],
+"_lifetime_map_8h_source.html":[37,0,4,2,1,3,0,0,1],
 "_linear_8cc.html":[37,0,4,2,2,1,1,15],
 "_linear_8cc_source.html":[37,0,4,2,2,1,1,15],
 "_linear_8h.html":[37,0,4,2,2,1,1,16],
@@ -246,8 +249,5 @@ var NAVTREEINDEX15 =
 "_max_pool_with_argmax_8h.html":[37,0,0,127,0,1,0,15],
 "_max_pool_with_argmax_8h_source.html":[37,0,0,127,0,1,0,15],
 "_maximum_canonicalizer_8cpp.html":[37,0,0,81,1,0,18],
-"_maximum_canonicalizer_8cpp_source.html":[37,0,0,81,1,0,18],
-"_maximum_canonicalizer_8h.html":[37,0,0,81,1,0,19],
-"_maximum_canonicalizer_8h_source.html":[37,0,0,81,1,0,19],
-"_maximum_minimum_options_8cpp.html":[37,0,0,129,2,0,88]
+"_maximum_canonicalizer_8cpp_source.html":[37,0,0,81,1,0,18]
 };
