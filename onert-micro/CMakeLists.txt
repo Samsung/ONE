@@ -139,6 +139,13 @@ endif()
 if (DIS_DYN_SHAPES)
     message(STATUS "ONERT-MICRO will not use dynamic shapes")
     add_definitions(-DDIS_DYN_SHAPES)
+    list(APPEND CMAKE_ARM_OPTIONS "-DDIS_DYN_SHAPES=ON")
+endif()
+
+if (OM_MEMORY_ESTIMATE)
+    message(STATUS "ONERT-MICRO will use memory estimation")
+    add_definitions(-DOM_MEMORY_ESTIMATE)
+    list(APPEND CMAKE_ARM_OPTIONS "-DOM_MEMORY_ESTIMATE=ON")
 endif()
 
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
@@ -162,6 +169,7 @@ unset(KERNELS CACHE)
 unset(USE_STATIC_KERNEL CACHE)
 unset(DIS_QUANT CACHE)
 unset(DIS_FLOAT CACHE)
+unset(OM_MEMORY_ESTIMATE CACHE)
 unset(ENABLE_ONERT_MICRO_TEST CACHE)
 unset(NOT_BUILD_EXTERNALS CACHE)
 
@@ -178,6 +186,7 @@ add_custom_command(
 add_custom_target(onert_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
 add_subdirectory(eval-driver)
+add_subdirectory(training-configure-tool)
 
 # Should be after add_subdirectory
 unset(ENABLE_ONERT_MICRO_TRAINING CACHE)
