@@ -44,7 +44,7 @@ public:
 
   OMRuntimeShape(const circle::Tensor *tensor)
   {
-    if (tensor == nullptr)
+    if (tensor == nullptr or tensor->shape() == nullptr)
       return;
 
     _size = tensor->shape()->size();
