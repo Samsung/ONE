@@ -184,6 +184,8 @@ public:
   NNFW_STATUS train_get_loss(uint32_t index, float *loss);
   NNFW_STATUS train_export_circle(const char *path);
   NNFW_STATUS train_export_circleplus(const char *path);
+  NNFW_STATUS train_import_checkpoint(const char *path);
+  NNFW_STATUS train_export_checkpoint(const char *path);
 
   NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
   NNFW_STATUS set_quantized_model_path(const char *path);

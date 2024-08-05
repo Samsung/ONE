@@ -375,6 +375,28 @@ NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *lo
  */
 NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
 
+/**
+ * @brief Import circle checkpoint
+ * @note  This function should be called on training mode
+ *        This function should be called before {@link nnfw_train}
+ *
+ * @param[in] session The session to export a checkpoint
+ * @param[in] path    The path to export a checkpoint
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_import_checkpoint(nnfw_session *session, const char *path);
+
+/**
+ * @brief Export circle checkpoint
+ * @note  This function should be called on training mode
+ *        This function should be called after {@link nnfw_train}
+ *
+ * @param[in] session The session to export a checkpoint
+ * @param[in] path    The path to export a checkpoint
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_export_checkpoint(nnfw_session *session, const char *path);
+
 //////////////////////////////////////////////
 // Optional APIs for training
 //////////////////////////////////////////////
