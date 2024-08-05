@@ -64,7 +64,6 @@ private:
   void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Pack &) override;
   void visit(const ir::operation::Pad &) override;
-  void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::Pool2D &) override;
   void visit(const ir::operation::PReLU &) override;
   void visit(const ir::operation::Reduce &) override;

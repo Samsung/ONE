@@ -129,14 +129,10 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
 
   // Find Permute information
   auto input_backend = operand_li_map.getRawPtr(operand_index)->def_backends().getOnlyElement();
-  auto output_backend = backend;
   const backend::Backend *permute_node_backend = compiler::BackendManager::get().getBuiltin();
   assert(permute_node_backend->config()->id() == onert::backend::builtin::Config::ID);
+  assert(input_backend != backend);
 
-  if (input_backend == output_backend)
-  {
-    permute_node_backend = input_backend;
-  }
   // Update LowerInfo of input operand
   auto operand_lower_info = operand_li_map.getRawPtr(operand_index);
   operand_lower_info->removeUseBackend(backend);
