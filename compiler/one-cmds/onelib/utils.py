@@ -149,6 +149,12 @@ def parse_cfg(config_path: Union[str, None],
         raise AssertionError('configuration file must have \'' + section_to_parse +
                              '\' section')
 
+    # set environment
+    CFG_ENV_SECTION = 'Environment'
+    if parser.has_section(CFG_ENV_SECTION):
+        for key in parser[CFG_ENV_SECTION]:
+            os.environ[key] = parser[CFG_ENV_SECTION][key]
+
     for key in parser[section_to_parse]:
         if is_accumulated_arg(key, section_to_parse):
             if not is_valid_attr(args, key):
