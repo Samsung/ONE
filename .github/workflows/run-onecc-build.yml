@@ -22,8 +22,10 @@ defaults:
 
 jobs:
   onecc-test:
-    runs-on: ubuntu-22.04
+    # Tested ubuntu version is decided by docker image, not runner
+    runs-on: ubuntu-latest
     strategy:
+      # TODO Support various ubuntu version
       matrix:
         type: [ Debug, Release ]
     container:
@@ -32,6 +34,7 @@ jobs:
     env:
       NNCC_WORKSPACE : build
       NNCC_INSTALL_PREFIX : install
+    name: onecc ubuntu 20.04 ${{ matrix.type }} test
 
     steps:
       - name: Checkout
