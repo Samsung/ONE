@@ -52,6 +52,8 @@ OMStatus onert_micro::train::train_kernel_CircleConv2D(const OMBackpropExecuteAr
   const circle::Tensor *weight;
   const circle::Tensor *output;
 
+  int32_t weight_tensor_index = -1;
+
   uint8_t *input_data;
   uint8_t *dloss_dinput_data;
 
@@ -78,6 +80,9 @@ OMStatus onert_micro::train::train_kernel_CircleConv2D(const OMBackpropExecuteAr
     // Bias can be nullptr
     assert(output != nullptr);
 
+    weight_tensor_index = runtime_kernel.inputs_index[weightTensorIdx];
+    assert(weight_tensor_index != -1);
+
     // Read forward storage
     {
       runtime_kernel.getDataFromStorage(op_index, forward_storage, context);
@@ -88,7 +93,7 @@ OMStatus onert_micro::train::train_kernel_CircleConv2D(const OMBackpropExecuteAr
       output_data = runtime_kernel.outputs_data[outputTensorIdx];
       // Bias_data can be nullptr
       // Output_data can be nullptr
-      assert(input_data != nullptr);
+      // Input_data can be nullptr if we don't train this layer
       assert(weight_data != nullptr);
     }
 
@@ -147,20 +152,35 @@ OMStatus onert_micro::train::train_kernel_CircleConv2D(const OMBackpropExecuteAr
   params.pad_h = 0;
   params.pad_w = 0;
 
-  // 2. Calculate weight gradient
-  pal::Conv2DWeightGrad(params, input_shape, utils::castInputData<float>(input_data), output_shape,
-                        utils::castInputData<float>(dloss_doutput_data), weight_shape,
-                        utils::castOutputData<float>(dloss_dweight_data));
-
-  // 3. Calculate bias gradient
-  if (dloss_dbias_data)
+  if (args.is_trainable_layer)
   {
-    assert(bias_data != nullptr);
-    if (bias_data == nullptr)
-      return UnknownError;
+    // Check is only bias updating
+    if (args.train_rank_type != ONLY_BIAS)
+    {
+      assert(input_data != nullptr); // FIX memory planner then
 
-    pal::Conv2DBiasGrad(output_shape, utils::castInputData<float>(dloss_doutput_data),
-                        utils::castOutputData<float>(dloss_dbias_data));
+      // Get weight shape
+      OMRuntimeShape dynamic_shapes = backward_storage.getDynamicRuntimeShape(weight_tensor_index);
+      if (dynamic_shapes.flatSize() != 0)
+        weight_shape = dynamic_shapes;
+
+      // 2. Calculate weight gradient
+      pal::Conv2DWeightGrad(params, input_shape, utils::castInputData<float>(input_data),
+                            output_shape, utils::castInputData<float>(dloss_doutput_data),
+                            weight_shape, utils::castOutputData<float>(dloss_dweight_data),
+                            args.train_rank_type);
+    }
+
+    // 3. Calculate bias gradient
+    if (dloss_dbias_data)
+    {
+      assert(bias_data != nullptr);
+      if (bias_data == nullptr)
+        return UnknownError;
+
+      pal::Conv2DBiasGrad(output_shape, utils::castInputData<float>(dloss_doutput_data),
+                          utils::castOutputData<float>(dloss_dbias_data));
+    }
   }
 
   // 4. Calculate (if needed) input grad

@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_TRAIN_BACKPROP_ARGS_H
-#define ONERT_MICRO_TRAIN_BACKPROP_ARGS_H
+#ifndef ONERT_MICRO_IMPORT_DYNAMIC_SHAPES_HANDLER_H
+#define ONERT_MICRO_IMPORT_DYNAMIC_SHAPES_HANDLER_H
 
 #include "OMStatus.h"
-#include "core/OMRuntimeContext.h"
+#include "OMConfig.h"
 #include "core/OMRuntimeStorage.h"
-#include "core/OMRuntimeModule.h"
+#include "core/OMRuntimeContext.h"
 #include "core/train/OMTrainingStorage.h"
 
 namespace onert_micro
 {
-namespace train
+namespace import
 {
 
 /*
- * Args to execute backpropagation graph
+ * Class to handle with tensors dynamic shapes
  */
-struct OMBackpropExecuteArgs
+struct OMDynamicShapesHandler
 {
-  core::OMRuntimeStorage &forward_storage;
-  core::OMRuntimeStorage &backward_storage;
-  core::OMRuntimeContext &backward_context;
-  bool is_last_layer;
-  bool is_trainable_layer;
-  uint16_t kernel_index;
-  core::OpTrainableRankType train_rank_type;
+  /*
+   * Import dynamic shapes from train config file data:
+   * Some tensors can have sparse tensor backpropagation scheme (train rank)
+   */
+  static OMStatus importDynamicShapesFromTrainConfig(core::OMRuntimeStorage &storage,
+                                                     core::OMRuntimeContext &context,
+                                                     core::train::OMTrainingStorage &train_storage);
 };
 
-} // namespace train
+} // namespace import
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_TRAIN_BACKPROP_ARGS_H
+#endif // ONERT_MICRO_IMPORT_DYNAMIC_SHAPES_HANDLER_H

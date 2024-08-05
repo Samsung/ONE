@@ -18,10 +18,63 @@
 #include "train/train_optimizers/SGD.h"
 #include "core/memory/OMMemoryManager.h"
 #include "core/OMRuntimeShape.h"
+#include "core/OMDataType.h"
 
 using namespace onert_micro;
 using namespace onert_micro::train;
 using namespace onert_micro::train::optimizers;
+
+namespace
+{
+inline std::pair<uint32_t, uint32_t> getUpLowerWeightTensorDepth(core::OpTrainableRankType rank,
+                                                                 const uint32_t output_depth)
+{
+  std::pair<uint32_t, uint32_t> result(0u, output_depth);
+
+  switch (rank)
+  {
+    case core::ALL:
+      break;
+    case core::UP_1_2_PART:
+      result.second = static_cast<uint32_t>(static_cast<float>(output_depth) / 2.f);
+      break;
+    case core::LOWER_1_2_PART:
+      result.first = static_cast<uint32_t>(static_cast<float>(output_depth) / 2.f);
+      break;
+    default:
+      assert("Unsupported type");
+      break;
+  }
+
+  return result;
+}
+} // namespace
+
+#ifdef OM_MEMORY_ESTIMATE
+
+void SGD::reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage)
+{
+  for (auto &cur_tensor_index_data : _tensor_index_to_gradient)
+  {
+    uint8_t *allocated_data = cur_tensor_index_data.second;
+    auto tensor_index = cur_tensor_index_data.first;
+
+    auto tensor = context.getTensorByIndex(tensor_index);
+    auto num_elements = core::OMRuntimeShape(tensor).flatSize();
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_index).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
+
+    auto tensor_size = num_elements * sizeof(core::OMDataType(tensor->type()));
+    core::memory::OMMemoryManager::deallocateMemory(tensor_size, allocated_data);
+  }
+  _tensor_index_to_gradient.clear();
+}
+
+#endif // OM_MEMORY_ESTIMATE
 
 void SGD::reset()
 {
@@ -38,7 +91,8 @@ void SGD::reset()
  * Update internal states according to calculated gradients using Adam theory
  * grad(t) = grad(t - 1) + calculated_grad(t)
  */
-OMStatus SGD::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context)
+OMStatus SGD::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context,
+                     core::OMRuntimeStorage &storage)
 {
   auto &backward_tensor_to_data = backward_storage.getTensorIndexToData();
   // Check is allocated or not helper buffers
@@ -64,14 +118,18 @@ OMStatus SGD::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeCo
     for (auto &tensor_to_data : backward_tensor_to_data)
     {
       auto tensor = context.getTensorByIndex(tensor_to_data.first);
-      core::OMRuntimeShape shape(tensor);
+      auto num_elements = core::OMRuntimeShape(tensor).flatSize();
 
-      const auto flat_size = shape.flatSize();
+#ifndef DIS_DYN_SHAPES
+      int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_to_data.first).flatSize();
+      if (dynamic_tensor_size != 0)
+        num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
 
       auto *grad_data = reinterpret_cast<float *>(_tensor_index_to_gradient[tensor_to_data.first]);
       auto *calculated_data = reinterpret_cast<float *>(tensor_to_data.second);
 
-      for (uint32_t i = 0; i < flat_size; ++i)
+      for (uint32_t i = 0; i < num_elements; ++i)
       {
         grad_data[i] += calculated_data[i];
       }
@@ -86,8 +144,10 @@ OMStatus SGD::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeCo
  *
  * w(t + 1) = w(t) - lambda * grad(t) / batch_size
  */
-OMStatus SGD::updateWeights(const onert_micro::OMTrainingContext &training_config,
-                            core::OMRuntimeContext &context)
+OMStatus SGD::updateWeights(
+  const onert_micro::OMTrainingContext &training_config, core::OMRuntimeContext &context,
+  core::OMRuntimeStorage &storage,
+  std::unordered_map<uint16_t, core::OpTrainableRankType> &tensor_index_to_rank_type_map)
 {
   assert(!_tensor_index_to_gradient.empty());
   if (_tensor_index_to_gradient.empty())
@@ -97,8 +157,15 @@ OMStatus SGD::updateWeights(const onert_micro::OMTrainingContext &training_confi
   {
     auto tensor = context.getTensorByIndex(tensor_to_data.first);
     core::OMRuntimeShape shape(tensor);
+    auto num_elements = shape.flatSize();
 
-    const auto flat_size = shape.flatSize();
+    auto original_d = shape.dims(0);
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_to_data.first).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
 
     auto *grad_data = reinterpret_cast<float *>(tensor_to_data.second);
     uint8_t *weight_data = nullptr;
@@ -112,10 +179,15 @@ OMStatus SGD::updateWeights(const onert_micro::OMTrainingContext &training_confi
     auto *f_weight_data = reinterpret_cast<float *>(weight_data);
     float lambda = training_config.learning_rate;
     const uint32_t batch_size = training_config.batch_size;
+    auto train_it = tensor_index_to_rank_type_map.find(tensor_to_data.first);
+    core::OpTrainableRankType rank = train_it == tensor_index_to_rank_type_map.end()
+                                       ? core::OpTrainableRankType::ALL
+                                       : core::OpTrainableRankType(train_it->second);
+    auto depth_bounds = getUpLowerWeightTensorDepth(rank, original_d);
 
     assert(batch_size != 0);
 
-    for (uint32_t i = 0; i < flat_size; ++i)
+    for (uint32_t i = 0; i < num_elements; ++i)
     {
       f_weight_data[i] -= (lambda * grad_data[i]) / (static_cast<float>(batch_size));
     }

@@ -92,6 +92,11 @@ public:
   void *getInputData(uint32_t position);
   void *getInputDataAt(uint32_t position);
   void *getOutputDataAt(uint32_t position);
+
+#ifdef OM_MEMORY_ESTIMATE
+  size_t getPeakFootprintMemory() { return _training_runtime_module.getPeakFootprintMemory(); }
+  size_t getCurrentFootprintMemory() { return _training_runtime_module.getPeakFootprintMemory(); }
+#endif // OM_MEMORY_ESTIMATE
 };
 
 } // namespace onert_micro

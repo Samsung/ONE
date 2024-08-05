@@ -80,9 +80,9 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
   if (input_shape.flatSize() == 1 and output_shape.flatSize() != 1)
   {
 #ifndef DIS_DYN_SHAPES
-    int32_t dynamic_tensor_size =
-      runtime_storage.getDynamicTensorSize(runtime_kernel.inputs_index[inputTensorIdx]);
-    if (dynamic_tensor_size == -1)
+    input_shape =
+      runtime_storage.getDynamicRuntimeShape(runtime_kernel.inputs_index[inputTensorIdx]);
+    if (input_shape.flatSize() == 0)
       return UnsupportedDynamicShapeCase;
 #else
     return UnsupportedDynamicShapeCase;

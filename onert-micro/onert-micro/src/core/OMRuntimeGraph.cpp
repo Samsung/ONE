@@ -16,6 +16,7 @@
 
 #include "core/OMRuntimeGraph.h"
 #include "core/OMDataType.h"
+#include "core/memory/OMMemoryManager.h"
 #include "OMStatus.h"
 
 using namespace onert_micro::core;
@@ -29,7 +30,14 @@ OMStatus OMRuntimeGraph::reset()
   return status;
 }
 
-OMRuntimeGraph::~OMRuntimeGraph() { reset(); }
+OMRuntimeGraph::~OMRuntimeGraph()
+{
+  reset();
+#ifdef OM_MEMORY_ESTIMATE
+  memory::OMMemoryManager::cur_memory_allocated = 0;
+  memory::OMMemoryManager::peak_memory_allocated = 0;
+#endif // OM_MEMORY_ESTIMATE
+}
 
 void *OMRuntimeGraph::getInputDataAt(uint32_t position)
 {
