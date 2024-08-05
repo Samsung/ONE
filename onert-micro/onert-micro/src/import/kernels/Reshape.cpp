@@ -75,8 +75,8 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
     if (status != Ok)
       return status;
 
-    runtime_storage.setDynamicTensorSize(runtime_kernel.outputs_index[outputTensorIdx],
-                                         input_shape_size);
+    runtime_storage.setDynamicRuntimeShape(runtime_kernel.outputs_index[outputTensorIdx],
+                                           input_shape);
   }
   else
   {

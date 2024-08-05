@@ -25,6 +25,16 @@ namespace onert_micro
 namespace core
 {
 
+// Enum  to indicate the degree(rank) to which part of the operation we will train
+enum OpTrainableRankType
+{
+  ALL = 0,            // 0 - Train all weights in the operation
+  ONLY_BIAS = 1,      // 1 - Train bias only in the operation
+  UP_1_2_PART = 2,    // 2 - Train the upper 1/2 part of the operation
+  LOWER_1_2_PART = 3, // 3 - Train the lower 1/2 part of the operation
+  // TODO add more
+};
+
 enum OMKernelType
 {
   Normal,
