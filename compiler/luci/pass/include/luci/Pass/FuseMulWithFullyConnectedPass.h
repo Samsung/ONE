@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_FUSE_MUL_WITH_FULLY_CONNECTED_PASS_H__
-#define __LUCI_FUSE_MUL_WITH_FULLY_CONNECTED_PASS_H__
+#ifndef __LUCI_FUSE_MUL_WITH_FULLYCONNECTED_PASS_H__
+#define __LUCI_FUSE_MUL_WITH_FULLYCONNECTED_PASS_H__
 
 #include <logo/Pass.h>
 
@@ -34,4 +34,4 @@ struct FuseMulWithFullyConnectedPass final : public logo::Pass
 
 } // namespace luci
 
-#endif // __LUCI_FUSE_MUL_WITH_FULLY_CONNECTED_PASS_H__
+#endif // __LUCI_FUSE_MUL_WITH_FULLYCONNECTED_PASS_H__

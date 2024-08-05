@@ -118,7 +118,7 @@ int entry(int argc, char **argv)
              "This will fuse Mul operation with a preceding Conv if possible.");
   add_switch(arser, "--fuse_mul_with_div",
              "This will fuse Mul operation with a Div operation whose numerator is const.");
-  add_switch(arser, "--fuse_mul_with_fully_connected",
+  add_switch(arser, "--fuse_mul_with_fullyconnected",
              "This will fuse Mul operator with a preceding FullyConnected operator.");
   add_switch(arser, "--fuse_slice_with_tconv",
              "This will fuse Slice operation with a preceding TConv if possible.");
@@ -328,7 +328,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FuseMulWithConv);
   if (arser.get<bool>("--fuse_mul_with_div"))
     options->enable(Algorithms::FuseMulWithDiv);
-  if (arser.get<bool>("--fuse_mul_with_fully_connected"))
+  if (arser.get<bool>("--fuse_mul_with_fullyconnected"))
     options->enable(Algorithms::FuseMulWithFullyConnected);
   if (arser.get<bool>("--make_batchnorm_gamma_positive"))
     options->enable(Algorithms::MakeBatchNormGammaPositive);
