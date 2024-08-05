@@ -72,6 +72,10 @@ int main(const int argc, char **argv)
           nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
       else
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
+
+      // if (args.getCheckpointFilename())
+      //   NNPR_ENSURE_STATUS(nnfw_train_import_checkpoint(session,
+      //   args.getCheckpointFilename().c_str()));
     });
 
     // Set training backend
@@ -281,6 +285,9 @@ int main(const int argc, char **argv)
               if (args.getMetricType() == 0)
                 metrics[i] += metric.categoricalAccuracy(i);
             }
+
+            if (auto name = args.getExportCheckpointFilename(); name != "")
+              NNPR_ENSURE_STATUS(nnfw_train_export_checkpoint(session, name.c_str()));
           }
 
           // print loss

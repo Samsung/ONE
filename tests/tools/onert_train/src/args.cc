@@ -156,6 +156,13 @@ void Args::Initialize(void)
     _use_single_model = true;
   };
 
+  auto process_checkpoint = [&](const std::string &checkpoint_filename) {
+    _checkpoint_filename = checkpoint_filename;
+
+    std::cerr << "Checkpoint Filename " << _checkpoint_filename << std::endl;
+    checkModelfile(checkpoint_filename);
+  };
+
   auto process_path = [&](const std::string &path) {
     struct stat sb;
     if (stat(path.c_str(), &sb) == 0)
@@ -184,6 +191,9 @@ void Args::Initialize(void)
   auto process_export_circle = [&](const std::string &path) { _export_circle_filename = path; };
   auto process_export_circleplus = [&](const std::string &path) {
     _export_circleplus_filename = path;
+  };
+  auto process_export_checkpoint = [&](const std::string &path) {
+    _export_checkpoint_filename = path;
   };
 
   auto process_load_raw_inputfile = [&](const std::string &input_filename) {
@@ -242,9 +252,11 @@ void Args::Initialize(void)
     ("version", "Print version and exit immediately")
     ("nnpackage", po::value<std::string>()->notifier(process_nnpackage), "NN Package file(directory) name")
     ("modelfile", po::value<std::string>()->notifier(process_modelfile), "NN Model filename")
+    ("checkpoint", po::value<std::string>()->notifier(process_checkpoint), "Checkpoint filename")
     ("path", po::value<std::string>()->notifier(process_path), "NN Package or NN Modelfile path")
     ("export_circle", po::value<std::string>()->notifier(process_export_circle), "Path to export circle")
     ("export_circleplus", po::value<std::string>()->notifier(process_export_circleplus), "Path to export circle+")
+    ("export_checkpoint", po::value<std::string>()->notifier(process_export_checkpoint), "Path to export checkpoint")
     ("load_input:raw", po::value<std::string>()->notifier(process_load_raw_inputfile),
          "NN Model Raw Input data file\n"
          "The datafile must have data for each input number.\n"
