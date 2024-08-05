@@ -103,6 +103,13 @@ void CheckpointExporter::setTensorData(std::unique_ptr<onert::exec::Execution> &
   std::vector<uint32_t> sizes;
   exec->iterateTrainableTensors(
     [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
+      assert(tensor);
+      if (tensor->total_size() >= std::numeric_limits<uint32_t>::max())
+      {
+        throw std::runtime_error{"Tensor size exceeds the uint32_t max value. This mode does not "
+                                 "support saving as a checkpoint file."};
+      }
+
       sizes.emplace_back(tensor->total_size());
     });
 
@@ -132,6 +139,7 @@ void CheckpointExporter::setTensorData(std::unique_ptr<onert::exec::Execution> &
   [[maybe_unused]] auto vindex = 0;
   exec->iterateTrainableTensors(
     [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
+      assert(tensor);
       assert(sizes[vindex++] == tensor->total_size());
       std::memcpy(ptr, tensor->buffer(), tensor->total_size());
       ptr += tensor->total_size();
