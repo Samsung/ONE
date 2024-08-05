@@ -37,10 +37,10 @@ endmacro(nnas_include)
 # Runtime 'find_package()' wrapper to find in cmake/packages folder
 #
 # Example:
-#  nnfw_find_package(Boost): Load settings from 'BoostConfig.cmake' file
-#    - this may drop warnings like "-- Could NOT find Boost (missing: Boost_DIR)
-#  nnfw_find_package(Boost QUIET): Load settings silently, without warnings
-#  nnfw_find_package(Boost REQUIRED): Load settings but stop with error when failed
+#  nnfw_find_package(Eigen): Load settings from 'EigenConfig.cmake' file
+#    - this may drop warnings like "-- Could NOT find Eigen (missing: Eigen_DIR)
+#  nnfw_find_package(Eigen QUIET): Load settings silently, without warnings
+#  nnfw_find_package(Eigen REQUIRED): Load settings but stop with error when failed
 macro(nnfw_find_package PREFIX)
   find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
     PATHS ${CMAKE_SOURCE_DIR}/cmake/packages

@@ -136,10 +136,10 @@ Makefile.template will pass crossbuild toolchain setting to cmake automatically 
 
 To run and test the cross-compiled runtime, you need to install library packages and copy the compiled output to the target device of the architecture in which it is executable.
 
-1. Install hdf5 and boost library package
+1. Install hdf5 library package
 
 ```
-$ sudo apt install libhdf5-dev libboost-system-dev libboost-program-options-dev
+$ sudo apt install libhdf5-dev
 ```
 
 2. Copy all artifacts under the `./Product/armv7l-linux.<BUILD_TYPE>` folder to the target device, Odroid-XU4 for example, as a whole.

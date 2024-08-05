@@ -8,12 +8,11 @@ If you are going to build this project, the following modules must be installed 
 
 - C & C++ compiler
 - CMake
-- Boost C++ libraries
 
 In the Ubuntu, you can easily install it with the following command.
 
 ```
-$ sudo apt-get install cmake libboost-all-dev
+$ sudo apt-get install cmake
 ```
 
 If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile.
@@ -30,7 +29,6 @@ git \
 graphviz \
 hdf5-tools \
 lcov \
-libboost-all-dev \
 libhdf5-dev \
 python3 \
 python3-pip \

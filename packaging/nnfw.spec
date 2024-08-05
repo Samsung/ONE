@@ -50,7 +50,6 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 %if %{test_build} == 1
-BuildRequires:  pkgconfig(boost)
 BuildRequires:  pkgconfig(tensorflow2-lite)
 BuildRequires:  hdf5-devel-static
 BuildRequires:  libaec-devel
