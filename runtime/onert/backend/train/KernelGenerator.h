@@ -59,8 +59,7 @@ public:
   void visit(const ir::train::operation::Softmax &node) override;
 
 private:
-  IPortableTensor *getBackPropIn(const ir::Operation &op_index,
-                                 const ir::OperandIndex &operand_index);
+  IPortableTensor *getBackPropIn(const ir::IOperation &node, const ir::OperandIndex &operand_index);
   IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
 
 private:
