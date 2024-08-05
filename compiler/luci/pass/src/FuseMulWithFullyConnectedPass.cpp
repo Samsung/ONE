@@ -35,7 +35,7 @@ inline void update_values(luci::CircleConst *fused_node, luci::CircleConst *mult
   auto node_size = fused_node->size<loco::DataType::FLOAT32>();
   auto mul_size = multiplication->size<loco::DataType::FLOAT32>();
   // Scalar multiplication:
-  if (multiplication->rank() == 1 || multiplication->rank() == 0 && mul_size == 1)
+  if ((multiplication->rank() == 1 || multiplication->rank() == 0) && mul_size == 1)
   {
     for (uint32_t i = 0; i < node_size; i++)
       fused_node->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(0);
