@@ -914,42 +914,6 @@ void KernelGenerator::visit(const ir::operation::Pool2D &node)
     ActivationBuilder::generate(activation, ofm_tensor->handle()));
 }
 
-void KernelGenerator::visit(const ir::operation::Permute &node)
-{
-  const auto ofm_idx{node.getOutputs().at(0)};
-  const auto ifm_idx{node.getInputs().at(0)};
-  const auto permute_type = node.getPermuteType();
-  auto ofm_tensor = _tensor_reg->getAclTensor(ofm_idx);
-  auto ifm_tensor = _tensor_reg->getAclTensor(ifm_idx);
-  const auto rank = _ctx.at(ofm_idx).shape().rank();
-  assert(_ctx.at(ifm_idx).shape().rank() == _ctx.at(ofm_idx).shape().rank());
-
-  std::unique_ptr<::arm_compute::IFunction> fn;
-  arm_compute::PermutationVector pv;
-  if (permute_type == ir::operation::Permute::Type::NCHW_TO_NHWC && rank == 4)
-  {
-    // WHCN -> CWHN
-    pv = arm_compute::PermutationVector{2, 0, 1};
-
-    fn = acl_common::generateLayer<arm_compute::CLPermute>(ifm_tensor->handle(),
-                                                           ofm_tensor->handle(), pv);
-  }
-  else if (permute_type == ir::operation::Permute::Type::NHWC_TO_NCHW && rank == 4)
-  {
-    // CWHN -> WHCN
-    pv = arm_compute::PermutationVector{1, 2, 0};
-
-    fn = acl_common::generateLayer<::arm_compute::CLPermute>(ifm_tensor->handle(),
-                                                             ofm_tensor->handle(), pv);
-  }
-  else
-  {
-    fn = acl_common::generateLayer<arm_compute::CLCopy>(ifm_tensor->handle(), ofm_tensor->handle());
-  }
-
-  _return_fn = asAclFunction(std::move(fn));
-}
-
 void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
