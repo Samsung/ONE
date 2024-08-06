@@ -8,7 +8,7 @@ function Usage()
   echo "      --codename    ubuntu codename, default: ${UBUNTU_CODENAME}"
   echo "                    default image name is nnfw/one-devtools:[codename]"
   echo "Options can use as docker build option:"
-  docker build --help
+  docker buildx build --help
 }
 
 DOCKER_FILE_RPATH_BASE="infra/docker"
@@ -52,7 +52,16 @@ fi
 
 DOCKER_BUILD_ARGS+=("-t ${DOCKER_IMAGE_NAME}")
 
-docker build --build-arg http_proxy="${http_proxy}" \
+docker buildx create --use \
+  --driver-opt env.http_proxy="${http_proxy}" \
+  --driver-opt env.https_proxy="${https_proxy}" \
+  --name nnfw-docker-builder \
+  --buildkitd-flags "--allow-insecure-entitlement security.insecure"
+
+docker buildx build --load --allow security.insecure \
+  --build-arg http_proxy="${http_proxy}" \
   --build-arg https_proxy="${https_proxy}" \
   ${DOCKER_BUILD_ARGS[@]} \
   - < ${NNAS_PROJECT_PATH}/${DOCKER_FILE_RPATH}
+
+docker buildx rm nnfw-docker-builder
