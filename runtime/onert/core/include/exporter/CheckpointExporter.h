@@ -48,14 +48,17 @@ public:
 
 private:
   void setReservedData();
-  void setAdamOffset(uint32_t m_offset, uint32_t v_offset);
   void setTensorData(std::unique_ptr<onert::exec::Execution> &exec);
+  void setOptimizerData(std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
+                        std::unique_ptr<onert::exec::Execution> &exec);
+  void setAdamOptimizerData(std::unique_ptr<onert::exec::Execution> &exec);
 
 private:
   const uint32_t RESERVED_SIZE = 16;
 
   std::vector<char> _reserved;
   std::vector<char> _buffers;
+  std::vector<char> _optimizers;
   std::mutex _mutex;
 };
 
