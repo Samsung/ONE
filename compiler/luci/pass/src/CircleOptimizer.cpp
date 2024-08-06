@@ -52,6 +52,7 @@
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
+#include "luci/Pass/FuseGRUPass.h"
 #include "luci/Pass/FuseRsqrtPass.h"
 #include "luci/Pass/FuseSliceWithTConvPass.h"
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
@@ -348,6 +349,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::FuseMulToFullyConnectedWeights] = &createPassInstance<luci::FuseMulToFullyConnectedWeightsPass>;
   option_to_pass[Options::Algorithm::FusePRelu] = &createPassInstance<luci::FusePReluPass>;
   option_to_pass[Options::Algorithm::FuseGelu] = &createPassInstance<luci::FuseGeluPass>;
+  option_to_pass[Options::Algorithm::FuseGRU] = &createPassInstance<luci::FuseGRUPass>;
   option_to_pass[Options::Algorithm::FuseRsqrt] = &createPassInstance<luci::FuseRsqrtPass>;
   option_to_pass[Options::Algorithm::FuseHorizontalFullyConnected] = &createPassInstance<luci::FuseHorizontalFullyConnectedPass>;
   option_to_pass[Options::Algorithm::FuseTransposeWithMean] = &createPassInstance<luci::FuseTransposeWithMeanPass>;
@@ -398,7 +400,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] = &createPassInstance<luci::XpSepActFromTransposeConvPass>;
   option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] = &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
   option_to_pass[Options::Algorithm::ForwardTransposeOp] = &createPassInstance<luci::ForwardTransposeOpPass>;
-  // clang-format on 
+  // clang-format on
 
   for (auto const &m : option_to_pass)
   {
