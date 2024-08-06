@@ -1,6 +1,20 @@
 name: Run ONECC Ubuntu Build
 
 on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onecc-build.yml'
+      - 'nnas'
+      - 'nncc'
+      - 'compiler/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'nnpackage/schema/**'
+      - 'res/**'
+      - '!**/*.md'
   pull_request:
     branches:
       - master
