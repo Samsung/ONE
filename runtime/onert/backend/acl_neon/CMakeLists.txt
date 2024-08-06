@@ -16,6 +16,6 @@ target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT_BACKEND_ACL_NEON} PROPERTIES
   OUTPUT_NAME backend_acl_neon
-  INSTALL_RPATH "$ORIGIN:$ORIGIN/../..")
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/..")
 
 install(TARGETS ${LIB_ONERT_BACKEND_ACL_NEON} DESTINATION lib/nnfw/backend)
