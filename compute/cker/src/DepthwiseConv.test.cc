@@ -63,9 +63,9 @@ public:
            const nnfw::cker::Shape &output_shape, const T *expected)
   {
     std::vector<T> output(output_shape.FlatSize());
-    nnfw::cker::DepthwiseConvOp<T>(params, input_shape, input_data, filter_shape, filter_data,
-                                   bias_shape, bias_data, _padded_filter.data(), _use_padded_filter,
-                                   _filter_buffers.data(), output_shape, output.data());
+    nnfw::cker::DepthwiseConvOp(params, input_shape, input_data, filter_shape, filter_data,
+                                bias_shape, bias_data, _padded_filter.data(), _use_padded_filter,
+                                _filter_buffers.data(), output_shape, output.data());
 
     for (size_t i = 0; i < output.size(); ++i)
       EXPECT_NEAR(output[i], expected[i], 1e-3f);
@@ -78,10 +78,10 @@ public:
                       const nnfw::cker::Shape &output_shape, const T *expected)
   {
     std::vector<T> output(output_shape.FlatSize());
-    EXPECT_ANY_THROW(nnfw::cker::DepthwiseConvOp<T>(
-      params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,
-      _padded_filter.data(), _use_padded_filter, _filter_buffers.data(), output_shape,
-      output.data()));
+    EXPECT_ANY_THROW(
+      nnfw::cker::DepthwiseConvOp(params, input_shape, input_data, filter_shape, filter_data,
+                                  bias_shape, bias_data, _padded_filter.data(), _use_padded_filter,
+                                  _filter_buffers.data(), output_shape, output.data()));
   }
 
 private:
