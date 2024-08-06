@@ -1,5 +1,5 @@
 Name: nnfw
-Description: NNFW API for tizen
+Description: onert API
 Version: @version@
 Libs: -L@libdir@ -lnnfw-dev
 Cflags: -I@includedir@/nnfw
