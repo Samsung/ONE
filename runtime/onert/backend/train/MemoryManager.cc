@@ -29,9 +29,8 @@ namespace backend
 namespace train
 {
 
-GradientMemoryManager::GradientMemoryManager(const std::string planner_id,
-                                             uint32_t optim_vars_count)
-  : MemoryManager{planner_id}, _optim_vars_count{optim_vars_count}
+GradientMemoryManager::GradientMemoryManager(uint32_t optim_vars_count)
+  : _optim_vars_count{optim_vars_count}
 {
   // DO NOTHING
 }
@@ -54,12 +53,6 @@ uint8_t *GradientMemoryManager::getOptVarBuffer(const ir::OperandIndex &ind, uin
 }
 
 DisposableMemoryManager::DisposableMemoryManager() : _mem_planner{createMemoryPlanner()}
-{
-  // DO NOTHING
-}
-
-DisposableMemoryManager::DisposableMemoryManager(const std::string planner_id)
-  : _mem_planner{createMemoryPlanner(planner_id)}
 {
   // DO NOTHING
 }

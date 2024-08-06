@@ -33,7 +33,7 @@ using MemoryManager = backend::basic::MemoryManager;
 class GradientMemoryManager : public MemoryManager
 {
 public:
-  GradientMemoryManager(const std::string planner_id, uint32_t optimizer_vars_count);
+  GradientMemoryManager(uint32_t optimizer_vars_count);
   virtual ~GradientMemoryManager() = default;
 
   void allocate(void);
@@ -48,7 +48,6 @@ class DisposableMemoryManager
 {
 public:
   DisposableMemoryManager();
-  DisposableMemoryManager(const std::string planner_id);
 
   void allocate(void);
   uint8_t *getBuffer(const DisposableTensorIndex &ind) const;
