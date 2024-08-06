@@ -48,6 +48,7 @@
 #include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FuseMulWithConvPass.h"
 #include "luci/Pass/FuseMulWithDivPass.h"
+#include "luci/Pass/FuseMulWithFullyConnectedPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
@@ -278,6 +279,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
+  if (_options->query(Options::Algorithm::FuseMulWithFullyConnected))
+  {
+    phase.emplace_back(std::make_unique<FuseMulWithFullyConnectedPass>());
+  }
   if (_options->query(Options::Algorithm::CommonSubExpressionElimination))
   {
     phase.emplace_back(std::make_unique<luci::CommonSubExpressionEliminationPass>());
