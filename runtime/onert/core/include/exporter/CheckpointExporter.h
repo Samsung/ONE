@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+#ifndef __ONERT_EXPORTER_CHECKPOINT_EXPORTER_H__
+#define __ONERT_EXPORTER_CHECKPOINT_EXPORTER_H__
+
 #include <string>
 #include <vector>
 #include <memory>
-#include <mutex>
 
 namespace onert
 {
@@ -59,8 +61,9 @@ private:
   std::vector<char> _reserved;
   std::vector<char> _buffers;
   std::vector<char> _optimizers;
-  std::mutex _mutex;
 };
 
 } // namespace exporter
 } // namespace onert
+
+#endif // __ONERT_EXPORTER_CHECKPOINT_EXPORTER_H__
