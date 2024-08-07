@@ -215,8 +215,11 @@ void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape
     stride, pad_height, pad_width, output_height, output_width, output_depth, input_data,
     filter_data, padded_filter_data, pad_filter, filter_buffers_data, output_data);
 
-  bias_op::biasHelper<float>(bias_shape, bias_data, output_shape, output_data, activation_min,
-                             activation_max);
+  if (bias_data != nullptr)
+  {
+    bias_op::biasHelper<float>(bias_shape, bias_data, output_shape, output_data, activation_min,
+                               activation_max);
+  }
 }
 
 } // namespace cker

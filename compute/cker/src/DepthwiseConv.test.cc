@@ -18,7 +18,6 @@
 #include <cker/operation/DepthwiseConv.h>
 
 #include <gtest/gtest.h>
-#include <gtest/gtest-death-test.h>
 #include <vector>
 
 namespace
@@ -83,20 +82,6 @@ public:
       nnfw::cker::DepthwiseConvOp(params, input_shape, input_data, filter_shape, filter_data,
                                   bias_shape, bias_data, _padded_filter.data(), _use_padded_filter,
                                   _filter_buffers.data(), output_shape, output.data()));
-  }
-
-  void checkDeath(const nnfw::cker::DepthwiseConvParams &params,
-                  const nnfw::cker::Shape &input_shape, const T *input_data,
-                  const nnfw::cker::Shape &filter_shape, const T *filter_data,
-                  const nnfw::cker::Shape &bias_shape, const T *bias_data,
-                  const nnfw::cker::Shape &output_shape, const T *expected)
-  {
-    std::vector<T> output(output_shape.FlatSize());
-    EXPECT_DEATH(nnfw::cker::DepthwiseConvOp(params, input_shape, input_data, filter_shape,
-                                             filter_data, bias_shape, bias_data,
-                                             _padded_filter.data(), _use_padded_filter,
-                                             _filter_buffers.data(), output_shape, output.data()),
-                 "");
   }
 
 private:
@@ -253,6 +238,34 @@ TEST(CKer_Operation, DepthwiseConv)
     verifier.run(params, input_shape, input.data(), filter_shape, filter.data(), bias_shape,
                  bias.data(), output_shape, expected.data());
   }
+
+  // No bias
+  {
+    nnfw::cker::DepthwiseConvParams params{};
+    params.padding_type = nnfw::cker::PaddingType::kSame;
+    params.padding_values.width = 0;
+    params.padding_values.height = 1;
+    params.stride_width = 1;
+    params.stride_height = 1;
+    params.dilation_width_factor = 1;
+    params.dilation_height_factor = 1;
+    params.depth_multiplier = 1;
+    params.float_activation_min = std::numeric_limits<float>::lowest();
+    params.float_activation_max = std::numeric_limits<float>::max();
+
+    nnfw::cker::Shape input_shape{1, 2, 2, 2}; // n, h, w, c
+    std::vector<float> input = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0};
+    nnfw::cker::Shape filter_shape{1, 3, 1, 2}; // 1, h, w, c
+    std::vector<float> filter = {0.0, 1.0, 2.0, 3.0, 4.0, 5.0};
+    nnfw::cker::Shape bias_shape{2};
+    nnfw::cker::Shape output_shape{1, 2, 2, 2}; // n, h, w, c
+    std::vector<float> expected = {16.0, 28.0, 28.0, 44.0, 8.0, 16.0, 12.0, 24.0};
+
+    DepthwiseConvVerifier<float> verifier;
+    verifier.prepare(output_shape, filter_shape);
+    verifier.run(params, input_shape, input.data(), filter_shape, filter.data(), bias_shape,
+                 nullptr, output_shape, expected.data());
+  }
 }
 
 TEST(CKer_Operation, neg_DepthwiseConv)
@@ -286,35 +299,5 @@ TEST(CKer_Operation, neg_DepthwiseConv)
     verifier.prepare(output_shape, filter_shape);
     verifier.checkException(params, input_shape, input.data(), filter_shape, filter.data(),
                             bias_shape, bias.data(), output_shape, expected.data());
-  }
-
-  // No bias data
-  {
-    nnfw::cker::DepthwiseConvParams params{};
-    params.padding_type = nnfw::cker::PaddingType::kSame;
-    params.padding_values.width = 0;
-    params.padding_values.height = 1;
-    params.stride_width = 1;
-    params.stride_height = 1;
-    params.dilation_width_factor = 1;
-    params.dilation_height_factor = 1;
-    params.depth_multiplier = 1;
-    params.float_activation_min = std::numeric_limits<float>::lowest();
-    params.float_activation_max = std::numeric_limits<float>::max();
-
-    nnfw::cker::Shape input_shape{1, 6, 6, 1}; // n, h, w, c
-    std::vector<float> input = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                                0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0,
-                                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    nnfw::cker::Shape filter_shape{1, 2, 2, 1}; // 1, h, w, c
-    std::vector<float> filter = {1.0, 2.0, 3.0, 4.0};
-    nnfw::cker::Shape bias_shape{1};
-    nnfw::cker::Shape output_shape{1, 3, 3, 1}; // n, h, w, c
-    std::vector<float> expected = {4.0, 0.0, 3.0, 0.0, 0.0, 0.0, 2.0, 0.0, 1.0};
-
-    DepthwiseConvVerifier<float> verifier;
-    verifier.prepare(output_shape, filter_shape);
-    verifier.checkDeath(params, input_shape, input.data(), filter_shape, filter.data(), bias_shape,
-                        nullptr, output_shape, expected.data());
   }
 }
