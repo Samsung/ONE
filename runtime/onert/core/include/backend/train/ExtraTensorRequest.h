@@ -57,7 +57,7 @@ public:
 private:
   ir::OperandInfo _info;
   ExtraTensorLifeTime _lifetime;
-  backend::train::ExtraTensor **const _address;
+  backend::train::ExtraTensor **_address;
 };
 
 using ExtraTensorRequests = std::vector<ExtraTensorRequest>;
