@@ -56,11 +56,9 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
 
   if (activation != ir::Activation::NONE)
   {
-    /*
     _act_back_prop_output = std::make_unique<BackPropTensor>(_back_prop_output->get_info());
     _act_back_prop_output->setBuffer(
       std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
-    */
   }
 
   const int64_t k_packet_size = [&]() {
@@ -77,20 +75,20 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
   }();
 
   const auto incoming_shape = getShape(_back_prop_output);
-  // const auto filter_shape = getShape(_kernel);
-  // const int batch = incoming_shape.Dims(0);
+  const auto filter_shape = getShape(_kernel);
+  const int batch = incoming_shape.Dims(0);
   const int out_depth = incoming_shape.Dims(3);
-  // const int filter_rows = filter_shape.Dims(1);
-  // const int filter_cols = filter_shape.Dims(2);
+  const int filter_rows = filter_shape.Dims(1);
+  const int filter_cols = filter_shape.Dims(2);
 
-  // const int filter_spatial_size = filter_rows * filter_cols;
-  // const int padded_filter_inner_dim_size =
-  //   ((out_depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
+  const int filter_spatial_size = filter_rows * filter_cols;
+  const int padded_filter_inner_dim_size =
+    ((out_depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
 
   _use_padded_filter = (out_depth % k_packet_size) == 0 ? false : true;
 
   // prepare padded_filter buffer for cker
-  /* auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+  auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
   padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
   _padded_filter = std::make_unique<Tensor>(padded_filter_info);
   _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
@@ -110,55 +108,6 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
   _filter_dim_buffers = std::make_unique<Tensor>(filter_dim_buffers_info);
   _filter_dim_buffers->setBuffer(
     std::make_shared<basic::Allocator>(_filter_dim_buffers->total_size()));
-  */
-}
-
-ExtraTensorRequests DepthwiseConvolutionLayer::requestExtraTensors()
-{
-  ExtraTensorRequests reqs;
-
-  reqs.push_back(ExtraTensorRequest::createLike(_back_prop_output, &_act_back_prop_output));
-
-  const auto incoming_shape = getShape(_back_prop_output);
-  const auto batch = incoming_shape.Dims(0);
-  const auto depth = incoming_shape.Dims(3);
-
-  const auto filter_shape = getShape(_kernel);
-  const int filter_rows = filter_shape.Dims(1);
-  const int filter_cols = filter_shape.Dims(2);
-  const int filter_spatial_size = filter_rows * filter_cols;
-
-  const auto k_packet_size = _dconv_kernel->kPacketSize<float>();
-  const int padded_filter_inner_dim_size =
-    ((depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
-
-  const int thread_count = _dconv_kernel->getThreadCount();
-
-  // _padded_filter
-  {
-    auto type_info = _kernel->get_info().typeInfo();
-    ir::Shape shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
-    auto info = ir::OperandInfo::createStaticInfo(shape, type_info);
-    reqs.emplace_back(info, ExtraTensorLifeTime::BACKWARD, &_padded_filter);
-  }
-
-  // _filter_buffers
-  {
-    auto type_info = _kernel->get_info().typeInfo();
-    ir::Shape shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
-    auto info = ir::OperandInfo::createStaticInfo(shape, type_info);
-    reqs.emplace_back(info, ExtraTensorLifeTime::BACKWARD, &_filter_buffers);
-  }
-
-  // _filter_dim_buffers
-  {
-    auto type = _back_prop_input->get_info().typeInfo();
-    ir::Shape shape({thread_count, padded_filter_inner_dim_size});
-    auto info = ir::OperandInfo::createStaticInfo(shape, type);
-    reqs.emplace_back(info, ExtraTensorLifeTime::BACKWARD, &_filter_dim_buffers);
-  }
-
-  return reqs;
 }
 
 void DepthwiseConvolutionLayer::forward(bool) { cpu::ops::DepthwiseConvolutionLayer::run(); }
@@ -187,7 +136,7 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   try
   {
     backprop_act =
-      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output);
+      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output.get());
   }
   catch (const std::exception &e)
   {
@@ -207,15 +156,15 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   // Calculate gradient for input
   nnfw::cker::train::backpropInput(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_kernel),
-    getBuffer<float>(_kernel), getBuffer<float>(_padded_filter), getShape(_back_prop_input),
-    getBuffer<float>(_back_prop_input), _use_padded_filter, getBuffer<float>(_filter_buffers),
-    getBuffer<float>(_filter_dim_buffers));
+    getBuffer<float>(_kernel), getBuffer<float>(_padded_filter.get()), getShape(_back_prop_input),
+    getBuffer<float>(_back_prop_input), _use_padded_filter, getBuffer<float>(_filter_buffers.get()),
+    getBuffer<float>(_filter_dim_buffers.get()));
 
   // Calculate gradient for weights
   nnfw::cker::train::backpropFilter(
     dconv_params, getShape(backprop_act), getBuffer<float>(backprop_act), getShape(_input),
     getBuffer<float>(_input), getShape(_grad_weights), getBuffer<float>(_grad_weights),
-    getBuffer<float>(_padded_filter), getBuffer<float>(_filter_buffers));
+    getBuffer<float>(_padded_filter.get()), getBuffer<float>(_filter_buffers.get()));
 
   // Calculate gradient for bias
   if (_bias)

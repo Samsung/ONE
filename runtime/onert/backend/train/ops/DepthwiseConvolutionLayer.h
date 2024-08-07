@@ -42,8 +42,6 @@ public:
   void configureBackward(IPortableTensor *back_prop_input, IPortableTensor *grad_weights,
                          IPortableTensor *grad_bias, const IPortableTensor *back_prop_output,
                          const ir::Activation activation);
-
-  ExtraTensorRequests requestExtraTensors() override;
   void forward(bool training) override;
   void backward() override;
 
@@ -56,12 +54,12 @@ private:
   IPortableTensor *_back_prop_input;
   const IPortableTensor *_back_prop_output;
 
-  ExtraTensor *_act_back_prop_output;
-
+  // TODO Consider if these tensors should be built in TensorBuilder
+  std::unique_ptr<BackPropTensor> _act_back_prop_output;
   bool _use_padded_filter;
-  ExtraTensor *_padded_filter;
-  ExtraTensor *_filter_buffers;
-  ExtraTensor *_filter_dim_buffers;
+  std::unique_ptr<Tensor> _padded_filter;
+  std::unique_ptr<Tensor> _filter_buffers;
+  std::unique_ptr<Tensor> _filter_dim_buffers;
 };
 
 } // namespace ops
