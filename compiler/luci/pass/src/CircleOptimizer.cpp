@@ -106,6 +106,7 @@
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
+#include "luci/Pass/EliminateDeadSubgraphPass.h"
 
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
@@ -250,6 +251,8 @@ void CircleOptimizer::optimize(luci::Module *m) const
   {
     phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
+
+  phase.emplace_back(std::make_unique<luci::EliminateDeadSubgraphPass>());
 
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};

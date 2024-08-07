@@ -37,6 +37,33 @@ TEST(ModuleTest, add)
   ASSERT_EQ(g_ptr, m->graph(0));
 }
 
+TEST(ModuleTest, remove)
+{
+  auto m = luci::make_module();
+  auto g1 = loco::make_graph();
+  auto g2 = loco::make_graph();
+  auto g3 = loco::make_graph();
+  auto g1_ptr = g1.get();
+  auto g2_ptr = g2.get();
+  auto g3_ptr = g3.get();
+
+  m->add(std::move(g1));
+  m->add(std::move(g2));
+  m->add(std::move(g3));
+
+  ASSERT_EQ(3, m->size());
+  ASSERT_EQ(g1_ptr, m->graph());
+  ASSERT_EQ(g1_ptr, m->graph(0));
+  ASSERT_EQ(g2_ptr, m->graph(1));
+  ASSERT_EQ(g3_ptr, m->graph(2));
+
+  // Let's delete graph at second position
+  m->removeGraphByIndex(1);
+  ASSERT_EQ(2, m->size());
+  ASSERT_EQ(g1_ptr, m->graph(0));
+  ASSERT_EQ(g3_ptr, m->graph(1));
+}
+
 TEST(ModuleTest, add_more)
 {
   auto m = luci::make_module();
@@ -71,6 +98,13 @@ TEST(ModuleTest, add_nullptr_NEG)
   auto m = luci::make_module();
 
   EXPECT_THROW(m->add(nullptr), std::invalid_argument);
+}
+
+TEST(ModuleTest, remove_index_overflow_NEG)
+{
+  auto m = luci::make_module();
+
+  EXPECT_THROW(m->removeGraphByIndex(10), std::invalid_argument);
 }
 
 TEST(ModuleTest, graph_index_overflow_NEG)
