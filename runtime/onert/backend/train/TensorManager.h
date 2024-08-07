@@ -41,8 +41,7 @@ public:
   static constexpr uint64_t _align = 16;
 
 public:
-  TensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
-                uint32_t optim_vars_count);
+  TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_t optim_vars_count);
   virtual ~TensorManager() = default;
 
   void allocateNonConstTensors();

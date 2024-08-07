@@ -53,13 +53,11 @@ namespace backend
 namespace train
 {
 
-TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                             const std::string planner_id, uint32_t optim_vars_count)
-  : _nonconst_mgr{new MemoryManager(planner_id)}, _trainable_mgr{new MemoryManager(planner_id)},
-    _back_prop_mgr{new MemoryManager(planner_id)},
-    _gradient_mgr{new GradientMemoryManager(planner_id, optim_vars_count)},
+TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_t optim_vars_count)
+  : _nonconst_mgr{new MemoryManager()}, _trainable_mgr{new MemoryManager()},
+    _back_prop_mgr{new MemoryManager()}, _gradient_mgr{new GradientMemoryManager(optim_vars_count)},
     // TODO Find a suitable planner of disposable tensors to reduce peak memory usage
-    _disposable_back_prop_mgr{new DisposableMemoryManager(std::string("WIC"))}, _tensors{reg}
+    _disposable_back_prop_mgr{new DisposableMemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }

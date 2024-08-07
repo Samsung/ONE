@@ -36,7 +36,7 @@ class TensorBuilder
 {
 public:
   TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
-                const exec::train::optimizer::Optimizer *optimizer, const std::string planner_id);
+                const exec::train::optimizer::Optimizer *optimizer);
 
   /**
    * @brief     Register tensor information to allocate on train backend

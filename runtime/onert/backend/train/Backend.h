@@ -54,7 +54,7 @@ public:
     const auto &tgraph = *tdata.tgraph;
     auto optimizer = createOptimizer(tdata.optim_info);
     auto tr = std::make_shared<TensorRegistry>();
-    auto tb = std::make_shared<TensorBuilder>(tr, optimizer.get(), "Bump");
+    auto tb = std::make_shared<TensorBuilder>(tr, optimizer.get());
     auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
     auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr, tb,
                                                            std::move(optimizer));
