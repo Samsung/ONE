@@ -53,6 +53,7 @@ enum OMLoss
   CROSS_ENTROPY,
   MSE,
   MAE,
+  SPARSE_CROSS_ENTROPY,
 };
 
 /*

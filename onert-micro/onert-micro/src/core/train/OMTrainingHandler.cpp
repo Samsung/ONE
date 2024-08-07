@@ -19,6 +19,7 @@
 #include "core/train/OMTrainingHandler.h"
 #include "train/losses_functions/MSE.h"
 #include "train/losses_functions/CrossEntropy.h"
+#include "train/losses_functions/SparseCrossEntropy.h"
 #include "train/metrics/MSE.h"
 #include "train/metrics/CrossEntropy.h"
 #include "train/metrics/Accuracy.h"
@@ -57,11 +58,18 @@ OMStatus OMTrainingHandler::handleError(const OMConfig &config, OMRuntimeStorage
     OMStatus status = forward_storage.getDataByTensorIndex(&calculated_data, forward_output_index);
     assert(calculated_data != nullptr);
 
+    OMLoss loss_type = config.training_context.loss;
+
     // Get target data
     auto data_type_size = sizeof(core::OMDataType(forward_output_tensor->type()));
     size_t offset = batch_num * data_type_size * flat_size;
+
+    // Need to check loss type to control proper offset.
+    if (loss_type == SPARSE_CROSS_ENTROPY)
+    {
+      offset = batch_num * data_type_size;
+    }
     uint8_t *target_data = _training_storage.getTargetData(i) + offset;
-    OMLoss loss_type = config.training_context.loss;
 
     // Allocate data for error gradient for current calculated data and target data
     uint8_t *output_grad_data;
@@ -82,6 +90,13 @@ OMStatus OMTrainingHandler::handleError(const OMConfig &config, OMRuntimeStorage
       case CROSS_ENTROPY:
       {
         losses_functions::CrossEntropy::calculateErrorBackpropagation(
+          flat_size, reinterpret_cast<float *>(calculated_data),
+          reinterpret_cast<float *>(target_data), reinterpret_cast<float *>(output_grad_data));
+        break;
+      }
+      case SPARSE_CROSS_ENTROPY:
+      {
+        losses_functions::SparseCrossEntropy::calculateErrorBackpropagation(
           flat_size, reinterpret_cast<float *>(calculated_data),
           reinterpret_cast<float *>(target_data), reinterpret_cast<float *>(output_grad_data));
         break;
