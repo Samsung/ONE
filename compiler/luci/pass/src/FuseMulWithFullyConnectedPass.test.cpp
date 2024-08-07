@@ -146,6 +146,8 @@ public:
   luci::FuseMulWithFullyConnectedPass pass;
 };
 
+} // namespace
+
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_not_scalar)
 {
   g.init(luci::FusedActFunc::NONE, false);
@@ -220,4 +222,3 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_activation_NEG)
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
-} // namespace

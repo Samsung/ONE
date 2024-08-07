@@ -279,10 +279,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  if (_options->query(Options::Algorithm::FuseMulWithFullyConnected))
-  {
-    phase.emplace_back(std::make_unique<FuseMulWithFullyConnectedPass>());
-  }
   if (_options->query(Options::Algorithm::CommonSubExpressionElimination))
   {
     phase.emplace_back(std::make_unique<luci::CommonSubExpressionEliminationPass>());
@@ -314,6 +310,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseMulWithDiv))
   {
     phase.emplace_back(std::make_unique<FuseMulWithDivPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseMulWithFullyConnected))
+  {
+    phase.emplace_back(std::make_unique<FuseMulWithFullyConnectedPass>());
   }
   if (_options->query(Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax))
   {

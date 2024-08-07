@@ -29,12 +29,12 @@ namespace
   if (not(cond))                  \
     return false;
 
-inline bool is_scalar(luci::CircleConst *node)
+inline bool is_scalar(const luci::CircleConst *node)
 {
   return ((node->rank() == 1 || node->rank() == 0) && node->size<loco::DataType::FLOAT32>() == 1);
 }
 
-inline void update_with_scalar(luci::CircleConst *fused_node, luci::CircleConst *multiplication)
+inline void update_with_scalar(luci::CircleConst *fused_node, const luci::CircleConst *multiplication)
 {
   for (uint32_t i = 0; i < fused_node->size<loco::DataType::FLOAT32>(); i++)
   {
@@ -42,7 +42,7 @@ inline void update_with_scalar(luci::CircleConst *fused_node, luci::CircleConst 
   }
 }
 
-inline void update_weights(luci::CircleConst *weights, luci::CircleConst *multiplication)
+inline void update_weights(luci::CircleConst *weights, const luci::CircleConst *multiplication)
 {
   // Scalar multiplication:
   if (is_scalar(multiplication))
@@ -67,7 +67,7 @@ inline void update_weights(luci::CircleConst *weights, luci::CircleConst *multip
   }
 }
 
-inline void update_bias(luci::CircleConst *bias, luci::CircleConst *multiplication)
+inline void update_bias(luci::CircleConst *bias, const luci::CircleConst *multiplication)
 {
   // Scalar multiplication:
   if (is_scalar(multiplication))
