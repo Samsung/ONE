@@ -43,17 +43,17 @@ namespace exporter
 class CheckpointExporter
 {
 public:
-  CheckpointExporter(std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
-                     std::unique_ptr<onert::exec::Execution> &exec);
+  CheckpointExporter(const std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
+                     const std::unique_ptr<onert::exec::Execution> &exec);
 
   void save(const std::string &path);
 
 private:
   void setReservedData();
-  void setTensorData(std::unique_ptr<onert::exec::Execution> &exec);
-  void setOptimizerData(std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
-                        std::unique_ptr<onert::exec::Execution> &exec);
-  void setAdamOptimizerData(std::unique_ptr<onert::exec::Execution> &exec);
+  void setTensorData(const std::unique_ptr<onert::exec::Execution> &exec);
+  void setOptimizerData(const std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
+                        const std::unique_ptr<onert::exec::Execution> &exec);
+  void setAdamOptimizerData(const std::unique_ptr<onert::exec::Execution> &exec);
 
 private:
   const uint32_t RESERVED_SIZE = 16;

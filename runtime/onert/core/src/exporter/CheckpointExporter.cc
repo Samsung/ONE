@@ -28,8 +28,9 @@ namespace onert
 namespace exporter
 {
 
-CheckpointExporter::CheckpointExporter(std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
-                                       std::unique_ptr<onert::exec::Execution> &execution)
+CheckpointExporter::CheckpointExporter(
+  const std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
+  const std::unique_ptr<onert::exec::Execution> &execution)
 {
   setReservedData();
   setTensorData(execution);
@@ -92,7 +93,7 @@ void CheckpointExporter::setReservedData()
   assert(ptr == _reserved.data() + RESERVED_SIZE);
 }
 
-void CheckpointExporter::setTensorData(std::unique_ptr<onert::exec::Execution> &exec)
+void CheckpointExporter::setTensorData(const std::unique_ptr<onert::exec::Execution> &exec)
 {
   // Tensor Buffers
   // - number of buffers for 4 bytes
@@ -152,8 +153,8 @@ void CheckpointExporter::setTensorData(std::unique_ptr<onert::exec::Execution> &
 }
 
 void CheckpointExporter::setOptimizerData(
-  std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
-  std::unique_ptr<onert::exec::Execution> &exec)
+  const std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
+  const std::unique_ptr<onert::exec::Execution> &exec)
 {
   // TODO Support multiple optimizer
   switch (train_info->optimizerInfo().optim_code)
@@ -166,7 +167,7 @@ void CheckpointExporter::setOptimizerData(
   }
 }
 
-void CheckpointExporter::setAdamOptimizerData(std::unique_ptr<onert::exec::Execution> &exec)
+void CheckpointExporter::setAdamOptimizerData(const std::unique_ptr<onert::exec::Execution> &exec)
 {
   // Reserved
   // - optimizer data offset for 4 bytes * 2
