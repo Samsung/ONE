@@ -51,7 +51,7 @@ void ExtraTensorGenerator::register_tensors(ir::OperationIndex op_idx, ExtraTens
   {
     // register tensor
     ExtraTensorIndex tensor_idx(op_idx, i);
-    _tensor_builder->registerExtraTensorInfo(tensor_idx, reqs[i].info);
+    _tensor_builder->registerExtraTensorInfo(tensor_idx, reqs[i].info());
 
     std::stringstream op_info;
     op_info << op_idx << "_" << operations.at(op_idx).name();
@@ -60,7 +60,7 @@ void ExtraTensorGenerator::register_tensors(ir::OperationIndex op_idx, ExtraTens
 
     // return registered tensor
     auto generated_tensor = _tensor_reg->getExtraTensor(tensor_idx);
-    *reqs[i].address = generated_tensor;
+    reqs[i].update_address(generated_tensor);
   }
   return;
 }
@@ -74,7 +74,7 @@ void ExtraTensorGenerator::plan()
     auto &reqs = _idx_to_requests[op_index];
     for (auto i = 0u; i < reqs.size(); ++i)
     {
-      auto &lt = reqs[i].lifetime;
+      const auto &lt = reqs[i].lifetime();
       if (lt == ExtraTensorLifeTime::FORWARD_TO_BACKWARD)
         _tensor_builder->notifyFirstUse(ExtraTensorIndex(op_index, i));
     }
@@ -88,14 +88,14 @@ void ExtraTensorGenerator::plan()
 
     for (auto i = 0u; i < reqs.size(); ++i)
     {
-      auto &lt = reqs[i].lifetime;
+      const auto &lt = reqs[i].lifetime();
       if (lt == ExtraTensorLifeTime::BACKWARD)
         _tensor_builder->notifyFirstUse(ExtraTensorIndex(op_index, i));
     }
 
     for (auto i = 0u; i < reqs.size(); ++i)
     {
-      auto &lt = reqs[i].lifetime;
+      const auto &lt = reqs[i].lifetime();
       if (lt == ExtraTensorLifeTime::FORWARD_TO_BACKWARD || lt == ExtraTensorLifeTime::BACKWARD)
         _tensor_builder->notifyLastUse(ExtraTensorIndex(op_index, i));
     }

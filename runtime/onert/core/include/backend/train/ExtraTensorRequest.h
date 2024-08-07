@@ -37,13 +37,13 @@ class ExtraTensorRequest
 
 public:
   ExtraTensorRequest(ir::OperandInfo info, ExtraTensorLifeTime lt,
-                     backend::train::ExtraTensor **addr)
-    : info(info), lifetime(lt), address(addr)
+                     ExtraTensor **addr)
+    : _info(info), _lifetime(lt), _address(addr)
   {
   }
 
   static ExtraTensorRequest createLike(const IPortableTensor *origin,
-                                       backend::train::ExtraTensor** addr)
+                                       ExtraTensor** addr)
   {
     assert(origin != nullptr);
     assert(addr != nullptr);
@@ -52,9 +52,25 @@ public:
   }
 
 public:
-  const ir::OperandInfo info;
-  const ExtraTensorLifeTime lifetime;
-  backend::train::ExtraTensor ** const address;
+  const ir::OperandInfo& info() const
+  {
+    return _info;
+  }
+
+  ExtraTensorLifeTime lifetime() const
+  {
+    return _lifetime;
+  }
+
+  void update_address(ExtraTensor* tensor)
+  {
+    *_address = tensor;
+  }
+
+private:
+  ir::OperandInfo _info;
+  ExtraTensorLifeTime _lifetime;
+  backend::train::ExtraTensor ** const _address;
 };
 
 using ExtraTensorRequests = std::vector<ExtraTensorRequest>;
