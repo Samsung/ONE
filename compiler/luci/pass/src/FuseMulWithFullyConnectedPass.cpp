@@ -34,7 +34,8 @@ inline bool is_scalar(const luci::CircleConst *node)
   return ((node->rank() == 1 || node->rank() == 0) && node->size<loco::DataType::FLOAT32>() == 1);
 }
 
-inline void update_with_scalar(luci::CircleConst *fused_node, const luci::CircleConst *multiplication)
+inline void update_with_scalar(luci::CircleConst *fused_node,
+                               const luci::CircleConst *multiplication)
 {
   for (uint32_t i = 0; i < fused_node->size<loco::DataType::FLOAT32>(); i++)
   {
