@@ -52,6 +52,13 @@ public:
   loco::Graph *graph(void) const;
 
   /**
+   * @brief remove graph at index
+   *
+   * @note  graph(0) is interpreted as a main graph and cannot be deleted
+   */
+  void removeGraphByIndex(size_t idx);
+
+  /**
    * @brief provide graph with an index
    *
    * @note  graph(0) is interpreted as a main graph
