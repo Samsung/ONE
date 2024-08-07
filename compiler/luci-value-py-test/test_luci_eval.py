@@ -101,8 +101,12 @@ def luci_eval_verify(test_name, artifacts, eval_driver, rtolf32=1e-5, atolf32=1e
                 luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
             output_dtype = "uint8"
         elif output_details["dtype"] == np.float32:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32), err_msg
+            ret = np.allclose(
+                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32)
+            if not ret:
+                print("tfl\r", intp_output_data)
+                print("cir\r", luci_output_data)
+            assert ret, err_msg
             output_dtype = "float32"
         elif output_details["dtype"] == np.int64:
             assert np.allclose(
