@@ -18,6 +18,7 @@ set(SOURCES
         metrics/MAE.cpp
         metrics/MSE.cpp
         metrics/Accuracy.cpp
+        metrics/SparseCrossEntropyAccuracy.cpp
         train_optimizers/SGD.cpp
         train_optimizers/Adam.cpp
         )
