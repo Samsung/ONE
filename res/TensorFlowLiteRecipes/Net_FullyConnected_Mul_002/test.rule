@@ -1,0 +1,12 @@
+# This checks if:
+#   Mul(FC(input, weights, bias), other)
+# is converted to:
+#   FC(input, Mul(weights, other), Mul(bias, other))
+# and then Mul is fused to:
+#   FC(input, weights', bias')
+# Here Mul is in shape of (1), it's a scalar.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "FC_EXIST"                $(op_count FULLY_CONNECTED) '=' 1
