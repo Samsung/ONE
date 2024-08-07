@@ -26,6 +26,124 @@ using namespace onert_micro;
 using namespace onert_micro::train;
 using namespace onert_micro::train::optimizers;
 
+namespace
+{
+inline std::pair<uint32_t, uint32_t> getUpLowerWeightTensorDepth(core::OpTrainableRankType rank,
+                                                                 const uint32_t output_depth)
+{
+  std::pair<uint32_t, uint32_t> result(0u, output_depth);
+
+  switch (rank)
+  {
+    case core::ALL:
+      break;
+    case core::UP_1_2_PART:
+      result.second = static_cast<uint32_t>(static_cast<float>(output_depth) / 2.f);
+      break;
+    case core::LOWER_1_2_PART:
+      result.first = static_cast<uint32_t>(static_cast<float>(output_depth) / 2.f);
+      break;
+    default:
+      assert("Unsupported type");
+      break;
+  }
+
+  return result;
+}
+} // namespace
+
+#ifdef OM_MEMORY_ESTIMATE
+void Adam::fullReset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage)
+{
+  for (auto &cur_tensor_index_data : _tensor_to_exponent_avg)
+  {
+    uint8_t *allocated_data = cur_tensor_index_data.second;
+    auto tensor_index = cur_tensor_index_data.first;
+
+    auto tensor = context.getTensorByIndex(tensor_index);
+    auto num_elements = core::OMRuntimeShape(tensor).flatSize();
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_index).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
+
+    auto tensor_size = num_elements * sizeof(core::OMDataType(tensor->type()));
+
+    core::memory::OMMemoryManager::deallocateMemory(tensor_size, allocated_data);
+  }
+  _tensor_to_exponent_avg.clear();
+
+  for (auto &cur_tensor_index_data : _tensor_to_exponent_avg_squares)
+  {
+    uint8_t *allocated_data = cur_tensor_index_data.second;
+
+    auto tensor_index = cur_tensor_index_data.first;
+
+    auto tensor = context.getTensorByIndex(tensor_index);
+    auto num_elements = core::OMRuntimeShape(tensor).flatSize();
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_index).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
+
+    auto tensor_size = num_elements * sizeof(core::OMDataType(tensor->type()));
+
+    core::memory::OMMemoryManager::deallocateMemory(tensor_size, allocated_data);
+  }
+  _tensor_to_exponent_avg_squares.clear();
+
+  for (auto &cur_tensor_index_data : _tensor_index_to_gradient)
+  {
+    uint8_t *allocated_data = cur_tensor_index_data.second;
+
+    auto tensor_index = cur_tensor_index_data.first;
+
+    auto tensor = context.getTensorByIndex(tensor_index);
+    auto num_elements = core::OMRuntimeShape(tensor).flatSize();
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_index).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
+
+    auto tensor_size = num_elements * sizeof(core::OMDataType(tensor->type()));
+
+    core::memory::OMMemoryManager::deallocateMemory(tensor_size, allocated_data);
+  }
+  auto tmp = core::memory::OMMemoryManager::cur_memory_allocated;
+  _tensor_index_to_gradient.clear();
+}
+
+void Adam::reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage)
+{
+  for (auto &cur_tensor_index_data : _tensor_index_to_gradient)
+  {
+    uint8_t *allocated_data = cur_tensor_index_data.second;
+
+    auto tensor_index = cur_tensor_index_data.first;
+
+    auto tensor = context.getTensorByIndex(tensor_index);
+    auto num_elements = core::OMRuntimeShape(tensor).flatSize();
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_index).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
+
+    auto tensor_size = num_elements * sizeof(core::OMDataType(tensor->type()));
+    core::memory::OMMemoryManager::deallocateMemory(tensor_size, allocated_data);
+  }
+  _tensor_index_to_gradient.clear();
+}
+
+#endif // OM_MEMORY_ESTIMATE
+
 void Adam::fullReset()
 {
   for (auto &cur_tensor_index_data : _tensor_to_exponent_avg)
@@ -103,7 +221,8 @@ void Adam::setExponentAvgSquaresDataByTensorIndex(uint16_t tensor_index, uint8_t
  * Update internal states according to calculated gradients using Adam theory
  * grad(t) = grad(t - 1) + calculated_grad(t)
  */
-OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context)
+OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context,
+                      core::OMRuntimeStorage &storage)
 {
   auto &backward_tensor_to_data = backward_storage.getTensorIndexToData();
 
@@ -117,32 +236,36 @@ OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeC
     // This should be done due to execution plan work
     for (auto &tensor_to_data : backward_tensor_to_data)
     {
-      auto tensor = context.getTensorByIndex(tensor_to_data.first);
-      core::OMRuntimeShape shape(tensor);
+      auto tensor_index = tensor_to_data.first;
+      auto tensor = context.getTensorByIndex(tensor_index);
+      auto num_elements = core::OMRuntimeShape(tensor).flatSize();
 
-      const auto flat_size = shape.flatSize();
-      const auto type_size = sizeof(core::OMDataType(tensor->type()));
+#ifndef DIS_DYN_SHAPES
+      int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_index).flatSize();
+      if (dynamic_tensor_size != 0)
+        num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
+
+      auto tensor_size = num_elements * sizeof(core::OMDataType(tensor->type()));
 
       // Allocate data for exponent calculation
       uint8_t *exponent_data = nullptr;
-      OMStatus status =
-        core::memory::OMMemoryManager::allocateMemory(flat_size * type_size, &exponent_data);
+      OMStatus status = core::memory::OMMemoryManager::allocateMemory(tensor_size, &exponent_data);
       assert(status == Ok);
       if (status != Ok)
         return UnknownError;
       // Set to zeros
-      std::memset(exponent_data, 0, flat_size * type_size);
+      std::memset(exponent_data, 0, tensor_size);
       _tensor_to_exponent_avg[tensor_to_data.first] = exponent_data;
 
       // Allocate data for exponent square calculation
       uint8_t *exponent_square_data = nullptr;
-      status =
-        core::memory::OMMemoryManager::allocateMemory(flat_size * type_size, &exponent_square_data);
+      status = core::memory::OMMemoryManager::allocateMemory(tensor_size, &exponent_square_data);
       assert(status == Ok);
       if (status != Ok)
         return UnknownError;
       // Set to zeros
-      std::memset(exponent_square_data, 0, flat_size * type_size);
+      std::memset(exponent_square_data, 0, tensor_size);
       _tensor_to_exponent_avg_squares[tensor_to_data.first] = exponent_square_data;
     }
   }
@@ -170,14 +293,18 @@ OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeC
     for (auto &tensor_to_data : backward_tensor_to_data)
     {
       auto tensor = context.getTensorByIndex(tensor_to_data.first);
-      core::OMRuntimeShape shape(tensor);
+      auto num_elements = core::OMRuntimeShape(tensor).flatSize();
 
-      const auto flat_size = shape.flatSize();
+#ifndef DIS_DYN_SHAPES
+      int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_to_data.first).flatSize();
+      if (dynamic_tensor_size != 0)
+        num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
 
       auto *grad_data = reinterpret_cast<float *>(_tensor_index_to_gradient[tensor_to_data.first]);
       auto *calculated_data = reinterpret_cast<float *>(tensor_to_data.second);
 
-      for (uint32_t i = 0; i < flat_size; ++i)
+      for (uint32_t i = 0; i < num_elements; ++i)
       {
         grad_data[i] += calculated_data[i];
       }
@@ -198,11 +325,12 @@ OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeC
  *
  * w(t + 1) = w(t) - lambda * m`(t) / (sqrt(v` + epsilon))
  */
-OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_config,
-                             core::OMRuntimeContext &context)
+OMStatus Adam::updateWeights(
+  const onert_micro::OMTrainingContext &training_config, core::OMRuntimeContext &context,
+  core::OMRuntimeStorage &storage,
+  std::unordered_map<uint16_t, core::OpTrainableRankType> &tensor_index_to_rank_type_map)
 {
   assert(!_tensor_index_to_gradient.empty());
-
   for (auto &tensor_to_data : _tensor_index_to_gradient)
   {
     auto exponent_squares_it = _tensor_to_exponent_avg_squares.find(tensor_to_data.first);
@@ -216,7 +344,15 @@ OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_conf
     auto tensor = context.getTensorByIndex(tensor_to_data.first);
     core::OMRuntimeShape shape(tensor);
 
-    const auto flat_size = shape.flatSize();
+    auto original_d = shape.dims(0);
+
+    auto num_elements = core::OMRuntimeShape(tensor).flatSize();
+
+#ifndef DIS_DYN_SHAPES
+    int32_t dynamic_tensor_size = storage.getDynamicRuntimeShape(tensor_to_data.first).flatSize();
+    if (dynamic_tensor_size != 0)
+      num_elements = dynamic_tensor_size;
+#endif // DIS_DYN_SHAPES
 
     auto *exponent_data = reinterpret_cast<float *>(exponent_it->second);
     auto *exponent_square_data = reinterpret_cast<float *>(exponent_squares_it->second);
@@ -224,7 +360,7 @@ OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_conf
     float beta = training_config.beta;
     float beta_squares = training_config.beta_squares;
     auto batches = static_cast<float>(training_config.batch_size);
-    for (uint32_t i = 0; i < flat_size; ++i)
+    for (uint32_t i = 0; i < num_elements; ++i)
     {
       const auto cur_val = calculated_data[i];
       exponent_data[i] = beta * exponent_data[i] + (1 - beta) * cur_val;
@@ -249,12 +385,17 @@ OMStatus Adam::updateWeights(const onert_micro::OMTrainingContext &training_conf
 
     assert((1.f - beta_in_pow_batch) != 0);
     assert((1.f - beta_square_in_pow_batch) != 0);
+    auto train_it = tensor_index_to_rank_type_map.find(tensor_to_data.first);
+    core::OpTrainableRankType rank = train_it == tensor_index_to_rank_type_map.end()
+                                       ? core::OpTrainableRankType::ALL
+                                       : core::OpTrainableRankType(train_it->second);
+    auto depth_bounds = getUpLowerWeightTensorDepth(rank, original_d);
 
-    for (uint32_t i = 0; i < flat_size; ++i)
+    for (uint32_t i = 0; i < num_elements; ++i)
     {
       float exponent_corrected = exponent_data[i] / (1.f - beta_in_pow_batch);
       float exponent_square_corrected = exponent_square_data[i] / (1.f - beta_square_in_pow_batch);
-      f_weight_data[i] -=
+      f_weight_data[i + depth_bounds.first] -=
         lambda * (exponent_corrected / (std::sqrt(exponent_square_corrected + epsilon)));
     }
   }

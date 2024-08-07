@@ -20,6 +20,7 @@
 #include "OMStatus.h"
 
 #include <cstdint>
+#include <stdlib.h>
 
 namespace onert_micro
 {
@@ -30,6 +31,12 @@ namespace memory
 
 struct OMMemoryManager
 {
+  // Need for configure tool estimations
+#ifdef OM_MEMORY_ESTIMATE
+  static size_t peak_memory_allocated;
+  static size_t cur_memory_allocated;
+  static OMStatus deallocateMemory(uint32_t size, uint8_t *data);
+#endif // OM_MEMORY_ESTIMATE
   static OMStatus allocateMemory(uint32_t size, uint8_t **data);
   static OMStatus deallocateMemory(uint8_t *data);
 };

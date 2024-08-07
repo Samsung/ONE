@@ -55,6 +55,23 @@ void OMTrainingStorage::reset()
   if (_sgd_optimizer)
     _sgd_optimizer->reset();
 
+  if (_adam_optimizer)
+    _adam_optimizer->fullReset();
+
   _target_index_to_target_data.clear();
   _input_index_to_input_data.clear();
 }
+
+#ifdef OM_MEMORY_ESTIMATE
+void OMTrainingStorage::reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage)
+{
+  if (_sgd_optimizer)
+    _sgd_optimizer->reset(context, storage);
+
+  if (_adam_optimizer)
+    _adam_optimizer->fullReset(context, storage);
+
+  _target_index_to_target_data.clear();
+  _input_index_to_input_data.clear();
+}
+#endif // OM_MEMORY_ESTIMATE

@@ -134,11 +134,15 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
 
 #ifndef DIS_DYN_SHAPES
   // Check dynamic shapes
-  if (runtime_storage.getDynamicTensorSize(input1_index) != -1)
-    input1_shape = output_shape;
+  {
+    auto input_1_dynamic_shape = runtime_storage.getDynamicRuntimeShape(input1_index);
+    if (input_1_dynamic_shape.flatSize() != 0)
+      input1_shape = input_1_dynamic_shape;
 
-  if (runtime_storage.getDynamicTensorSize(input2_index) != -1)
-    input2_shape = output_shape;
+    auto input_2_dynamic_shape = runtime_storage.getDynamicRuntimeShape(input2_index);
+    if (input_2_dynamic_shape.flatSize() != 0)
+      input2_shape = input_2_dynamic_shape;
+  }
 #endif // DIS_DYN_SHAPES
 
   // Check broadcast property
