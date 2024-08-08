@@ -211,8 +211,8 @@ TEST_F(SubstituteStridedSliceToReshapeTest, with_large_end_mask)
 TEST_F(SubstituteStridedSliceToReshapeTest, with_wrong_begin_end_mask_with_shrink_axis_mask)
 {
   buildGraph({1, 1, 20}, // input shape
-             {1, 0, 0},  // begin with -1 at 0th dim
-             {0, 1, 20}, // end with 0 at 0th dim
+             {1, 0, 0},  // begin with 1 at 0th dim, which break previous pattern
+             {0, 1, 20}, // end with 0 at 0th dim, which break previous pattern
              {1, 1, 1},  // strides
              0b110,      // begin mask
              0b110,      // end mask
