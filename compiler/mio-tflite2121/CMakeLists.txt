@@ -15,7 +15,8 @@ endif(NOT TensorFlowSource_FOUND)
 message(STATUS "Build mio-tflite2121: TRUE")
 message(STATUS "Build mio-tflite2121: with ${TensorFlowSource_DIR}")
 
-set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+#set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/TensorFlowLiteSchema/2.16.1/schema.fbs")
 
 # NOTE Use copy of schema.fbs as to provide unified way for circle also
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
