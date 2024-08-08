@@ -746,12 +746,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     pair.second->genTensors();
   }
 
-  for (auto &&pair : tbackend_contexts)
-  {
-    auto tctx = pair.second.get();
-    tctx->genTrainingTensors();
-  }
-
   prepareMigrantTensors(*lowered_graph, tbackend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
