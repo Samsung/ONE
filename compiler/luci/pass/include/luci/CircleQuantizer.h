@@ -59,6 +59,7 @@ public:
     enum Algorithm
     {
       QuantizeDequantizeWeights,
+      QuantizeWeightsWithGPTQ,
       QuantizeWithMinMax,
       Requantize,
       CopyQuantParam,
