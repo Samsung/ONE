@@ -40,12 +40,12 @@ void MirrorPad::configure()
   if (num_dims > 4)
     throw std::runtime_error("Unsupported number of dimensions.");
 
-  assert(output()->element_type() == input()->element_type());
-  assert(paddings()->element_type() == DataType::S32);
+  LUCI_INTERPRETER_CHECK(output()->element_type() == input()->element_type());
+  LUCI_INTERPRETER_CHECK(paddings()->element_type() == DataType::S32);
   // Paddings shape should be [N, 2].
-  assert(paddings()->shape().num_dims() == 2);
-  assert(paddings()->shape().dim(0) == num_dims);
-  assert(paddings()->shape().dim(1) == 2);
+  LUCI_INTERPRETER_CHECK(paddings()->shape().num_dims() == 2);
+  LUCI_INTERPRETER_CHECK(paddings()->shape().dim(0) == num_dims);
+  LUCI_INTERPRETER_CHECK(paddings()->shape().dim(1) == 2);
 
   Shape output_shape(num_dims);
   const auto *paddings_data = getTensorData<int32_t>(paddings());
@@ -53,7 +53,7 @@ void MirrorPad::configure()
   {
     const int32_t padding_before = paddings_data[i * 2];
     const int32_t padding_after = paddings_data[i * 2 + 1];
-    assert(padding_before >= 0 && padding_after >= 0);
+    LUCI_INTERPRETER_CHECK(padding_before >= 0 && padding_after >= 0);
     output_shape.dim(i) = input_shape.dim(i) + padding_before + padding_after;
   }
 
