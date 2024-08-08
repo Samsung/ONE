@@ -44,12 +44,27 @@ public:
   void handleSubgraphEnd(ir::SubgraphIndex) override;
   ObserverType type() const override { return ObserverType::MINMAX_DUMP; }
 
+  /**
+   * @brief     get current numbers of the minmax records
+   *            notice: this value will be update after execution model and dump miinmax file
+   * @return    number of the minmax records
+   */
+  int getMinMaxRecordsCount() { return _minmax_records_count; }
+
+  /**
+   * @brief     delete minmax file
+   *
+   * @return    return true is file removed successfully
+   */
+  bool deleteMinMaxFile();
+
 private:
   const ir::Graph &_graph;
   const backend::BackendContexts &_backend_contexts;
   std::string _workspace_dir;
   OpMinMaxMap _op_minmax;
   IOMinMaxMap _input_minmax;
+  int _minmax_records_count = 0;
 };
 
 } // namespace exec

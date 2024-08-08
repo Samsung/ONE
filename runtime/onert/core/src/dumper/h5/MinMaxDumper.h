@@ -64,8 +64,10 @@ public:
    *
    * @param[in] in_minmax  input minmax map
    * @param[in] op_minmax  op minmax map
+   *
+   * @return  number of minmax records
    */
-  void dump(const exec::IOMinMaxMap &in_minmax, const exec::OpMinMaxMap &op_minmax) const;
+  uint32_t dump(const exec::IOMinMaxMap &in_minmax, const exec::OpMinMaxMap &op_minmax) const;
 
 private:
   H5::Group _val_grp;

@@ -25,8 +25,8 @@ namespace exec
 
 RawMinMaxDumper::RawMinMaxDumper(const std::string &filename) : _filename(filename) {}
 
-void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
-                           const exec::OpMinMaxMap &op_minmax) const
+uint32_t RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
+                               const exec::OpMinMaxMap &op_minmax) const
 {
   // Find file is already exist for modifying
   auto file = std::fopen(_filename.c_str(), "rb+");
@@ -129,6 +129,8 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
   }
 
   std::fclose(file);
+
+  return runs;
 }
 
 } // namespace exec
