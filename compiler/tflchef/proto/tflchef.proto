@@ -719,4 +719,6 @@ message ModelRecipe {
   optional uint32 version = 6 [default = 1];
   repeated Graph graph = 7;
   repeated SignatureDef signature_def = 8;
+  // store to external and use (Buffer) offset
+  optional bool ext_offset = 9 [default = false];
 }

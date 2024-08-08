@@ -120,7 +120,9 @@ if(FlatBuffers_FOUND)
                        COMMAND ${CMAKE_COMMAND} -E make_directory "${abs_output_dir}"
                        COMMAND "${FLATC_PATH}" -c --no-includes
                                --no-union-value-namespacing
-                               --gen-object-api -o "${abs_output_dir}"
+                               --gen-object-api
+                               --gen-mutable
+                               -o "${abs_output_dir}"
                                ${SCHEMA_FILES}
                        DEPENDS ${SCHEMA_FILES}
                        COMMENT "Generate '${TGT}' headers")

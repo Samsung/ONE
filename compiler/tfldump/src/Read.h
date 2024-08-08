@@ -50,7 +50,7 @@ private:
   using TFliteSignatureDef_t = flatbuffers::Vector<flatbuffers::Offset<tflite::SignatureDef>>;
 
 public:
-  Reader(const tflite::Model *model);
+  Reader(const tflite::Model *model, const std::vector<char> *rawdata);
 
   Reader() = delete;
 
@@ -79,6 +79,8 @@ public:
 
 private:
   uint32_t _version;
+
+  const std::vector<char> *_rawdata{nullptr};
 
   const TFliteSubGraphs_t *_subgraphs{nullptr};
   const TFliteBuffers_t *_buffers{nullptr};

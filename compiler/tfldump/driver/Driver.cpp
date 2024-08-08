@@ -49,7 +49,11 @@ int entry(int argc, char **argv)
 
   std::cout << "Dump: " << tflite_path << std::endl << std::endl;
 
-  std::cout << tflmodel << std::endl;
+  tfldump::ModelEx modelex;
+  modelex.model = tflmodel;
+  modelex.rawdata = &modelData;
+
+  std::cout << modelex << std::endl;
 
   return 0;
 }

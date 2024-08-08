@@ -340,9 +340,9 @@ void dump_sub_graph(std::ostream &os, tflread::Reader &reader)
   os << std::endl;
 }
 
-void dump_model(std::ostream &os, const tflite::Model *model)
+void dump_model(std::ostream &os, const tflite::Model *model, const std::vector<char> *rawdata)
 {
-  tflread::Reader reader(model);
+  tflread::Reader reader(model, rawdata);
 
   uint32_t num_subgraph = reader.num_subgraph();
 
@@ -450,8 +450,8 @@ void dump_model(std::ostream &os, const tflite::Model *model)
 
 } // namespace tfldump
 
-std::ostream &operator<<(std::ostream &os, const tflite::Model *model)
+std::ostream &operator<<(std::ostream &os, const tfldump::ModelEx &modelex)
 {
-  tfldump::dump_model(os, model);
+  tfldump::dump_model(os, modelex.model, modelex.rawdata);
   return os;
 }

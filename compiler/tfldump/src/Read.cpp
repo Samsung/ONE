@@ -24,8 +24,10 @@
 namespace tflread
 {
 
-Reader::Reader(const tflite::Model *model)
+Reader::Reader(const tflite::Model *model, const std::vector<char> *rawdata)
 {
+  _rawdata = rawdata;
+
   _version = model->version();
   _subgraphs = model->subgraphs();
   _buffers = model->buffers();
@@ -48,7 +50,12 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
 
   if (auto *buffer = (*_buffers)[buf_idx])
   {
-    if (auto *array = buffer->data())
+    if (buffer->offset() > 1)
+    {
+      *buff_data = reinterpret_cast<const uint8_t *>(&_rawdata->at(buffer->offset()));
+      size_t size = buffer->size();
+    }
+    else if (auto *array = buffer->data())
     {
       if (size_t size = array->size())
       {
