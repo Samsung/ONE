@@ -72,7 +72,7 @@ template <> struct hash<onert::backend::train::ExtraTensorIndex>
     const auto op_index = index.op_index();
     const auto sub_index = index.sub_index();
 
-    assert(sizeof(op_index) <= 4);
+    assert(sizeof(op_index) <= sizeof(uint32_t));
     static_assert(sizeof(size_t) >= sizeof(uint32_t),
                   "ExtraTensorIndex's hash creation error, size_t size is less than uint32_t");
 
