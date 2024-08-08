@@ -24,13 +24,14 @@ override_dh_auto_install:
 	./nnfw install --prefix $(NNFW_INSTALL_PREFIX) --strip
 override_dh_install:
 	install -d $(NNFW_INSTALL_PREFIX)/lib/pkgconfig
-	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw.pc.in
-	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw.pc.in
-	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw.pc.in
-	sed -i 's:@libdir@:\/usr\/lib:g' ./packaging/nnfw-plugin.pc.in
-	sed -i 's:@includedir@:\/usr\/include:g' ./packaging/nnfw-plugin.pc.in
-	sed -i 's:@version@:${DEBVER}:g' ./packaging/nnfw-plugin.pc.in
-
-	install -m 0644 packaging/nnfw.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/nnfw.pc
-	install -m 0644 packaging/nnfw-plugin.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/nnfw-plugin.pc
+	install -m 0644 packaging/nnfw.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	install -m 0644 packaging/nnfw-plugin.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:@libdir@:\/usr\/lib:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:@includedir@:\/usr\/include:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:@version@:${DEBVER}:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:Name\: nnfw:Name\: onert:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:@libdir@:\/usr\/lib:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:@includedir@:\/usr\/include:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:@version@:${DEBVER}:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:Name\: nnfw:Name\: onert:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
 	dh_install
