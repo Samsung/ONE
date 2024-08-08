@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include "DisposableTensorIndex.h"
 #include "MemoryPlanner.h"
 #include "ir/Index.h"
 
@@ -25,7 +26,7 @@ using onert::ir::OperationIndex;
 
 TEST(BumpPlanner, claim_test)
 {
-  BumpPlanner planner;
+  BumpPlanner<DisposableTensorIndex> planner;
 
   auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
                           uint32_t expected_offset) {
@@ -55,7 +56,7 @@ TEST(BumpPlanner, claim_test)
 
 TEST(FirstFitPlanner, claim_release_test)
 {
-  FirstFitPlanner planner;
+  FirstFitPlanner<DisposableTensorIndex> planner;
 
   auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
                           uint32_t expected_offset) {
@@ -148,7 +149,7 @@ TEST(FirstFitPlanner, claim_release_test)
 
 TEST(FirstFitPlanner, neg_release_non_existing_index)
 {
-  FirstFitPlanner planner;
+  FirstFitPlanner<DisposableTensorIndex> planner;
 
   auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
                           uint32_t expected_offset) {
@@ -184,7 +185,7 @@ TEST(FirstFitPlanner, neg_release_non_existing_index)
 
 TEST(FirstFitPlanner, neg_release_twice)
 {
-  FirstFitPlanner planner;
+  FirstFitPlanner<DisposableTensorIndex> planner;
 
   auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
                           uint32_t expected_offset) {
@@ -223,7 +224,7 @@ TEST(FirstFitPlanner, neg_release_twice)
 
 TEST(WICPlanner, claim_release_test)
 {
-  WICPlanner planner;
+  WICPlanner<DisposableTensorIndex> planner;
 
   auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size) {
     DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};

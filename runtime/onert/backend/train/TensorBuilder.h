@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_TRAIN_TENSOR_BUILDER_H__
 
 #include "DisposableTensorIndex.h"
+#include "ExtraTensorIndex.h"
 #include "TensorManager.h"
 #include "TensorRegistry.h"
 #include "util/Set.h"
@@ -55,6 +56,8 @@ public:
   void registerDisposableBackwardTensorInfo(const DisposableTensorIndex &index,
                                             const ir::OperandInfo &info);
 
+  void registerExtraTensorInfo(const ExtraTensorIndex &index, const ir::OperandInfo &info);
+
   // TODO Support memory plan of all tensors
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);
@@ -62,6 +65,8 @@ public:
   void notifyBackwardLastUse(const ir::OperandIndex &);
   void notifyDisposableBackPropFirstUse(const DisposableTensorIndex &);
   void notifyDisposableBackPropLastUse(const DisposableTensorIndex &);
+  void notifyFirstUse(const ExtraTensorIndex &);
+  void notifyLastUse(const ExtraTensorIndex &);
 
   bool isRegistered(const ir::OperandIndex &) const;
   bool isRegisteredBackward(const ir::OperandIndex &) const;
@@ -69,6 +74,7 @@ public:
 
   void allocate(void);
   void allocateBackward(void);
+  void allocateExtra(void); // < this function will be called after genKernels
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;

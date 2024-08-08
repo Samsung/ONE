@@ -16,12 +16,14 @@
 
 #include "BackendContext.h"
 
+#include "ExtraTensorGenerator.h"
 #include "TensorBuilder.h"
 #include "TensorPlanner.h"
 #include "KernelGenerator.h"
 #include "ops/BackPropInitializer.h"
 
 #include <backend/basic/train/TrainableBackendContextHelpers.h>
+#include <ir/train/ITrainableOperation.h>
 #include <misc/polymorphic_downcast.h>
 
 #include <cassert>
@@ -245,6 +247,29 @@ FunctionMap BackendContext::genKernels()
   //   auto &fn_seq = it.second;
   //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
   // }
+
+  ExtraTensorGenerator extra_tensor_gen(trainable_graph(), _tensor_builder, _tensor_registry);
+
+  const auto &ops = trainable_graph()->operations();
+
+  for (auto &pair : ret)
+  {
+    auto &op_idx = pair.first;
+    auto &fn_seq = pair.second;
+
+    const ir::IOperation *op = &ops.at(op_idx);
+    const auto trainable_op = dynamic_cast<const ir::train::TrainableOperation *>(op);
+    assert(trainable_op != nullptr);
+
+    if (not trainable_op->isRequiredForBackward())
+      continue;
+
+    fn_seq->iterate([&](exec::train::ITrainableFunction &fn) {
+      extra_tensor_gen.register_tensors(op_idx, (&fn)->requestExtraTensors());
+    });
+  }
+  extra_tensor_gen.plan();
+  extra_tensor_gen.allocate();
 
   return ret;
 }

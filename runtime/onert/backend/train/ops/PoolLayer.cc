@@ -41,78 +41,90 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
-  std::unique_ptr<Tensor> _act_back_prop_output;
-  std::unique_ptr<Tensor> _arg_max_index;
+  ExtraTensor *_act_back_prop_output;
+  ExtraTensor *_arg_max_index;
 
 public:
   MaxPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t paddingTop, const uint32_t,
             const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t kernelWidth,
             const uint32_t kernelHeight, const ir::Activation activation,
             const IPortableTensor *output)
-    : _activation(activation), _output(output)
-  {
-    {
-      _op_params.stride_height = strideHeight;
-      _op_params.stride_width = strideWidth;
-      _op_params.filter_height = kernelHeight;
-      _op_params.filter_width = kernelWidth;
-      _op_params.padding_values.height = (int8_t)paddingTop;
-      _op_params.padding_values.width = (int8_t)paddingLeft;
-      CalculateActivationRange<float>(activation, &_op_params.float_activation_min,
-                                      &_op_params.float_activation_max);
-    }
+    : _activation(activation), _output(output){{_op_params.stride_height = strideHeight;
+  _op_params.stride_width = strideWidth;
+  _op_params.filter_height = kernelHeight;
+  _op_params.filter_width = kernelWidth;
+  _op_params.padding_values.height = (int8_t)paddingTop;
+  _op_params.padding_values.width = (int8_t)paddingLeft;
+  CalculateActivationRange<float>(activation, &_op_params.float_activation_min,
+                                  &_op_params.float_activation_max);
+}
 
-    _arg_max_index = std::make_unique<Tensor>(_output->get_info());
-    _arg_max_index->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+/*
+_arg_max_index = std::make_unique<Tensor>(_output->get_info());
+_arg_max_index->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
 
-    if (activation != ir::Activation::NONE)
-    {
-      _act_back_prop_output = std::make_unique<Tensor>(_output->get_info());
-      _act_back_prop_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
-    }
-  };
+if (activation != ir::Activation::NONE)
+{
+  _act_back_prop_output = std::make_unique<Tensor>(_output->get_info());
+  _act_back_prop_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+}
+*/
+}; // namespace
 
-  ~MaxPool2D() {}
+~MaxPool2D() {}
 
 public:
-  void forward(const IPortableTensor *in, IPortableTensor *out)
+ExtraTensorRequests requestExtraTensors() override
+{
+  auto r1 = ExtraTensorRequest(_output->get_info(), ExtraTensorLifeTime::FORWARD_TO_BACKWARD,
+                               &_arg_max_index);
+  auto r2 = ExtraTensorRequest::createLike(_output, &_act_back_prop_output);
+
+  ExtraTensorRequests reqs;
+  reqs.push_back(r1);
+  reqs.push_back(r2);
+
+  return reqs;
+}
+
+public:
+void forward(const IPortableTensor *in, IPortableTensor *out) override
+{
+  assert(in->layout() == ir::Layout::NHWC);
+
+  auto out_shape = getShape(out);
+  auto out_data = getBuffer<float>(out);
+  auto arg_max_index = _arg_max_index;
+
+  // maxpool forward
+  nnfw::cker::train::MaxPool2D(_op_params, getShape(in), getBuffer<float>(in), out_shape, out_data,
+                               getBuffer<int>(arg_max_index));
+}
+
+void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) override
+{
+  assert(back_prop_out->layout() == ir::Layout::NHWC);
+
+  // activation backward
+  try
   {
-    assert(in->layout() == ir::Layout::NHWC);
-
-    auto out_shape = getShape(out);
-    auto out_data = getBuffer<float>(out);
-    auto arg_max_index = _arg_max_index.get();
-
-    // maxpool forward
-    nnfw::cker::train::MaxPool2D(_op_params, getShape(in), getBuffer<float>(in), out_shape,
-                                 out_data, getBuffer<int>(arg_max_index));
+    back_prop_out = backpropActivation(_activation, _output, back_prop_out, _act_back_prop_output);
   }
-
-  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
+  catch (const std::exception &e)
   {
-    assert(back_prop_out->layout() == ir::Layout::NHWC);
-
-    // activation backward
-    try
-    {
-      back_prop_out =
-        backpropActivation(_activation, _output, back_prop_out, _act_back_prop_output.get());
-    }
-    catch (const std::exception &e)
-    {
-      throw std::runtime_error{"train PoolLayer: " + std::string(e.what())};
-    }
-    assert(back_prop_out != nullptr);
-
-    // maxpool baackward
-    auto arg_max_index = _arg_max_index.get();
-    nnfw::cker::train::MaxPool2DGrad(getShape(back_prop_out), getBuffer<float>(back_prop_out),
-                                     getBuffer<int>(arg_max_index), getShape(back_prop_in),
-                                     getBuffer<float>(back_prop_in));
+    throw std::runtime_error{"train PoolLayer: " + std::string(e.what())};
   }
-};
+  assert(back_prop_out != nullptr);
 
-} // namespace
+  // maxpool baackward
+  auto arg_max_index = _arg_max_index;
+  nnfw::cker::train::MaxPool2DGrad(getShape(back_prop_out), getBuffer<float>(back_prop_out),
+                                   getBuffer<int>(arg_max_index), getShape(back_prop_in),
+                                   getBuffer<float>(back_prop_in));
+}
+}; // namespace ops
+
+} // namespace train
 
 PoolLayer::PoolLayer()
   : cpu::ops::PoolLayer(), _back_prop_input(nullptr), _back_prop_output(nullptr), _kernel(nullptr)
@@ -149,6 +161,8 @@ void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t pad
   }
 }
 
+ExtraTensorRequests PoolLayer::requestExtraTensors() { return _kernel->requestExtraTensors(); }
+
 void PoolLayer::forward(bool training)
 {
   if (training)
@@ -163,7 +177,7 @@ void PoolLayer::forward(bool training)
 
 void PoolLayer::backward() { _kernel->backward(_back_prop_output, _back_prop_input); }
 
-} // namespace ops
-} // namespace train
+} // namespace backend
+} // namespace onert
 } // namespace backend
 } // namespace onert

@@ -55,9 +55,17 @@ void BinaryArithmeticLayer::configureBackward(IPortableTensor *back_prop_lhs,
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output = std::make_unique<Tensor>(_output->get_info());
-    _act_back_prop_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
   }
+}
+
+ExtraTensorRequests BinaryArithmeticLayer::requestExtraTensors()
+{
+  ExtraTensorRequests req;
+
+  if (_activation != ir::Activation::NONE)
+    req.push_back(ExtraTensorRequest::createLike(_back_prop_output, &_act_back_prop_output));
+
+  return req;
 }
 
 void BinaryArithmeticLayer::forward(bool) { cpu::ops::BinaryArithmeticLayer::run(); }
@@ -72,7 +80,7 @@ void BinaryArithmeticLayer::backward()
   try
   {
     backprop_act =
-      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output.get());
+      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output);
   }
   catch (const std::exception &e)
   {

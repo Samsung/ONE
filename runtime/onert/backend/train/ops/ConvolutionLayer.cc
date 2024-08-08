@@ -30,6 +30,7 @@ namespace
 
 using namespace onert;
 
+/*
 template <typename Tensor>
 std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *origin_weights)
 {
@@ -43,6 +44,28 @@ std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *
   transposed_info.shape(transposed_shape);
 
   return std::make_unique<Tensor>(transposed_info);
+}
+*/
+
+ir::OperandInfo transposeOperandInfo(const ir::OperandInfo &origin_info)
+{
+  const auto &origin_shape = origin_info.shape();
+  assert(origin_shape.rank() == 4);
+
+  auto transposed_info = ir::OperandInfo(origin_info);
+  auto transposed_shape =
+    ir::Shape{origin_shape.dim(1), origin_shape.dim(2), origin_shape.dim(3), origin_shape.dim(0)};
+  transposed_info.shape(transposed_shape);
+
+  return transposed_info;
+}
+
+backend::train::ExtraTensorRequest
+createTransposeTenosrRequest(const backend::IPortableTensor *origin,
+                             backend::train::ExtraTensor **const addr)
+{
+  return backend::train::ExtraTensorRequest(transposeOperandInfo(origin->get_info()),
+                                            backend::train::ExtraTensorLifeTime::BACKWARD, addr);
 }
 
 } // namespace
@@ -79,25 +102,34 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
   if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
     throw std::runtime_error("train ConvolutionLayer: Unsupported dilation yet");
 
-  // TODO Optimize transposed tensors
-  _transposed_weights = createTransposedWeights<Tensor>(weights);
-  _transposed_weights->setBuffer(
-    std::make_shared<basic::Allocator>(_transposed_weights->total_size()));
-
-  _conv_back_prop_output = std::make_unique<BackPropTensor>(back_prop_output->get_info());
-  _conv_back_prop_output->setBuffer(
-    std::make_shared<basic::Allocator>(_conv_back_prop_output->total_size()));
-
-  _transposed_grad_weights = createTransposedWeights<GradientTensor>(weights);
-  _transposed_grad_weights->setBuffer(
-    std::make_shared<basic::Allocator>(_transposed_grad_weights->total_size()));
+  // TO avoid unused parameter error
+  if (weights == nullptr)
+  {
+  };
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output = std::make_unique<BackPropTensor>(_back_prop_output->get_info());
-    _act_back_prop_output->setBuffer(
-      std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
   }
+}
+
+ExtraTensorRequests ConvolutionLayer::requestExtraTensors()
+{
+  ExtraTensorRequests reqs;
+
+  auto tr_weights = createTransposeTenosrRequest(_kernel, &_transposed_weights);
+  reqs.push_back(tr_weights);
+
+  auto conv_back_prop_output =
+    ExtraTensorRequest::createLike(_back_prop_output, &_conv_back_prop_output);
+  reqs.push_back(conv_back_prop_output);
+
+  auto tr_grad_weights = createTransposeTenosrRequest(_grad_weights, &_transposed_grad_weights);
+  reqs.push_back(tr_grad_weights);
+
+  if (_activation != ir::Activation::NONE)
+    reqs.push_back(ExtraTensorRequest::createLike(_back_prop_output, &_act_back_prop_output));
+
+  return reqs;
 }
 
 void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }
@@ -125,7 +157,7 @@ void ConvolutionLayer::backwardFloat32()
   try
   {
     backprop_act =
-      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output.get());
+      backpropActivation(_activation, _output, _back_prop_output, _act_back_prop_output);
   }
   catch (const std::exception &e)
   {
@@ -144,7 +176,7 @@ void ConvolutionLayer::backwardFloat32()
   conv_train_params.dilation_height_factor = _dilationHeightFactor;
 
   // Transpose weights from OHWI to HWIO
-  auto transposed_weights = _transposed_weights.get();
+  auto transposed_weights = _transposed_weights;
   assert(transposed_weights->getShape().rank() == 4);
   nnfw::cker::TransposeParams transpose_param;
   transpose_param.perm_count = transposed_weights->getShape().rank();
@@ -162,7 +194,7 @@ void ConvolutionLayer::backwardFloat32()
     _paddingRight, getShape(_back_prop_input), getBuffer<float>(_back_prop_input));
 
   // Calculate gradient for weights
-  auto transposed_grad_weights = _transposed_grad_weights.get();
+  auto transposed_grad_weights = _transposed_grad_weights;
   assert(_grad_weights->getShape().rank() == 4);
   assert(transposed_grad_weights->getShape().rank() == 4);
   nnfw::cker::train::ConvFilterGrad(
