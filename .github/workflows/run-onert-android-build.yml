@@ -1,29 +1,38 @@
 name: Run ONERT Android Release Build
 
 on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-android-build.yml'
+      - 'nn*'
+      - 'Makefile.template'
+      - 'compute/**'
+      - 'infra/buildtool/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'infra/nnfw/**'
+      - 'runtime/**'
+      - 'tests/**'
+      - '!**/*.md'
   pull_request:
     branches:
       - master
       - release/*
     paths:
       - '.github/workflows/run-onert-android-build.yml'
-      - 'nnas'
-      - 'nnfw'
+      - 'nn*'
       - 'Makefile.template'
       - 'compute/**'
-      - 'infra/**'
-      - '!infra/debian/**'
-      - '!infra/docker/**'
-      - '!infra/doxygen/**'
-      - '!infra/git-hooks/**'
-      - '!infra/nncc/**'
-      - '!infra/onert-micro/**'
-      - '!infra/packaging/**'
-      - 'nnpackage/**'
-      - '!nnpackage/spec/**'
+      - 'infra/buildtool/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'infra/nnfw/**'
       - 'runtime/**'
       - 'tests/**'
-      - '!**.md'
+      - '!**/*.md'
 
 defaults:
   run:
@@ -45,8 +54,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-ndk26
+          key: external-onert-ndk26-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
+            external-onert-ndk26-
             external-onert-ndk
             external-onert-
             external-
