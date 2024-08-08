@@ -46,11 +46,7 @@ public:
   {
   }
 
-  backend::ITensorRegistry *genTensors() override;
-  backend::train::ITensorRegistry *genTrainingTensors() override;
-
-public:
-  backend::train::FunctionMap genKernels() override;
+  backend::train::FunctionMap gen() override;
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 

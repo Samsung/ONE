@@ -28,29 +28,19 @@ namespace builtin
 namespace train
 {
 
-backend::ITensorRegistry *BackendContext::genTensors()
+backend::train::FunctionMap BackendContext::gen()
 {
-  // For now, there is no need to generate tensors for forwarding.
+  // For now, there is no need to generate tensors for forwarding and backwarding.
   // builtin train backend handles 3 operators: `Permute`, `IF`, `WHILE`.
   // `Permute`: Tensor generation is not required.
   // `IF`, `WHILE`: Not supported yet
-  return tensor_registry().get();
-}
 
-backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
-{
-  // For now, there is no need to generate tensors for backwarding.
-  return tensor_registry().get();
-}
-
-backend::train::FunctionMap BackendContext::genKernels()
-{
-  backend::train::FunctionMap ret;
+  backend::train::FunctionMap codes;
 
   for (auto &&op_ind : _tdata->op_order)
   {
     auto tn_seq = kernel_gen->generate(op_ind);
-    ret.emplace(op_ind, std::move(tn_seq));
+    codes.emplace(op_ind, std::move(tn_seq));
   }
 
   trainable_graph()->operands().iterate(
@@ -69,7 +59,7 @@ backend::train::FunctionMap BackendContext::genKernels()
   //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
   // }
 
-  return ret;
+  return codes;
 }
 
 } // namespace train

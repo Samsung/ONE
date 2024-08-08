@@ -136,22 +136,50 @@ getDisposableBackPropTensorList(const ir::train::TrainableGraph &tgraph,
 }
 } // namespace
 
-backend::ITensorRegistry *BackendContext::genTensors()
+FunctionMap BackendContext::gen()
 {
   planForwardTensors();
-
-  _tensor_builder->allocate();
-
-  return _tensor_registry.get();
-}
-
-backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
-{
   planBackwardTensors();
 
+  _tensor_builder->allocate();
   _tensor_builder->allocateBackward();
 
-  return _tensor_registry.get();
+  auto codes = generateFunctionMap();
+
+  // Initialize TrainableTensors
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (external_operands().contains(ind) || !operand.isConstant())
+        return;
+
+      auto tensor = tensor_registry()->getNativeITensor(ind);
+      assert(tensor != nullptr);
+
+      VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
+
+      auto data = operand.shareData();
+      assert(data && data->base());
+      auto trainable_tensor = dynamic_cast<TrainableTensor *>(tensor);
+
+      if (trainable_tensor == nullptr)
+        throw std::runtime_error{"This tensor is not trainable tensor"};
+
+      trainable_tensor->fillBuffer(data);
+    });
+
+  // NOTE For memory optimization, we want to free some operand data
+  const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)
+    .operands()
+    .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+
+  // TODO Enable
+  // for (auto &&it : ret)
+  // {
+  //   auto &fn_seq = it.second;
+  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+  // }
+
+  return codes;
 }
 
 void BackendContext::planForwardTensors()
@@ -207,46 +235,6 @@ void BackendContext::planBackwardTensors()
   tensor_planner.planGradientTensors(tensor_builder.get());
   tensor_planner.planBackPropTensors(tensor_builder.get());
   tensor_planner.planDisposableBackPropTensors(tensor_builder.get());
-}
-
-FunctionMap BackendContext::genKernels()
-{
-  auto ret = generateFunctionMap();
-
-  // Initialize TrainableTensors
-  trainable_graph()->operands().iterate(
-    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-      if (external_operands().contains(ind) || !operand.isConstant())
-        return;
-
-      auto tensor = tensor_registry()->getNativeITensor(ind);
-      assert(tensor != nullptr);
-
-      VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
-
-      auto data = operand.shareData();
-      assert(data && data->base());
-      auto trainable_tensor = dynamic_cast<TrainableTensor *>(tensor);
-
-      if (trainable_tensor == nullptr)
-        throw std::runtime_error{"This tensor is not trainable tensor"};
-
-      trainable_tensor->fillBuffer(data);
-    });
-
-  // NOTE For memory optimization, we want to free some operand data
-  const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)
-    .operands()
-    .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
-
-  // TODO Enable
-  // for (auto &&it : ret)
-  // {
-  //   auto &fn_seq = it.second;
-  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
-  // }
-
-  return ret;
 }
 
 FunctionMap BackendContext::generateFunctionMap()
