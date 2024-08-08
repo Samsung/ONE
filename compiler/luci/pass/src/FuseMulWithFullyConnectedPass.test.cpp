@@ -48,8 +48,6 @@ using namespace luci::test;
 class FCMulGraphlet
 {
 public:
-  FCMulGraphlet() = default;
-
   void init(loco::Graph *g, luci::FusedActFunc fc_activation, bool is_mul_scalar)
   {
     std::vector<float> weights_val(DIM_ONE * DIM_TWO);
@@ -123,12 +121,10 @@ protected:
   luci::CircleConst *_mul_c = nullptr;
 };
 
-class FuseAddWithFCTestGraph : public TestIOGraph, public FCMulGraphlet
+class FuseMulWithFCTestGraph : public TestIOGraph, public FCMulGraphlet
 {
 public:
-  FuseAddWithFCTestGraph() = default;
-
-  void init(luci::FusedActFunc fc_activation = luci::FusedActFunc::NONE, bool is_mul_scalar = false)
+  void init(luci::FusedActFunc fc_activation, bool is_mul_scalar)
   {
     TestIOGraph::init({1, DIM_TWO}, {1, DIM_ONE});
     FCMulGraphlet::init(g(), fc_activation, is_mul_scalar);
@@ -142,7 +138,7 @@ public:
 class FuseMulWithFullyConnectedPassTest : public ::testing::Test
 {
 public:
-  FuseAddWithFCTestGraph g;
+  FuseMulWithFCTestGraph g;
   luci::FuseMulWithFullyConnectedPass pass;
 };
 
@@ -208,7 +204,7 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_is_scalar)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 {
-  g.init();
+  g.init(luci::FusedActFunc::NONE, false);
 
   // Bias cannot be fused as it's passed as feature map.
   g.to_fm_bias();
@@ -218,7 +214,7 @@ TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_activation_NEG)
 {
-  g.init(luci::FusedActFunc::RELU);
+  g.init(luci::FusedActFunc::RELU, false);
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
