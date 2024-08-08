@@ -48,12 +48,12 @@ protected:
 
 TEST_F(MirrorPadTest, FloatReflect)
 {
-  Shape input_shape = {1, 2, 2, 1};
+  Shape input_shape = {1, 2, 3, 1};
   Shape padding_shape = {4, 2};
 
-  std::vector<float> input_data{1.0f, 2.0f,  //
-                                3.0f, 4.0f}; //
-  std::vector<int> padding_data{0, 0, 2, 1, 1, 2, 0, 0};
+  std::vector<float> input_data{1.0f, 2.0f, 3.0f,  //
+                                4.0f, 5.0f, 6.0f}; //
+  std::vector<int> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
 
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
@@ -64,12 +64,35 @@ TEST_F(MirrorPadTest, FloatReflect)
 
   Execute(input_tensor, padding_tensor, output_tensor, MirrorPadMode::REFLECT);
 
-  std::vector<float> ref_output_data{2.0f, 1.0f, 2.0f, 1.0f, 2.0f,  //
-                                     4.0f, 3.0f, 4.0f, 3.0f, 4.0f,  //
-                                     2.0f, 1.0f, 2.0f, 1.0f, 2.0f,  //
-                                     4.0f, 3.0f, 4.0f, 3.0f, 4.0f,  //
-                                     2.0f, 1.0f, 2.0f, 1.0f, 2.0f}; //
-  std::initializer_list<int32_t> ref_output_shape{1, 5, 5, 1};
+  std::vector<float> ref_output_data{5, 4, 5, 6, 5, 2, 1, 2, 3, 2,  //
+                                     5, 4, 5, 6, 5, 2, 1, 2, 3, 2}; //
+  std::initializer_list<int32_t> ref_output_shape{1, 4, 5, 1};
+
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
+}
+
+TEST_F(MirrorPadTest, FloatReflect2)
+{
+  Shape input_shape = {2, 3};
+  Shape padding_shape = {2, 2};
+
+  std::vector<float> input_data{1, 2, 3, 4, 5, 6};
+  std::vector<int> padding_data{1, 1, 2, 2};
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor padding_tensor =
+    makeInputTensor<DataType::S32>(padding_shape, padding_data, _memory_manager.get());
+
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Execute(input_tensor, padding_tensor, output_tensor, MirrorPadMode::REFLECT);
+
+  std::vector<float> ref_output_data{6, 5, 4, 5, 6, 5, 4, 3, 2, 1, 2, 3, 2, 1,
+                                     6, 5, 4, 5, 6, 5, 4, 3, 2, 1, 2, 3, 2, 1};
+
+  std::initializer_list<int32_t> ref_output_shape{4, 7};
 
   EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(ref_output_shape));
@@ -138,7 +161,7 @@ TEST_F(MirrorPadTest, Uint8Reflect)
 
   std::vector<float> input_data{1.0f, 2.0f, 3.0f,  //
                                 4.0f, 5.0f, 6.0f}; //
-  std::vector<int> padding_data{0, 0, 2, 1, 1, 3, 0, 0};
+  std::vector<int> padding_data{0, 0, 1, 1, 1, 1, 0, 0};
 
   Tensor input_tensor = makeInputTensor<DataType::U8>(
     input_shape, quant_param.first, quant_param.second, input_data, _memory_manager.get());
@@ -150,14 +173,9 @@ TEST_F(MirrorPadTest, Uint8Reflect)
 
   Execute(input_tensor, padding_tensor, output_tensor, MirrorPadMode::REFLECT);
 
-  std::vector<float> ref_output_data{
-    3.0f, 1.0f, 2.0f, 3.0f, 1.0f, 2.0f, 3.0f, //
-    6.0f, 4.0f, 5.0f, 6.0f, 4.0f, 5.0f, 6.0f, //
-    3.0f, 1.0f, 2.0f, 3.0f, 1.0f, 2.0f, 3.0f, //
-    6.0f, 4.0f, 5.0f, 6.0f, 4.0f, 5.0f, 6.0f, //
-    3.0f, 1.0f, 2.0f, 3.0f, 1.0f, 2.0f, 3.0f, //
-  };
-  std::initializer_list<int32_t> ref_output_shape{1, 5, 7, 1};
+  std::vector<float> ref_output_data{5, 4, 5, 6, 5, 2, 1, 2, 3, 2,  //
+                                     5, 4, 5, 6, 5, 2, 1, 2, 3, 2}; //
+  std::initializer_list<int32_t> ref_output_shape{1, 4, 5, 1};
 
   EXPECT_THAT(dequantizeTensorData(output_tensor),
               FloatArrayNear(ref_output_data, quant_tolerance));
