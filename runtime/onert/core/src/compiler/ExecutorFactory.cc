@@ -98,10 +98,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 {
   // TODO Store builtin backend in BackendContext
   std::shared_ptr<backend::builtin::TensorRegistry> builtin_tensor_reg;
-  for (const auto &e : backend_contexts)
+  for (auto &&[backend, context] : backend_contexts)
   {
-    auto backend = e.first;
-    auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
       builtin_tensor_reg =
@@ -113,7 +111,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    assert(lowered_graph.graph().layout() == ir::Layout::NHWC);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
@@ -126,10 +123,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
                                  const ir::OperandIndexSequence &indices)
 {
   std::shared_ptr<backend::builtin::train::TensorRegistry> builtin_tensor_reg;
-  for (const auto &e : backend_contexts)
+  for (auto &&[backend, context] : backend_contexts)
   {
-    auto backend = e.first;
-    auto &context = e.second;
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
       builtin_tensor_reg = std::dynamic_pointer_cast<backend::builtin::train::TensorRegistry>(
@@ -141,7 +136,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   for (auto &&ind : indices)
   {
     const auto &operand = lowered_graph.graph().operands().at(ind);
-    assert(lowered_graph.graph().layout() == ir::Layout::NHWC);
     auto tensor = std::make_unique<backend::builtin::IOTensor>(operand.info());
 
     // Add tensor to builtin TensorRegistry.
@@ -160,7 +154,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   auto init_context_data = [&](const backend::Backend *backend) {
     auto &data = context_data_map[backend];
     auto graph = std::make_unique<ir::Graph>();
-    graph->setLayout(lgraph.graph().layout());
     data.graph = std::move(graph);
   };
 
@@ -168,18 +161,17 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   // Separate operands into partial graphs
   whole_graph.operands().iterate([&](const ir::OperandIndex &operand_ind, ir::Operand &operand) {
     auto &operand_li = lgraph.lower_info().operand;
-    const auto &def_factors = operand_li.at(operand_ind).def_factors();
-    if (def_factors.size() == 0) // Ignore unused tensor
+    const auto &def_backends = operand_li.at(operand_ind).def_backends();
+    if (def_backends.size() == 0) // Ignore unused tensor
       return;
-    const auto &def_factor = def_factors.getOnlyElement();
-    const auto backend = def_factor.backend();
+    const auto backend = def_backends.getOnlyElement();
     if (context_data_map.find(backend) == context_data_map.end())
       init_context_data(backend);
 
     auto &partial_graph = *context_data_map[backend].graph;
     auto &operand_layouts = context_data_map[backend].operand_layouts;
     assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-    operand_layouts[operand_ind] = def_factor.layout();
+    operand_layouts[operand_ind] = ir::Layout::NHWC;
 
     // Copy the operand and insert it to the partial graph
     auto new_operand = std::make_unique<ir::Operand>(operand);
@@ -193,7 +185,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
   whole_graph.operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &operation) {
       auto &op_li = lgraph.lower_info().operation;
-      auto backend = op_li.at(op_ind).backend();
+      const auto backend = op_li.at(op_ind);
       if (context_data_map.find(backend) == context_data_map.end())
         init_context_data(backend);
 
@@ -218,10 +210,8 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           UNUSED_RELEASE(new_operand_ind);
           assert(new_operand_ind == operand_ind);
 
-          auto layout =
-            lgraph.lower_info().operand.at(operand_ind).def_factors().getOnlyElement().layout();
           assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-          operand_layouts[operand_ind] = layout;
+          operand_layouts[operand_ind] = ir::Layout::NHWC;
           external_operands.add(operand_ind);
         }
 
@@ -233,28 +223,29 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
-  for (auto &&pair : context_data_map)
+  for (auto &&[backend, data] : context_data_map)
   {
-    auto backend = pair.first;
-    auto &data = pair.second;
+    auto graph = data.graph.get();
+    auto &external_operands = data.external_operands;
     // Handle graph input/outputs or external tensors
-    data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+    graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
       if (whole_graph.getInputs().contains(ind) || whole_graph.getOutputs().contains(ind))
-        data.external_operands.add(ind);
+        external_operands.add(ind);
       // Inputs are either "graph input" or "no def op and non-constant"
       if (whole_graph.getInputs().contains(ind) ||
           (!operand.getDef().valid() && !operand.isConstant()))
         // Outputs are either "graph output" or "no uses"
-        data.graph->addInput(ind);
+        graph->addInput(ind);
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
-        data.graph->addOutput(ind);
+        graph->addOutput(ind);
     });
     VERBOSE(ExecutorFactory) << "createBackendContexts: partial graph for backend="
                              << backend->config()->id() << std::endl;
     dumper::text::dumpGraph(*data.graph);
 
-    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(data.op_order),
-                 [&](const auto &ind) { return data.graph->operations().exist(ind); });
+    auto &op_order = data.op_order;
+    std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(op_order),
+                 [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
     data.custom_kernel_builder = custom_kernel_builder;
     contexts.emplace(backend, backend->newContext(std::move(data)));
@@ -268,16 +259,16 @@ std::deque<std::pair<const backend::Backend *, Context *>> orderBackendContext(
 {
   std::deque<std::pair<const backend::Backend *, Context *>> ordered_contexts;
 
-  for (auto &&pair : tbackend_contexts)
+  for (auto &&[backend, context] : tbackend_contexts)
   {
     // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
     // different ITensor objects for the input and the output. And it requires all other backends'
     // tensors are ready to use.
-    if (pair.first->config()->id() == "builtin")
-      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    if (backend->config()->id() == "builtin")
+      ordered_contexts.emplace_back(backend, context.get());
     else
-      ordered_contexts.emplace_front(pair.first, pair.second.get());
+      ordered_contexts.emplace_front(backend, context.get());
   }
 
   return ordered_contexts;
@@ -321,8 +312,8 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
-      auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
-      auto &backend_ctx = backend_contexts.at(lower_info->backend());
+      const auto backend = lowered_graph.lower_info().operation.at(op_ind);
+      auto &backend_ctx = backend_contexts.at(backend);
       for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
@@ -363,16 +354,16 @@ std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
 ExecutorFactory::orderBackendContext(const backend::BackendContexts &backend_contexts)
 {
   std::deque<std::pair<const backend::Backend *, backend::BackendContext *>> ordered_contexts;
-  for (auto &&pair : backend_contexts)
+  for (auto &&[backend, context] : backend_contexts)
   {
     // NOTE builtin backend must be processed lastly.
     // This is because of Permute layer's specialty which is the only operation that could have
     // different ITensor objects for the input and the output. And it requires all other backends'
     // tensors are ready to use.
-    if (pair.first->config()->id() == "builtin")
-      ordered_contexts.emplace_back(pair.first, pair.second.get());
+    if (backend->config()->id() == "builtin")
+      ordered_contexts.emplace_back(backend, context.get());
     else
-      ordered_contexts.emplace_front(pair.first, pair.second.get());
+      ordered_contexts.emplace_front(backend, context.get());
   }
   return ordered_contexts;
 }
@@ -474,17 +465,15 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &&pair : codes)
+    for (auto &&[op_ind, fn_seq] : codes)
     {
-      auto &op_ind = pair.first;
-      auto &fn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
       if (options->he_profiling_mode)
-        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
+        fn_seq->wrap<SyncFunction>(backend->config());
       if (!dealloc_list_map[op_ind].empty())
         fn_seq->append(std::make_unique<DeallocFunction>(dealloc_list_map[op_ind]));
-      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
+      builder.append(op_ind, {op_ind, &op, backend, std::move(fn_seq)});
     }
   }
 
@@ -547,15 +536,13 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &&pair : codes)
+    for (auto &&[op_ind, fn_seq] : codes)
     {
-      auto &op_ind = pair.first;
-      auto &fn_seq = pair.second;
       auto &op = lowered_graph->graph().operations().at(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
       if (options->he_profiling_mode)
-        fn_seq->wrap<SyncFunction>(lower_info->backend()->config());
-      builder.append(op_ind, {op_ind, &op, lower_info, std::move(fn_seq)});
+        fn_seq->wrap<SyncFunction>(backend->config());
+      builder.append(op_ind, {op_ind, &op, backend, std::move(fn_seq)});
     }
   }
 
@@ -618,8 +605,8 @@ void ExecutorFactory::prepareMigrantTensors(
 
   lowered_graph.graph().operations().iterate(
     [&](const ir::OperationIndex &op_ind, const ir::IOperation &op) {
-      auto lower_info = lowered_graph.lower_info().operation.getRawPtr(op_ind);
-      auto &backend_ctx = backend_contexts.at(lower_info->backend());
+      const auto backend = lowered_graph.lower_info().operation.at(op_ind);
+      auto &backend_ctx = backend_contexts.at(backend);
       for (auto &&ind :
            (op.getInputs() + op.getOutputs()) | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
       {
@@ -702,6 +689,20 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         external_operands.remove(index);
     }
 
+    const auto backend = pair.first;
+    // NOTE The builtin backend does not yet support initializing UseDefs for training
+    //      because it's graph does not have loss operation
+    //      Without loss opeartion, we cannot call btopolSortOperations() or
+    //      getEssentialBackwardOrder()
+    // TODO Modify checking the condition to check whether loss op exists
+    if (backend->config()->id() != "builtin")
+    {
+      // Initialize training def-uses
+      tgraph->updateGraphDependency();
+
+      tgraph->verify();
+    }
+
     // Set trainable context data
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);
@@ -713,7 +714,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.optim_info = training_info.optimizerInfo();
 
     // TODO Remove dynamic_cast
-    const auto backend = pair.first;
     const auto tbackend = dynamic_cast<const backend::train::ITrainableBackend *>(backend);
     if (!tbackend)
     {
@@ -850,16 +850,14 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   for (auto &&pair : ordered_contexts)
   {
     auto codes = pair.second->genKernels();
-    for (auto &&pair : codes)
+    for (auto &&[op_ind, tn_seq] : codes)
     {
-      auto &op_ind = pair.first;
-      auto &tn_seq = pair.second;
       auto &op = lowered_graph->trainable_graph().operation(op_ind);
-      auto lower_info = lowered_graph->lower_info().operation.getRawPtr(op_ind);
+      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
 
       assert(code_map.find(op_ind) == code_map.end());
       code_map.insert(
-        {op_ind, train::TrainableCodeAndInfo{op_ind, &op, lower_info, std::move(tn_seq)}});
+        {op_ind, train::TrainableCodeAndInfo{op_ind, &op, backend, std::move(tn_seq)}});
     }
   }
 

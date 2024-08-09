@@ -30,9 +30,9 @@
 #include "ruy/profiler/profiler.h"
 #endif
 
-#include <boost/program_options.hpp>
 #include <cassert>
 #include <chrono>
+#include <climits>
 #include <cstdlib>
 #include <iostream>
 #include <libgen.h>
@@ -506,11 +506,6 @@ int main(const int argc, char **argv)
     benchmark::writeResult(result, exec_basename, nnpkg_basename, backend_name);
 
     return 0;
-  }
-  catch (boost::program_options::error &e)
-  {
-    std::cerr << "E: " << e.what() << std::endl;
-    exit(-1);
   }
   catch (std::runtime_error &e)
   {

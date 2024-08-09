@@ -147,30 +147,32 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   auto dump_level = static_cast<dumper::dot::DotDumper::Level>(_options->graph_dump_level);
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
-  for (const auto &pair : trainable_subgraphs)
+  for (const auto &[subg_index, subg] : trainable_subgraphs)
   {
-    const auto &subg_index = pair.first;
-    const auto &subg = pair.second;
     dot_dumper.dump(*subg, nnfw::misc::str("before_loss_insertion-", subg_index.value()));
   }
 
   // Apply pass for trainable subgraphs
-  for (auto &&pair : trainable_subgraphs)
+  for (auto &&[subg_index, trainable_subg] : trainable_subgraphs)
   {
-    auto trainable_subg = pair.second;
-    auto subg_index = pair.first;
-
     compiler::pass::PassRunner{}
       .append(std::make_unique<train::pass::LossInsertionPass>(*trainable_subg, &_training_info,
                                                                subg_index))
       .run();
   }
 
-  for (const auto &pair : trainable_subgraphs)
+  for (const auto &[subg_index, subg] : trainable_subgraphs)
   {
-    const auto &subg_index = pair.first;
-    const auto &subg = pair.second;
     dot_dumper.dump(*subg, nnfw::misc::str("after_loss_insertion-", subg_index.value()));
+  }
+
+  for (auto &&[subg_index, subg] : trainable_subgraphs)
+  {
+    subg->updateGraphDependency();
+    subg->verify();
+
+    dot_dumper.dump(*subg,
+                    nnfw::misc::str("after_initializing_training_usedefs-", subg_index.value()));
   }
 
   // Change input shape according to batch_size
@@ -200,11 +202,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::train::LoweredTrainableGraph>>
     lowered_subgs;
   {
-    for (auto &&pair : trainable_subgraphs)
+    for (auto &&[subg_index, trainable_subg] : trainable_subgraphs)
     {
-      auto &subg_index = pair.first;
-      auto trainable_subg = pair.second;
-
       // Lower: Assign backend
       lowered_subgs[subg_index] =
         std::make_unique<compiler::train::LoweredTrainableGraph>(*trainable_subg, *_options);
@@ -213,10 +212,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     }
   }
 
-  for (const auto &pair : lowered_subgs)
+  for (const auto &[subg_index, lowered_subg] : lowered_subgs)
   {
-    const auto &subg_index = pair.first;
-    const auto &lowered_subg = pair.second;
     dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_subg-", subg_index.value()));
   }
 
@@ -276,11 +273,9 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
   auto executors = std::make_shared<exec::train::TrainableExecutors>();
-  for (auto &&pair : lowered_subgs)
+  for (auto &&[subg_index, lowered_subg] : lowered_subgs)
   {
     auto const model_index = ir::ModelIndex{0};
-    auto const subg_index = pair.first;
-    auto &lowered_subg = pair.second;
     auto const indexed_ranks = lowered_subg->indexed_ranks();
 
     ir::OperationDumper dumper("Executor generation of Subgraph " +

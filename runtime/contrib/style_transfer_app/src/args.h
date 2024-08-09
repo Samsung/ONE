@@ -17,10 +17,9 @@
 #ifndef __STYLE_TRANSFER_APP_ARGS_H__
 #define __STYLE_TRANSFER_APP_ARGS_H__
 
-#include <string>
-#include <boost/program_options.hpp>
+#include <arser/arser.h>
 
-namespace po = boost::program_options;
+#include <string>
 
 namespace StyleTransferApp
 {
@@ -40,8 +39,7 @@ private:
   void Parse(const int argc, char **argv);
 
 private:
-  po::positional_options_description _positional;
-  po::options_description _options;
+  arser::Arser _arser{"style_transfer_app"};
 
   std::string _package_filename;
   std::string _input_filename;

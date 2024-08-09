@@ -182,20 +182,16 @@ void MultiModelExecutors::createEdgeQuantLayers()
   // Append type-aware quantization layer for edges between executors
   for (const auto &executor_pair : _executors)
   {
-    const auto &executor_index = executor_pair.first;
-    const auto &model_index = executor_index.first;
-    const auto &subg_index = executor_index.second;
+    const auto &[model_index, subg_index] = executor_pair.first;
 
     std::vector<backend::ITensor *> inputs;
     std::vector<backend::ITensor *> outputs;
-    for (const auto &pair : _edge_map)
+    for (const auto &[from_iodesc, to_list] : _edge_map)
     {
-      const auto &from_iodesc = pair.first;
       if (std::get<ir::ModelIndex>(from_iodesc) == model_index &&
           std::get<ir::SubgraphIndex>(from_iodesc) == subg_index)
       {
         const auto from_tensor = _edge_tensors[from_iodesc].get();
-        const auto &to_list = pair.second;
 
         for (const auto &to_iodesc : to_list)
         {
@@ -270,12 +266,9 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
 void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
 {
   // Append type-aware quantization layer for nnpkg inputs/outputs between executors
-  for (const auto &pair : _executors)
+  for (const auto &[executor_index, executor] : _executors)
   {
-    const auto &executor_index = pair.first;
-    const auto &model_index = executor_index.first;
-    const auto &subg_index = executor_index.second;
-    const auto executor = pair.second.get();
+    const auto &[model_index, subg_index] = executor_index;
 
     // Find pkg inputs of current executor
     std::vector<ir::IODesc> pkg_inputs;

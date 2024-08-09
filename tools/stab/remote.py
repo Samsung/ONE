@@ -79,9 +79,8 @@ class RemoteSSH():
         cmd += [f"RUY_THREADS={self.num_threads}"]
         cmd += [f"BACKENDS=\'{';'.join(['cpu', backend])}\'"]
         cmd += [f"{nnpkg_run_path}"]
-        cmd += [f"--nnpackage"]
-        cmd += [f"{nnpkg_path}"]
         cmd += [f"-w5 -r50"]
+        cmd += [f"{nnpkg_path}"]
         logging.debug(f"SSH command : {' '.join(cmd)}")
         subprocess.call(cmd)
 

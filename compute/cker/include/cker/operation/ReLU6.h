@@ -29,25 +29,16 @@ namespace nnfw
 namespace cker
 {
 
-inline void ReLU6(const Shape &input_shape, const float *input_data, float *output_data)
+inline void ReLU6(const Shape &input_shape, const float *input_data, const Shape &output_shape,
+                  float *output_data)
 {
-  int size = input_shape.FlatSize();
+  const auto input_map = MapAsVector(input_data, input_shape);
+  auto output_map = MapAsVector(output_data, output_shape);
 
-  for (int i = 0; i < size; ++i)
-  {
-    if (input_data[i] <= 0)
-    {
-      output_data[i] = 0;
-    }
-    else if (input_data[i] > 6.0)
-    {
-      output_data[i] = 6.0;
-    }
-    else
-    {
-      output_data[i] = input_data[i];
-    }
-  }
+  if (output_shape != input_shape)
+    throw std::runtime_error{"cker::ReLU6: Do not match input and output shapes."};
+
+  output_map = input_map.cwiseMax(0.0f).cwiseMin(6.0f);
 }
 
 } // namespace cker

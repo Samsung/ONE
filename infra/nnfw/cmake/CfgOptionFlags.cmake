@@ -29,14 +29,11 @@ option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
-option(BUILD_NPUD "Build NPU daemon" OFF)
-option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
 #
 # Default build configuration for contrib
 #
 option(BUILD_ANDROID_BENCHMARK_APP "Enable Android Benchmark App" OFF)
-option(BUILD_BENCHMARK_ACL "Build ARM Compute Library Benchmarks" OFF)
 option(BUILD_DETECTION_APP "Build detection example app" OFF)
 option(BUILD_HEAP_TRACE "Build heap trace tool" OFF)
 option(BUILD_LABS "Build lab projects" OFF)
@@ -47,6 +44,8 @@ option(BUILD_UBEN "Build micro-benchmark (uben) suite" OFF)
 option(BUILD_MLAPSE "Build mlapse benchmark toolkit" OFF)
 option(BUILD_GPU_CL "Build gpu_cl backend" OFF)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" OFF)
+option(BUILD_NPUD "Build NPU daemon" OFF)
+option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 #
 # Default build configuration for tools
 #
@@ -65,13 +64,11 @@ option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" ON)
 option(DOWNLOAD_FLATBUFFERS "Download FlatBuffers source" ON)
 option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" ON)
 option(DOWNLOAD_NONIUS "Download nonius source" ON)
-option(DOWNLOAD_BOOST "Download boost source" OFF)
 option(DOWNLOAD_RUY "Download ruy source" ON)
 option(DOWNLOAD_CPUINFO "Download cpuinfo source" ON)
 option(DOWNLOAD_OOURAFFT "Download Ooura FFT source" ON)
 option(DOWNLOAD_MLDTYPES "Download ml_dtypes source" ON)
 option(DOWNLOAD_GTEST "Download Google Test source and build Google Test" ON)
-option(BUILD_BOOST "Build boost source" OFF)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" ON)
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
 option(DEBUG_ARMCOMPUTE "Build ARM Compute as debug type" OFF)
@@ -91,7 +88,6 @@ option(BUILD_FXDIV "Build fxdiv library from the source" ON)
 option(DOWNLOAD_PYBIND11 "Download Pybind11 source" OFF)
 option(BUILD_PYTHON_BINDING "Build python binding" OFF)
 option(HDF5_USE_STATIC_LIBRARIES "Determine whether or not static linking for HDF5" ON)
-option(Boost_USE_STATIC_LIBS "Determine whether or not static linking for Boost" ON)
 
 #
 ## Default sample build configuration

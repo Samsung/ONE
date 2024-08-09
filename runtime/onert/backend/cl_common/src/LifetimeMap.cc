@@ -55,10 +55,10 @@ LifetimeMap createLifetimeMap(LifetimeSeq &lifetime_seq,
   LifetimeMap lifetime_map;
   for (size_t i = 0; i < lifetime_seq.size(); i++)
   {
-    auto &entry = lifetime_seq[i];
-    if (entry.first != UsesType::FIRST)
+    const auto &[entry_uses_type, entry_idx] = lifetime_seq[i];
+    if (entry_uses_type != UsesType::FIRST)
       continue;
-    auto root_ind = find_root(entry.second);
+    auto root_ind = find_root(entry_idx);
     if (first_use_check[root_ind])
       continue;
     first_use_check[root_ind] = true;
@@ -67,10 +67,10 @@ LifetimeMap createLifetimeMap(LifetimeSeq &lifetime_seq,
 
   for (int i = lifetime_seq.size() - 1; i >= 0; i--)
   {
-    auto &entry = lifetime_seq[i];
-    if (entry.first != UsesType::LAST)
+    const auto &[entry_uses_type, entry_idx] = lifetime_seq[i];
+    if (entry_uses_type != UsesType::LAST)
       continue;
-    auto root_ind = find_root(entry.second);
+    auto root_ind = find_root(entry_idx);
     if (last_use_check[root_ind])
       continue;
     last_use_check[root_ind] = true;

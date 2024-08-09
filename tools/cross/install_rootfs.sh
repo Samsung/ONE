@@ -34,7 +34,6 @@ __UbuntuPackages+=" python3-dev"
 # other development supports
 __UbuntuPackages+=" ocl-icd-opencl-dev"
 __UbuntuPackages+=" libhdf5-dev"
-__UbuntuPackages+=" libboost-all-dev"
 __UbuntuPackages+=" libglib2.0-dev"
 
 # symlinks fixer

@@ -435,6 +435,54 @@ public:
   luci::CircleConst *input2 = nullptr;
 };
 
+class DivGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    div = g.nodes()->create<luci::CircleDiv>();
+    constant = g.nodes()->create<luci::CircleConst>();
+
+    div->dtype(loco::DataType::FLOAT32);
+    constant->dtype(loco::DataType::FLOAT32);
+
+    uint32_t channel_size = 16;
+    div->shape({1, channel_size, 4, 4});
+    constant->shape({1, channel_size, 1, 1});
+
+    constant->size<loco::DataType::FLOAT32>(channel_size);
+    for (uint32_t i = 0; i < channel_size; i++)
+    {
+      constant->at<loco::DataType::FLOAT32>(i) = i;
+    }
+
+    div->x(input);
+    div->y(constant);
+
+    div->name("div");
+    constant->name("constant");
+
+    return div;
+  }
+
+public:
+  void update_const_shape_to_nchw(void)
+  {
+    uint32_t channel_size = 16;
+    constant->shape({1, channel_size, 4, 4});
+
+    constant->size<loco::DataType::FLOAT32>(channel_size * 4 * 4);
+    for (uint32_t i = 0; i < channel_size; i++)
+    {
+      constant->at<loco::DataType::FLOAT32>(i) = i;
+    }
+  }
+
+public:
+  luci::CircleDiv *div = nullptr;
+  luci::CircleConst *constant = nullptr;
+};
+
 class EluGraph final : public SimpleGraph
 {
 protected:
@@ -613,6 +661,55 @@ public:
   luci::CircleConst *limit = nullptr;
 };
 
+class MirrorPadGraph final : public SimpleGraph
+{
+protected:
+  loco::Node *insertGraphBody(loco::Node *input) override
+  {
+    pad = g.nodes()->create<luci::CircleMirrorPad>();
+    paddings = g.nodes()->create<luci::CircleConst>();
+
+    pad->dtype(loco::DataType::FLOAT32);
+    paddings->dtype(loco::DataType::S32);
+
+    uint32_t channel_size = 16;
+    pad->shape({1, channel_size, 4, 4});
+    paddings->shape({4, 2});
+
+    pad->mode(luci::MirrorPadMode::REFLECT);
+
+    // paddings data (NCHW)
+    // [[0,0], [0,0], [1,1], [2,2]]
+    paddings->size<loco::DataType::S32>(8);
+    for (uint32_t dim = 0; dim < 4; dim++)
+    {
+      for (uint32_t i = 0; i < 2; i++)
+      {
+        int32_t data = 0;
+
+        if (dim == 2)
+          data = 1;
+        else if (dim == 3)
+          data = 2;
+
+        paddings->at<loco::DataType::S32>(dim * 2 + i) = data;
+      }
+    }
+
+    pad->input(input);
+    pad->paddings(paddings);
+
+    pad->name("pad");
+    paddings->name("paddings");
+
+    return pad;
+  }
+
+public:
+  luci::CircleMirrorPad *pad = nullptr;
+  luci::CircleConst *paddings = nullptr;
+};
+
 class MulGraph final : public SimpleGraph
 {
 protected:
@@ -780,7 +877,7 @@ public:
   luci::CircleConst *paddings = nullptr;
 };
 
-class PadV2Graph final : public SimpleGraph
+template <loco::DataType PaddingType> class PadV2Graph final : public SimpleGraph
 {
 protected:
   loco::Node *insertGraphBody(loco::Node *input) override
@@ -790,7 +887,7 @@ protected:
     const_value = g.nodes()->create<luci::CircleConst>();
 
     pad->dtype(loco::DataType::FLOAT32);
-    paddings->dtype(loco::DataType::S32);
+    paddings->dtype(PaddingType);
     const_value->dtype(loco::DataType::FLOAT32);
 
     uint32_t channel_size = 16;
@@ -800,7 +897,7 @@ protected:
 
     // paddings data (NCHW)
     // [[0,0], [0,0], [1,1], [2,2]]
-    paddings->size<loco::DataType::S32>(8);
+    paddings->size<PaddingType>(8);
     for (uint32_t dim = 0; dim < 4; dim++)
     {
       for (uint32_t i = 0; i < 2; i++)
@@ -812,7 +909,7 @@ protected:
         else if (dim == 3)
           data = 2;
 
-        paddings->at<loco::DataType::S32>(dim * 2 + i) = data;
+        paddings->at<PaddingType>(dim * 2 + i) = data;
       }
     }
 
@@ -1333,6 +1430,35 @@ TEST(ConvertNCHWToNHWC, Concatenation)
   EXPECT_EQ(3, g.concat->axis());
 }
 
+TEST(ConvertNCHWToNHWC, Div)
+{
+  DivGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.div->x());
+
+  auto div_succs = loco::succs(g.div);
+  EXPECT_EQ(1, div_succs.size());
+  check_post_trans(*div_succs.begin());
+
+  uint32_t channel_size = 16;
+  auto new_constant = dynamic_cast<luci::CircleConst *>(g.div->y());
+  EXPECT_NE(nullptr, new_constant);
+  EXPECT_EQ(4, new_constant->rank());
+  EXPECT_EQ(1, new_constant->dim(0).value());
+  EXPECT_EQ(1, new_constant->dim(1).value());
+  EXPECT_EQ(1, new_constant->dim(2).value());
+  EXPECT_EQ(channel_size, new_constant->dim(3).value());
+
+  check_pre_trans(g.output->from());
+}
+
 TEST(ConvertNCHWToNHWC, Elu)
 {
   EluGraph g;
@@ -1606,6 +1732,40 @@ TEST(ConvertNCHWToNHWC, Minimum_non_scalar_NEG)
   EXPECT_FALSE(pass.run(&g.g));
 }
 
+TEST(ConvertNCHWToNHWC, MirrorPad)
+{
+  MirrorPadGraph g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  auto input_succs = loco::succs(g.input);
+  EXPECT_EQ(1, input_succs.size());
+  check_post_trans(*input_succs.begin());
+
+  check_pre_trans(g.pad->input());
+
+  auto pad_succs = loco::succs(g.pad);
+  EXPECT_EQ(1, pad_succs.size());
+  check_post_trans(*pad_succs.begin());
+
+  auto new_paddings = dynamic_cast<luci::CircleConst *>(g.pad->paddings());
+  EXPECT_NE(nullptr, new_paddings);
+  EXPECT_EQ(2, new_paddings->rank());
+  EXPECT_EQ(4, new_paddings->dim(0).value());
+  EXPECT_EQ(2, new_paddings->dim(1).value());
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(0));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(1));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S32>(2));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S32>(3));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(4));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(5));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(6));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(7));
+
+  check_pre_trans(g.output->from());
+}
+
 TEST(ConvertNCHWToNHWC, Mul)
 {
   MulGraph g;
@@ -1762,9 +1922,9 @@ TEST(ConvertNCHWToNHWC, Pad)
   check_pre_trans(g.output->from());
 }
 
-TEST(ConvertNCHWToNHWC, PadV2)
+TEST(ConvertNCHWToNHWC, PadV2_s32)
 {
-  PadV2Graph g;
+  PadV2Graph<loco::DataType::S32> g;
   g.init();
 
   run_phase(&g.g, false, false);
@@ -1788,6 +1948,34 @@ TEST(ConvertNCHWToNHWC, PadV2)
   EXPECT_EQ(2, new_paddings->at<loco::DataType::S32>(5));
   EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(6));
   EXPECT_EQ(0, new_paddings->at<loco::DataType::S32>(7));
+}
+
+TEST(ConvertNCHWToNHWC, PadV2_s64)
+{
+  PadV2Graph<loco::DataType::S64> g;
+  g.init();
+
+  run_phase(&g.g, false, false);
+
+  check_pre_trans(g.pad->input());
+
+  auto pad_succs = loco::succs(g.pad);
+  EXPECT_EQ(1, pad_succs.size());
+  check_post_trans(*pad_succs.begin());
+
+  auto new_paddings = dynamic_cast<luci::CircleConst *>(g.pad->paddings());
+  EXPECT_NE(nullptr, new_paddings);
+  EXPECT_EQ(2, new_paddings->rank());
+  EXPECT_EQ(4, new_paddings->dim(0).value());
+  EXPECT_EQ(2, new_paddings->dim(1).value());
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(0));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(1));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S64>(2));
+  EXPECT_EQ(1, new_paddings->at<loco::DataType::S64>(3));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S64>(4));
+  EXPECT_EQ(2, new_paddings->at<loco::DataType::S64>(5));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(6));
+  EXPECT_EQ(0, new_paddings->at<loco::DataType::S64>(7));
 }
 
 TEST(ConvertNCHWToNHWC, Unknown_Shape_NEG)

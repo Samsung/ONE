@@ -96,12 +96,10 @@ void ConstantInitializer::visit(const ir::operation::Reverse &node)
   const auto &axis_obj = _operands.at(axis_index);
 
   const auto ifm_rank = input_obj.shape().rank();
-  const auto frontend_layout = this->_current_layout;
 
   if (axis_obj.isConstant())
   {
-    _init_map[axis_index] = [ifm_rank, frontend_layout](const ir::Operand &operand,
-                                                        backend::ITensor &obj) {
+    _init_map[axis_index] = [ifm_rank](const ir::Operand &operand, backend::ITensor &obj) {
       assert(operand.data());
 
       const auto axis_value = *(reinterpret_cast<const int32_t *>(operand.data()->base()));
@@ -111,7 +109,7 @@ void ConstantInitializer::visit(const ir::operation::Reverse &node)
         axis_tmp = axis_tmp + ifm_rank;
       }
 
-      auto axis = acl_common::ToARMComputeAxis(ifm_rank, axis_tmp, frontend_layout).value();
+      auto axis = acl_common::ToARMComputeAxis(ifm_rank, axis_tmp).value();
 
       obj.access([&](ITensor &tensor) {
         int32_t *into = reinterpret_cast<int32_t *>(tensor.buffer());

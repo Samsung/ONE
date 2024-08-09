@@ -43,10 +43,10 @@ void setConfigKeyValues(const CfgKeyValues &keyValues)
 {
   auto configsrc = std::make_unique<GeneralConfigSource>();
 
-  for (auto it = keyValues.begin(); it != keyValues.end(); ++it)
+  for (const auto &[key, val] : keyValues)
   {
-    VERBOSE(NNPKG_CONFIGS) << "(" << it->first << ") = (" << it->second << ")" << std::endl;
-    configsrc->set(it->first, it->second);
+    VERBOSE(NNPKG_CONFIGS) << "(" << key << ") = (" << val << ")" << std::endl;
+    configsrc->set(key, val);
   }
 
   onert::util::config_source_ext(std::move(configsrc));

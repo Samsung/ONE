@@ -98,7 +98,6 @@ The crucial here is proper choosing value of `num_of_trainable_ops` to achieve t
 
 ```bash
 onert_train \
---modelfile customized_mobilenetv2.circle \
 --epoch 5 \
 --loss 1 \                # mean squared error
 --loss_reduction_type 1 \ # sum over batch size
@@ -108,7 +107,8 @@ onert_train \
 --num_of_trainable_ops 5 \
 --load_expected:raw cats_and_dogs.output.bin \
 --load_input:raw cats_and_dogs.input.bin \
---export_path customized_mobilenetv2_trained.circle
+--export_path customized_mobilenetv2_trained.circle \
+customized_mobilenetv2.circle
 ```
 The result of training:
 ```

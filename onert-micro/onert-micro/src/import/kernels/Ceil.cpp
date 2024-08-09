@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-#include "compiler/OperationLowerInfo.h"
+#include "import/helpers/OMConfigureSISOKernel.h"
 
-namespace onert
-{
-namespace compiler
-{
+using namespace onert_micro;
+using namespace onert_micro::core;
 
-OperationLowerInfo::OperationLowerInfo(const backend::Backend *backend, ir::Layout layout)
-  : _permute_factor{backend, layout}
+OMStatus onert_micro::import::configure_kernel_CircleCeil(const OMConfigureArgs &config_args)
 {
-  // DO NOTHING
+  return onert_micro::import::helpers::configure_SISO_kernel(config_args);
 }
-
-} // namespace compiler
-} // namespace onert

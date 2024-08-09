@@ -60,9 +60,8 @@ public:
       if (this->external_operands().contains(ind))
         return;
 
-      const auto frontend_layout = this->graph()->layout();
-      ir::OperandInfo backend_info{permuteShape(obj.shape(), frontend_layout, ir::Layout::NHWC),
-                                   obj.typeInfo(), obj.info().memAllocType(), obj.isConstant()};
+      ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
+                                   obj.isConstant()};
       this->tensor_builder->registerTensorInfo(ind, backend_info);
     });
 

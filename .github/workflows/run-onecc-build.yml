@@ -1,0 +1,115 @@
+name: Run ONECC Ubuntu Build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onecc-build.yml'
+      - 'nnas'
+      - 'nncc'
+      - 'compiler/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'nnpackage/schema/**'
+      - 'res/**'
+      - '!**/*.md'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onecc-build.yml'
+      - 'nnas'
+      - 'nncc'
+      - 'compiler/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'nnpackage/schema/**'
+      - 'res/**'
+      - '!**/*.md'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  onecc-test:
+    # Tested ubuntu version is decided by docker image, not runner
+    runs-on: ubuntu-latest
+    strategy:
+      # TODO Support various ubuntu version
+      matrix:
+        type: [ Debug, Release ]
+    container:
+      image: nnfw/one-devtools:focal
+      options: --user root
+    env:
+      NNCC_WORKSPACE : build
+      NNCC_INSTALL_PREFIX : install
+    name: onecc ubuntu 20.04 ${{ matrix.type }} test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onecc-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onecc-
+            external-
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NNCC_WORKSPACE }}/overlay
+          key: overlay-onecc-focal-${{ hashFiles('compiler/common-artifacts/CMakeLists.txt') }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+
+      - name: Build
+        run: |
+          ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+            -DEXTERNALS_BUILD_THREADS=$(nproc) -DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX}
+          ./nncc build -j$(nproc)
+          cmake --build ${NNCC_WORKSPACE} -- install
+
+      - name: Test(Debug)
+        if: matrix.type == 'Debug'
+        env:
+          LUCI_LOG : 100
+        run: ./nncc test
+
+      - name: Test(Release)
+        if: matrix.type == 'Release'
+        env:
+          NNCC_INSTALL_PATH : ${{ env.NNCC_WORKSPACE }}/${{ env.NNCC_INSTALL_PREFIX }}
+        run: |
+          ./nncc test
+          ${NNCC_INSTALL_PATH}/bin/one-prepare-venv
+          ${NNCC_INSTALL_PATH}/test/prepare_test_materials.sh
+          export PATH=${PWD}/${NNCC_INSTALL_PATH}/bin:$PATH
+          pushd ${NNCC_INSTALL_PATH}/test
+
+          ## one-import-tf -> one-optimize -> one-quantize -> one-codegen
+          bash onecc_006.test
+          ## one-import-tflite
+          bash onecc_014.test
+          ## one-import-bcq
+          bash onecc_015.test
+          ## one-import-onnx
+          bash onecc_016.test
+          ## one-pack
+          bash onecc_019.test
+          ## one-profile
+          bash onecc_021.test
+          ## one-quantize
+          bash onecc_023.test
+          bash onecc_026.test
+          ## one-infer
+          bash onecc_027.test
+          ## onecc workflows
+          bash onecc_032.test
+          bash onecc_041.test

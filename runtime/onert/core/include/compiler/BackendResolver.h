@@ -44,9 +44,9 @@ public:
   void
   iterate(const std::function<void(const ir::OperationIndex &, const backend::Backend &)> &fn) const
   {
-    for (const auto &e : _gen_map)
+    for (const auto &[op_index, backend] : _gen_map)
     {
-      fn(e.first, *e.second);
+      fn(op_index, *backend);
     }
   }
 

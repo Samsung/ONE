@@ -21,8 +21,8 @@
 #include "ir/Graph.h"
 #include "ir/OperationIndexMap.h"
 #include "ir/OperandIndexMap.h"
-#include "compiler/GraphLowerInfo.h"
 #include "exec/FunctionSequence.h"
+#include "util/Set.h"
 
 namespace onert
 {

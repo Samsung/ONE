@@ -105,9 +105,9 @@ public:
    */
   void iterate(const std::function<void(const SubgraphIndex &, const IGraph &)> &fn) const
   {
-    for (const auto &e : _subgraphs)
+    for (const auto &[subg_idx, subg] : _subgraphs)
     {
-      fn(e.first, *e.second);
+      fn(subg_idx, *subg);
     }
   }
 
@@ -119,9 +119,9 @@ public:
    */
   void iterate(const std::function<void(const SubgraphIndex &, IGraph &)> &fn)
   {
-    for (const auto &e : _subgraphs)
+    for (const auto &[subg_idx, subg] : _subgraphs)
     {
-      fn(e.first, *e.second);
+      fn(subg_idx, *subg);
     }
   }
 

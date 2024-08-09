@@ -28,7 +28,6 @@ Source3015: TENSORFLOW-2.16.1.tar.gz
 Source3016: XNNPACK.tar.gz
 
 %{!?build_type:     %define build_type      Release}
-%{!?npud_build:     %define npud_build      0}
 %{!?trix_support:   %define trix_support    1}
 %{!?odc_build:      %define odc_build       1}
 %{!?coverage_build: %define coverage_build  0}
@@ -45,29 +44,18 @@ Source3016: XNNPACK.tar.gz
 %define test_build 1
 %endif
 
-%ifarch riscv64
-# Disable npud on risc-v
-# TODO Enable on risc-v
-%define npud_build 0
-%endif
-
 BuildRequires:  cmake
 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
 %if %{test_build} == 1
-BuildRequires:  pkgconfig(boost)
 BuildRequires:  pkgconfig(tensorflow2-lite)
 BuildRequires:  hdf5-devel-static
 BuildRequires:  libaec-devel
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(libjpeg)
 BuildRequires:  gtest-devel
-%endif
-
-%if %{npud_build} == 1
-BuildRequires:  pkgconfig(glib-2.0)
 %endif
 
 %if %{trix_support} == 1
@@ -116,14 +104,6 @@ If you want to get coverage info, you should install runtime package which is bu
 # TODO Use release runtime pacakge for test
 %endif
 
-%if %{npud_build} == 1
-%package npud
-Summary: NPU daemon
-
-%description npud
-NPU daemon for optimal management of NPU hardware
-%endif
-
 %ifarch armv7l
 %define target_arch armv7l
 %endif
@@ -170,10 +150,6 @@ NPU daemon for optimal management of NPU hardware
 # Set option for configuration
 %define option_config %{nil}
 %if %{config_support} == 1
-%if %{npud_build} == 1
-# ENVVAR_NPUD_CONFIG: Use environment variable for npud configuration and debug
-%define option_config -DENVVAR_NPUD_CONFIG=ON
-%endif # npud_build
 %endif # config_support
 
 %if %{coverage_build} == 1
@@ -305,16 +281,6 @@ install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %endif # odc_build
 
-%if %{npud_build} == 1
-install -m 755 build/out/bin/npud %{buildroot}%{_bindir}
-
-%if %{test_build} == 1
-mkdir -p %{test_install_path}/npud-gtest
-install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
-%endif # test_build
-
-%endif # npud_build
-
 %endif
 
 %post -p /sbin/ldconfig
@@ -364,15 +330,6 @@ install -m 755 build/out/npud-gtest/* %{test_install_path}/npud-gtest
 %{test_install_home}/*
 %endif # arm armv7l armv7hl aarch64
 %endif # test_build
-
-%if %{npud_build} == 1
-%files npud
-%manifest %{name}.manifest
-%defattr(-,root,root,-)
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
-%{_bindir}/npud
-%endif # arm armv7l armv7hl aarch64 x86_64 %ix86
-%endif # npud_build
 
 %if %{odc_build} == 1
 %files odc

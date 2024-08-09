@@ -115,8 +115,8 @@ public:
     const std::function<void(const ir::OperandIndex &, const train::ITrainableTensor *)> &fn)
     const override
   {
-    for (const auto &e : _trainable)
-      fn(e.first, e.second.get());
+    for (const auto &[index, tensor] : _trainable)
+      fn(index, tensor.get());
   }
 
   IPortableTensor *getPortableTensor(const ir::OperandIndex &index)

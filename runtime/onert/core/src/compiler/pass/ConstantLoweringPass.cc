@@ -31,10 +31,7 @@ namespace pass
 
 void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
 {
-  const auto op_lower_info = _lowered_graph.lower_info().operation.getRawPtr(node_index);
-  const auto backend = op_lower_info->backend();
-  const auto layout = op_lower_info->layout();
-  const auto factor = PermuteFactor{backend, layout};
+  const auto backend = _lowered_graph.lower_info().operation.at(node_index);
 
   // Now this runtime does not support the node making output of operation as constant
   for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
@@ -45,8 +42,8 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
       // All constant operand are already assinged at each backend by ContantInsertionPass. So a
       // constant has `def` and `use` as the same PermuteFactor
       auto operand_li = std::make_unique<compiler::OperandLowerInfo>();
-      operand_li->addDefPermuteFactor(factor);
-      operand_li->addUsePermuteFactor(factor);
+      operand_li->addDefBackend(backend);
+      operand_li->addUseBackend(backend);
       _lowered_graph.lower_info().operand.set(input, std::move(operand_li));
     }
   }

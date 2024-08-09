@@ -34,6 +34,7 @@ bool acceptable_intermediate_op(const loco::Node *node)
     case luci::CircleOpcode::MUL:
     case luci::CircleOpcode::TANH:
     case luci::CircleOpcode::LOGISTIC:
+    case luci::CircleOpcode::RELU:
       break;
 
     default:

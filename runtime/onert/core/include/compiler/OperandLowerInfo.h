@@ -17,26 +17,15 @@
 #ifndef __ONERT_COMPILER_OPERAND_LOWER_INFO_H__
 #define __ONERT_COMPILER_OPERAND_LOWER_INFO_H__
 
-#include <functional>
-#include <stdint.h>
-
-#include "compiler/PermuteFactor.h"
+#include "backend/Backend.h"
 #include "util/Set.h"
-
-namespace onert
-{
-namespace backend
-{
-class Backend;
-} // namespace backend
-} // namespace onert
 
 namespace onert
 {
 namespace compiler
 {
 
-using PermuteFactorSet = util::Set<PermuteFactor>;
+using BackendSet = util::Set<const backend::Backend *>;
 
 class OperandLowerInfo
 {
@@ -47,18 +36,18 @@ public:
   }
 
 public:
-  const PermuteFactorSet &def_factors(void) const { return _def_factors; }
-  const PermuteFactorSet &use_factors(void) const { return _use_factors; }
+  const BackendSet &def_backends(void) const { return _def_backends; }
+  const BackendSet &use_backends(void) const { return _use_backends; }
 
 public:
-  void addDefPermuteFactor(const PermuteFactor &factor) { _def_factors.add(factor); }
-  void addUsePermuteFactor(const PermuteFactor &factor) { _use_factors.add(factor); }
-  void removeDefPermuteFactor(const PermuteFactor &factor) { _def_factors.remove(factor); }
-  void removeUsePermuteFactor(const PermuteFactor &factor) { _use_factors.remove(factor); }
+  void addDefBackend(const backend::Backend *backend) { _def_backends.add(backend); }
+  void addUseBackend(const backend::Backend *backend) { _use_backends.add(backend); }
+  void removeDefBackend(const backend::Backend *backend) { _def_backends.remove(backend); }
+  void removeUseBackend(const backend::Backend *backend) { _use_backends.remove(backend); }
 
 private:
-  PermuteFactorSet _def_factors;
-  PermuteFactorSet _use_factors;
+  BackendSet _def_backends;
+  BackendSet _use_backends;
 };
 
 } // namespace compiler

@@ -28,8 +28,7 @@ namespace backend
 namespace acl_common
 {
 
-::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, ir::Layout frontend_layout,
-                                         bool apply_dim_correction)
+::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, bool apply_dim_correction)
 {
   // If shape's rank is 0, the tensor is a scalar
   // Sometimes, some ACL kernel can use a scalar as tensor. But ACL does not allocate buffer for
@@ -51,15 +50,13 @@ namespace acl_common
     // However, if the dimension correction is applied to input_to_input_weights with input_size
     // equal to 1, it will be changed to 1-D.
     // So input_to_input_weights is not used by the weight of FullyConnected.
-    res.set(ToARMComputeAxis(rank, axis, frontend_layout).value(), tensor_shape.dim(axis),
-            apply_dim_correction);
+    res.set(ToARMComputeAxis(rank, axis).value(), tensor_shape.dim(axis), apply_dim_correction);
   }
 
   return res;
 }
 
-::arm_compute::Coordinates asTensorCoordinate(const ir::Coordinates &coord,
-                                              ir::Layout frontend_layout)
+::arm_compute::Coordinates asTensorCoordinate(const ir::Coordinates &coord)
 {
   const uint32_t rank = coord.size();
 
@@ -69,7 +66,7 @@ namespace acl_common
 
   for (uint32_t axis = 0; axis < rank; ++axis)
   {
-    res.set(ToARMComputeAxis(rank, axis, frontend_layout).value(), coord[axis]);
+    res.set(ToARMComputeAxis(rank, axis).value(), coord[axis]);
   }
 
   return res;
@@ -114,9 +111,9 @@ namespace acl_common
 }
 
 ::arm_compute::TensorInfo asTensorInfo(const ir::Shape &shape, const ir::TypeInfo &typeInfo,
-                                       ir::Layout frontend_layout, bool apply_dim_correction)
+                                       bool apply_dim_correction)
 {
-  ::arm_compute::TensorInfo info(asTensorShape(shape, frontend_layout, apply_dim_correction), 1,
+  ::arm_compute::TensorInfo info(asTensorShape(shape, apply_dim_correction), 1,
                                  asDataType(typeInfo.type()),
                                  asQuantizationInfo(typeInfo.scale(), typeInfo.zero_point()));
   info.set_data_layout(::arm_compute::DataLayout::NHWC);
@@ -211,10 +208,9 @@ asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, 
   }
 }
 
-arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank,
-                                       ir::Layout frontend_layout)
+arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank)
 {
-  std::set<uint32_t> axes = asSet(operand, rank, frontend_layout);
+  std::set<uint32_t> axes = asSet(operand, rank);
 
   arm_compute::Coordinates reduce_axes;
   for (const int32_t axis : axes)
@@ -225,7 +221,7 @@ arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank,
   return reduce_axes;
 }
 
-std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank, ir::Layout frontend_layout)
+std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank)
 {
   std::set<std::uint32_t> axes;
 
@@ -245,7 +241,7 @@ std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank, ir::Layout fr
     }
     if (axis < 0)
       axis += rank;
-    axes.insert(ToARMComputeAxis(rank, axis, frontend_layout).value());
+    axes.insert(ToARMComputeAxis(rank, axis).value());
   }
 
   return axes;

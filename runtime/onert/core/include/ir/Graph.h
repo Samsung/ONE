@@ -92,7 +92,6 @@ public:
   void addOutput(const OperandIndex &ind, const std::string &name = "");
   void verify(void) const;
   void removeOperand(const OperandIndex &ind) { _operands.remove(ind); }
-  void setLayout(Layout layout) { _layout = layout; }
 
 private:
   bool checkOperandsForOperation(const IOperation &operation);
@@ -114,7 +113,6 @@ public:
   Operands &operands() { return _operands; } // TODO Remove this non-const accessor
   const Operations &operations() const override { return _operations; }
   Operations &operations() { return _operations; }
-  Layout layout() const { return _layout; }
 
   // Topological sort
 public:
@@ -127,8 +125,6 @@ private:
   OperandIndexSequence _outputs;
   std::unordered_map<std::string, IOIndex> _name_to_input;
   std::unordered_map<std::string, IOIndex> _name_to_output;
-  // TFLite and circle's default layout is NHWC;
-  Layout _layout{Layout::NHWC};
 };
 
 } // namespace ir

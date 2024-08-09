@@ -85,9 +85,6 @@ public:
 private:
   FunctionMap generateFunctionMap();
 
-private:
-  void planDisposableBackPropTensors();
-
 public:
   // TODO Make it private
   std::shared_ptr<KernelGenerator> kernel_gen;

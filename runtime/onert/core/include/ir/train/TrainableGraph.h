@@ -106,7 +106,6 @@ public:
   void addLoss(const OperandIndex &loss_ind, const IOIndex &pred_io_ind);
   void verify() const;
   void removeOperand(const OperandIndex &ind);
-  void setLayout(Layout layout);
   void setInputs(OperandIndexSequence inputs,
                  std::unordered_map<std::string, IOIndex> name_to_input);
   void setOutputs(OperandIndexSequence outputs,
@@ -126,7 +125,6 @@ public:
   const Operations &operations() const override { return _graph.operations(); }
   const Operands &backward_operands() const { return _backward_operands; }
   OperandIndex getLossIndex(const IOIndex &pred_io_ind) const;
-  Layout layout() const { return _graph.layout(); }
   const Graph &graph() const { return _graph; }
 
 public:
@@ -160,6 +158,9 @@ public:
   std::vector<ir::OperationIndex>
   truncateBackwardOrder(std::vector<ir::OperationIndex> backward_order,
                         std::function<bool(const ir::OperationIndex &)> truncating_cond) const;
+
+public:
+  void updateGraphDependency();
 
 private:
   Graph _graph;

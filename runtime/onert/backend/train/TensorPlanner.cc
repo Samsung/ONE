@@ -47,10 +47,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 
   // Prepare scanning
   // This assumes TrainingOperationIndex in forwarding are always used
-  for (const auto &pair : training_usedefs)
+  for (const auto &[operand_index, operand_usedefs] : training_usedefs)
   {
-    const auto &operand_index = pair.first;
-    const auto &operand_usedefs = pair.second;
     const auto &operand = operand_usedefs.operand();
 
     if (_external_operands.contains(operand_index.index()))
@@ -69,10 +67,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   //    It's neither an external operand or a constant operand
   //    What does it mean when def count is 0?
   // A. Not yet found the reason to need it yet.
-  for (const auto &pair : defs_map)
+  for (const auto &[operand_index, def_count] : defs_map)
   {
-    const auto &operand_index = pair.first;
-    const auto def_count = pair.second;
     if (def_count == 0)
       tensor_builder->notifyFirstUse(operand_index.index());
   }
@@ -80,10 +76,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   // This is a workaround to keep the operands over the execution
   // (the operands look like they are unused)
   std::vector<ir::train::TrainingOperandIndex> operands_last_until_end;
-  for (const auto &pair : uses_map)
+  for (const auto &[operand_index, use_count] : uses_map)
   {
-    const auto &operand_index = pair.first;
-    const auto use_count = pair.second;
     if (use_count == 0)
       operands_last_until_end.push_back(operand_index);
   }
@@ -281,19 +275,248 @@ void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
   VERBOSE(BackendContext) << "Finish planning constant tensors" << std::endl;
 }
 
-void TensorPlanner::planBackPropTensors(TensorBuilder *)
+void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan back-propagated tensors
+  VERBOSE(BackendContext) << "Start planning back-propagated tensors" << std::endl;
+
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
+  std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
+
+  // Prepare scanning
+  const auto &training_usedefs = _tgraph.trainingUseDefs();
+  for (const auto &[operand_index, operand_usedefs] : training_usedefs)
+  {
+    const auto &operand = operand_usedefs.operand();
+
+    if (_external_operands.contains(operand_index.index()))
+      continue;
+
+    if (!tensor_builder->isRegisteredBackward(operand_index.index()))
+      continue;
+
+    if (operand_index.is_forward() || operand.isConstant())
+      continue;
+
+    uses_map[operand_index] = operand_usedefs.getTrainingUses().size();
+    defs_map[operand_index] = operand_usedefs.getTrainingDefs().size();
+  }
+
+  // Start scanning to do notify{First|Last}Use for each tensor
+
+  // This is a workaround to keep the operands over the execution
+  // (the operands look like they are unused)
+  std::vector<ir::train::TrainingOperandIndex> operands_last_until_end;
+  for (const auto &[ind, use_count] : uses_map)
+  {
+    if (use_count == 0)
+      operands_last_until_end.push_back(ind);
+  }
+
+  // At each operation,
+  // 1. Scan DEF of outgoing tnesors. If the first DEF, allocate it
+  // 2. Scan DEF of inputs. If variable tensor, throw an exception (not supported yet)
+  // 3. Scan USE of incoming tensors. Decrease the USE and deallocate if the USE is 0
+  std::set<ir::OperandIndex> unallocated;
+  _tgraph.operands().iterate(
+    [&](const ir::OperandIndex &index, const ir::Operand &) { unallocated.insert(index); });
+
+  const auto border = _tgraph.essentialBackwardOrder();
+  for (const auto &op_ind : border)
+  {
+    const auto &op = _tgraph.operations().at(op_ind);
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    // Allocate back-propagated tensors in first def
+    for (const auto &outgoing : op_inputs)
+    {
+      const auto operand_index = ir::train::TrainingOperandIndex{outgoing, false};
+      const auto &operand = _tgraph.operands().at(outgoing);
+      if (_external_operands.contains(outgoing))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(outgoing))
+        continue;
+      if (operand.isConstant())
+        continue;
+
+      if (defs_map.find(operand_index) != defs_map.end())
+      {
+        if (unallocated.find(outgoing) != unallocated.end())
+        {
+          // First Def
+          unallocated.erase(outgoing);
+          defs_map[operand_index]--;
+          tensor_builder->notifyBackwardFirstUse(outgoing);
+        }
+        else
+        {
+          assert(defs_map[operand_index] > 0);
+          defs_map[operand_index]--;
+        }
+      }
+    }
+
+    // Scan variable tensors
+    // This tensor has features like constant. But OperandInfo and LowerInfo treat them as
+    // non-constant because of less memory usage by memory planning in here
+    // However, train backend does not support variable tensors yet
+    for (const auto &outgoing : op_inputs)
+    {
+      if (_external_operands.contains(outgoing))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(outgoing))
+        continue;
+      const auto &operand = _tgraph.operands().at(outgoing);
+      if (operand.info().isVariable())
+        throw std::runtime_error("The train backend does not support variable tensors");
+    }
+
+    for (const auto &incoming : op_outputs)
+    {
+      const auto incoming_index = ir::train::TrainingOperandIndex{incoming, false};
+
+      if (_external_operands.contains(incoming))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(incoming))
+        continue;
+
+      // NOTE There is no case where an op's incoming tensors don't have the corresponding op def
+      assert(defs_map.find(incoming_index) != defs_map.end());
+
+      if (uses_map.find(incoming_index) != uses_map.end())
+      {
+        assert(uses_map[incoming_index] > 0);
+        uses_map[incoming_index]--;
+        if (uses_map[incoming_index] == 0)
+        {
+          // plan for deallocation of static tensornode
+          tensor_builder->notifyBackwardLastUse(incoming);
+        }
+      }
+    }
+  }
+
+  for (const auto &index : operands_last_until_end)
+  {
+    tensor_builder->notifyBackwardLastUse(index.index());
+  }
+
+  assert(std::all_of(
+    uses_map.begin(), uses_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  assert(std::all_of(
+    defs_map.begin(), defs_map.end(),
+    [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
+
+  VERBOSE(BackendContext) << "Finish planning back-propagated tensors" << std::endl;
 }
 
-void TensorPlanner::planGradientTensors(TensorBuilder *)
+void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan gradient tensors
+  VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
+
+  // TODO Use DisposableTensor instead of GradientTensor to plan them together if possible
+  //      Backward layers and the corresponding GradientApplier exist in the same back-propagated
+  //      operation sequence. So we can use DisposableTensors to plan GradientTensors.
+  for (const auto &op_index : _tgraph.essentialBackwardOrder())
+  {
+    std::vector<ir::train::TrainingOperandIndex> cur_seq;
+    const auto &op = _tgraph.operations().at(op_index);
+    const auto backwarding_op_index = ir::train::TrainingOperationIndex{op_index, false};
+    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+
+    // Only inputs can be candidates for def of backwarding tensors
+    for (const auto &input : op_inputs)
+    {
+      if (_external_operands.contains(input))
+        continue;
+      if (!tensor_builder->isRegisteredBackward(input))
+        continue;
+
+      const auto gradient_index = ir::train::TrainingOperandIndex{input, false};
+      const auto &training_usedefs = _tgraph.trainingUseDefs();
+      const auto &usedefs = training_usedefs.at(gradient_index);
+      const auto &operand = usedefs.operand();
+      const auto &defs = usedefs.getTrainingDefs();
+      if (operand.isConstant() && defs.find(backwarding_op_index) != defs.end())
+      {
+        assert(defs.size() == 1);
+        tensor_builder->notifyBackwardFirstUse(input);
+        cur_seq.emplace_back(gradient_index);
+      }
+    }
+
+    for (const auto &operand_index : cur_seq)
+    {
+      tensor_builder->notifyBackwardLastUse(operand_index.index());
+    }
+  }
+
+  VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
 }
 
-void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *)
+void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
 {
-  // TODO Plan diposable backprop tensors
+  VERBOSE(BackendContext) << "Start planning disposable back-prop tensors" << std::endl;
+
+  for (const auto &op_index : _tgraph.essentialBackwardOrder())
+  {
+    // NOTE Even if there are duplicate indices, the duplicate back-propagated tensors may need
+    //      to be updated respectively. So we use a sequence instead of a set.
+    const auto &inputs = _tgraph.operation(op_index).getInputs();
+    if (!(inputs == (inputs | ir::Remove::DUPLICATED)))
+      throw std::runtime_error("TensorPlanner: DispoableBackProp tensor does not support duplicate "
+                               "inputs of an operation");
+
+    std::vector<DisposableTensorIndex> cur_seq;
+    const auto back_prop_indices = getOutgoingBackPropSeq(op_index, tensor_builder);
+    for (const auto &back_prop_index : back_prop_indices)
+    {
+      DisposableTensorIndex cur_index{op_index, back_prop_index};
+      if (tensor_builder->isRegisteredDisposableBackwardTensor(cur_index))
+      {
+        tensor_builder->notifyDisposableBackPropFirstUse(cur_index);
+        cur_seq.emplace_back(cur_index);
+      }
+    }
+
+    for (const auto &cur_index : cur_seq)
+    {
+      tensor_builder->notifyDisposableBackPropLastUse(cur_index);
+    }
+  }
+
+  VERBOSE(BackendContext) << "Finish planning disposable back-prop tensors" << std::endl;
+}
+
+ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::OperationIndex &op_index,
+                                                               const TensorBuilder *tensor_builder)
+{
+  ir::OperandIndexSequence ret;
+
+  const auto &op = _tgraph.operation(op_index);
+  for (const auto &input : (op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED))
+  {
+    if (_external_operands.contains(input))
+      continue;
+    if (!tensor_builder->isRegisteredBackward(input))
+      continue;
+
+    const auto input_index = ir::train::TrainingOperandIndex{input, false};
+    const auto training_op_index = ir::train::TrainingOperationIndex{op_index, false};
+    const auto &training_usedefs = _tgraph.trainingUseDefs();
+    const auto &usedefs = training_usedefs.at(input_index);
+    if (usedefs.operand().isConstant())
+      continue;
+
+    if (usedefs.getTrainingDefs().find(training_op_index) == usedefs.getTrainingDefs().end())
+      continue;
+
+    ret.append(input);
+  }
+
+  return ret;
 }
 
 } // namespace train

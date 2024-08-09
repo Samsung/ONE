@@ -31,10 +31,8 @@ extractOperations(const train::UseDefChains &training_usedefs)
 {
   // Extract TrainingOperations from training_usedefs
   std::set<train::TrainingOperationIndex> operations;
-  for (const auto &pair : training_usedefs)
+  for (const auto &[output, usedefs] : training_usedefs)
   {
-    const auto &output = pair.first;
-    const auto &usedefs = pair.second;
     const auto &defs = usedefs.getTrainingDefs();
     for (const auto &node_index : defs)
       if (node_index.valid() && output.valid())
@@ -50,10 +48,8 @@ extractNodeInputs(const train::UseDefChains &training_usedefs)
   // Extract inputs of TrainingOperations from training_usedefs
   std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
     node_inputs;
-  for (const auto &pair : training_usedefs)
+  for (const auto &[input, usedefs] : training_usedefs)
   {
-    const auto &input = pair.first;
-    const auto &usedefs = pair.second;
     const auto &uses = usedefs.getTrainingUses();
     for (const auto &node_index : uses)
       if (node_index.valid() && input.valid())
@@ -69,10 +65,8 @@ extractNodeOutputs(const train::UseDefChains &training_usedefs)
   // Extract outputs of TrainingOperations from training_usedefs
   std::unordered_map<train::TrainingOperationIndex, std::vector<train::TrainingOperandIndex>>
     node_outputs;
-  for (const auto &pair : training_usedefs)
+  for (const auto &[output, usedefs] : training_usedefs)
   {
-    const auto &output = pair.first;
-    const auto &usedefs = pair.second;
     const auto &defs = usedefs.getTrainingDefs();
     for (const auto &node_index : defs)
       if (node_index.valid() && output.valid())

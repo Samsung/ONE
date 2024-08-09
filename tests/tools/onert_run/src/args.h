@@ -20,11 +20,10 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <boost/program_options.hpp>
+
+#include <arser/arser.h>
 
 #include "types.h"
-
-namespace po = boost::program_options;
 
 namespace onert_run
 {
@@ -84,8 +83,7 @@ private:
   void Parse(const int argc, char **argv);
 
 private:
-  po::positional_options_description _positional;
-  po::options_description _options;
+  arser::Arser _arser;
 
   std::string _package_filename;
   std::string _model_filename;

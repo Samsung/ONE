@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,34 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
-#define __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
+#ifndef __ONERT_BACKEND_EXTRA_H__
+#define __ONERT_BACKEND_EXTRA_H__
 
-#include <backend/basic/ConstantInitializer.h>
+#include <backend/basic/Tensor.h>
 
 namespace onert
 {
 namespace backend
 {
-namespace builtin
+namespace train
 {
 
-using ConstantInitializer = basic::ConstantInitializer;
+// ExtraTensor is a tensor that is accessed within one operation layer.
+// In other words, the scope of the extra tensor is confined to one specific layer.
+class ExtraTensor final : public basic::Tensor
+{
+public:
+  ExtraTensor() = delete;
 
-} // namespace builtin
+public:
+  ExtraTensor(const ir::OperandInfo &info) : basic::Tensor(info, nullptr)
+  {
+    // DO NOTHING
+  }
+};
+
+} // namespace train
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_COMPILER_BUILTIN_CONSTANT_INITIALIZER_H__
+#endif // __ONERT_BACKEND_EXTRA_TENSOR_H__

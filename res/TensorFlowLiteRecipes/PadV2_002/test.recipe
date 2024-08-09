@@ -1,0 +1,41 @@
+# padding with INT64, constant_values with FLOAT32, others same as PadV2_000
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "padding"
+  type: INT64
+  shape { dim: 4 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "1" arg: "1"
+    arg: "2" arg: "2"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "constant_values"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "explicit"
+    arg: "1" 
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 5 dim: 7 dim: 2 }
+}
+operation {
+  type: "PadV2"
+  input: "ifm"
+  input: "padding"
+  input: "constant_values"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

@@ -80,21 +80,22 @@ generateBackPropAccumulator(const IPortableTensor *disposable, BackPropTensor *g
   return update_fn;
 }
 
-void appendBackPropAccumulator(const ir::train::ITrainableOperation &op,
-                               const ir::OperationIndex &op_index, TensorRegistry *tensor_reg,
-                               exec::train::TrainableFnSequence *seq)
+void appendBackPropAccumulators(const ir::train::ITrainableOperation &op,
+                                const ir::OperationIndex &op_index, TensorRegistry *tensor_reg,
+                                exec::train::TrainableFnSequence *seq)
 {
+  if (!op.isRequiredForBackward())
+    return;
+
   for (const auto &input_index : (op.getInputs() | ir::Remove::UNDEFINED))
   {
-    if (op.isRequiredForBackward())
+    const auto disposable =
+      tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
+    if (disposable != nullptr)
     {
-      const auto disposable =
-        tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, input_index});
-      if (disposable != nullptr)
-      {
-        auto back_prop = tensor_reg->getBackPropTensor(input_index);
-        seq->append(generateBackPropAccumulator(disposable, back_prop));
-      }
+      auto back_prop = tensor_reg->getBackPropTensor(input_index);
+      assert(back_prop);
+      seq->append(generateBackPropAccumulator(disposable, back_prop));
     }
   }
 }
@@ -111,13 +112,16 @@ generateGradientApplier(const exec::train::optimizer::Optimizer *optimizer,
 
 std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::OperationIndex idx)
 {
+  // NOTE This function is related to planning tensors. If you change this function, you should
+  //      also consider to change planning tensors.
+
   auto ret = std::make_unique<exec::train::TrainableFnSequence>();
 
   const auto &op = _tgraph.operation(idx);
 
-  // NOTE appendBackPropAccumulator() must be called before appending _return_fn to
+  // NOTE appendBackPropAccumulators() must be called before appending _return_fn to
   //      TrainableFnSequence as long as both are appended to the same TrainableFnSequence.
-  appendBackPropAccumulator(op, idx, _tensor_reg.get(), ret.get());
+  appendBackPropAccumulators(op, idx, _tensor_reg.get(), ret.get());
 
   op.accept(*this);
   assert(_return_fn);
@@ -147,9 +151,8 @@ KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
                                  const std::shared_ptr<ExternalContext> &external_context,
                                  const exec::train::optimizer::Optimizer *optimizer)
-  : backend::train::KernelGeneratorBase{tgraph}, _current_layout{tgraph.layout()},
-    _tensor_reg{tensor_reg}, _external_context(external_context), _optimizer{optimizer},
-    _update_funcs{}, _node_to_idx{}
+  : backend::train::KernelGeneratorBase{tgraph}, _tensor_reg{tensor_reg},
+    _external_context(external_context), _optimizer{optimizer}, _update_funcs{}, _node_to_idx{}
 {
   tgraph.operations().iterate(
     [&](const onert::ir::OperationIndex &idx, const onert::ir::IOperation &op) {
@@ -211,8 +214,8 @@ void KernelGenerator::visit(const ir::train::operation::Conv2D &node)
   auto fn = std::make_unique<ops::ConvolutionLayer>();
 
   auto &operands = _tgraph.operands();
-  const auto ifm_shape = operands.at(in_index).shape().asFeature(_current_layout);
-  const auto ofm_shape = operands.at(out_index).shape().asFeature(_current_layout);
+  const auto ifm_shape = operands.at(in_index).shape().asFeature();
+  const auto ofm_shape = operands.at(out_index).shape().asFeature();
   // Kernel format is [depth_out, kernel_height, kernel_width, depth_in].
   const auto &ker_shape = operands.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -266,8 +269,8 @@ void KernelGenerator::visit(const ir::train::operation::DepthwiseConv2D &node)
 
   const auto stride = node.param().stride;
   const auto &operands = _tgraph.operands();
-  const auto ofm_shape = operands.at(ofm_index).shape().asFeature(_current_layout);
-  const auto ifm_shape = operands.at(ifm_index).shape().asFeature(_current_layout);
+  const auto ofm_shape = operands.at(ofm_index).shape().asFeature();
+  const auto ifm_shape = operands.at(ifm_index).shape().asFeature();
   // Kernel format is [1, kernel_height, kernel_width, depth_out].
   const auto &ker_shape = operands.at(ker_index).shape();
   const auto ker_height = ker_shape.dim(1);
@@ -480,9 +483,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
   const auto stride = node.param().stride;
   const auto kh = node.param().kh;
   const auto kw = node.param().kw;
-  const auto padding =
-    ir::calculatePadding(node.param().padding, ifm_shape.asFeature(_current_layout),
-                         ofm_shape.asFeature(_current_layout), stride, kw, kh);
+  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape.asFeature(),
+                                            ofm_shape.asFeature(), stride, kw, kh);
 
   auto out_tensor = _tensor_reg->getPortableTensor(output_index);
   auto in_tensor = _tensor_reg->getPortableTensor(input_index);
@@ -606,19 +608,28 @@ void KernelGenerator::visit(const ir::train::operation::Softmax &node)
   _return_fn = std::move(fn);
 }
 
-IPortableTensor *KernelGenerator::getBackPropIn(const ir::Operation &node,
+IPortableTensor *KernelGenerator::getBackPropIn(const ir::IOperation &node,
                                                 const ir::OperandIndex &operand_index)
 {
   const auto &op_index = _node_to_idx[&node];
+  const auto backwarding_operand_index = ir::train::TrainingOperandIndex{operand_index, false};
 
-  auto temp_tensor =
+  const auto disposable_tensor =
     _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index});
-  if (temp_tensor == nullptr)
+  if (disposable_tensor != nullptr)
   {
-    temp_tensor = _tensor_reg->getBackPropTensor(operand_index);
-  }
+    const auto &training_usedefs = _tgraph.trainingUseDefs().at(backwarding_operand_index);
+    UNUSED_RELEASE(training_usedefs);
+    assert(std::count_if(training_usedefs.getTrainingDefs().begin(),
+                         training_usedefs.getTrainingDefs().end(),
+                         [&](const ir::train::TrainingOperationIndex &op_index) {
+                           return _tgraph.operation(op_index.index()).isRequiredForBackward();
+                         }) > 1);
 
-  return temp_tensor;
+    return disposable_tensor;
+  }
+  else
+    return _tensor_reg->getBackPropTensor(operand_index);
 }
 
 IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_index)

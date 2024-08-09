@@ -13,17 +13,52 @@ endif ()
 set(OM_CIRCLE_SCHEMA onert_micro_circle_schema)
 set(OM_TRAININFO_SCHEMA onert_micro_traininfo_schema)
 
+
+# Generate git_version.h
+set(OM_GIT_VERSION_FILENAME "git_version.h")
+set(OM_GIT_VERSION_TEMPLATE_FILENAME "git_version.h.in")
+
+# Add command to generate git version header
+add_custom_command(
+        OUTPUT
+        ${CMAKE_CURRENT_BINARY_DIR}/gen/${OM_GIT_VERSION_FILENAME}
+        ALL
+        COMMAND
+        ${CMAKE_COMMAND}
+        -D IN_FILE=${CMAKE_CURRENT_SOURCE_DIR}/${OM_GIT_VERSION_TEMPLATE_FILENAME}
+        -D OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/gen/${OM_GIT_VERSION_FILENAME}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckGit.cmake
+        WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}
+)
+
+file(WRITE ${CMAKE_BINARY_DIR}/${OM_GIT_VERSION_FILENAME})
+
+add_custom_target(
+        generate_version_header
+        ALL
+        COMMAND
+        ${CMAKE_COMMAND}
+        -D IN_FILE=${CMAKE_CURRENT_SOURCE_DIR}/${OM_GIT_VERSION_TEMPLATE_FILENAME}
+        -D OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/gen/${OM_GIT_VERSION_FILENAME}
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/CheckGit.cmake
+        WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/gen/${OM_GIT_VERSION_FILENAME}
+)
+
+
 if (NOT_BUILD_EXTERNALS)
     message(STATUS "USE LOCAL EXTERNAL")
 
     set(ONERT_MICRO_EXTERNAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/externals")
     set(Flatbuffers_DIR "${ONERT_MICRO_EXTERNAL_DIR}")
     set(FlatBuffersSource_DIR "${Flatbuffers_DIR}")
-    set (EXT_OVERLAY_DIR "${ONERT_MICRO_EXTERNAL_DIR}")
+    set(EXT_OVERLAY_DIR "${ONERT_MICRO_EXTERNAL_DIR}")
     set(GENERATED_INCLUDE_DIR "${ONERT_MICRO_EXTERNAL_DIR}/gen")
 
     add_subdirectory(externals)
-else()
+else ()
     message(STATUS "DOWNLOAD AND BUILD EXTERNALS")
 
     nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
@@ -70,22 +105,22 @@ else()
     set(Flatbuffers_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../overlay/lib/cmake/flatbuffers")
     set(EXT_OVERLAY_DIR "${CMAKE_CURRENT_BINARY_DIR}/../../overlay")
     set(GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen")
-endif()
+endif ()
 
 # Choosing Kernel: reference mcu, optimized cmsisnn
 if (NOT KERNELS)
     message(STATUS "KERNEL variable is not defined, default reference mcu kernels will be used")
     set(OM_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/onert-micro/include/pal/mcu")
-elseif("${KERNELS}" STREQUAL "mcu")
+elseif ("${KERNELS}" STREQUAL "mcu")
     message(STATUS "ONERT_MICRO will use reference mcu kernels")
     set(OM_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/onert-micro/include/pal/mcu")
-elseif("${KERNELS}" STREQUAL "cmsisnn")
+elseif ("${KERNELS}" STREQUAL "cmsisnn")
     message(STATUS "ONERT_MICRO will use optimized cmsisnn kernels")
     set(OM_PAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/onert-micro/include/pal/cmsisnn")
-else()
+else ()
     message(STATUS "Build onert-micro: FAILED (Non-existent kernel variable. Choose one of the following options: mcu, cmsisnn)")
     return()
-endif()
+endif ()
 
 set(CMAKE_ARM_OPTIONS
         -DTARGET_CPU=${TARGET_CPU}
@@ -109,7 +144,7 @@ set(CMAKE_ARM_OPTIONS
 
 if (NOT_BUILD_EXTERNALS)
     list(APPEND CMAKE_ARM_OPTIONS "-DNOT_BUILD_EXTERNALS=ON")
-else()
+else ()
     list(APPEND CMAKE_ARM_OPTIONS "-DNOT_BUILD_EXTERNALS=OFF")
 endif ()
 
@@ -128,18 +163,18 @@ if (DIS_QUANT)
     message(STATUS "ONERT-MICRO will not use part for QUANTIZED models")
     add_definitions(-DDIS_QUANT)
     list(APPEND CMAKE_ARM_OPTIONS "-DDIS_QUANT=ON")
-endif()
+endif ()
 
 if (DIS_FLOAT)
     message(STATUS "ONERT-MICRO will not use part for FLOAT models")
     add_definitions(-DDIS_FLOAT)
     list(APPEND CMAKE_ARM_OPTIONS "-DDIS_FLOAT=ON")
-endif()
+endif ()
 
 if (DIS_DYN_SHAPES)
     message(STATUS "ONERT-MICRO will not use dynamic shapes")
     add_definitions(-DDIS_DYN_SHAPES)
-endif()
+endif ()
 
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")

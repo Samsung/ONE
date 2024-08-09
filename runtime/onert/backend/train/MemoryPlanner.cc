@@ -60,10 +60,9 @@ void FirstFitPlanner::claim(const DisposableTensorIndex &ind, size_t size)
 {
   // Find the right position for claiming
   uint32_t next_offset = 0;
-  for (const auto &mem_claim : _claim_table)
+  for (const auto &[claimed_base_offset, claimed_index] : _claim_table)
   {
-    auto claimed_base_offset = mem_claim.first;
-    auto claimed_size = _mem_plans[mem_claim.second].size;
+    auto claimed_size = _mem_plans[claimed_index].size;
     if (next_offset + size <= claimed_base_offset)
     {
       break;
@@ -146,10 +145,8 @@ void WICPlanner::release(const DisposableTensorIndex &ind)
  */
 void WICPlanner::buildMemoryPlans()
 {
-  for (const auto &operand : _indices)
+  for (const auto &[size, ind] : _indices)
   {
-    uint32_t size = operand.first;
-    const DisposableTensorIndex &ind = operand.second;
     VERBOSE(WIC_PLANNER) << "build_plan(" << ind << "): [" << size << "sz]" << std::endl;
 
     uint32_t next_offset = 0;
@@ -164,10 +161,8 @@ void WICPlanner::buildMemoryPlans()
       }
 
       // Find free memory block in first-fit manner
-      for (const auto &interfered_plan : interfered_plans)
+      for (const auto &[claimed_base_offset, claimed_size] : interfered_plans)
       {
-        auto claimed_base_offset = interfered_plan.first;
-        auto claimed_size = interfered_plan.second;
         VERBOSE(WIC_PLANNER) << "interfere : [+" << claimed_base_offset << ", " << claimed_size
                              << "sz]" << std::endl;
         if (next_offset + size <= claimed_base_offset)

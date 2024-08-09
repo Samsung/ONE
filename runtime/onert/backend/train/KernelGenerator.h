@@ -59,12 +59,10 @@ public:
   void visit(const ir::train::operation::Softmax &node) override;
 
 private:
-  IPortableTensor *getBackPropIn(const ir::Operation &op_index,
-                                 const ir::OperandIndex &operand_index);
+  IPortableTensor *getBackPropIn(const ir::IOperation &node, const ir::OperandIndex &operand_index);
   IPortableTensor *getBackPropOut(const ir::OperandIndex &index);
 
 private:
-  ir::Layout _current_layout;
   std::shared_ptr<TensorRegistry> _tensor_reg;
   const std::shared_ptr<ExternalContext> _external_context;
   const exec::train::optimizer::Optimizer *_optimizer;

@@ -47,13 +47,10 @@ namespace backend
 namespace acl_common
 {
 
-::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, ir::Layout frontend_layout,
-                                         bool apply_dim_correction = true);
-::arm_compute::Coordinates asTensorCoordinate(const ir::Coordinates &coord,
-                                              ir::Layout frontend_layout);
+::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, bool apply_dim_correction = true);
+::arm_compute::Coordinates asTensorCoordinate(const ir::Coordinates &coord);
 ::arm_compute::DataType asDataType(ir::DataType type);
 ::arm_compute::TensorInfo asTensorInfo(const ir::Shape &shape, const ir::TypeInfo &typeInfo,
-                                       ir::Layout frontend_layout,
                                        bool apply_dim_correction = true);
 
 ::arm_compute::PadStrideInfo asPadStrideInfo(const ir::ExplicitPadding &padding,
@@ -64,10 +61,9 @@ namespace acl_common
 asActivationLayerInfo(const ir::operation::ElementwiseActivation::Type op_type, float alpha,
                       float beta);
 
-arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank,
-                                       ir::Layout frontend_layout);
+arm_compute::Coordinates asCoordinates(const ir::Operand &operand, int32_t rank);
 
-std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank, ir::Layout frontend_layout);
+std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank);
 
 std::unique_ptr<AclFunction> asAclFunction(std::unique_ptr<::arm_compute::IFunction> &&layer);
 
