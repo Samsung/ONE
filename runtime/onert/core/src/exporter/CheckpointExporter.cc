@@ -261,6 +261,11 @@ void CheckpointExporter::setAdamOptimizerData(const std::unique_ptr<onert::exec:
 
   // Write Adam V offset
   memcpy(ptr, &v_offset, sizeof(v_offset));
+  ptr += sizeof(v_offset);
+
+  // Write other param offset
+  uint32_t o_offset = v_offset + v_offset_size + v_total_size;
+  memcpy(ptr, &o_offset, sizeof(o_offset));
 }
 
 } // namespace exporter
