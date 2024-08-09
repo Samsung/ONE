@@ -1,15 +1,11 @@
-from nnfwapi.libnnfw_api_pybind import *
+from onert import infer
 import sys
 
 
-def main(nnpackage_path, backends="cpu", operations=""):
+def main(nnpackage_path, backends="cpu"):
     # Create session and load nnpackage
-    # operations is optional to assign a specific backends to each operation.
     # The default value of backends is "cpu".
-    if operations:
-        session = nnfw_session(nnpackage_path, backends, operations)
-    else:
-        session = nnfw_session(nnpackage_path, backends)
+    session = infer.session(nnpackage_path, backends)
 
     # Prepare input. Here we just allocate dummy input arrays.
     input_size = session.input_size()

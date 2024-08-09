@@ -2,7 +2,7 @@ import numpy as np
 import os
 import shutil
 
-from .onert import libnnfw_api_pybind
+from .native import libnnfw_api_pybind
 
 
 def num_elems(tensor_info):
@@ -13,7 +13,7 @@ def num_elems(tensor_info):
     return n
 
 
-class nnfw_session(libnnfw_api_pybind.nnfw_session):
+class session(libnnfw_api_pybind.nnfw_session):
     """Class inherited nnfw_session for easily processing input/output"""
 
     def __init__(self, nnpackage_path, backends="cpu"):
