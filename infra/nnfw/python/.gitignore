@@ -1,4 +1,4 @@
 build/
 dist/
-nnfwapi/
-nnfwapi.egg-info/
+onert/
+onert.egg-info/
