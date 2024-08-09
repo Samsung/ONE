@@ -139,16 +139,9 @@ getDisposableBackPropTensorList(const ir::train::TrainableGraph &tgraph,
 backend::ITensorRegistry *BackendContext::genTensors()
 {
   planForwardTensors();
-
-  _tensor_builder->allocate();
-
-  return _tensor_registry.get();
-}
-
-backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
-{
   planBackwardTensors();
 
+  _tensor_builder->allocate();
   _tensor_builder->allocateBackward();
 
   return _tensor_registry.get();

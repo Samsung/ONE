@@ -30,16 +30,10 @@ namespace train
 
 backend::ITensorRegistry *BackendContext::genTensors()
 {
-  // For now, there is no need to generate tensors for forwarding.
+  // For now, there is no need to generate tensors for forwarding and backwarding.
   // builtin train backend handles 3 operators: `Permute`, `IF`, `WHILE`.
   // `Permute`: Tensor generation is not required.
   // `IF`, `WHILE`: Not supported yet
-  return tensor_registry().get();
-}
-
-backend::train::ITensorRegistry *BackendContext::genTrainingTensors()
-{
-  // For now, there is no need to generate tensors for backwarding.
   return tensor_registry().get();
 }
 
