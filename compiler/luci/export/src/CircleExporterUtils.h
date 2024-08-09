@@ -29,6 +29,7 @@
 namespace luci
 {
 
+circle::WeightCompressionType to_circle_weightcompressiontype(luci::WeightCompression type);
 circle::ActivationFunctionType to_circle_actfunc(luci::FusedActFunc func);
 circle::TensorType to_circle_tensortype(loco::DataType type);
 circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode);

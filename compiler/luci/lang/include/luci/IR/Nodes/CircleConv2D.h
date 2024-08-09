@@ -34,7 +34,8 @@ namespace luci
  */
 class CircleConv2D final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::CONV_2D>>,
                            public CircleNodeMixin<CircleNodeTrait::FusedActFunc>,
-                           public CircleNodeMixin<CircleNodeTrait::Bias>
+                           public CircleNodeMixin<CircleNodeTrait::Bias>,
+                           public CircleNodeMixin<CircleNodeTrait::WeightCompression>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

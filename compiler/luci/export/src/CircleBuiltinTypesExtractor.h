@@ -108,10 +108,10 @@ public:
   // flatbuffers::Offset<void> visit(luci::CircleConst *)
   flatbuffers::Offset<void> visit(luci::CircleConv2D *node)
   {
-    return circle::CreateConv2DOptions(_builder, getOpPadding(node->padding()), node->stride()->w(),
-                                       node->stride()->h(),
-                                       to_circle_actfunc(node->fusedActivationFunction()),
-                                       node->dilation()->w(), node->dilation()->h())
+    return circle::CreateConv2DOptions(
+             _builder, getOpPadding(node->padding()), node->stride()->w(), node->stride()->h(),
+             to_circle_actfunc(node->fusedActivationFunction()), node->dilation()->w(),
+             node->dilation()->h(), to_circle_weightcompressiontype(node->weightCompression()))
       .Union();
   }
   flatbuffers::Offset<void> visit(luci::CircleCos *)

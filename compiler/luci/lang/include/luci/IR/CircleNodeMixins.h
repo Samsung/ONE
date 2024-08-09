@@ -18,6 +18,7 @@
 #define __LUCI_IR_CIRCLE_NODE_MIXINS_H__
 
 #include "luci/IR/AttrFusedActFunc.h"
+#include "luci/IR/AttrWeightCompression.h"
 
 #include <loco/IR/Node.h>
 #include <loco/IR/NodeMixins.h>
@@ -31,10 +32,27 @@ namespace luci
 enum class CircleNodeTrait
 {
   FusedActFunc,
-  Bias
+  Bias,
+  WeightCompression
 };
 
 template <CircleNodeTrait T> class CircleNodeMixin;
+
+template <> class CircleNodeMixin<CircleNodeTrait::WeightCompression>
+{
+public:
+  CircleNodeMixin() = default;
+
+public:
+  WeightCompression weightCompression() const { return _weight_compression; }
+  void weightCompression(WeightCompression weight_compression)
+  {
+    _weight_compression = weight_compression;
+  }
+
+private:
+  WeightCompression _weight_compression = WeightCompression::UNDEFINED;
+};
 
 template <> class CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {

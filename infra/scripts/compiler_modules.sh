@@ -12,7 +12,7 @@ DEBUG_BUILD_ITEMS+=";oops;pepper-assert;pepper-csv2vec"
 DEBUG_BUILD_ITEMS+=";hermes;hermes-std"
 DEBUG_BUILD_ITEMS+=";loco;locop;locomotiv;logo-core;logo"
 DEBUG_BUILD_ITEMS+=";foder;crew;souschef;arser;vconone"
-DEBUG_BUILD_ITEMS+=";safemain;mio-circle08;mio-tflite2121;dio-hdf5"
+DEBUG_BUILD_ITEMS+=";safemain;mio-circle09;mio-tflite2121;dio-hdf5"
 DEBUG_BUILD_ITEMS+=";luci-compute"
 DEBUG_BUILD_ITEMS+=";tflite2circle"
 DEBUG_BUILD_ITEMS+=";luci"
@@ -50,7 +50,7 @@ NNPKG_RES_ITEMS+=";luci-compute"
 # Circle compiler library (.circle -> .circle)
 NNPKG_RES_ITEMS+=";luci"
 # Flatbuffer I/O
-NNPKG_RES_ITEMS+=";mio-tflite2121;mio-circle08"
+NNPKG_RES_ITEMS+=";mio-tflite2121;mio-circle09"
 # Tools
 NNPKG_RES_ITEMS+=";tflite2circle;circle2circle;luci-interpreter"
 NNPKG_RES_ITEMS+=";souschef;tflchef;circlechef;circle-verify"

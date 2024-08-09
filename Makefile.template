@@ -159,7 +159,7 @@ prepare_nncc_internal: $(WORKSPACE)
 ifeq (,$(findstring android,$(TARGET_OS)))
 	EXTERNAL_FLATC=$(BUILDTOOL_PATH)/bin/flatc ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
 		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
-		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle08;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str" \
+		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle09;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str" \
 		$(OPTIONS_NNCC)
 	./nncc build -j$(NPROCS)
 	cmake --install $(NNCC_FOLDER) $(INSTALL_OPTIONS)

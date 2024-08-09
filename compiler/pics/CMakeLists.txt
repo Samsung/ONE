@@ -11,7 +11,7 @@ unset(PICS_DEPS)
 ###
 set(CIRCLE_SCHEMA_PYTHON_DIR "${CMAKE_CURRENT_BINARY_DIR}/circle")
 
-get_target_property(SCHEMA_BIN_PATH mio_circle08 BINARY_DIR)
+get_target_property(SCHEMA_BIN_PATH mio_circle09 BINARY_DIR)
 
 add_custom_command(
   OUTPUT ${CIRCLE_SCHEMA_PYTHON_DIR}

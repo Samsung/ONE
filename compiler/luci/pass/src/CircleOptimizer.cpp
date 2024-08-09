@@ -96,6 +96,7 @@
 #include "luci/Pass/DecomposeSoftmaxPass.h"
 #include "luci/Pass/UnrollUnidirectionalSequenceLSTMPass.h"
 #include "luci/Pass/XpSepActFromTransposeConvPass.h"
+#include "luci/Pass/CompressWeightsPass.h"
 // TODO add more passes
 
 #include "luci/Pass/CircleShapeInferencePass.h"
@@ -567,7 +568,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::UnrollUnidirectionalSequenceLSTMPass>());
   }
-
+  if (_options->query(Options::Algorithm::CompressWeightsHuffman))
+  {
+    phase.emplace_back(std::make_unique<luci::CompressWeightsPass>());
+  }
   // NOTE Experimental options; these will be removed someday
   //      Add experimental options here
   if (_options->query(Options::Algorithm::XpSepActFromTransposeConv))

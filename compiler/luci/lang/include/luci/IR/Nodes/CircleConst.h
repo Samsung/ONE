@@ -17,6 +17,7 @@
 #ifndef __LUCI_IR_CIRCLECONST_H__
 #define __LUCI_IR_CIRCLECONST_H__
 
+#include "luci/IR/AttrWeightCompression.h"
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
@@ -34,6 +35,9 @@ namespace luci
 class CircleConst final : public FixedArityNode<0, CircleNodeImpl<CircleOpcode::CIRCLECONST>>
 {
 public:
+  template <loco::DataType DT> WeightCompression compression(void) const;
+  template <loco::DataType DT> void compression(WeightCompression c);
+
   template <loco::DataType DT> uint32_t size(void) const;
   template <loco::DataType DT> void size(uint32_t size);
   template <loco::DataType DT> const typename loco::DataTypeImpl<DT>::Type &at(uint32_t n) const;
@@ -46,6 +50,7 @@ private:
   std::vector<uint8_t> _data;
   // TODO use _data for STRING and remove _strings
   std::vector<std::string> _strings; // for STRING type
+  WeightCompression _compression{WeightCompression::NONE};
 };
 
 } // namespace luci
