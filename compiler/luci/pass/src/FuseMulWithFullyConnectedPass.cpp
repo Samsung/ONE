@@ -29,7 +29,6 @@ namespace
   if (not(cond))                  \
     return false;
 
-
 inline bool is_scalar(const luci::CircleConst *node)
 {
   return ((node->rank() == 1 || node->rank() == 0) && node->size<loco::DataType::FLOAT32>() == 1);
