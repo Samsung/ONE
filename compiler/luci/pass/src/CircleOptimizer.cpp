@@ -51,6 +51,7 @@
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
+#include "luci/Pass/FuseGRUPass.h"
 #include "luci/Pass/FuseRsqrtPass.h"
 #include "luci/Pass/FuseSliceWithTConvPass.h"
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
@@ -100,6 +101,7 @@
 
 #include "luci/Pass/CircleShapeInferencePass.h"
 #include "luci/Pass/CircleTypeInferencePass.h"
+#include "luci/Pass/EliminateDeadSubgraphPass.h"
 
 // logo passes
 #include <logo/RemoveDeadNodeWithQueryPass.h>
@@ -245,6 +247,8 @@ void CircleOptimizer::optimize(luci::Module *m) const
     phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
 
+  phase.emplace_back(std::make_unique<luci::EliminateDeadSubgraphPass>());
+
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};
   phase_runner.attach(&prog);
@@ -369,6 +373,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::FuseGelu))
   {
     phase.emplace_back(std::make_unique<FuseGeluPass>());
+  }
+  if (_options->query(Options::Algorithm::FuseGRU))
+  {
+    phase.emplace_back(std::make_unique<FuseGRUPass>());
   }
   if (_options->query(Options::Algorithm::FuseRsqrt))
   {
