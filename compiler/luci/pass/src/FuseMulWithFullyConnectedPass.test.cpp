@@ -75,7 +75,7 @@ public:
     if (is_mul_scalar)
     {
       mul_values.push_back(static_cast<float>(MUL_VAL));
-      _mul_c = luci::create_const_node(g, loco::DataType::FLOAT32, {1}, mul_values);
+      _mul_c = luci::create_const_node(g, loco::DataType::FLOAT32, {}, mul_values);
     }
     else
     {
