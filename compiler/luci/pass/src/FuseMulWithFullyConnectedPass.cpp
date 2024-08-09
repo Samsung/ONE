@@ -29,12 +29,14 @@ namespace
   if (not(cond))                  \
     return false;
 
-inline bool is_scalar(luci::CircleConst *node)
+
+inline bool is_scalar(const luci::CircleConst *node)
 {
   return ((node->rank() == 1 || node->rank() == 0) && node->size<loco::DataType::FLOAT32>() == 1);
 }
 
-inline void update_with_scalar(luci::CircleConst *fused_node, luci::CircleConst *multiplication)
+inline void update_with_scalar(luci::CircleConst *fused_node,
+                               const luci::CircleConst *multiplication)
 {
   for (uint32_t i = 0; i < fused_node->size<loco::DataType::FLOAT32>(); i++)
   {
@@ -42,47 +44,52 @@ inline void update_with_scalar(luci::CircleConst *fused_node, luci::CircleConst 
   }
 }
 
-inline void update_weights(luci::CircleConst *weights, luci::CircleConst *multiplication)
+luci::CircleConst *gen_fused_weights(luci::CircleConst *weights,
+                                     const luci::CircleConst *multiplication)
 {
+  auto fused_weights = luci::clone(weights);
   // Scalar multiplication:
   if (is_scalar(multiplication))
   {
-    update_with_scalar(weights, multiplication);
+    update_with_scalar(fused_weights, multiplication);
   }
   // N-size multiplication:
   else
   {
     // Go along channels, multiplication size is ensured to be compatible with channels.
-    auto count = weights->dim(0).value();
-    auto size = weights->dim(weights->rank() - 1).value();
+    auto count = fused_weights->dim(0).value();
+    auto size = fused_weights->dim(fused_weights->rank() - 1).value();
     float val;
     for (uint32_t c = 0; c < count; c++)
     {
       val = multiplication->at<loco::DataType::FLOAT32>(c);
       for (uint32_t i = 0; i < size; i++)
       {
-        weights->at<loco::DataType::FLOAT32>(c * size + i) *= val;
+        fused_weights->at<loco::DataType::FLOAT32>(c * size + i) *= val;
       }
     }
   }
+  return fused_weights;
 }
 
-inline void update_bias(luci::CircleConst *bias, luci::CircleConst *multiplication)
+luci::CircleConst *gen_fused_bias(luci::CircleConst *bias, const luci::CircleConst *multiplication)
 {
+  auto fused_bias = luci::clone(bias);
   // Scalar multiplication:
   if (is_scalar(multiplication))
   {
-    update_with_scalar(bias, multiplication);
+    update_with_scalar(fused_bias, multiplication);
   }
   // N-size multiplication:
   else
   {
     // Go along channels, multiplication size is ensured to be compatible with channels.
-    for (uint32_t i = 0; i < bias->size<loco::DataType::FLOAT32>(); i++)
+    for (uint32_t i = 0; i < fused_bias->size<loco::DataType::FLOAT32>(); i++)
     {
-      bias->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(i);
+      fused_bias->at<loco::DataType::FLOAT32>(i) *= multiplication->at<loco::DataType::FLOAT32>(i);
     }
   }
+  return fused_bias;
 }
 
 /**
@@ -127,7 +134,6 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   RETURN_FALSE_UNLESS(multiplication);
   // Get rank of multiplication:
   auto rank = multiplication->rank();
-  RETURN_FALSE_UNLESS(rank != 0);
   // Check that all dimensions are ones, checks broadcast capabilites.
   // Last dimesion of multiplication must be compatible with FC.
   // N-D case (N>1):
@@ -156,14 +162,9 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   RETURN_FALSE_UNLESS(const_bias)
   RETURN_FALSE_UNLESS(const_bias->dtype() == loco::DataType::FLOAT32);
 
-  auto fused_bias = luci::clone(const_bias);
-  // Create new weights to be updated with values:
-  auto fused_weights = luci::clone(weights);
-
-  // Update bias accordingly:
-  update_bias(fused_bias, multiplication);
-  // Update weights accordingly:
-  update_weights(fused_weights, multiplication);
+  // Create new weights and bias with updated values:
+  auto fused_bias = gen_fused_bias(const_bias, multiplication);
+  auto fused_weights = gen_fused_weights(weights, multiplication);
 
   // Replace weights and bias:
   fc->weights(fused_weights);
