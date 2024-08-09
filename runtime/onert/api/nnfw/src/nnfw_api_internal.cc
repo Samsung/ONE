@@ -21,6 +21,7 @@
 #include "util/Exceptions.h"
 #include "util/logging.h"
 #include "exec/Execution.h"
+#include "loader/CheckpointLoader.h"
 #include "loader/CircleLoader.h"
 #include "loader/ModelLoader.h"
 #include "loader/TFLiteLoader.h"
@@ -1718,9 +1719,7 @@ NNFW_STATUS nnfw_session::train_import_checkpoint(const char *path)
 
   try
   {
-    // onert::exporter::CircleExporter exporter(_model_path, std::string{path});
-    // exporter.updateWeight(_execution);
-    // exporter.updateMetadata(_train_info);
+    onert::loader::loadCheckpoint(_execution, _train_info, path);
   }
   catch (const std::exception &e)
   {
