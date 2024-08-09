@@ -154,21 +154,24 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   // Only supports:
   // (1) constant bias
   // (2) no bias
-  auto bias = loco::must_cast<luci::CircleNode *>(fc->bias());
-  RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST or
-                      bias->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
-  // Create new bias to be updated with values:
-  auto const_bias = dynamic_cast<luci::CircleConst *>(fc->bias());
-  RETURN_FALSE_UNLESS(const_bias)
-  RETURN_FALSE_UNLESS(const_bias->dtype() == loco::DataType::FLOAT32);
+  auto bias = dynamic_cast<luci::CircleNode *>(fc->bias());
+  if (bias != nullptr)
+  {
+    RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST or
+                        bias->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+    // Create new bias to be updated with values:
+    auto const_bias = dynamic_cast<luci::CircleConst *>(fc->bias());
+    RETURN_FALSE_UNLESS(const_bias)
+    RETURN_FALSE_UNLESS(const_bias->dtype() == loco::DataType::FLOAT32);
 
-  // Create new weights and bias with updated values:
-  auto fused_bias = gen_fused_bias(const_bias, multiplication);
+    // Create new bias with updated values and replace:
+    auto fused_bias = gen_fused_bias(const_bias, multiplication);
+    fc->bias(fused_bias);
+  }
+
+  // Create new weights with updated values and replace:
   auto fused_weights = gen_fused_weights(weights, multiplication);
-
-  // Replace weights and bias:
   fc->weights(fused_weights);
-  fc->bias(fused_bias);
 
   // Set origin and copy Activation Function if exisitng:
   fc->fusedActivationFunction(mul->fusedActivationFunction());

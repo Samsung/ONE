@@ -48,23 +48,27 @@ using namespace luci::test;
 class FCMulGraphlet
 {
 public:
-  void init(loco::Graph *g, luci::FusedActFunc fc_activation, bool is_mul_scalar)
+  void init(loco::Graph *g, luci::FusedActFunc fc_activation, bool is_mul_scalar, bool use_bias)
   {
+    _fc = g->nodes()->create<luci::CircleFullyConnected>();
+
     std::vector<float> weights_val(DIM_ONE * DIM_TWO);
     for (uint32_t i = 0; i < DIM_ONE * DIM_TWO; i++)
       weights_val.at(i) = i;
 
     _fc_f = luci::create_const_node(g, loco::DataType::FLOAT32, {DIM_ONE, DIM_TWO}, weights_val);
-
-    std::vector<float> bias_val(DIM_ONE);
-    for (uint32_t i = 0; i < DIM_ONE; i++)
-      bias_val.at(i) = i;
-
-    _fc_b = luci::create_const_node(g, loco::DataType::FLOAT32, {DIM_ONE}, bias_val);
-
-    _fc = g->nodes()->create<luci::CircleFullyConnected>();
     _fc->weights(_fc_f);
-    _fc->bias(_fc_b);
+
+    if (use_bias)
+    {
+      std::vector<float> bias_val(DIM_ONE);
+      for (uint32_t i = 0; i < DIM_ONE; i++)
+        bias_val.at(i) = i;
+
+      _fc_b = luci::create_const_node(g, loco::DataType::FLOAT32, {DIM_ONE}, bias_val);
+      _fc->bias(_fc_b);
+    }
+
     _fc->fusedActivationFunction(fc_activation);
     _fc->dtype(loco::DataType::FLOAT32);
     _fc->shape({1, DIM_ONE});
@@ -124,10 +128,10 @@ protected:
 class FuseMulWithFCTestGraph : public TestIOGraph, public FCMulGraphlet
 {
 public:
-  void init(luci::FusedActFunc fc_activation, bool is_mul_scalar)
+  void init(luci::FusedActFunc fc_activation, bool is_mul_scalar, bool use_bias)
   {
     TestIOGraph::init({1, DIM_TWO}, {1, DIM_ONE});
-    FCMulGraphlet::init(g(), fc_activation, is_mul_scalar);
+    FCMulGraphlet::init(g(), fc_activation, is_mul_scalar, use_bias);
 
     _fc->input(input());
 
@@ -146,7 +150,7 @@ public:
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_not_scalar)
 {
-  g.init(luci::FusedActFunc::NONE, false);
+  g.init(luci::FusedActFunc::NONE, false, true);
 
   EXPECT_EQ(true, pass.run(g.g()));
 
@@ -175,7 +179,7 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_not_scalar)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_is_scalar)
 {
-  g.init(luci::FusedActFunc::NONE, true);
+  g.init(luci::FusedActFunc::NONE, true, true);
 
   EXPECT_EQ(true, pass.run(g.g()));
 
@@ -202,9 +206,33 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_is_scalar)
   }
 }
 
+TEST_F(FuseMulWithFullyConnectedPassTest, fc_without_activation_mul_no_bias)
+{
+  g.init(luci::FusedActFunc::NONE, false, false);
+
+  EXPECT_EQ(true, pass.run(g.g()));
+
+  auto fc = dynamic_cast<luci::CircleFullyConnected *>(g.output()->from());
+  EXPECT_NE(nullptr, fc);
+  EXPECT_EQ(nullptr, fc->bias());
+
+  auto weights = loco::must_cast<luci::CircleConst *>(g.fc()->weights());
+  auto weights_n = weights->dim(0).value();
+  auto weights_m = weights->dim(1).value();
+  uint32_t offset = 0;
+  for (uint32_t i = 0; i < weights_n; i++)
+  {
+    for (uint32_t j = 0; j < weights_m; j++)
+    {
+      offset = i * weights_m + j;
+      EXPECT_EQ(i * offset, weights->at<loco::DataType::FLOAT32>(offset));
+    }
+  }
+}
+
 TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 {
-  g.init(luci::FusedActFunc::NONE, false);
+  g.init(luci::FusedActFunc::NONE, false, true);
 
   // Bias cannot be fused as it's passed as feature map.
   g.to_fm_bias();
@@ -214,7 +242,7 @@ TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_activation_NEG)
 {
-  g.init(luci::FusedActFunc::RELU, false);
+  g.init(luci::FusedActFunc::RELU, false, true);
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
