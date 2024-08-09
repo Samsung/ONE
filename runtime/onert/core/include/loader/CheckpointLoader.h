@@ -40,9 +40,9 @@ namespace onert
 namespace loader
 {
 
-void loadCheckpoint(const std::unique_ptr<onert::exec::Execution> &exec, const
-std::unique_ptr<ir::train::TrainingInfo> &train_info,
-  const std::string &filename);
+void loadCheckpoint(const std::string &filename,
+                    const std::unique_ptr<ir::train::TrainingInfo> &train_info,
+                    const std::unique_ptr<onert::exec::Execution> &exec);
 
 } // namespace loader
 } // namespace onert

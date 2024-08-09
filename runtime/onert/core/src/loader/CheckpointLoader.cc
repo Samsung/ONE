@@ -49,7 +49,7 @@ struct __attribute__((packed)) Header
 
 struct DataBufferPair
 {
-  DataBufferPair(uint32_t _offset, uint32_t _size): offset{_offset}, size{_size}
+  DataBufferPair(uint32_t _offset, uint32_t _size) : offset{_offset}, size{_size}
   {
     // DO NOTHING
   }
@@ -63,19 +63,20 @@ struct DataBuffer
   std::vector<uint32_t> offset;
   std::vector<uint32_t> size;
 
-  void resize(uint32_t length) {
+  void resize(uint32_t length)
+  {
     offset.resize(length);
     size.resize(length);
   }
 
-  char *getOffsetBuf() {
-    return reinterpret_cast<char *>(offset.data());
-  }
+  char *getOffsetBuf() { return reinterpret_cast<char *>(offset.data()); }
 
-  void calculateSize(uint32_t next_beg_offset) {
+  void calculateSize(uint32_t next_beg_offset)
+  {
     assert(offset.size() == size.size());
     uint32_t cur = offset[0];
-    for (size_t i = 1; i < offset.size(); ++i) {
+    for (size_t i = 1; i < offset.size(); ++i)
+    {
       size[i - 1] = offset[i] - cur;
       cur = offset[i];
     }
@@ -83,7 +84,8 @@ struct DataBuffer
   }
 
   // offset, size
-  DataBufferPair operator[](uint32_t i) {
+  DataBufferPair operator[](uint32_t i)
+  {
     assert(offset.size() == size.size());
     assert(i <= offset.size());
     return DataBufferPair{offset[i], size[i]};
@@ -105,7 +107,7 @@ public:
     _file.seekg(0, std::ios::end);
     const auto filesize = _file.tellg();
     _file.seekg(0, std::ios::beg);
-  
+
     if (filesize < static_cast<long int>(sizeof(_header)))
       throw std::runtime_error{"Invalid checkpoint file data"};
 
@@ -123,7 +125,7 @@ public:
     _tensor_data.resize(_header.length);
     _file.read(_tensor_data.getOffsetBuf(), _header.length * sizeof(uint32_t));
     _tensor_data.calculateSize(_header.opt1_offset);
-  
+
     if (_header.opt1_offset)
     {
       _opt1_data.resize(_header.length);
@@ -171,9 +173,9 @@ private:
   DataBuffer _opt2_data;
 };
 
-
-void loadCheckpoint(const std::unique_ptr<onert::exec::Execution> &exec, const std::unique_ptr<ir::train::TrainingInfo> &train_info,
-  const std::string &filename)
+void loadCheckpoint(const std::string &filename,
+                    const std::unique_ptr<ir::train::TrainingInfo> &train_info,
+                    const std::unique_ptr<onert::exec::Execution> &exec)
 {
   CheckpointLoader loader(filename);
   loader.updateTensor(exec);

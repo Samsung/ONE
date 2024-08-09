@@ -1719,7 +1719,7 @@ NNFW_STATUS nnfw_session::train_import_checkpoint(const char *path)
 
   try
   {
-    onert::loader::loadCheckpoint(_execution, _train_info, path);
+    onert::loader::loadCheckpoint(path, _train_info, _execution);
   }
   catch (const std::exception &e)
   {
