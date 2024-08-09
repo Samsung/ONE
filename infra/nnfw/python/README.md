@@ -1,12 +1,12 @@
-# nnfwapi package
+# onert package
 
-`nnfwapi` is a package to run `nnpackage` with the nnfw python API.
+`onert` is a package to run `nnpackage` with the nnfw onert's python API.
 
-This package includes the nnfw python API module resulting from runtime build.
+This package includes the nnfw-onert python API module resulting from runtime build.
 
 It is provided separate package for each architecture(x86_64, armv7l, aarch64).
 
-It uses `nnfwapi/libnnfw_api_pybind.py` interface.
+It uses `onert/infer.py` interface.
 
 ## Packaging
 Execute this command, then the tasks such as copying modules, and packaging.
@@ -39,17 +39,25 @@ $ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 You can install the package as follows:
 
 ```
-$ pip install -i https://test.pypi.org/simple/ nnfwapi
+$ pip install -i https://test.pypi.org/simple/ nnfw-onert
 ```
 
 By specifying the version, you can use a specific version of the package. (recommended)
 
 ```
-$ pip install -i https://test.pypi.org/simple/ nnfwapi==0.1.1
+$ pip install -i https://test.pypi.org/simple/ nnfw-onert==0.1.1
 ```
 
 This definition has to be set at the top of the script using nnfw python API.
 
 ```
-from nnfwapi.libnnfw_api_pybind import *
+import onert
 ```
+
+Or you can import the onert module directly.
+
+```
+from onert.infer import *
+```
+
+This can be use onert session directly.
