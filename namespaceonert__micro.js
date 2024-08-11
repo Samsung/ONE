@@ -14,13 +14,15 @@ var namespaceonert__micro =
       [ "BINARY_CROSS_ENTROPY", "namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda0cfc9f45a62ad1b7df0e8fec11948c7b", null ],
       [ "CROSS_ENTROPY", "namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa", null ],
       [ "MSE", "namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6", null ],
-      [ "MAE", "namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c", null ]
+      [ "MAE", "namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c", null ],
+      [ "SPARSE_CROSS_ENTROPY", "namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda1818808d149ef13c683d3bb35d6fe9ed", null ]
     ] ],
     [ "OMMetrics", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224", [
       [ "MSE_METRICS", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614", null ],
       [ "MAE_METRICS", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f", null ],
       [ "CROSS_ENTROPY_METRICS", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087", null ],
-      [ "ACCURACY", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc", null ]
+      [ "ACCURACY", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc", null ],
+      [ "SPARSE_CROSS_ENTROPY_ACCURACY", "namespaceonert__micro.html#ad046550495f851ca3f09b45262799224acb892a4491d539ccf90def1d3435e658", null ]
     ] ],
     [ "OMStatus", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb", [
       [ "Ok", "namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8", null ],

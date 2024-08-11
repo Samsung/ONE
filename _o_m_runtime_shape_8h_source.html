@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('_o_m_runtime_shape_8h_source.html','')
 <div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">   45</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">OMRuntimeShape</a>(<span class="keyword">const</span> circle::Tensor *tensor)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span> or tensor-&gt;shape() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    _size = tensor-&gt;shape()-&gt;size();</div>

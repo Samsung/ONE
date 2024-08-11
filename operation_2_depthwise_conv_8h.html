@@ -101,11 +101,13 @@ $(document).ready(function(){initNavTree('operation_2_depthwise_conv_8h.html',''
 <code>#include &quot;<a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html">cker/Utils.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cker_2include_2cker_2neon_2neon__check_8h_source.html">cker/neon/neon_check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_depthwise_conv_float_8h_source.html">cker/operation/optimized/DepthwiseConvFloat.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="optimized_2_depthwise_conv_uint8_8h_source.html">cker/operation/optimized/DepthwiseConvUint8.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="optimized_2_depthwise_conv_u_int8_8h_source.html">cker/operation/optimized/DepthwiseConvUint8.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_depthwise_conv_int8_8h_source.html">cker/operation/optimized/integer_ops/DepthwiseConvInt8.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="reference_2integer__ops_2_depthwise_conv_uint8_8h_source.html">cker/operation/reference/integer_ops/DepthwiseConvUInt8.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="reference_2integer__ops_2_depthwise_conv_u_int8_8h_source.html">cker/operation/reference/integer_ops/DepthwiseConvUInt8.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_depthwise_conv_hybrid_8h_source.html">cker/operation/reference/integer_ops/DepthwiseConvHybrid.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_cpu_backend_threadpool_8h_source.html">cker/CpuBackendThreadpool.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="depthwise__conv__op_8h_source.html">cker/eigen/depthwise_conv_op.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="bias__op_8h_source.html">cker/eigen/bias_op.h</a>&quot;</code><br />
 </div>
 <p><a href="operation_2_depthwise_conv_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -130,6 +132,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a084f98004ce2be7b83f2ad526b47f732" id="r_a084f98004ce2be7b83f2ad526b47f732"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TS &gt; </td></tr>
 <tr class="memitem:a084f98004ce2be7b83f2ad526b47f732"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a084f98004ce2be7b83f2ad526b47f732">nnfw::cker::DepthwiseConv</a> (const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;filter_shape, const T *filter_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;bias_shape, const TS *bias_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data, ruy::Context *ruy_context)</td></tr>
 <tr class="separator:a084f98004ce2be7b83f2ad526b47f732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c1618c3e78193a23a4030743fa5dbbc" id="r_a4c1618c3e78193a23a4030743fa5dbbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a4c1618c3e78193a23a4030743fa5dbbc">nnfw::cker::DepthwiseConvOp</a> (const <a class="el" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const float *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;filter_shape, const float *filter_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;bias_shape, const float *bias_data, float *padded_filter_data, bool pad_filter, float *filter_buffers_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
+<tr class="separator:a4c1618c3e78193a23a4030743fa5dbbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

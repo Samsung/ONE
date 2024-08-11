@@ -1,0 +1,11 @@
+<map id="onert_micro::test_model::TestDataFloatQuantize" name="onert_micro::test_model::TestDataFloatQuantize">
+<area shape="rect" id="Node000001" title=" " alt="" coords="722,41,882,82"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_quantize_base.html" title=" " alt="" coords="511,34,673,90"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="688,59,721,59,721,64,688,64"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="215,5,374,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="390,35,511,49,511,55,390,40"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1test__model_1_1_test_data_quantize_base.html" title=" " alt="" coords="214,70,375,126"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="391,83,511,69,511,74,391,89"/>
+<area shape="rect" id="Node000005" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="5,77,165,118"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="180,95,214,95,214,100,180,100"/>
+</map>

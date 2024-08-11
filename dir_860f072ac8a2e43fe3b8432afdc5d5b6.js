@@ -9,6 +9,7 @@ var dir_860f072ac8a2e43fe3b8432afdc5d5b6 =
     [ "Config.h", "runtime_2onert_2backend_2train_2_config_8h.html", "runtime_2onert_2backend_2train_2_config_8h" ],
     [ "DisposableTensorIndex.h", "_disposable_tensor_index_8h.html", "_disposable_tensor_index_8h" ],
     [ "ExternalContext.h", "backend_2train_2_external_context_8h.html", "backend_2train_2_external_context_8h" ],
+    [ "ExtraTensorIndex.h", "_extra_tensor_index_8h.html", "_extra_tensor_index_8h" ],
     [ "KernelGenerator.cc", "backend_2train_2_kernel_generator_8cc.html", null ],
     [ "KernelGenerator.h", "backend_2train_2_kernel_generator_8h.html", "backend_2train_2_kernel_generator_8h" ],
     [ "MemoryManager.cc", "backend_2train_2_memory_manager_8cc.html", null ],

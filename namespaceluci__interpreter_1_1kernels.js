@@ -162,7 +162,6 @@ var namespaceluci__interpreter_1_1kernels =
     [ "getTensorShape", "namespaceluci__interpreter_1_1kernels.html#a74f2161267eeabcf602a15e16c2350f5", null ],
     [ "getTfLiteActivation", "namespaceluci__interpreter_1_1kernels.html#a4ed6b9c9202ad76ab66811c677bc73b8", null ],
     [ "matrixScalarMultiplyAccumulate", "namespaceluci__interpreter_1_1kernels.html#afd0d7e8134f1365f84ef40571dec5ea8", null ],
-    [ "MirrorPadImpl", "namespaceluci__interpreter_1_1kernels.html#a311b8d64a068a0552d5c3fb08b5e50f6", null ],
     [ "one_of_types", "namespaceluci__interpreter_1_1kernels.html#aaeab94e4b66016c7ac88378ac1c045e0", null ],
     [ "one_of_types", "namespaceluci__interpreter_1_1kernels.html#abc1fcd91990e1a4189758637adb1fe1b", null ],
     [ "quantizeMultiplier", "namespaceluci__interpreter_1_1kernels.html#adcf639b916825841b3f99d5f4fccff22", null ],

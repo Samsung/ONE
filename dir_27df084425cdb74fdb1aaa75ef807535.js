@@ -32,6 +32,7 @@ var dir_27df084425cdb74fdb1aaa75ef807535 =
     [ "PALSquare.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_square_8h.html", null ],
     [ "PALSquaredDifference.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_squared_difference_8h.html", null ],
     [ "PALSub.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_sub_8h.html", null ],
+    [ "PALSVDF.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html", null ],
     [ "PALTanh.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_tanh_8h.html", null ],
     [ "PALTranspose.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_transpose_8h.html", null ],
     [ "PALTransposeConv.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_transpose_conv_8h.html", null ]

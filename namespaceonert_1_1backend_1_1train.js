@@ -10,8 +10,8 @@ var namespaceonert_1_1backend_1_1train =
     [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
     [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
     [ "ExtraTensor", "classonert_1_1backend_1_1train_1_1_extra_tensor.html", "classonert_1_1backend_1_1train_1_1_extra_tensor" ],
+    [ "ExtraTensorIndex", "classonert_1_1backend_1_1train_1_1_extra_tensor_index.html", "classonert_1_1backend_1_1train_1_1_extra_tensor_index" ],
     [ "FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", "classonert_1_1backend_1_1train_1_1_first_fit_planner" ],
-    [ "GradientMemoryManager", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager.html", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager" ],
     [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],
     [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
     [ "ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor" ],
@@ -26,6 +26,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "TensorRegistry", "classonert_1_1backend_1_1train_1_1_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_tensor_registry" ],
     [ "TrainableBackendContext", "classonert_1_1backend_1_1train_1_1_trainable_backend_context.html", "classonert_1_1backend_1_1train_1_1_trainable_backend_context" ],
     [ "TrainableContextData", "structonert_1_1backend_1_1train_1_1_trainable_context_data.html", "structonert_1_1backend_1_1train_1_1_trainable_context_data" ],
+    [ "TrainableMemoryManager", "classonert_1_1backend_1_1train_1_1_trainable_memory_manager.html", "classonert_1_1backend_1_1train_1_1_trainable_memory_manager" ],
     [ "WICPlanner", "classonert_1_1backend_1_1train_1_1_w_i_c_planner.html", "classonert_1_1backend_1_1train_1_1_w_i_c_planner" ],
     [ "BackPropTensor", "namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745", null ],
     [ "DisposableTensorIndexMap", "namespaceonert_1_1backend_1_1train.html#a3941bee692651dbecf8a48dd142c8ad4", null ],
@@ -36,5 +37,6 @@ var namespaceonert_1_1backend_1_1train =
     [ "TrainableBackendContexts", "namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e", null ],
     [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ],
     [ "createOptimizer", "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e", null ],
-    [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ad643bd209405eb6d4500363a4687ccc4", null ]
+    [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ad643bd209405eb6d4500363a4687ccc4", null ],
+    [ "operator<<", "namespaceonert_1_1backend_1_1train.html#a351ea0a781326b0bbf8e378a1fd21bdc", null ]
 ];

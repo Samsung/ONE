@@ -158,9 +158,9 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <h2>Run test</h2>
 <p>To run and test the cross-compiled runtime, you need to install library packages and copy the compiled output to the target device of the architecture in which it is executable.</p>
 <ol type="1">
-<li>Install hdf5 and boost library package</li>
+<li>Install hdf5 library package</li>
 </ol>
-<div class="fragment"><div class="line">$ sudo apt install libhdf5-dev libboost-system-dev libboost-program-options-dev</div>
+<div class="fragment"><div class="line">$ sudo apt install libhdf5-dev</div>
 </div><!-- fragment --><ol type="1">
 <li>Copy all artifacts under the <code>./Product/armv7l-linux.&lt;BUILD_TYPE&gt;</code> folder to the target device, Odroid-XU4 for example, as a whole.</li>
 </ol>

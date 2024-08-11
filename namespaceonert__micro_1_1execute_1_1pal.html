@@ -199,6 +199,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a7e7294edf154e7273af3b8d142eede09" id="r_a7e7294edf154e7273af3b8d142eede09"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Fn &gt; </td></tr>
 <tr class="memitem:a7e7294edf154e7273af3b8d142eede09"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a7e7294edf154e7273af3b8d142eede09">BroadcastBinaryOp4DSlow</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input1_shape, const float *input1_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input2_shape, const float *input2_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
 <tr class="separator:a7e7294edf154e7273af3b8d142eede09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07a03f4022c4c767d525f9c524f660b2" id="r_a07a03f4022c4c767d525f9c524f660b2"><td class="memTemplParams" colspan="2">template&lt;typename FromT , typename ToT &gt; </td></tr>
+<tr class="memitem:a07a03f4022c4c767d525f9c524f660b2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a07a03f4022c4c767d525f9c524f660b2">Cast</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, const FromT *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, ToT *output_data)</td></tr>
+<tr class="separator:a07a03f4022c4c767d525f9c524f660b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14053eb9b76772e319c52af32e5de065" id="r_a14053eb9b76772e319c52af32e5de065"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a14053eb9b76772e319c52af32e5de065"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a14053eb9b76772e319c52af32e5de065">Ceil</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
+<tr class="separator:a14053eb9b76772e319c52af32e5de065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aece49482e6c9643c92f5ee5c74413f76" id="r_aece49482e6c9643c92f5ee5c74413f76"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aece49482e6c9643c92f5ee5c74413f76"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#aece49482e6c9643c92f5ee5c74413f76">LessFn</a> (T lhs, T rhs)</td></tr>
 <tr class="separator:aece49482e6c9643c92f5ee5c74413f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,9 +258,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a26f7bd5a66568019eff517189d41c7da" id="r_a26f7bd5a66568019eff517189d41c7da"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a26f7bd5a66568019eff517189d41c7da"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a26f7bd5a66568019eff517189d41c7da">BroadcastDiv4DSlow</a> (const <a class="el" href="structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html">core::BinaryArithmeticBroadcastParams</a> &amp;params, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input1_shape, const T *input1_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input2_shape, const T *input2_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:a26f7bd5a66568019eff517189d41c7da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff573956fe015321c33daac96d20d1e3" id="r_aff573956fe015321c33daac96d20d1e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#aff573956fe015321c33daac96d20d1e3">Elu</a> (const int flat_size, const float *input_data, float *output_data)</td></tr>
+<tr class="separator:aff573956fe015321c33daac96d20d1e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a776fbd7afc30c8eea9bd1901522f48be" id="r_a776fbd7afc30c8eea9bd1901522f48be"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a776fbd7afc30c8eea9bd1901522f48be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a776fbd7afc30c8eea9bd1901522f48be">Exp</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:a776fbd7afc30c8eea9bd1901522f48be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48c7eaa71ab84e557119aa3d827fc6b4" id="r_a48c7eaa71ab84e557119aa3d827fc6b4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a48c7eaa71ab84e557119aa3d827fc6b4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a48c7eaa71ab84e557119aa3d827fc6b4">Fill</a> (const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
+<tr class="separator:a48c7eaa71ab84e557119aa3d827fc6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b3d5f96dd80b3c918600bea1335ffcc" id="r_a1b3d5f96dd80b3c918600bea1335ffcc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a1b3d5f96dd80b3c918600bea1335ffcc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a1b3d5f96dd80b3c918600bea1335ffcc">Floor</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:a1b3d5f96dd80b3c918600bea1335ffcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,6 +324,9 @@ Functions</h2></td></tr>
 <tr class="separator:ad00e1604b5f13c61f1121c6658f10fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5600ed9d33508222cf5c7ecbbe03edae" id="r_a5600ed9d33508222cf5c7ecbbe03edae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a5600ed9d33508222cf5c7ecbbe03edae">Pad</a> (const <a class="el" href="structonert__micro_1_1core_1_1_pad_params.html">core::PadParams</a> &amp;op_params, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, const float *input_data, const float pad_value, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, float *output_data)</td></tr>
 <tr class="separator:a5600ed9d33508222cf5c7ecbbe03edae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d366459e49cc323352bd465928cd99" id="r_af4d366459e49cc323352bd465928cd99"><td class="memTemplParams" colspan="2">template&lt;typename InputT , typename OutputT &gt; </td></tr>
+<tr class="memitem:af4d366459e49cc323352bd465928cd99"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#af4d366459e49cc323352bd465928cd99">Quantize</a> (const <a class="el" href="structonert__micro_1_1core_1_1_quantization_params.html">core::QuantizationParams</a> op_params, const uint32_t flat_size, const InputT *input_data, OutputT *output_data)</td></tr>
+<tr class="separator:af4d366459e49cc323352bd465928cd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20ef371456221f494f77cdf64fa8abad" id="r_a20ef371456221f494f77cdf64fa8abad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a20ef371456221f494f77cdf64fa8abad">ReLUCommon</a> (const int flat_size, const float *input_data, float *output_data, const float alpha, const bool is_relu_6)</td></tr>
 <tr class="separator:a20ef371456221f494f77cdf64fa8abad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35b81cd35cf8765af92b9d0f12bddf7e" id="r_a35b81cd35cf8765af92b9d0f12bddf7e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -369,6 +383,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a8a974e5bbdac4ae610d27cee4e50eb9b" id="r_a8a974e5bbdac4ae610d27cee4e50eb9b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a8a974e5bbdac4ae610d27cee4e50eb9b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a8a974e5bbdac4ae610d27cee4e50eb9b">BroadcastSub4DSlow</a> (const <a class="el" href="structonert__micro_1_1core_1_1_binary_arithmetic_broadcast_params.html">core::BinaryArithmeticBroadcastParams</a> &amp;params, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input1_shape, const T *input1_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input2_shape, const T *input2_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:a8a974e5bbdac4ae610d27cee4e50eb9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4849cf9582886e6fa0a9cb99891a79" id="r_adb4849cf9582886e6fa0a9cb99891a79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#adb4849cf9582886e6fa0a9cb99891a79">SVDF</a> (const float *input_data, const float *weights_feature_data, const float *weights_time_data, const float *bias_data, float *state_data, float *scratch_data, float *output_data, const int rank, const int input_size, const int batch_size, const int num_filters, const int num_units, const int memory_size, const circle::ActivationFunctionType activation)</td></tr>
+<tr class="separator:adb4849cf9582886e6fa0a9cb99891a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accfd923e3886b1daba0fbc8f20b97a64" id="r_accfd923e3886b1daba0fbc8f20b97a64"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:accfd923e3886b1daba0fbc8f20b97a64"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#accfd923e3886b1daba0fbc8f20b97a64">Tanh</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:accfd923e3886b1daba0fbc8f20b97a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3368,6 +3384,150 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a07a03f4022c4c767d525f9c524f660b2" name="a07a03f4022c4c767d525f9c524f660b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07a03f4022c4c767d525f9c524f660b2">&#9670;&#160;</a></span>Cast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FromT , typename ToT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::pal::Cast </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const FromT *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ToT *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_cast_8h_source.html#l00034">34</a> of file <a class="el" href="_p_a_l_cast_8h_source.html">PALCast.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">const</span> uint32_t flat_size = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#af21451ced7f3e19f2eb53d10e2978deb">flatSize</a>();</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (flat_size == -1)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   43</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  assert(input_shape == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    output_data[i] = <span class="keyword">static_cast&lt;</span>ToT<span class="keyword">&gt;</span>(input_data[i]);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   53</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+
+</div>
+</div>
+<a id="a14053eb9b76772e319c52af32e5de065" name="a14053eb9b76772e319c52af32e5de065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14053eb9b76772e319c52af32e5de065">&#9670;&#160;</a></span>Ceil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::pal::Ceil </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_ceil_8h_source.html#l00034">34</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_ceil_8h_source.html">PALCeil.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">const</span> uint32_t flat_size = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#af21451ced7f3e19f2eb53d10e2978deb">flatSize</a>();</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (flat_size == -1)</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   43</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  assert(input_shape == <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    output_data[i] = std::ceil(input_data[i]);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   53</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+
+</div>
+</div>
 <a id="a2af88685f9bc8db758ec82a19fe4bdfd" name="a2af88685f9bc8db758ec82a19fe4bdfd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2af88685f9bc8db758ec82a19fe4bdfd">&#9670;&#160;</a></span>ComparisonNoScaling()</h2>
 
@@ -4589,6 +4749,62 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aff573956fe015321c33daac96d20d1e3" name="aff573956fe015321c33daac96d20d1e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff573956fe015321c33daac96d20d1e3">&#9670;&#160;</a></span>Elu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::pal::Elu </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>flat_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_elu_8h_source.html#l00032">32</a> of file <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_elu_8h_source.html">PALElu.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   35</span>  {</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordtype">float</span> val = input_data[i];</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordtype">float</span> result = val &lt; 0.0f ? std::expm1(val) : val;</div>
+<div class="line"><span class="lineno">   38</span>    output_data[i] = result;</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   42</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
+
+</div>
+</div>
 <a id="a4da9da52f3ff19aee4e510c7febffa0d" name="a4da9da52f3ff19aee4e510c7febffa0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4da9da52f3ff19aee4e510c7febffa0d">&#9670;&#160;</a></span>EqualFn()</h2>
 
@@ -4699,6 +4915,71 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   53</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+
+</div>
+</div>
+<a id="a48c7eaa71ab84e557119aa3d827fc6b4" name="a48c7eaa71ab84e557119aa3d827fc6b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48c7eaa71ab84e557119aa3d827fc6b4">&#9670;&#160;</a></span>Fill()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::pal::Fill </td>
+          <td>(</td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>output_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_p_a_l_fill_8h_source.html#l00032">32</a> of file <a class="el" href="_p_a_l_fill_8h_source.html">PALFill.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> uint32_t flat_size = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">flatSize</a>();</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (flat_size == -1)</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   40</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; ++i)</div>
+<div class="line"><span class="lineno">   43</span>  {</div>
+<div class="line"><span class="lineno">   44</span>    output_data[i] = input_data[0];</div>
+<div class="line"><span class="lineno">   45</span>  }</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   48</span>}</div>
+<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_acbf4dabf4f38e9b25551036973965529"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">luci_interpreter::RuntimeShape::flatSize</a></div><div class="ttdeci">int flatSize() const</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">Tensor.h:45</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>
@@ -7752,6 +8033,69 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="af4d366459e49cc323352bd465928cd99" name="af4d366459e49cc323352bd465928cd99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4d366459e49cc323352bd465928cd99">&#9670;&#160;</a></span>Quantize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename InputT , typename OutputT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::pal::Quantize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structonert__micro_1_1core_1_1_quantization_params.html">core::QuantizationParams</a>&#160;</td>
+          <td class="paramname"><em>op_params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>flat_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const InputT *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">OutputT *&#160;</td>
+          <td class="paramname"><em>output_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_quantize_8h_source.html#l00035">35</a> of file <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_quantize_8h_source.html">PALQuantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> int32_t zero_point = op_params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_quantization_params.html#abbaf44b20bca88d955104bad5129a1ea">zero_point</a>;</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> scale = op_params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_quantization_params.html#aab162b75acd8179b370b7865826ded61">scale</a>;</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t min_val = std::numeric_limits&lt;OutputT&gt;::min();</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">static</span> <span class="keyword">constexpr</span> int32_t max_val = std::numeric_limits&lt;OutputT&gt;::max();</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
+<div class="line"><span class="lineno">   44</span>  {</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keyword">const</span> InputT val = input_data[i];</div>
+<div class="line"><span class="lineno">   46</span>    int32_t unclamped =</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(std::round(val / <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(scale))) + zero_point;</div>
+<div class="line"><span class="lineno">   48</span>    int32_t clamped = std::min(std::max(unclamped, min_val), max_val);</div>
+<div class="line"><span class="lineno">   49</span>    output_data[i] = clamped;</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   53</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00219">onert_micro::core::QuantizationParams::scale</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00220">onert_micro::core::QuantizationParams::zero_point</a>.</p>
+
+</div>
+</div>
 <a id="a6d854845904479887b91aa4c69d2a0e2" name="a6d854845904479887b91aa4c69d2a0e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d854845904479887b91aa4c69d2a0e2">&#9670;&#160;</a></span>ReduceDimensionsForBroadcast()</h2>
 
@@ -9639,6 +9983,157 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="adb4849cf9582886e6fa0a9cb99891a79" name="adb4849cf9582886e6fa0a9cb99891a79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb4849cf9582886e6fa0a9cb99891a79">&#9670;&#160;</a></span>SVDF()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::pal::SVDF </td>
+          <td>(</td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>weights_feature_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>weights_time_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>bias_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>state_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>scratch_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>output_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>rank</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>input_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>batch_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>num_filters</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>num_units</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>memory_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::ActivationFunctionType&#160;</td>
+          <td class="paramname"><em>activation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_s_v_d_f_common_8h_source.html#l00138">138</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_s_v_d_f_common_8h_source.html">PALSVDFCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
+<div class="line"><span class="lineno">  144</span>  <span class="comment">// Left shift the activation_state.</span></div>
+<div class="line"><span class="lineno">  145</span>  {</div>
+<div class="line"><span class="lineno">  146</span>    <span class="keywordtype">float</span> *new_state_start = state_data;</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *old_state_start = state_data + 1;</div>
+<div class="line"><span class="lineno">  148</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *old_state_end = state_data + batch_size * num_filters * memory_size;</div>
+<div class="line"><span class="lineno">  149</span>    <span class="keywordflow">while</span> (old_state_start != old_state_end)</div>
+<div class="line"><span class="lineno">  150</span>    {</div>
+<div class="line"><span class="lineno">  151</span>      *new_state_start++ = *old_state_start++;</div>
+<div class="line"><span class="lineno">  152</span>    }</div>
+<div class="line"><span class="lineno">  153</span>  }</div>
+<div class="line"><span class="lineno">  154</span> </div>
+<div class="line"><span class="lineno">  155</span>  <span class="comment">// Note: no need to clear the latest activation, matmul is not accumulative.</span></div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>  <span class="comment">// Compute conv1d(inputs, weights_feature).</span></div>
+<div class="line"><span class="lineno">  158</span>  <span class="comment">// The activation_state&#39;s rightmost column is used to save current cycle</span></div>
+<div class="line"><span class="lineno">  159</span>  <span class="comment">// activation. This is achieved by starting at state_ptr[memory_size - 1] and</span></div>
+<div class="line"><span class="lineno">  160</span>  <span class="comment">// having the stride equal to memory_size.</span></div>
+<div class="line"><span class="lineno">  161</span> </div>
+<div class="line"><span class="lineno">  162</span>  <span class="comment">// Perform batched matrix vector multiply operation:</span></div>
+<div class="line"><span class="lineno">  163</span>  {</div>
+<div class="line"><span class="lineno">  164</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix = weights_feature_data;</div>
+<div class="line"><span class="lineno">  165</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *vector = input_data;</div>
+<div class="line"><span class="lineno">  166</span>    <span class="keywordtype">float</span> *result = &amp;state_data[memory_size - 1];</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordtype">float</span> *result_in_batch = result;</div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; batch_size; ++i)</div>
+<div class="line"><span class="lineno">  169</span>    {</div>
+<div class="line"><span class="lineno">  170</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix_ptr = matrix;</div>
+<div class="line"><span class="lineno">  171</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; num_filters; ++j)</div>
+<div class="line"><span class="lineno">  172</span>      {</div>
+<div class="line"><span class="lineno">  173</span>        <span class="keywordtype">float</span> dot_prod = 0.0f;</div>
+<div class="line"><span class="lineno">  174</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> *vector_in_batch = vector + i * input_size;</div>
+<div class="line"><span class="lineno">  175</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; input_size; ++k)</div>
+<div class="line"><span class="lineno">  176</span>        {</div>
+<div class="line"><span class="lineno">  177</span>          dot_prod += *matrix_ptr++ * *vector_in_batch++;</div>
+<div class="line"><span class="lineno">  178</span>        }</div>
+<div class="line"><span class="lineno">  179</span>        *result_in_batch = dot_prod;</div>
+<div class="line"><span class="lineno">  180</span>        result_in_batch += memory_size;</div>
+<div class="line"><span class="lineno">  181</span>      }</div>
+<div class="line"><span class="lineno">  182</span>    }</div>
+<div class="line"><span class="lineno">  183</span>  }</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  applyTimeWeightsBiasAndActivation(batch_size, memory_size, num_filters, num_units, rank,</div>
+<div class="line"><span class="lineno">  186</span>                                    weights_time_data, bias_data, activation, state_data,</div>
+<div class="line"><span class="lineno">  187</span>                                    scratch_data, output_data);</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  189</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
+
+</div>
+</div>
 <a id="accfd923e3886b1daba0fbc8f20b97a64" name="accfd923e3886b1daba0fbc8f20b97a64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#accfd923e3886b1daba0fbc8f20b97a64">&#9670;&#160;</a></span>Tanh()</h2>
 
@@ -10050,7 +10545,6 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">  136</span>  }</div>
 <div class="line"><span class="lineno">  137</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">  138</span>}</div>
-<div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_acbf4dabf4f38e9b25551036973965529"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">luci_interpreter::RuntimeShape::flatSize</a></div><div class="ttdeci">int flatSize() const</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">Tensor.h:45</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00176">onert_micro::core::FloatConv2D::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00175">onert_micro::core::FloatConv2D::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00208">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00119">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00197">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00173">onert_micro::core::FloatConv2D::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00174">onert_micro::core::FloatConv2D::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00169">onert_micro::core::FloatConv2D::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00168">onert_micro::core::FloatConv2D::stride_w</a>.</p>
 

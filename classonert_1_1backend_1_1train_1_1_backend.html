@@ -220,7 +220,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   54</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
 <div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> optimizer = <a class="code hl_function" href="namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e">createOptimizer</a>(tdata.optim_info);</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, optimizer.get(), <span class="stringliteral">&quot;Bump&quot;</span>);</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, optimizer.get());</div>
 <div class="line"><span class="lineno">   58</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
 <div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb,</div>
 <div class="line"><span class="lineno">   60</span>                                                           std::move(optimizer));</div>

@@ -111,5 +111,6 @@ var searchData=
   ['externaldata_108',['ExternalData',['../classonert_1_1ir_1_1_external_data.html',1,'onert::ir']]],
   ['externalregion_109',['ExternalRegion',['../classmir_1_1_external_region.html',1,'mir']]],
   ['externaltensor_110',['ExternalTensor',['../classonert_1_1backend_1_1basic_1_1_external_tensor.html',1,'onert::backend::basic']]],
-  ['extratensor_111',['ExtraTensor',['../classonert_1_1backend_1_1train_1_1_extra_tensor.html',1,'onert::backend::train']]]
+  ['extratensor_111',['ExtraTensor',['../classonert_1_1backend_1_1train_1_1_extra_tensor.html',1,'onert::backend::train']]],
+  ['extratensorindex_112',['ExtraTensorIndex',['../classonert_1_1backend_1_1train_1_1_extra_tensor_index.html',1,'onert::backend::train']]]
 ];

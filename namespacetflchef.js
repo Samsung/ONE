@@ -135,7 +135,6 @@ var namespacetflchef =
     [ "as_tflchef_sparse_dim_type", "namespacetflchef.html#a7bfed56b2d56fe86f9905b655056b5d2", null ],
     [ "as_tflchef_sparse_idx_vec_type", "namespacetflchef.html#ab68d05ef145f351d1b60d312d2b5be80", null ],
     [ "as_tflchef_type", "namespacetflchef.html#ac7e727581ace986a5398db3565432186", null ],
-    [ "cook", "namespacetflchef.html#aea791676f72eef612c8c3042125b2641", null ],
     [ "cook", "namespacetflchef.html#a9fdece291a0b64deb42f0e4ec069a476", null ],
     [ "extract_buffer", "namespacetflchef.html#a1d4047690d8d6b203e9eb8108ce3f540", null ],
     [ "fill_tensor_to_import", "namespacetflchef.html#ade2d1e8ed5e587bf9ed1b813cf1ab1f6", null ],

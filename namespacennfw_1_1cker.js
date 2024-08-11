@@ -214,6 +214,7 @@ var namespacennfw_1_1cker =
     [ "CwiseClipping", "namespacennfw_1_1cker.html#acfbd4ad2e41a2fded6cd669424e07fe5", null ],
     [ "DepthToSpace", "namespacennfw_1_1cker.html#a7d4d714390469315a5c43b8301bd7bff", null ],
     [ "DepthwiseConv", "namespacennfw_1_1cker.html#a084f98004ce2be7b83f2ad526b47f732", null ],
+    [ "DepthwiseConvOp", "namespacennfw_1_1cker.html#a4c1618c3e78193a23a4030743fa5dbbc", null ],
     [ "Dequantize", "namespacennfw_1_1cker.html#ad7acb2eac666c3531d1275f859743d87", null ],
     [ "Dequantize", "namespacennfw_1_1cker.html#a2cd8a42d277d6bcabcd35e18fdfa9d4c", null ],
     [ "Dequantize", "namespacennfw_1_1cker.html#ae73600139339a71df768d6453c6d3db1", null ],

@@ -241,36 +241,36 @@ Args:
 Returns:
 dict: each entry is related to single detected driver,
       key is a config section name, value is a driver name</pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00339">339</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  339</span><span class="keyword">def </span>detect_one_import_drivers(search_path):</div>
-<div class="line"><span class="lineno">  340</span>    <span class="stringliteral">&quot;&quot;&quot;Looks for import drivers in given directory</span></div>
-<div class="line"><span class="lineno">  341</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  342</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><span class="lineno">  343</span><span class="stringliteral">        search_path: path to the directory where to search import drivers</span></div>
-<div class="line"><span class="lineno">  344</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  345</span><span class="stringliteral">    Returns:</span></div>
-<div class="line"><span class="lineno">  346</span><span class="stringliteral">    dict: each entry is related to single detected driver,</span></div>
-<div class="line"><span class="lineno">  347</span><span class="stringliteral">          key is a config section name, value is a driver name</span></div>
-<div class="line"><span class="lineno">  348</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  349</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  350</span>    import_drivers_dict = {}</div>
-<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">for</span> module_name <span class="keywordflow">in</span> os.listdir(search_path):</div>
-<div class="line"><span class="lineno">  352</span>        full_path = os.path.join(search_path, module_name)</div>
-<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(full_path):</div>
-<div class="line"><span class="lineno">  354</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  355</span>        <span class="keywordflow">if</span> module_name.find(<span class="stringliteral">&quot;one-import-&quot;</span>) != 0:</div>
-<div class="line"><span class="lineno">  356</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  357</span>        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)</div>
-<div class="line"><span class="lineno">  358</span>        module_spec = importlib.util.spec_from_loader(module_name, module_loader)</div>
-<div class="line"><span class="lineno">  359</span>        module = importlib.util.module_from_spec(module_spec)</div>
-<div class="line"><span class="lineno">  360</span>        <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  361</span>            module_loader.exec_module(module)</div>
-<div class="line"><span class="lineno">  362</span>            <span class="keywordflow">if</span> hasattr(module, <span class="stringliteral">&quot;get_driver_cfg_section&quot;</span>):</div>
-<div class="line"><span class="lineno">  363</span>                section = module.get_driver_cfg_section()</div>
-<div class="line"><span class="lineno">  364</span>                import_drivers_dict[section] = module_name</div>
-<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">except</span>:</div>
-<div class="line"><span class="lineno">  366</span>            <span class="keywordflow">pass</span></div>
-<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00345">345</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  345</span><span class="keyword">def </span>detect_one_import_drivers(search_path):</div>
+<div class="line"><span class="lineno">  346</span>    <span class="stringliteral">&quot;&quot;&quot;Looks for import drivers in given directory</span></div>
+<div class="line"><span class="lineno">  347</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  348</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><span class="lineno">  349</span><span class="stringliteral">        search_path: path to the directory where to search import drivers</span></div>
+<div class="line"><span class="lineno">  350</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  351</span><span class="stringliteral">    Returns:</span></div>
+<div class="line"><span class="lineno">  352</span><span class="stringliteral">    dict: each entry is related to single detected driver,</span></div>
+<div class="line"><span class="lineno">  353</span><span class="stringliteral">          key is a config section name, value is a driver name</span></div>
+<div class="line"><span class="lineno">  354</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  355</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  356</span>    import_drivers_dict = {}</div>
+<div class="line"><span class="lineno">  357</span>    <span class="keywordflow">for</span> module_name <span class="keywordflow">in</span> os.listdir(search_path):</div>
+<div class="line"><span class="lineno">  358</span>        full_path = os.path.join(search_path, module_name)</div>
+<div class="line"><span class="lineno">  359</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(full_path):</div>
+<div class="line"><span class="lineno">  360</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  361</span>        <span class="keywordflow">if</span> module_name.find(<span class="stringliteral">&quot;one-import-&quot;</span>) != 0:</div>
+<div class="line"><span class="lineno">  362</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  363</span>        module_loader = importlib.machinery.SourceFileLoader(module_name, full_path)</div>
+<div class="line"><span class="lineno">  364</span>        module_spec = importlib.util.spec_from_loader(module_name, module_loader)</div>
+<div class="line"><span class="lineno">  365</span>        module = importlib.util.module_from_spec(module_spec)</div>
+<div class="line"><span class="lineno">  366</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  367</span>            module_loader.exec_module(module)</div>
+<div class="line"><span class="lineno">  368</span>            <span class="keywordflow">if</span> hasattr(module, <span class="stringliteral">&quot;get_driver_cfg_section&quot;</span>):</div>
+<div class="line"><span class="lineno">  369</span>                section = module.get_driver_cfg_section()</div>
+<div class="line"><span class="lineno">  370</span>                import_drivers_dict[section] = module_name</div>
+<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">except</span>:</div>
+<div class="line"><span class="lineno">  372</span>            <span class="keywordflow">pass</span></div>
+<div class="line"><span class="lineno">  373</span>    <span class="keywordflow">return</span> import_drivers_dict</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -306,31 +306,31 @@ dict: each entry is related to single detected driver,
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00314">314</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  315</span>                   target: Optional[str]) -&gt; Optional[ArgumentParser]:</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> backend:</div>
-<div class="line"><span class="lineno">  317</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  318</span> </div>
-<div class="line"><span class="lineno">  319</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">  320</span>    <span class="comment"># for python module naming convention</span></div>
-<div class="line"><span class="lineno">  321</span>    command_schema_path = dir_path + f<span class="stringliteral">&#39;/../../backends/command/{backend}/{cmd}.py&#39;</span></div>
-<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(command_schema_path):</div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00320">320</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  321</span>                   target: Optional[str]) -&gt; Optional[ArgumentParser]:</div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> backend:</div>
 <div class="line"><span class="lineno">  323</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 <div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>    <span class="comment"># https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly</span></div>
-<div class="line"><span class="lineno">  326</span>    spec = importlib.util.spec_from_file_location(cmd, command_schema_path)</div>
-<div class="line"><span class="lineno">  327</span>    module = importlib.util.module_from_spec(spec)</div>
-<div class="line"><span class="lineno">  328</span>    sys.modules[cmd] = module</div>
-<div class="line"><span class="lineno">  329</span>    spec.loader.exec_module(module)</div>
+<div class="line"><span class="lineno">  325</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">  326</span>    <span class="comment"># for python module naming convention</span></div>
+<div class="line"><span class="lineno">  327</span>    command_schema_path = dir_path + f<span class="stringliteral">&#39;/../../backends/command/{backend}/{cmd}.py&#39;</span></div>
+<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(command_schema_path):</div>
+<div class="line"><span class="lineno">  329</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 <div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(module, <span class="stringliteral">&quot;command_schema&quot;</span>):</div>
-<div class="line"><span class="lineno">  332</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;You must implement &quot;command_schema&quot; function&#39;</span>)</div>
-<div class="line"><span class="lineno">  333</span> </div>
-<div class="line"><span class="lineno">  334</span>    parser: ArgumentParser = module.command_schema()</div>
-<div class="line"><span class="lineno">  335</span>    parser.target = target</div>
-<div class="line"><span class="lineno">  336</span>    <span class="keywordflow">return</span> parser</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  331</span>    <span class="comment"># https://docs.python.org/3/library/importlib.html#importing-a-source-file-directly</span></div>
+<div class="line"><span class="lineno">  332</span>    spec = importlib.util.spec_from_file_location(cmd, command_schema_path)</div>
+<div class="line"><span class="lineno">  333</span>    module = importlib.util.module_from_spec(spec)</div>
+<div class="line"><span class="lineno">  334</span>    sys.modules[cmd] = module</div>
+<div class="line"><span class="lineno">  335</span>    spec.loader.exec_module(module)</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(module, <span class="stringliteral">&quot;command_schema&quot;</span>):</div>
+<div class="line"><span class="lineno">  338</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&#39;You must implement &quot;command_schema&quot; function&#39;</span>)</div>
+<div class="line"><span class="lineno">  339</span> </div>
+<div class="line"><span class="lineno">  340</span>    parser: ArgumentParser = module.command_schema()</div>
+<div class="line"><span class="lineno">  341</span>    parser.target = target</div>
+<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">return</span> parser</div>
+<div class="line"><span class="lineno">  343</span> </div>
+<div class="line"><span class="lineno">  344</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -400,50 +400,50 @@ one
 
 Optimization options must be placed in `optimization` folder
 </pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00236">236</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  236</span><span class="keyword">def </span>get_optimization_list(get_name=False):</div>
-<div class="line"><span class="lineno">  237</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  238</span><span class="stringliteral">    returns a list of optimization. If `get_name` is True,</span></div>
-<div class="line"><span class="lineno">  239</span><span class="stringliteral">    only basename without extension is returned rather than full file path.</span></div>
-<div class="line"><span class="lineno">  240</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  241</span><span class="stringliteral">    [one hierarchy]</span></div>
-<div class="line"><span class="lineno">  242</span><span class="stringliteral">    one</span></div>
-<div class="line"><span class="lineno">  243</span><span class="stringliteral">    ├── backends</span></div>
-<div class="line"><span class="lineno">  244</span><span class="stringliteral">    ├── bin</span></div>
-<div class="line"><span class="lineno">  245</span><span class="stringliteral">    ├── doc</span></div>
-<div class="line"><span class="lineno">  246</span><span class="stringliteral">    ├── include</span></div>
-<div class="line"><span class="lineno">  247</span><span class="stringliteral">    ├── lib</span></div>
-<div class="line"><span class="lineno">  248</span><span class="stringliteral">    ├── optimization</span></div>
-<div class="line"><span class="lineno">  249</span><span class="stringliteral">    └── test</span></div>
-<div class="line"><span class="lineno">  250</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  251</span><span class="stringliteral">    Optimization options must be placed in `optimization` folder</span></div>
-<div class="line"><span class="lineno">  252</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  253</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>    <span class="comment"># optimization folder</span></div>
-<div class="line"><span class="lineno">  256</span>    files = [</div>
-<div class="line"><span class="lineno">  257</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../optimization/O*.cfg&#39;</span>, recursive=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  258</span>    ]</div>
-<div class="line"><span class="lineno">  259</span>    <span class="comment"># exclude if the name has space</span></div>
-<div class="line"><span class="lineno">  260</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    opt_list = []</div>
-<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
-<div class="line"><span class="lineno">  264</span>        base = ntpath.basename(cand)</div>
-<div class="line"><span class="lineno">  265</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
-<div class="line"><span class="lineno">  266</span>            opt_list.append(cand)</div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00242">242</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  242</span><span class="keyword">def </span>get_optimization_list(get_name=False):</div>
+<div class="line"><span class="lineno">  243</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  244</span><span class="stringliteral">    returns a list of optimization. If `get_name` is True,</span></div>
+<div class="line"><span class="lineno">  245</span><span class="stringliteral">    only basename without extension is returned rather than full file path.</span></div>
+<div class="line"><span class="lineno">  246</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  247</span><span class="stringliteral">    [one hierarchy]</span></div>
+<div class="line"><span class="lineno">  248</span><span class="stringliteral">    one</span></div>
+<div class="line"><span class="lineno">  249</span><span class="stringliteral">    ├── backends</span></div>
+<div class="line"><span class="lineno">  250</span><span class="stringliteral">    ├── bin</span></div>
+<div class="line"><span class="lineno">  251</span><span class="stringliteral">    ├── doc</span></div>
+<div class="line"><span class="lineno">  252</span><span class="stringliteral">    ├── include</span></div>
+<div class="line"><span class="lineno">  253</span><span class="stringliteral">    ├── lib</span></div>
+<div class="line"><span class="lineno">  254</span><span class="stringliteral">    ├── optimization</span></div>
+<div class="line"><span class="lineno">  255</span><span class="stringliteral">    └── test</span></div>
+<div class="line"><span class="lineno">  256</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  257</span><span class="stringliteral">    Optimization options must be placed in `optimization` folder</span></div>
+<div class="line"><span class="lineno">  258</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  259</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">  260</span> </div>
+<div class="line"><span class="lineno">  261</span>    <span class="comment"># optimization folder</span></div>
+<div class="line"><span class="lineno">  262</span>    files = [</div>
+<div class="line"><span class="lineno">  263</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../optimization/O*.cfg&#39;</span>, recursive=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">  264</span>    ]</div>
+<div class="line"><span class="lineno">  265</span>    <span class="comment"># exclude if the name has space</span></div>
+<div class="line"><span class="lineno">  266</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
 <div class="line"><span class="lineno">  267</span> </div>
-<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
-<div class="line"><span class="lineno">  269</span>        <span class="comment"># NOTE the name includes prefix &#39;O&#39;</span></div>
-<div class="line"><span class="lineno">  270</span>        <span class="comment"># e.g. O1, O2, ONCHW not just 1, 2, NCHW</span></div>
-<div class="line"><span class="lineno">  271</span>        opt_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> opt_list]</div>
-<div class="line"><span class="lineno">  272</span>        opt_list = [remove_suffix(s, <span class="stringliteral">&#39;.cfg&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> opt_list]</div>
+<div class="line"><span class="lineno">  268</span>    opt_list = []</div>
+<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
+<div class="line"><span class="lineno">  270</span>        base = ntpath.basename(cand)</div>
+<div class="line"><span class="lineno">  271</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
+<div class="line"><span class="lineno">  272</span>            opt_list.append(cand)</div>
 <div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">return</span> opt_list</div>
-<div class="line"><span class="lineno">  275</span> </div>
-<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
+<div class="line"><span class="lineno">  275</span>        <span class="comment"># NOTE the name includes prefix &#39;O&#39;</span></div>
+<div class="line"><span class="lineno">  276</span>        <span class="comment"># e.g. O1, O2, ONCHW not just 1, 2, NCHW</span></div>
+<div class="line"><span class="lineno">  277</span>        opt_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> opt_list]</div>
+<div class="line"><span class="lineno">  278</span>        opt_list = [remove_suffix(s, <span class="stringliteral">&#39;.cfg&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> opt_list]</div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span>    <span class="keywordflow">return</span> opt_list</div>
+<div class="line"><span class="lineno">  281</span> </div>
+<div class="line"><span class="lineno">  282</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="utils_8py_source.html#l00230">remove_suffix()</a>.</p>
+<p class="reference">References <a class="el" href="utils_8py_source.html#l00236">remove_suffix()</a>.</p>
 
 </div>
 </div>
@@ -478,46 +478,46 @@ one
 
 Target configuration files must be placed in `target` folder
 </pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00277">277</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  277</span><span class="keyword">def </span>get_target_list(get_name=False):</div>
-<div class="line"><span class="lineno">  278</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  279</span><span class="stringliteral">    returns a list of targets. If `get_name` is True,</span></div>
-<div class="line"><span class="lineno">  280</span><span class="stringliteral">    only basename without extension is returned rather than full file path.</span></div>
-<div class="line"><span class="lineno">  281</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  282</span><span class="stringliteral">    [one hierarchy]</span></div>
-<div class="line"><span class="lineno">  283</span><span class="stringliteral">    one</span></div>
-<div class="line"><span class="lineno">  284</span><span class="stringliteral">    ├── backends</span></div>
-<div class="line"><span class="lineno">  285</span><span class="stringliteral">    ├── bin</span></div>
-<div class="line"><span class="lineno">  286</span><span class="stringliteral">    ├── doc</span></div>
-<div class="line"><span class="lineno">  287</span><span class="stringliteral">    ├── include</span></div>
-<div class="line"><span class="lineno">  288</span><span class="stringliteral">    ├── lib</span></div>
-<div class="line"><span class="lineno">  289</span><span class="stringliteral">    ├── optimization</span></div>
-<div class="line"><span class="lineno">  290</span><span class="stringliteral">    ├── target</span></div>
-<div class="line"><span class="lineno">  291</span><span class="stringliteral">    └── test</span></div>
-<div class="line"><span class="lineno">  292</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  293</span><span class="stringliteral">    Target configuration files must be placed in `target` folder</span></div>
-<div class="line"><span class="lineno">  294</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  295</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>    <span class="comment"># target folder</span></div>
-<div class="line"><span class="lineno">  298</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../target/*.ini&#39;</span>, recursive=<span class="keyword">True</span>)]</div>
-<div class="line"><span class="lineno">  299</span>    <span class="comment"># exclude if the name has space</span></div>
-<div class="line"><span class="lineno">  300</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>    target_list = []</div>
-<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
-<div class="line"><span class="lineno">  304</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
-<div class="line"><span class="lineno">  305</span>            target_list.append(cand)</div>
-<div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
-<div class="line"><span class="lineno">  308</span>        target_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> target_list]</div>
-<div class="line"><span class="lineno">  309</span>        target_list = [remove_suffix(s, <span class="stringliteral">&#39;.ini&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> target_list]</div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">return</span> target_list</div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00283">283</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  283</span><span class="keyword">def </span>get_target_list(get_name=False):</div>
+<div class="line"><span class="lineno">  284</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  285</span><span class="stringliteral">    returns a list of targets. If `get_name` is True,</span></div>
+<div class="line"><span class="lineno">  286</span><span class="stringliteral">    only basename without extension is returned rather than full file path.</span></div>
+<div class="line"><span class="lineno">  287</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  288</span><span class="stringliteral">    [one hierarchy]</span></div>
+<div class="line"><span class="lineno">  289</span><span class="stringliteral">    one</span></div>
+<div class="line"><span class="lineno">  290</span><span class="stringliteral">    ├── backends</span></div>
+<div class="line"><span class="lineno">  291</span><span class="stringliteral">    ├── bin</span></div>
+<div class="line"><span class="lineno">  292</span><span class="stringliteral">    ├── doc</span></div>
+<div class="line"><span class="lineno">  293</span><span class="stringliteral">    ├── include</span></div>
+<div class="line"><span class="lineno">  294</span><span class="stringliteral">    ├── lib</span></div>
+<div class="line"><span class="lineno">  295</span><span class="stringliteral">    ├── optimization</span></div>
+<div class="line"><span class="lineno">  296</span><span class="stringliteral">    ├── target</span></div>
+<div class="line"><span class="lineno">  297</span><span class="stringliteral">    └── test</span></div>
+<div class="line"><span class="lineno">  298</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  299</span><span class="stringliteral">    Target configuration files must be placed in `target` folder</span></div>
+<div class="line"><span class="lineno">  300</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  301</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>    <span class="comment"># target folder</span></div>
+<div class="line"><span class="lineno">  304</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../target/*.ini&#39;</span>, recursive=<span class="keyword">True</span>)]</div>
+<div class="line"><span class="lineno">  305</span>    <span class="comment"># exclude if the name has space</span></div>
+<div class="line"><span class="lineno">  306</span>    files = [s <span class="keywordflow">for</span> s <span class="keywordflow">in</span> files <span class="keywordflow">if</span> <span class="keywordflow">not</span> <span class="stringliteral">&#39; &#39;</span> <span class="keywordflow">in</span> s]</div>
+<div class="line"><span class="lineno">  307</span> </div>
+<div class="line"><span class="lineno">  308</span>    target_list = []</div>
+<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
+<div class="line"><span class="lineno">  310</span>        <span class="keywordflow">if</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(cand, os.R_OK):</div>
+<div class="line"><span class="lineno">  311</span>            target_list.append(cand)</div>
 <div class="line"><span class="lineno">  312</span> </div>
-<div class="line"><span class="lineno">  313</span> </div>
+<div class="line"><span class="lineno">  313</span>    <span class="keywordflow">if</span> get_name == <span class="keyword">True</span>:</div>
+<div class="line"><span class="lineno">  314</span>        target_list = [ntpath.basename(f) <span class="keywordflow">for</span> f <span class="keywordflow">in</span> target_list]</div>
+<div class="line"><span class="lineno">  315</span>        target_list = [remove_suffix(s, <span class="stringliteral">&#39;.ini&#39;</span>) <span class="keywordflow">for</span> s <span class="keywordflow">in</span> target_list]</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">return</span> target_list</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="utils_8py_source.html#l00230">remove_suffix()</a>.</p>
+<p class="reference">References <a class="el" href="utils_8py_source.html#l00236">remove_suffix()</a>.</p>
 
 </div>
 </div>
@@ -621,7 +621,7 @@ Target configuration files must be placed in `target` folder
 <div class="line"><span class="lineno">   58</span> </div>
 <div class="line"><span class="lineno">   59</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="utils_8py_source.html#l00184">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utils_8py_source.html#l00190">run()</a>.</p>
 
 </div>
 </div>
@@ -692,18 +692,24 @@ Target configuration files must be placed in `target` folder
 <div class="line"><span class="lineno">  149</span>        <span class="keywordflow">raise</span> AssertionError(<span class="stringliteral">&#39;configuration file must have \&#39;&#39;</span> + section_to_parse +</div>
 <div class="line"><span class="lineno">  150</span>                             <span class="stringliteral">&#39;\&#39; section&#39;</span>)</div>
 <div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> parser[section_to_parse]:</div>
-<div class="line"><span class="lineno">  153</span>        <span class="keywordflow">if</span> is_accumulated_arg(key, section_to_parse):</div>
-<div class="line"><span class="lineno">  154</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
-<div class="line"><span class="lineno">  155</span>                setattr(args, key, [parser[section_to_parse][key]])</div>
-<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  157</span>                getattr(args, key).append(parser[section_to_parse][key])</div>
-<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  159</span>        <span class="keywordflow">if</span> hasattr(args, key) <span class="keywordflow">and</span> getattr(args, key):</div>
-<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  161</span>        setattr(args, key, parser[section_to_parse][key])</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  152</span>    <span class="comment"># set environment</span></div>
+<div class="line"><span class="lineno">  153</span>    CFG_ENV_SECTION = <span class="stringliteral">&#39;Environment&#39;</span></div>
+<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">if</span> parser.has_section(CFG_ENV_SECTION):</div>
+<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">for</span> key <span class="keywordflow">in</span> parser[CFG_ENV_SECTION]:</div>
+<div class="line"><span class="lineno">  156</span>            os.environ[key] = parser[CFG_ENV_SECTION][key]</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>    <span class="keywordflow">for</span> key <span class="keywordflow">in</span> parser[section_to_parse]:</div>
+<div class="line"><span class="lineno">  159</span>        <span class="keywordflow">if</span> is_accumulated_arg(key, section_to_parse):</div>
+<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">if</span> <span class="keywordflow">not</span> is_valid_attr(args, key):</div>
+<div class="line"><span class="lineno">  161</span>                setattr(args, key, [parser[section_to_parse][key]])</div>
+<div class="line"><span class="lineno">  162</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  163</span>                getattr(args, key).append(parser[section_to_parse][key])</div>
+<div class="line"><span class="lineno">  164</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">if</span> hasattr(args, key) <span class="keywordflow">and</span> getattr(args, key):</div>
+<div class="line"><span class="lineno">  166</span>            <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  167</span>        setattr(args, key, parser[section_to_parse][key])</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="utils_8py_source.html#l00115">get_config_parser()</a>, <a class="el" href="utils_8py_source.html#l00100">is_accumulated_arg()</a>, and <a class="el" href="utils_8py_source.html#l00111">is_valid_attr()</a>.</p>
 
@@ -725,17 +731,17 @@ Target configuration files must be placed in `target` folder
       </table>
 </div><div class="memdoc">
 <pre class="fragment">print version of the file located in the file_path</pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00164">164</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  164</span><span class="keyword">def </span>print_version_and_exit(file_path):</div>
-<div class="line"><span class="lineno">  165</span>    <span class="stringliteral">&quot;&quot;&quot;print version of the file located in the file_path&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  166</span>    script_path = os.path.realpath(file_path)</div>
-<div class="line"><span class="lineno">  167</span>    dir_path = os.path.dirname(script_path)</div>
-<div class="line"><span class="lineno">  168</span>    script_name = os.path.splitext(os.path.basename(script_path))[0]</div>
-<div class="line"><span class="lineno">  169</span>    <span class="comment"># run one-version</span></div>
-<div class="line"><span class="lineno">  170</span>    subprocess.call([os.path.join(dir_path, <span class="stringliteral">&#39;one-version&#39;</span>), script_name])</div>
-<div class="line"><span class="lineno">  171</span>    sys.exit()</div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span> </div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00170">170</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  170</span><span class="keyword">def </span>print_version_and_exit(file_path):</div>
+<div class="line"><span class="lineno">  171</span>    <span class="stringliteral">&quot;&quot;&quot;print version of the file located in the file_path&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  172</span>    script_path = os.path.realpath(file_path)</div>
+<div class="line"><span class="lineno">  173</span>    dir_path = os.path.dirname(script_path)</div>
+<div class="line"><span class="lineno">  174</span>    script_name = os.path.splitext(os.path.basename(script_path))[0]</div>
+<div class="line"><span class="lineno">  175</span>    <span class="comment"># run one-version</span></div>
+<div class="line"><span class="lineno">  176</span>    subprocess.call([os.path.join(dir_path, <span class="stringliteral">&#39;one-version&#39;</span>), script_name])</div>
+<div class="line"><span class="lineno">  177</span>    sys.exit()</div>
+<div class="line"><span class="lineno">  178</span> </div>
+<div class="line"><span class="lineno">  179</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -765,13 +771,13 @@ Target configuration files must be placed in `target` folder
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00224">224</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  224</span><span class="keyword">def </span>remove_prefix(str, prefix):</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">if</span> str.startswith(prefix):</div>
-<div class="line"><span class="lineno">  226</span>        <span class="keywordflow">return</span> str[len(prefix):]</div>
-<div class="line"><span class="lineno">  227</span>    <span class="keywordflow">return</span> str</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span> </div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00230">230</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  230</span><span class="keyword">def </span>remove_prefix(str, prefix):</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span> str.startswith(prefix):</div>
+<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">return</span> str[len(prefix):]</div>
+<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">return</span> str</div>
+<div class="line"><span class="lineno">  234</span> </div>
+<div class="line"><span class="lineno">  235</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -801,15 +807,15 @@ Target configuration files must be placed in `target` folder
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00230">230</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  230</span><span class="keyword">def </span>remove_suffix(str, suffix):</div>
-<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span> str.endswith(suffix):</div>
-<div class="line"><span class="lineno">  232</span>        <span class="keywordflow">return</span> str[:-len(suffix)]</div>
-<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">return</span> str</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span> </div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00236">236</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  236</span><span class="keyword">def </span>remove_suffix(str, suffix):</div>
+<div class="line"><span class="lineno">  237</span>    <span class="keywordflow">if</span> str.endswith(suffix):</div>
+<div class="line"><span class="lineno">  238</span>        <span class="keywordflow">return</span> str[:-len(suffix)]</div>
+<div class="line"><span class="lineno">  239</span>    <span class="keywordflow">return</span> str</div>
+<div class="line"><span class="lineno">  240</span> </div>
+<div class="line"><span class="lineno">  241</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="utils_8py_source.html#l00236">get_optimization_list()</a>, and <a class="el" href="utils_8py_source.html#l00277">get_target_list()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utils_8py_source.html#l00242">get_optimization_list()</a>, and <a class="el" href="utils_8py_source.html#l00283">get_target_list()</a>.</p>
 
 </div>
 </div>
@@ -858,47 +864,47 @@ Args:
     err_prefix: prefix to be put before every stderr lines
     logfile: file stream to which both of stdout and stderr lines will be written
 </pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00184">184</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span><span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(cmd, *, one_cmd: str = <span class="keywordtype">None</span>, err_prefix=<span class="keywordtype">None</span>, logfile=<span class="keywordtype">None</span>):</div>
-<div class="line"><span class="lineno">  185</span>    <span class="stringliteral">&quot;&quot;&quot;Execute command in subprocess</span></div>
-<div class="line"><span class="lineno">  186</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  187</span><span class="stringliteral">    Args:</span></div>
-<div class="line"><span class="lineno">  188</span><span class="stringliteral">        one_cmd: subtool name to execute with given `cmd`</span></div>
-<div class="line"><span class="lineno">  189</span><span class="stringliteral">        cmd: command to be executed in subprocess</span></div>
-<div class="line"><span class="lineno">  190</span><span class="stringliteral">        err_prefix: prefix to be put before every stderr lines</span></div>
-<div class="line"><span class="lineno">  191</span><span class="stringliteral">        logfile: file stream to which both of stdout and stderr lines will be written</span></div>
-<div class="line"><span class="lineno">  192</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">if</span> one_cmd:</div>
-<div class="line"><span class="lineno">  194</span>        <span class="keyword">assert</span> one_cmd <span class="keywordflow">in</span> one_cmd_list(), f<span class="stringliteral">&#39;Invalid ONE COMMAND: {one_cmd}&#39;</span></div>
-<div class="line"><span class="lineno">  195</span>        dir_path = os.path.dirname(os.path.dirname(</div>
-<div class="line"><span class="lineno">  196</span>            os.path.realpath(__file__)))  <span class="comment"># bin = onelib/../</span></div>
-<div class="line"><span class="lineno">  197</span>        driver_path = os.path.join(dir_path, f<span class="stringliteral">&#39;one-{one_cmd}&#39;</span>)</div>
-<div class="line"><span class="lineno">  198</span>        cmd = [driver_path] + cmd</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>    <span class="keyword">with</span> subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) <span class="keyword">as</span> p:</div>
-<div class="line"><span class="lineno">  201</span>        <span class="keyword">import</span> select</div>
-<div class="line"><span class="lineno">  202</span>        inputs = set([p.stdout, p.stderr])</div>
-<div class="line"><span class="lineno">  203</span>        <span class="keywordflow">while</span> inputs:</div>
-<div class="line"><span class="lineno">  204</span>            readable, _, _ = select.select(inputs, [], [])</div>
-<div class="line"><span class="lineno">  205</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> readable:</div>
-<div class="line"><span class="lineno">  206</span>                line = x.readline()</div>
-<div class="line"><span class="lineno">  207</span>                <span class="keywordflow">if</span> len(line) == 0:</div>
-<div class="line"><span class="lineno">  208</span>                    inputs.discard(x)</div>
-<div class="line"><span class="lineno">  209</span>                    <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">  210</span>                <span class="keywordflow">if</span> x == p.stdout:</div>
-<div class="line"><span class="lineno">  211</span>                    out = sys.stdout</div>
-<div class="line"><span class="lineno">  212</span>                <span class="keywordflow">if</span> x == p.stderr:</div>
-<div class="line"><span class="lineno">  213</span>                    out = sys.stderr</div>
-<div class="line"><span class="lineno">  214</span>                    <span class="keywordflow">if</span> err_prefix:</div>
-<div class="line"><span class="lineno">  215</span>                        line = f<span class="stringliteral">&quot;{err_prefix}: &quot;</span>.encode() + line</div>
-<div class="line"><span class="lineno">  216</span>                out.buffer.write(line)</div>
-<div class="line"><span class="lineno">  217</span>                out.buffer.flush()</div>
-<div class="line"><span class="lineno">  218</span>                <span class="keywordflow">if</span> logfile != <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  219</span>                    logfile.write(line)</div>
-<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">if</span> p.returncode != 0:</div>
-<div class="line"><span class="lineno">  221</span>        sys.exit(p.returncode)</div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span> </div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00190">190</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  190</span><span class="keyword">def </span><a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>(cmd, *, one_cmd: str = <span class="keywordtype">None</span>, err_prefix=<span class="keywordtype">None</span>, logfile=<span class="keywordtype">None</span>):</div>
+<div class="line"><span class="lineno">  191</span>    <span class="stringliteral">&quot;&quot;&quot;Execute command in subprocess</span></div>
+<div class="line"><span class="lineno">  192</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  193</span><span class="stringliteral">    Args:</span></div>
+<div class="line"><span class="lineno">  194</span><span class="stringliteral">        one_cmd: subtool name to execute with given `cmd`</span></div>
+<div class="line"><span class="lineno">  195</span><span class="stringliteral">        cmd: command to be executed in subprocess</span></div>
+<div class="line"><span class="lineno">  196</span><span class="stringliteral">        err_prefix: prefix to be put before every stderr lines</span></div>
+<div class="line"><span class="lineno">  197</span><span class="stringliteral">        logfile: file stream to which both of stdout and stderr lines will be written</span></div>
+<div class="line"><span class="lineno">  198</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  199</span>    <span class="keywordflow">if</span> one_cmd:</div>
+<div class="line"><span class="lineno">  200</span>        <span class="keyword">assert</span> one_cmd <span class="keywordflow">in</span> one_cmd_list(), f<span class="stringliteral">&#39;Invalid ONE COMMAND: {one_cmd}&#39;</span></div>
+<div class="line"><span class="lineno">  201</span>        dir_path = os.path.dirname(os.path.dirname(</div>
+<div class="line"><span class="lineno">  202</span>            os.path.realpath(__file__)))  <span class="comment"># bin = onelib/../</span></div>
+<div class="line"><span class="lineno">  203</span>        driver_path = os.path.join(dir_path, f<span class="stringliteral">&#39;one-{one_cmd}&#39;</span>)</div>
+<div class="line"><span class="lineno">  204</span>        cmd = [driver_path] + cmd</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>    <span class="keyword">with</span> subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) <span class="keyword">as</span> p:</div>
+<div class="line"><span class="lineno">  207</span>        <span class="keyword">import</span> select</div>
+<div class="line"><span class="lineno">  208</span>        inputs = set([p.stdout, p.stderr])</div>
+<div class="line"><span class="lineno">  209</span>        <span class="keywordflow">while</span> inputs:</div>
+<div class="line"><span class="lineno">  210</span>            readable, _, _ = select.select(inputs, [], [])</div>
+<div class="line"><span class="lineno">  211</span>            <span class="keywordflow">for</span> x <span class="keywordflow">in</span> readable:</div>
+<div class="line"><span class="lineno">  212</span>                line = x.readline()</div>
+<div class="line"><span class="lineno">  213</span>                <span class="keywordflow">if</span> len(line) == 0:</div>
+<div class="line"><span class="lineno">  214</span>                    inputs.discard(x)</div>
+<div class="line"><span class="lineno">  215</span>                    <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">  216</span>                <span class="keywordflow">if</span> x == p.stdout:</div>
+<div class="line"><span class="lineno">  217</span>                    out = sys.stdout</div>
+<div class="line"><span class="lineno">  218</span>                <span class="keywordflow">if</span> x == p.stderr:</div>
+<div class="line"><span class="lineno">  219</span>                    out = sys.stderr</div>
+<div class="line"><span class="lineno">  220</span>                    <span class="keywordflow">if</span> err_prefix:</div>
+<div class="line"><span class="lineno">  221</span>                        line = f<span class="stringliteral">&quot;{err_prefix}: &quot;</span>.encode() + line</div>
+<div class="line"><span class="lineno">  222</span>                out.buffer.write(line)</div>
+<div class="line"><span class="lineno">  223</span>                out.buffer.flush()</div>
+<div class="line"><span class="lineno">  224</span>                <span class="keywordflow">if</span> logfile != <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  225</span>                    logfile.write(line)</div>
+<div class="line"><span class="lineno">  226</span>    <span class="keywordflow">if</span> p.returncode != 0:</div>
+<div class="line"><span class="lineno">  227</span>        sys.exit(p.returncode)</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span> </div>
 <div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00198">GenerateKernelsListHelper.cpp:198</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="utils_8py_source.html#l00056">one_cmd_list()</a>.</p>
@@ -931,17 +937,17 @@ Args:
       </table>
 </div><div class="memdoc">
 <pre class="fragment">execute given method and print with program name for all uncaught exceptions</pre> 
-<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00174">174</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span><span class="keyword">def </span>safemain(main, mainpath):</div>
-<div class="line"><span class="lineno">  175</span>    <span class="stringliteral">&quot;&quot;&quot;execute given method and print with program name for all uncaught exceptions&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  176</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  177</span>        <a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>()</div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  179</span>        prog_name = os.path.basename(mainpath)</div>
-<div class="line"><span class="lineno">  180</span>        print(f<span class="stringliteral">&quot;{prog_name}: {type(e).__name__}: &quot;</span> + str(e), file=sys.stderr)</div>
-<div class="line"><span class="lineno">  181</span>        sys.exit(255)</div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span> </div>
+<p class="definition">Definition at line <a class="el" href="utils_8py_source.html#l00180">180</a> of file <a class="el" href="utils_8py_source.html">utils.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span><span class="keyword">def </span>safemain(main, mainpath):</div>
+<div class="line"><span class="lineno">  181</span>    <span class="stringliteral">&quot;&quot;&quot;execute given method and print with program name for all uncaught exceptions&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  183</span>        <a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>()</div>
+<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  185</span>        prog_name = os.path.basename(mainpath)</div>
+<div class="line"><span class="lineno">  186</span>        print(f<span class="stringliteral">&quot;{prog_name}: {type(e).__name__}: &quot;</span> + str(e), file=sys.stderr)</div>
+<div class="line"><span class="lineno">  187</span>        sys.exit(255)</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span> </div>
 <div class="ttc" id="aonert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_source.html#l00058">main.cpp:58</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_source.html#l00058">main()</a>.</p>

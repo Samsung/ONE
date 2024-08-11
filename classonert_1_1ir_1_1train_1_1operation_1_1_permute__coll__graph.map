@@ -1,6 +1,6 @@
 <map id="onert::ir::train::operation::Permute" name="onert::ir::train::operation::Permute">
 <area shape="rect" id="Node000001" title=" " alt="" coords="73,256,226,297"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1ir_1_1operation_1_1_permute.html" title=" " alt="" coords="8,168,131,208"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1ir_1_1operation_1_1_permute.html" title="Class to represent Permute operation." alt="" coords="8,168,131,208"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,218,133,254,129,258,96,222"/>
 <area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1_operation.html" title=" " alt="" coords="5,87,131,112"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="71,128,72,167,66,168,66,128"/>

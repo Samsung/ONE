@@ -1932,6 +1932,7 @@ var hierarchy =
     [ "onert::backend::cpu::ExternalContext", "classonert_1_1backend_1_1cpu_1_1_external_context.html", null ],
     [ "onert::backend::ruy::ExternalContext", "classonert_1_1backend_1_1ruy_1_1_external_context.html", null ],
     [ "onert::backend::xnnpack::ExternalContext", "classonert_1_1backend_1_1xnnpack_1_1_external_context.html", null ],
+    [ "onert::backend::train::ExtraTensorIndex", "classonert_1_1backend_1_1train_1_1_extra_tensor_index.html", null ],
     [ "nnfw::cker::FCTempArena", "classnnfw_1_1cker_1_1_f_c_temp_arena.html", null ],
     [ "FeatureDecodeLayer", "struct_feature_decode_layer.html", null ],
     [ "loco::FeatureDecoder", "structloco_1_1_feature_decoder.html", [
@@ -3182,7 +3183,7 @@ var hierarchy =
     ] ],
     [ "enco::MemoryContext", "classenco_1_1_memory_context.html", null ],
     [ "onert::backend::basic::MemoryManager", "classonert_1_1backend_1_1basic_1_1_memory_manager.html", [
-      [ "onert::backend::train::GradientMemoryManager", "classonert_1_1backend_1_1train_1_1_gradient_memory_manager.html", null ]
+      [ "onert::backend::train::TrainableMemoryManager", "classonert_1_1backend_1_1train_1_1_trainable_memory_manager.html", null ]
     ] ],
     [ "onert::backend::basic::MemoryPlannerFactory", "classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html", null ],
     [ "onert::backend::train::MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", null ],
@@ -3465,10 +3466,13 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchCastKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchBatchToSpaceNDKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchCeilKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_ceil_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchCosKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_cos_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchEluKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_elu_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchExpKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_exp_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchFloorKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_floor_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_gather_kernel.html", null ],
@@ -3486,16 +3490,19 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchReLUKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchRoundKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_round_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchRsqrtKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_rsqrt_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSVDFKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSinKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sin_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_softmax_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSpaceToBatchNDKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_space_to_batch_n_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSpaceToDepthKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_space_to_depth_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSplitKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_split_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSplitVKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_split_v_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSqrtKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sqrt_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSquareKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchTanhKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchUnpackKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_unpack_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputTypeMismatchFillKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_type_mismatch_fill_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputsTypeMismatchSquaredDifference", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_squared_difference.html", null ],
       [ "onert_micro::test_model::NegTestDataInputsTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_inputs_type_mismatch_sub_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInt16TypeMul", "classonert__micro_1_1test__model_1_1_neg_test_data_int16_type_mul.html", null ],
@@ -3518,9 +3525,11 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataNoZeroPointsFullyConnectedKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_zero_points_fully_connected_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWhileKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_while_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWithInvalidOutputShapeDequantizeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_dequantize_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataWithInvalidOutputShapeQuantizeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_quantize_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongAxisGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongBiasShapeFullyConnectedKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongBiasTypeDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_type_depthwise_conv2_d_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataWrongInputShapeFillKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_shape_fill_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongOutputTypeShapeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_output_type_shape_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongPermTypeTransposeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_perm_type_transpose_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataWrongPositionTypeGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_position_type_gather_kernel.html", null ],
@@ -4899,6 +4908,8 @@ var hierarchy =
     [ "luci_interpreter::SpaceToDepthParams", "structluci__interpreter_1_1_space_to_depth_params.html", null ],
     [ "nnfw::cker::SpaceToDepthParams", "structnnfw_1_1cker_1_1_space_to_depth_params.html", null ],
     [ "coco::Span< T >", "classcoco_1_1_span.html", null ],
+    [ "onert_micro::train::losses_functions::SparseCrossEntropy", "structonert__micro_1_1train_1_1losses__functions_1_1_sparse_cross_entropy.html", null ],
+    [ "onert_micro::train::metrics::SparseCrossEntropyAccuracy", "structonert__micro_1_1train_1_1metrics_1_1_sparse_cross_entropy_accuracy.html", null ],
     [ "luci::SparseIndexVector", "classluci_1_1_sparse_index_vector.html", null ],
     [ "luci::Sparsifier< T >", "classluci_1_1_sparsifier.html", null ],
     [ "onert::ir::Sparsity", "structonert_1_1ir_1_1_sparsity.html", null ],
@@ -5476,6 +5487,9 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataMulBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_mul_base.html", [
         [ "onert_micro::test_model::TestDataInt8Mul", "classonert__micro_1_1test__model_1_1_test_data_int8_mul.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataQuantizeBase< float, int8_t >", "classonert__micro_1_1test__model_1_1_test_data_quantize_base.html", [
+        [ "onert_micro::test_model::TestDataFloatQuantize", "classonert__micro_1_1test__model_1_1_test_data_float_quantize.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataSliceBase< int32_t >", "classonert__micro_1_1test__model_1_1_test_data_slice_base.html", [
         [ "onert_micro::test_model::TestDataInt32Slice", "classonert__micro_1_1test__model_1_1_test_data_int32_slice.html", null ]
       ] ],
@@ -5487,6 +5501,9 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataSoftmaxBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_softmax_base.html", [
         [ "onert_micro::test_model::TestDataInt8Softmax", "classonert__micro_1_1test__model_1_1_test_data_int8_softmax.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataSplitVBase< float >", "classonert__micro_1_1test__model_1_1_test_data_split_v_base.html", [
+        [ "onert_micro::test_model::TestDataFloatSplitV", "classonert__micro_1_1test__model_1_1_test_data_float_split_v.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataAbsBase< T >", "classonert__micro_1_1test__model_1_1_test_data_abs_base.html", [
         [ "onert_micro::test_model::TestDataFloatAbs", "classonert__micro_1_1test__model_1_1_test_data_float_abs.html", null ]
@@ -5507,6 +5524,12 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataBatchToSpaceNDBase< T >", "classonert__micro_1_1test__model_1_1_test_data_batch_to_space_n_d_base.html", [
         [ "onert_micro::test_model::TestDataFloatBatchToSpaceND", "classonert__micro_1_1test__model_1_1_test_data_float_batch_to_space_n_d.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataCastBase< T, U >", "classonert__micro_1_1test__model_1_1_test_data_cast_base.html", [
+        [ "onert_micro::test_model::TestDataFloatCast", "classonert__micro_1_1test__model_1_1_test_data_float_cast.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataCeilBase< T >", "classonert__micro_1_1test__model_1_1_test_data_ceil_base.html", [
+        [ "onert_micro::test_model::TestDataFloatCeil", "classonert__micro_1_1test__model_1_1_test_data_float_ceil.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataConcatenationBase< T >", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html", [
         [ "onert_micro::test_model::TestDataFloatConcatenation", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html", null ],
         [ "onert_micro::test_model::TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", null ],
@@ -5525,6 +5548,9 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataDivBase< T >", "classonert__micro_1_1test__model_1_1_test_data_div_base.html", [
         [ "onert_micro::test_model::TestDataFloatDiv", "classonert__micro_1_1test__model_1_1_test_data_float_div.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataEluBase< T >", "classonert__micro_1_1test__model_1_1_test_data_elu_base.html", [
+        [ "onert_micro::test_model::TestDataFloatElu", "classonert__micro_1_1test__model_1_1_test_data_float_elu.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataEqualBase< T, U >", "classonert__micro_1_1test__model_1_1_test_data_equal_base.html", [
         [ "onert_micro::test_model::TestDataFloatEqual", "classonert__micro_1_1test__model_1_1_test_data_float_equal.html", null ],
         [ "onert_micro::test_model::TestDataIntEqual", "classonert__micro_1_1test__model_1_1_test_data_int_equal.html", null ]
@@ -5533,6 +5559,7 @@ var hierarchy =
         [ "onert_micro::test_model::TestDataFloatExp", "classonert__micro_1_1test__model_1_1_test_data_float_exp.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataExpandDimsKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_expand_dims_kernel.html", null ],
+      [ "onert_micro::test_model::TestDataFillKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_fill_kernel.html", null ],
       [ "onert_micro::test_model::TestDataFloorBase< T >", "classonert__micro_1_1test__model_1_1_test_data_floor_base.html", [
         [ "onert_micro::test_model::TestDataFloatFloor", "classonert__micro_1_1test__model_1_1_test_data_float_floor.html", null ]
       ] ],
@@ -5611,6 +5638,7 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataPadBase< T >", "classonert__micro_1_1test__model_1_1_test_data_pad_base.html", [
         [ "onert_micro::test_model::TestDataFloatPad", "classonert__micro_1_1test__model_1_1_test_data_float_pad.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataQuantizeBase< T, O >", "classonert__micro_1_1test__model_1_1_test_data_quantize_base.html", null ],
       [ "onert_micro::test_model::TestDataReLU6Base< T >", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base.html", [
         [ "onert_micro::test_model::TestDataFloatReLU6", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6.html", null ]
       ] ],
@@ -5623,6 +5651,9 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataRsqrtBase< T >", "classonert__micro_1_1test__model_1_1_test_data_rsqrt_base.html", [
         [ "onert_micro::test_model::TestDataFloatRsqrt", "classonert__micro_1_1test__model_1_1_test_data_float_rsqrt.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataSVDFBase< T >", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base.html", [
+        [ "onert_micro::test_model::TestDataFloatSVDF", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataShapeKernel< T, U >", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", null ],
       [ "onert_micro::test_model::TestDataSinBase< T >", "classonert__micro_1_1test__model_1_1_test_data_sin_base.html", [
@@ -5641,6 +5672,7 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataSplitBase< T >", "classonert__micro_1_1test__model_1_1_test_data_split_base.html", [
         [ "onert_micro::test_model::TestDataFloatSplit", "classonert__micro_1_1test__model_1_1_test_data_float_split.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataSplitVBase< T >", "classonert__micro_1_1test__model_1_1_test_data_split_v_base.html", null ],
       [ "onert_micro::test_model::TestDataSqrtBase< T >", "classonert__micro_1_1test__model_1_1_test_data_sqrt_base.html", [
         [ "onert_micro::test_model::TestDataFloatSqrt", "classonert__micro_1_1test__model_1_1_test_data_float_sqrt.html", null ]
       ] ],
@@ -5672,6 +5704,7 @@ var hierarchy =
     [ "luci_interpreter::test_kernel::TestDataBase< float, bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "onert_micro::test_model::TestDataBase< float, int >", "classonert__micro_1_1test__model_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float, int32_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
+    [ "onert_micro::test_model::TestDataBase< float, int8_t >", "classonert__micro_1_1test__model_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float, uint8_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< int16_t >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],

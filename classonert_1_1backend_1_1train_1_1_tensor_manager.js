@@ -1,6 +1,6 @@
 var classonert_1_1backend_1_1train_1_1_tensor_manager =
 [
-    [ "TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html#a8f304011b4f586f8d78bb11f91a4d012", null ],
+    [ "TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html#a156c3cb739265a7537ef78235e036488", null ],
     [ "~TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html#a00c17a62060a4e98a6f9144d38995931", null ],
     [ "allocateBackPropTensors", "classonert_1_1backend_1_1train_1_1_tensor_manager.html#a82f53e8ae34df70b62f104838073f1ed", null ],
     [ "allocateDisposableBackPropTensors", "classonert_1_1backend_1_1train_1_1_tensor_manager.html#afac696c2842071bae170003fc002460f", null ],
