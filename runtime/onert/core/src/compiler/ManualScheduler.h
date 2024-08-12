@@ -29,7 +29,8 @@ class ManualScheduler : public IScheduler
 {
 public:
   ManualScheduler(const std::vector<const backend::Backend *> &backends,
-                  const compiler::CompilerOptions &options);
+                  const compiler::CompilerOptions &options, const ir::ModelIndex &modelIdx,
+                  const ir::SubgraphIndex &subgIdx);
   std::unique_ptr<BackendResolver> schedule(const ir::Graph &graph) override;
 
 private:
@@ -39,6 +40,8 @@ private:
 private:
   std::vector<const backend::Backend *> _backends;
   compiler::CompilerOptions _options;
+  const ir::ModelIndex _model_index;
+  const ir::SubgraphIndex _subg_index;
 };
 
 } // namespace compiler

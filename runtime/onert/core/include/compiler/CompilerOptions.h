@@ -19,6 +19,7 @@
 
 #include "ir/OpCode.h"
 #include "ir/Index.h"
+#include "ir/Layout.h"
 
 #include <memory>
 #include <string>
@@ -35,8 +36,9 @@ struct ManualSchedulerOptions
   void setBackendMap(const std::string &str);
 
   std::string backend_for_all;
+  std::unordered_map<ir::ModelIndex, std::string> model_to_backend;
   std::unordered_map<ir::OpCode, std::string> opcode_to_backend;
-  std::unordered_map<ir::OperationIndex, std::string> index_to_backend;
+  std::unordered_map<ir::OperationDesc, std::string> index_to_backend;
 };
 
 struct CompilerOptions
@@ -65,6 +67,10 @@ struct CompilerOptions
 
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
+  std::unordered_map<ir::IODesc, ir::Layout> input_layout;
+  std::unordered_map<ir::IODesc, ir::Layout> output_layout;
+  std::unordered_map<ir::IODesc, bool> input_float;
+  std::unordered_map<ir::IODesc, bool> output_float;
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   int graph_dump_level; //< Graph dump level, values between 0 and 2 are valid

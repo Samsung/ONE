@@ -29,8 +29,6 @@ namespace onert
 namespace ir
 {
 
-using IODesc = std::tuple<ModelIndex, SubgraphIndex, IOIndex>;
-
 struct ModelEdge
 {
   IODesc from;
@@ -56,12 +54,6 @@ struct ModelEdgeHash
     return h1 + h2;
   }
 };
-
-inline std::ostream &operator<<(std::ostream &o, const IODesc &od)
-{
-  o << std::get<0>(od).value() << ":" << std::get<1>(od).value() << ":" << std::get<2>(od).value();
-  return o;
-}
 
 using ModelEdgeSet = std::unordered_set<ir::ModelEdge, ir::ModelEdgeHash, ir::ModelEdgeEqual>;
 
@@ -299,19 +291,5 @@ private:
 
 } // namespace ir
 } // namespace onert
-
-namespace std
-{
-
-template <> struct hash<onert::ir::IODesc>
-{
-  size_t operator()(const ::onert::ir::IODesc &iodesc) const noexcept
-  {
-    return (std::get<0>(iodesc).value() << 24) | (std::get<1>(iodesc).value() << 16) |
-           std::get<2>(iodesc).value();
-  }
-};
-
-} // namespace std
 
 #endif // __ONERT_IR_NNPKG_H__

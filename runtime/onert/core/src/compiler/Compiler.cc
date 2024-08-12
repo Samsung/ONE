@@ -110,7 +110,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
       // Lower: Assign backend
-      lowered_subgs[subg_index] = std::make_unique<compiler::LoweredGraph>(subg, *_options);
+      lowered_subgs[subg_index] =
+        std::make_unique<compiler::LoweredGraph>(subg, *_options, ir::ModelIndex{0}, subg_index);
       // Set tracing_ctx for copied graph
       tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()), subg_index.value());
     });

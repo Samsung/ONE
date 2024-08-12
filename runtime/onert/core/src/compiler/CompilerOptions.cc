@@ -69,8 +69,20 @@ void ManualSchedulerOptions::setBackendMap(const std::string &str)
 
     const auto &key_str = key_val.at(0);
     const auto &val = key_val.at(1);
-    auto key = static_cast<uint32_t>(std::stoi(key_str));
-    this->index_to_backend.emplace(ir::OperationIndex{key}, val);
+    const auto desc_str = nnfw::misc::split(key_str, ':');
+    const auto desc_size = desc_str.size();
+    if (desc_size > 3)
+      throw std::runtime_error{"Invalid key description"};
+
+    const auto model_idx = (desc_size == 3)
+                             ? ir::ModelIndex(static_cast<uint32_t>(std::stoi(desc_str[0])))
+                             : ir::ModelIndex(0);
+    const auto subg_idx =
+      (desc_size > 1) ? ir::SubgraphIndex(static_cast<uint32_t>(std::stoi(desc_str[desc_size - 2])))
+                      : ir::SubgraphIndex(0);
+    const auto op_idx =
+      ir::OperationIndex(static_cast<uint32_t>(std::stoi(desc_str[desc_size - 1])));
+    this->index_to_backend.emplace(ir::OperationDesc{model_idx, subg_idx, op_idx}, val);
   }
 }
 
