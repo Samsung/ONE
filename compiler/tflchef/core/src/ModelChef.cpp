@@ -914,18 +914,9 @@ public:
   }
 
 public:
-  const char *base(void) const override
-  {
-    // Return the base address of generated flatbuffer model
-    return reinterpret_cast<const char *>(_mc.get_buffer_pointer());
-  }
+  const char *base(void) const override { return _mc.get_buffer_pointer(); }
 
-public:
-  size_t size(void) const override
-  {
-    // Return the size of generated flatbuffer model
-    return _mc.get_size();
-  }
+  size_t size(void) const override { return _mc.get_size(); }
 
 public:
   ModelChef &model_chef(void) { return _mc; }
