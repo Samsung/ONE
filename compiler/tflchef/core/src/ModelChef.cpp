@@ -186,7 +186,8 @@ public:
   void init(void);
   void cook(const ::tflchef::ModelRecipe &model_recipe);
 
-  template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph);
+  template <typename T>
+  void cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table);
 
 public:
   const char *get_buffer_pointer(void) const;
@@ -201,6 +202,10 @@ private:
   std::vector<flatbuffers::Offset<::tflite::SubGraph>> _subgraph_vec;
   std::map<tflite::BuiltinOperator, int32_t> _builtin_code_map;
   std::vector<std::string> _custom_code_vec;
+  // _symbol_tables stores symbol_table of each sub graph
+  // this is used to find tensor ID(index) with tensor name
+  std::vector<std::map<std::string, int32_t>> _symbol_tables;
+
   std::string _graph_name;
 };
 
@@ -245,9 +250,12 @@ make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_
   return dim_metadata_vec;
 }
 
-template <typename T> std::map<std::string, int32_t> ModelChef::cook_graph(const T &graph)
+template <typename T>
+void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table)
 {
   LOGGER(l);
+
+  assert(symbol_table.empty()); // FIX_CALLER_UNLESS
 
   // Operand-related
   std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
@@ -259,9 +267,6 @@ template <typename T> std::map<std::string, int32_t> ModelChef::cook_graph(const
   std::string graph_name = _graph_name;
   if (graph.has_name())
     graph_name = graph.name();
-
-  // Tensor Name -> Tensor ID mapping (per Graph)
-  std::map<std::string, int32_t> symbol_table;
 
   auto lookup = [&symbol_table, &graph_name](const std::string &name) {
     if (symbol_table.find(name) != symbol_table.end())
@@ -699,8 +704,6 @@ template <typename T> std::map<std::string, int32_t> ModelChef::cook_graph(const
   subgraph_builder.add_name(name);
 
   _subgraph_vec.emplace_back(subgraph_builder.Finish());
-
-  return symbol_table;
 }
 
 void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
@@ -755,17 +758,15 @@ void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
     _buffer_vec.emplace_back(buffer_builder.Finish());
   }
 
-  // symbol_tables stores symbol_table of each sub graph
-  // this is used to find tensor ID(index) with tensor name
-  std::vector<std::map<std::string, int32_t>> symbol_tables;
-
   //
   // Create Main graph
   //
 
   _graph_name = "main";
-  auto table = cook_graph<::tflchef::ModelRecipe>(model_recipe);
-  symbol_tables.push_back(table);
+  // Tensor Name -> Tensor ID mapping (per Graph)
+  std::map<std::string, int32_t> symbol_table;
+  cook_graph<::tflchef::ModelRecipe>(model_recipe, symbol_table);
+  _symbol_tables.push_back(symbol_table);
 
   //
   // Create subgraphs if exist
@@ -779,8 +780,9 @@ void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
 
     _graph_name = stringStream.str();
 
-    auto table = cook_graph<::tflchef::Graph>(graph);
-    symbol_tables.push_back(table);
+    symbol_table.clear();
+    cook_graph<::tflchef::Graph>(graph, symbol_table);
+    _symbol_tables.push_back(symbol_table);
   }
 
   // Create Signature-Def
@@ -799,8 +801,8 @@ void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
     {
       subgraph_index = rec_signature_def.subgraph_index();
     }
-    assert(subgraph_index < symbol_tables.size());
-    auto &symbol_table = symbol_tables[subgraph_index];
+    assert(subgraph_index < _symbol_tables.size());
+    auto &symbol_table = _symbol_tables[subgraph_index];
 
     // cook for inputs
     for (int si = 0; si < rec_signature_def.inputs_size(); ++si)
