@@ -159,7 +159,8 @@ void RecordHessian::initialize(luci::Module *module)
 // The directory should contain binary files each of which is a raw data,
 // ready to be consumed by the input circle model without any modification
 // TODO reduce duplicate codes with profileRawData
-void RecordHessian::profileRawDataDirectory(const std::string &input_data_path)
+std::unique_ptr<HessianMap>
+RecordHessian::profileRawDataDirectory(const std::string &input_data_path)
 {
   struct dirent *entry = nullptr;
   DIR *dp = nullptr;
@@ -219,7 +220,7 @@ void RecordHessian::profileRawDataDirectory(const std::string &input_data_path)
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  _hessian_computer->update_qparam(getObserver()->hessianData()->getMap());
+  return getObserver()->hessianData();
 }
 
 // input_data_path is a text file which specifies the representative data
@@ -228,7 +229,7 @@ void RecordHessian::profileRawDataDirectory(const std::string &input_data_path)
 // ready to be consumed by the input circle model without any modification
 // NOTE If a model has multiple inputs, the binary file should have inputs concatenated in the
 // same order with the input index of the circle model.
-void RecordHessian::profileRawData(const std::string &input_data_path)
+std::unique_ptr<HessianMap> RecordHessian::profileRawData(const std::string &input_data_path)
 {
   std::ifstream input_file(input_data_path);
   if (input_file.fail())
@@ -314,10 +315,10 @@ void RecordHessian::profileRawData(const std::string &input_data_path)
 
   std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
 
-  _hessian_computer->update_qparam(getObserver()->hessianData()->getMap());
+  return getObserver()->hessianData();
 }
 
-void RecordHessian::profileData(const std::string &input_data_path)
+std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path)
 {
   try
   {
@@ -379,7 +380,7 @@ void RecordHessian::profileData(const std::string &input_data_path)
     throw std::runtime_error("HDF5 error occurred.");
   }
 
-  _hessian_computer->update_qparam(getObserver()->hessianData()->getMap());
+  return getObserver()->hessianData();
 }
 
 } // namespace record_hessian
