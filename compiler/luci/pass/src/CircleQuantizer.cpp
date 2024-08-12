@@ -440,8 +440,7 @@ void CircleQuantizer::quantize_dequantize_weight(loco::Graph *g) const
         ctx->layers_info.emplace_back(info);
       }
     }
-
-    luci::QuantizeWeightsWithGPTQPass gptq_quantizer(std::move(ctx));
+    luci::QuantizeWeightsWithGPTQPass gptq_quantizer(std::move(ctx), _hessian_map);
 
     gptq_quantizer.run(g);
   }
