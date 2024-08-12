@@ -23,8 +23,6 @@
 
 #include <fstream>
 #include <filesystem>
-// #include "BaseLoader.h"
-// #include "circle_schema_generated.h"
 
 namespace onert
 {
