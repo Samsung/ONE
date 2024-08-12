@@ -120,7 +120,6 @@ protected:
       {
         // These tensors do not exist in any operation (No use and def)
         const auto &info = obj.info();
-        assert(_data.operand_layouts.at(ind) == ir::Layout::NHWC);
         registerTensorInfo(ind, info);
       }
     });
