@@ -45,6 +45,12 @@ struct __attribute__((packed)) Header
   uint32_t length;
 };
 
+struct __attribute__((pack)) Footer
+{
+  uint32_t cur_step;
+  uint32_t cur_epoch;
+};
+
 } // namespace checkpoint
 
 struct DataBufferPair
@@ -58,38 +64,46 @@ struct DataBufferPair
   uint32_t size;
 };
 
-struct DataBuffer
+class DataBuffer
 {
-  std::vector<uint32_t> offset;
-  std::vector<uint32_t> size;
-
+public:
   void resize(uint32_t length)
   {
-    offset.resize(length);
-    size.resize(length);
+    _offset.resize(length);
+    _size.resize(length);
   }
 
-  char *getOffsetBuf() { return reinterpret_cast<char *>(offset.data()); }
+  size_t size() const
+  {
+    assert(_offset.size() == _size.size());
+    return _offset.size();
+  }
+
+  char *getOffsetBuf() { return reinterpret_cast<char *>(_offset.data()); }
 
   void calculateSize(uint32_t next_beg_offset)
   {
-    assert(offset.size() == size.size());
-    uint32_t cur = offset[0];
-    for (size_t i = 1; i < offset.size(); ++i)
+    assert(_offset.size() == _size.size());
+    uint32_t cur = _offset[0];
+    for (size_t i = 1; i < _offset.size(); ++i)
     {
-      size[i - 1] = offset[i] - cur;
-      cur = offset[i];
+      _size[i - 1] = _offset[i] - cur;
+      cur = _offset[i];
     }
-    size.back() = next_beg_offset - offset.back();
+    _size.back() = next_beg_offset - _offset.back();
   }
 
   // offset, size
-  DataBufferPair operator[](uint32_t i)
+  DataBufferPair operator[](uint32_t i) const
   {
-    assert(offset.size() == size.size());
-    assert(i <= offset.size());
-    return DataBufferPair{offset[i], size[i]};
+    assert(_offset.size() == _size.size());
+    assert(i <= _offset.size());
+    return DataBufferPair{_offset[i], _size[i]};
   }
+
+private:
+  std::vector<uint32_t> _offset;
+  std::vector<uint32_t> _size;
 };
 
 class CheckpointLoader
@@ -141,6 +155,13 @@ public:
       _file.read(_opt2_data.getOffsetBuf(), _header.length * sizeof(uint32_t));
       _opt2_data.calculateSize(_header.other_offset);
     }
+
+    // if (filesize - static_cast<long int>(_header.other_offset) != sizeof(_footer))
+    //   throw std::runtime_error{"Invalid checkpoint file footer data"};
+
+    // memset(reinterpret_cast<char *>(&_footer), 0, sizeof(_footer));
+    // _file.seekg(_header.other_offset, std::ios::beg);
+    // _file.read(reinterpret_cast<char *>(&_footer), sizeof(_footer));
   }
 
   ~CheckpointLoader()
@@ -153,11 +174,71 @@ public:
   {
     auto vindex = 0;
     exec->iterateTrainableTensors(
+      [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *) { vindex++; });
+
+    if (_header.length != vindex)
+      throw std::runtime_error{
+        "Invalid number of tensors between TrainingInfo and checkpoint file"};
+
+    vindex = 0;
+    exec->iterateTrainableTensors(
       [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
         assert(tensor);
         assert(tensor->total_size() == _tensor_data[vindex].size);
         _file.seekg(_tensor_data[vindex].offset, std::ios::beg);
         _file.read(reinterpret_cast<char *>(tensor->buffer()), tensor->total_size());
+        vindex++;
+      });
+  }
+
+  void updateOptimizer(const std::unique_ptr<ir::train::TrainingInfo> &train_info,
+                       const std::unique_ptr<onert::exec::Execution> &exec)
+  {
+    ir::train::OptimizerCode ckpt_opt_code = ir::train::OptimizerCode::SGD;
+    if (_opt1_data.size() > 0 && _opt2_data.size() > 0)
+      ckpt_opt_code = ir::train::OptimizerCode::Adam;
+
+    if (ckpt_opt_code != train_info->optimizerInfo().optim_code)
+      throw std::runtime_error{
+        "Not compatible optimizer type between TrainingInfo and checkpoint file"};
+
+    switch (train_info->optimizerInfo().optim_code)
+    {
+      case ir::train::OptimizerCode::Adam:
+        updateAdamOptimizer(exec);
+        break;
+      default:
+        break;
+    }
+  }
+
+  void updateTrainingInfo(const std::unique_ptr<ir::train::TrainingInfo> &train_info)
+  {
+    // TODO Verify cur_step value
+    train_info->trainingStep() = _footer.cur_step;
+  }
+
+private:
+  void updateAdamOptimizer(const std::unique_ptr<onert::exec::Execution> &exec)
+  {
+    auto vindex = 0;
+    exec->iterateTrainableTensors(
+      [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
+        assert(tensor);
+        auto trainable_tensor = const_cast<backend::train::ITrainableTensor *>(tensor);
+        const auto opt_vars = trainable_tensor->optVars();
+        assert(opt_vars.size() == 2);
+
+        // moving average
+        assert(opt_vars[0]->total_size() == _opt1_data[vindex].size);
+        _file.seekg(_opt1_data[vindex].offset, std::ios::beg);
+        _file.read(reinterpret_cast<char *>(opt_vars[0]->buffer()), opt_vars[0]->total_size());
+
+        // value
+        assert(opt_vars[1]->total_size() == _opt2_data[vindex].size);
+        _file.seekg(_opt2_data[vindex].offset, std::ios::beg);
+        _file.read(reinterpret_cast<char *>(opt_vars[1]->buffer()), opt_vars[1]->total_size());
+
         vindex++;
       });
   }
@@ -168,6 +249,7 @@ private:
 
   std::ifstream _file;
   checkpoint::Header _header;
+  checkpoint::Footer _footer;
   DataBuffer _tensor_data;
   DataBuffer _opt1_data;
   DataBuffer _opt2_data;
@@ -179,8 +261,8 @@ void loadCheckpoint(const std::string &filename,
 {
   CheckpointLoader loader(filename);
   loader.updateTensor(exec);
-  // loader.updateOptimizer(train_info, exec);
-  UNUSED_RELEASE(train_info);
+  loader.updateOptimizer(train_info, exec);
+  loader.updateTrainingInfo(train_info);
 }
 
 } // namespace loader
