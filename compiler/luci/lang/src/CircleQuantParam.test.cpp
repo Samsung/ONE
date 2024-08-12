@@ -40,7 +40,6 @@ luci::CircleAdd *build_simple_add_graph(loco::Graph *g)
   qparam->zerop = {0};
   qparam->min = {0.0};
   qparam->max = {1.0};
-  qparam->hessian = {1.0};
   qparam->quantized_dimension = 0;
   node->quantparam(std::move(qparam));
 
@@ -61,7 +60,6 @@ TEST(CircleNodeCloneTest, copy_quantparam)
   const auto *qparam_copy = copy->quantparam();
   ASSERT_EQ(qparam_node->scale, qparam_copy->scale);
   ASSERT_EQ(qparam_node->zerop, qparam_copy->zerop);
-  ASSERT_EQ(qparam_node->hessian, qparam_copy->hessian);
   ASSERT_EQ(qparam_node->quantized_dimension, qparam_copy->quantized_dimension);
 }
 
