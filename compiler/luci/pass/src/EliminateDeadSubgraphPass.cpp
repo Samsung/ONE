@@ -28,15 +28,15 @@ namespace
 {
 
 // Go through the current graph and check all other graphs reachable from it and save it.
-// Note: The main idea for finding achievable graphs is that we can get into other graphs only
-// from some operations (see the list below) and we check the graph numbers from these operations.
+// Note: The main idea for finding achievable graphs is that we can reach other graphs only
+// from some operations (see the list below) and we check the graph indexes from these operations.
 void checkGraph(loco::Graph *current_graph, std::deque<size_t> &reachable_graphs_indexes_q)
 {
   assert(current_graph != nullptr);
 
   // 1 - Obtain all active nodes in current graph
   // 2 - Go through all active nodes and check its types
-  // 3 - If it is possible to get to another graph from the operation (see the list below),
+  // 3 - If it is possible to reach another graph from the current operation (see the list below),
   //     then add the graph numbers to our queue
 
   // 1 - Obtain all active nodes in current graph
@@ -49,37 +49,34 @@ void checkGraph(loco::Graph *current_graph, std::deque<size_t> &reachable_graphs
   // TODO: check all nodes which can be used to reach different subgraph
   for (auto &node : active_nodes)
   {
-    auto *circle_node = dynamic_cast<luci::CircleNode *>(node);
-    assert(circle_node != nullptr);
+    auto *circle_node = loco::must_cast<luci::CircleNode *>(node);
 
     switch (circle_node->opcode())
     {
       case CircleOpcode::WHILE:
       {
-        auto *while_node = dynamic_cast<luci::CircleWhile *>(circle_node);
-        assert(while_node != nullptr);
+        auto *while_node = loco::must_cast<luci::CircleWhile *>(circle_node);
         // Get body and cond graph indexes
         int32_t body_graph_index = while_node->body_branch();
         int32_t cond_graph_index = while_node->cond_branch();
         assert(body_graph_index >= 0);
         assert(cond_graph_index >= 0);
         // Add indexes into queue
-        reachable_graphs_indexes_q.push_back(size_t(body_graph_index));
-        reachable_graphs_indexes_q.push_back(size_t(cond_graph_index));
+        reachable_graphs_indexes_q.push_back(static_cast<size_t>(body_graph_index));
+        reachable_graphs_indexes_q.push_back(static_cast<size_t>(cond_graph_index));
       }
       break;
       case CircleOpcode::IF:
       {
-        auto *if_node = dynamic_cast<luci::CircleIf *>(circle_node);
-        assert(if_node != nullptr);
+        auto *if_node = loco::must_cast<luci::CircleIf *>(circle_node);
         // Get then and else graph indexes
         int32_t else_index = if_node->else_branch();
         int32_t then_index = if_node->then_branch();
         assert(else_index >= 0);
         assert(then_index >= 0);
         // Add indexes into queue
-        reachable_graphs_indexes_q.push_back(size_t(else_index));
-        reachable_graphs_indexes_q.push_back(size_t(then_index));
+        reachable_graphs_indexes_q.push_back(static_cast<size_t>(else_index));
+        reachable_graphs_indexes_q.push_back(static_cast<size_t>(then_index));
       }
       break;
       default:

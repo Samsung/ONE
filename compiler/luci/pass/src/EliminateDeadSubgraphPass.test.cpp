@@ -129,5 +129,5 @@ TEST_F(EliminateDeadSubgraphPassTest, no_graphs_NEG)
 {
   luci::EliminateDeadSubgraphPass pass;
   auto m = luci::make_module();
-  ASSERT_ANY_THROW(pass.run(m.get()));
+  ASSERT_FALSE(pass.run(m.get()));
 }
