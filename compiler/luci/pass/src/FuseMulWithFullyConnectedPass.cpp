@@ -136,7 +136,7 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   // Check that all dimensions are ones, checks broadcast capabilites.
   // Last dimesion of multiplication must be compatible with FC.
   // N-D case (N>1):
-  if (multiplication->rank() > 1)
+  if (multiplication->rank() >= 1)
   {
     // Check channel-wise broadcasting:
     for (uint32_t i = 0; i < rank - 1; i++)
@@ -145,27 +145,28 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
     RETURN_FALSE_UNLESS(multiplication->dim(rank - 1) == weights->dim(0));
   }
   // Scalar case:
-  else if (multiplication->rank() == 1 || multiplication->rank() == 0)
+  else if (multiplication->rank() == 0)
   {
-    RETURN_FALSE_UNLESS(multiplication->size<loco::DataType::FLOAT32>() != 0);
+    RETURN_FALSE_UNLESS(multiplication->size<loco::DataType::FLOAT32>() == 1);
   }
 
   // Only supports:
   // (1) constant bias
   // (2) no bias
-  auto bias = dynamic_cast<luci::CircleNode *>(fc->bias());
-  if (bias != nullptr)
+  auto bias = loco::must_cast<luci::CircleNode *>(fc->bias());
+  if (bias->opcode() == luci::CircleOpcode::CIRCLECONST)
   {
-    RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST or
-                        bias->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
     // Create new bias to be updated with values:
     auto const_bias = dynamic_cast<luci::CircleConst *>(fc->bias());
     RETURN_FALSE_UNLESS(const_bias)
     RETURN_FALSE_UNLESS(const_bias->dtype() == loco::DataType::FLOAT32);
-
     // Create new bias with updated values and replace:
     auto fused_bias = gen_fused_bias(const_bias, multiplication);
     fc->bias(fused_bias);
+  }
+  else if (bias->opcode() != luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)
+  {
+    return false;
   }
 
   // Create new weights with updated values and replace:
