@@ -524,9 +524,8 @@ int entry(int argc, char **argv)
 
   if (arser[gptq])
   {
-    std::unique_ptr<record_hessian::HessianComputer> computer;
 
-    record_hessian::RecordHessian rhn(1, std::move(computer));
+    record_hessian::RecordHessian rhn;
 
     // Initialize interpreter and observer
     rhn.initialize(module.get());
@@ -534,7 +533,8 @@ int entry(int argc, char **argv)
     if (arser["--input_data"])
     {
       auto input_data_path = arser.get<std::string>("--input_data");
-      rhn.profileData(input_data_path);
+      auto hessian = rhn.profileData(input_data_path);
+      quantizer.setHessianMap(hessian.get());
     }
     else
     {
