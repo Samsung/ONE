@@ -22,6 +22,7 @@
 #include <logo/Pass.h>
 
 #include <luci/Pass/QuantizationParameters.h>
+#include <luci/IR/CircleNode.h>
 
 namespace luci
 {
@@ -46,6 +47,14 @@ public:
     // DO NOTHING
   }
 
+  QuantizeWeightsWithGPTQPass(
+    std::unique_ptr<Context> &&ctx,
+    std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
+    : _ctx{std::move(ctx)}, _hessian_map{hessian_map}
+  {
+    // DO NOTHING
+  }
+
 public:
   QuantizeWeightsWithGPTQPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
                               QuantizationGranularity granularity)
@@ -64,6 +73,7 @@ public:
 
 private:
   std::unique_ptr<Context> _ctx;
+  std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
 };
 
 } // namespace luci

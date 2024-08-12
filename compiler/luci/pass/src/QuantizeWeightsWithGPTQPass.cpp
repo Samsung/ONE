@@ -481,15 +481,17 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
  */
 struct QuantizeWeightsWithGPTQ final : public luci::CircleNodeMutableVisitor<void>
 {
-  QuantizeWeightsWithGPTQ(loco::DataType input, loco::DataType output,
-                          QuantizationGranularity granularity)
-    : input_type(input), output_type(output), granularity(granularity)
+  QuantizeWeightsWithGPTQ(
+    loco::DataType input, loco::DataType output, QuantizationGranularity granularity,
+    std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
+    : input_type(input), output_type(output), granularity(granularity), hessian_map(*hessian_map)
   {
   }
 
   loco::DataType input_type;
   loco::DataType output_type;
   QuantizationGranularity granularity;
+  std::unordered_map<const luci::CircleNode *, std::vector<float>> hessian_map;
 
 private:
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
@@ -564,8 +566,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
 
-    auto quantparam = node->quantparam();
-    auto hessian = quantparam->hessian;
+    auto hessian = hessian_map[node];
 
     fake_quantize(new_weights, hessian);
   }
@@ -599,7 +600,6 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
 
-    auto quantparam = node->quantparam();
     std::vector<float> empty_vector;
 
     fake_quantize(new_weights, empty_vector);
@@ -616,8 +616,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
 
-    auto quantparam = node->quantparam();
-    auto hessian = quantparam->hessian;
+    auto hessian = hessian_map[node];
 
     fake_quantize(new_weights, hessian);
   }
@@ -659,7 +658,7 @@ bool QuantizeWeightsWithGPTQPass::run(loco::Graph *g)
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
     QuantizeWeightsWithGPTQ qw(_ctx->input_model_dtype, quantize_dtype(circle_node),
-                               quantize_granularity(circle_node));
+                               quantize_granularity(circle_node), _hessian_map);
     circle_node->accept(&qw);
   }
 
