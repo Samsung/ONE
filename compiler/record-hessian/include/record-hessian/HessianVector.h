@@ -20,9 +20,12 @@
 #include <vector>
 #include <numeric>
 #include <cstddef>
+#include <unordered_map>
+#include <luci/IR/CircleNodes.h>
 
 namespace record_hessian
 {
+using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 struct HessianVector
 {

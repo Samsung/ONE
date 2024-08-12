@@ -21,30 +21,129 @@
 namespace record_hessian
 {
 
-void HessianComputer::update_qparam(
-  const std::unordered_map<const luci::CircleNode *, HessianVector> *hessian_map)
+/**
+ * @brief unfold the vector with NHWC shape, inherently acting in an in-place manner.
+ * @note (N, H, W, C) -> (N, L, H*W*C)
+ */
+void HessianComputer::unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h,
+                             uint32_t input_w, uint32_t input_c, uint32_t stride_h,
+                             uint32_t stride_w, uint32_t dilation_h, uint32_t dilation_w,
+                             uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
+                             uint32_t kernel_ic)
 {
-  if (hessian_map == nullptr)
-    throw std::invalid_argument("hessian_map is nullptr");
+  assert(input_c == kernel_ic);
+  int out_height = (input_h - dilation_h * (kernel_h - 1) - 1) / stride_h + 1;
+  int out_width = (input_w - dilation_w * (kernel_w - 1) - 1) / stride_w + 1;
+  int patch_size = kernel_h * kernel_w * kernel_ic;
+  std::vector<float> unfolded_buf(input_n * out_height * out_width * patch_size, 0.0f);
 
-  for (auto iter = hessian_map->begin(); iter != hessian_map->end(); ++iter)
+  int index = 0;
+  int in_y, in_x;
+  for (int n = 0; n < input_n; ++n)
   {
-    auto node = iter->first;
-    auto hessian_vector = iter->second;
-
-    auto quantparam = std::make_unique<luci::CircleQuantParam>();
-    quantparam->hessian = hessian_vector.hessian;
-
-    assert(node->quantparam() == nullptr);
-
-    auto mutable_node = const_cast<luci::CircleNode *>(node);
-    mutable_node->quantparam(std::move(quantparam));
+    for (int y = 0; y < out_height; ++y)
+    {
+      for (int x = 0; x < out_width; ++x)
+      {
+        for (int in_c = 0; in_c < input_c; ++in_c)
+        {
+          for (int ky = 0; ky < kernel_h; ++ky)
+          {
+            for (int kx = 0; kx < kernel_w; ++kx)
+            {
+              in_y = y * stride_h + ky * dilation_h;
+              in_x = x * stride_w + kx * dilation_w;
+              if (in_y < input_h && in_x < input_w)
+              {
+                unfolded_buf[index] = buf[((n * input_h + in_y) * input_w + in_x) * input_c + in_c];
+              }
+              index++;
+            }
+          }
+        }
+      }
+    }
   }
+
+  buf.swap(unfolded_buf);
 }
 
-std::unique_ptr<HessianComputer> make_hessian_computer()
+void HessianComputer::recordHessian(const luci::CircleNode *node,
+                                    const luci_interpreter::Tensor *input_tensor)
 {
-  return std::make_unique<HessianComputer>();
+  uint32_t size_in_ch;
+  uint32_t length;
+
+  const auto data = input_tensor->data<float>();
+  const auto num_elements = input_tensor->shape().num_elements();
+  std::vector<float> buf(data, data + num_elements);
+
+  // get the size of input channel from weights
+  if (node->opcode() == luci::CircleOpcode::FULLY_CONNECTED)
+  {
+    if (input_tensor->shape().num_dims() == 3)
+    { // input_tensor [batch, length, channel]
+      size_in_ch = input_tensor->shape().dim(2);
+    }
+    else if (input_tensor->shape().num_dims() == 2)
+    {
+      size_in_ch = input_tensor->shape().dim(1); // input_tensor [length, channel]
+    }
+    else
+    {
+      throw std::runtime_error("Unsupported node rank");
+    }
+    length = num_elements / size_in_ch;
+  }
+  else if (node->opcode() == luci::CircleOpcode::CONV_2D)
+  {
+    const auto node_filter = loco::must_cast<luci::CircleConst *>(
+      loco::must_cast<const luci::CircleConv2D *>(node)->filter());
+    const auto node_bias = loco::must_cast<luci::CircleConst *>(
+      loco::must_cast<const luci::CircleConv2D *>(node)->bias());
+    size_in_ch =
+      node_filter->size<loco::DataType::FLOAT32>() / node_bias->size<loco::DataType::FLOAT32>();
+
+    uint32_t input_n = input_tensor->shape().dim(0);
+    uint32_t input_h = input_tensor->shape().dim(1);
+    uint32_t input_w = input_tensor->shape().dim(2);
+    uint32_t input_c = input_tensor->shape().dim(3);
+
+    uint32_t stride_h = ((luci::CircleConv2D *)node)->stride()->h();
+    uint32_t stride_w = ((luci::CircleConv2D *)node)->stride()->w();
+    uint32_t dilation_h = ((luci::CircleConv2D *)node)->dilation()->h();
+    uint32_t dilation_w = ((luci::CircleConv2D *)node)->dilation()->w();
+
+    uint32_t kernel_oc = node_filter->dim(0).value();
+    uint32_t kernel_h = node_filter->dim(1).value();
+    uint32_t kernel_w = node_filter->dim(2).value();
+    uint32_t kernel_ic = node_filter->dim(3).value();
+
+    unfold(buf, input_n, input_h, input_w, input_c, stride_h, stride_w, dilation_h, dilation_w,
+           kernel_oc, kernel_h, kernel_w, kernel_ic);
+    length = buf.size() / size_in_ch;
+  }
+  else
+  {
+    throw std::runtime_error(node->name() + " is unsupported op for record hessian.");
+  }
+  std::vector<float> hessian(size_in_ch * size_in_ch, 0);
+
+  for (int i = 0; i < size_in_ch; ++i)
+  {
+    for (int j = 0; j < size_in_ch; ++j)
+    {
+      float sum = 0;
+      for (int k = 0; k < length; ++k)
+      {
+        sum += buf[i + k * size_in_ch] * buf[j + k * size_in_ch];
+      }
+      hessian[i * size_in_ch + j] = 2 * sum;
+    }
+  }
+
+  HessianVector &vector = _hessian_map[node];
+  vector.update(hessian);
 }
 
 } // namespace record_hessian

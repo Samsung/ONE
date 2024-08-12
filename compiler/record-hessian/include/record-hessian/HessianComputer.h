@@ -20,8 +20,8 @@
 #include "HessianVector.h"
 
 #include <luci/IR/CircleNode.h>
+#include <luci_interpreter/Interpreter.h>
 
-#include <unordered_map>
 #include <memory>
 
 namespace record_hessian
@@ -30,16 +30,31 @@ namespace record_hessian
 class HessianComputer
 {
 public:
+  // Record min/max of node
+  void recordHessian(const luci::CircleNode *node, const luci_interpreter::Tensor *input_tensor);
 
-  using HessianMap = std::unordered_map<const luci::CircleNode *, HessianVector>;
-  
-  HessianComputer() = default;
+  void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
+              uint32_t input_c, uint32_t stride_h, uint32_t stride_w, uint32_t dilation_h,
+              uint32_t dilation_w, uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
+              uint32_t kernel_ic);
 
-  virtual ~HessianComputer() = default;
+  std::unique_ptr<HessianMap> getMap() const
+  {
 
-  void update_qparam(const HessianMap *hessian_map);
+    auto hessian_map = std::make_unique<HessianMap>();
+
+    for (auto item : _hessian_map)
+    {
+      auto &vec = (*hessian_map)[item.first];
+      vec = std::move(item.second.hessian);
+    }
+
+    return std::move(hessian_map);
+  }
+
+private:
+  std::unordered_map<const luci::CircleNode *, HessianVector> _hessian_map;
 };
-
 } // namespace record_hessian
 
 #endif // __RECORD_HESSIAN_HESSIANCOMPUTER_H__

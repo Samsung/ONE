@@ -21,7 +21,6 @@
 #include <luci_interpreter/Interpreter.h>
 
 #include "record-hessian/HessianObserver.h"
-#include "record-hessian/HessianComputer.h"
 
 #include <memory>
 #include <thread>
@@ -29,32 +28,24 @@
 namespace record_hessian
 {
 
-using Buffer = std::vector<char>;
-using Output = std::vector<Buffer>;
-using WholeOutput = std::vector<Output>;
-
 class RecordHessian
 {
 public:
-  explicit RecordHessian(uint32_t num_threads, std::unique_ptr<HessianComputer> &&hessian_computer)
-    : _hessian_computer(std::move(hessian_computer))
-  {
-    assert(_hessian_computer != nullptr);
-  }
+  explicit RecordHessian() {}
 
   ~RecordHessian() = default;
 
   void initialize(luci::Module *module);
   // TODO Refactor profile functions
-  void profileData(const std::string &input_data_path);
+  std::unique_ptr<HessianMap> profileData(const std::string &input_data_path);
 
-  void profileDataInParallel(const std::string &input_data_path);
+  std::unique_ptr<HessianMap> profileDataInParallel(const std::string &input_data_path);
 
-  void profileRawData(const std::string &input_data_path);
+  std::unique_ptr<HessianMap> profileRawData(const std::string &input_data_path);
 
-  void profileRawDataDirectory(const std::string &input_data_path);
+  std::unique_ptr<HessianMap> profileRawDataDirectory(const std::string &input_data_path);
 
-  void profileDataWithRandomInputs(void);
+  std::unique_ptr<HessianMap> profileDataWithRandomInputs(void);
 
 private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreter.get(); }
@@ -64,11 +55,8 @@ private:
 
   luci::Module *_module;
 
-  // Multiple interpreters are used for parallel execution
   std::unique_ptr<luci_interpreter::Interpreter> _interpreter;
   std::unique_ptr<HessianObserver> _observer;
-
-  std::unique_ptr<HessianComputer> _hessian_computer;
 };
 
 } // namespace record_hessian

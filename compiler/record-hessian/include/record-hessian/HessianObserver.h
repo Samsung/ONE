@@ -21,50 +21,25 @@
 #include <luci_interpreter/core/Tensor.h>
 #include <luci/IR/CircleNodes.h>
 
-#include "HessianVector.h"
+#include "HessianComputer.h"
 #include <numeric>
 #include <vector>
-#include <unordered_map>
 
 namespace record_hessian
 {
-
-class HessianMap
-{
-public:
-  // Record min/max of node
-  void recordHessian(const luci::CircleNode *node, const luci_interpreter::Tensor *input_tensor);
-
-  void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
-              uint32_t input_c, uint32_t stride_h, uint32_t stride_w, uint32_t dilation_h,
-              uint32_t dilation_w, uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
-              uint32_t kernel_ic);
-
-  const std::unordered_map<const luci::CircleNode *, HessianVector> *getMap() const
-  {
-    return &_hessian_map;
-  }
-
-private:
-  std::unordered_map<const luci::CircleNode *, HessianVector> _hessian_map;
-};
 
 class HessianObserver : public luci_interpreter::ExecutionObserver
 {
 public:
   HessianObserver() = default;
 
-  void preOperatorExecute(const luci::CircleNode *node,
-                          std::vector<const luci_interpreter::Tensor *> tensors);
   void postTensorWrite(const luci::CircleNode *node,
                        const luci_interpreter::Tensor *tensor) override;
 
-  // Never return nullptr
-  const HessianMap *hessianData() { return &_hessian_data; }
+  const std::unique_ptr<HessianMap> hessianData() { return _hessian_computer.getMap(); }
 
 private:
-  HessianMap _hessian_data;
-  const luci_interpreter::Tensor *_input_tensor;
+  HessianComputer _hessian_computer;
 };
 
 } // namespace record_hessian
