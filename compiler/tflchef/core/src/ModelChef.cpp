@@ -179,6 +179,7 @@ namespace
 
 struct ModelChef
 {
+  void init(void);
   void cook(const ::tflchef::ModelRecipe &model_recipe);
 
   template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph);
@@ -193,6 +194,12 @@ struct ModelChef
   std::vector<std::string> custom_code_vec;
   std::string _graph_name;
 };
+
+void ModelChef::init(void)
+{
+  flatbuffer_builder =
+    std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
+}
 
 std::vector<flatbuffers::Offset<tflite::DimensionMetadata>>
 make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_t dims_count,
@@ -933,9 +940,7 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 
   ModelChef &mc = gen_model->model_chef();
 
-  mc.flatbuffer_builder =
-    std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
-
+  mc.init();
   mc.cook(model_recipe);
 
   // Return "GenerateModel"
