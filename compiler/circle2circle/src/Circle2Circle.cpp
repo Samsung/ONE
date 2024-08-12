@@ -518,7 +518,7 @@ int entry(int argc, char **argv)
     luci::change_outputs(graph, new_outputs);
   }
 
-  // call luci optimizations for module before optimizations for graph
+  // call luci optimizations for module
   optimizer.optimize(module.get());
 
   for (size_t idx = 0; idx < module->size(); ++idx)
