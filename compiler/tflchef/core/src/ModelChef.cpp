@@ -193,6 +193,10 @@ struct CookParams
 
 struct ModelChef
 {
+  void cook(const ::tflchef::ModelRecipe &model_recipe);
+
+  template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph);
+
   std::unique_ptr<flatbuffers::FlatBufferBuilder> flatbuffer_builder;
 
   std::vector<flatbuffers::Offset<::tflite::SignatureDef>> signdef_vec;
@@ -201,7 +205,7 @@ struct ModelChef
   std::vector<flatbuffers::Offset<::tflite::SubGraph>> subgraph_vec;
   std::map<tflite::BuiltinOperator, int32_t> builtin_code_map;
   std::vector<std::string> custom_code_vec;
-  std::string graph_name;
+  std::string _graph_name;
 };
 
 std::vector<flatbuffers::Offset<tflite::DimensionMetadata>>
@@ -239,17 +243,9 @@ make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_
   return dim_metadata_vec;
 }
 
-template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, ModelChef &mc)
+template <typename T> std::map<std::string, int32_t> ModelChef::cook_graph(const T &graph)
 {
   LOGGER(l);
-
-  // TODO remove references
-  std::vector<flatbuffers::Offset<::tflite::Buffer>> &buffer_vec = mc.buffer_vec;
-  std::vector<flatbuffers::Offset<::tflite::OperatorCode>> &code_vec = mc.code_vec;
-  std::vector<flatbuffers::Offset<::tflite::SubGraph>> &subgraph_vec = mc.subgraph_vec;
-  std::unique_ptr<flatbuffers::FlatBufferBuilder> &flatbuffer_builder = mc.flatbuffer_builder;
-  std::map<tflite::BuiltinOperator, int32_t> &builtin_code_map = mc.builtin_code_map;
-  std::vector<std::string> &custom_code_vec = mc.custom_code_vec;
 
   // Operand-related
   std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
@@ -258,7 +254,7 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
   std::vector<flatbuffers::Offset<::tflite::Operator>> operator_vec;
 
   // default name for graph
-  std::string graph_name = mc.graph_name;
+  std::string graph_name = _graph_name;
   if (graph.has_name())
     graph_name = graph.name();
 
@@ -705,6 +701,191 @@ template <typename T> std::map<std::string, int32_t> cook_graph(const T &graph, 
   return symbol_table;
 }
 
+void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
+{
+  // Create OperatorCode with Builtin Operator
+  builtin_code_map = gather_builtincode_map(model_recipe);
+  for (auto const &opcode : builtin_code_map)
+  {
+    tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
+    // 127 is BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES
+    // This is the way to handle deprecated builtin code
+    // See
+    // https://github.com/tensorflow/tensorflow/blob/a0afe8f9218be5eb9ed5dffc2dff652996da8c28/tensorflow/lite/schema/schema.fbs#L1061-L1077
+    if (opcode.first < 127)
+    {
+      code_builder.add_deprecated_builtin_code(opcode.first);
+    }
+    else
+    {
+      code_builder.add_deprecated_builtin_code(
+        ::tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
+    }
+    code_builder.add_version(opcode.second);
+    code_builder.add_builtin_code(opcode.first);
+    auto code = code_builder.Finish();
+    // Update OperatorCode vector
+    code_vec.emplace_back(code);
+  }
+
+  // Create OperatorCode with Custom Operator
+  std::set<std::string> custom_code_set = gather_customcode_set(model_recipe);
+  custom_code_vec = {custom_code_set.begin(), custom_code_set.end()};
+
+  for (auto opcode : custom_code_vec)
+  {
+    auto custom_code = flatbuffer_builder->CreateString(opcode);
+    tflite::OperatorCodeBuilder code_builder{*flatbuffer_builder};
+    code_builder.add_deprecated_builtin_code(tflite::BuiltinOperator_CUSTOM);
+    code_builder.add_custom_code(custom_code);
+    code_builder.add_builtin_code(tflite::BuiltinOperator_CUSTOM);
+    auto code = code_builder.Finish();
+    // Update OperatorCode vector
+    code_vec.emplace_back(code);
+  }
+
+  // Create an Empty Buffer
+  //
+  // Buffer 0 SHOULD be an empty buffer in TensorFlow Lite model file
+  // (Please refer to the comment for Tensor.buffer field in schema)
+  {
+    tflite::BufferBuilder buffer_builder{*flatbuffer_builder};
+    buffer_vec.emplace_back(buffer_builder.Finish());
+  }
+
+  // symbol_tables stores symbol_table of each sub graph
+  // this is used to find tensor ID(index) with tensor name
+  std::vector<std::map<std::string, int32_t>> symbol_tables;
+
+  //
+  // Create Main graph
+  //
+
+  _graph_name = "main";
+  auto table = cook_graph<::tflchef::ModelRecipe>(model_recipe);
+  symbol_tables.push_back(table);
+
+  //
+  // Create subgraphs if exist
+  //
+  for (int g = 0; g < model_recipe.graph_size(); ++g)
+  {
+    const auto &graph = model_recipe.graph(g);
+
+    std::ostringstream stringStream;
+    stringStream << "sub_" << (g + 1);
+
+    _graph_name = stringStream.str();
+
+    auto table = cook_graph<::tflchef::Graph>(graph);
+    symbol_tables.push_back(table);
+  }
+
+  // Create Signature-Def
+  //
+  for (int s = 0; s < model_recipe.signature_def_size(); ++s)
+  {
+    // load from recipe
+    const auto &rec_signature_def = model_recipe.signature_def(s);
+
+    std::vector<flatbuffers::Offset<::tflite::TensorMap>> tensormap_inputs;
+    std::vector<flatbuffers::Offset<::tflite::TensorMap>> tensormap_outputs;
+
+    // which subgraph index to cook
+    auto subgraph_index = 0;
+    if (rec_signature_def.has_subgraph_index())
+    {
+      subgraph_index = rec_signature_def.subgraph_index();
+    }
+    assert(subgraph_index < symbol_tables.size());
+    auto &symbol_table = symbol_tables[subgraph_index];
+
+    // cook for inputs
+    for (int si = 0; si < rec_signature_def.inputs_size(); ++si)
+    {
+      // recipe for input TensorMap
+      auto rec_tm_input = rec_signature_def.inputs(si);
+      auto name = flatbuffer_builder->CreateString(rec_tm_input.name());
+      uint32_t tensor_index = 0;
+      // either tensor or tensor_index should exist
+      assert(rec_tm_input.has_tensor() || rec_tm_input.has_tensor_index());
+      if (rec_tm_input.has_tensor())
+      {
+        // we can get tensor_index from symbol_table
+        auto tensor = rec_tm_input.tensor();
+        tensor_index = symbol_table[tensor];
+      }
+      else
+      {
+        // or we can use tensor_index itself
+        tensor_index = rec_tm_input.tensor_index();
+      }
+
+      ::tflite::TensorMapBuilder tensormap_builder{*flatbuffer_builder};
+      tensormap_builder.add_name(name);
+      tensormap_builder.add_tensor_index(tensor_index);
+      tensormap_inputs.push_back(tensormap_builder.Finish());
+    }
+    // cook for outputs, same as inputs
+    for (int so = 0; so < rec_signature_def.outputs_size(); ++so)
+    {
+      auto rec_tm_output = rec_signature_def.outputs(so);
+      auto name = flatbuffer_builder->CreateString(rec_tm_output.name());
+      uint32_t tensor_index = 0;
+      assert(rec_tm_output.has_tensor() || rec_tm_output.has_tensor_index());
+      if (rec_tm_output.has_tensor())
+      {
+        auto tensor = rec_tm_output.tensor();
+        tensor_index = symbol_table[tensor];
+      }
+      else
+      {
+        tensor_index = rec_tm_output.tensor_index();
+      }
+
+      ::tflite::TensorMapBuilder tensormap_builder{*flatbuffer_builder};
+      tensormap_builder.add_name(name);
+      tensormap_builder.add_tensor_index(tensor_index);
+      tensormap_outputs.push_back(tensormap_builder.Finish());
+    }
+
+    auto inputs = flatbuffer_builder->CreateVector(tensormap_inputs);
+    auto outputs = flatbuffer_builder->CreateVector(tensormap_outputs);
+    auto signature_key = flatbuffer_builder->CreateString(rec_signature_def.signature_key());
+    // TODO add validation for signature_key
+
+    ::tflite::SignatureDefBuilder signature_def_builder{*flatbuffer_builder};
+    signature_def_builder.add_inputs(inputs);
+    signature_def_builder.add_outputs(outputs);
+    signature_def_builder.add_signature_key(signature_key);
+    signature_def_builder.add_subgraph_index(rec_signature_def.subgraph_index());
+
+    signdef_vec.emplace_back(signature_def_builder.Finish());
+  }
+
+  // Create "Model" arguments
+  auto buffers = flatbuffer_builder->CreateVector(buffer_vec);
+  auto signdefs = flatbuffer_builder->CreateVector(signdef_vec);
+  auto operator_codes = flatbuffer_builder->CreateVector(code_vec);
+  auto subgraphs = flatbuffer_builder->CreateVector(subgraph_vec);
+  auto description = flatbuffer_builder->CreateString("Generated by tflchef");
+
+  // Create "Model"
+  tflite::ModelBuilder model_builder{*flatbuffer_builder};
+
+  model_builder.add_version(3);
+  model_builder.add_operator_codes(operator_codes);
+  model_builder.add_signature_defs(signdefs);
+  model_builder.add_subgraphs(subgraphs);
+  model_builder.add_description(description);
+  model_builder.add_buffers(buffers);
+
+  auto model = model_builder.Finish();
+
+  // Finalize
+  ::tflite::FinishModelBuffer(*flatbuffer_builder, model);
+}
+
 } // namespace
 
 namespace
@@ -769,6 +950,9 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
   mc.flatbuffer_builder =
     std::unique_ptr<flatbuffers::FlatBufferBuilder>(new flatbuffers::FlatBufferBuilder(1024));
 
+  mc.cook(model_recipe);
+
+#if 0
   // TODO remove references
 
   //
@@ -971,6 +1155,7 @@ GeneratedModel cook(const ::tflchef::ModelRecipe &model_recipe)
 
   // Finalize
   ::tflite::FinishModelBuffer(*flatbuffer_builder, model);
+#endif
 
   // Return "GenerateModel"
   return GeneratedModel{std::move(gen_model)};
