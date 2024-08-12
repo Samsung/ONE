@@ -136,7 +136,7 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   // Check that all dimensions are ones, checks broadcast capabilites.
   // Last dimesion of multiplication must be compatible with FC.
   // N-D case (N>1):
-  if (multiplication->rank() >= 1)
+  if (multiplication->rank() > 1)
   {
     // Check channel-wise broadcasting:
     for (uint32_t i = 0; i < rank - 1; i++)
@@ -144,7 +144,12 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
     // Check the last dimesion of Mul is the same with the first dimension of FullyConnected
     RETURN_FALSE_UNLESS(multiplication->dim(rank - 1) == weights->dim(0));
   }
-  // Scalar case:
+  // 1-D or scalar case:
+  else if (multiplication->rank() == 1)
+  {
+    RETURN_FALSE_UNLESS(multiplication->size<loco::DataType::FLOAT32>() == 1 ||
+                        multiplication->size<loco::DataType::FLOAT32>() == weights->dim(0));
+  }
   else if (multiplication->rank() == 0)
   {
     RETURN_FALSE_UNLESS(multiplication->size<loco::DataType::FLOAT32>() == 1);
