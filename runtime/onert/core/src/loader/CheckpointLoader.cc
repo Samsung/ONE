@@ -17,6 +17,7 @@
 #include "loader/CheckpointLoader.h"
 
 #include "ir/Model.h"
+#include "ir/Checkpoint.h"
 #include "ir/train/TrainingInfo.h"
 #include "exec/Execution.h"
 #include "util/Utils.h"
@@ -28,29 +29,6 @@ namespace onert
 {
 namespace loader
 {
-
-namespace checkpoint
-{
-
-struct __attribute__((packed)) Header
-{
-  uint16_t magic;
-  uint8_t schema;
-  uint8_t reserved;
-  uint32_t opt1_offset;
-  uint32_t opt2_offset;
-  uint32_t other_offset;
-  uint32_t length;
-};
-
-struct __attribute__((pack)) Footer
-{
-  uint32_t cur_step;
-  uint32_t cur_epoch;
-};
-
-} // namespace checkpoint
-
 struct DataBufferPair
 {
   DataBufferPair(uint32_t _offset, uint32_t _size) : offset{_offset}, size{_size}
@@ -128,10 +106,10 @@ public:
     if (_file.fail())
       throw std::runtime_error{"Failed to load header data"};
 
-    if (_header.magic != MAGIC_NUMBER)
+    if (_header.magic != checkpoint::MAGIC_NUMBER)
       throw std::runtime_error{"Invalid MAGIC NUMBER"};
 
-    if (_header.schema != SCHEMA_VERSION)
+    if (_header.schema != checkpoint::SCHEMA_VERSION)
       throw std::runtime_error{"Invalid SCHEMA VERSION"};
 
     _tensor_data.resize(_header.length);
@@ -242,9 +220,6 @@ private:
   }
 
 private:
-  static constexpr uint16_t MAGIC_NUMBER = 429;
-  static constexpr uint8_t SCHEMA_VERSION = 1;
-
   std::ifstream _file;
   checkpoint::Header _header;
   checkpoint::Footer _footer;

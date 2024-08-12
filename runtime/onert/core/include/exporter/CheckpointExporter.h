@@ -21,6 +21,8 @@
 #include <vector>
 #include <memory>
 
+#include "ir/Checkpoint.h"
+
 namespace onert
 {
 namespace exec
@@ -40,6 +42,32 @@ namespace onert
 {
 namespace exporter
 {
+
+class DataBuffer
+{
+public:
+  /*
+   * length: number of tensors
+   * total_size: sum of all tensor sizes (in bytes) in the model
+   */
+  void resize(uint32_t length, uint32_t total_size);
+
+  void setOffset(uint32_t offset);
+
+  void setData(const char *data, uint32_t size);
+
+  void write(std::ofstream &ostream);
+
+private:
+  std::vector<uint32_t> _offset;
+  std::vector<char> _data;
+  uint32_t _cur_offset;
+
+  uint32_t _index;          // current index of data
+  char *_data_ptr;          // pointer to the data buffer
+  uint32_t _remaining_size; // remaining size of data buffer
+};
+
 class CheckpointExporter
 {
 public:
@@ -49,18 +77,24 @@ public:
   void save(const std::string &path);
 
 private:
-  void setReservedData();
   void setTensorData(const std::unique_ptr<onert::exec::Execution> &exec);
-  void setOptimizerData(const std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
-                        const std::unique_ptr<onert::exec::Execution> &exec);
-  void setAdamOptimizerData(const std::unique_ptr<onert::exec::Execution> &exec);
+
+  // void setReservedData();
+  // void setTensorData(const std::unique_ptr<onert::exec::Execution> &exec);
+  // void setOptimizerData(const std::unique_ptr<onert::ir::train::TrainingInfo> &train_info,
+  //                       const std::unique_ptr<onert::exec::Execution> &exec);
+  // void setAdamOptimizerData(const std::unique_ptr<onert::exec::Execution> &exec);
 
 private:
-  const uint32_t RESERVED_SIZE = 16;
+  checkpoint::Header _header;
+  checkpoint::Footer _footer;
+  DataBuffer _tensor_data;
 
-  std::vector<char> _reserved;
-  std::vector<char> _buffers;
-  std::vector<char> _optimizers;
+  // const uint32_t RESERVED_SIZE = 16;
+
+  // std::vector<char> _reserved;
+  // std::vector<char> _buffers;
+  // std::vector<char> _optimizers;
 };
 
 } // namespace exporter
