@@ -255,6 +255,8 @@ void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbo
 {
   LOGGER(l);
 
+  assert(symbol_table.empty()); // FIX_CALLER_UNLESS
+
   // Operand-related
   std::vector<flatbuffers::Offset<::tflite::Tensor>> tensor_vec;
 
