@@ -160,7 +160,7 @@ public:
     exec->iterateTrainableTensors(
       [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
         assert(tensor);
-        assert(tensor->total_size() == _tensor_data[vindex].size);
+        assert(_tensor_data[vindex].size == tensor->total_size());
         _file.seekg(_tensor_data[vindex].offset, std::ios::beg);
         _file.read(reinterpret_cast<char *>(tensor->buffer()), tensor->total_size());
         vindex++;
@@ -203,18 +203,25 @@ private:
         assert(tensor);
         auto trainable_tensor = const_cast<backend::train::ITrainableTensor *>(tensor);
         const auto opt_vars = trainable_tensor->optVars();
-        assert(opt_vars.size() == 2);
 
-        // moving average
-        assert(opt_vars[0]->total_size() == _opt1_data[vindex].size);
-        _file.seekg(_opt1_data[vindex].offset, std::ios::beg);
-        _file.read(reinterpret_cast<char *>(opt_vars[0]->buffer()), opt_vars[0]->total_size());
+        // Adam optimizer has two optimizer variables. (mean, variance)
+        // Untrainable tensor should not have any optimizer variables.
+        assert(opt_vars.size() == 2 || opt_vars.size() == 0);
 
-        // value
-        assert(opt_vars[1]->total_size() == _opt2_data[vindex].size);
-        _file.seekg(_opt2_data[vindex].offset, std::ios::beg);
-        _file.read(reinterpret_cast<char *>(opt_vars[1]->buffer()), opt_vars[1]->total_size());
+        if (opt_vars.size() == 2)
+        {
+          assert(_opt1_data[vindex].size == _opt2_data[vindex].size);
 
+          // mean
+          assert(opt_vars[0]->total_size() == _opt1_data[vindex].size);
+          _file.seekg(_opt1_data[vindex].offset, std::ios::beg);
+          _file.read(reinterpret_cast<char *>(opt_vars[0]->buffer()), opt_vars[0]->total_size());
+
+          // variance
+          assert(opt_vars[1]->total_size() == _opt2_data[vindex].size);
+          _file.seekg(_opt2_data[vindex].offset, std::ios::beg);
+          _file.read(reinterpret_cast<char *>(opt_vars[1]->buffer()), opt_vars[1]->total_size());
+        }
         vindex++;
       });
   }
