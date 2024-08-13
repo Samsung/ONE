@@ -484,14 +484,14 @@ struct QuantizeWeightsWithGPTQ final : public luci::CircleNodeMutableVisitor<voi
   QuantizeWeightsWithGPTQ(
     loco::DataType input, loco::DataType output, QuantizationGranularity granularity,
     std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
-    : input_type(input), output_type(output), granularity(granularity), hessian_map(*hessian_map)
+    : input_type(input), output_type(output), granularity(granularity), hessian_map(hessian_map)
   {
   }
 
   loco::DataType input_type;
   loco::DataType output_type;
   QuantizationGranularity granularity;
-  std::unordered_map<const luci::CircleNode *, std::vector<float>> hessian_map;
+  std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map;
 
 private:
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
@@ -566,7 +566,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
 
-    auto hessian = hessian_map[node];
+    auto hessian = (*hessian_map)[node];
 
     fake_quantize(new_weights, hessian);
   }
@@ -616,7 +616,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
 
-    auto hessian = hessian_map[node];
+    auto hessian = (*hessian_map)[node];
 
     fake_quantize(new_weights, hessian);
   }
