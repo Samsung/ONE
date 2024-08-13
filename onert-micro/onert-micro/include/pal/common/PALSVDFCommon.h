@@ -49,7 +49,7 @@ inline float activationValFloat(const circle::ActivationFunctionType act, float 
     case circle::ActivationFunctionType_TANH:
       return std::tanh(a);
     case circle::ActivationFunctionType_SIGN_BIT:
-      return std::signbit(a);
+      return (a < 0) ? true : false;
     default:
       assert(false && "Not supported");
   }
