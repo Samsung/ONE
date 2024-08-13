@@ -68,15 +68,13 @@ public:
   BackendContext &operator=(const BackendContext &) = delete;
 
 public:
-  backend::ITensorRegistry *genTensors() override;
+  FunctionMap gen() override;
 
 private:
   void planForwardTensors();
   void planBackwardTensors();
 
 public:
-  FunctionMap genKernels() override;
-
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
   const exec::train::optimizer::Optimizer *optimizer() const { return _optimizer.get(); }
