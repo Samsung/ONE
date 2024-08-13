@@ -35,7 +35,7 @@ inline bool is_single_element(const luci::CircleConst *node)
 }
 
 inline void update_with_single_element(luci::CircleConst *fused_node,
-                               const luci::CircleConst *multiplication)
+                                       const luci::CircleConst *multiplication)
 {
   for (uint32_t i = 0; i < fused_node->size<loco::DataType::FLOAT32>(); i++)
   {
