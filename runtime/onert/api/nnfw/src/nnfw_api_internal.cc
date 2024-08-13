@@ -1747,8 +1747,7 @@ NNFW_STATUS nnfw_session::train_export_checkpoint(const char *path)
 
   try
   {
-    onert::exporter::CheckpointExporter exporter(_train_info, _execution);
-    exporter.save(std::string{path});
+    onert::exporter::exportCheckpoint(path, _train_info, _execution);
   }
   catch (const std::exception &e)
   {
