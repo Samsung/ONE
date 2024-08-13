@@ -23,6 +23,7 @@
 
 #include <luci/Pass/QuantizationParameters.h>
 #include <luci/IR/CircleNode.h>
+#include <unordered_map>
 
 namespace luci
 {
