@@ -204,7 +204,7 @@ def _get_parser():
         type=str,
         help=
         'Set static shape for output tensors in comma-separated list format, like \'[1,2,3]\'.'
-        'If the model has multiple inputs, tensor names should be provided as well.'
+        'If the model has multiple outputs, tensor names should be provided as well.'
         'In such a case, the argument should be in the following format: \'a[1,2,3],b[4,5,6],c[7,8]\'.'
     )
 
@@ -353,7 +353,7 @@ def _convert(args):
                 output_shapes_map = _parse_shapes(
                     getattr(args, 'output_shapes'), output_shapes_map)
             onnx_model = update_model_dims.update_inputs_outputs_dims(
-                onnx_model, input_shapes_map, output_shapes_map)
+                onnx_model, input_shapes_map, output_shapes_map, strict_mode=True)
             onnx_model = onnx.shape_inference.infer_shapes(onnx_model)
         if _onnx_legalizer_enabled:
             options = onnx_legalizer.LegalizeOptions
