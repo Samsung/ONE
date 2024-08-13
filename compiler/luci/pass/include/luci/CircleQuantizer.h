@@ -114,19 +114,15 @@ public:
 
 public:
   void quantize(loco::Graph *) const;
-  void setHessianMap(std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
+  void setHessianMap(
+    std::unique_ptr<std::unordered_map<const luci::CircleNode *, std::vector<float>>> &hessian_map)
   {
     _hessian_map = std::move(hessian_map);
   }
 
-  const std::unordered_map<const luci::CircleNode *, std::vector<float>> *getHessianMap()
-  {
-    return _hessian_map;
-  }
-
 private:
   std::unique_ptr<Options> _options;
-  std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
+  std::unique_ptr<std::unordered_map<const luci::CircleNode *, std::vector<float>>> _hessian_map;
 };
 
 } // namespace luci
