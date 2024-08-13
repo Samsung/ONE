@@ -44,7 +44,7 @@ public:
     _remaining_size = _data.size();
   }
 
-  void setOffset(uint32_t offset) { _cur_offset = offset; }
+  void setOffset(uint32_t offset) { _cur_offset = offset + sizeof(uint32_t) * _offset.size(); }
 
   void setData(const char *data, uint32_t size)
   {
@@ -88,15 +88,16 @@ public:
     _header.schema = checkpoint::SCHEMA_VERSION;
     offset += sizeof(_header);
 
-    // setTensorData
-    //  - set _header.length
-    //  - set _tensor_data from execution
+    auto length = 0;
+    exec->iterateTrainableTensors(
+      [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *) { length++; });
+    _header.length = length;
+
     setTensorData(offset, exec);
     offset += _tensor_data.size();
 
-    // setOptimizerData
-    //  - set _header.[opt1/opt2]_offset
-    //  - set _optimizer_data from execution
+    _header.opt1_offset = offset;
+    // opt2_offset of _header will be stored in setOptimzierData function.
     setOptimizerData(offset, train_info, exec);
     for (const auto &opt : _optimizer_data)
       offset += opt.size();
@@ -137,8 +138,7 @@ private:
       sizes.emplace_back(tensor->total_size());
     });
 
-    // Update total tensor length of header
-    _header.length = sizes.size();
+    assert(_header.length == sizes.size());
 
     const uint32_t total_size = std::accumulate(sizes.begin(), sizes.end(), 0);
     _tensor_data.resize(sizes.size(), total_size);
@@ -172,7 +172,7 @@ private:
   void setAdamOptimizerData(uint32_t offset, const std::unique_ptr<onert::exec::Execution> &exec)
   {
     // Adam optimizer has two optimizer variables. (mean, variance)
-    constexpr uint32_t OPTIMIZER_VARIABLE_COUNT = 2;
+    constexpr auto ADAM_VARIABLE_COUNT = 2;
 
     std::vector<uint32_t> sizes;
     exec->iterateTrainableTensors(
@@ -182,10 +182,10 @@ private:
         const auto opt_vars = trainable_tensor->optVars();
 
         // Untrainable tensor should not have any optimizer variables.
-        assert(opt_vars.size() == OPTIMIZER_VARIABLE_COUNT || opt_vars.size() == 0);
+        assert(opt_vars.size() == ADAM_VARIABLE_COUNT || opt_vars.size() == 0);
 
         uint32_t size = 0;
-        if (opt_vars.size() == OPTIMIZER_VARIABLE_COUNT)
+        if (opt_vars.size() == ADAM_VARIABLE_COUNT)
         {
           // The sizes of mean and variance are the same.
           assert(opt_vars[0]->total_size() == opt_vars[1]->total_size());
@@ -197,7 +197,7 @@ private:
 
     assert(_header.length == sizes.size());
 
-    _optimizer_data.resize(OPTIMIZER_VARIABLE_COUNT);
+    _optimizer_data.resize(ADAM_VARIABLE_COUNT);
 
     const uint32_t total_size = std::accumulate(sizes.begin(), sizes.end(), 0);
     for (auto &opt_data : _optimizer_data)
@@ -205,7 +205,6 @@ private:
       opt_data.resize(sizes.size(), total_size);
     }
 
-    _header.opt1_offset = offset;
     _header.opt2_offset = offset + _optimizer_data[0].size();
 
     _optimizer_data[0].setOffset(_header.opt1_offset);
@@ -219,11 +218,11 @@ private:
         const auto opt_vars = trainable_tensor->optVars();
 
         // Untrainable tensor should not have any optimizer variables.
-        assert(opt_vars.size() == OPTIMIZER_VARIABLE_COUNT || opt_vars.size() == 0);
+        assert(opt_vars.size() == ADAM_VARIABLE_COUNT || opt_vars.size() == 0);
 
-        for (auto i = 0; i != OPTIMIZER_VARIABLE_COUNT; ++i)
+        for (auto i = 0; i < ADAM_VARIABLE_COUNT; ++i)
         {
-          if (opt_vars.size() == OPTIMIZER_VARIABLE_COUNT)
+          if (opt_vars.size() == ADAM_VARIABLE_COUNT)
           {
             assert(opt_vars[i]->total_size() == sizes[vindex]);
             _optimizer_data[i].setData(reinterpret_cast<const char *>(opt_vars[i]->buffer()),
