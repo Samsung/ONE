@@ -25,7 +25,8 @@ namespace circledump
 {
 
 void dump_model(std::ostream &os, const circle::Model *model);
-}
+
+} // namespace circledump
 
 std::ostream &operator<<(std::ostream &os, const circle::Model *model);
 
