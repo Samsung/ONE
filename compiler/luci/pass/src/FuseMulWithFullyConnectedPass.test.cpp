@@ -102,7 +102,7 @@ public:
     _mul->dtype(loco::DataType::FLOAT32);
     if (is_mul_scalar)
     {
-      _mul->shape({1});
+      _mul->shape({1, DIM_ONE});
     }
     else
     {
@@ -249,6 +249,15 @@ TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_activation_NEG)
 {
   g.init(luci::FusedActFunc::RELU, false /* is_mul_scalar */, true /* use_bias */);
+
+  EXPECT_EQ(false, pass.run(g.g()));
+}
+
+TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_null_weights_NEG)
+{
+  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */);
+
+  g.fc()->weights(nullptr);
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
