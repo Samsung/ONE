@@ -14,7 +14,7 @@ operand {
     }
 }
 operand {
-    name: "B"
+    name: "scale"
     type: FLOAT32
     shape { dim: 6 }
     filler {
@@ -50,7 +50,7 @@ operation {
         activation: RELU
     }
     input: "fc_out"
-    input: "B"
+    input: "scale"
     output: "mul_out"
 }
 input: "ifm"
