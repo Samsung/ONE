@@ -96,5 +96,9 @@ OMStatus onert_micro::import::configure_kernel_CircleGRU(const OMConfigureArgs &
   if (status != Ok)
     return status;
 
+  status = utils::checkCondition(input->type() == output->type());
+  if (status != Ok)
+    return status;
+
   return status;
 }

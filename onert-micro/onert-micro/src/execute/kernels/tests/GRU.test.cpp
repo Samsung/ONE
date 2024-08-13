@@ -14,4 +14,32 @@
  * limitations under the License.
  */
 
-// TODO add tests
+#include "execute/OMTestUtils.h"
+#include "test_models/gru/FloatGRUKernel.h"
+
+namespace onert_micro
+{
+namespace execute
+{
+namespace testing
+{
+
+using namespace testing;
+
+class GRUTest : public ::testing::Test
+{
+  // Do nothing
+};
+
+TEST_F(GRUTest, Float_P)
+{
+  onert_micro::test_model::TestDataFloatGRU test_data_kernel;
+  std::vector<float> output_data_vector =
+    onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector,
+              FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+} // namespace testing
+} // namespace execute
+} // namespace onert_micro
