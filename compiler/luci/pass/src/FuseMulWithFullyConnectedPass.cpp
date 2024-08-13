@@ -29,12 +29,12 @@ namespace
   if (not(cond))                  \
     return false;
 
-inline bool is_scalar(const luci::CircleConst *node)
+inline bool is_single_element(const luci::CircleConst *node)
 {
   return ((node->rank() == 1 || node->rank() == 0) && node->size<loco::DataType::FLOAT32>() == 1);
 }
 
-inline void update_with_scalar(luci::CircleConst *fused_node,
+inline void update_with_single_element(luci::CircleConst *fused_node,
                                const luci::CircleConst *multiplication)
 {
   for (uint32_t i = 0; i < fused_node->size<loco::DataType::FLOAT32>(); i++)
@@ -47,10 +47,10 @@ luci::CircleConst *gen_fused_weights(luci::CircleConst *weights,
                                      const luci::CircleConst *multiplication)
 {
   auto fused_weights = luci::clone(weights);
-  // Scalar multiplication:
-  if (is_scalar(multiplication))
+  // Single element multiplication:
+  if (is_single_element(multiplication))
   {
-    update_with_scalar(fused_weights, multiplication);
+    update_with_single_element(fused_weights, multiplication);
   }
   // N-size multiplication:
   else
@@ -74,10 +74,10 @@ luci::CircleConst *gen_fused_weights(luci::CircleConst *weights,
 luci::CircleConst *gen_fused_bias(luci::CircleConst *bias, const luci::CircleConst *multiplication)
 {
   auto fused_bias = luci::clone(bias);
-  // Scalar multiplication:
-  if (is_scalar(multiplication))
+  // Single element multiplication:
+  if (is_single_element(multiplication))
   {
-    update_with_scalar(fused_bias, multiplication);
+    update_with_single_element(fused_bias, multiplication);
   }
   // N-size multiplication:
   else
