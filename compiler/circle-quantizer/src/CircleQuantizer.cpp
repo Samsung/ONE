@@ -533,8 +533,8 @@ int entry(int argc, char **argv)
     if (arser["--input_data"])
     {
       auto input_data_path = arser.get<std::string>("--input_data");
-      auto hessian = rhn.profileData(input_data_path);
-      quantizer.setHessianMap(hessian.get());
+      auto hessian_map = rhn.profileData(input_data_path);
+      quantizer.setHessianMap(hessian_map);
     }
     else
     {
