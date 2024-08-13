@@ -36,7 +36,7 @@ public:
   void postTensorWrite(const luci::CircleNode *node,
                        const luci_interpreter::Tensor *tensor) override;
 
-  const std::unique_ptr<HessianMap> hessianData() { return _hessian_computer.getMap(); }
+  std::unique_ptr<HessianMap> hessianData() { return _hessian_computer.getMap(); }
 
 private:
   HessianComputer _hessian_computer;

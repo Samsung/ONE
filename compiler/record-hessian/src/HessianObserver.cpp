@@ -29,11 +29,17 @@ namespace record_hessian
 void HessianObserver::postTensorWrite(const luci::CircleNode *node,
                                       const luci_interpreter::Tensor *tensor)
 {
-  // TODO : ADD TCONV/DepthCONV cases
-  if (node->opcode() == luci::CircleOpcode::FULLY_CONNECTED ||
-      node->opcode() == luci::CircleOpcode::CONV_2D)
+
+  auto node_outputs = loco::succs(node);
+  for (auto node : node_outputs)
   {
-    _hessian_computer.recordHessian(node, tensor);
+    auto _node = dynamic_cast<luci::CircleNode *>(node);
+    // TODO : ADD TCONV/DepthCONV cases
+    if (_node->opcode() == luci::CircleOpcode::FULLY_CONNECTED ||
+        _node->opcode() == luci::CircleOpcode::CONV_2D)
+    {
+      _hessian_computer.recordHessian(_node, tensor);
+    }
   }
 }
 

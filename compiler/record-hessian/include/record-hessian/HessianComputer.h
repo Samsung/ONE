@@ -46,10 +46,10 @@ public:
     for (auto item : _hessian_map)
     {
       auto &vec = (*hessian_map)[item.first];
-      vec = std::move(item.second.hessian);
+      vec = item.second.hessian;
     }
 
-    return std::move(hessian_map);
+    return hessian_map;
   }
 
 private:
