@@ -96,12 +96,12 @@ size_t calculate_qauntized_value(CircleConst *node, uint32_t *indices, loco::Ten
 
 void cholesky_decomposition(std::vector<float> &src, uint32_t num_size)
 {
-  for (int i = 0; i < num_size; i++)
+  for (uint32_t i = 0; i < num_size; i++)
   {
-    for (int j = 0; j <= i; j++)
+    for (uint32_t j = 0; j <= i; j++)
     {
       double sum = 0;
-      for (int k = 0; k < j; k++)
+      for (uint32_t k = 0; k < j; k++)
       {
         sum += src[i * num_size + k] * src[j * num_size + k];
       }
@@ -120,9 +120,9 @@ void cholesky_decomposition(std::vector<float> &src, uint32_t num_size)
       }
     }
   }
-  for (int i = 0; i < num_size; i++)
+  for (uint32_t i = 0; i < num_size; i++)
   {
-    for (int j = 0; j < num_size; j++)
+    for (uint32_t j = 0; j < num_size; j++)
     {
       if (i < j)
       {
@@ -170,22 +170,22 @@ void cholesky_inverse(std::vector<float> &L, uint32_t num_size)
   std::vector<float> col(num_size, 0);
   std::vector<float> temp(num_size, 0);
 
-  for (int i = 0; i < num_size; ++i)
+  for (uint32_t i = 0; i < num_size; ++i)
   {
     fill(e.begin(), e.end(), 0.0);
     e[i] = 1.0;
 
     forward_substitution(L, e, temp, num_size);
 
-    for (int j = 0; j < num_size; ++j)
+    for (uint32_t j = 0; j < num_size; ++j)
     {
       L_inv[j * num_size + i] = temp[j];
     }
   }
 
-  for (int i = 0; i < num_size; i++)
+  for (uint32_t i = 0; i < num_size; i++)
   {
-    for (int j = 0; j < i; j++)
+    for (uint32_t j = 0; j < i; j++)
     {
       float tmp = L[i * num_size + j];
       L[i * num_size + j] = L[j * num_size + i];
@@ -193,22 +193,22 @@ void cholesky_inverse(std::vector<float> &L, uint32_t num_size)
     }
   }
 
-  for (int i = 0; i < num_size; ++i)
+  for (uint32_t i = 0; i < num_size; ++i)
   {
     fill(e.begin(), e.end(), 0.0);
     fill(col.begin(), col.end(), 0.0);
     e[i] = 1.0;
-    for (int j = 0; j < num_size; j++)
+    for (uint32_t j = 0; j < num_size; j++)
     {
       col[j] = L_inv[j * num_size + i];
     }
     backward_substitution(L, col, temp, num_size);
-    for (int j = 0; j < num_size; ++j)
+    for (uint32_t j = 0; j < num_size; ++j)
     {
       H_inv[j * num_size + i] = temp[j];
     }
   }
-  for (int i = 0; i < L.size(); i++)
+  for (uint32_t i = 0; i < L.size(); i++)
   {
     L[i] = H_inv[i];
   }
@@ -320,7 +320,6 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   assert(node->dtype() == loco::DataType::FLOAT32);
 
   IterFunc quantize;
-  bool is_reverse;
 
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = output_type == loco::DataType::U4 ? 15 : 255;
@@ -366,9 +365,9 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     cholesky_decomposition(hessian, size_hessian);
 
     // transpose hessian to make upper trangular
-    for (int i = 0; i < size_hessian; i++)
+    for (uint32_t i = 0; i < size_hessian; i++)
     {
-      for (int j = 0; j < i; j++)
+      for (uint32_t j = 0; j < i; j++)
       {
         float tmp = hessian[i * size_hessian + j];
         hessian[i * size_hessian + j] = hessian[j * size_hessian + i];
@@ -388,7 +387,6 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
 
     quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
       int in_dim_index = channel_dim_index == 0 ? 3 : 0;
-      int in_idx = indices[in_dim_index];
 
       quantized_values[cal_offset(dimension, indices)] = calculate_qauntized_value(
         node, indices, dimension, channel_dim_index, scaling_factor, nudged_max, nudged_min);
@@ -406,7 +404,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
 
       uint32_t indices_diag_hessian[2] = {idx_quant_column, idx_quant_column};
 
-      int channel_idx = indices[channel_dim_index];
+      uint32_t channel_idx = indices[channel_dim_index];
       auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
 
       error[cal_offset(dimension, indices)] =
