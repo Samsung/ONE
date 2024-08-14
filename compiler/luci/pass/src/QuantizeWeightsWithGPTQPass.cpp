@@ -386,8 +386,6 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     dimension_hessian.dim(1).set(size_hessian);
 
     quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
-      int in_dim_index = channel_dim_index == 0 ? 3 : 0;
-
       quantized_values[cal_offset(dimension, indices)] = calculate_qauntized_value(
         node, indices, dimension, channel_dim_index, scaling_factor, nudged_max, nudged_min);
 
