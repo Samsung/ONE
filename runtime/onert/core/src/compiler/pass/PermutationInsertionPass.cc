@@ -146,7 +146,8 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
 
   // Insert permute operation to the graph
   using Permute = ir::operation::Permute;
-  auto insert_node = std::make_unique<Permute>(operand_index, out_operand_index);
+  auto insert_node =
+    std::make_unique<Permute>(operand_index, out_operand_index, ir::PermuteType::COPY);
 
   auto node_index = _graph.operations().push(std::move(insert_node));
 
