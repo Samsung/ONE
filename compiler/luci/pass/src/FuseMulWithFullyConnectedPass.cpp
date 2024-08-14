@@ -16,11 +16,11 @@
 
 #include "luci/Pass/FuseMulWithFullyConnectedPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Profile/CircleNodeOrigin.h>
-
-#include <cmath>
 
 namespace
 {
@@ -107,10 +107,19 @@ luci::CircleConst *gen_fused_bias(luci::CircleConst *bias, const luci::CircleCon
  *                |
  *
  */
-bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
+bool fuse_mul_with_fc(luci::CircleMul *mul)
 {
   // Sanity check:
-  RETURN_FALSE_UNLESS(fc);
+  RETURN_FALSE_UNLESS(mul);
+  // Allow Mul node only with FLOAT32 data type:
+  RETURN_FALSE_UNLESS(mul->dtype() == loco::DataType::FLOAT32);
+  // Check if any FC node connects to Mul.
+  // Find the pattern of Mul(FC, CircleConst):
+  luci::CircleFullyConnected *fc = nullptr;
+  luci::CircleConst *multiplication = nullptr;
+  RETURN_FALSE_UNLESS(luci::fill(&fc, &multiplication).with_commutative_args_of(mul));
+  // Make sure that FullyConnected has only one successor:
+  RETURN_FALSE_UNLESS(loco::succs(fc).size() == 1);
   // Allow only FLOAT32 data type:
   RETURN_FALSE_UNLESS(fc->dtype() == loco::DataType::FLOAT32);
   // Allow only without activation functions as values are going to
@@ -119,18 +128,6 @@ bool fuse_mul_with_fc(luci::CircleFullyConnected *fc)
   // Check for weights being Constant:
   auto weights = dynamic_cast<luci::CircleConst *>(fc->weights());
   RETURN_FALSE_UNLESS(weights);
-  // Get Mul node:
-  auto fc_output = loco::succs(fc);
-  // Make sure that FullyConnected has only one child:
-  RETURN_FALSE_UNLESS(fc_output.size() == 1);
-  auto mul = dynamic_cast<luci::CircleMul *>(*fc_output.begin());
-  RETURN_FALSE_UNLESS(mul);
-  // Allow Mul node only with FLOAT32 data type:
-  RETURN_FALSE_UNLESS(mul->dtype() == loco::DataType::FLOAT32);
-  // Get multiplication Constant (here: the second input besides weights):
-  auto multiplication = mul->x() == fc ? dynamic_cast<luci::CircleConst *>(mul->y())
-                                       : dynamic_cast<luci::CircleConst *>(mul->x());
-  RETURN_FALSE_UNLESS(multiplication);
   // Get rank of multiplication:
   auto rank = multiplication->rank();
   // Check that all dimensions are ones, checks broadcast capabilites.
@@ -197,14 +194,14 @@ bool FuseMulWithFullyConnectedPass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto fc = dynamic_cast<luci::CircleFullyConnected *>(node);
-    if (not fc)
+    auto mul = dynamic_cast<luci::CircleMul *>(node);
+    if (not mul)
       continue;
 
-    switch (fc->dtype())
+    switch (mul->dtype())
     {
       case loco::DataType::FLOAT32:
-        if (fuse_mul_with_fc(fc))
+        if (fuse_mul_with_fc(mul))
           changed = true;
         break;
       default:
