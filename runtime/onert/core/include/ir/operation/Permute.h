@@ -18,6 +18,7 @@
 #define __ONERT_IR_OPERATION_PERMUTE_H__
 
 #include "ir/Operation.h"
+#include "ir/Layout.h"
 
 namespace onert::backend
 {
@@ -40,10 +41,9 @@ namespace onert::ir::operation
  *          1-2) Model output is comes from model input
  *          1-3) Model output shares tensor with other model output(s)
  *        2) Handle shared tensor between different backend
+ *        3) Handle when input and/or output layouts are different with model layout
+ *        4) Handle when input and/or output data type is different with model data type
  *
- *        Q) Why name is still 'Permute'?
- *        A) It is handled as copy operation on compile phase,
- *           but it can be permute operation if output buffer layout is changed by API call
  */
 class Permute : public Operation
 {
@@ -52,7 +52,13 @@ public:
   OpCode opcode() const final { return OpCode::Permute; }
 
 public:
-  Permute(const OperandIndex &input, const OperandIndex &output);
+  Permute(const OperandIndex &input, const OperandIndex &output, ir::PermuteType type);
+
+public:
+  ir::PermuteType getPermuteType() const { return _type; }
+
+private:
+  ir::PermuteType _type;
 };
 
 } // namespace onert::ir::operation

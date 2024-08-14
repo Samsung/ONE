@@ -520,7 +520,7 @@ NNFW_STATUS nnfw_session::await()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *buffer,
+NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE /*type*/, const void *buffer,
                                     size_t length)
 {
   if (!isStatePreparedOrFinishedRun())
@@ -539,10 +539,6 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *
 
   try
   {
-    // Allow float input internal quantization only
-    if (type == NNFW_TYPE_TENSOR_FLOAT32)
-      _execution->setInputType(onert::ir::IOIndex(index),
-                               onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
     _execution->setInput(onert::ir::IOIndex(index), buffer, length);
   }
   catch (const std::exception &e)
@@ -553,7 +549,8 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length)
+NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE /*type*/, void *buffer,
+                                     size_t length)
 {
   if (!isStatePreparedOrFinishedRun())
   {
@@ -571,10 +568,6 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE type, void *buffe
 
   try
   {
-    // Allow float output internal dequantization only
-    if (type == NNFW_TYPE_TENSOR_FLOAT32)
-      _execution->setOutputType(onert::ir::IOIndex(index),
-                                onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
     _execution->setOutput(onert::ir::IOIndex(index), buffer, length);
   }
   catch (const std::exception &e)
@@ -631,10 +624,10 @@ NNFW_STATUS nnfw_session::output_size(uint32_t *number)
 
 NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
 {
-  if (!isStatePreparedOrFinishedRun())
+  if (!isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::set_input_layout : "
-              << "run should be run after prepare" << std::endl;
+              << "run should be run before prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -647,7 +640,8 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
-    _execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    // Insert if not exists, otherwise update the value
+    _coptions->input_layout[index] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
@@ -657,12 +651,40 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_input_type : "
+              << "run should be run before prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    if (type != NNFW_TYPE_TENSOR_FLOAT32)
+    {
+      std::cerr << "Error during nnfw_session::set_input_type, not supported type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    _coptions->input_float.insert(index);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_input_type : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
 {
-  if (!isStatePreparedOrFinishedRun())
+  if (!isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::set_output_layout : "
-              << "run should be run after prepare" << std::endl;
+              << "run should be run before prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -676,13 +698,42 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
-    _execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    // Insert if not exists, otherwise update the value
+    _coptions->output_layout[index] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::set_output_layout : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_output_type : "
+              << "run should be run before prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    if (type != NNFW_TYPE_TENSOR_FLOAT32)
+    {
+      std::cerr << "Error during nnfw_session::set_output_type, not supported type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    _coptions->output_float.insert(index);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_output_type : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
   return NNFW_STATUS_NO_ERROR;
 }
 
