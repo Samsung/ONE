@@ -342,18 +342,8 @@ void Args::Parse(const int argc, char **argv)
     _mem_poll = _arser.get<bool>("--mem_poll");
     _write_report = _arser.get<bool>("--write_report");
 
-    // calling, e.g., "onert_run .. -- shape_prepare .. --shape_run .." should theoretically
-    // work but allowing both options together on command line makes the usage and implemenation
-    // of onert_run too complicated. Therefore let's not allow those option together.
     auto shape_prepare = _arser.get<std::string>("--shape_prepare");
     auto shape_run = _arser.get<std::string>("--shape_run");
-    if (!shape_prepare.empty() && !shape_run.empty())
-    {
-      std::cerr << "Two options '--shape_prepare' and '--shape_run' cannot be given at once"
-                << std::endl;
-      exit(1);
-    }
-
     if (!shape_prepare.empty())
     {
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
