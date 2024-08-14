@@ -76,8 +76,7 @@ public:
 
   std::shared_ptr<ITensorRegistry> tensor_registry() { return _tensor_registry; }
 
-  virtual backend::ITensorRegistry *genTensors() = 0;
-  virtual FunctionMap genKernels() = 0;
+  virtual FunctionMap gen() = 0;
 
 private:
   const ITrainableBackend *_backend{nullptr};
