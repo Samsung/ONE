@@ -87,7 +87,8 @@ void WhileLayer::run()
   // Copying body inputs to outputs when the loop body is never executed
   if (!getResultCond(cond_output_tensor.get()))
   {
-    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, _external_context};
+    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, ir::PermuteType::SAME,
+                                                _external_context};
     copy_body_inputs_to_op_outputs.run();
     return;
   }
@@ -105,7 +106,8 @@ void WhileLayer::run()
   }
 
   std::vector<ITensor *> body_outputs(temp_outputs.begin(), temp_outputs.end());
-  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs, _external_context};
+  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs, ir::PermuteType::SAME,
+                                               _external_context};
 
   const auto body_execute_with_op_inputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;

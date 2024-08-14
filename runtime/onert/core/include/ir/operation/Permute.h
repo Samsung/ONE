@@ -18,6 +18,7 @@
 #define __ONERT_IR_OPERATION_PERMUTE_H__
 
 #include "ir/Operation.h"
+#include "ir/Layout.h"
 
 namespace onert
 {
@@ -59,7 +60,13 @@ public:
   OpCode opcode() const final { return OpCode::Permute; }
 
 public:
-  Permute(const OperandIndex &input, const OperandIndex &output);
+  Permute(const OperandIndex &input, const OperandIndex &output, ir::PermuteType type);
+
+public:
+  ir::PermuteType getPermuteType() const { return _type; }
+
+private:
+  ir::PermuteType _type;
 };
 
 } // namespace operation

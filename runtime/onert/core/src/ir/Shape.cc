@@ -66,29 +66,29 @@ uint64_t Shape::num_elements() const
                          std::multiplies<uint64_t>());
 }
 
-Shape permuteShape(const Shape &shape, Layout from, Layout to)
+Shape convertShape(const Shape &shape, Layout src, Layout dst)
 {
   assert(shape.rank() <= Shape::kMaxRank);
   Shape ret{shape};
-  if (from == to)
+  if (src == dst)
     return ret;
   if (shape.rank() < 4)
     return ret;
-  // Permutation changing layout beyond 4-D is not supported yet
+  // Changing layout beyond 4-D is not supported yet
   assert(shape.rank() <= 4);
-  if (from == Layout::NHWC && to == Layout::NCHW)
+  if (src == Layout::NHWC && dst == Layout::NCHW)
   {
     ret.dim(1) = shape.dim(3);
     ret.dim(2) = shape.dim(1);
     ret.dim(3) = shape.dim(2);
   }
-  else if (from == Layout::NCHW && to == Layout::NHWC)
+  else if (src == Layout::NCHW && dst == Layout::NHWC)
   {
     ret.dim(1) = shape.dim(2);
     ret.dim(2) = shape.dim(3);
     ret.dim(3) = shape.dim(1);
   }
-  // Other cases(either `from` or `to` is UNKNOWN), just return the original shape
+  // Other cases(either `src` or `dst` is UNKNOWN), just return the original shape
   return ret;
 }
 

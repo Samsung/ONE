@@ -77,8 +77,8 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   }
 
   auto fn = std::make_unique<kernel::PermuteLayer>(
-    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors,
-    ignore_forward_in_training, _external_context);
+    input_tensors, output_tensors, node.getPermuteType(), input_back_prop_tensors,
+    output_back_prop_tensors, ignore_forward_in_training, _external_context);
 
   _return_fn = std::move(fn);
 }

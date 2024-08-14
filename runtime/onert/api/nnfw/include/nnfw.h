@@ -332,13 +332,10 @@ NNFW_STATUS nnfw_await(nnfw_session *session);
  * reused for many inferences. \p length must be greater or equal than the operand requires. To
  * specify an optional input, you can either not call this for that input or call this with \p
  * buffer of NULL and \p length of 0.
- * If you set {@link NNFW_TYPE_TENSOR_FLOAT32} type and model has quantized input type on given
- * index, runtime will set quantized data type model input by converting from float buffer data
- * internally.
  *
  * @param[in] session Session to the input is to be set
  * @param[in] index   Index of input to be set (0-indexed)
- * @param[in] type    Type of the input
+ * @param[in] type    Type of the input (deprecated)
  * @param[in] buffer  Raw buffer for input
  * @param[in] length  Size of bytes of input buffer
  *
@@ -354,13 +351,10 @@ NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type
  * reused for many inferences. \p length must be greater or equal than the operand requires. An
  * output operand can have unspecified shape and deduced dynamically during the execution. You must
  * provide \p buffer large enough.
- * If you set {@link NNFW_TYPE_TENSOR_FLOAT32} type and model has quantized output type on given
- * index, runtime will set dequantized float buffer data from quantize data type model output
- * internally.
  *
  * @param[in]   session Session from inference output is to be extracted
  * @param[in]   index   Index of output to be set (0-indexed)
- * @param[in]   type    Type of the output
+ * @param[in]   type    Type of the output (deprecated)
  * @param[out]  buffer  Raw buffer for output
  * @param[in]   length  Size of bytes of output buffer
  *
@@ -398,9 +392,11 @@ NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number);
 /**
  * @brief Set the layout of an input
  *
- * The input that does not call this has NNFW_LAYOUT_NHWC layout
+ * The input that does not call this has NNFW_LAYOUT_NHWC layout.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
  *
- * @param[in] session session from inference input is to be extracted
+ * @param[in] session session from input is to be extracted
  * @param[in] index   index of input to be set (0-indexed)
  * @param[in] layout  layout to set to target input
  *
@@ -409,26 +405,62 @@ NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number);
 NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout);
 
 /**
+ * @brief Set the type of an input
+ *
+ * User can call this function to set the type of an input. Then user can pass input data of that
+ * type. If it is not called, runtime will infer the type from the model.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
+ * Now only NNFW_TYPE_FLOAT32 is supported. If other types are passed, runtime will return error.
+ *
+ * @param[in] session session from input is to be extracted
+ * @param[in] index   index of input to be set (0-indexed)
+ * @param[in] type    type to set to target input. This can be NNFW_TYPE_FLOAT32 only.
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
+
+/**
  * @brief Set the layout of an output
  *
- * The output that does not call this has NNFW_LAYOUT_NHWC layout
+ * The output that does not call this has NNFW_LAYOUT_NHWC layout.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
  *
- * @param[in] session session from inference output is to be extracted
+ * @param[in] session session from output is to be extracted
  * @param[in] index   index of output to be set (0-indexed)
  * @param[in] layout  layout to set to target output
  *
- * @return NNFW_STATUS_NO_ERROR if successful
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
  */
 NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout);
+
+/**
+ * @brief Set the type of an output
+ *
+ * User can call this function to set the type of an output. Then user can pass output data of that
+ * type. If it is not called, runtime will output the type from the model.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
+ * Now only NNFW_TYPE_FLOAT32 is supported. If other types are passed, runtime will return error.
+ *
+ * @param[in] session session from output is to be extracted
+ * @param[in] index   index of output to be set (0-indexed)
+ * @param[in] type    type to set to target output. This can be NNFW_TYPE_FLOAT32 only.
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
 
 /**
  * @brief       Get i-th input tensor info
  *
  * <p>Before {@link nnfw_prepare} is invoked, this function return tensor info in model,
- * so updated tensor info by {@link nnfw_apply_tensorinfo} is not returned.</p>
+ * so updated tensor info by {@link nnfw_set_input_tensorinfo} is not returned.</p>
  *
  * <p>After {@link nnfw_prepare} is invoked, this function return updated tensor info
- * if tensor info is updated by {@link nnfw_apply_tensorinfo}.</p>
+ * if tensor info is updated by {@link nnfw_set_input_tensorinfo}.</p>
  *
  * @param[in]   session     Session from input information is to be extracted
  * @param[in]   index       Index of input

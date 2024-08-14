@@ -16,8 +16,6 @@
 
 #include "PermuteLayer.h"
 
-#include "../../../exec/ShapeConverter.h"
-
 #include <ruy/context.h> // from @ruy
 
 namespace onert
@@ -31,8 +29,9 @@ namespace kernel
 
 PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
                            const std::vector<ITensor *> &dst_tensors,
+                           const ir::PermuteType &permute_type,
                            const std::shared_ptr<ExternalContext> &external_context)
-  : _external_context{external_context}, _tasks_map{}
+  : _permute_type{permute_type}, _external_context{external_context}, _tasks_map{}
 {
   assert(src_tensors.size() == dst_tensors.size());
   _src_tensors = src_tensors;
@@ -65,22 +64,6 @@ void PermuteLayer::optimize()
       dst_offsets_it->resize(0);
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         continue;
-      const auto permute_type = [&]() -> PermuteType {
-        if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NHWC &&
-            dst->layout() == ir::Layout::NCHW)
-        {
-          return PermuteType::NHWC_TO_NCHW;
-        }
-        else if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NCHW &&
-                 dst->layout() == ir::Layout::NHWC)
-        {
-          return PermuteType::NCHW_TO_NHWC;
-        }
-        else
-        {
-          return PermuteType::COPY;
-        }
-      }();
 
       // TODO Support different types
       auto fn = [&](backend::ITensor &src_tensor) {
@@ -88,7 +71,7 @@ void PermuteLayer::optimize()
           // NOTE The buffer of both tensor can be nullptr in this step
           const auto data_size = ir::sizeOfDataType(src_tensor.data_type());
 
-          if (permute_type == PermuteType::COPY)
+          if (_permute_type == ir::PermuteType::SAME)
           {
             if ((!src_tensor.has_padding() && !dst_tensor.has_padding()))
             {
@@ -125,8 +108,8 @@ void PermuteLayer::optimize()
           else
           {
             assert(src_tensor.getShape().rank() == 4 &&
-                   (permute_type == PermuteType::NHWC_TO_NCHW ||
-                    permute_type == PermuteType::NCHW_TO_NHWC));
+                   (_permute_type == ir::PermuteType::NHWC_TO_NCHW ||
+                    _permute_type == ir::PermuteType::NCHW_TO_NHWC));
             const auto loop_shape = src_tensor.getShape();
             const auto copy_len = data_size;
 
@@ -148,7 +131,7 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
 {
   size_t distributed_dim = 0;
   auto src_shape = src_tensor->getShape();
-  if (src_tensor->layout() == dst_tensor->layout())
+  if (_permute_type == ir::PermuteType::SAME)
   {
     for (int i = 1; i < src_shape.rank() - 1; ++i)
     {
@@ -209,14 +192,17 @@ void PermuteLayer::run()
   {
     auto dst_tensor = _dst_tensors.at(i);
     auto src_tensor = _src_tensors.at(i);
+    auto src_layout =
+      _permute_type == ir::PermuteType::NCHW_TO_NHWC ? ir::Layout::NCHW : ir::Layout::NHWC;
+    auto dst_layout =
+      _permute_type == ir::PermuteType::NHWC_TO_NCHW ? ir::Layout::NCHW : ir::Layout::NHWC;
     if (src_tensor->is_dynamic() || dst_tensor->is_dynamic())
     {
       // getting output shape
       auto src_shape = src_tensor->getShape();
 
       // set output shape and output buffer
-      ir::Shape new_shape =
-        exec::convertShape(src_shape, src_tensor->layout(), dst_tensor->layout());
+      ir::Shape new_shape = ir::convertShape(src_shape, src_layout, dst_layout);
 
       try
       {
@@ -233,7 +219,7 @@ void PermuteLayer::run()
         throw;
       }
     }
-    assert(exec::convertShape(src_tensor->getShape(), src_tensor->layout(), dst_tensor->layout()) ==
+    assert(ir::convertShape(src_tensor->getShape(), src_layout, dst_layout) ==
            dst_tensor->getShape());
   }
   assert(_src_tensors.size() == _dst_tensors.size());
@@ -272,7 +258,7 @@ void PermuteLayer::run()
         // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
         else if (dst->needMemoryMap() && !dst->is_subtensor())
         {
-          if (!src->has_padding() && !dst->has_padding() && src->layout() == dst->layout())
+          if (!src->has_padding() && !dst->has_padding() && _permute_type == ir::PermuteType::SAME)
           {
             // This is more effective than multi-threading
             src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
@@ -288,7 +274,7 @@ void PermuteLayer::run()
           }
         }
         else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
-                 !dst->has_padding() && src->layout() == dst->layout())
+                 !dst->has_padding() && _permute_type == ir::PermuteType::SAME)
         {
           // This is more effective than multi-threading
           assert(!dst->needMemoryMap());

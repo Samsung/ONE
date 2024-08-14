@@ -16,8 +16,6 @@
 
 #include "ExecutorBase.h"
 
-#include "ShapeConverter.h"
-
 #include "util/ConfigSource.h"
 #include <misc/polymorphic_downcast.h>
 

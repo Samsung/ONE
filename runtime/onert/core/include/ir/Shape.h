@@ -137,7 +137,7 @@ private:
 inline bool operator==(const Shape &lhs, const Shape &rhs) { return lhs.dims() == rhs.dims(); }
 inline bool operator!=(const Shape &lhs, const Shape &rhs) { return lhs.dims() != rhs.dims(); }
 
-Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout);
+Shape convertShape(const Shape &shape, Layout src, Layout dst);
 
 /**
  * @brief Find out if tha rank in this shape is "maybe" unspecified.
