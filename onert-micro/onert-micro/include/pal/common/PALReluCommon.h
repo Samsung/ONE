@@ -29,14 +29,15 @@ namespace execute
 namespace pal
 {
 
-inline OMStatus ReLUCommon(const int flat_size, const float *input_data, float *output_data,
-                           const float alpha, const bool is_relu_6)
+template <typename Type>
+OMStatus ReLUCommon(const int flat_size, const Type *input_data, Type *output_data,
+                    const float alpha, const bool is_relu_6)
 {
-  const float relu_6_value = 6.0f;
+  const Type relu_6_value = 6.0f;
   for (int i = 0; i < flat_size; i++)
   {
-    const float val = input_data[i];
-    float result = val > 0 ? val : val * alpha;
+    const Type val = input_data[i];
+    Type result = val > 0 ? val : val * alpha;
     result = is_relu_6 ? (result > relu_6_value ? relu_6_value : result) : result;
     output_data[i] = result;
   }

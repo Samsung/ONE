@@ -15,7 +15,7 @@
  */
 
 #include "execute/kernels/ReluCommon.h"
-#include "PALReluCommon.h"
+#include "PALRelu.h"
 
 using namespace onert_micro;
 using namespace onert_micro::execute;
@@ -86,6 +86,23 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      core::OMRuntimeShape input_shape(input);
+      core::OMRuntimeShape output_shape(output);
+
+      const auto *input_data_int8 = core::utils::castInputData<int8_t>(input_data);
+      auto *output_data_int8 = core::utils::castOutputData<int8_t>(output_data);
+
+      assert(output_data_int8);
+      const int flat_size = input_shape.flatSize();
+
+      status = pal::ReLUCommon(flat_size, input_data_int8, output_data_int8, alpha, is_relu_6);
+    }
+    break;
+#endif // DIS_QUANT
+
     default:
     {
       status = UnsupportedType;
