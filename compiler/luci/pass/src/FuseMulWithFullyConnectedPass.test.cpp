@@ -34,13 +34,22 @@ using namespace luci::test;
 /**
  *  Graph for this test
  *
- *  BEFORE
+ *  BEFORE (without extra_fc_successor)
  *
  *         [FC]
  *           |
  *     [Mul w/ Relu]
  *
- *  AFTER
+ *  BEFORE (with extra_fc_successor)
+ *
+ *         [FC]
+ *           |
+ *           |-------------------
+ *           |                  |
+ *           |                  |
+ *     [Mul w/ Relu]       [other FC]
+ *
+ *  AFTER (if pass applied)
  *
  *      [FC w/ Relu] (weights and bias updated)
  *
@@ -48,7 +57,8 @@ using namespace luci::test;
 class FCMulGraphlet
 {
 public:
-  void init(loco::Graph *g, luci::FusedActFunc fc_activation, bool is_mul_scalar, bool use_bias)
+  void init(loco::Graph *g, luci::FusedActFunc fc_activation, bool is_mul_scalar, bool use_bias,
+            bool extra_successor)
   {
     _fc = g->nodes()->create<luci::CircleFullyConnected>();
 
@@ -78,6 +88,22 @@ public:
     _fc->dtype(loco::DataType::FLOAT32);
     _fc->shape({1, DIM_ONE});
     _fc->name("fc");
+
+    if (extra_successor)
+    {
+      _extra_succ = g->nodes()->create<luci::CircleFullyConnected>();
+      // Set previous FC as input to bump number of successors for it:
+      _extra_succ->input(_fc);
+      std::vector<float> weights_val(DIM_ONE * DIM_TWO);
+      _extra_f =
+        luci::create_const_node(g, loco::DataType::FLOAT32, {DIM_ONE, DIM_TWO}, weights_val);
+      _extra_succ->weights(_extra_f);
+      _extra_succ->bias(nullptr);
+      _extra_succ->fusedActivationFunction(luci::FusedActFunc::NONE);
+      _extra_succ->dtype(loco::DataType::FLOAT32);
+      _extra_succ->shape({1, DIM_ONE});
+      _extra_succ->name("extra_fc");
+    }
 
     std::vector<float> mul_values;
 
@@ -128,15 +154,18 @@ protected:
   luci::CircleConst *_fc_f = nullptr;
   luci::CircleNode *_fc_b = nullptr;
   luci::CircleConst *_mul_c = nullptr;
+  luci::CircleFullyConnected *_extra_succ = nullptr;
+  luci::CircleConst *_extra_f = nullptr;
 };
 
 class FuseMulWithFCTestGraph : public TestIOGraph, public FCMulGraphlet
 {
 public:
-  void init(luci::FusedActFunc fc_activation, bool is_mul_scalar, bool use_bias)
+  void init(luci::FusedActFunc fc_activation, bool is_mul_scalar, bool use_bias,
+            bool extra_successor)
   {
     TestIOGraph::init({1, DIM_TWO}, {1, DIM_ONE});
-    FCMulGraphlet::init(g(), fc_activation, is_mul_scalar, use_bias);
+    FCMulGraphlet::init(g(), fc_activation, is_mul_scalar, use_bias, extra_successor);
 
     _fc->input(input());
 
@@ -155,7 +184,8 @@ public:
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_mul_tensor)
 {
-  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */);
+  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */,
+         false /* extra_successor */);
 
   EXPECT_EQ(true, pass.run(g.g()));
 
@@ -184,7 +214,8 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_mul_tensor)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_mul_scalar)
 {
-  g.init(luci::FusedActFunc::NONE, true /* is_mul_scalar */, true /* use_bias */);
+  g.init(luci::FusedActFunc::NONE, true /* is_mul_scalar */, true /* use_bias */,
+         false /* extra_successor */);
 
   EXPECT_EQ(true, pass.run(g.g()));
 
@@ -213,7 +244,8 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_mul_scalar)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_no_bias)
 {
-  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, false /* use_bias */);
+  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, false /* use_bias */,
+         false /* extra_successor */);
 
   EXPECT_EQ(true, pass.run(g.g()));
 
@@ -238,7 +270,8 @@ TEST_F(FuseMulWithFullyConnectedPassTest, fc_no_bias)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 {
-  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */);
+  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */,
+         false /* extra_successor */);
 
   // Bias cannot be fused as it's passed as feature map.
   g.to_fm_bias();
@@ -248,16 +281,26 @@ TEST_F(FuseMulWithFullyConnectedPassTest, bias_feature_map_NEG)
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_activation_NEG)
 {
-  g.init(luci::FusedActFunc::RELU, false /* is_mul_scalar */, true /* use_bias */);
+  g.init(luci::FusedActFunc::RELU, false /* is_mul_scalar */, true /* use_bias */,
+         false /* extra_successor */);
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
 
 TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_null_weights_NEG)
 {
-  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */);
+  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */,
+         false /* extra_successor */);
 
   g.fc()->weights(nullptr);
+
+  EXPECT_EQ(false, pass.run(g.g()));
+}
+
+TEST_F(FuseMulWithFullyConnectedPassTest, fc_with_extra_successor_NEG)
+{
+  g.init(luci::FusedActFunc::NONE, false /* is_mul_scalar */, true /* use_bias */,
+         true /* extra_successor */);
 
   EXPECT_EQ(false, pass.run(g.g()));
 }
