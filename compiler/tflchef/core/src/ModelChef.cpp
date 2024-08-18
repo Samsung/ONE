@@ -690,18 +690,17 @@ void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbo
   assert(_operator_vec.empty()); // FIX_CALLER_UNLESS
 
   // default name for graph
-  std::string graph_name = _graph_name;
   if (graph.has_name())
-    graph_name = graph.name();
+    _graph_name = graph.name();
 
-  auto lookup = [&symbol_table, &graph_name](const std::string &name) {
+  auto lookup = [&](const std::string &name) {
     if (symbol_table.find(name) != symbol_table.end())
       return symbol_table.at(name);
     else if (name == "")
       return -1; // -1 in TFLite means that optional input tensor is empty.
     else
     {
-      std::string msg = "tflchef : input not found in " + graph_name + " graph";
+      std::string msg = "tflchef : input not found in " + _graph_name + " graph";
       throw std::runtime_error(msg.c_str());
     }
   };
@@ -730,7 +729,7 @@ void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbo
   auto inputs = _flatbuffer_builder->CreateVector(input_vec);
   auto outputs = _flatbuffer_builder->CreateVector(output_vec);
   auto operators = _flatbuffer_builder->CreateVector(_operator_vec);
-  auto name = _flatbuffer_builder->CreateString(graph_name);
+  auto name = _flatbuffer_builder->CreateString(_graph_name);
 
   tflite::SubGraphBuilder subgraph_builder{*_flatbuffer_builder};
 
