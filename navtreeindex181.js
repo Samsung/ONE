@@ -1,5 +1,17 @@
 var NAVTREEINDEX181 =
 {
+"compiler_2mir-interpreter_2src_2ops_2_reshape_8cpp.html":[37,0,0,77,1,0,52],
+"compiler_2mir-interpreter_2src_2ops_2_reshape_8cpp.html#a6968b89f2d0a3d6296371e8f161083cb":[37,0,0,77,1,0,52,0],
+"compiler_2mir-interpreter_2src_2ops_2_reshape_8cpp_source.html":[37,0,0,77,1,0,52],
+"compiler_2mir-interpreter_2src_2ops_2_reshape_8h.html":[37,0,0,77,1,0,53],
+"compiler_2mir-interpreter_2src_2ops_2_reshape_8h.html#a6968b89f2d0a3d6296371e8f161083cb":[37,0,0,77,1,0,53,0],
+"compiler_2mir-interpreter_2src_2ops_2_reshape_8h_source.html":[37,0,0,77,1,0,53],
+"compiler_2mir-interpreter_2src_2ops_2_slice_8cpp.html":[37,0,0,77,1,0,56],
+"compiler_2mir-interpreter_2src_2ops_2_slice_8cpp.html#aab2cfe7c4bae4cacfb40dfc213745054":[37,0,0,77,1,0,56,1],
+"compiler_2mir-interpreter_2src_2ops_2_slice_8cpp_source.html":[37,0,0,77,1,0,56],
+"compiler_2mir-interpreter_2src_2ops_2_slice_8h.html":[37,0,0,77,1,0,57],
+"compiler_2mir-interpreter_2src_2ops_2_slice_8h.html#aab2cfe7c4bae4cacfb40dfc213745054":[37,0,0,77,1,0,57,0],
+"compiler_2mir-interpreter_2src_2ops_2_slice_8h_source.html":[37,0,0,77,1,0,57],
 "compiler_2mir-interpreter_2src_2ops_2_soft_max_8h.html":[37,0,0,77,1,0,59],
 "compiler_2mir-interpreter_2src_2ops_2_soft_max_8h.html#aaa6868d889595d7ce4eaec3ad08fccdd":[37,0,0,77,1,0,59,0],
 "compiler_2mir-interpreter_2src_2ops_2_soft_max_8h_source.html":[37,0,0,77,1,0,59],
@@ -237,17 +249,5 @@ var NAVTREEINDEX181 =
 "compiler_2moco_2import_2src_2_nodes_2_pad_8cpp_source.html":[37,0,0,79,0,1,0,16],
 "compiler_2moco_2import_2src_2_nodes_2_re_l_u6_8cpp.html":[37,0,0,79,0,1,0,20],
 "compiler_2moco_2import_2src_2_nodes_2_re_l_u6_8cpp_source.html":[37,0,0,79,0,1,0,20],
-"compiler_2moco_2import_2src_2_nodes_2_re_l_u_8cpp.html":[37,0,0,79,0,1,0,19],
-"compiler_2moco_2import_2src_2_nodes_2_re_l_u_8cpp_source.html":[37,0,0,79,0,1,0,19],
-"compiler_2moco_2import_2src_2_nodes_2_reshape_8cpp.html":[37,0,0,79,0,1,0,21],
-"compiler_2moco_2import_2src_2_nodes_2_reshape_8cpp_source.html":[37,0,0,79,0,1,0,21],
-"compiler_2moco_2import_2src_2_nodes_2_rsqrt_8cpp.html":[37,0,0,79,0,1,0,22],
-"compiler_2moco_2import_2src_2_nodes_2_rsqrt_8cpp_source.html":[37,0,0,79,0,1,0,22],
-"compiler_2moco_2import_2src_2_nodes_2_shape_8cpp.html":[37,0,0,79,0,1,0,23],
-"compiler_2moco_2import_2src_2_nodes_2_shape_8cpp_source.html":[37,0,0,79,0,1,0,23],
-"compiler_2moco_2import_2src_2_nodes_2_softmax_8cpp.html":[37,0,0,79,0,1,0,24],
-"compiler_2moco_2import_2src_2_nodes_2_softmax_8cpp_source.html":[37,0,0,79,0,1,0,24],
-"compiler_2moco_2import_2src_2_nodes_2_sqrt_8cpp.html":[37,0,0,79,0,1,0,25],
-"compiler_2moco_2import_2src_2_nodes_2_sqrt_8cpp_source.html":[37,0,0,79,0,1,0,25],
-"compiler_2moco_2import_2src_2_nodes_2_squared_difference_8cpp.html":[37,0,0,79,0,1,0,26]
+"compiler_2moco_2import_2src_2_nodes_2_re_l_u_8cpp.html":[37,0,0,79,0,1,0,19]
 };

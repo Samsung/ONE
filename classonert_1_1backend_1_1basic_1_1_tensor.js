@@ -18,5 +18,6 @@ var classonert_1_1backend_1_1basic_1_1_tensor =
     [ "_buffer", "classonert_1_1backend_1_1basic_1_1_tensor.html#a287a6fe72cbbfa77b788565238b88303", null ],
     [ "_dynamic_mem_mgr", "classonert_1_1backend_1_1basic_1_1_tensor.html#a5d5d6676acd81bd721c88ae7fad3405d", null ],
     [ "_layout", "classonert_1_1backend_1_1basic_1_1_tensor.html#af16b07d54a320204eac8fb6adc1ffb0e", null ],
-    [ "_num_references", "classonert_1_1backend_1_1basic_1_1_tensor.html#acc1e59e576d37d0de71411e132c92a3a", null ]
+    [ "_num_references", "classonert_1_1backend_1_1basic_1_1_tensor.html#acc1e59e576d37d0de71411e132c92a3a", null ],
+    [ "_size", "classonert_1_1backend_1_1basic_1_1_tensor.html#aed82592eb697e0cbdfa9bec829520a51", null ]
 ];

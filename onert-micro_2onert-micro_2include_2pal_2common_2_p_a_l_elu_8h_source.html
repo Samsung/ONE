@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2include_2pal
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; flat_size; i++)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">float</span> val = input_data[i];</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">float</span> result = val &lt; 0.0f ? std::expm1(val) : val;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">float</span> result = val &lt; 0.0f ? std::exp(val) - 1 : val;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    output_data[i] = result;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>

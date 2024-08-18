@@ -1,5 +1,17 @@
 var NAVTREEINDEX178 =
 {
+"compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp.html":[37,0,0,58,2,2,6],
+"compiler_2luci-interpreter_2src_2kernels_2_average_pool2_d_8cpp_source.html":[37,0,0,58,2,2,6],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp.html":[37,0,0,58,2,2,8],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp.html#a3cf62fbddebae9c18b3242ac62f0ed0b":[37,0,0,58,2,2,8,0],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8cpp_source.html":[37,0,0,58,2,2,8],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8h.html":[37,0,0,58,2,2,9],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_mat_mul_8h_source.html":[37,0,0,58,2,2,9],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_to_space_n_d_8cpp.html":[37,0,0,58,2,2,10],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_to_space_n_d_8cpp_source.html":[37,0,0,58,2,2,10],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_to_space_n_d_8h.html":[37,0,0,58,2,2,11],
+"compiler_2luci-interpreter_2src_2kernels_2_batch_to_space_n_d_8h_source.html":[37,0,0,58,2,2,11],
+"compiler_2luci-interpreter_2src_2kernels_2_binary_op_common_8h.html":[37,0,0,58,2,2,12],
 "compiler_2luci-interpreter_2src_2kernels_2_binary_op_common_8h.html#ae259d24ecb5f94b508475ae0abcc3510":[37,0,0,58,2,2,12,0],
 "compiler_2luci-interpreter_2src_2kernels_2_binary_op_common_8h_source.html":[37,0,0,58,2,2,12],
 "compiler_2luci-interpreter_2src_2kernels_2_broadcast_to_8cpp.html":[37,0,0,58,2,2,13],
@@ -237,17 +249,5 @@ var NAVTREEINDEX178 =
 "compiler_2luci-interpreter_2src_2kernels_2_square_8cpp_source.html":[37,0,0,58,2,2,161],
 "compiler_2luci-interpreter_2src_2kernels_2_squared_difference_8cpp.html":[37,0,0,58,2,2,163],
 "compiler_2luci-interpreter_2src_2kernels_2_squared_difference_8cpp_source.html":[37,0,0,58,2,2,163],
-"compiler_2luci-interpreter_2src_2kernels_2_squared_difference_8h.html":[37,0,0,58,2,2,164],
-"compiler_2luci-interpreter_2src_2kernels_2_squared_difference_8h_source.html":[37,0,0,58,2,2,164],
-"compiler_2luci-interpreter_2src_2kernels_2_squeeze_8cpp.html":[37,0,0,58,2,2,165],
-"compiler_2luci-interpreter_2src_2kernels_2_squeeze_8cpp_source.html":[37,0,0,58,2,2,165],
-"compiler_2luci-interpreter_2src_2kernels_2_squeeze_8h.html":[37,0,0,58,2,2,166],
-"compiler_2luci-interpreter_2src_2kernels_2_squeeze_8h_source.html":[37,0,0,58,2,2,166],
-"compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp.html":[37,0,0,58,2,2,167],
-"compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8cpp_source.html":[37,0,0,58,2,2,167],
-"compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8h.html":[37,0,0,58,2,2,168],
-"compiler_2luci-interpreter_2src_2kernels_2_strided_slice_8h_source.html":[37,0,0,58,2,2,168],
-"compiler_2luci-interpreter_2src_2kernels_2_sub_8cpp.html":[37,0,0,58,2,2,169],
-"compiler_2luci-interpreter_2src_2kernels_2_sub_8cpp_source.html":[37,0,0,58,2,2,169],
-"compiler_2luci-interpreter_2src_2kernels_2_sum_8cpp.html":[37,0,0,58,2,2,171]
+"compiler_2luci-interpreter_2src_2kernels_2_squared_difference_8h.html":[37,0,0,58,2,2,164]
 };

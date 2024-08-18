@@ -1,5 +1,17 @@
 var NAVTREEINDEX183 =
 {
+"compiler_2tflchef_2core_2src_2_op_2_batch_mat_mul_8h.html":[37,0,0,127,0,1,1,13],
+"compiler_2tflchef_2core_2src_2_op_2_batch_mat_mul_8h_source.html":[37,0,0,127,0,1,1,13],
+"compiler_2tflchef_2core_2src_2_op_2_batch_to_space_n_d_8cpp.html":[37,0,0,127,0,1,1,14],
+"compiler_2tflchef_2core_2src_2_op_2_batch_to_space_n_d_8cpp_source.html":[37,0,0,127,0,1,1,14],
+"compiler_2tflchef_2core_2src_2_op_2_batch_to_space_n_d_8h.html":[37,0,0,127,0,1,1,15],
+"compiler_2tflchef_2core_2src_2_op_2_batch_to_space_n_d_8h_source.html":[37,0,0,127,0,1,1,15],
+"compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8cpp.html":[37,0,0,127,0,1,1,18],
+"compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8cpp_source.html":[37,0,0,127,0,1,1,18],
+"compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h.html":[37,0,0,127,0,1,1,19],
+"compiler_2tflchef_2core_2src_2_op_2_broadcast_to_8h_source.html":[37,0,0,127,0,1,1,19],
+"compiler_2tflchef_2core_2src_2_op_2_cast_8cpp.html":[37,0,0,127,0,1,1,20],
+"compiler_2tflchef_2core_2src_2_op_2_cast_8cpp_source.html":[37,0,0,127,0,1,1,20],
 "compiler_2tflchef_2core_2src_2_op_2_ceil_8cpp.html":[37,0,0,127,0,1,1,22],
 "compiler_2tflchef_2core_2src_2_op_2_ceil_8cpp_source.html":[37,0,0,127,0,1,1,22],
 "compiler_2tflchef_2core_2src_2_op_2_concatenation_8cpp.html":[37,0,0,127,0,1,1,24],
@@ -237,17 +249,5 @@ var NAVTREEINDEX183 =
 "compiler_2tflchef_2core_2src_2_op_2_squeeze_8cpp.html":[37,0,0,127,0,1,1,204],
 "compiler_2tflchef_2core_2src_2_op_2_squeeze_8cpp_source.html":[37,0,0,127,0,1,1,204],
 "compiler_2tflchef_2core_2src_2_op_2_squeeze_8h.html":[37,0,0,127,0,1,1,205],
-"compiler_2tflchef_2core_2src_2_op_2_squeeze_8h_source.html":[37,0,0,127,0,1,1,205],
-"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8cpp.html":[37,0,0,127,0,1,1,206],
-"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8cpp_source.html":[37,0,0,127,0,1,1,206],
-"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8h.html":[37,0,0,127,0,1,1,207],
-"compiler_2tflchef_2core_2src_2_op_2_strided_slice_8h_source.html":[37,0,0,127,0,1,1,207],
-"compiler_2tflchef_2core_2src_2_op_2_sub_8cpp.html":[37,0,0,127,0,1,1,208],
-"compiler_2tflchef_2core_2src_2_op_2_sub_8cpp_source.html":[37,0,0,127,0,1,1,208],
-"compiler_2tflchef_2core_2src_2_op_2_sum_8cpp.html":[37,0,0,127,0,1,1,210],
-"compiler_2tflchef_2core_2src_2_op_2_sum_8cpp_source.html":[37,0,0,127,0,1,1,210],
-"compiler_2tflchef_2core_2src_2_op_2_tanh_8cpp.html":[37,0,0,127,0,1,1,214],
-"compiler_2tflchef_2core_2src_2_op_2_tanh_8cpp_source.html":[37,0,0,127,0,1,1,214],
-"compiler_2tflchef_2core_2src_2_op_2_tanh_8h.html":[37,0,0,127,0,1,1,215],
-"compiler_2tflchef_2core_2src_2_op_2_tanh_8h_source.html":[37,0,0,127,0,1,1,215]
+"compiler_2tflchef_2core_2src_2_op_2_squeeze_8h_source.html":[37,0,0,127,0,1,1,205]
 };

@@ -447,7 +447,7 @@ var namespaces_dup =
     [ "MaxPool2D_000", "namespace_max_pool2_d__000.html", "namespace_max_pool2_d__000" ],
     [ "Mean_000", "namespace_mean__000.html", "namespace_mean__000" ],
     [ "minimal", "namespaceminimal.html", [
-      [ "main", "namespaceminimal.html#a952a113a97a90b2ba2023b671821bf58", null ],
+      [ "main", "namespaceminimal.html#a1b02f42a4f713242e41972ed5e4c28f2", null ],
       [ "argv", "namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a", null ]
     ] ],
     [ "minmax_embedder", "namespaceminmax__embedder.html", "namespaceminmax__embedder" ],

@@ -1,5 +1,11 @@
 var NAVTREEINDEX30 =
 {
+"_tensor_planner_8cc_source.html":[37,0,4,2,1,6,23],
+"_tensor_planner_8h.html":[37,0,4,2,1,6,24],
+"_tensor_planner_8h_source.html":[37,0,4,2,1,6,24],
+"_tensor_reduce_8cpp.html":[37,0,0,50,1,0,31],
+"_tensor_reduce_8cpp_source.html":[37,0,0,50,1,0,31],
+"_tensor_reduce_converter_8cpp.html":[37,0,0,38,1,1,37],
 "_tensor_reduce_converter_8cpp_source.html":[37,0,0,38,1,1,37],
 "_tensor_reduce_converter_8h.html":[37,0,0,38,1,1,38],
 "_tensor_reduce_converter_8h_source.html":[37,0,0,38,1,1,38],
@@ -243,11 +249,5 @@ var NAVTREEINDEX30 =
 "_transpose_conv_options_8cpp.html#aa563d07698c0f57b789f133b9da6d62f":[37,0,0,129,2,0,170,0],
 "_transpose_conv_options_8cpp_source.html":[37,0,0,129,2,0,170],
 "_transpose_conv_options_8h.html":[37,0,0,129,2,0,171],
-"_transpose_conv_options_8h.html#aa563d07698c0f57b789f133b9da6d62f":[37,0,0,129,2,0,171,0],
-"_transpose_conv_options_8h_source.html":[37,0,0,129,2,0,171],
-"_transpose_layer_8cc.html":[37,0,4,2,1,4,0,102],
-"_transpose_layer_8cc_source.html":[37,0,4,2,1,4,0,102],
-"_transpose_layer_8h.html":[37,0,4,2,1,4,0,103],
-"_transpose_layer_8h_source.html":[37,0,4,2,1,4,0,103],
-"_transpose_op_8cpp.html":[37,0,0,76,1,4,14]
+"_transpose_conv_options_8h.html#aa563d07698c0f57b789f133b9da6d62f":[37,0,0,129,2,0,171,0]
 };

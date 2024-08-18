@@ -1,5 +1,11 @@
 var NAVTREEINDEX27 =
 {
+"_softmax_canonicalizer_8cpp_source.html":[37,0,0,81,1,0,40],
+"_softmax_canonicalizer_8h.html":[37,0,0,81,1,0,41],
+"_softmax_canonicalizer_8h_source.html":[37,0,0,81,1,0,41],
+"_softmax_op_8h.html":[37,0,0,76,0,0,0,36],
+"_softmax_op_8h_source.html":[37,0,0,76,0,0,0,36],
+"_softmax_options_8cpp.html":[37,0,0,129,2,0,142],
 "_softmax_options_8cpp.html#afba4ab59520cedf1c9d736c2a0322dcc":[37,0,0,129,2,0,142,0],
 "_softmax_options_8cpp_source.html":[37,0,0,129,2,0,142],
 "_softmax_options_8h.html":[37,0,0,129,2,0,143],
@@ -107,8 +113,8 @@ var NAVTREEINDEX27 =
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[37,0,0,55,7,1,0,15,8,3],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[37,0,0,55,7,1,0,15,8,0],
 "_sparsity_format_converter_8h.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[37,0,0,55,7,1,0,15,8,2],
-"_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[37,0,0,55,7,1,0,15,8],
 "_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[37,0,0,55,7,1,0,15,5],
+"_sparsity_format_converter_8h.html#aebaa280a7d40b78a0e10bdff92358480":[37,0,0,55,7,1,0,15,8],
 "_sparsity_format_converter_8h_source.html":[37,0,0,55,7,1,0,15],
 "_sparsity_param_8h.html":[37,0,0,55,3,0,0,0,23],
 "_sparsity_param_8h.html#a75d1b28634c64ffe78d7ab4f307135c0":[37,0,0,55,3,0,0,0,23,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX27 =
 "_stride2_d_8h.html":[37,0,0,27,0,0,0,1,57],
 "_stride2_d_8h_source.html":[37,0,0,27,0,0,0,1,57],
 "_stride_8h.html":[37,0,0,48,0,0,1,46],
-"_stride_8h_source.html":[37,0,0,48,0,0,1,46],
-"_stride_info_8h.html":[37,0,0,94,0,0,2],
-"_stride_info_8h_source.html":[37,0,0,94,0,0,2],
-"_strided_slice_8cc.html":[37,0,4,2,2,1,5,0,63],
-"_strided_slice_8cc_source.html":[37,0,4,2,2,1,5,0,63],
-"_strided_slice_layer_8cc.html":[37,0,4,2,1,4,0,98],
-"_strided_slice_layer_8cc_source.html":[37,0,4,2,1,4,0,98]
+"_stride_8h_source.html":[37,0,0,48,0,0,1,46]
 };

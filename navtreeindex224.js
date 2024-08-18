@@ -1,5 +1,17 @@
 var NAVTREEINDEX224 =
 {
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__depth__to__space__kernel.html#a8e7820719fd9084fea823dde5aa7fbd4":[35,0,82,2,111,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__fill__kernel.html":[35,0,82,2,112],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__fill__kernel.html#a6dddfa78dd51844e9883e510a7d6aa37":[35,0,82,2,112,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__floor__kernel.html":[35,0,82,2,113],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__floor__kernel.html#aebcf3b7e71b14ddaa1fbbadda5dc1ef8":[35,0,82,2,113,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__kernel.html":[35,0,82,2,114],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__kernel.html#a702bcd27a9e14c3c035b4700477786a1":[35,0,82,2,114,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__l2__normalization__kernel.html":[35,0,82,2,115],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__l2__normalization__kernel.html#a55dc254aaeab81ebb66bfd972a708e51":[35,0,82,2,115,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__l2__pool__2d__kernel.html":[35,0,82,2,116],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__l2__pool__2d__kernel.html#a303e891d026026c9f228910506b9da32":[35,0,82,2,116,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__log__softmax__kernel.html":[35,0,82,2,117],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__log__softmax__kernel.html#af2be3f486da52ce36fa4ee1eaeed44ac":[35,0,82,2,117,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__mean__kernel.html":[35,0,82,2,118],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__input__output__type__mismatch__mean__kernel.html#a9a6b303ff042b2f4f5e26f9f4866f225":[35,0,82,2,118,0],
@@ -237,17 +249,5 @@ var NAVTREEINDEX224 =
 "namespaceluci__interpreter_1_1test__kernel_1_1sin__float.html#a43a878e295dd8e0dd0863f3ed0eb3a83":[35,0,82,2,196,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1sin__float.html#a7ef8b0b26d9369461067f768420aab63":[35,0,82,2,196,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1sin__float.html#af91852a2536ef137b350bca7e283a99a":[35,0,82,2,196,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__float.html":[35,0,82,2,197],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__float.html#a1cd8d27bbb5ac6f1395dc1064a8ae316":[35,0,82,2,197,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__float.html#adc716a49d3cb5815d31cdfe85b59dc90":[35,0,82,2,197,2],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__float.html#af7bafde6340f1b3d42aa01210339552a":[35,0,82,2,197,1],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__int16.html":[35,0,82,2,198],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__int16.html#a3bfa2674abe56a511c07dc7909132ab3":[35,0,82,2,198,1],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__int16.html#a9f78c3f844b6f256502b267f3b70c72a":[35,0,82,2,198,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__int16.html#acb0f8f52388531de6faf02d0c607e743":[35,0,82,2,198,2],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__type__mismatch.html":[35,0,82,2,199],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__type__mismatch.html#a24310b712f4554156ca7e122f0d9f088":[35,0,82,2,199,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__uint8.html":[35,0,82,2,200],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__uint8.html#a091e562491449fa5eeeddfc750cae5ce":[35,0,82,2,200,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1slice__uint8.html#aa9fd4c8298bc519e7af8b6a1fde896e8":[35,0,82,2,200,1]
+"namespaceluci__interpreter_1_1test__kernel_1_1slice__float.html":[35,0,82,2,197]
 };

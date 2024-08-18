@@ -3552,9 +3552,11 @@ var hierarchy =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", null ],
     [ "nnfw_operand", "structnnfw__operand.html", null ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "libnnfw_api_pybind.nnfw_session", null, [
+      [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
+    ] ],
     [ "nnfw_session", "structnnfw__session.html", null ],
-    [ "package.libnnfw_api_pybind.nnfw_session", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -5459,6 +5461,9 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataAveragePool2DBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_average_pool2_d_base.html", [
         [ "onert_micro::test_model::TestDataS8AveragePool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_average_pool2_d.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataConcatenationBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html", [
+        [ "onert_micro::test_model::TestDataS8Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataConv2DBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_conv2_d_base.html", [
         [ "onert_micro::test_model::TestDataS8Conv2D", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d.html", null ]

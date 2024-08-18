@@ -102,14 +102,11 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-use-nnfw-python
 <ol type="1">
 <li>Initialize nnfw_session</li>
 </ol>
-<div class="fragment"><div class="line"><span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><span class="comment"># operations is optional to assign a specific backends to each operation.</span></div>
+<div class="fragment"><div class="line"><span class="keyword">import</span> onert</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Create session and load nnpackage</span></div>
 <div class="line"><span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
-<div class="line"><span class="keywordflow">if</span> operations:</div>
-<div class="line">    session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends, operations)</div>
-<div class="line"><span class="keywordflow">else</span>:</div>
-<div class="line">    session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends)</div>
-<div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00068">onert-micro.cpp:69</a></div></div>
+<div class="line">session = onert.infer.session(nnpackage_path, backends)</div>
 </div><!-- fragment --><ol type="1">
 <li>Prepare Input</li>
 </ol>

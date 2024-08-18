@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2transfer__learning.h
 <p>The current version of <code>Python API</code> expect models in Python <code>nnpackge</code> format. The conversion can be done with <code>tools/nnpackage_tool/model2nnpkg/model2nnpkg.py</code> script. </p><div class="fragment"><div class="line">python model2nnpkg.py -m customized_mobilenetv2_trained.circle -o mobilenet_package_dir</div>
 </div><!-- fragment --> <h2>Run inference via Python API</h2>
 <p>PRE: Install <code>nnfwapi</code> package </p><div class="fragment"><div class="line">pip install -i https://test.pypi.org/simple/ nnfwapi==0.1.1</div>
-</div><!-- fragment --> <div class="fragment"><div class="line"><span class="keyword">from</span> <a class="code hl_namespace" href="namespacennfwapi_1_1libnnfw__api__pybind.html">nnfwapi.libnnfw_api_pybind</a> <span class="keyword">import</span> *</div>
+</div><!-- fragment --> <div class="fragment"><div class="line"><span class="keyword">from</span> nnfwapi.libnnfw_api_pybind <span class="keyword">import</span> *</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div>
 <div class="line"><span class="keyword">import</span> os</div>
@@ -251,7 +251,6 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2transfer__learning.h
 <div class="line">plt.axis(<span class="stringliteral">&quot;off&quot;</span>)</div>
 <div class="line">plt.imshow(test_image.squeeze().astype(<span class="stringliteral">&quot;uint8&quot;</span>))</div>
 <div class="line">plt.savefig(<span class="stringliteral">&#39;transfer_learning_result.png&#39;</span>)</div>
-<div class="ttc" id="anamespacennfwapi_1_1libnnfw__api__pybind_html"><div class="ttname"><a href="namespacennfwapi_1_1libnnfw__api__pybind.html">libnnfw_api_pybind</a></div></div>
 <div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00068">onert-micro.cpp:69</a></div></div>
 </div><!-- fragment --><p>Example output<br  />
  <img src="transfer_learning_result.png" alt="An example result of inference" class="inline"/></p>

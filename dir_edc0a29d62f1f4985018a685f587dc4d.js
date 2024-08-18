@@ -1,6 +1,7 @@
 var dir_edc0a29d62f1f4985018a685f587dc4d =
 [
     [ "PALAdd.h", "onert-micro_2include_2pal_2cmsisnn_2_p_a_l_add_8h.html", "onert-micro_2include_2pal_2cmsisnn_2_p_a_l_add_8h" ],
+    [ "PALArgMax.h", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_arg_max_8h.html", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_arg_max_8h" ],
     [ "PALAveragePool2D.h", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h.html", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h" ],
     [ "PALConv2D.h", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_conv2d_8h.html", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_conv2d_8h" ],
     [ "PALDepthwiseConv2D.h", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h.html", "onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h" ],

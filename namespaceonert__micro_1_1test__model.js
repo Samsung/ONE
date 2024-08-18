@@ -106,6 +106,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1concatenation__int64.html#aa88c55bc81f5ce927dc46d620884e8c1", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1concatenation__int64.html#ae30777938e2bc4e463688204754c2647", null ]
     ] ],
+    [ "concatenation_s8", "namespaceonert__micro_1_1test__model_1_1concatenation__s8.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1concatenation__s8.html#ae9cab9751f206b9c9a27e57dbc79794e", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1concatenation__s8.html#af213d840f1a6c1f8e2b2815cc5ff163a", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1concatenation__s8.html#aefc1950c1adff4061dee3111cbb37f05", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1concatenation__s8.html#aa81acdfd7c88c65c9d988c6f2f74e64e", null ]
+    ] ],
     [ "concatenation_with_relu", "namespaceonert__micro_1_1test__model_1_1concatenation__with__relu.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1concatenation__with__relu.html#a28ccf35b5ee4c05ab823294f3a2723ac", null ]
     ] ],
@@ -1175,6 +1181,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation" ],
     [ "TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation" ],
     [ "TestDataS8AveragePool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_average_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_average_pool2_d" ],
+    [ "TestDataS8Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation" ],
     [ "TestDataS8Conv2D", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d" ],
     [ "TestDataS8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected" ],
     [ "TestDataS8MaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d" ],

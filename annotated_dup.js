@@ -3648,6 +3648,7 @@ var annotated_dup =
         [ "TestDataS32Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s32_concatenation" ],
         [ "TestDataS64Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s64_concatenation" ],
         [ "TestDataS8AveragePool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_average_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_average_pool2_d" ],
+        [ "TestDataS8Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation" ],
         [ "TestDataS8Conv2D", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d" ],
         [ "TestDataS8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected" ],
         [ "TestDataS8MaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d" ],
@@ -3726,8 +3727,8 @@ var annotated_dup =
       [ "OptionBuilder", "class_option_builder_1_1_option_builder.html", "class_option_builder_1_1_option_builder" ]
     ] ],
     [ "package", "namespacepackage.html", [
-      [ "libnnfw_api_pybind", "namespacepackage_1_1libnnfw__api__pybind.html", [
-        [ "nnfw_session", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session.html", "classpackage_1_1libnnfw__api__pybind_1_1nnfw__session" ]
+      [ "infer", "namespacepackage_1_1infer.html", [
+        [ "session", "classpackage_1_1infer_1_1session.html", "classpackage_1_1infer_1_1session" ]
       ] ]
     ] ],
     [ "Pad_000", "namespace_pad__000.html", [
@@ -4318,8 +4319,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

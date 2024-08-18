@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('namespaceminimal.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a952a113a97a90b2ba2023b671821bf58" id="r_a952a113a97a90b2ba2023b671821bf58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceminimal.html#a952a113a97a90b2ba2023b671821bf58">main</a> (nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;)</td></tr>
-<tr class="separator:a952a113a97a90b2ba2023b671821bf58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b02f42a4f713242e41972ed5e4c28f2" id="r_a1b02f42a4f713242e41972ed5e4c28f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceminimal.html#a1b02f42a4f713242e41972ed5e4c28f2">main</a> (nnpackage_path, backends=&quot;cpu&quot;)</td></tr>
+<tr class="separator:a1b02f42a4f713242e41972ed5e4c28f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -107,8 +107,8 @@ Variables</h2></td></tr>
 <tr class="separator:a5f2767e1a6e0198d72dfe1719abc3b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a952a113a97a90b2ba2023b671821bf58" name="a952a113a97a90b2ba2023b671821bf58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a952a113a97a90b2ba2023b671821bf58">&#9670;&#160;</a></span>main()</h2>
+<a id="a1b02f42a4f713242e41972ed5e4c28f2" name="a1b02f42a4f713242e41972ed5e4c28f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b02f42a4f713242e41972ed5e4c28f2">&#9670;&#160;</a></span>main()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,13 +123,7 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>backends</em> = <code>&quot;cpu&quot;</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>operations</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>backends</em> = <code>&quot;cpu&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -140,27 +134,22 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00005">5</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span><a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(nnpackage_path, backends=&quot;cpu&quot;, operations=&quot;&quot;):</div>
+<div class="fragment"><div class="line"><span class="lineno">    5</span><span class="keyword">def </span><a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>(nnpackage_path, backends=&quot;cpu&quot;):</div>
 <div class="line"><span class="lineno">    6</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><span class="lineno">    7</span>    <span class="comment"># operations is optional to assign a specific backends to each operation.</span></div>
-<div class="line"><span class="lineno">    8</span>    <span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
-<div class="line"><span class="lineno">    9</span>    <span class="keywordflow">if</span> operations:</div>
-<div class="line"><span class="lineno">   10</span>        session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends, operations)</div>
-<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   12</span>        session = <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a>(nnpackage_path, backends)</div>
+<div class="line"><span class="lineno">    7</span>    <span class="comment"># The default value of backends is &quot;cpu&quot;.</span></div>
+<div class="line"><span class="lineno">    8</span>    session = infer.session(nnpackage_path, backends)</div>
+<div class="line"><span class="lineno">    9</span> </div>
+<div class="line"><span class="lineno">   10</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
+<div class="line"><span class="lineno">   11</span>    input_size = session.input_size()</div>
+<div class="line"><span class="lineno">   12</span>    session.set_inputs(input_size)</div>
 <div class="line"><span class="lineno">   13</span> </div>
-<div class="line"><span class="lineno">   14</span>    <span class="comment"># Prepare input. Here we just allocate dummy input arrays.</span></div>
-<div class="line"><span class="lineno">   15</span>    input_size = session.input_size()</div>
-<div class="line"><span class="lineno">   16</span>    session.set_inputs(input_size)</div>
-<div class="line"><span class="lineno">   17</span> </div>
-<div class="line"><span class="lineno">   18</span>    outputs = session.inference()</div>
+<div class="line"><span class="lineno">   14</span>    outputs = session.inference()</div>
+<div class="line"><span class="lineno">   15</span> </div>
+<div class="line"><span class="lineno">   16</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
+<div class="line"><span class="lineno">   17</span>    <span class="keywordflow">return</span></div>
+<div class="line"><span class="lineno">   18</span> </div>
 <div class="line"><span class="lineno">   19</span> </div>
-<div class="line"><span class="lineno">   20</span>    print(f<span class="stringliteral">&quot;nnpackage {nnpackage_path.split(&#39;/&#39;)[-1]} runs successfully.&quot;</span>)</div>
-<div class="line"><span class="lineno">   21</span>    <span class="keywordflow">return</span></div>
-<div class="line"><span class="lineno">   22</span> </div>
-<div class="line"><span class="lineno">   23</span> </div>
 <div class="ttc" id="aonert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_source.html#l00058">main.cpp:58</a></div></div>
-<div class="ttc" id="astructnnfw__session_html"><div class="ttname"><a href="structnnfw__session.html">nnfw_session</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00068">onert-micro.cpp:69</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -177,7 +166,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00025">25</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="minimal_8py_source.html#l00021">21</a> of file <a class="el" href="minimal_8py_source.html">minimal.py</a>.</p>
 
 </div>
 </div>

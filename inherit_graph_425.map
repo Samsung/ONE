@@ -1,3 +1,467 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structlogo_1_1_phase_event_info.html" title=" " alt="" coords="5,5,179,31"/>
+<area shape="rect" id="Node000000" href="$classlogo_1_1_pass.html" title=" " alt="" coords="5,5358,87,5384"/>
+<area shape="rect" id="Node000001" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,5,357,46"/>
+<area shape="poly" id="edge1145_Node000000_Node000001" title=" " alt="" coords="45,5343,46,4360,56,2589,66,1672,82,874,92,553,103,301,117,132,124,82,132,58,147,44,163,34,166,39,150,48,137,60,129,83,122,132,109,301,97,553,87,874,71,1672,61,2589,51,4360,50,5343"/>
+<area shape="rect" id="Node000003" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,71,357,111"/>
+<area shape="poly" id="edge1147_Node000000_Node000003" title=" " alt="" coords="45,5343,46,4370,56,2621,67,1716,82,928,92,612,104,363,117,196,124,147,132,123,147,109,163,100,166,104,150,113,137,126,129,148,122,197,109,363,97,612,87,929,72,1716,61,2621,52,4370,50,5343"/>
+<area shape="rect" id="Node000005" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,136,357,177"/>
+<area shape="poly" id="edge1149_Node000000_Node000005" title=" " alt="" coords="45,5343,46,4383,57,2656,67,1761,83,984,92,671,104,426,117,261,124,212,132,188,147,174,163,165,166,169,150,179,137,191,130,213,122,261,109,426,98,671,88,984,72,1761,62,2656,52,4383,50,5343"/>
+<area shape="rect" id="Node000007" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,201,357,242"/>
+<area shape="poly" id="edge1151_Node000000_Node000007" title=" " alt="" coords="45,5342,47,4391,57,2686,68,1804,83,1038,93,729,104,487,117,325,124,277,132,254,147,240,163,230,166,235,150,244,137,256,130,278,123,326,110,488,98,729,88,1038,73,1804,62,2686,52,4391,50,5342"/>
+<area shape="rect" id="Node000009" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,267,357,307"/>
+<area shape="poly" id="edge1153_Node000000_Node000009" title=" " alt="" coords="45,5343,47,4403,57,2720,68,1850,84,1093,93,789,105,550,117,389,125,342,132,319,147,305,163,296,166,300,150,309,137,322,130,344,123,390,110,550,99,789,89,1093,73,1850,63,2721,52,4403,50,5343"/>
+<area shape="rect" id="Node000011" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,332,357,373"/>
+<area shape="poly" id="edge1155_Node000000_Node000011" title=" " alt="" coords="45,5343,47,4416,58,2755,69,1895,84,1148,94,848,105,612,118,454,125,407,132,384,147,370,163,361,166,366,150,375,137,387,130,409,123,454,110,613,99,848,89,1149,74,1896,63,2755,52,4416,50,5343"/>
+<area shape="rect" id="Node000013" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,397,357,438"/>
+<area shape="poly" id="edge1157_Node000000_Node000013" title=" " alt="" coords="45,5343,47,4426,58,2787,69,1940,84,1203,94,907,105,674,118,518,125,472,132,450,147,436,163,426,166,431,150,440,137,452,130,474,123,519,111,675,99,907,90,1203,74,1940,64,2787,53,4426,50,5343"/>
+<area shape="rect" id="Node000015" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,463,357,503"/>
+<area shape="poly" id="edge1159_Node000000_Node000015" title=" " alt="" coords="45,5342,47,4437,59,2820,70,1984,85,1258,95,966,105,737,118,583,125,537,132,515,147,501,163,492,166,496,150,505,137,518,130,539,123,583,111,737,100,966,90,1258,75,1984,64,2820,53,4437,50,5342"/>
+<area shape="rect" id="Node000017" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,528,357,569"/>
+<area shape="poly" id="edge1161_Node000000_Node000017" title=" " alt="" coords="45,5342,48,4447,59,2853,70,2029,85,1313,95,1024,106,799,118,647,125,602,132,580,147,566,163,557,166,562,150,571,137,583,130,604,123,648,111,799,100,1025,91,1313,75,2029,65,2853,53,4447,50,5342"/>
+<area shape="rect" id="Node000019" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,593,357,634"/>
+<area shape="poly" id="edge1163_Node000000_Node000019" title=" " alt="" coords="45,5343,48,4460,60,2887,71,2074,86,1368,106,861,118,711,125,667,132,646,147,632,163,622,166,627,150,636,137,648,130,669,124,712,111,861,91,1368,76,2074,65,2887,53,4460,50,5343"/>
+<area shape="rect" id="Node000021" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,659,357,699"/>
+<area shape="poly" id="edge1165_Node000000_Node000021" title=" " alt="" coords="45,5342,48,4470,60,2920,71,2119,86,1423,106,923,119,776,125,732,132,711,147,697,163,688,166,692,150,701,137,714,130,734,124,776,112,924,92,1423,76,2119,65,2920,53,4470,50,5342"/>
+<area shape="rect" id="Node000023" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,724,357,765"/>
+<area shape="poly" id="edge1167_Node000000_Node000023" title=" " alt="" coords="45,5343,48,4483,61,2954,72,2164,87,1478,107,986,119,840,125,797,132,776,147,762,163,753,166,758,150,767,137,779,130,799,124,841,112,986,92,1478,77,2164,66,2954,54,4483,50,5343"/>
+<area shape="rect" id="Node000025" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,789,357,830"/>
+<area shape="poly" id="edge1169_Node000000_Node000025" title=" " alt="" coords="45,5343,48,4494,61,2987,72,2209,87,1533,107,1048,119,905,125,863,132,842,147,828,163,818,166,823,150,832,137,844,131,864,124,905,112,1048,93,1533,77,2209,66,2987,54,4494,50,5343"/>
+<area shape="rect" id="Node000027" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,855,357,895"/>
+<area shape="poly" id="edge1171_Node000000_Node000027" title=" " alt="" coords="45,5343,49,4504,61,3020,73,2253,88,1588,107,1110,119,969,125,928,132,907,147,893,163,884,166,888,150,897,137,910,131,929,124,970,113,1110,93,1588,78,2253,67,3020,54,4504,50,5343"/>
+<area shape="rect" id="Node000029" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,920,357,961"/>
+<area shape="poly" id="edge1173_Node000000_Node000029" title=" " alt="" coords="45,5343,49,4517,62,3054,73,2299,88,1643,108,1172,119,1033,126,993,132,972,147,958,163,949,166,954,150,963,137,975,131,994,125,1034,113,1173,94,1643,78,2299,67,3054,54,4517,50,5343"/>
+<area shape="rect" id="Node000031" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,985,357,1026"/>
+<area shape="poly" id="edge1175_Node000000_Node000031" title=" " alt="" coords="45,5343,49,4528,62,3087,74,2343,89,1698,108,1235,119,1098,126,1058,132,1038,147,1024,163,1014,166,1019,150,1028,137,1040,131,1059,125,1098,113,1235,94,1698,79,2343,68,3087,54,4528,50,5343"/>
+<area shape="rect" id="Node000033" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,1051,357,1091"/>
+<area shape="poly" id="edge1177_Node000000_Node000033" title=" " alt="" coords="45,5343,49,4539,63,3120,74,2388,89,1753,108,1297,120,1162,126,1123,132,1103,147,1089,163,1080,166,1084,150,1093,137,1106,131,1124,125,1163,114,1297,95,1753,80,2388,68,3120,55,4539,50,5343"/>
+<area shape="rect" id="Node000035" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,1116,357,1157"/>
+<area shape="poly" id="edge1179_Node000000_Node000035" title=" " alt="" coords="45,5343,49,4550,63,3153,75,2433,90,1807,109,1359,120,1227,126,1188,132,1168,147,1154,163,1145,166,1150,150,1159,137,1171,131,1189,125,1227,114,1359,95,1808,80,2433,69,3153,55,4550,50,5343"/>
+<area shape="rect" id="Node000037" href="$classexo_1_1_canonical_node_converter.html" title=" " alt="" coords="165,1181,357,1222"/>
+<area shape="poly" id="edge1181_Node000000_Node000037" title=" " alt="" coords="45,5342,50,4561,64,3186,75,2477,90,1862,109,1421,120,1291,126,1253,132,1234,147,1220,163,1210,166,1215,150,1224,137,1236,131,1254,125,1292,114,1422,95,1862,81,2477,69,3186,55,4561,50,5343"/>
+<area shape="rect" id="Node000039" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1247,363,1287"/>
+<area shape="poly" id="edge1183_Node000000_Node000039" title=" " alt="" coords="45,5342,50,4572,64,3219,76,2522,91,1917,109,1483,120,1355,126,1318,132,1299,157,1279,160,1283,137,1302,131,1319,125,1356,115,1484,96,1917,81,2522,69,3219,55,4572,50,5342"/>
+<area shape="rect" id="Node000041" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1312,363,1353"/>
+<area shape="poly" id="edge1185_Node000000_Node000041" title=" " alt="" coords="45,5342,50,4583,65,3252,76,2567,91,1972,110,1546,120,1420,126,1383,132,1364,157,1344,160,1348,137,1367,131,1384,126,1420,115,1546,96,1972,82,2567,70,3252,55,4583,50,5342"/>
+<area shape="rect" id="Node000043" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1377,363,1418"/>
+<area shape="poly" id="edge1187_Node000000_Node000043" title=" " alt="" coords="45,5343,50,4596,65,3287,77,2612,92,2027,110,1608,120,1484,126,1448,132,1429,157,1409,160,1414,137,1433,131,1449,126,1485,115,1608,97,2028,82,2613,70,3287,56,4596,50,5343"/>
+<area shape="rect" id="Node000045" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1443,363,1483"/>
+<area shape="poly" id="edge1189_Node000000_Node000045" title=" " alt="" coords="45,5343,50,4607,66,3320,77,2657,92,2082,110,1670,121,1549,126,1513,132,1495,157,1475,160,1479,137,1498,131,1514,126,1549,116,1671,97,2083,83,2657,71,3320,56,4607,50,5343"/>
+<area shape="rect" id="Node000047" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1508,363,1549"/>
+<area shape="poly" id="edge1191_Node000000_Node000047" title=" " alt="" coords="45,5342,51,4616,66,3352,78,2701,93,2137,111,1732,121,1613,126,1578,132,1560,157,1540,160,1544,137,1563,132,1579,126,1614,116,1733,98,2137,83,2701,71,3352,56,4616,50,5342"/>
+<area shape="rect" id="Node000049" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="147,1573,375,1614"/>
+<area shape="poly" id="edge1193_Node000000_Node000049" title=" " alt="" coords="45,5343,51,4629,66,3386,78,2747,93,2192,111,1795,121,1677,126,1643,132,1626,146,1613,149,1616,137,1628,132,1644,126,1678,116,1795,98,2193,84,2747,72,3386,56,4629,50,5343"/>
+<area shape="rect" id="Node000051" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1639,363,1679"/>
+<area shape="poly" id="edge1195_Node000000_Node000051" title=" " alt="" coords="45,5343,51,4641,67,3420,79,2792,93,2247,111,1857,121,1742,132,1691,157,1671,160,1675,137,1694,126,1743,116,1857,99,2247,84,2792,72,3420,56,4641,50,5343"/>
+<area shape="rect" id="Node000053" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="141,1704,381,1745"/>
+<area shape="poly" id="edge1197_Node000000_Node000053" title=" " alt="" coords="45,5343,51,4652,67,3453,79,2837,94,2302,111,1919,121,1806,132,1756,146,1743,149,1747,137,1759,127,1807,117,1920,99,2302,85,2837,73,3453,57,4652,50,5343"/>
+<area shape="rect" id="Node000055" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1769,363,1810"/>
+<area shape="poly" id="edge1199_Node000000_Node000055" title=" " alt="" coords="45,5343,52,4664,68,3486,80,2882,94,2357,112,1982,122,1871,132,1822,157,1801,160,1806,137,1824,127,1871,117,1982,100,2358,85,2882,73,3486,57,4664,50,5343"/>
+<area shape="rect" id="Node000057" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1835,363,1875"/>
+<area shape="poly" id="edge1201_Node000000_Node000057" title=" " alt="" coords="45,5343,52,4675,68,3520,80,2927,95,2412,112,2044,122,1935,132,1887,157,1867,160,1871,137,1890,127,1936,117,2044,100,2413,86,2927,74,3520,57,4675,50,5343"/>
+<area shape="rect" id="Node000059" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1900,363,1941"/>
+<area shape="poly" id="edge1203_Node000000_Node000059" title=" " alt="" coords="45,5342,52,4685,69,3552,81,2971,95,2467,112,2106,122,1999,132,1952,157,1932,160,1936,137,1955,127,2000,118,2106,101,2467,86,2971,74,3552,57,4685,50,5342"/>
+<area shape="rect" id="Node000061" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,1965,363,2006"/>
+<area shape="poly" id="edge1205_Node000000_Node000061" title=" " alt="" coords="45,5343,52,4698,69,3587,81,3017,96,2522,113,2168,122,2064,132,2018,157,1997,160,2002,137,2020,127,2065,118,2169,101,2523,87,3017,74,3587,57,4698,50,5343"/>
+<area shape="rect" id="Node000063" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2031,363,2071"/>
+<area shape="poly" id="edge1207_Node000000_Node000063" title=" " alt="" coords="45,5342,52,4709,70,3619,82,3061,96,2577,113,2231,122,2128,132,2083,157,2063,160,2067,137,2086,128,2129,118,2231,102,2577,87,3061,75,3619,58,4709,50,5342"/>
+<area shape="rect" id="Node000065" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2096,363,2137"/>
+<area shape="poly" id="edge1209_Node000000_Node000065" title=" " alt="" coords="45,5342,53,4720,70,3653,82,3106,97,2632,113,2293,122,2193,132,2148,157,2128,160,2132,137,2151,128,2193,119,2293,102,2632,88,3106,75,3653,58,4720,50,5343"/>
+<area shape="rect" id="Node000067" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2161,363,2202"/>
+<area shape="poly" id="edge1211_Node000000_Node000067" title=" " alt="" coords="45,5343,53,4732,71,3687,83,3151,97,2687,114,2355,123,2257,132,2214,157,2193,160,2198,137,2216,128,2258,119,2355,103,2688,88,3151,76,3687,58,4732,50,5343"/>
+<area shape="rect" id="Node000069" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2227,363,2267"/>
+<area shape="poly" id="edge1213_Node000000_Node000069" title=" " alt="" coords="45,5342,53,4743,71,3719,83,3196,98,2742,114,2417,123,2321,132,2279,157,2259,160,2263,137,2282,128,2322,119,2418,103,2742,89,3196,76,3720,58,4743,50,5342"/>
+<area shape="rect" id="Node000071" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2292,363,2333"/>
+<area shape="poly" id="edge1215_Node000000_Node000071" title=" " alt="" coords="45,5343,44,4767,51,3779,61,3270,77,2824,87,2643,100,2498,115,2396,123,2363,133,2344,157,2324,160,2328,137,2347,128,2365,120,2397,105,2498,93,2643,82,2825,66,3270,56,3779,49,4767,50,5343"/>
+<area shape="rect" id="Node000073" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2357,363,2398"/>
+<area shape="poly" id="edge1217_Node000000_Node000073" title=" " alt="" coords="45,5343,44,4777,52,3812,62,3314,78,2879,88,2701,101,2559,115,2460,123,2428,133,2409,157,2389,161,2394,137,2413,128,2430,120,2461,106,2560,93,2702,83,2879,67,3314,57,3812,50,4777,50,5343"/>
+<area shape="rect" id="Node000075" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2423,363,2463"/>
+<area shape="poly" id="edge1219_Node000000_Node000075" title=" " alt="" coords="45,5343,45,4789,53,3845,63,3359,79,2933,89,2760,101,2621,116,2524,124,2493,133,2475,157,2455,161,2459,137,2478,129,2495,121,2525,107,2622,94,2760,84,2934,68,3359,58,3845,50,4789,50,5343"/>
+<area shape="rect" id="Node000077" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2488,363,2529"/>
+<area shape="poly" id="edge1221_Node000000_Node000077" title=" " alt="" coords="45,5343,45,4800,54,3877,64,3403,80,2988,90,2818,102,2683,116,2589,124,2558,133,2540,157,2520,161,2524,137,2543,129,2560,121,2590,107,2684,95,2819,85,2988,69,3403,59,3878,50,4800,50,5343"/>
+<area shape="rect" id="Node000079" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2553,363,2594"/>
+<area shape="poly" id="edge1223_Node000000_Node000079" title=" " alt="" coords="45,5343,45,4812,54,3911,65,3448,80,3042,91,2877,102,2745,116,2653,124,2623,133,2605,157,2585,161,2590,137,2609,129,2625,122,2654,108,2746,96,2877,86,3042,70,3448,60,3911,51,4812,50,5343"/>
+<area shape="rect" id="Node000081" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2619,363,2659"/>
+<area shape="poly" id="edge1225_Node000000_Node000081" title=" " alt="" coords="45,5343,46,4823,55,3944,66,3492,81,3096,91,2935,103,2807,117,2717,124,2688,133,2671,157,2651,161,2655,137,2674,129,2690,122,2718,108,2808,97,2936,87,3097,71,3492,61,3944,51,4823,50,5343"/>
+<area shape="rect" id="Node000083" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2684,363,2725"/>
+<area shape="poly" id="edge1227_Node000000_Node000083" title=" " alt="" coords="45,5343,46,4835,56,3977,67,3536,82,3151,92,2994,104,2869,117,2781,124,2753,133,2736,157,2716,161,2720,137,2739,129,2755,122,2782,109,2869,98,2995,88,3151,72,3537,62,3977,52,4835,50,5343"/>
+<area shape="rect" id="Node000085" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2749,363,2790"/>
+<area shape="poly" id="edge1229_Node000000_Node000085" title=" " alt="" coords="45,5342,47,4845,57,4009,68,3580,83,3205,93,3053,104,2931,117,2845,125,2818,133,2801,157,2781,161,2786,137,2805,130,2820,123,2846,110,2931,98,3053,89,3206,73,3580,63,4009,52,4845,50,5343"/>
+<area shape="rect" id="Node000087" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2815,363,2855"/>
+<area shape="poly" id="edge1231_Node000000_Node000087" title=" " alt="" coords="45,5342,47,4856,58,4042,69,3624,84,3260,105,2992,118,2909,125,2883,133,2867,157,2847,161,2851,137,2870,130,2885,123,2910,110,2993,90,3260,74,3625,63,4042,52,4856,50,5342"/>
+<area shape="rect" id="Node000089" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2880,363,2921"/>
+<area shape="poly" id="edge1233_Node000000_Node000089" title=" " alt="" coords="45,5343,48,4868,59,4076,70,3669,85,3314,106,3054,118,2973,132,2932,157,2912,161,2916,137,2935,123,2975,111,3055,90,3315,75,3670,64,4076,53,4868,50,5343"/>
+<area shape="rect" id="Node000091" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title=" " alt="" coords="159,2945,363,2986"/>
+<area shape="poly" id="edge1235_Node000000_Node000091" title=" " alt="" coords="45,5343,48,4880,60,4109,71,3714,86,3369,106,3116,118,3038,132,2997,157,2977,161,2982,137,3001,124,3039,112,3117,91,3369,76,3714,65,4109,53,4880,50,5343"/>
+<area shape="rect" id="Node000093" href="$classexo_1_1_canonical_node_converter.html" title="Class to convert a canonical node to TFL node." alt="" coords="165,3011,357,3051"/>
+<area shape="poly" id="edge1237_Node000000_Node000093" title=" " alt="" coords="45,5343,48,4891,61,4141,72,3757,87,3422,107,3177,119,3100,132,3062,147,3048,164,3039,166,3043,150,3052,137,3064,124,3102,112,3177,92,3422,77,3757,66,4141,54,4891,50,5343"/>
+<area shape="rect" id="Node000094" href="$structexo_1_1_fold_reshape_of_const_pass.html" title="Class to fuse TFLReshape + TFLConst into one equivalent TFLConst." alt="" coords="160,3076,362,3101"/>
+<area shape="poly" id="edge1238_Node000000_Node000094" title=" " alt="" coords="45,5342,48,4899,60,4165,71,3790,86,3462,106,3223,119,3149,133,3111,158,3092,161,3096,137,3114,124,3150,112,3224,92,3463,76,3790,65,4165,53,4899,50,5343"/>
+<area shape="rect" id="Node000095" href="$structexo_1_1_fold_transpose_of_const_pass.html" title="Class to fuse TFLTranspose + TFLConst into one equivalent TFLConst." alt="" coords="155,3125,367,3151"/>
+<area shape="poly" id="edge1239_Node000000_Node000095" title=" " alt="" coords="45,5343,48,4908,61,4190,72,3824,87,3504,107,3270,119,3197,133,3160,153,3144,156,3148,137,3163,124,3198,112,3270,92,3504,77,3824,66,4191,54,4908,50,5343"/>
+<area shape="rect" id="Node000096" href="$structexo_1_1_fuse_bias_add_pass.html" title="Class to fuse TFLAdd or TFLSub into Bias input of the following ops:" alt="" coords="183,3174,339,3200"/>
+<area shape="poly" id="edge1240_Node000000_Node000096" title=" " alt="" coords="45,5343,49,4917,62,4215,73,3857,88,3545,107,3316,119,3245,133,3209,155,3192,182,3183,183,3188,158,3197,137,3213,124,3247,113,3317,93,3545,78,3857,67,4215,54,4917,50,5343"/>
+<area shape="rect" id="Node000097" href="$structexo_1_1_fuse_instance_norm_pass.html" title="Class to fuse certain pattern of subgraph into CircleInstanceNorm with auxiliary nodes." alt="" coords="167,3224,355,3249"/>
+<area shape="poly" id="edge1241_Node000000_Node000097" title=" " alt="" coords="45,5342,49,4925,62,4240,74,3891,89,3586,108,3363,119,3294,132,3259,148,3246,165,3237,168,3242,151,3250,137,3262,125,3295,113,3364,94,3586,79,3891,68,4240,54,4925,50,5343"/>
+<area shape="rect" id="Node000098" href="$structexo_1_1_fuse_relu_pass.html" title="Class to fuse TFLRelu or TFLRelu6 into the TensorFlow Lite ops below:" alt="" coords="195,3273,327,3299"/>
+<area shape="poly" id="edge1242_Node000000_Node000098" title=" " alt="" coords="45,5343,49,4935,63,4266,74,3925,89,3627,108,3410,120,3342,132,3308,146,3296,161,3288,194,3280,195,3285,163,3293,149,3301,137,3311,125,3344,114,3411,95,3628,80,3925,68,4266,55,4935,50,5343"/>
+<area shape="rect" id="Node000099" href="$structexo_1_1_fuse_rsqrt_pass.html" title="Class to fuse TFLSqrt that is divided(TFLDiv) by 1, into TFLRsqrt." alt="" coords="192,3322,330,3348"/>
+<area shape="poly" id="edge1243_Node000000_Node000099" title=" " alt="" coords="45,5342,50,4942,64,4290,75,3958,90,3668,109,3457,120,3391,133,3357,159,3338,191,3330,192,3335,162,3343,137,3361,125,3392,114,3457,95,3669,81,3958,69,4290,55,4943,50,5342"/>
+<area shape="rect" id="Node000100" href="$structexo_1_1_fuse_squared_difference_pass.html" title="Class to fuse SquaredDifference pattern." alt="" coords="155,3372,367,3397"/>
+<area shape="poly" id="edge1244_Node000000_Node000100" title=" " alt="" coords="45,5343,50,4952,65,4316,76,3992,91,3710,109,3503,120,3439,133,3407,152,3391,156,3395,137,3410,125,3441,115,3504,96,3710,81,3992,70,4316,56,4952,50,5343"/>
+<area shape="rect" id="Node000101" href="$classexo_1_1_merge_concat_nodes_pass.html" title="Merge concat nodes whose axis and fusedActivationFunction are same." alt="" coords="165,3421,357,3447"/>
+<area shape="poly" id="edge1245_Node000000_Node000101" title=" " alt="" coords="45,5343,51,4961,65,4341,77,4026,92,3751,110,3550,121,3488,132,3456,147,3444,163,3435,165,3440,150,3448,137,3459,126,3489,115,3551,97,3751,82,4026,71,4341,56,4961,50,5343"/>
+<area shape="rect" id="Node000102" href="$classexo_1_1_shape_inference_pass.html" title="Pass to infer shape of nodes." alt="" coords="177,3470,345,3496"/>
+<area shape="poly" id="edge1246_Node000000_Node000102" title=" " alt="" coords="45,5342,51,4969,66,4366,78,4059,92,3792,110,3597,121,3536,133,3505,152,3490,175,3481,177,3486,155,3494,137,3509,126,3538,116,3598,98,3792,83,4059,71,4366,56,4969,50,5342"/>
+<area shape="rect" id="Node000103" href="$classexo_1_1_tensor_broadcast_converter.html" title="Pass to resolve TensorBroadcast IR." alt="" coords="160,3520,362,3545"/>
+<area shape="poly" id="edge1247_Node000000_Node000103" title=" " alt="" coords="45,5342,51,4977,67,4391,78,4092,93,3833,111,3644,121,3585,133,3555,158,3536,161,3541,137,3558,126,3586,116,3644,98,3833,84,4093,72,4391,57,4977,50,5342"/>
+<area shape="rect" id="Node000104" href="$classexo_1_1_type_inference_pass.html" title="Pass to infer type of nodes." alt="" coords="181,3569,341,3595"/>
+<area shape="poly" id="edge1248_Node000000_Node000104" title=" " alt="" coords="45,5343,52,4987,68,4417,79,4127,94,3875,111,3691,121,3633,133,3604,154,3587,180,3579,182,3584,157,3592,137,3607,127,3635,117,3691,99,3875,85,4127,73,4417,57,4987,50,5343"/>
+<area shape="rect" id="Node000105" href="$classfme__apply_1_1_forward_pre_scale_pass.html" title="Pass to forward CircleCustom(PreScale) to succeeding Op." alt="" coords="153,3618,369,3644"/>
+<area shape="poly" id="edge1249_Node000000_Node000105" title=" " alt="" coords="45,5343,52,4996,68,4442,80,4161,95,3916,112,3737,122,3682,133,3653,151,3639,154,3643,137,3657,127,3683,117,3738,100,3916,85,4161,74,4442,57,4997,50,5343"/>
+<area shape="rect" id="Node000106" href="$classfme__apply_1_1_forward_pre_shift_pass.html" title="Pass to forward CircleCustom(PreShift) to succeeding Op." alt="" coords="156,3668,366,3693"/>
+<area shape="poly" id="edge1250_Node000000_Node000106" title=" " alt="" coords="45,5343,52,5006,69,4468,81,4195,95,3957,112,3784,122,3730,133,3703,154,3686,157,3691,137,3706,127,3732,118,3785,101,3958,86,4195,74,4468,58,5006,50,5343"/>
+<area shape="rect" id="Node000107" href="$classfme__apply_1_1_fuse_post_scale_pass.html" title="Pass to fuse CircleCustom(PostScale) to preceding Ops." alt="" coords="158,3717,364,3743"/>
+<area shape="poly" id="edge1251_Node000000_Node000107" title=" " alt="" coords="45,5342,53,5014,70,4492,82,4228,96,3998,113,3831,122,3779,133,3752,156,3735,159,3739,137,3755,127,3780,118,3832,101,3999,87,4228,75,4492,58,5014,51,5342"/>
+<area shape="rect" id="Node000108" href="$classfme__apply_1_1_fuse_post_shift_pass.html" title="Pass to fuse CircleCustom(PostShift) to preceding Ops." alt="" coords="161,3766,361,3792"/>
+<area shape="poly" id="edge1252_Node000000_Node000108" title=" " alt="" coords="45,5343,53,5023,71,4518,83,4262,97,4040,113,3878,122,3827,133,3801,159,3783,162,3787,137,3805,128,3829,119,3878,102,4040,88,4262,76,4518,59,5023,51,5343"/>
+<area shape="rect" id="Node000109" href="$classfme__apply_1_1_fuse_pre_scale_pass.html" title="Pass to fuse CircleCustom(PreScale) to succeeding Ops." alt="" coords="162,3816,360,3841"/>
+<area shape="poly" id="edge1253_Node000000_Node000109" title=" " alt="" coords="45,5342,54,5031,71,4542,83,4295,98,4081,114,3924,123,3876,133,3851,160,3832,163,3836,137,3854,128,3877,119,3925,103,4081,89,4296,77,4543,59,5032,51,5342"/>
+<area shape="rect" id="Node000110" href="$classfme__apply_1_1_fuse_pre_shift_pass.html" title="Pass to fuse CircleCustom(PreShift) to succeeding Ops." alt="" coords="165,3865,357,3891"/>
+<area shape="poly" id="edge1254_Node000000_Node000110" title=" " alt="" coords="45,5343,54,5041,72,4568,84,4330,98,4122,114,3971,123,3924,132,3900,147,3888,163,3880,165,3884,150,3892,137,3903,128,3926,120,3972,104,4123,90,4330,77,4569,59,5041,51,5343"/>
+<area shape="rect" id="Node000111" href="$classlogo_1_1_constant_folding_pass.html" title="Performs constant folding optimization." alt="" coords="173,3914,349,3940"/>
+<area shape="poly" id="edge1255_Node000000_Node000111" title=" " alt="" coords="44,5342,44,5059,52,4615,62,4388,78,4187,88,4103,101,4033,116,3981,133,3949,151,3935,172,3926,174,3931,154,3939,137,3953,120,3983,106,4035,94,4104,83,4187,67,4389,57,4616,49,5060,50,5342"/>
+<area shape="rect" id="Node000112" href="$structlogo_1_1_remove_dead_node_pass.html" title=" " alt="" coords="166,3964,356,3989"/>
+<area shape="poly" id="edge1256_Node000000_Node000112" title=" " alt="" coords="44,5343,45,5069,54,4642,64,4423,80,4229,90,4148,102,4081,116,4031,133,4000,147,3987,164,3979,167,3984,150,3992,137,4003,121,4033,107,4082,95,4149,85,4229,69,4423,59,4642,50,5070,50,5343"/>
+<area shape="rect" id="Node000113" href="$structlogo_1_1_remove_dead_node_with_query_pass.html" title=" " alt="" coords="168,4013,354,4054"/>
+<area shape="poly" id="edge1257_Node000000_Node000113" title=" " alt="" coords="45,5343,46,5081,57,4674,67,4466,83,4282,104,4142,117,4094,133,4064,148,4050,166,4041,168,4045,151,4055,137,4067,122,4096,109,4143,88,4283,73,4467,62,4674,52,5081,50,5343"/>
+<area shape="rect" id="Node000114" href="$structlogo_1_1_remove_forward_node_pass.html" title="Use the input of &quot;Forward&quot; node instead." alt="" coords="157,4078,365,4104"/>
+<area shape="poly" id="edge1258_Node000000_Node000114" title=" " alt="" coords="45,5343,47,5089,57,4698,68,4499,83,4323,104,4188,117,4143,133,4115,155,4097,159,4102,137,4118,122,4145,110,4190,88,4323,73,4499,62,4699,52,5089,50,5343"/>
+<area shape="rect" id="Node000115" href="$structlogo_1_1_reorder_decode_pass_3_01loco_1_1_re_l_u_01_4.html" title=" " alt="" coords="176,4128,346,4169"/>
+<area shape="poly" id="edge1259_Node000000_Node000115" title=" " alt="" coords="45,5342,48,5101,60,4732,71,4544,86,4377,106,4250,119,4207,133,4180,152,4164,174,4153,176,4158,155,4168,137,4183,124,4209,112,4252,92,4378,76,4544,66,4732,54,5102,50,5343"/>
+<area shape="rect" id="Node000116" href="$structlogo_1_1_reorder_decode_pass_3_01loco_1_1_tensor_bias_add_01_4.html" title=" " alt="" coords="176,4193,346,4234"/>
+<area shape="poly" id="edge1260_Node000000_Node000116" title=" " alt="" coords="45,5342,49,5113,62,4764,73,4587,88,4430,108,4310,119,4269,133,4244,152,4228,174,4218,177,4223,155,4232,137,4247,124,4271,113,4311,93,4430,78,4587,67,4764,54,5113,50,5343"/>
+<area shape="rect" id="Node000117" href="$classlogo_1_1_resolve_duplicate_reshape_pass.html" title="Resolve duplicated Reshape nodes in a row." alt="" coords="144,4258,378,4284"/>
+<area shape="poly" id="edge1261_Node000000_Node000117" title=" " alt="" coords="45,5343,49,5122,62,4788,73,4619,88,4469,108,4356,119,4317,133,4293,145,4282,149,4286,137,4297,124,4319,113,4357,94,4470,79,4619,68,4788,55,5122,50,5343"/>
+<area shape="rect" id="Node000118" href="$classlogo_1_1_resolve_redundant_reshape_pass.html" title="Remove redundant canonical FixedReshape." alt="" coords="140,4308,382,4333"/>
+<area shape="poly" id="edge1262_Node000000_Node000118" title=" " alt="" coords="45,5342,50,5131,64,4813,75,4652,90,4510,109,4402,120,4365,133,4343,145,4332,149,4336,137,4346,125,4367,114,4403,95,4511,80,4652,69,4813,55,5131,50,5343"/>
+<area shape="rect" id="Node000119" href="$structlogo_1_1_simplify_domain_conversion_pass.html" title="Simplify redundant domain conversion." alt="" coords="143,4357,379,4383"/>
+<area shape="poly" id="edge1263_Node000000_Node000119" title=" " alt="" coords="45,5342,51,5140,65,4837,77,4685,91,4550,110,4448,121,4413,133,4392,145,4381,149,4385,137,4395,125,4416,115,4450,97,4551,82,4685,71,4838,56,5140,51,5343"/>
+<area shape="rect" id="Node000120" href="$structluci_1_1_canonicalize_pass.html" title="Class to canoncalize CircleNodes." alt="" coords="186,4406,336,4432"/>
+<area shape="poly" id="edge1264_Node000000_Node000120" title=" " alt="" coords="45,5342,52,5149,67,4863,79,4719,93,4592,111,4496,121,4463,133,4443,157,4425,185,4416,186,4421,159,4430,137,4446,126,4465,116,4497,98,4593,84,4720,72,4864,57,5149,51,5343"/>
+<area shape="rect" id="Node000121" href="$classluci_1_1_common_sub_expression_elimination_pass.html" title="Pass to perform CSE (Common Sub&#45;expression Elimination)" alt="" coords="168,4456,354,4497"/>
+<area shape="poly" id="edge1265_Node000000_Node000121" title=" " alt="" coords="46,5343,53,5162,70,4897,82,4763,96,4646,113,4556,122,4526,133,4507,148,4493,167,4483,169,4488,151,4497,137,4510,127,4528,118,4558,101,4647,87,4764,75,4897,59,5162,51,5343"/>
+<area shape="rect" id="Node000122" href="$structluci_1_1_convert_n_c_h_w_to_n_h_w_c_pass.html" title="Class to convert NCHW Ops to NHWC." alt="" coords="151,4521,371,4547"/>
+<area shape="poly" id="edge1266_Node000000_Node000122" title=" " alt="" coords="46,5343,54,5171,71,4922,82,4797,97,4687,113,4603,122,4575,133,4557,149,4544,153,4548,137,4561,127,4577,118,4605,102,4688,88,4797,76,4922,59,5171,51,5343"/>
+<area shape="rect" id="Node000123" href="$structluci_1_1_convert_to_fake_quantized_model_pass.html" title="Class to convert a quantized model to a fake&#45;quantized fp32 model." alt="" coords="164,4571,358,4611"/>
+<area shape="poly" id="edge1267_Node000000_Node000123" title=" " alt="" coords="46,5342,56,5183,73,4955,99,4740,115,4664,123,4638,133,4621,146,4609,162,4600,165,4605,149,4613,137,4625,128,4640,120,4665,104,4741,79,4955,61,5183,51,5343"/>
+<area shape="rect" id="Node000124" href="$classluci_1_1_copy_quant_param_pass.html" title="Pass to copy quantparam (scale, zerop) of a tensor to another tensor." alt="" coords="171,4636,351,4661"/>
+<area shape="poly" id="edge1268_Node000000_Node000124" title=" " alt="" coords="46,5342,56,5192,74,4979,100,4780,115,4710,124,4686,133,4671,150,4657,170,4649,172,4653,153,4662,137,4674,129,4688,120,4711,105,4781,80,4980,62,5192,52,5343"/>
+<area shape="rect" id="Node000125" href="$structluci_1_1_decompose_hard_swish_pass.html" title="Class to decompose HardSwish to Add, Mul and Relu6." alt="" coords="156,4685,366,4711"/>
+<area shape="poly" id="edge1269_Node000000_Node000125" title=" " alt="" coords="44,5343,45,5211,55,5024,66,4928,82,4841,104,4769,117,4741,133,4720,154,4705,157,4709,137,4724,122,4744,109,4771,87,4842,71,4929,61,5025,51,5211,50,5343"/>
+<area shape="rect" id="Node000126" href="$structluci_1_1_decompose_softmax_pass.html" title="Class to decompose Softmax into backend friendly structures." alt="" coords="164,4734,358,4760"/>
+<area shape="poly" id="edge1270_Node000000_Node000126" title=" " alt="" coords="45,5343,47,5220,59,5048,70,4961,85,4881,106,4815,118,4790,133,4770,162,4751,165,4756,136,4774,123,4793,111,4817,90,4882,75,4962,64,5049,53,5220,50,5343"/>
+<area shape="rect" id="Node000127" href="$classluci_1_1_dynamic_batch_to_single_batch_pass.html" title="Pass to convert dynamic batch to single batch." alt="" coords="170,4784,352,4825"/>
+<area shape="poly" id="edge1271_Node000000_Node000127" title=" " alt="" coords="45,5343,50,5232,64,5080,75,5003,90,4933,109,4875,133,4835,149,4821,168,4812,170,4816,152,4825,137,4838,114,4877,95,4934,80,5004,69,5081,56,5232,51,5343"/>
+<area shape="rect" id="Node000128" href="$structluci_1_1_expand_broadcast_const_pass.html" title="Class to remove broadcasts of Const nodes." alt="" coords="155,4849,367,4875"/>
+<area shape="poly" id="edge1272_Node000000_Node000128" title=" " alt="" coords="46,5343,52,5241,66,5103,77,5034,92,4971,110,4919,133,4884,153,4869,156,4874,137,4888,115,4921,97,4972,83,5035,71,5104,57,5241,51,5343"/>
+<area shape="rect" id="Node000129" href="$structluci_1_1_fold_add_v2_pass.html" title="Class to fold AddV2 to a constant tensor." alt="" coords="190,4898,332,4924"/>
+<area shape="poly" id="edge1273_Node000000_Node000129" title=" " alt="" coords="46,5343,54,5250,69,5128,81,5066,95,5010,112,4964,133,4933,159,4916,189,4908,191,4913,161,4921,137,4937,117,4967,100,5012,86,5067,75,5128,59,5251,52,5343"/>
+<area shape="rect" id="Node000130" href="$structluci_1_1_fold_cast_pass.html" title="Class to fold Cast to a constant tensor." alt="" coords="196,4948,326,4973"/>
+<area shape="poly" id="edge1274_Node000000_Node000130" title=" " alt="" coords="47,5342,56,5259,73,5151,98,5049,114,5010,133,4982,162,4964,195,4956,197,4962,164,4969,137,4986,119,5012,103,5051,78,5152,62,5260,52,5343"/>
+<area shape="rect" id="Node000131" href="$structluci_1_1_fold_densify_pass.html" title="Class to Fold Densify if input is Sparse Constant." alt="" coords="188,4997,334,5023"/>
+<area shape="poly" id="edge1275_Node000000_Node000131" title=" " alt="" coords="48,5342,59,5269,77,5177,101,5090,116,5056,133,5033,158,5017,187,5008,188,5013,160,5022,137,5037,121,5059,106,5092,82,5178,64,5270,54,5343"/>
+<area shape="rect" id="Node000132" href="$structluci_1_1_fold_depthwise_conv2_d_pass.html" title="Class to fold DepthwiseConv2D with constant input and filter into a constant tensor." alt="" coords="176,5047,346,5087"/>
+<area shape="poly" id="edge1276_Node000000_Node000132" title=" " alt="" coords="45,5343,50,5290,63,5224,75,5190,90,5156,109,5125,133,5097,152,5083,175,5074,177,5079,155,5088,136,5101,113,5128,94,5158,80,5192,69,5226,55,5291,51,5343"/>
+<area shape="rect" id="Node000133" href="$structluci_1_1_fold_dequantize_pass.html" title="Class to fold Dequantize, which can be folded by constant inputs." alt="" coords="178,5112,344,5137"/>
+<area shape="poly" id="edge1277_Node000000_Node000133" title=" " alt="" coords="47,5342,55,5299,69,5245,95,5192,112,5167,133,5146,153,5134,176,5126,178,5131,156,5138,136,5150,116,5171,99,5194,74,5247,60,5300,52,5343"/>
+<area shape="rect" id="Node000134" href="$structluci_1_1_fold_fully_connected_pass.html" title="Class to fold FullyConnected with constant input and filter into a constant tensor." alt="" coords="165,5161,357,5187"/>
+<area shape="poly" id="edge1278_Node000000_Node000134" title=" " alt="" coords="51,5342,61,5308,77,5268,101,5229,133,5196,164,5180,166,5185,136,5200,105,5232,82,5270,66,5310,56,5344"/>
+<area shape="rect" id="Node000135" href="$structluci_1_1_fold_gather_pass.html" title="Class to fold Gather to a constant tensor." alt="" coords="190,5210,332,5236"/>
+<area shape="poly" id="edge1279_Node000000_Node000135" title=" " alt="" coords="57,5342,86,5292,108,5266,133,5245,160,5232,189,5224,191,5229,162,5237,136,5249,111,5270,90,5295,61,5345"/>
+<area shape="rect" id="Node000136" href="$structluci_1_1_fold_mul_pass.html" title="Class to fold Mul to a constant tensor." alt="" coords="199,5260,323,5285"/>
+<area shape="poly" id="edge1280_Node000000_Node000136" title=" " alt="" coords="67,5345,97,5318,133,5294,166,5282,199,5275,200,5280,167,5287,136,5299,100,5322,71,5349"/>
+<area shape="rect" id="Node000137" href="$structluci_1_1_fold_reshape_pass.html" title="Class to fold Reshape to a constant tensor." alt="" coords="184,5309,338,5335"/>
+<area shape="poly" id="edge1281_Node000000_Node000137" title=" " alt="" coords="101,5352,134,5343,183,5332,185,5338,135,5348,102,5357"/>
+<area shape="rect" id="Node000138" href="$structluci_1_1_fold_shape_pass.html" title="Class to fold Shape to a constant tensor." alt="" coords="191,5358,331,5384"/>
+<area shape="poly" id="edge1282_Node000000_Node000138" title=" " alt="" coords="102,5368,191,5368,191,5374,102,5374"/>
+<area shape="rect" id="Node000139" href="$structluci_1_1_fold_sparse_to_dense_pass.html" title="Class to fold SparseToDense to a constant tensor." alt="" coords="163,5408,359,5433"/>
+<area shape="poly" id="edge1283_Node000000_Node000139" title=" " alt="" coords="102,5385,135,5394,184,5404,183,5409,134,5399,101,5390"/>
+<area shape="rect" id="Node000140" href="$structluci_1_1_fold_squeeze_pass.html" title="Class to fold Squeeze to a constant tensor." alt="" coords="185,5457,337,5483"/>
+<area shape="poly" id="edge1284_Node000000_Node000140" title=" " alt="" coords="71,5393,100,5420,136,5443,185,5459,183,5464,134,5448,97,5424,67,5397"/>
+<area shape="rect" id="Node000141" href="$classluci_1_1_force_quant_param_pass.html" title="Pass to write quantparam (scale, zerop) to the specified tensors." alt="" coords="169,5506,353,5532"/>
+<area shape="poly" id="edge1285_Node000000_Node000141" title=" " alt="" coords="61,5397,90,5447,111,5472,136,5493,170,5508,168,5513,133,5497,108,5476,86,5450,57,5400"/>
+<area shape="rect" id="Node000142" href="$structluci_1_1_forward_reshape_to_unary_op_pass.html" title="Class to Forward send Reshape after UnaryOp." alt="" coords="164,5556,358,5597"/>
+<area shape="poly" id="edge1286_Node000000_Node000142" title=" " alt="" coords="56,5398,67,5431,83,5471,106,5509,136,5542,165,5559,162,5563,133,5546,102,5513,78,5473,61,5433,51,5399"/>
+<area shape="rect" id="Node000143" href="$structluci_1_1_forward_transpose_op_pass.html" title="Class to Forward Transpose Ops for further optimization." alt="" coords="160,5621,362,5647"/>
+<area shape="poly" id="edge1287_Node000000_Node000143" title=" " alt="" coords="52,5399,58,5445,72,5501,98,5558,115,5584,136,5606,160,5621,158,5625,133,5610,111,5587,93,5561,67,5503,53,5446,46,5399"/>
+<area shape="rect" id="Node000144" href="$structluci_1_1_fuse_activation_function_pass.html" title="Class to fuse activation functions into preceding operators." alt="" coords="154,5670,368,5696"/>
+<area shape="poly" id="edge1288_Node000000_Node000144" title=" " alt="" coords="50,5399,53,5455,65,5525,76,5561,91,5596,111,5629,136,5657,155,5669,152,5674,133,5661,107,5632,87,5599,71,5563,60,5526,48,5455,44,5400"/>
+<area shape="rect" id="Node000145" href="$structluci_1_1_fuse_add_to_fully_connected_bias_pass.html" title="Class to fuse Add to following FC bias." alt="" coords="159,5720,363,5761"/>
+<area shape="poly" id="edge1289_Node000000_Node000145" title=" " alt="" coords="54,5399,65,5472,83,5564,107,5651,121,5684,137,5706,160,5723,157,5727,133,5710,116,5687,102,5653,77,5566,59,5473,48,5400"/>
+<area shape="rect" id="Node000146" href="$structluci_1_1_fuse_add_with_conv_pass.html" title="Class to fuse CircleAdd into CircleConv2D." alt="" coords="168,5785,354,5811"/>
+<area shape="poly" id="edge1290_Node000000_Node000146" title=" " alt="" coords="52,5399,61,5485,77,5597,102,5703,118,5743,137,5770,152,5782,169,5790,167,5794,149,5786,133,5774,114,5746,97,5704,72,5598,56,5486,47,5400"/>
+<area shape="rect" id="Node000147" href="$structluci_1_1_fuse_add_with_fully_connected_pass.html" title="Class to fuse Add into FullyConnected." alt="" coords="139,5834,383,5860"/>
+<area shape="poly" id="edge1291_Node000000_Node000147" title=" " alt="" coords="51,5399,58,5494,74,5621,85,5685,99,5743,116,5790,137,5821,150,5831,146,5836,133,5825,111,5792,94,5745,80,5686,68,5622,53,5495,46,5399"/>
+<area shape="rect" id="Node000148" href="$structluci_1_1_fuse_add_with_t_conv_pass.html" title="Class to fuse Add into CircleTransposeConv." alt="" coords="164,5884,358,5909"/>
+<area shape="poly" id="edge1292_Node000000_Node000148" title=" " alt="" coords="51,5399,56,5504,70,5646,82,5718,96,5783,114,5835,137,5871,150,5881,165,5888,163,5893,147,5885,133,5874,110,5838,91,5784,76,5719,65,5647,51,5504,46,5400"/>
+<area shape="rect" id="Node000149" href="$structluci_1_1_fuse_batch_norm_with_conv_pass.html" title="Class to fuse Batch Normalization into CircleConv." alt="" coords="147,5933,375,5959"/>
+<area shape="poly" id="edge1293_Node000000_Node000149" title=" " alt="" coords="50,5399,54,5513,67,5670,78,5750,93,5822,112,5881,124,5903,137,5920,150,5930,146,5934,133,5924,119,5906,108,5883,88,5823,73,5751,62,5671,49,5514,45,5400"/>
+<area shape="rect" id="Node000150" href="$structluci_1_1_fuse_batch_norm_with_dw_conv_pass.html" title="Class to fuse Batch Normalization into CircleDepthWiseConv2D." alt="" coords="167,5983,355,6023"/>
+<area shape="poly" id="edge1294_Node000000_Node000150" title=" " alt="" coords="50,5399,53,5521,65,5693,76,5780,91,5860,111,5925,123,5950,137,5969,151,5981,168,5990,165,5995,148,5986,133,5973,119,5953,106,5927,86,5861,71,5781,60,5693,48,5522,45,5399"/>
+<area shape="rect" id="Node000151" href="$structluci_1_1_fuse_batch_norm_with_t_conv_pass.html" title="Class to fuse Batch Normalization into CircleTransposeConv." alt="" coords="143,6048,379,6073"/>
+<area shape="poly" id="edge1295_Node000000_Node000151" title=" " alt="" coords="50,5399,50,5534,60,5725,71,5822,86,5912,108,5984,122,6012,137,6033,151,6045,148,6049,133,6037,117,6015,103,5986,81,5913,65,5823,55,5725,45,5534,44,5399"/>
+<area shape="rect" id="Node000152" href="$structluci_1_1_fuse_gelu_pass.html" title="Class to fuse certain pattern of subgraph into CircleGelu." alt="" coords="194,6097,328,6123"/>
+<area shape="poly" id="edge1296_Node000000_Node000152" title=" " alt="" coords="52,5399,61,5553,79,5770,105,5974,120,6046,128,6070,137,6084,163,6101,194,6109,193,6114,161,6106,133,6088,123,6072,115,6047,99,5975,74,5771,56,5553,46,5400"/>
+<area shape="rect" id="Node000153" href="$structluci_1_1_fuse_horizontal_fully_connected_pass.html" title=" " alt="" coords="180,6147,342,6187"/>
+<area shape="poly" id="edge1297_Node000000_Node000153" title=" " alt="" coords="51,5399,61,5562,78,5795,104,6014,120,6092,128,6118,137,6133,156,6149,181,6159,179,6164,154,6154,133,6137,123,6120,115,6093,99,6015,73,5796,55,5562,46,5400"/>
+<area shape="rect" id="Node000154" href="$structluci_1_1_fuse_instance_norm_pass.html" title="Class to fuse certain pattern of subgraph into CircleInstanceNorm with auxiliary nodes." alt="" coords="167,6212,355,6237"/>
+<area shape="poly" id="edge1298_Node000000_Node000154" title=" " alt="" coords="51,5399,59,5574,76,5828,87,5956,101,6068,118,6152,127,6180,137,6197,151,6209,168,6217,165,6222,148,6213,133,6201,122,6183,113,6154,96,6068,82,5956,70,5829,54,5574,46,5399"/>
+<area shape="rect" id="Node000155" href="$structluci_1_1_fuse_mean_with_mean_pass.html" title="Class to fuse two Mean operations follow one by one into one Mean with merge reduction indices." alt="" coords="163,6261,359,6287"/>
+<area shape="poly" id="edge1299_Node000000_Node000155" title=" " alt="" coords="51,5399,58,5584,74,5854,85,5990,100,6109,117,6200,127,6230,137,6248,149,6258,163,6266,161,6271,146,6263,133,6251,122,6232,112,6201,94,6110,80,5990,68,5854,53,5584,46,5399"/>
+<area shape="rect" id="Node000156" href="$structluci_1_1_fuse_mul_to_fully_connected_weights_pass.html" title="Class to fuse Mul into following FullyConnected." alt="" coords="160,6311,362,6351"/>
+<area shape="poly" id="edge1300_Node000000_Node000156" title=" " alt="" coords="51,5399,58,5593,73,5878,85,6022,99,6149,117,6246,126,6278,137,6297,162,6316,158,6320,133,6301,121,6280,111,6247,94,6150,79,6023,68,5879,52,5593,45,5400"/>
+<area shape="rect" id="Node000157" href="$structluci_1_1_fuse_mul_with_conv_pass.html" title="Class to fuse Mul operation with a preceding Conv." alt="" coords="169,6376,353,6401"/>
+<area shape="poly" id="edge1301_Node000000_Node000157" title=" " alt="" coords="51,5399,56,5605,70,5911,82,6066,96,6203,115,6306,125,6341,137,6361,152,6374,170,6382,168,6387,149,6378,133,6365,120,6343,110,6307,91,6203,76,6067,65,5912,51,5605,45,5400"/>
+<area shape="rect" id="Node000158" href="$structluci_1_1_fuse_mul_with_div_pass.html" title="Class to fuse Mul operation with a Div operation." alt="" coords="175,6425,347,6451"/>
+<area shape="poly" id="edge1302_Node000000_Node000158" title=" " alt="" coords="50,5399,55,5614,69,5937,80,6100,95,6245,114,6354,125,6390,137,6412,154,6426,176,6434,174,6439,152,6430,133,6415,120,6392,108,6355,89,6245,74,6101,63,5937,50,5614,45,5399"/>
+<area shape="rect" id="Node000159" href="$structluci_1_1_fuse_p_relu_pass.html" title="Class to fuse certain pattern of subgraph into CirclePRelu with auxiliary nodes." alt="" coords="190,6474,332,6500"/>
+<area shape="poly" id="edge1303_Node000000_Node000159" title=" " alt="" coords="50,5400,54,5624,67,5962,78,6134,93,6285,113,6400,124,6438,137,6461,161,6478,191,6486,189,6492,159,6483,133,6465,119,6440,107,6401,88,6286,73,6134,62,5963,49,5624,45,5400"/>
+<area shape="rect" id="Node000160" href="$structluci_1_1_fuse_pre_activation_batch_norm_pass.html" title="Class to fuse batch normalization of pre&#45;activation." alt="" coords="167,6524,355,6565"/>
+<area shape="poly" id="edge1304_Node000000_Node000160" title=" " alt="" coords="50,5399,54,5632,67,5986,78,6166,93,6325,112,6446,124,6486,137,6511,151,6523,168,6532,165,6537,148,6528,133,6514,119,6488,107,6447,88,6325,72,6166,61,5986,49,5632,45,5399"/>
+<area shape="rect" id="Node000161" href="$structluci_1_1_fuse_rsqrt_pass.html" title="Class to fuse certain pattern of subgraph into CircleRsqrt." alt="" coords="192,6589,330,6615"/>
+<area shape="poly" id="edge1305_Node000000_Node000161" title=" " alt="" coords="50,5399,53,5644,64,6019,75,6209,90,6378,111,6506,123,6549,137,6575,162,6592,193,6601,191,6606,160,6597,133,6578,118,6551,105,6507,85,6379,69,6210,58,6019,47,5644,45,5399"/>
+<area shape="rect" id="Node000162" href="$structluci_1_1_fuse_slice_with_t_conv_pass.html" title="Class to fuse Slice operation with a preceding TConv." alt="" coords="161,6638,361,6664"/>
+<area shape="poly" id="edge1306_Node000000_Node000162" title=" " alt="" coords="50,5399,52,5653,62,6044,73,6244,88,6420,109,6554,122,6599,137,6625,162,6643,159,6647,133,6629,117,6601,104,6555,83,6421,67,6244,57,6045,46,5653,45,5400"/>
+<area shape="rect" id="Node000163" href="$structluci_1_1_fuse_transpose_with_mean_pass.html" title="Class to fuse Mean operation with a preceding Transpose." alt="" coords="148,6688,374,6713"/>
+<area shape="poly" id="edge1307_Node000000_Node000163" title=" " alt="" coords="50,5399,51,5662,61,6069,71,6277,87,6460,108,6600,122,6647,137,6675,150,6686,146,6690,133,6678,117,6649,103,6601,81,6461,66,6277,55,6069,46,5662,45,5399"/>
+<area shape="rect" id="Node000164" href="$structluci_1_1_make_batch_norm_gamma_positive_pass.html" title="Class to make negative gamma of batchnorm to a small positive value (1e&#45;10) This pass can change the ..." alt="" coords="165,6737,357,6778"/>
+<area shape="poly" id="edge1308_Node000000_Node000164" title=" " alt="" coords="50,5399,51,5670,61,6092,71,6308,87,6500,108,6645,122,6694,137,6724,150,6736,166,6745,163,6750,147,6740,133,6727,117,6696,103,6646,81,6500,66,6309,55,6092,46,5670,45,5399"/>
+<area shape="rect" id="Node000165" href="$classluci_1_1_pass.html" title=" " alt="" coords="222,6802,300,6828"/>
+<area shape="poly" id="edge1309_Node000000_Node000165" title=" " alt="" coords="50,5400,49,5682,57,6125,68,6352,84,6553,94,6637,106,6706,121,6757,137,6788,155,6802,176,6811,222,6816,222,6821,175,6816,152,6807,133,6791,116,6759,101,6707,89,6638,78,6554,62,6353,52,6126,44,5682,44,5400"/>
+<area shape="rect" id="Node000169" href="$structluci_1_1_propagate_q_param_backward_pass.html" title="Class to propagate quantization parameters of an operator&#39;s output to input." alt="" coords="140,6852,382,6877"/>
+<area shape="poly" id="edge1313_Node000000_Node000169" title=" " alt="" coords="51,5399,59,5701,77,6173,90,6412,104,6619,120,6770,128,6816,137,6839,149,6849,145,6853,132,6842,123,6818,114,6771,98,6620,84,6412,72,6174,54,5701,45,5399"/>
+<area shape="rect" id="Node000170" href="$structluci_1_1_propagate_q_param_forward_pass.html" title="Class to propagate quantization parameters of an operator&#39;s input to output." alt="" coords="145,6901,377,6927"/>
+<area shape="poly" id="edge1314_Node000000_Node000170" title=" " alt="" coords="51,5400,59,5710,77,6199,89,6446,103,6661,119,6817,128,6865,137,6888,149,6898,145,6902,132,6891,123,6866,114,6818,98,6661,83,6447,71,6200,54,5711,45,5400"/>
+<area shape="rect" id="Node000171" href="$classluci_1_1_quantize_dequantize_weights_pass.html" title="Pass to quantize weights." alt="" coords="180,6951,342,6991"/>
+<area shape="poly" id="edge1315_Node000000_Node000171" title=" " alt="" coords="51,5399,59,5718,77,6223,89,6479,103,6701,119,6863,128,6913,137,6937,156,6953,180,6963,178,6968,153,6958,132,6941,123,6914,114,6864,98,6702,83,6479,71,6224,54,5718,45,5399"/>
+<area shape="rect" id="Node000172" href="$structluci_1_1_quantize_onnx_dequantize_linear_pass.html" title="Class to quantize ONNXDequantizeLinear operator." alt="" coords="165,7016,357,7057"/>
+<area shape="poly" id="edge1316_Node000000_Node000172" title=" " alt="" coords="51,5399,59,5730,76,6256,88,6522,102,6754,119,6924,128,6976,137,7002,150,7014,166,7023,163,7027,147,7018,132,7004,122,6977,113,6924,97,6755,83,6523,71,6256,53,5730,45,5399"/>
+<area shape="rect" id="Node000173" href="$classluci_1_1_quantize_onnx_fake_quant_model_pass.html" title="Pass to create a quantized graph from a graph fake&#45;quantized on onnx." alt="" coords="165,7081,357,7122"/>
+<area shape="poly" id="edge1317_Node000000_Node000173" title=" " alt="" coords="51,5399,58,5741,75,6289,87,6567,101,6809,118,6986,127,7040,137,7067,150,7079,166,7088,163,7093,147,7083,132,7070,122,7041,113,6986,96,6809,82,6567,70,6289,53,5741,45,5399"/>
+<area shape="rect" id="Node000174" href="$structluci_1_1_quantize_onnx_q_d_q_pass.html" title="Class to quantize ONNX QuantizeLinear&#45;DequantizeLinear operator." alt="" coords="167,7146,355,7172"/>
+<area shape="poly" id="edge1318_Node000000_Node000174" title=" " alt="" coords="50,5399,57,5754,73,6324,85,6613,99,6865,117,7048,127,7105,137,7132,151,7144,168,7152,165,7157,148,7148,132,7135,121,7106,111,7049,94,6865,79,6613,68,6324,52,5754,45,5399"/>
+<area shape="rect" id="Node000175" href="$classluci_1_1_quantize_pre_checker_pass.html" title="Pass to verify the input model has the form acceptable by quantizer." alt="" coords="163,7196,359,7221"/>
+<area shape="poly" id="edge1319_Node000000_Node000175" title=" " alt="" coords="50,5400,57,5764,72,6351,84,6648,98,6907,116,7096,126,7154,137,7183,149,7193,164,7201,161,7206,146,7198,132,7186,121,7156,111,7097,93,6908,78,6649,67,6351,51,5764,45,5400"/>
+<area shape="rect" id="Node000176" href="$classluci_1_1_quantize_weights_pass.html" title="Pass to quantize weights." alt="" coords="173,7245,349,7271"/>
+<area shape="poly" id="edge1320_Node000000_Node000176" title=" " alt="" coords="50,5400,56,5773,71,6375,83,6682,98,6949,116,7143,126,7203,137,7232,153,7245,174,7254,172,7259,151,7250,133,7235,121,7204,110,7144,92,6949,78,6682,66,6375,51,5773,45,5400"/>
+<area shape="rect" id="Node000177" href="$classluci_1_1_quantize_with_min_max_pass.html" title="Pass to quantize activation, weights, and bias." alt="" coords="161,7294,361,7320"/>
+<area shape="poly" id="edge1321_Node000000_Node000177" title=" " alt="" coords="50,5399,56,5781,71,6400,82,6715,97,6990,115,7190,126,7251,137,7281,162,7299,159,7304,133,7285,121,7253,110,7191,92,6990,77,6715,65,6400,51,5781,45,5399"/>
+<area shape="rect" id="Node000178" href="$structluci_1_1_quantize_with_predecessor_pass.html" title="Class to quantize nodes using their predecessors&#39; qparam." alt="" coords="147,7344,375,7369"/>
+<area shape="poly" id="edge1322_Node000000_Node000178" title=" " alt="" coords="50,5399,56,5790,70,6425,81,6749,96,7031,115,7237,125,7300,137,7331,149,7341,145,7345,132,7334,120,7301,109,7237,91,7031,76,6749,65,6425,50,5790,45,5399"/>
+<area shape="rect" id="Node000179" href="$structluci_1_1_remove_duplicate_const_pass.html" title="Class to remove duplicate Const nodes." alt="" coords="154,7393,368,7419"/>
+<area shape="poly" id="edge1323_Node000000_Node000179" title=" " alt="" coords="50,5400,55,5799,69,6451,81,6783,95,7072,114,7283,125,7348,137,7380,156,7395,152,7399,133,7383,120,7350,109,7284,90,7073,75,6783,64,6451,50,5799,45,5400"/>
+<area shape="rect" id="Node000180" href="$structluci_1_1_remove_fake_quant_pass.html" title="Class to Remove FakeQuant node." alt="" coords="166,7442,356,7468"/>
+<area shape="poly" id="edge1324_Node000000_Node000180" title=" " alt="" coords="50,5399,55,5807,68,6475,80,6816,95,7113,114,7330,125,7397,137,7429,150,7441,167,7449,165,7454,148,7446,132,7433,120,7398,108,7331,89,7114,74,6816,63,6475,50,5807,45,5399"/>
+<area shape="rect" id="Node000181" href="$structluci_1_1_remove_gather_guard_pass.html" title="Class to remove Add+FloorMod guard ops of Gather." alt="" coords="161,7492,361,7517"/>
+<area shape="poly" id="edge1325_Node000000_Node000181" title=" " alt="" coords="50,5399,54,5817,68,6501,79,6850,94,7155,113,7377,125,7445,137,7479,148,7489,162,7497,160,7501,145,7493,132,7482,119,7447,108,7378,89,7155,74,6850,62,6501,49,5817,45,5400"/>
+<area shape="rect" id="Node000182" href="$structluci_1_1_remove_q_d_q_for_mixed_precision_op_pass.html" title="Class to remove QDQ pattern for mixed&#45;precision Ops." alt="" coords="145,7541,377,7582"/>
+<area shape="poly" id="edge1326_Node000000_Node000182" title=" " alt="" coords="50,5399,55,5825,68,6525,79,6883,94,7195,113,7423,125,7493,137,7528,148,7539,144,7543,132,7531,120,7495,108,7424,89,7195,74,6883,63,6525,49,5825,45,5399"/>
+<area shape="rect" id="Node000183" href="$structluci_1_1_remove_quant_dequant_seq_pass.html" title="Class to Remove Quantize&#45;Dequantize sequence." alt="" coords="172,7607,350,7647"/>
+<area shape="poly" id="edge1327_Node000000_Node000183" title=" " alt="" coords="50,5399,54,5835,67,6557,79,6926,94,7248,113,7484,124,7556,137,7592,153,7606,172,7616,170,7621,150,7611,132,7595,119,7558,108,7484,88,7248,73,6926,62,6557,49,5835,45,5399"/>
+<area shape="rect" id="Node000184" href="$structluci_1_1_remove_redundant_dequantize_pass.html" title="Class to remove redundant dequantize operations." alt="" coords="135,7672,387,7697"/>
+<area shape="poly" id="edge1328_Node000000_Node000184" title=" " alt="" coords="50,5399,53,5848,65,6592,76,6972,91,7304,112,7546,124,7621,137,7657,150,7669,147,7673,132,7661,118,7622,106,7547,86,7304,71,6972,60,6592,48,5848,45,5400"/>
+<area shape="rect" id="Node000185" href="$structluci_1_1_remove_redundant_quantize_pass.html" title="Class to remove redundant quantize operations." alt="" coords="142,7721,380,7747"/>
+<area shape="poly" id="edge1329_Node000000_Node000185" title=" " alt="" coords="50,5399,53,5857,64,6617,75,7007,90,7346,111,7594,123,7671,137,7708,149,7719,145,7723,132,7711,118,7672,106,7595,85,7346,70,7007,59,6617,48,5857,45,5399"/>
+<area shape="rect" id="Node000186" href="$structluci_1_1_remove_redundant_reshape_pass.html" title="Class to remove redundant Reshape node into 1 Reshape node." alt="" coords="142,7770,380,7796"/>
+<area shape="poly" id="edge1330_Node000000_Node000186" title=" " alt="" coords="50,5400,53,5866,64,6643,74,7040,90,7387,110,7641,123,7719,130,7744,137,7757,148,7768,144,7771,133,7761,125,7746,118,7720,105,7642,84,7388,69,7041,58,6643,47,5866,45,5400"/>
+<area shape="rect" id="Node000187" href="$structluci_1_1_remove_redundant_transpose_pass.html" title="fuse or remove subsequent Transpose operators" alt="" coords="137,7820,385,7845"/>
+<area shape="poly" id="edge1331_Node000000_Node000187" title=" " alt="" coords="50,5399,52,5874,63,6667,74,7074,89,7429,99,7573,110,7688,123,7768,130,7793,137,7807,148,7817,144,7821,133,7810,125,7795,118,7769,105,7688,93,7573,84,7429,68,7074,58,6667,47,5874,45,5399"/>
+<area shape="rect" id="Node000188" href="$structluci_1_1_remove_unnecessary_add_pass.html" title="Class to temove unnecessary(input and output are same) Add node." alt="" coords="149,7869,373,7895"/>
+<area shape="poly" id="edge1332_Node000000_Node000188" title=" " alt="" coords="50,5399,52,5883,62,6693,73,7108,88,7470,98,7617,109,7735,122,7816,130,7842,137,7856,150,7868,147,7872,133,7859,125,7844,117,7817,104,7735,93,7618,83,7470,67,7108,57,6693,47,5883,45,5399"/>
+<area shape="rect" id="Node000189" href="$structluci_1_1_remove_unnecessary_reshape_net_pass.html" title="Class to remove unnecessary Reshape nodes." alt="" coords="150,7919,372,7959"/>
+<area shape="poly" id="edge1333_Node000000_Node000189" title=" " alt="" coords="50,5399,52,5891,63,6716,73,7140,89,7510,99,7660,110,7780,123,7864,130,7891,137,7905,151,7918,147,7922,133,7909,125,7892,117,7865,105,7781,93,7661,83,7510,68,7140,57,6716,47,5891,45,5399"/>
+<area shape="rect" id="Node000190" href="$structluci_1_1_remove_unnecessary_reshape_pass.html" title="Class to Remove Unnecessary(input shape and output shape same) Reshape node." alt="" coords="135,7984,387,8009"/>
+<area shape="poly" id="edge1334_Node000000_Node000190" title=" " alt="" coords="50,5399,51,5903,61,6750,71,7185,87,7564,97,7719,108,7842,122,7928,129,7954,137,7969,150,7981,147,7985,133,7973,124,7956,117,7929,103,7842,91,7719,81,7565,66,7185,55,6750,46,5903,45,5399"/>
+<area shape="rect" id="Node000191" href="$structluci_1_1_remove_unnecessary_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) Slice node." alt="" coords="146,8033,376,8059"/>
+<area shape="poly" id="edge1335_Node000000_Node000191" title=" " alt="" coords="50,5399,51,5911,60,6775,70,7219,86,7606,96,7764,108,7890,121,7977,129,8005,137,8020,148,8030,144,8034,133,8023,124,8007,116,7979,102,7891,91,7765,80,7607,65,7219,54,6775,45,5911,45,5399"/>
+<area shape="rect" id="Node000192" href="$structluci_1_1_remove_unnecessary_split_pass.html" title="Remove unnecessary Split OP." alt="" coords="147,8082,375,8108"/>
+<area shape="poly" id="edge1336_Node000000_Node000192" title=" " alt="" coords="50,5399,50,5920,59,6800,69,7253,85,7648,95,7809,107,7937,121,8026,129,8054,137,8069,149,8080,145,8084,133,8073,124,8056,116,8027,102,7937,90,7809,80,7648,64,7253,54,6800,45,5920,45,5399"/>
+<area shape="rect" id="Node000193" href="$structluci_1_1_remove_unnecessary_strided_slice_pass.html" title="Class to Remove Unnecessary(input and output are same) StridedSlice node." alt="" coords="155,8132,367,8173"/>
+<area shape="poly" id="edge1337_Node000000_Node000193" title=" " alt="" coords="50,5399,51,5927,60,6823,70,7284,86,7687,96,7852,108,7982,121,8074,129,8103,137,8119,156,8135,153,8139,133,8122,124,8104,116,8075,102,7983,91,7852,80,7688,65,7284,54,6823,45,5927,45,5399"/>
+<area shape="rect" id="Node000194" href="$structluci_1_1_remove_unnecessary_transpose_net_pass.html" title=" " alt="" coords="145,8197,377,8238"/>
+<area shape="poly" id="edge1338_Node000000_Node000194" title=" " alt="" coords="50,5400,50,5940,59,6857,69,7329,85,7741,95,7909,107,8043,121,8137,129,8166,137,8183,149,8195,146,8199,133,8186,124,8168,116,8138,102,8044,90,7910,80,7741,64,7329,54,6857,45,5940,45,5400"/>
+<area shape="rect" id="Node000195" href="$structluci_1_1_replace_mul_add_with_depthwise_conv_pass.html" title="Class to replace channel&#45;wise mul/add with CircleDepthwiseConv2D." alt="" coords="148,8263,374,8303"/>
+<area shape="poly" id="edge1339_Node000000_Node000195" title=" " alt="" coords="50,5399,50,5950,58,6888,68,7372,84,7795,94,7967,107,8105,121,8201,129,8231,137,8248,149,8260,146,8264,133,8251,124,8233,116,8202,101,8105,89,7968,79,7795,63,7372,53,6889,45,5950,45,5399"/>
+<area shape="rect" id="Node000196" href="$structluci_1_1_replace_non_const_f_c_with_batch_mat_mul_pass.html" title="Class to replace &quot;FC with non&#45;const weight&quot; with Batched MatMul." alt="" coords="163,8328,359,8369"/>
+<area shape="poly" id="edge1340_Node000000_Node000196" title=" " alt="" coords="50,5400,50,5963,57,6923,67,7417,83,7850,94,8026,106,8167,121,8265,129,8296,137,8313,149,8325,164,8334,162,8339,146,8330,133,8317,123,8298,115,8266,101,8168,88,8027,78,7850,62,7418,52,6923,44,5963,45,5400"/>
+<area shape="rect" id="Node000197" href="$structluci_1_1_replace_sub_with_add_pass.html" title="Class to Replace Sub With Add." alt="" coords="163,8393,359,8419"/>
+<area shape="poly" id="edge1341_Node000000_Node000197" title=" " alt="" coords="50,5399,58,5984,76,6981,88,7490,103,7932,119,8247,128,8340,137,8379,149,8390,163,8397,161,8402,146,8394,132,8382,123,8341,114,8248,98,7932,83,7491,71,6981,53,5984,45,5399"/>
+<area shape="rect" id="Node000198" href="$structluci_1_1_replace_with_f_c_gelu_f_c_pass.html" title="Class to generate FC&#45;Gelu&#45;FC from a certain Op pattern." alt="" coords="155,8442,367,8468"/>
+<area shape="poly" id="edge1342_Node000000_Node000198" title=" " alt="" coords="50,5399,58,5993,76,7007,88,7525,102,7974,119,8296,128,8390,137,8430,157,8445,153,8449,132,8432,123,8391,114,8296,97,7975,83,7526,70,7007,53,5993,45,5399"/>
+<area shape="rect" id="Node000199" href="$classluci_1_1_requantize_pass.html" title="Pass to re&#45;quantize graph (ex: int8 &#45;&gt; uint8)" alt="" coords="190,8492,332,8517"/>
+<area shape="poly" id="edge1343_Node000000_Node000199" title=" " alt="" coords="50,5399,58,6001,75,7031,87,7559,102,8016,119,8342,128,8438,137,8479,161,8496,190,8504,189,8509,158,8501,132,8482,122,8439,113,8343,97,8016,82,7559,70,7031,53,6001,45,5399"/>
+<area shape="rect" id="Node000200" href="$structluci_1_1_resolve_custom_op_add_pass.html" title="Class to resolve certain custom op of subgraph into add op in circle schema." alt="" coords="156,8541,366,8567"/>
+<area shape="poly" id="edge1344_Node000000_Node000200" title=" " alt="" coords="50,5399,58,6011,75,7057,87,7593,102,8058,118,8390,128,8487,137,8528,157,8544,154,8548,132,8531,122,8488,113,8390,96,8058,82,7594,70,7057,52,6011,45,5399"/>
+<area shape="rect" id="Node000201" href="$structluci_1_1_resolve_custom_op_batch_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into batchmatmul op in circle schema." alt="" coords="166,8591,356,8631"/>
+<area shape="poly" id="edge1345_Node000000_Node000201" title=" " alt="" coords="50,5399,58,6019,75,7082,88,7627,102,8098,119,8436,128,8535,137,8578,150,8590,167,8599,164,8604,147,8594,132,8580,122,8536,113,8437,97,8099,82,7627,70,7082,53,6019,45,5399"/>
+<area shape="rect" id="Node000202" href="$structluci_1_1_resolve_custom_op_mat_mul_pass.html" title="Class to resolve certain custom op of subgraph into matmul op in circle schema." alt="" coords="172,8656,350,8697"/>
+<area shape="poly" id="edge1346_Node000000_Node000202" title=" " alt="" coords="50,5399,58,6030,75,7115,87,7671,102,8152,118,8497,128,8599,137,8642,153,8656,172,8666,170,8670,150,8660,132,8644,122,8599,113,8497,96,8152,82,7671,70,7115,52,6031,45,5399"/>
+<area shape="rect" id="Node000203" href="$structluci_1_1_resolve_custom_op_max_pool_with_argmax_pass.html" title="Class to resolve custom op MaxPoolWithArgmax to subgraph with circle&#39;s MaxPool and ArgMax." alt="" coords="171,8721,351,8762"/>
+<area shape="poly" id="edge1347_Node000000_Node000203" title=" " alt="" coords="50,5399,58,6041,75,7147,87,7715,101,8207,118,8559,127,8663,137,8707,152,8721,172,8731,169,8735,149,8725,132,8710,122,8664,113,8560,96,8207,81,7715,69,7147,52,6041,45,5399"/>
+<area shape="rect" id="Node000204" href="$structluci_1_1_resolve_custom_op_split_v_pass.html" title="Class to resolve certain custom op of subgraph into splitv op in circle schema." alt="" coords="170,8787,352,8827"/>
+<area shape="poly" id="edge1348_Node000000_Node000204" title=" " alt="" coords="50,5400,57,6054,74,7182,86,7761,101,8262,118,8622,127,8727,137,8772,152,8786,170,8796,168,8800,149,8790,132,8775,122,8728,112,8622,95,8263,81,7761,69,7182,52,6054,45,5400"/>
+<area shape="rect" id="Node000205" href="$structluci_1_1_resolve_former_custom_op_pass.html" title="Class to convert a custom operator to a built&#45;in operator." alt="" coords="171,8852,351,8893"/>
+<area shape="poly" id="edge1349_Node000000_Node000205" title=" " alt="" coords="50,5400,57,6065,74,7216,86,7806,100,8317,117,8684,127,8792,137,8838,152,8852,172,8861,169,8866,149,8856,132,8840,122,8793,112,8684,95,8318,80,7806,68,7216,52,6065,45,5400"/>
+<area shape="rect" id="Node000206" href="$structluci_1_1_shuffle_weight_to16x1_float32_pass.html" title="Class to convert weight format of FullyConnected to SHUFFLED16x1FLOAT32." alt="" coords="177,8917,345,8958"/>
+<area shape="poly" id="edge1350_Node000000_Node000206" title=" " alt="" coords="50,5399,57,6075,73,7248,85,7850,100,8372,117,8746,127,8856,137,8903,155,8918,177,8929,175,8933,152,8923,132,8906,122,8857,112,8746,94,8372,80,7850,68,7248,52,6075,45,5399"/>
+<area shape="rect" id="Node000207" href="$structluci_1_1_sparsify_tensor_pass.html" title="Pass to sparsify tensor." alt="" coords="179,8982,343,9008"/>
+<area shape="poly" id="edge1351_Node000000_Node000207" title=" " alt="" coords="50,5400,56,6089,72,7283,84,7897,98,8428,116,8809,126,8921,132,8953,137,8968,156,8983,179,8992,178,8997,153,8988,132,8971,126,8955,121,8922,111,8809,93,8429,78,7897,67,7283,51,6089,45,5400"/>
+<area shape="rect" id="Node000208" href="$structluci_1_1_substitute_pack_to_reshape_pass.html" title="Class to Substitute Pack with 1 input to single reshape node." alt="" coords="145,9032,377,9057"/>
+<area shape="poly" id="edge1352_Node000000_Node000208" title=" " alt="" coords="50,5400,56,6097,71,7309,83,7931,98,8471,116,8857,126,8971,132,9004,137,9019,148,9029,144,9033,132,9022,126,9005,121,8972,111,8858,93,8471,78,7932,66,7309,51,6097,45,5400"/>
+<area shape="rect" id="Node000209" href="$structluci_1_1_substitute_pad_v2_to_pad_pass.html" title="Class to substitute PadV2 in certain condition to Pad." alt="" coords="154,9081,368,9107"/>
+<area shape="poly" id="edge1353_Node000000_Node000209" title=" " alt="" coords="50,5399,56,6106,71,7334,83,7965,97,8512,116,8904,126,9020,131,9053,137,9068,156,9083,152,9087,132,9071,126,9054,121,9020,110,8905,92,8513,77,7965,66,7334,51,6106,45,5400"/>
+<area shape="rect" id="Node000210" href="$structluci_1_1_substitute_split_v_to_split_pass.html" title="Class to substitute certain SplitV to Split." alt="" coords="183,9131,339,9171"/>
+<area shape="poly" id="edge1354_Node000000_Node000210" title=" " alt="" coords="50,5399,56,6113,72,7358,83,7998,98,8553,116,8951,126,9068,132,9102,137,9117,157,9134,183,9145,181,9149,155,9139,132,9121,126,9103,121,9069,111,8951,93,8553,78,7998,66,7358,51,6113,45,5399"/>
+<area shape="rect" id="Node000211" href="$structluci_1_1_substitute_squeeze_to_reshape_pass.html" title="Class to Substitute Squeeze to Reshape node for certain conditions." alt="" coords="175,9196,347,9237"/>
+<area shape="poly" id="edge1355_Node000000_Node000211" title=" " alt="" coords="50,5399,56,6124,71,7390,83,8042,98,8607,116,9012,126,9131,132,9166,137,9182,154,9197,176,9207,174,9212,151,9201,132,9184,126,9167,121,9132,111,9012,92,8607,78,8042,66,7390,51,6124,45,5399"/>
+<area shape="rect" id="Node000212" href="$structluci_1_1_substitute_strided_slice_to_reshape_pass.html" title="Class to substitute Strided_Slice with certain condition to single reshape node." alt="" coords="173,9261,349,9302"/>
+<area shape="poly" id="edge1356_Node000000_Node000212" title=" " alt="" coords="50,5399,56,6136,71,7424,83,8086,97,8662,116,9074,126,9195,131,9231,137,9247,153,9261,173,9271,171,9276,150,9266,132,9250,126,9232,121,9196,110,9074,92,8662,77,8087,65,7424,50,6136,45,5399"/>
+<area shape="rect" id="Node000213" href="$structluci_1_1_substitute_transpose_to_reshape_pass.html" title="Class to Substitute Transpose with certain input shape condition to single reshape node." alt="" coords="177,9327,345,9367"/>
+<area shape="poly" id="edge1357_Node000000_Node000213" title=" " alt="" coords="50,5399,56,6147,70,7457,82,8131,97,8717,115,9136,126,9260,131,9296,137,9312,155,9328,178,9338,176,9343,152,9332,132,9315,126,9297,120,9260,110,9136,92,8717,77,8131,65,7457,50,6147,45,5399"/>
+<area shape="rect" id="Node000214" href="$structluci_1_1_transform_min_max_to_relu6_pass.html" title="Class to transform Maximum(Minimum(input, 6), 0) to Relu6." alt="" coords="146,9392,376,9417"/>
+<area shape="poly" id="edge1358_Node000000_Node000214" title=" " alt="" coords="50,5400,55,6160,69,7492,80,8178,95,8773,114,9199,125,9325,131,9361,137,9378,150,9389,146,9393,132,9380,126,9362,120,9325,109,9199,90,8773,75,8178,64,7492,50,6160,45,5400"/>
+<area shape="rect" id="Node000215" href="$structluci_1_1_transform_min_relu_to_relu6_pass.html" title="Class to transform Relu(Minimum(input, 6)) to Relu6." alt="" coords="177,9441,345,9482"/>
+<area shape="poly" id="edge1359_Node000000_Node000215" title=" " alt="" coords="50,5399,55,6168,69,7517,81,8212,96,8815,115,9247,125,9374,131,9411,137,9428,155,9444,177,9454,175,9458,152,9448,132,9431,126,9412,120,9375,109,9247,91,8815,76,8212,64,7517,50,6168,45,5400"/>
+<area shape="rect" id="Node000216" href="$structluci_1_1_transform_sqrt_div_to_rsqrt_mul_pass.html" title="Class to transform Div(X,Sqrt(y)) to Mul(X,Rsqrt(y))" alt="" coords="179,9507,343,9547"/>
+<area shape="poly" id="edge1360_Node000000_Node000216" title=" " alt="" coords="50,5399,55,6179,69,7549,81,8255,96,8868,114,9308,125,9437,131,9475,137,9492,156,9508,179,9519,177,9523,153,9513,132,9495,126,9476,120,9438,109,9308,90,8868,75,8255,64,7549,50,6179,45,5399"/>
+<area shape="rect" id="Node000217" href="$structluci_1_1_unroll_unidirectional_sequence_l_s_t_m_pass.html" title="Class to Unroll UnidirectionalSequenceLSTM." alt="" coords="181,9572,341,9613"/>
+<area shape="poly" id="edge1361_Node000000_Node000217" title=" " alt="" coords="50,5399,55,6190,69,7582,80,8300,95,8923,114,9370,125,9502,131,9540,137,9558,157,9574,182,9585,180,9590,154,9579,132,9560,126,9541,120,9502,109,9370,90,8923,75,8300,63,7582,49,6190,45,5399"/>
+<area shape="rect" id="Node000218" href="$structluci_1_1_xp_sep_act_from_transpose_conv_pass.html" title="Experimental Class to separate activation functions from TransposeConv." alt="" coords="162,9637,360,9678"/>
+<area shape="poly" id="edge1362_Node000000_Node000218" title=" " alt="" coords="50,5400,55,6202,68,7617,80,8346,95,8979,114,9432,125,9566,131,9605,137,9623,149,9634,163,9643,160,9648,145,9639,132,9626,126,9606,120,9567,108,9433,89,8979,74,8346,63,7617,49,6202,45,5400"/>
+<area shape="rect" id="Node000219" href="$classmoco_1_1_constant_fold_add.html" title="Constant folder for Const + Add &#45;&gt; Const." alt="" coords="181,9702,341,9728"/>
+<area shape="poly" id="edge1363_Node000000_Node000219" title=" " alt="" coords="50,5399,54,6212,67,7649,78,8390,93,9034,113,9495,124,9631,131,9670,137,9688,157,9704,182,9713,180,9718,154,9708,132,9691,125,9671,119,9631,107,9495,88,9034,73,8390,61,7649,49,6212,45,5399"/>
+<area shape="rect" id="Node000220" href="$classmoco_1_1_constant_fold_mul.html" title="Constant folder for Const + Mul &#45;&gt; Const." alt="" coords="182,9752,340,9777"/>
+<area shape="poly" id="edge1364_Node000000_Node000220" title=" " alt="" coords="50,5399,54,6222,66,7676,77,8426,92,9077,112,9543,124,9681,130,9720,137,9739,157,9754,183,9763,181,9768,155,9759,133,9742,125,9722,119,9681,107,9544,87,9077,72,8426,61,7676,48,6222,45,5399"/>
+<area shape="rect" id="Node000221" href="$classmoco_1_1_constant_fold_pack.html" title="Constant folder for Const + Pack &#45;&gt; Const." alt="" coords="178,9801,344,9827"/>
+<area shape="poly" id="edge1365_Node000000_Node000221" title=" " alt="" coords="50,5399,53,6229,66,7700,77,8459,92,9118,112,9590,124,9729,130,9770,137,9788,155,9803,178,9811,176,9816,153,9807,132,9791,125,9771,119,9730,107,9591,87,9118,71,8459,60,7700,48,6230,45,5399"/>
+<area shape="rect" id="Node000222" href="$classmoco_1_1_constant_fold_strided_slice.html" title="Constant folder for Const + StridedSlice &#45;&gt; Const." alt="" coords="172,9851,350,9891"/>
+<area shape="poly" id="edge1366_Node000000_Node000222" title=" " alt="" coords="50,5399,54,6239,67,7725,78,8493,93,9159,113,9637,124,9778,131,9819,137,9838,153,9852,173,9861,171,9866,150,9856,132,9840,125,9820,119,9778,107,9637,88,9159,72,8493,61,7725,48,6239,45,5399"/>
+<area shape="rect" id="Node000223" href="$classmoco_1_1_fuse_binary_into_preceding.html" title="Fuse TFAdd, TFMul to preceding TFConv2D or TFDepthWiseConv2D." alt="" coords="159,9916,363,9941"/>
+<area shape="poly" id="edge1367_Node000000_Node000223" title=" " alt="" coords="50,5399,53,6249,65,7758,76,8537,91,9213,112,9698,124,9841,130,9882,137,9901,160,9919,157,9923,133,9905,125,9884,118,9842,106,9699,86,9214,71,8537,60,7758,48,6249,45,5399"/>
+<area shape="rect" id="Node000224" href="$structmoco_1_1_remove_t_f_identity_node.html" title="Use the input of &quot;TFIdentity&quot; node instead." alt="" coords="163,9965,359,9991"/>
+<area shape="poly" id="edge1368_Node000000_Node000224" title=" " alt="" coords="50,5399,53,6257,65,7784,76,8572,91,9256,100,9531,111,9747,123,9891,130,9933,137,9952,149,9963,163,9971,161,9975,146,9967,132,9955,125,9934,118,9892,106,9747,95,9531,85,9256,70,8572,59,7784,48,6257,45,5399"/>
+<area shape="rect" id="Node000225" href="$classmoco_1_1_resolve_constant_shape.html" title="Replace fully determined TFShape node into TFConst." alt="" coords="163,10014,359,10040"/>
+<area shape="poly" id="edge1369_Node000000_Node000225" title=" " alt="" coords="50,5399,53,6267,64,7809,75,8606,90,9298,100,9576,111,9794,123,9940,130,9982,137,10002,149,10012,164,10020,161,10025,146,10017,132,10004,125,9983,118,9940,106,9794,95,9576,85,9298,70,8606,59,7810,47,6267,45,5399"/>
+<area shape="rect" id="Node000226" href="$classmoco_1_1_resolve_fused_batch_norm.html" title="Trasform TFFusedBatchNorm into TFAdd + TFRsqrt + TFMul + TFBatchNorm." alt="" coords="157,10064,365,10089"/>
+<area shape="poly" id="edge1370_Node000000_Node000226" title=" " alt="" coords="50,5399,53,6274,64,7834,75,8639,90,9339,100,9620,111,9841,123,9988,130,10031,137,10051,158,10067,155,10071,133,10054,125,10032,118,9989,105,9841,94,9621,85,9339,69,8639,59,7834,47,6274,45,5399"/>
+<area shape="rect" id="Node000227" href="$classmoco_1_1_resolve_reshape_wildcard_dim.html" title="Determine wildcard dimension (denoted as &#45;1) of Reshape&#39;s shape input if possible." alt="" coords="146,10113,376,10139"/>
+<area shape="poly" id="edge1371_Node000000_Node000227" title=" " alt="" coords="50,5399,52,6284,64,7860,74,8674,90,9381,99,9665,110,9888,123,10037,130,10080,137,10100,148,10110,144,10114,132,10103,125,10081,118,10038,105,9888,94,9665,84,9381,69,8674,58,7860,47,6284,45,5399"/>
+<area shape="rect" id="Node000228" href="$classmoco_1_1_resolve_squared_difference.html" title="Decompose TFSquaredDifference to TFSub, TFMul." alt="" coords="155,10162,367,10188"/>
+<area shape="poly" id="edge1372_Node000000_Node000228" title=" " alt="" coords="50,5400,52,6294,63,7886,74,8708,89,9423,99,9710,110,9935,123,10086,130,10129,137,10149,156,10165,153,10169,132,10153,125,10131,118,10086,105,9935,94,9710,84,9423,69,8708,58,7886,47,6294,45,5400"/>
+<area shape="rect" id="Node000229" href="$classmoco_1_1_squeeze_reduce_node.html" title="If ReduceTypeOP don&#39;t keep dimensions, replace the ReduceTypeOp as new one to keep dimensions and ins..." alt="" coords="169,10212,353,10237"/>
+<area shape="poly" id="edge1373_Node000000_Node000229" title=" " alt="" coords="50,5399,52,6301,63,7910,74,8741,89,9464,99,9754,110,9982,123,10134,130,10178,137,10199,151,10211,169,10219,167,10224,148,10216,132,10202,125,10180,117,10135,105,9982,93,9755,84,9464,68,8742,58,7910,47,6301,45,5399"/>
+<area shape="rect" id="Node000230" href="$classmoco_1_1tf_1_1_shape_inference_pass.html" title="Run shape inference to the graph." alt="" coords="164,10261,358,10287"/>
+<area shape="poly" id="edge1374_Node000000_Node000230" title=" " alt="" coords="50,5399,52,6308,62,7934,73,8775,89,9505,98,9799,110,10029,123,10183,130,10227,137,10248,149,10259,165,10267,162,10272,146,10264,132,10251,125,10229,117,10183,104,10029,93,9799,83,9505,68,8775,57,7934,47,6308,45,5399"/>
+<area shape="rect" id="Node000231" href="$structmoco_1_1tf_1_1_simple_node_transform.html" title="Per&#45;Node Transform." alt="" coords="159,10311,363,10351"/>
+<area shape="poly" id="edge1375_Node000000_Node000231" title=" " alt="" coords="50,5399,52,6317,63,7959,74,8808,90,9546,99,9843,110,10075,123,10231,130,10276,137,10297,160,10316,157,10320,132,10301,125,10278,118,10232,105,10075,94,9843,84,9546,69,8808,58,7959,47,6317,45,5399"/>
+<area shape="rect" id="Node000232" href="$classmoco_1_1tf_1_1_type_inference_pass.html" title="Run type inference to the graph." alt="" coords="168,10376,354,10401"/>
+<area shape="poly" id="edge1376_Node000000_Node000232" title=" " alt="" coords="50,5399,52,6328,62,7992,72,8852,88,9600,98,9901,109,10137,122,10295,130,10340,137,10362,151,10374,169,10382,166,10387,148,10378,132,10364,124,10342,117,10295,104,10137,92,9901,83,9600,67,8852,57,7992,46,6328,45,5399"/>
+<area shape="rect" id="Node000002" href="$classexo_1_1_avg_pool2_d_converter.html" title="Convert loco::AvgPool2D to locoex::TFLAveragePool2D." alt="" coords="464,13,632,39"/>
+<area shape="poly" id="edge1146_Node000001_Node000002" title=" " alt="" coords="372,23,463,23,463,28,372,28"/>
+<area shape="rect" id="Node000004" href="$classexo_1_1_const_gen_converter.html" title=" " alt="" coords="468,78,629,104"/>
+<area shape="poly" id="edge1148_Node000003_Node000004" title=" " alt="" coords="372,88,467,88,467,94,372,94"/>
+<area shape="rect" id="Node000006" href="$classexo_1_1_conv2_d_converter.html" title="Convert loco::Conv2D to locoex::TFLConv2D." alt="" coords="474,144,623,169"/>
+<area shape="poly" id="edge1150_Node000005_Node000006" title=" " alt="" coords="372,154,473,154,473,159,372,159"/>
+<area shape="rect" id="Node000008" href="$classexo_1_1_depthwise_conv2_d_converter.html" title="Convert loco::DepthwiseConv2D to locoex::TFLDepthwiseConv2D and auxiliary." alt="" coords="443,209,653,235"/>
+<area shape="poly" id="edge1152_Node000007_Node000008" title=" " alt="" coords="372,219,443,219,443,224,372,224"/>
+<area shape="rect" id="Node000010" href="$classexo_1_1_eltwise_add_converter.html" title="Convert loco::EltwiseAdd to TFLAdd." alt="" coords="464,274,632,300"/>
+<area shape="poly" id="edge1154_Node000009_Node000010" title=" " alt="" coords="372,284,463,284,463,290,372,290"/>
+<area shape="rect" id="Node000012" href="$classexo_1_1_eltwise_div_converter.html" title="Convert loco::EltwiseDiv to TFLDiv." alt="" coords="466,340,630,365"/>
+<area shape="poly" id="edge1156_Node000011_Node000012" title=" " alt="" coords="372,350,466,350,466,355,372,355"/>
+<area shape="rect" id="Node000014" href="$classexo_1_1_eltwise_max_converter.html" title="Convert loco::EltwiseMax to TFLMaximum." alt="" coords="464,405,633,431"/>
+<area shape="poly" id="edge1158_Node000013_Node000014" title=" " alt="" coords="372,415,463,415,463,420,372,420"/>
+<area shape="rect" id="Node000016" href="$classexo_1_1_eltwise_mul_converter.html" title="Convert loco::EltwiseMul to TFLMul." alt="" coords="465,470,631,496"/>
+<area shape="poly" id="edge1160_Node000015_Node000016" title=" " alt="" coords="372,480,464,480,464,486,372,486"/>
+<area shape="rect" id="Node000018" href="$classexo_1_1_eltwise_sqrt_converter.html" title="Convert loco::EltwiseSqrt to TFLSqrt." alt="" coords="464,536,633,561"/>
+<area shape="poly" id="edge1162_Node000017_Node000018" title=" " alt="" coords="372,546,463,546,463,551,372,551"/>
+<area shape="rect" id="Node000020" href="$classexo_1_1_eltwise_sub_converter.html" title="Convert loco::EltwiseSub to TFLSub." alt="" coords="464,601,632,627"/>
+<area shape="poly" id="edge1164_Node000019_Node000020" title=" " alt="" coords="372,611,463,611,463,616,372,616"/>
+<area shape="rect" id="Node000022" href="$classexo_1_1_feature_bias_add_converter.html" title=" " alt="" coords="450,666,646,692"/>
+<area shape="poly" id="edge1166_Node000021_Node000022" title=" " alt="" coords="372,676,450,676,450,682,372,682"/>
+<area shape="rect" id="Node000024" href="$classexo_1_1_mat_mul_converter.html" title="Convert loco::MatMul to locoex::TFLFullyConnected." alt="" coords="475,732,621,757"/>
+<area shape="poly" id="edge1168_Node000023_Node000024" title=" " alt="" coords="372,742,475,742,475,747,372,747"/>
+<area shape="rect" id="Node000026" href="$classexo_1_1_max_pool2_d_converter.html" title="Convert loco::MaxPool2D to locoex::TFLMaxPool2D." alt="" coords="464,797,633,823"/>
+<area shape="poly" id="edge1170_Node000025_Node000026" title=" " alt="" coords="372,807,463,807,463,812,372,812"/>
+<area shape="rect" id="Node000028" href="$classexo_1_1_relu6_converter.html" title="Convert loco::Relu6 to TFLRelu6." alt="" coords="480,862,616,888"/>
+<area shape="poly" id="edge1172_Node000027_Node000028" title=" " alt="" coords="372,872,479,872,479,878,372,878"/>
+<area shape="rect" id="Node000030" href="$classexo_1_1_relu_converter.html" title="Convert loco::Relu to TFLRelu." alt="" coords="484,928,613,953"/>
+<area shape="poly" id="edge1174_Node000029_Node000030" title=" " alt="" coords="372,938,483,938,483,943,372,943"/>
+<area shape="rect" id="Node000032" href="$classexo_1_1_tensor_concat_converter.html" title="Convert loco::TensorConcat to TFLConcatenate." alt="" coords="456,993,640,1019"/>
+<area shape="poly" id="edge1176_Node000031_Node000032" title=" " alt="" coords="372,1003,455,1003,455,1008,372,1008"/>
+<area shape="rect" id="Node000034" href="$classexo_1_1_tensor_reduce_converter.html" title="Convert loco::TensorReduce to appropriate TFL reduce operation." alt="" coords="455,1058,642,1084"/>
+<area shape="poly" id="edge1178_Node000033_Node000034" title=" " alt="" coords="372,1068,454,1068,454,1074,372,1074"/>
+<area shape="rect" id="Node000036" href="$classexo_1_1_tensor_transpose_converter.html" title="Convert loco::TensorTranspose to locoex::TFLTranspose." alt="" coords="446,1124,650,1149"/>
+<area shape="poly" id="edge1180_Node000035_Node000036" title=" " alt="" coords="372,1134,446,1134,446,1139,372,1139"/>
+<area shape="rect" id="Node000038" href="$classexo_1_1_transposed_conv2_d_converter.html" title="Convert loco::TransposedConv2D to locoex::TFLTransposeConv and auxiliary." alt="" coords="440,1189,657,1215"/>
+<area shape="poly" id="edge1182_Node000037_Node000038" title=" " alt="" coords="372,1199,439,1199,439,1204,372,1204"/>
+<area shape="rect" id="Node000040" href="$classmoco_1_1tf_1_1_add_canonicalizer.html" title="Convert TFAdd to Canonical EltwiseAdd." alt="" coords="462,1254,635,1280"/>
+<area shape="poly" id="edge1184_Node000039_Node000040" title=" " alt="" coords="378,1264,461,1264,461,1270,378,1270"/>
+<area shape="rect" id="Node000042" href="$classmoco_1_1tf_1_1_avg_pool_canonicalizer.html" title="Convert TFAvgPool to Canonical AvgPool2D." alt="" coords="449,1320,648,1345"/>
+<area shape="poly" id="edge1186_Node000041_Node000042" title=" " alt="" coords="378,1330,448,1330,448,1335,378,1335"/>
+<area shape="rect" id="Node000044" href="$classmoco_1_1tf_1_1_bias_add_canonicalizer.html" title="Convert TFBiasAdd to Canonical BiasAdd." alt="" coords="449,1385,648,1411"/>
+<area shape="poly" id="edge1188_Node000043_Node000044" title=" " alt="" coords="378,1395,448,1395,448,1400,378,1400"/>
+<area shape="rect" id="Node000046" href="$classmoco_1_1tf_1_1_concat_v2_canonicalizer.html" title="Convert TFConcatV2 to Canonical TensorConcat." alt="" coords="445,1450,652,1476"/>
+<area shape="poly" id="edge1190_Node000045_Node000046" title=" " alt="" coords="378,1460,444,1460,444,1466,378,1466"/>
+<area shape="rect" id="Node000048" href="$classmoco_1_1tf_1_1_const_canonicalizer.html" title="Convert TFConst to Canonical ConstGen." alt="" coords="456,1516,640,1541"/>
+<area shape="poly" id="edge1192_Node000047_Node000048" title=" " alt="" coords="378,1526,456,1526,456,1531,378,1531"/>
+<area shape="rect" id="Node000050" href="$classmoco_1_1tf_1_1_conv2_d_backprop_input_canonicalizer.html" title="Convert TFConv2DBackpropInput to Canonical TransposedConv2D." alt="" coords="461,1573,635,1614"/>
+<area shape="poly" id="edge1194_Node000049_Node000050" title=" " alt="" coords="390,1591,460,1591,460,1596,390,1596"/>
+<area shape="rect" id="Node000052" href="$classmoco_1_1tf_1_1_conv2_d_canonicalizer.html" title="Convert TFConv2D to Canonical Conv2D." alt="" coords="450,1646,646,1672"/>
+<area shape="poly" id="edge1196_Node000051_Node000052" title=" " alt="" coords="378,1656,450,1656,450,1662,378,1662"/>
+<area shape="rect" id="Node000054" href="$classmoco_1_1tf_1_1_depthwise_conv2d_native_canonicalizer.html" title="Convert TFDepthwiseConv2dNative to Canonical DepthwiseConv2D." alt="" coords="459,1704,637,1745"/>
+<area shape="poly" id="edge1198_Node000053_Node000054" title=" " alt="" coords="397,1722,458,1722,458,1727,397,1727"/>
+<area shape="rect" id="Node000056" href="$classmoco_1_1tf_1_1_identity_canonicalizer.html" title="Convert TFIdentity to Canonical Forward." alt="" coords="452,1777,644,1803"/>
+<area shape="poly" id="edge1200_Node000055_Node000056" title=" " alt="" coords="378,1787,451,1787,451,1792,378,1792"/>
+<area shape="rect" id="Node000058" href="$classmoco_1_1tf_1_1_max_pool_canonicalizer.html" title="Convert TFMaxPool to Canonical MaxPool2D." alt="" coords="448,1842,648,1868"/>
+<area shape="poly" id="edge1202_Node000057_Node000058" title=" " alt="" coords="378,1852,448,1852,448,1858,378,1858"/>
+<area shape="rect" id="Node000060" href="$classmoco_1_1tf_1_1_maximum_canonicalizer.html" title="Convert TFMaximum to Canonical EltwiseMax." alt="" coords="445,1908,651,1933"/>
+<area shape="poly" id="edge1204_Node000059_Node000060" title=" " alt="" coords="378,1918,445,1918,445,1923,378,1923"/>
+<area shape="rect" id="Node000062" href="$classmoco_1_1tf_1_1_mean_canonicalizer.html" title="Canonicalize TF&#45;dialect TFMean into canonical TensorReduce(Mean) node." alt="" coords="457,1973,639,1999"/>
+<area shape="poly" id="edge1206_Node000061_Node000062" title=" " alt="" coords="378,1983,457,1983,457,1988,378,1988"/>
+<area shape="rect" id="Node000064" href="$classmoco_1_1tf_1_1_mul_canonicalizer.html" title="Convert TFMul to Canonical EltwiseMul." alt="" coords="463,2038,634,2064"/>
+<area shape="poly" id="edge1208_Node000063_Node000064" title=" " alt="" coords="378,2048,462,2048,462,2054,378,2054"/>
+<area shape="rect" id="Node000066" href="$classmoco_1_1tf_1_1_pad_canonicalizer.html" title="Convert TFPad to Canonical TensorConstantPad." alt="" coords="462,2104,635,2129"/>
+<area shape="poly" id="edge1210_Node000065_Node000066" title=" " alt="" coords="378,2114,461,2114,461,2119,378,2119"/>
+<area shape="rect" id="Node000068" href="$classmoco_1_1tf_1_1_placeholder_canonicalizer.html" title="Convert TFPlaceholder to Canonical Pull." alt="" coords="439,2169,657,2195"/>
+<area shape="poly" id="edge1212_Node000067_Node000068" title=" " alt="" coords="378,2179,438,2179,438,2184,378,2184"/>
+<area shape="rect" id="Node000070" href="$classmoco_1_1tf_1_1_real_div_canonicalizer.html" title="Convert TFRealDiv to Canonical EltwiseDiv." alt="" coords="451,2234,646,2260"/>
+<area shape="poly" id="edge1214_Node000069_Node000070" title=" " alt="" coords="378,2244,450,2244,450,2250,378,2250"/>
+<area shape="rect" id="Node000072" href="$classmoco_1_1tf_1_1_relu6_canonicalizer.html" title="Convert TFRelu6 to Canonical ReLU6." alt="" coords="457,2300,640,2325"/>
+<area shape="poly" id="edge1216_Node000071_Node000072" title=" " alt="" coords="378,2310,456,2310,456,2315,378,2315"/>
+<area shape="rect" id="Node000074" href="$classmoco_1_1tf_1_1_relu_canonicalizer.html" title="Convert TFRelu to Canonical ReLU." alt="" coords="460,2365,636,2391"/>
+<area shape="poly" id="edge1218_Node000073_Node000074" title=" " alt="" coords="378,2375,459,2375,459,2380,378,2380"/>
+<area shape="rect" id="Node000076" href="$classmoco_1_1tf_1_1_reshape_canonicalizer.html" title="Convert TFReshape to Canonical Reshape." alt="" coords="448,2430,649,2456"/>
+<area shape="poly" id="edge1220_Node000075_Node000076" title=" " alt="" coords="378,2440,447,2440,447,2446,378,2446"/>
+<area shape="rect" id="Node000078" href="$classmoco_1_1tf_1_1_rsqrt_canonicalizer.html" title="Convert TFRsqrt to Canonical EltwiseDiv + EltwiseSqrt." alt="" coords="458,2496,639,2521"/>
+<area shape="poly" id="edge1222_Node000077_Node000078" title=" " alt="" coords="378,2506,457,2506,457,2511,378,2511"/>
+<area shape="rect" id="Node000080" href="$classmoco_1_1tf_1_1_softmax_canonicalizer.html" title="Canonicalize TF&#45;dialect TFSoftmax into canonical Softmax node." alt="" coords="449,2561,647,2587"/>
+<area shape="poly" id="edge1224_Node000079_Node000080" title=" " alt="" coords="378,2571,449,2571,449,2576,378,2576"/>
+<area shape="rect" id="Node000082" href="$classmoco_1_1tf_1_1_sqrt_canonicalizer.html" title="Convert TFsqrt to Canonical EltwiseSqrt." alt="" coords="461,2626,635,2652"/>
+<area shape="poly" id="edge1226_Node000081_Node000082" title=" " alt="" coords="378,2636,460,2636,460,2642,378,2642"/>
+<area shape="rect" id="Node000084" href="$classmoco_1_1tf_1_1_squeeze_canonicalizer.html" title="Canonicalize TF&#45;dialect TFSqueeze into canonical FixedReshape node." alt="" coords="448,2692,648,2717"/>
+<area shape="poly" id="edge1228_Node000083_Node000084" title=" " alt="" coords="378,2702,448,2702,448,2707,378,2707"/>
+<area shape="rect" id="Node000086" href="$classmoco_1_1tf_1_1_stop_gradient_canonicalizer.html" title="Canonicalize TF&#45;dialect TFStopGradient into canonical Forward node." alt="" coords="435,2757,661,2783"/>
+<area shape="poly" id="edge1230_Node000085_Node000086" title=" " alt="" coords="378,2767,435,2767,435,2772,378,2772"/>
+<area shape="rect" id="Node000088" href="$classmoco_1_1tf_1_1_sub_canonicalizer.html" title="Convert TFSub to Canonical EltwiseSub." alt="" coords="462,2822,635,2848"/>
+<area shape="poly" id="edge1232_Node000087_Node000088" title=" " alt="" coords="378,2832,461,2832,461,2838,378,2838"/>
+<area shape="rect" id="Node000090" href="$classmoco_1_1tf_1_1_t_f_push_canonicalizer.html" title="Convert TFPush to Canonical Push." alt="" coords="450,2888,646,2913"/>
+<area shape="poly" id="edge1234_Node000089_Node000090" title=" " alt="" coords="378,2898,450,2898,450,2903,378,2903"/>
+<area shape="rect" id="Node000092" href="$classmoco_1_1tf_1_1_tanh_canonicalizer.html" title="Convert TFTanh to Canonical Tanh." alt="" coords="459,2953,638,2979"/>
+<area shape="poly" id="edge1236_Node000091_Node000092" title=" " alt="" coords="378,2963,458,2963,458,2968,378,2968"/>
+<area shape="rect" id="Node000166" href="$classluci_1_1_circle_shape_inference_pass.html" title="Pass to infer shape of circle nodes." alt="" coords="448,6753,649,6779"/>
+<area shape="poly" id="edge1310_Node000165_Node000166" title=" " alt="" coords="315,6803,469,6777,470,6782,315,6808"/>
+<area shape="rect" id="Node000167" href="$classluci_1_1_circle_type_inference_pass.html" title="Pass to infer type of circle nodes." alt="" coords="452,6802,644,6828"/>
+<area shape="poly" id="edge1311_Node000165_Node000167" title=" " alt="" coords="315,6812,452,6812,452,6818,315,6818"/>
+<area shape="rect" id="Node000168" href="$structluci_1_1_fuse_b_c_q_pass.html" title="Class to fuse certain pattern of subgraph into CircleBCQFullyConnected or CircleBCQGather." alt="" coords="481,6852,615,6877"/>
+<area shape="poly" id="edge1312_Node000165_Node000168" title=" " alt="" coords="315,6822,481,6850,480,6855,314,6827"/>
 </map>

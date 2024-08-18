@@ -1,5 +1,17 @@
 var NAVTREEINDEX187 =
 {
+"compute_2cker_2include_2cker_2operation_2_strided_slice_8h.html#acd27cacb2dd69ab57d96361ee288f2f1":[37,0,1,1,0,0,3,64,0],
+"compute_2cker_2include_2cker_2operation_2_strided_slice_8h.html#adb32b47564bd9c48ae6881fef4229d24":[37,0,1,1,0,0,3,64,4],
+"compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html":[37,0,1,1,0,0,3,64],
+"compute_2cker_2include_2cker_2operation_2_tanh_8h.html":[37,0,1,1,0,0,3,65],
+"compute_2cker_2include_2cker_2operation_2_tanh_8h.html#a6472bf04d4ebd32eab3e826405415df3":[37,0,1,1,0,0,3,65,0],
+"compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html":[37,0,1,1,0,0,3,65],
+"compute_2cker_2include_2cker_2operation_2_tile_8h.html":[37,0,1,1,0,0,3,66],
+"compute_2cker_2include_2cker_2operation_2_tile_8h.html#a83de02f6dff1acafbafa575761b5b8bc":[37,0,1,1,0,0,3,66,0],
+"compute_2cker_2include_2cker_2operation_2_tile_8h.html#a9914bcaed4bfbe2c923c12d8efafcbce":[37,0,1,1,0,0,3,66,1],
+"compute_2cker_2include_2cker_2operation_2_tile_8h_source.html":[37,0,1,1,0,0,3,66],
+"compute_2cker_2include_2cker_2operation_2_transpose_8h.html":[37,0,1,1,0,0,3,67],
+"compute_2cker_2include_2cker_2operation_2_transpose_8h.html#a295888086391d908f57fa904c9d4544d":[37,0,1,1,0,0,3,67,0],
 "compute_2cker_2include_2cker_2operation_2_transpose_8h.html#a2eb3bd32a2ec40712091a4b9b602137c":[37,0,1,1,0,0,3,67,4],
 "compute_2cker_2include_2cker_2operation_2_transpose_8h.html#a3b748c82a63cf7a900d558cf3389ac13":[37,0,1,1,0,0,3,67,3],
 "compute_2cker_2include_2cker_2operation_2_transpose_8h.html#a77ee976f07a81db2abb12effb60384d7":[37,0,1,1,0,0,3,67,5],
@@ -237,17 +249,5 @@ var NAVTREEINDEX187 =
 "core_2src_2backend_2_backend_context_8cc.html":[37,0,4,2,2,1,0,2],
 "core_2src_2backend_2_backend_context_8cc_source.html":[37,0,4,2,2,1,0,2],
 "core_2src_2backend_2basic_2_memory_manager_8cc.html":[37,0,4,2,2,1,0,0,4],
-"core_2src_2backend_2basic_2_memory_manager_8cc_source.html":[37,0,4,2,2,1,0,0,4],
-"core_2src_2backend_2basic_2_memory_planner_8cc.html":[37,0,4,2,2,1,0,0,5],
-"core_2src_2backend_2basic_2_memory_planner_8cc_source.html":[37,0,4,2,2,1,0,0,5],
-"core_2src_2backend_2basic_2_memory_planner_8h.html":[37,0,4,2,2,1,0,0,6],
-"core_2src_2backend_2basic_2_memory_planner_8h_source.html":[37,0,4,2,2,1,0,0,6],
-"core_2src_2backend_2basic_2_memory_planner_factory_8cc.html":[37,0,4,2,2,1,0,0,7],
-"core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html":[37,0,4,2,2,1,0,0,7],
-"core_2src_2backend_2basic_2_memory_planner_factory_8h.html":[37,0,4,2,2,1,0,0,8],
-"core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html":[37,0,4,2,2,1,0,0,8],
-"core_2src_2backend_2basic_2_tensor_builder_8cc.html":[37,0,4,2,2,1,0,0,11],
-"core_2src_2backend_2basic_2_tensor_builder_8cc_source.html":[37,0,4,2,2,1,0,0,11],
-"core_2src_2backend_2builtin_2_backend_context_8cc.html":[37,0,4,2,2,1,0,1,3],
-"core_2src_2backend_2builtin_2_backend_context_8cc_source.html":[37,0,4,2,2,1,0,1,3]
+"core_2src_2backend_2basic_2_memory_manager_8cc_source.html":[37,0,4,2,2,1,0,0,4]
 };
