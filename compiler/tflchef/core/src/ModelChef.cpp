@@ -951,6 +951,9 @@ bool ModelChef::finalize_ext_buffer(void)
 
 void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
 {
+  // use Custom/Buffer offset
+  _ext_offset = model_recipe.has_ext_offset() ? model_recipe.ext_offset() : false;
+
   prepare_initial_buffer();
 
   gather_operator_codes(model_recipe);
