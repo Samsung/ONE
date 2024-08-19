@@ -142,9 +142,12 @@ bool fuse_mul_with_fc(luci::CircleMul *mul)
    *
    *  AFTER
    *                |
-   *      [CircleFullyConnected]
-   *                |
-   *        +-------+-----------------------+
+   *                +-----------------------+
+   *                |                       |
+   *                |                       |
+   *      [CircleFullyConnected]            |
+   *                |                       |
+   *        +-------+                       |
    *        |                               |
    *        |                               |
    *  [Other Node]       [New CircleFullyConnected Fused with Mul]
