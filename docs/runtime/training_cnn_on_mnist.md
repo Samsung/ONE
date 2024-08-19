@@ -1,6 +1,6 @@
 # Training a simple CNN model on MNIST using ONERT
 
-Let's train a simple neural network for MNIST dataset using ONERT.
+Let's train a simple neural network on MNIST dataset using ONERT.
 
 ## Prepare dataset
 
