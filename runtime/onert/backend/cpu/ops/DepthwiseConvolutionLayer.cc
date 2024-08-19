@@ -81,9 +81,9 @@ void DepthwiseConvolutionLayer::convFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
-  // Since DepthwiseConvOp does not support dilation yet, it uses the existing
-  // kernel in this case.
-  if (_dilationWidth == 1 && _dilationHeight == 1)
+  // Since DepthwiseConvOp does not support dilation and different W/H stride yet,
+  // it uses the existing kernel in this case.
+  if (_dilationWidth == 1 && _dilationHeight == 1 && _strideWidth == _strideHeight)
   {
     nnfw::cker::DepthwiseConvOp(op_params, getShape(_input), getBuffer<float>(_input),
                                 getShape(_kernel), getBuffer<float>(_kernel), getShape(_bias),
