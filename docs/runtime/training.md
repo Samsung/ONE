@@ -8,7 +8,7 @@ It supports on-device training based on existing trained models and supports tra
 
 In order to efficiently learn models with limited resources, ONERT not only uses less memory by reusing it memory space during training but also quickly improves accuracy of trained model by performing optimized kernel for each operation.
 
-Trained model can be saved to be deployed using ONERT API. This allows users to deploy it to other environments or real applications to perform inference and retraining.
+Trained model can be saved to be deployed using ONERT API. This allows users to redeploy it to other environments or real applications to perform inference and retraining.
 
 ## Training in ONERT
 
