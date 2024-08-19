@@ -4,11 +4,11 @@
 
 ONERT supports model training. In particular, it supports training not only in the Host environment but also in the On-device environment and provides features for on-device training. Training is an important part of developing and improving models. While general learning in the Host environment involves training with a large amount of data using many resources, in the on-device environment there is limited space to store data, and the resources that can be used are also limited. Therefore, efficient learning using less data and small resources is required for on-devcie training. ONERT provides various features to meet these requirements.
 
-It supports training based on existing trained models and supports transfer learning to learn new data added to the trained model. It also provides supervised fine-tuning to improve the accuracy of the trained model. This allows ONERT to support efficient learning with less data.
+It supports on-device training based on existing trained models and supports transfer learning to learn new data added to the trained model. It also provides supervised fine-tuning to improve the accuracy of the trained model. This allows ONERT to support efficient learning with less data.
 
 In order to efficiently learn models with limited resources, ONERT not only uses less memory by reusing it memory space during training but also quickly improves accuracy of trained model by performing optimized kernel for each operation.
 
-Trained model can be saved to be deployed using ONERT API. This allow the user to deploy it to other environments or real applications to perform inference and retraining.
+Trained model can be saved to be deployed using ONERT API. This allows users to deploy it to other environments or real applications to perform inference and retraining.
 
 ## Training in ONERT
 
