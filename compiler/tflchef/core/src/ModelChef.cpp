@@ -362,16 +362,26 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
               sparse_uint8.emplace_back(arr[b]);
             }
           }
-          auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+          if (_ext_offset)
+          {
+            buffer_index = _buffer_vec.size();
+            _buffer_data_map[buffer_index] = sparse_uint8;
 
-          // Create Buffer
-          tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-          buffer_builder.add_data(data);
-          auto buffer = buffer_builder.Finish();
+            auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+            _buffer_vec.emplace_back(buffer);
+          }
+          else
+          {
+            auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+            // Create Buffer
+            tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+            buffer_builder.add_data(data);
+            auto buffer = buffer_builder.Finish();
 
-          // Update Buffer Index & Vector
-          buffer_index = _buffer_vec.size();
-          _buffer_vec.emplace_back(buffer);
+            // Update Buffer Index & Vector
+            buffer_index = _buffer_vec.size();
+            _buffer_vec.emplace_back(buffer);
+          }
 
           // save SparsityParameters
           auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
@@ -405,16 +415,27 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
               sparse_uint8.emplace_back(arr[b]);
             }
           }
-          auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+          if (_ext_offset)
+          {
+            buffer_index = _buffer_vec.size();
+            _buffer_data_map[buffer_index] = sparse_uint8;
 
-          // Create Buffer
-          tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-          buffer_builder.add_data(data);
-          auto buffer = buffer_builder.Finish();
+            auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+            _buffer_vec.emplace_back(buffer);
+          }
+          else
+          {
+            auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
 
-          // Update Buffer Index & Vector
-          buffer_index = _buffer_vec.size();
-          _buffer_vec.emplace_back(buffer);
+            // Create Buffer
+            tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+            buffer_builder.add_data(data);
+            auto buffer = buffer_builder.Finish();
+
+            // Update Buffer Index & Vector
+            buffer_index = _buffer_vec.size();
+            _buffer_vec.emplace_back(buffer);
+          }
 
           // save SparsityParameters
           auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
@@ -454,16 +475,27 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
           data_vec = data_packed;
         }
 
-        auto data = _flatbuffer_builder->CreateVector(data_vec);
+        if (_ext_offset)
+        {
+          buffer_index = _buffer_vec.size();
+          _buffer_data_map[buffer_index] = data_vec;
 
-        // Create Buffer
-        tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-        buffer_builder.add_data(data);
-        auto buffer = buffer_builder.Finish();
+          auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+          _buffer_vec.emplace_back(buffer);
+        }
+        else
+        {
+          auto data = _flatbuffer_builder->CreateVector(data_vec);
 
-        // Update Buffer Index & Vector
-        buffer_index = _buffer_vec.size();
-        _buffer_vec.emplace_back(buffer);
+          // Create Buffer
+          tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+          buffer_builder.add_data(data);
+          auto buffer = buffer_builder.Finish();
+
+          // Update Buffer Index & Vector
+          buffer_index = _buffer_vec.size();
+          _buffer_vec.emplace_back(buffer);
+        }
       }
     }
     else
