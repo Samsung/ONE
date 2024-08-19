@@ -55,8 +55,7 @@ Training process in ONERT consists of the following steps:
 ### Training well-known models using ONERT
 
 - [Training a simple CNN model on MNIST Dataset using ONERT](docs/runtime/training_cnn_on_mnist.md)
-- [Training MobileNet v2 using ONERT](https://github.com/Samsung/ONE/blob/master/docs/examples/mobilenetv2_training.md)
-- [Training VGG16 using ONERT](https://github.com/Samsung/ONE/blob/master/docs/examples/vgg16_training.md)
+- [Training MobileNetV2 on ImageNet Dataset using ONERT](docs/runtime/training_mobilenetv2_on_imagenet.md)
 
 ### Advanced Topics
 
