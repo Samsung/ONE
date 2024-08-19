@@ -34,16 +34,15 @@ Training process in ONERT consists of the following steps:
 
 1. Create a session.
 2. Load a circle model.
-  a. (optional) Load the checkpoint. (for fine-tuning)
+   - (optional) Load the checkpoint. (for fine-tuning)
 3. Set training information.
 4. Prepare training a model.
-5. Train the model.
-  a. Set input and expected data.
-  b. Run training.
-  c. (optional) Get loss and accuracy.
-  d. (optional) Save the checkpoint.
-6. (optional) Validate the model.
-7. (optional) Export the trained model for inference.
+5. Set input and expected data.
+6. Run training.
+   - (optional) Get loss and accuracy.
+   - (optional) Save the checkpoint.
+7. Validate the model.
+8. Export the trained model for inference.
 
 ### Training tools
 
