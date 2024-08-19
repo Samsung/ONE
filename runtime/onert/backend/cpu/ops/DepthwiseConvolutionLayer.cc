@@ -30,7 +30,7 @@ namespace ops
 
 void DepthwiseConvolutionLayer::prepareF32()
 {
-  if (_dilationWidth != 1 || _dilationHeight != 1)
+  if (_dilationWidth != 1 || _dilationHeight != 1 || _strideWidth != _strideHeight)
     return;
 
   // DepthwiseConvOp cpu kernel needs additional memory to perform with multi-
