@@ -34,6 +34,7 @@ Training process in ONERT consists of the following steps:
 
 1. Create a session.
 2. Load a circle model.
+  a. (optional) Load the checkpoint. (for fine-tuning)
 3. Set training information.
 4. Prepare training a model.
 5. Train the model.
