@@ -199,6 +199,8 @@ private:
   template <typename T>
   void cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table);
 
+  bool finalize_ext_buffer(void);
+
 public:
   const char *get_buffer_pointer(void) const;
   size_t get_size(void) const;
@@ -223,6 +225,11 @@ private:
   std::vector<flatbuffers::Offset<::tflite::Operator>> _operator_vec;
 
   std::string _graph_name;
+
+  // store Buffer data to external of FB and use (Buffer) offset/size fields
+  bool _ext_offset = false;
+  std::map<int32_t, std::vector<uint8_t>> _buffer_data_map;
+  std::string _ext_data;
 };
 
 void ModelChef::init(void)
@@ -882,6 +889,66 @@ void ModelChef::gather_signature_defs(const ::tflchef::ModelRecipe &model_recipe
   }
 }
 
+bool ModelChef::finalize_ext_buffer(void)
+{
+  // NOTE modification of std::string object in the middle may reallocate it.
+  // we will use std::string::reserve() to prevent this.
+
+  auto align16 = [](size_t &v) {
+    while (v % 16 != 0)
+      v++;
+  };
+
+  // get total memory for flatbuffer + all buffer_data
+  size_t result_size = _flatbuffer_builder->GetSize();
+  align16(result_size);
+  for (auto &it : _buffer_data_map)
+  {
+    std::vector<uint8_t> &buffer_data = it.second;
+    result_size += buffer_data.size();
+    align16(result_size);
+  }
+  align16(result_size);
+  result_size += 16; // additional for safety
+
+  std::string result;
+  auto *buff_ptr = reinterpret_cast<const char *>(_flatbuffer_builder->GetBufferPointer());
+
+  auto padalign16 = [](std::string &str) {
+    while (str.size() % 16 != 0)
+      str += '\0';
+  };
+
+  result.reserve(result_size);
+  result.append(buff_ptr, _flatbuffer_builder->GetSize());
+
+  auto mutable_model = tflite::GetMutableModel(result.data());
+  auto mutable_buffers = mutable_model->mutable_buffers();
+  bool ret = true;
+
+  padalign16(result);
+  for (auto &it : _buffer_data_map)
+  {
+    int32_t buffer_index = it.first;
+    std::vector<uint8_t> &buffer_data = it.second;
+    uint64_t offset = result.size();
+    uint64_t size = buffer_data.size();
+
+    tflite::Buffer *mutable_buffer = mutable_buffers->GetMutableObject(buffer_index);
+    ret &= mutable_buffer->mutate_offset(offset);
+    ret &= mutable_buffer->mutate_size(size);
+
+    result.append(buffer_data.begin(), buffer_data.end());
+    padalign16(result);
+  }
+  padalign16(result);
+
+  // use final result
+  _ext_data = result;
+
+  return ret;
+}
+
 void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
 {
   prepare_initial_buffer();
@@ -940,17 +1007,22 @@ void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
 
   // Finalize
   ::tflite::FinishModelBuffer(*_flatbuffer_builder, model);
+
+  if (_ext_offset)
+    finalize_ext_buffer();
 }
 
 const char *ModelChef::get_buffer_pointer(void) const
 {
-  //
+  if (_ext_offset)
+    return _ext_data.data();
   return reinterpret_cast<const char *>(_flatbuffer_builder->GetBufferPointer());
 }
 
 size_t ModelChef::get_size(void) const
 {
-  //
+  if (_ext_offset)
+    return _ext_data.size();
   return _flatbuffer_builder->GetSize();
 }
 
