@@ -44,6 +44,12 @@ Training process in ONERT consists of the following steps:
 6. (optional) Validate the model.
 7. (optional) Export the trained model for inference.
 
+### Training tools
+
+- [onert_train](tests/tools/onert_train): A tool to train neural networks with ONERT.
+- [generate_datafile](tools/generate_datafile): A tool to generate data files for ONERT training.
+- [circle_plus_gen](tools/circle_plus_gen): A tool to generate Circle+ model from circle model.
+
 ## Example
 
 ### Training well-known models using ONERT
