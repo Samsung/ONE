@@ -57,6 +57,13 @@ TEST_F(ReLUTest, Input_output_type_mismatch_NEG)
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
 }
 
+TEST_F(ReLUTest, Input_output_shape_mismatch_NEG)
+{
+  onert_micro::test_model::NegTestDataInputOutputShapeMismatchReLUKernel test_data_kernel;
+
+  EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
 } // namespace testing
 } // namespace execute
 } // namespace onert_micro
