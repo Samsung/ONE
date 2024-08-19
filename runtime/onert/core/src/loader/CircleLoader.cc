@@ -87,6 +87,20 @@ public:
     }
   }
 
+protected:
+  ir::DataType getTensorDataType(const Tensor *tensor) override
+  {
+    auto type = tensor->type();
+    // Workaround: No quantization parameter for blockwize quantization
+    //             Actual parameter(scale) for each block is in data
+    // TODO Handle custom quantization parameter to represent blockwise quantization
+    if (type == TensorType::TensorType_UINT4 && !tensor->quantization())
+      return ir::DataType::QUANT_UINT4_SYMM_BLOCK;
+    if (type == TensorType::TensorType_INT8 && !tensor->quantization())
+      return ir::DataType::QUANT_INT8_SYMM_BLOCK;
+    return tensorTypeToDataType(type);
+  }
+
 private:
   std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg) override
   {

@@ -94,6 +94,7 @@ protected:
 
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
+  virtual ir::DataType getTensorDataType(const Tensor *tensor);
   ir::DataType tensorTypeToDataType(TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
   flexbuffers::Map getCustomOpAttrMap(const Operator *op);
@@ -296,6 +297,12 @@ BaseLoader<LoaderDomain>::BaseLoader::convertActivation(const ActivationFunction
 }
 
 template <typename LoaderDomain>
+ir::DataType BaseLoader<LoaderDomain>::BaseLoader::getTensorDataType(const Tensor *tensor)
+{
+  return tensorTypeToDataType(tensor->type());
+}
+
+template <typename LoaderDomain>
 ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const TensorType type)
 {
   switch (type)
@@ -381,7 +388,7 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
   //       be used.
 
   // TypeInfo
-  ir::TypeInfo type_info(tensorTypeToDataType(tensor->type()));
+  ir::TypeInfo type_info(getTensorDataType(tensor));
   loadQuantization(tensor, type_info);
   loadSparsity(tensor, type_info);
 

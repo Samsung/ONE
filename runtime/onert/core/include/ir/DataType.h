@@ -39,6 +39,8 @@ enum class DataType
   QUANT_INT16_ASYMM = 10,
   QUANT_INT8_SYMM_PER_CHANNEL = 11,
   QUANT_INT16_SYMM = 12,
+  QUANT_UINT4_SYMM_BLOCK = 13, // Blockwise quantization - for Gather input and FC weight
+  QUANT_INT8_SYMM_BLOCK = 14   // Blockwise quantization - for FC weight
 };
 
 size_t sizeOfDataType(DataType data_type);
