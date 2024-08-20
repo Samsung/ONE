@@ -354,6 +354,11 @@ def _convert(args):
                     getattr(args, 'output_shapes'), output_shapes_map)
             onnx_model = update_model_dims.update_inputs_outputs_dims(
                 onnx_model, input_shapes_map, output_shapes_map)
+            try:
+                print(onnx.__file__)
+                onnx_model = onnx.shape_inference.infer_shapes(onnx_model, strict_mode=True)
+            except Exception as e:
+                raise RuntimeError(f'Exception with message="{e}" raised from external onnx library during shape inference')
         if _onnx_legalizer_enabled:
             options = onnx_legalizer.LegalizeOptions
             options.unroll_rnn = oneutils.is_valid_attr(args, 'unroll_rnn')
