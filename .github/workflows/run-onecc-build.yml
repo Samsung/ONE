@@ -38,6 +38,7 @@ jobs:
   onecc-test:
     # Tested ubuntu version is decided by docker image, not runner
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
         type: [ Debug, Release ]
