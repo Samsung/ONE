@@ -139,7 +139,7 @@ struct SerializedModelData final
 struct SerializedGraphData final : public SubGraphContext
 {
   SerializedGraphData() = default;
-  SerializedGraphData(const SerializedModelData &) = delete;
+  SerializedGraphData(const SerializedGraphData &) = delete;
 
   std::vector<flatbuffers::Offset<circle::Operator>> _operators;
   std::vector<flatbuffers::Offset<circle::Tensor>> _tensors;
