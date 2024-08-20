@@ -341,9 +341,9 @@ void dump_sub_graph(std::ostream &os, mio::circle::Reader &reader)
   os << std::endl;
 }
 
-void dump_model(std::ostream &os, const circle::Model *model)
+void dump_model(std::ostream &os, const circle::Model *model, const std::vector<char> *rawdata)
 {
-  mio::circle::Reader reader(model);
+  mio::circle::Reader reader(model, rawdata);
 
   uint32_t num_subgraph = reader.num_subgraph();
 
@@ -378,13 +378,17 @@ void dump_model(std::ostream &os, const circle::Model *model)
   os << std::endl;
 
   // dump buffer
-  os << "Buffers: B(index) (length) values, if any" << std::endl;
+  os << "Buffers: B(index) (length) values, if any; (length *) for ext_offset" << std::endl;
   for (uint32_t i = 0; i < buffers->size(); ++i)
   {
+    bool ext_offset = false;
     const uint8_t *buff_data;
-    size_t size = reader.buffer_info(i, &buff_data);
+    size_t size = reader.buffer_info(i, &buff_data, ext_offset);
 
-    os << "B(" << i << ") (" << size << ") ";
+    os << "B(" << i << ") (" << size;
+    if (ext_offset)
+      os << " *";
+    os << ") ";
     if (buff_data != nullptr)
     {
       dump_buffer(os, buff_data, size, 16);
@@ -460,8 +464,8 @@ void dump_model(std::ostream &os, const circle::Model *model)
 
 } // namespace circledump
 
-std::ostream &operator<<(std::ostream &os, const circle::Model *model)
+std::ostream &operator<<(std::ostream &os, const circledump::ModelEx &modelex)
 {
-  circledump::dump_model(os, model);
+  circledump::dump_model(os, modelex.model, modelex.rawdata);
   return os;
 }
