@@ -349,7 +349,8 @@ TEST(ShapeInference, FullyConnected)
 {
   Shape in_shape{3, 4, 5, 6};
   Shape ker_shape{3, 10};
-  auto infered_out_shape = onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape);
+  auto infered_out_shape =
+    onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape, false);
 
   ASSERT_EQ(infered_out_shape.rank(), 2);
   ASSERT_EQ(infered_out_shape.dim(0), 36);
@@ -420,7 +421,7 @@ TEST(ShapeInference, Gather)
 {
   auto check = [&](Shape &input, Shape &indices, Shape &expected, int32_t axis) {
     int rank = input.rank();
-    auto actual = onert::shape_inference::inferGatherShape(input, indices, axis, rank);
+    auto actual = onert::shape_inference::inferGatherShape(input, indices, axis, rank, false);
 
     ASSERT_EQ(actual.rank(), expected.rank());
 

@@ -447,7 +447,11 @@ void DynamicShapeInferer::visit(const ir::operation::FullyConnected &op)
   auto input_shape = input->getShape();
   auto ker_shape = ker->getShape();
 
-  ir::Shape new_shape = shape_inference::inferFullyConnectedShape(input_shape, ker_shape);
+  const auto ker_type = ker->data_type();
+  const bool chunk_ker = (ker_type == ir::DataType::QUANT_UINT4_SYMM_BLOCK ||
+                          ker_type == ir::DataType::QUANT_INT8_SYMM_BLOCK);
+  ir::Shape new_shape =
+    shape_inference::inferFullyConnectedShape(input_shape, ker_shape, chunk_ker);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
@@ -479,7 +483,11 @@ void DynamicShapeInferer::visit(const ir::operation::Gather &op)
 
   assert(0 <= axis && axis < rank);
 
-  ir::Shape new_shape = shape_inference::inferGatherShape(input_shape, indices_shape, axis, rank);
+  const auto input_type = input->data_type();
+  const bool chunk_input = (input_type == ir::DataType::QUANT_UINT4_SYMM_BLOCK ||
+                            input_type == ir::DataType::QUANT_INT8_SYMM_BLOCK);
+  ir::Shape new_shape =
+    shape_inference::inferGatherShape(input_shape, indices_shape, axis, rank, chunk_input);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
