@@ -448,8 +448,8 @@ void DynamicShapeInferer::visit(const ir::operation::FullyConnected &op)
   auto ker_shape = ker->getShape();
 
   const auto ker_type = ker->data_type();
-  const bool chunk_ker = (ker_type == ir::DataType::QUANT_UINT4_SYMM_BLOCK ||
-                          ker_type == ir::DataType::QUANT_INT8_SYMM_BLOCK);
+  const bool chunk_ker = (ker_type == ir::DataType::QUANT_UINT4_SYMM_PER_CHUNK ||
+                          ker_type == ir::DataType::QUANT_INT8_SYMM_PER_CHUNK);
   ir::Shape new_shape =
     shape_inference::inferFullyConnectedShape(input_shape, ker_shape, chunk_ker);
 
@@ -484,8 +484,8 @@ void DynamicShapeInferer::visit(const ir::operation::Gather &op)
   assert(0 <= axis && axis < rank);
 
   const auto input_type = input->data_type();
-  const bool chunk_input = (input_type == ir::DataType::QUANT_UINT4_SYMM_BLOCK ||
-                            input_type == ir::DataType::QUANT_INT8_SYMM_BLOCK);
+  const bool chunk_input = (input_type == ir::DataType::QUANT_UINT4_SYMM_PER_CHUNK ||
+                            input_type == ir::DataType::QUANT_INT8_SYMM_PER_CHUNK);
   ir::Shape new_shape =
     shape_inference::inferGatherShape(input_shape, indices_shape, axis, rank, chunk_input);
 
