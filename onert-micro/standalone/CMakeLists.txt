@@ -3,7 +3,7 @@ project(onert_micro_standalone)
 include(${NNAS_ROOT}/infra/onert-micro/utils.cmake)
 
 if (NOT ${NOT_BUILD_EXTERNALS})
-    nnas_find_package(FlatBuffersSource EXACT 2.0 QUIET)
+    nnas_find_package(FlatBuffersSource EXACT 23.5.26 QUIET)
     include_directories(${FlatBuffersSource_DIR}/include)
 else()
     include_directories(${FlatBuffersSource_DIR})
