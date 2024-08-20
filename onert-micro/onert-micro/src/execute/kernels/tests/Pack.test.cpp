@@ -47,6 +47,14 @@ TEST_F(PackTest, Int_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(PackTest, S8_P)
+{
+  test_model::TestDataS8Pack test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
 // TODO: add negative tests and quant version
 
 } // namespace testing
