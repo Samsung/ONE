@@ -18,7 +18,6 @@
 #define __RECORD_HESSIAN_HESSIANVECTOR_H__
 
 #include <vector>
-#include <numeric>
 #include <cstddef>
 #include <unordered_map>
 #include <luci/IR/CircleNodes.h>
@@ -46,7 +45,6 @@ struct HessianVector
     }
 
     size_t numel = new_hessian.size();
-
     float alpha = 1.f / static_cast<float>(count + 1);
 
     for (size_t i = 0; i < numel; ++i)

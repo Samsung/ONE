@@ -19,8 +19,6 @@
 #include <luci/IR/CircleOpcode.h>
 #include <luci/IR/CircleNodes.h>
 
-#include <limits>
-
 using DataType = luci_interpreter::DataType;
 
 namespace record_hessian

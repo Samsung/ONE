@@ -22,9 +22,6 @@
 #include <luci/IR/CircleNodes.h>
 
 #include "HessianComputer.h"
-#include <numeric>
-#include <vector>
-
 namespace record_hessian
 {
 
