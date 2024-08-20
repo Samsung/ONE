@@ -15,14 +15,18 @@
  */
 
 #include "CircleExporterImpl.h"
-#include "Optimize.h"
 #include "CircleExportMetadata.h"
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
+#include "ProgressReporter.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 
+#include <loco.h>
+#include <logo/Phase.h>
 #include <oops/InternalExn.h>
 #include <mio/circle/schema_generated.h>
 #include <flatbuffers/flatbuffers.h>
@@ -96,6 +100,29 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode,
   }
 
   return builder.CreateVector(operator_codes_vec);
+}
+
+} // namespace
+
+namespace
+{
+
+void optimize(loco::Graph *g)
+{
+  logo::Phase phase;
+  {
+    // prepare type and shape before optimization
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+    // TODO add more optimization passes (with a knob)
+  }
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+
+  luci::ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
 }
 
 } // namespace
