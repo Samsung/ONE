@@ -19,7 +19,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
   DEPENDS "${SCHEMA_FILE}"
 )
 
-FlatBuffers_Target(mio_circle08
+FlatBuffersMuteable_Target(mio_circle08
   OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/mio/circle"
   INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
   SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"

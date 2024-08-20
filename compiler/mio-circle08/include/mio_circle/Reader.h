@@ -47,6 +47,7 @@ private:
 
 public:
   Reader(const ::circle::Model *model);
+  Reader(const ::circle::Model *model, const std::vector<char> *rawdata);
 
   Reader() = delete;
 
@@ -65,6 +66,7 @@ public:
   uint32_t num_subgraph() const { return _subgraphs->size(); }
 
   size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data);
+  size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data, bool &ext_offset);
   ::circle::BuiltinOperator builtin_code(const ::circle::Operator *op) const;
   std::string opcode_name(const ::circle::Operator *op) const;
   std::vector<int32_t> outputs(const ::circle::Operator *op) const;
@@ -78,6 +80,8 @@ public:
 
 private:
   uint32_t _version;
+
+  const std::vector<char> *_rawdata{nullptr};
 
   const CircleSubGraphs_t *_subgraphs{nullptr};
   const CircleBuffers_t *_buffers{nullptr};
