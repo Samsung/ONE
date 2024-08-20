@@ -22,9 +22,6 @@
 
 #include "record-hessian/HessianObserver.h"
 
-#include <memory>
-#include <thread>
-
 namespace record_hessian
 {
 
