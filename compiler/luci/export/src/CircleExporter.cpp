@@ -26,9 +26,6 @@
 namespace luci
 {
 
-// TODO remove this
-Module *CircleExporter::Contract::module(void) const { return nullptr; }
-
 CircleExporter::CircleExporter()
 {
   // NOTHING TO DO
@@ -48,17 +45,10 @@ bool CircleExporter::invoke(Contract *contract) const
     return contract->store(ptr, size);
   }
 
-  auto graph = contract->graph();
-  if (graph == nullptr)
-    return false;
+  // NOTE some unit tests calls with nullptr module, cannot add assert here
+  // TODO fix those unit tests and add assert(false)
 
-  CircleExporterImpl impl(graph);
-
-  const char *ptr = impl.getBufferPointer();
-  const size_t size = impl.getBufferSize();
-
-  // we just send one time
-  return contract->store(ptr, size);
+  return false;
 }
 
 } // namespace luci
