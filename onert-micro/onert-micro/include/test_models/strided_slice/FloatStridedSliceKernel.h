@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_TEST_MODELS_STRIDED_SLICE_KERNEL_H
-#define ONERT_MICRO_TEST_MODELS_STRIDED_SLICE_KERNEL_H
+#ifndef ONERT_MICRO_TEST_MODELS_FLOAT_STRIDED_SLICE_KERNEL_H
+#define ONERT_MICRO_TEST_MODELS_FLOAT_STRIDED_SLICE_KERNEL_H
 
-#include "test_models/TestDataBase.h"
+#include "TestDataStridedSliceBase.h"
 
 namespace onert_micro
 {
 namespace test_model
 {
 
-namespace strided_slice_kernel
+namespace strided_slice_float
 {
 /*
  * StridedSlice Kernel:
@@ -85,46 +85,22 @@ const std::vector<float> input_data = {15.78072,  -20.820415, 17.688091, 12.9615
 
 const std::vector<float> reference_output_data = {-6.989258, -9.068207, 4.974188};
 
-} // namespace strided_slice_kernel
+} // namespace strided_slice_float
 
-template <typename T> class TestDataStridedSliceKernel : public TestDataBase<T>
+class TestDataFloatStridedSlice : public TestDataStridedSliceBase<float>
 {
 public:
-  TestDataStridedSliceKernel()
+  TestDataFloatStridedSlice()
   {
-    _input_data = strided_slice_kernel::input_data;
-    _reference_output_data = strided_slice_kernel::reference_output_data;
-    _test_kernel_model_circle = strided_slice_kernel::test_kernel_model_circle;
+    _input_data = strided_slice_float::input_data;
+    _reference_output_data = strided_slice_float::reference_output_data;
+    _test_kernel_model_circle = strided_slice_float::test_kernel_model_circle;
   }
 
-  ~TestDataStridedSliceKernel() override = default;
-
-  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
-
-  const std::vector<T> &get_input_data_by_index(int i) override final
-  {
-    switch (i)
-    {
-      case 0:
-        return _input_data;
-      default:
-        assert(false && "Wrong input index");
-    }
-  }
-
-  const std::vector<T> &get_output_data_by_index(int i) override final
-  {
-    assert(i == 0);
-    return _reference_output_data;
-  }
-
-protected:
-  std::vector<T> _input_data;
-  std::vector<T> _reference_output_data;
-  const unsigned char *_test_kernel_model_circle;
+  ~TestDataFloatStridedSlice() override = default;
 };
 
 } // namespace test_model
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_TEST_MODELS_STRIDED_SLICE_KERNEL_H
+#endif // ONERT_MICRO_TEST_MODELS_FLOAT_STRIDED_SLICE_KERNEL_H
