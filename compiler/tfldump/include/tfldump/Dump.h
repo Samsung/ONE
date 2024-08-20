@@ -24,9 +24,16 @@
 namespace tfldump
 {
 
-void dump_model(std::ostream &os, const tflite::Model *model);
-}
+struct ModelEx
+{
+  const tflite::Model *model;
+  const std::vector<char> *rawdata;
+};
 
-std::ostream &operator<<(std::ostream &os, const tflite::Model *model);
+void dump_model(std::ostream &os, const ModelEx &model);
+
+} // namespace tfldump
+
+std::ostream &operator<<(std::ostream &os, const tfldump::ModelEx &model);
 
 #endif // __TFLDUMP_DUMP_H__
