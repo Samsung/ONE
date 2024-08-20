@@ -105,6 +105,15 @@ generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
       return Eval<arithmetic_type, int32_t>(lhs, rhs, output, op_params);
       break;
     }
+    case OperandType::INT64:
+    {
+      int64_t output_activation_min = 0, output_activation_max = 0;
+      CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
+      op_params.int64_activation_max = output_activation_max;
+      op_params.int64_activation_min = output_activation_min;
+      return Eval<arithmetic_type, int64_t>(lhs, rhs, output, op_params);
+      break;
+    }
     case OperandType::BOOL8:
     {
       if (activation != ir::Activation::NONE)
