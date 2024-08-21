@@ -71,6 +71,20 @@ OMStatus onert_micro::import::configure_kernel_CircleGather(const OMConfigureArg
   if (status != Ok)
     return status;
 
+#ifndef DIS_QUANT
+  if (input_type == circle::TensorType_INT8)
+  {
+    status = utils::checkCondition(*output->quantization()->scale()->begin() ==
+                                   *input->quantization()->scale()->begin());
+    if (status != Ok)
+      return status;
+    status = utils::checkCondition(*output->quantization()->zero_point()->begin() ==
+                                   *input->quantization()->zero_point()->begin());
+    if (status != Ok)
+      return status;
+  }
+#endif // DIS_QUANT
+
   int32_t axis = options->axis();
 
   core::OMRuntimeShape input_shape(input);
