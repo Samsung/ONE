@@ -72,6 +72,7 @@ int entry(int argc, char **argv)
 
   circle_model.load_offsets(tfl_model.get_model());
   circle_model.model_build();
+  circle_model.finalize();
 
   std::ofstream outfile{circle_path, std::ios::binary};
 
