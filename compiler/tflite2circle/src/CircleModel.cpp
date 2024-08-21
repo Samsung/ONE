@@ -376,8 +376,8 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
   _circle_flatbuffer_vec_offset = _fb->CreateVector(operator_code_vec);
 }
 
-CircleModel::CircleModel(FlatBufBuilder &fb)
-  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}
+CircleModel::CircleModel(FlatBufBuilder &fb, const std::vector<char> &fr)
+  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}, _file_raw{fr}
 {
   // NOTHING TODO
 }
