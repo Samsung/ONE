@@ -96,7 +96,7 @@ OMStatus inline Logistic(const int flat_size, const int8_t *input_data, float in
       result = 1.f / (1.f + std::exp(-val));
     }
     // Requantize
-    int8_t output = static_cast<int8_t>(result / output_scale + output_zero_point);
+    int8_t output = static_cast<int8_t>(std::round(result / output_scale) + output_zero_point);
     output_data[i] = output;
   }
   return Ok;

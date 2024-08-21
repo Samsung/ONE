@@ -4,7 +4,8 @@ import shutil
 import sys
 
 architecture_directory = ['x86_64', 'armv7l', 'aarch64']
-package_directory = 'nnfwapi'
+package_name = 'onert'
+package_directory = 'onert'
 packaging_directory = ['build', package_directory + '.egg-info']
 THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_PRODUCT_DIR = "../../../Product"
@@ -66,7 +67,7 @@ try:
             shutil.rmtree(arch_path)
 
         # make architecture_directory and copy .so files to the directories
-        arch_path = os.path.join(package_directory, 'onert')
+        arch_path = os.path.join(package_directory, 'native')
         os.makedirs(arch_path)
         print(f"Created directory '{arch_path}'")
 
@@ -81,7 +82,7 @@ try:
 
         for so in os.listdir(so_core_dir):
             if so.endswith(".so"):
-                so_list.append('onert/' + so)
+                so_list.append('native/' + so)
                 src_path = os.path.join(so_core_dir, so)
                 tgt_path = os.path.join(arch_path, so)
                 shutil.copy(src_path, tgt_path)
@@ -94,7 +95,7 @@ try:
             os.makedirs(so_backend_tgt_dir)
             for so in os.listdir(so_backend_dir):
                 if so.endswith(".so"):
-                    so_list.append('onert/nnfw/backend/' + so)
+                    so_list.append('native/nnfw/backend/' + so)
                     src_path = os.path.join(so_backend_dir, so)
                     tgt_path = os.path.join(so_backend_tgt_dir, so)
                     shutil.copy(src_path, tgt_path)
@@ -107,7 +108,7 @@ try:
             os.makedirs(so_odc_tgt_dir)
             for so in os.listdir(so_odc_dir):
                 if so.endswith(".so"):
-                    so_list.append('onert/nnfw/odc/' + so)
+                    so_list.append('native/nnfw/odc/' + so)
                     src_path = os.path.join(so_odc_dir, so)
                     tgt_path = os.path.join(so_odc_tgt_dir, so)
                     shutil.copy(src_path, tgt_path)
@@ -121,7 +122,7 @@ except Exception as e:
 # copy .so files to architecture directories
 
 setup(
-    name=package_directory,
+    name=package_name,
     version='0.1.0',
     description='nnfw_api binding',
     long_description='It provides nnfw Python api',

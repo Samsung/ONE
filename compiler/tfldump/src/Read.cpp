@@ -18,6 +18,7 @@
 
 #include <mio_tflite2121/Helper.h>
 
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -26,6 +27,23 @@ namespace tflread
 
 Reader::Reader(const tflite::Model *model)
 {
+  _version = model->version();
+  _subgraphs = model->subgraphs();
+  _buffers = model->buffers();
+  _metadata = model->metadata();
+  _signaturedefs = model->signature_defs();
+
+  auto opcodes = model->operator_codes();
+  for (const ::tflite::OperatorCode *opcode : *opcodes)
+  {
+    _op_codes.push_back(opcode);
+  }
+}
+
+Reader::Reader(const tflite::Model *model, const std::vector<char> *rawdata)
+{
+  _rawdata = rawdata;
+
   _version = model->version();
   _subgraphs = model->subgraphs();
   _buffers = model->buffers();
@@ -54,6 +72,47 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
       {
         *buff_data = reinterpret_cast<const uint8_t *>(array->data());
         return size;
+      }
+    }
+  }
+
+  return 0;
+}
+
+size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data, bool &ext_offset)
+{
+  *buff_data = nullptr;
+  ext_offset = false;
+
+  if (buf_idx == 0)
+    return 0;
+
+  if (auto *buffer = (*_buffers)[buf_idx])
+  {
+    auto buffer_offset = buffer->offset();
+    if (buffer->offset() > 1)
+    {
+      assert(_rawdata); // make debug break for invalid case
+      if (_rawdata == nullptr)
+        return 0;
+
+      ext_offset = true;
+      *buff_data = reinterpret_cast<const uint8_t *>(&_rawdata->at(buffer_offset));
+      return buffer->size();
+    }
+    else if (auto *array = buffer->data())
+    {
+      if (size_t size = array->size())
+      {
+        *buff_data = reinterpret_cast<const uint8_t *>(array->data());
+        return size;
+      }
+    }
+    else
+    {
+      if (buffer->offset() == 1 && buffer->size() == 1)
+      {
+        std::cerr << "Buffer " << buf_idx << " has invalid offset/size." << std::endl;
       }
     }
   }

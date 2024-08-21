@@ -110,8 +110,8 @@ template <typename T> void evalComparisonGeneric(OMRuntimeKernel *runtime_kernel
   }
 }
 
-template <typename T>
-void evalQuantizedComparisonGeneric(OMRuntimeKernel *runtime_kernel, bool F(T, T))
+template <typename T, typename AccType>
+void evalQuantizedComparisonGeneric(OMRuntimeKernel *runtime_kernel, bool F(AccType, AccType))
 {
   const circle::Tensor *input1 = nullptr;
   const circle::Tensor *input2 = nullptr;

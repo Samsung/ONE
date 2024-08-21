@@ -16,6 +16,7 @@
 
 #include "execute/OMTestUtils.h"
 #include "test_models/logistic/FloatLogisticKernel.h"
+#include "test_models/logistic/S8LogisticKernel.h"
 #include "test_models/logistic/NegLogisticKernel.h"
 
 namespace onert_micro
@@ -37,6 +38,14 @@ TEST_F(LogisticTest, Float_P)
   onert_micro::test_model::TestDataFloatLogistic test_data_kernel;
   std::vector<float> output_data_vector =
     onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(LogisticTest, S8_P)
+{
+  onert_micro::test_model::TestDataS8Logistic test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 

@@ -51,6 +51,7 @@ private:
 
 public:
   Reader(const tflite::Model *model);
+  Reader(const tflite::Model *model, const std::vector<char> *rawdata);
 
   Reader() = delete;
 
@@ -69,6 +70,7 @@ public:
   uint32_t num_subgraph() const { return _subgraphs->size(); }
 
   size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data);
+  size_t buffer_info(uint32_t buf_idx, const uint8_t **buff_data, bool &ext_offset);
   tflite::BuiltinOperator builtin_code(const tflite::Operator *op) const;
   std::string opcode_name(const tflite::Operator *op) const;
 
@@ -79,6 +81,8 @@ public:
 
 private:
   uint32_t _version;
+
+  const std::vector<char> *_rawdata{nullptr};
 
   const TFliteSubGraphs_t *_subgraphs{nullptr};
   const TFliteBuffers_t *_buffers{nullptr};

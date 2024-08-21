@@ -568,14 +568,35 @@ loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
     {
       if (j == static_cast<uint32_t>(axis))
       {
-        // If dimension is unknown, value() will return 0.
-        // This is wrong but until new inference algorithm is implemented,
-        // this code will not be modified to keep compatibility.
-        output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
+        if (output_shape.dim(j).known() and input_shape.dim(j).known())
+        {
+          output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
+        }
+        else
+        {
+          // If any of inputs is unknown, just mark it as unknown.
+          output_shape.dim(j).unset();
+        }
       }
       else
-        assert(!output_shape.dim(j).known() || !input_shape.dim(j).known() ||
-               output_shape.dim(j) == input_shape.dim(j));
+      {
+        if (output_shape.dim(j).known() and input_shape.dim(j).known())
+        {
+          if (output_shape.dim(j).value() != input_shape.dim(j).value())
+          {
+            INTERNAL_EXN_V("Input has incompatible shape.", node->name());
+          }
+        }
+        else
+        {
+          if (input_shape.dim(j).known())
+          {
+            assert(not output_shape.dim(j).known()); // FIX_ME_UNLESS
+            output_shape.dim(j) = input_shape.dim(j);
+          }
+          // For unknown input_shape, leave output_shape as-is
+        }
+      }
     }
   }
 

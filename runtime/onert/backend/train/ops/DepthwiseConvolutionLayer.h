@@ -56,9 +56,6 @@ private:
 
   // TODO Consider if these tensors should be built in TensorBuilder
   std::unique_ptr<BackPropTensor> _act_back_prop_output;
-  bool _use_padded_filter;
-  std::unique_ptr<Tensor> _padded_filter;
-  std::unique_ptr<Tensor> _filter_buffers;
   std::unique_ptr<Tensor> _filter_dim_buffers;
 };
 
