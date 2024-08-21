@@ -85,6 +85,15 @@ void InstanceNorm::evalFloat() const
   tflite::RuntimeShape input_shape = getTensorShape(input());
   auto output_shape = getTensorShape(output());
 
+  const float *input_data = getTensorData<float>(input());
+  const float *gamma_data = getTensorData<float>(gamma());
+  auto gamma_shape = getTensorShape(gamma());
+  bool single_gamma = gamma_shape.DimensionsCount() == 1 && gamma_shape.Dims(0) == 1;
+  const float *beta_data = getTensorData<float>(beta());
+  auto beta_shape = getTensorShape(beta());
+  bool single_beta = beta_shape.DimensionsCount() == 1 && beta_shape.Dims(0) == 1;
+  float *output_data = getTensorData<float>(output());
+
   if (input_shape.DimensionsCount() == 4)
   {
     // Dimensions for image case are (N x H x W x C)
@@ -92,14 +101,6 @@ void InstanceNorm::evalFloat() const
     const int32_t heights = tflite::MatchingDim(input_shape, 1, output_shape, 1);
     const int32_t widths = tflite::MatchingDim(input_shape, 2, output_shape, 2);
     const int32_t channels = tflite::MatchingDim(input_shape, 3, output_shape, 3);
-    const float *input_data = getTensorData<float>(input());
-    const float *gamma_data = getTensorData<float>(gamma());
-    auto gamma_shape = getTensorShape(gamma());
-    bool single_gamma = gamma_shape.DimensionsCount() == 1 && gamma_shape.Dims(0) == 1;
-    const float *beta_data = getTensorData<float>(beta());
-    auto beta_shape = getTensorShape(beta());
-    bool single_beta = beta_shape.DimensionsCount() == 1 && beta_shape.Dims(0) == 1;
-    float *output_data = getTensorData<float>(output());
     for (int32_t batch = 0; batch < batches; batch++)
     {
       for (int32_t channel = 0; channel < channels; channel++)
@@ -146,14 +147,6 @@ void InstanceNorm::evalFloat() const
     const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
     const int32_t channels = tflite::MatchingDim(input_shape, 1, output_shape, 1);
     const int32_t size = tflite::MatchingDim(input_shape, 2, output_shape, 2);
-    const float *input_data = getTensorData<float>(input());
-    const float *gamma_data = getTensorData<float>(gamma());
-    auto gamma_shape = getTensorShape(gamma());
-    bool single_gamma = gamma_shape.DimensionsCount() == 1 && gamma_shape.Dims(0) == 1;
-    const float *beta_data = getTensorData<float>(beta());
-    auto beta_shape = getTensorShape(beta());
-    bool single_beta = beta_shape.DimensionsCount() == 1 && beta_shape.Dims(0) == 1;
-    float *output_data = getTensorData<float>(output());
     for (int32_t batch = 0; batch < batches; batch++)
     {
       for (int32_t channel = 0; channel < channels; channel++)
