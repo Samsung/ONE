@@ -50,7 +50,11 @@ int entry(int argc, char **argv)
 
   std::cout << "Dump: " << circle_path << std::endl << std::endl;
 
-  std::cout << circlemodel << std::endl;
+  circledump::ModelEx modelex;
+  modelex.model = circlemodel;
+  modelex.rawdata = &modelData;
+
+  std::cout << modelex << std::endl;
 
   return 0;
 }

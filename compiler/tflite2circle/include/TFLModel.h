@@ -38,6 +38,8 @@ public:
 
 public:
   const tflite::Model *get_model(void);
+  // NOTE TFLModel lifetime should be longer than users
+  const std::vector<char> &raw_data(void) const { return _data; }
 
 public:
   bool verify_data(void);

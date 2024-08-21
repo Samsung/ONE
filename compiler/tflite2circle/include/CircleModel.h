@@ -80,6 +80,8 @@ private:
   CIRFlatBufVecOffset _circle_flatbuffer_vec_offset;
   // TODO revise this when Circle supports SignatureDef
   const SignatureDefs *_tfl_signature_def_offsets = nullptr;
+  // for extended buffer for size > 2G
+  const std::vector<char> *_file_raw = nullptr;
 };
 
 class CircleModel
@@ -89,7 +91,7 @@ private:
 
 public:
   CircleModel(void) = delete;
-  CircleModel(FlatBufBuilder &fb);
+  CircleModel(FlatBufBuilder &fb, const std::vector<char> &fr);
 
 public:
   void load_offsets(const tflite::Model *tfl_model);
@@ -101,6 +103,7 @@ private:
   uint32_t _version;
   Description _description;
   FlatBufBuilder &_fb;
+  const std::vector<char> &_file_raw;
   std::unique_ptr<Offset<OperatorCodeLink>> _operator_codes_offset;
   std::unique_ptr<Offset<SubGraphLink>> _subGraphs_offset;
   std::unique_ptr<Offset<BufferLink>> _buffers_offset;

@@ -1,6 +1,13 @@
 name: Run onert-micro Unit tests
 
 on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - 'onert-micro/**'
+      - '.github/workflows/run-onert-micro-unit-tests.yml'
   pull_request:
     branches:
       - master
@@ -23,7 +30,7 @@ jobs:
     name: Run onert-micro Unit tests
     runs-on: ubuntu-20.04
     # Skip on draft, check on draft -> ready
-    if: github.event.pull_request.draft == false
+    if: github.repository_owner == 'Samsung' && github.event.pull_request.draft == false
 
     steps:
       - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)

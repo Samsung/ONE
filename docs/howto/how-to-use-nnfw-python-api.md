@@ -17,13 +17,11 @@ Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/infra/nn
 1. Initialize nnfw_session
 
 ```python
+import onert
+
 # Create session and load nnpackage
-# operations is optional to assign a specific backends to each operation.
 # The default value of backends is "cpu".
-if operations:
-    session = nnfw_session(nnpackage_path, backends, operations)
-else:
-    session = nnfw_session(nnpackage_path, backends)
+session = onert.infer.session(nnpackage_path, backends)
 ```
 
 2. Prepare Input

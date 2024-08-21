@@ -169,9 +169,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
       init_context_data(backend);
 
     auto &partial_graph = *context_data_map[backend].graph;
-    auto &operand_layouts = context_data_map[backend].operand_layouts;
-    assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-    operand_layouts[operand_ind] = ir::Layout::NHWC;
 
     // Copy the operand and insert it to the partial graph
     auto new_operand = std::make_unique<ir::Operand>(operand);
@@ -191,7 +188,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 
       auto &partial_graph = *context_data_map[backend].graph;
       auto &external_operands = context_data_map[backend].external_operands;
-      auto &operand_layouts = context_data_map[backend].operand_layouts;
 
       {
         // Add missing operands (externals)
@@ -210,8 +206,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           UNUSED_RELEASE(new_operand_ind);
           assert(new_operand_ind == operand_ind);
 
-          assert(operand_layouts.find(operand_ind) == operand_layouts.end());
-          operand_layouts[operand_ind] = ir::Layout::NHWC;
           external_operands.add(operand_ind);
         }
 
@@ -272,6 +266,21 @@ std::deque<std::pair<const backend::Backend *, Context *>> orderBackendContext(
   }
 
   return ordered_contexts;
+}
+
+void generateCodes(backend::train::FunctionMap &codes,
+                   const compiler::train::LoweredTrainableGraph *lowered_graph,
+                   compiler::train::TrainableCodeMap &code_map)
+{
+  for (auto &&[op_ind, tn_seq] : codes)
+  {
+    auto &op = lowered_graph->trainable_graph().operation(op_ind);
+    const auto backend = lowered_graph->lower_info().operation.at(op_ind);
+
+    assert(code_map.find(op_ind) == code_map.end());
+    code_map.insert(
+      {op_ind, compiler::train::TrainableCodeAndInfo{op_ind, &op, backend, std::move(tn_seq)}});
+  }
 }
 
 } // namespace
@@ -708,7 +717,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
     tdata.external_operands = std::move(external_operands);
-    tdata.operand_layouts = std::move(data.operand_layouts);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
     tdata.optim_info = training_info.optimizerInfo();
@@ -741,15 +749,17 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   VERBOSE(ExecutorFactory) << "Linearize for backwarding order" << std::endl;
   Linear::dump(*lowered_graph, backward_order);
 
-  for (auto &&pair : tbackend_contexts)
+  train::TrainableCodeMap code_map;
+  // Generate tensors and kernels
+  for (auto &&[backend, context] : tbackend_contexts)
   {
-    pair.second->genTensors();
-  }
+    // builtin backend's kernel generator requires access to tensors in other backends.
+    // So, the other backends must be generated first.
+    if (backend->config()->id() == "builtin")
+      continue;
 
-  for (auto &&pair : tbackend_contexts)
-  {
-    auto tctx = pair.second.get();
-    tctx->genTrainingTensors();
+    auto fn_map = context->gen();
+    generateCodes(fn_map, lowered_graph.get(), code_map);
   }
 
   prepareMigrantTensors(*lowered_graph, tbackend_contexts);
@@ -764,6 +774,16 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       auto builtin_kernel_gen = builtin_context->kernel_gen;
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
       builtin_kernel_gen->setWholeGraphOutputs(lowered_graph->trainable_graph().getOutputs());
+    }
+  }
+
+  // Generate tensors and kernels for only builtin backend
+  for (auto &&[backend, context] : tbackend_contexts)
+  {
+    if (backend->config()->id() == "builtin")
+    {
+      auto fn_map = context->gen();
+      generateCodes(fn_map, lowered_graph.get(), code_map);
     }
   }
 
@@ -843,22 +863,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                        [&](const auto &output_idx) {
                          return tensor_regs.getBackPropITensor(output_idx) == nullptr;
                        }));
-  }
-
-  train::TrainableCodeMap code_map;
-  // Generate kernels
-  for (auto &&pair : ordered_contexts)
-  {
-    auto codes = pair.second->genKernels();
-    for (auto &&[op_ind, tn_seq] : codes)
-    {
-      auto &op = lowered_graph->trainable_graph().operation(op_ind);
-      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
-
-      assert(code_map.find(op_ind) == code_map.end());
-      code_map.insert(
-        {op_ind, train::TrainableCodeAndInfo{op_ind, &op, backend, std::move(tn_seq)}});
-    }
   }
 
   if (order.size() != code_map.size())

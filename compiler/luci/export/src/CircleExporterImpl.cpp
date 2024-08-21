@@ -15,14 +15,18 @@
  */
 
 #include "CircleExporterImpl.h"
-#include "Optimize.h"
 #include "CircleExportMetadata.h"
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
+#include "ProgressReporter.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 
+#include <loco.h>
+#include <logo/Phase.h>
 #include <oops/InternalExn.h>
 #include <mio/circle/schema_generated.h>
 #include <flatbuffers/flatbuffers.h>
@@ -100,13 +104,35 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode,
 
 } // namespace
 
+namespace
+{
+
+void optimize(loco::Graph *g)
+{
+  logo::Phase phase;
+  {
+    // prepare type and shape before optimization
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+    // TODO add more optimization passes (with a knob)
+  }
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+
+  luci::ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+}
+
+} // namespace
+
 namespace luci
 {
 
 using namespace circle;
 using namespace flatbuffers;
 
-CircleExporterImpl::CircleExporterImpl(loco::Graph *graph) { exportGraph(graph); }
 CircleExporterImpl::CircleExporterImpl(Module *module) { exportModule(module); }
 
 ::flatbuffers::Offset<::circle::SubGraph>
@@ -119,61 +145,6 @@ CircleExporterImpl::exportSubgraph(SerializedGraphData &gd)
   auto name = _builder.CreateString(gd._name);
   auto subgraph = CreateSubGraph(_builder, tensors, inputs, outputs, operators, name);
   return subgraph;
-}
-
-void CircleExporterImpl::exportGraph(loco::Graph *graph)
-{
-  // do graph optimization
-  optimize(graph);
-
-  _builder.Clear();
-
-  SerializedModelData md;
-  SerializedGraphData gd;
-
-  // This version is taken from comment in fbs
-  constexpr uint32_t version = 0;
-
-  // set Subgraph name
-  gd._name = graph->name();
-
-  // TODO set this value properly
-  gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
-
-  // prepare model data
-  prepareModelData(_builder, md);
-
-  // parse graph into SerializedModelData structure
-  exportOpDefinedTensors(graph, _builder, md, gd);
-
-  // NOTE Invoke these register functions only after each node is annotated with its tensor_index
-  registerGraphInputTensors(graph, gd);
-  registerGraphOutputTensors(graph, gd);
-
-  exportNodes(graph, _builder, md, gd);
-
-  // encode operator codes
-  auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
-
-  // Subgraphs
-  Offset<SubGraph> subgraph = exportSubgraph(gd);
-  auto subgraphs = _builder.CreateVector(std::vector<Offset<SubGraph>>{subgraph});
-
-  // Description
-  std::string description_str = "nnpackage";
-  auto description = _builder.CreateString(description_str);
-
-  // Metadata
-  auto metadata_vec = createCircleMetadataVector(_builder, md);
-  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
-
-  // create array of buffers
-  auto buffers = _builder.CreateVector(md._buffers);
-
-  // Model
-  auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, 0 /* metadata_buffer */, metadata);
-  FinishModelBuffer(_builder, model_offset);
 }
 
 void CircleExporterImpl::exportModule(Module *module)
@@ -221,7 +192,7 @@ void CircleExporterImpl::exportModule(Module *module)
   auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
 
   // Description
-  std::string description_str = "nnpackage";
+  std::string description_str = "ONE-luci/export";
   auto description = _builder.CreateString(description_str);
 
   // Metadata
