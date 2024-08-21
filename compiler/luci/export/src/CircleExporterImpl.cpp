@@ -248,7 +248,7 @@ void CircleExporterImpl::exportModule(Module *module)
   auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
 
   // Description
-  std::string description_str = "nnpackage";
+  std::string description_str = "ONE-luci/export";
   auto description = _builder.CreateString(description_str);
 
   // Metadata
