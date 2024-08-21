@@ -92,6 +92,11 @@ public:
   OMStatus loadCheckpointData(OMConfig &config, const char *data);
 
   void *getInputData(int32_t index);
+
+#ifdef OM_MEMORY_ESTIMATE
+  size_t getPeakFootprintMemory();
+  size_t getCurrentFootprintMemory();
+#endif // OM_MEMORY_ESTIMATE
 };
 
 } // namespace core

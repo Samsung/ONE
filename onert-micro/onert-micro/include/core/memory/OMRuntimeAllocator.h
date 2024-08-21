@@ -45,18 +45,6 @@ public:
   OMRuntimeAllocator(OMRuntimeAllocator &&) = default;
   ~OMRuntimeAllocator() = default;
 
-  void saveAllocPlan(std::vector<std::vector<uint16_t>> &&alloc_plan)
-  {
-    _alloc_plan.clear();
-    _alloc_plan = std::move(alloc_plan);
-  }
-
-  void saveDeallocPlan(std::vector<std::vector<uint16_t>> &&dealloc_plan)
-  {
-    _dealloc_plan.clear();
-    _dealloc_plan = std::move(dealloc_plan);
-  }
-
   std::vector<std::vector<uint16_t>> &getAllocPlan() { return _alloc_plan; }
 
   std::vector<std::vector<uint16_t>> &getDeallocPlan() { return _dealloc_plan; }
@@ -67,6 +55,10 @@ public:
 
   OMStatus allocate(size_t kernel_index, OMRuntimeContext *context, OMRuntimeStorage *storage);
   OMStatus deallocate(size_t kernel_index, OMRuntimeStorage *storage);
+  // Need for configure tool estimations
+#ifdef OM_MEMORY_ESTIMATE
+  OMStatus deallocate(size_t kernel_index, OMRuntimeStorage *storage, OMRuntimeContext *context);
+#endif // OM_MEMORY_ESTIMTE
 };
 
 } // namespace memory

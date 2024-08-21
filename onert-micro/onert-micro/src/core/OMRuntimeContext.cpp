@@ -22,7 +22,7 @@ using namespace onert_micro::core;
 const circle::Operator *OMRuntimeContext::getCircleOperatorAt(uint16_t index)
 {
   const auto *operators = _reader.operators();
-
+  assert(index < operators->size());
   return operators->operator[](index);
 }
 
