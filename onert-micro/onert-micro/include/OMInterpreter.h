@@ -40,7 +40,7 @@ public:
 
   OMStatus importModel(const char *model_ptr, const OMConfig &config);
 
-  OMStatus run();
+  OMStatus run(const OMConfig &config);
 
   OMStatus reset();
 

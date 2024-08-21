@@ -14,30 +14,32 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_EXECUTE_EXECUTE_ARGS_H
-#define ONERT_MICRO_EXECUTE_EXECUTE_ARGS_H
-
-#include "OMStatus.h"
-#include "core/OMRuntimeContext.h"
-#include "core/OMRuntimeStorage.h"
-#include "core/OMRuntimeModule.h"
+#include "execute/OMTestUtils.h"
+#include "test_models/gru/FloatGRUKernel.h"
 
 namespace onert_micro
 {
 namespace execute
 {
-
-struct OMExecuteArgs
+namespace testing
 {
-  core::OMRuntimeStorage &runtime_storage;
-  core::OMRuntimeContext &runtime_context;
-  uint16_t kernel_index;
-  core::OMRuntimeModule &runtime_module;
-  uint32_t num_train_layers = 0;
-  bool is_train_mode = false;
+
+using namespace testing;
+
+class GRUTest : public ::testing::Test
+{
+  // Do nothing
 };
 
+TEST_F(GRUTest, Float_P)
+{
+  onert_micro::test_model::TestDataFloatGRU test_data_kernel;
+  std::vector<float> output_data_vector =
+    onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector,
+              FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+} // namespace testing
 } // namespace execute
 } // namespace onert_micro
-
-#endif // ONERT_MICRO_EXECUTE_EXECUTE_ARGS_H

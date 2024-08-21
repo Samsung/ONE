@@ -68,7 +68,8 @@ public:
   //          2) metric_val should be initialized with some value before calling this method due to
   //             after calculation for current batch_num (the sequence number of the current sample)
   //             this value is added to metric_val
-  OMStatus evaluateMetric(OMMetrics metric, void *metric_val, uint32_t test_size);
+  OMStatus evaluateMetric(const OMConfig &config, OMMetrics metric, void *metric_val,
+                          uint32_t test_size);
 
   // Set input data for input with input_index
   // Note: number of the samples in data should be equal to the batch_size in config structure

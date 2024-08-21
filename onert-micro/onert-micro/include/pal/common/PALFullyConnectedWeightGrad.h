@@ -48,7 +48,7 @@ void inline FullyConnectedWeightGrad(
     float cur_dloss_doutput = dloss_doutput_data[o + depth_bounds.first];
     for (uint32_t i = 0; i < accum_depth; ++i)
     {
-      dloss_dweight_data[i + o * accum_depth] = cur_dloss_doutput * input_data[i];
+      dloss_dweight_data[i + o * accum_depth] += cur_dloss_doutput * input_data[i];
     }
   }
 
