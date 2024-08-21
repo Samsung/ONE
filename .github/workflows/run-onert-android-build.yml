@@ -41,6 +41,7 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    if: github.repository_owner == 'Samsung'
     env:
       TARGET_ARCH: aarch64
       TARGET_OS: android
