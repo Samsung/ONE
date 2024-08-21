@@ -71,11 +71,11 @@ inline void ComparisonNoScaling(const int64_t flat_size, const T *input1_data, c
   }
 }
 
-template <typename T>
+template <typename T, typename AccType>
 inline void BroadcastComparison4DSlowWithScaling(
   const core::ComparisonParams &op_params, const core::OMRuntimeShape &unextended_input1_shape,
   const T *input1_data, const core::OMRuntimeShape &unextended_input2_shape, const T *input2_data,
-  const core::OMRuntimeShape &unextended_output_shape, bool *output_data, bool F(T, T))
+  const core::OMRuntimeShape &unextended_output_shape, bool *output_data, bool F(AccType, AccType))
 {
   const BroadcastComparison4DSlowCommon dims = BroadcastComparison4DSlowPreprocess(
     unextended_input1_shape, unextended_input2_shape, unextended_output_shape);
@@ -118,10 +118,10 @@ inline void BroadcastComparison4DSlowWithScaling(
   }
 }
 
-template <typename T>
+template <typename T, typename AccType>
 inline void ComparisonWithScaling(const core::ComparisonParams &op_params, const int64_t flat_size,
                                   const T *input1_data, const T *input2_data, bool *output_data,
-                                  bool F(T, T))
+                                  bool F(AccType, AccType))
 {
   int left_shift = op_params.left_shift;
   int32_t input1_offset = op_params.input1_offset;
