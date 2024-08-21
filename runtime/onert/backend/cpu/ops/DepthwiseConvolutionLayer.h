@@ -20,6 +20,7 @@
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 #include "../ExternalContext.h"
+#include "../Tensor.h"
 
 #include <exec/IFunction.h>
 
@@ -57,6 +58,7 @@ public:
   void run() override;
 
 private:
+  void prepareF32();
   void prepareQ8i();
   void prepareQ8uPerChannel();
   void prepareQ8iHybridPerChannel();
@@ -82,6 +84,10 @@ protected:
   uint32_t _dilationHeight{1};
 
   ir::Activation _activation{ir::Activation::NONE};
+
+  bool _use_padded_filter{false};
+  std::unique_ptr<Tensor> _padded_filter{nullptr};
+  std::unique_ptr<Tensor> _filter_buffers{nullptr};
 
 private:
   std::shared_ptr<ExternalContext> _external_context;

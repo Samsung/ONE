@@ -40,7 +40,6 @@ public:
   virtual ~CircleFileExpContract() = default;
 
 public:
-  loco::Graph *graph(void) const final { return nullptr; }
   luci::Module *module(void) const final { return _module; }
 
 public:

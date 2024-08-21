@@ -36,14 +36,9 @@ public:
     virtual ~Contract() = default;
 
   public: // Client -> Exporter
-    // Input Graph (to be exported)
-    // Exporter expects a loco graph that consists of Circle nodes
-    virtual loco::Graph *graph(void) const = 0;
-
     // Input Module (to be exported)
     // Exporter expects a luci module that consists of loco graphs
-    // TODO make this pure virtual
-    virtual luci::Module *module(void) const;
+    virtual luci::Module *module(void) const = 0;
 
   public: // Exporter -> Client
     // Exporter calls store for export data

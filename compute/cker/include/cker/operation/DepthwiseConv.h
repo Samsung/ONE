@@ -28,6 +28,8 @@
 #include "cker/operation/reference/integer_ops/DepthwiseConvUInt8.h"
 #include "cker/operation/reference/integer_ops/DepthwiseConvHybrid.h"
 #include "cker/CpuBackendThreadpool.h"
+#include "cker/eigen/depthwise_conv_op.h"
+#include "cker/eigen/bias_op.h"
 
 namespace nnfw
 {
@@ -178,6 +180,46 @@ inline void DepthwiseConv(const DepthwiseConvParams &params, const Shape &input_
     thread_start = thread_end;
   }
   cpu_backend_threadpool::Execute(tasks.size(), tasks.data(), ruy_context);
+}
+
+void DepthwiseConvOp(const DepthwiseConvParams &params, const Shape &input_shape,
+                     const float *input_data, const Shape &filter_shape, const float *filter_data,
+                     const Shape &bias_shape, const float *bias_data, float *padded_filter_data,
+                     bool pad_filter, float *filter_buffers_data, const Shape &output_shape,
+                     float *output_data)
+{
+  if (params.stride_height != params.stride_width)
+    throw std::runtime_error("Not support different length strides");
+
+  if (params.dilation_height_factor != 1 || params.dilation_width_factor != 1)
+    throw std::runtime_error{"Not support dilation other than 1."};
+
+  const int batch = MatchingDim(input_shape, 0, output_shape, 0);
+  const int input_depth = input_shape.Dims(3);
+  const int output_depth = output_shape.Dims(3);
+  const int input_height = input_shape.Dims(1);
+  const int input_width = input_shape.Dims(2);
+  const int filter_height = filter_shape.Dims(1);
+  const int filter_width = filter_shape.Dims(2);
+  const int output_height = output_shape.Dims(1);
+  const int output_width = output_shape.Dims(2);
+  const int stride = params.stride_height;
+  const int depth_multiplier = params.depth_multiplier;
+  const int pad_height = params.padding_values.height;
+  const int pad_width = params.padding_values.width;
+  const float activation_min = params.float_activation_min;
+  const float activation_max = params.float_activation_max;
+
+  depthwise_conv_op::LaunchDepthwiseConvOp<Eigen::ThreadPoolDevice, float>()(
+    batch, input_height, input_width, input_depth, filter_height, filter_width, depth_multiplier,
+    stride, pad_height, pad_width, output_height, output_width, output_depth, input_data,
+    filter_data, padded_filter_data, pad_filter, filter_buffers_data, output_data);
+
+  if (bias_data != nullptr)
+  {
+    bias_op::biasHelper<float>(bias_shape, bias_data, output_shape, output_data, activation_min,
+                               activation_max);
+  }
 }
 
 } // namespace cker

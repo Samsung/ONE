@@ -34,7 +34,7 @@ inline OMStatus Elu(const int flat_size, const float *input_data, float *output_
   for (int i = 0; i < flat_size; i++)
   {
     float val = input_data[i];
-    float result = val < 0.0f ? std::expm1(val) : val;
+    float result = val < 0.0f ? std::exp(val) - 1 : val;
     output_data[i] = result;
   }
 

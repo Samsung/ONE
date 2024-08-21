@@ -18,6 +18,7 @@ jobs:
   check-format:
     name: Check format
     runs-on: ubuntu-20.04
+    if: github.repository_owner == 'Samsung'
 
     steps:
       - name: Checkout
@@ -54,6 +55,7 @@ jobs:
   check-copyright:
     name: Check copyright
     runs-on: ubuntu-20.04
+    if: github.repository_owner == 'Samsung'
 
     steps:
       - name: Checkout

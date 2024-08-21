@@ -38,7 +38,6 @@ public:
   CircleExporterImpl() = delete;
   ~CircleExporterImpl() = default;
 
-  explicit CircleExporterImpl(loco::Graph *graph);
   explicit CircleExporterImpl(Module *module);
 
   /**
@@ -58,12 +57,6 @@ private:
    * @return offset in buffer corresponding to serialized subgraph
    */
   flatbuffers::Offset<circle::SubGraph> exportSubgraph(SerializedGraphData &gd);
-
-  /**
-   * @brief root function that writes graph into internal buffer
-   * @param graph
-   */
-  void exportGraph(loco::Graph *graph);
 
   /**
    * @brief root function that writes Module into internal buffer

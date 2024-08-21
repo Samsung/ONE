@@ -28,6 +28,43 @@ namespace cpu
 namespace ops
 {
 
+void DepthwiseConvolutionLayer::prepareF32()
+{
+  if (_dilationWidth != 1 || _dilationHeight != 1 || _strideWidth != _strideHeight)
+    return;
+
+  // DepthwiseConvOp cpu kernel needs additional memory to perform with multi-
+  // threads. So, we allocate it here and pass it to the kernel.
+  const int64_t k_packet_size = nnfw::cker::eigen_support::kPacketSize<float>();
+
+  const auto out_shape = getShape(_output);
+  const auto filter_shape = getShape(_kernel);
+  const int batch = out_shape.Dims(0);
+  const int out_depth = out_shape.Dims(3);
+  const int filter_rows = filter_shape.Dims(1);
+  const int filter_cols = filter_shape.Dims(2);
+
+  const int filter_spatial_size = filter_rows * filter_cols;
+  const int padded_filter_inner_dim_size =
+    ((out_depth + k_packet_size - 1) / k_packet_size) * k_packet_size;
+
+  _use_padded_filter = (out_depth % k_packet_size) == 0 ? false : true;
+
+  // prepare padded_filter buffer for cker
+  auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+  padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
+  _padded_filter = std::make_unique<Tensor>(padded_filter_info, nullptr);
+  _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
+
+  // prepare out_bprop and in_bprop buffer for cker
+  const int thread_count = nnfw::cker::eigen_support::getThreadCount() + 1;
+
+  auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
+  filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
+  _filter_buffers = std::make_unique<Tensor>(filter_buffers_info, nullptr);
+  _filter_buffers->setBuffer(std::make_shared<basic::Allocator>(_filter_buffers->total_size()));
+}
+
 void DepthwiseConvolutionLayer::convFloat32()
 {
   float output_activation_min = 0, output_activation_max = 0;
@@ -44,10 +81,23 @@ void DepthwiseConvolutionLayer::convFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
-  nnfw::cker::DepthwiseConv<float, float>(
-    op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
-    getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias), getShape(_output),
-    getBuffer<float>(_output), _external_context->ruy_context());
+  // Since DepthwiseConvOp does not support dilation and different W/H stride yet,
+  // it uses the existing kernel in this case.
+  if (_dilationWidth == 1 && _dilationHeight == 1 && _strideWidth == _strideHeight)
+  {
+    nnfw::cker::DepthwiseConvOp(op_params, getShape(_input), getBuffer<float>(_input),
+                                getShape(_kernel), getBuffer<float>(_kernel), getShape(_bias),
+                                getBuffer<float>(_bias), getBuffer<float>(_padded_filter.get()),
+                                _use_padded_filter, getBuffer<float>(_filter_buffers.get()),
+                                getShape(_output), getBuffer<float>(_output));
+  }
+  else
+  {
+    nnfw::cker::DepthwiseConv<float, float>(
+      op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
+      getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias), getShape(_output),
+      getBuffer<float>(_output), _external_context->ruy_context());
+  }
 }
 
 void DepthwiseConvolutionLayer::convQ8uPerTensor()
@@ -264,6 +314,10 @@ void DepthwiseConvolutionLayer::configure(
     ensureQ8iHybridPerChannel();
     prepareQ8iHybridPerChannel();
     _prepared = true;
+  }
+  else if (_input->data_type() == OperandType::FLOAT32)
+  {
+    prepareF32();
   }
   else if (_input->data_type() == OperandType::QUANT_INT8_ASYMM)
   {

@@ -41,8 +41,7 @@ public:
   static constexpr uint64_t _align = 16;
 
 public:
-  TensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
-                uint32_t optim_vars_count);
+  TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_t optim_vars_count);
   virtual ~TensorManager() = default;
 
   void allocateNonConstTensors();
@@ -65,9 +64,9 @@ public:
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
-  std::unique_ptr<MemoryManager> _trainable_mgr;
+  std::unique_ptr<TrainableMemoryManager> _trainable_mgr;
   std::unique_ptr<MemoryManager> _back_prop_mgr;
-  std::unique_ptr<GradientMemoryManager> _gradient_mgr;
+  std::unique_ptr<MemoryManager> _gradient_mgr;
   std::unique_ptr<DisposableMemoryManager> _disposable_back_prop_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 };
