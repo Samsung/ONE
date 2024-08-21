@@ -19,6 +19,8 @@
 
 namespace onert
 {
+namespace ir
+{
 namespace train
 {
 namespace checkpoint
@@ -46,6 +48,7 @@ constexpr uint8_t SCHEMA_VERSION = 1;
 
 } // namespace checkpoint
 } // namespace train
+} // namespace ir
 } // namespace onert
 
 #endif // __ONERT_IR_TRAIN_CHECKPOINT_H__
