@@ -113,6 +113,38 @@ TEST_F(InstanceNormTest, Wrong_gamma_beta_dim_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
+TEST_F(InstanceNormTest, Wrong_gamma_beta_dim_3D_NEG)
+{
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {2, 2, 2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(InstanceNormTest, Unsupported_dims_NEG)
+{
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({2}, {1, 1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({2}, {2, 2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter
