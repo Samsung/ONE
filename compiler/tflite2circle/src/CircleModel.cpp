@@ -43,9 +43,10 @@ template <> void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffe
   for (auto it : *tflite_flatbuffer_vec)
   {
     flatbuffers::Offset<flatbuffers::Vector<uint8_t>> buffer_data;
-    if (it->data())
+    const auto *tflbuff_data = it->data();
+    if (tflbuff_data)
     {
-      std::vector<uint8_t> data_vec{it->data()->begin(), it->data()->end()};
+      std::vector<uint8_t> data_vec{tflbuff_data->begin(), tflbuff_data->end()};
       buffer_data = _fb->CreateVector(data_vec);
     }
     circle::BufferBuilder circle_buffer_builder{*_fb};
