@@ -43,9 +43,10 @@ template <> void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffe
   for (auto it : *tflite_flatbuffer_vec)
   {
     flatbuffers::Offset<flatbuffers::Vector<uint8_t>> buffer_data;
-    if (it->data())
+    const auto *tflbuff_data = it->data();
+    if (tflbuff_data)
     {
-      std::vector<uint8_t> data_vec{it->data()->begin(), it->data()->end()};
+      std::vector<uint8_t> data_vec{tflbuff_data->begin(), tflbuff_data->end()};
       buffer_data = _fb->CreateVector(data_vec);
     }
     circle::BufferBuilder circle_buffer_builder{*_fb};
@@ -376,8 +377,8 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
   _circle_flatbuffer_vec_offset = _fb->CreateVector(operator_code_vec);
 }
 
-CircleModel::CircleModel(FlatBufBuilder &fb)
-  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}
+CircleModel::CircleModel(FlatBufBuilder &fb, const std::vector<char> &fr)
+  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}, _file_raw{fr}
 {
   // NOTHING TODO
 }

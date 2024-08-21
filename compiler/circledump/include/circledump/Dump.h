@@ -24,9 +24,16 @@
 namespace circledump
 {
 
-void dump_model(std::ostream &os, const circle::Model *model);
-}
+struct ModelEx
+{
+  const circle::Model *model;
+  const std::vector<char> *rawdata;
+};
 
-std::ostream &operator<<(std::ostream &os, const circle::Model *model);
+void dump_model(std::ostream &os, const circledump::ModelEx &model);
+
+} // namespace circledump
+
+std::ostream &operator<<(std::ostream &os, const circledump::ModelEx &model);
 
 #endif // __CIRCLEDUMP_DUMP_H__

@@ -20,7 +20,6 @@
 #include "LoweredOperandPass.h"
 #include "compiler/BackendManager.h"
 #include "ir/Operand.h"
-#include "compiler/PermuteFactor.h"
 
 namespace onert
 {

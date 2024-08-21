@@ -26,8 +26,8 @@ namespace operation
 
 void Permute::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Permute::Permute(const OperandIndex &input, const OperandIndex &output, Type type)
-  : Operation{OperandConstraint::createExact(1u)}, _type{type}
+Permute::Permute(const OperandIndex &input, const OperandIndex &output)
+  : Operation{OperandConstraint::createExact(1u)}
 {
   setInputs({input});
   setOutputs({output});

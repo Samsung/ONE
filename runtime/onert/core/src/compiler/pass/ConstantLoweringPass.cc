@@ -17,10 +17,9 @@
 #include "ConstantLoweringPass.h"
 
 #include "backend/Backend.h"
-#include <ir/Graph.h>
-#include <compiler/PermuteFactor.h>
-#include <util/Utils.h>
+#include "ir/Graph.h"
 #include "util/logging.h"
+#include "util/Utils.h"
 
 namespace onert
 {
@@ -40,7 +39,7 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
     if (object.isConstant())
     {
       // All constant operand are already assinged at each backend by ContantInsertionPass. So a
-      // constant has `def` and `use` as the same PermuteFactor
+      // constant has `def` and `use` as the same backend
       auto operand_li = std::make_unique<compiler::OperandLowerInfo>();
       operand_li->addDefBackend(backend);
       operand_li->addUseBackend(backend);

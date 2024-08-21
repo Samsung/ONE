@@ -73,7 +73,12 @@ OMStatus onert_micro::execute::execute_kernel_CircleLess(const OMExecuteArgs &ex
       break;
 #ifndef DIS_QUANT
     case circle::TensorType_UINT8:
-      evalQuantizedComparisonGeneric<uint8_t>(&runtime_kernel, onert_micro::execute::pal::LessFn);
+      evalQuantizedComparisonGeneric<uint8_t, int32_t>(&runtime_kernel,
+                                                       onert_micro::execute::pal::LessFn);
+      break;
+    case circle::TensorType_INT8:
+      evalQuantizedComparisonGeneric<int8_t, int32_t>(&runtime_kernel,
+                                                      onert_micro::execute::pal::LessFn);
       break;
 #endif // DIS_QUANT
 

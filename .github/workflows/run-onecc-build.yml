@@ -38,17 +38,23 @@ jobs:
   onecc-test:
     # Tested ubuntu version is decided by docker image, not runner
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'Samsung'
     strategy:
-      # TODO Support various ubuntu version
       matrix:
         type: [ Debug, Release ]
+        ubuntu_code: [ focal, jammy ]
+        include:
+          - ubuntu_code: focal
+            ubuntu_ver: 20.04
+          - ubuntu_code: jammy
+            ubuntu_ver: 22.04
     container:
-      image: nnfw/one-devtools:focal
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       NNCC_WORKSPACE : build
       NNCC_INSTALL_PREFIX : install
-    name: onecc ubuntu 20.04 ${{ matrix.type }} test
+    name: onecc ubuntu ${{ matrix.ubuntu_ver }} ${{ matrix.type }} test
 
     steps:
       - name: Checkout
@@ -67,7 +73,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.NNCC_WORKSPACE }}/overlay
-          key: overlay-onecc-focal-${{ hashFiles('compiler/common-artifacts/CMakeLists.txt') }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
+          key: overlay-onecc-${{ matrix.ubuntu_code }}-${{ hashFiles('compiler/common-artifacts/CMakeLists.txt') }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}
 
       - name: Build
         run: |

@@ -38,8 +38,7 @@ void Permute::accept(OperationVisitor &v) const { v.visit(*this); }
 void Permute::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
 
 Permute::Permute(const OperationType &operation)
-  : OperationType{operation.getInputs().at(0), operation.getOutputs().at(0),
-                  operation.getPermuteType()}
+  : OperationType{operation.getInputs().at(0), operation.getOutputs().at(0)}
 {
   // DO NOTHING
 }

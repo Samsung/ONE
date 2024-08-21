@@ -93,6 +93,13 @@ OMStatus onert_micro::execute::execute_kernel_CircleUnpack(const OMExecuteArgs &
                            output_shape, axis_value);
       break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+      status =
+        pal::Unpack<int8_t>(params, input_shape, core::utils::castInputData<int8_t>(input_data),
+                            output_shape, axis_value);
+      break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedActivation;

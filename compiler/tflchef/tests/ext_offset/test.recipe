@@ -1,0 +1,44 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "1.1"
+    arg: "2.2"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "constant"
+    arg: "3.3"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: VALID
+    stride_w: 1
+    stride_h: 1
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
+ext_offset: true

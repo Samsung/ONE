@@ -53,13 +53,12 @@ namespace backend
 namespace train
 {
 
-TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                             const std::string planner_id, uint32_t optim_vars_count)
-  : _nonconst_mgr{new MemoryManager(planner_id)}, _trainable_mgr{new MemoryManager(planner_id)},
-    _back_prop_mgr{new MemoryManager(planner_id)},
-    _gradient_mgr{new GradientMemoryManager(planner_id, optim_vars_count)},
+TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_t optim_vars_count)
+  : _nonconst_mgr{new MemoryManager()},
+    _trainable_mgr{new TrainableMemoryManager(optim_vars_count)},
+    _back_prop_mgr{new MemoryManager()}, _gradient_mgr{new MemoryManager()},
     // TODO Find a suitable planner of disposable tensors to reduce peak memory usage
-    _disposable_back_prop_mgr{new DisposableMemoryManager(std::string("WIC"))}, _tensors{reg}
+    _disposable_back_prop_mgr{new DisposableMemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }
@@ -74,6 +73,19 @@ void TensorManager::allocateTrainableTensors()
 {
   allocateMemory(_trainable_mgr.get(), _tensors->trainable_tensors(),
                  std::string{"     TRAINABLE TENSOR "});
+
+  // Set buffers of optimizer variables
+  // Allocating optimizer variables has been done when calling allocate() of TrainableMemoryManager
+  for (const auto &[index, trainable_tensor] : _tensors->trainable_tensors())
+  {
+    for (uint32_t var_pos = 0; var_pos < trainable_tensor->optVars().size(); ++var_pos)
+    {
+      auto *buffer = _trainable_mgr.get()->getOptVarBuffer(index, var_pos);
+      trainable_tensor->setOptVarBuffer(buffer, var_pos);
+      VERBOSE(TensorManager) << std::string{"     OPTIM_VAR TENSOR "} << index << " : "
+                             << static_cast<void *>(buffer) << std::endl;
+    }
+  }
 }
 
 void TensorManager::allocateBackPropTensors()
@@ -86,21 +98,6 @@ void TensorManager::allocateGradientTensors()
 {
   allocateMemory(_gradient_mgr.get(), _tensors->gradient_tensors(),
                  std::string{"     GRADIENT TENSOR "});
-
-  // Set buffers of optimizer variables
-  // Allocating optimizer variables has been done when calling allocate() of GradientMemoryManager
-  for (const auto &pair : _tensors->gradient_tensors())
-  {
-    const auto &index = pair.first;
-    const auto trainable_tensor = _tensors->trainable_tensors().at(index).get();
-    for (uint32_t var_pos = 0; var_pos < trainable_tensor->optVars().size(); ++var_pos)
-    {
-      auto *buffer = _gradient_mgr.get()->getOptVarBuffer(index, var_pos);
-      trainable_tensor->setOptVarBuffer(buffer, var_pos);
-      VERBOSE(TensorManager) << std::string{"     OPTIM_VAR TENSOR "} << index << " : "
-                             << static_cast<void *>(buffer) << std::endl;
-    }
-  }
 }
 
 void TensorManager::allocateDisposableBackPropTensors()

@@ -41,8 +41,8 @@ public:
 
 public:
   Tensor(const ir::OperandInfo &info, DynamicMemoryManager *dynamic_mem_mgr)
-    : IPortableTensor(info), _layout(ir::Layout::NHWC), _buffer(nullptr), _num_references(0),
-      _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
+    : IPortableTensor(info), _layout(ir::Layout::NHWC), _buffer(nullptr), _size(info.total_size()),
+      _num_references(0), _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
   }
@@ -128,6 +128,7 @@ public:
 protected:
   const ir::Layout _layout;
   uint8_t *_buffer;
+  size_t _size;
   int32_t _num_references;
   DynamicMemoryManager *_dynamic_mem_mgr;
 
