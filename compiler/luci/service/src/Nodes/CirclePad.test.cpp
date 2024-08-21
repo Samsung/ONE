@@ -16,6 +16,8 @@
 
 #include "luci/Service/CircleNodeClone.h"
 
+#include <luci/Service/CircleShapeInference.h>
+
 #include <gtest/gtest.h>
 
 TEST(CloneNodeTest, clone_Pad)
@@ -30,4 +32,43 @@ TEST(CloneNodeTest, clone_Pad)
 
   auto cloned_pad = dynamic_cast<luci::CirclePad *>(cloned);
   ASSERT_NE(nullptr, cloned_pad);
+}
+
+TEST(ShapeRuleTest, pad_dynamic_shape)
+{
+  luci::CirclePad pad;
+  luci::CircleInput input;
+  // Use circle input as paddings
+  luci::CircleConst padddings;
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  input.shape({1, 2, 3, 4});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(2).unset();
+
+  padddings.dtype(loco::DataType::S64);
+  padddings.shape({4, 2});
+  padddings.shape_status(luci::ShapeStatus::VALID);
+
+  const loco::DataType S64 = loco::DataType::S64;
+  uint32_t t = 64 * 8;
+  padddings.size<S64>(t);
+
+  pad.input(&input);
+  pad.paddings(&padddings);
+
+  ASSERT_TRUE(shape_inf_rule.infer(&pad, shape));
+  ASSERT_EQ(shape.rank(), 4);
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_FALSE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(2, shape.dim(1).value());
+  ASSERT_EQ(0, shape.dim(2).value());
+  ASSERT_EQ(4, shape.dim(3).value());
+  pad.drop();
 }
