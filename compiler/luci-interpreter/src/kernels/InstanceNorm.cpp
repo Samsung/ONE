@@ -34,16 +34,35 @@ InstanceNorm::InstanceNorm(const Tensor *input, const Tensor *gamma, const Tenso
 
 void InstanceNorm::configure()
 {
-  LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(gamma()->element_type() == input()->element_type());
-  LUCI_INTERPRETER_CHECK(gamma()->shape().num_dims() == 1);
-  LUCI_INTERPRETER_CHECK(gamma()->shape().dim(0) == input()->shape().dim(3) ||
-                         gamma()->shape().dim(0) == 1);
-  LUCI_INTERPRETER_CHECK(beta()->element_type() == input()->element_type());
-  LUCI_INTERPRETER_CHECK(beta()->shape().num_dims() == 1);
-  LUCI_INTERPRETER_CHECK(beta()->shape().dim(0) == input()->shape().dim(3) ||
-                         beta()->shape().dim(0) == 1);
+  if (input()->shape().num_dims() == 4)
+  {
+    LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
+    LUCI_INTERPRETER_CHECK(gamma()->shape().num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(gamma()->shape().dim(0) == input()->shape().dim(3) ||
+                           gamma()->shape().dim(0) == 1);
+    LUCI_INTERPRETER_CHECK(beta()->element_type() == input()->element_type());
+    LUCI_INTERPRETER_CHECK(beta()->shape().num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(beta()->shape().dim(0) == input()->shape().dim(3) ||
+                           beta()->shape().dim(0) == 1);
+  }
+  else if (input()->shape().num_dims() == 3)
+  {
+    LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 3);
+    LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
+    LUCI_INTERPRETER_CHECK(gamma()->element_type() == input()->element_type());
+    LUCI_INTERPRETER_CHECK(gamma()->shape().num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(gamma()->shape().dim(0) == input()->shape().dim(1) ||
+                           gamma()->shape().dim(0) == 1);
+    LUCI_INTERPRETER_CHECK(beta()->element_type() == input()->element_type());
+    LUCI_INTERPRETER_CHECK(beta()->shape().num_dims() == 1);
+    LUCI_INTERPRETER_CHECK(beta()->shape().dim(0) == input()->shape().dim(1) ||
+                           beta()->shape().dim(0) == 1);
+  }
+  else
+    LUCI_INTERPRETER_CHECK(false && "luci-intp InstanceNorm unsupported rank.");
+
   output()->resize(input()->shape());
 }
 
@@ -63,12 +82,9 @@ void InstanceNorm::evalFloat() const
 {
   float activation_min, activation_max;
   calculateActivationRange(params().activation, &activation_min, &activation_max);
-  auto input_shape = getTensorShape(input());
+  tflite::RuntimeShape input_shape = getTensorShape(input());
   auto output_shape = getTensorShape(output());
-  const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
-  const int32_t heights = tflite::MatchingDim(input_shape, 1, output_shape, 1);
-  const int32_t widths = tflite::MatchingDim(input_shape, 2, output_shape, 2);
-  const int32_t channels = tflite::MatchingDim(input_shape, 3, output_shape, 3);
+
   const float *input_data = getTensorData<float>(input());
   const float *gamma_data = getTensorData<float>(gamma());
   auto gamma_shape = getTensorShape(gamma());
@@ -77,44 +93,94 @@ void InstanceNorm::evalFloat() const
   auto beta_shape = getTensorShape(beta());
   bool single_beta = beta_shape.DimensionsCount() == 1 && beta_shape.Dims(0) == 1;
   float *output_data = getTensorData<float>(output());
-  for (int32_t batch = 0; batch < batches; batch++)
+
+  if (input_shape.DimensionsCount() == 4)
   {
-    for (int32_t channel = 0; channel < channels; channel++)
+    // Dimensions for image case are (N x H x W x C)
+    const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t heights = tflite::MatchingDim(input_shape, 1, output_shape, 1);
+    const int32_t widths = tflite::MatchingDim(input_shape, 2, output_shape, 2);
+    const int32_t channels = tflite::MatchingDim(input_shape, 3, output_shape, 3);
+    for (int32_t batch = 0; batch < batches; batch++)
     {
-      double sum = 0.0f;
-      double square_sum = 0.0f;
-      int32_t size = heights * widths;
-      for (int32_t height = 0; height < heights; height++)
+      for (int32_t channel = 0; channel < channels; channel++)
       {
-        for (int32_t width = 0; width < widths; width++)
+        double sum = 0.0f;
+        double square_sum = 0.0f;
+        int32_t size = heights * widths;
+        for (int32_t height = 0; height < heights; height++)
         {
-          double input_val = input_data[tflite::Offset(input_shape, batch, height, width, channel)];
-          sum += input_val;
-          square_sum += (input_val * input_val);
+          for (int32_t width = 0; width < widths; width++)
+          {
+            double input_val =
+              input_data[tflite::Offset(input_shape, batch, height, width, channel)];
+            sum += input_val;
+            square_sum += (input_val * input_val);
+          }
         }
-      }
-      double mean = sum / size;
-      double var = square_sum / size - mean * mean;
+        double mean = sum / size;
+        double var = square_sum / size - mean * mean;
 
-      double gamma = single_gamma ? gamma_data[0] : gamma_data[channel];
-      double beta = single_beta ? beta_data[0] : beta_data[channel];
-      double a = gamma / (std::sqrt(var + params().epsilon));
-      double b = -mean * a + beta;
+        double gamma = single_gamma ? gamma_data[0] : gamma_data[channel];
+        double beta = single_beta ? beta_data[0] : beta_data[channel];
+        double a = gamma / (std::sqrt(var + params().epsilon));
+        double b = -mean * a + beta;
 
-      for (int32_t height = 0; height < heights; height++)
-      {
-        for (int32_t width = 0; width < widths; width++)
+        for (int32_t height = 0; height < heights; height++)
         {
-          double input_value =
-            input_data[tflite::Offset(output_shape, batch, height, width, channel)];
-          double output_value = input_value * a + b;
-          output_data[tflite::Offset(output_shape, batch, height, width, channel)] =
-            tflite::ActivationFunctionWithMinMax((float)output_value, activation_min,
-                                                 activation_max);
+          for (int32_t width = 0; width < widths; width++)
+          {
+            double input_value =
+              input_data[tflite::Offset(output_shape, batch, height, width, channel)];
+            double output_value = input_value * a + b;
+            output_data[tflite::Offset(output_shape, batch, height, width, channel)] =
+              tflite::ActivationFunctionWithMinMax((float)output_value, activation_min,
+                                                   activation_max);
+          }
         }
       }
     }
   }
+  else if (input_shape.DimensionsCount() == 3)
+  {
+    // Dimensions for non image case are (N x C x D1 x D2 … Dn)
+    const int32_t batches = tflite::MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t channels = tflite::MatchingDim(input_shape, 1, output_shape, 1);
+    const int32_t size = tflite::MatchingDim(input_shape, 2, output_shape, 2);
+    for (int32_t batch = 0; batch < batches; batch++)
+    {
+      for (int32_t channel = 0; channel < channels; channel++)
+      {
+        double sum = 0.0f;
+        double square_sum = 0.0f;
+        size_t offset =
+          static_cast<size_t>(batch * channels * size) + static_cast<size_t>(channel * size);
+        for (int32_t i = 0; i < size; i++)
+        {
+          double input_val = input_data[offset + i];
+          sum += input_val;
+          square_sum += (input_val * input_val);
+        }
+        double mean = sum / size;
+        double var = square_sum / size - mean * mean;
+
+        double gamma = single_gamma ? gamma_data[0] : gamma_data[channel];
+        double beta = single_beta ? beta_data[0] : beta_data[channel];
+        double a = gamma / (std::sqrt(var + params().epsilon));
+        double b = -mean * a + beta;
+
+        for (int32_t i = 0; i < size; i++)
+        {
+          double input_value = input_data[offset + i];
+          double output_value = input_value * a + b;
+          output_data[offset + i] = tflite::ActivationFunctionWithMinMax(
+            (float)output_value, activation_min, activation_max);
+        }
+      }
+    }
+  }
+  else
+    throw std::runtime_error("luci-intp InstanceNorm unsupported rank.");
 }
 
 } // namespace kernels
