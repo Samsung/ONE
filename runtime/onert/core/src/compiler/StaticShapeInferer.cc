@@ -575,12 +575,9 @@ void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
   // get mutable output operand
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = operands.at(output_idx);
-  const auto ker_type = ker.typeInfo().type();
-  const bool chunk_ker = (ker_type == ir::DataType::QUANT_UINT4_SYMM_PER_CHUNK ||
-                          ker_type == ir::DataType::QUANT_INT8_SYMM_PER_CHUNK);
   // re-sizing output shape
   ir::Shape new_shape =
-    shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape(), chunk_ker);
+    shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape());
   output.info().shape(new_shape);
 }
 
@@ -608,11 +605,8 @@ void StaticShapeInferer::visit(const ir::operation::Gather &op)
   assert(0 <= axis && axis < rank);
 
   // re-sizing output shape
-  const auto input_type = input.typeInfo().type();
-  const bool chunk_input = (input_type == ir::DataType::QUANT_UINT4_SYMM_PER_CHUNK ||
-                            input_type == ir::DataType::QUANT_INT8_SYMM_PER_CHUNK);
-  ir::Shape new_shape = shape_inference::inferGatherShape(
-    input.info().shape(), indices.info().shape(), axis, rank, chunk_input);
+  ir::Shape new_shape =
+    shape_inference::inferGatherShape(input.info().shape(), indices.info().shape(), axis, rank);
   output.info().shape(new_shape);
 }
 

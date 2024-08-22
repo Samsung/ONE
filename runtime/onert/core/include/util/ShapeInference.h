@@ -68,11 +68,10 @@ ir::Shape inferExpandDimsShape(const ir::Shape &in_shape, int32_t axis);
 
 template <typename T> ir::Shape inferFillShape(const ir::Shape &fill_shape, const T *shape_buf);
 
-ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                                   const bool chunk_kernel);
+ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape);
 
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
-                           int rank, const bool chunk_input);
+                           int rank);
 
 ir::Shape inferOnehotShape(const ir::Shape &input_shape, const int depth, int axis);
 

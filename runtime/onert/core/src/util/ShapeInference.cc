@@ -394,15 +394,14 @@ template <typename T> ir::Shape inferFillShape(const ir::Shape &fill_shape, cons
 template ir::Shape inferFillShape(const ir::Shape &fill_shape, const int32_t *shape_buf);
 template ir::Shape inferFillShape(const ir::Shape &fill_shape, const int64_t *shape_buf);
 
-ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
-                                   bool chunk_kernel)
+ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape)
 {
   assert(in_shape.rank() >= 2);
   assert(ker_shape.rank() == 2);
 
   const auto input_size_with_batch = in_shape.num_elements();
   const auto num_units = ker_shape.dim(0);
-  const auto input_size = chunk_kernel ? ker_shape.dim(1) * 32 : ker_shape.dim(1);
+  const auto input_size = ker_shape.dim(1);
   const auto batch_size = input_size_with_batch / input_size;
   assert(input_size_with_batch % input_size == 0);
 
@@ -457,7 +456,7 @@ ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &c
 }
 
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
-                           int rank, const bool chunk_input)
+                           int rank)
 {
   ir::Shape out_shape;
 
@@ -474,9 +473,7 @@ ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indice
     }
     else
     {
-      auto output_dim =
-        (chunk_input && idx == rank - 1) ? input_shape.dim(idx) * 32 : input_shape.dim(idx);
-      out_shape.append(output_dim);
+      out_shape.append(input_shape.dim(idx));
     }
   }
 
