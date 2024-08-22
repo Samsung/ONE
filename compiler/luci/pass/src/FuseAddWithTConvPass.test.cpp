@@ -62,7 +62,6 @@ using namespace luci::test;
 class TConvAddGraphlet
 {
 public:
-  // TODO: FIX all of this and testcases
   void init(loco::Graph *g, luci::FusedActFunc tconv_activation, bool use_bias,
             bool extra_successor)
   {
