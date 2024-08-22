@@ -48,14 +48,23 @@ public:
   SGD &&operator=(const SGD &&) = delete;
   ~SGD() { reset(); }
 
+#ifdef OM_MEMORY_ESTIMATE
+  // Reset and deallocate all internal states
+  void reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage);
+#endif // OM_MEMORY_ESTIMATE
+
   // Reset and deallocate all internal states
   void reset();
 
   // Update internal states according to SGD theory
-  OMStatus handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context);
+  OMStatus handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context,
+                  core::OMRuntimeStorage &storage);
 
   // Update weights according to SGD theory
-  OMStatus updateWeights(const OMTrainingContext &training_config, core::OMRuntimeContext &context);
+  OMStatus updateWeights(
+    const OMTrainingContext &training_config, core::OMRuntimeContext &context,
+    core::OMRuntimeStorage &storage,
+    std::unordered_map<uint16_t, core::OpTrainableRankType> &tensor_index_to_rank_type_map);
 };
 
 } // namespace optimizers

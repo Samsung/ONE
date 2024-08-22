@@ -19,8 +19,12 @@
 
 #include "OMStatus.h"
 
+#include "core/OMRuntimeShape.h"
+#include "core/OMRuntimeStorage.h"
+
 #include "reader/OMCircleReader.h"
 #include "reader/OMWeightOnlyFormatReader.h"
+#include "reader/OMTrainingConfigFileReader.h"
 
 #include <cstdint>
 
@@ -32,8 +36,9 @@ namespace core
 class OMRuntimeContext
 {
 private:
-  reader::OMCircleReader _reader;
-  reader::OMWeightOnlyFormatReader _wof_reader;
+  reader::OMCircleReader _reader{};
+  reader::OMWeightOnlyFormatReader _wof_reader{};
+  reader::OMTrainingConfigReader _train_config_reader{};
 
 public:
   OMRuntimeContext() = default;
@@ -66,7 +71,23 @@ public:
     return Ok;
   }
 
-  const bool isConstTensor(uint32_t tensor_index) { return _reader.isConstTensor(tensor_index); }
+  OMStatus setTrainConfigFile(char *train_config_file_ptr)
+  {
+    OMStatus status = Ok;
+    _train_config_reader.parse(train_config_file_ptr);
+
+    status = _train_config_reader.validate(&_reader);
+    if (status != Ok)
+      return status;
+    return Ok;
+  }
+
+  std::unordered_map<uint16_t, uint8_t> getTrainableOpsIndexes()
+  {
+    return _train_config_reader.getTrainableOpsIndexes();
+  }
+
+  bool isConstTensor(uint32_t tensor_index) { return _reader.isConstTensor(tensor_index); }
 
   const reader::CircleValues *getCircleOutputs() { return _reader.outputs(); }
   const reader::CircleValues *getCircleInputs() { return _reader.inputs(); }

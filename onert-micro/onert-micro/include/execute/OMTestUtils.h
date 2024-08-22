@@ -47,6 +47,9 @@ std::vector<U> checkKernel(uint32_t num_inputs,
 
   assert(num_inputs == interpreter.getNumberOfInputs());
 
+  interpreter.reset();
+  interpreter.allocateInputs();
+
   for (uint32_t i = 0; i < num_inputs; ++i)
   {
     T *input_data = reinterpret_cast<T *>(interpreter.getInputDataAt(i));
