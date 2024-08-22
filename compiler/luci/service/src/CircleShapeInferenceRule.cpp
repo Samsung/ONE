@@ -539,70 +539,6 @@ loco::NodeShape infer_broadcast_to(const luci::CircleBroadcastTo *node)
   return loco::NodeShape{shape_by_input};
 }
 
-loco::NodeShape infer_concatenation(const luci::CircleConcatenation *node)
-{
-  // TODO Support when CircleConcatenation has 0 input
-  assert(node->numValues() > 0);
-
-  auto first_shape = luci::shape_get(node->values(0)).as<loco::TensorShape>();
-  auto axis = node->axis();
-  if (axis < 0)
-    axis += first_shape.rank();
-
-  assert(0 <= axis);
-  assert(first_shape.rank() > static_cast<uint32_t>(axis));
-
-  loco::TensorShape output_shape;
-
-  output_shape.rank(first_shape.rank());
-  for (uint32_t i = 0; i < output_shape.rank(); ++i)
-    output_shape.dim(i) = first_shape.dim(i);
-
-  for (uint32_t i = 1; i < node->numValues(); ++i)
-  {
-    auto input_shape = luci::shape_get(node->values(i)).as<loco::TensorShape>();
-    if (input_shape.rank() != output_shape.rank())
-      INTERNAL_EXN_V("Input has incompatible shape", node->name());
-
-    for (uint32_t j = 0; j < output_shape.rank(); ++j)
-    {
-      if (j == static_cast<uint32_t>(axis))
-      {
-        if (output_shape.dim(j).known() and input_shape.dim(j).known())
-        {
-          output_shape.dim(j) = output_shape.dim(j).value() + input_shape.dim(j).value();
-        }
-        else
-        {
-          // If any of inputs is unknown, just mark it as unknown.
-          output_shape.dim(j).unset();
-        }
-      }
-      else
-      {
-        if (output_shape.dim(j).known() and input_shape.dim(j).known())
-        {
-          if (output_shape.dim(j).value() != input_shape.dim(j).value())
-          {
-            INTERNAL_EXN_V("Input has incompatible shape.", node->name());
-          }
-        }
-        else
-        {
-          if (input_shape.dim(j).known())
-          {
-            assert(not output_shape.dim(j).known()); // FIX_ME_UNLESS
-            output_shape.dim(j) = input_shape.dim(j);
-          }
-          // For unknown input_shape, leave output_shape as-is
-        }
-      }
-    }
-  }
-
-  return loco::NodeShape{output_shape};
-}
-
 loco::NodeShape infer_conv2d(const luci::CircleConv2D *node)
 {
   LOGGER(l);
@@ -2117,11 +2053,6 @@ public:
   loco::NodeShape visit(const luci::CircleCast *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleCeil *node) final { return use_x(node); }
-
-  loco::NodeShape visit(const luci::CircleConcatenation *node) final
-  {
-    return infer_concatenation(node);
-  }
 
   loco::NodeShape visit(const luci::CircleConst *node) final { return use_own(node); }
 
