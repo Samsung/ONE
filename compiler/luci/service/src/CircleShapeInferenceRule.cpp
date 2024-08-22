@@ -2082,8 +2082,6 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleDiv *node) final { return broadcast_xy(node); }
-
   loco::NodeShape visit(const luci::CircleElu *node) final
   {
     auto input_shape = luci::shape_get(node->features()).as<loco::TensorShape>();
