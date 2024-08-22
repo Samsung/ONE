@@ -61,16 +61,16 @@ if (NOT_BUILD_EXTERNALS)
 else ()
     message(STATUS "DOWNLOAD AND BUILD EXTERNALS")
 
-    nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+    nnas_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 
     if (NOT FlatBuffers_FOUND)
-        message(STATUS "Build onert-micro failed: FlatBuffers 2.0 NOT FOUND")
+        message(STATUS "Build onert-micro failed: FlatBuffers 23.5.26 NOT FOUND")
         return()
     endif (NOT FlatBuffers_FOUND)
 
     message(STATUS "FOUND FlatBuffers")
 
-    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.6/circle_schema.fbs")
+    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.8/circle_schema.fbs")
 
     # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
     add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
