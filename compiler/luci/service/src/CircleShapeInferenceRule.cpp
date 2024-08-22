@@ -235,35 +235,32 @@ loco::NodeShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *pa
   output_shape.rank(input_shape.rank());
   for (int32_t ni = 0; ni < n; ++ni)
   {
-    int32_t idx = ni * 2;
-    int value = input_shape.dim(ni).value();
-    if (!input_shape.dim(ni).known())
+    if (not input_shape.dim(ni).known())
     {
       output_shape.dim(ni).unset();
+      continue;
+    }
+    int32_t idx = ni * 2;
+    int value = input_shape.dim(ni).value();
+    if (paddings->dtype() == S32)
+    {
+      value += paddings->at<S32>(idx + 0); // left
+      value += paddings->at<S32>(idx + 1); // right
     }
     else
     {
-
-      if (paddings->dtype() == S32)
-      {
-        value += paddings->at<S32>(idx + 0); // left
-        value += paddings->at<S32>(idx + 1); // right
-      }
-      else
-      {
-        auto pl = paddings->at<S64>(idx + 0);
-        auto pr = paddings->at<S64>(idx + 1);
-        auto max = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
-        auto low = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
-        LUCI_ASSERT(pl <= max, "paddings is over 32 bit limit");
-        LUCI_ASSERT(pl >= low, "paddings is over 32 bit limit");
-        LUCI_ASSERT(pr <= max, "paddings is over 32 bit limit");
-        LUCI_ASSERT(pr >= low, "paddings is over 32 bit limit");
-        value += static_cast<int32_t>(pl); // left
-        value += static_cast<int32_t>(pr); // right
-      }
-      output_shape.dim(ni) = value;
+      auto pl = paddings->at<S64>(idx + 0);
+      auto pr = paddings->at<S64>(idx + 1);
+      auto max = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
+      auto low = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
+      LUCI_ASSERT(pl <= max, "paddings is over 32 bit limit");
+      LUCI_ASSERT(pl >= low, "paddings is over 32 bit limit");
+      LUCI_ASSERT(pr <= max, "paddings is over 32 bit limit");
+      LUCI_ASSERT(pr >= low, "paddings is over 32 bit limit");
+      value += static_cast<int32_t>(pl); // left
+      value += static_cast<int32_t>(pr); // right
     }
+    output_shape.dim(ni) = value;
   }
 
   return loco::NodeShape{output_shape};
