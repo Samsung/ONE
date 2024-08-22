@@ -148,7 +148,7 @@ OMStatus OMRuntimeModule::allocateInputs()
   return _graphs.at(0).allocateGraphInputs();
 }
 
-OMStatus OMRuntimeModule::run()
+OMStatus OMRuntimeModule::run(const OMConfig &config)
 {
   OMStatus status = Ok;
 
@@ -158,7 +158,11 @@ OMStatus OMRuntimeModule::run()
   core::OMRuntimeGraph &main_graph = _graphs.at(0);
 
   execute::OMExecuteArgs execute_args = {main_graph.getRuntimeStorage(),
-                                         main_graph.getRuntimeContext(), 0, *this};
+                                         main_graph.getRuntimeContext(),
+                                         0,
+                                         *this,
+                                         config.training_context.num_of_train_layers,
+                                         config.train_mode};
 
   status = execute::OMKernelExecute::runForward(execute_args, main_graph.getRuntimeAllocator());
   if (status != Ok)
