@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020-2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,18 @@
 
 #include "luci/Pass/FuseAddWithTConvPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
 namespace
 {
+
+#define RETURN_FALSE_UNLESS(cond) \
+  if (not(cond))                  \
+    return false;
+
 /**
  *  Fuse Add to TransposeConv if possible
  *
@@ -42,55 +49,39 @@ namespace
  *
  *  Note: CircleRelu/Relu6 is inserted if Add activation is ReLU6
  */
-bool fuse_add_with_tconv(luci::CircleTransposeConv *tconv)
+bool fuse_add_with_tconv(luci::CircleAdd *add)
 {
-  // skip if tconv has fused activation
-  if (tconv->fusedActivationFunction() != luci::FusedActFunc::NONE)
-    return false;
-  // check whether it has bias or not. This optimization works only if it doesn't.
-  auto bias = dynamic_cast<luci::CircleOutputExclude *>(tconv->bias());
-  if (not bias)
-    return false;
+  // Allow Add node only with FLOAT32 data type:
+  RETURN_FALSE_UNLESS(add->dtype() == loco::DataType::FLOAT32);
 
-  // get weight of tconv
-  auto filter = dynamic_cast<luci::CircleConst *>(tconv->filter());
-  if (not filter)
-    return false;
-  if (filter->dtype() != loco::DataType::FLOAT32)
-    return false;
-
-  // get add node
-  auto tconv_output = loco::succs(tconv);
-  assert(tconv_output.size() == 1);
-  auto add = dynamic_cast<luci::CircleAdd *>(*tconv_output.begin());
-  if (not add)
-    return false;
-  if (add->dtype() != loco::DataType::FLOAT32)
-    return false;
-  if (add->fusedActivationFunction() != luci::FusedActFunc::NONE &&
-      add->fusedActivationFunction() != luci::FusedActFunc::RELU6 &&
-      add->fusedActivationFunction() != luci::FusedActFunc::RELU)
-    return false;
-
-  // get addition
+  RETURN_FALSE_UNLESS(add->fusedActivationFunction() == luci::FusedActFunc::NONE ||
+                      add->fusedActivationFunction() == luci::FusedActFunc::RELU6 ||
+                      add->fusedActivationFunction() == luci::FusedActFunc::RELU);
+  // Find the pattern of Add(TransposeConv, CircleConst):
+  luci::CircleTransposeConv *tconv = nullptr;
   luci::CircleConst *addition = nullptr;
-  if (add->x() == tconv)
-    addition = dynamic_cast<luci::CircleConst *>(add->y());
-  else
-    addition = dynamic_cast<luci::CircleConst *>(add->x());
+  RETURN_FALSE_UNLESS(luci::fill(&tconv, &addition).with_commutative_args_of(add));
 
-  if (not addition)
-    return false;
+  RETURN_FALSE_UNLESS(loco::succs(tconv).size() == 1);
+
+  // Skip if tconv has fused activation.
+  RETURN_FALSE_UNLESS(tconv->fusedActivationFunction() == luci::FusedActFunc::NONE);
+  // Check whether tconv has bias or not. This optimization works only if it doesn't.
+  auto bias = dynamic_cast<luci::CircleOutputExclude *>(tconv->bias());
+  RETURN_FALSE_UNLESS(bias);
+  // Get weights of tconv:
+  auto filter = dynamic_cast<luci::CircleConst *>(tconv->filter());
+  RETURN_FALSE_UNLESS(filter);
+  RETURN_FALSE_UNLESS(filter->dtype() == loco::DataType::FLOAT32);
 
   // addition dim(0) == tconv filter channel dim
-  if (addition->rank() != 1)
-    return false;
+  RETURN_FALSE_UNLESS(addition->rank() == 1);
+
   auto addition_dim = addition->dim(0).value();
   auto filter_channel_dim = filter->dim(0).value();
-  if (filter_channel_dim != addition_dim)
-    return false;
+  RETURN_FALSE_UNLESS(filter_channel_dim == addition_dim);
 
-  // fuse addition with transposed conv
+  // Fuse addition with transposed conv:
   tconv->bias(addition);
 
   if (add->fusedActivationFunction() == luci::FusedActFunc::RELU6)
@@ -140,12 +131,9 @@ bool FuseAddWithTConvPass::run(loco::Graph *g)
   bool changed = false;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto tconv = dynamic_cast<luci::CircleTransposeConv *>(node);
-    if (not tconv)
-      continue;
-
-    if (fuse_add_with_tconv(tconv))
-      changed = true;
+    if (auto add = dynamic_cast<luci::CircleAdd *>(node))
+      if (fuse_add_with_tconv(add))
+        changed = true;
   }
 
   return changed;
