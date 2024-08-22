@@ -20,4 +20,24 @@
 
 #include "PALSVDFCommon.h"
 
+namespace onert_micro
+{
+namespace execute
+{
+namespace pal
+{
+
+OMStatus SVDF(const core::SVDFQuantParams &, const int8_t *, const int8_t *, const int8_t *,
+              const int32_t *, int8_t *, int8_t *, const core::OMRuntimeShape &,
+              const core::OMRuntimeShape &, const core::OMRuntimeShape &,
+              const core::OMRuntimeShape &, const core::OMRuntimeShape &)
+{
+  // TODO: support it
+  return UnsupportedType;
+}
+
+} // namespace pal
+} // namespace execute
+} // namespace onert_micro
+
 #endif // ONERT_MICRO_EXECUTE_PAL_SVDF_H
