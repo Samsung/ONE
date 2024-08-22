@@ -146,10 +146,14 @@ void Args::Initialize(void)
     .nargs(0)
     .default_value(false)
     .help("Print version and exit immediately");
+  _arser.add_argument("--checkpoint").type(arser::DataType::STR).help("Checkpoint filename");
   _arser.add_argument("--export_circle").type(arser::DataType::STR).help("Path to export circle");
   _arser.add_argument("--export_circleplus")
     .type(arser::DataType::STR)
     .help("Path to export circle+");
+  _arser.add_argument("--export_checkpoint")
+    .type(arser::DataType::STR)
+    .help("Path to export checkpoint");
   _arser.add_argument("--load_input:raw")
     .type(arser::DataType::STR)
     .help({"NN Model Raw Input data file", "The datafile must have data for each input number.",
@@ -243,10 +247,18 @@ void Args::Parse(const int argc, char **argv)
       }
     }
 
+    if (_arser["--checkpoint"])
+    {
+      _checkpoint_filename = _arser.get<std::string>("--checkpoint");
+      checkModelfile(_checkpoint_filename);
+    }
+
     if (_arser["--export_circle"])
       _export_circle_filename = _arser.get<std::string>("--export_circle");
     if (_arser["--export_circleplus"])
       _export_circleplus_filename = _arser.get<std::string>("--export_circleplus");
+    if (_arser["--export_checkpoint"])
+      _export_checkpoint_filename = _arser.get<std::string>("--export_checkpoint");
     if (_arser["--load_input:raw"])
     {
       _load_raw_input_filename = _arser.get<std::string>("--load_input:raw");

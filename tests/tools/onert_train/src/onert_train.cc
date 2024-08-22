@@ -156,7 +156,12 @@ int main(const int argc, char **argv)
     // prepare execution
 
     // TODO When nnfw_{prepare|run} are failed, can't catch the time
-    measure.run(PhaseType::PREPARE, [&]() { NNPR_ENSURE_STATUS(nnfw_train_prepare(session)); });
+    measure.run(PhaseType::PREPARE, [&]() {
+      NNPR_ENSURE_STATUS(nnfw_train_prepare(session));
+
+      if (const auto name = args.getCheckpointFilename(); name != "")
+        NNPR_ENSURE_STATUS(nnfw_train_import_checkpoint(session, name.c_str()));
+    });
 
     // prepare input and expected tensor info lists
     std::vector<nnfw_tensorinfo> input_infos;
@@ -280,6 +285,9 @@ int main(const int argc, char **argv)
               if (args.getMetricType() == 0)
                 metrics[i] += metric.categoricalAccuracy(i);
             }
+
+            if (const auto name = args.getExportCheckpointFilename(); name != "")
+              NNPR_ENSURE_STATUS(nnfw_train_export_checkpoint(session, name.c_str()));
           }
 
           // print loss
