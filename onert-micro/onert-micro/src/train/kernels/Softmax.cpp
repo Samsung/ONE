@@ -111,8 +111,14 @@ OMStatus onert_micro::train::train_kernel_CircleSoftmax(const OMBackpropExecuteA
                         core::utils::castOutputData<float>(jacobian_row_data),
                         core::utils::castOutputData<float>(dloss_dinput_data));
 
+#ifdef OM_MEMORY_ESTIMATE
+  // Deallocate temporary buffer with Jacobian row
+  status = core::memory::OMMemoryManager::deallocateMemory(
+    output_shape.flatSize() * sizeof(OMDataType(output->type())), jacobian_row_data);
+#else
   // Deallocate temporary buffer with Jacobian row
   status = core::memory::OMMemoryManager::deallocateMemory(jacobian_row_data);
+#endif
 
   return status;
 }

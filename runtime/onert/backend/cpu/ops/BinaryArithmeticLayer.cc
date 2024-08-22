@@ -105,6 +105,15 @@ generateKernelGeneric(const IPortableTensor *lhs, const IPortableTensor *rhs,
       return Eval<arithmetic_type, int32_t>(lhs, rhs, output, op_params);
       break;
     }
+    case OperandType::INT64:
+    {
+      int64_t output_activation_min = 0, output_activation_max = 0;
+      CalculateActivationRange(activation, &output_activation_min, &output_activation_max);
+      op_params.int64_activation_max = output_activation_max;
+      op_params.int64_activation_min = output_activation_min;
+      return Eval<arithmetic_type, int64_t>(lhs, rhs, output, op_params);
+      break;
+    }
     case OperandType::BOOL8:
     {
       if (activation != ir::Activation::NONE)
@@ -253,19 +262,17 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
       }
       break;
     case ArithmeticType::kDiv:
-      if (_lhs->data_type() == OperandType::QUANT_UINT8_ASYMM)
-      {
-        throw std::runtime_error{
-          "BinaryArithmetic(Div): Div operation does not support quantization"};
-      }
-      else if (_lhs->data_type() == OperandType::INT32)
-      {
-        throw std::runtime_error{"BinaryArithmetic(Div): Unsupported data type"};
-      }
-      else
+      if (_lhs->data_type() == OperandType::FLOAT32)
       {
         _kernel = generateKernelGeneric<nnfw::cker::BinaryArithmeticOpType::DIV>(
           _lhs, _rhs, _output, activation, op_params);
+      }
+      else
+      {
+        // TODO Support quantized type
+        // TODO Support integer type with zero check
+        throw std::runtime_error{
+          "BinaryArithmetic(Div): Div operation does not support non-float data types yet"};
       }
       break;
     default:

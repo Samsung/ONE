@@ -56,7 +56,7 @@ public:
   // loco::TensorShape visit(const luci::CircleBatchToSpaceND *node) final;
   // loco::TensorShape visit(const luci::CircleCast *node) final;
   // loco::TensorShape visit(const luci::CircleCeil *node) final;
-  // loco::TensorShape visit(const luci::CircleConcatenation *node) final;
+  loco::TensorShape visit(const luci::CircleConcatenation *node) final;
   // loco::TensorShape visit(const luci::CircleConst *node) final;
   // loco::TensorShape visit(const luci::CircleConv2D *node) final;
   // loco::TensorShape visit(const luci::CircleCos *node) final;

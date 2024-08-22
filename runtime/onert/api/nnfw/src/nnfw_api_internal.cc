@@ -1701,6 +1701,61 @@ NNFW_STATUS nnfw_session::train_export_circleplus(const char *path)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::train_import_checkpoint(const char *path)
+{
+  if (path == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_import_checkpoint : path is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_import_checkpoint : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    // TODO Implement importing checkpoint
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_import_checkpoint : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_export_checkpoint(const char *path)
+{
+  if (path == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_export_checkpoint : path is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  // Check training mode is enabled
+  if (!isStateFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_export_checkpoint : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    // TODO Implement exporting checkpoint
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_export_checkpoint : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 bool nnfw_session::isStatePreparedTraining()
 {
   if (_state == State::PREPARED_TRAINING)

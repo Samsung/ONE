@@ -27,6 +27,29 @@ namespace execute
 namespace pal
 {
 
+inline std::pair<uint32_t, uint32_t> getUpLowerWeightTensorDepth(core::OpTrainableRankType rank,
+                                                                 const uint32_t output_depth)
+{
+  std::pair<uint32_t, uint32_t> result(0u, output_depth);
+
+  switch (rank)
+  {
+    case core::ALL:
+      break;
+    case core::UP_1_2_PART:
+      result.second = static_cast<uint32_t>(static_cast<float>(output_depth) / 2.f);
+      break;
+    case core::LOWER_1_2_PART:
+      result.first = static_cast<uint32_t>(static_cast<float>(output_depth) / 2.f);
+      break;
+    default:
+      assert("Unsupported type");
+      break;
+  }
+
+  return result;
+}
+
 // Table of sigmoid(i/24) at 0.16 format - 256 elements.
 // We use combined sigmoid and tanh look-up table, since
 // tanh(x) = 2*sigmoid(2*x) -1.

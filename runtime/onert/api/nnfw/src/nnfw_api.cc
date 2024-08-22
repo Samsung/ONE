@@ -464,6 +464,18 @@ NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *path
   return session->train_export_circleplus(path);
 }
 
+NNFW_STATUS nnfw_train_import_checkpoint(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_import_checkpoint(path);
+}
+
+NNFW_STATUS nnfw_train_export_checkpoint(nnfw_session *session, const char *path)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->train_export_checkpoint(path);
+}
+
 // Quantization
 
 NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype)
