@@ -25,7 +25,7 @@ luci::CircleCustom *to_pre_scale(loco::Node *node)
   if (not pre_scale)
     return nullptr;
 
-  if (pre_scale->custom_code() != "PreScale")
+  if (pre_scale->custom_code() != "scale")
     return nullptr;
 
   // TODO Return false?
@@ -40,7 +40,7 @@ luci::CircleCustom *to_post_scale(loco::Node *node)
   if (not post_scale)
     return nullptr;
 
-  if (post_scale->custom_code() != "PostScale")
+  if (post_scale->custom_code() != "scale")
     return nullptr;
 
   // TODO Return false?

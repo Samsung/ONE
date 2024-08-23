@@ -54,8 +54,8 @@ void check_no_scale_shift(loco::Graph *g)
       continue;
 
     const auto code = custom->custom_code();
-    if (code == "PreScale" or code == "PreShift" or code == "PostScale" or code == "PostShift")
-      throw std::runtime_error("Virtual node(" + code + ") remains. " + custom->name());
+    if (code == "scale")
+      throw std::runtime_error("Virtual node(" + code + ") remains.");
   }
 }
 
@@ -64,7 +64,7 @@ void check_no_scale_shift(loco::Graph *g)
 namespace fme_apply
 {
 
-void FMEqualizer::equalize(loco::Graph *g, const std::vector<EqualizePattern> &p)
+void FMEqualizer::equalize(loco::Graph *g, std::vector<EqualizePattern> &p)
 {
   THROW_UNLESS(g != nullptr, "Invalid argument g");
 
@@ -83,14 +83,14 @@ void FMEqualizer::equalize(loco::Graph *g, const std::vector<EqualizePattern> &p
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   // Forward PreScale/PreShift
-  phase.emplace_back(std::make_unique<fme_apply::ForwardPreScalePass>());
-  phase.emplace_back(std::make_unique<fme_apply::ForwardPreShiftPass>());
+  // phase.emplace_back(std::make_unique<fme_apply::ForwardPreScalePass>());
+  // phase.emplace_back(std::make_unique<fme_apply::ForwardPreShiftPass>());
 
   // Fuse Pre/Post Scale/Shift
   phase.emplace_back(std::make_unique<fme_apply::FusePreScalePass>());
   phase.emplace_back(std::make_unique<fme_apply::FusePostScalePass>());
-  phase.emplace_back(std::make_unique<fme_apply::FusePreShiftPass>());
-  phase.emplace_back(std::make_unique<fme_apply::FusePostShiftPass>());
+  // phase.emplace_back(std::make_unique<fme_apply::FusePreShiftPass>());
+  // phase.emplace_back(std::make_unique<fme_apply::FusePostShiftPass>());
 
   ProgressReporter prog(g, logo::PhaseStrategy::Restart);
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};

@@ -129,6 +129,11 @@ def main():
     verbose = args.verbose
     allow_dup_op = args.allow_dup_op
 
+    curr_dir = Path(__file__).parent.resolve()
+    dump_fme_param_py = curr_dir / 'fmelib' / 'DumpFMEParams.py'
+    if dump_fme_param_py.exists() == False:
+        raise FileNotFoundError('Error: DumpFMEParams.py not found')
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         fme_patterns = os.path.join(
             tmp_dir,
@@ -144,8 +149,13 @@ def main():
         if args.fme_patterns != None:
             os.system(f'cp {fme_patterns} {args.fme_patterns}')
 
-        # TODO Step 2. Run dalgona
-        # _run_dalgona
+        # Step 2. Run dalgona
+        _run_dalgona(
+            str(input_model),
+            data,
+            str(dump_fme_param_py),
+            str(fme_patterns),
+            verbose=verbose)
 
         # Copy fme_patterns to the given path
         # Why copy twice? To observe the result of fme-detect too

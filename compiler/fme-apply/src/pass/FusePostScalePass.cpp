@@ -34,90 +34,6 @@ struct FusePostScale final : public luci::CircleNodeMutableVisitor<bool>
 {
   bool visit(luci::CircleNode *) { return false; }
 
-  bool visit(luci::CircleDepthwiseConv2D *node)
-  {
-    if (node->fusedActivationFunction() != luci::FusedActFunc::NONE and
-        node->fusedActivationFunction() != luci::FusedActFunc::RELU)
-      return false;
-
-    bool changed = false;
-    for (auto succ : loco::succs(node))
-    {
-      auto post_scale = to_post_scale(succ);
-      if (not post_scale)
-        continue;
-
-      auto param =
-        loco::must_cast<luci::CircleConst *>(post_scale->inputs(1)); // FIX_PostScale_UNLESS
-      auto filter = loco::must_cast<luci::CircleConst *>(node->filter());
-      auto bias = loco::must_cast<luci::CircleConst *>(node->bias());
-
-      uint32_t filter_i = filter->dim(0).value();
-      uint32_t filter_h = filter->dim(1).value();
-      uint32_t filter_w = filter->dim(2).value();
-      uint32_t filter_o = filter->dim(3).value();
-
-      if (filter_o != param->size<loco::DataType::FLOAT32>())
-      {
-        assert(false); // FIX_PostScale_Unless
-        return false;
-      }
-
-      auto cloned_dconv = luci::clone_node(node, node->graph());
-      assert(cloned_dconv != nullptr); // FIX_CALLER_UNLESS
-      auto fused_dconv = loco::must_cast<luci::CircleDepthwiseConv2D *>(cloned_dconv);
-      auto fused_filter = luci::clone(filter);
-      auto fused_bias = luci::clone(bias);
-
-      // Add random string to make unique name
-      fused_dconv->name(node->name() + "_postscale_" + random_str());
-      fused_filter->name(filter->name() + "_postscale_" + random_str());
-      fused_bias->name(bias->name() + "_postscale_" + random_str());
-
-      add_origin(fused_dconv, luci::get_origin(node));
-      add_origin(fused_filter, luci::get_origin(filter));
-      add_origin(fused_bias, luci::get_origin(bias));
-
-      // Multiply param to weights
-      for (uint32_t b = 0; b < filter_i; b++)
-      {
-        for (uint32_t h = 0; h < filter_h; h++)
-        {
-          for (uint32_t w = 0; w < filter_w; w++)
-          {
-            for (uint32_t c = 0; c < filter_o; c++)
-            {
-              uint32_t offset =
-                b * filter_h * filter_w * filter_o + h * filter_w * filter_o + w * filter_o + c;
-              float scale = param->at<loco::DataType::FLOAT32>(c);
-              assert(scale > 0.0); // Defensive guard
-
-              fused_filter->at<loco::DataType::FLOAT32>(offset) =
-                fused_filter->at<loco::DataType::FLOAT32>(offset) * scale;
-            }
-          }
-        }
-      }
-
-      // Multiply param to bias
-      for (uint32_t c = 0; c < filter_o; ++c)
-      {
-        float scale = param->at<loco::DataType::FLOAT32>(c);
-        fused_bias->at<loco::DataType::FLOAT32>(c) =
-          fused_bias->at<loco::DataType::FLOAT32>(c) * scale;
-      }
-
-      fused_dconv->input(node->input());
-      fused_dconv->filter(fused_filter);
-      fused_dconv->bias(fused_bias);
-
-      loco::replace(post_scale).with(fused_dconv);
-      changed = true;
-    }
-
-    return changed;
-  }
-
   bool visit(luci::CircleConv2D *node)
   {
     if (node->fusedActivationFunction() != luci::FusedActFunc::NONE and
@@ -144,7 +60,9 @@ struct FusePostScale final : public luci::CircleNodeMutableVisitor<bool>
 
       if (filter_o != param->size<loco::DataType::FLOAT32>())
       {
-        assert(false); // FIX_PostScale_Unless
+        throw std::runtime_error("Mismatch between scale size and filter output channel size: " +
+                                 std::to_string(filter_o) +
+                                 " != " + std::to_string(param->size<loco::DataType::FLOAT32>()));
         return false;
       }
 
@@ -154,9 +72,9 @@ struct FusePostScale final : public luci::CircleNodeMutableVisitor<bool>
       auto fused_filter = luci::clone(filter);
       auto fused_bias = luci::clone(bias);
 
-      fused_conv->name(node->name() + "_postscale_" + random_str());
-      fused_filter->name(filter->name() + "_postscale_" + random_str());
-      fused_bias->name(bias->name() + "_postscale_" + random_str());
+      fused_conv->name(node->name() + "_fused_" + random_str());
+      fused_filter->name(filter->name() + "_fused_" + random_str());
+      fused_bias->name(bias->name() + "_fused_" + random_str());
 
       add_origin(fused_conv, luci::get_origin(node));
       add_origin(fused_filter, luci::get_origin(filter));
@@ -231,7 +149,9 @@ struct FusePostScale final : public luci::CircleNodeMutableVisitor<bool>
 
       if (filter_o != param->size<loco::DataType::FLOAT32>())
       {
-        assert(false); // FIX_PostScale_Unless
+        throw std::runtime_error("Mismatch between scale size and filter output channel size: " +
+                                 std::to_string(filter_o) +
+                                 " != " + std::to_string(param->size<loco::DataType::FLOAT32>()));
         return false;
       }
 
@@ -240,8 +160,8 @@ struct FusePostScale final : public luci::CircleNodeMutableVisitor<bool>
       auto fused_tconv = loco::must_cast<luci::CircleTransposeConv *>(cloned_tconv);
       auto fused_filter = luci::clone(filter);
 
-      fused_tconv->name(node->name() + "_postscale_" + random_str());
-      fused_filter->name(filter->name() + "_postscale_" + random_str());
+      fused_tconv->name(node->name() + "_fused_" + random_str());
+      fused_filter->name(filter->name() + "_fused_" + random_str());
 
       add_origin(fused_tconv, luci::get_origin(node));
       add_origin(fused_filter, luci::get_origin(filter));
@@ -271,7 +191,7 @@ struct FusePostScale final : public luci::CircleNodeMutableVisitor<bool>
       if (bias)
       {
         auto fused_bias = luci::clone(bias);
-        fused_bias->name(bias->name() + "_postscale_" + random_str());
+        fused_bias->name(bias->name() + "_fused_" + random_str());
         add_origin(fused_bias, luci::get_origin(bias));
 
         // Multiply param to bias

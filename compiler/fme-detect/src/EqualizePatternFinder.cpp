@@ -71,16 +71,37 @@ struct GetFusability final : public luci::CircleNodeMutableVisitor<Fusability>
     return f;
   }
 
-  Fusability visit(luci::CircleDepthwiseConv2D *node)
+  // Fusability visit(luci::CircleDepthwiseConv2D *node)
+  // {
+  //   Fusability f;
+  //   {
+  //     f.pre_scale = true;
+  //     // PreShift would be fused with DConv when DConv
+  //     // does not use padding
+  //     // TODO Check the above condition and enable the below line
+  //     // f.pre_shift = true;
+
+  //     if (node->fusedActivationFunction() == luci::FusedActFunc::NONE)
+  //     {
+  //       f.post_scale = true;
+  //       f.post_shift = true;
+  //     }
+  //     // Negative scale is not fusable across ReLU, but fme-detect does not
+  //     // know the scale value. So, we assume that the scale is positive.
+  //     // NOTE If a pattern has negative scales, fm-equalize rejects the pattern
+  //     else if (node->fusedActivationFunction() == luci::FusedActFunc::RELU)
+  //     {
+  //       f.post_scale = true;
+  //     }
+  //   }
+  //   return f;
+  // }
+
+  Fusability visit(luci::CircleInstanceNorm *node)
   {
     Fusability f;
     {
-      f.pre_scale = true;
-      // PreShift would be fused with DConv when DConv
-      // does not use padding
-      // TODO Check the above condition and enable the below line
-      // f.pre_shift = true;
-
+      f.pre_shift = true;
       if (node->fusedActivationFunction() == luci::FusedActFunc::NONE)
       {
         f.post_scale = true;
@@ -97,11 +118,11 @@ struct GetFusability final : public luci::CircleNodeMutableVisitor<Fusability>
     return f;
   }
 
-  Fusability visit(luci::CircleInstanceNorm *node)
+  Fusability visit(luci::CircleFullyConnected *node)
   {
     Fusability f;
     {
-      f.pre_shift = true;
+      f.pre_scale = true;
       if (node->fusedActivationFunction() == luci::FusedActFunc::NONE)
       {
         f.post_scale = true;
@@ -147,8 +168,15 @@ Forwardable forwardable(luci::CircleNode *node)
     case luci::CircleOpcode::MAX_POOL_2D:
       // Assumption: all scale values are positive.
       return {true, true};
-    case luci::CircleOpcode::SLICE:
-      return {true, true};
+    case luci::CircleOpcode::RELU:
+      // Assumption: all scale values are positive.
+      return {true, false};
+    case luci::CircleOpcode::LEAKY_RELU:
+      // Assumption: all scale values are positive.
+      return {true, false};
+    case luci::CircleOpcode::GELU:
+      // Assumption: all scale values are positive.
+      return {true, false};
     default:
       return {false, false};
   }
@@ -185,9 +213,17 @@ void match(luci::CircleNode *front, std::vector<EqualizePattern> &res)
         back_fusability = fusability(next_back);
         back_fusability.pre_scale &= f.scale_forwardable;
         back_fusability.pre_shift &= f.shift_forwardable;
+        back = next_back;
       }
     }
 
+    if (front_fusability.post_scale and back_fusability.pre_scale)
+    {
+      res.emplace_back(front->name(), back->name(), EqualizePattern::Type::ScaleOnly);
+    }
+
+    // TODO Let's consider "shift" when it is necessary.
+#if 0
     // Create EqualizePattern based on fusability
     // ScaleShift
     //   front: fusable_post_shift and fusable_post_scale
@@ -211,6 +247,7 @@ void match(luci::CircleNode *front, std::vector<EqualizePattern> &res)
     {
       res.emplace_back(front->name(), back->name(), EqualizePattern::Type::ScaleOnly);
     }
+#endif
   }
 }
 
