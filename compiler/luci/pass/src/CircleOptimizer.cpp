@@ -66,6 +66,7 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 #include "luci/Pass/RemoveRedundantQuantizePass.h"
 #include "luci/Pass/RemoveUnnecessaryAddPass.h"
+#include "luci/Pass/RemoveUnnecessaryCastPass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapePass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapeNetPass.h"
 #include "luci/Pass/RemoveUnnecessarySlicePass.h"
