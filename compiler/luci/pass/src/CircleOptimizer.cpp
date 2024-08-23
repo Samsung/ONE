@@ -66,6 +66,7 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 #include "luci/Pass/RemoveRedundantQuantizePass.h"
 #include "luci/Pass/RemoveUnnecessaryAddPass.h"
+#include "luci/Pass/RemoveUnnecessaryCastPass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapePass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapeNetPass.h"
 #include "luci/Pass/RemoveUnnecessarySlicePass.h"
@@ -474,6 +475,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   if (_options->query(Options::Algorithm::RemoveUnnecessaryAdd))
   {
     phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryAddPass>());
+  }
+  if (_options->query(Options::Algorithm::RemoveUnnecessaryCast))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryCastPass>());
   }
   if (_options->query(Options::Algorithm::RemoveUnnecessaryReshape))
   {
