@@ -77,7 +77,7 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
   std::unique_ptr<BackendResolver> backend_resolver;
   auto all_backends = backend_manager.getAll();
 
-  auto scheduler = ManualScheduler(all_backends, options);
+  auto scheduler = ManualScheduler(all_backends, options, ir::ModelIndex{0}, ir::SubgraphIndex{0});
   backend_resolver = scheduler.schedule(_trainable_graph.graph());
 
   // Check if backends are trainable

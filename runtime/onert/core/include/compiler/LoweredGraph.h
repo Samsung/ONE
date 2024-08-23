@@ -36,7 +36,8 @@ namespace compiler
 class LoweredGraph : public ILoweredGraph
 {
 public:
-  LoweredGraph(const ir::Graph &graph, const compiler::CompilerOptions &options);
+  LoweredGraph(const ir::Graph &graph, const compiler::CompilerOptions &options,
+               const ir::ModelIndex &modelIdx, const ir::SubgraphIndex &subgIdx);
 
   ir::Graph &graph() override { return _graph; }
   const ir::Graph &graph() const override { return _graph; }
@@ -66,6 +67,8 @@ private:
    *          It allows the original graph can be compiled multiple times.
    */
   ir::Graph _graph;
+  ir::ModelIndex _model_index;
+  ir::SubgraphIndex _subg_index;
   std::shared_ptr<ir::OperationIndexMap<int64_t>> _indexed_ranks;
   compiler::GraphLowerInfo _lower_info_map;
   ir::OperationIndexMap<bool> _has_dynamic_tensor_map;
