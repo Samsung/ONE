@@ -97,11 +97,14 @@ private:
 class MockUpLayer : public IPermuteFunction
 {
 public:
-  MockUpLayer(const std::vector<ITensor *> &inputs, const std::vector<ITensor *> &outputs)
+  MockUpLayer(const std::vector<ITensor *> &inputs, const std::vector<ITensor *> &outputs,
+              const std::vector<ir::PermuteType> &types)
   {
     assert(inputs.size() == outputs.size());
+    assert(types.size() == outputs.size());
     _src_tensors = inputs;
     _dst_tensors = outputs;
+    _permute_types = types;
   }
   virtual ~MockUpLayer() {}
   void optimize() override {}
@@ -135,7 +138,9 @@ TEST(IPermuteFunction, float_to_float)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                   ir::PermuteType::SAME, ir::PermuteType::SAME});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -177,7 +182,9 @@ TEST(IPermuteFunction, float_to_float)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                   ir::PermuteType::SAME, ir::PermuteType::SAME});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -222,7 +229,9 @@ TEST(IPermuteFunction, float_to_float)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                   ir::PermuteType::SAME, ir::PermuteType::SAME});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -270,7 +279,9 @@ TEST(IPermuteFunction, float_to_float)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                   ir::PermuteType::SAME, ir::PermuteType::SAME});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -307,6 +318,7 @@ TEST(IPermuteFunction, float_to_float)
 
     std::vector<std::unique_ptr<MockUpTensor>> inputs(4);
     std::vector<std::unique_ptr<MockUpTensor>> outputs(4);
+    std::vector<ir::PermuteType> types(4);
     std::vector<std::unique_ptr<uint8_t[]>> output_buffers(4);
     for (size_t i = 0; i < 4; ++i)
     {
@@ -324,11 +336,13 @@ TEST(IPermuteFunction, float_to_float)
       {
         layout = Layout::NCHW;
         shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+        types[i] = ir::PermuteType::NHWC_TO_NCHW;
       }
       else
       {
         layout = Layout::NHWC;
         shape = shapes[i];
+        types[i] = ir::PermuteType::NCHW_TO_NHWC;
       }
       outputs[i] = std::make_unique<MockUpTensor>(shape, type_info, layout, output_pads[i]);
       output_buffers[i] = std::make_unique<uint8_t[]>(outputs[i]->total_size());
@@ -338,7 +352,8 @@ TEST(IPermuteFunction, float_to_float)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      types);
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -408,7 +423,9 @@ TEST(IPermuteFunction, float_to_qasymm8)
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
     std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()},
+    std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                 ir::PermuteType::SAME, ir::PermuteType::SAME});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -461,7 +478,9 @@ TEST(IPermuteFunction, float_to_qsymm8)
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
     std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()},
+    std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                 ir::PermuteType::SAME, ir::PermuteType::SAME});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -514,7 +533,9 @@ TEST(IPermuteFunction, float_to_qsymm16)
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
     std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()},
+    std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                 ir::PermuteType::SAME, ir::PermuteType::SAME});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -576,7 +597,9 @@ TEST(IPermuteFunction, qasymm8_to_float)
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
     std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()},
+    std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                 ir::PermuteType::SAME, ir::PermuteType::SAME});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -638,7 +661,9 @@ TEST(IPermuteFunction, qsymm8_to_float)
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
     std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()},
+    std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                 ir::PermuteType::SAME, ir::PermuteType::SAME});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -700,7 +725,9 @@ TEST(IPermuteFunction, qsymm16_to_float)
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
     std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()},
+    std::vector<ir::PermuteType>{ir::PermuteType::SAME, ir::PermuteType::SAME,
+                                 ir::PermuteType::SAME, ir::PermuteType::SAME});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -741,6 +768,7 @@ TEST(IPermuteFunction, float_qasymm8_layout)
 
     std::vector<std::unique_ptr<MockUpTensor>> inputs(4);
     std::vector<std::unique_ptr<MockUpTensor>> outputs(4);
+    std::vector<ir::PermuteType> types(4);
     std::vector<std::unique_ptr<uint8_t[]>> output_buffers(4);
     for (size_t i = 0; i < 4; ++i)
     {
@@ -759,11 +787,13 @@ TEST(IPermuteFunction, float_qasymm8_layout)
       {
         layout = Layout::NCHW;
         shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+        types[i] = ir::PermuteType::NHWC_TO_NCHW;
       }
       else
       {
         layout = Layout::NHWC;
         shape = shapes[i];
+        types[i] = ir::PermuteType::NCHW_TO_NHWC;
       }
       TypeInfo type_info{DataType::QUANT_UINT8_ASYMM, scale, zero_point};
       outputs[i] = std::make_unique<MockUpTensor>(shape, type_info, layout, output_pads[i]);
@@ -774,7 +804,8 @@ TEST(IPermuteFunction, float_qasymm8_layout)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      types);
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -839,6 +870,7 @@ TEST(IPermuteFunction, float_qasymm8_layout)
 
     std::vector<std::unique_ptr<MockUpTensor>> inputs(4);
     std::vector<std::unique_ptr<MockUpTensor>> outputs(4);
+    std::vector<ir::PermuteType> types(4);
     std::vector<std::unique_ptr<uint8_t[]>> output_buffers(4);
     for (size_t i = 0; i < 4; ++i)
     {
@@ -857,11 +889,13 @@ TEST(IPermuteFunction, float_qasymm8_layout)
       {
         layout = Layout::NCHW;
         shape = Shape{shapes[i].dim(0), shapes[i].dim(3), shapes[i].dim(1), shapes[i].dim(2)};
+        types[i] = ir::PermuteType::NHWC_TO_NCHW;
       }
       else
       {
         layout = Layout::NHWC;
         shape = shapes[i];
+        types[i] = ir::PermuteType::NCHW_TO_NHWC;
       }
       outputs[i] =
         std::make_unique<MockUpTensor>(shape, TypeInfo(DataType::FLOAT32), layout, output_pads[i]);
@@ -872,7 +906,8 @@ TEST(IPermuteFunction, float_qasymm8_layout)
     auto mockup_layer = std::make_unique<MockUpLayer>(
       std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
       std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+                             outputs[3].get()},
+      types);
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)

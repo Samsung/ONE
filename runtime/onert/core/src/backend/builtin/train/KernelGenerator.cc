@@ -76,8 +76,12 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
       ignore_forward_in_training = true;
   }
 
+  std::vector<ir::PermuteType> permute_types;
+  for (uint32_t i = 0; i < input_tensors.size(); i++)
+    permute_types.emplace_back(ir::PermuteType::SAME);
+
   auto fn = std::make_unique<kernel::PermuteLayer>(
-    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors,
+    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors, permute_types,
     ignore_forward_in_training, _external_context);
 
   _return_fn = std::move(fn);

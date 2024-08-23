@@ -103,9 +103,12 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   // Add PermuteLayer
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
+  std::vector<ir::PermuteType> permute_types;
+  for (uint32_t i = 0; i < input_tensors.size(); i++)
+    permute_types.emplace_back(ir::PermuteType::SAME);
 
-  auto fn =
-    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, permute_types,
+                                                   _external_context);
   _return_fn = std::move(fn);
 }
 
