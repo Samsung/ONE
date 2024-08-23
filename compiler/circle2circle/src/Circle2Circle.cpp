@@ -146,6 +146,8 @@ int entry(int argc, char **argv)
              "This will fuse or remove subsequent Transpose operators");
   add_switch(arser, "--remove_unnecessary_add",
              "This will remove unnecessary add of zero constant");
+  add_switch(arser, "--remove_unnecessary_cast",
+             "This will remove unnecessary cast with the same input and output type.");
   add_switch(arser, "--remove_unnecessary_reshape",
              "This will remove unnecessary reshape operators");
   add_switch(arser, "--remove_unnecessary_slice", "This will remove unnecessary slice operators");
@@ -356,6 +358,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveRedundantTranspose);
   if (arser.get<bool>("--remove_unnecessary_add"))
     options->enable(Algorithms::RemoveUnnecessaryAdd);
+    if (arser.get<bool>("--remove_unnecessary_cast"))
+    options->enable(Algorithms::RemoveUnnecessaryCast);
   if (arser.get<bool>("--remove_unnecessary_reshape"))
     options->enable(Algorithms::RemoveUnnecessaryReshape);
   if (arser.get<bool>("--remove_unnecessary_slice"))
