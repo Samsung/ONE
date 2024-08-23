@@ -36,6 +36,7 @@ class PermuteLayer : public builtin::kernel::PermuteLayer, public exec::train::I
 {
 public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
+               const ir::PermuteType &permute_type,
                const std::vector<ITensor *> &input_back_prop_tensors,
                const std::vector<ITensor *> &output_back_prop_tensors,
                bool ignore_forward_in_training,

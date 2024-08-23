@@ -206,6 +206,12 @@ NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LA
   return session->set_input_layout(index, layout);
 }
 
+NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE type)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_input_type(index, type);
+}
+
 /*
  * Set the layout of an output
  * @note The output that does not call this has NNFW_LAYOUT_CHANNELS_LAST layout
@@ -220,6 +226,12 @@ NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_L
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_output_layout(index, layout);
+}
+
+NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_output_type(index, type);
 }
 
 /*

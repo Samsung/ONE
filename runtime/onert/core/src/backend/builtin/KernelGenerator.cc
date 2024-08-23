@@ -104,8 +104,8 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
 
-  auto fn =
-    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors,
+                                                   node.getPermuteType(), _external_context);
   _return_fn = std::move(fn);
 }
 
