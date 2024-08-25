@@ -129,14 +129,14 @@ Functions</h2></td></tr>
 <tr class="separator:abecdd222255cd40719a0e497e58aa5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ebe5d071655ae5d3562e2834439fc24" id="r_a7ebe5d071655ae5d3562e2834439fc24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetfldump.html#a7ebe5d071655ae5d3562e2834439fc24">tfldump::dump_sub_graph</a> (std::ostream &amp;os, <a class="el" href="classtflread_1_1_reader.html">tflread::Reader</a> &amp;reader)</td></tr>
 <tr class="separator:a7ebe5d071655ae5d3562e2834439fc24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fdbaddccc9ba31c7250270742adf157" id="r_a1fdbaddccc9ba31c7250270742adf157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetfldump.html#a1fdbaddccc9ba31c7250270742adf157">tfldump::dump_model</a> (std::ostream &amp;os, const tflite::Model *model)</td></tr>
-<tr class="separator:a1fdbaddccc9ba31c7250270742adf157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab79a583d8da24707a9462e673a8eaca2" id="r_ab79a583d8da24707a9462e673a8eaca2"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tfldump_2src_2_dump_8cpp.html#ab79a583d8da24707a9462e673a8eaca2">operator&lt;&lt;</a> (std::ostream &amp;os, const tflite::Model *model)</td></tr>
-<tr class="separator:ab79a583d8da24707a9462e673a8eaca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf77e697270524b34da1474937a15334" id="r_abf77e697270524b34da1474937a15334"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetfldump.html#abf77e697270524b34da1474937a15334">tfldump::dump_model</a> (std::ostream &amp;os, const tflite::Model *model, const std::vector&lt; char &gt; *rawdata)</td></tr>
+<tr class="separator:abf77e697270524b34da1474937a15334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6b8231c9b411a90be728e6db57d9080" id="r_ad6b8231c9b411a90be728e6db57d9080"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tfldump_2src_2_dump_8cpp.html#ad6b8231c9b411a90be728e6db57d9080">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structtfldump_1_1_model_ex.html">tfldump::ModelEx</a> &amp;modelex)</td></tr>
+<tr class="separator:ad6b8231c9b411a90be728e6db57d9080"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab79a583d8da24707a9462e673a8eaca2" name="ab79a583d8da24707a9462e673a8eaca2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab79a583d8da24707a9462e673a8eaca2">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+<a id="ad6b8231c9b411a90be728e6db57d9080" name="ad6b8231c9b411a90be728e6db57d9080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6b8231c9b411a90be728e6db57d9080">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,8 +150,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const tflite::Model *&#160;</td>
-          <td class="paramname"><em>model</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structtfldump_1_1_model_ex.html">tfldump::ModelEx</a> &amp;&#160;</td>
+          <td class="paramname"><em>modelex</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -161,14 +161,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_dump_8cpp_source.html#l00453">453</a> of file <a class="el" href="tfldump_2src_2_dump_8cpp_source.html">Dump.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  454</span>{</div>
-<div class="line"><span class="lineno">  455</span>  <a class="code hl_function" href="namespacetfldump.html#a1fdbaddccc9ba31c7250270742adf157">tfldump::dump_model</a>(os, model);</div>
-<div class="line"><span class="lineno">  456</span>  <span class="keywordflow">return</span> os;</div>
-<div class="line"><span class="lineno">  457</span>}</div>
-<div class="ttc" id="anamespacetfldump_html_a1fdbaddccc9ba31c7250270742adf157"><div class="ttname"><a href="namespacetfldump.html#a1fdbaddccc9ba31c7250270742adf157">tfldump::dump_model</a></div><div class="ttdeci">void dump_model(std::ostream &amp;os, const tflite::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="tfldump_2src_2_dump_8cpp_source.html#l00343">Dump.cpp:343</a></div></div>
+<p class="definition">Definition at line <a class="el" href="tfldump_2src_2_dump_8cpp_source.html#l00457">457</a> of file <a class="el" href="tfldump_2src_2_dump_8cpp_source.html">Dump.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  458</span>{</div>
+<div class="line"><span class="lineno">  459</span>  <a class="code hl_function" href="namespacetfldump.html#ab50ca4880353d0ecf8670ae3078b92b1">tfldump::dump_model</a>(os, modelex.<a class="code hl_variable" href="structtfldump_1_1_model_ex.html#aee6d8cdbf77e91010d54c8d940df5ea8">model</a>, modelex.<a class="code hl_variable" href="structtfldump_1_1_model_ex.html#a679b46ac977ce4a68a35044189a0147a">rawdata</a>);</div>
+<div class="line"><span class="lineno">  460</span>  <span class="keywordflow">return</span> os;</div>
+<div class="line"><span class="lineno">  461</span>}</div>
+<div class="ttc" id="anamespacetfldump_html_ab50ca4880353d0ecf8670ae3078b92b1"><div class="ttname"><a href="namespacetfldump.html#ab50ca4880353d0ecf8670ae3078b92b1">tfldump::dump_model</a></div><div class="ttdeci">void dump_model(std::ostream &amp;os, const ModelEx &amp;model)</div></div>
+<div class="ttc" id="astructtfldump_1_1_model_ex_html_a679b46ac977ce4a68a35044189a0147a"><div class="ttname"><a href="structtfldump_1_1_model_ex.html#a679b46ac977ce4a68a35044189a0147a">tfldump::ModelEx::rawdata</a></div><div class="ttdeci">const std::vector&lt; char &gt; * rawdata</div><div class="ttdef"><b>Definition</b> <a href="tfldump_2include_2tfldump_2_dump_8h_source.html#l00030">Dump.h:30</a></div></div>
+<div class="ttc" id="astructtfldump_1_1_model_ex_html_aee6d8cdbf77e91010d54c8d940df5ea8"><div class="ttname"><a href="structtfldump_1_1_model_ex.html#aee6d8cdbf77e91010d54c8d940df5ea8">tfldump::ModelEx::model</a></div><div class="ttdeci">const tflite::Model * model</div><div class="ttdef"><b>Definition</b> <a href="tfldump_2include_2tfldump_2_dump_8h_source.html#l00029">Dump.h:29</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="tfldump_2src_2_dump_8cpp_source.html#l00343">tfldump::dump_model()</a>.</p>
+<p class="reference">References <a class="el" href="namespacetfldump.html#ab50ca4880353d0ecf8670ae3078b92b1">tfldump::dump_model()</a>, <a class="el" href="tfldump_2include_2tfldump_2_dump_8h_source.html#l00029">tfldump::ModelEx::model</a>, and <a class="el" href="tfldump_2include_2tfldump_2_dump_8h_source.html#l00030">tfldump::ModelEx::rawdata</a>.</p>
 
 </div>
 </div>

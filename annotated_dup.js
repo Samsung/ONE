@@ -204,6 +204,7 @@ var annotated_dup =
       [ "MetadataPrinter", "classcircledump_1_1_metadata_printer.html", "classcircledump_1_1_metadata_printer" ],
       [ "MetadataPrinterRegistry", "classcircledump_1_1_metadata_printer_registry.html", "classcircledump_1_1_metadata_printer_registry" ],
       [ "MirrorPadPrinter", "classcircledump_1_1_mirror_pad_printer.html", "classcircledump_1_1_mirror_pad_printer" ],
+      [ "ModelEx", "structcircledump_1_1_model_ex.html", "structcircledump_1_1_model_ex" ],
       [ "MulPrinter", "classcircledump_1_1_mul_printer.html", "classcircledump_1_1_mul_printer" ],
       [ "OneHotPrinter", "classcircledump_1_1_one_hot_printer.html", "classcircledump_1_1_one_hot_printer" ],
       [ "OpPrinter", "classcircledump_1_1_op_printer.html", "classcircledump_1_1_op_printer" ],
@@ -1281,6 +1282,7 @@ var annotated_dup =
       [ "FuseMulToFullyConnectedWeightsPass", "structluci_1_1_fuse_mul_to_fully_connected_weights_pass.html", "structluci_1_1_fuse_mul_to_fully_connected_weights_pass" ],
       [ "FuseMulWithConvPass", "structluci_1_1_fuse_mul_with_conv_pass.html", "structluci_1_1_fuse_mul_with_conv_pass" ],
       [ "FuseMulWithDivPass", "structluci_1_1_fuse_mul_with_div_pass.html", "structluci_1_1_fuse_mul_with_div_pass" ],
+      [ "FuseMulWithFullyConnectedPass", "structluci_1_1_fuse_mul_with_fully_connected_pass.html", "structluci_1_1_fuse_mul_with_fully_connected_pass" ],
       [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
       [ "FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", "structluci_1_1_fuse_p_relu_pass" ],
       [ "FuseRsqrtPass", "structluci_1_1_fuse_rsqrt_pass.html", "structluci_1_1_fuse_rsqrt_pass" ],
@@ -3067,7 +3069,6 @@ var annotated_dup =
         [ "MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", "classonert_1_1compiler_1_1_multi_model_compiler" ],
         [ "OperandLowerInfo", "classonert_1_1compiler_1_1_operand_lower_info.html", "classonert_1_1compiler_1_1_operand_lower_info" ],
         [ "OperandObserver", "classonert_1_1compiler_1_1_operand_observer.html", "classonert_1_1compiler_1_1_operand_observer" ],
-        [ "PermuteFactor", "classonert_1_1compiler_1_1_permute_factor.html", "classonert_1_1compiler_1_1_permute_factor" ],
         [ "ShapeValidator", "classonert_1_1compiler_1_1_shape_validator.html", "classonert_1_1compiler_1_1_shape_validator" ],
         [ "StaticShapeInferer", "classonert_1_1compiler_1_1_static_shape_inferer.html", "classonert_1_1compiler_1_1_static_shape_inferer" ],
         [ "TensorRegistries", "classonert_1_1compiler_1_1_tensor_registries.html", "classonert_1_1compiler_1_1_tensor_registries" ]
@@ -3341,6 +3342,7 @@ var annotated_dup =
         ] ],
         [ "reader", "namespaceonert__micro_1_1core_1_1reader.html", [
           [ "OMCircleReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader" ],
+          [ "OMTrainingConfigReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_training_config_reader.html", "classonert__micro_1_1core_1_1reader_1_1_o_m_training_config_reader" ],
           [ "OMWeightOnlyFormatReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_weight_only_format_reader.html", "classonert__micro_1_1core_1_1reader_1_1_o_m_weight_only_format_reader" ]
         ] ],
         [ "train", "namespaceonert__micro_1_1core_1_1train.html", [
@@ -3384,6 +3386,7 @@ var annotated_dup =
         [ "SoftmaxParams", "structonert__micro_1_1core_1_1_softmax_params.html", "structonert__micro_1_1core_1_1_softmax_params" ],
         [ "SplitParams", "structonert__micro_1_1core_1_1_split_params.html", "structonert__micro_1_1core_1_1_split_params" ],
         [ "StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ],
+        [ "SVDFQuantParams", "structonert__micro_1_1core_1_1_s_v_d_f_quant_params.html", "structonert__micro_1_1core_1_1_s_v_d_f_quant_params" ],
         [ "TransposeParams", "structonert__micro_1_1core_1_1_transpose_params.html", "structonert__micro_1_1core_1_1_transpose_params" ]
       ] ],
       [ "execute", "namespaceonert__micro_1_1execute.html", [
@@ -3410,6 +3413,7 @@ var annotated_dup =
         [ "KernelBuiltinConfigureRegistry", "classonert__micro_1_1import_1_1_kernel_builtin_configure_registry.html", "classonert__micro_1_1import_1_1_kernel_builtin_configure_registry" ],
         [ "KernelCustomConfigureRegistry", "classonert__micro_1_1import_1_1_kernel_custom_configure_registry.html", "classonert__micro_1_1import_1_1_kernel_custom_configure_registry" ],
         [ "OMConfigureArgs", "structonert__micro_1_1import_1_1_o_m_configure_args.html", "structonert__micro_1_1import_1_1_o_m_configure_args" ],
+        [ "OMDynamicShapesHandler", "structonert__micro_1_1import_1_1_o_m_dynamic_shapes_handler.html", null ],
         [ "OMExecutionPlanCreator", "structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html", null ],
         [ "OMKernelConfiguration", "structonert__micro_1_1import_1_1_o_m_kernel_configuration.html", null ]
       ] ],
@@ -3438,8 +3442,12 @@ var annotated_dup =
         [ "NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel" ],
         [ "NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel" ],
         [ "NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel" ],
+        [ "NegTestDataInputOutputScaleMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel" ],
         [ "NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
         [ "NegTestDataInputOutputShapeMismatchCastKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel" ],
+        [ "NegTestDataInputOutputShapeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u6_kernel" ],
+        [ "NegTestDataInputOutputShapeMismatchReLUKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u_kernel" ],
+        [ "NegTestDataInputOutputShapeMismatchSpaceToDepthKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_space_to_depth_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_space_to_depth_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchBatchToSpaceNDKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel" ],
@@ -3651,7 +3659,17 @@ var annotated_dup =
         [ "TestDataS8Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation" ],
         [ "TestDataS8Conv2D", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d" ],
         [ "TestDataS8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected" ],
+        [ "TestDataS8Gather", "classonert__micro_1_1test__model_1_1_test_data_s8_gather.html", "classonert__micro_1_1test__model_1_1_test_data_s8_gather" ],
+        [ "TestDataS8Less", "classonert__micro_1_1test__model_1_1_test_data_s8_less.html", "classonert__micro_1_1test__model_1_1_test_data_s8_less" ],
+        [ "TestDataS8Logistic", "classonert__micro_1_1test__model_1_1_test_data_s8_logistic.html", "classonert__micro_1_1test__model_1_1_test_data_s8_logistic" ],
         [ "TestDataS8MaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d" ],
+        [ "TestDataS8Pack", "classonert__micro_1_1test__model_1_1_test_data_s8_pack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_pack" ],
+        [ "TestDataS8ReLU", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u.html", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u" ],
+        [ "TestDataS8ReLU6", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6" ],
+        [ "TestDataS8ReshapeKernel", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel" ],
+        [ "TestDataS8SpaceToDepth", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth.html", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth" ],
+        [ "TestDataS8Sub", "classonert__micro_1_1test__model_1_1_test_data_s8_sub.html", "classonert__micro_1_1test__model_1_1_test_data_s8_sub" ],
+        [ "TestDataS8Unpack", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack" ],
         [ "TestDataShapeKernel", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel" ],
         [ "TestDataSinBase", "classonert__micro_1_1test__model_1_1_test_data_sin_base.html", "classonert__micro_1_1test__model_1_1_test_data_sin_base" ],
         [ "TestDataSliceBase", "classonert__micro_1_1test__model_1_1_test_data_slice_base.html", "classonert__micro_1_1test__model_1_1_test_data_slice_base" ],
@@ -4005,6 +4023,7 @@ var annotated_dup =
       [ "LeakyReluPrinter", "classtfldump_1_1_leaky_relu_printer.html", "classtfldump_1_1_leaky_relu_printer" ],
       [ "LocalResponseNormalizationPrinter", "classtfldump_1_1_local_response_normalization_printer.html", "classtfldump_1_1_local_response_normalization_printer" ],
       [ "MirrorPadPrinter", "classtfldump_1_1_mirror_pad_printer.html", "classtfldump_1_1_mirror_pad_printer" ],
+      [ "ModelEx", "structtfldump_1_1_model_ex.html", "structtfldump_1_1_model_ex" ],
       [ "MulPrinter", "classtfldump_1_1_mul_printer.html", "classtfldump_1_1_mul_printer" ],
       [ "OneHotPrinter", "classtfldump_1_1_one_hot_printer.html", "classtfldump_1_1_one_hot_printer" ],
       [ "OpPrinter", "classtfldump_1_1_op_printer.html", "classtfldump_1_1_op_printer" ],
@@ -4080,6 +4099,11 @@ var annotated_dup =
     ] ],
     [ "TopologicalSortHelper", "namespace_topological_sort_helper.html", [
       [ "TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", "class_topological_sort_helper_1_1_topological_sort_helper" ]
+    ] ],
+    [ "training_configure_tool", "namespacetraining__configure__tool.html", [
+      [ "TrainConfigFileData", "structtraining__configure__tool_1_1_train_config_file_data.html", "structtraining__configure__tool_1_1_train_config_file_data" ],
+      [ "TrainData", "structtraining__configure__tool_1_1_train_data.html", "structtraining__configure__tool_1_1_train_data" ],
+      [ "TrainResult", "structtraining__configure__tool_1_1_train_result.html", "structtraining__configure__tool_1_1_train_result" ]
     ] ],
     [ "validate_onnx2circle", "namespacevalidate__onnx2circle.html", [
       [ "OnnxRunner", "classvalidate__onnx2circle_1_1_onnx_runner.html", "classvalidate__onnx2circle_1_1_onnx_runner" ]
@@ -4319,8 +4343,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

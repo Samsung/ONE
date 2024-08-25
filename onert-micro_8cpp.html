@@ -145,8 +145,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:af34150291cf5ff5d0d441ef73e623400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export current training model into circle model.  <br /></td></tr>
 <tr class="separator:af34150291cf5ff5d0d441ef73e623400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24e5273e85e46f0e1f3f15ed839451ad" id="r_a24e5273e85e46f0e1f3f15ed839451ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_8cpp.html#a24e5273e85e46f0e1f3f15ed839451ad">nnfw_train_export_checkpoint</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
+<tr class="memdesc:a24e5273e85e46f0e1f3f15ed839451ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export circle checkpoint.  <br /></td></tr>
 <tr class="separator:a24e5273e85e46f0e1f3f15ed839451ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4532bafa5aef43492fac0ae927f3ec6" id="r_ac4532bafa5aef43492fac0ae927f3ec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_8cpp.html#ac4532bafa5aef43492fac0ae927f3ec6">nnfw_train_import_checkpoint</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
+<tr class="memdesc:ac4532bafa5aef43492fac0ae927f3ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Import circle checkpoint.  <br /></td></tr>
 <tr class="separator:ac4532bafa5aef43492fac0ae927f3ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a865bb2c7843c3f74b3fda145b1c6f2fc" id="r_a865bb2c7843c3f74b3fda145b1c6f2fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="onert-micro_8cpp.html#a865bb2c7843c3f74b3fda145b1c6f2fc">nnfw_train_set_input</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, void *input, const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *input_info)</td></tr>
 <tr class="memdesc:a865bb2c7843c3f74b3fda145b1c6f2fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set training input.  <br /></td></tr>
@@ -362,6 +364,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Export circle checkpoint. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called on training mode This function should be called after <code><a class="el" href="onert-micro_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to export a checkpoint </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>The path to export a checkpoint </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00409">409</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  410</span>{</div>
 <div class="line"><span class="lineno">  411</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_checkpoint(path);</div>
@@ -492,6 +505,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Import circle checkpoint. </p>
+<dl class="section note"><dt>Note</dt><dd>This function should be called on training mode This function should be called before <code><a class="el" href="onert-micro_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a></code></dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session to export a checkpoint </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>The path to export a checkpoint </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00414">414</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  415</span>{</div>

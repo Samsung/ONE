@@ -22,6 +22,7 @@ var dir_27df084425cdb74fdb1aaa75ef807535 =
     [ "PALMinimum.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_minimum_8h.html", null ],
     [ "PALMul.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_mul_8h.html", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_mul_8h" ],
     [ "PALNeg.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_neg_8h.html", null ],
+    [ "PALRelu.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_relu_8h.html", null ],
     [ "PALRound.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_round_8h.html", null ],
     [ "PALRsqrt.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_rsqrt_8h.html", null ],
     [ "PALSin.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_sin_8h.html", null ],
@@ -31,8 +32,8 @@ var dir_27df084425cdb74fdb1aaa75ef807535 =
     [ "PALSqrt.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_sqrt_8h.html", null ],
     [ "PALSquare.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_square_8h.html", null ],
     [ "PALSquaredDifference.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_squared_difference_8h.html", null ],
-    [ "PALSub.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_sub_8h.html", null ],
-    [ "PALSVDF.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html", null ],
+    [ "PALSub.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_sub_8h.html", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_sub_8h" ],
+    [ "PALSVDF.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_s_v_d_f_8h" ],
     [ "PALTanh.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_tanh_8h.html", null ],
     [ "PALTranspose.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_transpose_8h.html", null ],
     [ "PALTransposeConv.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_transpose_conv_8h.html", null ]

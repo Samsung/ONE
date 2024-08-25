@@ -455,9 +455,9 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 </div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
 <div class="foldopen" id="foldopen00344" data-start="{" data-end="}">
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno"><a class="line" href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">  344</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">dump_model</a>(std::ostream &amp;os, <span class="keyword">const</span> circle::Model *model)</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno"><a class="line" href="namespacecircledump.html#a74b61d7e98dd1601f181262e28db2f86">  344</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacecircledump.html#a1cd153643d28a2f76731fcf02e65fb56">dump_model</a>(std::ostream &amp;os, <span class="keyword">const</span> circle::Model *model, <span class="keyword">const</span> std::vector&lt;char&gt; *rawdata)</div>
 <div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>{</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <a class="code hl_class" href="classmio_1_1circle_1_1_reader.html">mio::circle::Reader</a> reader(model);</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>  <a class="code hl_class" href="classmio_1_1circle_1_1_reader.html">mio::circle::Reader</a> reader(model, rawdata);</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  uint32_t num_subgraph = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a574539c07cbb65e88b0ed7fa90b43971">num_subgraph</a>();</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
@@ -492,99 +492,103 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>  os &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  <span class="comment">// dump buffer</span></div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  os &lt;&lt; <span class="stringliteral">&quot;Buffers: B(index) (length) values, if any&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  os &lt;&lt; <span class="stringliteral">&quot;Buffers: B(index) (length) values, if any; (length *) for ext_offset&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; buffers-&gt;size(); ++i)</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>  {</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="keyword">const</span> uint8_t *buff_data;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a8fdcda88deddd622edf050c36b869796">buffer_info</a>(i, &amp;buff_data);</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    os &lt;&lt; <span class="stringliteral">&quot;B(&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;) (&quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    <span class="keywordflow">if</span> (buff_data != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    {</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      <a class="code hl_function" href="namespacecircledump.html#ab3cef28306d510623fc27751be057f0d">dump_buffer</a>(os, buff_data, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, 16);</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    }</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    os &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  }</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>  os &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <span class="comment">// dump metadata</span></div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  <span class="keywordflow">if</span> (metadata != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  {</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>    os &lt;&lt; <span class="stringliteral">&quot;metadata : B(index) name&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; metadata-&gt;size(); ++i)</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>    {</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      <span class="keyword">const</span> <span class="keyword">auto</span> buff_id = metadata-&gt;Get(i)-&gt;buffer();</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>      <span class="keyword">const</span> <span class="keyword">auto</span> metadata_name = metadata-&gt;Get(i)-&gt;name()-&gt;str();</div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>      os &lt;&lt; <span class="stringliteral">&quot;B(&quot;</span> &lt;&lt; buff_id &lt;&lt; <span class="stringliteral">&quot;) &quot;</span> &lt;&lt; metadata_name &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>      <span class="keyword">const</span> uint8_t *buff_data;</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>      reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a8fdcda88deddd622edf050c36b869796">buffer_info</a>(buff_id, &amp;buff_data);</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      <span class="keywordflow">if</span> (<span class="keyword">auto</span> meta_prn = <a class="code hl_function" href="classcircledump_1_1_metadata_printer_registry.html#ac3eadf5e687de5db704a540cf4cdc372">MetadataPrinterRegistry::get</a>().lookup(metadata_name))</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>      {</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        meta_prn-&gt;print(buff_data, os);</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>      }</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    }</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    os &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  }</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  <span class="comment">// dump signaturedef</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="keywordflow">if</span> (signaturedefs != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  {</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    os &lt;&lt; <span class="stringliteral">&quot;SignatureDef&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; signaturedefs-&gt;size(); ++i)</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    {</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>      <span class="keyword">auto</span> sign_i = signaturedefs-&gt;Get(i);</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      os &lt;&lt; <span class="stringliteral">&quot;S(&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;) signature_key(&quot;</span> &lt;&lt; sign_i-&gt;signature_key()-&gt;c_str() &lt;&lt; <span class="stringliteral">&quot;), sub_graph(&quot;</span></div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>         &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>      <span class="keyword">auto</span> inputs_i = sign_i-&gt;inputs();</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; inputs_i-&gt;size(); ++t)</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>      {</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        <span class="keyword">auto</span> inputs_i_t = inputs_i-&gt;Get(t);</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>        os &lt;&lt; <span class="stringliteral">&quot;    I(&quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>           &lt;&lt; <span class="stringliteral">&quot; T(&quot;</span> &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; inputs_i_t-&gt;tensor_index() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>           &lt;&lt; inputs_i_t-&gt;name()-&gt;c_str() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>      }</div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>      <span class="keyword">auto</span> outputs_i = sign_i-&gt;outputs();</div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; outputs_i-&gt;size(); ++t)</div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      {</div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>        <span class="keyword">auto</span> outputs_i_t = outputs_i-&gt;Get(t);</div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>        os &lt;&lt; <span class="stringliteral">&quot;    O(&quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>           &lt;&lt; <span class="stringliteral">&quot; T(&quot;</span> &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; outputs_i_t-&gt;tensor_index() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>           &lt;&lt; outputs_i_t-&gt;name()-&gt;c_str() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>      }</div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    }</div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>    os &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>  }</div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>  <span class="keywordflow">for</span> (uint32_t sg = 0; sg &lt; num_subgraph; ++sg)</div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>  {</div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#af95b54feb12024dce42f1ec99f68c5e1">select_subgraph</a>(sg);</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="keywordtype">bool</span> ext_offset = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keyword">const</span> uint8_t *buff_data;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a8fdcda88deddd622edf050c36b869796">buffer_info</a>(i, &amp;buff_data, ext_offset);</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    os &lt;&lt; <span class="stringliteral">&quot;B(&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;) (&quot;</span> &lt;&lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    <span class="keywordflow">if</span> (ext_offset)</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      os &lt;&lt; <span class="stringliteral">&quot; *&quot;</span>;</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    os &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    <span class="keywordflow">if</span> (buff_data != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    {</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      <a class="code hl_function" href="namespacecircledump.html#ab3cef28306d510623fc27751be057f0d">dump_buffer</a>(os, buff_data, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, 16);</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    }</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  }</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  os &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="comment">// dump metadata</span></div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>  <span class="keywordflow">if</span> (metadata != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>  {</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    os &lt;&lt; <span class="stringliteral">&quot;metadata : B(index) name&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; metadata-&gt;size(); ++i)</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    {</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>      <span class="keyword">const</span> <span class="keyword">auto</span> buff_id = metadata-&gt;Get(i)-&gt;buffer();</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>      <span class="keyword">const</span> <span class="keyword">auto</span> metadata_name = metadata-&gt;Get(i)-&gt;name()-&gt;str();</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      os &lt;&lt; <span class="stringliteral">&quot;B(&quot;</span> &lt;&lt; buff_id &lt;&lt; <span class="stringliteral">&quot;) &quot;</span> &lt;&lt; metadata_name &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>      <span class="keyword">const</span> uint8_t *buff_data;</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>      reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#a8fdcda88deddd622edf050c36b869796">buffer_info</a>(buff_id, &amp;buff_data);</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>      <span class="keywordflow">if</span> (<span class="keyword">auto</span> meta_prn = <a class="code hl_function" href="classcircledump_1_1_metadata_printer_registry.html#ac3eadf5e687de5db704a540cf4cdc372">MetadataPrinterRegistry::get</a>().lookup(metadata_name))</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>      {</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>        meta_prn-&gt;print(buff_data, os);</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>      }</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    }</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  }</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span> </div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  <span class="comment">// dump signaturedef</span></div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  <span class="keywordflow">if</span> (signaturedefs != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  {</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    os &lt;&lt; <span class="stringliteral">&quot;SignatureDef&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; signaturedefs-&gt;size(); ++i)</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    {</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>      <span class="keyword">auto</span> sign_i = signaturedefs-&gt;Get(i);</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>      os &lt;&lt; <span class="stringliteral">&quot;S(&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;) signature_key(&quot;</span> &lt;&lt; sign_i-&gt;signature_key()-&gt;c_str() &lt;&lt; <span class="stringliteral">&quot;), sub_graph(&quot;</span></div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>         &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span> </div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>      <span class="keyword">auto</span> inputs_i = sign_i-&gt;inputs();</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; inputs_i-&gt;size(); ++t)</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>      {</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>        <span class="keyword">auto</span> inputs_i_t = inputs_i-&gt;Get(t);</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>        os &lt;&lt; <span class="stringliteral">&quot;    I(&quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>           &lt;&lt; <span class="stringliteral">&quot; T(&quot;</span> &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; inputs_i_t-&gt;tensor_index() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>           &lt;&lt; inputs_i_t-&gt;name()-&gt;c_str() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>      }</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span> </div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>      <span class="keyword">auto</span> outputs_i = sign_i-&gt;outputs();</div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>      <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; outputs_i-&gt;size(); ++t)</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>      {</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>        <span class="keyword">auto</span> outputs_i_t = outputs_i-&gt;Get(t);</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>        os &lt;&lt; <span class="stringliteral">&quot;    O(&quot;</span> &lt;&lt; t &lt;&lt; <span class="stringliteral">&quot;)&quot;</span></div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>           &lt;&lt; <span class="stringliteral">&quot; T(&quot;</span> &lt;&lt; sign_i-&gt;subgraph_index() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; outputs_i_t-&gt;tensor_index() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>           &lt;&lt; outputs_i_t-&gt;name()-&gt;c_str() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>      }</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    }</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>  }</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    os &lt;&lt; <span class="stringliteral">&quot;-------------------------------------------------------------------&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    os &lt;&lt; <span class="stringliteral">&quot;Sub-Graph: #&quot;</span> &lt;&lt; sg &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#ad3f9189c7515d09393ecda71e66488f0">subgraph_name</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>  <span class="keywordflow">for</span> (uint32_t sg = 0; sg &lt; num_subgraph; ++sg)</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>  {</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#af95b54feb12024dce42f1ec99f68c5e1">select_subgraph</a>(sg);</div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span> </div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    <a class="code hl_function" href="namespacecircledump.html#a9571c9e952552bf3ab3f9946ff99d069">dump_sub_graph</a>(os, reader);</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>  }</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span> </div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>  os &lt;&lt; <span class="stringliteral">&quot;===================================================================&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>}</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    os &lt;&lt; <span class="stringliteral">&quot;-------------------------------------------------------------------&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>    os &lt;&lt; <span class="stringliteral">&quot;Sub-Graph: #&quot;</span> &lt;&lt; sg &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; reader.<a class="code hl_function" href="classmio_1_1circle_1_1_reader.html#ad3f9189c7515d09393ecda71e66488f0">subgraph_name</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    os &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span> </div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    <a class="code hl_function" href="namespacecircledump.html#a9571c9e952552bf3ab3f9946ff99d069">dump_sub_graph</a>(os, reader);</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>  }</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span> </div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>  os &lt;&lt; <span class="stringliteral">&quot;===================================================================&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>}</div>
 </div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span> </div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>} <span class="comment">// namespace circledump</span></div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span> </div>
-<div class="foldopen" id="foldopen00463" data-start="{" data-end="}">
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno"><a class="line" href="circledump_2include_2circledump_2_dump_8h.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">  463</a></span>std::ostream &amp;<a class="code hl_function" href="circledump_2src_2_dump_8cpp.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">operator&lt;&lt;</a>(std::ostream &amp;os, <span class="keyword">const</span> circle::Model *model)</div>
-<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>{</div>
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>  <a class="code hl_function" href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">circledump::dump_model</a>(os, model);</div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>  <span class="keywordflow">return</span> os;</div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>}</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span> </div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>} <span class="comment">// namespace circledump</span></div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span> </div>
+<div class="foldopen" id="foldopen00467" data-start="{" data-end="}">
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno"><a class="line" href="circledump_2include_2circledump_2_dump_8h.html#a4020666fff86e3f1d52dde5bf16b776d">  467</a></span>std::ostream &amp;<a class="code hl_function" href="circledump_2src_2_dump_8cpp.html#ad7f6ccb5952e4bebd73b5e5a8163d448">operator&lt;&lt;</a>(std::ostream &amp;os, <span class="keyword">const</span> <a class="code hl_struct" href="structcircledump_1_1_model_ex.html">circledump::ModelEx</a> &amp;modelex)</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>{</div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>  <a class="code hl_function" href="namespacecircledump.html#a1cd153643d28a2f76731fcf02e65fb56">circledump::dump_model</a>(os, modelex.<a class="code hl_variable" href="structcircledump_1_1_model_ex.html#a42b00dcb5f66e6d91d698af43690a50c">model</a>, modelex.<a class="code hl_variable" href="structcircledump_1_1_model_ex.html#af0e8e42c7706b5928e4d7ff3166d14b6">rawdata</a>);</div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>  <span class="keywordflow">return</span> os;</div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span>}</div>
 </div>
 <div class="ttc" id="a_metadata_printer_8h_html"><div class="ttname"><a href="_metadata_printer_8h.html">MetadataPrinter.h</a></div></div>
 <div class="ttc" id="acircledump_2include_2circledump_2_dump_8h_html"><div class="ttname"><a href="circledump_2include_2circledump_2_dump_8h.html">Dump.h</a></div></div>
-<div class="ttc" id="acircledump_2src_2_dump_8cpp_html_a5c8cbbf61e0997b7df5ce080e0ae5bf6"><div class="ttname"><a href="circledump_2src_2_dump_8cpp.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00463">Dump.cpp:463</a></div></div>
+<div class="ttc" id="acircledump_2src_2_dump_8cpp_html_ad7f6ccb5952e4bebd73b5e5a8163d448"><div class="ttname"><a href="circledump_2src_2_dump_8cpp.html#ad7f6ccb5952e4bebd73b5e5a8163d448">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const circledump::ModelEx &amp;modelex)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00467">Dump.cpp:467</a></div></div>
 <div class="ttc" id="aclasscircledump_1_1_metadata_printer_registry_html_ac3eadf5e687de5db704a540cf4cdc372"><div class="ttname"><a href="classcircledump_1_1_metadata_printer_registry.html#ac3eadf5e687de5db704a540cf4cdc372">circledump::MetadataPrinterRegistry::get</a></div><div class="ttdeci">static MetadataPrinterRegistry &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_metadata_printer_8h_source.html#l00050">MetadataPrinter.h:50</a></div></div>
 <div class="ttc" id="aclasscircledump_1_1_op_printer_registry_html_a76c6a3217b15d3083f48a23c6ef051cc"><div class="ttname"><a href="classcircledump_1_1_op_printer_registry.html#a76c6a3217b15d3083f48a23c6ef051cc">circledump::OpPrinterRegistry::get</a></div><div class="ttdeci">static OpPrinterRegistry &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_op_printer_8h_source.html#l00049">OpPrinter.h:49</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00268">flatbuffers.h:269</a></div></div>
@@ -608,7 +612,7 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="ttc" id="aclassmio_1_1circle_1_1_reader_html_ad3f9189c7515d09393ecda71e66488f0"><div class="ttname"><a href="classmio_1_1circle_1_1_reader.html#ad3f9189c7515d09393ecda71e66488f0">mio::circle::Reader::subgraph_name</a></div><div class="ttdeci">const std::string &amp; subgraph_name(void) const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2mio-circle04_2include_2mio__circle_2_reader_8h_source.html#l00077">Reader.h:77</a></div></div>
 <div class="ttc" id="aclassmio_1_1circle_1_1_reader_html_af95b54feb12024dce42f1ec99f68c5e1"><div class="ttname"><a href="classmio_1_1circle_1_1_reader.html#af95b54feb12024dce42f1ec99f68c5e1">mio::circle::Reader::select_subgraph</a></div><div class="ttdeci">bool select_subgraph(uint32_t subgraph)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle04_2src_2_reader_8cpp_source.html#l00116">Reader.cpp:116</a></div></div>
 <div class="ttc" id="anamespacecircledump_html"><div class="ttname"><a href="namespacecircledump.html">circledump</a></div><div class="ttdef"><b>Definition</b> <a href="circledump_2include_2circledump_2_dump_8h_source.html#l00024">Dump.h:25</a></div></div>
-<div class="ttc" id="anamespacecircledump_html_a29776e19b9cf5cb457b5e8d0ea6cb3c0"><div class="ttname"><a href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">circledump::dump_model</a></div><div class="ttdeci">void dump_model(std::ostream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00344">Dump.cpp:344</a></div></div>
+<div class="ttc" id="anamespacecircledump_html_a1cd153643d28a2f76731fcf02e65fb56"><div class="ttname"><a href="namespacecircledump.html#a1cd153643d28a2f76731fcf02e65fb56">circledump::dump_model</a></div><div class="ttdeci">void dump_model(std::ostream &amp;os, const circledump::ModelEx &amp;model)</div></div>
 <div class="ttc" id="anamespacecircledump_html_a487957c9e8a7dae428d97a731b45ae13"><div class="ttname"><a href="namespacecircledump.html#a487957c9e8a7dae428d97a731b45ae13">circledump::dump_vector</a></div><div class="ttdeci">void dump_vector(std::ostream &amp;os, const std::vector&lt; int32_t &gt; &amp;vs)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00060">Dump.cpp:60</a></div></div>
 <div class="ttc" id="anamespacecircledump_html_a9571c9e952552bf3ab3f9946ff99d069"><div class="ttname"><a href="namespacecircledump.html#a9571c9e952552bf3ab3f9946ff99d069">circledump::dump_sub_graph</a></div><div class="ttdeci">void dump_sub_graph(std::ostream &amp;os, mio::circle::Reader &amp;reader)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00125">Dump.cpp:125</a></div></div>
 <div class="ttc" id="anamespacecircledump_html_ab3cef28306d510623fc27751be057f0d"><div class="ttname"><a href="namespacecircledump.html#ab3cef28306d510623fc27751be057f0d">circledump::dump_buffer</a></div><div class="ttdeci">void dump_buffer(std::ostream &amp;os, const uint8_t *buffer, size_t size, size_t amount)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00032">Dump.cpp:32</a></div></div>
@@ -619,6 +623,9 @@ $(document).ready(function(){initNavTree('circledump_2src_2_dump_8cpp_source.htm
 <div class="ttc" id="anamespacemio_1_1circle_html_a83b506ea8b310e5116b6259985f72136"><div class="ttname"><a href="namespacemio_1_1circle.html#a83b506ea8b310e5116b6259985f72136">mio::circle::as_index_vector</a></div><div class="ttdeci">std::vector&lt; T &gt; as_index_vector(const flatbuffers::Vector&lt; T &gt; *flat_array)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle04_2include_2mio__circle_2_helper_8h_source.html#l00036">Helper.h:36</a></div></div>
 <div class="ttc" id="anamespacemio_1_1circle_html_a9dadcab3fa3288500db94ffb281ea65b"><div class="ttname"><a href="namespacemio_1_1circle.html#a9dadcab3fa3288500db94ffb281ea65b">mio::circle::tensor_type</a></div><div class="ttdeci">const char * tensor_type(const ::circle::Tensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle_2src_2_helper_8cpp_source.html#l00064">Helper.cpp:64</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
+<div class="ttc" id="astructcircledump_1_1_model_ex_html"><div class="ttname"><a href="structcircledump_1_1_model_ex.html">circledump::ModelEx</a></div><div class="ttdef"><b>Definition</b> <a href="circledump_2include_2circledump_2_dump_8h_source.html#l00027">Dump.h:28</a></div></div>
+<div class="ttc" id="astructcircledump_1_1_model_ex_html_a42b00dcb5f66e6d91d698af43690a50c"><div class="ttname"><a href="structcircledump_1_1_model_ex.html#a42b00dcb5f66e6d91d698af43690a50c">circledump::ModelEx::model</a></div><div class="ttdeci">const circle::Model * model</div><div class="ttdef"><b>Definition</b> <a href="circledump_2include_2circledump_2_dump_8h_source.html#l00029">Dump.h:29</a></div></div>
+<div class="ttc" id="astructcircledump_1_1_model_ex_html_af0e8e42c7706b5928e4d7ff3166d14b6"><div class="ttname"><a href="structcircledump_1_1_model_ex.html#af0e8e42c7706b5928e4d7ff3166d14b6">circledump::ModelEx::rawdata</a></div><div class="ttdeci">const std::vector&lt; char &gt; * rawdata</div><div class="ttdef"><b>Definition</b> <a href="circledump_2include_2circledump_2_dump_8h_source.html#l00030">Dump.h:30</a></div></div>
 <div class="ttc" id="atfldump_2src_2_op_printer_8h_html"><div class="ttname"><a href="tfldump_2src_2_op_printer_8h.html">OpPrinter.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

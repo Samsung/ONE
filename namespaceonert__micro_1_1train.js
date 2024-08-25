@@ -6,9 +6,9 @@ var namespaceonert__micro_1_1train =
     [ "pal", "namespaceonert__micro_1_1train_1_1pal.html", [
       [ "Conv2DBiasGrad", "namespaceonert__micro_1_1train_1_1pal.html#ad75bd7c652a91d426c84d4510223b9d6", null ],
       [ "Conv2DInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#a990aeaa2e5a27e2c72e8de3fe7d72f70", null ],
-      [ "Conv2DWeightGrad", "namespaceonert__micro_1_1train_1_1pal.html#a57d37762744cebe9c5d35428765bce0e", null ],
+      [ "Conv2DWeightGrad", "namespaceonert__micro_1_1train_1_1pal.html#a7e8ab6edca92522bd47ced35ad2d8a88", null ],
       [ "FullyConnectedInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#a3e13cc500824cda9d974985e240e7329", null ],
-      [ "FullyConnectedWeightGrad", "namespaceonert__micro_1_1train_1_1pal.html#a9eb2fa0407a397c065d29ba5b975b722", null ],
+      [ "FullyConnectedWeightGrad", "namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8", null ],
       [ "MaxPool2D", "namespaceonert__micro_1_1train_1_1pal.html#a4c2a2472f64f222662aae7c68f826f37", null ],
       [ "ReluInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#a3b95c071f13296cd0dbd46bcc0cd57cb", null ],
       [ "SoftmaxInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#ab23700dbd0f7f61ccb070ece73c92d44", null ]

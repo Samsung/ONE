@@ -10,5 +10,6 @@ var structonert__micro_1_1_o_m_training_context =
     [ "num_epoch", "structonert__micro_1_1_o_m_training_context.html#acb043b255aa1ace966d60aeb543ac94a", null ],
     [ "num_of_train_layers", "structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69", null ],
     [ "num_step", "structonert__micro_1_1_o_m_training_context.html#a6970c596a98f2c40b4101ae594bd0238", null ],
-    [ "optimizer", "structonert__micro_1_1_o_m_training_context.html#a8eb4935188db5fd11be29b368d306a59", null ]
+    [ "optimizer", "structonert__micro_1_1_o_m_training_context.html#a8eb4935188db5fd11be29b368d306a59", null ],
+    [ "training_config_info_data", "structonert__micro_1_1_o_m_training_context.html#aa5fbdc80c202a5fc292f3b87580d285f", null ]
 ];

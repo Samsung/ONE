@@ -17,6 +17,7 @@ var _o_m_kernel_data_8h =
     [ "onert_micro::core::ComparisonParams", "structonert__micro_1_1core_1_1_comparison_params.html", "structonert__micro_1_1core_1_1_comparison_params" ],
     [ "onert_micro::core::QuantizationParams", "structonert__micro_1_1core_1_1_quantization_params.html", "structonert__micro_1_1core_1_1_quantization_params" ],
     [ "onert_micro::core::SliceParams", "structonert__micro_1_1core_1_1_slice_params.html", "structonert__micro_1_1core_1_1_slice_params" ],
+    [ "onert_micro::core::SVDFQuantParams", "structonert__micro_1_1core_1_1_s_v_d_f_quant_params.html", "structonert__micro_1_1core_1_1_s_v_d_f_quant_params" ],
     [ "BroadcastableOpCategory", "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46", [
       [ "kNone", "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46a35c3ace1970663a16e5c65baa5941b13", null ],
       [ "kNonBroadcast", "_o_m_kernel_data_8h.html#a965b8f3e9c466ba0fe86487daabf7e46a474311140849eefcabdcbb172ad82866", null ],

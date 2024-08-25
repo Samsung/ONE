@@ -1,8 +1,10 @@
 var classtflread_1_1_reader =
 [
     [ "Reader", "classtflread_1_1_reader.html#a87444eae86a8c32ac24ba44f72f38846", null ],
+    [ "Reader", "classtflread_1_1_reader.html#a19d349cf6d9f8a599bc8fce7620a3a94", null ],
     [ "Reader", "classtflread_1_1_reader.html#a8fa08a2ce4b6917a5de2bc782cfd9f58", null ],
     [ "buffer_info", "classtflread_1_1_reader.html#a470e761cd4894d64ed7d0775b1c78a20", null ],
+    [ "buffer_info", "classtflread_1_1_reader.html#a92ddfd539aa4bf7f37bb20cefadfd916", null ],
     [ "buffers", "classtflread_1_1_reader.html#a48f280ea668bfa7bd90857f557003a08", null ],
     [ "builtin_code", "classtflread_1_1_reader.html#a3e9513a4873f25a4ecad7dbcbd922262", null ],
     [ "inputs", "classtflread_1_1_reader.html#a461c7e669cd49dd14dd4d4e088bd46cd", null ],

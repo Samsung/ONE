@@ -102,6 +102,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html">OMCircleReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Circle file and provides helpers to access attributes.  <a href="classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1reader_1_1_o_m_training_config_reader.html">OMTrainingConfigReader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Training Config files and provides helpers functions.  <a href="classonert__micro_1_1core_1_1reader_1_1_o_m_training_config_reader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1reader_1_1_o_m_weight_only_format_reader.html">OMWeightOnlyFormatReader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Weight Only Format files and provides helpers functions.  <a href="classonert__micro_1_1core_1_1reader_1_1_o_m_weight_only_format_reader.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,6 +126,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:aa4f0260fa875a047597347549e73bbba" id="r_aa4f0260fa875a047597347549e73bbba"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#aa4f0260fa875a047597347549e73bbba">train_config_file_magic_number</a> = 29</td></tr>
+<tr class="separator:aa4f0260fa875a047597347549e73bbba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed851504ae783e79dc217d15ffaa9ed3" id="r_aed851504ae783e79dc217d15ffaa9ed3"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#aed851504ae783e79dc217d15ffaa9ed3">train_config_file_schema_version</a> = 1</td></tr>
+<tr class="separator:aed851504ae783e79dc217d15ffaa9ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39059ea1916fe28dd6e6846b45e2a484" id="r_a39059ea1916fe28dd6e6846b45e2a484"><td class="memItemLeft" align="right" valign="top">constexpr uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#a39059ea1916fe28dd6e6846b45e2a484">wof_magic_number</a> = 429</td></tr>
 <tr class="separator:a39059ea1916fe28dd6e6846b45e2a484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3e9b386c8177eb3e1d450d716f1f6e0" id="r_ab3e9b386c8177eb3e1d450d716f1f6e0"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core_1_1reader.html#ab3e9b386c8177eb3e1d450d716f1f6e0">schema_version</a> = 1</td></tr>
@@ -249,6 +256,58 @@ Variables</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_o_m_weight_only_format_reader_8h_source.html#l00043">43</a> of file <a class="el" href="_o_m_weight_only_format_reader_8h_source.html">OMWeightOnlyFormatReader.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_o_m_weight_only_format_reader_8cpp_source.html#l00025">onert_micro::core::reader::OMWeightOnlyFormatReader::validate()</a>.</p>
+
+</div>
+</div>
+<a id="aa4f0260fa875a047597347549e73bbba" name="aa4f0260fa875a047597347549e73bbba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4f0260fa875a047597347549e73bbba">&#9670;&#160;</a></span>train_config_file_magic_number</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint16_t onert_micro::core::reader::train_config_file_magic_number = 29</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_config_file_reader_8h_source.html#l00044">44</a> of file <a class="el" href="_o_m_training_config_file_reader_8h_source.html">OMTrainingConfigFileReader.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_training_config_file_reader_8cpp_source.html#l00025">onert_micro::core::reader::OMTrainingConfigReader::validate()</a>.</p>
+
+</div>
+</div>
+<a id="aed851504ae783e79dc217d15ffaa9ed3" name="aed851504ae783e79dc217d15ffaa9ed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed851504ae783e79dc217d15ffaa9ed3">&#9670;&#160;</a></span>train_config_file_schema_version</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t onert_micro::core::reader::train_config_file_schema_version = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_training_config_file_reader_8h_source.html#l00045">45</a> of file <a class="el" href="_o_m_training_config_file_reader_8h_source.html">OMTrainingConfigFileReader.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_training_config_file_reader_8cpp_source.html#l00025">onert_micro::core::reader::OMTrainingConfigReader::validate()</a>.</p>
 
 </div>
 </div>

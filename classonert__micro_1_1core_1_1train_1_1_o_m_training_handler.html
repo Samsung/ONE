@@ -123,8 +123,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adf541d6ef3901c166d9a9fde1b31e91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8fe402405d79b2c8511240914be627b" id="r_ab8fe402405d79b2c8511240914be627b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#ab8fe402405d79b2c8511240914be627b">updateOptimizerState</a> (const <a class="el" href="structonert__micro_1_1_o_m_config.html">OMConfig</a> &amp;config, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">OMRuntimeStorage</a> &amp;backward_storage, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;context)</td></tr>
 <tr class="separator:ab8fe402405d79b2c8511240914be627b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a784aadc2e7d6325d47dc691f59bb727a" id="r_a784aadc2e7d6325d47dc691f59bb727a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a784aadc2e7d6325d47dc691f59bb727a">updateWeights</a> (const <a class="el" href="structonert__micro_1_1_o_m_config.html">OMConfig</a> &amp;config, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;context)</td></tr>
-<tr class="separator:a784aadc2e7d6325d47dc691f59bb727a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a089f6be18f4a04d5e18512b2e95c7fe6" id="r_a089f6be18f4a04d5e18512b2e95c7fe6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a089f6be18f4a04d5e18512b2e95c7fe6">updateWeights</a> (const <a class="el" href="structonert__micro_1_1_o_m_config.html">OMConfig</a> &amp;config, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;context, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">OMRuntimeStorage</a> &amp;storage)</td></tr>
+<tr class="separator:a089f6be18f4a04d5e18512b2e95c7fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adced71556afee67d585c922e60001898" id="r_adced71556afee67d585c922e60001898"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#adced71556afee67d585c922e60001898">evaluateMetric</a> (<a class="el" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224">OMMetrics</a> metric, void *metric_val, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">OMRuntimeStorage</a> &amp;storage, <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;context, uint32_t batch_num)</td></tr>
 <tr class="separator:adced71556afee67d585c922e60001898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55276767c52ebc0f7175d2d2aebb4766" id="r_a55276767c52ebc0f7175d2d2aebb4766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a55276767c52ebc0f7175d2d2aebb4766">setOptimizer</a> (const <a class="el" href="structonert__micro_1_1_o_m_config.html">OMConfig</a> &amp;config)</td></tr>
@@ -286,92 +286,92 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>NOTE: This offset will always return 0 if the MODEL OUTPUT is returning 1 value of prediction. (forward_output-&gt;size() == length of output vector.) one-hot: size == target_numbers Sparse cross : size == 1</p>
 
-<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00215">215</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  218</span>{</div>
-<div class="line"><span class="lineno">  219</span>  <span class="comment">// Go over all outputs and calculate metric</span></div>
-<div class="line"><span class="lineno">  220</span>  <span class="keyword">auto</span> forward_outputs = context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
-<div class="line"><span class="lineno">  221</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; forward_outputs-&gt;size(); ++i)</div>
-<div class="line"><span class="lineno">  222</span>  {</div>
-<div class="line"><span class="lineno">  223</span>    <span class="comment">// Get output tensor</span></div>
-<div class="line"><span class="lineno">  224</span>    <span class="keyword">const</span> <span class="keyword">auto</span> forward_output_index = forward_outputs-&gt;operator[](i);</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keyword">const</span> <span class="keyword">auto</span> forward_output_tensor = context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#ac6ed9d034dd6a4cdda2dc85a156286c2">getTensorByIndex</a>(forward_output_index);</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> shape(forward_output_tensor);</div>
-<div class="line"><span class="lineno">  228</span>    <span class="keyword">const</span> <span class="keyword">auto</span> flat_size = shape.flatSize();</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    <span class="comment">// Check type</span></div>
-<div class="line"><span class="lineno">  231</span>    assert(forward_output_tensor-&gt;type() == circle::TensorType_FLOAT32 &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">if</span> (forward_output_tensor-&gt;type() != circle::TensorType_FLOAT32)</div>
-<div class="line"><span class="lineno">  233</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>    <span class="comment">// Get calculated data</span></div>
-<div class="line"><span class="lineno">  236</span>    uint8_t *calculated_data = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  237</span>    <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#abc4192c55196e6d3fe7ecb6276394deb">getDataByTensorIndex</a>(&amp;calculated_data, forward_output_index);</div>
-<div class="line"><span class="lineno">  238</span>    assert(calculated_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    <span class="comment">// Get target data</span></div>
-<div class="line"><span class="lineno">  247</span>    <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = batch_num * <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#ad685c328cb57eb4f4e9081ada4020a70">core::OMDataType</a>(forward_output_tensor-&gt;type())) * flat_size;</div>
-<div class="line"><span class="lineno">  248</span>    uint8_t *target_data = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79d5267b49a21da63973350255aeeeb6">getTargetData</a>(i) + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>    <span class="comment">// Note: always cast it to float</span></div>
-<div class="line"><span class="lineno">  251</span>    <span class="keywordtype">float</span> *f_metric_val = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(metric_val);</div>
-<div class="line"><span class="lineno">  252</span>    <span class="keywordflow">switch</span> (metric)</div>
-<div class="line"><span class="lineno">  253</span>    {</div>
-<div class="line"><span class="lineno">  254</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">MSE_METRICS</a>:</div>
-<div class="line"><span class="lineno">  255</span>      {</div>
-<div class="line"><span class="lineno">  256</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
-<div class="line"><span class="lineno">  257</span>        *f_metric_val +=</div>
-<div class="line"><span class="lineno">  258</span>          <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_m_s_e.html#a97e06899c4a8386a227057880c6a08be">metrics::MSE::calculateValue</a>(flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
-<div class="line"><span class="lineno">  259</span>                                       <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
-<div class="line"><span class="lineno">  260</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  261</span>      }</div>
-<div class="line"><span class="lineno">  262</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">MAE_METRICS</a>:</div>
-<div class="line"><span class="lineno">  263</span>      {</div>
-<div class="line"><span class="lineno">  264</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
-<div class="line"><span class="lineno">  265</span>        *f_metric_val +=</div>
-<div class="line"><span class="lineno">  266</span>          <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_m_a_e.html#ad419fccfb9428ff46363f82572d774f4">metrics::MAE::calculateValue</a>(flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
-<div class="line"><span class="lineno">  267</span>                                       <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
-<div class="line"><span class="lineno">  268</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  269</span>      }</div>
-<div class="line"><span class="lineno">  270</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">CROSS_ENTROPY_METRICS</a>:</div>
-<div class="line"><span class="lineno">  271</span>      {</div>
-<div class="line"><span class="lineno">  272</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
-<div class="line"><span class="lineno">  273</span>        *f_metric_val += <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_cross_entropy.html#a8d1a4d533c9d33005dab8d365e64c290">metrics::CrossEntropy::calculateValue</a>(</div>
-<div class="line"><span class="lineno">  274</span>          flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
-<div class="line"><span class="lineno">  275</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
-<div class="line"><span class="lineno">  276</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  277</span>      }</div>
-<div class="line"><span class="lineno">  278</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">ACCURACY</a>:</div>
-<div class="line"><span class="lineno">  279</span>      {</div>
-<div class="line"><span class="lineno">  280</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
-<div class="line"><span class="lineno">  281</span>        *f_metric_val +=</div>
-<div class="line"><span class="lineno">  282</span>          <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_accuracy.html#a5c9ec9191ad2acde29c259240cf9f3ef">metrics::Accuracy::calculateValue</a>(flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
-<div class="line"><span class="lineno">  283</span>                                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
-<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  285</span>      }</div>
-<div class="line"><span class="lineno">  286</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224acb892a4491d539ccf90def1d3435e658">SPARSE_CROSS_ENTROPY_ACCURACY</a>:</div>
-<div class="line"><span class="lineno">  287</span>      {</div>
-<div class="line"><span class="lineno">  288</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
-<div class="line"><span class="lineno">  289</span>        *f_metric_val += <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_sparse_cross_entropy_accuracy.html#a65253669e3c3d74b207a9e9d3bd5e702">metrics::SparseCrossEntropyAccuracy::calculateValue</a>(</div>
-<div class="line"><span class="lineno">  290</span>          flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
-<div class="line"><span class="lineno">  291</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
-<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  293</span>      }</div>
-<div class="line"><span class="lineno">  294</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  295</span>      {</div>
-<div class="line"><span class="lineno">  296</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported loss type&quot;</span>);</div>
-<div class="line"><span class="lineno">  297</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  298</span>      }</div>
-<div class="line"><span class="lineno">  299</span>    }</div>
-<div class="line"><span class="lineno">  300</span>  }</div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  303</span>}</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_a2c819c1d2922338068c58f5a856542af"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">onert_micro::core::OMRuntimeContext::getCircleOutputs</a></div><div class="ttdeci">const reader::CircleValues * getCircleOutputs()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00071">OMRuntimeContext.h:71</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00232">232</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  235</span>{</div>
+<div class="line"><span class="lineno">  236</span>  <span class="comment">// Go over all outputs and calculate metric</span></div>
+<div class="line"><span class="lineno">  237</span>  <span class="keyword">auto</span> forward_outputs = context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
+<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; forward_outputs-&gt;size(); ++i)</div>
+<div class="line"><span class="lineno">  239</span>  {</div>
+<div class="line"><span class="lineno">  240</span>    <span class="comment">// Get output tensor</span></div>
+<div class="line"><span class="lineno">  241</span>    <span class="keyword">const</span> <span class="keyword">auto</span> forward_output_index = forward_outputs-&gt;operator[](i);</div>
+<div class="line"><span class="lineno">  242</span>    <span class="keyword">const</span> <span class="keyword">auto</span> forward_output_tensor = context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#ac6ed9d034dd6a4cdda2dc85a156286c2">getTensorByIndex</a>(forward_output_index);</div>
+<div class="line"><span class="lineno">  243</span> </div>
+<div class="line"><span class="lineno">  244</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> shape(forward_output_tensor);</div>
+<div class="line"><span class="lineno">  245</span>    <span class="keyword">const</span> <span class="keyword">auto</span> flat_size = shape.flatSize();</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>    <span class="comment">// Check type</span></div>
+<div class="line"><span class="lineno">  248</span>    assert(forward_output_tensor-&gt;type() == circle::TensorType_FLOAT32 &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">if</span> (forward_output_tensor-&gt;type() != circle::TensorType_FLOAT32)</div>
+<div class="line"><span class="lineno">  250</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  252</span>    <span class="comment">// Get calculated data</span></div>
+<div class="line"><span class="lineno">  253</span>    uint8_t *calculated_data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  254</span>    <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#abc4192c55196e6d3fe7ecb6276394deb">getDataByTensorIndex</a>(&amp;calculated_data, forward_output_index);</div>
+<div class="line"><span class="lineno">  255</span>    assert(calculated_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>    <span class="comment">// Get target data</span></div>
+<div class="line"><span class="lineno">  264</span>    <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = batch_num * <span class="keyword">sizeof</span>(<a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#ad685c328cb57eb4f4e9081ada4020a70">core::OMDataType</a>(forward_output_tensor-&gt;type())) * flat_size;</div>
+<div class="line"><span class="lineno">  265</span>    uint8_t *target_data = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79d5267b49a21da63973350255aeeeb6">getTargetData</a>(i) + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
+<div class="line"><span class="lineno">  266</span> </div>
+<div class="line"><span class="lineno">  267</span>    <span class="comment">// Note: always cast it to float</span></div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordtype">float</span> *f_metric_val = <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(metric_val);</div>
+<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">switch</span> (metric)</div>
+<div class="line"><span class="lineno">  270</span>    {</div>
+<div class="line"><span class="lineno">  271</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a9beda1704caa2f283c9dcaf0ec657614">MSE_METRICS</a>:</div>
+<div class="line"><span class="lineno">  272</span>      {</div>
+<div class="line"><span class="lineno">  273</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
+<div class="line"><span class="lineno">  274</span>        *f_metric_val +=</div>
+<div class="line"><span class="lineno">  275</span>          <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_m_s_e.html#a97e06899c4a8386a227057880c6a08be">metrics::MSE::calculateValue</a>(flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
+<div class="line"><span class="lineno">  276</span>                                       <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
+<div class="line"><span class="lineno">  277</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  278</span>      }</div>
+<div class="line"><span class="lineno">  279</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224a1d28ad8b688ce2ef695b63adba823b7f">MAE_METRICS</a>:</div>
+<div class="line"><span class="lineno">  280</span>      {</div>
+<div class="line"><span class="lineno">  281</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
+<div class="line"><span class="lineno">  282</span>        *f_metric_val +=</div>
+<div class="line"><span class="lineno">  283</span>          <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_m_a_e.html#ad419fccfb9428ff46363f82572d774f4">metrics::MAE::calculateValue</a>(flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
+<div class="line"><span class="lineno">  284</span>                                       <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
+<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  286</span>      }</div>
+<div class="line"><span class="lineno">  287</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087">CROSS_ENTROPY_METRICS</a>:</div>
+<div class="line"><span class="lineno">  288</span>      {</div>
+<div class="line"><span class="lineno">  289</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
+<div class="line"><span class="lineno">  290</span>        *f_metric_val += <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_cross_entropy.html#a8d1a4d533c9d33005dab8d365e64c290">metrics::CrossEntropy::calculateValue</a>(</div>
+<div class="line"><span class="lineno">  291</span>          flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
+<div class="line"><span class="lineno">  292</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
+<div class="line"><span class="lineno">  293</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  294</span>      }</div>
+<div class="line"><span class="lineno">  295</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224afaa25ac03fa72d2a4f87c268226f30fc">ACCURACY</a>:</div>
+<div class="line"><span class="lineno">  296</span>      {</div>
+<div class="line"><span class="lineno">  297</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
+<div class="line"><span class="lineno">  298</span>        *f_metric_val +=</div>
+<div class="line"><span class="lineno">  299</span>          <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_accuracy.html#a5c9ec9191ad2acde29c259240cf9f3ef">metrics::Accuracy::calculateValue</a>(flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
+<div class="line"><span class="lineno">  300</span>                                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
+<div class="line"><span class="lineno">  301</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  302</span>      }</div>
+<div class="line"><span class="lineno">  303</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ad046550495f851ca3f09b45262799224acb892a4491d539ccf90def1d3435e658">SPARSE_CROSS_ENTROPY_ACCURACY</a>:</div>
+<div class="line"><span class="lineno">  304</span>      {</div>
+<div class="line"><span class="lineno">  305</span>        <span class="comment">// Note: sum up new calculated value for current sample</span></div>
+<div class="line"><span class="lineno">  306</span>        *f_metric_val += <a class="code hl_function" href="structonert__micro_1_1train_1_1metrics_1_1_sparse_cross_entropy_accuracy.html#a65253669e3c3d74b207a9e9d3bd5e702">metrics::SparseCrossEntropyAccuracy::calculateValue</a>(</div>
+<div class="line"><span class="lineno">  307</span>          flat_size, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(calculated_data),</div>
+<div class="line"><span class="lineno">  308</span>          <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(target_data));</div>
+<div class="line"><span class="lineno">  309</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  310</span>      }</div>
+<div class="line"><span class="lineno">  311</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  312</span>      {</div>
+<div class="line"><span class="lineno">  313</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported loss type&quot;</span>);</div>
+<div class="line"><span class="lineno">  314</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  315</span>      }</div>
+<div class="line"><span class="lineno">  316</span>    }</div>
+<div class="line"><span class="lineno">  317</span>  }</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  320</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_a2c819c1d2922338068c58f5a856542af"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">onert_micro::core::OMRuntimeContext::getCircleOutputs</a></div><div class="ttdeci">const reader::CircleValues * getCircleOutputs()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00092">OMRuntimeContext.h:92</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_ac6ed9d034dd6a4cdda2dc85a156286c2"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#ac6ed9d034dd6a4cdda2dc85a156286c2">onert_micro::core::OMRuntimeContext::getTensorByIndex</a></div><div class="ttdeci">const circle::Tensor * getTensorByIndex(int32_t tensor_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8cpp_source.html#l00034">OMRuntimeContext.cpp:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00033">OMRuntimeShape.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_storage_html_abc4192c55196e6d3fe7ecb6276394deb"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#abc4192c55196e6d3fe7ecb6276394deb">onert_micro::core::OMRuntimeStorage::getDataByTensorIndex</a></div><div class="ttdeci">OMStatus getDataByTensorIndex(uint8_t **data, uint16_t tensor_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_storage_8cpp_source.html#l00042">OMRuntimeStorage.cpp:42</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a79d5267b49a21da63973350255aeeeb6"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79d5267b49a21da63973350255aeeeb6">onert_micro::core::train::OMTrainingStorage::getTargetData</a></div><div class="ttdeci">uint8_t * getTargetData(uint32_t target_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00086">OMTrainingStorage.h:86</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a79d5267b49a21da63973350255aeeeb6"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79d5267b49a21da63973350255aeeeb6">onert_micro::core::train::OMTrainingStorage::getTargetData</a></div><div class="ttdeci">uint8_t * getTargetData(uint32_t target_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00099">OMTrainingStorage.h:99</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_html_ad685c328cb57eb4f4e9081ada4020a70"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#ad685c328cb57eb4f4e9081ada4020a70">onert_micro::core::OMDataType</a></div><div class="ttdeci">OMDataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition</b> <a href="_o_m_data_type_8h_source.html#l00034">OMDataType.h:35</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
@@ -388,9 +388,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="astructonert__micro_1_1train_1_1metrics_1_1_m_s_e_html_a97e06899c4a8386a227057880c6a08be"><div class="ttname"><a href="structonert__micro_1_1train_1_1metrics_1_1_m_s_e.html#a97e06899c4a8386a227057880c6a08be">onert_micro::train::metrics::MSE::calculateValue</a></div><div class="ttdeci">static float calculateValue(const uint32_t flat_size, const float *calculated_data, const float *target_data)</div><div class="ttdef"><b>Definition</b> <a href="metrics_2_m_s_e_8cpp_source.html#l00030">MSE.cpp:30</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1train_1_1metrics_1_1_sparse_cross_entropy_accuracy_html_a65253669e3c3d74b207a9e9d3bd5e702"><div class="ttname"><a href="structonert__micro_1_1train_1_1metrics_1_1_sparse_cross_entropy_accuracy.html#a65253669e3c3d74b207a9e9d3bd5e702">onert_micro::train::metrics::SparseCrossEntropyAccuracy::calculateValue</a></div><div class="ttdeci">static float calculateValue(const uint32_t flat_size, const float *calculated_data, const float *target_data)</div><div class="ttdef"><b>Definition</b> <a href="_sparse_cross_entropy_accuracy_8cpp_source.html#l00027">SparseCrossEntropyAccuracy.cpp:27</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00043">onert_micro::ACCURACY</a>, <a class="el" href="_accuracy_8cpp_source.html#l00027">onert_micro::train::metrics::Accuracy::calculateValue()</a>, <a class="el" href="metrics_2_cross_entropy_8cpp_source.html#l00031">onert_micro::train::metrics::CrossEntropy::calculateValue()</a>, <a class="el" href="_m_a_e_8cpp_source.html#l00030">onert_micro::train::metrics::MAE::calculateValue()</a>, <a class="el" href="metrics_2_m_s_e_8cpp_source.html#l00030">onert_micro::train::metrics::MSE::calculateValue()</a>, <a class="el" href="_sparse_cross_entropy_accuracy_8cpp_source.html#l00027">onert_micro::train::metrics::SparseCrossEntropyAccuracy::calculateValue()</a>, <a class="el" href="_o_m_config_8h_source.html#l00042">onert_micro::CROSS_ENTROPY_METRICS</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00071">onert_micro::core::OMRuntimeContext::getCircleOutputs()</a>, <a class="el" href="_o_m_runtime_storage_8cpp_source.html#l00042">onert_micro::core::OMRuntimeStorage::getDataByTensorIndex()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00086">onert_micro::core::train::OMTrainingStorage::getTargetData()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00034">onert_micro::core::OMRuntimeContext::getTensorByIndex()</a>, <a class="el" href="_o_m_config_8h_source.html#l00041">onert_micro::MAE_METRICS</a>, <a class="el" href="_o_m_config_8h_source.html#l00040">onert_micro::MSE_METRICS</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00044">onert_micro::SPARSE_CROSS_ENTROPY_ACCURACY</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00043">onert_micro::ACCURACY</a>, <a class="el" href="_accuracy_8cpp_source.html#l00027">onert_micro::train::metrics::Accuracy::calculateValue()</a>, <a class="el" href="metrics_2_cross_entropy_8cpp_source.html#l00031">onert_micro::train::metrics::CrossEntropy::calculateValue()</a>, <a class="el" href="_m_a_e_8cpp_source.html#l00030">onert_micro::train::metrics::MAE::calculateValue()</a>, <a class="el" href="metrics_2_m_s_e_8cpp_source.html#l00030">onert_micro::train::metrics::MSE::calculateValue()</a>, <a class="el" href="_sparse_cross_entropy_accuracy_8cpp_source.html#l00027">onert_micro::train::metrics::SparseCrossEntropyAccuracy::calculateValue()</a>, <a class="el" href="_o_m_config_8h_source.html#l00042">onert_micro::CROSS_ENTROPY_METRICS</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00064">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00092">onert_micro::core::OMRuntimeContext::getCircleOutputs()</a>, <a class="el" href="_o_m_runtime_storage_8cpp_source.html#l00042">onert_micro::core::OMRuntimeStorage::getDataByTensorIndex()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00099">onert_micro::core::train::OMTrainingStorage::getTargetData()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00034">onert_micro::core::OMRuntimeContext::getTensorByIndex()</a>, <a class="el" href="_o_m_config_8h_source.html#l00041">onert_micro::MAE_METRICS</a>, <a class="el" href="_o_m_config_8h_source.html#l00040">onert_micro::MSE_METRICS</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00044">onert_micro::SPARSE_CROSS_ENTROPY_ACCURACY</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00190">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00206">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>.</p>
 
 </div>
 </div>
@@ -422,11 +422,11 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>  {</div>
 <div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#af5e087adcbf2ecab63150f441c95a74a">getInputData</a>(input_index);</div>
 <div class="line"><span class="lineno">   62</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_af5e087adcbf2ecab63150f441c95a74a"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#af5e087adcbf2ecab63150f441c95a74a">onert_micro::core::train::OMTrainingStorage::getInputData</a></div><div class="ttdeci">uint8_t * getInputData(uint32_t input_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00084">OMTrainingStorage.h:84</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_af5e087adcbf2ecab63150f441c95a74a"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#af5e087adcbf2ecab63150f441c95a74a">onert_micro::core::train::OMTrainingStorage::getInputData</a></div><div class="ttdeci">uint8_t * getInputData(uint32_t input_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00097">OMTrainingStorage.h:97</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00084">onert_micro::core::train::OMTrainingStorage::getInputData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00097">onert_micro::core::train::OMTrainingStorage::getInputData()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00190">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00306">onert_micro::core::OMTrainingRuntimeModule::getInputData()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00206">onert_micro::core::OMTrainingRuntimeModule::evaluateMetric()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00327">onert_micro::core::OMTrainingRuntimeModule::getInputData()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00091">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
 
 </div>
 </div>
@@ -459,7 +459,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79d5267b49a21da63973350255aeeeb6">getTargetData</a>(target_index);</div>
 <div class="line"><span class="lineno">   66</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00086">onert_micro::core::train::OMTrainingStorage::getTargetData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00099">onert_micro::core::train::OMTrainingStorage::getTargetData()</a>.</p>
 
 </div>
 </div>
@@ -486,10 +486,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8h_source.html#l00094">94</a> of file <a class="el" href="_o_m_training_handler_8h_source.html">OMTrainingHandler.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{ <span class="keywordflow">return</span> _training_storage; }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8h_source.html#l00095">95</a> of file <a class="el" href="_o_m_training_handler_8h_source.html">OMTrainingHandler.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <span class="keywordflow">return</span> _training_storage; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00272">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00291">onert_micro::core::OMTrainingRuntimeModule::loadCheckpointData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00293">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile()</a>, <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00034">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>, and <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00312">onert_micro::core::OMTrainingRuntimeModule::loadCheckpointData()</a>.</p>
 
 </div>
 </div>
@@ -614,18 +614,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  113</span>}</div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_storage_html_ad601ae1e83b2c5d8b4023bc23e69c710"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#ad601ae1e83b2c5d8b4023bc23e69c710">onert_micro::core::OMRuntimeStorage::saveDataToTensorIndex</a></div><div class="ttdeci">OMStatus saveDataToTensorIndex(uint8_t *data, uint16_t tensor_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_storage_8cpp_source.html#l00022">OMRuntimeStorage.cpp:22</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_ad2e650e5f9a54072f7e063a353ef6489"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">gen_h5_explicit_inputs_all.config</a></div><div class="ttdeci">config</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00071">gen_h5_explicit_inputs_all.py:71</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fd"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">onert_micro::OMLoss</a></div><div class="ttdeci">OMLoss</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00050">OMConfig.h:51</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda1818808d149ef13c683d3bb35d6fe9ed"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda1818808d149ef13c683d3bb35d6fe9ed">onert_micro::SPARSE_CROSS_ENTROPY</a></div><div class="ttdeci">@ SPARSE_CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00056">OMConfig.h:56</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">onert_micro::CROSS_ENTROPY</a></div><div class="ttdeci">@ CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00053">OMConfig.h:53</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">onert_micro::MSE</a></div><div class="ttdeci">@ MSE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00054">OMConfig.h:54</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1core_1_1memory_1_1_o_m_memory_manager_html_af144f2c774bdb3e930553f26f8ad2efd"><div class="ttname"><a href="structonert__micro_1_1core_1_1memory_1_1_o_m_memory_manager.html#af144f2c774bdb3e930553f26f8ad2efd">onert_micro::core::memory::OMMemoryManager::allocateMemory</a></div><div class="ttdeci">static OMStatus allocateMemory(uint32_t size, uint8_t **data)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8cpp_source.html#l00022">OMMemoryManager.cpp:22</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fd"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fd">onert_micro::OMLoss</a></div><div class="ttdeci">OMLoss</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00051">OMConfig.h:52</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda1818808d149ef13c683d3bb35d6fe9ed"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda1818808d149ef13c683d3bb35d6fe9ed">onert_micro::SPARSE_CROSS_ENTROPY</a></div><div class="ttdeci">@ SPARSE_CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00057">OMConfig.h:57</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa">onert_micro::CROSS_ENTROPY</a></div><div class="ttdeci">@ CROSS_ENTROPY</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00054">OMConfig.h:54</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">onert_micro::MSE</a></div><div class="ttdeci">@ MSE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00055">OMConfig.h:55</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1memory_1_1_o_m_memory_manager_html_af144f2c774bdb3e930553f26f8ad2efd"><div class="ttname"><a href="structonert__micro_1_1core_1_1memory_1_1_o_m_memory_manager.html#af144f2c774bdb3e930553f26f8ad2efd">onert_micro::core::memory::OMMemoryManager::allocateMemory</a></div><div class="ttdeci">static OMStatus allocateMemory(uint32_t size, uint8_t **data)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8cpp_source.html#l00031">OMMemoryManager.cpp:31</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1train_1_1losses__functions_1_1_cross_entropy_html_ae83073f532b853a6899d5d8b5b88a99d"><div class="ttname"><a href="structonert__micro_1_1train_1_1losses__functions_1_1_cross_entropy.html#ae83073f532b853a6899d5d8b5b88a99d">onert_micro::train::losses_functions::CrossEntropy::calculateErrorBackpropagation</a></div><div class="ttdeci">static void calculateErrorBackpropagation(const uint32_t flat_size, const float *calculated_data, const float *target_data, float *output_grad)</div><div class="ttdef"><b>Definition</b> <a href="losses__functions_2_cross_entropy_8cpp_source.html#l00029">CrossEntropy.cpp:29</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1train_1_1losses__functions_1_1_m_s_e_html_ab7a100d0fe3a4d57d7d081eec393daac"><div class="ttname"><a href="structonert__micro_1_1train_1_1losses__functions_1_1_m_s_e.html#ab7a100d0fe3a4d57d7d081eec393daac">onert_micro::train::losses_functions::MSE::calculateErrorBackpropagation</a></div><div class="ttdeci">static void calculateErrorBackpropagation(const uint32_t flat_size, const float *calculated_data, const float *target_data, float *output_grad)</div><div class="ttdef"><b>Definition</b> <a href="losses__functions_2_m_s_e_8cpp_source.html#l00029">MSE.cpp:29</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1train_1_1losses__functions_1_1_sparse_cross_entropy_html_a331e14d6574acabaa0fb8cb246bc5898"><div class="ttname"><a href="structonert__micro_1_1train_1_1losses__functions_1_1_sparse_cross_entropy.html#a331e14d6574acabaa0fb8cb246bc5898">onert_micro::train::losses_functions::SparseCrossEntropy::calculateErrorBackpropagation</a></div><div class="ttdeci">static void calculateErrorBackpropagation(const uint32_t flat_size, const float *calculated_data, const float *target_data, float *output_grad)</div><div class="ttdef"><b>Definition</b> <a href="_sparse_cross_entropy_8cpp_source.html#l00033">SparseCrossEntropy.cpp:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_memory_manager_8cpp_source.html#l00022">onert_micro::core::memory::OMMemoryManager::allocateMemory()</a>, <a class="el" href="losses__functions_2_cross_entropy_8cpp_source.html#l00029">onert_micro::train::losses_functions::CrossEntropy::calculateErrorBackpropagation()</a>, <a class="el" href="losses__functions_2_m_s_e_8cpp_source.html#l00029">onert_micro::train::losses_functions::MSE::calculateErrorBackpropagation()</a>, <a class="el" href="_sparse_cross_entropy_8cpp_source.html#l00033">onert_micro::train::losses_functions::SparseCrossEntropy::calculateErrorBackpropagation()</a>, <a class="el" href="_o_m_config_8h_source.html#l00053">onert_micro::CROSS_ENTROPY</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00071">onert_micro::core::OMRuntimeContext::getCircleOutputs()</a>, <a class="el" href="_o_m_runtime_storage_8cpp_source.html#l00042">onert_micro::core::OMRuntimeStorage::getDataByTensorIndex()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00086">onert_micro::core::train::OMTrainingStorage::getTargetData()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00034">onert_micro::core::OMRuntimeContext::getTensorByIndex()</a>, <a class="el" href="_o_m_config_8h_source.html#l00054">onert_micro::MSE</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_storage_8cpp_source.html#l00022">onert_micro::core::OMRuntimeStorage::saveDataToTensorIndex()</a>, <a class="el" href="_o_m_config_8h_source.html#l00056">onert_micro::SPARSE_CROSS_ENTROPY</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_memory_manager_8cpp_source.html#l00031">onert_micro::core::memory::OMMemoryManager::allocateMemory()</a>, <a class="el" href="losses__functions_2_cross_entropy_8cpp_source.html#l00029">onert_micro::train::losses_functions::CrossEntropy::calculateErrorBackpropagation()</a>, <a class="el" href="losses__functions_2_m_s_e_8cpp_source.html#l00029">onert_micro::train::losses_functions::MSE::calculateErrorBackpropagation()</a>, <a class="el" href="_sparse_cross_entropy_8cpp_source.html#l00033">onert_micro::train::losses_functions::SparseCrossEntropy::calculateErrorBackpropagation()</a>, <a class="el" href="_o_m_config_8h_source.html#l00054">onert_micro::CROSS_ENTROPY</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00064">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00092">onert_micro::core::OMRuntimeContext::getCircleOutputs()</a>, <a class="el" href="_o_m_runtime_storage_8cpp_source.html#l00042">onert_micro::core::OMRuntimeStorage::getDataByTensorIndex()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00099">onert_micro::core::train::OMTrainingStorage::getTargetData()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00034">onert_micro::core::OMRuntimeContext::getTensorByIndex()</a>, <a class="el" href="_o_m_config_8h_source.html#l00055">onert_micro::MSE</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_storage_8cpp_source.html#l00022">onert_micro::core::OMRuntimeStorage::saveDataToTensorIndex()</a>, <a class="el" href="_o_m_config_8h_source.html#l00057">onert_micro::SPARSE_CROSS_ENTROPY</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00091">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
 
 </div>
 </div>
@@ -696,13 +696,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00205">205</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  205</span>{ _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a91ab4aec213a616eeaca0e0e95c726c2">reset</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00215">215</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  215</span>{ _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a91ab4aec213a616eeaca0e0e95c726c2">reset</a>(); }</div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a91ab4aec213a616eeaca0e0e95c726c2"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a91ab4aec213a616eeaca0e0e95c726c2">onert_micro::core::train::OMTrainingStorage::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8cpp_source.html#l00053">OMTrainingStorage.cpp:53</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_storage_8cpp_source.html#l00053">onert_micro::core::train::OMTrainingStorage::reset()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00247">onert_micro::core::OMTrainingRuntimeModule::reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00263">onert_micro::core::OMTrainingRuntimeModule::reset()</a>.</p>
 
 </div>
 </div>
@@ -744,9 +744,9 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>  {</div>
 <div class="line"><span class="lineno">   51</span>    _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79c8972c267e3d7ac36f4afef20e4e82">setInputData</a>(data, input_index);</div>
 <div class="line"><span class="lineno">   52</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a79c8972c267e3d7ac36f4afef20e4e82"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79c8972c267e3d7ac36f4afef20e4e82">onert_micro::core::train::OMTrainingStorage::setInputData</a></div><div class="ttdeci">void setInputData(uint8_t *data, uint32_t input_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00063">OMTrainingStorage.h:63</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a79c8972c267e3d7ac36f4afef20e4e82"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a79c8972c267e3d7ac36f4afef20e4e82">onert_micro::core::train::OMTrainingStorage::setInputData</a></div><div class="ttdeci">void setInputData(uint8_t *data, uint32_t input_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00066">OMTrainingStorage.h:66</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00063">onert_micro::core::train::OMTrainingStorage::setInputData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00066">onert_micro::core::train::OMTrainingStorage::setInputData()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8h_source.html#l00075">onert_micro::core::OMTrainingRuntimeModule::setInputData()</a>.</p>
 
@@ -776,13 +776,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8h_source.html#l00091">91</a> of file <a class="el" href="_o_m_training_handler_8h_source.html">OMTrainingHandler.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span>{ <span class="keywordflow">return</span> _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aab93db512b8049eaeb70e827a02c79c2">setOptimizer</a>(config); }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8h_source.html#l00092">92</a> of file <a class="el" href="_o_m_training_handler_8h_source.html">OMTrainingHandler.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{ <span class="keywordflow">return</span> _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aab93db512b8049eaeb70e827a02c79c2">setOptimizer</a>(config); }</div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_aab93db512b8049eaeb70e827a02c79c2"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aab93db512b8049eaeb70e827a02c79c2">onert_micro::core::train::OMTrainingStorage::setOptimizer</a></div><div class="ttdeci">OMStatus setOptimizer(const OMConfig &amp;config)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8cpp_source.html#l00025">OMTrainingStorage.cpp:25</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_training_storage_8cpp_source.html#l00025">onert_micro::core::train::OMTrainingStorage::setOptimizer()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00029">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00034">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>.</p>
 
 </div>
 </div>
@@ -824,9 +824,9 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   54</span>  {</div>
 <div class="line"><span class="lineno">   55</span>    _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a9033d916c72d029b6fec7e8661bddf5c">setTargetData</a>(data, target_index);</div>
 <div class="line"><span class="lineno">   56</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a9033d916c72d029b6fec7e8661bddf5c"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a9033d916c72d029b6fec7e8661bddf5c">onert_micro::core::train::OMTrainingStorage::setTargetData</a></div><div class="ttdeci">void setTargetData(uint8_t *data, uint32_t target_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00068">OMTrainingStorage.h:68</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a9033d916c72d029b6fec7e8661bddf5c"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a9033d916c72d029b6fec7e8661bddf5c">onert_micro::core::train::OMTrainingStorage::setTargetData</a></div><div class="ttdeci">void setTargetData(uint8_t *data, uint32_t target_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00071">OMTrainingStorage.h:71</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00068">onert_micro::core::train::OMTrainingStorage::setTargetData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_storage_8h_source.html#l00071">onert_micro::core::train::OMTrainingStorage::setTargetData()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8h_source.html#l00081">onert_micro::core::OMTrainingRuntimeModule::setTargetData()</a>.</p>
 
@@ -864,55 +864,55 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00167">167</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  170</span>{</div>
-<div class="line"><span class="lineno">  171</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  172</span> </div>
-<div class="line"><span class="lineno">  173</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.optimizer)</div>
-<div class="line"><span class="lineno">  174</span>  {</div>
-<div class="line"><span class="lineno">  175</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>:</div>
-<div class="line"><span class="lineno">  176</span>    {</div>
-<div class="line"><span class="lineno">  177</span>      <span class="keyword">auto</span> *sgd_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aa5992721c64ab388e4182189b13f73c2">getSGD</a>();</div>
-<div class="line"><span class="lineno">  178</span>      assert(sgd_optimizer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  179</span>      <span class="keywordflow">if</span> (sgd_optimizer == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  180</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>      sgd_optimizer-&gt;handle(backward_storage, context);</div>
-<div class="line"><span class="lineno">  183</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  184</span>    }</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">ADAM</a>:</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00177">177</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
+<div class="line"><span class="lineno">  181</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  183</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.optimizer)</div>
+<div class="line"><span class="lineno">  184</span>  {</div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>:</div>
 <div class="line"><span class="lineno">  186</span>    {</div>
-<div class="line"><span class="lineno">  187</span>      <span class="keyword">auto</span> *adam_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a363c1ffda2ee111d67f50d35755b5c67">getAdam</a>();</div>
-<div class="line"><span class="lineno">  188</span>      assert(adam_optimizer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  189</span>      <span class="keywordflow">if</span> (adam_optimizer == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  187</span>      <span class="keyword">auto</span> *sgd_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aa5992721c64ab388e4182189b13f73c2">getSGD</a>();</div>
+<div class="line"><span class="lineno">  188</span>      assert(sgd_optimizer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  189</span>      <span class="keywordflow">if</span> (sgd_optimizer == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  190</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>      adam_optimizer-&gt;handle(backward_storage, context);</div>
+<div class="line"><span class="lineno">  192</span>      sgd_optimizer-&gt;handle(backward_storage, context, backward_storage);</div>
 <div class="line"><span class="lineno">  193</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  194</span>    }</div>
-<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">ADAM</a>:</div>
 <div class="line"><span class="lineno">  196</span>    {</div>
-<div class="line"><span class="lineno">  197</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">  198</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  199</span>    }</div>
-<div class="line"><span class="lineno">  200</span>  }</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keyword">auto</span> *adam_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a363c1ffda2ee111d67f50d35755b5c67">getAdam</a>();</div>
+<div class="line"><span class="lineno">  198</span>      assert(adam_optimizer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  199</span>      <span class="keywordflow">if</span> (adam_optimizer == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  200</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
 <div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  203</span>}</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a363c1ffda2ee111d67f50d35755b5c67"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a363c1ffda2ee111d67f50d35755b5c67">onert_micro::core::train::OMTrainingStorage::getAdam</a></div><div class="ttdeci">onert_micro::train::optimizers::Adam * getAdam()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00081">OMTrainingStorage.h:81</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_aa5992721c64ab388e4182189b13f73c2"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aa5992721c64ab388e4182189b13f73c2">onert_micro::core::train::OMTrainingStorage::getSGD</a></div><div class="ttdeci">onert_micro::train::optimizers::SGD * getSGD()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00078">OMTrainingStorage.h:78</a></div></div>
+<div class="line"><span class="lineno">  202</span>      adam_optimizer-&gt;handle(backward_storage, context, backward_storage);</div>
+<div class="line"><span class="lineno">  203</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  204</span>    }</div>
+<div class="line"><span class="lineno">  205</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  206</span>    {</div>
+<div class="line"><span class="lineno">  207</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">  208</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  209</span>    }</div>
+<div class="line"><span class="lineno">  210</span>  }</div>
+<div class="line"><span class="lineno">  211</span> </div>
+<div class="line"><span class="lineno">  212</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  213</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a363c1ffda2ee111d67f50d35755b5c67"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a363c1ffda2ee111d67f50d35755b5c67">onert_micro::core::train::OMTrainingStorage::getAdam</a></div><div class="ttdeci">onert_micro::train::optimizers::Adam * getAdam()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00094">OMTrainingStorage.h:94</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_aa5992721c64ab388e4182189b13f73c2"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aa5992721c64ab388e4182189b13f73c2">onert_micro::core::train::OMTrainingStorage::getSGD</a></div><div class="ttdeci">onert_micro::train::optimizers::SGD * getSGD()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00091">OMTrainingStorage.h:91</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">onert_micro::ADAM</a></div><div class="ttdeci">@ ADAM</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00032">OMConfig.h:32</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">onert_micro::SGD</a></div><div class="ttdeci">@ SGD</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00031">OMConfig.h:31</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00081">onert_micro::core::train::OMTrainingStorage::getAdam()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00078">onert_micro::core::train::OMTrainingStorage::getSGD()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00031">onert_micro::SGD</a>, <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00094">onert_micro::core::train::OMTrainingStorage::getAdam()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00091">onert_micro::core::train::OMTrainingStorage::getSGD()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00031">onert_micro::SGD</a>, <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00091">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
 
 </div>
 </div>
-<a id="a784aadc2e7d6325d47dc691f59bb727a" name="a784aadc2e7d6325d47dc691f59bb727a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a784aadc2e7d6325d47dc691f59bb727a">&#9670;&#160;</a></span>updateWeights()</h2>
+<a id="a089f6be18f4a04d5e18512b2e95c7fe6" name="a089f6be18f4a04d5e18512b2e95c7fe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a089f6be18f4a04d5e18512b2e95c7fe6">&#9670;&#160;</a></span>updateWeights()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -927,7 +927,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">OMRuntimeContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">OMRuntimeStorage</a> &amp;&#160;</td>
+          <td class="paramname"><em>storage</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -938,51 +944,61 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_o_m_training_handler_8cpp_source.html#l00118">118</a> of file <a class="el" href="_o_m_training_handler_8cpp_source.html">OMTrainingHandler.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span>{</div>
-<div class="line"><span class="lineno">  120</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>  <span class="comment">// Chose optimizer type</span></div>
-<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.optimizer)</div>
-<div class="line"><span class="lineno">  124</span>  {</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>:</div>
-<div class="line"><span class="lineno">  126</span>    {</div>
-<div class="line"><span class="lineno">  127</span>      <span class="keyword">auto</span> *sgd_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aa5992721c64ab388e4182189b13f73c2">getSGD</a>();</div>
-<div class="line"><span class="lineno">  128</span>      assert(sgd_optimizer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">if</span> (sgd_optimizer == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>      status = sgd_optimizer-&gt;updateWeights(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context, context);</div>
-<div class="line"><span class="lineno">  133</span>      assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
-<div class="line"><span class="lineno">  134</span>      <span class="comment">// Reset values</span></div>
-<div class="line"><span class="lineno">  135</span>      sgd_optimizer-&gt;reset();</div>
-<div class="line"><span class="lineno">  136</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  137</span>    }</div>
-<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">ADAM</a>:</div>
-<div class="line"><span class="lineno">  139</span>    {</div>
-<div class="line"><span class="lineno">  140</span>      <span class="keyword">auto</span> *adam_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a363c1ffda2ee111d67f50d35755b5c67">getAdam</a>();</div>
-<div class="line"><span class="lineno">  141</span>      assert(adam_optimizer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">if</span> (adam_optimizer == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>      status = adam_optimizer-&gt;updateWeights(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context, context);</div>
-<div class="line"><span class="lineno">  146</span>      assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
-<div class="line"><span class="lineno">  147</span>      <span class="comment">// Reset values</span></div>
-<div class="line"><span class="lineno">  148</span>      adam_optimizer-&gt;reset();</div>
-<div class="line"><span class="lineno">  149</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  150</span>    }</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  152</span>    {</div>
-<div class="line"><span class="lineno">  153</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  155</span>    }</div>
-<div class="line"><span class="lineno">  156</span>  }</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  159</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>{</div>
+<div class="line"><span class="lineno">  121</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>  <span class="comment">// Chose optimizer type</span></div>
+<div class="line"><span class="lineno">  124</span>  <span class="keywordflow">switch</span> (<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context.optimizer)</div>
+<div class="line"><span class="lineno">  125</span>  {</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a>:</div>
+<div class="line"><span class="lineno">  127</span>    {</div>
+<div class="line"><span class="lineno">  128</span>      <span class="keyword">auto</span> *sgd_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#aa5992721c64ab388e4182189b13f73c2">getSGD</a>();</div>
+<div class="line"><span class="lineno">  129</span>      assert(sgd_optimizer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  130</span>      <span class="keywordflow">if</span> (sgd_optimizer == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>      status = sgd_optimizer-&gt;updateWeights(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context, context, storage,</div>
+<div class="line"><span class="lineno">  134</span>                                            _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a97f3d088d75b57e3c7875a9cebf614bb">getTensorIndexToRankTypeTable</a>());</div>
+<div class="line"><span class="lineno">  135</span>      assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
+<div class="line"><span class="lineno">  136</span>      <span class="comment">// Reset values</span></div>
+<div class="line"><span class="lineno">  137</span><span class="preprocessor">#ifdef OM_MEMORY_ESTIMATE</span></div>
+<div class="line"><span class="lineno">  138</span>      sgd_optimizer-&gt;reset(context, storage);</div>
+<div class="line"><span class="lineno">  139</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  140</span>      sgd_optimizer-&gt;reset();</div>
+<div class="line"><span class="lineno">  141</span><span class="preprocessor">#endif </span><span class="comment">// OM_MEMORY_ESTIMATE</span></div>
+<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  143</span>    }</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">ADAM</a>:</div>
+<div class="line"><span class="lineno">  145</span>    {</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keyword">auto</span> *adam_optimizer = _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a363c1ffda2ee111d67f50d35755b5c67">getAdam</a>();</div>
+<div class="line"><span class="lineno">  147</span>      assert(adam_optimizer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">if</span> (adam_optimizer == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  150</span>      status = adam_optimizer-&gt;updateWeights(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.training_context, context, storage,</div>
+<div class="line"><span class="lineno">  151</span>                                             _training_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a97f3d088d75b57e3c7875a9cebf614bb">getTensorIndexToRankTypeTable</a>());</div>
+<div class="line"><span class="lineno">  152</span>      assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
+<div class="line"><span class="lineno">  153</span>      <span class="comment">// Reset values</span></div>
+<div class="line"><span class="lineno">  154</span><span class="preprocessor">#ifdef OM_MEMORY_ESTIMATE</span></div>
+<div class="line"><span class="lineno">  155</span>      adam_optimizer-&gt;reset(context, storage);</div>
+<div class="line"><span class="lineno">  156</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  157</span>      adam_optimizer-&gt;reset();</div>
+<div class="line"><span class="lineno">  158</span><span class="preprocessor">#endif </span><span class="comment">// OM_MEMORY_ESTIMATE</span></div>
+<div class="line"><span class="lineno">  159</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  160</span>    }</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  162</span>    {</div>
+<div class="line"><span class="lineno">  163</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">  164</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  165</span>    }</div>
+<div class="line"><span class="lineno">  166</span>  }</div>
+<div class="line"><span class="lineno">  167</span> </div>
+<div class="line"><span class="lineno">  168</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  169</span>}</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1train_1_1_o_m_training_storage_html_a97f3d088d75b57e3c7875a9cebf614bb"><div class="ttname"><a href="classonert__micro_1_1core_1_1train_1_1_o_m_training_storage.html#a97f3d088d75b57e3c7875a9cebf614bb">onert_micro::core::train::OMTrainingStorage::getTensorIndexToRankTypeTable</a></div><div class="ttdeci">std::unordered_map&lt; uint16_t, core::OpTrainableRankType &gt; &amp; getTensorIndexToRankTypeTable()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_storage_8h_source.html#l00081">OMTrainingStorage.h:81</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00081">onert_micro::core::train::OMTrainingStorage::getAdam()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00078">onert_micro::core::train::OMTrainingStorage::getSGD()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00031">onert_micro::SGD</a>, <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00094">onert_micro::core::train::OMTrainingStorage::getAdam()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00091">onert_micro::core::train::OMTrainingStorage::getSGD()</a>, <a class="el" href="_o_m_training_storage_8h_source.html#l00081">onert_micro::core::train::OMTrainingStorage::getTensorIndexToRankTypeTable()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00031">onert_micro::SGD</a>, <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00076">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00091">onert_micro::core::OMTrainingRuntimeModule::trainSingleStep()</a>.</p>
 
 </div>
 </div>

@@ -130,14 +130,14 @@ Functions</h2></td></tr>
 <tr class="separator:a98bde7d32ac6c2928f4b16bfebd6b442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9571c9e952552bf3ab3f9946ff99d069" id="r_a9571c9e952552bf3ab3f9946ff99d069"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecircledump.html#a9571c9e952552bf3ab3f9946ff99d069">circledump::dump_sub_graph</a> (std::ostream &amp;os, <a class="el" href="classmio_1_1circle_1_1_reader.html">mio::circle::Reader</a> &amp;reader)</td></tr>
 <tr class="separator:a9571c9e952552bf3ab3f9946ff99d069"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29776e19b9cf5cb457b5e8d0ea6cb3c0" id="r_a29776e19b9cf5cb457b5e8d0ea6cb3c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">circledump::dump_model</a> (std::ostream &amp;os, const circle::Model *model)</td></tr>
-<tr class="separator:a29776e19b9cf5cb457b5e8d0ea6cb3c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c8cbbf61e0997b7df5ce080e0ae5bf6" id="r_a5c8cbbf61e0997b7df5ce080e0ae5bf6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="circledump_2src_2_dump_8cpp.html#a5c8cbbf61e0997b7df5ce080e0ae5bf6">operator&lt;&lt;</a> (std::ostream &amp;os, const circle::Model *model)</td></tr>
-<tr class="separator:a5c8cbbf61e0997b7df5ce080e0ae5bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b61d7e98dd1601f181262e28db2f86" id="r_a74b61d7e98dd1601f181262e28db2f86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecircledump.html#a74b61d7e98dd1601f181262e28db2f86">circledump::dump_model</a> (std::ostream &amp;os, const circle::Model *model, const std::vector&lt; char &gt; *rawdata)</td></tr>
+<tr class="separator:a74b61d7e98dd1601f181262e28db2f86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7f6ccb5952e4bebd73b5e5a8163d448" id="r_ad7f6ccb5952e4bebd73b5e5a8163d448"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="circledump_2src_2_dump_8cpp.html#ad7f6ccb5952e4bebd73b5e5a8163d448">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="structcircledump_1_1_model_ex.html">circledump::ModelEx</a> &amp;modelex)</td></tr>
+<tr class="separator:ad7f6ccb5952e4bebd73b5e5a8163d448"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5c8cbbf61e0997b7df5ce080e0ae5bf6" name="a5c8cbbf61e0997b7df5ce080e0ae5bf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c8cbbf61e0997b7df5ce080e0ae5bf6">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+<a id="ad7f6ccb5952e4bebd73b5e5a8163d448" name="ad7f6ccb5952e4bebd73b5e5a8163d448"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7f6ccb5952e4bebd73b5e5a8163d448">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -151,8 +151,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const circle::Model *&#160;</td>
-          <td class="paramname"><em>model</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structcircledump_1_1_model_ex.html">circledump::ModelEx</a> &amp;&#160;</td>
+          <td class="paramname"><em>modelex</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -162,14 +162,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00463">463</a> of file <a class="el" href="circledump_2src_2_dump_8cpp_source.html">Dump.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  464</span>{</div>
-<div class="line"><span class="lineno">  465</span>  <a class="code hl_function" href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">circledump::dump_model</a>(os, model);</div>
-<div class="line"><span class="lineno">  466</span>  <span class="keywordflow">return</span> os;</div>
-<div class="line"><span class="lineno">  467</span>}</div>
-<div class="ttc" id="anamespacecircledump_html_a29776e19b9cf5cb457b5e8d0ea6cb3c0"><div class="ttname"><a href="namespacecircledump.html#a29776e19b9cf5cb457b5e8d0ea6cb3c0">circledump::dump_model</a></div><div class="ttdeci">void dump_model(std::ostream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00344">Dump.cpp:344</a></div></div>
+<p class="definition">Definition at line <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00467">467</a> of file <a class="el" href="circledump_2src_2_dump_8cpp_source.html">Dump.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  468</span>{</div>
+<div class="line"><span class="lineno">  469</span>  <a class="code hl_function" href="namespacecircledump.html#a1cd153643d28a2f76731fcf02e65fb56">circledump::dump_model</a>(os, modelex.<a class="code hl_variable" href="structcircledump_1_1_model_ex.html#a42b00dcb5f66e6d91d698af43690a50c">model</a>, modelex.<a class="code hl_variable" href="structcircledump_1_1_model_ex.html#af0e8e42c7706b5928e4d7ff3166d14b6">rawdata</a>);</div>
+<div class="line"><span class="lineno">  470</span>  <span class="keywordflow">return</span> os;</div>
+<div class="line"><span class="lineno">  471</span>}</div>
+<div class="ttc" id="anamespacecircledump_html_a1cd153643d28a2f76731fcf02e65fb56"><div class="ttname"><a href="namespacecircledump.html#a1cd153643d28a2f76731fcf02e65fb56">circledump::dump_model</a></div><div class="ttdeci">void dump_model(std::ostream &amp;os, const circledump::ModelEx &amp;model)</div></div>
+<div class="ttc" id="astructcircledump_1_1_model_ex_html_a42b00dcb5f66e6d91d698af43690a50c"><div class="ttname"><a href="structcircledump_1_1_model_ex.html#a42b00dcb5f66e6d91d698af43690a50c">circledump::ModelEx::model</a></div><div class="ttdeci">const circle::Model * model</div><div class="ttdef"><b>Definition</b> <a href="circledump_2include_2circledump_2_dump_8h_source.html#l00029">Dump.h:29</a></div></div>
+<div class="ttc" id="astructcircledump_1_1_model_ex_html_af0e8e42c7706b5928e4d7ff3166d14b6"><div class="ttname"><a href="structcircledump_1_1_model_ex.html#af0e8e42c7706b5928e4d7ff3166d14b6">circledump::ModelEx::rawdata</a></div><div class="ttdeci">const std::vector&lt; char &gt; * rawdata</div><div class="ttdef"><b>Definition</b> <a href="circledump_2include_2circledump_2_dump_8h_source.html#l00030">Dump.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00344">circledump::dump_model()</a>.</p>
+<p class="reference">References <a class="el" href="namespacecircledump.html#a1cd153643d28a2f76731fcf02e65fb56">circledump::dump_model()</a>, <a class="el" href="circledump_2include_2circledump_2_dump_8h_source.html#l00029">circledump::ModelEx::model</a>, and <a class="el" href="circledump_2include_2circledump_2_dump_8h_source.html#l00030">circledump::ModelEx::rawdata</a>.</p>
 
 </div>
 </div>

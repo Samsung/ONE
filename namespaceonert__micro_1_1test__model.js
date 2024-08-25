@@ -272,6 +272,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1gather__nd__float.html#acabc7eb7cb52e2293642d565b3176df0", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1gather__nd__float.html#a52fc4b13b3b8164b1044065c7d12607a", null ]
     ] ],
+    [ "gather_s8", "namespaceonert__micro_1_1test__model_1_1gather__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1gather__s8.html#afde20fec3c696c3600e357872335be8a", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1gather__s8.html#a00f6ee94be4a9257f5ce9512c7adc857", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1gather__s8.html#a29a2e55afb0fa0e432e4c9df3f3e035e", null ]
+    ] ],
     [ "greater_equal_float", "namespaceonert__micro_1_1test__model_1_1greater__equal__float.html", [
       [ "input1_data", "namespaceonert__micro_1_1test__model_1_1greater__equal__float.html#aa22a52eeddf1121c26f9615979940907", null ],
       [ "input2_data", "namespaceonert__micro_1_1test__model_1_1greater__equal__float.html#a4dbcc3b94afbcc72a0a80b3a4778c1a4", null ],
@@ -350,6 +355,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1less__int__with__no__broadcasting.html#a93cdfa36534906317a4da2ae6f86a58a", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1less__int__with__no__broadcasting.html#ab1bc2cd2d7d255dd9fa252b0d8fafaa4", null ]
     ] ],
+    [ "less_s8_with_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1less__s8__with__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1less__s8__with__no__broadcasting.html#a48af6d79d69a7b4dcc6c71d217fa1a74", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1less__s8__with__no__broadcasting.html#af5edcdd09f57fbd3ac7f16b050d34989", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1less__s8__with__no__broadcasting.html#a7bd98156a3a28bada8240cf38dc9417f", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1less__s8__with__no__broadcasting.html#a7ebb23c775038ccc7e48dc98f5710711", null ]
+    ] ],
     [ "less_uint8_with_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1less__uint8__with__no__broadcasting.html", [
       [ "input1_data", "namespaceonert__micro_1_1test__model_1_1less__uint8__with__no__broadcasting.html#a5bdf3e7feb99ea0e81a9c6f14a1d58b4", null ],
       [ "input2_data", "namespaceonert__micro_1_1test__model_1_1less__uint8__with__no__broadcasting.html#a83f454ad5b4197faff374cee3174725c", null ],
@@ -370,6 +381,11 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a142c75b5d461adcb85b4a7f47727edee", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a422eff38d2ac3504cc89a64532625a01", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a741cad1619b7f7126bb7a02d2b01d08d", null ]
+    ] ],
+    [ "logistic_s8", "namespaceonert__micro_1_1test__model_1_1logistic__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1logistic__s8.html#a42800038497d66551ae3567c00568c42", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logistic__s8.html#a95ddc1a421f3f1c1d4e8d6ecebc02bad", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1logistic__s8.html#a8227f7389542802c133ab90b2fe83656", null ]
     ] ],
     [ "maximum_float_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1maximum__float__no__broadcasting.html", [
       [ "input1_data", "namespaceonert__micro_1_1test__model_1_1maximum__float__no__broadcasting.html#a96a7ddb828a8dd123acc153bd0f4b363", null ],
@@ -528,6 +544,9 @@ var namespaceonert__micro_1_1test__model =
     [ "neg_gather_nd_mismatch_input_output_type", "namespaceonert__micro_1_1test__model_1_1neg__gather__nd__mismatch__input__output__type.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__gather__nd__mismatch__input__output__type.html#ac14e0dac9b03f9419d47784c2da91a55", null ]
     ] ],
+    [ "neg_gather_scale_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__gather__scale__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__gather__scale__mismatch.html#aa1b5f1caef23d3f76a10bc48897cadab", null ]
+    ] ],
     [ "neg_gather_wrong_axis", "namespaceonert__micro_1_1test__model_1_1neg__gather__wrong__axis.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__gather__wrong__axis.html#a03bd58ca7cb69617f08b2dc2541bbade", null ]
     ] ],
@@ -548,6 +567,12 @@ var namespaceonert__micro_1_1test__model =
     ] ],
     [ "neg_input_output_shape_mismatch_cast_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__shape__mismatch__cast__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__shape__mismatch__cast__kernel.html#a216fb29e0c5214e1d6148316d33366c6", null ]
+    ] ],
+    [ "neg_input_output_shape_mismatch_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__shape__mismatch__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__shape__mismatch__kernel.html#a56201a2d4a9ca8f6fd9ec88f336eb5ec", null ]
+    ] ],
+    [ "neg_input_output_shape_mismatch_space_to_depth_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__shape__mismatch__space__to__depth__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__shape__mismatch__space__to__depth__kernel.html#a338819bad0898b6da56ecd5bfc7137eb", null ]
     ] ],
     [ "neg_input_output_type_mismatch_batch_to_space_nd_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__batch__to__space__nd__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__batch__to__space__nd__kernel.html#a8215cdee322ba7a5957f940159a5458b", null ]
@@ -651,6 +676,12 @@ var namespaceonert__micro_1_1test__model =
     [ "neg_less_kernel_wrong_output", "namespaceonert__micro_1_1test__model_1_1neg__less__kernel__wrong__output.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__less__kernel__wrong__output.html#aae1a801ad8b3e6c592ee419d192dc06d", null ]
     ] ],
+    [ "neg_less_s8_with_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1neg__less__s8__with__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1neg__less__s8__with__no__broadcasting.html#ae9252d1ca000ad84f22233c5396973d3", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1neg__less__s8__with__no__broadcasting.html#aa565c90c85636284805e738a4c66a55a", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1neg__less__s8__with__no__broadcasting.html#a9f5a2b31a63d7e15824f0402810dd8e9", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__less__s8__with__no__broadcasting.html#a8e324da92aa004690b7407b2f80a5b32", null ]
+    ] ],
     [ "neg_less_uint8_with_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1neg__less__uint8__with__no__broadcasting.html", [
       [ "input1_data", "namespaceonert__micro_1_1test__model_1_1neg__less__uint8__with__no__broadcasting.html#ac0fa2faf4191c6e1b346094cfdb883c5", null ],
       [ "input2_data", "namespaceonert__micro_1_1test__model_1_1neg__less__uint8__with__no__broadcasting.html#a76dee61ba9d979fc139b30cc299fd841", null ],
@@ -688,6 +719,11 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel.html#ab0c8c634edbfb43cd3badca05ff9f1a7", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel.html#a23a32422639796a98c5cf5206bbf4460", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel.html#a4daef57c6cd5768b9aee1af3d8a9836b", null ]
+    ] ],
+    [ "neg_reshape_kernel_s8", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#a3a1254e4a4a8888a8bed527c7b2a4ca5", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#aa67cfceaa200c6d88ec9a70433dd7247", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__reshape__kernel__s8.html#a59a11647598d355672db3fe5ec8c9ac6", null ]
     ] ],
     [ "neg_softmax_input_output_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__softmax__input__output__type__mismatch.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__softmax__input__output__type__mismatch.html#a336734ad7014ea12f46a339758bcf71d", null ]
@@ -743,6 +779,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1pack__quant__u8.html#a24d645f8ab0a39fecd3b1a953daea0a9", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1pack__quant__u8.html#abfb41976f9f2735874daed23e5d9820f", null ]
     ] ],
+    [ "pack_s8", "namespaceonert__micro_1_1test__model_1_1pack__s8.html", [
+      [ "input_data_1", "namespaceonert__micro_1_1test__model_1_1pack__s8.html#ad3bab181eb50fa6666b73ff7f850fbfb", null ],
+      [ "input_data_2", "namespaceonert__micro_1_1test__model_1_1pack__s8.html#acc510f205478f210d82bccdb8ad2214d", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1pack__s8.html#acf6988834d3cb84a4a3bd82933e61018", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1pack__s8.html#ae36f8734f22607f8d5a2787f97cfaf46", null ]
+    ] ],
     [ "pad_float", "namespaceonert__micro_1_1test__model_1_1pad__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1pad__float.html#afbba160e6f88420d67a6d82e050fd18a", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1pad__float.html#a6a23a40034386975a97e18e923d5cd8d", null ],
@@ -758,15 +800,30 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1relu6__float.html#a873f98932894ae5f236fd556bf06d1f1", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1relu6__float.html#af97353bc9491166830f6236ed25b8b9c", null ]
     ] ],
+    [ "relu6_s8", "namespaceonert__micro_1_1test__model_1_1relu6__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1relu6__s8.html#ae5919b6c74301108db7909783d5f5295", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1relu6__s8.html#a6b03abc7b98182d11bfc7344c6bd6f0c", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1relu6__s8.html#a8b9ce3b1b640560c552e172ac445c48b", null ]
+    ] ],
     [ "relu_float", "namespaceonert__micro_1_1test__model_1_1relu__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1relu__float.html#a535f7213a6925c6d0451d3daa4295a77", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1relu__float.html#ac211e0109570dc2d9911fe52cb313138", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1relu__float.html#a9bb2fdb3838771d27b88509c521c1c9b", null ]
     ] ],
+    [ "relu_s8", "namespaceonert__micro_1_1test__model_1_1relu__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1relu__s8.html#a4d271b118c82f838cb476c47d35744cc", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1relu__s8.html#a535b5df152261579c4ba30bf4626a8d1", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1relu__s8.html#a50c518b6834e207b84d657907094a2f9", null ]
+    ] ],
     [ "reshape_kernel", "namespaceonert__micro_1_1test__model_1_1reshape__kernel.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1reshape__kernel.html#ad53e948c73c939c5a426d9ebbbb2b8e0", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reshape__kernel.html#a3e7b26663ecace7ab428537efff27837", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reshape__kernel.html#a409f29cbc6d0846f8c7ddbb139ee08da", null ]
+    ] ],
+    [ "reshape_kernel_s8", "namespaceonert__micro_1_1test__model_1_1reshape__kernel__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reshape__kernel__s8.html#ab6c87ecbb6555e6d4f0fea27b84d691a", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reshape__kernel__s8.html#abb578bc3cf9caf19b41596d0010d98c8", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reshape__kernel__s8.html#a4769d8128475b4e19e008ebfbc59203d", null ]
     ] ],
     [ "round_float", "namespaceonert__micro_1_1test__model_1_1round__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1round__float.html#a7c18c1dd3d2ad5a3aef7f6ee5ce3d634", null ],
@@ -860,6 +917,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1space__to__depth__float.html#a798a3d2a01b1e8342464530a4a74a46d", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1space__to__depth__float.html#ac2afb8c3853a65311bf33874c1dbeb24", null ]
     ] ],
+    [ "space_to_depth_s8", "namespaceonert__micro_1_1test__model_1_1space__to__depth__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1space__to__depth__s8.html#aa273790beff29ec81ce4aafaff579784", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1space__to__depth__s8.html#ab61de8a82e807f259a60e0ab5281c762", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1space__to__depth__s8.html#a696505b5503cef4ab555894ac597a5a8", null ]
+    ] ],
     [ "split_float", "namespaceonert__micro_1_1test__model_1_1split__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1split__float.html#a27652dd75f19069c5f8812c963aeba8c", null ],
       [ "reference_output_data_1", "namespaceonert__micro_1_1test__model_1_1split__float.html#a16abeab81accfdf77153947b8af41b49", null ],
@@ -918,6 +980,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html#a067f805352fd88f7af701541597f9585", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__int__with__broadcasting.html#ae3f696a7fa0a6e322ac10a539dea6a0a", null ]
     ] ],
+    [ "sub_s8_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html#ac0050e1a9d099dccb97ff2ed87c785fc", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html#a08e1e3a46daacda4dd359ec0d8fb7d2d", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html#a049f30c46b92125faf85abe36ee96bec", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html#a51e14cd70d363bf34fd5d1cb6a7d5807", null ]
+    ] ],
     [ "svdf_float", "namespaceonert__micro_1_1test__model_1_1svdf__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1svdf__float.html#a563e4e35886e5e08f6916358f59238a0", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1svdf__float.html#ab9a8abea62e62ab8ffd3128690637792", null ],
@@ -943,6 +1011,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data_1", "namespaceonert__micro_1_1test__model_1_1unpack__float.html#a6bf1bbc91986d560fe79c31b1292c9f5", null ],
       [ "reference_output_data_2", "namespaceonert__micro_1_1test__model_1_1unpack__float.html#a7b75a90bc3d4b9bcfdb9940cbf5feebc", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1unpack__float.html#a280bec982b326be0095eac4ae8a21783", null ]
+    ] ],
+    [ "unpack_s8", "namespaceonert__micro_1_1test__model_1_1unpack__s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1unpack__s8.html#a900425b6f291f70853c012eed515ab00", null ],
+      [ "reference_output_data_1", "namespaceonert__micro_1_1test__model_1_1unpack__s8.html#abee9074c9fd22d5210b4b6232dc990f0", null ],
+      [ "reference_output_data_2", "namespaceonert__micro_1_1test__model_1_1unpack__s8.html#aebd30b23c656fd54dcfaadf5b1051010", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1unpack__s8.html#ab0023bd6d6131b509037143582ef8c74", null ]
     ] ],
     [ "unsupported_type", "namespaceonert__micro_1_1test__model_1_1unsupported__type.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1unsupported__type.html#abbdeb8224146c15016a54650a6f9dd49", null ]
@@ -971,8 +1045,12 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel" ],
     [ "NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel" ],
     [ "NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel" ],
+    [ "NegTestDataInputOutputScaleMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel" ],
     [ "NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
     [ "NegTestDataInputOutputShapeMismatchCastKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel" ],
+    [ "NegTestDataInputOutputShapeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u6_kernel" ],
+    [ "NegTestDataInputOutputShapeMismatchReLUKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u_kernel" ],
+    [ "NegTestDataInputOutputShapeMismatchSpaceToDepthKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_space_to_depth_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_space_to_depth_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_abs_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_average_pool2_d_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchBatchToSpaceNDKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_batch_to_space_n_d_kernel" ],
@@ -1184,7 +1262,17 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataS8Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation" ],
     [ "TestDataS8Conv2D", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_conv2_d" ],
     [ "TestDataS8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_s8_fully_connected" ],
+    [ "TestDataS8Gather", "classonert__micro_1_1test__model_1_1_test_data_s8_gather.html", "classonert__micro_1_1test__model_1_1_test_data_s8_gather" ],
+    [ "TestDataS8Less", "classonert__micro_1_1test__model_1_1_test_data_s8_less.html", "classonert__micro_1_1test__model_1_1_test_data_s8_less" ],
+    [ "TestDataS8Logistic", "classonert__micro_1_1test__model_1_1_test_data_s8_logistic.html", "classonert__micro_1_1test__model_1_1_test_data_s8_logistic" ],
     [ "TestDataS8MaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d" ],
+    [ "TestDataS8Pack", "classonert__micro_1_1test__model_1_1_test_data_s8_pack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_pack" ],
+    [ "TestDataS8ReLU", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u.html", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u" ],
+    [ "TestDataS8ReLU6", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6" ],
+    [ "TestDataS8ReshapeKernel", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel" ],
+    [ "TestDataS8SpaceToDepth", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth.html", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth" ],
+    [ "TestDataS8Sub", "classonert__micro_1_1test__model_1_1_test_data_s8_sub.html", "classonert__micro_1_1test__model_1_1_test_data_s8_sub" ],
+    [ "TestDataS8Unpack", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack" ],
     [ "TestDataShapeKernel", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel" ],
     [ "TestDataSinBase", "classonert__micro_1_1test__model_1_1_test_data_sin_base.html", "classonert__micro_1_1test__model_1_1_test_data_sin_base" ],
     [ "TestDataSliceBase", "classonert__micro_1_1test__model_1_1_test_data_slice_base.html", "classonert__micro_1_1test__model_1_1_test_data_slice_base" ],

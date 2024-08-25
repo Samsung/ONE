@@ -11,7 +11,5 @@ var classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator =
     [ "getAllocPlan", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1", null ],
     [ "getDeallocPlan", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd", null ],
     [ "operator=", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#a9ff93a73df200222292cb02cce907d70", null ],
-    [ "operator=", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#af4f5b5cfd09e1120831a32ad87762397", null ],
-    [ "saveAllocPlan", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#a23ad9fc0e6c2b03e27f9115c1b805805", null ],
-    [ "saveDeallocPlan", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#aeafc099b39b735d45647261c596f2e59", null ]
+    [ "operator=", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#af4f5b5cfd09e1120831a32ad87762397", null ]
 ];

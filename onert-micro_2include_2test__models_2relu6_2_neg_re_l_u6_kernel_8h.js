@@ -1,4 +1,5 @@
 var onert_micro_2include_2test__models_2relu6_2_neg_re_l_u6_kernel_8h =
 [
-    [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel" ]
+    [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel" ],
+    [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_re_l_u6_kernel" ]
 ];

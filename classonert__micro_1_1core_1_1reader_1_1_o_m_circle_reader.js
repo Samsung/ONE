@@ -6,7 +6,6 @@ var classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader =
     [ "~OMCircleReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#a5ec4387a2ec0b8006824fa181252c898", null ],
     [ "buffers", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#a0157758034e5f24e0458779849e10a40", null ],
     [ "builtin_code", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#ac8d89a0f0dce239be0900a5f7158a459", null ],
-    [ "data_format", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#a81583f153416491ea520ea0342b0e7cf", null ],
     [ "get_current_subgraph_index", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#a51584047bab4ecbc9a121d1dd41b9308", null ],
     [ "inputs", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#af1276a59d89b9272c58f296610dce329", null ],
     [ "isConstTensor", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html#a0e223de2d8434662db8fff0efe51c558", null ],

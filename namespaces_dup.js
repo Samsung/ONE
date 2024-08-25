@@ -677,6 +677,7 @@ var namespaces_dup =
     [ "tflite2circle", "namespacetflite2circle.html", "namespacetflite2circle" ],
     [ "tflread", "namespacetflread.html", "namespacetflread" ],
     [ "TopologicalSortHelper", "namespace_topological_sort_helper.html", "namespace_topological_sort_helper" ],
+    [ "training_configure_tool", "namespacetraining__configure__tool.html", "namespacetraining__configure__tool" ],
     [ "Util", "namespace_util.html", [
       [ "pretty_float", "namespace_util.html#a08554e25a1c8167355292fb68a90e914", null ],
       [ "to_filename", "namespace_util.html#aa040a8ebfa0d30c86b93ba0ccfff5271", null ],

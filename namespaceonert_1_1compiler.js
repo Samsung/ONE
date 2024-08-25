@@ -24,7 +24,6 @@ var namespaceonert_1_1compiler =
     [ "MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", "classonert_1_1compiler_1_1_multi_model_compiler" ],
     [ "OperandLowerInfo", "classonert_1_1compiler_1_1_operand_lower_info.html", "classonert_1_1compiler_1_1_operand_lower_info" ],
     [ "OperandObserver", "classonert_1_1compiler_1_1_operand_observer.html", "classonert_1_1compiler_1_1_operand_observer" ],
-    [ "PermuteFactor", "classonert_1_1compiler_1_1_permute_factor.html", "classonert_1_1compiler_1_1_permute_factor" ],
     [ "ShapeValidator", "classonert_1_1compiler_1_1_shape_validator.html", "classonert_1_1compiler_1_1_shape_validator" ],
     [ "StaticShapeInferer", "classonert_1_1compiler_1_1_static_shape_inferer.html", "classonert_1_1compiler_1_1_static_shape_inferer" ],
     [ "TensorRegistries", "classonert_1_1compiler_1_1_tensor_registries.html", "classonert_1_1compiler_1_1_tensor_registries" ],

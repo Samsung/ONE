@@ -5,5 +5,6 @@ var dir_2f1d0fa04477eba32645101cc39c87e0 =
     [ "externals", "dir_e7527537462cf0139587d7a9786929d7.html", "dir_e7527537462cf0139587d7a9786929d7" ],
     [ "helpers", "dir_1657d75c61599b904ec1ec5c979e43f6.html", "dir_1657d75c61599b904ec1ec5c979e43f6" ],
     [ "luci-interpreter", "dir_ce4f6825df8839c6a8b44d3d97c3a322.html", "dir_ce4f6825df8839c6a8b44d3d97c3a322" ],
-    [ "onert-micro", "dir_8316815ad5ca2a2c9f1ab9a8efef445a.html", "dir_8316815ad5ca2a2c9f1ab9a8efef445a" ]
+    [ "onert-micro", "dir_8316815ad5ca2a2c9f1ab9a8efef445a.html", "dir_8316815ad5ca2a2c9f1ab9a8efef445a" ],
+    [ "training-configure-tool", "dir_96287747abf6412cdd142a0d9acc14bd.html", "dir_96287747abf6412cdd142a0d9acc14bd" ]
 ];

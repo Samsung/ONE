@@ -1,5 +1,6 @@
 var tfldump_2include_2tfldump_2_dump_8h =
 [
-    [ "dump_model", "tfldump_2include_2tfldump_2_dump_8h.html#a1fdbaddccc9ba31c7250270742adf157", null ],
-    [ "operator<<", "tfldump_2include_2tfldump_2_dump_8h.html#ab79a583d8da24707a9462e673a8eaca2", null ]
+    [ "tfldump::ModelEx", "structtfldump_1_1_model_ex.html", "structtfldump_1_1_model_ex" ],
+    [ "dump_model", "tfldump_2include_2tfldump_2_dump_8h.html#ab50ca4880353d0ecf8670ae3078b92b1", null ],
+    [ "operator<<", "tfldump_2include_2tfldump_2_dump_8h.html#a0d3654901994c2af872e80f85165105a", null ]
 ];

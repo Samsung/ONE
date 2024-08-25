@@ -19,7 +19,7 @@ var namespaceonert__micro_1_1execute =
     [ "computePaddingHeightWidth", "namespaceonert__micro_1_1execute.html#afcd2a79dd4fb5a079bbe41b8aa834ca3", null ],
     [ "createConvParams", "namespaceonert__micro_1_1execute.html#aed25f47a3ee005c4c5cf14bc488f8eea", null ],
     [ "evalComparisonGeneric", "namespaceonert__micro_1_1execute.html#aaeb8636803a5020701dd2565e98a4728", null ],
-    [ "evalQuantizedComparisonGeneric", "namespaceonert__micro_1_1execute.html#ae6286a7b10df60824b289f6baf289029", null ],
+    [ "evalQuantizedComparisonGeneric", "namespaceonert__micro_1_1execute.html#ab656257a0adf46858fbbada1ad52c2ee", null ],
     [ "execute_arg_common", "namespaceonert__micro_1_1execute.html#af176af973859c27928f2c1cd4fcd4970", null ],
     [ "execute_math_common", "namespaceonert__micro_1_1execute.html#ac23aed336a427289a712ad0bed333118", null ],
     [ "execute_pooling_common", "namespaceonert__micro_1_1execute.html#a9fb9e08df4155b8e17dcb86ce734cb12", null ],

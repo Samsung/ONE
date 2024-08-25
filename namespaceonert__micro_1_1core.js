@@ -43,6 +43,7 @@ var namespaceonert__micro_1_1core =
     [ "SoftmaxParams", "structonert__micro_1_1core_1_1_softmax_params.html", "structonert__micro_1_1core_1_1_softmax_params" ],
     [ "SplitParams", "structonert__micro_1_1core_1_1_split_params.html", "structonert__micro_1_1core_1_1_split_params" ],
     [ "StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", "structonert__micro_1_1core_1_1_strided_slice_params" ],
+    [ "SVDFQuantParams", "structonert__micro_1_1core_1_1_s_v_d_f_quant_params.html", "structonert__micro_1_1core_1_1_s_v_d_f_quant_params" ],
     [ "TransposeParams", "structonert__micro_1_1core_1_1_transpose_params.html", "structonert__micro_1_1core_1_1_transpose_params" ],
     [ "BroadcastableOpCategory", "namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46", [
       [ "kNone", "namespaceonert__micro_1_1core.html#a965b8f3e9c466ba0fe86487daabf7e46a35c3ace1970663a16e5c65baa5941b13", null ],
@@ -78,6 +79,12 @@ var namespaceonert__micro_1_1core =
     [ "OMKernelType", "namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402", [
       [ "Normal", "namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402a2bdc5d6b67c727fac19056ab9df05934", null ],
       [ "Inplace", "namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a", null ]
+    ] ],
+    [ "OpTrainableRankType", "namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749", [
+      [ "ALL", "namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a05502a64b81947ce33b300a53a12b342", null ],
+      [ "ONLY_BIAS", "namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b", null ],
+      [ "UP_1_2_PART", "namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a06685102e8cc3455e0830d632ab6bceb", null ],
+      [ "LOWER_1_2_PART", "namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749ac9b0a2bc16e36bbcc402e849355822e9", null ]
     ] ],
     [ "getBuilderId", "namespaceonert__micro_1_1core.html#a35d207992b5a6ff29c1360d2db4a8199", null ],
     [ "getBuiltinOperatorBuilderId", "namespaceonert__micro_1_1core.html#ac777a6066bc42ea4f735de09a8bb07f1", null ],

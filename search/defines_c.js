@@ -408,7 +408,7 @@ var searchData=
   ['min_5fconst_5fvar_5fdef_405',['MIN_CONST_VAR_DEF',['../repeat_8h.html#ac059d94be1a167be33c57fa3af805821',1,'repeat.h']]],
   ['mla_406',['MLA',['../activation__float__helpers_8h.html#a8df78bbafb6073319466ffe69a01931f',1,'activation_float_helpers.h']]],
   ['mla_5fvar_5fwith_5fconst_5fvec_5fdef_407',['MLA_VAR_WITH_CONST_VEC_DEF',['../repeat_8h.html#a7e8e64b0ce4440786059b63459106467',1,'repeat.h']]],
-  ['model_5ftype_408',['MODEL_TYPE',['../_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f',1,'TrainingDriver.cpp']]],
+  ['model_5ftype_408',['model_type',['../_training_driver_8cpp.html#a609febbafa682bd13f7cffc78ee9130f',1,'MODEL_TYPE:&#160;TrainingDriver.cpp'],['../_sparse_backpropagation_handler_8cpp.html#a609febbafa682bd13f7cffc78ee9130f',1,'MODEL_TYPE:&#160;SparseBackpropagationHandler.cpp'],['../_sparse_backpropagation_helper_8cpp.html#a609febbafa682bd13f7cffc78ee9130f',1,'MODEL_TYPE:&#160;SparseBackpropagationHelper.cpp'],['../_tensor_rank_sparse_backpropagation_handler_8cpp.html#a609febbafa682bd13f7cffc78ee9130f',1,'MODEL_TYPE:&#160;TensorRankSparseBackpropagationHandler.cpp'],['../_training_driver_handler_8cpp.html#a609febbafa682bd13f7cffc78ee9130f',1,'MODEL_TYPE:&#160;TrainingDriverHandler.cpp']]],
   ['multiply_5fby_5fquantized_5fmultiplier_409',['MULTIPLY_BY_QUANTIZED_MULTIPLIER',['../helpers__asymm_8h.html#ac05728fbe1ea6dbeebbd1b8e87a78b02',1,'helpers_asymm.h']]],
   ['multiply_5fby_5fquantized_5fmultiplier_5fimpl_410',['MULTIPLY_BY_QUANTIZED_MULTIPLIER_IMPL',['../helpers__asymm_8h.html#a97dbfbc016c553b482f2664f2a5ded30',1,'helpers_asymm.h']]]
 ];

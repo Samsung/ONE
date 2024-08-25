@@ -42,6 +42,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "FuseMulToFullyConnectedWeightsPass.h", "_fuse_mul_to_fully_connected_weights_pass_8h.html", "_fuse_mul_to_fully_connected_weights_pass_8h" ],
     [ "FuseMulWithConvPass.h", "_fuse_mul_with_conv_pass_8h.html", "_fuse_mul_with_conv_pass_8h" ],
     [ "FuseMulWithDivPass.h", "_fuse_mul_with_div_pass_8h.html", "_fuse_mul_with_div_pass_8h" ],
+    [ "FuseMulWithFullyConnectedPass.h", "_fuse_mul_with_fully_connected_pass_8h.html", "_fuse_mul_with_fully_connected_pass_8h" ],
     [ "FusePreActivationBatchNormPass.h", "_fuse_pre_activation_batch_norm_pass_8h.html", "_fuse_pre_activation_batch_norm_pass_8h" ],
     [ "FusePReluPass.h", "_fuse_p_relu_pass_8h.html", "_fuse_p_relu_pass_8h" ],
     [ "FuseRsqrtPass.h", "luci_2pass_2include_2luci_2_pass_2_fuse_rsqrt_pass_8h.html", "luci_2pass_2include_2luci_2_pass_2_fuse_rsqrt_pass_8h" ],

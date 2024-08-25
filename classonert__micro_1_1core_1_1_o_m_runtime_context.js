@@ -14,9 +14,11 @@ var classonert__micro_1_1core_1_1_o_m_runtime_context =
     [ "getGraphInputTensorIndex", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#adacaf4744172633e9f1f806996fbc7da", null ],
     [ "getGraphOutputTensorIndex", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#aae6f860a6e865845e375358404187f1a", null ],
     [ "getTensorByIndex", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#ac6ed9d034dd6a4cdda2dc85a156286c2", null ],
-    [ "isConstTensor", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a401abafced0fec857acbf7cb3bda4a1b", null ],
+    [ "getTrainableOpsIndexes", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a4b5b1db58de8615fdf732b02fa7c5f6b", null ],
+    [ "isConstTensor", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859", null ],
     [ "operator=", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a1ee2f7b4bfbb6cb404178a37aa343720", null ],
     [ "operator=", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a1162d950d20ed85e523b92312b289744", null ],
     [ "setModel", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#ae16e77fefcd50e851a4a7cd7f390f45d", null ],
+    [ "setTrainConfigFile", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a8772107db21582a5021558cf8b94bf16", null ],
     [ "setWofFile", "classonert__micro_1_1core_1_1_o_m_runtime_context.html#a46837db187f9fe84e5eb7c0310478e5b", null ]
 ];

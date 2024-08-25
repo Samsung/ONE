@@ -123,10 +123,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6efb3e797b1ff342f6a2592f49d78887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1155f0c0d202bca845833c8c92b0856e" id="r_a1155f0c0d202bca845833c8c92b0856e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a1155f0c0d202bca845833c8c92b0856e">setKernelType</a> (uint16_t op_index, <a class="el" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402">OMKernelType</a> type)</td></tr>
 <tr class="separator:a1155f0c0d202bca845833c8c92b0856e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9248ce9421550f432bcae8cb7b5733d5" id="r_a9248ce9421550f432bcae8cb7b5733d5"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a9248ce9421550f432bcae8cb7b5733d5">getDynamicTensorSize</a> (uint16_t tensor_index)</td></tr>
-<tr class="separator:a9248ce9421550f432bcae8cb7b5733d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a102b992f21599c172c54e0cfaa1659c8" id="r_a102b992f21599c172c54e0cfaa1659c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a102b992f21599c172c54e0cfaa1659c8">setDynamicTensorSize</a> (uint16_t tensor_index, uint32_t dynamic_size)</td></tr>
-<tr class="separator:a102b992f21599c172c54e0cfaa1659c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78420822635bbe4dece002b4915fd874" id="r_a78420822635bbe4dece002b4915fd874"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a78420822635bbe4dece002b4915fd874">getDynamicRuntimeShape</a> (uint16_t tensor_index)</td></tr>
+<tr class="separator:a78420822635bbe4dece002b4915fd874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bec78fc730899bc61cf92ba0cb60be3" id="r_a3bec78fc730899bc61cf92ba0cb60be3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a3bec78fc730899bc61cf92ba0cb60be3">setDynamicRuntimeShape</a> (uint16_t tensor_index, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;shape)</td></tr>
+<tr class="separator:a3bec78fc730899bc61cf92ba0cb60be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad12746829e84df9ec70a8a7ca057e987" id="r_ad12746829e84df9ec70a8a7ca057e987"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#ad12746829e84df9ec70a8a7ca057e987">clearTensorIndexToData</a> ()</td></tr>
 <tr class="separator:ad12746829e84df9ec70a8a7ca057e987"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -263,7 +263,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_storage_8h_source.html#l00089">89</a> of file <a class="el" href="_o_m_runtime_storage_8h_source.html">OMRuntimeStorage.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>{ _tensor_index_to_data.clear(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00024">onert_micro::core::OMRuntimeGraph::reset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00025">onert_micro::core::OMRuntimeGraph::reset()</a>.</p>
 
 </div>
 </div>
@@ -309,12 +309,12 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00042">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00118">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00089">onert_micro::core::memory::OMRuntimeAllocator::deallocate()</a>, <a class="el" href="_o_m_training_handler_8cpp_source.html#l00215">onert_micro::core::train::OMTrainingHandler::evaluateMetric()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00034">onert_micro::core::OMRuntimeGraph::getInputDataAt()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00050">onert_micro::core::OMRuntimeGraph::getOutputDataAt()</a>, and <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00057">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00177">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00148">onert_micro::core::memory::OMRuntimeAllocator::deallocate()</a>, <a class="el" href="_o_m_training_handler_8cpp_source.html#l00232">onert_micro::core::train::OMTrainingHandler::evaluateMetric()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00042">onert_micro::core::OMRuntimeGraph::getInputDataAt()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00058">onert_micro::core::OMRuntimeGraph::getOutputDataAt()</a>, and <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>.</p>
 
 </div>
 </div>
-<a id="a9248ce9421550f432bcae8cb7b5733d5" name="a9248ce9421550f432bcae8cb7b5733d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9248ce9421550f432bcae8cb7b5733d5">&#9670;&#160;</a></span>getDynamicTensorSize()</h2>
+<a id="a78420822635bbe4dece002b4915fd874" name="a78420822635bbe4dece002b4915fd874"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78420822635bbe4dece002b4915fd874">&#9670;&#160;</a></span>getDynamicRuntimeShape()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +323,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int32_t onert_micro::core::OMRuntimeStorage::getDynamicTensorSize </td>
+          <td class="memname"><a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> onert_micro::core::OMRuntimeStorage::getDynamicRuntimeShape </td>
           <td>(</td>
           <td class="paramtype">uint16_t&#160;</td>
           <td class="paramname"><em>tensor_index</em></td><td>)</td>
@@ -341,12 +341,12 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   74</span>  {</div>
 <div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> it = _tensor_index_to_dynamic_tensor_size.find(tensor_index);</div>
 <div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> (it == _tensor_index_to_dynamic_tensor_size.end())</div>
-<div class="line"><span class="lineno">   77</span>      <span class="keywordflow">return</span> -1;</div>
+<div class="line"><span class="lineno">   77</span>      <span class="keywordflow">return</span> {}; <span class="comment">// Return empty</span></div>
 <div class="line"><span class="lineno">   78</span> </div>
 <div class="line"><span class="lineno">   79</span>    <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><span class="lineno">   80</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00042">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00057">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00177">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00026">onert_micro::core::memory::OMRuntimeAllocator::clearAllTensorsData()</a>, <a class="el" href="_adam_8cpp_source.html#l00224">onert_micro::train::optimizers::Adam::handle()</a>, <a class="el" href="_s_g_d_8cpp_source.html#l00094">onert_micro::train::optimizers::SGD::handle()</a>, <a class="el" href="_adam_8cpp_source.html#l00328">onert_micro::train::optimizers::Adam::updateWeights()</a>, and <a class="el" href="_s_g_d_8cpp_source.html#l00147">onert_micro::train::optimizers::SGD::updateWeights()</a>.</p>
 
 </div>
 </div>
@@ -382,11 +382,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   63</span> </div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
-<div class="ttc" id="anamespaceonert__micro_1_1core_html_aa8207dbb94c1edf390c8d19d2da15402a2bdc5d6b67c727fac19056ab9df05934"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402a2bdc5d6b67c727fac19056ab9df05934">onert_micro::core::Normal</a></div><div class="ttdeci">@ Normal</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00030">OMKernelType.h:30</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_html_aa8207dbb94c1edf390c8d19d2da15402a2bdc5d6b67c727fac19056ab9df05934"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402a2bdc5d6b67c727fac19056ab9df05934">onert_micro::core::Normal</a></div><div class="ttdeci">@ Normal</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00040">OMKernelType.h:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_kernel_type_8h_source.html#l00030">onert_micro::core::Normal</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_kernel_type_8h_source.html#l00040">onert_micro::core::Normal</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00049">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, and <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00082">onert_micro::import::OMExecutionPlanCreator::createExecutionPlan()</a>, <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00181">onert_micro::import::OMExecutionPlanCreator::createForwardExecutionPlan()</a>, and <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>.</p>
 
 </div>
 </div>
@@ -416,7 +416,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_storage_8h_source.html#l00050">50</a> of file <a class="el" href="_o_m_runtime_storage_8h_source.html">OMRuntimeStorage.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _tensor_index_to_data; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00026">onert_micro::core::memory::OMRuntimeAllocator::clearAllTensorsData()</a>, <a class="el" href="_adam_8cpp_source.html#l00106">onert_micro::train::optimizers::Adam::handle()</a>, and <a class="el" href="_s_g_d_8cpp_source.html#l00041">onert_micro::train::optimizers::SGD::handle()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00026">onert_micro::core::memory::OMRuntimeAllocator::clearAllTensorsData()</a>, <a class="el" href="_adam_8cpp_source.html#l00224">onert_micro::train::optimizers::Adam::handle()</a>, and <a class="el" href="_s_g_d_8cpp_source.html#l00094">onert_micro::train::optimizers::SGD::handle()</a>.</p>
 
 </div>
 </div>
@@ -504,7 +504,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00089">onert_micro::core::memory::OMRuntimeAllocator::deallocate()</a>, and <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00148">onert_micro::core::memory::OMRuntimeAllocator::deallocate()</a>, and <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>.</p>
 
 </div>
 </div>
@@ -543,12 +543,12 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00042">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00118">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, and <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00057">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00177">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, and <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>.</p>
 
 </div>
 </div>
-<a id="a102b992f21599c172c54e0cfaa1659c8" name="a102b992f21599c172c54e0cfaa1659c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a102b992f21599c172c54e0cfaa1659c8">&#9670;&#160;</a></span>setDynamicTensorSize()</h2>
+<a id="a3bec78fc730899bc61cf92ba0cb60be3" name="a3bec78fc730899bc61cf92ba0cb60be3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bec78fc730899bc61cf92ba0cb60be3">&#9670;&#160;</a></span>setDynamicRuntimeShape()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -557,7 +557,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::core::OMRuntimeStorage::setDynamicTensorSize </td>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::core::OMRuntimeStorage::setDynamicRuntimeShape </td>
           <td>(</td>
           <td class="paramtype">uint16_t&#160;</td>
           <td class="paramname"><em>tensor_index</em>, </td>
@@ -565,8 +565,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>dynamic_size</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -583,11 +583,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_storage_8h_source.html#l00082">82</a> of file <a class="el" href="_o_m_runtime_storage_8h_source.html">OMRuntimeStorage.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   83</span>  {</div>
-<div class="line"><span class="lineno">   84</span>    _tensor_index_to_dynamic_tensor_size[tensor_index] = dynamic_size;</div>
+<div class="line"><span class="lineno">   84</span>    _tensor_index_to_dynamic_tensor_size[tensor_index] = shape;</div>
 <div class="line"><span class="lineno">   85</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   86</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_o_m_dynamic_shapes_handler_8cpp_source.html#l00077">onert_micro::import::OMDynamicShapesHandler::importDynamicShapesFromTrainConfig()</a>.</p>
 
 </div>
 </div>

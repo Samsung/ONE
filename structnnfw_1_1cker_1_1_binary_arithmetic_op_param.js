@@ -10,6 +10,8 @@ var structnnfw_1_1cker_1_1_binary_arithmetic_op_param =
     [ "input2_multiplier", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#ab6b610a4f597712f6dcaf6576c04dc66", null ],
     [ "input2_offset", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#ac4d8a22f96208f1efd75047318475f03", null ],
     [ "input2_shift", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aaf1857ba76a406a592402a13607421a5", null ],
+    [ "int64_activation_max", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aedffc211bdcff58d91a36b73e6a633fc", null ],
+    [ "int64_activation_min", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#a907c53598775124effcf34e3e7a1073c", null ],
     [ "left_shift", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#ae5b66510e715c8fb127887931de98dd9", null ],
     [ "output_multiplier", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#adae6f3cd4f5808bde90f4dfd3d915b4c", null ],
     [ "output_offset", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa5bf6b7c6e3772bd04264f6729915729", null ],

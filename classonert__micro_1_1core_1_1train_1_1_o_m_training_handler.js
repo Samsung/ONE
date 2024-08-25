@@ -16,5 +16,5 @@ var classonert__micro_1_1core_1_1train_1_1_o_m_training_handler =
     [ "setOptimizer", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a55276767c52ebc0f7175d2d2aebb4766", null ],
     [ "setTargetData", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a6497d9ed693a92c27625e9cbf2ec0ea2", null ],
     [ "updateOptimizerState", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#ab8fe402405d79b2c8511240914be627b", null ],
-    [ "updateWeights", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a784aadc2e7d6325d47dc691f59bb727a", null ]
+    [ "updateWeights", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html#a089f6be18f4a04d5e18512b2e95c7fe6", null ]
 ];

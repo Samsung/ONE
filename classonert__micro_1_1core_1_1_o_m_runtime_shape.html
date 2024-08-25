@@ -169,9 +169,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    std::memcpy(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), other.dimsData(), <span class="keyword">sizeof</span>(int32_t) * _size);</div>
 <div class="line"><span class="lineno">   43</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a166a4cc1a3ef3ec54191257141c81ca9"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00067">OMRuntimeShape.h:67</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a166a4cc1a3ef3ec54191257141c81ca9"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00077">OMRuntimeShape.h:77</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">dimsData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00077">dimsData()</a>.</p>
 
 </div>
 </div>
@@ -201,12 +201,20 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00045">45</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   48</span>      <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>    _size = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()-&gt;size();</div>
-<div class="line"><span class="lineno">   51</span>    std::memcpy(_dims, <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()-&gt;data(), <span class="keyword">sizeof</span>(int32_t) * _size);</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
+<div class="line"><span class="lineno">   50</span>    <span class="comment">// Shape is scalar</span></div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape() == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()-&gt;size() == 0)</div>
+<div class="line"><span class="lineno">   52</span>    {</div>
+<div class="line"><span class="lineno">   53</span>      _size = 1;</div>
+<div class="line"><span class="lineno">   54</span>      _dims[0] = 1;</div>
+<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   56</span>    }</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    _size = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()-&gt;size();</div>
+<div class="line"><span class="lineno">   59</span>    std::memcpy(_dims, <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;shape()-&gt;data(), <span class="keyword">sizeof</span>(int32_t) * _size);</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -234,10 +242,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00070">70</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>: _size(0) {}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00080">80</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>: _size(0) {}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_shape_8h_source.html#l00106">extendedShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_shape_8h_source.html#l00116">extendedShape()</a>.</p>
 
 </div>
 </div>
@@ -265,12 +273,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00072">72</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>                                                : _size(dimensions_count)</div>
-<div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    assert(dimensions_count &lt;= maxTensorShapeSize);</div>
-<div class="line"><span class="lineno">   75</span>    assert(dimensions_count &gt;= 0);</div>
-<div class="line"><span class="lineno">   76</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00082">82</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>                                                : _size(dimensions_count)</div>
+<div class="line"><span class="lineno">   83</span>  {</div>
+<div class="line"><span class="lineno">   84</span>    assert(dimensions_count &lt;= maxTensorShapeSize);</div>
+<div class="line"><span class="lineno">   85</span>    assert(dimensions_count &gt;= 0);</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -308,16 +316,16 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00078">78</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>                                                                 : _size(0)</div>
-<div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(dimensions_count);</div>
-<div class="line"><span class="lineno">   81</span>    int32_t *dst_dims = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
-<div class="line"><span class="lineno">   82</span>    std::memcpy(dst_dims, dims_data, dimensions_count * <span class="keyword">sizeof</span>(int32_t));</div>
-<div class="line"><span class="lineno">   83</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a224298a3421809287e91479d7b61b69f"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">onert_micro::core::OMRuntimeShape::resize</a></div><div class="ttdeci">void resize(int dimensions_count)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00133">OMRuntimeShape.h:133</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00088">88</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>                                                                 : _size(0)</div>
+<div class="line"><span class="lineno">   89</span>  {</div>
+<div class="line"><span class="lineno">   90</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(dimensions_count);</div>
+<div class="line"><span class="lineno">   91</span>    int32_t *dst_dims = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
+<div class="line"><span class="lineno">   92</span>    std::memcpy(dst_dims, dims_data, dimensions_count * <span class="keyword">sizeof</span>(int32_t));</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a224298a3421809287e91479d7b61b69f"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">onert_micro::core::OMRuntimeShape::resize</a></div><div class="ttdeci">void resize(int dimensions_count)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00143">OMRuntimeShape.h:143</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">dimsData()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00133">resize()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00077">dimsData()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00143">resize()</a>.</p>
 
 </div>
 </div>
@@ -361,21 +369,21 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00085">85</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>                                                                                 : _size(0)</div>
-<div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(new_shape_size);</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> size_increase = new_shape_size - shape.dimensionsCount();</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; size_increase; ++i)</div>
-<div class="line"><span class="lineno">   90</span>    {</div>
-<div class="line"><span class="lineno">   91</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(i, pad_value);</div>
-<div class="line"><span class="lineno">   92</span>    }</div>
-<div class="line"><span class="lineno">   93</span>    std::memcpy(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>() + size_increase, shape.dimsData(),</div>
-<div class="line"><span class="lineno">   94</span>                <span class="keyword">sizeof</span>(int32_t) * shape.dimensionsCount());</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a665ca051982e3b9ac18ac1282b1ba386"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">onert_micro::core::OMRuntimeShape::setDim</a></div><div class="ttdeci">void setDim(int i, int32_t val)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00126">OMRuntimeShape.h:126</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00095">95</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>                                                                                 : _size(0)</div>
+<div class="line"><span class="lineno">   96</span>  {</div>
+<div class="line"><span class="lineno">   97</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(new_shape_size);</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> size_increase = new_shape_size - shape.dimensionsCount();</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; size_increase; ++i)</div>
+<div class="line"><span class="lineno">  100</span>    {</div>
+<div class="line"><span class="lineno">  101</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(i, pad_value);</div>
+<div class="line"><span class="lineno">  102</span>    }</div>
+<div class="line"><span class="lineno">  103</span>    std::memcpy(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>() + size_increase, shape.dimsData(),</div>
+<div class="line"><span class="lineno">  104</span>                <span class="keyword">sizeof</span>(int32_t) * shape.dimensionsCount());</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a665ca051982e3b9ac18ac1282b1ba386"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">onert_micro::core::OMRuntimeShape::setDim</a></div><div class="ttdeci">void setDim(int i, int32_t val)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00136">OMRuntimeShape.h:136</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00117">dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00133">resize()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00126">setDim()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00127">dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00077">dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00143">resize()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00136">setDim()</a>.</p>
 
 </div>
 </div>
@@ -413,17 +421,17 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00097">97</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>                                                : _size(0)</div>
-<div class="line"><span class="lineno">   98</span>  {</div>
-<div class="line"><span class="lineno">   99</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(shape_size);</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape_size; ++i)</div>
-<div class="line"><span class="lineno">  101</span>    {</div>
-<div class="line"><span class="lineno">  102</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(i, value);</div>
-<div class="line"><span class="lineno">  103</span>    }</div>
-<div class="line"><span class="lineno">  104</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00107">107</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>                                                : _size(0)</div>
+<div class="line"><span class="lineno">  108</span>  {</div>
+<div class="line"><span class="lineno">  109</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(shape_size);</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape_size; ++i)</div>
+<div class="line"><span class="lineno">  111</span>    {</div>
+<div class="line"><span class="lineno">  112</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(i, value);</div>
+<div class="line"><span class="lineno">  113</span>    }</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00133">resize()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00126">setDim()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00143">resize()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00136">setDim()</a>.</p>
 
 </div>
 </div>
@@ -451,10 +459,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00117">117</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  117</span>{ <span class="keywordflow">return</span> _size; }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00127">127</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>{ <span class="keywordflow">return</span> _size; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_p_a_l_arg_min_max_common_8h_source.html#l00032">onert_micro::execute::pal::ArgMinMax()</a>, <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::BatchToSpaceND()</a>, <a class="el" href="_o_m_arg_common_8cpp_source.html#l00032">onert_micro::import::helpers::configure_arg_kernel_common()</a>, <a class="el" href="_o_m_pooling_common_8cpp_source.html#l00031">onert_micro::import::helpers::configure_pooling_kernel_common()</a>, <a class="el" href="_o_m_spaces_batches_n_d_common_8cpp_source.html#l00032">onert_micro::import::helpers::configure_spaces_batches_nd_kernel_common()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00031">onert_micro::train::pal::Conv2DBiasGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_floor_common_8h_source.html#l00033">onert_micro::execute::pal::Floor()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected&lt; float &gt;()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">onert_micro::execute::pal::GatherND()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00085">OMRuntimeShape()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00219">onert_micro::execute::pal::ReduceDimensionsForBroadcast()</a>, <a class="el" href="_p_a_l_softmax_input_grad_8h_source.html#l00033">onert_micro::train::pal::SoftmaxInputGrad()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::SpaceToBatchND()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_split_8h_source.html#l00036">onert_micro::execute::pal::Split()</a>, <a class="el" href="_p_a_l_transpose_common_8h_source.html#l00036">onert_micro::execute::pal::TransposeImpl()</a>, and <a class="el" href="_p_a_l_unpack_8h_source.html#l00031">onert_micro::execute::pal::Unpack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_p_a_l_arg_min_max_common_8h_source.html#l00032">onert_micro::execute::pal::ArgMinMax()</a>, <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::BatchToSpaceND()</a>, <a class="el" href="_o_m_arg_common_8cpp_source.html#l00032">onert_micro::import::helpers::configure_arg_kernel_common()</a>, <a class="el" href="_o_m_pooling_common_8cpp_source.html#l00031">onert_micro::import::helpers::configure_pooling_kernel_common()</a>, <a class="el" href="_o_m_spaces_batches_n_d_common_8cpp_source.html#l00032">onert_micro::import::helpers::configure_spaces_batches_nd_kernel_common()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00031">onert_micro::train::pal::Conv2DBiasGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_floor_common_8h_source.html#l00033">onert_micro::execute::pal::Floor()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected&lt; float &gt;()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">onert_micro::execute::pal::GatherND()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00095">OMRuntimeShape()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00242">onert_micro::execute::pal::ReduceDimensionsForBroadcast()</a>, <a class="el" href="_p_a_l_softmax_input_grad_8h_source.html#l00033">onert_micro::train::pal::SoftmaxInputGrad()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::SpaceToBatchND()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_split_8h_source.html#l00036">onert_micro::execute::pal::Split()</a>, <a class="el" href="_p_a_l_transpose_common_8h_source.html#l00036">onert_micro::execute::pal::TransposeImpl()</a>, and <a class="el" href="_p_a_l_unpack_8h_source.html#l00031">onert_micro::execute::pal::Unpack()</a>.</p>
 
 </div>
 </div>
@@ -482,14 +490,14 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00119">119</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>  {</div>
-<div class="line"><span class="lineno">  121</span>    assert(i &lt;= _size);</div>
-<div class="line"><span class="lineno">  122</span>    assert(i &gt;= 0);</div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">return</span> _dims[i];</div>
-<div class="line"><span class="lineno">  124</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00129">129</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  130</span>  {</div>
+<div class="line"><span class="lineno">  131</span>    assert(i &lt;= _size);</div>
+<div class="line"><span class="lineno">  132</span>    assert(i &gt;= 0);</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span> _dims[i];</div>
+<div class="line"><span class="lineno">  134</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_p_a_l_arg_min_max_common_8h_source.html#l00032">onert_micro::execute::pal::ArgMinMax()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_average_pool2_d_common_8h_source.html#l00033">onert_micro::execute::pal::AveragePool()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h_source.html#l00032">onert_micro::execute::pal::AveragePool()</a>, <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::BatchToSpaceND()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_arithmetic_op_common_8h_source.html#l00093">onert_micro::execute::pal::BroadcastArithmeticOp4DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_binary_op_common_8h_source.html#l00075">onert_micro::execute::pal::BroadcastBinaryOp4DSlow()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00031">onert_micro::train::pal::Conv2DBiasGrad()</a>, <a class="el" href="_p_a_l_conv2_d_input_grad_8h_source.html#l00060">onert_micro::train::pal::Conv2DInputGrad()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00058">onert_micro::train::pal::Conv2DWeightGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_conv2_d_common_8h_source.html#l00031">onert_micro::execute::pal::ConvFloat()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_conv2d_8h_source.html#l00036">onert_micro::execute::pal::ConvPerChannel()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00053">onert_micro::execute::pal::copyDimsToDesc()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">onert_micro::execute::pal::DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h_source.html#l00036">onert_micro::execute::pal::DepthwiseConvPerChannel()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_floor_common_8h_source.html#l00033">onert_micro::execute::pal::Floor()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected&lt; float &gt;()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>, <a class="el" href="_p_a_l_fully_connected_input_grad_8h_source.html#l00033">onert_micro::train::pal::FullyConnectedInputGrad()</a>, <a class="el" href="_p_a_l_fully_connected_weight_grad_8h_source.html#l00033">onert_micro::train::pal::FullyConnectedWeightGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">onert_micro::execute::pal::GatherND()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">onert_micro::execute::pal::L2Pool()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00177">onert_micro::execute::pal::MatchingDim()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_max_pool2_d_common_8h_source.html#l00032">onert_micro::execute::pal::MaxPool()</a>, <a class="el" href="onert-micro_2include_2pal_2cmsisnn_2_p_a_l_max_pool2_d_8h_source.html#l00032">onert_micro::execute::pal::MaxPool()</a>, <a class="el" href="_p_a_l_max_pool2_d_input_grad_8h_source.html#l00033">onert_micro::train::pal::MaxPool2D()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_slice_8h_source.html#l00029">onert_micro::execute::pal::Slice()</a>, <a class="el" href="_p_a_l_softmax_input_grad_8h_source.html#l00033">onert_micro::train::pal::SoftmaxInputGrad()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::SpaceToBatchND()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">onert_micro::execute::pal::SpaceToDepth()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_split_8h_source.html#l00036">onert_micro::execute::pal::Split()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_strided_slice_8h_source.html#l00206">onert_micro::execute::pal::StridedSlice()</a>, <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">onert_micro::execute::pal::TransposeConv&lt; float &gt;()</a>, and <a class="el" href="_p_a_l_unpack_8h_source.html#l00031">onert_micro::execute::pal::Unpack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_p_a_l_arg_min_max_common_8h_source.html#l00032">onert_micro::execute::pal::ArgMinMax()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_average_pool2_d_common_8h_source.html#l00033">onert_micro::execute::pal::AveragePool()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h_source.html#l00032">onert_micro::execute::pal::AveragePool()</a>, <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::BatchToSpaceND()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_arithmetic_op_common_8h_source.html#l00093">onert_micro::execute::pal::BroadcastArithmeticOp4DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_binary_op_common_8h_source.html#l00075">onert_micro::execute::pal::BroadcastBinaryOp4DSlow()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00031">onert_micro::train::pal::Conv2DBiasGrad()</a>, <a class="el" href="_p_a_l_conv2_d_input_grad_8h_source.html#l00060">onert_micro::train::pal::Conv2DInputGrad()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00058">onert_micro::train::pal::Conv2DWeightGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_conv2_d_common_8h_source.html#l00031">onert_micro::execute::pal::ConvFloat()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_conv2d_8h_source.html#l00036">onert_micro::execute::pal::ConvPerChannel()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00053">onert_micro::execute::pal::copyDimsToDesc()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">onert_micro::execute::pal::DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_depthwise_conv2d_8h_source.html#l00036">onert_micro::execute::pal::DepthwiseConvPerChannel()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_floor_common_8h_source.html#l00033">onert_micro::execute::pal::Floor()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected&lt; float &gt;()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>, <a class="el" href="_p_a_l_fully_connected_input_grad_8h_source.html#l00033">onert_micro::train::pal::FullyConnectedInputGrad()</a>, <a class="el" href="_p_a_l_fully_connected_weight_grad_8h_source.html#l00033">onert_micro::train::pal::FullyConnectedWeightGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">onert_micro::execute::pal::GatherND()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">onert_micro::execute::pal::L2Pool()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00200">onert_micro::execute::pal::MatchingDim()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_max_pool2_d_common_8h_source.html#l00032">onert_micro::execute::pal::MaxPool()</a>, <a class="el" href="onert-micro_2include_2pal_2cmsisnn_2_p_a_l_max_pool2_d_8h_source.html#l00032">onert_micro::execute::pal::MaxPool()</a>, <a class="el" href="_p_a_l_max_pool2_d_input_grad_8h_source.html#l00033">onert_micro::train::pal::MaxPool2D()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_slice_8h_source.html#l00029">onert_micro::execute::pal::Slice()</a>, <a class="el" href="_p_a_l_softmax_input_grad_8h_source.html#l00033">onert_micro::train::pal::SoftmaxInputGrad()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::SpaceToBatchND()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">onert_micro::execute::pal::SpaceToDepth()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_split_8h_source.html#l00036">onert_micro::execute::pal::Split()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_strided_slice_8h_source.html#l00206">onert_micro::execute::pal::StridedSlice()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_s_v_d_f_8h_source.html#l00035">onert_micro::execute::pal::SVDF()</a>, <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">onert_micro::execute::pal::TransposeConv&lt; float &gt;()</a>, <a class="el" href="_p_a_l_unpack_8h_source.html#l00031">onert_micro::execute::pal::Unpack()</a>, <a class="el" href="_adam_8cpp_source.html#l00328">onert_micro::train::optimizers::Adam::updateWeights()</a>, and <a class="el" href="_s_g_d_8cpp_source.html#l00147">onert_micro::train::optimizers::SGD::updateWeights()</a>.</p>
 
 </div>
 </div>
@@ -516,10 +524,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">67</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> _dims; }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00077">77</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{ <span class="keywordflow">return</span> _dims; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::BatchToSpaceND()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_mul_common_8h_source.html#l00055">onert_micro::execute::pal::BroadcastMul6DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">onert_micro::execute::pal::DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">flatSize()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">onert_micro::execute::pal::L2Pool()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00040">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00078">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00085">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00111">operator==()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00219">onert_micro::execute::pal::ReduceDimensionsForBroadcast()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::SpaceToBatchND()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">onert_micro::execute::pal::SpaceToDepth()</a>, and <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">onert_micro::execute::pal::TransposeConv&lt; float &gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::BatchToSpaceND()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_mul_common_8h_source.html#l00055">onert_micro::execute::pal::BroadcastMul6DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">onert_micro::execute::pal::DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00064">flatSize()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">onert_micro::execute::pal::L2Pool()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00040">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00088">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00095">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">operator==()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00242">onert_micro::execute::pal::ReduceDimensionsForBroadcast()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">onert_micro::execute::pal::SpaceToBatchND()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">onert_micro::execute::pal::SpaceToDepth()</a>, and <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">onert_micro::execute::pal::TransposeConv&lt; float &gt;()</a>.</p>
 
 </div>
 </div>
@@ -546,8 +554,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00068">68</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{ <span class="keywordflow">return</span> _dims; }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00078">78</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> _dims; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -585,13 +593,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00106">106</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  107</span>  {</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">OMRuntimeShape</a>(new_shape_size, shape, 1);</div>
-<div class="line"><span class="lineno">  109</span>  }</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ae678d8b2cebc9ecc5c58fb854b85db1b"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00070">OMRuntimeShape.h:70</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00116">116</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>  {</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">OMRuntimeShape</a>(new_shape_size, shape, 1);</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ae678d8b2cebc9ecc5c58fb854b85db1b"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00080">OMRuntimeShape.h:80</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00070">OMRuntimeShape()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00080">OMRuntimeShape()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_arithmetic_op_common_8h_source.html#l00093">onert_micro::execute::pal::BroadcastArithmeticOp4DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_binary_op_common_8h_source.html#l00075">onert_micro::execute::pal::BroadcastBinaryOp4DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_mul_common_8h_source.html#l00055">onert_micro::execute::pal::BroadcastMul6DSlow()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00094">onert_micro::execute::pal::NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_pad_8h_source.html#l00035">onert_micro::execute::pal::Pad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_slice_8h_source.html#l00029">onert_micro::execute::pal::Slice()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">onert_micro::execute::pal::SpaceToDepth()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_strided_slice_8h_source.html#l00206">onert_micro::execute::pal::StridedSlice()</a>, and <a class="el" href="_p_a_l_transpose_common_8h_source.html#l00036">onert_micro::execute::pal::TransposeImpl()</a>.</p>
 
@@ -620,20 +628,22 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00056">56</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordtype">int</span> buffer_size = 1;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> *dims_data = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>());</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; _size; i++)</div>
-<div class="line"><span class="lineno">   61</span>    {</div>
-<div class="line"><span class="lineno">   62</span>      buffer_size *= dims_data[i];</div>
-<div class="line"><span class="lineno">   63</span>    }</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> buffer_size;</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00064">64</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>  {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (_size == 0)</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordtype">int</span> buffer_size = 1;</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> *dims_data = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>());</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; _size; i++)</div>
+<div class="line"><span class="lineno">   71</span>    {</div>
+<div class="line"><span class="lineno">   72</span>      buffer_size *= dims_data[i];</div>
+<div class="line"><span class="lineno">   73</span>    }</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> buffer_size;</div>
+<div class="line"><span class="lineno">   75</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">dimsData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00077">dimsData()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_abs_8h_source.html#l00033">onert_micro::execute::pal::Abs()</a>, <a class="el" href="_p_a_l_cast_8h_source.html#l00034">onert_micro::execute::pal::Cast()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_ceil_8h_source.html#l00034">onert_micro::execute::pal::Ceil()</a>, <a class="el" href="_o_m_arg_common_8cpp_source.html#l00032">onert_micro::import::helpers::configure_arg_kernel_common()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00031">onert_micro::train::pal::Conv2DBiasGrad()</a>, <a class="el" href="_p_a_l_conv2_d_input_grad_8h_source.html#l00060">onert_micro::train::pal::Conv2DInputGrad()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00058">onert_micro::train::pal::Conv2DWeightGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_cos_common_8h_source.html#l00034">onert_micro::execute::pal::Cos()</a>, <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00082">onert_micro::execute::evalComparisonGeneric()</a>, <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00114">onert_micro::execute::evalQuantizedComparisonGeneric()</a>, <a class="el" href="_o_m_training_handler_8cpp_source.html#l00215">onert_micro::core::train::OMTrainingHandler::evaluateMetric()</a>, <a class="el" href="_relu_common_8cpp_source.html#l00032">onert_micro::execute::execute_relu_common()</a>, <a class="el" href="_reshape_common_8cpp_source.html#l00031">onert_micro::execute::execute_reshape_common()</a>, <a class="el" href="_p_a_l_exp_common_8h_source.html#l00034">onert_micro::execute::pal::Exp()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_floor_common_8h_source.html#l00033">onert_micro::execute::pal::Floor()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">onert_micro::execute::pal::GatherND()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00092">onert_micro::core::OMRuntimeGraph::getInputSizeAt()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00064">onert_micro::core::OMRuntimeGraph::getOutputSizeAt()</a>, <a class="el" href="_adam_8cpp_source.html#l00106">onert_micro::train::optimizers::Adam::handle()</a>, <a class="el" href="_s_g_d_8cpp_source.html#l00041">onert_micro::train::optimizers::SGD::handle()</a>, <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>, <a class="el" href="_p_a_l_log_common_8h_source.html#l00034">onert_micro::execute::pal::Log()</a>, <a class="el" href="_p_a_l_neg_common_8h_source.html#l00030">onert_micro::execute::pal::Neg()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="_p_a_l_relu_input_grad_8h_source.html#l00034">onert_micro::train::pal::ReluInputGrad()</a>, <a class="el" href="_p_a_l_round_common_8h_source.html#l00038">onert_micro::execute::pal::Round&lt; float &gt;()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_sin_common_8h_source.html#l00035">onert_micro::execute::pal::Sin()</a>, <a class="el" href="_p_a_l_s_i_s_o_operation_8h_source.html#l00031">onert_micro::execute::pal::SISOOperation()</a>, <a class="el" href="_p_a_l_sqrt_common_8h_source.html#l00034">onert_micro::execute::pal::Sqrt()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_square_common_8h_source.html#l00034">onert_micro::execute::pal::Square()</a>, <a class="el" href="_p_a_l_tanh_common_8h_source.html#l00031">onert_micro::execute::pal::Tanh()</a>, <a class="el" href="_p_a_l_unary_op_common_8h_source.html#l00040">onert_micro::execute::pal::UnaryOp()</a>, <a class="el" href="_adam_8cpp_source.html#l00201">onert_micro::train::optimizers::Adam::updateWeights()</a>, and <a class="el" href="_s_g_d_8cpp_source.html#l00089">onert_micro::train::optimizers::SGD::updateWeights()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_abs_8h_source.html#l00033">onert_micro::execute::pal::Abs()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00057">onert_micro::core::memory::OMRuntimeAllocator::allocate()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00177">onert_micro::core::memory::OMRuntimeAllocator::allocateGraphInputs()</a>, <a class="el" href="_p_a_l_cast_8h_source.html#l00034">onert_micro::execute::pal::Cast()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_ceil_8h_source.html#l00034">onert_micro::execute::pal::Ceil()</a>, <a class="el" href="_o_m_runtime_allocator_8cpp_source.html#l00026">onert_micro::core::memory::OMRuntimeAllocator::clearAllTensorsData()</a>, <a class="el" href="_o_m_arg_common_8cpp_source.html#l00032">onert_micro::import::helpers::configure_arg_kernel_common()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00031">onert_micro::train::pal::Conv2DBiasGrad()</a>, <a class="el" href="_p_a_l_conv2_d_input_grad_8h_source.html#l00060">onert_micro::train::pal::Conv2DInputGrad()</a>, <a class="el" href="_p_a_l_conv2_d_weight_grad_8h_source.html#l00058">onert_micro::train::pal::Conv2DWeightGrad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_cos_common_8h_source.html#l00034">onert_micro::execute::pal::Cos()</a>, <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00082">onert_micro::execute::evalComparisonGeneric()</a>, <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00114">onert_micro::execute::evalQuantizedComparisonGeneric()</a>, <a class="el" href="_o_m_training_handler_8cpp_source.html#l00232">onert_micro::core::train::OMTrainingHandler::evaluateMetric()</a>, <a class="el" href="_relu_common_8cpp_source.html#l00032">onert_micro::execute::execute_relu_common()</a>, <a class="el" href="_reshape_common_8cpp_source.html#l00031">onert_micro::execute::execute_reshape_common()</a>, <a class="el" href="_p_a_l_exp_common_8h_source.html#l00034">onert_micro::execute::pal::Exp()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_floor_common_8h_source.html#l00033">onert_micro::execute::pal::Floor()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">onert_micro::execute::pal::GatherND()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00100">onert_micro::core::OMRuntimeGraph::getInputSizeAt()</a>, <a class="el" href="_o_m_runtime_graph_8cpp_source.html#l00072">onert_micro::core::OMRuntimeGraph::getOutputSizeAt()</a>, <a class="el" href="_adam_8cpp_source.html#l00224">onert_micro::train::optimizers::Adam::handle()</a>, <a class="el" href="_s_g_d_8cpp_source.html#l00094">onert_micro::train::optimizers::SGD::handle()</a>, <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>, <a class="el" href="_p_a_l_log_common_8h_source.html#l00034">onert_micro::execute::pal::Log()</a>, <a class="el" href="_p_a_l_neg_common_8h_source.html#l00030">onert_micro::execute::pal::Neg()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="_p_a_l_relu_input_grad_8h_source.html#l00034">onert_micro::train::pal::ReluInputGrad()</a>, <a class="el" href="_p_a_l_round_common_8h_source.html#l00038">onert_micro::execute::pal::Round&lt; float &gt;()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_sin_common_8h_source.html#l00035">onert_micro::execute::pal::Sin()</a>, <a class="el" href="_p_a_l_s_i_s_o_operation_8h_source.html#l00031">onert_micro::execute::pal::SISOOperation()</a>, <a class="el" href="_p_a_l_sqrt_common_8h_source.html#l00034">onert_micro::execute::pal::Sqrt()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_square_common_8h_source.html#l00034">onert_micro::execute::pal::Square()</a>, <a class="el" href="_p_a_l_tanh_common_8h_source.html#l00031">onert_micro::execute::pal::Tanh()</a>, <a class="el" href="_p_a_l_unary_op_common_8h_source.html#l00040">onert_micro::execute::pal::UnaryOp()</a>, <a class="el" href="_adam_8cpp_source.html#l00328">onert_micro::train::optimizers::Adam::updateWeights()</a>, and <a class="el" href="_s_g_d_8cpp_source.html#l00147">onert_micro::train::optimizers::SGD::updateWeights()</a>.</p>
 
 </div>
 </div>
@@ -661,13 +671,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00111">111</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>  {</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">return</span> this-&gt;_size == comp._size &amp;&amp;</div>
-<div class="line"><span class="lineno">  114</span>           std::memcmp(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), comp.dimsData(), _size * <span class="keyword">sizeof</span>(int32_t)) == 0;</div>
-<div class="line"><span class="lineno">  115</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">121</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span>  {</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">return</span> this-&gt;_size == comp._size &amp;&amp;</div>
+<div class="line"><span class="lineno">  124</span>           std::memcmp(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), comp.dimsData(), _size * <span class="keyword">sizeof</span>(int32_t)) == 0;</div>
+<div class="line"><span class="lineno">  125</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00067">dimsData()</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00077">dimsData()</a>.</p>
 
 </div>
 </div>
@@ -695,14 +705,14 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00133">133</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  134</span>  {</div>
-<div class="line"><span class="lineno">  135</span>    assert(dimensions_count &lt;= maxTensorShapeSize);</div>
-<div class="line"><span class="lineno">  136</span>    assert(dimensions_count &gt;= 0);</div>
-<div class="line"><span class="lineno">  137</span>    _size = dimensions_count;</div>
-<div class="line"><span class="lineno">  138</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00143">143</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>  {</div>
+<div class="line"><span class="lineno">  145</span>    assert(dimensions_count &lt;= maxTensorShapeSize);</div>
+<div class="line"><span class="lineno">  146</span>    assert(dimensions_count &gt;= 0);</div>
+<div class="line"><span class="lineno">  147</span>    _size = dimensions_count;</div>
+<div class="line"><span class="lineno">  148</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_shape_8h_source.html#l00078">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00085">OMRuntimeShape()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00097">OMRuntimeShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_shape_8h_source.html#l00088">OMRuntimeShape()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00095">OMRuntimeShape()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00107">OMRuntimeShape()</a>.</p>
 
 </div>
 </div>
@@ -740,14 +750,14 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00126">126</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>  {</div>
-<div class="line"><span class="lineno">  128</span>    assert(i &lt;= _size);</div>
-<div class="line"><span class="lineno">  129</span>    assert(i &gt;= 0);</div>
-<div class="line"><span class="lineno">  130</span>    _dims[i] = val;</div>
-<div class="line"><span class="lineno">  131</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_runtime_shape_8h_source.html#l00136">136</a> of file <a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  137</span>  {</div>
+<div class="line"><span class="lineno">  138</span>    assert(i &lt;= _size);</div>
+<div class="line"><span class="lineno">  139</span>    assert(i &gt;= 0);</div>
+<div class="line"><span class="lineno">  140</span>    _dims[i] = val;</div>
+<div class="line"><span class="lineno">  141</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_o_m_runtime_shape_8h_source.html#l00085">OMRuntimeShape()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00097">OMRuntimeShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_o_m_runtime_shape_8h_source.html#l00095">OMRuntimeShape()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00107">OMRuntimeShape()</a>.</p>
 
 </div>
 </div>

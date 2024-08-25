@@ -176,20 +176,29 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2src_2execute
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    }</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      status =</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        pal::SpaceToDepth&lt;int8_t&gt;(block_size, input_shape, <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(input_data),</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                                  <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(output_data));</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
 <div class="ttc" id="a_o_m_kernel_execution_builder_8h_html"><div class="ttname"><a href="_o_m_kernel_execution_builder_8h.html">OMKernelExecutionBuilder.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_kernel_8h_html"><div class="ttname"><a href="_o_m_runtime_kernel_8h.html">OMRuntimeKernel.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_shape_8h_html"><div class="ttname"><a href="_o_m_runtime_shape_8h.html">OMRuntimeShape.h</a></div></div>
 <div class="ttc" id="a_o_m_status_8h_html"><div class="ttname"><a href="_o_m_status_8h.html">OMStatus.h</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">onert_micro::core::OMRuntimeContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00032">OMRuntimeContext.h:33</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">onert_micro::core::OMRuntimeContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00036">OMRuntimeContext.h:37</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00033">OMRuntimeShape.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_storage_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">onert_micro::core::OMRuntimeStorage</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_storage_8h_source.html#l00033">OMRuntimeStorage.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">onert_micro::execute::OMRuntimeKernel</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00034">OMRuntimeKernel.h:35</a></div></div>
@@ -205,7 +214,7 @@ $(document).ready(function(){initNavTree('onert-micro_2onert-micro_2src_2execute
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_html"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html">onert_micro::execute</a></div><div class="ttdef"><b>Definition</b> <a href="_arg_common_8h_source.html#l00032">ArgCommon.h:33</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00024">OMMemoryManager.h:25</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00025">OMMemoryManager.h:26</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">onert_micro::UnsupportedType</a></div><div class="ttdeci">@ UnsupportedType</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00026">OMStatus.h:26</a></div></div>

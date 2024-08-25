@@ -1,0 +1,5 @@
+<map id="luci::FuseMulWithFullyConnectedPass" name="luci::FuseMulWithFullyConnectedPass">
+<area shape="rect" id="Node000001" title="Class to fuse Mul into CircleFullyConnected." alt="" coords="5,79,248,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="86,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,46,129,79,124,79,124,46"/>
+</map>

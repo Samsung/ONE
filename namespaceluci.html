@@ -1016,6 +1016,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_mul_with_div_pass.html">FuseMulWithDivPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse Mul operation with a Div operation.  <a href="structluci_1_1_fuse_mul_with_div_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_mul_with_fully_connected_pass.html">FuseMulWithFullyConnectedPass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse Mul into CircleFullyConnected.  <a href="structluci_1_1_fuse_mul_with_fully_connected_pass.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_fuse_pre_activation_batch_norm_pass.html">FusePreActivationBatchNormPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to fuse batch normalization of pre-activation.  <a href="structluci_1_1_fuse_pre_activation_batch_norm_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1515,9 +1518,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aa99c425fc09fb77d14c5262dc722dae5" id="r_aa99c425fc09fb77d14c5262dc722dae5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#aa99c425fc09fb77d14c5262dc722dae5">exportOpDefinedTensors</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *g, <a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;builder, <a class="el" href="structluci_1_1_serialized_model_data.html">SerializedModelData</a> &amp;md, <a class="el" href="structluci_1_1_serialized_graph_data.html">SerializedGraphData</a> &amp;gd)</td></tr>
 <tr class="memdesc:aa99c425fc09fb77d14c5262dc722dae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">create Tensors corresponding to results of all nodes in graph  <br /></td></tr>
 <tr class="separator:aa99c425fc09fb77d14c5262dc722dae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a875402c9ea669dddc0f7e52dfa828b2e" id="r_a875402c9ea669dddc0f7e52dfa828b2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a875402c9ea669dddc0f7e52dfa828b2e">optimize</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *)</td></tr>
-<tr class="memdesc:a875402c9ea669dddc0f7e52dfa828b2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run passes of graph transformations.  <br /></td></tr>
-<tr class="separator:a875402c9ea669dddc0f7e52dfa828b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4438f6b29d02d97c6d8aef9a31481cb9" id="r_a4438f6b29d02d97c6d8aef9a31481cb9"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a> (const circle::Tensor *tensor)</td></tr>
 <tr class="separator:a4438f6b29d02d97c6d8aef9a31481cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc7e41d5c520bb4a9fbfff971f1c4487" id="r_afc7e41d5c520bb4a9fbfff971f1c4487"><td class="memItemLeft" align="right" valign="top">const circle::QuantizationParameters *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#afc7e41d5c520bb4a9fbfff971f1c4487">tensor_quantization</a> (const circle::Tensor *tensor)</td></tr>
@@ -7466,47 +7466,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a875402c9ea669dddc0f7e52dfa828b2e" name="a875402c9ea669dddc0f7e52dfa828b2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a875402c9ea669dddc0f7e52dfa828b2e">&#9670;&#160;</a></span>optimize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void luci::optimize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *&#160;</td>
-          <td class="paramname"><em>g</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Run passes of graph transformations. </p>
-
-<p class="definition">Definition at line <a class="el" href="_optimize_8cpp_source.html#l00030">30</a> of file <a class="el" href="_optimize_8cpp_source.html">Optimize.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
-<div class="line"><span class="lineno">   33</span>  {</div>
-<div class="line"><span class="lineno">   34</span>    <span class="comment">// prepare type and shape before optimization</span></div>
-<div class="line"><span class="lineno">   35</span>    phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">   36</span>    phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>    <span class="comment">// TODO add more optimization passes (with a knob)</span></div>
-<div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;</a> phase_runner{g};</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  ProgressReporter prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a>);</div>
-<div class="line"><span class="lineno">   44</span>  phase_runner.attach(&amp;prog);</div>
-<div class="line"><span class="lineno">   45</span>  phase_runner.run(phase);</div>
-<div class="line"><span class="lineno">   46</span>}</div>
-<div class="ttc" id="anamespacelogo_html_a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2"><div class="ttname"><a href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a></div><div class="ttdeci">@ Restart</div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::Restart</a>.</p>
-
-</div>
-</div>
 <a id="ac7dd3da6e892c67c7db0f62c1001c61d" name="ac7dd3da6e892c67c7db0f62c1001c61d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac7dd3da6e892c67c7db0f62c1001c61d">&#9670;&#160;</a></span>output_node()</h2>
 
@@ -8392,7 +8351,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_circle_shape_inference_helper_8cpp_source.html#l00041">luci::sinf::circle_shape()</a>, and <a class="el" href="_circle_shape_inference_helper_8cpp_source.html#l00028">shape_known()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_shape_infer___strided_slice_8cpp_source.html#l00371">infer_output_shape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_shape_infer___strided_slice_8cpp_source.html#l00371">infer_output_shape()</a>, and <a class="el" href="service_2src_2_nodes_2_circle_concatenation_8cpp_source.html#l00040">luci::sinf::Algorithm::visit()</a>.</p>
 
 </div>
 </div>
@@ -8946,7 +8905,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00255">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00599">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00255">copy_tensor_attributes()</a>, <a class="el" href="_circle_optimizer_8cpp_source.html#l00604">luci::CircleOptimizer::sparsify()</a>, <a class="el" href="import_2src_2_nodes_2_circle_cast_8cpp_source.html#l00029">luci::CircleCastGraphBuilder::validate()</a>, <a class="el" href="import_2src_2_nodes_2_circle_greater_8cpp_source.html#l00029">luci::CircleGreaterGraphBuilder::validate()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_unpack_8cpp_source.html#l00031">luci::CircleUnpackGraphBuilder::validate()</a>.</p>
 
 </div>
 </div>

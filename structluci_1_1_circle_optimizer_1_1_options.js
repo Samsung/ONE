@@ -16,6 +16,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "FuseMeanWithMean", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeae4ebe81cb13fbb6a3cb371d5c8609fa2", null ],
       [ "FuseMulWithConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeac442b9b2dbcc4a562cafe90319407c7c", null ],
       [ "FuseMulWithDiv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeac7b7a6502cd4c3e21913bf0fd49960df", null ],
+      [ "FuseMulWithFullyConnected", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea0f565e61c9ed4bda9125a3d5a2073c85", null ],
       [ "FuseTransposeWithMean", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea966690c9cfc551868e7505224f6cc27f", null ],
       [ "ResolveCustomOpAdd", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaf52daff767677a2ecda0d525416c3ed6", null ],
       [ "ResolveCustomOpBatchMatMul", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea0e9740f1df43f4d42d97ddac3dfe7804", null ],

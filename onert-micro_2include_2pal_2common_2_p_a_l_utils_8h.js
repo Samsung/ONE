@@ -5,6 +5,7 @@ var onert_micro_2include_2pal_2common_2_p_a_l_utils_8h =
     [ "getActivationParams", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#af33827c2f608f48e2569856e2a080abe", null ],
     [ "getActivationParams", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a447c124a35f528e94108da67cdbc1c0e", null ],
     [ "getActivationParams", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a3a9088e032c86c38e008041efb706da0", null ],
+    [ "getUpLowerWeightTensorDepth", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a093fb5e98109bdeb3049673b648d2fe1", null ],
     [ "MatchingDim", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a7c8c03685f5fa37b89c40a060337cf19", null ],
     [ "multiplyByQuantizedMultiplier", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#ad46467b3a1fe2994b5e48e829efc031d", null ],
     [ "multiplyByQuantizedMultiplierSmallerThanOneExp", "onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html#a5b2437784697da8dbdab5bdf9fc12cfe", null ],
