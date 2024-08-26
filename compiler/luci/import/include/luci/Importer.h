@@ -42,10 +42,14 @@ public:
   }
 
 public:
+  // TODO move to private
   std::unique_ptr<Module> importModule(const circle::Model *model) const;
+  std::unique_ptr<Module> importModule(const uint8_t *data, size_t size);
 
 private:
   const GraphBuilderSource *_source = nullptr;
+  const uint8_t *_file_data = nullptr;
+  size_t _file_size = 0;
 };
 
 } // namespace luci
