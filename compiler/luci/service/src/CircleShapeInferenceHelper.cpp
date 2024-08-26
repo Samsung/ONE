@@ -57,13 +57,13 @@ loco::TensorShape expand_dimension(const loco::TensorShape &x, const loco::Tenso
   output_shape.rank(rank);
 
   // Shape inference rule (commutative)
-  // Values of x, y, and Result are categorized as 1, X, ? where
-  // X is a positive integer greater than 1 and ? is unknown.
+  // Dimension values of x, y, and Result are categorized as 1, N, ?
+  // where N is a positive integer greater than 1 and ? is unknown.
   //     x | y | Result
-  // c1. 1 | X | X
+  // c1. 1 | N | N
   // c2. 1 | ? | ?
-  // c3. X | X | X
-  // c4. X | ? | X
+  // c3. N | N | N
+  // c4. N | ? | N
   // c5. ? | ? | ?
   // Throw exception if none of the below conditions are met
   // e1. x == y
