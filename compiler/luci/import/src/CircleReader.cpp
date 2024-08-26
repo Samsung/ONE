@@ -331,6 +331,21 @@ bool CircleReader::parse(const circle::Model *model)
   return true;
 }
 
+bool CircleReader::parse(const circle::Model *model, const uint8_t *data, const size_t size)
+{
+  assert(model != nullptr);
+  assert(data != nullptr);
+  assert(size > 0);
+
+  // for direct pointer access
+  _model = model;
+
+  _file_data = data;
+  _file_size = size;
+
+  return true;
+}
+
 bool CircleReader::select_subgraph(uint32_t sgindex)
 {
   if (num_subgraph() <= sgindex)
@@ -347,6 +362,15 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   assert(_current_subgraph != nullptr);
 
   return true;
+}
+
+// NOTE need caution not to access beyond _file_data + _file_size.
+// current method doesn't have this guard.
+const uint8_t *CircleReader::file_data(uint64_t offset) const
+{
+  assert(_file_data);
+  assert(offset < _file_size);
+  return (_file_data == nullptr) ? nullptr : _file_data + offset;
 }
 
 template <typename T>
