@@ -38,7 +38,6 @@ TEST(ShapeRuleTest, pad_dynamic_shape)
 {
   luci::CirclePad pad;
   luci::CircleInput input;
-  // Use circle input as paddings
   luci::CircleConst padddings;
 
   loco::TensorShape shape;
@@ -70,5 +69,23 @@ TEST(ShapeRuleTest, pad_dynamic_shape)
   ASSERT_EQ(2, shape.dim(1).value());
   ASSERT_EQ(0, shape.dim(2).value());
   ASSERT_EQ(4, shape.dim(3).value());
+  pad.drop();
+}
+
+TEST(ShapeRuleTest, pad_without_padding_NEG)
+{
+  luci::CirclePad pad;
+  luci::CircleInput input;
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  input.shape({1, 2, 3, 4});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(2).unset();
+
+  pad.input(&input);
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&pad, shape));
+
   pad.drop();
 }
