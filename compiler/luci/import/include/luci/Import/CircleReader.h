@@ -115,11 +115,19 @@ public: // direct API
 
 public:
   bool parse(const circle::Model *model);
+  bool parse(const circle::Model *model, const uint8_t *data, const size_t size);
   bool select_subgraph(uint32_t subgraph);
+
+public:
+  // to access raw file data for Buffer outside of flatbuffer range
+  const uint8_t *file_data(uint64_t offset) const;
+  size_t file_size(void) const { return _file_size; }
 
 private:
   const circle::Model *_model{nullptr};
   const circle::SubGraph *_current_subgraph{nullptr};
+  const uint8_t *_file_data{nullptr};
+  size_t _file_size{0};
 };
 
 } // namespace luci
