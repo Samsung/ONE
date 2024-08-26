@@ -126,7 +126,7 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
 
     //  b. Run forward graph
     {
-      status = run();
+      status = run(config);
       assert(status == Ok);
       if (status != Ok)
         return status;
@@ -203,8 +203,8 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
  *              after calculation for current batch_num (the sequence number of the current sample)
  *              this value is added to metric_val
  */
-OMStatus OMTrainingRuntimeModule::evaluateMetric(OMMetrics metric, void *metric_val,
-                                                 uint32_t test_size)
+OMStatus OMTrainingRuntimeModule::evaluateMetric(const OMConfig &config, OMMetrics metric,
+                                                 void *metric_val, uint32_t test_size)
 {
   OMStatus status = Ok;
   OMRuntimeGraph &forward_main_graph = _graphs.at(0);
@@ -234,7 +234,7 @@ OMStatus OMTrainingRuntimeModule::evaluateMetric(OMMetrics metric, void *metric_
 
     //  b. Run forward graph
     {
-      status = run();
+      status = run(config);
       assert(status == Ok);
       if (status != Ok)
         return status;

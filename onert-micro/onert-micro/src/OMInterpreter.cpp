@@ -27,7 +27,7 @@ OMStatus OMInterpreter::importModel(const char *model_ptr, const OMConfig &confi
   return _runtime_module.importModel(model_ptr, config);
 }
 
-OMStatus OMInterpreter::run() { return _runtime_module.run(); }
+OMStatus OMInterpreter::run(const OMConfig &config) { return _runtime_module.run(config); }
 
 OMStatus OMInterpreter::reset() { return _runtime_module.reset(); }
 

@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-constexpr static uint32_t maxInputSize = 5;
+constexpr static uint32_t maxInputSize = 6;
 constexpr static uint32_t maxOutputSize = 5;
 
 namespace onert_micro

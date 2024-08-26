@@ -34,6 +34,7 @@ bool isTrainableWeights(const circle::OperatorCode *opcode)
   {
     case circle::BuiltinOperator_FULLY_CONNECTED:
     case circle::BuiltinOperator_CONV_2D:
+    case circle::BuiltinOperator_GRU:
       return true;
     default:
       return false;
@@ -255,8 +256,9 @@ OMStatus OMExecutionPlanCreator::createForwardExecutionPlan(
     // of the graph)
     bool need_to_save_input_data =
       (index >= last_train_op_indx) and
-      ((trainable_ops_config.find(index) != trainable_ops_config.end() and
-        trainable_ops_config[index] != ONLY_BIAS) or
+      ((trainable_ops_config.empty() or
+        trainable_ops_config.find(index) != trainable_ops_config.end() and
+          trainable_ops_config[index] != ONLY_BIAS) or
        isOpNeedSaveInputData(opcode));
 
     // Flag to determine is current operation needed to save output data (is this op in training

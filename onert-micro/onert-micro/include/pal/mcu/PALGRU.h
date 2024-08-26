@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +15,9 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_EXECUTE_EXECUTE_ARGS_H
-#define ONERT_MICRO_EXECUTE_EXECUTE_ARGS_H
+#ifndef ONERT_MICRO_EXECUTE_PAL_GRU_H
+#define ONERT_MICRO_EXECUTE_PAL_GRU_H
 
-#include "OMStatus.h"
-#include "core/OMRuntimeContext.h"
-#include "core/OMRuntimeStorage.h"
-#include "core/OMRuntimeModule.h"
+#include "PALGRUCommon.h"
 
-namespace onert_micro
-{
-namespace execute
-{
-
-struct OMExecuteArgs
-{
-  core::OMRuntimeStorage &runtime_storage;
-  core::OMRuntimeContext &runtime_context;
-  uint16_t kernel_index;
-  core::OMRuntimeModule &runtime_module;
-  uint32_t num_train_layers = 0;
-  bool is_train_mode = false;
-};
-
-} // namespace execute
-} // namespace onert_micro
-
-#endif // ONERT_MICRO_EXECUTE_EXECUTE_ARGS_H
+#endif // ONERT_MICRO_EXECUTE_PAL_GRU_H
