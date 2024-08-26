@@ -52,7 +52,7 @@ public:
   // loco::TensorShape visit(const luci::CircleArgMax *node) final;
   // loco::TensorShape visit(const luci::CircleArgMin *node) final;
   // loco::TensorShape visit(const luci::CircleAveragePool2D *node) final;
-  // loco::TensorShape visit(const luci::CircleBatchMatMul *node) final;
+  loco::TensorShape visit(const luci::CircleBatchMatMul *node) final;
   // loco::TensorShape visit(const luci::CircleBatchToSpaceND *node) final;
   // loco::TensorShape visit(const luci::CircleCast *node) final;
   // loco::TensorShape visit(const luci::CircleCeil *node) final;

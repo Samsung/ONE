@@ -463,52 +463,6 @@ template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
   return os;
 }
 
-// BatchMatMulV2 supports broadcasting in the batch dimensions(BatchMatMul doesn't)
-// TODO Distinguish BatchMatMul and BatchMatMulV2
-loco::NodeShape infer_batchmatmul_shape(const loco::TensorShape &x_shape,
-                                        const loco::TensorShape &y_shape, bool adj_x, bool adj_y)
-{
-  uint32_t x_rank = x_shape.rank();
-  uint32_t y_rank = y_shape.rank();
-  assert(x_rank >= 2 && y_rank >= 2);
-
-  loco::TensorShape output_shape;
-  output_shape.rank(x_shape.rank());
-  // Braodcast in the batch dimension
-  if (x_rank > 2 || y_rank > 2)
-  {
-    loco::TensorShape dummy_x = x_shape;
-    loco::TensorShape dummy_y = y_shape;
-    expand_rank(dummy_x, dummy_y);
-    if (x_rank < y_rank)
-      expand_rank(output_shape, dummy_y);
-
-    for (uint32_t d = 0; d < output_shape.rank() - 2; d++)
-    {
-      uint32_t max_dim = std::max(dummy_x.dim(d).value(), dummy_y.dim(d).value());
-      if (dummy_x.dim(d) == dummy_y.dim(d) ||
-          dummy_x.dim(d).value() * dummy_y.dim(d).value() == max_dim)
-        output_shape.dim(d).set(max_dim);
-      else
-        INTERNAL_EXN("BatchMatMul has wrong shape");
-    }
-  }
-
-  loco::Dimension x_lhs = adj_x ? x_shape.dim(x_rank - 1) : x_shape.dim(x_rank - 2);
-  loco::Dimension x_rhs = adj_x ? x_shape.dim(x_rank - 2) : x_shape.dim(x_rank - 1);
-  loco::Dimension y_lhs = adj_y ? y_shape.dim(y_rank - 1) : y_shape.dim(y_rank - 2);
-  loco::Dimension y_rhs = adj_y ? y_shape.dim(y_rank - 2) : y_shape.dim(y_rank - 1);
-
-  if (x_rhs.known() && y_lhs.known() && not(x_rhs == y_lhs))
-    INTERNAL_EXN("x_rhs and y_lhs should be same");
-
-  uint32_t out_rank = output_shape.rank();
-  output_shape.dim(out_rank - 2) = x_lhs;
-  output_shape.dim(out_rank - 1) = y_rhs;
-
-  return loco::NodeShape{output_shape};
-}
-
 loco::NodeShape infer_broadcast_to(const luci::CircleBroadcastTo *node)
 {
   const loco::DataType S32 = loco::DataType::S32;
@@ -2028,14 +1982,6 @@ public:
   loco::NodeShape visit(const luci::CircleAveragePool2D *node) final
   {
     return infer_pool_2d_shape(node);
-  }
-
-  loco::NodeShape visit(const luci::CircleBatchMatMul *node) final
-  {
-    auto x_shape = luci::shape_get(node->x()).as<loco::TensorShape>();
-    auto y_shape = luci::shape_get(node->y()).as<loco::TensorShape>();
-
-    return infer_batchmatmul_shape(x_shape, y_shape, node->adj_x(), node->adj_y());
   }
 
   loco::NodeShape visit(const luci::CircleBatchToSpaceND *node) final
