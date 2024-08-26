@@ -66,14 +66,6 @@ inline void CopyDynamic(const ::onert::backend::ITensor *src, const ::onert::bac
 
 class IPermuteFunction : public IFunction
 {
-protected:
-  enum class PermuteType
-  {
-    NHWC_TO_NCHW,
-    NCHW_TO_NHWC,
-    COPY
-  };
-
 public:
   virtual void run() override;
 
@@ -138,25 +130,25 @@ private:
     assert(dst_buffer != nullptr);
     assert(dst_size == dst->total_size());
 
-    const auto permute_type = [&]() -> PermuteType {
+    const auto permute_type = [&]() -> ir::PermuteType {
       if (src->layout() == ir::Layout::NHWC && dst->layout() == ir::Layout::NCHW)
       {
-        return PermuteType::NHWC_TO_NCHW;
+        return ir::PermuteType::NHWC_TO_NCHW;
       }
       else if (src->layout() == ir::Layout::NCHW && dst->layout() == ir::Layout::NHWC)
       {
-        return PermuteType::NCHW_TO_NHWC;
+        return ir::PermuteType::NCHW_TO_NHWC;
       }
       else
       {
-        return PermuteType::COPY;
+        return ir::PermuteType::COPY;
       }
     }();
-    if (rank == 4 && permute_type != PermuteType::COPY)
+    if (rank == 4 && permute_type != ir::PermuteType::COPY)
     {
       switch (permute_type)
       {
-        case PermuteType::NHWC_TO_NCHW:
+        case ir::PermuteType::NHWC_TO_NCHW:
         {
           ir::FeatureShape shape;
           auto dst_shape = dst->getShape();
@@ -181,7 +173,7 @@ private:
           };
           break;
         }
-        case PermuteType::NCHW_TO_NHWC:
+        case ir::PermuteType::NCHW_TO_NHWC:
         {
           ir::FeatureShape shape;
           auto dst_shape = dst->getShape();

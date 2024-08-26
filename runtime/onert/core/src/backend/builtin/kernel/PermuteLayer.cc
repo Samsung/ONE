@@ -65,20 +65,20 @@ void PermuteLayer::optimize()
       dst_offsets_it->resize(0);
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         continue;
-      const auto permute_type = [&]() -> PermuteType {
+      const auto permute_type = [&]() -> ir::PermuteType {
         if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NHWC &&
             dst->layout() == ir::Layout::NCHW)
         {
-          return PermuteType::NHWC_TO_NCHW;
+          return ir::PermuteType::NHWC_TO_NCHW;
         }
         else if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NCHW &&
                  dst->layout() == ir::Layout::NHWC)
         {
-          return PermuteType::NCHW_TO_NHWC;
+          return ir::PermuteType::NCHW_TO_NHWC;
         }
         else
         {
-          return PermuteType::COPY;
+          return ir::PermuteType::COPY;
         }
       }();
 
@@ -88,7 +88,7 @@ void PermuteLayer::optimize()
           // NOTE The buffer of both tensor can be nullptr in this step
           const auto data_size = ir::sizeOfDataType(src_tensor.data_type());
 
-          if (permute_type == PermuteType::COPY)
+          if (permute_type == ir::PermuteType::COPY)
           {
             if ((!src_tensor.has_padding() && !dst_tensor.has_padding()))
             {
@@ -125,8 +125,8 @@ void PermuteLayer::optimize()
           else
           {
             assert(src_tensor.getShape().rank() == 4 &&
-                   (permute_type == PermuteType::NHWC_TO_NCHW ||
-                    permute_type == PermuteType::NCHW_TO_NHWC));
+                   (permute_type == ir::PermuteType::NHWC_TO_NCHW ||
+                    permute_type == ir::PermuteType::NCHW_TO_NHWC));
             const auto loop_shape = src_tensor.getShape();
             const auto copy_len = data_size;
 
