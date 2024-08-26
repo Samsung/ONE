@@ -2,18 +2,32 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
+#   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+if(CMAKE_VERSION VERSION_LESS 3.12)
+  find_package(PythonInterp 3.8 QUIET)
+  find_package(PythonLibs 3.8 QUIET)
 
-if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
-  return()
-endif()
+  if(NOT ${PYTHONINTERP_FOUND})
+    message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
+    return()
+  endif()
 
-if(${PYTHON_VERSION_MINOR} LESS 8)
-  message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
-  return()
+  if(${PYTHON_VERSION_MINOR} LESS 8)
+    message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
+    return()
+  endif()
+else()
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+
+  if(NOT Python_Interpreter_FOUND)
+    message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
+    return()
+  endif()
+
+  message(STATUS "Build one-cmds: Found Python ${Python_VERSION}")
+
+  set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
 
 # NOTE these files should not have extensions.
@@ -78,7 +92,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
+
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES

@@ -66,11 +66,23 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
-set(Python_ADDITIONAL_VERSIONS 3.8)
-find_package(PythonInterp 3.8 QUIET)
+if(CMAKE_VERSION VERSION_LESS 3.12)
+  set(Python_ADDITIONAL_VERSIONS 3.8)
+  find_package(PythonInterp 3.8 QUIET)
+  if(NOT ${PYTHONINTERP_FOUND})
+    message(FATAL_ERROR "Build fm-equalize_unittest: FAIL (Python3 is missing)")
+  endif()
+else()
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
 
-if(NOT ${PYTHONINTERP_FOUND})
-  message(FATAL_ERROR "Build fm-equalize_unittest: FAIL (Python3 is missing)")
+  if(NOT Python_Interpreter_FOUND)
+    message(STATUS "Build fm-equalize_unittest: FAILED (Python3 is missing)")
+    return()
+  endif()
+
+  message(STATUS "Build fm-equalize_unittest: Found Python ${Python_VERSION}")
+
+  set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
 
 add_test(

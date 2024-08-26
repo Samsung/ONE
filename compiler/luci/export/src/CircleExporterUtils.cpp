@@ -77,6 +77,15 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
     case loco::DataType::STRING:
       return circle::TensorType_STRING;
 
+    case loco::DataType::GGML_Q4_0:
+      return circle::TensorType_GGML_Q4_0;
+    case loco::DataType::GGML_Q4_1:
+      return circle::TensorType_GGML_Q4_1;
+    case loco::DataType::GGML_Q8_0:
+      return circle::TensorType_GGML_Q8_0;
+    case loco::DataType::GGML_Q8_1:
+      return circle::TensorType_GGML_Q8_1;
+
     default:
       INTERNAL_EXN_V("failed to convert unsupported loco::DataType", oops::to_uint32(type));
   }
