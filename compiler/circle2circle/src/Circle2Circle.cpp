@@ -358,7 +358,7 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::RemoveRedundantTranspose);
   if (arser.get<bool>("--remove_unnecessary_add"))
     options->enable(Algorithms::RemoveUnnecessaryAdd);
-    if (arser.get<bool>("--remove_unnecessary_cast"))
+  if (arser.get<bool>("--remove_unnecessary_cast"))
     options->enable(Algorithms::RemoveUnnecessaryCast);
   if (arser.get<bool>("--remove_unnecessary_reshape"))
     options->enable(Algorithms::RemoveUnnecessaryReshape);
