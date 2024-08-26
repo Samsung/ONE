@@ -179,12 +179,10 @@ int entry(int argc, char **argv)
     config.wof_ptr = nullptr;
 
   // Set user defined training settings
-  const uint32_t training_epochs = 30;
+  const uint32_t training_epochs = 50;
   const float lambda = 0.001f;
-  const uint32_t BATCH_SIZE = 32;
-  const uint32_t INPUT_SIZE = 180;
-  const uint32_t OUTPUT_SIZE = 4;
-  const uint32_t num_train_layers = 10;
+  const uint32_t BATCH_SIZE = 64;
+  const uint32_t num_train_layers = 4;
   const onert_micro::OMLoss loss = onert_micro::CROSS_ENTROPY;
   const onert_micro::OMTrainOptimizer train_optim = onert_micro::ADAM;
   const float beta = 0.9;
@@ -210,6 +208,9 @@ int entry(int argc, char **argv)
   // Create training interpreter and import models
   onert_micro::OMTrainingInterpreter train_interpreter;
   train_interpreter.importTrainModel(circle_model.data(), config);
+
+  const uint32_t OUTPUT_SIZE = train_interpreter.getOutputSizeAt(0);
+  const uint32_t INPUT_SIZE = train_interpreter.getInputSizeAt(0);
 
   // Temporary buffer to read input data from file using BATCH_SIZE
   float training_input[BATCH_SIZE * INPUT_SIZE];
@@ -263,11 +264,11 @@ int entry(int argc, char **argv)
       if (CLASSIFICATION_TASK)
       {
         // Evaluate cross_entropy and accuracy metrics
-        train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+        train_interpreter.evaluateMetric(config, onert_micro::CROSS_ENTROPY_METRICS,
                                          reinterpret_cast<void *>(&cross_entropy_metric),
                                          cur_batch_size);
-        train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
-                                         cur_batch_size);
+        train_interpreter.evaluateMetric(config, onert_micro::ACCURACY,
+                                         reinterpret_cast<void *>(&accuracy), cur_batch_size);
 
         // Save them into vectors
         accuracy_v.push_back(accuracy);
@@ -276,10 +277,10 @@ int entry(int argc, char **argv)
       else
       {
         // Evaluate mse and mae metrics
-        train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&mse),
-                                         cur_batch_size);
-        train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&mae),
-                                         cur_batch_size);
+        train_interpreter.evaluateMetric(config, onert_micro::MSE_METRICS,
+                                         reinterpret_cast<void *>(&mse), cur_batch_size);
+        train_interpreter.evaluateMetric(config, onert_micro::MAE_METRICS,
+                                         reinterpret_cast<void *>(&mae), cur_batch_size);
 
         // Save them into vectors
         mse_v.push_back(mse);
@@ -335,11 +336,11 @@ int entry(int argc, char **argv)
       if (CLASSIFICATION_TASK)
       {
         // Evaluate cross_entropy and accuracy metrics
-        train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+        train_interpreter.evaluateMetric(config, onert_micro::CROSS_ENTROPY_METRICS,
                                          reinterpret_cast<void *>(&cross_entropy_metric),
                                          cur_batch_size);
-        train_interpreter.evaluateMetric(onert_micro::ACCURACY, reinterpret_cast<void *>(&accuracy),
-                                         cur_batch_size);
+        train_interpreter.evaluateMetric(config, onert_micro::ACCURACY,
+                                         reinterpret_cast<void *>(&accuracy), cur_batch_size);
 
         // Save them into vectors
         accuracy_v.push_back(accuracy);
@@ -348,10 +349,10 @@ int entry(int argc, char **argv)
       else
       {
         // Evaluate mse and mae metrics
-        train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&mse),
-                                         cur_batch_size);
-        train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&mae),
-                                         cur_batch_size);
+        train_interpreter.evaluateMetric(config, onert_micro::MSE_METRICS,
+                                         reinterpret_cast<void *>(&mse), cur_batch_size);
+        train_interpreter.evaluateMetric(config, onert_micro::MAE_METRICS,
+                                         reinterpret_cast<void *>(&mae), cur_batch_size);
 
         // Save them into vectors
         mse_v.push_back(mse);

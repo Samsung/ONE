@@ -30,6 +30,7 @@ namespace train
 namespace pal
 {
 
+// Note: dloss_dweight_data should be initialized
 void inline FullyConnectedWeightGrad(
   const float *dloss_doutput_data, const core::OMRuntimeShape &dloss_doutput_shape,
   const float *input_data, const core::OMRuntimeShape &input_shape, float *dloss_dweight_data,
@@ -48,7 +49,7 @@ void inline FullyConnectedWeightGrad(
     float cur_dloss_doutput = dloss_doutput_data[o + depth_bounds.first];
     for (uint32_t i = 0; i < accum_depth; ++i)
     {
-      dloss_dweight_data[i + o * accum_depth] = cur_dloss_doutput * input_data[i];
+      dloss_dweight_data[i + o * accum_depth] += cur_dloss_doutput * input_data[i];
     }
   }
 
