@@ -264,43 +264,6 @@ Importer::Importer()
   // DO NOTHING
 }
 
-std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
-{
-  auto graph = loco::make_graph();
-
-  const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
-
-  if (_source != nullptr)
-  {
-    // Use user-defined GraphBuilderSource
-    source_ptr = _source;
-  }
-
-  CircleReader reader;
-  if (!reader.parse(model))
-    return nullptr;
-
-  if (reader.num_subgraph() != 1)
-  {
-    INTERNAL_EXN("Use 'importModule()' for multiple subgraphs");
-  }
-  if (!reader.select_subgraph(0))
-    return nullptr;
-
-  // Convert circle::Model to loco::Graph
-  convert_graph(*source_ptr, reader, graph.get());
-
-  LOGGER(l);
-  VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
-  VERBOSE(l, 3) << "Name: " << graph->name();
-  VERBOSE(l, 3) << fmt(graph.get());
-  VERBOSE(l, 3) << "--- graph dump end ---------------------------------------------";
-
-  assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
-
-  return graph;
-}
-
 std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 {
   auto module = make_module();
