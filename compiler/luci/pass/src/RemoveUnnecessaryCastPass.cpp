@@ -25,19 +25,13 @@ namespace
   if (not(cond))                  \
     return false;
 
-bool remove_unnecessary_cast(luci::CircleCast* cast) {
-	RETURN_FALSE_UNLESS(cast->in_data_type() == cast->out_data_type());
-	// TODO: check a case where there are multiple outputs
-	// Check it with tflrecipe instead of tests
-	//       |
-	//  [CircleNode]
-	//       |
-	//  [CircleCast]
-	//   |   |    |
-	//  [A] [B]  [C]
-	loco::replace(cast).with(cast->x());
+bool remove_unnecessary_cast(luci::CircleCast *cast)
+{
+  RETURN_FALSE_UNLESS(cast->in_data_type() == cast->out_data_type());
 
-	return true;
+  loco::replace(cast).with(cast->x());
+
+  return true;
 }
 
 } // namespace
@@ -47,16 +41,16 @@ namespace luci
 
 bool RemoveUnnecessaryCastPass::run(loco::Graph *g)
 {
-	bool changed = false;
-	for (auto node : loco::active_nodes(loco::output_nodes(g)))
-	{
-		if (auto cast_node = dynamic_cast<luci::CircleCast *>(node))
-		{
-			if (remove_unnecessary_cast(cast_node))
-				changed = true;
-		}
-	}
-	return changed;
+  bool changed = false;
+  for (auto node : loco::active_nodes(loco::output_nodes(g)))
+  {
+    if (auto cast_node = dynamic_cast<luci::CircleCast *>(node))
+    {
+      if (remove_unnecessary_cast(cast_node))
+        changed = true;
+    }
+  }
+  return changed;
 }
 
 } // namespace luci
