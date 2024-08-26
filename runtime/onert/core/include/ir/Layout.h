@@ -33,6 +33,13 @@ enum class Layout
   NCHW
 };
 
+enum class PermuteType
+{
+  NHWC_TO_NCHW,
+  NCHW_TO_NHWC,
+  COPY
+};
+
 inline std::string to_string(Layout layout)
 {
   switch (layout)
