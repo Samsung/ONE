@@ -54,7 +54,7 @@ luci::CircleConst *const_node_of_dtype(loco::Graph *g, const loco::DataType dtyp
  *           |
  *      [CircleAdd]
  *           |
- * 
+ *
  *  AFTER
  *
  *           |
@@ -62,7 +62,7 @@ luci::CircleConst *const_node_of_dtype(loco::Graph *g, const loco::DataType dtyp
  *           |           [CircleCast removed]
  *      [CircleAdd]
  *           |
- * 
+ *
  */
 class CastGraphlet
 {
