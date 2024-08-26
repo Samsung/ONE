@@ -17,6 +17,7 @@
 #ifndef __CREW_PCONFIG_JSON_H__
 #define __CREW_PCONFIG_JSON_H__
 
+#include <cstdint>
 #include <ostream>
 #include <string>
 #include <vector>

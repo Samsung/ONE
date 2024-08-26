@@ -174,6 +174,13 @@ struct TypeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::DataT
 
   loco::DataType visit(const luci::CircleGather *node) final
   {
+    // TODO Check block quantization
+    if (luci::dtype_get(node->params()) == loco::DataType::Q4_0 ||
+        luci::dtype_get(node->params()) == loco::DataType::Q4_1 ||
+        luci::dtype_get(node->params()) == loco::DataType::Q8_0 ||
+        luci::dtype_get(node->params()) == loco::DataType::Q8_1)
+      return loco::DataType::FLOAT32;
+
     return luci::dtype_get(node->params());
   }
 

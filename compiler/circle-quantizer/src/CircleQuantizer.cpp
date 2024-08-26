@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+#include "QuantizeWeightsLLM.h"
+
 #include <luci/ImporterEx.h>
 #include <luci/CircleQuantizer.h>
 #include <luci/Service/Validate.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include <luci/UserSettings.h>
+#include <luci/IR/CircleNodeDecl.h>
 
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
@@ -151,6 +154,7 @@ void print_exclusive_options(void)
   std::cout << "    --requantize" << std::endl;
   std::cout << "    --force_quantparam" << std::endl;
   std::cout << "    --quantize_weights" << std::endl;
+  std::cout << "    --quantize_llm" << std::endl;
   std::cout << "    --quantize_onnx_fq_model" << std::endl;
 }
 
@@ -176,6 +180,8 @@ int entry(int argc, char **argv)
   const std::string fake_quant = "--fake_quantize";
   const std::string qw = "--quantize_weights";
   const std::string cfg = "--config";
+  const std::string qllm = "--block_quantize_weights";
+  const std::string skip_qllm = "--skipsize_block_quantize";
 
   const std::string tf_maxpool = "--TF-style_maxpool";
 
@@ -220,6 +226,20 @@ int entry(int argc, char **argv)
     .nargs(0)
     .help("Convert a quantized model to a fake-quantized model. NOTE: This feature will "
           "generate an fp32 model.");
+
+  arser.add_argument(qllm)
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("FullyConnected weight and Gather param quantization with block granualrity. "
+          "One argument requires: type(Q4_0, Q8_0)");
+
+  arser.add_argument(skip_qllm)
+    .nargs(1)
+    .type(arser::DataType::INT32)
+    .default_value(0)
+    .help("Skip weight quantization with block granualrity when "
+          "weight is smaller than specified elementsize. "
+          "One argument requires: size (default: 0)");
 
   arser.add_argument(rq)
     .nargs(2)
@@ -289,6 +309,7 @@ int entry(int argc, char **argv)
     opt_used += arser[cq] ? 1 : 0;
     opt_used += arser[fake_quant] ? 1 : 0;
     opt_used += arser[qw] ? 1 : 0;
+    opt_used += arser[qllm] ? 1 : 0;
     opt_used += arser.get<bool>(qofm) ? 1 : 0;
     if (opt_used != 1)
     {
@@ -464,6 +485,67 @@ int entry(int argc, char **argv)
 
   if (arser[fake_quant])
     options->enable(Algorithms::ConvertToFakeQuantizedModel);
+
+  if (arser[qllm])
+  {
+    std::string input_path = arser.get<std::string>("input");
+    std::string output_path = arser.get<std::string>("output");
+    std::string type_str = arser.get<std::string>(qllm);
+    auto skip_length = arser.get<int32_t>(skip_qllm);
+    quantizer::QuantizeWeightsLLM::Type qtype = quantizer::QuantizeWeightsLLM::Type::Q4_0;
+    if (type_str == "Q8_0")
+      qtype = quantizer::QuantizeWeightsLLM::Type::Q8_0;
+    else if (type_str == "skip")
+      qtype = quantizer::QuantizeWeightsLLM::Type::SKIP;
+    else if (type_str != "Q4_0")
+    {
+      std::cerr << "ERROR: Unsupported chunk quantization type" << std::endl;
+      return 255;
+    }
+    if (skip_length < 0)
+    {
+      std::cerr << "ERROR: Skip weight elementsize should be larger than zero" << std::endl;
+      return 255;
+    }
+
+    // Load model from the file
+    luci::ImporterEx importerex;
+    auto module = importerex.importVerifyModule(input_path);
+    if (module.get() == nullptr)
+      return EXIT_FAILURE;
+
+    for (size_t idx = 0; idx < module->size(); ++idx)
+    {
+      auto graph = module->graph(idx);
+
+      // Weight quantization for LLM
+      for (auto node : loco::active_nodes(loco::output_nodes(graph)))
+      {
+        auto circle_node = loco::must_cast<luci::CircleNode *>(node);
+        quantizer::QuantizeWeightsLLM qw(qtype, skip_length);
+        circle_node->accept(&qw);
+      }
+
+      if (!luci::validate(graph))
+      {
+        std::cerr << "ERROR: Quantized graph is invalid" << std::endl;
+        return 255;
+      }
+    }
+
+    // Export to output Circle file
+    luci::CircleExporter exporter;
+
+    luci::CircleFileExpContract contract(module.get(), output_path);
+
+    if (!exporter.invoke(&contract))
+    {
+      std::cerr << "ERROR: Failed to export '" << output_path << "'" << std::endl;
+      return 255;
+    }
+
+    return 0;
+  }
 
   if (arser[qw])
   {

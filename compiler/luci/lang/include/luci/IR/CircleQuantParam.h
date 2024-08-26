@@ -18,6 +18,7 @@
 #define __LUCI_IR_CIRCLEQUANTPARAM_H__
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace luci
