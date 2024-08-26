@@ -61,6 +61,16 @@ operand {
   name: "add"
   type: FLOAT32
   shape {
+    dim: 0
+    dim: 8
+    dim: 0
+    dim: 64
+  }
+  shape_signature {
+    dim: -1
+    dim: 8
+    dim: -1
+    dim: 64
   }
 }
 operation {
