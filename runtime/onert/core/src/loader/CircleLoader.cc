@@ -91,12 +91,13 @@ protected:
   ir::DataType getTensorDataType(const Tensor *tensor) override
   {
     auto type = tensor->type();
-    // Workaround: No quantization parameter for chunk quantization
-    //             Actual parameter(scale) for each chunk is in data
-    // TODO Handle custom quantization parameter to represent chunk quantization
-    if (type == TensorType::TensorType_UINT4 && !tensor->quantization())
+    if (type == TensorType::TensorType_UINT4 && tensor->quantization() &&
+        tensor->quantization()->details_type() ==
+          circle::QuantizationDetails::QuantizationDetails_CircleChunkQuantization)
       return ir::DataType::QUANT_UINT4_SYMM_PER_CHUNK;
-    if (type == TensorType::TensorType_INT8 && !tensor->quantization())
+    if (type == TensorType::TensorType_INT8 && tensor->quantization() &&
+        tensor->quantization()->details_type() ==
+          circle::QuantizationDetails::QuantizationDetails_CircleChunkQuantization)
       return ir::DataType::QUANT_INT8_SYMM_PER_CHUNK;
     return tensorTypeToDataType(type);
   }

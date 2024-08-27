@@ -35,6 +35,10 @@ struct CustomQuantization;
 struct CustomQuantizationBuilder;
 struct CustomQuantizationT;
 
+struct CircleChunkQuantization;
+struct CircleChunkQuantizationBuilder;
+struct CircleChunkQuantizationT;
+
 struct QuantizationParameters;
 struct QuantizationParametersBuilder;
 struct QuantizationParametersT;
@@ -756,27 +760,30 @@ enum QuantizationDetails : uint8_t
 {
   QuantizationDetails_NONE = 0,
   QuantizationDetails_CustomQuantization = 1,
+  QuantizationDetails_CircleChunkQuantization = 2,
   QuantizationDetails_MIN = QuantizationDetails_NONE,
-  QuantizationDetails_MAX = QuantizationDetails_CustomQuantization
+  QuantizationDetails_MAX = QuantizationDetails_CircleChunkQuantization
 };
 
-inline const QuantizationDetails (&EnumValuesQuantizationDetails())[2]
+inline const QuantizationDetails (&EnumValuesQuantizationDetails())[3]
 {
   static const QuantizationDetails values[] = {QuantizationDetails_NONE,
-                                               QuantizationDetails_CustomQuantization};
+                                               QuantizationDetails_CustomQuantization,
+                                               QuantizationDetails_CircleChunkQuantization};
   return values;
 }
 
 inline const char *const *EnumNamesQuantizationDetails()
 {
-  static const char *const names[3] = {"NONE", "CustomQuantization", nullptr};
+  static const char *const names[4] = {"NONE", "CustomQuantization", "CircleChunkQuantization",
+                                       nullptr};
   return names;
 }
 
 inline const char *EnumNameQuantizationDetails(QuantizationDetails e)
 {
   if (::flatbuffers::IsOutRange(e, QuantizationDetails_NONE,
-                                QuantizationDetails_CustomQuantization))
+                                QuantizationDetails_CircleChunkQuantization))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesQuantizationDetails()[index];
@@ -792,6 +799,11 @@ template <> struct QuantizationDetailsTraits<circle::CustomQuantization>
   static const QuantizationDetails enum_value = QuantizationDetails_CustomQuantization;
 };
 
+template <> struct QuantizationDetailsTraits<circle::CircleChunkQuantization>
+{
+  static const QuantizationDetails enum_value = QuantizationDetails_CircleChunkQuantization;
+};
+
 template <typename T> struct QuantizationDetailsUnionTraits
 {
   static const QuantizationDetails enum_value = QuantizationDetails_NONE;
@@ -800,6 +812,11 @@ template <typename T> struct QuantizationDetailsUnionTraits
 template <> struct QuantizationDetailsUnionTraits<circle::CustomQuantizationT>
 {
   static const QuantizationDetails enum_value = QuantizationDetails_CustomQuantization;
+};
+
+template <> struct QuantizationDetailsUnionTraits<circle::CircleChunkQuantizationT>
+{
+  static const QuantizationDetails enum_value = QuantizationDetails_CircleChunkQuantization;
 };
 
 struct QuantizationDetailsUnion
@@ -860,6 +877,18 @@ struct QuantizationDetailsUnion
   {
     return type == QuantizationDetails_CustomQuantization
              ? reinterpret_cast<const circle::CustomQuantizationT *>(value)
+             : nullptr;
+  }
+  circle::CircleChunkQuantizationT *AsCircleChunkQuantization()
+  {
+    return type == QuantizationDetails_CircleChunkQuantization
+             ? reinterpret_cast<circle::CircleChunkQuantizationT *>(value)
+             : nullptr;
+  }
+  const circle::CircleChunkQuantizationT *AsCircleChunkQuantization() const
+  {
+    return type == QuantizationDetails_CircleChunkQuantization
+             ? reinterpret_cast<const circle::CircleChunkQuantizationT *>(value)
              : nullptr;
   }
 };
@@ -6240,6 +6269,111 @@ CreateCustomQuantizationDirect(::flatbuffers::FlatBufferBuilder &_fbb,
 CreateCustomQuantization(::flatbuffers::FlatBufferBuilder &_fbb, const CustomQuantizationT *_o,
                          const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
+struct CircleChunkQuantizationT : public ::flatbuffers::NativeTable
+{
+  typedef CircleChunkQuantization TableType;
+  std::string name{};
+  uint32_t size = 0;
+  bool has_min_or_sum = false;
+  bool is_super = false;
+};
+
+struct CircleChunkQuantization FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
+{
+  typedef CircleChunkQuantizationT NativeTableType;
+  typedef CircleChunkQuantizationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
+  {
+    VT_NAME = 4,
+    VT_SIZE = 6,
+    VT_HAS_MIN_OR_SUM = 8,
+    VT_IS_SUPER = 10
+  };
+  const ::flatbuffers::String *name() const
+  {
+    return GetPointer<const ::flatbuffers::String *>(VT_NAME);
+  }
+  uint32_t size() const { return GetField<uint32_t>(VT_SIZE, 0); }
+  bool has_min_or_sum() const { return GetField<uint8_t>(VT_HAS_MIN_OR_SUM, 0) != 0; }
+  bool is_super() const { return GetField<uint8_t>(VT_IS_SUPER, 0) != 0; }
+  bool Verify(::flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) && VerifyField<uint32_t>(verifier, VT_SIZE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_HAS_MIN_OR_SUM, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_SUPER, 1) && verifier.EndTable();
+  }
+  CircleChunkQuantizationT *
+  UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(CircleChunkQuantizationT *_o,
+                const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<CircleChunkQuantization>
+  Pack(::flatbuffers::FlatBufferBuilder &_fbb, const CircleChunkQuantizationT *_o,
+       const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct CircleChunkQuantizationBuilder
+{
+  typedef CircleChunkQuantization Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_name(::flatbuffers::Offset<::flatbuffers::String> name)
+  {
+    fbb_.AddOffset(CircleChunkQuantization::VT_NAME, name);
+  }
+  void add_size(uint32_t size)
+  {
+    fbb_.AddElement<uint32_t>(CircleChunkQuantization::VT_SIZE, size, 0);
+  }
+  void add_has_min_or_sum(bool has_min_or_sum)
+  {
+    fbb_.AddElement<uint8_t>(CircleChunkQuantization::VT_HAS_MIN_OR_SUM,
+                             static_cast<uint8_t>(has_min_or_sum), 0);
+  }
+  void add_is_super(bool is_super)
+  {
+    fbb_.AddElement<uint8_t>(CircleChunkQuantization::VT_IS_SUPER, static_cast<uint8_t>(is_super),
+                             0);
+  }
+  explicit CircleChunkQuantizationBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CircleChunkQuantization> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CircleChunkQuantization>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CircleChunkQuantization>
+CreateCircleChunkQuantization(::flatbuffers::FlatBufferBuilder &_fbb,
+                              ::flatbuffers::Offset<::flatbuffers::String> name = 0,
+                              uint32_t size = 0, bool has_min_or_sum = false, bool is_super = false)
+{
+  CircleChunkQuantizationBuilder builder_(_fbb);
+  builder_.add_size(size);
+  builder_.add_name(name);
+  builder_.add_is_super(is_super);
+  builder_.add_has_min_or_sum(has_min_or_sum);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CircleChunkQuantization>
+CreateCircleChunkQuantizationDirect(::flatbuffers::FlatBufferBuilder &_fbb,
+                                    const char *name = nullptr, uint32_t size = 0,
+                                    bool has_min_or_sum = false, bool is_super = false)
+{
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return circle::CreateCircleChunkQuantization(_fbb, name__, size, has_min_or_sum, is_super);
+}
+
+::flatbuffers::Offset<CircleChunkQuantization>
+CreateCircleChunkQuantization(::flatbuffers::FlatBufferBuilder &_fbb,
+                              const CircleChunkQuantizationT *_o,
+                              const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
 struct QuantizationParametersT : public ::flatbuffers::NativeTable
 {
   typedef QuantizationParameters TableType;
@@ -6293,6 +6427,12 @@ struct QuantizationParameters FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
              ? static_cast<const circle::CustomQuantization *>(details())
              : nullptr;
   }
+  const circle::CircleChunkQuantization *details_as_CircleChunkQuantization() const
+  {
+    return details_type() == circle::QuantizationDetails_CircleChunkQuantization
+             ? static_cast<const circle::CircleChunkQuantization *>(details())
+             : nullptr;
+  }
   int32_t quantized_dimension() const { return GetField<int32_t>(VT_QUANTIZED_DIMENSION, 0); }
   bool Verify(::flatbuffers::Verifier &verifier) const
   {
@@ -6320,6 +6460,13 @@ inline const circle::CustomQuantization *
 QuantizationParameters::details_as<circle::CustomQuantization>() const
 {
   return details_as_CustomQuantization();
+}
+
+template <>
+inline const circle::CircleChunkQuantization *
+QuantizationParameters::details_as<circle::CircleChunkQuantization>() const
+{
+  return details_as_CircleChunkQuantization();
 }
 
 struct QuantizationParametersBuilder
@@ -20734,6 +20881,68 @@ CreateCustomQuantization(::flatbuffers::FlatBufferBuilder &_fbb, const CustomQua
   return circle::CreateCustomQuantization(_fbb, _custom);
 }
 
+inline CircleChunkQuantizationT *
+CircleChunkQuantization::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  auto _o = std::unique_ptr<CircleChunkQuantizationT>(new CircleChunkQuantizationT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void
+CircleChunkQuantization::UnPackTo(CircleChunkQuantizationT *_o,
+                                  const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  (void)_o;
+  (void)_resolver;
+  {
+    auto _e = name();
+    if (_e)
+      _o->name = _e->str();
+  }
+  {
+    auto _e = size();
+    _o->size = _e;
+  }
+  {
+    auto _e = has_min_or_sum();
+    _o->has_min_or_sum = _e;
+  }
+  {
+    auto _e = is_super();
+    _o->is_super = _e;
+  }
+}
+
+inline ::flatbuffers::Offset<CircleChunkQuantization>
+CircleChunkQuantization::Pack(::flatbuffers::FlatBufferBuilder &_fbb,
+                              const CircleChunkQuantizationT *_o,
+                              const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  return CreateCircleChunkQuantization(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<CircleChunkQuantization>
+CreateCircleChunkQuantization(::flatbuffers::FlatBufferBuilder &_fbb,
+                              const CircleChunkQuantizationT *_o,
+                              const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs
+  {
+    ::flatbuffers::FlatBufferBuilder *__fbb;
+    const CircleChunkQuantizationT *__o;
+    const ::flatbuffers::rehasher_function_t *__rehasher;
+  } _va = {&_fbb, _o, _rehasher};
+  (void)_va;
+  auto _name = _o->name.empty() ? 0 : _fbb.CreateString(_o->name);
+  auto _size = _o->size;
+  auto _has_min_or_sum = _o->has_min_or_sum;
+  auto _is_super = _o->is_super;
+  return circle::CreateCircleChunkQuantization(_fbb, _name, _size, _has_min_or_sum, _is_super);
+}
+
 inline QuantizationParametersT *
 QuantizationParameters::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
 {
@@ -29893,6 +30102,11 @@ inline bool VerifyQuantizationDetails(::flatbuffers::Verifier &verifier, const v
       auto ptr = reinterpret_cast<const circle::CustomQuantization *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case QuantizationDetails_CircleChunkQuantization:
+    {
+      auto ptr = reinterpret_cast<const circle::CircleChunkQuantization *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     default:
       return true;
   }
@@ -29929,6 +30143,11 @@ inline void *QuantizationDetailsUnion::UnPack(const void *obj, QuantizationDetai
       auto ptr = reinterpret_cast<const circle::CustomQuantization *>(obj);
       return ptr->UnPack(resolver);
     }
+    case QuantizationDetails_CircleChunkQuantization:
+    {
+      auto ptr = reinterpret_cast<const circle::CircleChunkQuantization *>(obj);
+      return ptr->UnPack(resolver);
+    }
     default:
       return nullptr;
   }
@@ -29946,6 +30165,11 @@ QuantizationDetailsUnion::Pack(::flatbuffers::FlatBufferBuilder &_fbb,
       auto ptr = reinterpret_cast<const circle::CustomQuantizationT *>(value);
       return CreateCustomQuantization(_fbb, ptr, _rehasher).Union();
     }
+    case QuantizationDetails_CircleChunkQuantization:
+    {
+      auto ptr = reinterpret_cast<const circle::CircleChunkQuantizationT *>(value);
+      return CreateCircleChunkQuantization(_fbb, ptr, _rehasher).Union();
+    }
     default:
       return 0;
   }
@@ -29962,6 +30186,12 @@ inline QuantizationDetailsUnion::QuantizationDetailsUnion(const QuantizationDeta
         new circle::CustomQuantizationT(*reinterpret_cast<circle::CustomQuantizationT *>(u.value));
       break;
     }
+    case QuantizationDetails_CircleChunkQuantization:
+    {
+      value = new circle::CircleChunkQuantizationT(
+        *reinterpret_cast<circle::CircleChunkQuantizationT *>(u.value));
+      break;
+    }
     default:
       break;
   }
@@ -29974,6 +30204,12 @@ inline void QuantizationDetailsUnion::Reset()
     case QuantizationDetails_CustomQuantization:
     {
       auto ptr = reinterpret_cast<circle::CustomQuantizationT *>(value);
+      delete ptr;
+      break;
+    }
+    case QuantizationDetails_CircleChunkQuantization:
+    {
+      auto ptr = reinterpret_cast<circle::CircleChunkQuantizationT *>(value);
       delete ptr;
       break;
     }
