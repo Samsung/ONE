@@ -105,7 +105,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
   std::vector<ir::PermuteType> permute_types;
 
-  // Laouy in graph is always NHWC, so layout is not changed
+  // Layout in graph is always NHWC, so layout is not changed
   for (uint32_t i = 0; i < input_tensors.size(); i++)
     permute_types.emplace_back(ir::PermuteType::COPY);
 
