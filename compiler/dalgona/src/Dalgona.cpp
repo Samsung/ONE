@@ -19,7 +19,7 @@
 #include "RandomUtils.h"
 
 #include <luci/IR/DataTypeHelper.h>
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <foder/FileLoader.h>
 #include <dio_hdf5/HDF5Importer.h>
 
@@ -98,22 +98,8 @@ namespace dalgona
 
 void Dalgona::initialize(const std::string &input_model_path)
 {
-  // Load model from the file
-  foder::FileLoader loader{input_model_path};
-  std::vector<char> model_data = loader.load();
-
-  // Verify flatbuffers
-  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
-                                 model_data.size()};
-  if (not circle::VerifyModelBuffer(verifier))
-    throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
-
-  auto circle_model = circle::GetModel(model_data.data());
-
-  if (not circle_model)
-    throw std::runtime_error("Failed to load '" + input_model_path + "'");
-
-  _module = luci::Importer().importModule(circle_model);
+  luci::ImporterEx importer;
+  _module = importer.importVerifyModule(input_model_path);
 
   if (not _module)
     throw std::runtime_error("ERROR: Failed to load '" + input_model_path + "'");
