@@ -44,7 +44,7 @@ with open('model.tflite', 'wb') as f:
 
 ## Convert tflite model to circle model
 
-ONERT takes both the tflite model and the circle model. So you can use this tflite model file directly. To use the circle model instead of the tflite model, you must convert it to the circle model using the 'onecc' tool, and 'onecc' can only be used in Ubuntu. When the ‘one-compiler’ debian package is installed on the [ONE release page](https://github.com/Samsung/ONE/releases), it is installed in the ‘/usr/share/one/bin’ directory. Please refer to the help for detailed guidelines. The following command converts the tflite model into a circle model.
+ONERT can take a model from a tflite file or a circle file. So you can use this tflite model file directly. To use the circle model instead of the tflite model, you must convert it to the circle model using the 'onecc' tool, and 'onecc' can only be used in Ubuntu. When the ‘one-compiler’ debian package is installed on the [ONE release page](https://github.com/Samsung/ONE/releases), it is installed in the ‘/usr/share/one/bin’ directory. Please refer to the help for detailed guidelines. The following command converts the tflite model into a circle model.
 
 ```bash
 $ onecc import tflite -- -i ./model.tflite -o ./model.circle
