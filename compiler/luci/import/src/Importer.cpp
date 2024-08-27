@@ -277,8 +277,17 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   }
 
   CircleReader reader;
-  if (!reader.parse(model))
-    return nullptr;
+  if (_file_data && _file_size)
+  {
+    if (!reader.parse(model, _file_data, _file_size))
+      return nullptr;
+  }
+  else
+  {
+    // TODO remove this
+    if (!reader.parse(model))
+      return nullptr;
+  }
 
   for (uint32_t g = 0; g < reader.num_subgraph(); ++g)
   {
@@ -359,6 +368,21 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   }
 
   return module;
+}
+
+std::unique_ptr<Module> Importer::importModule(const uint8_t *data, size_t size)
+{
+  if (data == nullptr || size == 0)
+    return nullptr;
+
+  _file_data = data;
+  _file_size = size;
+
+  const circle::Model *circle_model = circle::GetModel(_file_data);
+  if (circle_model == nullptr)
+    return nullptr;
+
+  return importModule(circle_model);
 }
 
 } // namespace luci
