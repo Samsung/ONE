@@ -138,6 +138,7 @@ void PermuteLayer::optimize()
       dst_it++;
       src_offsets_it++;
       dst_offsets_it++;
+      type_it++;
     }
   }
 }
@@ -308,6 +309,7 @@ void PermuteLayer::run()
     dst_it++;
     src_offsets_it++;
     dst_offsets_it++;
+    type_it++;
   }
 }
 
