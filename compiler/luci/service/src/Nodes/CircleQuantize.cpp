@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <luci/Service/CircleShapeInference.h>
 
 #include "CircleCloneNode.h"
+
+#include "CircleShapeInferenceHelper.h"
 
 namespace luci
 {
@@ -22,6 +25,12 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleQuantize *)
 {
   return _graph->nodes()->create<luci::CircleQuantize>();
+}
+
+loco::TensorShape sinf::Algorithm::visit(const luci::CircleQuantize *node)
+{
+  const auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+  return input_shape;
 }
 
 } // namespace luci
