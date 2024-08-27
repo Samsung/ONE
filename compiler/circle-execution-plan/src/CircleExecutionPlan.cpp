@@ -16,7 +16,7 @@
 
 #include <foder/FileLoader.h>
 
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include "ExecutionPlanner.h"
@@ -164,37 +164,14 @@ int entry(int argc, char **argv)
     is_save_allocations = true;
   }
 
-  foder::FileLoader file_loader{input_path};
-  std::vector<char> model_data;
-
-  try
-  {
-    model_data = file_loader.load();
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
-  if (!circle::VerifyModelBuffer(verifier))
-  {
-    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-    return EXIT_FAILURE;
-  }
-
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
+  // Import from input Circle file
+  luci::ImporterEx importer;
+  auto module = importer.importVerifyModule(input_path);
+  if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
     return EXIT_FAILURE;
   }
-
-  // Import from input Circle file
-  luci::Importer importer;
-  auto module = importer.importModule(circle_model);
-
   // Do main job
   circle_planner::ExecutionPlanner execution_planner(module->graph(), {platform_type, use_dsp},
                                                      runtime_type, allocating_mode);
