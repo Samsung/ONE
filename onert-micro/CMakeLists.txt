@@ -7,7 +7,6 @@ find_program(ARM_C_COMPILER_PATH ${ARM_C_COMPILER})
 
 if (NOT ARM_C_COMPILER_PATH)
     message(STATUS "Build onert-micro failed: ARM compiler is NOT FOUND")
-    return()
 endif ()
 
 set(OM_CIRCLE_SCHEMA onert_micro_circle_schema)
