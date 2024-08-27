@@ -100,7 +100,7 @@ public:
   // loco::TensorShape visit(const luci::CircleMean *node) final;
   // loco::TensorShape visit(const luci::CircleMinimum *node) final;
   // loco::TensorShape visit(const luci::CircleMirrorPad *node) final;
-  // loco::TensorShape visit(const luci::CircleMul *node) final;
+  loco::TensorShape visit(const luci::CircleMul *node) final;
   // loco::TensorShape visit(const luci::CircleNeg *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV4 *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV5 *node) final;
