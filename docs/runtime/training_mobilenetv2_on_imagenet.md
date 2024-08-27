@@ -4,7 +4,7 @@ Let's train a MobileNetV2 model on ImageNet Dataset using ONERT.
 
 ## Prepare dataset
 
-ImageNet dataset is an image database organized according to the WordNet hierarchy in which each node of hierarchy is depicted by hundreds and thousands of images. ImageNet contains more than 20,000 categories, with a typical category, such as "ballon" or "strawberry", consisting of several hundred images. There are serveral versions of ImageNet dataset in the TensorFlow datasets. Among them, ImageNet-A dataset is used in this document. ImageNet-A is a set of images labelled with ImageNet labels that were obtained by collecting new data and keeping only those images that ResNet-50 models fail to correctly classify. ONERT provides a `tf_dataset_converter` tool to download ImageNet-A dataset from TensorFlow Datasets and converts it to binary format for ONERT training.
+ImageNet dataset is an image database organized according to the WordNet hierarchy in which each node of hierarchy is depicted by hundreds and thousands of images. ImageNet contains more than 20,000 categories, with a typical category, such as "balloon" or "strawberry", consisting of several hundred images. There are serveral versions of ImageNet dataset in the TensorFlow datasets. Among them, ImageNet-A dataset is used in this document. ImageNet-A is a set of images labelled with ImageNet labels that were obtained by collecting new data and keeping only those images that ResNet-50 models fail to correctly classify. ONERT provides a `tf_dataset_converter` tool to download ImageNet-A dataset from TensorFlow Datasets and converts it to binary format for ONERT training.
 
 ```bash
 $ python3 tools/generate_datafile/tf_dataset_converter/main.py \
