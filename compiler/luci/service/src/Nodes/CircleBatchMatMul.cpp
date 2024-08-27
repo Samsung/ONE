@@ -86,8 +86,8 @@ loco::TensorShape sinf::Algorithm::visit(const luci::CircleBatchMatMul *node)
   }
 
   // shape inference in contracting dimensions
-  auto adj_x = node->adj_x();
-  auto adj_y = node->adj_y();
+  const auto adj_x = node->adj_x();
+  const auto adj_y = node->adj_y();
 
   loco::Dimension x_lhs = adj_x ? x_shape.dim(x_rank - 1) : x_shape.dim(x_rank - 2);
   loco::Dimension x_rhs = adj_x ? x_shape.dim(x_rank - 2) : x_shape.dim(x_rank - 1);
