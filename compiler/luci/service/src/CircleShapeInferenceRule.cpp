@@ -2019,8 +2019,6 @@ class ShapeInferenceAlgorithm final : public luci::CircleNodeVisitor<loco::NodeS
 public:
   loco::NodeShape visit(const luci::CircleAbs *node) final { return use_x(node); }
 
-  loco::NodeShape visit(const luci::CircleAdd *node) final { return broadcast_xy(node); }
-
   loco::NodeShape visit(const luci::CircleAddN *node) final { return infer_add_n(node); }
 
   loco::NodeShape visit(const luci::CircleArgMax *node) final { return infer_arg_maxmin(node); }

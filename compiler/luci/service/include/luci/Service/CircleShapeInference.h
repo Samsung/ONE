@@ -47,7 +47,7 @@ public:
   }
 
   // loco::TensorShape visit(const luci::CircleAbs *node) final;
-  // loco::TensorShape visit(const luci::CircleAdd *node) final;
+  loco::TensorShape visit(const luci::CircleAdd *node) final;
   // loco::TensorShape visit(const luci::CircleAddN *node) final;
   // loco::TensorShape visit(const luci::CircleArgMax *node) final;
   // loco::TensorShape visit(const luci::CircleArgMin *node) final;
