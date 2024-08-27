@@ -112,7 +112,7 @@ OMStatus evaluate(OMTrainingInterpreter &train_interpreter, OMConfig &config,
     U result = U(0);
 
     status =
-      train_interpreter.evaluateMetric(metric, reinterpret_cast<void *>(&result), batch_size);
+      train_interpreter.evaluateMetric(config, metric, reinterpret_cast<void *>(&result), batch_size);
     assert(status == Ok);
     result_v.push_back(result);
   }
