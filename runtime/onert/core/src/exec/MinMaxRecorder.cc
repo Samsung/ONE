@@ -15,11 +15,7 @@
  */
 
 #include "MinMaxRecorder.h"
-#if MINMAX_H5DUMPER
-#include "../dumper/h5/MinMaxDumper.h"
-#else
 #include "MinMaxData.h"
-#endif
 #include "backend/ITensor.h"
 
 #include <cassert>
@@ -148,13 +144,8 @@ void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
 {
   // It would be better to dump at the end of model execution, not subgraph
   // But it requires more changes than subgraph.
-#if MINMAX_H5DUMPER
-  auto h5dumper = dumper::h5::MinMaxDumper(_workspace_dir + "/minmax.h5");
-  h5dumper.dump(_input_minmax, _op_minmax);
-#else
   auto raw_dumper = RawMinMaxDumper(_workspace_dir + "/minmax.bin");
   raw_dumper.dump(_input_minmax, _op_minmax);
-#endif
 }
 
 } // namespace exec
