@@ -884,7 +884,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     exec->addObserver(
       std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
   }
-  // TODO Support MINMAX_H5DUMPER
+  // TODO Support MINMAX_DUMPER
 
   return exec;
 }
