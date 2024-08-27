@@ -39,8 +39,8 @@ enum class DataType
   QUANT_INT16_ASYMM = 10,
   QUANT_INT8_SYMM_PER_CHANNEL = 11,
   QUANT_INT16_SYMM = 12,
-  QUANT_UINT4_SYMM_PER_CHUNK = 13, // Chunk(32) uint4 quantization - for Gather input and FC weight
-  QUANT_INT8_SYMM_PER_CHUNK = 14   // Chunk(32) int8 quantization - for FC weight
+  QUANT_UINT4_SYMM_PER_BLOCK = 13, // Symmetric by substracting 8 always
+  QUANT_INT8_SYMM_PER_BLOCK = 14
 };
 
 size_t sizeOfDataType(DataType data_type);

@@ -32,14 +32,14 @@ size_t OperandInfo::total_size() const
   }
   catch (const std::runtime_error &e)
   {
-    if (data_type != DataType::QUANT_UINT4_SYMM_PER_CHUNK &&
-        data_type != DataType::QUANT_INT8_SYMM_PER_CHUNK)
+    if (data_type != DataType::QUANT_UINT4_SYMM_PER_BLOCK &&
+        data_type != DataType::QUANT_INT8_SYMM_PER_BLOCK)
       throw e;
 
     // Assume last dim is multiple of chunk size (32)
     assert(_shape.dim(_shape.rank() - 1) % 32 == 0);
     const auto num_chunks = _shape.num_elements() / 32;
-    const auto chunk_size = data_type == DataType::QUANT_UINT4_SYMM_PER_CHUNK
+    const auto chunk_size = data_type == DataType::QUANT_UINT4_SYMM_PER_BLOCK
                               ? (sizeof(uint8_t) * 32 / 2 + sizeof(uint16_t))
                               : (sizeof(uint8_t) * 32 + sizeof(uint16_t));
     return num_chunks * chunk_size;

@@ -76,22 +76,15 @@ table CustomQuantization {
   custom:[ubyte] (force_align: 16);
 }
 
-// Chunk(block) quantization
-table CircleChunkQuantization {
-  // for debugging, optional
+// Block quantization: from ggml quantization (https://github.com/ggerganov/ggml)
+table CircleBlockQuantization {
   name:string;
-  // chunk size
-  size:uint;
-  // min on 4,5 bit. sum on 8bit
-  has_min_or_sum:bool;
-  // super-block quantization
-  is_super:bool;
 }
 
 // Represents a specific quantization technique's parameters.
 union QuantizationDetails {
   CustomQuantization,
-  CircleChunkQuantization
+  CircleBlockQuantization
 }
 
 // Parameters for converting a quantized tensor back to float.

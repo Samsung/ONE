@@ -93,12 +93,12 @@ protected:
     auto type = tensor->type();
     if (type == TensorType::TensorType_UINT4 && tensor->quantization() &&
         tensor->quantization()->details_type() ==
-          circle::QuantizationDetails::QuantizationDetails_CircleChunkQuantization)
-      return ir::DataType::QUANT_UINT4_SYMM_PER_CHUNK;
+          circle::QuantizationDetails::QuantizationDetails_CircleBlockQuantization)
+      return ir::DataType::QUANT_UINT4_SYMM_PER_BLOCK;
     if (type == TensorType::TensorType_INT8 && tensor->quantization() &&
         tensor->quantization()->details_type() ==
-          circle::QuantizationDetails::QuantizationDetails_CircleChunkQuantization)
-      return ir::DataType::QUANT_INT8_SYMM_PER_CHUNK;
+          circle::QuantizationDetails::QuantizationDetails_CircleBlockQuantization)
+      return ir::DataType::QUANT_INT8_SYMM_PER_BLOCK;
     return tensorTypeToDataType(type);
   }
 

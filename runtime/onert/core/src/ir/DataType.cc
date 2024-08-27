@@ -53,8 +53,8 @@ size_t sizeOfDataType(DataType data_type)
     case DataType::QUANT_INT16_SYMM:
       return sizeof(int16_t);
     // Chunk type size is not supported
-    // case DataType::QUANT_UINT4_SYMM_PER_CHUNK:
-    // case DataType::QUANT_INT8_SYMM_PER_CHUNK
+    // case DataType::QUANT_UINT4_SYMM_PER_BLOCK:
+    // case DataType::QUANT_INT8_SYMM_PER_BLOCK
     default:
       throw std::runtime_error{"Unsupported type size"};
   }
