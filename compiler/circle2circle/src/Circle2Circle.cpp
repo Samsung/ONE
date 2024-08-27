@@ -132,6 +132,7 @@ int entry(int argc, char **argv)
              "This will fuse BatchNorm operators of pre-activations to Convolution operator");
   add_switch(arser, "--fuse_prelu", "This will fuse operators to PReLU operator");
   add_switch(arser, "--fuse_gelu", "This will fuse operators to GeLU operator");
+  add_switch(arser, "--fuse_gru", "This will fuse operators to GRU operator");
   add_switch(arser, "--fuse_rsqrt", "This will fuse operators to Rsqrt operator");
   add_switch(arser, "--remove_duplicate_const", "This will remove all duplicate constant nodes");
   add_switch(arser, "--remove_fakequant", "This will remove FakeQuant operators");
@@ -338,6 +339,8 @@ int entry(int argc, char **argv)
     options->enable(Algorithms::FusePRelu);
   if (arser.get<bool>("--fuse_gelu"))
     options->enable(Algorithms::FuseGelu);
+  if (arser.get<bool>("--fuse_gru"))
+    options->enable(Algorithms::FuseGRU);
   if (arser.get<bool>("--fuse_rsqrt"))
     options->enable(Algorithms::FuseRsqrt);
   if (arser.get<bool>("--fuse_transpose_with_mean"))
@@ -541,6 +544,9 @@ int entry(int argc, char **argv)
       }
     }
   }
+
+  // call luci optimizations for module after optimizations for graph
+  optimizer.optimize(module.get());
 
   // Export to output Circle file
   luci::CircleExporter exporter;
