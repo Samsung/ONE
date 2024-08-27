@@ -57,6 +57,7 @@ namespace odc
 {
 class QuantizeManager;
 class CodegenManager;
+class OdcInfo;
 } // namespace odc
 } // namespace onert
 
@@ -164,6 +165,14 @@ public:
   NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
   NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
   NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
+
+  // Run inference with auto compilation
+  NNFW_STATUS run_with_auto_compilation(const char *target, NNFW_CODEGEN_PREF pref);
+  // Set odc parameter: minmax_records_count for quantization in auto compilation mode
+  NNFW_STATUS set_odc_param_minmax_records_count(int minmax_records_count);
+  // delete MinMax File of on-device compiler
+  NNFW_STATUS delete_odc_minmax_file();
+
   /**
    * @brief   Set backends with string-encoded mapping from operation index to backend type
    *          (cpu, acl_cl)
@@ -226,6 +235,8 @@ private:
   std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
   std::unique_ptr<onert::odc::CodegenManager> _codegen_manager;
+  std::unique_ptr<onert::odc::OdcInfo> _odc_info;
+
   // Remember path to loaded original model
   // It may be used for on-device compiler / on-device training.
   //

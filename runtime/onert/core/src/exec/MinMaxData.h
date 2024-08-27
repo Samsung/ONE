@@ -63,7 +63,7 @@ public:
    * @param[in] op_minmax  op minmax map
    */
 
-  void dump(const exec::IOMinMaxMap &in_minmax, const exec::OpMinMaxMap &op_minmax) const;
+  uint32_t dump(const exec::IOMinMaxMap &in_minmax, const exec::OpMinMaxMap &op_minmax) const;
 
 private:
   std::string _filename;

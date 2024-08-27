@@ -150,11 +150,28 @@ void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
   // But it requires more changes than subgraph.
 #if MINMAX_H5DUMPER
   auto h5dumper = dumper::h5::MinMaxDumper(_workspace_dir + "/minmax.h5");
-  h5dumper.dump(_input_minmax, _op_minmax);
+  _minmax_records_count = h5dumper.dump(_input_minmax, _op_minmax);
 #else
   auto raw_dumper = RawMinMaxDumper(_workspace_dir + "/minmax.bin");
-  raw_dumper.dump(_input_minmax, _op_minmax);
+  _minmax_records_count = raw_dumper.dump(_input_minmax, _op_minmax);
 #endif
+}
+
+bool MinMaxRecorder::deleteMinMaxFile()
+{
+  int result = 0;
+#if MINMAX_H5DUMPER
+  result = std::remove((_workspace_dir + "/minmax.h5").c_str());
+#else
+  result = std::remove((_workspace_dir + "/minmax.bin").c_str());
+#endif
+  if (!result)
+  {
+    _minmax_records_count = 0;
+    return true;
+  }
+  else
+    return false;
 }
 
 } // namespace exec
