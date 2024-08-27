@@ -55,6 +55,7 @@ Training process in ONERT consists of the following steps:
 ### Training well-known models using ONERT
 
 - [Training a simple CNN model on MNIST Dataset using ONERT](docs/runtime/training_cnn_on_mnist.md)
+- [Training MobileNetV2 model on ImageNet Dataset using ONERT](docs/runtime/training_mobilenetv2_on_imagenet.md)
 
 ### Advanced Topics
 
