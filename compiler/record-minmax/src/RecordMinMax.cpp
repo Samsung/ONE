@@ -18,7 +18,7 @@
 #include "MinMaxObserver.h"
 
 #include <luci/IR/DataTypeHelper.h>
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include <luci/IR/CircleQuantParam.h>
@@ -183,30 +183,8 @@ void RecordMinMax::initialize(const std::string &input_model_path)
 {
   assert(_threads_size > 0);
 
-  // Load model from the file
-  std::ifstream fs(input_model_path, std::ifstream::binary);
-  if (fs.fail())
-  {
-    throw std::runtime_error("Cannot open model file \"" + input_model_path + "\".\n");
-  }
-  std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
-                               std::istreambuf_iterator<char>());
-
-  // Verify flatbuffers
-  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
-                                 model_data.size()};
-  if (!circle::VerifyModelBuffer(verifier))
-  {
-    throw std::runtime_error("Failed to verify circle '" + input_model_path + "'");
-  }
-
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    throw std::runtime_error("Failed to load '" + input_model_path + "'");
-  }
-
-  _module = luci::Importer().importModule(circle_model);
+  luci::ImporterEx importer;
+  _module = importer.importVerifyModule(input_model_path);
 
   if (_module == nullptr)
   {
