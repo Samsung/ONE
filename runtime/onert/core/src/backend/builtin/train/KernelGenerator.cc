@@ -68,7 +68,7 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   output_back_prop_tensors.emplace_back(output_back_prop_tensor);
   input_back_prop_tensors.emplace_back(input_back_prop_tensor);
 
-  // Laouy in graph is always NHWC, so layout is not changed
+  // Layout in graph is always NHWC, so layout is not changed
   for (uint32_t i = 0; i < input_tensors.size(); i++)
     permute_types.emplace_back(ir::PermuteType::COPY);
 
