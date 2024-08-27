@@ -337,7 +337,7 @@ namespace
  *         V
  *       [Out]
  *-------------------------------------------------------------------
- * Version_6 (For only 3D I/O)
+ * Version_6 (Same as Version_5, For only 3D I/O)
  *                 [In]
  *                   |
  *                   V
