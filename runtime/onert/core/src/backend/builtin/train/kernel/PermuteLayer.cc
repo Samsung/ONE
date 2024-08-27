@@ -73,9 +73,10 @@ void PermuteLayer::backward()
       const auto rank = src_back_prop->getShape().rank();
       auto output_offsets = _dst_tensors_offsets.at(i);
       auto input_offsets = _src_tensors_offsets.at(i);
+      auto permute_type = _permute_types.at(i);
 
       exec::IPermuteFunction::permute(src_back_prop, dst_back_prop, rank, output_offsets,
-                                      input_offsets);
+                                      input_offsets, permute_type);
     }
   }
 }

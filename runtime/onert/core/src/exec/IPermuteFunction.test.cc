@@ -102,6 +102,17 @@ public:
     assert(inputs.size() == outputs.size());
     _src_tensors = inputs;
     _dst_tensors = outputs;
+    _permute_types.resize(inputs.size());
+
+    for (uint32_t i = 0; i < inputs.size(); i++)
+    {
+      if (inputs[i]->layout() == outputs[i]->layout())
+        _permute_types[i] = ir::PermuteType::COPY;
+      else if (inputs[i]->layout() == ir::Layout::NHWC)
+        _permute_types[i] = ir::PermuteType::NHWC_TO_NCHW;
+      else
+        _permute_types[i] = ir::PermuteType::NCHW_TO_NHWC;
+    }
   }
   virtual ~MockUpLayer() {}
   void optimize() override {}
