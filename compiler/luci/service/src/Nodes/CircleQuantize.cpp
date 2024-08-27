@@ -16,7 +16,10 @@
 
 #include "luci/Service/CircleShapeInference.h"
 
+#include "luci/Service/CircleShapeInference.h"
+
 #include "CircleCloneNode.h"
+#include "CircleShapeInferenceHelper.h"
 #include "CircleShapeInferenceHelper.h"
 
 namespace luci
@@ -29,7 +32,7 @@ luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleQuantize *)
 
 loco::TensorShape sinf::Algorithm::visit(const luci::CircleQuantize *node)
 {
-  const auto input_shape = circle_shape(node);
+  const auto input_shape = sinf::circle_shape(loco::must_cast<CircleNode *>(node->input()));
   return input_shape;
 }
 
