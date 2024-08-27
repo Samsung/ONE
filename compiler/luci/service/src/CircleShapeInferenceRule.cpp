@@ -2360,8 +2360,6 @@ public:
 
   loco::NodeShape visit(const luci::CircleSlice *node) final { return infer_slice(node); }
 
-  loco::NodeShape visit(const luci::CircleSoftmax *node) final { return use_logits(node); }
-
   loco::NodeShape visit(const luci::CircleSpaceToBatchND *node) final
   {
     return infer_space_to_batch_nd(node);
