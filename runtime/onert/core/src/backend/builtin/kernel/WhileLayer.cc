@@ -84,10 +84,15 @@ void WhileLayer::run()
 
   std::vector<ITensor *> op_inputs(_input_tensors.begin(), _input_tensors.end());
   std::vector<ITensor *> op_outputs(_output_tensors.begin(), _output_tensors.end());
+  std::vector<ir::PermuteType> permute_types;
+  // Laouy in graph is always NHWC, so layout is not changed
+  for (uint32_t i = 0; i < op_outputs.size(); i++)
+    permute_types.emplace_back(ir::PermuteType::COPY);
   // Copying body inputs to outputs when the loop body is never executed
   if (!getResultCond(cond_output_tensor.get()))
   {
-    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, _external_context};
+    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, permute_types,
+                                                _external_context};
     copy_body_inputs_to_op_outputs.run();
     return;
   }
@@ -105,7 +110,8 @@ void WhileLayer::run()
   }
 
   std::vector<ITensor *> body_outputs(temp_outputs.begin(), temp_outputs.end());
-  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs, _external_context};
+  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs, permute_types,
+                                               _external_context};
 
   const auto body_execute_with_op_inputs = [&]() {
     VERBOSE(While) << "Call to $" << _body_subg_index << " (body)" << std::endl;

@@ -35,6 +35,7 @@ class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
+               const std::vector<ir::PermuteType> &types,
                const std::shared_ptr<ExternalContext> &external_context);
 
   void optimize() override;

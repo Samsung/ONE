@@ -31,26 +31,18 @@ namespace kernel
 
 PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
                            const std::vector<ITensor *> &dst_tensors,
+                           const std::vector<ir::PermuteType> &types,
                            const std::shared_ptr<ExternalContext> &external_context)
   : _external_context{external_context}, _tasks_map{}
 {
   assert(src_tensors.size() == dst_tensors.size());
+  assert(src_tensors.size() == types.size());
   _src_tensors = src_tensors;
   _dst_tensors = dst_tensors;
+  _permute_types = types;
   _src_tensors_offsets.resize(src_tensors.size());
   _dst_tensors_offsets.resize(dst_tensors.size());
   _permute_types.resize(src_tensors.size());
-
-  // TODO Get from constructor parameter
-  for (uint32_t i = 0; i < src_tensors.size(); i++)
-  {
-    if (src_tensors[i]->layout() == dst_tensors[i]->layout())
-      _permute_types[i] = ir::PermuteType::COPY;
-    else if (src_tensors[i]->layout() == ir::Layout::NHWC)
-      _permute_types[i] = ir::PermuteType::NHWC_TO_NCHW;
-    else
-      _permute_types[i] = ir::PermuteType::NCHW_TO_NHWC;
-  }
 }
 
 void PermuteLayer::optimize()

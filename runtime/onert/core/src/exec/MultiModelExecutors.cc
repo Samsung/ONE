@@ -186,6 +186,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
 
     std::vector<backend::ITensor *> inputs;
     std::vector<backend::ITensor *> outputs;
+    std::vector<ir::PermuteType> permute_types;
     for (const auto &[from_iodesc, to_list] : _edge_map)
     {
       if (std::get<ir::ModelIndex>(from_iodesc) == model_index &&
@@ -212,13 +213,16 @@ void MultiModelExecutors::createEdgeQuantLayers()
             auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info, to_layout);
             outputs.emplace_back(type_aware_quant_tensor.get());
 
+            // No layout change on edge
+            permute_types.emplace_back(ir::PermuteType::COPY);
+
             _edge_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
           }
         }
       }
     }
 
-    auto layer = std::make_unique<PermuteLayer>(inputs, outputs);
+    auto layer = std::make_unique<PermuteLayer>(inputs, outputs, permute_types);
     layer->prepare();
     _edge_quant_layers[{model_index, subg_index}] = std::move(layer);
   }
@@ -282,6 +286,7 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
     }
     std::vector<backend::ITensor *> src_tensors;
     std::vector<backend::ITensor *> dst_tensors;
+    std::vector<ir::PermuteType> permute_types;
     for (const auto &pkg_input : pkg_inputs)
     {
       const auto &io_index = std::get<ir::IOIndex>(pkg_input);
@@ -294,7 +299,8 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
       // Create EdgeTensor for nnpkg input if type is different
       const auto &orig_info = executor->inputInfo(io_index.value());
       const auto orig_layout = executor->inputLayout(io_index.value());
-      if (input_desc->info.typeInfo().type() != orig_info.typeInfo().type())
+      if ((input_desc->info.typeInfo().type() != orig_info.typeInfo().type()) ||
+          (input_desc->layout == ir::Layout::NCHW))
       {
         auto pkg_input_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
         _pkg_input_quant_tensors[pkg_input] = std::move(pkg_input_edge_tensor);
@@ -302,11 +308,16 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
         // Append type-aware quantization layer's inputs/outputs
         src_tensors.emplace_back(_pkg_input_tensors[pkg_input].get());
         dst_tensors.emplace_back(_pkg_input_quant_tensors[pkg_input].get());
+
+        if (input_desc->layout == ir::Layout::NCHW)
+          permute_types.emplace_back(ir::PermuteType::NCHW_TO_NHWC);
+        else
+          permute_types.emplace_back(ir::PermuteType::COPY);
       }
     }
 
     // Create type-aware quantization layer for nnpkg inputs
-    auto pkg_input_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors);
+    auto pkg_input_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors, permute_types);
     pkg_input_layer->prepare();
     _pkg_input_quant_layers[{model_index, subg_index}] = std::move(pkg_input_layer);
 
@@ -322,6 +333,7 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
     }
     src_tensors.clear();
     dst_tensors.clear();
+    permute_types.clear();
     // Create Tensors of nnpkg outputs for type-aware quantization
     for (const auto &pkg_output : pkg_outputs)
     {
@@ -335,7 +347,8 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
       // Create EdgeTensor for nnpkg output if type is different
       const auto &orig_info = executor->outputInfo(io_index.value());
       const auto orig_layout = executor->outputLayout(io_index.value());
-      if (output_desc->info.typeInfo().type() != orig_info.typeInfo().type())
+      if ((output_desc->info.typeInfo().type() != orig_info.typeInfo().type()) ||
+          (output_desc->layout == ir::Layout::NCHW))
       {
         auto pkg_output_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
         _pkg_output_quant_tensors[pkg_output] = std::move(pkg_output_edge_tensor);
@@ -343,11 +356,16 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
         // Append type-aware quantization layer's inputs/outputs
         src_tensors.emplace_back(_pkg_output_quant_tensors[pkg_output].get());
         dst_tensors.emplace_back(_pkg_output_tensors[pkg_output].get());
+
+        if (output_desc->layout == ir::Layout::NCHW)
+          permute_types.emplace_back(ir::PermuteType::NHWC_TO_NCHW);
+        else
+          permute_types.emplace_back(ir::PermuteType::COPY);
       }
     }
 
     // Create type-aware quantization layer for nnpkg outputs
-    auto pkg_output_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors);
+    auto pkg_output_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors, permute_types);
     pkg_output_layer->prepare();
     _pkg_output_quant_layers[{model_index, subg_index}] = std::move(pkg_output_layer);
   }
