@@ -75,13 +75,15 @@ public:
 
 protected:
   void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank,
-               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets);
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets,
+               const ir::PermuteType &permute_type);
 
 private:
   // TODO make src const by proving const access()
   template <class T>
   void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank,
-               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
+               std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets,
+               const ir::PermuteType &permute_type)
   {
     assert(src->total_size() != 0 && dst->total_size() != 0);
     // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
@@ -101,7 +103,8 @@ private:
         _buffers_map[dst].reserve(dst->total_size());
         auto dst_buffer = _buffers_map[dst].data();
         src->access([&](backend::ITensor &) {
-          permute<T>(src, dst, rank, dst_buffer, dst->total_size(), src_offsets, dst_offsets);
+          permute<T>(src, dst, rank, dst_buffer, dst->total_size(), src_offsets, dst_offsets,
+                     permute_type);
         });
         dst->enqueueWriteBuffer(dst_buffer, false);
       }
@@ -116,7 +119,8 @@ private:
     {
       auto fn = [&](backend::ITensor &) {
         dst->access([&](backend::ITensor &) {
-          permute<T>(src, dst, rank, dst->buffer(), dst->total_size(), src_offsets, dst_offsets);
+          permute<T>(src, dst, rank, dst->buffer(), dst->total_size(), src_offsets, dst_offsets,
+                     permute_type);
         });
       };
       src->access(fn);
@@ -125,25 +129,12 @@ private:
 
   template <class T>
   void permute(backend::ITensor *src, backend::ITensor *dst, size_t rank, uint8_t *dst_buffer,
-               size_t dst_size, std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets)
+               size_t dst_size, std::vector<size_t> &src_offsets, std::vector<size_t> &dst_offsets,
+               const ir::PermuteType &permute_type)
   {
     assert(dst_buffer != nullptr);
     assert(dst_size == dst->total_size());
 
-    const auto permute_type = [&]() -> ir::PermuteType {
-      if (src->layout() == ir::Layout::NHWC && dst->layout() == ir::Layout::NCHW)
-      {
-        return ir::PermuteType::NHWC_TO_NCHW;
-      }
-      else if (src->layout() == ir::Layout::NCHW && dst->layout() == ir::Layout::NHWC)
-      {
-        return ir::PermuteType::NCHW_TO_NHWC;
-      }
-      else
-      {
-        return ir::PermuteType::COPY;
-      }
-    }();
     if (rank == 4 && permute_type != ir::PermuteType::COPY)
     {
       switch (permute_type)
@@ -252,6 +243,7 @@ protected:
   std::vector<backend::ITensor *> _dst_tensors;
   std::vector<std::vector<size_t>> _src_tensors_offsets;
   std::vector<std::vector<size_t>> _dst_tensors_offsets;
+  std::vector<ir::PermuteType> _permute_types;
   std::unordered_map<const backend::ITensor *, std::vector<uint8_t>> _buffers_map;
 };
 
@@ -265,6 +257,18 @@ public:
     assert(inputs.size() == outputs.size());
     _src_tensors = inputs;
     _dst_tensors = outputs;
+    _permute_types.resize(inputs.size());
+
+    // TODO Get from constructor parameter
+    for (uint32_t i = 0; i < inputs.size(); i++)
+    {
+      if (inputs[i]->layout() == outputs[i]->layout())
+        _permute_types[i] = ir::PermuteType::COPY;
+      else if (inputs[i]->layout() == ir::Layout::NHWC)
+        _permute_types[i] = ir::PermuteType::NHWC_TO_NCHW;
+      else
+        _permute_types[i] = ir::PermuteType::NCHW_TO_NHWC;
+    }
   }
   virtual ~PermuteLayer() {}
   void optimize() override {}

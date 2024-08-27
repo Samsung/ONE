@@ -39,6 +39,18 @@ PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
   _dst_tensors = dst_tensors;
   _src_tensors_offsets.resize(src_tensors.size());
   _dst_tensors_offsets.resize(dst_tensors.size());
+  _permute_types.resize(src_tensors.size());
+
+  // TODO Get from constructor parameter
+  for (uint32_t i = 0; i < src_tensors.size(); i++)
+  {
+    if (src_tensors[i]->layout() == dst_tensors[i]->layout())
+      _permute_types[i] = ir::PermuteType::COPY;
+    else if (src_tensors[i]->layout() == ir::Layout::NHWC)
+      _permute_types[i] = ir::PermuteType::NHWC_TO_NCHW;
+    else
+      _permute_types[i] = ir::PermuteType::NCHW_TO_NHWC;
+  }
 }
 
 void PermuteLayer::optimize()
@@ -48,6 +60,7 @@ void PermuteLayer::optimize()
   auto dst_it = _dst_tensors.begin();
   auto src_offsets_it = _src_tensors_offsets.begin();
   auto dst_offsets_it = _dst_tensors_offsets.begin();
+  auto type_it = _permute_types.begin();
   while (src_it != _src_tensors.end())
   {
     if ((*src_it == *dst_it) || (*src_it == nullptr || *dst_it == nullptr))
@@ -56,6 +69,7 @@ void PermuteLayer::optimize()
       dst_it = _dst_tensors.erase(dst_it);
       src_offsets_it = _src_tensors_offsets.erase(src_offsets_it);
       dst_offsets_it = _dst_tensors_offsets.erase(dst_offsets_it);
+      type_it = _permute_types.erase(type_it);
     }
     else
     {
@@ -65,22 +79,7 @@ void PermuteLayer::optimize()
       dst_offsets_it->resize(0);
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         continue;
-      const auto permute_type = [&]() -> ir::PermuteType {
-        if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NHWC &&
-            dst->layout() == ir::Layout::NCHW)
-        {
-          return ir::PermuteType::NHWC_TO_NCHW;
-        }
-        else if (src->getShape().rank() == 4 && src->layout() == ir::Layout::NCHW &&
-                 dst->layout() == ir::Layout::NHWC)
-        {
-          return ir::PermuteType::NCHW_TO_NHWC;
-        }
-        else
-        {
-          return ir::PermuteType::COPY;
-        }
-      }();
+      const auto permute_type = *type_it;
 
       // TODO Support different types
       auto fn = [&](backend::ITensor &src_tensor) {
@@ -139,6 +138,7 @@ void PermuteLayer::optimize()
       dst_it++;
       src_offsets_it++;
       dst_offsets_it++;
+      type_it++;
     }
   }
 }
@@ -243,12 +243,14 @@ void PermuteLayer::run()
   auto dst_it = _dst_tensors.begin();
   auto src_offsets_it = _src_tensors_offsets.begin();
   auto dst_offsets_it = _dst_tensors_offsets.begin();
+  auto type_it = _permute_types.begin();
   while (src_it != _src_tensors.end())
   {
     auto src = *src_it;
     auto dst = *dst_it;
     auto &src_offsets = *src_offsets_it;
     auto &dst_offsets = *dst_offsets_it;
+    auto permute_type = *type_it;
 
     if (src->total_size() == 0)
     {
@@ -267,7 +269,7 @@ void PermuteLayer::run()
             src->is_dynamic() || dst->is_dynamic() ||
             underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         {
-          permute(src, dst, src->getShape().rank(), src_offsets, dst_offsets);
+          permute(src, dst, src->getShape().rank(), src_offsets, dst_offsets, permute_type);
         }
         // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
         else if (dst->needMemoryMap() && !dst->is_subtensor())
@@ -307,6 +309,7 @@ void PermuteLayer::run()
     dst_it++;
     src_offsets_it++;
     dst_offsets_it++;
+    type_it++;
   }
 }
 

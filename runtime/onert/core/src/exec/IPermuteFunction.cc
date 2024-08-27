@@ -233,17 +233,19 @@ void IPermuteFunction::IPermuteFunction::run()
     auto dst_tensor = _dst_tensors.at(i);
     auto &src_offsets = _src_tensors_offsets.at(i);
     auto &dst_offsets = _dst_tensors_offsets.at(i);
+    auto permute_type = _permute_types.at(i);
     if (src_tensor != dst_tensor)
     {
       const auto rank = src_tensor->getShape().rank();
-      permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
     }
   }
 }
 
 void IPermuteFunction::permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
                                size_t rank, std::vector<size_t> &src_offsets,
-                               std::vector<size_t> &dst_offsets)
+                               std::vector<size_t> &dst_offsets,
+                               const ir::PermuteType &permute_type)
 {
   if (src_tensor->total_size() == 0)
   {
@@ -261,28 +263,28 @@ void IPermuteFunction::permute(backend::ITensor *src_tensor, backend::ITensor *d
   switch (src_tensor->data_type())
   {
     case ir::DataType::FLOAT32:
-      permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::INT32:
-      permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::UINT32:
-      permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::BOOL8:
     case ir::DataType::QUANT_UINT8_ASYMM:
     case ir::DataType::UINT8:
-      permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::QUANT_INT8_ASYMM:
     case ir::DataType::QUANT_INT8_SYMM:
-      permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::INT64:
-      permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::QUANT_INT16_SYMM:
-      permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     default:
       throw std::runtime_error("IPermuteFunction: Not supported data type");
