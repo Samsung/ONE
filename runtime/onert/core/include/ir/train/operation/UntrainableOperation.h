@@ -51,7 +51,7 @@ public:
   void accept(OperationVisitor &v) const override { v.visit(*this); }
   void accept(TrainableOperationVisitor &) const override
   {
-    throw std::runtime_error(OperationType::name() + "operation is not trainable yet");
+    throw std::runtime_error(OperationType::name() + " operation is not trainable yet");
   }
   bool hasTrainableParameter() const override { return false; }
 };
