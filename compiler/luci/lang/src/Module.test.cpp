@@ -58,6 +58,14 @@ TEST(ModuleTest, add_more)
   ASSERT_EQ(g3_ptr, m->graph(2));
 }
 
+TEST(ModuleTest, ext_buffer)
+{
+  auto m = luci::make_module();
+
+  m->ext_buffer(true);
+  ASSERT_TRUE(m->ext_buffer());
+}
+
 TEST(ModuleTest, add_nullptr_NEG)
 {
   auto m = luci::make_module();
@@ -70,4 +78,11 @@ TEST(ModuleTest, graph_index_overflow_NEG)
   auto m = luci::make_module();
 
   EXPECT_ANY_THROW(m->graph(100));
+}
+
+TEST(ModuleTest, ext_buffer_NEG)
+{
+  auto m = luci::make_module();
+  // NOTE how can we define negative test for ext_buffer?
+  ASSERT_FALSE(m->ext_buffer());
 }

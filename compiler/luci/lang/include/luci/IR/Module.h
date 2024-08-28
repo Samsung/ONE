@@ -61,6 +61,13 @@ public:
   // TODO provide graph accessor with a name
 
 public:
+  void ext_buffer(bool set) { _ext_buffer = set; }
+  bool ext_buffer(void) const { return _ext_buffer; }
+
+private:
+  bool _ext_buffer = false;
+
+public:
   void source_table(const std::map<uint32_t, std::string> &table) { _source_table = table; }
 
   const std::map<uint32_t, std::string> &source_table(void) const { return _source_table; }
