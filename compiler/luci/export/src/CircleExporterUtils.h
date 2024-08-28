@@ -57,6 +57,7 @@ circle::Padding getOpPadding(const luci::Padding pad);
 using CircleTensorIndex = int32_t;
 
 void set_tensor_index(loco::Node *node, const CircleTensorIndex &tensor_id);
+void clear_tensor_index(loco::Node *node);
 CircleTensorIndex get_tensor_index(loco::Node *node);
 
 } // namespace luci

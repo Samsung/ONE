@@ -694,4 +694,14 @@ void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, Serializ
   }
 }
 
+void clearExportInfo(loco::Graph *g)
+{
+  auto nodes = g->nodes();
+  for (uint32_t n = 0; n < nodes->size(); ++n)
+  {
+    auto node = loco::must_cast<luci::CircleNode *>(nodes->at(n));
+    clear_tensor_index(node);
+  }
+}
+
 } // namespace luci
