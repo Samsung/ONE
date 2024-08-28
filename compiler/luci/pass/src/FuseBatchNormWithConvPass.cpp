@@ -27,15 +27,12 @@
 namespace
 {
 
-bool has_same_shape(luci::CircleNode *node, std::vector<uint32_t> shape)
+bool has_same_shape(const luci::CircleNode *node, const std::vector<uint32_t> &shape)
 {
   const auto rank = node->rank();
   CHECK_OR_FALSE(rank == shape.size());
   for (uint32_t idx = 0; idx < rank; idx++)
-  {
     CHECK_OR_FALSE(node->dim(idx).value() == shape.at(idx));
-  }
-
   return true;
 }
 
