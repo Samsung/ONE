@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <luci/Service/CircleShapeInference.h>
 
 #include "luci/Service/CircleShapeInference.h"
 
 #include "CircleCloneNode.h"
-#include "CircleShapeInferenceHelper.h"
-
 #include "CircleShapeInferenceHelper.h"
 
 namespace luci
