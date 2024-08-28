@@ -33,6 +33,7 @@ namespace sinf
 
 loco::TensorShape Algorithm::visit(const luci::CirclePad *node)
 {
+  // TODO support non-const case
   auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
   return use_paddings(node, paddings);
 }
