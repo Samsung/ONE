@@ -23,10 +23,12 @@ TEST(CloneNodeTest, clone_Quantize)
 {
   auto g = loco::make_graph();
   auto node_q = g->nodes()->create<luci::CircleQuantize>();
+
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_q, gc.get());
   ASSERT_NE(nullptr, cloned);
   ASSERT_EQ(gc.get(), cloned->graph());
+  
   auto cloned_q = dynamic_cast<luci::CircleQuantize *>(cloned);
   ASSERT_NE(nullptr, cloned_q);
 }
