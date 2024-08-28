@@ -71,7 +71,8 @@ class GraphBuilderContext
 public:
   GraphBuilderContext(loco::Graph *g, CircleReader *reader, IndexNodeFinder *nodefinder,
                       IndexTensorOutputs *tensoroutputs)
-    : _g(g), _reader(reader), _indexnodefinder(nodefinder), _indextensoroutputs(tensoroutputs)
+    : _g(g), _reader(reader), _indexnodefinder(nodefinder), _indextensoroutputs(tensoroutputs),
+      _ext_buffer(false)
   {
     // DO NOTHING
   }
@@ -86,11 +87,16 @@ public:
   IndexNodeFinder *nodefinder() { return _indexnodefinder; }
   IndexTensorOutputs *tensoroutputs() { return _indextensoroutputs; }
 
+  // Buffers are extended mode, which exist outside of flatbuffers area
+  bool ext_buffer() const { return _ext_buffer; }
+  void ext_buffer(bool set) { _ext_buffer = set; }
+
 private:
   loco::Graph *_g;
   CircleReader *_reader;
   IndexNodeFinder *_indexnodefinder;
   IndexTensorOutputs *_indextensoroutputs;
+  bool _ext_buffer;
 };
 
 } // namespace luci
