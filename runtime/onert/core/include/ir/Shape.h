@@ -143,7 +143,7 @@ inline bool operator!=(const Shape &lhs, const Shape &rhs) { return lhs.dims() !
  * @return  Return a shape based on permutation type.
  *          If rank is not 4, input shape is returned without conversion.
  */
-ir::Shape convertShape(const Shape &shape, const PermuteType &type);
+Shape convertShape(const Shape &shape, const PermuteType &type);
 
 /**
  * @brief Find out if tha rank in this shape is "maybe" unspecified.
