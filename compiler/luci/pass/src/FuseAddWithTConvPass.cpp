@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +51,9 @@ namespace
  */
 bool fuse_add_with_tconv(luci::CircleAdd *add)
 {
-  // Allow Add node only with FLOAT32 data type:
+  // Allow Add node only with FLOAT32 data type.
   RETURN_FALSE_UNLESS(add->dtype() == loco::DataType::FLOAT32);
-
+  // Allow Add node only with specific activations.
   RETURN_FALSE_UNLESS(add->fusedActivationFunction() == luci::FusedActFunc::NONE ||
                       add->fusedActivationFunction() == luci::FusedActFunc::RELU6 ||
                       add->fusedActivationFunction() == luci::FusedActFunc::RELU);
@@ -88,34 +88,35 @@ bool fuse_add_with_tconv(luci::CircleAdd *add)
   {
     auto name = addition->name();
     assert(name.length() > 0);
-    // separate relu op from add op
+    // Separate relu op from add op:
     auto relu = add->graph()->nodes()->create<luci::CircleRelu6>();
     relu->features(tconv);
     relu->name(name + "/Relu6");
     luci::add_origin(relu, luci::get_origin(add));
 
-    // remove add node
+    // Remove add node.
     replace(add).with(relu);
   }
   else if (add->fusedActivationFunction() == luci::FusedActFunc::RELU)
   {
     auto name = addition->name();
     assert(name.length() > 0);
-    // separate relu op from add op
+    // Separate relu op from add op:
     auto relu = add->graph()->nodes()->create<luci::CircleRelu>();
     relu->features(tconv);
     relu->name(name + "/Relu");
     luci::add_origin(relu, luci::get_origin(add));
 
-    // remove add node
+    // Remove add node.
     replace(add).with(relu);
   }
   else
   {
+    // Remove add node.
     replace(add).with(tconv);
   }
 
-  // set origin
+  // Set new origin.
   luci::add_origin(tconv, luci::get_origin(add));
 
   return true;
