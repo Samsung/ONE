@@ -20,6 +20,7 @@
 
 #include <loco/IR/TensorShape.h>
 #include <luci/IR/CircleNodes.h>
+
 #include <limits>
 
 namespace luci
@@ -80,7 +81,8 @@ loco::TensorShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *
 
   return output_shape;
 }
+
 } // namespace sinf
 } // namespace luci
 
-#endif
+#endif // __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_PADS_H__
