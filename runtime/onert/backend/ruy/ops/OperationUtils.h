@@ -46,8 +46,6 @@ inline nnfw::ruy::Shape getTensorShape(const IPortableTensor *tensor)
 
   const ir::Shape &shape = tensor->get_info().shape();
 
-  assert(tensor->layout() == ir::Layout::NHWC);
-
   auto rank = shape.rank();
   nnfw::ruy::Shape ret(rank);
   auto data = ret.DimsData();

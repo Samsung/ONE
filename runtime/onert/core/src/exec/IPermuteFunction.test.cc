@@ -71,7 +71,7 @@ public:
 
   uint8_t *buffer() const override { return _data; }
 
-  ir::Layout layout() const override { return _layout; }
+  ir::Layout layout() const { return _layout; }
   ir::DataType data_type() const override { return _type_info.type(); }
   float data_scale() const override { return _type_info.scale(); }
   int32_t data_zero_point() const override { return _type_info.zero_point(); }
@@ -97,15 +97,18 @@ private:
 class MockUpLayer : public IPermuteFunction
 {
 public:
-  MockUpLayer(const std::vector<ITensor *> &inputs, const std::vector<ITensor *> &outputs)
+  MockUpLayer(const std::vector<MockUpTensor *> &inputs, const std::vector<MockUpTensor *> &outputs)
   {
-    assert(inputs.size() == outputs.size());
-    _src_tensors = inputs;
-    _dst_tensors = outputs;
-    _permute_types.resize(inputs.size());
+    const uint32_t input_size = inputs.size();
+    assert(outputs.size() == input_size);
+    _src_tensors.resize(input_size);
+    _dst_tensors.resize(input_size);
+    _permute_types.resize(input_size);
 
-    for (uint32_t i = 0; i < inputs.size(); i++)
+    for (uint32_t i = 0; i < input_size; i++)
     {
+      _src_tensors[i] = inputs[i];
+      _dst_tensors[i] = outputs[i];
       if (inputs[i]->layout() == outputs[i]->layout())
         _permute_types[i] = ir::PermuteType::COPY;
       else if (inputs[i]->layout() == ir::Layout::NHWC)
@@ -144,9 +147,10 @@ TEST(IPermuteFunction, float_to_float)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -186,9 +190,10 @@ TEST(IPermuteFunction, float_to_float)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -231,9 +236,10 @@ TEST(IPermuteFunction, float_to_float)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -279,9 +285,10 @@ TEST(IPermuteFunction, float_to_float)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -347,9 +354,10 @@ TEST(IPermuteFunction, float_to_float)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -418,8 +426,9 @@ TEST(IPermuteFunction, float_to_qasymm8)
   }
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
-    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                outputs[3].get()});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -471,8 +480,9 @@ TEST(IPermuteFunction, float_to_qsymm8)
   }
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
-    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                outputs[3].get()});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -524,8 +534,9 @@ TEST(IPermuteFunction, float_to_qsymm16)
   }
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
-    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                outputs[3].get()});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -586,8 +597,9 @@ TEST(IPermuteFunction, qasymm8_to_float)
   }
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
-    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                outputs[3].get()});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -648,8 +660,9 @@ TEST(IPermuteFunction, qsymm8_to_float)
   }
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
-    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                outputs[3].get()});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -710,8 +723,9 @@ TEST(IPermuteFunction, qsymm16_to_float)
   }
 
   auto mockup_layer = std::make_unique<MockUpLayer>(
-    std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-    std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(), outputs[3].get()});
+    std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
+    std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                outputs[3].get()});
   mockup_layer->run();
 
   for (size_t i = 0; i < 4; ++i)
@@ -783,9 +797,10 @@ TEST(IPermuteFunction, float_qasymm8_layout)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
@@ -881,9 +896,10 @@ TEST(IPermuteFunction, float_qasymm8_layout)
     }
 
     auto mockup_layer = std::make_unique<MockUpLayer>(
-      std::vector<ITensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(), inputs[3].get()},
-      std::vector<ITensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
-                             outputs[3].get()});
+      std::vector<MockUpTensor *>{inputs[0].get(), inputs[1].get(), inputs[2].get(),
+                                  inputs[3].get()},
+      std::vector<MockUpTensor *>{outputs[0].get(), outputs[1].get(), outputs[2].get(),
+                                  outputs[3].get()});
     mockup_layer->run();
 
     for (size_t i = 0; i < 4; ++i)
