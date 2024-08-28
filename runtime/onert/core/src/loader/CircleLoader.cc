@@ -91,14 +91,10 @@ protected:
   ir::DataType getTensorDataType(const Tensor *tensor) override
   {
     auto type = tensor->type();
-    if (type == TensorType::TensorType_UINT4 && tensor->quantization() &&
-        tensor->quantization()->details_type() ==
-          circle::QuantizationDetails::QuantizationDetails_CircleBlockQuantization)
-      return ir::DataType::QUANT_UINT4_SYMM_PER_BLOCK;
-    if (type == TensorType::TensorType_INT8 && tensor->quantization() &&
-        tensor->quantization()->details_type() ==
-          circle::QuantizationDetails::QuantizationDetails_CircleBlockQuantization)
-      return ir::DataType::QUANT_INT8_SYMM_PER_BLOCK;
+    if (type == TensorType::TensorType_Q4_0)
+      return ir::DataType::QUANT_GGML_Q4_0;
+    if (type == TensorType::TensorType_Q8_0)
+      return ir::DataType::QUANT_GGML_Q8_0;
     return tensorTypeToDataType(type);
   }
 

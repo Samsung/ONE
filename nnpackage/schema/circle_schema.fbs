@@ -45,8 +45,8 @@ file_extension "circle";
 // end to ensure backwards compatibility.
 
 // The type of data stored in a tensor.
+// Q4_0, Q4_1, Q8_0, Q8_1 are follow ggml quantization spec (https://github.com/ggerganov/ggml)
 enum TensorType : byte {
-  UINT4 = -1,
   FLOAT32 = 0,
   FLOAT16 = 1,
   INT32 = 2,
@@ -68,6 +68,12 @@ enum TensorType : byte {
   UINT32 = 15,
   UINT16 = 16,
   INT4 = 17,
+  // Belows are using negative value to represent not existing TensorType on TensorFlow Lite schema
+  UINT4 = -1,
+  Q4_0 = -2,
+  Q4_1 = -3,
+  Q8_0 = -4,
+  Q8_1 = -5,
 }
 
 // Custom quantization parameters for experimenting with new quantization
@@ -76,15 +82,9 @@ table CustomQuantization {
   custom:[ubyte] (force_align: 16);
 }
 
-// Block quantization: from ggml quantization (https://github.com/ggerganov/ggml)
-table CircleBlockQuantization {
-  name:string;
-}
-
 // Represents a specific quantization technique's parameters.
 union QuantizationDetails {
-  CustomQuantization,
-  CircleBlockQuantization
+  CustomQuantization
 }
 
 // Parameters for converting a quantized tensor back to float.
