@@ -36,29 +36,31 @@ TEST(CloneNodeTest, clone_Pad)
 
 TEST(ShapeRuleTest, pad_dynamic_shape)
 {
-  luci::CirclePad pad;
-  luci::CircleInput input;
-  luci::CircleConst padddings;
+  auto g = loco::make_graph();
+  auto node_pad = g->nodes()->create<luci::CirclePad>();
+
+  auto node_paddings = g->nodes()->create<luci::CircleConst>();
+  auto node_input = g->nodes()->create<luci::CircleInput>();
 
   loco::TensorShape shape;
   luci::sinf::Rule shape_inf_rule;
 
-  input.shape({1, 2, 3, 4});
-  input.shape_status(luci::ShapeStatus::VALID);
-  input.dim(2).unset();
+  node_input->shape({1, 2, 3, 4});
+  node_input->shape_status(luci::ShapeStatus::VALID);
+  node_input->dim(2).unset();
 
-  padddings.dtype(loco::DataType::S64);
-  padddings.shape({4, 2});
-  padddings.shape_status(luci::ShapeStatus::VALID);
+  node_paddings->dtype(loco::DataType::S64);
+  node_paddings->shape({4, 2});
+  node_paddings->shape_status(luci::ShapeStatus::VALID);
 
   const loco::DataType S64 = loco::DataType::S64;
   uint32_t t = 64 * 8;
-  padddings.size<S64>(t);
+  node_paddings->size<S64>(t);
 
-  pad.input(&input);
-  pad.paddings(&padddings);
+  node_pad->input(node_input);
+  node_pad->paddings(node_paddings);
 
-  ASSERT_TRUE(shape_inf_rule.infer(&pad, shape));
+  ASSERT_TRUE(shape_inf_rule.infer(node_pad, shape));
   ASSERT_EQ(shape.rank(), 4);
   ASSERT_TRUE(shape.dim(0).known());
   ASSERT_TRUE(shape.dim(1).known());
@@ -69,23 +71,22 @@ TEST(ShapeRuleTest, pad_dynamic_shape)
   ASSERT_EQ(2, shape.dim(1).value());
   ASSERT_EQ(0, shape.dim(2).value());
   ASSERT_EQ(4, shape.dim(3).value());
-  pad.drop();
 }
 
 TEST(ShapeRuleTest, pad_without_padding_NEG)
 {
-  luci::CirclePad pad;
-  luci::CircleInput input;
+  auto g = loco::make_graph();
+  auto node_pad = g->nodes()->create<luci::CirclePad>();
+  auto node_input = g->nodes()->create<luci::CircleInput>();
 
   loco::TensorShape shape;
   luci::sinf::Rule shape_inf_rule;
 
-  input.shape({1, 2, 3, 4});
-  input.shape_status(luci::ShapeStatus::VALID);
-  input.dim(2).unset();
+  node_input->shape({1, 2, 3, 4});
+  node_input->shape_status(luci::ShapeStatus::VALID);
+  node_input->dim(2).unset();
 
-  pad.input(&input);
-  ASSERT_ANY_THROW(shape_inf_rule.infer(&pad, shape));
+  node_pad->input(node_input);
 
-  pad.drop();
+  ASSERT_ANY_THROW(shape_inf_rule.infer(node_pad, shape));
 }
