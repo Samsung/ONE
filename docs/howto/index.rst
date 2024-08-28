@@ -21,7 +21,6 @@ How To
   ./how-to-run-package.md
   ./how-to-make-an-application-with-runtime.md
   ./how-to-use-api.md
-  ./how-to-use-nnapi-binding.md
   ./how-to-use-nnfw-api.md
   ./how-to-use-specific-backend.md
   ./how-to-contribute.md

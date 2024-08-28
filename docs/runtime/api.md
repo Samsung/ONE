@@ -12,13 +12,7 @@ There are three parts - Frontend, Core and Backend. Core works with Frontend and
 
 Frontend API is about from creation/loading the model and
 
-Runtime supports two (frontend) APIs - NN API and NNFW API.
-
-### NN API
-
-NN API stands for Android Neural Networks API. It is part of Android Open Source Project and we provide a binding between NN API and One Runtime.
-
-For usage, refer to [Howto : NN API](../howto/how-to-use-nnapi-binding.md).
+Runtime supports NNFW API.
 
 ### NNFW API
 
