@@ -28,7 +28,7 @@ TEST(CloneNodeTest, clone_Quantize)
   auto cloned = luci::clone_node(node_q, gc.get());
   ASSERT_NE(nullptr, cloned);
   ASSERT_EQ(gc.get(), cloned->graph());
-  
+
   auto cloned_q = dynamic_cast<luci::CircleQuantize *>(cloned);
   ASSERT_NE(nullptr, cloned_q);
 }
