@@ -49,7 +49,7 @@ target_include_directories(${RUNTIME_NNAPI_TEST} PRIVATE ${RUNTIME_NNAPI_TEST_SR
 # Define NNTEST_ONLY_PUBLIC_API to avoid android dependency
 target_compile_definitions(${RUNTIME_NNAPI_TEST} PRIVATE NNTEST_ONLY_PUBLIC_API)
 
-target_link_libraries(${RUNTIME_NNAPI_TEST} nnfw_lib_nnapi)
+target_link_libraries(${RUNTIME_NNAPI_TEST} onert-nnapi)
 target_link_libraries(${RUNTIME_NNAPI_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNAPI_TEST} ${LIB_PTHREAD} dl)
 

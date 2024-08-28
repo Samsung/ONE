@@ -8,7 +8,6 @@ add_library(${ONERT_DEV} SHARED ${API_SRC})
 # But runtime developer can use nnfw_internal.h by linking nnfw-dev
 set(NNFW_API_HEADERS include/nnfw.h include/nnfw_experimental.h)
 
-target_link_libraries(${ONERT_DEV} PUBLIC nnfw-nnapi-header)
 target_link_libraries(${ONERT_DEV} PRIVATE onert_core)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_lib_misc)
 target_link_libraries(${ONERT_DEV} PRIVATE jsoncpp ${LIB_PTHREAD})
