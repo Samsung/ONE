@@ -137,7 +137,13 @@ private:
 inline bool operator==(const Shape &lhs, const Shape &rhs) { return lhs.dims() == rhs.dims(); }
 inline bool operator!=(const Shape &lhs, const Shape &rhs) { return lhs.dims() != rhs.dims(); }
 
-Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout);
+/**
+ * @brief   Converts shape when its rank is 4
+ *
+ * @return  Return a shape based on permutation type.
+ *          If rank is not 4, input shape is returned without conversion.
+ */
+ir::Shape convertShape(const Shape &shape, const PermuteType &type);
 
 /**
  * @brief Find out if tha rank in this shape is "maybe" unspecified.
