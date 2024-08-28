@@ -93,7 +93,12 @@ OMStatus OMBackpropExecute::runBackward(const OMConfig &config, OMBackpropExecut
       args.is_last_layer = false;
     }
 
-    if (trainable_ops_config.find(cur_op_index) != trainable_ops_config.end())
+    if (trainable_ops_config.empty())
+    {
+      args.is_trainable_layer = true;
+      args.train_rank_type = core::OpTrainableRankType::ALL;
+    }
+    else if (trainable_ops_config.find(cur_op_index) != trainable_ops_config.end())
     {
       args.is_trainable_layer = true;
       args.train_rank_type = core::OpTrainableRankType(trainable_ops_config[cur_op_index]);

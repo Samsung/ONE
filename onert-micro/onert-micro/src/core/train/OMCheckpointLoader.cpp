@@ -49,6 +49,7 @@ bool isTrainableWeights(const circle::OperatorCode *opcode)
   {
     case circle::BuiltinOperator_FULLY_CONNECTED:
     case circle::BuiltinOperator_CONV_2D:
+    case circle::BuiltinOperator_GRU:
       return true;
     default:
       return false;
