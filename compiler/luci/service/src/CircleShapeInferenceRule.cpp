@@ -2149,8 +2149,6 @@ public:
 
   loco::NodeShape visit(const luci::CircleMirrorPad *node) final { return infer_mirror_pad(node); }
 
-  loco::NodeShape visit(const luci::CircleMul *node) final { return broadcast_xy(node); }
-
   loco::NodeShape visit(const luci::CircleNeg *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleNonMaxSuppressionV4 *node) final
