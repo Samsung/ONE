@@ -15,8 +15,7 @@
  */
 
 #include "luci/Service/CircleNodeClone.h"
-
-#include <luci/Service/CircleShapeInference.h>
+#include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
 
