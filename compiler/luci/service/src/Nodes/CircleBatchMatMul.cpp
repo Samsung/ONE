@@ -36,6 +36,30 @@ loco::TensorShape remove_last_two(const loco::TensorShape &original_shape)
   return ret;
 }
 
+bool contain_zero(const loco::TensorShape &shape)
+{
+  bool zero_found = false;
+
+  for (uint32_t axis = 0; axis < shape.rank(); ++axis)
+  {
+    const auto &dim = shape.dim(axis);
+    if (dim.known() && dim.value() == 0)
+    {
+      zero_found = true;
+      break;
+    }
+  }
+  return zero_found;
+}
+
+void throw_unless(bool condition_result, const char *exception_msg)
+{
+  if (not condition_result)
+  {
+    INTERNAL_EXN(exception_msg);
+  }
+}
+
 } // namespace
 
 namespace luci
@@ -64,7 +88,23 @@ loco::TensorShape sinf::Algorithm::visit(const luci::CircleBatchMatMul *node)
 
   uint32_t x_rank = x_shape.rank();
   uint32_t y_rank = y_shape.rank();
-  assert(x_rank >= 2 && y_rank >= 2);
+
+  // throw internal exception if condition not met
+  throw_unless(x_rank >= 2, "x_rank shoud be >= 2");
+  throw_unless(y_rank >= 2, "y_rank shoud be >= 2");
+  throw_unless((not contain_zero(x_shape)), "x_shape should NOT have 0");
+  throw_unless((not contain_zero(y_shape)), "y_shape should NOT have 0");
+
+  // BatchMatMul shape inference rule works with two-part
+  //
+  // 1) Batch dimensions part
+  //    - Batch dimensions correspond to the input_shape[:-2]
+  //    - General broadcast rules are used to infer the shape of the output batch
+  //
+  // 2) Contracting dimensions part
+  //    - Contracting dimensions correspond to the input_shape[-2:]
+  //    - General matrix multiplication shape inference applied for this part,
+  //      which means '(x_lhs, x_rhs) x (y_lhs, y_rhs) => (x_lhs, y_rhs)'
 
   uint32_t max_rank = x_rank > y_rank ? x_rank : y_rank;
   loco::TensorShape output_shape;
