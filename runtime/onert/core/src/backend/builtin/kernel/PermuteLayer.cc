@@ -16,8 +16,6 @@
 
 #include "PermuteLayer.h"
 
-#include "../../../exec/ShapeConverter.h"
-
 #include <ruy/context.h> // from @ruy
 
 namespace onert
@@ -201,14 +199,14 @@ void PermuteLayer::run()
   {
     auto dst_tensor = _dst_tensors.at(i);
     auto src_tensor = _src_tensors.at(i);
+    auto permute_type = _permute_types.at(i);
     if (src_tensor->is_dynamic() || dst_tensor->is_dynamic())
     {
       // getting output shape
       auto src_shape = src_tensor->getShape();
 
       // set output shape and output buffer
-      ir::Shape new_shape =
-        exec::convertShape(src_shape, src_tensor->layout(), dst_tensor->layout());
+      ir::Shape new_shape = ir::convertShape(src_shape, permute_type);
 
       try
       {
@@ -225,8 +223,7 @@ void PermuteLayer::run()
         throw;
       }
     }
-    assert(exec::convertShape(src_tensor->getShape(), src_tensor->layout(), dst_tensor->layout()) ==
-           dst_tensor->getShape());
+    assert(ir::convertShape(src_tensor->getShape(), permute_type) == dst_tensor->getShape());
   }
   assert(_src_tensors.size() == _dst_tensors.size());
   assert(_src_tensors.size() == _src_tensors_offsets.size());
