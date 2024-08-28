@@ -284,6 +284,35 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
+  // Forward Reshape/Transpose is done after
+  // 1. SubstituteXXXToReshape
+  // 2. RemoveRedundantReshape/Transpose
+  // See https://github.com/Samsung/ONE/pull/10596 for more details
+  if (_options->query(Options::Algorithm::SubstitutePackToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteSqueezeToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteSqueezeToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteStridedSliceToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteStridedSliceToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::SubstituteTransposeToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteTransposeToReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::RemoveRedundantReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantReshapePass>());
+  }
+  if (_options->query(Options::Algorithm::RemoveRedundantTranspose))
+  {
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
+  }
+
   std::map<Options::Algorithm, std::unique_ptr<logo::Pass> (*)(void)> option_to_pass;
   option_to_pass[Options::Algorithm::CommonSubExpressionElimination] =
     &createPassInstance<luci::CommonSubExpressionEliminationPass>;
@@ -380,10 +409,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
     &createPassInstance<luci::RemoveUnnecessarySplitPass>;
   option_to_pass[Options::Algorithm::RemoveUnnecessaryTranspose] =
     &createPassInstance<luci::RemoveUnnecessaryTransposeNetPass>;
-  option_to_pass[Options::Algorithm::RemoveRedundantReshape] =
-    &createPassInstance<luci::RemoveRedundantReshapePass>;
-  option_to_pass[Options::Algorithm::RemoveRedundantTranspose] =
-    &createPassInstance<luci::RemoveRedundantTransposePass>;
   option_to_pass[Options::Algorithm::RemoveRedundantQuantize] =
     &createPassInstance<luci::RemoveRedundantQuantizePass>;
   option_to_pass[Options::Algorithm::ReplaceNonConstFCWithBatchMatMul] =
@@ -394,18 +419,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
     &createPassInstance<luci::ReplaceSubWithAddPass>;
   option_to_pass[Options::Algorithm::ReplaceWithFCGeluFC] =
     &createPassInstance<luci::ReplaceWithFCGeluFCPass>;
-  option_to_pass[Options::Algorithm::SubstitutePackToReshape] =
-    &createPassInstance<luci::SubstitutePackToReshapePass>;
   option_to_pass[Options::Algorithm::SubstitutePadV2ToPad] =
     &createPassInstance<luci::SubstitutePadV2ToPadPass>;
   option_to_pass[Options::Algorithm::SubstituteSplitVToSplit] =
     &createPassInstance<luci::SubstituteSplitVToSplitPass>;
-  option_to_pass[Options::Algorithm::SubstituteSqueezeToReshape] =
-    &createPassInstance<luci::SubstituteSqueezeToReshapePass>;
-  option_to_pass[Options::Algorithm::SubstituteStridedSliceToReshape] =
-    &createPassInstance<luci::SubstituteStridedSliceToReshapePass>;
-  option_to_pass[Options::Algorithm::SubstituteTransposeToReshape] =
-    &createPassInstance<luci::SubstituteTransposeToReshapePass>;
   option_to_pass[Options::Algorithm::TransformMinMaxToRelu6Pass] =
     &createPassInstance<luci::TransformMinMaxToRelu6Pass>;
   option_to_pass[Options::Algorithm::TransformMinReluToRelu6Pass] =
@@ -422,10 +439,6 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   //      Add experimental options here
   option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] =
     &createPassInstance<luci::XpSepActFromTransposeConvPass>;
-  // Forward Reshape/Transpose is done after
-  // 1. SubstituteXXXToReshape
-  // 2. RemoveRedundantReshape/Transpose
-  // See https://github.com/Samsung/ONE/pull/10596 for more details
   option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] =
     &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
   option_to_pass[Options::Algorithm::ForwardTransposeOp] =
@@ -439,6 +452,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
     }
   }
 
+  // TODO Extend `option_to_pass` to be able to instantiate two or more pass objects.
   if (_options->query(Options::Algorithm::RemoveUnnecessaryReshape))
   {
     phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapePass>());
