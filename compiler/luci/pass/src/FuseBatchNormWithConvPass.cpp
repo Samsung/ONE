@@ -15,12 +15,27 @@
  */
 
 #include "luci/Pass/FuseBatchNormWithConvPass.h"
+#include "helpers/NodeFiller.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
+#define CHECK_OR_FALSE(condition) \
+  if (not(condition))             \
+    return false;
+
 namespace
 {
+
+bool has_same_shape(const luci::CircleNode *node, const std::vector<uint32_t> &shape)
+{
+  const auto rank = node->rank();
+  CHECK_OR_FALSE(rank == shape.size());
+  for (uint32_t idx = 0; idx < rank; idx++)
+    CHECK_OR_FALSE(node->dim(idx).value() == shape.at(idx));
+  return true;
+}
+
 /**
  *  Fuse Mul-Add to Conv2D if possible.
  *
@@ -52,84 +67,33 @@ bool fused_batch_norm_with_conv(luci::CircleAdd *add)
 {
   luci::CircleMul *mul = nullptr;
   luci::CircleConst *shift = nullptr;
-  if (auto add_lhs = dynamic_cast<luci::CircleMul *>(add->x()))
-  {
-    mul = add_lhs;
-    shift = dynamic_cast<luci::CircleConst *>(add->y());
-  }
-  else if (auto add_rhs = dynamic_cast<luci::CircleMul *>(add->y()))
-  {
-    mul = add_rhs;
-    shift = dynamic_cast<luci::CircleConst *>(add->x());
-  }
-
   // If CircleMul is not found or constant operand of CircleAdd is not found,
   // this pass cannot be applied.
-  if (mul == nullptr || shift == nullptr)
-    return false;
-
+  CHECK_OR_FALSE(luci::fill(&mul, &shift).with_commutative_args_of(add));
   // If FusedActivationFunction of mul is not none, this pass cannot be applied.
-  if (mul->fusedActivationFunction() != luci::FusedActFunc::NONE)
-    return false;
-
-  // To apply this pass, shape of shift should be [1, 1, 1, out_channel].
-  if (shift->rank() != 4)
-    return false;
-  for (uint32_t i = 0; i < 3; ++i)
-    if (shift->dim(i).value() != 1)
-      return false;
+  CHECK_OR_FALSE(mul->fusedActivationFunction() == luci::FusedActFunc::NONE);
 
   luci::CircleConv2D *conv = nullptr;
   luci::CircleConst *scale = nullptr;
-  if (auto mul_lhs = dynamic_cast<luci::CircleConv2D *>(mul->x()))
-  {
-    conv = mul_lhs;
-    scale = dynamic_cast<luci::CircleConst *>(mul->y());
-  }
-  else if (auto mul_rhs = dynamic_cast<luci::CircleConv2D *>(mul->y()))
-  {
-    conv = mul_rhs;
-    scale = dynamic_cast<luci::CircleConst *>(mul->x());
-  }
-
   // If CircleConv2D is not found or constant operand of CircleMul is not found,
   // this pass cannot be applied.
-  if (conv == nullptr || scale == nullptr)
-    return false;
-
-  // To apply this pass, shape of scale should be [1, 1, 1, out_channel].
-  if (scale->rank() != 4)
-    return false;
-  for (uint32_t i = 0; i < 3; ++i)
-    if (scale->dim(i).value() != 1)
-      return false;
-
+  CHECK_OR_FALSE(luci::fill(&conv, &scale).with_commutative_args_of(mul));
   // If FusedActivationFunction of conv is not none, this pass cannot be applied.
-  if (conv->fusedActivationFunction() != luci::FusedActFunc::NONE)
-    return false;
+  CHECK_OR_FALSE(conv->fusedActivationFunction() == luci::FusedActFunc::NONE);
 
   luci::CircleConst *filter = dynamic_cast<luci::CircleConst *>(conv->filter());
   luci::CircleConst *bias = dynamic_cast<luci::CircleConst *>(conv->bias());
-
   // If filter or bias of conv is not const, this pass cannot be applied.
-  if (filter == nullptr || bias == nullptr)
-    return false;
+  CHECK_OR_FALSE(filter != nullptr && bias != nullptr);
+  // TODO Support more data type
+  CHECK_OR_FALSE(filter->dtype() == loco::DataType::FLOAT32);
 
   // If dtype of filter is different with scale and shift, multiplication may be impossible.
-  if (filter->dtype() != scale->dtype())
-    return false;
-  if (filter->dtype() != shift->dtype())
-    return false;
+  CHECK_OR_FALSE(filter->dtype() == scale->dtype());
+  CHECK_OR_FALSE(filter->dtype() == shift->dtype());
 
-  // TODO Support more data type
-  if (filter->dtype() != loco::DataType::FLOAT32)
-    return false;
-
-  // Output channel dimension should be same. If not, this pass cannot be applied.
-  if (filter->dim(0).value() != scale->dim(3).value())
-    return false;
-  if (filter->dim(0).value() != shift->dim(3).value())
-    return false;
+  CHECK_OR_FALSE(has_same_shape(shift, {1, 1, 1, filter->dim(0).value()}));
+  CHECK_OR_FALSE(has_same_shape(scale, {1, 1, 1, filter->dim(0).value()}));
 
   auto name = add->name();
   assert(name.length() > 0);
