@@ -30,11 +30,16 @@ luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSoftmax *node)
   return cloned;
 }
 
-loco::TensorShape sinf::Algorithm::visit(const luci::CircleSoftmax *node)
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleSoftmax *node)
 {
   const auto logits = loco::must_cast<luci::CircleNode *>(node->logits());
 
   return sinf::circle_shape(logits);
 }
+
+} // namespace sinf
 
 } // namespace luci

@@ -37,7 +37,10 @@ luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleConcatenation *
   return cloned;
 }
 
-loco::TensorShape sinf::Algorithm::visit(const luci::CircleConcatenation *node)
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleConcatenation *node)
 {
   // TODO Support when CircleConcatenation has 0 input
   assert(node->numValues() > 0);
@@ -100,5 +103,7 @@ loco::TensorShape sinf::Algorithm::visit(const luci::CircleConcatenation *node)
 
   return output_shape;
 }
+
+} // namespace sinf
 
 } // namespace luci

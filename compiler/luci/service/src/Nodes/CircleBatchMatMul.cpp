@@ -76,15 +76,18 @@ luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleBatchMatMul *no
   return cloned;
 }
 
+namespace sinf
+{
+
 // BatchMatMulV2 supports broadcasting in the batch dimensions(BatchMatMul doesn't)
 // TODO Distinguish BatchMatMul and BatchMatMulV2
-loco::TensorShape sinf::Algorithm::visit(const luci::CircleBatchMatMul *node)
+loco::TensorShape Algorithm::visit(const luci::CircleBatchMatMul *node)
 {
   const auto x = loco::must_cast<CircleNode *>(node->x());
   const auto y = loco::must_cast<CircleNode *>(node->y());
 
-  const auto x_shape = sinf::circle_shape(x);
-  const auto y_shape = sinf::circle_shape(y);
+  const auto x_shape = circle_shape(x);
+  const auto y_shape = circle_shape(y);
 
   uint32_t x_rank = x_shape.rank();
   uint32_t y_rank = y_shape.rank();
@@ -143,5 +146,7 @@ loco::TensorShape sinf::Algorithm::visit(const luci::CircleBatchMatMul *node)
 
   return output_shape;
 }
+
+} // namespace sinf
 
 } // namespace luci
