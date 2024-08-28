@@ -196,7 +196,9 @@ TEST(CircleImport, simple_plan)
   auto model_ptr = circle::GetModel(fbb.GetBufferPointer());
   luci::Importer import;
 
-  auto luci_module = import.importModule(model_ptr);
+  auto data = fbb.GetBufferPointer();
+  auto size = fbb.GetSize();
+  auto luci_module = import.importModule(data, size);
 
   auto main_graph = luci_module->graph();
   for (int i = 0; i < main_graph->nodes()->size(); ++i)
@@ -255,7 +257,9 @@ TEST(CircleImport, incomplete_plan_NEG)
   auto model_ptr = circle::GetModel(fbb.GetBufferPointer());
   luci::Importer import;
 
-  auto luci_module = import.importModule(model_ptr);
+  auto data = fbb.GetBufferPointer();
+  auto size = fbb.GetSize();
+  auto luci_module = import.importModule(data, size);
 
   auto main_graph = luci_module->graph();
   for (int i = 0; i < main_graph->nodes()->size(); ++i)
@@ -307,7 +311,9 @@ TEST(CircleImport, corrupted_plan_NEG)
   auto model_ptr = circle::GetModel(fbb.GetBufferPointer());
   luci::Importer import;
 
-  ASSERT_ANY_THROW(import.importModule(model_ptr));
+  auto data = fbb.GetBufferPointer();
+  auto size = fbb.GetSize();
+  ASSERT_ANY_THROW(import.importModule(data, size));
 }
 
 /**
@@ -348,5 +354,7 @@ TEST(CircleImport, corrupted_plan_entry_NEG)
   auto model_ptr = circle::GetModel(fbb.GetBufferPointer());
   luci::Importer import;
 
-  ASSERT_ANY_THROW(import.importModule(model_ptr));
+  auto data = fbb.GetBufferPointer();
+  auto size = fbb.GetSize();
+  ASSERT_ANY_THROW(import.importModule(data, size));
 }
