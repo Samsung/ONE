@@ -338,14 +338,15 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder)
 }
 
 template <typename NodeT>
-flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, NodeT *)
+flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder,
+                                                   SerializedModelData &, NodeT *)
 {
   return CreateBuffer(builder);
 }
 
 template <loco::DataType DT>
-flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &builder,
-                                                          luci::CircleConst *c)
+flatbuffers::Offset<circle::Buffer>
+encodeOpBufferByDType(FlatBufferBuilder &builder, SerializedModelData &, luci::CircleConst *c)
 {
   using NativeType = typename loco::DataTypeImpl<DT>::Type;
 
@@ -363,7 +364,8 @@ flatbuffers::Offset<circle::Buffer> encodeOpBufferByDType(FlatBufferBuilder &bui
 
 template <>
 flatbuffers::Offset<circle::Buffer>
-encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::CircleConst *c)
+encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, SerializedModelData &,
+                                              luci::CircleConst *c)
 {
   const uint32_t count = c->size<loco::DataType::STRING>();
   uint32_t raw_size = sizeof(int32_t) * (count + 2);
@@ -410,8 +412,8 @@ encodeOpBufferByDType<loco::DataType::STRING>(FlatBufferBuilder &builder, luci::
 }
 
 template <loco::DataType DT>
-flatbuffers::Offset<circle::Buffer> encodeOpBufferPack4bit(FlatBufferBuilder &builder,
-                                                           luci::CircleConst *c)
+flatbuffers::Offset<circle::Buffer>
+encodeOpBufferPack4bit(FlatBufferBuilder &builder, SerializedModelData &, luci::CircleConst *c)
 {
   const uint32_t size = c->size<DT>();
   const uint32_t raw_size = (size + 1) / 2;
@@ -435,30 +437,31 @@ flatbuffers::Offset<circle::Buffer> encodeOpBufferPack4bit(FlatBufferBuilder &bu
 }
 
 template <>
-flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder, luci::CircleConst *c)
+flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder,
+                                                   SerializedModelData &md, luci::CircleConst *c)
 {
   switch (c->dtype())
   {
     case loco::DataType::FLOAT32:
-      return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::FLOAT32>(builder, md, c);
     case loco::DataType::S4:
-      return encodeOpBufferPack4bit<loco::DataType::S4>(builder, c);
+      return encodeOpBufferPack4bit<loco::DataType::S4>(builder, md, c);
     case loco::DataType::S8:
-      return encodeOpBufferByDType<loco::DataType::S8>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::S8>(builder, md, c);
     case loco::DataType::S16:
-      return encodeOpBufferByDType<loco::DataType::S16>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::S16>(builder, md, c);
     case loco::DataType::S32:
-      return encodeOpBufferByDType<loco::DataType::S32>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::S32>(builder, md, c);
     case loco::DataType::S64:
-      return encodeOpBufferByDType<loco::DataType::S64>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::S64>(builder, md, c);
     case loco::DataType::U4:
-      return encodeOpBufferPack4bit<loco::DataType::U4>(builder, c);
+      return encodeOpBufferPack4bit<loco::DataType::U4>(builder, md, c);
     case loco::DataType::U8:
-      return encodeOpBufferByDType<loco::DataType::U8>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::U8>(builder, md, c);
     case loco::DataType::BOOL:
-      return encodeOpBufferByDType<loco::DataType::BOOL>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::BOOL>(builder, md, c);
     case loco::DataType::STRING:
-      return encodeOpBufferByDType<loco::DataType::STRING>(builder, c);
+      return encodeOpBufferByDType<loco::DataType::STRING>(builder, md, c);
     default:
       break;
   }
@@ -598,7 +601,7 @@ uint32_t get_buffer_id(FlatBufferBuilder &builder, SerializedModelData &md, luci
     }
 
     // When buffer with same values is not found, generate new buffer
-    auto buffer = encodeOpBuffer(builder, node);
+    auto buffer = encodeOpBuffer(builder, md, node);
 
     auto buffer_id = static_cast<uint32_t>(md._buffers.size());
     md._buffers.push_back(buffer);
