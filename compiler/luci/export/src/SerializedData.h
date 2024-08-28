@@ -70,6 +70,8 @@ public:
     _execution_plan_table[node_id] = execution_plan_inform;
   }
 
+  void clear(void);
+
 public:
   const std::vector<uint8_t> encoded_source_table(void);
   const std::vector<uint8_t> encoded_op_table(void);
@@ -133,6 +135,8 @@ struct SerializedModelData final
    */
   uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
                                  const std::string &custom_code, const int32_t op_version);
+
+  void clear(void);
 };
 
 // Prerequisites for circle::Model object creation
