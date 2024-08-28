@@ -235,11 +235,6 @@ loco::NodeShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *pa
   output_shape.rank(input_shape.rank());
   for (int32_t ni = 0; ni < n; ++ni)
   {
-    if (not input_shape.dim(ni).known())
-    {
-      output_shape.dim(ni).unset();
-      continue;
-    }
     int32_t idx = ni * 2;
     int value = input_shape.dim(ni).value();
     if (paddings->dtype() == S32)
