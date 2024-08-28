@@ -29,7 +29,7 @@ luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleQuantize *)
 
 loco::TensorShape sinf::Algorithm::visit(const luci::CircleQuantize *node)
 {
-  const auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+  const auto input_shape = circle_shape(node);
   return input_shape;
 }
 
