@@ -30,6 +30,15 @@ void print_version(void)
   std::cout << vconone::get_copyright() << std::endl;
 }
 
+template <typename T>
+T get_values_from(arser::Arser &arser, const std::string arg, const T default_value)
+{
+  if (arser[arg])
+    return arser.get<T>(arg);
+
+  return default_value;
+}
+
 int entry(const int argc, char **argv)
 {
   using namespace record_minmax;
@@ -114,35 +123,19 @@ int entry(const int argc, char **argv)
   std::string input_data_format("h5");
   uint32_t num_threads = 1;
 
-  if (arser["--min_percentile"])
-    min_percentile = arser.get<float>("--min_percentile");
-
-  if (arser["--num_threads"])
-    num_threads = arser.get<int>("--num_threads");
-
+  ::get_values_from<float>(arser, "--min_percentile", 1.0);
+  ::get_values_from<int>(arser, "--num_threads", 1);
   if (num_threads < 1)
     throw std::runtime_error("The number of threads must be greater than zero");
-
-  if (arser["--max_percentile"])
-    max_percentile = arser.get<float>("--max_percentile");
-
-  if (arser["--mode"])
-    mode = arser.get<std::string>("--mode");
-
-  if (arser["--moving_avg_batch"])
-    moving_avg_batch = arser.get<int>("--moving_avg_batch");
-
-  if (arser["--moving_avg_const"])
-    moving_avg_const = arser.get<float>("--moving_avg_const");
-
+  ::get_values_from<float>(arser, "--max_percentile", 99.0);
+  ::get_values_from<std::string>(arser, "--mode", "percentile");
+  ::get_values_from<int>(arser, "--moving_avg_batch", 16);
+  ::get_values_from<float>(arser, "--moving_avg_const", 0.1);
   if (mode != "percentile" && mode != "moving_average")
     throw std::runtime_error("Unsupported mode");
-
+  ::get_values_from<std::string>(arser, "--input_data_format", "h5");
   if (arser["--generate_profile_data"])
     settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
-
-  if (arser["--input_data_format"])
-    input_data_format = arser.get<std::string>("--input_data_format");
 
   std::unique_ptr<MinMaxComputer> computer;
   {
