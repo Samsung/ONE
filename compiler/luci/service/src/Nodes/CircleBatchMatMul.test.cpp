@@ -15,6 +15,7 @@
  */
 
 #include "luci/Service/CircleNodeClone.h"
+#include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
 
@@ -34,4 +35,370 @@ TEST(CloneNodeTest, clone_BatchMatMul)
   ASSERT_NE(nullptr, cloned_bmm);
   ASSERT_EQ(node_bmm->adj_x(), cloned_bmm->adj_x());
   ASSERT_EQ(node_bmm->adj_y(), cloned_bmm->adj_y());
+}
+
+TEST(ShapeRuleTest, bmm_broadcast_known_dim_1)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({1, 3, 5});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
+
+  // (2, 4, 3) x (1, 3, 5) -> (2, 4, 5)
+  // output shape should be (2, 4, 5)
+  ASSERT_EQ(3, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_EQ(2, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(5, shape.dim(2).value());
+}
+
+TEST(ShapeRuleTest, bmm_broadcast_known_dim_2)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({5, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({3, 8});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
+
+  // (5, 4, 3) x (3, 8) -> (5, 3, 8)
+  // output shape should be (5, 4, 8)
+  ASSERT_EQ(3, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_EQ(5, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(8, shape.dim(2).value());
+}
+
+TEST(ShapeRuleTest, bmm_with_dynamic_shape_1)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({1, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+  input_x.dim(0).unset(); // {0, 4, 3}
+
+  input_y.shape({2, 5, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
+
+  // (0, 4, 3) x (2, 5, 3, 7) -> (2, 5, 4, 7)
+  // output shape should be (2, 5, 4, 7)
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+  ASSERT_EQ(2, shape.dim(0).value());
+  ASSERT_EQ(5, shape.dim(1).value());
+  ASSERT_EQ(4, shape.dim(2).value());
+  ASSERT_EQ(7, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, bmm_with_dynamic_shape_2)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({1, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+  input_x.dim(0).unset(); // {0, 4, 3}
+
+  input_y.shape({2, 5, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+  input_y.dim(0).unset();
+  input_y.dim(1).unset(); // {0, 0, 3, 7}
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
+
+  // (0, 4, 3) x (0, 0, 3, 7) -> (0, 0, 4, 7)
+  // output shape should be (0, 0, 4, 7)
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_FALSE(shape.dim(0).known());
+  ASSERT_FALSE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+  ASSERT_EQ(0, shape.dim(0).value());
+  ASSERT_EQ(0, shape.dim(1).value());
+  ASSERT_EQ(4, shape.dim(2).value());
+  ASSERT_EQ(7, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, bmm_with_dynamic_shape_3)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({1, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({1, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+  input_y.dim(1).unset(); // {1, 0, 7}
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
+
+  // (1, 4, 3) x (1, 0, 7) -> (1, 4, 7)
+  // output shape should be (1, 4, 7)
+  ASSERT_EQ(3, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(7, shape.dim(2).value());
+}
+
+TEST(ShapeRuleTest, bmm_with_dynamic_shape_4)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({2, 2, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+  input_y.dim(1).unset(); // {2, 0, 3, 7}
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
+
+  // (2, 4, 3) x (2, 0, 3, 7) -> (2, 2, 4, 7)
+  // output shape should be (2, 2, 4, 7)
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+  ASSERT_EQ(2, shape.dim(0).value());
+  ASSERT_EQ(2, shape.dim(1).value());
+  ASSERT_EQ(4, shape.dim(2).value());
+  ASSERT_EQ(7, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, bmm_not_broadcastable_1_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({3, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (2, 4, 3) x (3, 3, 7)
+  //  ^           ^
+  // => error, batch dimension failed to broadcast
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
+}
+
+TEST(ShapeRuleTest, bmm_not_broadcastable_2_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({1, 3, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (2, 4, 3) x (1, 3, 3, 7)
+  //  ^           ^  ^
+  // => error, batch dimension failed to broadcast
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
+}
+
+TEST(ShapeRuleTest, bmm_not_broadcastable_3_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2, 4, 3});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({4, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (2, 4, 3) x (4, 3, 7)
+  //  ^           ^
+  // => error, batch dimension failed to broadcast
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
+}
+
+TEST(ShapeRuleTest, bmm_mismatch_dim_1_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({1, 4, 4});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({1, 3, 7});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (1, 4, 4) x (1, 3, 7)
+  //        ^        ^
+  // => error, matmul hidden dim should be same
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
+}
+
+TEST(ShapeRuleTest, bmm_mismatch_dim_2_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2, 40, 40});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({1, 30, 70});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (2, 40, 40) x (1, 30, 70)
+  //         ^         ^
+  // => error, matmul hidden dim should be same
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
+}
+
+TEST(ShapeRuleTest, bmm_1D_rank_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({2});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({2, 4});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (2) x (2, 4)
+  //  ^
+  // => error, x_rank should be >= 2
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
+}
+
+TEST(ShapeRuleTest, bmm_empty_input_NEG)
+{
+  luci::CircleInput input_x;
+  luci::CircleInput input_y;
+  luci::CircleBatchMatMul bmm;
+
+  input_x.shape({0, 2});
+  input_x.shape_status(luci::ShapeStatus::VALID);
+
+  input_y.shape({2, 4});
+  input_y.shape_status(luci::ShapeStatus::VALID);
+
+  bmm.x(&input_x);
+  bmm.y(&input_y);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  // (0, 2) x (2, 4)
+  //  ^
+  // => error, x should not be empty
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&bmm, shape));
 }
