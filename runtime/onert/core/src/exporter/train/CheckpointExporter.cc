@@ -36,8 +36,8 @@ using namespace exec;
 class CheckpointExporter
 {
 public:
-  CheckpointExporter(const std::unique_ptr<ir::train::TrainingInfo> &train_info,
-                     const std::unique_ptr<exec::Execution> &exec)
+  CheckpointExporter(const ir::train::TrainingInfo *const train_info,
+                     const exec::Execution *const exec)
   {
     std::memset(&_header, 0, sizeof(_header));
     _header.magic = checkpoint::MAGIC_NUMBER;
@@ -82,7 +82,7 @@ void exportCheckpoint(const std::string &filename,
                       const std::unique_ptr<ir::train::TrainingInfo> &train_info,
                       const std::unique_ptr<exec::Execution> &exec)
 {
-  CheckpointExporter exporter(train_info, exec);
+  CheckpointExporter exporter(train_info.get(), exec.get());
   exporter.save(filename);
 }
 
