@@ -89,7 +89,7 @@ TEST(ShapeRuleTest, bmm_broadcast_known_dim_2)
   ASSERT_TRUE(shape_inf_rule.infer(&bmm, shape));
 
   // (5, 4, 3) x (3, 8) -> (5, 3, 8)
-  // output shape should be (5, 3, 8)
+  // output shape should be (5, 4, 8)
   ASSERT_EQ(3, shape.rank());
   ASSERT_TRUE(shape.dim(0).known());
   ASSERT_TRUE(shape.dim(1).known());
