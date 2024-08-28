@@ -113,6 +113,16 @@ public:
   void quantize(loco::Graph *) const;
 
 private:
+  void quantize_dequantize_weight(loco::Graph *) const;
+  void quantize_with_min_max(loco::Graph *) const;
+  void quantize_weights(loco::Graph *) const;
+  void quantize_onnx_fake_quantized_model(loco::Graph *) const;
+  void requantize(loco::Graph *) const;
+  void force_quant_param(loco::Graph *) const;
+  void copy_quant_param(loco::Graph *) const;
+  void convert_to_fake_quantized_model(loco::Graph *) const;
+
+private:
   std::unique_ptr<Options> _options;
 };
 
