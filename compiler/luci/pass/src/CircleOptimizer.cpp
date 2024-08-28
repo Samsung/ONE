@@ -313,136 +313,81 @@ void CircleOptimizer::optimize(loco::Graph *g) const
     phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
 
+  // clang-format off
   std::map<Options::Algorithm, std::unique_ptr<logo::Pass> (*)(void)> option_to_pass;
-  option_to_pass[Options::Algorithm::CommonSubExpressionElimination] =
-    &createPassInstance<luci::CommonSubExpressionEliminationPass>;
-  option_to_pass[Options::Algorithm::ResolveCustomOpAdd] =
-    &createPassInstance<luci::ResolveCustomOpAddPass>;
-  option_to_pass[Options::Algorithm::ResolveCustomOpBatchMatMul] =
-    &createPassInstance<luci::ResolveCustomOpBatchMatMulPass>;
-  option_to_pass[Options::Algorithm::ResolveCustomOpMatMul] =
-    &createPassInstance<luci::ResolveCustomOpMatMulPass>;
-  option_to_pass[Options::Algorithm::ResolveFormerCustomOp] =
-    &createPassInstance<luci::ResolveFormerCustomOpPass>;
-  option_to_pass[Options::Algorithm::FuseMeanWithMean] =
-    &createPassInstance<luci::FuseMeanWithMeanPass>;
-  option_to_pass[Options::Algorithm::FuseMulWithConv] =
-    &createPassInstance<luci::FuseMulWithConvPass>;
-  option_to_pass[Options::Algorithm::FuseMulWithDiv] =
-    &createPassInstance<luci::FuseMulWithDivPass>;
-  option_to_pass[Options::Algorithm::FuseMulWithFullyConnected] =
-    &createPassInstance<luci::FuseMulWithFullyConnectedPass>;
-  option_to_pass[Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax] =
-    &createPassInstance<luci::ResolveCustomOpMaxPoolWithArgmaxPass>;
-  option_to_pass[Options::Algorithm::ResolveCustomOpSplitV] =
-    &createPassInstance<luci::ResolveCustomOpSplitVPass>;
-  option_to_pass[Options::Algorithm::FuseInstanceNorm] =
-    &createPassInstance<luci::FuseInstanceNormPass>;
-  option_to_pass[Options::Algorithm::FuseBatchNormWithConv] =
-    &createPassInstance<luci::FuseBatchNormWithConvPass>;
-  option_to_pass[Options::Algorithm::FuseBatchNormWithDwConv] =
-    &createPassInstance<luci::FuseBatchNormWithDwConvPass>;
-  option_to_pass[Options::Algorithm::FuseBatchNormWithTConv] =
-    &createPassInstance<luci::FuseBatchNormWithTConvPass>;
-  option_to_pass[Options::Algorithm::FuseSliceWithTConv] =
-    &createPassInstance<luci::FuseSliceWithTConvPass>;
-  option_to_pass[Options::Algorithm::FuseAddToFullyConnectedBias] =
-    &createPassInstance<luci::FuseAddToFullyConnectedBiasPass>;
-  option_to_pass[Options::Algorithm::FuseAddWithConv] =
-    &createPassInstance<luci::FuseAddWithConvPass>;
-  option_to_pass[Options::Algorithm::FuseAddWithFullyConnected] =
-    &createPassInstance<luci::FuseAddWithFullyConnectedPass>;
-  option_to_pass[Options::Algorithm::FuseAddWithTConv] =
-    &createPassInstance<luci::FuseAddWithTConvPass>;
-  option_to_pass[Options::Algorithm::FuseActivationFunction] =
-    &createPassInstance<luci::FuseActivationFunctionPass>;
-  option_to_pass[Options::Algorithm::FuseMulToFullyConnectedWeights] =
-    &createPassInstance<luci::FuseMulToFullyConnectedWeightsPass>;
+
+  option_to_pass[Options::Algorithm::CommonSubExpressionElimination] = &createPassInstance<luci::CommonSubExpressionEliminationPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpAdd] = &createPassInstance<luci::ResolveCustomOpAddPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpBatchMatMul] = &createPassInstance<luci::ResolveCustomOpBatchMatMulPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpMatMul] = &createPassInstance<luci::ResolveCustomOpMatMulPass>;
+  option_to_pass[Options::Algorithm::ResolveFormerCustomOp] = &createPassInstance<luci::ResolveFormerCustomOpPass>;
+  option_to_pass[Options::Algorithm::FuseMeanWithMean] = &createPassInstance<luci::FuseMeanWithMeanPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithConv] = &createPassInstance<luci::FuseMulWithConvPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithDiv] = &createPassInstance<luci::FuseMulWithDivPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithFullyConnected] = &createPassInstance<luci::FuseMulWithFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax] = &createPassInstance<luci::ResolveCustomOpMaxPoolWithArgmaxPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpSplitV] = &createPassInstance<luci::ResolveCustomOpSplitVPass>;
+  option_to_pass[Options::Algorithm::FuseInstanceNorm] = &createPassInstance<luci::FuseInstanceNormPass>;
+  option_to_pass[Options::Algorithm::FuseBatchNormWithConv] = &createPassInstance<luci::FuseBatchNormWithConvPass>;
+  option_to_pass[Options::Algorithm::FuseBatchNormWithDwConv] = &createPassInstance<luci::FuseBatchNormWithDwConvPass>;
+  option_to_pass[Options::Algorithm::FuseBatchNormWithTConv] = &createPassInstance<luci::FuseBatchNormWithTConvPass>;
+  option_to_pass[Options::Algorithm::FuseSliceWithTConv] = &createPassInstance<luci::FuseSliceWithTConvPass>;
+  option_to_pass[Options::Algorithm::FuseAddToFullyConnectedBias] = &createPassInstance<luci::FuseAddToFullyConnectedBiasPass>;
+  option_to_pass[Options::Algorithm::FuseAddWithConv] = &createPassInstance<luci::FuseAddWithConvPass>;
+  option_to_pass[Options::Algorithm::FuseAddWithFullyConnected] = &createPassInstance<luci::FuseAddWithFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FuseAddWithTConv] = &createPassInstance<luci::FuseAddWithTConvPass>;
+  option_to_pass[Options::Algorithm::FuseActivationFunction] = &createPassInstance<luci::FuseActivationFunctionPass>;
+  option_to_pass[Options::Algorithm::FuseMulToFullyConnectedWeights] = &createPassInstance<luci::FuseMulToFullyConnectedWeightsPass>;
   option_to_pass[Options::Algorithm::FusePRelu] = &createPassInstance<luci::FusePReluPass>;
   option_to_pass[Options::Algorithm::FuseGelu] = &createPassInstance<luci::FuseGeluPass>;
   option_to_pass[Options::Algorithm::FuseRsqrt] = &createPassInstance<luci::FuseRsqrtPass>;
-  option_to_pass[Options::Algorithm::FuseHorizontalFullyConnected] =
-    &createPassInstance<luci::FuseHorizontalFullyConnectedPass>;
-  option_to_pass[Options::Algorithm::FuseTransposeWithMean] =
-    &createPassInstance<luci::FuseTransposeWithMeanPass>;
+  option_to_pass[Options::Algorithm::FuseHorizontalFullyConnected] = &createPassInstance<luci::FuseHorizontalFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FuseTransposeWithMean] = &createPassInstance<luci::FuseTransposeWithMeanPass>;
   option_to_pass[Options::Algorithm::FoldAddV2] = &createPassInstance<luci::FoldAddV2Pass>;
   option_to_pass[Options::Algorithm::FoldCast] = &createPassInstance<luci::FoldCastPass>;
   option_to_pass[Options::Algorithm::FoldDensify] = &createPassInstance<luci::FoldDensifyPass>;
-  option_to_pass[Options::Algorithm::FoldDepthwiseConv2D] =
-    &createPassInstance<luci::FoldDepthwiseConv2DPass>;
-  option_to_pass[Options::Algorithm::FoldDequantize] =
-    &createPassInstance<luci::FoldDequantizePass>;
-  option_to_pass[Options::Algorithm::FoldFullyConnected] =
-    &createPassInstance<luci::FoldFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FoldDepthwiseConv2D] = &createPassInstance<luci::FoldDepthwiseConv2DPass>;
+  option_to_pass[Options::Algorithm::FoldDequantize] = &createPassInstance<luci::FoldDequantizePass>;
+  option_to_pass[Options::Algorithm::FoldFullyConnected] = &createPassInstance<luci::FoldFullyConnectedPass>;
   option_to_pass[Options::Algorithm::FoldGather] = &createPassInstance<luci::FoldGatherPass>;
   option_to_pass[Options::Algorithm::FoldMul] = &createPassInstance<luci::FoldMulPass>;
   option_to_pass[Options::Algorithm::FoldReshape] = &createPassInstance<luci::FoldReshapePass>;
   option_to_pass[Options::Algorithm::FoldShape] = &createPassInstance<luci::FoldShapePass>;
-  option_to_pass[Options::Algorithm::FoldSparseToDense] =
-    &createPassInstance<luci::FoldSparseToDensePass>;
+  option_to_pass[Options::Algorithm::FoldSparseToDense] = &createPassInstance<luci::FoldSparseToDensePass>;
   option_to_pass[Options::Algorithm::FoldSqueeze] = &createPassInstance<luci::FoldSqueezePass>;
-  option_to_pass[Options::Algorithm::FusePreActivationBatchNorm] =
-    &createPassInstance<luci::FusePreActivationBatchNormPass>;
-  option_to_pass[Options::Algorithm::MakeBatchNormGammaPositive] =
-    &createPassInstance<luci::MakeBatchNormGammaPositivePass>;
-  option_to_pass[Options::Algorithm::ShuffleWeightTo16x1Float32] =
-    &createPassInstance<luci::ShuffleWeightTo16x1Float32Pass>;
-  option_to_pass[Options::Algorithm::ExpandBroadcastConst] =
-    &createPassInstance<luci::ExpandBroadcastConstPass>;
-  option_to_pass[Options::Algorithm::RemoveDuplicateConst] =
-    &createPassInstance<luci::RemoveDuplicateConstPass>;
-  option_to_pass[Options::Algorithm::RemoveFakeQuant] =
-    &createPassInstance<luci::RemoveFakeQuantPass>;
-  option_to_pass[Options::Algorithm::RemoveGatherGuard] =
-    &createPassInstance<luci::RemoveGatherGuardPass>;
-  option_to_pass[Options::Algorithm::RemoveQDQForMixedPrecisionOp] =
-    &createPassInstance<luci::RemoveQDQForMixedPrecisionOpPass>;
-  option_to_pass[Options::Algorithm::RemoveQuantDequantSeq] =
-    &createPassInstance<luci::RemoveQuantDequantSeqPass>;
-  option_to_pass[Options::Algorithm::RemoveUnnecessaryAdd] =
-    &createPassInstance<luci::RemoveUnnecessaryAddPass>;
-  option_to_pass[Options::Algorithm::RemoveUnnecessarySlice] =
-    &createPassInstance<luci::RemoveUnnecessarySlicePass>;
-  option_to_pass[Options::Algorithm::RemoveUnnecessaryStridedSlice] =
-    &createPassInstance<luci::RemoveUnnecessaryStridedSlicePass>;
-  option_to_pass[Options::Algorithm::RemoveUnnecessarySplit] =
-    &createPassInstance<luci::RemoveUnnecessarySplitPass>;
-  option_to_pass[Options::Algorithm::RemoveUnnecessaryTranspose] =
-    &createPassInstance<luci::RemoveUnnecessaryTransposeNetPass>;
-  option_to_pass[Options::Algorithm::RemoveRedundantQuantize] =
-    &createPassInstance<luci::RemoveRedundantQuantizePass>;
-  option_to_pass[Options::Algorithm::ReplaceNonConstFCWithBatchMatMul] =
-    &createPassInstance<luci::ReplaceNonConstFCWithBatchMatMulPass>;
-  option_to_pass[Options::Algorithm::ReplaceMulAddWithDepthwiseConv] =
-    &createPassInstance<luci::ReplaceMulAddWithDepthwiseConvPass>;
-  option_to_pass[Options::Algorithm::ReplaceSubWithAdd] =
-    &createPassInstance<luci::ReplaceSubWithAddPass>;
-  option_to_pass[Options::Algorithm::ReplaceWithFCGeluFC] =
-    &createPassInstance<luci::ReplaceWithFCGeluFCPass>;
-  option_to_pass[Options::Algorithm::SubstitutePadV2ToPad] =
-    &createPassInstance<luci::SubstitutePadV2ToPadPass>;
-  option_to_pass[Options::Algorithm::SubstituteSplitVToSplit] =
-    &createPassInstance<luci::SubstituteSplitVToSplitPass>;
-  option_to_pass[Options::Algorithm::TransformMinMaxToRelu6Pass] =
-    &createPassInstance<luci::TransformMinMaxToRelu6Pass>;
-  option_to_pass[Options::Algorithm::TransformMinReluToRelu6Pass] =
-    &createPassInstance<luci::TransformMinReluToRelu6Pass>;
-  option_to_pass[Options::Algorithm::TransformSqrtDivToRsqrtMul] =
-    &createPassInstance<luci::TransformSqrtDivToRsqrtMulPass>;
-  option_to_pass[Options::Algorithm::DecomposeHardSwishPass] =
-    &createPassInstance<luci::DecomposeHardSwishPass>;
-  option_to_pass[Options::Algorithm::DecomposeSoftmaxPass] =
-    &createPassInstance<luci::DecomposeSoftmaxPass>;
-  option_to_pass[Options::Algorithm::UnrollUnidirSeqLSTM] =
-    &createPassInstance<luci::UnrollUnidirectionalSequenceLSTMPass>;
+  option_to_pass[Options::Algorithm::FusePreActivationBatchNorm] = &createPassInstance<luci::FusePreActivationBatchNormPass>;
+  option_to_pass[Options::Algorithm::MakeBatchNormGammaPositive] = &createPassInstance<luci::MakeBatchNormGammaPositivePass>;
+  option_to_pass[Options::Algorithm::ShuffleWeightTo16x1Float32] = &createPassInstance<luci::ShuffleWeightTo16x1Float32Pass>;
+  option_to_pass[Options::Algorithm::ExpandBroadcastConst] = &createPassInstance<luci::ExpandBroadcastConstPass>;
+  option_to_pass[Options::Algorithm::RemoveDuplicateConst] = &createPassInstance<luci::RemoveDuplicateConstPass>;
+  option_to_pass[Options::Algorithm::RemoveFakeQuant] = &createPassInstance<luci::RemoveFakeQuantPass>;
+  option_to_pass[Options::Algorithm::RemoveGatherGuard] = &createPassInstance<luci::RemoveGatherGuardPass>;
+  option_to_pass[Options::Algorithm::RemoveQDQForMixedPrecisionOp] = &createPassInstance<luci::RemoveQDQForMixedPrecisionOpPass>;
+  option_to_pass[Options::Algorithm::RemoveQuantDequantSeq] = &createPassInstance<luci::RemoveQuantDequantSeqPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryAdd] = &createPassInstance<luci::RemoveUnnecessaryAddPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessarySlice] = &createPassInstance<luci::RemoveUnnecessarySlicePass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryStridedSlice] = &createPassInstance<luci::RemoveUnnecessaryStridedSlicePass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessarySplit] = &createPassInstance<luci::RemoveUnnecessarySplitPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryTranspose] = &createPassInstance<luci::RemoveUnnecessaryTransposeNetPass>;
+  option_to_pass[Options::Algorithm::RemoveRedundantQuantize] = &createPassInstance<luci::RemoveRedundantQuantizePass>;
+  option_to_pass[Options::Algorithm::ReplaceNonConstFCWithBatchMatMul] = &createPassInstance<luci::ReplaceNonConstFCWithBatchMatMulPass>;
+  option_to_pass[Options::Algorithm::ReplaceMulAddWithDepthwiseConv] = &createPassInstance<luci::ReplaceMulAddWithDepthwiseConvPass>;
+  option_to_pass[Options::Algorithm::ReplaceSubWithAdd] = &createPassInstance<luci::ReplaceSubWithAddPass>;
+  option_to_pass[Options::Algorithm::ReplaceWithFCGeluFC] = &createPassInstance<luci::ReplaceWithFCGeluFCPass>;
+  option_to_pass[Options::Algorithm::SubstitutePadV2ToPad] = &createPassInstance<luci::SubstitutePadV2ToPadPass>;
+  option_to_pass[Options::Algorithm::SubstituteSplitVToSplit] = &createPassInstance<luci::SubstituteSplitVToSplitPass>;
+  option_to_pass[Options::Algorithm::TransformMinMaxToRelu6Pass] = &createPassInstance<luci::TransformMinMaxToRelu6Pass>;
+  option_to_pass[Options::Algorithm::TransformMinReluToRelu6Pass] = &createPassInstance<luci::TransformMinReluToRelu6Pass>;
+  option_to_pass[Options::Algorithm::TransformSqrtDivToRsqrtMul] = &createPassInstance<luci::TransformSqrtDivToRsqrtMulPass>;
+  option_to_pass[Options::Algorithm::DecomposeHardSwishPass] = &createPassInstance<luci::DecomposeHardSwishPass>;
+  option_to_pass[Options::Algorithm::DecomposeSoftmaxPass] = &createPassInstance<luci::DecomposeSoftmaxPass>;
+  option_to_pass[Options::Algorithm::UnrollUnidirSeqLSTM] = &createPassInstance<luci::UnrollUnidirectionalSequenceLSTMPass>;
   // NOTE Experimental options; these will be removed someday
   //      Add experimental options here
-  option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] =
-    &createPassInstance<luci::XpSepActFromTransposeConvPass>;
-  option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] =
-    &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
-  option_to_pass[Options::Algorithm::ForwardTransposeOp] =
-    &createPassInstance<luci::ForwardTransposeOpPass>;
+  option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] = &createPassInstance<luci::XpSepActFromTransposeConvPass>;
+  option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] = &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
+  option_to_pass[Options::Algorithm::ForwardTransposeOp] = &createPassInstance<luci::ForwardTransposeOpPass>;
+  // clang-format on 
 
   for (auto const &m : option_to_pass)
   {
