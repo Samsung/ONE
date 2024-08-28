@@ -18,7 +18,7 @@
 
 #include "CircleCloneNode.h"
 #include "CircleShapeInferenceHelper.h"
-#include "CircleShapeInferenceHelperPads.h"
+#include "HelperPads.h"
 
 namespace luci
 {
