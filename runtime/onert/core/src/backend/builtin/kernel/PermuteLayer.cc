@@ -110,7 +110,7 @@ void PermuteLayer::optimize()
               const auto copy_len = loop_shape.dim(copy_axis) * data_size;
               loop_shape.dim(copy_axis) = 1;
 
-              appendPermuteTasks(src, dst, loop_shape, copy_len);
+              appendPermuteTasks(src, dst, loop_shape, copy_len, permute_type);
             }
           }
           else
@@ -121,7 +121,7 @@ void PermuteLayer::optimize()
             const auto loop_shape = src_tensor.getShape();
             const auto copy_len = data_size;
 
-            appendPermuteTasks(src, dst, loop_shape, copy_len);
+            appendPermuteTasks(src, dst, loop_shape, copy_len, permute_type);
           }
         });
       };
@@ -136,11 +136,12 @@ void PermuteLayer::optimize()
 }
 
 void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_tensor,
-                                      const ir::Shape &loop_shape, size_t size)
+                                      const ir::Shape &loop_shape, size_t size,
+                                      const ir::PermuteType &permute_type)
 {
   size_t distributed_dim = 0;
   auto src_shape = src_tensor->getShape();
-  if (src_tensor->layout() == dst_tensor->layout())
+  if (permute_type == ir::PermuteType::COPY)
   {
     for (int i = 1; i < src_shape.rank() - 1; ++i)
     {
@@ -165,7 +166,8 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
     start_coords.set(distributed_dim, start);
     int end = start + (distributed_dim_val - start) / (thread_count - i);
     one_thread_loop_shape.dim(distributed_dim) = end - start;
-    tasks.emplace_back(*src_tensor, *dst_tensor, start_coords, one_thread_loop_shape, size);
+    tasks.emplace_back(*src_tensor, *dst_tensor, start_coords, one_thread_loop_shape, size,
+                       permute_type);
     start = end;
   }
   assert(tasks.size() >= 1);
