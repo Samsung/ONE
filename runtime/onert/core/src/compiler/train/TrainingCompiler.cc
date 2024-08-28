@@ -18,6 +18,7 @@
 
 #include "StaticBackwardShapeInferer.h"
 #include "TrainableOperationConverter.h"
+#include "pass/BiasInsertionPass.h"
 #include "pass/LossInsertionPass.h"
 #include "../CompilerHelpers.h"
 #include "../ExecutorFactory.h"
@@ -86,6 +87,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
     compiler::pass::PassRunner{}
       .append(std::make_unique<compiler::pass::ConstantOutputPass>(subg))
       .append(std::make_unique<compiler::pass::OddOutputPass>(subg))
+      .append(std::make_unique<train::pass::BiasInsertionPass>(subg))
       .run();
 
     // Optimizations

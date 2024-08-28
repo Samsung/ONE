@@ -50,6 +50,7 @@ public:
 public:
   void replaceInputs(const OperandIndex &from, const OperandIndex &to) override;
   void replaceOutputs(const OperandIndex &from, const OperandIndex &to) override;
+  void replaceInput(size_t pos, const OperandIndex &index) override;
   OperandIndexSequence &getInputs() { return _inputs; }
   const OperandIndexSequence &getInputs() const override { return _inputs; }
   const OperandIndexSequence &getOutputs() const override { return _outputs; }

@@ -186,13 +186,11 @@ void FullyConnectedLayer::backwardFloat32()
     getShape(_grad_weights), getBuffer<float>(_grad_weights));
 
   // Compute gradient for bias
-  if (_bias)
-  {
-    assert(_grad_bias);
-    nnfw::cker::train::FullyConnectedBiasGrad(getShape(backprop_act),
-                                              getBuffer<float>(backprop_act), getShape(_grad_bias),
-                                              getBuffer<float>(_grad_bias));
-  }
+  // Bias tensor must exist on training even if bias is optinal input
+  assert(_bias);
+  assert(_grad_bias);
+  nnfw::cker::train::FullyConnectedBiasGrad(getShape(backprop_act), getBuffer<float>(backprop_act),
+                                            getShape(_grad_bias), getBuffer<float>(_grad_bias));
 }
 
 } // namespace ops

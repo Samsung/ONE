@@ -51,6 +51,7 @@ public:
   const OperandIndex &at(uint32_t index) const { return _vec.at(index); }
   bool contains(const OperandIndex &index) const;
   void replace(const OperandIndex &from, const OperandIndex &to);
+  void replace(size_t pos, const OperandIndex &index);
   OperandIndexSequence operator|(ir::Remove filter) const
   {
     switch (filter)

@@ -62,5 +62,7 @@ void Operation::replaceOutputs(const OperandIndex &from, const OperandIndex &to)
   _outputs.replace(from, to);
 }
 
+void Operation::replaceInput(size_t pos, const OperandIndex &index) { _inputs.replace(pos, index); }
+
 } // namespace ir
 } // namespace onert

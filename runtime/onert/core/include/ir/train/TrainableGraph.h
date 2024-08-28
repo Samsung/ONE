@@ -123,6 +123,7 @@ public:
   const Operands &operands() const override { return _graph.operands(); }
   Operands &operands() { return _graph.operands(); } // TODO Remove this non-const accessor
   const Operations &operations() const override { return _graph.operations(); }
+  Operations &operations() { return _graph.operations(); }
   const Operands &backward_operands() const { return _backward_operands; }
   OperandIndex getLossIndex(const IOIndex &pred_io_ind) const;
   const Graph &graph() const { return _graph; }

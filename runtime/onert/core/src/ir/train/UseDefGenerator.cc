@@ -211,6 +211,23 @@ void UseDefGenerator::visit(const train::operation::FullyConnected &node)
   const auto weights_forwarding_index = TrainingOperandIndex{weights_index, true};
   insertUse(weights_forwarding_index, backwarding_op_index);
 
+  // // Set def and use for bias if bias is optional since bias is required on training
+  // const auto forwarding_op_index = TrainingOperationIndex{op_index, true};
+  // const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
+  // const auto bias_forwarding_index = TrainingOperandIndex{bias_index, true};
+  // if (!bias_index.valid())
+  // {
+  //   // If bias is not optional, the use for bias is already inserted before
+  //   insertUse(bias_forwarding_index, forwarding_op_index);
+
+  //   // The forwarding bias is not used in backwarding
+  // }
+  // else
+  // {
+  //   [[maybe_unused]] const auto &usedef_chain = _training_usedefs.at(bias_forwarding_index);
+  //   assert(usedef_chain.getTrainingUses().count(forwarding_op_index) == 0);
+  // }
+
   // Insert uses of forwarding output
   if (node.param().activation != ir::Activation::NONE)
   {
@@ -220,18 +237,19 @@ void UseDefGenerator::visit(const train::operation::FullyConnected &node)
   }
 
   // Set def of backwarding inputs
+  // The uses of backwarding inputs has already been inserted before
   const auto outgoing_index = TrainingOperandIndex{in_index, false};
   insertBackPropDef(outgoing_index, backwarding_op_index);
 
   const auto weights_gradient_index = TrainingOperandIndex{weights_index, false};
   insertDef(weights_gradient_index, backwarding_op_index);
 
+  // Set def for gradient bias even if it is optional bias since bias is required
+  // on training.
   const auto &bias_index = node.getInputs().at(ir::operation::Conv2D::Input::BIAS);
-  if (bias_index.valid())
-  {
-    const auto bias_gradient_index = TrainingOperandIndex{bias_index, false};
-    insertDef(bias_gradient_index, backwarding_op_index);
-  }
+  assert(bias_index.valid());
+  const auto bias_gradient_index = TrainingOperandIndex{bias_index, false};
+  insertDef(bias_gradient_index, backwarding_op_index);
 }
 
 void UseDefGenerator::visit(const train::operation::Loss &node)
@@ -427,7 +445,10 @@ void UseDefGenerator::initForForwardingNodes()
     assert(_training_usedefs.at(forwarding_operand_index).getTrainingUses().size() == 0);
     const auto uses = operand.getUses();
     for (const auto &use : uses)
+    {
+      // if (use.valid())
       insertUse(forwarding_operand_index, TrainingOperationIndex{use, is_forward});
+    }
   });
 }
 

@@ -106,6 +106,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
 
     /*
      (input) ⎼[FC]⎼> (ba_input1) ⎼[BA]⎼> (y_pred)
@@ -117,6 +118,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto ba_input1 = tgraph.addOperand(shape, type);
     const auto ba_input2 = tgraph.addOperand(shape, type);
     const auto y_pred = tgraph.addOperand(shape, type);
@@ -125,6 +127,8 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
     tgraph.operands().at(ba_input2).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
 
@@ -132,8 +136,7 @@ TEST(UseDefGenerator, one_op)
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {ba_input1});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {ba_input1});
 
     operation::BinaryArithmetic::Param param;
     param.arithmetic_type = operation::BinaryArithmetic::ArithmeticType::ADD;
@@ -575,6 +578,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
 
     /*
      (input) ⎼[FC]⎼> (ea_input) ⎼[EA]⎼> (y_pred)
@@ -586,6 +590,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto ea_input = tgraph.addOperand(shape, type);
     const auto y_pred = tgraph.addOperand(shape, type);
     const auto y_true = tgraph.addOperand(shape, type);
@@ -593,13 +598,14 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
 
     tgraph.addInput({input});
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {ea_input});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {ea_input});
 
     operation::ElementwiseActivation::Param param;
     param.op_type = operation::ElementwiseActivation::Type::RELU;
@@ -745,6 +751,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
 
     /*
      (input) ⎼[FC]⎼> (y_pred)
@@ -756,19 +763,21 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto y_pred = tgraph.addOperand(shape, type);
     const auto y_true = tgraph.addOperand(shape, type);
     const auto output = tgraph.addOperand(shape, type);
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
 
     tgraph.addInput({input});
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {y_pred});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {y_pred});
     const auto loss_index = addLossOperation(tgraph, {y_pred, y_true}, {output});
 
     enableAllBackwarding(tgraph);
@@ -883,6 +892,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> weights_data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
     std::vector<int32_t> padding_data(4, 0);
 
     /*
@@ -895,6 +905,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto pad_input = tgraph.addOperand(shape, type);
     const auto padding = tgraph.addOperand(shape, TypeInfo{DataType::INT32});
     const auto y_pred = tgraph.addOperand(shape, type);
@@ -903,6 +914,8 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(weights_data.data()), weights_data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
     tgraph.operands().at(padding).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(padding_data.data()), padding_data.size() * sizeof(int32_t)));
 
@@ -910,8 +923,7 @@ TEST(UseDefGenerator, one_op)
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {pad_input});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {pad_input});
 
     const auto pad_op = operation::Pad({pad_input, padding}, {y_pred});
     const auto pad_index = tgraph.addOperation(std::make_unique<train::operation::Pad>(pad_op));
@@ -1069,6 +1081,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
 
     /*
      (input) ⎼[FC]⎼> (pool_input) ⎼[MaxPool2D]⎼> (y_pred)
@@ -1080,6 +1093,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto pool_input = tgraph.addOperand(shape, type);
     const auto y_pred = tgraph.addOperand(shape, type);
     const auto y_true = tgraph.addOperand(shape, type);
@@ -1087,13 +1101,14 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
 
     tgraph.addInput({input});
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {pool_input});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {pool_input});
 
     operation::Pool2D::Param param;
     param.op_type = operation::Pool2D::PoolType::MAX;
@@ -1243,6 +1258,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 1};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> weights_data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
     std::vector<int32_t> axis_data{-1};
 
     /*
@@ -1255,6 +1271,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto mean_input = tgraph.addOperand(shape, type);
     const auto axis = tgraph.addOperand(Shape{1}, TypeInfo{DataType::INT32});
     const auto y_pred = tgraph.addOperand(shape, type);
@@ -1263,6 +1280,8 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(weights_data.data()), weights_data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
     tgraph.operands().at(axis).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(axis_data.data()), axis_data.size() * sizeof(int32_t)));
 
@@ -1270,8 +1289,7 @@ TEST(UseDefGenerator, one_op)
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {mean_input});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {mean_input});
 
     operation::Reduce::Param param;
     param.reduce_type = operation::Reduce::ReduceType::MEAN;
@@ -1431,6 +1449,7 @@ TEST(UseDefGenerator, one_op)
     Shape s{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> weights_data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
     std::vector<int32_t> shape_data{2, 2};
 
     /*
@@ -1443,6 +1462,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(s, type);
     const auto weights = tgraph.addOperand(s, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto reshape_input = tgraph.addOperand(s, type);
     const auto shape = tgraph.addOperand(Shape{2}, TypeInfo{DataType::INT32});
     const auto y_pred = tgraph.addOperand(s, type);
@@ -1451,6 +1471,8 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(weights_data.data()), weights_data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
     tgraph.operands().at(shape).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(shape_data.data()), shape_data.size() * sizeof(int32_t)));
 
@@ -1459,7 +1481,7 @@ TEST(UseDefGenerator, one_op)
     tgraph.addOutput({output});
 
     const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {reshape_input});
+      addFullyConnectedOperation(tgraph, {input, weights, bias}, {reshape_input});
 
     operation::Reshape::Param param;
     param.new_shape = shape_data;
@@ -1619,6 +1641,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
 
     /*
      (input) ⎼[FC]⎼> (softmax_input) ⎼[Softmax]⎼> (y_pred)
@@ -1630,6 +1653,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto softmax_input = tgraph.addOperand(shape, type);
     const auto y_pred = tgraph.addOperand(shape, type);
     const auto y_true = tgraph.addOperand(shape, type);
@@ -1637,13 +1661,15 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
 
     tgraph.addInput({input});
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
     const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {softmax_input});
+      addFullyConnectedOperation(tgraph, {input, weights, bias}, {softmax_input});
 
     operation::Softmax::Param param;
     param.beta = 1.0f;
@@ -1788,6 +1814,7 @@ TEST(UseDefGenerator, one_op)
     Shape shape{2, 2};
     TypeInfo type{DataType::FLOAT32};
     std::vector<float> data(4, 0.f);
+    std::vector<float> bias_data(2, 0.f);
 
     /*
      (input) ⎼[FC]⎼> (fc_out) ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼[BA]⎼> (y_pred)
@@ -1799,6 +1826,7 @@ TEST(UseDefGenerator, one_op)
 
     const auto input = tgraph.addOperand(shape, type);
     const auto weights = tgraph.addOperand(shape, type);
+    const auto bias = tgraph.addOperand(Shape{2}, type);
     const auto fc_out = tgraph.addOperand(shape, type);
     const auto ea_out = tgraph.addOperand(shape, type);
     const auto y_pred = tgraph.addOperand(shape, type);
@@ -1807,13 +1835,14 @@ TEST(UseDefGenerator, one_op)
 
     tgraph.operands().at(weights).data(std::make_unique<ExternalData>(
       reinterpret_cast<uint8_t *>(data.data()), data.size() * sizeof(float)));
+    tgraph.operands().at(bias).data(std::make_unique<ExternalData>(
+      reinterpret_cast<uint8_t *>(bias_data.data()), bias_data.size() * sizeof(float)));
 
     tgraph.addInput({input});
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    const auto fc_index =
-      addFullyConnectedOperation(tgraph, {input, weights, OperandIndex{}}, {fc_out});
+    const auto fc_index = addFullyConnectedOperation(tgraph, {input, weights, bias}, {fc_out});
 
     operation::ElementwiseActivation::Param ea_param;
     ea_param.op_type = operation::ElementwiseActivation::Type::RELU;
