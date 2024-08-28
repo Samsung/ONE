@@ -33,15 +33,20 @@ luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMul *node)
   return cloned;
 }
 
-loco::TensorShape sinf::Algorithm::visit(const luci::CircleMul *node)
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleMul *node)
 {
   const auto x = loco::must_cast<luci::CircleNode *>(node->x());
   const auto y = loco::must_cast<luci::CircleNode *>(node->y());
 
-  const auto x_shape = sinf::circle_shape(x);
-  const auto y_shape = sinf::circle_shape(y);
+  const auto x_shape = circle_shape(x);
+  const auto y_shape = circle_shape(y);
 
-  return sinf::broadcast_shape(x_shape, y_shape);
+  return broadcast_shape(x_shape, y_shape);
 }
+
+} // namespace sinf
 
 } // namespace luci
