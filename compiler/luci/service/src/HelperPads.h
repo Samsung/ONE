@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_PADS_H__
-#define __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_PADS_H__
+#ifndef __LUCI_SERVICE_HELPER_PADS_H__
+#define __LUCI_SERVICE_HELPER_PADS_H__
 
 #include "Check.h"
 
@@ -85,4 +85,4 @@ loco::TensorShape use_paddings(const CIRCLENODE *node, const luci::CircleConst *
 } // namespace sinf
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_SHAPE_INFERENCE_HELPER_PADS_H__
+#endif // __LUCI_SERVICE_HELPER_PADS_H__
