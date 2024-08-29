@@ -286,7 +286,6 @@ std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
   std::vector<int32_t> ret;
 
   auto axes_vals = (axes->getShape().rank() == 0) ? 1 : axes->getShape().dim(0);
-  assert(axes->layout() == ir::Layout::NHWC);
   assert(static_cast<size_t>(axes_vals) == axes->getShape().num_elements());
   switch (axes->data_type())
   {

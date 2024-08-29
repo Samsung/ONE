@@ -51,7 +51,6 @@ public:
 
 public:
   uint8_t *buffer() const override { return _tensor.buffer(); }
-  ir::Layout layout() const override { return _tensor.layout(); }
 
 public:
   std::vector<ITensor *> optVars() override;

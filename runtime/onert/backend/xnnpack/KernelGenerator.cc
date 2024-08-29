@@ -70,12 +70,6 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-    if (portable_tensor)
-    {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
-    }
-
     auto tensor = _tensor_reg->getNativeTensor(ind);
     if (tensor)
     {

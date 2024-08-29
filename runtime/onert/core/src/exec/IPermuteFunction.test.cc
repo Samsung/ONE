@@ -71,7 +71,7 @@ public:
 
   uint8_t *buffer() const override { return _data; }
 
-  ir::Layout layout() const override { return _layout; }
+  ir::Layout layout() const { return _layout; }
   ir::DataType data_type() const override { return _type_info.type(); }
   float data_scale() const override { return _type_info.scale(); }
   int32_t data_zero_point() const override { return _type_info.zero_point(); }
