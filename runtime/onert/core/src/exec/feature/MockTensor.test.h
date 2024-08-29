@@ -47,7 +47,7 @@ public:
 
 public: // DUMMY methods
   size_t total_size() const override { return 0; }
-  onert::ir::Layout layout() const override { return _layout; }
+  onert::ir::Layout layout() const { return _layout; }
   onert::ir::DataType data_type() const override { return onert::ir::DataType::UINT8; }
   float data_scale() const override { return 0; }
   int32_t data_zero_point() const override { return 0; }

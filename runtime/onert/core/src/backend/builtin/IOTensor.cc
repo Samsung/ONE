@@ -40,7 +40,6 @@ void IOTensor::setTensor(IPortableTensor *tensor)
 {
   assert(tensor);
   assert(tensor != this);
-  assert(tensor->layout() == _orig->layout()); // Changing layout is not considered yet
   _tensor = tensor;
   if (_info.shape() != tensor->getShape())
   {

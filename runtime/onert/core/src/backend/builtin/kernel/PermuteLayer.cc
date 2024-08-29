@@ -265,7 +265,7 @@ void PermuteLayer::run()
         // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
         else if (dst->needMemoryMap() && !dst->is_subtensor())
         {
-          if (!src->has_padding() && !dst->has_padding() && src->layout() == dst->layout())
+          if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::COPY)
           {
             // This is more effective than multi-threading
             src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
@@ -281,7 +281,7 @@ void PermuteLayer::run()
           }
         }
         else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
-                 !dst->has_padding() && src->layout() == dst->layout())
+                 !dst->has_padding() && permute_type == ir::PermuteType::COPY)
         {
           // This is more effective than multi-threading
           assert(!dst->needMemoryMap());
