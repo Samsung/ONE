@@ -35,8 +35,8 @@ TEST(CloneNodeTest, clone_Quantize)
 
 TEST(ShapeRuleTest, quantize_dynamic_shape)
 {
-  luci::CircleQuantize quantize;
   luci::CircleInput input;
+  luci::CircleQuantize quantize;
 
   input.shape({1, 2, 3, 4});
   input.shape_status(luci::ShapeStatus::VALID);
@@ -58,14 +58,12 @@ TEST(ShapeRuleTest, quantize_dynamic_shape)
   ASSERT_EQ(2, shape.dim(1).value());
   ASSERT_EQ(0, shape.dim(2).value());
   ASSERT_EQ(4, shape.dim(3).value());
-
-  quantize.drop();
 }
 
-TEST(ShapeRuleTest, quantize_dynamic_shape_NEG)
+TEST(ShapeRuleTest, quantize_shape_not_ready_NEG)
 {
-  luci::CircleQuantize quantize;
   luci::CircleInput input;
+  luci::CircleQuantize quantize;
 
   input.shape_status(luci::ShapeStatus::UNDEFINED);
   quantize.input(&input);
@@ -74,6 +72,4 @@ TEST(ShapeRuleTest, quantize_dynamic_shape_NEG)
   luci::sinf::Rule shape_inf_rule;
 
   ASSERT_FALSE(shape_inf_rule.infer(&quantize, shape));
-
-  quantize.drop();
 }
