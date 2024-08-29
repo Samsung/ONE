@@ -15,6 +15,7 @@
  */
 
 #include "luci/Service/CircleNodeClone.h"
+#include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
 
@@ -36,4 +37,37 @@ TEST(CloneNodeTest, clone_Reshape)
   ASSERT_EQ(node_reshape->newShape()->rank(), cloned_reshape->newShape()->rank());
   ASSERT_EQ(node_reshape->newShape()->dim(0), cloned_reshape->newShape()->dim(0));
   ASSERT_EQ(node_reshape->newShape()->dim(1), cloned_reshape->newShape()->dim(1));
+}
+
+TEST(ShapeRuleTest, reshape_known_dim)
+{
+  luci::CircleInput input;
+  input.rank(3);
+  input.dim(0) = 2;
+  input.dim(1) = 3;
+  input.dim(2) = 4;
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.rank(2);
+  new_shape.dim(0) = 6;
+  new_shape.dim(1) = 4;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  std::cout << "new_shape: " << &new_shape << std::endl;
+  std::cout << "new_shape.rank(): " << new_shape.rank() << std::endl;
+  std::cout << "new_shape.dim(0).value(): " << new_shape.dim(0).value() << std::endl;
+  std::cout << "new_shape.dim(1).value(): " << new_shape.dim(1).value() << std::endl;
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&reshape, shape));
+
+  ASSERT_EQ(2, shape.rank());
 }

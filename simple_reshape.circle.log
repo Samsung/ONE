@@ -1,0 +1,3 @@
+/usr/local/bin/tflite2circle simple_reshape.tflite simple_reshape.circle
+tflite2circle: terminate called after throwing an instance of 'std::runtime_error'
+tflite2circle:   what():  Failed to open file: simple_reshape.tflite

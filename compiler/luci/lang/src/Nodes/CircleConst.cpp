@@ -18,6 +18,8 @@
 
 #include <cassert>
 
+#include <iostream>
+
 namespace luci
 {
 

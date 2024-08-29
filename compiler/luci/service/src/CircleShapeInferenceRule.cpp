@@ -1003,84 +1003,6 @@ loco::NodeShape infer_range(const luci::CircleRange *node)
   return loco::NodeShape{output_shape};
 }
 
-loco::NodeShape infer_reshape(const luci::CircleReshape *node)
-{
-  LOGGER(l);
-
-  const loco::DataType S32 = loco::DataType::S32;
-
-  loco::TensorShape shape_by_input;
-  {
-    LUCI_ASSERT(node->shape(), "2nd input shape() should not be nullptr");
-
-    // Only support node's shape() is CircleConst with S32
-    // TODO support other node with other types
-    auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
-    if (const_shape_node != nullptr)
-    {
-      LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
-
-      shape_by_input.rank(const_shape_node->size<S32>());
-
-      for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
-      {
-        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
-      }
-    }
-    else
-    {
-      // We use shape from the node itself
-      shape_by_input = own_shape(node);
-    }
-  }
-
-  loco::TensorShape shape_by_attr;
-  {
-    shape_by_attr.rank(node->newShape()->rank());
-
-    for (uint32_t axis = 0; axis < shape_by_attr.rank(); ++axis)
-    {
-      shape_by_attr.dim(axis) = node->newShape()->dim(axis);
-    }
-  }
-
-  if (!(shape_by_input == shape_by_attr))
-  {
-    INFO(l) << "CircleReshape: Two new shape information mismatched : " << std::endl;
-    INFO(l) << "   shape_by_input : " << shape_by_input << std::endl;
-    INFO(l) << "   shape_by_attr : " << shape_by_attr << std::endl;
-  }
-
-  loco::TensorShape output_shape = shape_by_input;
-
-  // One of the dimensions can have special value -1, meaning its actual value should be inferred.
-  const auto input_shape = luci::shape_get(node->tensor()).as<loco::TensorShape>();
-  uint32_t input_element_count = 1;
-  uint32_t output_element_count = 1;
-  uint32_t unknown_dim_index = UINT32_MAX;
-  for (uint32_t i = 0; i < input_shape.rank(); ++i)
-    input_element_count *= (input_shape.dim(i).known() ? input_shape.dim(i).value() : 1);
-  for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
-  {
-    const uint32_t dim_value = output_shape.dim(dim_index).value();
-    if (static_cast<int>(dim_value) == -1)
-    {
-      LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
-      unknown_dim_index = dim_index;
-    }
-    else
-    {
-      output_element_count *= dim_value;
-    }
-  }
-  if (unknown_dim_index != UINT32_MAX)
-  {
-    output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
-  }
-
-  return loco::NodeShape{output_shape};
-}
-
 template <class CIRCLENODE> loco::NodeShape infer_resize_type(const CIRCLENODE *node)
 {
   auto input_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
@@ -2244,15 +2166,6 @@ public:
 
     return loco::NodeShape{input_shape};
   }
-
-  /**
-   * @note  CircleReshape has new shape info in two places: 2nd input and attribute.
-   *        This shape inference uses shape from input 'shape' node when it's constant.
-   *        If not, shape will be from node itself. shape from attribute is not used.
-   *
-   * TODO Change this policy when not appropriate
-   */
-  loco::NodeShape visit(const luci::CircleReshape *node) final { return infer_reshape(node); }
 
   loco::NodeShape visit(const luci::CircleResizeBilinear *node) final
   {
