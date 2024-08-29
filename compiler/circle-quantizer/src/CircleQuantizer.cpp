@@ -20,6 +20,7 @@
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 #include <luci/UserSettings.h>
+#include <record-hessian/RecordHessian.h>
 
 #include <oops/InternalExn.h>
 #include <arser/arser.h>
@@ -145,9 +146,10 @@ LayerParamsSet read_layer_params_set(std::string &filename)
 
 void print_exclusive_options(void)
 {
-  std::cout << "Use only one of the 3 options below." << std::endl;
+  std::cout << "Use only one of the 7 options below." << std::endl;
   std::cout << "    --quantize_dequantize_weights" << std::endl;
   std::cout << "    --quantize_with_minmax" << std::endl;
+  std::cout << "    --quantize_dequantize_weights_with_gptq" << std::endl;
   std::cout << "    --requantize" << std::endl;
   std::cout << "    --force_quantparam" << std::endl;
   std::cout << "    --quantize_weights" << std::endl;
@@ -169,6 +171,7 @@ int entry(int argc, char **argv)
 
   const std::string qdqw = "--quantize_dequantize_weights";
   const std::string qwmm = "--quantize_with_minmax";
+  const std::string gptq = "--quantize_dequantize_weights_with_gptq";
   const std::string qofm = "--quantize_onnx_fq_model";
   const std::string rq = "--requantize";
   const std::string fq = "--force_quantparam";
@@ -204,6 +207,16 @@ int entry(int argc, char **argv)
     .help("Quantize with min/max values. "
           "Three arguments required: input_model_dtype(float32) "
           "output_model_dtype(uint8) granularity(layer, channel)");
+
+  arser.add_argument(gptq)
+    .nargs(3)
+    .type(arser::DataType::STR_VEC)
+    .help("Quantize-dequantize values using GPTQ algorithm. "
+          "Three arguments required: input_model_dtype(float32) "
+          "output_model_dtype(uint8) granularity(channel)");
+
+  arser.add_argument("--input_data")
+    .help("Input data required to obtain the Hessian for GPTQ algorithm. ");
 
   arser.add_argument(tf_maxpool)
     .nargs(0)
@@ -284,6 +297,7 @@ int entry(int argc, char **argv)
     // only one of qdqw, qwmm, rq, fq, cq, fake_quant, qw, qofm option can be used
     int32_t opt_used = arser[qdqw] ? 1 : 0;
     opt_used += arser[qwmm] ? 1 : 0;
+    opt_used += arser[gptq] ? 1 : 0;
     opt_used += arser[rq] ? 1 : 0;
     opt_used += arser[fq] ? 1 : 0;
     opt_used += arser[cq] ? 1 : 0;
@@ -386,6 +400,22 @@ int entry(int argc, char **argv)
         return 255;
       }
     }
+  }
+  if (arser[gptq])
+  {
+    auto values = arser.get<std::vector<std::string>>(gptq);
+
+    if (values.size() != 3)
+    {
+      std::cerr << arser;
+      return 255;
+    }
+
+    options->enable(Algorithms::QuantizeWeightsWithGPTQ);
+
+    options->param(AlgorithmParameters::Quantize_input_model_dtype, values.at(0));
+    options->param(AlgorithmParameters::Quantize_output_model_dtype, values.at(1));
+    options->param(AlgorithmParameters::Quantize_granularity, values.at(2));
   }
 
   if (arser.get<bool>(qofm))
@@ -492,6 +522,26 @@ int entry(int argc, char **argv)
   if (module.get() == nullptr)
     return EXIT_FAILURE;
 
+  if (arser[gptq])
+  {
+
+    record_hessian::RecordHessian rhn;
+
+    // Initialize interpreter and observer
+    rhn.initialize(module.get());
+
+    if (arser["--input_data"])
+    {
+      auto input_data_path = arser.get<std::string>("--input_data");
+      auto hessian_map = rhn.profileData(input_data_path);
+      quantizer.setHessianMap(hessian_map);
+    }
+    else
+    {
+      std::cerr << "ERROR: 'input data' is required" << std::endl;
+    }
+  }
+
   for (size_t idx = 0; idx < module->size(); ++idx)
   {
     auto graph = module->graph(idx);
@@ -505,7 +555,6 @@ int entry(int argc, char **argv)
       return 255;
     }
   }
-
   // Export to output Circle file
   luci::CircleExporter exporter;
 
