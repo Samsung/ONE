@@ -262,6 +262,7 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  // clang-format off
   std::map<std::string /* option string */, Algorithms /* option enum */> option_str_to_enum;
   option_str_to_enum["fold_add_v2"] = Algorithms::FoldAddV2;
   option_str_to_enum["fold_cast"] = Algorithms::FoldCast;
@@ -286,8 +287,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["fuse_add_with_tconv"] = Algorithms::FuseAddWithTConv;
   option_str_to_enum["fuse_batchnorm_with_dwconv"] = Algorithms::FuseBatchNormWithDwConv;
   option_str_to_enum["fuse_batchnorm_with_tconv"] = Algorithms::FuseBatchNormWithTConv;
-  option_str_to_enum["fuse_mul_to_fullyconnected_weights"] =
-    Algorithms::FuseMulToFullyConnectedWeights;
+  option_str_to_enum["fuse_mul_to_fullyconnected_weights"] = Algorithms::FuseMulToFullyConnectedWeights;
   option_str_to_enum["fuse_slice_with_tconv"] = Algorithms::FuseSliceWithTConv;
   option_str_to_enum["fuse_bcq"] = Algorithms::FuseBCQ;
   option_str_to_enum["fuse_instnorm"] = Algorithms::FuseInstanceNorm;
@@ -312,40 +312,35 @@ int entry(int argc, char **argv)
   option_str_to_enum["remove_unnecessary_add"] = Algorithms::RemoveUnnecessaryAdd;
   option_str_to_enum["remove_unnecessary_reshape"] = Algorithms::RemoveUnnecessaryReshape;
   option_str_to_enum["remove_unnecessary_slice"] = Algorithms::RemoveUnnecessarySlice;
-  option_str_to_enum["remove_unnecessary_strided_slice"] =
-    Algorithms::RemoveUnnecessaryStridedSlice;
+  option_str_to_enum["remove_unnecessary_strided_slice"] = Algorithms::RemoveUnnecessaryStridedSlice;
   option_str_to_enum["remove_unnecessary_split"] = Algorithms::RemoveUnnecessarySplit;
   option_str_to_enum["remove_unnecessary_transpose"] = Algorithms::RemoveUnnecessaryTranspose;
-  option_str_to_enum["replace_cw_mul_add_with_depthwise_conv"] =
-    Algorithms::ReplaceMulAddWithDepthwiseConv;
+  option_str_to_enum["replace_cw_mul_add_with_depthwise_conv"] = Algorithms::ReplaceMulAddWithDepthwiseConv;
   option_str_to_enum["replace_sub_with_add"] = Algorithms::ReplaceSubWithAdd;
   option_str_to_enum["replace_with_fc_gelu_fc"] = Algorithms::ReplaceWithFCGeluFC;
   option_str_to_enum["resolve_customop_add"] = Algorithms::ResolveCustomOpAdd;
   option_str_to_enum["resolve_customop_batchmatmul"] = Algorithms::ResolveCustomOpBatchMatMul;
   option_str_to_enum["resolve_customop_matmul"] = Algorithms::ResolveCustomOpMatMul;
-  option_str_to_enum["resolve_customop_max_pool_with_argmax"] =
-    Algorithms::ResolveCustomOpMaxPoolWithArgmax;
+  option_str_to_enum["resolve_customop_max_pool_with_argmax"] = Algorithms::ResolveCustomOpMaxPoolWithArgmax;
   option_str_to_enum["resolve_customop_splitv"] = Algorithms::ResolveCustomOpSplitV;
   option_str_to_enum["resolve_former_customop"] = Algorithms::ResolveFormerCustomOp;
   option_str_to_enum["shuffle_weight_to_16x1float32"] = Algorithms::ShuffleWeightTo16x1Float32;
-  option_str_to_enum["replace_non_const_fc_with_batch_matmul"] =
-    Algorithms::ReplaceNonConstFCWithBatchMatMul;
+  option_str_to_enum["replace_non_const_fc_with_batch_matmul"] = Algorithms::ReplaceNonConstFCWithBatchMatMul;
   option_str_to_enum["substitute_pack_to_reshape"] = Algorithms::SubstitutePackToReshape;
   option_str_to_enum["substitute_padv2_to_pad"] = Algorithms::SubstitutePadV2ToPad;
   option_str_to_enum["substitute_splitv_to_split"] = Algorithms::SubstituteSplitVToSplit;
   option_str_to_enum["substitute_squeeze_to_reshape"] = Algorithms::SubstituteSqueezeToReshape;
-  option_str_to_enum["substitute_strided_slice_to_reshape"] =
-    Algorithms::SubstituteStridedSliceToReshape;
+  option_str_to_enum["substitute_strided_slice_to_reshape"] = Algorithms::SubstituteStridedSliceToReshape;
   option_str_to_enum["substitute_transpose_to_reshape"] = Algorithms::SubstituteTransposeToReshape;
   option_str_to_enum["transform_min_max_to_relu6"] = Algorithms::TransformMinMaxToRelu6Pass;
   option_str_to_enum["transform_min_relu_to_relu6"] = Algorithms::TransformMinReluToRelu6Pass;
   option_str_to_enum["transform_sqrt_div_to_rsqrt_mul"] = Algorithms::TransformSqrtDivToRsqrtMul;
-  option_str_to_enum["common_subexpression_elimination"] =
-    Algorithms::CommonSubExpressionElimination;
+  option_str_to_enum["common_subexpression_elimination"] = Algorithms::CommonSubExpressionElimination;
   option_str_to_enum["decompose_hardswish"] = Algorithms::DecomposeHardSwishPass;
   option_str_to_enum["decompose_softmax"] = Algorithms::DecomposeSoftmaxPass;
   option_str_to_enum["expand_broadcast_const"] = Algorithms::ExpandBroadcastConst;
   option_str_to_enum["unroll_unidirseqlstm"] = Algorithms::UnrollUnidirSeqLSTM;
+  // clang-format on
 
   if (arser.get<bool>("--verbose"))
   {
