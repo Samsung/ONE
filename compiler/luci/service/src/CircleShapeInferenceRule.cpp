@@ -931,13 +931,6 @@ loco::NodeShape infer_pack(const luci::CirclePack *node)
   return loco::NodeShape{output_shape};
 }
 
-loco::NodeShape infer_pad(const luci::CirclePad *node)
-{
-  // TODO support non-const case
-  auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
-  return use_paddings(node, paddings);
-}
-
 loco::NodeShape infer_pad_v2(const luci::CirclePadV2 *node)
 {
   // TODO support non-const case
@@ -2168,8 +2161,6 @@ public:
   loco::NodeShape visit(const luci::CircleOneHot *node) final { return infer_one_hot(node); }
 
   loco::NodeShape visit(const luci::CirclePack *node) final { return infer_pack(node); }
-
-  loco::NodeShape visit(const luci::CirclePad *node) final { return infer_pad(node); }
 
   loco::NodeShape visit(const luci::CirclePadV2 *node) final { return infer_pad_v2(node); }
 
