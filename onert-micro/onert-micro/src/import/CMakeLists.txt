@@ -11,6 +11,7 @@ set(SOURCES
         helpers/OMSpacesBatchesNDCommon.cpp
         helpers/OMPoolingCommon.cpp
         helpers/OMArgCommon.cpp
+        helpers/OMFloorCommon.cpp
         )
 
 # Add configure kernels
