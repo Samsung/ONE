@@ -18,7 +18,6 @@
 
 #include "CircleCloneNode.h"
 #include "CircleShapeInferenceHelper.h"
-#include "HelperPads.h"
 
 namespace luci
 {
@@ -35,7 +34,8 @@ loco::TensorShape Algorithm::visit(const luci::CirclePad *node)
 {
   // TODO support non-const case
   auto paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
-  return use_paddings(node, paddings);
+  auto input_shape = circle_shape(loco::must_cast<const luci::CircleNode *>(node->input()));
+  return pad_shape(input_shape, paddings);
 }
 
 } // namespace sinf
