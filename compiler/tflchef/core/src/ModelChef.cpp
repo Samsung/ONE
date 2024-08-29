@@ -869,7 +869,7 @@ void ModelChef::gather_signature_defs(const ::tflchef::ModelRecipe &model_recipe
       if (rec_tm_input.has_tensor())
       {
         // we can get tensor_index from symbol_table
-        auto tensor = rec_tm_input.tensor();
+        const auto &tensor = rec_tm_input.tensor();
         tensor_index = symbol_table[tensor];
       }
       else
