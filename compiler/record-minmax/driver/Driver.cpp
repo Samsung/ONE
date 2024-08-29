@@ -123,17 +123,17 @@ int entry(const int argc, char **argv)
   std::string input_data_format("h5");
   uint32_t num_threads = 1;
 
-  ::get_values_from<float>(arser, "--min_percentile", 1.0);
-  ::get_values_from<int>(arser, "--num_threads", 1);
+  min_percentile = ::get_values_from<float>(arser, "--min_percentile", 1.0);
+  num_threads = ::get_values_from<int>(arser, "--num_threads", 1);
   if (num_threads < 1)
     throw std::runtime_error("The number of threads must be greater than zero");
-  ::get_values_from<float>(arser, "--max_percentile", 99.0);
-  ::get_values_from<std::string>(arser, "--mode", "percentile");
-  ::get_values_from<int>(arser, "--moving_avg_batch", 16);
-  ::get_values_from<float>(arser, "--moving_avg_const", 0.1);
+  max_percentile = ::get_values_from<float>(arser, "--max_percentile", 99.0);
+  mode = ::get_values_from<std::string>(arser, "--mode", "percentile");
+  moving_avg_batch = ::get_values_from<int>(arser, "--moving_avg_batch", 16);
+  moving_avg_const = ::get_values_from<float>(arser, "--moving_avg_const", 0.1);
   if (mode != "percentile" && mode != "moving_average")
     throw std::runtime_error("Unsupported mode");
-  ::get_values_from<std::string>(arser, "--input_data_format", "h5");
+  input_data_format = ::get_values_from<std::string>(arser, "--input_data_format", "h5");
   if (arser["--generate_profile_data"])
     settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
