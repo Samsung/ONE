@@ -52,6 +52,8 @@ void Operation::setOutputs(const OperandIndexSequence &indexes)
   _outputs = indexes;
 }
 
+void Operation::replaceInput(size_t pos, const OperandIndex &index) { _inputs.replace(pos, index); }
+
 void Operation::replaceInputs(const OperandIndex &from, const OperandIndex &to)
 {
   _inputs.replace(from, to);

@@ -48,6 +48,7 @@ public:
   virtual ~Operation();
 
 public:
+  void replaceInput(size_t pos, const OperandIndex &index) override;
   void replaceInputs(const OperandIndex &from, const OperandIndex &to) override;
   void replaceOutputs(const OperandIndex &from, const OperandIndex &to) override;
   OperandIndexSequence &getInputs() { return _inputs; }

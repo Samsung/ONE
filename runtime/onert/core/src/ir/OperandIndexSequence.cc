@@ -17,6 +17,7 @@
 #include "ir/OperandIndexSequence.h"
 
 #include <algorithm>
+#include <cassert>
 #include <sstream>
 
 namespace onert
@@ -48,6 +49,12 @@ OperandIndexSequence::OperandIndexSequence(std::initializer_list<uint32_t> list)
 bool OperandIndexSequence::contains(const OperandIndex &index) const
 {
   return std::find(_vec.begin(), _vec.end(), index) != _vec.end();
+}
+
+void OperandIndexSequence::replace(size_t pos, const OperandIndex &index)
+{
+  assert(pos < _vec.size() && "OperandIndexSequence: Out of range");
+  _vec.at(pos) = index;
 }
 
 void OperandIndexSequence::replace(const OperandIndex &from, const OperandIndex &to)

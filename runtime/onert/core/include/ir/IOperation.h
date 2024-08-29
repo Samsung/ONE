@@ -38,6 +38,7 @@ struct IOperation
   virtual std::string name() const { return std::string{toString(opcode())}; }
   virtual OpCode opcode() const = 0;
 
+  virtual void replaceInput(size_t pos, const OperandIndex &index) = 0;
   virtual void replaceInputs(const OperandIndex &from, const OperandIndex &to) = 0;
   virtual void replaceOutputs(const OperandIndex &from, const OperandIndex &to) = 0;
   virtual const OperandIndexSequence &getInputs() const = 0;
