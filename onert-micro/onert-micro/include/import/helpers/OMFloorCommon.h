@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-#include "import/helpers/OMFloorCommon.h"
+#ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_FLOOR_KERNEL_COMMON_H
+#define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_FLOOR_KERNEL_COMMON_H
 
-using namespace onert_micro;
-using namespace onert_micro::core;
+#include "import/OMKernelConfigureBuilder.h"
+#include "core/OMUtils.h"
+#include "OMStatus.h"
+#include "execute/OMRuntimeKernel.h"
 
-namespace
+namespace onert_micro
+{
+namespace import
+{
+namespace helpers
 {
 
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
+OMStatus configure_floor_kernel_common(const OMConfigureArgs &config_args);
 
-} // namespace
+} // namespace helpers
+} // namespace import
+} // namespace onert_micro
 
-OMStatus onert_micro::import::configure_kernel_CircleFloorMod(const OMConfigureArgs &config_args)
-{
-  return onert_micro::import::helpers::configure_floor_kernel_common(config_args);
-}
+#endif // ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_FLOOR_KERNEL_COMMON_H
