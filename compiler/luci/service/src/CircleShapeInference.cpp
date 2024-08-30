@@ -28,23 +28,6 @@
 namespace
 {
 
-std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape)
-{
-  os << "[";
-  for (uint32_t r = 0; r < tensor_shape.rank(); ++r)
-  {
-    if (r)
-      os << ",";
-
-    if (tensor_shape.dim(r).known())
-      os << tensor_shape.dim(r).value();
-    else
-      os << "?";
-  }
-  os << "]";
-  return os;
-}
-
 bool inputs_shape_ready(const luci::CircleNode *node)
 {
   for (uint32_t arity = 0; arity < node->arity(); ++arity)
