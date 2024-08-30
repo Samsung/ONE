@@ -83,12 +83,25 @@ private:
   std::vector<Dimension> _dims;
 };
 
+// Inheritance type wrapper which provides ability to change inheritance mode
+// (direct or virtual) by specifying one of the types
+struct InheritanceMode
+{
+  template <typename Base = void> struct Virtual : public virtual Base
+  {
+  };
+  template <typename Base = void> struct Direct : public Base
+  {
+  };
+};
+
 template <uint32_t N> struct FixedArity
 {
-  template <typename Base> class Mixin : public virtual Base
+  template <typename Base, template <class> class Inheritance>
+  class MixinImpl : public Inheritance<Base>
   {
   public:
-    Mixin()
+    MixinImpl()
     {
       for (uint32_t n = 0; n < N; ++n)
       {
@@ -96,7 +109,7 @@ template <uint32_t N> struct FixedArity
       }
     }
 
-    virtual ~Mixin() = default;
+    virtual ~MixinImpl() = default;
 
   public:
     uint32_t arity(void) const final { return N; }
@@ -117,6 +130,15 @@ template <uint32_t N> struct FixedArity
 
   private:
     std::array<std::unique_ptr<Use>, N> _args{};
+  };
+
+  template <typename Base = void>
+  class Mixin : public MixinImpl<Base, loco::InheritanceMode::Virtual>
+  {
+  };
+  template <typename Base = void>
+  class DirectMixin : public MixinImpl<Base, loco::InheritanceMode::Direct>
+  {
   };
 };
 
