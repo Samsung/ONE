@@ -17,9 +17,6 @@
 #include "Embedder.h"
 #include "MinMaxReader.h"
 
-#include <luci/CircleExporter.h>
-#include <luci/CircleFileExpContract.h>
-#include <luci/ImporterEx.h>
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
 #include <luci/Profile/CircleNodeID.h>
