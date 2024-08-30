@@ -113,7 +113,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
   }
 
   // One of the dimensions of output shape can have special value -1,
-  // meaning its actual value should be inferred.
+  // meaning its actual value might be inferred.
   uint32_t output_unknown_dim_index = UINT32_MAX;
   uint32_t output_element_count = 1;
   for (uint32_t i = 0; i < output_shape.rank(); i++)
