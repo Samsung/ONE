@@ -21,6 +21,7 @@
 #include "OMStatus.h"
 #include "core/reader/OMCircleReader.h"
 #include "core/OMRuntimeShape.h"
+#include "core/OMKernelData.h"
 
 namespace onert_micro
 {
@@ -151,6 +152,10 @@ inline void computePaddingHeightWidth(int32_t stride_height, int32_t stride_widt
 
   *padding_w = computePadding(stride_width, dilation_rate_width, in_width, filter_width, out_width);
 }
+
+void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
+                          const circle::Tensor *input2, const circle::Tensor *output,
+                          circle::ActivationFunctionType act);
 
 } // namespace execute
 } // namespace onert_micro
