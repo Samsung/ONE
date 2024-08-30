@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_EXTRA_H__
-#define __ONERT_BACKEND_EXTRA_H__
+#ifndef __ONERT_BACKEND_LAYER_SCOPE_TENSOR_H__
+#define __ONERT_BACKEND_LAYER_SCOPE_TENSOR_H__
 
 #include <backend/basic/Tensor.h>
 
@@ -26,15 +26,15 @@ namespace backend
 namespace train
 {
 
-// ExtraTensor is a tensor that is accessed within one operation layer.
-// In other words, the scope of the extra tensor is confined to one specific layer.
-class ExtraTensor final : public basic::Tensor
+// LayerScopeTensor is a tensor that is not shown in graph but required by each layer.
+// It is accessed within one operation layer.
+class LayerScopeTensor final : public basic::Tensor
 {
 public:
-  ExtraTensor() = delete;
+  LayerScopeTensor() = delete;
 
 public:
-  ExtraTensor(const ir::OperandInfo &info) : basic::Tensor(info, nullptr)
+  LayerScopeTensor(const ir::OperandInfo &info) : basic::Tensor(info, nullptr)
   {
     // DO NOTHING
   }
@@ -44,4 +44,4 @@ public:
 } // namespace backend
 } // namespace onert
 
-#endif // __ONERT_BACKEND_EXTRA_TENSOR_H__
+#endif // __ONERT_BACKEND_LAYER_SCOPE_TENSOR_H__
