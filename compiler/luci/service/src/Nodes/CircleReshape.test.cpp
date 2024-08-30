@@ -15,6 +15,7 @@
  */
 
 #include "luci/Service/CircleNodeClone.h"
+#include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
 
@@ -36,4 +37,249 @@ TEST(CloneNodeTest, clone_Reshape)
   ASSERT_EQ(node_reshape->newShape()->rank(), cloned_reshape->newShape()->rank());
   ASSERT_EQ(node_reshape->newShape()->dim(0), cloned_reshape->newShape()->dim(0));
   ASSERT_EQ(node_reshape->newShape()->dim(1), cloned_reshape->newShape()->dim(1));
+}
+
+TEST(ShapeRuleTest, reshape_both_known_dim)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = 6;
+  new_shape.at<loco::DataType::S32>(1) = 4;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&reshape, shape));
+
+  ASSERT_EQ(3, input.rank());
+  ASSERT_TRUE(input.dim(0).known());
+  ASSERT_TRUE(input.dim(1).known());
+  ASSERT_TRUE(input.dim(2).known());
+  ASSERT_EQ(2, input.dim(0).value());
+  ASSERT_EQ(3, input.dim(1).value());
+  ASSERT_EQ(4, input.dim(2).value());
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_EQ(6, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, reshape_input_unknown_dim)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.dim(0).unset();
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = 6;
+  new_shape.at<loco::DataType::S32>(1) = 4;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&reshape, shape));
+
+  ASSERT_EQ(3, input.rank());
+  ASSERT_FALSE(input.dim(0).known());
+  ASSERT_TRUE(input.dim(1).known());
+  ASSERT_TRUE(input.dim(2).known());
+  ASSERT_EQ(0, input.dim(0).value());
+  ASSERT_EQ(3, input.dim(1).value());
+  ASSERT_EQ(4, input.dim(2).value());
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_EQ(6, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, reshape_output_unknown_dim)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = -1;
+  new_shape.at<loco::DataType::S32>(1) = 4;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&reshape, shape));
+
+  ASSERT_EQ(3, input.rank());
+  ASSERT_TRUE(input.dim(0).known());
+  ASSERT_TRUE(input.dim(1).known());
+  ASSERT_TRUE(input.dim(2).known());
+  ASSERT_EQ(2, input.dim(0).value());
+  ASSERT_EQ(3, input.dim(1).value());
+  ASSERT_EQ(4, input.dim(2).value());
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_EQ(6, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, reshape_both_unknown_dim)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.dim(0).unset();
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = -1;
+  new_shape.at<loco::DataType::S32>(1) = 4;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&reshape, shape));
+
+  ASSERT_EQ(3, input.rank());
+  ASSERT_FALSE(input.dim(0).known());
+  ASSERT_TRUE(input.dim(1).known());
+  ASSERT_TRUE(input.dim(2).known());
+  ASSERT_EQ(0, input.dim(0).value());
+  ASSERT_EQ(3, input.dim(1).value());
+  ASSERT_EQ(4, input.dim(2).value());
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_FALSE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_EQ(0, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, reshape_input_multiple_unknown_dim_NEG)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.dim(0).unset();
+  input.dim(1).unset();
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = 6;
+  new_shape.at<loco::DataType::S32>(1) = 4;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&reshape, shape));
+}
+
+TEST(ShapeRuleTest, reshape_output_multiple_unknown_dim_NEG)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = -1;
+  new_shape.at<loco::DataType::S32>(1) = -1;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&reshape, shape));
+}
+
+TEST(ShapeRuleTest, reshape_both_multiple_unknown_dim_NEG)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.dim(0).unset();
+  input.dim(1).unset();
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = -1;
+  new_shape.at<loco::DataType::S32>(1) = -1;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&reshape, shape));
+}
+
+TEST(ShapeRuleTest, reshape_all_unknown_dim_NEG)
+{
+  luci::CircleInput input;
+  input.shape({2, 3, 4});
+  input.dim(0).unset();
+  input.dim(1).unset();
+  input.dim(2).unset();
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConst new_shape;
+  new_shape.dtype(loco::DataType::S32);
+  new_shape.size<loco::DataType::S32>(2);
+  new_shape.at<loco::DataType::S32>(0) = -1;
+  new_shape.at<loco::DataType::S32>(1) = -1;
+  new_shape.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleReshape reshape;
+  reshape.tensor(&input);
+  reshape.shape(&new_shape);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&reshape, shape));
 }
