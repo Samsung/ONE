@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ForwardTransposeOpPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Profile/CircleNodeOrigin.h>
@@ -150,6 +152,25 @@ bool check_perm(const CircleTranspose *t)
   return true;
 }
 
+bool has_single_element(const luci::CircleConst *node)
+{
+  bool has_single_elem = false;
+  switch (node->dtype())
+  {
+    case loco::DataType::FLOAT32:
+      has_single_elem = node->size<loco::DataType::FLOAT32>() == 1;
+      break;
+    default:
+      // NYI
+      break;
+  }
+
+  if (has_single_elem)
+    assert(node->rank() == 0 or node->rank() == 1); // FIX_ME_UNLESS
+
+  return has_single_elem;
+}
+
 #define RETURN_FALSE_UNLESS(COND) \
   if (not(COND))                  \
     return false;
@@ -158,8 +179,72 @@ bool check_perm(const CircleTranspose *t)
 class EBOWithConstPattern final : public CircleNodeMutableVisitor<bool>
 {
 private:
+  // TODO Rename this to has_commutative_pattern
   template <typename CIRCLE_OP_PTR> bool has_pattern(CIRCLE_OP_PTR node)
   {
+    luci::CircleTranspose *transpose = nullptr;
+    luci::CircleConst *const_value = nullptr;
+
+    RETURN_FALSE_UNLESS(luci::fill(&transpose, &const_value).with_commutative_args_of(node));
+
+    if (has_single_element(const_value))
+    {
+      RETURN_FALSE_UNLESS(check_perm(transpose));
+      auto new_transpose = create_cloned_transpose(transpose);
+      assert(new_transpose); // FIX_ME_UNLESS
+
+      if (node->x() == const_value)
+      {
+        node->y(transpose->a());
+      }
+      else
+      {
+        assert(node->y() == const_value);
+        node->x(transpose->a());
+      }
+      loco::replace(node).with(new_transpose);
+      new_transpose->a(node);
+
+      // Do shape inference for this node again.
+      node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+      return true;
+    }
+    else if (const_value->rank() == transpose->rank())
+    {
+      // Only support rank 4 for now
+      RETURN_FALSE_UNLESS(check_rank_four(const_value));
+      RETURN_FALSE_UNLESS(check_perm(transpose));
+
+      auto new_const = gen_new_const(transpose, const_value);
+      assert(new_const); // FIX_ME_UNLESS
+
+      auto new_transpose = create_cloned_transpose(transpose);
+      assert(new_transpose); // FIX_ME_UNLESS
+
+      // Reconnect network
+      if (node->x() == const_value)
+      {
+        node->x(new_const);
+        node->y(transpose->a());
+      }
+      else
+      {
+        node->x(transpose->a());
+        node->y(new_const);
+      }
+
+      loco::replace(node).with(new_transpose);
+      new_transpose->a(node);
+
+      // Do shape inference for this node again.
+      node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+      return true;
+    }
+
+// TODO Remove unused code
+#if 0
     if (auto x = dynamic_cast<luci::CircleConst *>(node->x()))
     {
       if (auto y = dynamic_cast<luci::CircleTranspose *>(node->y()))
@@ -213,6 +298,7 @@ private:
         return true;
       }
     }
+#endif
 
     return false;
   }
