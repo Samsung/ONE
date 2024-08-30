@@ -70,34 +70,32 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
   }
   else
   {
-    uint32_t input_size = 1;
     bool is_dynamic_shape = false;
-    for (uint32_t i = 0; i < input_shape.rank(); i++)
+
+    for (uint32_t i = 0; i < input_shape.rank() - 1; i++)
     {
-      if (not input_shape.dim(i).known() && i != input_shape.rank() - 1)
+      if (not input_shape.dim(i).known())
       {
         is_dynamic_shape = true;
         break;
       }
-      input_size = input_size * (input_shape.dim(i).known() ? input_shape.dim(i).value()
-                                                            : weights_shape.dim(1).value());
     }
 
-    // Originally, input_size is calculated by multiplying dimensions from 0 to rank()-1
-    // The output BatchSize is determined by the input_size, which is calculated by multiplying
-    // dimensions up to rank()-2. Since weights_shape.dim(1).value() ==
-    // input_shape.dim(input_shape.rank()-1).value(). However, If dim(rank()-1) is
-    // unknown(=dynamic), dim(rank()-1).value will be set 0. As a result, BatchSize may also become
-    // 0 due to value of last input dimension.
+    // The output BatchSize is determined by the input_size,
+    // which is calculated by multiplying dimensions up to rank()-2.
+
+    uint32_t input_batch = 1;
+
+    for (uint32_t i = 0; i < input_shape.rank() - 1; i++)
+    {
+      input_batch *= input_shape.dim(i).value();
+    }
 
     out_shape.rank(2);
     if (is_dynamic_shape)
       out_shape.dim(0).unset();
     else
-    {
-      const uint32_t batch_size = input_size / weights_shape.dim(1).value();
-      out_shape.dim(0) = batch_size;
-    }
+      out_shape.dim(0) = input_batch;
     out_shape.dim(1) = weights_shape.dim(0);
   }
 
