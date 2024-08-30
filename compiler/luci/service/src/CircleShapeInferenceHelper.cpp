@@ -19,8 +19,6 @@
 
 #include "CircleShapeInferenceHelper.h"
 
-#include "Check.h"
-
 #include <oops/InternalExn.h>
 
 #include <limits>

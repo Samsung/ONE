@@ -21,9 +21,6 @@
 #include "CircleShapeInferenceHelper.h"
 
 #include <luci/Log.h>
-#include "CircleShapeInferenceHelper.h"
-
-#include <luci/Log.h>
 
 namespace luci
 {
@@ -61,7 +58,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
 
   bool is_input_known = true;
   auto input_tensor = dynamic_cast<luci::CircleNode *>(node->tensor());
-  for (auto axis = 0; axis < input_tensor->rank(); ++axis)
+  for (uint32_t axis = 0; axis < input_tensor->rank(); ++axis)
   {
     if (!input_tensor->dim(axis).known())
     {
