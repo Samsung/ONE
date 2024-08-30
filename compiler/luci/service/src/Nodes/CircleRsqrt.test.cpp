@@ -87,7 +87,7 @@ TEST(ShapeRuleTest, rsqrt_static_shape)
   ASSERT_EQ(4, shape.dim(3).value());
 }
 
-TEST(ShapeRuleTest, rsqrt_shape_forward_NEG)
+TEST(ShapeRuleTest, rsqrt_nullptr_input_NEG)
 {
   luci::CircleRsqrt rsqrt;
 
@@ -96,4 +96,18 @@ TEST(ShapeRuleTest, rsqrt_shape_forward_NEG)
 
   rsqrt.x(nullptr);
   ASSERT_ANY_THROW(shape_inf_rule.infer(&rsqrt, shape));
+}
+
+TEST(ShapeRuleTest, rsqrt_shape_not_ready_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleRsqrt rsqrt;
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  input.shape_status(luci::ShapeStatus::UNDEFINED);
+
+  rsqrt.x(&input);
+  ASSERT_FALSE(shape_inf_rule.infer(&rsqrt, shape));
 }
