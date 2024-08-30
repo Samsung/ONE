@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRAIN_EXTRA_TENSOR_INDEX_H__
-#define __ONERT_BACKEND_TRAIN_EXTRA_TENSOR_INDEX_H__
+#ifndef __ONERT_BACKEND_TRAIN_LAYER_SCOPE_TENSOR_INDEX_H__
+#define __ONERT_BACKEND_TRAIN_LAYER_SCOPE_TENSOR_INDEX_H__
 
 #include <ir/Index.h>
 
@@ -28,10 +28,10 @@ namespace backend
 namespace train
 {
 
-class ExtraTensorIndex
+class LayerScopeTensorIndex
 {
 public:
-  ExtraTensorIndex(const ir::OperationIndex &op_index, uint32_t sub_index)
+  LayerScopeTensorIndex(const ir::OperationIndex &op_index, uint32_t sub_index)
     : _op_index{op_index}, _sub_index{sub_index}
   {
     assert(op_index.valid());
@@ -41,18 +41,18 @@ public:
   const ir::OperationIndex &op_index() const { return _op_index; }
   uint32_t sub_index() const { return _sub_index; }
 
-  bool operator==(const ExtraTensorIndex &other) const
+  bool operator==(const LayerScopeTensorIndex &other) const
   {
     return _op_index == other.op_index() && _sub_index == other.sub_index();
   }
-  bool operator!=(const ExtraTensorIndex &other) const { return !(*this == other); }
+  bool operator!=(const LayerScopeTensorIndex &other) const { return !(*this == other); }
 
 private:
   ir::OperationIndex _op_index;
   uint32_t _sub_index;
 };
 
-inline std::ostream &operator<<(std::ostream &o, const ExtraTensorIndex &i)
+inline std::ostream &operator<<(std::ostream &o, const LayerScopeTensorIndex &i)
 {
   o << i.op_index() << "-" << i.sub_index();
   return o;
@@ -65,16 +65,16 @@ inline std::ostream &operator<<(std::ostream &o, const ExtraTensorIndex &i)
 namespace std
 {
 
-template <> struct hash<onert::backend::train::ExtraTensorIndex>
+template <> struct hash<onert::backend::train::LayerScopeTensorIndex>
 {
-  size_t operator()(const onert::backend::train::ExtraTensorIndex &index) const noexcept
+  size_t operator()(const onert::backend::train::LayerScopeTensorIndex &index) const noexcept
   {
     const auto op_index = index.op_index();
     const auto sub_index = index.sub_index();
 
     assert(sizeof(op_index) <= sizeof(uint32_t));
     static_assert(sizeof(size_t) >= sizeof(uint32_t),
-                  "ExtraTensorIndex's hash creation error, size_t size is less than uint32_t");
+                  "LayerScopeTensorIndex's hash creation error, size_t size is less than uint32_t");
 
     return (static_cast<size_t>(op_index.value())) << 16 | static_cast<size_t>(sub_index);
   }
@@ -82,4 +82,4 @@ template <> struct hash<onert::backend::train::ExtraTensorIndex>
 
 } // namespace std
 
-#endif // __ONERT_BACKEND_TRAIN_EXTRA_TENSOR_INDEX_H__
+#endif // __ONERT_BACKEND_TRAIN_LAYER_SCOPE_TENSOR_INDEX_H__

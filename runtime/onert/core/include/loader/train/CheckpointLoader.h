@@ -14,34 +14,40 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_EXTRA_H__
-#define __ONERT_BACKEND_EXTRA_H__
+#ifndef __ONERT_LOADER_TRAIN_CHECKPOINT_LOADER_H__
+#define __ONERT_LOADER_TRAIN_CHECKPOINT_LOADER_H__
 
-#include <backend/basic/Tensor.h>
+#include <string>
+#include <memory>
 
 namespace onert
 {
-namespace backend
+namespace exec
+{
+class Execution;
+} // namespace exec
+namespace ir
+{
+namespace train
+{
+class TrainingInfo;
+} // namespace train
+} // namespace ir
+} // namespace onert
+
+namespace onert
+{
+namespace loader
 {
 namespace train
 {
 
-// ExtraTensor is a tensor that is accessed within one operation layer.
-// In other words, the scope of the extra tensor is confined to one specific layer.
-class ExtraTensor final : public basic::Tensor
-{
-public:
-  ExtraTensor() = delete;
-
-public:
-  ExtraTensor(const ir::OperandInfo &info) : basic::Tensor(info, nullptr)
-  {
-    // DO NOTHING
-  }
-};
+void loadCheckpoint(const std::string &filename,
+                    const std::unique_ptr<ir::train::TrainingInfo> &train_info,
+                    const std::unique_ptr<exec::Execution> &exec);
 
 } // namespace train
-} // namespace backend
+} // namespace loader
 } // namespace onert
 
-#endif // __ONERT_BACKEND_EXTRA_TENSOR_H__
+#endif // __ONERT_LOADER_TRAIN_CHECKPOINT_LOADER_H__

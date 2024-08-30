@@ -19,6 +19,12 @@
 
 #include "luci/IR/Module.h"
 
+// NOTE we should include "luci/Import/GraphBuilderRegistry.h" but
+// tizen_gbs build fails if included
+// TODO enable include and remove forward declaration
+// #include "luci/Import/GraphBuilderRegistry.h"
+struct GraphBuilderSource;
+
 #include <memory>
 #include <string>
 
@@ -31,7 +37,23 @@ public:
   ImporterEx() = default;
 
 public:
+  // TODO remove this after embedded-import-value-test has moved to onert-micro
+  explicit ImporterEx(const GraphBuilderSource *source) : _source{source}
+  {
+    // DO NOTHING
+  }
+
+public:
   std::unique_ptr<Module> importVerifyModule(const std::string &input_path) const;
+
+  // NOTE importModule is for embedded-import-value-test
+  // embedded-import-value-test uses constant data from file(actually ROM)
+  // so unloading file will break the precondition
+  // TODO remove this after embedded-import-value-test has moved to onert-micro
+  std::unique_ptr<Module> importModule(std::vector<char> &model_data) const;
+
+private:
+  const GraphBuilderSource *_source = nullptr;
 };
 
 } // namespace luci

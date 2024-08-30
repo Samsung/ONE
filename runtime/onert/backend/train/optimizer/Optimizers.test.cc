@@ -54,8 +54,6 @@ public:
 
   template <typename T> const std::vector<T> &data() const { return _data; }
 
-  ir::Layout layout() const override { return ir::Layout::NHWC; }
-
 private:
   using ITensor::setShape;
   using ITensor::set_dynamic;
@@ -88,8 +86,6 @@ public:
 
     return const_cast<uint8_t *>(_data.data());
   }
-
-  ir::Layout layout() const override { return ir::Layout::NHWC; }
 
 public:
   std::vector<ITensor *> optVars() override

@@ -52,8 +52,6 @@ public:
   Reader(backend::ITensor *tensor)
     : _ptr{tensor->buffer() + tensor->calcOffset({0, 0, 0, 0})}, _len{tensor->total_size()}
   {
-    assert(tensor->layout() == ir::Layout::NCHW);
-
     const auto start_offset = tensor->calcOffset({0, 0, 0, 0});
     auto shape = tensor->getShape();
     _strides.W = shape.dim(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;

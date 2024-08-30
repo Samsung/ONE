@@ -107,11 +107,11 @@ public:
   // loco::TensorShape visit(const luci::CircleNotEqual *node) final;
   // loco::TensorShape visit(const luci::CircleOneHot *node) final;
   // loco::TensorShape visit(const luci::CirclePack *node) final;
-  // loco::TensorShape visit(const luci::CirclePad *node) final;
+  loco::TensorShape visit(const luci::CirclePad *node) final;
   // loco::TensorShape visit(const luci::CirclePadV2 *node) final;
   // loco::TensorShape visit(const luci::CirclePow *node) final;
   // loco::TensorShape visit(const luci::CirclePRelu *node) final;
-  // loco::TensorShape visit(const luci::CircleQuantize *node) final;
+  loco::TensorShape visit(const luci::CircleQuantize *node) final;
   // loco::TensorShape visit(const luci::CircleRange *node) final;
   // loco::TensorShape visit(const luci::CircleRank *node) final;
   // loco::TensorShape visit(const luci::CircleReduceAny *node) final;

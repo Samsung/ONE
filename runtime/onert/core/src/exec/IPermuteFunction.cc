@@ -36,9 +36,6 @@ using namespace onert;
 inline nnfw::cker::Shape getShape(const backend::ITensor *tensor)
 {
   const ir::Shape shape = tensor->getShape();
-
-  assert(tensor->layout() == ir::Layout::NHWC);
-
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
   auto data = ret.DimsData();
