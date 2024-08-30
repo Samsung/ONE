@@ -58,4 +58,13 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
   return importer.importModule(circle_model);
 }
 
+std::unique_ptr<Module> ImporterEx::importModule(std::vector<char> &model_data) const
+{
+  auto data_data = reinterpret_cast<uint8_t *>(model_data.data());
+  auto data_size = model_data.size();
+
+  Importer importer(_source);
+  return importer.importModule(data_data, data_size);
+}
+
 } // namespace luci
