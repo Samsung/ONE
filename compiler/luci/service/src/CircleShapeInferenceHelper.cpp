@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#include "luci/Service/CircleShapeInferenceRule.h"
+#include "Check.h"
+
 #include "CircleShapeInferenceHelper.h"
 
 #include <oops/InternalExn.h>
@@ -155,6 +158,40 @@ loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::Tensor
   auto output_shape = expand_dimension(x_match, y_match);
 
   return output_shape;
+}
+
+loco::TensorShape own_shape(const luci::CircleNode *node)
+{
+  loco::TensorShape shape;
+  shape.rank(node->rank());
+  for (uint32_t r = 0; r < node->rank(); ++r)
+  {
+    // Shape inference rules in this file did not consider unknown dimension.
+    // If some node has unknown dimension, 0 is inserted and wrong shape
+    // inference was done as a result.
+    // To fix this, new shape inference algorithm is being implemented.
+    // Until new inference algorithm is fully implemented, unknown dimension
+    // would be represented as 1 along with TFLite expression.
+    shape.dim(r) = node->dim(r).known() ? node->dim(r).value() : 1;
+  }
+  return shape;
+}
+
+std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape)
+{
+  os << "[";
+  for (uint32_t r = 0; r < tensor_shape.rank(); ++r)
+  {
+    if (r)
+      os << ",";
+
+    if (tensor_shape.dim(r).known())
+      os << tensor_shape.dim(r).value();
+    else
+      os << "?";
+  }
+  os << "]";
+  return os;
 }
 
 } // namespace sinf
