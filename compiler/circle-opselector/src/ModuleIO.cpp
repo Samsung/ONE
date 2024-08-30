@@ -18,7 +18,6 @@
 
 #include <foder/FileLoader.h>
 
-#include <luci/Importer.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 
