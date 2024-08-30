@@ -55,30 +55,22 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
 
     // Only support node's shape() is CircleConst with S32
     // TODO support other node with other types
-    std::cout << "node->shape(): " << node->shape() << std::endl;
     auto const_shape_node = dynamic_cast<luci::CircleConst *>(node->shape());
-    std::cout << "const_shape_node: " << const_shape_node << std::endl;
     if (const_shape_node != nullptr)
     {
-      std::cout << "const_shape_node is NOT nullptr" << std::endl;
       LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
-
-      std::cout << "const_shape_node->size<S32>(): " << const_shape_node->size<S32>() << std::endl;
 
       shape_by_input.rank(const_shape_node->size<S32>());
 
       for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
       {
         shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
-        std::cout << "shape_by_input.dim(" << axis << ").known(): " << shape_by_input.dim(axis).known() << std::endl;
-        std::cout << "shape_by_input.dim(" << axis << ").value(): " << shape_by_input.dim(axis).value() << std::endl;
         if (const_shape_node->at<S32>(axis) < 0)
           shape_by_input.dim(axis).unset();
       }
     }
     else
     {
-      std::cout << "const_shape_node IS nullptr" << std::endl;
       // We use shape from the node itself
       shape_by_input = own_shape(node);
     }
@@ -101,16 +93,10 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     INFO(l) << "   shape_by_attr : " << shape_by_attr << std::endl;
   }
 
-  std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
-  std::cout << "shape_by_input: " << shape_by_input << std::endl;
-  std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
   loco::TensorShape output_shape = shape_by_input;
-  std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
-  std::cout << "output_shape: " << output_shape << std::endl;
-  std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
 
   // One of the dimensions can have special value -1, meaning its actual value should be inferred.
-  const auto input_shape = luci::shape_get(node->tensor()).as<loco::TensorShape>();
+  const auto input_shape = circle_shape(loco::must_cast<CircleNode *>(node->tensor()));
 
   uint32_t input_unknown_dim_index = UINT32_MAX;
   uint32_t input_element_count = 1;
@@ -119,7 +105,8 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     input_element_count *= (input_shape.dim(i).known() ? input_shape.dim(i).value() : 1);
     if (!input_shape.dim(i).known())
     {
-      LUCI_ASSERT(input_unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
+      if (input_unknown_dim_index != UINT32_MAX)
+        INTERNAL_EXN("More than one unknown dimension");
       input_unknown_dim_index = i;
     }
   }
@@ -131,7 +118,8 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     output_element_count *= (output_shape.dim(i).known() ? output_shape.dim(i).value() : 1);
     if (!output_shape.dim(i).known())
     {
-      LUCI_ASSERT(output_unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
+      if (output_unknown_dim_index != UINT32_MAX)
+        INTERNAL_EXN("More than one unknown dimension");
       output_unknown_dim_index = i;
     }
   }
@@ -140,34 +128,6 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
   {
     output_shape.dim(output_unknown_dim_index) = input_element_count / output_element_count;
   }
-
-  // const auto input_shape = luci::shape_get(node->tensor()).as<loco::TensorShape>();
-  // uint32_t input_element_count = 1;
-  // uint32_t output_element_count = 1;
-  // uint32_t unknown_dim_index = UINT32_MAX;
-  // for (uint32_t i = 0; i < input_shape.rank(); ++i)
-  //   input_element_count *= (input_shape.dim(i).known() ? input_shape.dim(i).value() : 1);
-  // for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
-  // {
-  //   const uint32_t dim_value = output_shape.dim(dim_index).value();
-  //   if (static_cast<int>(dim_value) == -1)
-  //   {
-  //     LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
-  //     unknown_dim_index = dim_index;
-  //   }
-  //   else
-  //   {
-  //     output_element_count *= dim_value;
-  //   }
-  // }
-  // if (unknown_dim_index != UINT32_MAX)
-  // {
-  //   output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
-  // }
-
-  std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
-  std::cout << "output_shape: " << output_shape << std::endl;
-  std::cout << "|||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
 
   return output_shape;
 }

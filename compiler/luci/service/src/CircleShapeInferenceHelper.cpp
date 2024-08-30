@@ -21,7 +21,6 @@
 
 #include <oops/InternalExn.h>
 
-
 using namespace luci::sinf;
 
 namespace

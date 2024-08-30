@@ -122,7 +122,7 @@ public:
   // loco::TensorShape visit(const luci::CircleRelu0To1 *node) final;
   // loco::TensorShape visit(const luci::CircleRelu6 *node) final;
   // loco::TensorShape visit(const luci::CircleReluN1To1 *node) final;
-  
+
   /**
    * @note  CircleReshape has new shape info in two places: 2nd input and attribute.
    *        This shape inference uses shape from input 'shape' node when it's constant.

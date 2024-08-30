@@ -1,1 +1,0 @@
-/usr/local/bin/tflite2circle simple_reshape.tflite simple_reshape.circle
