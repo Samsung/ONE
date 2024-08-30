@@ -39,12 +39,11 @@ public:
   virtual ~TransposeBinaryOpGraphlet() = default;
 
 public:
+  // TODO Rename shape_in to shape_const
   void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeU32 perm)
   {
     std::vector<uint32_t> shape_in_v = shape_in;
     std::vector<uint32_t> perm_v = perm;
-
-    assert(shape_in_v.size() == perm_v.size()); // FIX_CALLER_UNLESS
 
     _perm = g->nodes()->create<luci::CircleConst>();
     _const = g->nodes()->create<luci::CircleConst>();
@@ -69,7 +68,7 @@ public:
       _perm->at<loco::DataType::S32>(i) = perm_v[i];
 
     uint32_t elems = 1;
-    for (uint32_t i = 0; i < size; i++)
+    for (uint32_t i = 0; i < shape_in_v.size(); i++)
       elems *= shape_in_v[i];
 
     _const->size<loco::DataType::FLOAT32>(elems);
@@ -155,6 +154,42 @@ public:
   }
 };
 
+class ForwardTransposeToScalarMulGraph : public TestIOGraph, public TransposeMulGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeMulGraphlet::init(g(), {}, shape_out);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _binary->x(_transpose);
+    _binary->y(_const);
+
+    output()->from(_binary);
+  }
+};
+
+class ForwardTransposeToSingleElemMulGraph : public TestIOGraph, public TransposeMulGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeMulGraphlet::init(g(), {1}, shape_out);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _binary->x(_transpose);
+    _binary->y(_const);
+
+    output()->from(_binary);
+  }
+};
+
 void run_phase(loco::Graph *g)
 {
   logo::Phase phase;
@@ -194,6 +229,24 @@ public:
 
 protected:
   ForwardTransposeToMulGraph _graph;
+};
+
+class ForwardTransposeToScalarMulGraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToScalarMulGraph _graph;
+};
+
+class ForwardTransposeToSingleElemMulGraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToSingleElemMulGraph _graph;
 };
 
 } // namespace
@@ -322,6 +375,61 @@ TEST_F(ForwardTransposeToMulGraphTest, forward_mul_yx)
   EXPECT_EQ(64, mul_const->dim(1).value());
   EXPECT_EQ(51, mul_const->dim(2).value());
   EXPECT_EQ(1, mul_const->dim(3).value());
+}
+
+TEST_F(ForwardTransposeToScalarMulGraphTest, forward_scalar_mul)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto mul = dynamic_cast<luci::CircleMul *>(transpose->a());
+  EXPECT_NE(nullptr, mul);
+  EXPECT_EQ(4, mul->rank());
+  EXPECT_EQ(1, mul->dim(0).value());
+  EXPECT_EQ(64, mul->dim(1).value());
+  EXPECT_EQ(51, mul->dim(2).value());
+  EXPECT_EQ(1, mul->dim(3).value());
+
+  auto mul_const = dynamic_cast<luci::CircleConst *>(mul->y());
+  EXPECT_NE(nullptr, mul_const);
+  EXPECT_EQ(0, mul_const->rank());
+}
+
+TEST_F(ForwardTransposeToSingleElemMulGraphTest, forward_single_elem_mul)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto mul = dynamic_cast<luci::CircleMul *>(transpose->a());
+  EXPECT_NE(nullptr, mul);
+  EXPECT_EQ(4, mul->rank());
+  EXPECT_EQ(1, mul->dim(0).value());
+  EXPECT_EQ(64, mul->dim(1).value());
+  EXPECT_EQ(51, mul->dim(2).value());
+  EXPECT_EQ(1, mul->dim(3).value());
+
+  auto mul_const = dynamic_cast<luci::CircleConst *>(mul->y());
+  EXPECT_NE(nullptr, mul_const);
+  EXPECT_EQ(1, mul_const->rank());
+  EXPECT_EQ(1, mul_const->dim(0).value());
 }
 
 TEST_F(ForwardTransposeToAddGraphTest, forward_transpose_add_NEG)
@@ -518,6 +626,28 @@ TEST_F(ForwardTransposeToAbsGraphTest, forward_transpose_abs_NEG)
 TEST_F(ForwardTransposeToAbsGraphNegTest, forward_transpose_abs_non_transpose_NEG)
 {
   _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
+}
+
+TEST_F(ForwardTransposeToScalarMulGraphTest, forward_transpose_smul_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  // Remove mul
+  _graph.output()->from(_graph.transpose());
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
+}
+
+TEST_F(ForwardTransposeToSingleElemMulGraphTest, forward_transpose_se_mul_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  // Remove mul
+  _graph.output()->from(_graph.transpose());
 
   luci::ForwardTransposeOpPass pass;
   EXPECT_FALSE(pass.run(_graph.g()));
