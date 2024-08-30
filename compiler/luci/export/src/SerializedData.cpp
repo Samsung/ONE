@@ -32,6 +32,11 @@ void SerializedModelData::clear(void)
   _buffers.clear();
   _metadata.clear();
   _cached_buffer_id.clear();
+
+  // clear extended buffer mode
+  _ext_buffer = false;
+  _require_ext_buffer = false;
+  _buffer_data_map.clear();
 }
 
 } // namespace luci
