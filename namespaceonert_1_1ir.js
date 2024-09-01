@@ -69,7 +69,9 @@ var namespaceonert_1_1ir =
       [ "QUANT_INT8_ASYMM", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6", null ],
       [ "QUANT_INT16_ASYMM", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a", null ],
       [ "QUANT_INT8_SYMM_PER_CHANNEL", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0", null ],
-      [ "QUANT_INT16_SYMM", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa", null ]
+      [ "QUANT_INT16_SYMM", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa", null ],
+      [ "QUANT_GGML_Q4_0", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9", null ],
+      [ "QUANT_GGML_Q8_0", "namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331acb818f4524e9907085fe9e40ffdd9799", null ]
     ] ],
     [ "FullyConnectedWeightsFormat", "namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19", [
       [ "Default", "namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67", null ],
@@ -95,6 +97,11 @@ var namespaceonert_1_1ir =
       [ "SAME", "namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b", null ],
       [ "VALID", "namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea", null ]
     ] ],
+    [ "PermuteType", "namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a", [
+      [ "NHWC_TO_NCHW", "namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625", null ],
+      [ "NCHW_TO_NHWC", "namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65", null ],
+      [ "COPY", "namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f", null ]
+    ] ],
     [ "Remove", "namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54", [
       [ "DUPLICATED", "namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8", null ],
       [ "UNDEFINED", "namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3", null ]
@@ -102,7 +109,8 @@ var namespaceonert_1_1ir =
     [ "_index_print_impl", "namespaceonert_1_1ir.html#a9e02c69ad87810fa6eea11687cde298d", null ],
     [ "calculatePadding", "namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85", null ],
     [ "clone", "namespaceonert_1_1ir.html#a0ea35d40e64c151039c40fed046e88e8", null ],
-    [ "convertCoordinates", "namespaceonert_1_1ir.html#af1389e492fcfa0f97a26d26adab0de08", null ],
+    [ "convertCoordinates", "namespaceonert_1_1ir.html#a12c098852df34afdd2cb319ed2a9e02f", null ],
+    [ "convertShape", "namespaceonert_1_1ir.html#ab92fc7cd718a3cc5f5ed959ebf0d3913", null ],
     [ "operator!=", "namespaceonert_1_1ir.html#a328ad04ec7ab499041226b756159ab8b", null ],
     [ "operator!=", "namespaceonert_1_1ir.html#aa5485df735327845e5c2ce2a71b447a1", null ],
     [ "operator<<", "namespaceonert_1_1ir.html#ad18ab9a9da0c13a9966cff69d34e63d1", null ],
@@ -115,7 +123,6 @@ var namespaceonert_1_1ir =
     [ "operator<<", "namespaceonert_1_1ir.html#af872538cc8324eba9d534870bd023b22", null ],
     [ "operator==", "namespaceonert_1_1ir.html#a2ff5156baf7c263628243dd1304f2799", null ],
     [ "operator==", "namespaceonert_1_1ir.html#a556d7c5424d2bdf6bca6271e9bd94c6c", null ],
-    [ "permuteShape", "namespaceonert_1_1ir.html#add78de535b4132674c884966f922b6f2", null ],
     [ "rankMaybeUnspecified", "namespaceonert_1_1ir.html#a60288e0e74a65f9902ebdf52626098ee", null ],
     [ "sizeOfDataType", "namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26", null ],
     [ "to_string", "namespaceonert_1_1ir.html#a8f6928493e220980a53b39c5d0fdc61e", null ],

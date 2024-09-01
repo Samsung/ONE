@@ -118,6 +118,10 @@ Data Structures</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:a7d3f623dcd2b43198a02b11c1ade90ee" id="r_a7d3f623dcd2b43198a02b11c1ade90ee"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#a7d3f623dcd2b43198a02b11c1ade90ee">FlatBufBuilder</a> = std::unique_ptr&lt; <a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &gt;</td></tr>
 <tr class="separator:a7d3f623dcd2b43198a02b11c1ade90ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3d592e40f47aac3b9e56cca542a1622" id="r_ac3d592e40f47aac3b9e56cca542a1622"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">BufferData</a> = std::vector&lt; uint8_t &gt;</td></tr>
+<tr class="separator:ac3d592e40f47aac3b9e56cca542a1622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57678f7b6a8c85cade10564194b2973f" id="r_a57678f7b6a8c85cade10564194b2973f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetflite2circle.html#a57678f7b6a8c85cade10564194b2973f">MapBufferData</a> = std::map&lt; int32_t, <a class="el" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">BufferData</a> &gt;</td></tr>
+<tr class="separator:a57678f7b6a8c85cade10564194b2973f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -343,6 +347,22 @@ Functions</h2></td></tr>
 <tr class="separator:a5bc2a4beed66e82aca55e81652239328"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="ac3d592e40f47aac3b9e56cca542a1622" name="ac3d592e40f47aac3b9e56cca542a1622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3d592e40f47aac3b9e56cca542a1622">&#9670;&#160;</a></span>BufferData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">tflite2circle::BufferData</a> = typedef std::vector&lt;uint8_t&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_model_8h_source.html#l00058">58</a> of file <a class="el" href="_circle_model_8h_source.html">CircleModel.h</a>.</p>
+
+</div>
+</div>
 <a id="a7d3f623dcd2b43198a02b11c1ade90ee" name="a7d3f623dcd2b43198a02b11c1ade90ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d3f623dcd2b43198a02b11c1ade90ee">&#9670;&#160;</a></span>FlatBufBuilder</h2>
 
@@ -356,6 +376,22 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_circle_model_8h_source.html#l00032">32</a> of file <a class="el" href="_circle_model_8h_source.html">CircleModel.h</a>.</p>
+
+</div>
+</div>
+<a id="a57678f7b6a8c85cade10564194b2973f" name="a57678f7b6a8c85cade10564194b2973f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57678f7b6a8c85cade10564194b2973f">&#9670;&#160;</a></span>MapBufferData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacetflite2circle.html#a57678f7b6a8c85cade10564194b2973f">tflite2circle::MapBufferData</a> = typedef std::map&lt;int32_t, <a class="el" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">BufferData</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_model_8h_source.html#l00059">59</a> of file <a class="el" href="_circle_model_8h_source.html">CircleModel.h</a>.</p>
 
 </div>
 </div>
@@ -4079,7 +4115,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00337">tflite2circle::Offset&lt; T &gt;::build()</a>, and <a class="el" href="_data_lookup_8cpp_source.html#l00041">get_circle_builtin_code()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00370">tflite2circle::Offset&lt; T &gt;::build()</a>, and <a class="el" href="_data_lookup_8cpp_source.html#l00041">get_circle_builtin_code()</a>.</p>
 
 </div>
 </div>
@@ -4131,7 +4167,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  126</span>}</div>
 <div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00060">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00093">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -4170,7 +4206,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  141</span>  }</div>
 <div class="line"><span class="lineno">  142</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00060">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00093">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -4205,7 +4241,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  167</span>  }</div>
 <div class="line"><span class="lineno">  168</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00060">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00093">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -4356,7 +4392,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01762">flatbuffers::FlatBufferBuilder::CreateVector()</a>, and <a class="el" href="flatbuffers_8h_source.html#l02196">flatbuffers::FlatBufferBuilder::Finish()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00060">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00093">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -4395,7 +4431,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  228</span>  }</div>
 <div class="line"><span class="lineno">  229</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00060">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00093">tflite2circle::Offset&lt; T &gt;::build()</a>.</p>
 
 </div>
 </div>
@@ -4432,7 +4468,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   79</span>  }</div>
 <div class="line"><span class="lineno">   80</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00060">tflite2circle::Offset&lt; T &gt;::build()</a>, <a class="el" href="_arg_max_options_8cpp_source.html#l00026">build_circle_ArgMaxOptions()</a>, <a class="el" href="_arg_min_options_8cpp_source.html#l00026">build_circle_ArgMinOptions()</a>, <a class="el" href="_cast_options_8cpp_source.html#l00026">build_circle_CastOptions()</a>, <a class="el" href="_shape_options_8cpp_source.html#l00026">build_circle_ShapeOptions()</a>, and <a class="el" href="_unique_options_8cpp_source.html#l00026">build_circle_UniqueOptions()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00093">tflite2circle::Offset&lt; T &gt;::build()</a>, <a class="el" href="_arg_max_options_8cpp_source.html#l00026">build_circle_ArgMaxOptions()</a>, <a class="el" href="_arg_min_options_8cpp_source.html#l00026">build_circle_ArgMinOptions()</a>, <a class="el" href="_cast_options_8cpp_source.html#l00026">build_circle_CastOptions()</a>, <a class="el" href="_shape_options_8cpp_source.html#l00026">build_circle_ShapeOptions()</a>, and <a class="el" href="_unique_options_8cpp_source.html#l00026">build_circle_UniqueOptions()</a>.</p>
 
 </div>
 </div>

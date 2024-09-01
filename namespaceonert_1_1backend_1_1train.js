@@ -9,14 +9,14 @@ var namespaceonert_1_1backend_1_1train =
     [ "DisposableMemoryManager", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager.html", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager" ],
     [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
     [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
-    [ "ExtraTensor", "classonert_1_1backend_1_1train_1_1_extra_tensor.html", "classonert_1_1backend_1_1train_1_1_extra_tensor" ],
-    [ "ExtraTensorIndex", "classonert_1_1backend_1_1train_1_1_extra_tensor_index.html", "classonert_1_1backend_1_1train_1_1_extra_tensor_index" ],
     [ "FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", "classonert_1_1backend_1_1train_1_1_first_fit_planner" ],
     [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],
     [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
     [ "ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor" ],
     [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ],
     [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
+    [ "LayerScopeTensor", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor.html", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor" ],
+    [ "LayerScopeTensorIndex", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index" ],
     [ "MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", "classonert_1_1backend_1_1train_1_1_memory_planner_factory" ],
     [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template" ],
     [ "Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", "classonert_1_1backend_1_1train_1_1_tensor" ],
@@ -38,5 +38,5 @@ var namespaceonert_1_1backend_1_1train =
     [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ],
     [ "createOptimizer", "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e", null ],
     [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ad643bd209405eb6d4500363a4687ccc4", null ],
-    [ "operator<<", "namespaceonert_1_1backend_1_1train.html#a351ea0a781326b0bbf8e378a1fd21bdc", null ]
+    [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ae6fb39e2071d806ff8c84d4beda1bbf1", null ]
 ];

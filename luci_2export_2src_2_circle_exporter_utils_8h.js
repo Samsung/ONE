@@ -5,6 +5,7 @@ var luci_2export_2src_2_circle_exporter_utils_8h =
     [ "circle_builtin_options", "luci_2export_2src_2_circle_exporter_utils_8h.html#a08c9aa2161dd029a07f7ddc7c27d625e", null ],
     [ "circle_custom_code", "luci_2export_2src_2_circle_exporter_utils_8h.html#afa04f0a17858ae3c31dda2cab68d569b", null ],
     [ "circle_custom_options", "luci_2export_2src_2_circle_exporter_utils_8h.html#a1f8d6d558e2564aad695229f57f552dd", null ],
+    [ "clear_tensor_index", "luci_2export_2src_2_circle_exporter_utils_8h.html#aaa30811729355a044ac0f35081a8909f", null ],
     [ "get_tensor_index", "luci_2export_2src_2_circle_exporter_utils_8h.html#ac6afd16fb779239fd96a91345fc70b7e", null ],
     [ "getOpPadding", "luci_2export_2src_2_circle_exporter_utils_8h.html#a2a94b2f596282dc800716cffef4367af", null ],
     [ "getOpPadding", "luci_2export_2src_2_circle_exporter_utils_8h.html#ab09a2d7183062a00b7446d9137c527a5", null ],

@@ -107,8 +107,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae4d0d8bbbe8f7263f820914888ef3141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a187884f2d0365b3e5b211f0a8f2fc794" id="r_a187884f2d0365b3e5b211f0a8f2fc794"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a187884f2d0365b3e5b211f0a8f2fc794">calcOffset</a> (const <a class="el" href="classonert_1_1ir_1_1_coordinates.html">ir::Coordinates</a> &amp;<a class="el" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>) const =0</td></tr>
 <tr class="separator:a187884f2d0365b3e5b211f0a8f2fc794"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c6b4e796289ace0d82d7e60a5320305" id="r_a9c6b4e796289ace0d82d7e60a5320305"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">layout</a> () const =0</td></tr>
-<tr class="separator:a9c6b4e796289ace0d82d7e60a5320305"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d57b178316225a9e08f1191ce489ad9" id="r_a6d57b178316225a9e08f1191ce489ad9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">data_type</a> () const =0</td></tr>
 <tr class="separator:a6d57b178316225a9e08f1191ce489ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2043ecba51a27f47854d0e772bdf7180" id="r_a2043ecba51a27f47854d0e772bdf7180"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a2043ecba51a27f47854d0e772bdf7180">data_scale</a> () const =0</td></tr>
@@ -252,10 +250,10 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1train_1_1_tensor.html#aa5b7b6c16c4cec23c5d56b4f63e5a84e">onert::backend::train::Tensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a3f52b501980ba7f904431bff7d35182a">onert::backend::builtin::UserTensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a0ef72abd6f89e7e2b9e4f689a79a9c9b">onert::backend::basic::Tensor</a>, <a class="el" href="classonert_1_1exec_1_1_edge_tensor.html#a206f3d1bf78a84d79d487c159c887bda">onert::exec::EdgeTensor</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#af2683e4ec227995cefbceed0a7ebe972">onert::backend::builtin::IOTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00067">67</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00066">66</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_i_o_tensor_8h_source.html#l00091">onert::backend::builtin::IOTensor::applyShape()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_o_tensor_8h_source.html#l00091">onert::backend::builtin::IOTensor::applyShape()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -284,7 +282,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a43adeae8f962e4456147e3551540b31e">onert::backend::acl_common::IACLTensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html#ab7851984acfa15c64d110c5acb6a95ab">onert::backend::basic::Tensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html#a7e0a97b02d8b48b1ff00c6614a36ba7c">onert::backend::basic::ExternalTensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#aa887913261678fa14833d23c9c1b0d76">onert::backend::basic::train::TrainableTensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a3e11becc5b4824384b605f06a71b7c8e">onert::backend::builtin::IOTensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#ad510aff517bf4bb7237a811259c3a4bd">onert::backend::builtin::UserTensor</a>, and <a class="el" href="classonert_1_1exec_1_1_edge_tensor.html#a06e136c5abefffdb61915965da700909">onert::exec::EdgeTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00089">onert::backend::train::ops::biasGrad()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00059">onert::backend::builtin::IOTensor::buffer()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00042">onert::backend::ruy::ops::ConvolutionLayer::convFloat32()</a>, <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00092">onert::backend::xnnpack::ops::ConvolutionLayer::create()</a>, <a class="el" href="xnnpack_2ops_2_depthwise_convolution_layer_8cc_source.html#l00093">onert::backend::xnnpack::ops::DepthwiseConvolutionLayer::create()</a>, <a class="el" href="xnnpack_2ops_2_fully_connected_layer_8cc_source.html#l00077">onert::backend::xnnpack::ops::FullyConnectedLayer::create()</a>, <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00035">onert::backend::train::ops::PadLayer::depad()</a>, <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00041">onert::backend::ruy::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00036">onert::backend::cpu::ops::PadLayer::padImpl()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00246">onert::backend::cpu::ops::FullyConnectedLayer::prepare()</a>, <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::ruy::ops::FullyConnectedLayer::prepare()</a>, <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00033">onert::backend::cpu::ops::ReshapeLayer::reshapeGeneric()</a>, <a class="el" href="_broadcast_to_layer_8cc_source.html#l00043">onert::backend::cpu::ops::BroadcastToLayer::run()</a>, <a class="el" href="_detection_post_process_layer_8cc_source.html#l00281">onert::backend::cpu::ops::DetectionPostProcessLayer::run()</a>, <a class="el" href="_expand_dims_layer_8cc_source.html#l00039">onert::backend::cpu::ops::ExpandDimsLayer::run()</a>, <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00055">onert::backend::cpu::ops::PadLayer::run()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>, <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00123">onert::backend::xnnpack::ops::ConvolutionLayer::setup()</a>, <a class="el" href="xnnpack_2ops_2_depthwise_convolution_layer_8cc_source.html#l00124">onert::backend::xnnpack::ops::DepthwiseConvolutionLayer::setup()</a>, and <a class="el" href="xnnpack_2ops_2_fully_connected_layer_8cc_source.html#l00116">onert::backend::xnnpack::ops::FullyConnectedLayer::setup()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00086">onert::backend::train::ops::biasGrad()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00059">onert::backend::builtin::IOTensor::buffer()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00042">onert::backend::ruy::ops::ConvolutionLayer::convFloat32()</a>, <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00089">onert::backend::xnnpack::ops::ConvolutionLayer::create()</a>, <a class="el" href="xnnpack_2ops_2_depthwise_convolution_layer_8cc_source.html#l00090">onert::backend::xnnpack::ops::DepthwiseConvolutionLayer::create()</a>, <a class="el" href="xnnpack_2ops_2_fully_connected_layer_8cc_source.html#l00074">onert::backend::xnnpack::ops::FullyConnectedLayer::create()</a>, <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00035">onert::backend::train::ops::PadLayer::depad()</a>, <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00041">onert::backend::ruy::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00036">onert::backend::cpu::ops::PadLayer::padImpl()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00246">onert::backend::cpu::ops::FullyConnectedLayer::prepare()</a>, <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::ruy::ops::FullyConnectedLayer::prepare()</a>, <a class="el" href="cpu_2ops_2_reshape_layer_8cc_source.html#l00033">onert::backend::cpu::ops::ReshapeLayer::reshapeGeneric()</a>, <a class="el" href="_broadcast_to_layer_8cc_source.html#l00043">onert::backend::cpu::ops::BroadcastToLayer::run()</a>, <a class="el" href="_detection_post_process_layer_8cc_source.html#l00281">onert::backend::cpu::ops::DetectionPostProcessLayer::run()</a>, <a class="el" href="_expand_dims_layer_8cc_source.html#l00039">onert::backend::cpu::ops::ExpandDimsLayer::run()</a>, <a class="el" href="cpu_2ops_2_pad_layer_8cc_source.html#l00055">onert::backend::cpu::ops::PadLayer::run()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>, <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00120">onert::backend::xnnpack::ops::ConvolutionLayer::setup()</a>, <a class="el" href="xnnpack_2ops_2_depthwise_convolution_layer_8cc_source.html#l00121">onert::backend::xnnpack::ops::DepthwiseConvolutionLayer::setup()</a>, and <a class="el" href="xnnpack_2ops_2_fully_connected_layer_8cc_source.html#l00113">onert::backend::xnnpack::ops::FullyConnectedLayer::setup()</a>.</p>
 
 </div>
 </div>
@@ -397,7 +395,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a377f248ebbc4573d14e23353f4249b87">onert::backend::acl_common::IACLTensor</a>, and <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_permute_function_8cc_source.html#l00244">onert::exec::IPermuteFunction::permute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_permute_function_8cc_source.html#l00240">onert::exec::IPermuteFunction::permute()</a>.</p>
 
 </div>
 </div>
@@ -482,10 +480,10 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a3c0dd872c78208e99d7f1587a7a1e73b">onert::backend::basic::Tensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00091">91</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>  {</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support resetting buffer&quot;</span>);</div>
-<div class="line"><span class="lineno">   94</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00090">90</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support resetting buffer&quot;</span>);</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -525,10 +523,10 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a4dd2ec72d0d053e2bdea7bbad271ef1d">onert::backend::acl_cl::operand::ICLTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00118">118</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span>  {</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support enqueueReadBuffer&quot;</span>);</div>
-<div class="line"><span class="lineno">  121</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00117">117</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>  {</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support enqueueReadBuffer&quot;</span>);</div>
+<div class="line"><span class="lineno">  120</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -568,10 +566,10 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#ad9bdee11ee82678f8fa4c632e58fdfda">onert::backend::acl_cl::operand::ICLTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00114">114</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support enqueueWriteBuffer&quot;</span>);</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00113">113</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>  {</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support enqueueWriteBuffer&quot;</span>);</div>
+<div class="line"><span class="lineno">  116</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -603,7 +601,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a610b21184748055f7da08552b4e7f6cf">onert::backend::acl_common::IACLTensor</a>, and <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>, and <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00238">onert::exec::DynamicShapeInferer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>, and <a class="el" href="_dynamic_shape_inferer_8cc_source.html#l00238">onert::exec::DynamicShapeInferer::visit()</a>.</p>
 
 </div>
 </div>
@@ -632,7 +630,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html#a316aef9a1a8655777253ba781676d6a4">onert::backend::IPortableTensor</a>, <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_sub_tensor.html#a5c1346d6f4e055a28d98ca3a112df632">onert::backend::acl_cl::operand::CLSubTensor</a>, <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ac642963498921071bc639855a9970b5a">onert::backend::acl_common::IACLTensor</a>, and <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_sub_tensor.html#a7d5695ccc869d6deeb3799786d1ff18c">onert::backend::acl_neon::operand::NESubTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>.</p>
 
 </div>
 </div>
@@ -663,10 +661,10 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html#aea60bbe865c4ce194daf9b61d7353052">onert::backend::IPortableTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00072">72</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support checking constant&quot;</span>);</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00071">71</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support checking constant&quot;</span>);</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -697,7 +695,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ad709b325dc3ec996301b6e3d93fbd637">onert::backend::acl_common::IACLTensor</a>, and <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">onert::backend::IPortableTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -726,38 +724,9 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_sub_tensor.html#ac0799653445a459f16e38a6e26a3428d">onert::backend::acl_cl::operand::CLSubTensor</a>, and <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_sub_tensor.html#a8dc999089940dd4f94ca182a2efc799d">onert::backend::acl_neon::operand::NESubTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00112">112</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00111">111</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="a9c6b4e796289ace0d82d7e60a5320305" name="a9c6b4e796289ace0d82d7e60a5320305"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c6b4e796289ace0d82d7e60a5320305">&#9670;&#160;</a></span>layout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::backend::ITensor::layout </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ac4e990f58f1dd0a2da9972b006e678ef">onert::backend::acl_common::IACLTensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a62830c80112aef8c3ec7464c049df816">onert::backend::basic::Tensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#ac852656504d4541264ae601efaa3e41e">onert::backend::basic::train::TrainableTensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a25bcc7bdd78fcde02d602bcfd1fbd53c">onert::backend::builtin::IOTensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a8d261444bed488227ac71aa9294d116d">onert::backend::builtin::UserTensor</a>, and <a class="el" href="classonert_1_1exec_1_1_edge_tensor.html#aebe5e1782d545c48a32e8eb2d0c3f11e">onert::exec::EdgeTensor</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="xnnpack_2ops_2_fully_connected_layer_8cc_source.html#l00037">onert::backend::xnnpack::ops::FullyConnectedLayer::configure()</a>, <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00038">onert::backend::xnnpack::ops::ConvolutionLayer::configure()</a>, <a class="el" href="xnnpack_2ops_2_depthwise_convolution_layer_8cc_source.html#l00040">onert::backend::xnnpack::ops::DepthwiseConvolutionLayer::configure()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00284">onert::backend::cpu::ops::getReducerAxes()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
-
 </div>
 </div>
 <a id="a25d45dee8318a268826bc6ae1e882c83" name="a25d45dee8318a268826bc6ae1e882c83"></a>
@@ -785,8 +754,8 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#ac586cb84b48c3c935e6185e163cc3fcf">onert::backend::acl_cl::operand::ICLTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00113">113</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00112">112</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  112</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -817,10 +786,10 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a14dd8ee5d547516d4a698d2a94ce3be6">onert::backend::basic::Tensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html#ae3d193ec48ea11c13c763c0e79d71a1c">onert::backend::basic::ExternalTensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad08039ec1be9173cf8e24a80ab1733b3">onert::backend::builtin::IOTensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a97e3b6315808e8f22d5fb39cf7c5e673">onert::backend::builtin::UserTensor</a>, and <a class="el" href="classonert_1_1exec_1_1_edge_tensor.html#a6063e77288f2ad9c77aa4ec2666fa1d1">onert::exec::EdgeTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00085">85</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support dynamic tensor&quot;</span>);</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00084">84</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>  {</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support dynamic tensor&quot;</span>);</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_i_o_tensor_8h_source.html#l00061">onert::backend::builtin::IOTensor::set_dynamic()</a>.</p>
 
@@ -855,11 +824,11 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented in <a class="el" href="classonert_1_1backend_1_1basic_1_1_external_tensor.html#a34a5bab2641965307f6873395915e901">onert::backend::basic::ExternalTensor</a>, <a class="el" href="classonert_1_1backend_1_1basic_1_1_tensor.html#a29c2bdb21171705c57bc92bb24d1450a">onert::backend::basic::Tensor</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a2212b2dd1452a2d5e867ae9418d74782">onert::backend::builtin::UserTensor</a>, <a class="el" href="classonert_1_1exec_1_1_edge_tensor.html#ad387745a75f36ca9a4a734199812e88f">onert::exec::EdgeTensor</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#af51a935f6b7663fe8fcbe98bc2194d9c">onert::backend::builtin::IOTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00100">100</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>  {</div>
-<div class="line"><span class="lineno">  102</span>    <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(new_shape);</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support dynamic setShape&quot;</span>);</div>
-<div class="line"><span class="lineno">  104</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_tensor_8h_source.html#l00099">99</a> of file <a class="el" href="_i_tensor_8h_source.html">ITensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>  {</div>
+<div class="line"><span class="lineno">  101</span>    <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(new_shape);</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;This backend does not support dynamic setShape&quot;</span>);</div>
+<div class="line"><span class="lineno">  103</span>  }</div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
@@ -893,7 +862,7 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">onert::backend::acl_common::IACLTensor</a>, and <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">onert::backend::IPortableTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_permute_function_8cc_source.html#l00244">onert::exec::IPermuteFunction::permute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_permute_function_8cc_source.html#l00240">onert::exec::IPermuteFunction::permute()</a>.</p>
 
 </div>
 </div>

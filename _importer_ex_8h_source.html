@@ -118,31 +118,58 @@ $(document).ready(function(){initNavTree('_importer_ex_8h_source.html',''); init
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="luci_2lang_2include_2luci_2_i_r_2_module_8h.html">luci/IR/Module.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// NOTE we should include &quot;luci/Import/GraphBuilderRegistry.h&quot; but</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// tizen_gbs build fails if included</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// TODO enable include and remove forward declaration</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// #include &quot;luci/Import/GraphBuilderRegistry.h&quot;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">struct </span>GraphBuilderSource;</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classluci_1_1_importer_ex.html">   28</a></span><span class="keyword">class </span><a class="code hl_class" href="classluci_1_1_importer_ex.html">ImporterEx</a> final</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classluci_1_1_importer_ex.html#af819ce5f182cf746c2ea93a915e40fb8">   31</a></span>  <a class="code hl_function" href="classluci_1_1_importer_ex.html#af819ce5f182cf746c2ea93a915e40fb8">ImporterEx</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::unique_ptr&lt;Module&gt; <a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(<span class="keyword">const</span> std::string &amp;input_path) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
-</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classluci_1_1_importer_ex.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classluci_1_1_importer_ex.html">ImporterEx</a> final</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classluci_1_1_importer_ex.html#af819ce5f182cf746c2ea93a915e40fb8">   37</a></span>  <a class="code hl_function" href="classluci_1_1_importer_ex.html#af819ce5f182cf746c2ea93a915e40fb8">ImporterEx</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif </span><span class="comment">// __LUCI_IMPORTER_EX_H__</span></div>
-<div class="ttc" id="aclassluci_1_1_importer_ex_html"><div class="ttname"><a href="classluci_1_1_importer_ex.html">luci::ImporterEx</a></div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8h_source.html#l00028">ImporterEx.h:29</a></div></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="comment">// TODO remove this after embedded-import-value-test has moved to onert-micro</span></div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classluci_1_1_importer_ex.html#af0f55f77cdb8b3a04b573eb826827ba3">   41</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classluci_1_1_importer_ex.html#af0f55f77cdb8b3a04b573eb826827ba3">ImporterEx</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_graph_builder_source.html">GraphBuilderSource</a> *source) : _source{source}</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
+</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  std::unique_ptr&lt;Module&gt; <a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(<span class="keyword">const</span> std::string &amp;input_path) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="comment">// NOTE importModule is for embedded-import-value-test</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// embedded-import-value-test uses constant data from file(actually ROM)</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// so unloading file will break the precondition</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// TODO remove this after embedded-import-value-test has moved to onert-micro</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  std::unique_ptr&lt;Module&gt; <a class="code hl_function" href="classluci_1_1_importer_ex.html#ac6206e4ca053122a0257aa0000613ef2">importModule</a>(std::vector&lt;char&gt; &amp;model_data) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_graph_builder_source.html">GraphBuilderSource</a> *_source = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
+</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif </span><span class="comment">// __LUCI_IMPORTER_EX_H__</span></div>
+<div class="ttc" id="aclassluci_1_1_importer_ex_html"><div class="ttname"><a href="classluci_1_1_importer_ex.html">luci::ImporterEx</a></div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8h_source.html#l00034">ImporterEx.h:35</a></div></div>
+<div class="ttc" id="aclassluci_1_1_importer_ex_html_ac6206e4ca053122a0257aa0000613ef2"><div class="ttname"><a href="classluci_1_1_importer_ex.html#ac6206e4ca053122a0257aa0000613ef2">luci::ImporterEx::importModule</a></div><div class="ttdeci">std::unique_ptr&lt; Module &gt; importModule(std::vector&lt; char &gt; &amp;model_data) const</div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8cpp_source.html#l00061">ImporterEx.cpp:61</a></div></div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html_adc96edd9e31ad56e6844829427b4403e"><div class="ttname"><a href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">luci::ImporterEx::importVerifyModule</a></div><div class="ttdeci">std::unique_ptr&lt; Module &gt; importVerifyModule(const std::string &amp;input_path) const</div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8cpp_source.html#l00028">ImporterEx.cpp:28</a></div></div>
+<div class="ttc" id="aclassluci_1_1_importer_ex_html_af0f55f77cdb8b3a04b573eb826827ba3"><div class="ttname"><a href="classluci_1_1_importer_ex.html#af0f55f77cdb8b3a04b573eb826827ba3">luci::ImporterEx::ImporterEx</a></div><div class="ttdeci">ImporterEx(const GraphBuilderSource *source)</div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8h_source.html#l00041">ImporterEx.h:41</a></div></div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html_af819ce5f182cf746c2ea93a915e40fb8"><div class="ttname"><a href="classluci_1_1_importer_ex.html#af819ce5f182cf746c2ea93a915e40fb8">luci::ImporterEx::ImporterEx</a></div><div class="ttdeci">ImporterEx()=default</div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_module_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_module_8h.html">Module.h</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-compute_2include_2luci__compute_2_depthwise_conv2_d_8h_source.html#l00023">DepthwiseConv2D.h:24</a></div></div>
+<div class="ttc" id="astructluci_1_1_graph_builder_source_html"><div class="ttname"><a href="structluci_1_1_graph_builder_source.html">luci::GraphBuilderSource</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2import_2include_2luci_2_import_2_graph_builder_registry_8h_source.html#l00028">GraphBuilderRegistry.h:29</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

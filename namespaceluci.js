@@ -587,6 +587,8 @@ var namespaceluci =
     [ "CircleConst::scalar< loco::DataType::STRING >", "namespaceluci.html#aa1f2324bf4005587971ed7fa0cb1d097", null ],
     [ "CircleConst::size< loco::DataType::STRING >", "namespaceluci.html#a33a8e9262264b96ea0ac763401b0a885", null ],
     [ "CircleConst::size< loco::DataType::STRING >", "namespaceluci.html#af7ca93f71ec6c67ec58fc3ac4da6b4ee", null ],
+    [ "clear_tensor_index", "namespaceluci.html#aaa30811729355a044ac0f35081a8909f", null ],
+    [ "clearExportInfo", "namespaceluci.html#adb52cd8e2e3e507d9e4dada166aa11af", null ],
     [ "clone", "namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b", null ],
     [ "clone_connect", "namespaceluci.html#a23c64587ec8b3c3358d3f26173489ab8", null ],
     [ "clone_node", "namespaceluci.html#a8727d0fa490008c6078181d4a27f3ca2", null ],

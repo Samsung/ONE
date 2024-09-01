@@ -293,9 +293,9 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  458</span>      assert(cur_id &gt;= 0 &amp;&amp; cur_id &lt; d.numThreads() + 1);</div>
 <div class="line"><span class="lineno">  459</span> </div>
 <div class="line"><span class="lineno">  460</span>      <span class="keyword">static</span> <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> = (<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4.html#ac12caa983b8b412125bc399e3e846222">Packet</a>) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><span class="lineno">  461</span>      <span class="keyword">const</span> int64_t input_image_size = in_rows * in_cols * in_depth;</div>
-<div class="line"><span class="lineno">  462</span>      <span class="keyword">const</span> int64_t output_image_size = out_rows * out_cols * out_depth;</div>
-<div class="line"><span class="lineno">  463</span>      <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  461</span>      <span class="keyword">const</span> int64_t input_image_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(in_rows) * in_cols * in_depth;</div>
+<div class="line"><span class="lineno">  462</span>      <span class="keyword">const</span> int64_t output_image_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(out_rows) * out_cols * out_depth;</div>
+<div class="line"><span class="lineno">  463</span>      <span class="keyword">const</span> int64_t filter_spatial_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(filter_rows) * filter_cols;</div>
 <div class="line"><span class="lineno">  464</span>      <span class="keyword">const</span> int64_t padded_filter_inner_dim_size =</div>
 <div class="line"><span class="lineno">  465</span>        ((out_depth + <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> - 1) / kPacketSize) * <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>;</div>
 <div class="line"><span class="lineno">  466</span>      <span class="keyword">const</span> int64_t padded_filter_size = filter_spatial_size * padded_filter_inner_dim_size;</div>
@@ -326,7 +326,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  491</span>      }</div>
 <div class="line"><span class="lineno">  492</span>    };</div>
 <div class="line"><span class="lineno">  493</span> </div>
-<div class="line"><span class="lineno">  494</span>    <span class="keyword">const</span> int64_t total_shards = batch * out_rows;</div>
+<div class="line"><span class="lineno">  494</span>    <span class="keyword">const</span> int64_t total_shards = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(batch) * out_rows;</div>
 <div class="line"><span class="lineno">  495</span> </div>
 <div class="line"><span class="lineno">  496</span>    <span class="comment">// Empirically tested to give reasonable performance boosts at batch size 1</span></div>
 <div class="line"><span class="lineno">  497</span>    <span class="comment">// without reducing throughput at batch size 32.</span></div>
@@ -336,8 +336,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  501</span>    <span class="comment">// flops/loads/stores required to compute one shard.</span></div>
 <div class="line"><span class="lineno">  502</span>    <span class="keyword">const</span> int64_t shard_cost = kCostMultiplier * out_cols * out_depth;</div>
 <div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>    <span class="keyword">const</span> int64_t input_bytes = in_rows * in_cols * in_depth * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><span class="lineno">  505</span>    <span class="keyword">const</span> int64_t output_bytes = out_rows * out_cols * out_depth * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><span class="lineno">  504</span>    <span class="keyword">const</span> int64_t input_bytes = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(in_rows) * in_cols * in_depth * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><span class="lineno">  505</span>    <span class="keyword">const</span> int64_t output_bytes = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(out_rows) * out_cols * out_depth * <span class="keyword">sizeof</span>(T);</div>
 <div class="line"><span class="lineno">  506</span>    <span class="keyword">const</span> Eigen::TensorOpCost cost(input_bytes, output_bytes, shard_cost);</div>
 <div class="line"><span class="lineno">  507</span>    d.parallelFor(total_shards, cost, shard);</div>
 <div class="line"><span class="lineno">  508</span>  }</div>

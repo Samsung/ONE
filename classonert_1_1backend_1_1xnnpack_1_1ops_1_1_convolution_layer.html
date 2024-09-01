@@ -294,22 +294,17 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   59</span>  _activation = activation;</div>
 <div class="line"><span class="lineno">   60</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
 <div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>  <span class="comment">// TODO Support not nhwc layer</span></div>
-<div class="line"><span class="lineno">   63</span>  assert(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">layout</a>() == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>);</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  assert(_activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a> || _activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">ir::Activation::RELU</a> ||</div>
-<div class="line"><span class="lineno">   66</span>         _activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">ir::Activation::RELU1</a> || _activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">ir::Activation::RELU6</a>);</div>
-<div class="line"><span class="lineno">   67</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a9c6b4e796289ace0d82d7e60a5320305"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">onert::backend::ITensor::layout</a></div><div class="ttdeci">virtual ir::Layout layout() const =0</div></div>
+<div class="line"><span class="lineno">   62</span>  assert(_activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a> || _activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">ir::Activation::RELU</a> ||</div>
+<div class="line"><span class="lineno">   63</span>         _activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">ir::Activation::RELU1</a> || _activation == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">ir::Activation::RELU6</a>);</div>
+<div class="line"><span class="lineno">   64</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00099">gen_h5_explicit_inputs_all.py:99</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::Activation::RELU1</a></div><div class="ttdeci">@ RELU1</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::Activation::RELU6</a></div><div class="ttdeci">@ RELU6</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::Activation::RELU</a></div><div class="ttdeci">@ RELU</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a9c6b4e796289ace0d82d7e60a5320305">onert::backend::ITensor::layout()</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::RELU</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::RELU1</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::RELU6</a>.</p>
+<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::RELU</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::RELU1</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::RELU6</a>.</p>
 
 </div>
 </div>
@@ -338,36 +333,36 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#a5d54fa74db0340ac6ed8345805c487b6">onert::backend::xnnpack::ops::Layer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00092">92</a> of file <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{</div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordtype">float</span> output_activation_min = 0.f, output_activation_max = 0.f;</div>
-<div class="line"><span class="lineno">   95</span>  CalculateActivationRange&lt;float&gt;(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  <span class="comment">// NHWC</span></div>
-<div class="line"><span class="lineno">   98</span>  <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
-<div class="line"><span class="lineno">   99</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;kernel_shape = _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>();</div>
-<div class="line"><span class="lineno">  100</span>  uint32_t kernel_height = kernel_shape.dim(1);</div>
-<div class="line"><span class="lineno">  101</span>  uint32_t kernel_width = kernel_shape.dim(2);</div>
-<div class="line"><span class="lineno">  102</span>  uint32_t output_channels = kernel_shape.dim(0);</div>
-<div class="line"><span class="lineno">  103</span>  uint32_t input_channels = kernel_shape.dim(3);</div>
-<div class="line"><span class="lineno">  104</span>  assert(<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(3)) == input_channels);</div>
-<div class="line"><span class="lineno">  105</span>  assert(<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(3)) == output_channels);</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>  <span class="keyword">enum</span> xnn_status status = xnn_create_convolution2d_nhwc_f32(</div>
-<div class="line"><span class="lineno">  108</span>    _padding_top, _padding_right, _padding_bottom, _padding_left, kernel_height, kernel_width,</div>
-<div class="line"><span class="lineno">  109</span>    _stride_height, _stride_width, _dilation_height_factor, _dilation_width_factor, 1 <span class="comment">/* groups */</span>,</div>
-<div class="line"><span class="lineno">  110</span>    input_channels <span class="comment">/* group_input_channels */</span>, output_channels <span class="comment">/* group_output_channels */</span>,</div>
-<div class="line"><span class="lineno">  111</span>    input_channels <span class="comment">/* input_channel_stride */</span>, output_channels <span class="comment">/* output_channel_stride */</span>,</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()), output_activation_min, output_activation_max,</div>
-<div class="line"><span class="lineno">  114</span>    0, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, &amp;<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>);</div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">if</span> (status != xnn_status_success)</div>
-<div class="line"><span class="lineno">  116</span>  {</div>
-<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to create FP32 Convolution operator&quot;</span>};</div>
-<div class="line"><span class="lineno">  118</span>  }</div>
-<div class="line"><span class="lineno">  119</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a> != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  121</span>}</div>
+<p class="definition">Definition at line <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00089">89</a> of file <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>{</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordtype">float</span> output_activation_min = 0.f, output_activation_max = 0.f;</div>
+<div class="line"><span class="lineno">   92</span>  CalculateActivationRange&lt;float&gt;(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>  <span class="comment">// NHWC</span></div>
+<div class="line"><span class="lineno">   95</span>  <span class="comment">// Kernel format is [depth_out, kernel_height, kernel_width, depth_in].</span></div>
+<div class="line"><span class="lineno">   96</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;kernel_shape = _kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>();</div>
+<div class="line"><span class="lineno">   97</span>  uint32_t kernel_height = kernel_shape.dim(1);</div>
+<div class="line"><span class="lineno">   98</span>  uint32_t kernel_width = kernel_shape.dim(2);</div>
+<div class="line"><span class="lineno">   99</span>  uint32_t output_channels = kernel_shape.dim(0);</div>
+<div class="line"><span class="lineno">  100</span>  uint32_t input_channels = kernel_shape.dim(3);</div>
+<div class="line"><span class="lineno">  101</span>  assert(<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(3)) == input_channels);</div>
+<div class="line"><span class="lineno">  102</span>  assert(<span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(3)) == output_channels);</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>  <span class="keyword">enum</span> xnn_status status = xnn_create_convolution2d_nhwc_f32(</div>
+<div class="line"><span class="lineno">  105</span>    _padding_top, _padding_right, _padding_bottom, _padding_left, kernel_height, kernel_width,</div>
+<div class="line"><span class="lineno">  106</span>    _stride_height, _stride_width, _dilation_height_factor, _dilation_width_factor, 1 <span class="comment">/* groups */</span>,</div>
+<div class="line"><span class="lineno">  107</span>    input_channels <span class="comment">/* group_input_channels */</span>, output_channels <span class="comment">/* group_output_channels */</span>,</div>
+<div class="line"><span class="lineno">  108</span>    input_channels <span class="comment">/* input_channel_stride */</span>, output_channels <span class="comment">/* output_channel_stride */</span>,</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_kernel-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()), output_activation_min, output_activation_max,</div>
+<div class="line"><span class="lineno">  111</span>    0, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, &amp;<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>);</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">if</span> (status != xnn_status_success)</div>
+<div class="line"><span class="lineno">  113</span>  {</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to create FP32 Convolution operator&quot;</span>};</div>
+<div class="line"><span class="lineno">  115</span>  }</div>
+<div class="line"><span class="lineno">  116</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  118</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00066">IPortableTensor.h:66</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_ac42a9739e80a0e11be18c0e0a61ccf85"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer</a></div><div class="ttdeci">virtual uint8_t * buffer() const =0</div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer_html_af55dd38d91a97a58d3f7a40c4621cb04"><div class="ttname"><a href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">onert::backend::xnnpack::ops::Layer::_kernel_op</a></div><div class="ttdeci">xnn_operator_t _kernel_op</div><div class="ttdef"><b>Definition</b> <a href="_layer_8h_source.html#l00070">Layer.h:70</a></div></div>
@@ -401,34 +396,34 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00069">69</a> of file <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a> &amp;&amp; <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a>-&gt;getThreadPool());</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">_setup</a>)</div>
-<div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">_setup</a> = <a class="code hl_function" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer.html#a4dbf1bbf867b8cc26aa622c7fd403ae6">setup</a>();</div>
-<div class="line"><span class="lineno">   75</span>    assert(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">_setup</a>);</div>
-<div class="line"><span class="lineno">   76</span>  }</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">enum</span> xnn_status status = xnn_run_operator(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a>-&gt;getThreadPool());</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (status != xnn_status_success)</div>
-<div class="line"><span class="lineno">   82</span>    {</div>
-<div class="line"><span class="lineno">   83</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to run FP32 Convolution operator&quot;</span>};</div>
-<div class="line"><span class="lineno">   84</span>    }</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;XNNPACK Conv: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>}</div>
+<p class="definition">Definition at line <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00066">66</a> of file <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
+<div class="line"><span class="lineno">   68</span>  assert(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a> &amp;&amp; <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a>-&gt;getThreadPool());</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">_setup</a>)</div>
+<div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">_setup</a> = <a class="code hl_function" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer.html#a4dbf1bbf867b8cc26aa622c7fd403ae6">setup</a>();</div>
+<div class="line"><span class="lineno">   72</span>    assert(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">_setup</a>);</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">   76</span>  {</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keyword">enum</span> xnn_status status = xnn_run_operator(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>, <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a>-&gt;getThreadPool());</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> (status != xnn_status_success)</div>
+<div class="line"><span class="lineno">   79</span>    {</div>
+<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to run FP32 Convolution operator&quot;</span>};</div>
+<div class="line"><span class="lineno">   81</span>    }</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   84</span>  {</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;XNNPACK Conv: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer_html_a4dbf1bbf867b8cc26aa622c7fd403ae6"><div class="ttname"><a href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer.html#a4dbf1bbf867b8cc26aa622c7fd403ae6">onert::backend::xnnpack::ops::ConvolutionLayer::setup</a></div><div class="ttdeci">bool setup() override</div><div class="ttdef"><b>Definition</b> <a href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00123">ConvolutionLayer.cc:123</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer_html_a4dbf1bbf867b8cc26aa622c7fd403ae6"><div class="ttname"><a href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer.html#a4dbf1bbf867b8cc26aa622c7fd403ae6">onert::backend::xnnpack::ops::ConvolutionLayer::setup</a></div><div class="ttdeci">bool setup() override</div><div class="ttdef"><b>Definition</b> <a href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00120">ConvolutionLayer.cc:120</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer_html_ae1c58099ede76d3db85b2ba419df9b6b"><div class="ttname"><a href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">onert::backend::xnnpack::ops::Layer::_external_context</a></div><div class="ttdeci">const std::shared_ptr&lt; ExternalContext &gt; _external_context</div><div class="ttdef"><b>Definition</b> <a href="_layer_8h_source.html#l00073">Layer.h:73</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer_html_af1bf1cdd38a9c21c8b44ce3527613b01"><div class="ttname"><a href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af1bf1cdd38a9c21c8b44ce3527613b01">onert::backend::xnnpack::ops::Layer::_setup</a></div><div class="ttdeci">bool _setup</div><div class="ttdef"><b>Definition</b> <a href="_layer_8h_source.html#l00072">Layer.h:72</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_layer_8h_source.html#l00073">onert::backend::xnnpack::ops::Layer::_external_context</a>, <a class="el" href="_layer_8h_source.html#l00070">onert::backend::xnnpack::ops::Layer::_kernel_op</a>, <a class="el" href="_layer_8h_source.html#l00072">onert::backend::xnnpack::ops::Layer::_setup</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00123">setup()</a>.</p>
+<p class="reference">References <a class="el" href="_layer_8h_source.html#l00073">onert::backend::xnnpack::ops::Layer::_external_context</a>, <a class="el" href="_layer_8h_source.html#l00070">onert::backend::xnnpack::ops::Layer::_kernel_op</a>, <a class="el" href="_layer_8h_source.html#l00072">onert::backend::xnnpack::ops::Layer::_setup</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>, and <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00120">setup()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="infer_8py_source.html#l00051">package.infer.session::inference()</a>.</p>
 
@@ -459,41 +454,41 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#a3195c472f43dcaaa7158ab9c23afbc1b">onert::backend::xnnpack::ops::Layer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00123">123</a> of file <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() == <span class="keyword">nullptr</span> || _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  126</span>  {</div>
-<div class="line"><span class="lineno">  127</span>    <span class="comment">// it could be models&#39;s input or output</span></div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  129</span>  }</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>  uint32_t input_width = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(2);</div>
-<div class="line"><span class="lineno">  132</span>  uint32_t input_height = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(1);</div>
-<div class="line"><span class="lineno">  133</span>  uint32_t batch_size = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(0);</div>
-<div class="line"><span class="lineno">  134</span>  <span class="keywordtype">size_t</span> workspace_size = 0;</div>
-<div class="line"><span class="lineno">  135</span>  <span class="keywordtype">size_t</span> workspace_alignment = 0;</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keyword">enum</span> xnn_status status = xnn_reshape_convolution2d_nhwc_f32(</div>
-<div class="line"><span class="lineno">  137</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>, batch_size, input_height, input_width, &amp;workspace_size, &amp;workspace_alignment,</div>
-<div class="line"><span class="lineno">  138</span>    <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a>-&gt;getThreadPool());</div>
-<div class="line"><span class="lineno">  139</span>  <span class="keywordflow">if</span> (status != xnn_status_success)</div>
-<div class="line"><span class="lineno">  140</span>  {</div>
-<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to create FP32 DepthwiseConvolution operator&quot;</span>};</div>
-<div class="line"><span class="lineno">  142</span>  }</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>  std::vector&lt;uint8_t&gt; workspace(workspace_size);</div>
-<div class="line"><span class="lineno">  145</span>  status = xnn_setup_convolution2d_nhwc_f32(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>, workspace.data(),</div>
-<div class="line"><span class="lineno">  146</span>                                            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
-<div class="line"><span class="lineno">  147</span>                                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()));</div>
-<div class="line"><span class="lineno">  148</span>  <span class="keywordflow">if</span> (status != xnn_status_success)</div>
-<div class="line"><span class="lineno">  149</span>  {</div>
-<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to create FP32 Convolution operator&quot;</span>};</div>
-<div class="line"><span class="lineno">  151</span>  }</div>
-<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  153</span>}</div>
+<p class="definition">Definition at line <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00120">120</a> of file <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
+<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() == <span class="keyword">nullptr</span> || _output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  123</span>  {</div>
+<div class="line"><span class="lineno">  124</span>    <span class="comment">// it could be models&#39;s input or output</span></div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  uint32_t input_width = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(2);</div>
+<div class="line"><span class="lineno">  129</span>  uint32_t input_height = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(1);</div>
+<div class="line"><span class="lineno">  130</span>  uint32_t batch_size = _input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">getShape</a>().dim(0);</div>
+<div class="line"><span class="lineno">  131</span>  <span class="keywordtype">size_t</span> workspace_size = 0;</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keywordtype">size_t</span> workspace_alignment = 0;</div>
+<div class="line"><span class="lineno">  133</span>  <span class="keyword">enum</span> xnn_status status = xnn_reshape_convolution2d_nhwc_f32(</div>
+<div class="line"><span class="lineno">  134</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>, batch_size, input_height, input_width, &amp;workspace_size, &amp;workspace_alignment,</div>
+<div class="line"><span class="lineno">  135</span>    <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>, <a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#ae1c58099ede76d3db85b2ba419df9b6b">_external_context</a>-&gt;getThreadPool());</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">if</span> (status != xnn_status_success)</div>
+<div class="line"><span class="lineno">  137</span>  {</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to create FP32 DepthwiseConvolution operator&quot;</span>};</div>
+<div class="line"><span class="lineno">  139</span>  }</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>  std::vector&lt;uint8_t&gt; workspace(workspace_size);</div>
+<div class="line"><span class="lineno">  142</span>  status = xnn_setup_convolution2d_nhwc_f32(<a class="code hl_variable" href="classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html#af55dd38d91a97a58d3f7a40c4621cb04">_kernel_op</a>, workspace.data(),</div>
+<div class="line"><span class="lineno">  143</span>                                            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()),</div>
+<div class="line"><span class="lineno">  144</span>                                            <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">buffer</a>()));</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">if</span> (status != xnn_status_success)</div>
+<div class="line"><span class="lineno">  146</span>  {</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;failed to create FP32 Convolution operator&quot;</span>};</div>
+<div class="line"><span class="lineno">  148</span>  }</div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  150</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_layer_8h_source.html#l00073">onert::backend::xnnpack::ops::Layer::_external_context</a>, <a class="el" href="_layer_8h_source.html#l00070">onert::backend::xnnpack::ops::Layer::_kernel_op</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00066">onert::backend::IPortableTensor::getShape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00069">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="xnnpack_2ops_2_convolution_layer_8cc_source.html#l00066">run()</a>.</p>
 
 </div>
 </div>

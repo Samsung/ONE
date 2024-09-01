@@ -164,47 +164,52 @@ $(document).ready(function(){initNavTree('core_2src_2backend_2builtin_2train_2_k
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  std::vector&lt;ITensor *&gt; output_back_prop_tensors;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::vector&lt;ITensor *&gt; input_back_prop_tensors;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">auto</span> input_back_prop_tensor = getBackPropTensor(input_index);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">auto</span> output_back_prop_tensor = getBackPropTensor(output_index);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  output_back_prop_tensors.emplace_back(output_back_prop_tensor);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  input_back_prop_tensors.emplace_back(input_back_prop_tensor);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// NOTE The output buffers of IOTensors are not essential for training. If there</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">//      is no output buffer provided by the user, permute is not performed.</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">bool</span> ignore_forward_in_training = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> dst_tensor : output_tensors)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (dst_tensor-&gt;buffer() == <span class="keyword">nullptr</span> || dst_tensor-&gt;total_size() == 0)</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      ignore_forward_in_training = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;kernel::PermuteLayer&gt;(</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    ignore_forward_in_training, _external_context);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>backend::ITensor *KernelGenerator::getTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>{</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="comment">// Get Tensor from all tensor registries (for Permute op)</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(index);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  assert(ret != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>backend::ITensor *KernelGenerator::getBackPropTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>{</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="comment">// Get back propagation Tensor from all tensor registries (for Permute op)</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#adece68b6fd571ba832a1737b2f0ebf39">getBackPropITensor</a>(index);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>} <span class="comment">// namespace builtin</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  std::vector&lt;ir::PermuteType&gt; permute_types;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">auto</span> input_back_prop_tensor = getBackPropTensor(input_index);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">auto</span> output_back_prop_tensor = getBackPropTensor(output_index);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  output_back_prop_tensors.emplace_back(output_back_prop_tensor);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  input_back_prop_tensors.emplace_back(input_back_prop_tensor);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">// Layout in graph is always NHWC, so layout is not changed</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; input_tensors.size(); i++)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    permute_types.emplace_back(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">ir::PermuteType::COPY</a>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="comment">// NOTE The output buffers of IOTensors are not essential for training. If there</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">//      is no output buffer provided by the user, permute is not performed.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">bool</span> ignore_forward_in_training = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> dst_tensor : output_tensors)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> (dst_tensor-&gt;buffer() == <span class="keyword">nullptr</span> || dst_tensor-&gt;total_size() == 0)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>      ignore_forward_in_training = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;kernel::PermuteLayer&gt;(</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors, permute_types,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    ignore_forward_in_training, _external_context);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> = std::move(fn);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>backend::ITensor *KernelGenerator::getTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// Get Tensor from all tensor registries (for Permute op)</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(index);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  assert(ret != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>backend::ITensor *KernelGenerator::getBackPropTensor(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;index)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>{</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="comment">// Get back propagation Tensor from all tensor registries (for Permute op)</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keyword">auto</span> ret = _tensor_registries.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#adece68b6fd571ba832a1737b2f0ebf39">getBackPropITensor</a>(index);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>} <span class="comment">// namespace builtin</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator_html_a01f325c8d7c1abb064238435bbbb4a65"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html#a01f325c8d7c1abb064238435bbbb4a65">onert::backend::builtin::train::KernelGenerator::KernelGenerator</a></div><div class="ttdeci">KernelGenerator(const ir::train::TrainableGraph &amp;tgraph, const std::shared_ptr&lt; TensorRegistry &gt; &amp;tensor_reg, const std::shared_ptr&lt; ExternalContext &gt; &amp;external_context)</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00030">KernelGenerator.cc:30</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator_html_a956f5ac33484eb6411a39662910231ba"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_kernel_generator.html#a956f5ac33484eb6411a39662910231ba">onert::backend::builtin::train::KernelGenerator::generate</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::TrainableFnSequence &gt; generate(ir::OperationIndex ind) override</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00037">KernelGenerator.cc:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace46c76d914d0d7915a3749c442694b4"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">onert::backend::train::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::ITrainableFunction &gt; _return_fn</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00053">KernelGeneratorBase.h:53</a></div></div>
@@ -220,6 +225,7 @@ $(document).ready(function(){initNavTree('core_2src_2backend_2builtin_2train_2_k
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1operation_1_1_permute_html"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1operation_1_1_permute.html">onert::ir::train::operation::Permute</a></div><div class="ttdef"><b>Definition</b> <a href="train_2operation_2_permute_8h_source.html#l00032">Permute.h:33</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperationIndexTag &gt;</a></div></div>
 <div class="ttc" id="acore_2src_2backend_2builtin_2train_2_kernel_generator_8h_html"><div class="ttname"><a href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h.html">KernelGenerator.h</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::PermuteType::COPY</a></div><div class="ttdeci">@ COPY</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00035">Index.h:35</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_a_neural_networks_event_8h_source.html#l00024">ANeuralNetworksEvent.h:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -259,74 +259,81 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span> </div>
 <div class="line"><span class="lineno">   85</span>  std::vector&lt;ITensor *&gt; op_inputs(_input_tensors.begin(), _input_tensors.end());</div>
 <div class="line"><span class="lineno">   86</span>  std::vector&lt;ITensor *&gt; op_outputs(_output_tensors.begin(), _output_tensors.end());</div>
-<div class="line"><span class="lineno">   87</span>  <span class="comment">// Copying body inputs to outputs when the loop body is never executed</span></div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">if</span> (!getResultCond(cond_output_tensor.get()))</div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, _external_context};</div>
-<div class="line"><span class="lineno">   91</span>    copy_body_inputs_to_op_outputs.run();</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   93</span>  }</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// Need some temp tensors to hold the body subgraph output</span></div>
-<div class="line"><span class="lineno">   96</span>  std::vector&lt;std::unique_ptr&lt;Tensor&gt;&gt; temp_outputs_o;</div>
-<div class="line"><span class="lineno">   97</span>  std::vector&lt;IPortableTensor *&gt; temp_outputs;</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; body_exec-&gt;outputSize(); i++)</div>
-<div class="line"><span class="lineno">   99</span>  {</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;Tensor&gt;(body_exec-&gt;outputInfo(i), _dyn_memory_manager);</div>
-<div class="line"><span class="lineno">  101</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;set_dynamic();</div>
-<div class="line"><span class="lineno">  102</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setBuffer(_dyn_memory_manager-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a030f2b7f80af9b627596198d56d46a76">allocate</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.get(), <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size()));</div>
-<div class="line"><span class="lineno">  103</span>    temp_outputs.push_back(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.get());</div>
-<div class="line"><span class="lineno">  104</span>    temp_outputs_o.push_back(std::move(tensor));</div>
-<div class="line"><span class="lineno">  105</span>  }</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>  std::vector&lt;ITensor *&gt; body_outputs(temp_outputs.begin(), temp_outputs.end());</div>
-<div class="line"><span class="lineno">  108</span>  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs, _external_context};</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> <span class="keyword">auto</span> body_execute_with_op_inputs = [&amp;]() {</div>
-<div class="line"><span class="lineno">  111</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Call to $&quot;</span> &lt;&lt; _body_subg_index &lt;&lt; <span class="stringliteral">&quot; (body)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  112</span>    body_exec-&gt;execute(_input_tensors, temp_outputs, options);</div>
-<div class="line"><span class="lineno">  113</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Return from $&quot;</span> &lt;&lt; _body_subg_index &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  114</span>  };</div>
+<div class="line"><span class="lineno">   87</span>  std::vector&lt;ir::PermuteType&gt; permute_types;</div>
+<div class="line"><span class="lineno">   88</span>  <span class="comment">// Layout in graph is always NHWC, so layout is not changed</span></div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; op_outputs.size(); i++)</div>
+<div class="line"><span class="lineno">   90</span>    permute_types.emplace_back(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">ir::PermuteType::COPY</a>);</div>
+<div class="line"><span class="lineno">   91</span>  <span class="comment">// Copying body inputs to outputs when the loop body is never executed</span></div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (!getResultCond(cond_output_tensor.get()))</div>
+<div class="line"><span class="lineno">   93</span>  {</div>
+<div class="line"><span class="lineno">   94</span>    PermuteLayer copy_body_inputs_to_op_outputs{op_inputs, op_outputs, permute_types,</div>
+<div class="line"><span class="lineno">   95</span>                                                _external_context};</div>
+<div class="line"><span class="lineno">   96</span>    copy_body_inputs_to_op_outputs.run();</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   98</span>  }</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  <span class="comment">// Need some temp tensors to hold the body subgraph output</span></div>
+<div class="line"><span class="lineno">  101</span>  std::vector&lt;std::unique_ptr&lt;Tensor&gt;&gt; temp_outputs_o;</div>
+<div class="line"><span class="lineno">  102</span>  std::vector&lt;IPortableTensor *&gt; temp_outputs;</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; body_exec-&gt;outputSize(); i++)</div>
+<div class="line"><span class="lineno">  104</span>  {</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = std::make_unique&lt;Tensor&gt;(body_exec-&gt;outputInfo(i), _dyn_memory_manager);</div>
+<div class="line"><span class="lineno">  106</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;set_dynamic();</div>
+<div class="line"><span class="lineno">  107</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setBuffer(_dyn_memory_manager-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a030f2b7f80af9b627596198d56d46a76">allocate</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.get(), <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size()));</div>
+<div class="line"><span class="lineno">  108</span>    temp_outputs.push_back(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>.get());</div>
+<div class="line"><span class="lineno">  109</span>    temp_outputs_o.push_back(std::move(tensor));</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>  std::vector&lt;ITensor *&gt; body_outputs(temp_outputs.begin(), temp_outputs.end());</div>
+<div class="line"><span class="lineno">  113</span>  PermuteLayer copy_body_outputs_to_op_outputs{body_outputs, op_outputs, permute_types,</div>
+<div class="line"><span class="lineno">  114</span>                                               _external_context};</div>
 <div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>  <span class="keyword">const</span> <span class="keyword">auto</span> body_execute_with_body_outputs = [&amp;]() {</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keyword">const</span> <span class="keyword">auto</span> body_execute_with_op_inputs = [&amp;]() {</div>
 <div class="line"><span class="lineno">  117</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Call to $&quot;</span> &lt;&lt; _body_subg_index &lt;&lt; <span class="stringliteral">&quot; (body)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  118</span>    body_exec-&gt;execute(_output_tensors, temp_outputs, options);</div>
+<div class="line"><span class="lineno">  118</span>    body_exec-&gt;execute(_input_tensors, temp_outputs, options);</div>
 <div class="line"><span class="lineno">  119</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Return from $&quot;</span> &lt;&lt; _body_subg_index &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  120</span>  };</div>
 <div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>  std::function&lt;void()&gt; body_execute = body_execute_with_op_inputs;</div>
-<div class="line"><span class="lineno">  123</span>  <span class="keyword">const</span> <span class="keyword">auto</span> cond_execute = [&amp;]() {</div>
-<div class="line"><span class="lineno">  124</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Call to $&quot;</span> &lt;&lt; _cond_subg_index &lt;&lt; <span class="stringliteral">&quot; (cond)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  125</span>    cond_exec-&gt;execute(_output_tensors, {cond_output_tensor.get()}, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>);</div>
-<div class="line"><span class="lineno">  126</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Return from $&quot;</span> &lt;&lt; _cond_subg_index &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  127</span>  };</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>  <span class="comment">// Loop while Cond subgraph&#39;s output is true</span></div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">while</span> (getResultCond(cond_output_tensor.get()))</div>
-<div class="line"><span class="lineno">  131</span>  {</div>
-<div class="line"><span class="lineno">  132</span>    body_execute();</div>
-<div class="line"><span class="lineno">  133</span>    copy_body_outputs_to_op_outputs.run();</div>
-<div class="line"><span class="lineno">  134</span>    cond_execute();</div>
-<div class="line"><span class="lineno">  135</span>    body_execute = body_execute_with_body_outputs;</div>
-<div class="line"><span class="lineno">  136</span>  }</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>  <span class="comment">// Clean-up the temp tensors</span></div>
-<div class="line"><span class="lineno">  139</span>  _dyn_memory_manager-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(cond_output_tensor.get());</div>
-<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;tensor : temp_outputs)</div>
-<div class="line"><span class="lineno">  141</span>  {</div>
-<div class="line"><span class="lineno">  142</span>    _dyn_memory_manager-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(tensor);</div>
-<div class="line"><span class="lineno">  143</span>  }</div>
-<div class="line"><span class="lineno">  144</span>}</div>
+<div class="line"><span class="lineno">  122</span>  <span class="keyword">const</span> <span class="keyword">auto</span> body_execute_with_body_outputs = [&amp;]() {</div>
+<div class="line"><span class="lineno">  123</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Call to $&quot;</span> &lt;&lt; _body_subg_index &lt;&lt; <span class="stringliteral">&quot; (body)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  124</span>    body_exec-&gt;execute(_output_tensors, temp_outputs, options);</div>
+<div class="line"><span class="lineno">  125</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Return from $&quot;</span> &lt;&lt; _body_subg_index &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  126</span>  };</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  std::function&lt;void()&gt; body_execute = body_execute_with_op_inputs;</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keyword">const</span> <span class="keyword">auto</span> cond_execute = [&amp;]() {</div>
+<div class="line"><span class="lineno">  130</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Call to $&quot;</span> &lt;&lt; _cond_subg_index &lt;&lt; <span class="stringliteral">&quot; (cond)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  131</span>    cond_exec-&gt;execute(_output_tensors, {cond_output_tensor.get()}, <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>);</div>
+<div class="line"><span class="lineno">  132</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(While) &lt;&lt; <span class="stringliteral">&quot;Return from $&quot;</span> &lt;&lt; _cond_subg_index &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  133</span>  };</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>  <span class="comment">// Loop while Cond subgraph&#39;s output is true</span></div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">while</span> (getResultCond(cond_output_tensor.get()))</div>
+<div class="line"><span class="lineno">  137</span>  {</div>
+<div class="line"><span class="lineno">  138</span>    body_execute();</div>
+<div class="line"><span class="lineno">  139</span>    copy_body_outputs_to_op_outputs.run();</div>
+<div class="line"><span class="lineno">  140</span>    cond_execute();</div>
+<div class="line"><span class="lineno">  141</span>    body_execute = body_execute_with_body_outputs;</div>
+<div class="line"><span class="lineno">  142</span>  }</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>  <span class="comment">// Clean-up the temp tensors</span></div>
+<div class="line"><span class="lineno">  145</span>  _dyn_memory_manager-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(cond_output_tensor.get());</div>
+<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;tensor : temp_outputs)</div>
+<div class="line"><span class="lineno">  147</span>  {</div>
+<div class="line"><span class="lineno">  148</span>    _dyn_memory_manager-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">deallocate</a>(tensor);</div>
+<div class="line"><span class="lineno">  149</span>  }</div>
+<div class="line"><span class="lineno">  150</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_memory_manager_html_a030f2b7f80af9b627596198d56d46a76"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#a030f2b7f80af9b627596198d56d46a76">onert::backend::basic::DynamicMemoryManager::allocate</a></div><div class="ttdeci">std::shared_ptr&lt; Allocator &gt; allocate(const ITensor *tensor, uint32_t capacity)</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00075">MemoryManager.cc:75</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1_dynamic_memory_manager_html_ab12bda3661c8260b18ec535ffa58a80e"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html#ab12bda3661c8260b18ec535ffa58a80e">onert::backend::basic::DynamicMemoryManager::deallocate</a></div><div class="ttdeci">void deallocate(const ITensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00086">MemoryManager.cc:86</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_i_executors_html_a1d6f5140cb2508e75931bd3699352f91"><div class="ttname"><a href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">onert::exec::IExecutors::entryExecutor</a></div><div class="ttdeci">IExecutor * entryExecutor() const</div><div class="ttdef"><b>Definition</b> <a href="_i_executors_8h_source.html#l00060">IExecutors.h:60</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_i_executors_html_a57aa05c327c0d2795daea7ebf8341cc0"><div class="ttname"><a href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">onert::exec::IExecutors::at</a></div><div class="ttdeci">virtual IExecutor * at(const ir::ModelIndex &amp;model_index, const ir::SubgraphIndex &amp;subg_index) const =0</div><div class="ttdoc">Return executor of index.</div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::PermuteType::COPY</a></div><div class="ttdeci">@ COPY</div></div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
 <div class="ttc" id="astructonert_1_1exec_1_1_i_executor_html_af912a0ab9cb71c557f167442ebd5c7d4"><div class="ttname"><a href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">onert::exec::IExecutor::currentOptions</a></div><div class="ttdeci">virtual const ExecutionOptions &amp; currentOptions() const =0</div><div class="ttdoc">Return current execution configuration.</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00075">onert::backend::basic::DynamicMemoryManager::allocate()</a>, <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">onert::exec::IExecutors::at()</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">onert::exec::IExecutor::currentOptions()</a>, <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00086">onert::backend::basic::DynamicMemoryManager::deallocate()</a>, <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00075">onert::backend::basic::DynamicMemoryManager::allocate()</a>, <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">onert::exec::IExecutors::at()</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::COPY</a>, <a class="el" href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">onert::exec::IExecutor::currentOptions()</a>, <a class="el" href="core_2src_2backend_2basic_2_memory_manager_8cc_source.html#l00086">onert::backend::basic::DynamicMemoryManager::deallocate()</a>, <a class="el" href="_i_executors_8h_source.html#l00060">onert::exec::IExecutors::entryExecutor()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="infer_8py_source.html#l00051">package.infer.session::inference()</a>.</p>
 

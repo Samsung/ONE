@@ -9,6 +9,7 @@ var namespaceonert__micro_1_1train =
       [ "Conv2DWeightGrad", "namespaceonert__micro_1_1train_1_1pal.html#a7e8ab6edca92522bd47ced35ad2d8a88", null ],
       [ "FullyConnectedInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#a3e13cc500824cda9d974985e240e7329", null ],
       [ "FullyConnectedWeightGrad", "namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8", null ],
+      [ "GRUWeightGrads", "namespaceonert__micro_1_1train_1_1pal.html#a99c93f6fa72bdcac318b81e3bd3f9dc0", null ],
       [ "MaxPool2D", "namespaceonert__micro_1_1train_1_1pal.html#a4c2a2472f64f222662aae7c68f826f37", null ],
       [ "ReluInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#a3b95c071f13296cd0dbd46bcc0cd57cb", null ],
       [ "SoftmaxInputGrad", "namespaceonert__micro_1_1train_1_1pal.html#ab23700dbd0f7f61ccb070ece73c92d44", null ]

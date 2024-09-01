@@ -156,128 +156,128 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00334">334</a> of file <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html">OMExecutionPlanCreator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  337</span>{</div>
-<div class="line"><span class="lineno">  338</span>  <span class="keywordtype">bool</span> keep_input = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#aa63f2d0105fbd5e32a1199faec98f73c">keep_input</a>;</div>
-<div class="line"><span class="lineno">  339</span>  <span class="keywordtype">bool</span> train_mode = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a>;</div>
-<div class="line"><span class="lineno">  340</span>  assert(train_mode);</div>
-<div class="line"><span class="lineno">  341</span>  <span class="keywordflow">if</span> (train_mode == <span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  343</span> </div>
-<div class="line"><span class="lineno">  344</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;alloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1">getAllocPlan</a>();</div>
-<div class="line"><span class="lineno">  345</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;dealloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd">getDeallocPlan</a>();</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>  <span class="comment">// First remove prev plan (if it was created)</span></div>
-<div class="line"><span class="lineno">  348</span>  alloc_plan.clear();</div>
-<div class="line"><span class="lineno">  349</span>  dealloc_plan.clear();</div>
-<div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>  <span class="keyword">using </span>Lifetime = std::pair&lt;int32_t, int32_t&gt;;</div>
-<div class="line"><span class="lineno">  352</span>  std::map&lt;uint16_t, Lifetime&gt; lifetimes;</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>  <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">reader::CircleOperators</a> *operators = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aa4b899b818bb8a1ec85227f39851c4ec">getCircleOperators</a>();</div>
-<div class="line"><span class="lineno">  355</span>  <span class="keyword">const</span> uint32_t num_kernels = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
-<div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>  uint32_t num_train_layers =</div>
-<div class="line"><span class="lineno">  358</span>    configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a9001351dbf6086a8a92b3070af01314b">training_context</a>.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a> == 0</div>
-<div class="line"><span class="lineno">  359</span>      ? num_kernels</div>
-<div class="line"><span class="lineno">  360</span>      : std::min(num_kernels, configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a9001351dbf6086a8a92b3070af01314b">training_context</a>.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a>);</div>
-<div class="line"><span class="lineno">  361</span>  <span class="keyword">auto</span> graph_outputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
-<div class="line"><span class="lineno">  362</span> </div>
-<div class="line"><span class="lineno">  363</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_ind : *graph_outputs)</div>
-<div class="line"><span class="lineno">  364</span>  {</div>
-<div class="line"><span class="lineno">  365</span>    assert(lifetimes.count(output_ind) == 0);</div>
-<div class="line"><span class="lineno">  366</span>    lifetimes[output_ind] = Lifetime(-1, 0);</div>
-<div class="line"><span class="lineno">  367</span>  }</div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span>  std::unordered_map&lt;uint16_t, uint8_t&gt; trainable_ops_config =</div>
-<div class="line"><span class="lineno">  370</span>    runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a4b5b1db58de8615fdf732b02fa7c5f6b">getTrainableOpsIndexes</a>();</div>
-<div class="line"><span class="lineno">  371</span> </div>
-<div class="line"><span class="lineno">  372</span>  <span class="comment">// If context has config file defined trainable operations</span></div>
-<div class="line"><span class="lineno">  373</span>  <span class="comment">// than ignore configs.training_context.num_of_train_layers value</span></div>
-<div class="line"><span class="lineno">  374</span>  <span class="comment">// and use max value from trainable_ops_indexes to define last train op</span></div>
-<div class="line"><span class="lineno">  375</span>  uint16_t last_train_op_indx = num_kernels - num_train_layers;</div>
-<div class="line"><span class="lineno">  376</span>  <span class="keywordflow">if</span> (!trainable_ops_config.empty())</div>
-<div class="line"><span class="lineno">  377</span>  {</div>
-<div class="line"><span class="lineno">  378</span>    last_train_op_indx = std::numeric_limits&lt;uint16_t&gt;::max();</div>
-<div class="line"><span class="lineno">  379</span>    <span class="comment">// Find op trainable index with min value</span></div>
-<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;p : trainable_ops_config)</div>
-<div class="line"><span class="lineno">  381</span>    {</div>
-<div class="line"><span class="lineno">  382</span>      last_train_op_indx = std::min(p.first, last_train_op_indx);</div>
-<div class="line"><span class="lineno">  383</span>    }</div>
-<div class="line"><span class="lineno">  384</span>    num_train_layers = (num_kernels - last_train_op_indx);</div>
-<div class="line"><span class="lineno">  385</span>  }</div>
-<div class="line"><span class="lineno">  386</span> </div>
-<div class="line"><span class="lineno">  387</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *op_codes = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a959e3f3e1917b980a2a965e9f0ad6d14">getCircleOpcodes</a>();</div>
-<div class="line"><span class="lineno">  388</span>  <span class="keywordflow">for</span> (int32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; num_train_layers; ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
-<div class="line"><span class="lineno">  389</span>  {</div>
-<div class="line"><span class="lineno">  390</span>    uint32_t cur_op_index = num_kernels - <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> - 1;</div>
-<div class="line"><span class="lineno">  391</span>    <span class="keyword">auto</span> *cur_op = operators-&gt;operator[](cur_op_index);</div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>    uint32_t cur_opcode_index = cur_op-&gt;opcode_index();</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00336">336</a> of file <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html">OMExecutionPlanCreator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  339</span>{</div>
+<div class="line"><span class="lineno">  340</span>  <span class="keywordtype">bool</span> keep_input = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#aa63f2d0105fbd5e32a1199faec98f73c">keep_input</a>;</div>
+<div class="line"><span class="lineno">  341</span>  <span class="keywordtype">bool</span> train_mode = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a>;</div>
+<div class="line"><span class="lineno">  342</span>  assert(train_mode);</div>
+<div class="line"><span class="lineno">  343</span>  <span class="keywordflow">if</span> (train_mode == <span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  345</span> </div>
+<div class="line"><span class="lineno">  346</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;alloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1">getAllocPlan</a>();</div>
+<div class="line"><span class="lineno">  347</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;dealloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd">getDeallocPlan</a>();</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>  <span class="comment">// First remove prev plan (if it was created)</span></div>
+<div class="line"><span class="lineno">  350</span>  alloc_plan.clear();</div>
+<div class="line"><span class="lineno">  351</span>  dealloc_plan.clear();</div>
+<div class="line"><span class="lineno">  352</span> </div>
+<div class="line"><span class="lineno">  353</span>  <span class="keyword">using </span>Lifetime = std::pair&lt;int32_t, int32_t&gt;;</div>
+<div class="line"><span class="lineno">  354</span>  std::map&lt;uint16_t, Lifetime&gt; lifetimes;</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span>  <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">reader::CircleOperators</a> *operators = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aa4b899b818bb8a1ec85227f39851c4ec">getCircleOperators</a>();</div>
+<div class="line"><span class="lineno">  357</span>  <span class="keyword">const</span> uint32_t num_kernels = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>  uint32_t num_train_layers =</div>
+<div class="line"><span class="lineno">  360</span>    configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a9001351dbf6086a8a92b3070af01314b">training_context</a>.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a> == 0</div>
+<div class="line"><span class="lineno">  361</span>      ? num_kernels</div>
+<div class="line"><span class="lineno">  362</span>      : std::min(num_kernels, configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a9001351dbf6086a8a92b3070af01314b">training_context</a>.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a>);</div>
+<div class="line"><span class="lineno">  363</span>  <span class="keyword">auto</span> graph_outputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
+<div class="line"><span class="lineno">  364</span> </div>
+<div class="line"><span class="lineno">  365</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_ind : *graph_outputs)</div>
+<div class="line"><span class="lineno">  366</span>  {</div>
+<div class="line"><span class="lineno">  367</span>    assert(lifetimes.count(output_ind) == 0);</div>
+<div class="line"><span class="lineno">  368</span>    lifetimes[output_ind] = Lifetime(-1, 0);</div>
+<div class="line"><span class="lineno">  369</span>  }</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span>  std::unordered_map&lt;uint16_t, uint8_t&gt; trainable_ops_config =</div>
+<div class="line"><span class="lineno">  372</span>    runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a4b5b1db58de8615fdf732b02fa7c5f6b">getTrainableOpsIndexes</a>();</div>
+<div class="line"><span class="lineno">  373</span> </div>
+<div class="line"><span class="lineno">  374</span>  <span class="comment">// If context has config file defined trainable operations</span></div>
+<div class="line"><span class="lineno">  375</span>  <span class="comment">// than ignore configs.training_context.num_of_train_layers value</span></div>
+<div class="line"><span class="lineno">  376</span>  <span class="comment">// and use max value from trainable_ops_indexes to define last train op</span></div>
+<div class="line"><span class="lineno">  377</span>  uint16_t last_train_op_indx = num_kernels - num_train_layers;</div>
+<div class="line"><span class="lineno">  378</span>  <span class="keywordflow">if</span> (!trainable_ops_config.empty())</div>
+<div class="line"><span class="lineno">  379</span>  {</div>
+<div class="line"><span class="lineno">  380</span>    last_train_op_indx = std::numeric_limits&lt;uint16_t&gt;::max();</div>
+<div class="line"><span class="lineno">  381</span>    <span class="comment">// Find op trainable index with min value</span></div>
+<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;p : trainable_ops_config)</div>
+<div class="line"><span class="lineno">  383</span>    {</div>
+<div class="line"><span class="lineno">  384</span>      last_train_op_indx = std::min(p.first, last_train_op_indx);</div>
+<div class="line"><span class="lineno">  385</span>    }</div>
+<div class="line"><span class="lineno">  386</span>    num_train_layers = (num_kernels - last_train_op_indx);</div>
+<div class="line"><span class="lineno">  387</span>  }</div>
+<div class="line"><span class="lineno">  388</span> </div>
+<div class="line"><span class="lineno">  389</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *op_codes = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a959e3f3e1917b980a2a965e9f0ad6d14">getCircleOpcodes</a>();</div>
+<div class="line"><span class="lineno">  390</span>  <span class="keywordflow">for</span> (int32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; num_train_layers; ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
+<div class="line"><span class="lineno">  391</span>  {</div>
+<div class="line"><span class="lineno">  392</span>    uint32_t cur_op_index = num_kernels - <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> - 1;</div>
+<div class="line"><span class="lineno">  393</span>    <span class="keyword">auto</span> *cur_op = operators-&gt;operator[](cur_op_index);</div>
 <div class="line"><span class="lineno">  394</span> </div>
-<div class="line"><span class="lineno">  395</span>    assert(cur_opcode_index &lt; op_codes-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>());</div>
+<div class="line"><span class="lineno">  395</span>    uint32_t cur_opcode_index = cur_op-&gt;opcode_index();</div>
 <div class="line"><span class="lineno">  396</span> </div>
-<div class="line"><span class="lineno">  397</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes-&gt;operator[](cur_opcode_index);</div>
+<div class="line"><span class="lineno">  397</span>    assert(cur_opcode_index &lt; op_codes-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>());</div>
 <div class="line"><span class="lineno">  398</span> </div>
-<div class="line"><span class="lineno">  399</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_inputs = cur_op-&gt;inputs();</div>
-<div class="line"><span class="lineno">  400</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_outputs = cur_op-&gt;outputs();</div>
-<div class="line"><span class="lineno">  401</span> </div>
-<div class="line"><span class="lineno">  402</span>    <span class="keywordtype">bool</span> is_trainable_ops =</div>
-<div class="line"><span class="lineno">  403</span>      trainable_ops_config.empty() == <span class="keyword">true</span></div>
-<div class="line"><span class="lineno">  404</span>        ? isTrainableWeights(opcode)</div>
-<div class="line"><span class="lineno">  405</span>        : trainable_ops_config.<a class="code hl_function" href="namespacecrew.html#a97bc5b58ba6787d57c4fa91965d9e794">find</a>(cur_op_index) != trainable_ops_config.end();</div>
-<div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>    <span class="comment">// Warning: this is right for Conv2D and for FullyConnected kernels</span></div>
-<div class="line"><span class="lineno">  408</span>    <span class="keyword">const</span> int32_t bias_index = 2;</div>
-<div class="line"><span class="lineno">  409</span> </div>
-<div class="line"><span class="lineno">  410</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_inputs-&gt;size(); ++j)</div>
-<div class="line"><span class="lineno">  411</span>    {</div>
-<div class="line"><span class="lineno">  412</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = op_inputs-&gt;operator[](j);</div>
-<div class="line"><span class="lineno">  413</span>      <span class="keyword">const</span> <span class="keyword">auto</span> is_const = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859">isConstTensor</a>(input_index);</div>
-<div class="line"><span class="lineno">  414</span>      <span class="comment">// Note: we dont need to allocate for last node and for empty tensor</span></div>
-<div class="line"><span class="lineno">  415</span>      <span class="keywordflow">if</span> (input_index == -1 or (is_const and not is_trainable_ops))</div>
-<div class="line"><span class="lineno">  416</span>      {</div>
-<div class="line"><span class="lineno">  417</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  418</span>      }</div>
-<div class="line"><span class="lineno">  419</span> </div>
-<div class="line"><span class="lineno">  420</span>      <span class="keywordflow">if</span> ((index == num_train_layers - 1) and !is_const)</div>
-<div class="line"><span class="lineno">  421</span>      {</div>
-<div class="line"><span class="lineno">  422</span>        lifetimes[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>] = {-1, <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>};</div>
-<div class="line"><span class="lineno">  423</span>      }</div>
-<div class="line"><span class="lineno">  424</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_const and</div>
-<div class="line"><span class="lineno">  425</span>               trainable_ops_config.find(cur_op_index) != trainable_ops_config.end() and</div>
-<div class="line"><span class="lineno">  426</span>               trainable_ops_config[cur_op_index] == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b">ONLY_BIAS</a> and j != bias_index)</div>
-<div class="line"><span class="lineno">  427</span>      {</div>
-<div class="line"><span class="lineno">  428</span>        <span class="comment">// Do nothing, due to update only bias</span></div>
-<div class="line"><span class="lineno">  429</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  430</span>      }</div>
-<div class="line"><span class="lineno">  431</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  432</span>      {</div>
-<div class="line"><span class="lineno">  433</span>        lifetimes[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>] = {<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>, -1};</div>
-<div class="line"><span class="lineno">  434</span>      }</div>
-<div class="line"><span class="lineno">  435</span>    }</div>
-<div class="line"><span class="lineno">  436</span> </div>
-<div class="line"><span class="lineno">  437</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_outputs-&gt;size(); ++j)</div>
-<div class="line"><span class="lineno">  438</span>    {</div>
-<div class="line"><span class="lineno">  439</span>      <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op_outputs-&gt;operator[](j);</div>
-<div class="line"><span class="lineno">  440</span>      <span class="keywordflow">if</span> (lifetimes.count(output_index) &gt; 0)</div>
-<div class="line"><span class="lineno">  441</span>        lifetimes.at(output_index).second = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
-<div class="line"><span class="lineno">  442</span>    }</div>
-<div class="line"><span class="lineno">  443</span>  }</div>
-<div class="line"><span class="lineno">  444</span> </div>
-<div class="line"><span class="lineno">  445</span>  alloc_plan.assign(num_train_layers, std::vector&lt;uint16_t&gt;());</div>
-<div class="line"><span class="lineno">  446</span>  dealloc_plan.assign(num_train_layers, std::vector&lt;uint16_t&gt;());</div>
-<div class="line"><span class="lineno">  447</span> </div>
-<div class="line"><span class="lineno">  448</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;item : lifetimes)</div>
-<div class="line"><span class="lineno">  449</span>  {</div>
-<div class="line"><span class="lineno">  450</span>    <span class="keywordflow">if</span> (item.second.first != -1)</div>
-<div class="line"><span class="lineno">  451</span>      alloc_plan[item.second.first].push_back(item.first);</div>
-<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">if</span> (item.second.second != -1)</div>
-<div class="line"><span class="lineno">  453</span>      dealloc_plan[item.second.second].push_back(item.first);</div>
-<div class="line"><span class="lineno">  454</span>  }</div>
-<div class="line"><span class="lineno">  455</span> </div>
-<div class="line"><span class="lineno">  456</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  457</span>}</div>
+<div class="line"><span class="lineno">  399</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes-&gt;operator[](cur_opcode_index);</div>
+<div class="line"><span class="lineno">  400</span> </div>
+<div class="line"><span class="lineno">  401</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_inputs = cur_op-&gt;inputs();</div>
+<div class="line"><span class="lineno">  402</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_outputs = cur_op-&gt;outputs();</div>
+<div class="line"><span class="lineno">  403</span> </div>
+<div class="line"><span class="lineno">  404</span>    <span class="keywordtype">bool</span> is_trainable_ops =</div>
+<div class="line"><span class="lineno">  405</span>      trainable_ops_config.empty() == <span class="keyword">true</span></div>
+<div class="line"><span class="lineno">  406</span>        ? isTrainableWeights(opcode)</div>
+<div class="line"><span class="lineno">  407</span>        : trainable_ops_config.<a class="code hl_function" href="namespacecrew.html#a97bc5b58ba6787d57c4fa91965d9e794">find</a>(cur_op_index) != trainable_ops_config.end();</div>
+<div class="line"><span class="lineno">  408</span> </div>
+<div class="line"><span class="lineno">  409</span>    <span class="comment">// Warning: this is right for Conv2D and for FullyConnected kernels</span></div>
+<div class="line"><span class="lineno">  410</span>    <span class="keyword">const</span> int32_t bias_index = 2;</div>
+<div class="line"><span class="lineno">  411</span> </div>
+<div class="line"><span class="lineno">  412</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_inputs-&gt;size(); ++j)</div>
+<div class="line"><span class="lineno">  413</span>    {</div>
+<div class="line"><span class="lineno">  414</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = op_inputs-&gt;operator[](j);</div>
+<div class="line"><span class="lineno">  415</span>      <span class="keyword">const</span> <span class="keyword">auto</span> is_const = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859">isConstTensor</a>(input_index);</div>
+<div class="line"><span class="lineno">  416</span>      <span class="comment">// Note: we dont need to allocate for last node and for empty tensor</span></div>
+<div class="line"><span class="lineno">  417</span>      <span class="keywordflow">if</span> (input_index == -1 or (is_const and not is_trainable_ops))</div>
+<div class="line"><span class="lineno">  418</span>      {</div>
+<div class="line"><span class="lineno">  419</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  420</span>      }</div>
+<div class="line"><span class="lineno">  421</span> </div>
+<div class="line"><span class="lineno">  422</span>      <span class="keywordflow">if</span> ((index == num_train_layers - 1) and !is_const)</div>
+<div class="line"><span class="lineno">  423</span>      {</div>
+<div class="line"><span class="lineno">  424</span>        lifetimes[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>] = {-1, <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>};</div>
+<div class="line"><span class="lineno">  425</span>      }</div>
+<div class="line"><span class="lineno">  426</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_const and</div>
+<div class="line"><span class="lineno">  427</span>               trainable_ops_config.find(cur_op_index) != trainable_ops_config.end() and</div>
+<div class="line"><span class="lineno">  428</span>               trainable_ops_config[cur_op_index] == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b">ONLY_BIAS</a> and j != bias_index)</div>
+<div class="line"><span class="lineno">  429</span>      {</div>
+<div class="line"><span class="lineno">  430</span>        <span class="comment">// Do nothing, due to update only bias</span></div>
+<div class="line"><span class="lineno">  431</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  432</span>      }</div>
+<div class="line"><span class="lineno">  433</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  434</span>      {</div>
+<div class="line"><span class="lineno">  435</span>        lifetimes[<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>] = {<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>, -1};</div>
+<div class="line"><span class="lineno">  436</span>      }</div>
+<div class="line"><span class="lineno">  437</span>    }</div>
+<div class="line"><span class="lineno">  438</span> </div>
+<div class="line"><span class="lineno">  439</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_outputs-&gt;size(); ++j)</div>
+<div class="line"><span class="lineno">  440</span>    {</div>
+<div class="line"><span class="lineno">  441</span>      <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op_outputs-&gt;operator[](j);</div>
+<div class="line"><span class="lineno">  442</span>      <span class="keywordflow">if</span> (lifetimes.count(output_index) &gt; 0)</div>
+<div class="line"><span class="lineno">  443</span>        lifetimes.at(output_index).second = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
+<div class="line"><span class="lineno">  444</span>    }</div>
+<div class="line"><span class="lineno">  445</span>  }</div>
+<div class="line"><span class="lineno">  446</span> </div>
+<div class="line"><span class="lineno">  447</span>  alloc_plan.assign(num_train_layers, std::vector&lt;uint16_t&gt;());</div>
+<div class="line"><span class="lineno">  448</span>  dealloc_plan.assign(num_train_layers, std::vector&lt;uint16_t&gt;());</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;item : lifetimes)</div>
+<div class="line"><span class="lineno">  451</span>  {</div>
+<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">if</span> (item.second.first != -1)</div>
+<div class="line"><span class="lineno">  453</span>      alloc_plan[item.second.first].push_back(item.first);</div>
+<div class="line"><span class="lineno">  454</span>    <span class="keywordflow">if</span> (item.second.second != -1)</div>
+<div class="line"><span class="lineno">  455</span>      dealloc_plan[item.second.second].push_back(item.first);</div>
+<div class="line"><span class="lineno">  456</span>  }</div>
+<div class="line"><span class="lineno">  457</span> </div>
+<div class="line"><span class="lineno">  458</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  459</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00268">flatbuffers.h:269</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_a2c819c1d2922338068c58f5a856542af"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">onert_micro::core::OMRuntimeContext::getCircleOutputs</a></div><div class="ttdeci">const reader::CircleValues * getCircleOutputs()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00092">OMRuntimeContext.h:92</a></div></div>
@@ -351,97 +351,97 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00082">82</a> of file <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html">OMExecutionPlanCreator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span>  <span class="comment">// Check is non trainable mode</span></div>
-<div class="line"><span class="lineno">   88</span>  assert(configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> != <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">if</span> (configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> == <span class="keyword">true</span>)</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordtype">bool</span> keep_input = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#aa63f2d0105fbd5e32a1199faec98f73c">keep_input</a>;</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;alloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1">getAllocPlan</a>();</div>
-<div class="line"><span class="lineno">   95</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;dealloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd">getDeallocPlan</a>();</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  <span class="comment">// First remove prev plan (if it was created)</span></div>
-<div class="line"><span class="lineno">   98</span>  alloc_plan.clear();</div>
-<div class="line"><span class="lineno">   99</span>  dealloc_plan.clear();</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  <span class="keyword">using </span>Lifetime = std::pair&lt;int32_t, int32_t&gt;;</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>  std::map&lt;uint16_t, Lifetime&gt; lifetimes;</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">reader::CircleOperators</a> *operators = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aa4b899b818bb8a1ec85227f39851c4ec">getCircleOperators</a>();</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_kernels = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
-<div class="line"><span class="lineno">  108</span> </div>
-<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">if</span> (not keep_input)</div>
-<div class="line"><span class="lineno">  110</span>  {</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keyword">auto</span> graph_inputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#adfa88a7f566a5ce3bd23f2186fe661e0">getCircleInputs</a>();</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input_ind : *graph_inputs)</div>
-<div class="line"><span class="lineno">  113</span>    {</div>
-<div class="line"><span class="lineno">  114</span>      assert(lifetimes.count(input_ind) == 0);</div>
-<div class="line"><span class="lineno">  115</span>      lifetimes[input_ind] = Lifetime(-1, 0);</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">for</span> (int32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; num_kernels; ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
-<div class="line"><span class="lineno">  120</span>  {</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keyword">auto</span> *cur_op = operators-&gt;operator[](<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_inputs = cur_op-&gt;inputs();</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_outputs = cur_op-&gt;outputs();</div>
-<div class="line"><span class="lineno">  125</span>    <span class="keyword">auto</span> kernel_type = runtime_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a6efb3e797b1ff342f6a2592f49d78887">getKernelType</a>(index);</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_inputs-&gt;size(); ++j)</div>
-<div class="line"><span class="lineno">  127</span>    {</div>
-<div class="line"><span class="lineno">  128</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = op_inputs-&gt;operator[](j);</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>      <span class="keywordflow">if</span> (input_index == -1)</div>
-<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>      <span class="comment">// Pass constant tensors</span></div>
-<div class="line"><span class="lineno">  134</span>      <span class="keywordflow">if</span> (runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859">isConstTensor</a>(input_index))</div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>      <span class="keywordflow">if</span> (lifetimes.count(input_index) &gt; 0)</div>
-<div class="line"><span class="lineno">  138</span>      {</div>
-<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a>)</div>
-<div class="line"><span class="lineno">  140</span>          lifetimes.at(input_index).second = -1;</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  142</span>          lifetimes.at(input_index).second = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
-<div class="line"><span class="lineno">  143</span>      }</div>
-<div class="line"><span class="lineno">  144</span>    }</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_outputs-&gt;size(); ++j)</div>
-<div class="line"><span class="lineno">  147</span>    {</div>
-<div class="line"><span class="lineno">  148</span>      <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op_outputs-&gt;operator[](j);</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>      <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a>)</div>
-<div class="line"><span class="lineno">  151</span>        lifetimes[output_index] = Lifetime(-1, index);</div>
-<div class="line"><span class="lineno">  152</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  153</span>        lifetimes[output_index] = Lifetime(index, index);</div>
-<div class="line"><span class="lineno">  154</span>    }</div>
-<div class="line"><span class="lineno">  155</span>  }</div>
-<div class="line"><span class="lineno">  156</span>  <span class="keyword">auto</span> graph_outputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
-<div class="line"><span class="lineno">  157</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_ind : *graph_outputs)</div>
-<div class="line"><span class="lineno">  158</span>  {</div>
-<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">if</span> (lifetimes.count(output_ind) &gt; 0)</div>
-<div class="line"><span class="lineno">  160</span>      lifetimes.at(output_ind).second = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(num_kernels);</div>
-<div class="line"><span class="lineno">  161</span>  }</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>  alloc_plan.assign(num_kernels, std::vector&lt;uint16_t&gt;());</div>
-<div class="line"><span class="lineno">  164</span>  dealloc_plan.assign(num_kernels + 1, std::vector&lt;uint16_t&gt;());</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;item : lifetimes)</div>
-<div class="line"><span class="lineno">  167</span>  {</div>
-<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">if</span> (item.second.first != -1)</div>
-<div class="line"><span class="lineno">  169</span>      alloc_plan[item.second.first].push_back(item.first);</div>
-<div class="line"><span class="lineno">  170</span>    <span class="keywordflow">if</span> (item.second.second != -1)</div>
-<div class="line"><span class="lineno">  171</span>      dealloc_plan[item.second.second].push_back(item.first);</div>
-<div class="line"><span class="lineno">  172</span>  }</div>
-<div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  175</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00083">83</a> of file <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html">OMExecutionPlanCreator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>  <span class="comment">// Check is non trainable mode</span></div>
+<div class="line"><span class="lineno">   89</span>  assert(configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> != <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">if</span> (configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> == <span class="keyword">true</span>)</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordtype">bool</span> keep_input = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#aa63f2d0105fbd5e32a1199faec98f73c">keep_input</a>;</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;alloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1">getAllocPlan</a>();</div>
+<div class="line"><span class="lineno">   96</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;dealloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd">getDeallocPlan</a>();</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>  <span class="comment">// First remove prev plan (if it was created)</span></div>
+<div class="line"><span class="lineno">   99</span>  alloc_plan.clear();</div>
+<div class="line"><span class="lineno">  100</span>  dealloc_plan.clear();</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  <span class="keyword">using </span>Lifetime = std::pair&lt;int32_t, int32_t&gt;;</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>  std::map&lt;uint16_t, Lifetime&gt; lifetimes;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">reader::CircleOperators</a> *operators = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aa4b899b818bb8a1ec85227f39851c4ec">getCircleOperators</a>();</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_kernels = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">if</span> (not keep_input)</div>
+<div class="line"><span class="lineno">  111</span>  {</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keyword">auto</span> graph_inputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#adfa88a7f566a5ce3bd23f2186fe661e0">getCircleInputs</a>();</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input_ind : *graph_inputs)</div>
+<div class="line"><span class="lineno">  114</span>    {</div>
+<div class="line"><span class="lineno">  115</span>      assert(lifetimes.count(input_ind) == 0);</div>
+<div class="line"><span class="lineno">  116</span>      lifetimes[input_ind] = Lifetime(-1, 0);</div>
+<div class="line"><span class="lineno">  117</span>    }</div>
+<div class="line"><span class="lineno">  118</span>  }</div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">for</span> (int32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; num_kernels; ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
+<div class="line"><span class="lineno">  121</span>  {</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keyword">auto</span> *cur_op = operators-&gt;operator[](<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_inputs = cur_op-&gt;inputs();</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_outputs = cur_op-&gt;outputs();</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keyword">auto</span> kernel_type = runtime_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a6efb3e797b1ff342f6a2592f49d78887">getKernelType</a>(index);</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_inputs-&gt;size(); ++j)</div>
+<div class="line"><span class="lineno">  128</span>    {</div>
+<div class="line"><span class="lineno">  129</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = op_inputs-&gt;operator[](j);</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>      <span class="keywordflow">if</span> (input_index == -1)</div>
+<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>      <span class="comment">// Pass constant tensors</span></div>
+<div class="line"><span class="lineno">  135</span>      <span class="keywordflow">if</span> (runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859">isConstTensor</a>(input_index))</div>
+<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">if</span> (lifetimes.count(input_index) &gt; 0)</div>
+<div class="line"><span class="lineno">  139</span>      {</div>
+<div class="line"><span class="lineno">  140</span>        <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a>)</div>
+<div class="line"><span class="lineno">  141</span>          lifetimes.at(input_index).second = -1;</div>
+<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  143</span>          lifetimes.at(input_index).second = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
+<div class="line"><span class="lineno">  144</span>      }</div>
+<div class="line"><span class="lineno">  145</span>    }</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_outputs-&gt;size(); ++j)</div>
+<div class="line"><span class="lineno">  148</span>    {</div>
+<div class="line"><span class="lineno">  149</span>      <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op_outputs-&gt;operator[](j);</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>      <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a>)</div>
+<div class="line"><span class="lineno">  152</span>        lifetimes[output_index] = Lifetime(-1, index);</div>
+<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  154</span>        lifetimes[output_index] = Lifetime(index, index);</div>
+<div class="line"><span class="lineno">  155</span>    }</div>
+<div class="line"><span class="lineno">  156</span>  }</div>
+<div class="line"><span class="lineno">  157</span>  <span class="keyword">auto</span> graph_outputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_ind : *graph_outputs)</div>
+<div class="line"><span class="lineno">  159</span>  {</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> (lifetimes.count(output_ind) &gt; 0)</div>
+<div class="line"><span class="lineno">  161</span>      lifetimes.at(output_ind).second = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(num_kernels);</div>
+<div class="line"><span class="lineno">  162</span>  }</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>  alloc_plan.assign(num_kernels, std::vector&lt;uint16_t&gt;());</div>
+<div class="line"><span class="lineno">  165</span>  dealloc_plan.assign(num_kernels + 1, std::vector&lt;uint16_t&gt;());</div>
+<div class="line"><span class="lineno">  166</span> </div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;item : lifetimes)</div>
+<div class="line"><span class="lineno">  168</span>  {</div>
+<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">if</span> (item.second.first != -1)</div>
+<div class="line"><span class="lineno">  170</span>      alloc_plan[item.second.first].push_back(item.first);</div>
+<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">if</span> (item.second.second != -1)</div>
+<div class="line"><span class="lineno">  172</span>      dealloc_plan[item.second.second].push_back(item.first);</div>
+<div class="line"><span class="lineno">  173</span>  }</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  176</span>}</div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html_adfa88a7f566a5ce3bd23f2186fe661e0"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#adfa88a7f566a5ce3bd23f2186fe661e0">onert_micro::core::OMRuntimeContext::getCircleInputs</a></div><div class="ttdeci">const reader::CircleValues * getCircleInputs()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00093">OMRuntimeContext.h:93</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_storage_html_a6efb3e797b1ff342f6a2592f49d78887"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a6efb3e797b1ff342f6a2592f49d78887">onert_micro::core::OMRuntimeStorage::getKernelType</a></div><div class="ttdeci">OMKernelType getKernelType(uint16_t op_index)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_storage_8h_source.html#l00058">OMRuntimeStorage.h:58</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_html_aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">onert_micro::core::Inplace</a></div><div class="ttdeci">@ Inplace</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00041">OMKernelType.h:41</a></div></div>
@@ -498,147 +498,148 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00181">181</a> of file <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html">OMExecutionPlanCreator.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span>{</div>
-<div class="line"><span class="lineno">  185</span>  <span class="comment">// Check is trainable mode</span></div>
-<div class="line"><span class="lineno">  186</span>  assert(configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> == <span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">  187</span>  <span class="keywordflow">if</span> (configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> != <span class="keyword">true</span>)</div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>  <span class="keywordtype">bool</span> keep_input = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#aa63f2d0105fbd5e32a1199faec98f73c">keep_input</a>;</div>
-<div class="line"><span class="lineno">  191</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;alloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1">getAllocPlan</a>();</div>
-<div class="line"><span class="lineno">  192</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;dealloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd">getDeallocPlan</a>();</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>  <span class="comment">// First remove prev plan (if it was created)</span></div>
-<div class="line"><span class="lineno">  195</span>  alloc_plan.clear();</div>
-<div class="line"><span class="lineno">  196</span>  dealloc_plan.clear();</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>  <span class="keyword">using </span>Lifetime = std::pair&lt;int32_t, int32_t&gt;;</div>
-<div class="line"><span class="lineno">  199</span> </div>
-<div class="line"><span class="lineno">  200</span>  std::map&lt;uint16_t, Lifetime&gt; lifetimes;</div>
-<div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">reader::CircleOperators</a> *operators = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aa4b899b818bb8a1ec85227f39851c4ec">getCircleOperators</a>();</div>
-<div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_kernels = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
-<div class="line"><span class="lineno">  205</span> </div>
-<div class="line"><span class="lineno">  206</span>  uint32_t num_train_layers = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a9001351dbf6086a8a92b3070af01314b">training_context</a>.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a>;</div>
-<div class="line"><span class="lineno">  207</span>  <span class="keywordflow">if</span> (num_train_layers == 0)</div>
-<div class="line"><span class="lineno">  208</span>    num_train_layers = num_kernels;</div>
-<div class="line"><span class="lineno">  209</span> </div>
-<div class="line"><span class="lineno">  210</span>  std::unordered_map&lt;uint16_t, uint8_t&gt; trainable_ops_config =</div>
-<div class="line"><span class="lineno">  211</span>    runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a4b5b1db58de8615fdf732b02fa7c5f6b">getTrainableOpsIndexes</a>();</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>  <span class="comment">// If context has config file defined trainable operations</span></div>
-<div class="line"><span class="lineno">  214</span>  <span class="comment">// than ignore configs.training_context.num_of_train_layers value</span></div>
-<div class="line"><span class="lineno">  215</span>  <span class="comment">// and use max value from trainable_ops_indexes to define last train op</span></div>
-<div class="line"><span class="lineno">  216</span>  uint16_t last_train_op_indx = num_kernels - num_train_layers;</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keywordflow">if</span> (!trainable_ops_config.empty())</div>
-<div class="line"><span class="lineno">  218</span>  {</div>
-<div class="line"><span class="lineno">  219</span>    last_train_op_indx = std::numeric_limits&lt;uint16_t&gt;::max();</div>
-<div class="line"><span class="lineno">  220</span>    <span class="comment">// Find op trainable index with min value</span></div>
-<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;p : trainable_ops_config)</div>
-<div class="line"><span class="lineno">  222</span>    {</div>
-<div class="line"><span class="lineno">  223</span>      last_train_op_indx = std::min(p.first, last_train_op_indx);</div>
-<div class="line"><span class="lineno">  224</span>    }</div>
-<div class="line"><span class="lineno">  225</span>    num_train_layers = (num_kernels - last_train_op_indx);</div>
-<div class="line"><span class="lineno">  226</span>  }</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">if</span> (not keep_input)</div>
-<div class="line"><span class="lineno">  229</span>  {</div>
-<div class="line"><span class="lineno">  230</span>    <span class="keyword">auto</span> graph_inputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#adfa88a7f566a5ce3bd23f2186fe661e0">getCircleInputs</a>();</div>
-<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input_ind : *graph_inputs)</div>
-<div class="line"><span class="lineno">  232</span>    {</div>
-<div class="line"><span class="lineno">  233</span>      assert(lifetimes.count(input_ind) == 0);</div>
-<div class="line"><span class="lineno">  234</span>      lifetimes[input_ind] = Lifetime(-1, 0);</div>
-<div class="line"><span class="lineno">  235</span>    }</div>
-<div class="line"><span class="lineno">  236</span>  }</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *op_codes = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a959e3f3e1917b980a2a965e9f0ad6d14">getCircleOpcodes</a>();</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>  <span class="keywordflow">for</span> (int32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; num_kernels; ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
-<div class="line"><span class="lineno">  241</span>  {</div>
-<div class="line"><span class="lineno">  242</span>    <span class="keyword">auto</span> *cur_op = operators-&gt;operator[](<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_inputs = cur_op-&gt;inputs();</div>
-<div class="line"><span class="lineno">  245</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_outputs = cur_op-&gt;outputs();</div>
-<div class="line"><span class="lineno">  246</span>    <span class="keyword">auto</span> kernel_type = runtime_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a6efb3e797b1ff342f6a2592f49d78887">getKernelType</a>(index);</div>
-<div class="line"><span class="lineno">  247</span> </div>
-<div class="line"><span class="lineno">  248</span>    uint32_t cur_opcode_index = cur_op-&gt;opcode_index();</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>    assert(cur_opcode_index &lt; op_codes-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>());</div>
-<div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes-&gt;operator[](cur_opcode_index);</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>    <span class="comment">// Flag to determine is current operation needed to save input data (is this op in training part</span></div>
-<div class="line"><span class="lineno">  255</span>    <span class="comment">// of the graph)</span></div>
-<div class="line"><span class="lineno">  256</span>    <span class="keywordtype">bool</span> need_to_save_input_data =</div>
-<div class="line"><span class="lineno">  257</span>      (<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &gt;= last_train_op_indx) and</div>
-<div class="line"><span class="lineno">  258</span>      ((trainable_ops_config.find(index) != trainable_ops_config.end() and</div>
-<div class="line"><span class="lineno">  259</span>        trainable_ops_config[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] != <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b">ONLY_BIAS</a>) or</div>
-<div class="line"><span class="lineno">  260</span>       isOpNeedSaveInputData(opcode));</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    <span class="comment">// Flag to determine is current operation needed to save output data (is this op in training</span></div>
-<div class="line"><span class="lineno">  263</span>    <span class="comment">// part of the graph)</span></div>
-<div class="line"><span class="lineno">  264</span>    <span class="keywordtype">bool</span> need_to_save_output_data =</div>
-<div class="line"><span class="lineno">  265</span>      (<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &gt;= last_train_op_indx) and</div>
-<div class="line"><span class="lineno">  266</span>      ((trainable_ops_config.find(index) != trainable_ops_config.end() and</div>
-<div class="line"><span class="lineno">  267</span>        trainable_ops_config[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] != <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b">ONLY_BIAS</a>) or</div>
-<div class="line"><span class="lineno">  268</span>       isOpNeedSaveOutputData(opcode, cur_op));</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_inputs-&gt;size(); ++j)</div>
-<div class="line"><span class="lineno">  271</span>    {</div>
-<div class="line"><span class="lineno">  272</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = op_inputs-&gt;operator[](j);</div>
-<div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>      <span class="keywordflow">if</span> (input_index == -1)</div>
-<div class="line"><span class="lineno">  275</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>      <span class="comment">// Pass constant tensors</span></div>
-<div class="line"><span class="lineno">  278</span>      <span class="keywordflow">if</span> (runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859">isConstTensor</a>(input_index))</div>
-<div class="line"><span class="lineno">  279</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span>      <span class="keywordflow">if</span> (lifetimes.count(input_index) &gt; 0)</div>
-<div class="line"><span class="lineno">  282</span>      {</div>
-<div class="line"><span class="lineno">  283</span>        <span class="comment">// lifetimes.at(input_index).second == -2 - Means need to save data for input_index tensor</span></div>
-<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a> or need_to_save_input_data or</div>
-<div class="line"><span class="lineno">  285</span>            (lifetimes.at(input_index).second == -2))</div>
-<div class="line"><span class="lineno">  286</span>          lifetimes.at(input_index).second = -1;</div>
-<div class="line"><span class="lineno">  287</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  288</span>          lifetimes.at(input_index).second = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
-<div class="line"><span class="lineno">  289</span>      }</div>
-<div class="line"><span class="lineno">  290</span>    }</div>
-<div class="line"><span class="lineno">  291</span> </div>
-<div class="line"><span class="lineno">  292</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_outputs-&gt;size(); ++j)</div>
-<div class="line"><span class="lineno">  293</span>    {</div>
-<div class="line"><span class="lineno">  294</span>      <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op_outputs-&gt;operator[](j);</div>
-<div class="line"><span class="lineno">  295</span> </div>
-<div class="line"><span class="lineno">  296</span>      <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a>)</div>
-<div class="line"><span class="lineno">  297</span>        lifetimes[output_index] = Lifetime(-1, index);</div>
-<div class="line"><span class="lineno">  298</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (need_to_save_output_data)</div>
-<div class="line"><span class="lineno">  299</span>        lifetimes[output_index] = Lifetime(index, -2);</div>
-<div class="line"><span class="lineno">  300</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  301</span>        lifetimes[output_index] = Lifetime(index, index);</div>
-<div class="line"><span class="lineno">  302</span>    }</div>
-<div class="line"><span class="lineno">  303</span>  }</div>
-<div class="line"><span class="lineno">  304</span>  <span class="keyword">auto</span> graph_outputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
-<div class="line"><span class="lineno">  305</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_ind : *graph_outputs)</div>
-<div class="line"><span class="lineno">  306</span>  {</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">if</span> (lifetimes.count(output_ind) &gt; 0)</div>
-<div class="line"><span class="lineno">  308</span>      lifetimes.at(output_ind).second = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(num_kernels);</div>
-<div class="line"><span class="lineno">  309</span>  }</div>
-<div class="line"><span class="lineno">  310</span> </div>
-<div class="line"><span class="lineno">  311</span>  alloc_plan.assign(num_kernels, std::vector&lt;uint16_t&gt;());</div>
-<div class="line"><span class="lineno">  312</span>  dealloc_plan.assign(num_kernels + 1, std::vector&lt;uint16_t&gt;());</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;item : lifetimes)</div>
-<div class="line"><span class="lineno">  315</span>  {</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">if</span> (item.second.first &gt;= 0)</div>
-<div class="line"><span class="lineno">  317</span>      alloc_plan[item.second.first].push_back(item.first);</div>
-<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">if</span> (item.second.second &gt;= 0)</div>
-<div class="line"><span class="lineno">  319</span>      dealloc_plan[item.second.second].push_back(item.first);</div>
-<div class="line"><span class="lineno">  320</span>  }</div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  323</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html#l00182">182</a> of file <a class="el" href="_o_m_execution_plan_creator_8cpp_source.html">OMExecutionPlanCreator.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
+<div class="line"><span class="lineno">  186</span>  <span class="comment">// Check is trainable mode</span></div>
+<div class="line"><span class="lineno">  187</span>  assert(configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> == <span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keywordflow">if</span> (configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a93356efb2f983f7816f4dcb17fea8c5f">train_mode</a> != <span class="keyword">true</span>)</div>
+<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  190</span> </div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordtype">bool</span> keep_input = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#aa63f2d0105fbd5e32a1199faec98f73c">keep_input</a>;</div>
+<div class="line"><span class="lineno">  192</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;alloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae3351fe696779b66eb6e208d42d76ff1">getAllocPlan</a>();</div>
+<div class="line"><span class="lineno">  193</span>  std::vector&lt;std::vector&lt;uint16_t&gt;&gt; &amp;dealloc_plan = allocator.<a class="code hl_function" href="classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html#ae4105b8ee52dfdb2f4296dbbfa3d0cbd">getDeallocPlan</a>();</div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>  <span class="comment">// First remove prev plan (if it was created)</span></div>
+<div class="line"><span class="lineno">  196</span>  alloc_plan.clear();</div>
+<div class="line"><span class="lineno">  197</span>  dealloc_plan.clear();</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>  <span class="keyword">using </span>Lifetime = std::pair&lt;int32_t, int32_t&gt;;</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>  std::map&lt;uint16_t, Lifetime&gt; lifetimes;</div>
+<div class="line"><span class="lineno">  202</span> </div>
+<div class="line"><span class="lineno">  203</span>  <span class="keyword">const</span> <a class="code hl_class" href="classflatbuffers_1_1_vector.html">reader::CircleOperators</a> *operators = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aa4b899b818bb8a1ec85227f39851c4ec">getCircleOperators</a>();</div>
+<div class="line"><span class="lineno">  204</span> </div>
+<div class="line"><span class="lineno">  205</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_kernels = operators-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>  uint32_t num_train_layers = configs.<a class="code hl_variable" href="structonert__micro_1_1_o_m_config.html#a9001351dbf6086a8a92b3070af01314b">training_context</a>.<a class="code hl_variable" href="structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69">num_of_train_layers</a>;</div>
+<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">if</span> (num_train_layers == 0)</div>
+<div class="line"><span class="lineno">  209</span>    num_train_layers = num_kernels;</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>  std::unordered_map&lt;uint16_t, uint8_t&gt; trainable_ops_config =</div>
+<div class="line"><span class="lineno">  212</span>    runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a4b5b1db58de8615fdf732b02fa7c5f6b">getTrainableOpsIndexes</a>();</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>  <span class="comment">// If context has config file defined trainable operations</span></div>
+<div class="line"><span class="lineno">  215</span>  <span class="comment">// than ignore configs.training_context.num_of_train_layers value</span></div>
+<div class="line"><span class="lineno">  216</span>  <span class="comment">// and use max value from trainable_ops_indexes to define last train op</span></div>
+<div class="line"><span class="lineno">  217</span>  uint16_t last_train_op_indx = num_kernels - num_train_layers;</div>
+<div class="line"><span class="lineno">  218</span>  <span class="keywordflow">if</span> (!trainable_ops_config.empty())</div>
+<div class="line"><span class="lineno">  219</span>  {</div>
+<div class="line"><span class="lineno">  220</span>    last_train_op_indx = std::numeric_limits&lt;uint16_t&gt;::max();</div>
+<div class="line"><span class="lineno">  221</span>    <span class="comment">// Find op trainable index with min value</span></div>
+<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;p : trainable_ops_config)</div>
+<div class="line"><span class="lineno">  223</span>    {</div>
+<div class="line"><span class="lineno">  224</span>      last_train_op_indx = std::min(p.first, last_train_op_indx);</div>
+<div class="line"><span class="lineno">  225</span>    }</div>
+<div class="line"><span class="lineno">  226</span>    num_train_layers = (num_kernels - last_train_op_indx);</div>
+<div class="line"><span class="lineno">  227</span>  }</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">if</span> (not keep_input)</div>
+<div class="line"><span class="lineno">  230</span>  {</div>
+<div class="line"><span class="lineno">  231</span>    <span class="keyword">auto</span> graph_inputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#adfa88a7f566a5ce3bd23f2186fe661e0">getCircleInputs</a>();</div>
+<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input_ind : *graph_inputs)</div>
+<div class="line"><span class="lineno">  233</span>    {</div>
+<div class="line"><span class="lineno">  234</span>      assert(lifetimes.count(input_ind) == 0);</div>
+<div class="line"><span class="lineno">  235</span>      lifetimes[input_ind] = Lifetime(-1, 0);</div>
+<div class="line"><span class="lineno">  236</span>    }</div>
+<div class="line"><span class="lineno">  237</span>  }</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *op_codes = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a959e3f3e1917b980a2a965e9f0ad6d14">getCircleOpcodes</a>();</div>
+<div class="line"><span class="lineno">  240</span> </div>
+<div class="line"><span class="lineno">  241</span>  <span class="keywordflow">for</span> (int32_t index = 0; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt; num_kernels; ++<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>)</div>
+<div class="line"><span class="lineno">  242</span>  {</div>
+<div class="line"><span class="lineno">  243</span>    <span class="keyword">auto</span> *cur_op = operators-&gt;operator[](<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>);</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_inputs = cur_op-&gt;inputs();</div>
+<div class="line"><span class="lineno">  246</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *op_outputs = cur_op-&gt;outputs();</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keyword">auto</span> kernel_type = runtime_storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a6efb3e797b1ff342f6a2592f49d78887">getKernelType</a>(index);</div>
+<div class="line"><span class="lineno">  248</span> </div>
+<div class="line"><span class="lineno">  249</span>    uint32_t cur_opcode_index = cur_op-&gt;opcode_index();</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>    assert(cur_opcode_index &lt; op_codes-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>());</div>
+<div class="line"><span class="lineno">  252</span> </div>
+<div class="line"><span class="lineno">  253</span>    <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes-&gt;operator[](cur_opcode_index);</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span>    <span class="comment">// Flag to determine is current operation needed to save input data (is this op in training part</span></div>
+<div class="line"><span class="lineno">  256</span>    <span class="comment">// of the graph)</span></div>
+<div class="line"><span class="lineno">  257</span>    <span class="keywordtype">bool</span> need_to_save_input_data =</div>
+<div class="line"><span class="lineno">  258</span>      (<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &gt;= last_train_op_indx) and</div>
+<div class="line"><span class="lineno">  259</span>      ((trainable_ops_config.empty() or</div>
+<div class="line"><span class="lineno">  260</span>        trainable_ops_config.find(index) != trainable_ops_config.end() and</div>
+<div class="line"><span class="lineno">  261</span>          trainable_ops_config[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] != <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b">ONLY_BIAS</a>) or</div>
+<div class="line"><span class="lineno">  262</span>       isOpNeedSaveInputData(opcode));</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>    <span class="comment">// Flag to determine is current operation needed to save output data (is this op in training</span></div>
+<div class="line"><span class="lineno">  265</span>    <span class="comment">// part of the graph)</span></div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordtype">bool</span> need_to_save_output_data =</div>
+<div class="line"><span class="lineno">  267</span>      (<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &gt;= last_train_op_indx) and</div>
+<div class="line"><span class="lineno">  268</span>      ((trainable_ops_config.find(index) != trainable_ops_config.end() and</div>
+<div class="line"><span class="lineno">  269</span>        trainable_ops_config[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] != <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a4c215dc2249a280607fb183c5365639b">ONLY_BIAS</a>) or</div>
+<div class="line"><span class="lineno">  270</span>       isOpNeedSaveOutputData(opcode, cur_op));</div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_inputs-&gt;size(); ++j)</div>
+<div class="line"><span class="lineno">  273</span>    {</div>
+<div class="line"><span class="lineno">  274</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a> = op_inputs-&gt;operator[](j);</div>
+<div class="line"><span class="lineno">  275</span> </div>
+<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">if</span> (input_index == -1)</div>
+<div class="line"><span class="lineno">  277</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  278</span> </div>
+<div class="line"><span class="lineno">  279</span>      <span class="comment">// Pass constant tensors</span></div>
+<div class="line"><span class="lineno">  280</span>      <span class="keywordflow">if</span> (runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#aede80ed042c6f791fed1b7c32c7f7859">isConstTensor</a>(input_index))</div>
+<div class="line"><span class="lineno">  281</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span>      <span class="keywordflow">if</span> (lifetimes.count(input_index) &gt; 0)</div>
+<div class="line"><span class="lineno">  284</span>      {</div>
+<div class="line"><span class="lineno">  285</span>        <span class="comment">// lifetimes.at(input_index).second == -2 - Means need to save data for input_index tensor</span></div>
+<div class="line"><span class="lineno">  286</span>        <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a> or need_to_save_input_data or</div>
+<div class="line"><span class="lineno">  287</span>            (lifetimes.at(input_index).second == -2))</div>
+<div class="line"><span class="lineno">  288</span>          lifetimes.at(input_index).second = -1;</div>
+<div class="line"><span class="lineno">  289</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  290</span>          lifetimes.at(input_index).second = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
+<div class="line"><span class="lineno">  291</span>      }</div>
+<div class="line"><span class="lineno">  292</span>    }</div>
+<div class="line"><span class="lineno">  293</span> </div>
+<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">for</span> (int32_t j = 0; j &lt; op_outputs-&gt;size(); ++j)</div>
+<div class="line"><span class="lineno">  295</span>    {</div>
+<div class="line"><span class="lineno">  296</span>      <span class="keyword">const</span> <span class="keyword">auto</span> output_index = op_outputs-&gt;operator[](j);</div>
+<div class="line"><span class="lineno">  297</span> </div>
+<div class="line"><span class="lineno">  298</span>      <span class="keywordflow">if</span> (kernel_type == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">Inplace</a>)</div>
+<div class="line"><span class="lineno">  299</span>        lifetimes[output_index] = Lifetime(-1, index);</div>
+<div class="line"><span class="lineno">  300</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (need_to_save_output_data)</div>
+<div class="line"><span class="lineno">  301</span>        lifetimes[output_index] = Lifetime(index, -2);</div>
+<div class="line"><span class="lineno">  302</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  303</span>        lifetimes[output_index] = Lifetime(index, index);</div>
+<div class="line"><span class="lineno">  304</span>    }</div>
+<div class="line"><span class="lineno">  305</span>  }</div>
+<div class="line"><span class="lineno">  306</span>  <span class="keyword">auto</span> graph_outputs = runtime_context.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html#a2c819c1d2922338068c58f5a856542af">getCircleOutputs</a>();</div>
+<div class="line"><span class="lineno">  307</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> output_ind : *graph_outputs)</div>
+<div class="line"><span class="lineno">  308</span>  {</div>
+<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">if</span> (lifetimes.count(output_ind) &gt; 0)</div>
+<div class="line"><span class="lineno">  310</span>      lifetimes.at(output_ind).second = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(num_kernels);</div>
+<div class="line"><span class="lineno">  311</span>  }</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span>  alloc_plan.assign(num_kernels, std::vector&lt;uint16_t&gt;());</div>
+<div class="line"><span class="lineno">  314</span>  dealloc_plan.assign(num_kernels + 1, std::vector&lt;uint16_t&gt;());</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;item : lifetimes)</div>
+<div class="line"><span class="lineno">  317</span>  {</div>
+<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">if</span> (item.second.first &gt;= 0)</div>
+<div class="line"><span class="lineno">  319</span>      alloc_plan[item.second.first].push_back(item.first);</div>
+<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">if</span> (item.second.second &gt;= 0)</div>
+<div class="line"><span class="lineno">  321</span>      dealloc_plan[item.second.second].push_back(item.first);</div>
+<div class="line"><span class="lineno">  322</span>  }</div>
+<div class="line"><span class="lineno">  323</span> </div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  325</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_allocator_8h_source.html#l00048">onert_micro::core::memory::OMRuntimeAllocator::getAllocPlan()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00093">onert_micro::core::OMRuntimeContext::getCircleInputs()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00098">onert_micro::core::OMRuntimeContext::getCircleOpcodes()</a>, <a class="el" href="_o_m_runtime_context_8cpp_source.html#l00029">onert_micro::core::OMRuntimeContext::getCircleOperators()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00092">onert_micro::core::OMRuntimeContext::getCircleOutputs()</a>, <a class="el" href="_o_m_runtime_allocator_8h_source.html#l00050">onert_micro::core::memory::OMRuntimeAllocator::getDeallocPlan()</a>, <a class="el" href="_o_m_runtime_storage_8h_source.html#l00058">onert_micro::core::OMRuntimeStorage::getKernelType()</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00085">onert_micro::core::OMRuntimeContext::getTrainableOpsIndexes()</a>, <a class="el" href="_o_m_kernel_type_8h_source.html#l00041">onert_micro::core::Inplace</a>, <a class="el" href="_o_m_runtime_context_8h_source.html#l00090">onert_micro::core::OMRuntimeContext::isConstTensor()</a>, <a class="el" href="_o_m_config_8h_source.html#l00100">onert_micro::OMConfig::keep_input</a>, <a class="el" href="_o_m_config_8h_source.html#l00077">onert_micro::OMTrainingContext::num_of_train_layers</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_type_8h_source.html#l00032">onert_micro::core::ONLY_BIAS</a>, <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, <a class="el" href="_o_m_config_8h_source.html#l00104">onert_micro::OMConfig::train_mode</a>, <a class="el" href="_o_m_config_8h_source.html#l00107">onert_micro::OMConfig::training_context</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 

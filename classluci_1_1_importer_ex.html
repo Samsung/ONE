@@ -101,15 +101,19 @@ $(document).ready(function(){initNavTree('classluci_1_1_importer_ex.html',''); i
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af819ce5f182cf746c2ea93a915e40fb8" id="r_af819ce5f182cf746c2ea93a915e40fb8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_importer_ex.html#af819ce5f182cf746c2ea93a915e40fb8">ImporterEx</a> ()=default</td></tr>
 <tr class="separator:af819ce5f182cf746c2ea93a915e40fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0f55f77cdb8b3a04b573eb826827ba3" id="r_af0f55f77cdb8b3a04b573eb826827ba3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_importer_ex.html#af0f55f77cdb8b3a04b573eb826827ba3">ImporterEx</a> (const <a class="el" href="structluci_1_1_graph_builder_source.html">GraphBuilderSource</a> *source)</td></tr>
+<tr class="separator:af0f55f77cdb8b3a04b573eb826827ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc96edd9e31ad56e6844829427b4403e" id="r_adc96edd9e31ad56e6844829427b4403e"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci_1_1_module.html">Module</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a> (const std::string &amp;input_path) const</td></tr>
 <tr class="separator:adc96edd9e31ad56e6844829427b4403e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6206e4ca053122a0257aa0000613ef2" id="r_ac6206e4ca053122a0257aa0000613ef2"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci_1_1_module.html">Module</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_importer_ex.html#ac6206e4ca053122a0257aa0000613ef2">importModule</a> (std::vector&lt; char &gt; &amp;model_data) const</td></tr>
+<tr class="separator:ac6206e4ca053122a0257aa0000613ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_importer_ex_8h_source.html#l00028">28</a> of file <a class="el" href="_importer_ex_8h_source.html">ImporterEx.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_importer_ex_8h_source.html#l00034">34</a> of file <a class="el" href="_importer_ex_8h_source.html">ImporterEx.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af819ce5f182cf746c2ea93a915e40fb8" name="af819ce5f182cf746c2ea93a915e40fb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af819ce5f182cf746c2ea93a915e40fb8">&#9670;&#160;</a></span>ImporterEx()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af819ce5f182cf746c2ea93a915e40fb8">&#9670;&#160;</a></span>ImporterEx() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -133,7 +137,70 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af0f55f77cdb8b3a04b573eb826827ba3" name="af0f55f77cdb8b3a04b573eb826827ba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0f55f77cdb8b3a04b573eb826827ba3">&#9670;&#160;</a></span>ImporterEx() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">luci::ImporterEx::ImporterEx </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci_1_1_graph_builder_source.html">GraphBuilderSource</a> *&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_importer_ex_8h_source.html#l00041">41</a> of file <a class="el" href="_importer_ex_8h_source.html">ImporterEx.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>                                                        : _source{source}</div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac6206e4ca053122a0257aa0000613ef2" name="ac6206e4ca053122a0257aa0000613ef2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6206e4ca053122a0257aa0000613ef2">&#9670;&#160;</a></span>importModule()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classluci_1_1_module.html">Module</a> &gt; luci::ImporterEx::importModule </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>model_data</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_importer_ex_8cpp_source.html#l00061">61</a> of file <a class="el" href="_importer_ex_8cpp_source.html">ImporterEx.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keyword">auto</span> data_size = model_data.size();</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  Importer importer(_source);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> importer.importModule(data_data, data_size);</div>
+<div class="line"><span class="lineno">   68</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::importModule()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_test_driver_8cpp_source.html#l00120">entry()</a>.</p>
+
+</div>
+</div>
 <a id="adc96edd9e31ad56e6844829427b4403e" name="adc96edd9e31ad56e6844829427b4403e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adc96edd9e31ad56e6844829427b4403e">&#9670;&#160;</a></span>importVerifyModule()</h2>
 
@@ -186,9 +253,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html_adc903eb7f252ed7fac779a6869139ec4"><div class="ttname"><a href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">foder::FileLoader::load</a></div><div class="ttdeci">DataBuffer load(void) const</div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00039">FileLoader.h:39</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_ab8593f39f8c0562457496ffafe7c2932"><div class="ttname"><a href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">part_eval_one.circle_model</a></div><div class="ttdeci">str circle_model</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00025">part_eval_one.py:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, and <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::importModule()</a>, and <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_data_provider_8cpp_source.html#l00052">mpqsolver::core::H5FileDataProvider::H5FileDataProvider()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_data_provider_8cpp_source.html#l00052">mpqsolver::core::H5FileDataProvider::H5FileDataProvider()</a>, <a class="el" href="_dalgona_8cpp_source.html#l00099">dalgona::Dalgona::initialize()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00182">record_minmax::RecordMinMax::initialize()</a>.</p>
 
 </div>
 </div>

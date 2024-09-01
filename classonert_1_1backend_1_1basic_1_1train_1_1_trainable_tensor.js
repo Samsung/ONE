@@ -6,7 +6,6 @@ var classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor =
     [ "appendOptVar", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a18a60603ec9bc335f9aec0195af34962", null ],
     [ "buffer", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#aa887913261678fa14833d23c9c1b0d76", null ],
     [ "fillBuffer", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a44ef3400ba1df4653ac97efe47669ca7", null ],
-    [ "layout", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#ac852656504d4541264ae601efaa3e41e", null ],
     [ "optVars", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a1a4f227fbfe02444bfca17efb935213a", null ],
     [ "setBuffer", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a9f3ecd192fa085572d45e3d53aa8403e", null ],
     [ "setOptVarBuffer", "classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a7bbeec2ad06de1a647c494aa0cd3db5c", null ],

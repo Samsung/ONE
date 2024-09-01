@@ -101,8 +101,8 @@ $(document).ready(function(){initNavTree('classcircleinspect_1_1_dump_interface.
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a60aa99a97523bc8e333455db34a206c3" id="r_a60aa99a97523bc8e333455db34a206c3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircleinspect_1_1_dump_interface.html#a60aa99a97523bc8e333455db34a206c3">~DumpInterface</a> ()=default</td></tr>
 <tr class="separator:a60aa99a97523bc8e333455db34a206c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a221f4b956d7e863ca10f3931d50645c8" id="r_a221f4b956d7e863ca10f3931d50645c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircleinspect_1_1_dump_interface.html#a221f4b956d7e863ca10f3931d50645c8">run</a> (std::ostream &amp;os, const circle::Model *model)=0</td></tr>
-<tr class="separator:a221f4b956d7e863ca10f3931d50645c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94e75d897ffa020320ba34442f813062" id="r_a94e75d897ffa020320ba34442f813062"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircleinspect_1_1_dump_interface.html#a94e75d897ffa020320ba34442f813062">run</a> (std::ostream &amp;os, const circle::Model *model, const std::vector&lt; char &gt; *data)=0</td></tr>
+<tr class="separator:a94e75d897ffa020320ba34442f813062"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -134,8 +134,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a221f4b956d7e863ca10f3931d50645c8" name="a221f4b956d7e863ca10f3931d50645c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a221f4b956d7e863ca10f3931d50645c8">&#9670;&#160;</a></span>run()</h2>
+<a id="a94e75d897ffa020320ba34442f813062" name="a94e75d897ffa020320ba34442f813062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94e75d897ffa020320ba34442f813062">&#9670;&#160;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,7 +153,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const circle::Model *&#160;</td>
-          <td class="paramname"><em>model</em>&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; char &gt; *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -168,7 +174,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classcircleinspect_1_1_dump_operators.html#aa46f1b0974844abffaf374742cd26416">circleinspect::DumpOperators</a>, <a class="el" href="classcircleinspect_1_1_dump_conv2_d_weight.html#ade304241925af5db5b77e7b3418cd86a">circleinspect::DumpConv2DWeight</a>, <a class="el" href="classcircleinspect_1_1_dump_operator_version.html#a4da5da06a92f909687d56dc6bbc647fc">circleinspect::DumpOperatorVersion</a>, <a class="el" href="classcircleinspect_1_1_dump_tensor_d_type.html#a9b344ca14f94834da702fd1c5673ada6">circleinspect::DumpTensorDType</a>, and <a class="el" href="classcircleinspect_1_1_dump_constants.html#ab1c3c8f3579c0a9570458a1c4dcd9b8c">circleinspect::DumpConstants</a>.</p>
+<p>Implemented in <a class="el" href="classcircleinspect_1_1_dump_operators.html#ac70969dd717a147324811909a52ae9b6">circleinspect::DumpOperators</a>, <a class="el" href="classcircleinspect_1_1_dump_conv2_d_weight.html#afde9e558c9423d38f87815ea26abb830">circleinspect::DumpConv2DWeight</a>, <a class="el" href="classcircleinspect_1_1_dump_operator_version.html#a03ba802cd862608529f757de8b7d6fc1">circleinspect::DumpOperatorVersion</a>, <a class="el" href="classcircleinspect_1_1_dump_tensor_d_type.html#afae469832b2bb1aa90cad26009da2303">circleinspect::DumpTensorDType</a>, and <a class="el" href="classcircleinspect_1_1_dump_constants.html#a584d6b7d32b6baf41eb47d309650c28f">circleinspect::DumpConstants</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="infer_8py_source.html#l00051">package.infer.session::inference()</a>.</p>
 

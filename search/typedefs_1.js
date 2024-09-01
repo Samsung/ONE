@@ -12,6 +12,7 @@ var searchData=
   ['blobname_9',['BlobName',['../namespacecaffeimport.html#a84326098b4683452147f1a81ac3e4fca',1,'caffeimport']]],
   ['blocklist_10',['BlockList',['../namespacecoco.html#a7164332029ef5afef25adcd1bdad1d83',1,'coco']]],
   ['buffer_11',['buffer',['../classonert_1_1loader_1_1_base_loader.html#a73462687eee497d5a049ff6b2659f928',1,'onert::loader::BaseLoader::Buffer'],['../classlocomotiv_1_1_node_data_impl.html#ab7ae87f1407241ce0920ec7381cc4a72',1,'locomotiv::NodeDataImpl::Buffer'],['../structlocomotiv_1_1_node_data.html#a30ca06f4a350f4b0b5b3e958caa1351b',1,'locomotiv::NodeData::Buffer'],['../namespacempqsolver_1_1core.html#ad8d2a28d403e2d2ee492235eed91fc7c',1,'mpqsolver::core::Buffer'],['../namespaceprunner.html#a64146d12a38648ed11f63f9ae31f997e',1,'prunner::Buffer'],['../namespacerecord__minmax.html#a436fa9e67582bd0c9c1d18b500d3c1be',1,'record_minmax::Buffer']]],
-  ['buffers_12',['Buffers',['../namespaceprunner.html#aa5212196f3110e7d24ec4ae5dc7eaeca',1,'prunner']]],
-  ['builtinoperator_13',['BuiltinOperator',['../classonert_1_1loader_1_1_base_loader.html#aa5998cb62abb8b25195a3b4c40b16bf1',1,'onert::loader::BaseLoader']]]
+  ['bufferdata_12',['bufferdata',['../structluci_1_1_serialized_model_data.html#ad480cb81775629aca67c14bf69409585',1,'luci::SerializedModelData::BufferData'],['../namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622',1,'tflite2circle::BufferData']]],
+  ['buffers_13',['Buffers',['../namespaceprunner.html#aa5212196f3110e7d24ec4ae5dc7eaeca',1,'prunner']]],
+  ['builtinoperator_14',['BuiltinOperator',['../classonert_1_1loader_1_1_base_loader.html#aa5998cb62abb8b25195a3b4c40b16bf1',1,'onert::loader::BaseLoader']]]
 ];

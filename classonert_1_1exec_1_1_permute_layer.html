@@ -111,8 +111,8 @@ Collaboration diagram for onert::exec::PermuteLayer:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afcbc73bea742b83ebc988cfa2406b1dd" id="r_afcbc73bea742b83ebc988cfa2406b1dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_permute_layer.html#afcbc73bea742b83ebc988cfa2406b1dd">PermuteLayer</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a> * &gt; &amp;inputs, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a> * &gt; &amp;outputs)</td></tr>
-<tr class="separator:afcbc73bea742b83ebc988cfa2406b1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5f1934d7d4cb9ea05a0672c33c4d558" id="r_ab5f1934d7d4cb9ea05a0672c33c4d558"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_permute_layer.html#ab5f1934d7d4cb9ea05a0672c33c4d558">PermuteLayer</a> (const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a> * &gt; &amp;inputs, const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a> * &gt; &amp;outputs, const std::vector&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &gt; &amp;types)</td></tr>
+<tr class="separator:ab5f1934d7d4cb9ea05a0672c33c4d558"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91845d41e8af4a6472cd1aa3a01ac575" id="r_a91845d41e8af4a6472cd1aa3a01ac575"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_permute_layer.html#a91845d41e8af4a6472cd1aa3a01ac575">~PermuteLayer</a> ()</td></tr>
 <tr class="separator:a91845d41e8af4a6472cd1aa3a01ac575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2e5243081be8552d7ad1c23516f81ff" id="r_af2e5243081be8552d7ad1c23516f81ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_permute_layer.html#af2e5243081be8552d7ad1c23516f81ff">optimize</a> () override</td></tr>
@@ -128,15 +128,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_types_classonert_1_1exec_1_1_i_permute_function"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classonert_1_1exec_1_1_i_permute_function')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html">onert::exec::IPermuteFunction</a></td></tr>
-<tr class="memitem:acce430ddf9519674a57e97292d2465e4 inherit pro_types_classonert_1_1exec_1_1_i_permute_function" id="r_acce430ddf9519674a57e97292d2465e4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4">PermuteType</a> { <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>
-, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>
-, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f">COPY</a>
- }</td></tr>
-<tr class="separator:acce430ddf9519674a57e97292d2465e4 inherit pro_types_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classonert_1_1exec_1_1_i_permute_function"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classonert_1_1exec_1_1_i_permute_function')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html">onert::exec::IPermuteFunction</a></td></tr>
-<tr class="memitem:a557de95a78d405f21437de41dd8c24d3 inherit pro_methods_classonert_1_1exec_1_1_i_permute_function" id="r_a557de95a78d405f21437de41dd8c24d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a557de95a78d405f21437de41dd8c24d3">permute</a> (<a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *src_tensor, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets)</td></tr>
-<tr class="separator:a557de95a78d405f21437de41dd8c24d3 inherit pro_methods_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd7a12f901f6e35d530e9a71f592e28 inherit pro_methods_classonert_1_1exec_1_1_i_permute_function" id="r_a4dd7a12f901f6e35d530e9a71f592e28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">permute</a> (<a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *src_tensor, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets, const <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &amp;permute_type)</td></tr>
+<tr class="separator:a4dd7a12f901f6e35d530e9a71f592e28 inherit pro_methods_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8174dbba1a0c5f449d891e5b31a6bfd4 inherit pro_methods_classonert_1_1exec_1_1_i_permute_function" id="r_a8174dbba1a0c5f449d891e5b31a6bfd4"><td class="memItemLeft" align="right" valign="top">const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type) const</td></tr>
 <tr class="separator:a8174dbba1a0c5f449d891e5b31a6bfd4 inherit pro_methods_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classonert_1_1exec_1_1_i_permute_function"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classonert_1_1exec_1_1_i_permute_function')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html">onert::exec::IPermuteFunction</a></td></tr>
@@ -148,15 +142,17 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a8705a1ceb48f7d535d321e6bab6081c7 inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a067528d61e5b9e112aeb10e63af884a9 inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function" id="r_a067528d61e5b9e112aeb10e63af884a9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; size_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a></td></tr>
 <tr class="separator:a067528d61e5b9e112aeb10e63af884a9 inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43516f4c839df2fe816b9c8531866ad4 inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function" id="r_a43516f4c839df2fe816b9c8531866ad4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a></td></tr>
+<tr class="separator:a43516f4c839df2fe816b9c8531866ad4 inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1be7fd11c49f519c320f1c5583ecee5e inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function" id="r_a1be7fd11c49f519c320f1c5583ecee5e"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *, std::vector&lt; uint8_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">_buffers_map</a></td></tr>
 <tr class="separator:a1be7fd11c49f519c320f1c5583ecee5e inherit pro_attribs_classonert_1_1exec_1_1_i_permute_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00267">267</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00251">251</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afcbc73bea742b83ebc988cfa2406b1dd" name="afcbc73bea742b83ebc988cfa2406b1dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcbc73bea742b83ebc988cfa2406b1dd">&#9670;&#160;</a></span>PermuteLayer()</h2>
+<a id="ab5f1934d7d4cb9ea05a0672c33c4d558" name="ab5f1934d7d4cb9ea05a0672c33c4d558"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5f1934d7d4cb9ea05a0672c33c4d558">&#9670;&#160;</a></span>PermuteLayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +170,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">onert::backend::ITensor</a> * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>outputs</em>&#160;</td>
+          <td class="paramname"><em>outputs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>types</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -189,17 +191,20 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00270">270</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  272</span>  {</div>
-<div class="line"><span class="lineno">  273</span>    assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == outputs.size());</div>
-<div class="line"><span class="lineno">  274</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>;</div>
-<div class="line"><span class="lineno">  275</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a> = outputs;</div>
-<div class="line"><span class="lineno">  276</span>  }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a9f6cf33a245a4c96e4b1d12b2c574540"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">onert::exec::IPermuteFunction::_src_tensors</a></div><div class="ttdeci">std::vector&lt; backend::ITensor * &gt; _src_tensors</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00259">IPermuteFunction.h:259</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_af4d632eca1bf45e99229e972078b3dce"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">onert::exec::IPermuteFunction::_dst_tensors</a></div><div class="ttdeci">std::vector&lt; backend::ITensor * &gt; _dst_tensors</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00260">IPermuteFunction.h:260</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00254">254</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  257</span>  {</div>
+<div class="line"><span class="lineno">  258</span>    assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == outputs.size());</div>
+<div class="line"><span class="lineno">  259</span>    assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == types.size());</div>
+<div class="line"><span class="lineno">  260</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>;</div>
+<div class="line"><span class="lineno">  261</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a> = outputs;</div>
+<div class="line"><span class="lineno">  262</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a> = types;</div>
+<div class="line"><span class="lineno">  263</span>  }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a43516f4c839df2fe816b9c8531866ad4"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">onert::exec::IPermuteFunction::_permute_types</a></div><div class="ttdeci">std::vector&lt; ir::PermuteType &gt; _permute_types</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00246">IPermuteFunction.h:246</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a9f6cf33a245a4c96e4b1d12b2c574540"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">onert::exec::IPermuteFunction::_src_tensors</a></div><div class="ttdeci">std::vector&lt; backend::ITensor * &gt; _src_tensors</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00242">IPermuteFunction.h:242</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_af4d632eca1bf45e99229e972078b3dce"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">onert::exec::IPermuteFunction::_dst_tensors</a></div><div class="ttdeci">std::vector&lt; backend::ITensor * &gt; _dst_tensors</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00243">IPermuteFunction.h:243</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00260">onert::exec::IPermuteFunction::_dst_tensors</a>, and <a class="el" href="_i_permute_function_8h_source.html#l00259">onert::exec::IPermuteFunction::_src_tensors</a>.</p>
+<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00243">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00246">onert::exec::IPermuteFunction::_permute_types</a>, and <a class="el" href="_i_permute_function_8h_source.html#l00242">onert::exec::IPermuteFunction::_src_tensors</a>.</p>
 
 </div>
 </div>
@@ -226,8 +231,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00277">277</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  277</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00264">264</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  264</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -257,8 +262,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">onert::exec::IPermuteFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00278">278</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  278</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00265">265</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>

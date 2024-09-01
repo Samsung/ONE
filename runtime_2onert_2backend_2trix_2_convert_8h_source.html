@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2trix_2_conver
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;num_info; ++idx)</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].layout = <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#a6ada1583f4d04ae12ca76b94e4edfc63">convertDataLayout</a>(tensors[idx]-&gt;layout());</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].layout = DATA_LAYOUT_NHWC;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">convertDataType</a>(tensors[idx]-&gt;data_type());</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>

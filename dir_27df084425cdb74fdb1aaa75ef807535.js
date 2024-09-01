@@ -15,6 +15,7 @@ var dir_27df084425cdb74fdb1aaa75ef807535 =
     [ "PALFloorDiv.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_floor_div_8h.html", null ],
     [ "PALFloorMod.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_floor_mod_8h.html", null ],
     [ "PALFullyConnected.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_fully_connected_8h.html", null ],
+    [ "PALGRU.h", "_p_a_l_g_r_u_8h.html", null ],
     [ "PALL2Pool2D.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_l2_pool2_d_8h.html", null ],
     [ "PALLog.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_log_8h.html", null ],
     [ "PALMaximum.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_maximum_8h.html", null ],

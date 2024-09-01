@@ -271,21 +271,21 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_checkpoint_loader_8cpp_source.html#l00271">271</a> of file <a class="el" href="_o_m_checkpoint_loader_8cpp_source.html">OMCheckpointLoader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  274</span>{</div>
-<div class="line"><span class="lineno">  275</span> </div>
-<div class="line"><span class="lineno">  276</span>  <span class="comment">// Validate current checkpoint file data</span></div>
-<div class="line"><span class="lineno">  277</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = validateCheckpointData(context, data, config);</div>
-<div class="line"><span class="lineno">  278</span>  assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
-<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
-<div class="line"><span class="lineno">  280</span>    <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  281</span> </div>
-<div class="line"><span class="lineno">  282</span>  <span class="comment">// Read and save buffer</span></div>
-<div class="line"><span class="lineno">  283</span>  status = loadBuffers(context, train_storage, data, config);</div>
-<div class="line"><span class="lineno">  284</span>  assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
-<div class="line"><span class="lineno">  285</span> </div>
-<div class="line"><span class="lineno">  286</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  287</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_checkpoint_loader_8cpp_source.html#l00272">272</a> of file <a class="el" href="_o_m_checkpoint_loader_8cpp_source.html">OMCheckpointLoader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  275</span>{</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>  <span class="comment">// Validate current checkpoint file data</span></div>
+<div class="line"><span class="lineno">  278</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = validateCheckpointData(context, data, config);</div>
+<div class="line"><span class="lineno">  279</span>  assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
+<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  282</span> </div>
+<div class="line"><span class="lineno">  283</span>  <span class="comment">// Read and save buffer</span></div>
+<div class="line"><span class="lineno">  284</span>  status = loadBuffers(context, train_storage, data, config);</div>
+<div class="line"><span class="lineno">  285</span>  assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
+<div class="line"><span class="lineno">  286</span> </div>
+<div class="line"><span class="lineno">  287</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  288</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 </div><!-- fragment -->

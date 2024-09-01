@@ -28,6 +28,7 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "gather_nd", "dir_33b67b4f6687d2fcf58261717309dfcb.html", "dir_33b67b4f6687d2fcf58261717309dfcb" ],
     [ "greater", "dir_519355306067a9efc38ba53f2657389d.html", "dir_519355306067a9efc38ba53f2657389d" ],
     [ "greater_equal", "dir_7b46c1574cae443acbd66057f3eded49.html", "dir_7b46c1574cae443acbd66057f3eded49" ],
+    [ "gru", "dir_82d52f22ca6e11d488fbe7bd0a817a7b.html", "dir_82d52f22ca6e11d488fbe7bd0a817a7b" ],
     [ "l2_normalization", "dir_388665a4d953d1d93367a3dc18088115.html", "dir_388665a4d953d1d93367a3dc18088115" ],
     [ "l2pool2d", "dir_26de63ff3d50f1fddd5003353f63b41a.html", "dir_26de63ff3d50f1fddd5003353f63b41a" ],
     [ "leaky_relu", "dir_03b46cd26784f640bdcc2d644f360d81.html", "dir_03b46cd26784f640bdcc2d644f360d81" ],

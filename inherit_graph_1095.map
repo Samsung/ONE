@@ -1,37 +1,19 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonert_1_1backend_1_1_i_tensor.html" title=" " alt="" coords="5,340,161,365"/>
-<area shape="rect" id="Node000001" href="$classonert_1_1backend_1_1_i_portable_tensor.html" title="A tensor class that is portable for other backends." alt="" coords="209,235,372,275"/>
-<area shape="poly" id="edge2360_Node000000_Node000001" title=" " alt="" coords="125,330,244,273,246,278,127,335"/>
-<area shape="rect" id="Node000011" href="$classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html" title="Class representing Tensor for ACL." alt="" coords="213,389,368,430"/>
-<area shape="poly" id="edge2370_Node000000_Node000011" title=" " alt="" coords="147,367,215,386,213,391,146,372"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1basic_1_1_tensor.html" title=" " alt="" coords="437,71,579,111"/>
-<area shape="poly" id="edge2361_Node000001_Node000002" title=" " alt="" coords="315,221,360,171,388,145,419,122,441,110,444,114,421,127,392,149,364,175,319,224"/>
-<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html" title="Tensor object that indirects to the tensor it is pointing to." alt="" coords="436,136,581,177"/>
-<area shape="poly" id="edge2365_Node000001_Node000006" title=" " alt="" coords="342,225,419,187,449,175,451,180,421,192,344,230"/>
-<area shape="rect" id="Node000007" href="$classonert_1_1backend_1_1builtin_1_1_user_tensor.html" title="Tensor object that is for Input and Output tensors from the user." alt="" coords="436,201,581,242"/>
-<area shape="poly" id="edge2366_Node000001_Node000007" title=" " alt="" coords="387,238,434,230,435,235,388,243"/>
-<area shape="rect" id="Node000008" href="$classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html" title="A tensor class that can be trained." alt="" coords="440,267,576,307"/>
-<area shape="poly" id="edge2367_Node000001_Node000008" title=" " alt="" coords="387,267,440,274,439,280,387,272"/>
-<area shape="rect" id="Node000010" href="$classonert_1_1exec_1_1_edge_tensor.html" title=" " alt="" coords="429,332,587,357"/>
-<area shape="poly" id="edge2369_Node000001_Node000010" title=" " alt="" coords="343,280,421,317,456,328,455,333,419,321,341,285"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1basic_1_1_external_tensor.html" title="Class that uses data from external memory that is not managed by a backend instead of allocating and ..." alt="" coords="671,5,813,46"/>
-<area shape="poly" id="edge2362_Node000002_Node000003" title=" " alt="" coords="593,65,670,43,671,48,595,70"/>
-<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1train_1_1_extra_tensor.html" title=" " alt="" coords="674,71,810,111"/>
-<area shape="poly" id="edge2363_Node000002_Node000004" title=" " alt="" coords="594,88,673,88,673,94,594,94"/>
-<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1train_1_1_tensor.html" title=" " alt="" coords="674,136,810,177"/>
-<area shape="poly" id="edge2364_Node000002_Node000005" title=" " alt="" coords="595,112,674,135,673,140,593,117"/>
-<area shape="rect" id="Node000009" href="$classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html" title=" " alt="" coords="666,263,818,303"/>
-<area shape="poly" id="edge2368_Node000008_Node000009" title=" " alt="" coords="592,283,666,282,666,287,592,288"/>
-<area shape="rect" id="Node000012" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html" title=" " alt="" coords="430,389,587,430"/>
-<area shape="poly" id="edge2371_Node000011_Node000012" title=" " alt="" coords="383,407,429,407,429,412,383,412"/>
-<area shape="rect" id="Node000015" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html" title=" " alt="" coords="420,459,596,499"/>
-<area shape="poly" id="edge2374_Node000011_Node000015" title=" " alt="" coords="372,433,443,456,441,461,370,438"/>
-<area shape="rect" id="Node000013" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_sub_tensor.html" title=" " alt="" coords="654,328,830,369"/>
-<area shape="poly" id="edge2372_Node000012_Node000013" title=" " alt="" coords="601,383,661,367,662,372,602,388"/>
-<area shape="rect" id="Node000014" href="$classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_tensor.html" title=" " alt="" coords="665,393,819,434"/>
-<area shape="poly" id="edge2373_Node000012_Node000014" title=" " alt="" coords="602,409,665,410,665,415,602,414"/>
-<area shape="rect" id="Node000016" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_sub_tensor.html" title=" " alt="" coords="644,459,840,499"/>
-<area shape="poly" id="edge2375_Node000015_Node000016" title=" " alt="" coords="612,476,644,476,644,482,612,482"/>
-<area shape="rect" id="Node000017" href="$classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html" title=" " alt="" coords="656,524,828,565"/>
-<area shape="poly" id="edge2376_Node000015_Node000017" title=" " alt="" coords="599,501,667,521,666,526,597,507"/>
+<area shape="rect" id="Node000000" href="$structonert_1_1backend_1_1_i_config.html" title=" " alt="" coords="5,242,157,268"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1backend_1_1acl__cl_1_1_config.html" title=" " alt="" coords="220,5,349,46"/>
+<area shape="poly" id="edge2352_Node000000_Node000001" title=" " alt="" coords="91,227,108,189,132,144,164,98,203,57,221,44,224,49,206,61,168,101,137,147,112,192,95,229"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1acl__neon_1_1_config.html" title=" " alt="" coords="220,71,349,111"/>
+<area shape="poly" id="edge2353_Node000000_Node000002" title=" " alt="" coords="99,228,143,176,172,147,203,122,225,110,227,114,206,127,175,151,147,179,103,231"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1builtin_1_1_config.html" title=" " alt="" coords="212,136,357,177"/>
+<area shape="poly" id="edge2354_Node000000_Node000003" title=" " alt="" coords="118,232,203,187,231,175,233,180,206,192,120,237"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1cpu_1_1_config.html" title=" " alt="" coords="218,201,351,242"/>
+<area shape="poly" id="edge2355_Node000000_Node000004" title=" " alt="" coords="171,238,218,230,219,235,172,243"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1ruy_1_1_config.html" title=" " alt="" coords="220,267,349,307"/>
+<area shape="poly" id="edge2356_Node000000_Node000005" title=" " alt="" coords="172,267,220,274,220,280,171,272"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1train_1_1_config.html" title=" " alt="" coords="216,332,353,373"/>
+<area shape="poly" id="edge2357_Node000000_Node000006" title=" " alt="" coords="121,273,206,317,233,329,231,334,204,321,119,278"/>
+<area shape="rect" id="Node000007" href="$classonert_1_1backend_1_1trix_1_1_config.html" title=" " alt="" coords="220,397,349,438"/>
+<area shape="poly" id="edge2358_Node000000_Node000007" title=" " alt="" coords="103,279,147,330,176,358,206,382,227,394,225,399,203,387,172,362,143,334,99,282"/>
+<area shape="rect" id="Node000008" href="$classonert_1_1backend_1_1xnnpack_1_1_config.html" title=" " alt="" coords="205,463,364,503"/>
+<area shape="poly" id="edge2359_Node000000_Node000008" title=" " alt="" coords="95,281,112,318,137,362,168,408,206,448,224,460,221,464,203,452,164,411,132,365,108,320,91,283"/>
 </map>

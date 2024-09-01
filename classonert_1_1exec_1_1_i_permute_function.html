@@ -91,7 +91,6 @@ $(document).ready(function(){initNavTree('classonert_1_1exec_1_1_i_permute_funct
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a>  </div>
   <div class="headertitle"><div class="title">onert::exec::IPermuteFunction Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
@@ -122,18 +121,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae05c7341d5ee2cac795f17d4b735cbfd inherit pub_methods_classonert_1_1exec_1_1_i_function" id="r_ae05c7341d5ee2cac795f17d4b735cbfd"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_function.html#ae05c7341d5ee2cac795f17d4b735cbfd">~IFunction</a> ()=default</td></tr>
 <tr class="separator:ae05c7341d5ee2cac795f17d4b735cbfd inherit pub_methods_classonert_1_1exec_1_1_i_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
-Protected Types</h2></td></tr>
-<tr class="memitem:acce430ddf9519674a57e97292d2465e4" id="r_acce430ddf9519674a57e97292d2465e4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4">PermuteType</a> { <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>
-, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>
-, <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f">COPY</a>
- }</td></tr>
-<tr class="separator:acce430ddf9519674a57e97292d2465e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a557de95a78d405f21437de41dd8c24d3" id="r_a557de95a78d405f21437de41dd8c24d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a557de95a78d405f21437de41dd8c24d3">permute</a> (<a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *src_tensor, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets)</td></tr>
-<tr class="separator:a557de95a78d405f21437de41dd8c24d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd7a12f901f6e35d530e9a71f592e28" id="r_a4dd7a12f901f6e35d530e9a71f592e28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">permute</a> (<a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *src_tensor, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets, const <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &amp;permute_type)</td></tr>
+<tr class="separator:a4dd7a12f901f6e35d530e9a71f592e28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8174dbba1a0c5f449d891e5b31a6bfd4" id="r_a8174dbba1a0c5f449d891e5b31a6bfd4"><td class="memItemLeft" align="right" valign="top">const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type) const</td></tr>
 <tr class="separator:a8174dbba1a0c5f449d891e5b31a6bfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -147,51 +138,15 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a8705a1ceb48f7d535d321e6bab6081c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a067528d61e5b9e112aeb10e63af884a9" id="r_a067528d61e5b9e112aeb10e63af884a9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; size_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a></td></tr>
 <tr class="separator:a067528d61e5b9e112aeb10e63af884a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43516f4c839df2fe816b9c8531866ad4" id="r_a43516f4c839df2fe816b9c8531866ad4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a></td></tr>
+<tr class="separator:a43516f4c839df2fe816b9c8531866ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1be7fd11c49f519c320f1c5583ecee5e" id="r_a1be7fd11c49f519c320f1c5583ecee5e"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *, std::vector&lt; uint8_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">_buffers_map</a></td></tr>
 <tr class="separator:a1be7fd11c49f519c320f1c5583ecee5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00067">67</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="acce430ddf9519674a57e97292d2465e4" name="acce430ddf9519674a57e97292d2465e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acce430ddf9519674a57e97292d2465e4">&#9670;&#160;</a></span>PermuteType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4">onert::exec::IPermuteFunction::PermuteType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625" name="acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625"></a>NHWC_TO_NCHW&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65" name="acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65"></a>NCHW_TO_NHWC&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f" name="acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f"></a>COPY&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00070">70</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>,</div>
-<div class="line"><span class="lineno">   73</span>    <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>,</div>
-<div class="line"><span class="lineno">   74</span>    <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f">COPY</a></div>
-<div class="line"><span class="lineno">   75</span>  };</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4a91e2d85a9482765dd34300a989314625">onert::exec::IPermuteFunction::PermuteType::NHWC_TO_NCHW</a></div><div class="ttdeci">@ NHWC_TO_NCHW</div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4aac33c7e495b69e7a5fa54b992a5a7d65">onert::exec::IPermuteFunction::PermuteType::NCHW_TO_NHWC</a></div><div class="ttdeci">@ NCHW_TO_NHWC</div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f">onert::exec::IPermuteFunction::PermuteType::COPY</a></div><div class="ttdeci">@ COPY</div></div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae233b6e1578adce4c4ac8252694883d8" name="ae233b6e1578adce4c4ac8252694883d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae233b6e1578adce4c4ac8252694883d8">&#9670;&#160;</a></span>optimize()</h2>
 
@@ -217,12 +172,12 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">onert::backend::builtin::kernel::PermuteLayer</a>, <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#aa931933167d0aafd66f621c16279c4f0">onert::backend::builtin::train::kernel::PermuteLayer</a>, and <a class="el" href="classonert_1_1exec_1_1_permute_layer.html#af2e5243081be8552d7ad1c23516f81ff">onert::exec::PermuteLayer</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_permute_function_8h_source.html#l00080">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_permute_function_8h_source.html#l00072">prepare()</a>.</p>
 
 </div>
 </div>
-<a id="a557de95a78d405f21437de41dd8c24d3" name="a557de95a78d405f21437de41dd8c24d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a557de95a78d405f21437de41dd8c24d3">&#9670;&#160;</a></span>permute()</h2>
+<a id="a4dd7a12f901f6e35d530e9a71f592e28" name="a4dd7a12f901f6e35d530e9a71f592e28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dd7a12f901f6e35d530e9a71f592e28">&#9670;&#160;</a></span>permute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,7 +213,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; size_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>dst_offsets</em>&#160;</td>
+          <td class="paramname"><em>dst_offsets</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a> &amp;&#160;</td>
+          <td class="paramname"><em>permute_type</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -273,57 +234,57 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8cc_source.html#l00244">244</a> of file <a class="el" href="_i_permute_function_8cc_source.html">IPermuteFunction.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  247</span>{</div>
-<div class="line"><span class="lineno">  248</span>  <span class="keywordflow">if</span> (src_tensor-&gt;total_size() == 0)</div>
-<div class="line"><span class="lineno">  249</span>  {</div>
-<div class="line"><span class="lineno">  250</span>    assert(dst_tensor-&gt;total_size() == 0);</div>
-<div class="line"><span class="lineno">  251</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  252</span>  }</div>
-<div class="line"><span class="lineno">  253</span> </div>
-<div class="line"><span class="lineno">  254</span>  assert(src_tensor != dst_tensor);</div>
-<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(src_tensor-&gt;data_type()) != <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(dst_tensor-&gt;data_type()))</div>
-<div class="line"><span class="lineno">  256</span>  {</div>
-<div class="line"><span class="lineno">  257</span>    typeAwareQuantize(src_tensor, dst_tensor);</div>
-<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  259</span>  }</div>
-<div class="line"><span class="lineno">  260</span> </div>
-<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">switch</span> (src_tensor-&gt;data_type())</div>
-<div class="line"><span class="lineno">  262</span>  {</div>
-<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">  264</span>      permute&lt;float&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8cc_source.html#l00240">240</a> of file <a class="el" href="_i_permute_function_8cc_source.html">IPermuteFunction.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  244</span>{</div>
+<div class="line"><span class="lineno">  245</span>  <span class="keywordflow">if</span> (src_tensor-&gt;total_size() == 0)</div>
+<div class="line"><span class="lineno">  246</span>  {</div>
+<div class="line"><span class="lineno">  247</span>    assert(dst_tensor-&gt;total_size() == 0);</div>
+<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  249</span>  }</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>  assert(src_tensor != dst_tensor);</div>
+<div class="line"><span class="lineno">  252</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(src_tensor-&gt;data_type()) != <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(dst_tensor-&gt;data_type()))</div>
+<div class="line"><span class="lineno">  253</span>  {</div>
+<div class="line"><span class="lineno">  254</span>    typeAwareQuantize(src_tensor, dst_tensor, permute_type);</div>
+<div class="line"><span class="lineno">  255</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  256</span>  }</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>  <span class="keywordflow">switch</span> (src_tensor-&gt;data_type())</div>
+<div class="line"><span class="lineno">  259</span>  {</div>
+<div class="line"><span class="lineno">  260</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  261</span>      permute&lt;float&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
+<div class="line"><span class="lineno">  262</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
+<div class="line"><span class="lineno">  264</span>      permute&lt;int32_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
 <div class="line"><span class="lineno">  265</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
-<div class="line"><span class="lineno">  267</span>      permute&lt;int32_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">case</span> ir::DataType::UINT32:</div>
+<div class="line"><span class="lineno">  267</span>      permute&lt;uint32_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
 <div class="line"><span class="lineno">  268</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">case</span> ir::DataType::UINT32:</div>
-<div class="line"><span class="lineno">  270</span>      permute&lt;uint32_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
-<div class="line"><span class="lineno">  271</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keywordflow">case</span> ir::DataType::BOOL8:</div>
-<div class="line"><span class="lineno">  273</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">case</span> ir::DataType::UINT8:</div>
-<div class="line"><span class="lineno">  275</span>      permute&lt;uint8_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
-<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  277</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_ASYMM:</div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_SYMM:</div>
-<div class="line"><span class="lineno">  279</span>      permute&lt;int8_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
+<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">case</span> ir::DataType::BOOL8:</div>
+<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">  271</span>    <span class="keywordflow">case</span> ir::DataType::UINT8:</div>
+<div class="line"><span class="lineno">  272</span>      permute&lt;uint8_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
+<div class="line"><span class="lineno">  273</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_ASYMM:</div>
+<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_SYMM:</div>
+<div class="line"><span class="lineno">  276</span>      permute&lt;int8_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
+<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
+<div class="line"><span class="lineno">  279</span>      permute&lt;int64_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
 <div class="line"><span class="lineno">  280</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
-<div class="line"><span class="lineno">  282</span>      permute&lt;int64_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
+<div class="line"><span class="lineno">  282</span>      permute&lt;int16_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);</div>
 <div class="line"><span class="lineno">  283</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
-<div class="line"><span class="lineno">  285</span>      permute&lt;int16_t&gt;(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);</div>
+<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  285</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;IPermuteFunction: Not supported data type&quot;</span>);</div>
 <div class="line"><span class="lineno">  286</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  288</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;IPermuteFunction: Not supported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  289</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  290</span>  }</div>
-<div class="line"><span class="lineno">  291</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a8174dbba1a0c5f449d891e5b31a6bfd4"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">onert::exec::IPermuteFunction::underlying_type</a></div><div class="ttdeci">const std::type_info &amp; underlying_type(ir::DataType type) const</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8cc_source.html#l00293">IPermuteFunction.cc:293</a></div></div>
+<div class="line"><span class="lineno">  287</span>  }</div>
+<div class="line"><span class="lineno">  288</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a8174dbba1a0c5f449d891e5b31a6bfd4"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">onert::exec::IPermuteFunction::underlying_type</a></div><div class="ttdeci">const std::type_info &amp; underlying_type(ir::DataType type) const</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8cc_source.html#l00290">IPermuteFunction.cc:290</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ae4d0d8bbbe8f7263f820914888ef3141">onert::backend::ITensor::total_size()</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00293">underlying_type()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a6d57b178316225a9e08f1191ce489ad9">onert::backend::ITensor::data_type()</a>, <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ae4d0d8bbbe8f7263f820914888ef3141">onert::backend::ITensor::total_size()</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00290">underlying_type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00062">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00063">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -352,8 +313,8 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00080">80</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{ <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">optimize</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00072">72</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{ <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">optimize</a>(); }</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_ae233b6e1578adce4c4ac8252694883d8"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">onert::exec::IPermuteFunction::optimize</a></div><div class="ttdeci">virtual void optimize()=0</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#ae233b6e1578adce4c4ac8252694883d8">optimize()</a>.</p>
@@ -415,33 +376,33 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8cc_source.html#l00293">293</a> of file <a class="el" href="_i_permute_function_8cc_source.html">IPermuteFunction.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  294</span>{</div>
-<div class="line"><span class="lineno">  295</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">  296</span>  {</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">  298</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(float);</div>
-<div class="line"><span class="lineno">  299</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
-<div class="line"><span class="lineno">  300</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int32_t);</div>
-<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">case</span> ir::DataType::UINT32:</div>
-<div class="line"><span class="lineno">  302</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(uint32_t);</div>
-<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
-<div class="line"><span class="lineno">  304</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int64_t);</div>
-<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">case</span> ir::DataType::BOOL8:</div>
-<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">case</span> ir::DataType::UINT8:</div>
-<div class="line"><span class="lineno">  308</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(uint8_t);</div>
-<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_ASYMM:</div>
-<div class="line"><span class="lineno">  310</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_SYMM:</div>
-<div class="line"><span class="lineno">  311</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int8_t);</div>
-<div class="line"><span class="lineno">  312</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
-<div class="line"><span class="lineno">  313</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int16_t);</div>
-<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  315</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;IPermuteFunction: Not supported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  316</span>  }</div>
-<div class="line"><span class="lineno">  317</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8cc_source.html#l00290">290</a> of file <a class="el" href="_i_permute_function_8cc_source.html">IPermuteFunction.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  291</span>{</div>
+<div class="line"><span class="lineno">  292</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  293</span>  {</div>
+<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  295</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(float);</div>
+<div class="line"><span class="lineno">  296</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
+<div class="line"><span class="lineno">  297</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int32_t);</div>
+<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">case</span> ir::DataType::UINT32:</div>
+<div class="line"><span class="lineno">  299</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(uint32_t);</div>
+<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
+<div class="line"><span class="lineno">  301</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int64_t);</div>
+<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">case</span> ir::DataType::BOOL8:</div>
+<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">case</span> ir::DataType::UINT8:</div>
+<div class="line"><span class="lineno">  305</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(uint8_t);</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_ASYMM:</div>
+<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT8_SYMM:</div>
+<div class="line"><span class="lineno">  308</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int8_t);</div>
+<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
+<div class="line"><span class="lineno">  310</span>      <span class="keywordflow">return</span> <span class="keyword">typeid</span>(int16_t);</div>
+<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  312</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;IPermuteFunction: Not supported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  313</span>  }</div>
+<div class="line"><span class="lineno">  314</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00244">permute()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00240">permute()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -466,9 +427,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00263">263</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00247">247</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -492,9 +453,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00260">260</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00243">243</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00032">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, <a class="el" href="_i_permute_function_8h_source.html#l00270">onert::exec::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00030">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, <a class="el" href="_i_permute_function_8h_source.html#l00254">onert::exec::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -518,9 +479,35 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00262">262</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00245">245</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00062">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00032">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00063">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00030">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+
+</div>
+</div>
+<a id="a43516f4c839df2fe816b9c8531866ad4" name="a43516f4c839df2fe816b9c8531866ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43516f4c839df2fe816b9c8531866ad4">&#9670;&#160;</a></span>_permute_types</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a>&gt; onert::exec::IPermuteFunction::_permute_types</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00246">246</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00063">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00030">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, <a class="el" href="_i_permute_function_8h_source.html#l00254">onert::exec::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -544,9 +531,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00259">259</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00242">242</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00032">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, <a class="el" href="_i_permute_function_8h_source.html#l00270">onert::exec::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00030">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, <a class="el" href="_i_permute_function_8h_source.html#l00254">onert::exec::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -570,9 +557,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00261">261</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_permute_function_8h_source.html#l00244">244</a> of file <a class="el" href="_i_permute_function_8h_source.html">IPermuteFunction.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00062">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00032">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00196">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00063">onert::backend::builtin::train::kernel::PermuteLayer::backward()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00030">onert::backend::builtin::kernel::PermuteLayer::PermuteLayer()</a>, and <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>

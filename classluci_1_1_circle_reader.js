@@ -3,6 +3,8 @@ var classluci_1_1_circle_reader =
     [ "CircleReader", "classluci_1_1_circle_reader.html#a3f372679949a337380a88b47e1e50a2a", null ],
     [ "buffers", "classluci_1_1_circle_reader.html#a2788375299ddbc774a313ed06825e2e5", null ],
     [ "builtin_code", "classluci_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4", null ],
+    [ "file_data", "classluci_1_1_circle_reader.html#a1b271e1c17d7b7d755af7b918ba2a382", null ],
+    [ "file_size", "classluci_1_1_circle_reader.html#a86583b5e87515399ff6c08e58085f4df", null ],
     [ "inputs", "classluci_1_1_circle_reader.html#aae516732afc634a3478e53024165b5c1", null ],
     [ "metadata", "classluci_1_1_circle_reader.html#a4cda8c4d7efddaf529e3957485391613", null ],
     [ "name", "classluci_1_1_circle_reader.html#a2551e899429fe4ea62db9b780c873118", null ],
@@ -12,6 +14,7 @@ var classluci_1_1_circle_reader =
     [ "operators", "classluci_1_1_circle_reader.html#a1af8661dad6b1a8b6ea46b9fb322aea2", null ],
     [ "outputs", "classluci_1_1_circle_reader.html#a3b6e91e4d8a0d41c0ad8e0eea3270c27", null ],
     [ "parse", "classluci_1_1_circle_reader.html#abd03654bf4885531d1a1228db0cfa335", null ],
+    [ "parse", "classluci_1_1_circle_reader.html#a74a5a16a9c318991e9abfe958ff40117", null ],
     [ "select_subgraph", "classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9", null ],
     [ "tensors", "classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4", null ]
 ];

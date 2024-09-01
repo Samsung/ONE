@@ -2,6 +2,7 @@ var namespaceonert__micro_1_1import =
 [
     [ "helpers", "namespaceonert__micro_1_1import_1_1helpers.html", [
       [ "configure_arg_kernel_common", "namespaceonert__micro_1_1import_1_1helpers.html#a603bf47761b163b77f35ed737aa3200d", null ],
+      [ "configure_floor_kernel_common", "namespaceonert__micro_1_1import_1_1helpers.html#a9ec626cbe9c6feab9a77528fa4351307", null ],
       [ "configure_pad_kernel_common", "namespaceonert__micro_1_1import_1_1helpers.html#a6d43be94eb4f5adca13d2e878b44d1c8", null ],
       [ "configure_pooling_kernel_common", "namespaceonert__micro_1_1import_1_1helpers.html#aa45cbe54518db35420677d67ebf8caf8", null ],
       [ "configure_SISO_kernel", "namespaceonert__micro_1_1import_1_1helpers.html#a01b36a36b9716d68952f4ea38f97e345", null ],

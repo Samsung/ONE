@@ -172,6 +172,8 @@ Functions</h2></td></tr>
 <tr class="separator:afa7ceac3620b2b1f2610dbbe5367edff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcd2a79dd4fb5a079bbe41b8aa834ca3" id="r_afcd2a79dd4fb5a079bbe41b8aa834ca3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#afcd2a79dd4fb5a079bbe41b8aa834ca3">computePaddingHeightWidth</a> (int32_t stride_height, int32_t stride_width, int32_t dilation_rate_height, int32_t dilation_rate_width, int32_t in_height, int32_t in_width, int32_t filter_height, int32_t filter_width, circle::Padding padding, int32_t *padding_h, int32_t *padding_w)</td></tr>
 <tr class="separator:afcd2a79dd4fb5a079bbe41b8aa834ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a622cd75dd3948e0b23940c4884b326" id="r_a5a622cd75dd3948e0b23940c4884b326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a5a622cd75dd3948e0b23940c4884b326">calculateQuantParams</a> (<a class="el" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html">core::ArithmeticQuantParams</a> &amp;params, const circle::Tensor *input1, const circle::Tensor *input2, const circle::Tensor *output, circle::ActivationFunctionType act)</td></tr>
+<tr class="separator:a5a622cd75dd3948e0b23940c4884b326"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -232,33 +234,33 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00032">32</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">switch</span> (activation)</div>
-<div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_NONE:</div>
-<div class="line"><span class="lineno">   38</span>      *activation_min = std::numeric_limits&lt;T&gt;::lowest();</div>
-<div class="line"><span class="lineno">   39</span>      *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
-<div class="line"><span class="lineno">   40</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_RELU:</div>
-<div class="line"><span class="lineno">   42</span>      *activation_min = 0;</div>
-<div class="line"><span class="lineno">   43</span>      *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_RELU_N1_TO_1:</div>
-<div class="line"><span class="lineno">   46</span>      *activation_min = -1;</div>
-<div class="line"><span class="lineno">   47</span>      *activation_max = 1;</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_RELU6:</div>
-<div class="line"><span class="lineno">   50</span>      *activation_min = 0;</div>
-<div class="line"><span class="lineno">   51</span>      *activation_max = 6;</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   54</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported activation.&quot;</span>);</div>
-<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">UnsupportedActivation</a>;</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00033">33</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">switch</span> (activation)</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_NONE:</div>
+<div class="line"><span class="lineno">   39</span>      *activation_min = std::numeric_limits&lt;T&gt;::lowest();</div>
+<div class="line"><span class="lineno">   40</span>      *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
+<div class="line"><span class="lineno">   41</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_RELU:</div>
+<div class="line"><span class="lineno">   43</span>      *activation_min = 0;</div>
+<div class="line"><span class="lineno">   44</span>      *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
+<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_RELU_N1_TO_1:</div>
+<div class="line"><span class="lineno">   47</span>      *activation_min = -1;</div>
+<div class="line"><span class="lineno">   48</span>      *activation_max = 1;</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType::ActivationFunctionType_RELU6:</div>
+<div class="line"><span class="lineno">   51</span>      *activation_min = 0;</div>
+<div class="line"><span class="lineno">   52</span>      *activation_max = 6;</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   55</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported activation.&quot;</span>);</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">UnsupportedActivation</a>;</div>
+<div class="line"><span class="lineno">   57</span>  }</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   60</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">onert_micro::UnsupportedActivation</a></div><div class="ttdeci">@ UnsupportedActivation</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00028">OMStatus.h:28</a></div></div>
 </div><!-- fragment -->
@@ -348,7 +350,112 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2src_2execute_2kernels_2_convolution_common_8cpp_source.html#l00023">createConvParams()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00159">calculateQuantParams()</a>, and <a class="el" href="onert-micro_2src_2execute_2kernels_2_convolution_common_8cpp_source.html#l00023">createConvParams()</a>.</p>
+
+</div>
+</div>
+<a id="a5a622cd75dd3948e0b23940c4884b326" name="a5a622cd75dd3948e0b23940c4884b326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a622cd75dd3948e0b23940c4884b326">&#9670;&#160;</a></span>calculateQuantParams()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert_micro::execute::calculateQuantParams </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html">core::ArithmeticQuantParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>input1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>input2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const circle::Tensor *&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">circle::ActivationFunctionType&#160;</td>
+          <td class="paramname"><em>act</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00159">159</a> of file <a class="el" href="execute_2_o_m_utils_8cpp_source.html">OMUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  164</span>{</div>
+<div class="line"><span class="lineno">  165</span>  <span class="keywordtype">long</span> input1_zp;</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keywordtype">long</span> input2_zp;</div>
+<div class="line"><span class="lineno">  167</span>  <span class="keywordtype">long</span> output_zp;</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>  <span class="keywordtype">float</span> input1_scale;</div>
+<div class="line"><span class="lineno">  170</span>  <span class="keywordtype">float</span> input2_scale;</div>
+<div class="line"><span class="lineno">  171</span>  <span class="keywordtype">float</span> output_scale;</div>
+<div class="line"><span class="lineno">  172</span> </div>
+<div class="line"><span class="lineno">  173</span>  <span class="comment">// Read input1 quant params</span></div>
+<div class="line"><span class="lineno">  174</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a40e42e3586514350a03c2b8b7f3b3f22">readQuantParams</a>(input1, input1_zp, input1_scale);</div>
+<div class="line"><span class="lineno">  175</span>  <span class="comment">// Read input2 quant params</span></div>
+<div class="line"><span class="lineno">  176</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a40e42e3586514350a03c2b8b7f3b3f22">readQuantParams</a>(input2, input2_zp, input2_scale);</div>
+<div class="line"><span class="lineno">  177</span>  <span class="comment">// Read output quant params</span></div>
+<div class="line"><span class="lineno">  178</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a40e42e3586514350a03c2b8b7f3b3f22">readQuantParams</a>(output, output_zp, output_scale);</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>  params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a8c47c9f556200f0f6aea0e1ea4bce805">input1_offset</a> = -<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(input1_zp);</div>
+<div class="line"><span class="lineno">  181</span>  params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a662b80bd21f120d48e0407ca5ec1db51">input2_offset</a> = -<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(input2_zp);</div>
+<div class="line"><span class="lineno">  182</span>  params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a041611c89cc9e62b06bc5a9e818b623e">output_offset</a> = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(output_zp);</div>
+<div class="line"><span class="lineno">  183</span>  params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a2150bc5f4064fc24e701ffe6f68f36b1">left_shift</a> = (output-&gt;type() == circle::TensorType_INT16) ? 15 : 20;</div>
+<div class="line"><span class="lineno">  184</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> twice_max_input_scale =</div>
+<div class="line"><span class="lineno">  185</span>    2 * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(std::max(input1_scale, input2_scale));</div>
+<div class="line"><span class="lineno">  186</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_input1_multiplier = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(input1_scale) / twice_max_input_scale;</div>
+<div class="line"><span class="lineno">  187</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_input2_multiplier = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(input2_scale) / twice_max_input_scale;</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> real_output_multiplier =</div>
+<div class="line"><span class="lineno">  189</span>    twice_max_input_scale / ((1 &lt;&lt; params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a2150bc5f4064fc24e701ffe6f68f36b1">left_shift</a>) * <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(output_scale));</div>
+<div class="line"><span class="lineno">  190</span> </div>
+<div class="line"><span class="lineno">  191</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38">quantizeMultiplierSmallerThanOneExp</a>(real_input1_multiplier, &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a70bf174fa665dbaef2a31eb296db6991">input1_multiplier</a>,</div>
+<div class="line"><span class="lineno">  192</span>                                      &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#ae6c9e6bb4850fa79c0ae40499dbd8cbc">input1_shift</a>);</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38">quantizeMultiplierSmallerThanOneExp</a>(real_input2_multiplier, &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a8d504e3c0849679c8b509e8f6c2bfe79">input2_multiplier</a>,</div>
+<div class="line"><span class="lineno">  195</span>                                      &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#ae8682fbc6af9479da9e68021e449f7f6">input2_shift</a>);</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38">quantizeMultiplierSmallerThanOneExp</a>(real_output_multiplier, &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#adcce8eeea0ed66e56461240b76719108">output_multiplier</a>,</div>
+<div class="line"><span class="lineno">  198</span>                                      &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a4c0ea7c9fbd8a8c594aa7622025f3427">output_shift</a>);</div>
+<div class="line"><span class="lineno">  199</span> </div>
+<div class="line"><span class="lineno">  200</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a4162f05d689856864535c2adcea44f70">calculateActivationRangeQuantized</a>(act, output_zp, output_scale, output-&gt;type(),</div>
+<div class="line"><span class="lineno">  201</span>                                    &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a14c0b7e9598274a23379e3918449604f">quantized_activation_min</a>,</div>
+<div class="line"><span class="lineno">  202</span>                                    &amp;params.<a class="code hl_variable" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a31bed1deebe6f0e3a4c7b219ae74eec0">quantized_activation_max</a>);</div>
+<div class="line"><span class="lineno">  203</span>}</div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a40e42e3586514350a03c2b8b7f3b3f22"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a40e42e3586514350a03c2b8b7f3b3f22">onert_micro::execute::readQuantParams</a></div><div class="ttdeci">void readQuantParams(const circle::Tensor *tensor, long &amp;zero_point, float &amp;scale)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8cpp_source.html#l00143">OMUtils.cpp:143</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a4162f05d689856864535c2adcea44f70"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a4162f05d689856864535c2adcea44f70">onert_micro::execute::calculateActivationRangeQuantized</a></div><div class="ttdeci">OMStatus calculateActivationRangeQuantized(circle::ActivationFunctionType activation, int32_t output_zero_point, float output_scale, circle::TensorType data_type, int32_t *activation_min, int32_t *activation_max)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8cpp_source.html#l00112">OMUtils.cpp:112</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a6b3b2086437cf9875010e5c914dbde38"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38">onert_micro::execute::quantizeMultiplierSmallerThanOneExp</a></div><div class="ttdeci">void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier, int *left_shift)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8cpp_source.html#l00060">OMUtils.cpp:60</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a041611c89cc9e62b06bc5a9e818b623e"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a041611c89cc9e62b06bc5a9e818b623e">onert_micro::core::ArithmeticQuantParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00121">OMKernelData.h:121</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a14c0b7e9598274a23379e3918449604f"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a14c0b7e9598274a23379e3918449604f">onert_micro::core::ArithmeticQuantParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00123">OMKernelData.h:123</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a2150bc5f4064fc24e701ffe6f68f36b1"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a2150bc5f4064fc24e701ffe6f68f36b1">onert_micro::core::ArithmeticQuantParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00114">OMKernelData.h:114</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a31bed1deebe6f0e3a4c7b219ae74eec0"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a31bed1deebe6f0e3a4c7b219ae74eec0">onert_micro::core::ArithmeticQuantParams::quantized_activation_max</a></div><div class="ttdeci">int32_t quantized_activation_max</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00122">OMKernelData.h:122</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a4c0ea7c9fbd8a8c594aa7622025f3427"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a4c0ea7c9fbd8a8c594aa7622025f3427">onert_micro::core::ArithmeticQuantParams::output_shift</a></div><div class="ttdeci">int output_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00120">OMKernelData.h:120</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a662b80bd21f120d48e0407ca5ec1db51"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a662b80bd21f120d48e0407ca5ec1db51">onert_micro::core::ArithmeticQuantParams::input2_offset</a></div><div class="ttdeci">int32_t input2_offset</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00113">OMKernelData.h:113</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a70bf174fa665dbaef2a31eb296db6991"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a70bf174fa665dbaef2a31eb296db6991">onert_micro::core::ArithmeticQuantParams::input1_multiplier</a></div><div class="ttdeci">int32_t input1_multiplier</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00115">OMKernelData.h:115</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a8c47c9f556200f0f6aea0e1ea4bce805"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a8c47c9f556200f0f6aea0e1ea4bce805">onert_micro::core::ArithmeticQuantParams::input1_offset</a></div><div class="ttdeci">int32_t input1_offset</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00112">OMKernelData.h:112</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_a8d504e3c0849679c8b509e8f6c2bfe79"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#a8d504e3c0849679c8b509e8f6c2bfe79">onert_micro::core::ArithmeticQuantParams::input2_multiplier</a></div><div class="ttdeci">int32_t input2_multiplier</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00116">OMKernelData.h:116</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_adcce8eeea0ed66e56461240b76719108"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#adcce8eeea0ed66e56461240b76719108">onert_micro::core::ArithmeticQuantParams::output_multiplier</a></div><div class="ttdeci">int32_t output_multiplier</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00119">OMKernelData.h:119</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_ae6c9e6bb4850fa79c0ae40499dbd8cbc"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#ae6c9e6bb4850fa79c0ae40499dbd8cbc">onert_micro::core::ArithmeticQuantParams::input1_shift</a></div><div class="ttdeci">int input1_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00117">OMKernelData.h:117</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1core_1_1_arithmetic_quant_params_html_ae8682fbc6af9479da9e68021e449f7f6"><div class="ttname"><a href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html#ae8682fbc6af9479da9e68021e449f7f6">onert_micro::core::ArithmeticQuantParams::input2_shift</a></div><div class="ttdeci">int input2_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00118">OMKernelData.h:118</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00112">calculateActivationRangeQuantized()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00115">onert_micro::core::ArithmeticQuantParams::input1_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00112">onert_micro::core::ArithmeticQuantParams::input1_offset</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00117">onert_micro::core::ArithmeticQuantParams::input1_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00116">onert_micro::core::ArithmeticQuantParams::input2_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00113">onert_micro::core::ArithmeticQuantParams::input2_offset</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00118">onert_micro::core::ArithmeticQuantParams::input2_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00114">onert_micro::core::ArithmeticQuantParams::left_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00119">onert_micro::core::ArithmeticQuantParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00121">onert_micro::core::ArithmeticQuantParams::output_offset</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00120">onert_micro::core::ArithmeticQuantParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00122">onert_micro::core::ArithmeticQuantParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00123">onert_micro::core::ArithmeticQuantParams::quantized_activation_min</a>, <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00060">quantizeMultiplierSmallerThanOneExp()</a>, and <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00143">readQuantParams()</a>.</p>
 
 </div>
 </div>
@@ -404,25 +511,25 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00110">110</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordtype">int</span> effective_filter_size = (filter_size - 1) * dilation_rate + 1;</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">if</span> (stride == 0)</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>  <span class="keywordflow">switch</span> (padding)</div>
-<div class="line"><span class="lineno">  119</span>  {</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">case</span> circle::Padding_SAME:</div>
-<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">return</span> (image_size + stride - 1) / stride;</div>
-<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">case</span> circle::Padding_VALID:</div>
-<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">return</span> (image_size + stride - effective_filter_size) / stride;</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  126</span>  }</div>
-<div class="line"><span class="lineno">  127</span>}</div>
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00111">111</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
+<div class="line"><span class="lineno">  114</span>  <span class="keywordtype">int</span> effective_filter_size = (filter_size - 1) * dilation_rate + 1;</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">if</span> (stride == 0)</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">switch</span> (padding)</div>
+<div class="line"><span class="lineno">  120</span>  {</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">case</span> circle::Padding_SAME:</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">return</span> (image_size + stride - 1) / stride;</div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">case</span> circle::Padding_VALID:</div>
+<div class="line"><span class="lineno">  124</span>      <span class="keywordflow">return</span> (image_size + stride - effective_filter_size) / stride;</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  126</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  127</span>  }</div>
+<div class="line"><span class="lineno">  128</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8h_source.html#l00137">computePaddingHeightWidth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8h_source.html#l00138">computePaddingHeightWidth()</a>.</p>
 
 </div>
 </div>
@@ -478,14 +585,14 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00129">129</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
-<div class="line"><span class="lineno">  132</span>  int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;</div>
-<div class="line"><span class="lineno">  133</span>  int32_t padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;</div>
-<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">return</span> padding &gt; 0 ? padding : 0;</div>
-<div class="line"><span class="lineno">  135</span>}</div>
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00130">130</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  132</span>{</div>
+<div class="line"><span class="lineno">  133</span>  int32_t effective_filter_size = (filter_size - 1) * dilation_rate + 1;</div>
+<div class="line"><span class="lineno">  134</span>  int32_t padding = ((out_size - 1) * stride + effective_filter_size - in_size) / 2;</div>
+<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">return</span> padding &gt; 0 ? padding : 0;</div>
+<div class="line"><span class="lineno">  136</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8h_source.html#l00137">computePaddingHeightWidth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8h_source.html#l00138">computePaddingHeightWidth()</a>.</p>
 
 </div>
 </div>
@@ -577,22 +684,22 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00137">137</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span>  <span class="keywordtype">int</span> out_width =</div>
-<div class="line"><span class="lineno">  145</span>    <a class="code hl_function" href="_spatial_8h.html#aec052078398dad3113102a22da1bb8ec">computeOutSize</a>(padding, in_width, filter_width, stride_width, dilation_rate_width);</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keywordtype">int</span> out_height =</div>
-<div class="line"><span class="lineno">  147</span>    <a class="code hl_function" href="_spatial_8h.html#aec052078398dad3113102a22da1bb8ec">computeOutSize</a>(padding, in_height, filter_height, stride_height, dilation_rate_height);</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>  *padding_h =</div>
-<div class="line"><span class="lineno">  150</span>    computePadding(stride_height, dilation_rate_height, in_height, filter_height, out_height);</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>  *padding_w = computePadding(stride_width, dilation_rate_width, in_width, filter_width, out_width);</div>
-<div class="line"><span class="lineno">  153</span>}</div>
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00138">138</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordtype">int</span> out_width =</div>
+<div class="line"><span class="lineno">  146</span>    <a class="code hl_function" href="_spatial_8h.html#aec052078398dad3113102a22da1bb8ec">computeOutSize</a>(padding, in_width, filter_width, stride_width, dilation_rate_width);</div>
+<div class="line"><span class="lineno">  147</span>  <span class="keywordtype">int</span> out_height =</div>
+<div class="line"><span class="lineno">  148</span>    <a class="code hl_function" href="_spatial_8h.html#aec052078398dad3113102a22da1bb8ec">computeOutSize</a>(padding, in_height, filter_height, stride_height, dilation_rate_height);</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>  *padding_h =</div>
+<div class="line"><span class="lineno">  151</span>    computePadding(stride_height, dilation_rate_height, in_height, filter_height, out_height);</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>  *padding_w = computePadding(stride_width, dilation_rate_width, in_width, filter_width, out_width);</div>
+<div class="line"><span class="lineno">  154</span>}</div>
 <div class="ttc" id="a_spatial_8h_html_aec052078398dad3113102a22da1bb8ec"><div class="ttname"><a href="_spatial_8h.html#aec052078398dad3113102a22da1bb8ec">computeOutSize</a></div><div class="ttdeci">uint32_t computeOutSize(uint32_t imageSize, uint32_t filterSize, uint32_t stride, uint32_t paddingHead, uint32_t paddingTail)</div><div class="ttdef"><b>Definition</b> <a href="_spatial_8h_source.html#l00023">Spatial.h:23</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="execute_2_o_m_utils_8h_source.html#l00110">computeOutSize()</a>, and <a class="el" href="execute_2_o_m_utils_8h_source.html#l00129">computePadding()</a>.</p>
+<p class="reference">References <a class="el" href="execute_2_o_m_utils_8h_source.html#l00111">computeOutSize()</a>, and <a class="el" href="execute_2_o_m_utils_8h_source.html#l00130">computePadding()</a>.</p>
 
 </div>
 </div>
@@ -710,8 +817,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   94</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   95</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_html_a08c8cab72e9c82644f03ab9e6d4af1ee"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a08c8cab72e9c82644f03ab9e6d4af1ee">onert_micro::execute::quantizeMultiplier</a></div><div class="ttdeci">void quantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8cpp_source.html#l00023">OMUtils.cpp:23</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a3e0bf080a0023117641415c6eec4417d"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a3e0bf080a0023117641415c6eec4417d">onert_micro::execute::getQuantizedConvolutionMultiplers</a></div><div class="ttdeci">std::vector&lt; double &gt; getQuantizedConvolutionMultiplers(float input_scale, const flatbuffers::Vector&lt; float &gt; *filter_scale, float output_scale)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8h_source.html#l00091">OMUtils.h:91</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a4162f05d689856864535c2adcea44f70"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a4162f05d689856864535c2adcea44f70">onert_micro::execute::calculateActivationRangeQuantized</a></div><div class="ttdeci">OMStatus calculateActivationRangeQuantized(circle::ActivationFunctionType activation, int32_t output_zero_point, float output_scale, circle::TensorType data_type, int32_t *activation_min, int32_t *activation_max)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8cpp_source.html#l00112">OMUtils.cpp:112</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a3e0bf080a0023117641415c6eec4417d"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a3e0bf080a0023117641415c6eec4417d">onert_micro::execute::getQuantizedConvolutionMultiplers</a></div><div class="ttdeci">std::vector&lt; double &gt; getQuantizedConvolutionMultiplers(float input_scale, const flatbuffers::Vector&lt; float &gt; *filter_scale, float output_scale)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8h_source.html#l00092">OMUtils.h:92</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_conv_quant_html_a0d9bb61eb68609b8e19e71ed53216a8f"><div class="ttname"><a href="structonert__micro_1_1core_1_1_conv_quant.html#a0d9bb61eb68609b8e19e71ed53216a8f">onert_micro::core::ConvQuant::per_channel_output_shift</a></div><div class="ttdeci">std::vector&lt; int &gt; per_channel_output_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00157">OMKernelData.h:157</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_conv_quant_html_a1b49accfe79ef42bc2f40cbf668a9a6c"><div class="ttname"><a href="structonert__micro_1_1core_1_1_conv_quant.html#a1b49accfe79ef42bc2f40cbf668a9a6c">onert_micro::core::ConvQuant::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00153">OMKernelData.h:153</a></div></div>
@@ -721,7 +827,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_conv_quant_html_a8082af6cee125bd0882bb2c6bfd377ef"><div class="ttname"><a href="structonert__micro_1_1core_1_1_conv_quant.html#a8082af6cee125bd0882bb2c6bfd377ef">onert_micro::core::ConvQuant::per_channel_output_multiplier</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; per_channel_output_multiplier</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00156">OMKernelData.h:156</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_conv_quant_html_a931c1f5514e9ff39020b314858ebeea4"><div class="ttname"><a href="structonert__micro_1_1core_1_1_conv_quant.html#a931c1f5514e9ff39020b314858ebeea4">onert_micro::core::ConvQuant::input_offset</a></div><div class="ttdeci">int32_t input_offset</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00148">OMKernelData.h:148</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00112">calculateActivationRangeQuantized()</a>, <a class="el" href="execute_2_o_m_utils_8h_source.html#l00091">getQuantizedConvolutionMultiplers()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00148">onert_micro::core::ConvQuant::input_offset</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00150">onert_micro::core::ConvQuant::output_offset</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00156">onert_micro::core::ConvQuant::per_channel_output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00157">onert_micro::core::ConvQuant::per_channel_output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00154">onert_micro::core::ConvQuant::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00153">onert_micro::core::ConvQuant::quantized_activation_min</a>, <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00023">quantizeMultiplier()</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00149">onert_micro::core::ConvQuant::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00112">calculateActivationRangeQuantized()</a>, <a class="el" href="execute_2_o_m_utils_8h_source.html#l00092">getQuantizedConvolutionMultiplers()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00148">onert_micro::core::ConvQuant::input_offset</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00150">onert_micro::core::ConvQuant::output_offset</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00156">onert_micro::core::ConvQuant::per_channel_output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00157">onert_micro::core::ConvQuant::per_channel_output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00154">onert_micro::core::ConvQuant::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00153">onert_micro::core::ConvQuant::quantized_activation_min</a>, <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00023">quantizeMultiplier()</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00149">onert_micro::core::ConvQuant::weights_offset</a>.</p>
 
 </div>
 </div>
@@ -894,7 +1000,6 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  183</span>}</div>
 <div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html_abd40fce4708b3659c02bdc3989973740"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#abd40fce4708b3659c02bdc3989973740">onert_micro::execute::OMRuntimeKernel::outputs</a></div><div class="ttdeci">const circle::Tensor * outputs[maxOutputSize]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00052">OMRuntimeKernel.h:52</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1execute_1_1_o_m_runtime_kernel_html_af34c85abb206d91e55e3e28b975692c5"><div class="ttname"><a href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">onert_micro::execute::OMRuntimeKernel::inputs</a></div><div class="ttdeci">const circle::Tensor * inputs[maxInputSize]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_kernel_8h_source.html#l00051">OMRuntimeKernel.h:51</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_html_a6b3b2086437cf9875010e5c914dbde38"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a6b3b2086437cf9875010e5c914dbde38">onert_micro::execute::quantizeMultiplierSmallerThanOneExp</a></div><div class="ttdeci">void quantizeMultiplierSmallerThanOneExp(double double_multiplier, int32_t *quantized_multiplier, int *left_shift)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8cpp_source.html#l00060">OMUtils.cpp:60</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_comparison_params_html_a244612cf66891f37b93090eeecbd10b8"><div class="ttname"><a href="structonert__micro_1_1core_1_1_comparison_params.html#a244612cf66891f37b93090eeecbd10b8">onert_micro::core::ComparisonParams::left_shift</a></div><div class="ttdeci">int left_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00206">OMKernelData.h:206</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_comparison_params_html_a47c4dafe4b7861553ae21e7d521e3a09"><div class="ttname"><a href="structonert__micro_1_1core_1_1_comparison_params.html#a47c4dafe4b7861553ae21e7d521e3a09">onert_micro::core::ComparisonParams::input2_shift</a></div><div class="ttdeci">int input2_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00212">OMKernelData.h:212</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_comparison_params_html_a5716898917de1efb0215855bc2cfb6b3"><div class="ttname"><a href="structonert__micro_1_1core_1_1_comparison_params.html#a5716898917de1efb0215855bc2cfb6b3">onert_micro::core::ComparisonParams::input1_shift</a></div><div class="ttdeci">int input1_shift</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00209">OMKernelData.h:209</a></div></div>
@@ -1315,18 +1420,18 @@ template&lt;typename T , typename AccType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00061">61</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> input_product_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(input_scale * filter_scale);</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  assert(input_product_scale &gt;= 0);</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>  assert(output_scale != 0.f);</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> input_product_scale / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(output_scale);</div>
-<div class="line"><span class="lineno">   71</span>}</div>
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00062">62</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> input_product_scale = <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(input_scale * filter_scale);</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  assert(input_product_scale &gt;= 0);</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  assert(output_scale != 0.f);</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">return</span> input_product_scale / <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(output_scale);</div>
+<div class="line"><span class="lineno">   72</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8h_source.html#l00091">getQuantizedConvolutionMultiplers()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8h_source.html#l00092">getQuantizedConvolutionMultiplers()</a>.</p>
 
 </div>
 </div>
@@ -1370,21 +1475,21 @@ template&lt;typename T , typename AccType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00091">91</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{</div>
-<div class="line"><span class="lineno">   94</span>  std::vector&lt;double&gt; effective_output_scales;</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordtype">size_t</span> n = filter_scale-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
-<div class="line"><span class="lineno">   96</span>  effective_output_scales.reserve(n);</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
-<div class="line"><span class="lineno">   98</span>  {</div>
-<div class="line"><span class="lineno">   99</span>    effective_output_scales.push_back(</div>
-<div class="line"><span class="lineno">  100</span>      getQuantizedConvolutionMultipler(input_scale, filter_scale-&gt;operator[](i), output_scale));</div>
-<div class="line"><span class="lineno">  101</span>  }</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">return</span> effective_output_scales;</div>
-<div class="line"><span class="lineno">  103</span>}</div>
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00092">92</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
+<div class="line"><span class="lineno">   95</span>  std::vector&lt;double&gt; effective_output_scales;</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordtype">size_t</span> n = filter_scale-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><span class="lineno">   97</span>  effective_output_scales.reserve(n);</div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n; ++i)</div>
+<div class="line"><span class="lineno">   99</span>  {</div>
+<div class="line"><span class="lineno">  100</span>    effective_output_scales.push_back(</div>
+<div class="line"><span class="lineno">  101</span>      getQuantizedConvolutionMultipler(input_scale, filter_scale-&gt;operator[](i), output_scale));</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">return</span> effective_output_scales;</div>
+<div class="line"><span class="lineno">  104</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="execute_2_o_m_utils_8h_source.html#l00061">getQuantizedConvolutionMultipler()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="execute_2_o_m_utils_8h_source.html#l00062">getQuantizedConvolutionMultipler()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2src_2execute_2kernels_2_convolution_common_8cpp_source.html#l00023">createConvParams()</a>.</p>
 
@@ -1506,7 +1611,7 @@ template&lt;typename T , typename AccType &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00023">quantizeMultiplier()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00114">evalQuantizedComparisonGeneric()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00159">calculateQuantParams()</a>, and <a class="el" href="onert-micro_2include_2execute_2kernels_2_comparison_common_8h_source.html#l00114">evalQuantizedComparisonGeneric()</a>.</p>
 
 </div>
 </div>
@@ -1766,6 +1871,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  156</span>  scale = tensor-&gt;quantization()-&gt;scale()-&gt;operator[](0);</div>
 <div class="line"><span class="lineno">  157</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00159">calculateQuantParams()</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>

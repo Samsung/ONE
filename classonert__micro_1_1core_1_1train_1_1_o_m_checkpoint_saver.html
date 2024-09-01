@@ -271,36 +271,36 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_checkpoint_saver_8cpp_source.html#l00402">402</a> of file <a class="el" href="_o_m_checkpoint_saver_8cpp_source.html">OMCheckpointSaver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  405</span>{</div>
-<div class="line"><span class="lineno">  406</span>  <span class="comment">// Clear data</span></div>
-<div class="line"><span class="lineno">  407</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.clear();</div>
-<div class="line"><span class="lineno">  408</span> </div>
-<div class="line"><span class="lineno">  409</span>  <span class="comment">// Obtain file size and resize vector</span></div>
-<div class="line"><span class="lineno">  410</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> data_size = calculateFileSize(context, train_storage, config);</div>
-<div class="line"><span class="lineno">  411</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.resize(data_size);</div>
-<div class="line"><span class="lineno">  412</span> </div>
-<div class="line"><span class="lineno">  413</span>  <span class="comment">// Point to start of the buffer</span></div>
-<div class="line"><span class="lineno">  414</span>  <span class="keywordtype">char</span> *cur_ptr = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.data();</div>
-<div class="line"><span class="lineno">  415</span> </div>
-<div class="line"><span class="lineno">  416</span>  <span class="comment">// Write MAGIC_NUMBER</span></div>
-<div class="line"><span class="lineno">  417</span>  std::memcpy(cur_ptr, &amp;MAGIC_NUMBER, <span class="keyword">sizeof</span>(MAGIC_NUMBER));</div>
-<div class="line"><span class="lineno">  418</span>  cur_ptr += 2;</div>
-<div class="line"><span class="lineno">  419</span> </div>
-<div class="line"><span class="lineno">  420</span>  <span class="comment">// Write SCHEMA_VERSION</span></div>
-<div class="line"><span class="lineno">  421</span>  std::memcpy(cur_ptr, &amp;SCHEMA_VERSION, <span class="keyword">sizeof</span>(SCHEMA_VERSION));</div>
-<div class="line"><span class="lineno">  422</span>  cur_ptr += 1;</div>
-<div class="line"><span class="lineno">  423</span> </div>
-<div class="line"><span class="lineno">  424</span>  <span class="comment">// Miss RESERVED field</span></div>
-<div class="line"><span class="lineno">  425</span>  cur_ptr += 1;</div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span>  <span class="comment">// Writes buffers and offsets</span></div>
-<div class="line"><span class="lineno">  428</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = writeOffsetsAndBuffers(context, train_storage, config, data);</div>
-<div class="line"><span class="lineno">  429</span> </div>
-<div class="line"><span class="lineno">  430</span>  assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
-<div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  433</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_checkpoint_saver_8cpp_source.html#l00403">403</a> of file <a class="el" href="_o_m_checkpoint_saver_8cpp_source.html">OMCheckpointSaver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  406</span>{</div>
+<div class="line"><span class="lineno">  407</span>  <span class="comment">// Clear data</span></div>
+<div class="line"><span class="lineno">  408</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.clear();</div>
+<div class="line"><span class="lineno">  409</span> </div>
+<div class="line"><span class="lineno">  410</span>  <span class="comment">// Obtain file size and resize vector</span></div>
+<div class="line"><span class="lineno">  411</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> data_size = calculateFileSize(context, train_storage, config);</div>
+<div class="line"><span class="lineno">  412</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.resize(data_size);</div>
+<div class="line"><span class="lineno">  413</span> </div>
+<div class="line"><span class="lineno">  414</span>  <span class="comment">// Point to start of the buffer</span></div>
+<div class="line"><span class="lineno">  415</span>  <span class="keywordtype">char</span> *cur_ptr = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.data();</div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span>  <span class="comment">// Write MAGIC_NUMBER</span></div>
+<div class="line"><span class="lineno">  418</span>  std::memcpy(cur_ptr, &amp;MAGIC_NUMBER, <span class="keyword">sizeof</span>(MAGIC_NUMBER));</div>
+<div class="line"><span class="lineno">  419</span>  cur_ptr += 2;</div>
+<div class="line"><span class="lineno">  420</span> </div>
+<div class="line"><span class="lineno">  421</span>  <span class="comment">// Write SCHEMA_VERSION</span></div>
+<div class="line"><span class="lineno">  422</span>  std::memcpy(cur_ptr, &amp;SCHEMA_VERSION, <span class="keyword">sizeof</span>(SCHEMA_VERSION));</div>
+<div class="line"><span class="lineno">  423</span>  cur_ptr += 1;</div>
+<div class="line"><span class="lineno">  424</span> </div>
+<div class="line"><span class="lineno">  425</span>  <span class="comment">// Miss RESERVED field</span></div>
+<div class="line"><span class="lineno">  426</span>  cur_ptr += 1;</div>
+<div class="line"><span class="lineno">  427</span> </div>
+<div class="line"><span class="lineno">  428</span>  <span class="comment">// Writes buffers and offsets</span></div>
+<div class="line"><span class="lineno">  429</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status = writeOffsetsAndBuffers(context, train_storage, config, data);</div>
+<div class="line"><span class="lineno">  430</span> </div>
+<div class="line"><span class="lineno">  431</span>  assert(status == <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>);</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  434</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>

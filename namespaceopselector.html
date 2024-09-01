@@ -111,8 +111,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a27fff21a6f106642d88f31c752814c9a" id="r_a27fff21a6f106642d88f31c752814c9a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classluci_1_1_module.html">luci::Module</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceopselector.html#a27fff21a6f106642d88f31c752814c9a">getModule</a> (std::string &amp;input_path)</td></tr>
-<tr class="separator:a27fff21a6f106642d88f31c752814c9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d94db6d0cc5886d326f921781701c51" id="r_a6d94db6d0cc5886d326f921781701c51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceopselector.html#a6d94db6d0cc5886d326f921781701c51">exportModule</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module, std::string &amp;output_path)</td></tr>
 <tr class="separator:a6d94db6d0cc5886d326f921781701c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b6a6c19cf1bc0b1ad57f484d5d8fb89" id="r_a0b6a6c19cf1bc0b1ad57f484d5d8fb89"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
@@ -188,79 +186,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_module_i_o_8cpp_source.html#l00057">57</a> of file <a class="el" href="_module_i_o_8cpp_source.html">ModuleIO.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
-<div class="line"><span class="lineno">   59</span>  <a class="code hl_class" href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a> exporter;</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_struct" href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a> contract(module, output_path);</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">if</span> (!exporter.<a class="code hl_function" href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">invoke</a>(&amp;contract))</div>
-<div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to export &#39;&quot;</span> &lt;&lt; output_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   67</span>  }</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   70</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_module_i_o_8cpp_source.html#l00029">29</a> of file <a class="el" href="_module_i_o_8cpp_source.html">ModuleIO.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_class" href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a> exporter;</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_struct" href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a> contract(module, output_path);</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (!exporter.<a class="code hl_function" href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">invoke</a>(&amp;contract))</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to export &#39;&quot;</span> &lt;&lt; output_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   42</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html"><div class="ttname"><a href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci_2export_2include_2luci_2_circle_exporter_8h_source.html#l00029">CircleExporter.h:30</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html_a6fcbba96153e5d1582664e6e7f6dcb54"><div class="ttname"><a href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">luci::CircleExporter::invoke</a></div><div class="ttdeci">bool invoke(Contract *) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2export_2src_2_circle_exporter_8cpp_source.html#l00034">CircleExporter.cpp:34</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_file_exp_contract_html"><div class="ttname"><a href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a></div><div class="ttdef"><b>Definition</b> <a href="_circle_file_exp_contract_8h_source.html#l00032">CircleFileExpContract.h:33</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2export_2src_2_circle_exporter_8cpp_source.html#l00034">luci::CircleExporter::invoke()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2circle-opselector_2driver_2_driver_8cpp_source.html#l00041">entry()</a>.</p>
-
-</div>
-</div>
-<a id="a27fff21a6f106642d88f31c752814c9a" name="a27fff21a6f106642d88f31c752814c9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27fff21a6f106642d88f31c752814c9a">&#9670;&#160;</a></span>getModule()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classluci_1_1_module.html">luci::Module</a> &gt; opselector::getModule </td>
-          <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
-          <td class="paramname"><em>input_path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_module_i_o_8cpp_source.html#l00030">30</a> of file <a class="el" href="_module_i_o_8cpp_source.html">ModuleIO.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">// Load model from the file</span></div>
-<div class="line"><span class="lineno">   33</span>  <a class="code hl_class" href="classfoder_1_1_file_loader.html">foder::FileLoader</a> file_loader{input_path};</div>
-<div class="line"><span class="lineno">   34</span>  std::vector&lt;char&gt; model_data = file_loader.<a class="code hl_function" href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">load</a>();</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <span class="comment">// Verify flatbuffers</span></div>
-<div class="line"><span class="lineno">   37</span>  flatbuffers::Verifier verifier{<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data()), model_data.size()};</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (!circle::VerifyModelBuffer(verifier))</div>
-<div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Invalid input file &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   41</span>    exit(EXIT_FAILURE);</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> circle::Model *<a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a> = circle::GetModel(model_data.data());</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">if</span> (circle_model == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to load circle &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   48</span>    exit(EXIT_FAILURE);</div>
-<div class="line"><span class="lineno">   49</span>  }</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <span class="comment">// Import from input Circle file</span></div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_class" href="classluci_1_1_importer.html">luci::Importer</a> importer;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> importer.<a class="code hl_function" href="classluci_1_1_importer.html#a555aa79f84a164378a5c5437a4afb6e6">importModule</a>(circle_model);</div>
-<div class="line"><span class="lineno">   55</span>}</div>
-<div class="ttc" id="aclassfoder_1_1_file_loader_html"><div class="ttname"><a href="classfoder_1_1_file_loader.html">foder::FileLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00026">FileLoader.h:27</a></div></div>
-<div class="ttc" id="aclassfoder_1_1_file_loader_html_adc903eb7f252ed7fac779a6869139ec4"><div class="ttname"><a href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">foder::FileLoader::load</a></div><div class="ttdeci">DataBuffer load(void) const</div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00039">FileLoader.h:39</a></div></div>
-<div class="ttc" id="aclassluci_1_1_importer_html"><div class="ttname"><a href="classluci_1_1_importer.html">luci::Importer</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2import_2include_2luci_2_importer_8h_source.html#l00033">Importer.h:34</a></div></div>
-<div class="ttc" id="aclassluci_1_1_importer_html_a555aa79f84a164378a5c5437a4afb6e6"><div class="ttname"><a href="classluci_1_1_importer.html#a555aa79f84a164378a5c5437a4afb6e6">luci::Importer::importModule</a></div><div class="ttdeci">std::unique_ptr&lt; Module &gt; importModule(const circle::Model *model) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2import_2src_2_importer_8cpp_source.html#l00304">Importer.cpp:304</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_ab8593f39f8c0562457496ffafe7c2932"><div class="ttname"><a href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">part_eval_one.circle_model</a></div><div class="ttdeci">str circle_model</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00025">part_eval_one.py:25</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00304">luci::Importer::importModule()</a>, and <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2circle-opselector_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
 
 </div>
 </div>

@@ -913,7 +913,8 @@ var annotated_dup =
       ] ],
       [ "sinf", "namespaceluci_1_1sinf.html", [
         [ "Algorithm", "classluci_1_1sinf_1_1_algorithm.html", "classluci_1_1sinf_1_1_algorithm" ],
-        [ "Rule", "structluci_1_1sinf_1_1_rule.html", "structluci_1_1sinf_1_1_rule" ]
+        [ "Rule", "structluci_1_1sinf_1_1_rule.html", "structluci_1_1sinf_1_1_rule" ],
+        [ "TensorShapeExpander", "classluci_1_1sinf_1_1_tensor_shape_expander.html", "classluci_1_1sinf_1_1_tensor_shape_expander" ]
       ] ],
       [ "test", "namespaceluci_1_1test.html", [
         [ "ExampleGraph", "classluci_1_1test_1_1_example_graph.html", null ],
@@ -2963,14 +2964,14 @@ var annotated_dup =
           [ "DisposableMemoryManager", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager.html", "classonert_1_1backend_1_1train_1_1_disposable_memory_manager" ],
           [ "DisposableTensorIndex", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html", "classonert_1_1backend_1_1train_1_1_disposable_tensor_index" ],
           [ "DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", "classonert_1_1backend_1_1train_1_1_dummy_backend_context" ],
-          [ "ExtraTensor", "classonert_1_1backend_1_1train_1_1_extra_tensor.html", "classonert_1_1backend_1_1train_1_1_extra_tensor" ],
-          [ "ExtraTensorIndex", "classonert_1_1backend_1_1train_1_1_extra_tensor_index.html", "classonert_1_1backend_1_1train_1_1_extra_tensor_index" ],
           [ "FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", "classonert_1_1backend_1_1train_1_1_first_fit_planner" ],
           [ "ITensorRegistry", "classonert_1_1backend_1_1train_1_1_i_tensor_registry.html", "classonert_1_1backend_1_1train_1_1_i_tensor_registry" ],
           [ "ITrainableBackend", "structonert_1_1backend_1_1train_1_1_i_trainable_backend.html", "structonert_1_1backend_1_1train_1_1_i_trainable_backend" ],
           [ "ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor" ],
           [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ],
           [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
+          [ "LayerScopeTensor", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor.html", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor" ],
+          [ "LayerScopeTensorIndex", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index" ],
           [ "MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", "classonert_1_1backend_1_1train_1_1_memory_planner_factory" ],
           [ "PortableTensorRegistryTemplate", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template.html", "classonert_1_1backend_1_1train_1_1_portable_tensor_registry_template" ],
           [ "Tensor", "classonert_1_1backend_1_1train_1_1_tensor.html", "classonert_1_1backend_1_1train_1_1_tensor" ],
@@ -3080,10 +3081,6 @@ var annotated_dup =
           [ "Node", "classonert_1_1dumper_1_1dot_1_1_node.html", "classonert_1_1dumper_1_1dot_1_1_node" ],
           [ "Operand", "classonert_1_1dumper_1_1dot_1_1_operand.html", "classonert_1_1dumper_1_1dot_1_1_operand" ],
           [ "Operation", "classonert_1_1dumper_1_1dot_1_1_operation.html", "classonert_1_1dumper_1_1dot_1_1_operation" ]
-        ] ],
-        [ "h5", "namespaceonert_1_1dumper_1_1h5.html", [
-          [ "Dumper", "classonert_1_1dumper_1_1h5_1_1_dumper.html", "classonert_1_1dumper_1_1h5_1_1_dumper" ],
-          [ "MinMaxDumper", "classonert_1_1dumper_1_1h5_1_1_min_max_dumper.html", "classonert_1_1dumper_1_1h5_1_1_min_max_dumper" ]
         ] ]
       ] ],
       [ "exec", "namespaceonert_1_1exec.html", [
@@ -3426,6 +3423,8 @@ var annotated_dup =
         [ "NegTestDataBase", "classonert__micro_1_1test__model_1_1_neg_test_data_base.html", "classonert__micro_1_1test__model_1_1_neg_test_data_base" ],
         [ "NegTestDataFloatGreaterEqualTypeMishmach", "classonert__micro_1_1test__model_1_1_neg_test_data_float_greater_equal_type_mishmach.html", "classonert__micro_1_1test__model_1_1_neg_test_data_float_greater_equal_type_mishmach" ],
         [ "NegTestDataFloatGreaterTypeMishmach", "classonert__micro_1_1test__model_1_1_neg_test_data_float_greater_type_mishmach.html", "classonert__micro_1_1test__model_1_1_neg_test_data_float_greater_type_mishmach" ],
+        [ "NegTestDataIncorrectTypeParamBeginStridedSliceKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_incorrect_type_param_begin_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_incorrect_type_param_begin_strided_slice_kernel" ],
+        [ "NegTestDataIncorrectTypeParamStridesStridedSliceKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_incorrect_type_param_strides_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_incorrect_type_param_strides_strided_slice_kernel" ],
         [ "NegTestDataInput1WrongTypeDiv", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_div.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_div" ],
         [ "NegTestDataInput1WrongTypeFloorDiv", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_floor_div.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_floor_div" ],
         [ "NegTestDataInput1WrongTypeFloorMod", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_floor_mod.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input1_wrong_type_floor_mod" ],
@@ -3478,6 +3477,7 @@ var annotated_dup =
         [ "NegTestDataInputOutputTypeMismatchSplitVKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_split_v_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_split_v_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchSqrtKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sqrt_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sqrt_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchSquareKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel" ],
+        [ "NegTestDataInputOutputTypeMismatchStridedSliceKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_strided_slice_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchSVDFKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchTanhKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel" ],
@@ -3567,6 +3567,7 @@ var annotated_dup =
         [ "TestDataFloatGatherND", "classonert__micro_1_1test__model_1_1_test_data_float_gather_n_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_gather_n_d" ],
         [ "TestDataFloatGreater", "classonert__micro_1_1test__model_1_1_test_data_float_greater.html", "classonert__micro_1_1test__model_1_1_test_data_float_greater" ],
         [ "TestDataFloatGreaterEqual", "classonert__micro_1_1test__model_1_1_test_data_float_greater_equal.html", "classonert__micro_1_1test__model_1_1_test_data_float_greater_equal" ],
+        [ "TestDataFloatGRU", "classonert__micro_1_1test__model_1_1_test_data_float_g_r_u.html", "classonert__micro_1_1test__model_1_1_test_data_float_g_r_u" ],
         [ "TestDataFloatL2Normalization", "classonert__micro_1_1test__model_1_1_test_data_float_l2_normalization.html", "classonert__micro_1_1test__model_1_1_test_data_float_l2_normalization" ],
         [ "TestDataFloatL2Pool2D", "classonert__micro_1_1test__model_1_1_test_data_float_l2_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_l2_pool2_d" ],
         [ "TestDataFloatLeakyReLU", "classonert__micro_1_1test__model_1_1_test_data_float_leaky_re_l_u.html", "classonert__micro_1_1test__model_1_1_test_data_float_leaky_re_l_u" ],
@@ -3598,6 +3599,7 @@ var annotated_dup =
         [ "TestDataFloatSqrt", "classonert__micro_1_1test__model_1_1_test_data_float_sqrt.html", "classonert__micro_1_1test__model_1_1_test_data_float_sqrt" ],
         [ "TestDataFloatSquare", "classonert__micro_1_1test__model_1_1_test_data_float_square.html", "classonert__micro_1_1test__model_1_1_test_data_float_square" ],
         [ "TestDataFloatSquaredDifference", "classonert__micro_1_1test__model_1_1_test_data_float_squared_difference.html", "classonert__micro_1_1test__model_1_1_test_data_float_squared_difference" ],
+        [ "TestDataFloatStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice" ],
         [ "TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", "classonert__micro_1_1test__model_1_1_test_data_float_sub" ],
         [ "TestDataFloatSVDF", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f.html", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f" ],
         [ "TestDataFloatTanh", "classonert__micro_1_1test__model_1_1_test_data_float_tanh.html", "classonert__micro_1_1test__model_1_1_test_data_float_tanh" ],
@@ -3611,6 +3613,7 @@ var annotated_dup =
         [ "TestDataGatherNDBase", "classonert__micro_1_1test__model_1_1_test_data_gather_n_d_base.html", "classonert__micro_1_1test__model_1_1_test_data_gather_n_d_base" ],
         [ "TestDataGreaterBase", "classonert__micro_1_1test__model_1_1_test_data_greater_base.html", "classonert__micro_1_1test__model_1_1_test_data_greater_base" ],
         [ "TestDataGreaterEqualBase", "classonert__micro_1_1test__model_1_1_test_data_greater_equal_base.html", "classonert__micro_1_1test__model_1_1_test_data_greater_equal_base" ],
+        [ "TestDataGRUBase", "classonert__micro_1_1test__model_1_1_test_data_g_r_u_base.html", "classonert__micro_1_1test__model_1_1_test_data_g_r_u_base" ],
         [ "TestDataInputTypeMismatchAddN", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_add_n.html", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_add_n" ],
         [ "TestDataInputTypeMismatchConcatenation", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_input_type_mismatch_concatenation" ],
         [ "TestDataInt32Slice", "classonert__micro_1_1test__model_1_1_test_data_int32_slice.html", "classonert__micro_1_1test__model_1_1_test_data_int32_slice" ],
@@ -3626,6 +3629,7 @@ var annotated_dup =
         [ "TestDataIntLess", "classonert__micro_1_1test__model_1_1_test_data_int_less.html", "classonert__micro_1_1test__model_1_1_test_data_int_less" ],
         [ "TestDataIntMul", "classonert__micro_1_1test__model_1_1_test_data_int_mul.html", "classonert__micro_1_1test__model_1_1_test_data_int_mul" ],
         [ "TestDataIntPack", "classonert__micro_1_1test__model_1_1_test_data_int_pack.html", "classonert__micro_1_1test__model_1_1_test_data_int_pack" ],
+        [ "TestDataIntStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_int_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_int_strided_slice" ],
         [ "TestDataIntSub", "classonert__micro_1_1test__model_1_1_test_data_int_sub.html", "classonert__micro_1_1test__model_1_1_test_data_int_sub" ],
         [ "TestDataL2NormalizationBase", "classonert__micro_1_1test__model_1_1_test_data_l2_normalization_base.html", "classonert__micro_1_1test__model_1_1_test_data_l2_normalization_base" ],
         [ "TestDataL2Pool2DBase", "classonert__micro_1_1test__model_1_1_test_data_l2_pool2_d_base.html", "classonert__micro_1_1test__model_1_1_test_data_l2_pool2_d_base" ],
@@ -3668,6 +3672,7 @@ var annotated_dup =
         [ "TestDataS8ReLU6", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6" ],
         [ "TestDataS8ReshapeKernel", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel" ],
         [ "TestDataS8SpaceToDepth", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth.html", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth" ],
+        [ "TestDataS8StridedSlice", "classonert__micro_1_1test__model_1_1_test_data_s8_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_s8_strided_slice" ],
         [ "TestDataS8Sub", "classonert__micro_1_1test__model_1_1_test_data_s8_sub.html", "classonert__micro_1_1test__model_1_1_test_data_s8_sub" ],
         [ "TestDataS8Unpack", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack" ],
         [ "TestDataShapeKernel", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel" ],
@@ -3681,7 +3686,7 @@ var annotated_dup =
         [ "TestDataSqrtBase", "classonert__micro_1_1test__model_1_1_test_data_sqrt_base.html", "classonert__micro_1_1test__model_1_1_test_data_sqrt_base" ],
         [ "TestDataSquareBase", "classonert__micro_1_1test__model_1_1_test_data_square_base.html", "classonert__micro_1_1test__model_1_1_test_data_square_base" ],
         [ "TestDataSquaredDifferenceBase", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base.html", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base" ],
-        [ "TestDataStridedSliceKernel", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_kernel" ],
+        [ "TestDataStridedSliceBase", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base.html", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base" ],
         [ "TestDataSubBase", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", "classonert__micro_1_1test__model_1_1_test_data_sub_base" ],
         [ "TestDataSVDFBase", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base.html", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base" ],
         [ "TestDataTanhBase", "classonert__micro_1_1test__model_1_1_test_data_tanh_base.html", "classonert__micro_1_1test__model_1_1_test_data_tanh_base" ],

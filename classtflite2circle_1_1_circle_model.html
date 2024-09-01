@@ -107,6 +107,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad0d9e0932b68c98e2235dc63bb9a5b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09d7848b06f8c74e41c22cf1aacc0ba8" id="r_a09d7848b06f8c74e41c22cf1aacc0ba8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_circle_model.html#a09d7848b06f8c74e41c22cf1aacc0ba8">model_build</a> (void) const</td></tr>
 <tr class="separator:a09d7848b06f8c74e41c22cf1aacc0ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bde156c07a182e8ec2d43635ea56c19" id="r_a4bde156c07a182e8ec2d43635ea56c19"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_circle_model.html#a4bde156c07a182e8ec2d43635ea56c19">finalize</a> (void)</td></tr>
+<tr class="separator:a4bde156c07a182e8ec2d43635ea56c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c7e918f396ac06f93145507fd8e7a5" id="r_a73c7e918f396ac06f93145507fd8e7a5"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_circle_model.html#a73c7e918f396ac06f93145507fd8e7a5">base</a> (void) const</td></tr>
 <tr class="separator:a73c7e918f396ac06f93145507fd8e7a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e087f116e34d7544480a786f998ac25" id="r_a3e087f116e34d7544480a786f998ac25"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">size</a> (void) const</td></tr>
@@ -114,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_circle_model_8h_source.html#l00087">87</a> of file <a class="el" href="_circle_model_8h_source.html">CircleModel.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_circle_model_8h_source.html#l00093">93</a> of file <a class="el" href="_circle_model_8h_source.html">CircleModel.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a731579184d63686f98c3f384d17be9af" name="a731579184d63686f98c3f384d17be9af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a731579184d63686f98c3f384d17be9af">&#9670;&#160;</a></span>CircleModel() <span class="overload">[1/2]</span></h2>
@@ -168,11 +170,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00380">380</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  381</span>  : _version{0}, _description{fb-&gt;CreateString(<span class="stringliteral">&quot;ONE-tflite2circle&quot;</span>)}, _fb{fb}, _file_raw{fr}</div>
-<div class="line"><span class="lineno">  382</span>{</div>
-<div class="line"><span class="lineno">  383</span>  <span class="comment">// NOTHING TODO</span></div>
-<div class="line"><span class="lineno">  384</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00413">413</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  414</span>  : _version{0}, _description{fb-&gt;CreateString(<span class="stringliteral">&quot;ONE-tflite2circle&quot;</span>)}, _fb{fb}, _file_raw{fr}</div>
+<div class="line"><span class="lineno">  415</span>{</div>
+<div class="line"><span class="lineno">  416</span>  <span class="comment">// NOTHING TODO</span></div>
+<div class="line"><span class="lineno">  417</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -193,11 +195,95 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00416">416</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  417</span>{</div>
-<div class="line"><span class="lineno">  418</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb-&gt;GetBufferPointer());</div>
-<div class="line"><span class="lineno">  419</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00509">509</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  510</span>{</div>
+<div class="line"><span class="lineno">  511</span>  <span class="keywordflow">if</span> (_buffer_data_map.empty())</div>
+<div class="line"><span class="lineno">  512</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb-&gt;GetBufferPointer());</div>
+<div class="line"><span class="lineno">  513</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb_data_with_ext.data());</div>
+<div class="line"><span class="lineno">  514</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a4bde156c07a182e8ec2d43635ea56c19" name="a4bde156c07a182e8ec2d43635ea56c19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bde156c07a182e8ec2d43635ea56c19">&#9670;&#160;</a></span>finalize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void tflite2circle::CircleModel::finalize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00451">451</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  452</span>{</div>
+<div class="line"><span class="lineno">  453</span>  <span class="keywordflow">if</span> (_buffer_data_map.empty())</div>
+<div class="line"><span class="lineno">  454</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  455</span> </div>
+<div class="line"><span class="lineno">  456</span>  <span class="keyword">auto</span> align16 = [](<span class="keywordtype">size_t</span> &amp;v) {</div>
+<div class="line"><span class="lineno">  457</span>    <span class="keywordflow">while</span> (v % 16 != 0)</div>
+<div class="line"><span class="lineno">  458</span>      v++;</div>
+<div class="line"><span class="lineno">  459</span>  };</div>
+<div class="line"><span class="lineno">  460</span> </div>
+<div class="line"><span class="lineno">  461</span>  <span class="comment">// get total memory for flatbuffer + all buffer_data</span></div>
+<div class="line"><span class="lineno">  462</span>  <span class="keywordtype">size_t</span> result_size = _fb-&gt;GetSize();</div>
+<div class="line"><span class="lineno">  463</span>  align16(result_size);</div>
+<div class="line"><span class="lineno">  464</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;it : _buffer_data_map)</div>
+<div class="line"><span class="lineno">  465</span>  {</div>
+<div class="line"><span class="lineno">  466</span>    <a class="code hl_typedef" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">BufferData</a> &amp;buffer_data = it.second;</div>
+<div class="line"><span class="lineno">  467</span>    result_size += buffer_data.size();</div>
+<div class="line"><span class="lineno">  468</span>    align16(result_size);</div>
+<div class="line"><span class="lineno">  469</span>  }</div>
+<div class="line"><span class="lineno">  470</span>  align16(result_size);</div>
+<div class="line"><span class="lineno">  471</span>  result_size += 16; <span class="comment">// for safety</span></div>
+<div class="line"><span class="lineno">  472</span> </div>
+<div class="line"><span class="lineno">  473</span>  std::string result;</div>
+<div class="line"><span class="lineno">  474</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *buff_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb-&gt;GetBufferPointer());</div>
+<div class="line"><span class="lineno">  475</span> </div>
+<div class="line"><span class="lineno">  476</span>  <span class="keyword">auto</span> padalign16 = [](std::string &amp;<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>) {</div>
+<div class="line"><span class="lineno">  477</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.size() % 16 != 0)</div>
+<div class="line"><span class="lineno">  478</span>      str += <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  479</span>  };</div>
+<div class="line"><span class="lineno">  480</span> </div>
+<div class="line"><span class="lineno">  481</span>  result.reserve(result_size);</div>
+<div class="line"><span class="lineno">  482</span>  result.append(buff_ptr, _fb-&gt;GetSize());</div>
+<div class="line"><span class="lineno">  483</span> </div>
+<div class="line"><span class="lineno">  484</span>  <span class="keyword">auto</span> mutable_model = circle::GetMutableModel(result.data());</div>
+<div class="line"><span class="lineno">  485</span>  <span class="keyword">auto</span> mutable_buffers = mutable_model-&gt;mutable_buffers();</div>
+<div class="line"><span class="lineno">  486</span> </div>
+<div class="line"><span class="lineno">  487</span>  <span class="comment">// pad to be 16 bytes aligned</span></div>
+<div class="line"><span class="lineno">  488</span>  padalign16(result);</div>
+<div class="line"><span class="lineno">  489</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;it : _buffer_data_map)</div>
+<div class="line"><span class="lineno">  490</span>  {</div>
+<div class="line"><span class="lineno">  491</span>    int32_t buffer_index = it.first;</div>
+<div class="line"><span class="lineno">  492</span>    <a class="code hl_typedef" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">BufferData</a> &amp;buffer_data = it.second;</div>
+<div class="line"><span class="lineno">  493</span>    uint64_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = result.size();</div>
+<div class="line"><span class="lineno">  494</span>    uint64_t <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">size</a> = buffer_data.size();</div>
+<div class="line"><span class="lineno">  495</span> </div>
+<div class="line"><span class="lineno">  496</span>    circle::Buffer *mutable_buffer = mutable_buffers-&gt;GetMutableObject(buffer_index);</div>
+<div class="line"><span class="lineno">  497</span>    mutable_buffer-&gt;mutate_offset(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><span class="lineno">  498</span>    mutable_buffer-&gt;mutate_size(<a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">size</a>);</div>
+<div class="line"><span class="lineno">  499</span> </div>
+<div class="line"><span class="lineno">  500</span>    result.append(buffer_data.begin(), buffer_data.end());</div>
+<div class="line"><span class="lineno">  501</span>    padalign16(result);</div>
+<div class="line"><span class="lineno">  502</span>  }</div>
+<div class="line"><span class="lineno">  503</span>  padalign16(result);</div>
+<div class="line"><span class="lineno">  504</span> </div>
+<div class="line"><span class="lineno">  505</span>  <span class="comment">// use final result</span></div>
+<div class="line"><span class="lineno">  506</span>  _fb_data_with_ext = result;</div>
+<div class="line"><span class="lineno">  507</span>}</div>
+<div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a3e087f116e34d7544480a786f998ac25"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">tflite2circle::CircleModel::size</a></div><div class="ttdeci">size_t size(void) const</div><div class="ttdef"><b>Definition</b> <a href="_circle_model_8cpp_source.html#l00516">CircleModel.cpp:516</a></div></div>
+<div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_afc9dd8b2ac5b9f8a2a04466cf313732a"><div class="ttname"><a href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">part_eval_one.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00019">part_eval_one.py:19</a></div></div>
+<div class="ttc" id="anamespacetflite2circle_html_ac3d592e40f47aac3b9e56cca542a1622"><div class="ttname"><a href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">tflite2circle::BufferData</a></div><div class="ttdeci">std::vector&lt; uint8_t &gt; BufferData</div><div class="ttdef"><b>Definition</b> <a href="_circle_model_8h_source.html#l00058">CircleModel.h:58</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="_circle_model_8cpp_source.html#l00516">size()</a>.</p>
+
 </div>
 </div>
 <a id="ad0d9e0932b68c98e2235dc63bb9a5b24" name="ad0d9e0932b68c98e2235dc63bb9a5b24"></a>
@@ -216,20 +302,22 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00386">386</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  387</span>{</div>
-<div class="line"><span class="lineno">  388</span>  _operator_codes_offset = std::make_unique&lt;Offset&lt;OperatorCodeLink&gt;&gt;(_fb);</div>
-<div class="line"><span class="lineno">  389</span>  _subGraphs_offset = std::make_unique&lt;Offset&lt;SubGraphLink&gt;&gt;(_fb);</div>
-<div class="line"><span class="lineno">  390</span>  _buffers_offset = std::make_unique&lt;Offset&lt;BufferLink&gt;&gt;(_fb);</div>
-<div class="line"><span class="lineno">  391</span>  _metadata_buffer_offset = std::make_unique&lt;Offset&lt;MetaDataBufferLink&gt;&gt;(_fb);</div>
-<div class="line"><span class="lineno">  392</span> </div>
-<div class="line"><span class="lineno">  393</span>  _subGraphs_offset-&gt;set_signature_defs(tfl_model-&gt;signature_defs());</div>
-<div class="line"><span class="lineno">  394</span> </div>
-<div class="line"><span class="lineno">  395</span>  _operator_codes_offset-&gt;build(tfl_model-&gt;operator_codes());</div>
-<div class="line"><span class="lineno">  396</span>  _subGraphs_offset-&gt;build(tfl_model-&gt;subgraphs());</div>
-<div class="line"><span class="lineno">  397</span>  _buffers_offset-&gt;build(tfl_model-&gt;buffers());</div>
-<div class="line"><span class="lineno">  398</span>  _metadata_buffer_offset-&gt;build(tfl_model-&gt;metadata_buffer());</div>
-<div class="line"><span class="lineno">  399</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00419">419</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  420</span>{</div>
+<div class="line"><span class="lineno">  421</span>  _operator_codes_offset = std::make_unique&lt;Offset&lt;OperatorCodeLink&gt;&gt;(_fb);</div>
+<div class="line"><span class="lineno">  422</span>  _subGraphs_offset = std::make_unique&lt;Offset&lt;SubGraphLink&gt;&gt;(_fb);</div>
+<div class="line"><span class="lineno">  423</span>  _buffers_offset = std::make_unique&lt;Offset&lt;BufferLink&gt;&gt;(_fb);</div>
+<div class="line"><span class="lineno">  424</span>  _metadata_buffer_offset = std::make_unique&lt;Offset&lt;MetaDataBufferLink&gt;&gt;(_fb);</div>
+<div class="line"><span class="lineno">  425</span> </div>
+<div class="line"><span class="lineno">  426</span>  _subGraphs_offset-&gt;set_signature_defs(tfl_model-&gt;signature_defs());</div>
+<div class="line"><span class="lineno">  427</span>  _buffers_offset-&gt;set_buffer_data_map(&amp;_buffer_data_map);</div>
+<div class="line"><span class="lineno">  428</span>  _buffers_offset-&gt;set_file_raw(&amp;_file_raw);</div>
+<div class="line"><span class="lineno">  429</span> </div>
+<div class="line"><span class="lineno">  430</span>  _operator_codes_offset-&gt;build(tfl_model-&gt;operator_codes());</div>
+<div class="line"><span class="lineno">  431</span>  _subGraphs_offset-&gt;build(tfl_model-&gt;subgraphs());</div>
+<div class="line"><span class="lineno">  432</span>  _buffers_offset-&gt;build(tfl_model-&gt;buffers());</div>
+<div class="line"><span class="lineno">  433</span>  _metadata_buffer_offset-&gt;build(tfl_model-&gt;metadata_buffer());</div>
+<div class="line"><span class="lineno">  434</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -249,20 +337,20 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00401">401</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  402</span>{</div>
-<div class="line"><span class="lineno">  403</span>  circle::ModelBuilder model_builder{*_fb};</div>
-<div class="line"><span class="lineno">  404</span> </div>
-<div class="line"><span class="lineno">  405</span>  model_builder.add_version(_version);</div>
-<div class="line"><span class="lineno">  406</span>  model_builder.add_description(_description);</div>
-<div class="line"><span class="lineno">  407</span>  model_builder.add_operator_codes(_operator_codes_offset-&gt;offset());</div>
-<div class="line"><span class="lineno">  408</span>  model_builder.add_subgraphs(_subGraphs_offset-&gt;offset());</div>
-<div class="line"><span class="lineno">  409</span>  model_builder.add_buffers(_buffers_offset-&gt;offset());</div>
-<div class="line"><span class="lineno">  410</span>  model_builder.add_metadata_buffer(_metadata_buffer_offset-&gt;offset());</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = model_builder.Finish();</div>
-<div class="line"><span class="lineno">  413</span>  circle::FinishModelBuffer(*_fb, model);</div>
-<div class="line"><span class="lineno">  414</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00436">436</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  437</span>{</div>
+<div class="line"><span class="lineno">  438</span>  circle::ModelBuilder model_builder{*_fb};</div>
+<div class="line"><span class="lineno">  439</span> </div>
+<div class="line"><span class="lineno">  440</span>  model_builder.add_version(_version);</div>
+<div class="line"><span class="lineno">  441</span>  model_builder.add_description(_description);</div>
+<div class="line"><span class="lineno">  442</span>  model_builder.add_operator_codes(_operator_codes_offset-&gt;offset());</div>
+<div class="line"><span class="lineno">  443</span>  model_builder.add_subgraphs(_subGraphs_offset-&gt;offset());</div>
+<div class="line"><span class="lineno">  444</span>  model_builder.add_buffers(_buffers_offset-&gt;offset());</div>
+<div class="line"><span class="lineno">  445</span>  model_builder.add_metadata_buffer(_metadata_buffer_offset-&gt;offset());</div>
+<div class="line"><span class="lineno">  446</span> </div>
+<div class="line"><span class="lineno">  447</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a> = model_builder.Finish();</div>
+<div class="line"><span class="lineno">  448</span>  circle::FinishModelBuffer(*_fb, model);</div>
+<div class="line"><span class="lineno">  449</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -283,9 +371,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00421">421</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  421</span>{ <span class="keywordflow">return</span> _fb-&gt;GetSize(); }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_model_8cpp_source.html#l00516">516</a> of file <a class="el" href="_circle_model_8cpp_source.html">CircleModel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  517</span>{</div>
+<div class="line"><span class="lineno">  518</span>  <span class="keywordflow">if</span> (_buffer_data_map.empty())</div>
+<div class="line"><span class="lineno">  519</span>    <span class="keywordflow">return</span> _fb-&gt;GetSize();</div>
+<div class="line"><span class="lineno">  520</span>  <span class="keywordflow">return</span> _fb_data_with_ext.size();</div>
+<div class="line"><span class="lineno">  521</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_circle_model_8cpp_source.html#l00451">finalize()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

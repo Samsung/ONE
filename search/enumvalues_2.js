@@ -45,7 +45,7 @@ var searchData=
   ['convertnchwtonhwc_42',['ConvertNCHWToNHWC',['../structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea74c62704fcdcb058b662843ff52b06f0',1,'luci::CircleOptimizer::Options']]],
   ['converttofakequantizedmodel_43',['ConvertToFakeQuantizedModel',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968baf6605c22fe731a4acc1fad910fa92dd6',1,'luci::CircleQuantizer::Options']]],
   ['convolution_44',['convolution',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa9595c1c24c33b16056d2ad07e71682d',1,'mir_caffe']]],
-  ['copy_45',['COPY',['../classonert_1_1exec_1_1_i_permute_function.html#acce430ddf9519674a57e97292d2465e4ae8606d021da140a92c7eba8d9b8af84f',1,'onert::exec::IPermuteFunction']]],
+  ['copy_45',['COPY',['../namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f',1,'onert::ir']]],
   ['copyquantparam_46',['CopyQuantParam',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba655358c33459d60cce558ebe67ff82b3',1,'luci::CircleQuantizer::Options']]],
   ['cos_47',['COS',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aef23ef1d426ae1a73a7eed399cef707d',1,'onert::ir::operation::ElementwiseUnary']]],
   ['count_48',['count',['../namespaceloco.html#ac9f207997cef8d437eb2e86f2a78a1ebae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count'],['../namespaceloco.html#aa7dc6df6698f9a45c41ae8ea155fb623ae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count'],['../namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d',1,'onert::ir::COUNT']]],

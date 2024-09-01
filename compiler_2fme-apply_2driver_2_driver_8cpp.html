@@ -146,80 +146,82 @@ Functions</h2></td></tr>
 <p>HDF5 layout is like below</p>
 <p>GROUP "/" ㄴGROUP "name" ㄴATTRIBUTE "0" ㄴDATA (0): "input_01:0" ㄴATTRIBUTE "1" ㄴDATA (0): "input_02:0" ㄴGROUP "value" ㄴDATASET "0" ㄴDATA ... ㄴDATASET "1" ㄴDATA ...</p>
 
-<p class="definition">Definition at line <a class="el" href="compiler_2fme-apply_2driver_2_driver_8cpp_source.html#l00066">66</a> of file <a class="el" href="compiler_2fme-apply_2driver_2_driver_8cpp_source.html">Driver.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_class" href="classarser_1_1_arser.html">arser::Arser</a> <a class="code hl_namespace" href="namespacearser.html">arser</a>(<span class="stringliteral">&quot;fm-apply applies channel-wise scale/shift for FM equalization&quot;</span>);</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  <a class="code hl_function" href="classarser_1_1_helper.html#a87d7e0368d4a303d8c204bf82f46933a">arser::Helper::add_verbose</a>(<a class="code hl_namespace" href="namespacearser.html">arser</a>);</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--input&quot;</span>).required().help(<span class="stringliteral">&quot;Input circle model&quot;</span>);</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--fme_patterns&quot;</span>)</div>
-<div class="line"><span class="lineno">   75</span>    .required()</div>
-<div class="line"><span class="lineno">   76</span>    .help(<span class="stringliteral">&quot;Json file that describes feture map equalization info&quot;</span>);</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--output&quot;</span>).required().help(<span class="stringliteral">&quot;Output circle model&quot;</span>);</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">   81</span>  {</div>
-<div class="line"><span class="lineno">   82</span>    <a class="code hl_namespace" href="namespacearser.html">arser</a>.parse(argc, argv);</div>
-<div class="line"><span class="lineno">   83</span>  }</div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;err)</div>
-<div class="line"><span class="lineno">   85</span>  {</div>
-<div class="line"><span class="lineno">   86</span>    std::cerr &lt;&lt; err.what() &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   87</span>    std::cout &lt;&lt; <a class="code hl_namespace" href="namespacearser.html">arser</a>;</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--verbose&quot;</span>))</div>
-<div class="line"><span class="lineno">   92</span>  {</div>
-<div class="line"><span class="lineno">   93</span>    <span class="comment">// The third parameter of setenv means REPLACE.</span></div>
-<div class="line"><span class="lineno">   94</span>    <span class="comment">// If REPLACE is zero, it does not overwrite an existing value.</span></div>
-<div class="line"><span class="lineno">   95</span>    setenv(<span class="stringliteral">&quot;LUCI_LOG&quot;</span>, <span class="stringliteral">&quot;100&quot;</span>, 0);</div>
-<div class="line"><span class="lineno">   96</span>  }</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>  <span class="keyword">const</span> std::string input_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--input&quot;</span>);</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keyword">const</span> std::string fme_patterns_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--fme_patterns&quot;</span>);</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> std::string <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a> = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--output&quot;</span>);</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>  <span class="keyword">auto</span> <span class="keyword">module</span> = import(input_path);</div>
-<div class="line"><span class="lineno">  103</span>  assert(module != <span class="keyword">nullptr</span>); <span class="comment">// FIX_ME_UNLESS</span></div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>  <span class="keyword">auto</span> patterns = <a class="code hl_function" href="namespacefme__apply.html#a4e8aee22aa7952fd289e4dac50302875">fme_apply::read</a>(fme_patterns_path);</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; <span class="keyword">module</span>-&gt;size(); ++idx)</div>
-<div class="line"><span class="lineno">  108</span>  {</div>
-<div class="line"><span class="lineno">  109</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <span class="keyword">module</span>-&gt;graph(idx);</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    <a class="code hl_class" href="classfme__apply_1_1_f_m_equalizer.html">FMEqualizer</a> equalizer;</div>
-<div class="line"><span class="lineno">  112</span>    equalizer.<a class="code hl_function" href="classfme__apply_1_1_f_m_equalizer.html#adad6b29a7d27ba6959c2a76abd04faa9">equalize</a>(graph, patterns);</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a3f8123e9327a4ce0405499ce4ebe175c">luci::validate</a>(graph))</div>
-<div class="line"><span class="lineno">  115</span>    {</div>
-<div class="line"><span class="lineno">  116</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Equalized graph is invalid&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">  118</span>    }</div>
-<div class="line"><span class="lineno">  119</span>  }</div>
-<div class="line"><span class="lineno">  120</span> </div>
-<div class="line"><span class="lineno">  121</span>  <span class="comment">// Export to output Circle file</span></div>
-<div class="line"><span class="lineno">  122</span>  <a class="code hl_class" href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a> exporter;</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>  <a class="code hl_struct" href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a> contract(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), output_path);</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">if</span> (!exporter.<a class="code hl_function" href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">invoke</a>(&amp;contract))</div>
-<div class="line"><span class="lineno">  127</span>  {</div>
-<div class="line"><span class="lineno">  128</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to export &#39;&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a> &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><span class="lineno">  130</span>  }</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><span class="lineno">  133</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2fme-apply_2driver_2_driver_8cpp_source.html#l00033">33</a> of file <a class="el" href="compiler_2fme-apply_2driver_2_driver_8cpp_source.html">Driver.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <a class="code hl_class" href="classarser_1_1_arser.html">arser::Arser</a> <a class="code hl_namespace" href="namespacearser.html">arser</a>(<span class="stringliteral">&quot;fm-apply applies channel-wise scale/shift for FM equalization&quot;</span>);</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_function" href="classarser_1_1_helper.html#a87d7e0368d4a303d8c204bf82f46933a">arser::Helper::add_verbose</a>(<a class="code hl_namespace" href="namespacearser.html">arser</a>);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--input&quot;</span>).required().help(<span class="stringliteral">&quot;Input circle model&quot;</span>);</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--fme_patterns&quot;</span>)</div>
+<div class="line"><span class="lineno">   42</span>    .required()</div>
+<div class="line"><span class="lineno">   43</span>    .help(<span class="stringliteral">&quot;Json file that describes feture map equalization info&quot;</span>);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--output&quot;</span>).required().help(<span class="stringliteral">&quot;Output circle model&quot;</span>);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    <a class="code hl_namespace" href="namespacearser.html">arser</a>.parse(argc, argv);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;err)</div>
+<div class="line"><span class="lineno">   52</span>  {</div>
+<div class="line"><span class="lineno">   53</span>    std::cerr &lt;&lt; err.what() &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   54</span>    std::cout &lt;&lt; <a class="code hl_namespace" href="namespacearser.html">arser</a>;</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   56</span>  }</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--verbose&quot;</span>))</div>
+<div class="line"><span class="lineno">   59</span>  {</div>
+<div class="line"><span class="lineno">   60</span>    <span class="comment">// The third parameter of setenv means REPLACE.</span></div>
+<div class="line"><span class="lineno">   61</span>    <span class="comment">// If REPLACE is zero, it does not overwrite an existing value.</span></div>
+<div class="line"><span class="lineno">   62</span>    setenv(<span class="stringliteral">&quot;LUCI_LOG&quot;</span>, <span class="stringliteral">&quot;100&quot;</span>, 0);</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> std::string input_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--input&quot;</span>);</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keyword">const</span> std::string fme_patterns_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--fme_patterns&quot;</span>);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keyword">const</span> std::string <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a> = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--output&quot;</span>);</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  <a class="code hl_class" href="classluci_1_1_importer_ex.html">luci::ImporterEx</a> importerex;</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keyword">auto</span> <span class="keyword">module</span> = importerex.importVerifyModule(input_path);</div>
+<div class="line"><span class="lineno">   71</span>  assert(module != <span class="keyword">nullptr</span>); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>  <span class="keyword">auto</span> patterns = <a class="code hl_function" href="namespacefme__apply.html#a4e8aee22aa7952fd289e4dac50302875">fme_apply::read</a>(fme_patterns_path);</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; <span class="keyword">module</span>-&gt;size(); ++idx)</div>
+<div class="line"><span class="lineno">   76</span>  {</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <span class="keyword">module</span>-&gt;graph(idx);</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>    <a class="code hl_class" href="classfme__apply_1_1_f_m_equalizer.html">FMEqualizer</a> equalizer;</div>
+<div class="line"><span class="lineno">   80</span>    equalizer.<a class="code hl_function" href="classfme__apply_1_1_f_m_equalizer.html#adad6b29a7d27ba6959c2a76abd04faa9">equalize</a>(graph, patterns);</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a3f8123e9327a4ce0405499ce4ebe175c">luci::validate</a>(graph))</div>
+<div class="line"><span class="lineno">   83</span>    {</div>
+<div class="line"><span class="lineno">   84</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Equalized graph is invalid&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   85</span>      <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   86</span>    }</div>
+<div class="line"><span class="lineno">   87</span>  }</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="comment">// Export to output Circle file</span></div>
+<div class="line"><span class="lineno">   90</span>  <a class="code hl_class" href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a> exporter;</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>  <a class="code hl_struct" href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a> contract(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>.get(), output_path);</div>
+<div class="line"><span class="lineno">   93</span> </div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">if</span> (!exporter.<a class="code hl_function" href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">invoke</a>(&amp;contract))</div>
+<div class="line"><span class="lineno">   95</span>  {</div>
+<div class="line"><span class="lineno">   96</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to export &#39;&quot;</span> &lt;&lt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">output_path</a> &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><span class="lineno">   98</span>  }</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><span class="lineno">  101</span>}</div>
 <div class="ttc" id="aclassarser_1_1_arser_html"><div class="ttname"><a href="classarser_1_1_arser.html">arser::Arser</a></div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00328">arser.h:329</a></div></div>
 <div class="ttc" id="aclassarser_1_1_helper_html_a87d7e0368d4a303d8c204bf82f46933a"><div class="ttname"><a href="classarser_1_1_helper.html#a87d7e0368d4a303d8c204bf82f46933a">arser::Helper::add_verbose</a></div><div class="ttdeci">static void add_verbose(Arser &amp;arser)</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00764">arser.h:764</a></div></div>
 <div class="ttc" id="aclassfme__apply_1_1_f_m_equalizer_html"><div class="ttname"><a href="classfme__apply_1_1_f_m_equalizer.html">fme_apply::FMEqualizer</a></div><div class="ttdef"><b>Definition</b> <a href="_f_m_equalizer_8h_source.html#l00027">FMEqualizer.h:28</a></div></div>
 <div class="ttc" id="aclassfme__apply_1_1_f_m_equalizer_html_adad6b29a7d27ba6959c2a76abd04faa9"><div class="ttname"><a href="classfme__apply_1_1_f_m_equalizer.html#adad6b29a7d27ba6959c2a76abd04faa9">fme_apply::FMEqualizer::equalize</a></div><div class="ttdeci">void equalize(loco::Graph *g, const std::vector&lt; EqualizePattern &gt; &amp;p)</div><div class="ttdef"><b>Definition</b> <a href="_f_m_equalizer_8cpp_source.html#l00067">FMEqualizer.cpp:67</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html"><div class="ttname"><a href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci_2export_2include_2luci_2_circle_exporter_8h_source.html#l00029">CircleExporter.h:30</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html_a6fcbba96153e5d1582664e6e7f6dcb54"><div class="ttname"><a href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">luci::CircleExporter::invoke</a></div><div class="ttdeci">bool invoke(Contract *) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2export_2src_2_circle_exporter_8cpp_source.html#l00034">CircleExporter.cpp:34</a></div></div>
+<div class="ttc" id="aclassluci_1_1_importer_ex_html"><div class="ttname"><a href="classluci_1_1_importer_ex.html">luci::ImporterEx</a></div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8h_source.html#l00034">ImporterEx.h:35</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ad27053a53bf014780d72862b2219b3ef"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ad27053a53bf014780d72862b2219b3ef">GenH5RandomInputs.output_path</a></div><div class="ttdeci">output_path</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00040">GenH5RandomInputs.py:40</a></div></div>
 <div class="ttc" id="anamespacearser_html"><div class="ttname"><a href="namespacearser.html">arser</a></div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00037">arser.h:38</a></div></div>

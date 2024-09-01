@@ -29,6 +29,8 @@ var dir_398ea7c36d76878cd9138b670aaa7b8c =
     [ "PALFullyConnectedInputGrad.h", "_p_a_l_fully_connected_input_grad_8h.html", "_p_a_l_fully_connected_input_grad_8h" ],
     [ "PALFullyConnectedWeightGrad.h", "_p_a_l_fully_connected_weight_grad_8h.html", "_p_a_l_fully_connected_weight_grad_8h" ],
     [ "PALGatherND.h", "onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h.html", "onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h" ],
+    [ "PALGRUCommon.h", "_p_a_l_g_r_u_common_8h.html", "_p_a_l_g_r_u_common_8h" ],
+    [ "PALGRUWeightGrad.h", "_p_a_l_g_r_u_weight_grad_8h.html", "_p_a_l_g_r_u_weight_grad_8h" ],
     [ "PALL2Normalize.h", "onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_l2_normalize_8h.html", "onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_l2_normalize_8h" ],
     [ "PALL2Pool2DCommon.h", "_p_a_l_l2_pool2_d_common_8h.html", "_p_a_l_l2_pool2_d_common_8h" ],
     [ "PALLogCommon.h", "_p_a_l_log_common_8h.html", "_p_a_l_log_common_8h" ],

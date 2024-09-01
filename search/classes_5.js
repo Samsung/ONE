@@ -31,7 +31,7 @@ var searchData=
   ['elucheffactory_28',['ELUChefFactory',['../struct_e_l_u_chef_factory.html',1,'']]],
   ['eluimpl_29',['ELUImpl',['../structmir__interpreter_1_1_e_l_u_impl.html',1,'mir_interpreter']]],
   ['eluop_30',['EluOp',['../classmir_1_1ops_1_1_elu_op.html',1,'mir::ops']]],
-  ['embedder_31',['embedder',['../classonert_1_1odc_1_1_embedder.html',1,'onert::odc::Embedder'],['../classminmax__embedder_1_1_embedder.html',1,'minmax_embedder::Embedder']]],
+  ['embedder_31',['embedder',['../classminmax__embedder_1_1_embedder.html',1,'minmax_embedder::Embedder'],['../classonert_1_1odc_1_1_embedder.html',1,'onert::odc::Embedder']]],
   ['embedderoptions_32',['embedderoptions',['../structminmax__embedder_1_1_embedder_options.html',1,'minmax_embedder::EmbedderOptions'],['../structonert_1_1odc_1_1_embedder_options.html',1,'onert::odc::EmbedderOptions']]],
   ['embeddinglookup_33',['EmbeddingLookup',['../classonert_1_1ir_1_1operation_1_1_embedding_lookup.html',1,'onert::ir::operation']]],
   ['encloseddocument_34',['EnclosedDocument',['../classpp_1_1_enclosed_document.html',1,'pp']]],
@@ -59,7 +59,7 @@ var searchData=
   ['errorlistener_56',['ErrorListener',['../structloco_1_1_error_listener.html',1,'loco']]],
   ['errormetric_57',['ErrorMetric',['../classmpqsolver_1_1core_1_1_error_metric.html',1,'mpqsolver::core']]],
   ['eval_58',['Eval',['../classcoco_1_1_eval.html',1,'coco']]],
-  ['event_59',['event',['../struct_event_collector_1_1_event.html',1,'EventCollector::Event'],['../struct_event.html',1,'Event']]],
+  ['event_59',['event',['../struct_event.html',1,'Event'],['../struct_event_collector_1_1_event.html',1,'EventCollector::Event']]],
   ['eventcollector_60',['EventCollector',['../class_event_collector.html',1,'']]],
   ['eventformatwriter_61',['EventFormatWriter',['../class_event_format_writer.html',1,'']]],
   ['eventnotifier_62',['EventNotifier',['../classluci__interpreter_1_1_event_notifier.html',1,'luci_interpreter']]],
@@ -110,7 +110,5 @@ var searchData=
   ['externalcontext_107',['externalcontext',['../classonert_1_1backend_1_1builtin_1_1_external_context.html',1,'onert::backend::builtin::ExternalContext'],['../classonert_1_1backend_1_1cpu_1_1_external_context.html',1,'onert::backend::cpu::ExternalContext'],['../classonert_1_1backend_1_1ruy_1_1_external_context.html',1,'onert::backend::ruy::ExternalContext'],['../classonert_1_1backend_1_1xnnpack_1_1_external_context.html',1,'onert::backend::xnnpack::ExternalContext']]],
   ['externaldata_108',['ExternalData',['../classonert_1_1ir_1_1_external_data.html',1,'onert::ir']]],
   ['externalregion_109',['ExternalRegion',['../classmir_1_1_external_region.html',1,'mir']]],
-  ['externaltensor_110',['ExternalTensor',['../classonert_1_1backend_1_1basic_1_1_external_tensor.html',1,'onert::backend::basic']]],
-  ['extratensor_111',['ExtraTensor',['../classonert_1_1backend_1_1train_1_1_extra_tensor.html',1,'onert::backend::train']]],
-  ['extratensorindex_112',['ExtraTensorIndex',['../classonert_1_1backend_1_1train_1_1_extra_tensor_index.html',1,'onert::backend::train']]]
+  ['externaltensor_110',['ExternalTensor',['../classonert_1_1backend_1_1basic_1_1_external_tensor.html',1,'onert::backend::basic']]]
 ];

@@ -7,7 +7,7 @@ var classonert_1_1exec_1_1_edge_tensor =
     [ "buffer", "classonert_1_1exec_1_1_edge_tensor.html#a06e136c5abefffdb61915965da700909", null ],
     [ "decrease_ref", "classonert_1_1exec_1_1_edge_tensor.html#afb93de221bb19d7f3dfae263fa2c16bb", null ],
     [ "increase_ref", "classonert_1_1exec_1_1_edge_tensor.html#a2aa5e4bc43aef93c5510d96f99e4f60f", null ],
-    [ "layout", "classonert_1_1exec_1_1_edge_tensor.html#aebe5e1782d545c48a32e8eb2d0c3f11e", null ],
+    [ "layout", "classonert_1_1exec_1_1_edge_tensor.html#ad1c851ad1b47c978cea259c62d85a616", null ],
     [ "set_dynamic", "classonert_1_1exec_1_1_edge_tensor.html#a6063e77288f2ad9c77aa4ec2666fa1d1", null ],
     [ "setShape", "classonert_1_1exec_1_1_edge_tensor.html#ad387745a75f36ca9a4a734199812e88f", null ]
 ];

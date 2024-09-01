@@ -5,7 +5,7 @@ var classonert__micro_1_1core_1_1_o_m_training_runtime_module =
     [ "OMTrainingRuntimeModule", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#a8f8bae904f0a5e91f42e15e42d8212b8", null ],
     [ "~OMTrainingRuntimeModule", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#a6ed1651528bc3956a76556e0e3d020ea", null ],
     [ "createCheckpointFile", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#a729b81574c30a40aaac2a657ac8248b5", null ],
-    [ "evaluateMetric", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#a5e8c4e8133b8f5cdb5cc1c1880844b43", null ],
+    [ "evaluateMetric", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#abc8215ce8a100fba465744beafc21734", null ],
     [ "getInputData", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#adab87d7c51d94f5c4b50626b32879766", null ],
     [ "importTrainModel", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#abbb893018e867a16a88e897b96016f49", null ],
     [ "loadCheckpointData", "classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#aa0058706246fb00ddcaeabee3f1a3745", null ],

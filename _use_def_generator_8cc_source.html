@@ -550,7 +550,7 @@ $(document).ready(function(){initNavTree('_use_def_generator_8cc_source.html',''
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    }</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span> </div>
 <div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    assert(_training_usedefs.at(forwarding_operand_index).getTrainingUses().size() == 0);</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keyword">const</span> <span class="keyword">auto</span> uses = operand.getUses();</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;uses = operand.getUses();</div>
 <div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;use : uses)</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>      insertUse(forwarding_operand_index, <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{use, is_forward});</div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>  });</div>

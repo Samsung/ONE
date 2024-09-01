@@ -28,6 +28,7 @@ var dir_ff970b087a976e02e2a0b395feb12740 =
     [ "GatherND.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_gather_nd_8cpp.html", null ],
     [ "Greater.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_greater_8cpp.html", null ],
     [ "GreaterEqual.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_greater_equal_8cpp.html", null ],
+    [ "GRU.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_g_r_u_8cpp.html", null ],
     [ "L2Normalize.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_l2_normalize_8cpp.html", null ],
     [ "L2Pool2D.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_l2_pool2_d_8cpp.html", null ],
     [ "LeakyRelu.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_leaky_relu_8cpp.html", null ],

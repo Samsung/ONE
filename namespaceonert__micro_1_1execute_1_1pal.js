@@ -82,6 +82,7 @@ var namespaceonert__micro_1_1execute_1_1pal =
     [ "getUpLowerWeightTensorDepth", "namespaceonert__micro_1_1execute_1_1pal.html#a093fb5e98109bdeb3049673b648d2fe1", null ],
     [ "GreaterEqualFn", "namespaceonert__micro_1_1execute_1_1pal.html#ab134eba6894d83e4b1913b77653ac1df", null ],
     [ "GreaterFn", "namespaceonert__micro_1_1execute_1_1pal.html#a3fa5e155e7e363ce70ec642fb2eeaf0f", null ],
+    [ "GRU", "namespaceonert__micro_1_1execute_1_1pal.html#addf23051aa4fdb41d61d03af1f4d9163", null ],
     [ "L2Normalization", "namespaceonert__micro_1_1execute_1_1pal.html#aba5b3afce0234c9a2ae71634c940699e", null ],
     [ "L2Pool", "namespaceonert__micro_1_1execute_1_1pal.html#ac8f8b5abf454fb0e4334677e012d524e", null ],
     [ "LessEqualFn", "namespaceonert__micro_1_1execute_1_1pal.html#a3969b165f04531c39770c75da5a971e3", null ],

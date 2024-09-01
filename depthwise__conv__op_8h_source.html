@@ -487,7 +487,7 @@ $(document).ready(function(){initNavTree('depthwise__conv__op_8h_source.html',''
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>    <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keyword">const</span> int64_t filter_spatial_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(filter_rows) * filter_cols;</div>
 <div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="keyword">const</span> int64_t output_scalar_size = out_depth % kPacketSize;</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keyword">const</span> int64_t output_vectorized_size = (out_depth / kPacketSize) * kPacketSize;</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keyword">const</span> int64_t base_output_index = (out_r * out_cols + out_c) * out_depth;</div>
@@ -581,9 +581,9 @@ $(document).ready(function(){initNavTree('depthwise__conv__op_8h_source.html',''
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>      assert(cur_id &gt;= 0 &amp;&amp; cur_id &lt; d.numThreads() + 1);</div>
 <div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span> </div>
 <div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>      <span class="keyword">static</span> <span class="keyword">const</span> int64_t kPacketSize = (<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_op_3_01_c_p_u_device_00_01_t_01_4.html#ac12caa983b8b412125bc399e3e846222">Packet</a>) / <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>      <span class="keyword">const</span> int64_t input_image_size = in_rows * in_cols * in_depth;</div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>      <span class="keyword">const</span> int64_t output_image_size = out_rows * out_cols * out_depth;</div>
-<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>      <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>      <span class="keyword">const</span> int64_t input_image_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(in_rows) * in_cols * in_depth;</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>      <span class="keyword">const</span> int64_t output_image_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(out_rows) * out_cols * out_depth;</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>      <span class="keyword">const</span> int64_t filter_spatial_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(filter_rows) * filter_cols;</div>
 <div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>      <span class="keyword">const</span> int64_t padded_filter_inner_dim_size =</div>
 <div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;</div>
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>      <span class="keyword">const</span> int64_t padded_filter_size = filter_spatial_size * padded_filter_inner_dim_size;</div>
@@ -614,7 +614,7 @@ $(document).ready(function(){initNavTree('depthwise__conv__op_8h_source.html',''
 <div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>      }</div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>    };</div>
 <div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span> </div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>    <span class="keyword">const</span> int64_t total_shards = batch * out_rows;</div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>    <span class="keyword">const</span> int64_t total_shards = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(batch) * out_rows;</div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span> </div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>    <span class="comment">// Empirically tested to give reasonable performance boosts at batch size 1</span></div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>    <span class="comment">// without reducing throughput at batch size 32.</span></div>
@@ -624,8 +624,8 @@ $(document).ready(function(){initNavTree('depthwise__conv__op_8h_source.html',''
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>    <span class="comment">// flops/loads/stores required to compute one shard.</span></div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>    <span class="keyword">const</span> int64_t shard_cost = kCostMultiplier * out_cols * out_depth;</div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span> </div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>    <span class="keyword">const</span> int64_t input_bytes = in_rows * in_cols * in_depth * <span class="keyword">sizeof</span>(T);</div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>    <span class="keyword">const</span> int64_t output_bytes = out_rows * out_cols * out_depth * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>    <span class="keyword">const</span> int64_t input_bytes = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(in_rows) * in_cols * in_depth * <span class="keyword">sizeof</span>(T);</div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>    <span class="keyword">const</span> int64_t output_bytes = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(out_rows) * out_cols * out_depth * <span class="keyword">sizeof</span>(T);</div>
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>    <span class="keyword">const</span> Eigen::TensorOpCost cost(input_bytes, output_bytes, shard_cost);</div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>    d.parallelFor(total_shards, cost, shard);</div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>  }</div>

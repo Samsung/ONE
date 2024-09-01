@@ -8,5 +8,7 @@ var classtflite2circle_1_1_offset =
     [ "build", "classtflite2circle_1_1_offset.html#ab7a9dfeb01cad7500234a27bcbf8375e", null ],
     [ "build", "classtflite2circle_1_1_offset.html#a3090e2ee11beac58c5c2fd4cbfdc429d", null ],
     [ "offset", "classtflite2circle_1_1_offset.html#a34816a60b9764837e7f8ac700f28c8cc", null ],
+    [ "set_buffer_data_map", "classtflite2circle_1_1_offset.html#a8fde63d399e44a77f1c79171a56cbab1", null ],
+    [ "set_file_raw", "classtflite2circle_1_1_offset.html#af0438f37a02b711a70399aca4f848215", null ],
     [ "set_signature_defs", "classtflite2circle_1_1_offset.html#a0bcc321d864b89a47c207dfee02d7173", null ]
 ];

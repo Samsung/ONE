@@ -196,7 +196,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  368</span>    <span class="keyword">typedef</span> <span class="keyword">typename</span> Eigen::internal::packet_traits&lt;T&gt;::type Packet;</div>
 <div class="line"><span class="lineno">  369</span>    <span class="keyword">static</span> <span class="keyword">const</span> int64_t <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a> = (<span class="keyword">sizeof</span>(Packet) / <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><span class="lineno">  370</span> </div>
-<div class="line"><span class="lineno">  371</span>    <span class="keyword">const</span> int64_t filter_spatial_size = filter_rows * filter_cols;</div>
+<div class="line"><span class="lineno">  371</span>    <span class="keyword">const</span> int64_t filter_spatial_size = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(filter_rows) * filter_cols;</div>
 <div class="line"><span class="lineno">  372</span>    <span class="keyword">const</span> int64_t output_scalar_size = out_depth % <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>;</div>
 <div class="line"><span class="lineno">  373</span>    <span class="keyword">const</span> int64_t output_vectorized_size = (out_depth / <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>) * kPacketSize;</div>
 <div class="line"><span class="lineno">  374</span>    <span class="keyword">const</span> int64_t base_output_index = (out_r * out_cols + out_c) * out_depth;</div>

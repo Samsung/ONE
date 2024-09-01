@@ -157,7 +157,7 @@ template&lt;typename T , typename U  = T&gt; </div>
 <div class="line"><span class="lineno">   61</span>    }</div>
 <div class="line"><span class="lineno">   62</span>  }</div>
 <div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  interpreter.run();</div>
+<div class="line"><span class="lineno">   64</span>  interpreter.run(config);</div>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span>  U *output_data = <span class="keyword">reinterpret_cast&lt;</span>U *<span class="keyword">&gt;</span>(interpreter.getOutputDataAt(0));</div>
 <div class="line"><span class="lineno">   67</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_elements = interpreter.getOutputSizeAt(0);</div>

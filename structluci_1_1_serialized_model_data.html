@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('structluci_1_1_serialized_model_data.h
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">luci::SerializedModelData Struct Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
@@ -108,6 +109,13 @@ Collaboration diagram for luci::SerializedModelData:</div>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ad480cb81775629aca67c14bf69409585" id="r_ad480cb81775629aca67c14bf69409585"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#ad480cb81775629aca67c14bf69409585">BufferData</a> = std::vector&lt; uint8_t &gt;</td></tr>
+<tr class="separator:ad480cb81775629aca67c14bf69409585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f90bd6f1d80c4c4b46366dacf9927a2" id="r_a4f90bd6f1d80c4c4b46366dacf9927a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a4f90bd6f1d80c4c4b46366dacf9927a2">MapBufferData</a> = std::map&lt; int32_t, <a class="el" href="structluci_1_1_serialized_model_data.html#ad480cb81775629aca67c14bf69409585">BufferData</a> &gt;</td></tr>
+<tr class="separator:a4f90bd6f1d80c4c4b46366dacf9927a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a43119b21e5a1da9b38d379c6fd0cadf1" id="r_a43119b21e5a1da9b38d379c6fd0cadf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a43119b21e5a1da9b38d379c6fd0cadf1">SerializedModelData</a> ()=default</td></tr>
@@ -117,6 +125,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf8c6b5816c175cdaae75f03495d376f" id="r_aaf8c6b5816c175cdaae75f03495d376f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#aaf8c6b5816c175cdaae75f03495d376f">registerBuiltinOpcode</a> (circle::BuiltinOperator builtin_code, const std::string &amp;custom_code, const int32_t op_version)</td></tr>
 <tr class="memdesc:aaf8c6b5816c175cdaae75f03495d376f"><td class="mdescLeft">&#160;</td><td class="mdescRight">if opcode is not registered in table of opcodes add it  <br /></td></tr>
 <tr class="separator:aaf8c6b5816c175cdaae75f03495d376f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abde343fdf20fe28924acbf9c207ca9c4" id="r_abde343fdf20fe28924acbf9c207ca9c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#abde343fdf20fe28924acbf9c207ca9c4">clear</a> (void)</td></tr>
+<tr class="separator:abde343fdf20fe28924acbf9c207ca9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -128,11 +138,50 @@ Data Fields</h2></td></tr>
 <tr class="separator:ac76cc54955caa48a2890f5397910ea77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e90b4cbeb8ba41e7e7754f6f09679ff" id="r_a5e90b4cbeb8ba41e7e7754f6f09679ff"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *, uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a5e90b4cbeb8ba41e7e7754f6f09679ff">_cached_buffer_id</a></td></tr>
 <tr class="separator:a5e90b4cbeb8ba41e7e7754f6f09679ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1ad94cd5ce7fe5dbc6be6b6c3b89b9" id="r_acd1ad94cd5ce7fe5dbc6be6b6c3b89b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#acd1ad94cd5ce7fe5dbc6be6b6c3b89b9">_ext_buffer</a> = false</td></tr>
+<tr class="separator:acd1ad94cd5ce7fe5dbc6be6b6c3b89b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4356e6331629670961f412301feacfc5" id="r_a4356e6331629670961f412301feacfc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a4356e6331629670961f412301feacfc5">_require_ext_buffer</a> = false</td></tr>
+<tr class="separator:a4356e6331629670961f412301feacfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac481f4d7d6a316dbd2c6483c89d732a7" id="r_ac481f4d7d6a316dbd2c6483c89d732a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structluci_1_1_serialized_model_data.html#a4f90bd6f1d80c4c4b46366dacf9927a2">MapBufferData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#ac481f4d7d6a316dbd2c6483c89d732a7">_buffer_data_map</a></td></tr>
+<tr class="separator:ac481f4d7d6a316dbd2c6483c89d732a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00117">117</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00119">119</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad480cb81775629aca67c14bf69409585" name="ad480cb81775629aca67c14bf69409585"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad480cb81775629aca67c14bf69409585">&#9670;&#160;</a></span>BufferData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structluci_1_1_serialized_model_data.html#ad480cb81775629aca67c14bf69409585">luci::SerializedModelData::BufferData</a> =  std::vector&lt;uint8_t&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00136">136</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+
+</div>
+</div>
+<a id="a4f90bd6f1d80c4c4b46366dacf9927a2" name="a4f90bd6f1d80c4c4b46366dacf9927a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f90bd6f1d80c4c4b46366dacf9927a2">&#9670;&#160;</a></span>MapBufferData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structluci_1_1_serialized_model_data.html#a4f90bd6f1d80c4c4b46366dacf9927a2">luci::SerializedModelData::MapBufferData</a> =  std::map&lt;int32_t, <a class="el" href="structluci_1_1_serialized_model_data.html#ad480cb81775629aca67c14bf69409585">BufferData</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00137">137</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a43119b21e5a1da9b38d379c6fd0cadf1" name="a43119b21e5a1da9b38d379c6fd0cadf1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a43119b21e5a1da9b38d379c6fd0cadf1">&#9670;&#160;</a></span>SerializedModelData() <span class="overload">[1/2]</span></h2>
 
@@ -185,6 +234,47 @@ Data Fields</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abde343fdf20fe28924acbf9c207ca9c4" name="abde343fdf20fe28924acbf9c207ca9c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abde343fdf20fe28924acbf9c207ca9c4">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci::SerializedModelData::clear </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8cpp_source.html#l00029">29</a> of file <a class="el" href="_serialized_data_8cpp_source.html">SerializedData.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.clear();</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#aba32cff9bef7f670531f2516f57ddf83">_buffers</a>.clear();</div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#ac76cc54955caa48a2890f5397910ea77">_metadata</a>.<a class="code hl_function" href="classluci_1_1_circle_export_metadata.html#a6f034a7fbed02cf332edeaf583e6ec17">clear</a>();</div>
+<div class="line"><span class="lineno">   34</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a5e90b4cbeb8ba41e7e7754f6f09679ff">_cached_buffer_id</a>.clear();</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>  <span class="comment">// clear extended buffer mode</span></div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#acd1ad94cd5ce7fe5dbc6be6b6c3b89b9">_ext_buffer</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a4356e6331629670961f412301feacfc5">_require_ext_buffer</a> = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#ac481f4d7d6a316dbd2c6483c89d732a7">_buffer_data_map</a>.clear();</div>
+<div class="line"><span class="lineno">   40</span>}</div>
+<div class="ttc" id="aclassluci_1_1_circle_export_metadata_html_a6f034a7fbed02cf332edeaf583e6ec17"><div class="ttname"><a href="classluci_1_1_circle_export_metadata.html#a6f034a7fbed02cf332edeaf583e6ec17">luci::CircleExportMetadata::clear</a></div><div class="ttdeci">void clear(void)</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8cpp_source.html#l00022">SerializedData.cpp:22</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_a4356e6331629670961f412301feacfc5"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#a4356e6331629670961f412301feacfc5">luci::SerializedModelData::_require_ext_buffer</a></div><div class="ttdeci">bool _require_ext_buffer</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00134">SerializedData.h:134</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_a5e90b4cbeb8ba41e7e7754f6f09679ff"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#a5e90b4cbeb8ba41e7e7754f6f09679ff">luci::SerializedModelData::_cached_buffer_id</a></div><div class="ttdeci">std::map&lt; luci::CircleConst *, uint32_t &gt; _cached_buffer_id</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00129">SerializedData.h:129</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_a97f3747680438ab2be05dbab74abc651"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">luci::SerializedModelData::_operator_codes</a></div><div class="ttdeci">std::unordered_map&lt; OpCode, uint32_t &gt; _operator_codes</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00124">SerializedData.h:124</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_aba32cff9bef7f670531f2516f57ddf83"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#aba32cff9bef7f670531f2516f57ddf83">luci::SerializedModelData::_buffers</a></div><div class="ttdeci">std::vector&lt; flatbuffers::Offset&lt; circle::Buffer &gt; &gt; _buffers</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00125">SerializedData.h:125</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_ac481f4d7d6a316dbd2c6483c89d732a7"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#ac481f4d7d6a316dbd2c6483c89d732a7">luci::SerializedModelData::_buffer_data_map</a></div><div class="ttdeci">MapBufferData _buffer_data_map</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00139">SerializedData.h:139</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_ac76cc54955caa48a2890f5397910ea77"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#ac76cc54955caa48a2890f5397910ea77">luci::SerializedModelData::_metadata</a></div><div class="ttdeci">CircleExportMetadata _metadata</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00126">SerializedData.h:126</a></div></div>
+<div class="ttc" id="astructluci_1_1_serialized_model_data_html_acd1ad94cd5ce7fe5dbc6be6b6c3b89b9"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#acd1ad94cd5ce7fe5dbc6be6b6c3b89b9">luci::SerializedModelData::_ext_buffer</a></div><div class="ttdeci">bool _ext_buffer</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00132">SerializedData.h:132</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_serialized_data_8h_source.html#l00139">_buffer_data_map</a>, <a class="el" href="_serialized_data_8h_source.html#l00125">_buffers</a>, <a class="el" href="_serialized_data_8h_source.html#l00129">_cached_buffer_id</a>, <a class="el" href="_serialized_data_8h_source.html#l00132">_ext_buffer</a>, <a class="el" href="_serialized_data_8h_source.html#l00126">_metadata</a>, <a class="el" href="_serialized_data_8h_source.html#l00124">_operator_codes</a>, <a class="el" href="_serialized_data_8h_source.html#l00134">_require_ext_buffer</a>, and <a class="el" href="_serialized_data_8cpp_source.html#l00022">luci::CircleExportMetadata::clear()</a>.</p>
+
+</div>
+</div>
 <a id="aaf8c6b5816c175cdaae75f03495d376f" name="aaf8c6b5816c175cdaae75f03495d376f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf8c6b5816c175cdaae75f03495d376f">&#9670;&#160;</a></span>registerBuiltinOpcode()</h2>
 
@@ -239,15 +329,32 @@ Data Fields</h2></td></tr>
 <div class="line"><span class="lineno">  227</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.emplace(OpCode{builtin_code, custom_code, op_version}, idx);</div>
 <div class="line"><span class="lineno">  228</span>  <span class="keywordflow">return</span> idx;</div>
 <div class="line"><span class="lineno">  229</span>}</div>
-<div class="ttc" id="astructluci_1_1_serialized_model_data_html_a97f3747680438ab2be05dbab74abc651"><div class="ttname"><a href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">luci::SerializedModelData::_operator_codes</a></div><div class="ttdeci">std::unordered_map&lt; OpCode, uint32_t &gt; _operator_codes</div><div class="ttdef"><b>Definition</b> <a href="_serialized_data_8h_source.html#l00122">SerializedData.h:122</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_serialized_data_8h_source.html#l00122">_operator_codes</a>.</p>
+<p class="reference">References <a class="el" href="_serialized_data_8h_source.html#l00124">_operator_codes</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_operation_exporter_rule_8cpp_source.html#l00250">luci::OperationExporterRule::visit()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
+<a id="ac481f4d7d6a316dbd2c6483c89d732a7" name="ac481f4d7d6a316dbd2c6483c89d732a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac481f4d7d6a316dbd2c6483c89d732a7">&#9670;&#160;</a></span>_buffer_data_map</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structluci_1_1_serialized_model_data.html#a4f90bd6f1d80c4c4b46366dacf9927a2">MapBufferData</a> luci::SerializedModelData::_buffer_data_map</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00139">139</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>.</p>
+
+</div>
+</div>
 <a id="aba32cff9bef7f670531f2516f57ddf83" name="aba32cff9bef7f670531f2516f57ddf83"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba32cff9bef7f670531f2516f57ddf83">&#9670;&#160;</a></span>_buffers</h2>
 
@@ -260,9 +367,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00123">123</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00125">125</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2export_2src_2_circle_tensor_exporter_8cpp_source.html#l00656">luci::prepareModelData()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>, and <a class="el" href="luci_2export_2src_2_circle_tensor_exporter_8cpp_source.html#l00659">luci::prepareModelData()</a>.</p>
 
 </div>
 </div>
@@ -278,7 +385,27 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00127">127</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00129">129</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>.</p>
+
+</div>
+</div>
+<a id="acd1ad94cd5ce7fe5dbc6be6b6c3b89b9" name="acd1ad94cd5ce7fe5dbc6be6b6c3b89b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd1ad94cd5ce7fe5dbc6be6b6c3b89b9">&#9670;&#160;</a></span>_ext_buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool luci::SerializedModelData::_ext_buffer = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00132">132</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>.</p>
 
 </div>
 </div>
@@ -294,9 +421,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00124">124</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00126">126</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_circle_export_metadata_8cpp_source.html#l00129">luci::createCircleMetadataVector()</a>, and <a class="el" href="luci_2export_2src_2_circle_operation_exporter_8cpp_source.html#l00028">luci::exportNodes()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>, <a class="el" href="_circle_export_metadata_8cpp_source.html#l00129">luci::createCircleMetadataVector()</a>, and <a class="el" href="luci_2export_2src_2_circle_operation_exporter_8cpp_source.html#l00028">luci::exportNodes()</a>.</p>
 
 </div>
 </div>
@@ -312,15 +439,34 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00122">122</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00124">124</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00215">registerBuiltinOpcode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>, and <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00215">registerBuiltinOpcode()</a>.</p>
+
+</div>
+</div>
+<a id="a4356e6331629670961f412301feacfc5" name="a4356e6331629670961f412301feacfc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4356e6331629670961f412301feacfc5">&#9670;&#160;</a></span>_require_ext_buffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool luci::SerializedModelData::_require_ext_buffer = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00134">134</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
 <li>compiler/luci/export/src/<a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a></li>
 <li>compiler/luci/export/src/<a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html">CircleExporterUtils.cpp</a></li>
+<li>compiler/luci/export/src/<a class="el" href="_serialized_data_8cpp_source.html">SerializedData.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

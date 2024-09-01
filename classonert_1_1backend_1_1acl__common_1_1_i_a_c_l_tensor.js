@@ -19,7 +19,6 @@ var classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor =
     [ "info", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a35d767bb8f505155ac67ebf8d97a80fe", null ],
     [ "info", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb", null ],
     [ "is_dynamic", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ad709b325dc3ec996301b6e3d93fbd637", null ],
-    [ "layout", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#ac4e990f58f1dd0a2da9972b006e678ef", null ],
     [ "num_dimensions", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a182331339fc75e60dde6a1425f9e81d0", null ],
     [ "operator=", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a33059ea8472aea1b62474944c1fc3057", null ],
     [ "operator=", "classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a288e20ab0f2913265c330e280f1aea36", null ],

@@ -23,5 +23,6 @@ var searchData=
   ['to_20use_20specific_20backend_20during_20inference_20',['How to Use Specific Backend during Inference',['../md_docs_2howto_2how-to-use-specific-backend.html',1,'']]],
   ['training_21',['Training',['../md_docs_2runtime_2training.html',1,'']]],
   ['training_20a_20simple_20cnn_20model_20on_20mnist_20using_20onert_22',['Training a simple CNN model on MNIST using ONERT',['../md_docs_2runtime_2training__cnn__on__mnist.html',1,'']]],
-  ['transfer_20learning_23',['Transfer Learning',['../md_docs_2runtime_2transfer__learning.html',1,'']]]
+  ['training_20mobilenetv2_20on_20imagenet_20dataset_20using_20onert_23',['Training MobileNetV2 on ImageNet Dataset using ONERT',['../md_docs_2runtime_2training__mobilenetv2__on__imagenet.html',1,'']]],
+  ['transfer_20learning_24',['Transfer Learning',['../md_docs_2runtime_2transfer__learning.html',1,'']]]
 ];

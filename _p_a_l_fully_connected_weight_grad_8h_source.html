@@ -129,55 +129,56 @@ $(document).ready(function(){initNavTree('_p_a_l_fully_connected_weight_grad_8h_
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>pal</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8">   33</a></span><span class="keywordtype">void</span> <span class="keyword">inline</span> <a class="code hl_function" href="namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8">FullyConnectedWeightGrad</a>(</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *dloss_doutput_data, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;dloss_doutput_shape,</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *input_data, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, <span class="keywordtype">float</span> *dloss_dweight_data,</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;weight_shape, <a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749">core::OpTrainableRankType</a> rank)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">const</span> uint32_t batches = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(0);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> uint32_t output_depth = dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(1);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> uint32_t accum_depth = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(1);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">auto</span> depth_bounds = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a093fb5e98109bdeb3049673b648d2fe1">execute::pal::getUpLowerWeightTensorDepth</a>(rank, output_depth);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">auto</span> weight_depth = weight_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(0);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">for</span> (uint32_t o = 0; o &lt; weight_depth; ++o)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">float</span> cur_dloss_doutput = dloss_doutput_data[o + depth_bounds.first];</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; accum_depth; ++i)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      dloss_dweight_data[i + o * accum_depth] = cur_dloss_doutput * input_data[i];</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 1; b &lt; batches; ++b)</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">for</span> (uint32_t o = depth_bounds.first; o &lt; depth_bounds.second; ++o)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      <span class="keywordtype">float</span> cur_dloss_doutput = dloss_doutput_data[o + b * output_depth];</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; accum_depth; ++i)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        dloss_dweight_data[i + o * accum_depth] +=</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>          cur_dloss_doutput * input_data[i + b * accum_depth];</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// Note: dloss_dweight_data should be initialized</span></div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8">   34</a></span><span class="keywordtype">void</span> <span class="keyword">inline</span> <a class="code hl_function" href="namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8">FullyConnectedWeightGrad</a>(</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *dloss_doutput_data, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;dloss_doutput_shape,</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *input_data, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, <span class="keywordtype">float</span> *dloss_dweight_data,</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;weight_shape, <a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749">core::OpTrainableRankType</a> rank)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> uint32_t batches = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(0);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> uint32_t output_depth = dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(1);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> uint32_t accum_depth = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(1);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">auto</span> depth_bounds = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a093fb5e98109bdeb3049673b648d2fe1">execute::pal::getUpLowerWeightTensorDepth</a>(rank, output_depth);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">auto</span> weight_depth = weight_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(0);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">for</span> (uint32_t o = 0; o &lt; weight_depth; ++o)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">float</span> cur_dloss_doutput = dloss_doutput_data[o + depth_bounds.first];</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; accum_depth; ++i)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      dloss_dweight_data[i + o * accum_depth] += cur_dloss_doutput * input_data[i];</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 1; b &lt; batches; ++b)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">for</span> (uint32_t o = depth_bounds.first; o &lt; depth_bounds.second; ++o)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="keywordtype">float</span> cur_dloss_doutput = dloss_doutput_data[o + b * output_depth];</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; accum_depth; ++i)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        dloss_dweight_data[i + o * accum_depth] +=</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>          cur_dloss_doutput * input_data[i + b * accum_depth];</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
 </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">// namespace pal</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_COMMON_FULLY_CONNECTED_WEIGHT_GRAD_H</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>} <span class="comment">// namespace pal</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_COMMON_FULLY_CONNECTED_WEIGHT_GRAD_H</span></div>
 <div class="ttc" id="a_o_m_status_8h_html"><div class="ttname"><a href="_o_m_status_8h.html">OMStatus.h</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00033">OMRuntimeShape.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aa5351b75c2dbb83f63423eb21afe3461"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">onert_micro::core::OMRuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00129">OMRuntimeShape.h:129</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_html_a7868252a8f08b25e0105db392ad7f749"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749">onert_micro::core::OpTrainableRankType</a></div><div class="ttdeci">OpTrainableRankType</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00029">OMKernelType.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a093fb5e98109bdeb3049673b648d2fe1"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a093fb5e98109bdeb3049673b648d2fe1">onert_micro::execute::pal::getUpLowerWeightTensorDepth</a></div><div class="ttdeci">std::pair&lt; uint32_t, uint32_t &gt; getUpLowerWeightTensorDepth(core::OpTrainableRankType rank, const uint32_t output_depth)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00030">PALUtils.h:30</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1train_1_1pal_html_ab08111087104a82298d06292dda598a8"><div class="ttname"><a href="namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8">onert_micro::train::pal::FullyConnectedWeightGrad</a></div><div class="ttdeci">void FullyConnectedWeightGrad(const float *dloss_doutput_data, const core::OMRuntimeShape &amp;dloss_doutput_shape, const float *input_data, const core::OMRuntimeShape &amp;input_shape, float *dloss_dweight_data, const core::OMRuntimeShape &amp;weight_shape, core::OpTrainableRankType rank)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_fully_connected_weight_grad_8h_source.html#l00033">PALFullyConnectedWeightGrad.h:33</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1train_1_1pal_html_ab08111087104a82298d06292dda598a8"><div class="ttname"><a href="namespaceonert__micro_1_1train_1_1pal.html#ab08111087104a82298d06292dda598a8">onert_micro::train::pal::FullyConnectedWeightGrad</a></div><div class="ttdeci">void FullyConnectedWeightGrad(const float *dloss_doutput_data, const core::OMRuntimeShape &amp;dloss_doutput_shape, const float *input_data, const core::OMRuntimeShape &amp;input_shape, float *dloss_dweight_data, const core::OMRuntimeShape &amp;weight_shape, core::OpTrainableRankType rank)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_fully_connected_weight_grad_8h_source.html#l00034">PALFullyConnectedWeightGrad.h:34</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00025">OMMemoryManager.h:26</a></div></div>
 <div class="ttc" id="aonert-micro_2include_2pal_2common_2_p_a_l_utils_8h_html"><div class="ttname"><a href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h.html">PALUtils.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

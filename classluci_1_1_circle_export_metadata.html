@@ -105,6 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad0dd6958bfdc92c4b6bfbd9c66ce90cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a064c152c1e3b28db21231226c4de0131" id="r_a064c152c1e3b28db21231226c4de0131"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_export_metadata.html#a064c152c1e3b28db21231226c4de0131">add_execution_plan_table</a> (uint32_t node_id, const std::vector&lt; uint32_t &gt; &amp;execution_plan_inform)</td></tr>
 <tr class="separator:a064c152c1e3b28db21231226c4de0131"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f034a7fbed02cf332edeaf583e6ec17" id="r_a6f034a7fbed02cf332edeaf583e6ec17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_export_metadata.html#a6f034a7fbed02cf332edeaf583e6ec17">clear</a> (void)</td></tr>
+<tr class="separator:a6f034a7fbed02cf332edeaf583e6ec17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10327254298c78cc26db6b55bb3055c8" id="r_a10327254298c78cc26db6b55bb3055c8"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_export_metadata.html#a10327254298c78cc26db6b55bb3055c8">encoded_source_table</a> (void)</td></tr>
 <tr class="separator:a10327254298c78cc26db6b55bb3055c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a984b411c8391c466c3a3c6d3222a4edb" id="r_a984b411c8391c466c3a3c6d3222a4edb"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_export_metadata.html#a984b411c8391c466c3a3c6d3222a4edb">encoded_op_table</a> (void)</td></tr>
@@ -204,6 +206,33 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="luci_2export_2src_2_circle_operation_exporter_8cpp_source.html#l00028">luci::exportNodes()</a>.</p>
+
+</div>
+</div>
+<a id="a6f034a7fbed02cf332edeaf583e6ec17" name="a6f034a7fbed02cf332edeaf583e6ec17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f034a7fbed02cf332edeaf583e6ec17">&#9670;&#160;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void luci::CircleExportMetadata::clear </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_serialized_data_8cpp_source.html#l00022">22</a> of file <a class="el" href="_serialized_data_8cpp_source.html">SerializedData.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
+<div class="line"><span class="lineno">   24</span>  _source_table.clear();</div>
+<div class="line"><span class="lineno">   25</span>  _op_table.clear();</div>
+<div class="line"><span class="lineno">   26</span>  _execution_plan_table.clear();</div>
+<div class="line"><span class="lineno">   27</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">luci::SerializedModelData::clear()</a>.</p>
 
 </div>
 </div>
@@ -380,6 +409,7 @@ Public Member Functions</h2></td></tr>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>compiler/luci/export/src/<a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a></li>
 <li>compiler/luci/export/src/<a class="el" href="_circle_export_metadata_8cpp_source.html">CircleExportMetadata.cpp</a></li>
+<li>compiler/luci/export/src/<a class="el" href="_serialized_data_8cpp_source.html">SerializedData.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
