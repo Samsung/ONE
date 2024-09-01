@@ -159,6 +159,11 @@ void CircleExporterImpl::exportModule(Module *module)
   // prepare model data
   prepareModelData(_builder, md);
 
+  exportModuleData(module, md);
+}
+
+void CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &md)
+{
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgraph_vec;
 
   for (size_t g = 0; g < module->size(); ++g)
