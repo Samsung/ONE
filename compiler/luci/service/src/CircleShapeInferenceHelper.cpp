@@ -18,9 +18,9 @@
 
 #include "Check.h"
 
-#include <limits>
-
 #include <oops/InternalExn.h>
+
+#include <limits>
 
 using namespace luci::sinf;
 
