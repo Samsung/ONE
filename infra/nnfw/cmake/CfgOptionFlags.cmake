@@ -14,7 +14,6 @@ option(ENABLE_STRICT_BUILD "Treat warning as error" ON)
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
 option(BUILD_ONERT "Build onert" ON)
-option(BUILD_LOGGING "Build logging runtime" ON)
 option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" ON)
 option(BUILD_RUNTIME_NNFW_API_TEST "Build Runtime NNFW API Tests" ON)
 option(BUILD_TFLITE_RUN "Build tflite-run" ON)
@@ -29,7 +28,6 @@ option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
-option(BUILD_MINMAX_H5DUMPER "Build minmax h5dumper" OFF)
 #
 # Default build configuration for contrib
 #
@@ -46,6 +44,7 @@ option(BUILD_GPU_CL "Build gpu_cl backend" OFF)
 option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the downloaded source" OFF)
 option(BUILD_NPUD "Build NPU daemon" OFF)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
+option(BUILD_LOGGING "Build logging runtime" OFF)
 #
 # Default build configuration for tools
 #

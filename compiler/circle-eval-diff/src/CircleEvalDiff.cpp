@@ -20,7 +20,7 @@
 #include "Tensor.h"
 
 #include <foder/FileLoader.h>
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 
 #include <stdexcept>
 
@@ -48,24 +48,8 @@ bool same_dtype(const luci::CircleNode *a, const luci::CircleNode *b)
 
 std::unique_ptr<luci::Module> import(const std::string &model_path)
 {
-  // Load model from the file
-  foder::FileLoader loader{model_path};
-  std::vector<char> model_data = loader.load();
-
-  // Verify flatbuffers
-  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
-                                 model_data.size()};
-  if (not circle::VerifyModelBuffer(verifier))
-  {
-    throw std::runtime_error("Failed to verify circle '" + model_path + "'");
-  }
-
-  auto circle_model = circle::GetModel(model_data.data());
-
-  if (not circle_model)
-    throw std::runtime_error("Failed to load '" + model_path + "'");
-
-  auto module = luci::Importer().importModule(circle_model);
+  luci::ImporterEx importer;
+  auto module = importer.importVerifyModule(model_path);
 
   if (not module)
     throw std::runtime_error("Failed to load '" + model_path + "'");

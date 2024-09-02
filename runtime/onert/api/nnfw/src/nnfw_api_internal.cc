@@ -25,7 +25,9 @@
 #include "loader/ModelLoader.h"
 #include "loader/TFLiteLoader.h"
 #include "loader/TrainInfoLoader.h"
+#include "loader/train/CheckpointLoader.h"
 #include "exporter/CircleExporter.h"
+#include "exporter/train/CheckpointExporter.h"
 #include "json/json.h"
 #include "ir/NNPkg.h"
 #include "ir/OpCode.h"
@@ -1695,6 +1697,61 @@ NNFW_STATUS nnfw_session::train_export_circleplus(const char *path)
   catch (const std::exception &e)
   {
     std::cerr << "Error during nnfw_session::train_export_circleplus : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_import_checkpoint(const char *path)
+{
+  if (path == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_import_checkpoint : path is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStatePreparedOrFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_import_checkpoint : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    onert::loader::train::loadCheckpoint(path, _train_info, _execution);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_import_checkpoint : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::train_export_checkpoint(const char *path)
+{
+  if (path == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::train_export_checkpoint : path is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  // Check training mode is enabled
+  if (!isStateFinishedTraining())
+  {
+    std::cerr << "Error during nnfw_session::train_export_checkpoint : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    onert::exporter::train::exportCheckpoint(path, _train_info, _execution);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::train_export_checkpoint : " << e.what() << std::endl;
     return NNFW_STATUS_ERROR;
   }
 

@@ -119,8 +119,13 @@ private:
   std::vector<int32_t> _coordinates;
 };
 
-Coordinates convertCoordinates(const Coordinates &from_coordinates, Layout from_layout,
-                               Layout to_layout);
+/**
+ * @brief     Convert coordinate for layout change
+ * @param[in] coord Coordinates to be converted
+ * @param[in] type  Permutation type to be applied to coordinates
+ * @return    Converted coordinates based on permutation type
+ */
+Coordinates convertCoordinates(const Coordinates &coords, const PermuteType &type);
 
 } // namespace ir
 } // namespace onert

@@ -68,9 +68,10 @@ public:
   // Note: calculation will be done on test_size number of test samples
   // Warning: before using evaluateMetric call: 1) importTrainModel; 2) setInput; 3) setTarget
   // Note: number of the samples in data should be equal to the test_size
-  OMStatus evaluateMetric(OMMetrics metric, void *metric_val, uint32_t test_size)
+  OMStatus evaluateMetric(const OMConfig &config, OMMetrics metric, void *metric_val,
+                          uint32_t test_size)
   {
-    return _training_runtime_module.evaluateMetric(metric, metric_val, test_size);
+    return _training_runtime_module.evaluateMetric(config, metric, metric_val, test_size);
   }
 
   // To get input and output flat size
@@ -86,12 +87,17 @@ public:
   // Load current status from checkpoint and save it in current model and in current config
   OMStatus loadCheckpoint(OMConfig &config, const char *load_path);
 
-  OMStatus run() { return _training_runtime_module.run(); }
+  OMStatus run(const OMConfig &config) { return _training_runtime_module.run(config); }
   OMStatus allocateInputs() { return _training_runtime_module.allocateInputs(); }
 
   void *getInputData(uint32_t position);
   void *getInputDataAt(uint32_t position);
   void *getOutputDataAt(uint32_t position);
+
+#ifdef OM_MEMORY_ESTIMATE
+  size_t getPeakFootprintMemory() { return _training_runtime_module.getPeakFootprintMemory(); }
+  size_t getCurrentFootprintMemory() { return _training_runtime_module.getPeakFootprintMemory(); }
+#endif // OM_MEMORY_ESTIMATE
 };
 
 } // namespace onert_micro

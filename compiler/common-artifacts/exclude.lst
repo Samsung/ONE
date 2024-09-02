@@ -5,6 +5,8 @@
 
 #[[ optimize : Exclude from circle optimization(circle2circle) ]]
 ## TensorFlowLiteRecipes
+optimize(Add_STR_000) # STRING is not supported
+optimize(Add_STR_001) # STRING is not supported
 
 ## CircleRecipes
 

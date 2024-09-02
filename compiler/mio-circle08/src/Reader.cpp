@@ -80,6 +80,8 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
 
   if (auto *buffer = (*_buffers)[buf_idx])
   {
+    assert(buffer->offset() == 0);
+
     if (auto *array = buffer->data())
     {
       if (size_t size = array->size())
@@ -118,7 +120,10 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data, bool &ex
         return 0;
 
       ext_offset = true;
-      *buff_data = reinterpret_cast<const uint8_t *>(&_rawdata->at(buffer_offset));
+      if (buff_data != nullptr)
+      {
+        *buff_data = reinterpret_cast<const uint8_t *>(&_rawdata->at(buffer_offset));
+      }
       return buffer->size();
     }
     else if (auto *array = buffer->data())

@@ -76,12 +76,65 @@ TEST_F(InstanceNormTest, Single_gamma_beta)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 1, 2}));
 }
 
+TEST_F(InstanceNormTest, Single_gamma_beta_3D)
+{
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<float>(output_tensor), FloatArrayNear({2, 2, 2, 2}));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2}));
+}
+
 TEST_F(InstanceNormTest, Wrong_gamma_beta_dim_NEG)
 {
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>({1, 2, 1, 2}, {1, 1, 1, 1}, _memory_manager.get());
   Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1}, _memory_manager.get());
   Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {2, 2, 2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(InstanceNormTest, Wrong_gamma_beta_dim_3D_NEG)
+{
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 2, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {2, 2, 2}, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  InstanceNormParams params{};
+  params.epsilon = 0.1f;
+  params.activation = Activation::NONE;
+
+  InstanceNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
+TEST_F(InstanceNormTest, Unsupported_dims_NEG)
+{
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>({2, 2}, {1, 1, 1, 1}, _memory_manager.get());
+  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({2}, {1, 1}, _memory_manager.get());
+  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({2}, {2, 2}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   InstanceNormParams params{};

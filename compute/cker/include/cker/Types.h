@@ -191,6 +191,8 @@ struct BinaryArithmeticOpParam
   // float activation params.
   float float_activation_min = 0;
   float float_activation_max = 0;
+  int64_t int64_activation_min = 0;
+  int64_t int64_activation_max = 0;
 
   // Processed output dimensions.
   // Let input "a" be the one that broadcasts in the faster-changing dimension.

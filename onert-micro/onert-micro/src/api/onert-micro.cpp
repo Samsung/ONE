@@ -307,7 +307,7 @@ NNFW_STATUS nnfw_session::train_run(bool update_weights)
     float *user_input_data = (float *)_train_interpreter->getInputData(0);
     memcpy(allocated_input_data, user_input_data,
            sizeof(float) * _train_interpreter->getInputSizeAt(0));
-    _train_interpreter->run();
+    _train_interpreter->run(_config);
     float *calculated_ptr = (float *)_train_interpreter->getOutputDataAt(0);
     memcpy(outputbuf, calculated_ptr, sizeof(float) * _train_interpreter->getOutputSizeAt(0));
     _train_interpreter->reset();
@@ -380,7 +380,7 @@ NNFW_STATUS nnfw_session::train_get_loss(uint32_t index, float *loss)
       break;
   }
 
-  _train_interpreter->evaluateMetric(m, reinterpret_cast<void *>(loss),
+  _train_interpreter->evaluateMetric(_config, m, reinterpret_cast<void *>(loss),
                                      _config.training_context.batch_size);
   return NNFW_STATUS_NO_ERROR;
 }

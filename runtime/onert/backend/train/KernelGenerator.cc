@@ -133,11 +133,6 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-    if (portable_tensor)
-    {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
-    }
     auto tensor = _tensor_reg->getNonConstTensor(ind);
     if (tensor)
     {

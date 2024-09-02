@@ -16,6 +16,7 @@
 
 #include "execute/OMTestUtils.h"
 #include "test_models/relu/FloatReLUKernel.h"
+#include "test_models/relu/Int8ReLUKernel.h"
 #include "test_models/relu/NegReLUKernel.h"
 
 namespace onert_micro
@@ -41,9 +42,24 @@ TEST_F(ReLUTest, Float_P)
               FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
 }
 
+TEST_F(ReLUTest, S8_P)
+{
+  onert_micro::test_model::TestDataS8ReLU test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
 TEST_F(ReLUTest, Input_output_type_mismatch_NEG)
 {
   onert_micro::test_model::NegTestDataInputOutputTypeMismatchReLUKernel test_data_kernel;
+
+  EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
+TEST_F(ReLUTest, Input_output_shape_mismatch_NEG)
+{
+  onert_micro::test_model::NegTestDataInputOutputShapeMismatchReLUKernel test_data_kernel;
 
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
 }

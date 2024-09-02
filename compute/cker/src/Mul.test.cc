@@ -187,6 +187,92 @@ TEST(CKer_Operation, Mul)
       EXPECT_EQ(output[i], expected_output[i]);
   }
 
+  // Int64
+  {
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input1 = {10, 9, -11, 3};
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input2 = {2, -2, -3, 4};
+    std::vector<int64_t> expected_output = {20, -18, 33, 12};
+    std::vector<int64_t> output(4);
+
+    nnfw::cker::BinaryArithmeticOpParam param;
+    param.int64_activation_min = std::numeric_limits<int64_t>::lowest();
+    param.int64_activation_max = std::numeric_limits<int64_t>::max();
+    nnfw::cker::Shape shape{1, 2, 2, 1};
+
+    nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+      param, shape, input1.data(), shape, input2.data(), shape, output.data());
+
+    for (size_t i = 0; i < expected_output.size(); ++i)
+      EXPECT_EQ(output[i], expected_output[i]);
+  }
+
+  // Int64 big value
+  {
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input1 = {INT32_MIN, INT32_MIN, INT32_MAX, 3};
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input2 = {INT32_MAX, INT32_MIN, INT32_MAX, 4};
+    std::vector<int64_t> expected_output = {INT64_MIN / 2 + INT32_MAX + 1, INT64_MAX / 2 + 1,
+                                            INT64_MAX / 2 + INT32_MIN + INT32_MIN + 2, 12};
+    std::vector<int64_t> output(4);
+
+    nnfw::cker::BinaryArithmeticOpParam param;
+    param.int64_activation_min = std::numeric_limits<int64_t>::lowest();
+    param.int64_activation_max = std::numeric_limits<int64_t>::max();
+    nnfw::cker::Shape shape{1, 2, 2, 1};
+
+    nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+      param, shape, input1.data(), shape, input2.data(), shape, output.data());
+
+    for (size_t i = 0; i < expected_output.size(); ++i)
+      EXPECT_EQ(output[i], expected_output[i]);
+  }
+
+  // Int64 Relu
+  {
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input1 = {10, 9, -11, 3};
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input2 = {2, -2, -3, 4};
+    std::vector<int64_t> expected_output = {20, 0, 33, 12};
+    std::vector<int64_t> output(4);
+
+    nnfw::cker::BinaryArithmeticOpParam param;
+    param.int64_activation_min = 0;
+    param.int64_activation_max = std::numeric_limits<int64_t>::max();
+    nnfw::cker::Shape shape{1, 2, 2, 1};
+
+    nnfw::cker::BinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+      param, shape, input1.data(), shape, input2.data(), shape, output.data());
+
+    for (size_t i = 0; i < expected_output.size(); ++i)
+      EXPECT_EQ(output[i], expected_output[i]);
+  }
+
+  // Int64 Broadcast
+  {
+    // Shape: {1, 2, 2, 1}
+    std::vector<int64_t> input1 = {10, 9, -11, 3};
+    // Shape: {1}
+    std::vector<int64_t> input2 = {-3};
+    std::vector<int64_t> expected_output = {-30, -27, 33, -9};
+    std::vector<int64_t> output(4);
+
+    nnfw::cker::BinaryArithmeticOpParam param;
+    param.broadcast_category = nnfw::cker::BroadcastableOpCategory::kGenericBroadcast;
+    param.int64_activation_min = std::numeric_limits<int64_t>::lowest();
+    param.int64_activation_max = std::numeric_limits<int64_t>::max();
+
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+      param, nnfw::cker::Shape{1, 2, 2, 1}, input1.data(), nnfw::cker::Shape{1}, input2.data(),
+      nnfw::cker::Shape{1, 2, 2, 1}, output.data());
+
+    for (size_t i = 0; i < expected_output.size(); ++i)
+      EXPECT_EQ(output[i], expected_output[i]);
+  }
+
   // TODO Add other types
 }
 

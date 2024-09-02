@@ -55,6 +55,9 @@ struct MetaDataBufferLink
   using CIR = int32_t;
 };
 
+using BufferData = std::vector<uint8_t>;
+using MapBufferData = std::map<int32_t, BufferData>;
+
 template <typename T> class Offset
 {
 private:
@@ -68,6 +71,8 @@ public:
 
 public:
   void set_signature_defs(const SignatureDefs *offset) { _tfl_signature_def_offsets = offset; }
+  void set_buffer_data_map(MapBufferData *map) { _buffer_data_map = map; }
+  void set_file_raw(const std::vector<char> *raw) { _file_raw = raw; }
 
 public:
   void build(const TFLFlatBufVec *tflite_flatbuffer_vec);
@@ -82,6 +87,7 @@ private:
   const SignatureDefs *_tfl_signature_def_offsets = nullptr;
   // for extended buffer for size > 2G
   const std::vector<char> *_file_raw = nullptr;
+  MapBufferData *_buffer_data_map = nullptr;
 };
 
 class CircleModel
@@ -96,6 +102,7 @@ public:
 public:
   void load_offsets(const tflite::Model *tfl_model);
   void model_build(void) const;
+  void finalize(void);
   const char *base(void) const;
   size_t size(void) const;
 
@@ -108,6 +115,9 @@ private:
   std::unique_ptr<Offset<SubGraphLink>> _subGraphs_offset;
   std::unique_ptr<Offset<BufferLink>> _buffers_offset;
   std::unique_ptr<Offset<MetaDataBufferLink>> _metadata_buffer_offset;
+
+  MapBufferData _buffer_data_map;
+  std::string _fb_data_with_ext;
 };
 
 } // namespace tflite2circle

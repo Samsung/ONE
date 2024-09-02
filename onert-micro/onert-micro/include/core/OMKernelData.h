@@ -228,6 +228,18 @@ struct SliceParams
   int32_t size[5];
 };
 
+struct SVDFQuantParams
+{
+  int32_t input_zero_point;
+  int32_t output_zero_point;
+  int32_t activation_state_zero_point;
+  int32_t effective_scale_1_a;
+  int effective_scale_1_b;
+  int32_t effective_scale_2_a;
+  int effective_scale_2_b;
+  int rank;
+};
+
 } // namespace core
 } // namespace onert_micro
 

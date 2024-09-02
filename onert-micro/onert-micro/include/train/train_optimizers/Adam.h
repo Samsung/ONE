@@ -20,6 +20,7 @@
 #include "OMStatus.h"
 #include "core/OMRuntimeStorage.h"
 #include "core/OMRuntimeContext.h"
+#include "core/OMRuntimeStorage.h"
 
 #include <cstdint>
 #include <unordered_map>
@@ -53,6 +54,14 @@ public:
   Adam &&operator=(const Adam &&) = delete;
   ~Adam() { fullReset(); }
 
+#ifdef OM_MEMORY_ESTIMATE
+  // Reset and deallocate all internal states
+  void fullReset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage);
+
+  // Reset only gradients
+  void reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage);
+#endif // OM_MEMORY_ESTIMATE
+
   // Reset and deallocate all internal states
   void fullReset();
 
@@ -74,10 +83,13 @@ public:
   void setExponentAvgSquaresDataByTensorIndex(uint16_t tensor_index, uint8_t *data);
 
   // Update internal states according to Adam theory
-  OMStatus handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context);
+  OMStatus handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeContext &context,
+                  core::OMRuntimeStorage &storage);
 
   // Update weights according to Adam theory
-  OMStatus updateWeights(const OMTrainingContext &training_config, core::OMRuntimeContext &context);
+  OMStatus updateWeights(const OMTrainingContext &training_config, core::OMRuntimeContext &context,
+                         core::OMRuntimeStorage &storage,
+                         std::unordered_map<uint16_t, core::OpTrainableRankType> &);
 };
 
 } // namespace optimizers

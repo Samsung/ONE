@@ -47,6 +47,9 @@ std::vector<U> checkKernel(uint32_t num_inputs,
 
   assert(num_inputs == interpreter.getNumberOfInputs());
 
+  interpreter.reset();
+  interpreter.allocateInputs();
+
   for (uint32_t i = 0; i < num_inputs; ++i)
   {
     T *input_data = reinterpret_cast<T *>(interpreter.getInputDataAt(i));
@@ -58,7 +61,7 @@ std::vector<U> checkKernel(uint32_t num_inputs,
     }
   }
 
-  interpreter.run();
+  interpreter.run(config);
 
   U *output_data = reinterpret_cast<U *>(interpreter.getOutputDataAt(0));
   const size_t num_elements = interpreter.getOutputSizeAt(0);
