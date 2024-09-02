@@ -227,7 +227,12 @@ bool CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &m
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
-  // TODO check current total size exceeds limit
+  // check current total size exceeds limit
+  if (check_size_limit(_builder, 0))
+  {
+    md._require_ext_buffer = true;
+    return false;
+  }
 
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;

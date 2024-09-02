@@ -16,6 +16,8 @@
 
 #include "CircleTensorExporter.h"
 
+#include "CircleExporterUtils.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Service/CircleTypeInference.h>
@@ -371,6 +373,11 @@ encodeOpBufferByDType(FlatBufferBuilder &builder, SerializedModelData &md, luci:
 
     // create fake indicator buffer
     return circle::CreateBuffer(builder, 0 /* data */, 1 /* offset */, 1 /* size */);
+  }
+  if (check_size_limit(builder, raw_size))
+  {
+    md._require_ext_buffer = true;
+    return md._empty_buffer;
   }
 
   auto array_offset = builder.CreateVector(reinterpret_cast<uint8_t *>(raw_data.data()), raw_size);
