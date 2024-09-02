@@ -67,7 +67,7 @@ private:
   /**
    * @brief implementation that writes Module into internal buffer
    */
-  void exportModuleData(Module *module, SerializedModelData &md);
+  bool exportModuleData(Module *module, SerializedModelData &md);
 
 private:
   flatbuffers::FlatBufferBuilder _builder;
