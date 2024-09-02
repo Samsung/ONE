@@ -32,7 +32,8 @@ namespace sinf
 
 loco::TensorShape Algorithm::visit(const luci::CircleRsqrt *node)
 {
-  const auto input_shape = circle_shape(loco::must_cast<CircleNode *>(node->x()));
+  const auto input_x = loco::must_cast<CircleNode *>(node->x());
+  const auto input_shape = circle_shape(input_x);
   return input_shape;
 }
 
