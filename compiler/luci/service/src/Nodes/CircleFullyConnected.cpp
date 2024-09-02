@@ -63,6 +63,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
   if (node->keep_num_dims())
   {
+    // [1,10,?,20] X [15,20] -> [1,10,?,15] (weights_shape =[15,20])
     out_shape.rank(input_shape.rank());
     for (uint32_t i = 0; i < input_shape.rank(); ++i)
       out_shape.dim(i) = input_shape.dim(i);
@@ -81,6 +82,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
       }
     }
 
+    // Originally, BatchSize = input_size / weights_shape(0).value()
     // The output BatchSize is determined by the input_size,
     // which is calculated by multiplying dimensions up to rank()-2.
 
@@ -90,6 +92,12 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
     {
       batch_size *= input_shape.dim(i).value();
     }
+
+    // input_shape = [batch_size, ..., weights_shape.dim(1).value()]
+    // out_shape = [batch_size, weights_shape.dim(0).value()]
+    // if the fullyconnected operation doesn't keep dimensions, input_shape will be flattened.
+    // [1,10,?,20] X [15,20] -> [?,15] (weights_shape = [15,20])
+    // batch_size = 1 * 10 * ?
 
     out_shape.rank(2);
     if (is_dynamic_shape)
