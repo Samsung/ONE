@@ -42,7 +42,7 @@ namespace
 {
 
 void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &reader,
-                   loco::Graph *graph)
+                   loco::Graph *graph, bool &ext_buffer)
 {
   LOGGER(l);
 
@@ -242,6 +242,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     auto dtype = luci::luci_datatype(tensor->type());
     graph_output->dtype(dtype);
   }
+
+  ext_buffer = gb_context.ext_buffer();
 }
 
 class ValidateCollector final : public loco::ErrorListener
@@ -299,7 +301,8 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     graph->name(reader.name());
 
     // Convert circle::Model to loco::Graph
-    convert_graph(*source_ptr, reader, graph.get());
+    bool graph_ext_buffer = false;
+    convert_graph(*source_ptr, reader, graph.get(), graph_ext_buffer);
 
     LOGGER(l);
     VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
@@ -310,6 +313,9 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
     module->add(std::move(graph));
+
+    if (graph_ext_buffer)
+      module->ext_buffer(true);
   }
 
   post_import_graph(module.get(), reader);
