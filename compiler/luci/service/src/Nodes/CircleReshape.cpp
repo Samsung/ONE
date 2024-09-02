@@ -144,7 +144,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
       output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
     }
   }
-  
+
   return output_shape;
 }
 } // namespace sinf
