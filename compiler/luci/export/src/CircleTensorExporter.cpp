@@ -664,8 +664,8 @@ void prepareModelData(FlatBufferBuilder &builder, SerializedModelData &md)
   //   - Note the 0th entry of this array must be an empty buffer (sentinel).
   //   - This is a convention so that tensors without a buffer can provide 0 as
   //   - their buffer.
-  auto buffer = encodeOpBuffer(builder);
-  md._buffers.push_back(buffer);
+  md._empty_buffer = encodeOpBuffer(builder);
+  md._buffers.push_back(md._empty_buffer);
 }
 
 void exportOpDefinedTensors(loco::Graph *g, FlatBufferBuilder &builder, SerializedModelData &md,
