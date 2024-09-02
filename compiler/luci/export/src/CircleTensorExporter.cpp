@@ -673,6 +673,8 @@ namespace luci
 
 void prepareModelData(FlatBufferBuilder &builder, SerializedModelData &md)
 {
+  md.clear();
+
   // add one empty buffer
   //   note: this follows TFLite
   //   note: there's a comment in tflite fbs file
