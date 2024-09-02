@@ -167,7 +167,6 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   // temporary buffer to provide raw data from file
   // must have life time same or longer than 'buffer' variable
   std::vector<uint8_t> temp_buffer;
-  // const auto buffer = wrap(r_buffer->data());
   luci::VectorWrapper<uint8_t> buffer(nullptr);
   if (r_buffer->offset() > 1)
   {
