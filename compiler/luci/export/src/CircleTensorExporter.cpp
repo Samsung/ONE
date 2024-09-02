@@ -346,7 +346,7 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder,
 
 template <loco::DataType DT>
 flatbuffers::Offset<circle::Buffer>
-encodeOpBufferByDType(FlatBufferBuilder &builder, SerializedModelData &, luci::CircleConst *c)
+encodeOpBufferByDType(FlatBufferBuilder &builder, SerializedModelData &md, luci::CircleConst *c)
 {
   using NativeType = typename loco::DataTypeImpl<DT>::Type;
 
@@ -358,6 +358,21 @@ encodeOpBufferByDType(FlatBufferBuilder &builder, SerializedModelData &, luci::C
     raw_data.push_back(c->at<DT>(i));
   }
   const size_t raw_size = size * sizeof(NativeType);
+
+  if (md._ext_buffer)
+  {
+    // TODO optimize this if this operation takes long or much memory
+    SerializedModelData::BufferData buffer_data;
+    buffer_data.resize(raw_size);
+    std::memcpy(buffer_data.data(), raw_data.data(), raw_size);
+
+    int32_t buffer_index = md._buffers.size();
+    md._buffer_data_map.emplace(buffer_index, buffer_data);
+
+    // create fake indicator buffer
+    return circle::CreateBuffer(builder, 0 /* data */, 1 /* offset */, 1 /* size */);
+  }
+
   auto array_offset = builder.CreateVector(reinterpret_cast<uint8_t *>(raw_data.data()), raw_size);
   return CreateBuffer(builder, array_offset);
 }
