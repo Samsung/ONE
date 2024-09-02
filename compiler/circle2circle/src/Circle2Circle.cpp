@@ -312,6 +312,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["remove_redundant_reshape"] = Algorithms::RemoveRedundantReshape;
   option_str_to_enum["remove_redundant_transpose"] = Algorithms::RemoveRedundantTranspose;
   option_str_to_enum["remove_unnecessary_add"] = Algorithms::RemoveUnnecessaryAdd;
+  option_str_to_enum["remove_unnecessary_cast"] = Algorithms::RemoveUnnecessaryCast;
   option_str_to_enum["remove_unnecessary_reshape"] = Algorithms::RemoveUnnecessaryReshape;
   option_str_to_enum["remove_unnecessary_slice"] = Algorithms::RemoveUnnecessarySlice;
   option_str_to_enum["remove_unnecessary_strided_slice"] = Algorithms::RemoveUnnecessaryStridedSlice;
