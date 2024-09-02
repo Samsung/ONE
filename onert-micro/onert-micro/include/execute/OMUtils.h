@@ -160,12 +160,8 @@ void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Ten
                           const circle::Tensor *input2, const circle::Tensor *output,
                           circle::ActivationFunctionType act);
 
-OMStatus SISOHeader(const OMExecuteArgs &execute_args,
-                    const circle::Tensor **input,
-                    const circle::Tensor **output,
-                    uint8_t **input_data,
-                    uint8_t **output_data);
-
+OMStatus SISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input,
+                    const circle::Tensor **output, uint8_t **input_data, uint8_t **output_data);
 
 } // namespace execute
 } // namespace onert_micro

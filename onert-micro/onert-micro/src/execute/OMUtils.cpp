@@ -158,8 +158,7 @@ void onert_micro::execute::readQuantParams(const circle::Tensor *tensor, long &z
 
 OMStatus onert_micro::execute::SISOHeader(const OMExecuteArgs &execute_args,
                                           const circle::Tensor **input,
-                                          const circle::Tensor **output,
-                                          uint8_t **input_data,
+                                          const circle::Tensor **output, uint8_t **input_data,
                                           uint8_t **output_data)
 {
   OMStatus status;
