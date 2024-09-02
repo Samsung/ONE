@@ -179,6 +179,8 @@ void CircleExporterImpl::exportModule(Module *module)
     md._ext_buffer = true;
     exportModuleData(module, md);
   }
+
+  finalizeWithExtendedBuffer(md);
 }
 
 bool CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &md)
@@ -243,6 +245,67 @@ bool CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &m
   FinishModelBuffer(_builder, model_offset);
 
   return true;
+}
+
+void CircleExporterImpl::finalizeWithExtendedBuffer(SerializedModelData &md)
+{
+  _ext_buffer = md._ext_buffer;
+  if (!_ext_buffer)
+    return;
+
+  _fb_data_with_ext.clear();
+
+  auto align16 = [](size_t &v) {
+    while (v % 16 != 0)
+      v++;
+  };
+
+  // get total memory for flatbuffer + all buffer_data
+  size_t result_size = _builder.GetSize();
+  align16(result_size);
+  for (auto &it : md._buffer_data_map)
+  {
+    SerializedModelData::BufferData &buffer_data = it.second;
+    result_size += buffer_data.size();
+    align16(result_size);
+  }
+  align16(result_size);
+  result_size += 16; // for safety
+
+  std::string result;
+  const char *buff_ptr = reinterpret_cast<const char *>(_builder.GetBufferPointer());
+
+  auto padalign16 = [](std::string &str) {
+    while (str.size() % 16 != 0)
+      str += '\0';
+  };
+
+  result.reserve(result_size);
+  result.append(buff_ptr, _builder.GetSize());
+
+  auto mutable_model = circle::GetMutableModel(result.data());
+  auto mutable_buffers = mutable_model->mutable_buffers();
+
+  // pad to be 16 bytes aligned
+  padalign16(result);
+  for (auto &it : md._buffer_data_map)
+  {
+    int32_t buffer_index = it.first;
+    SerializedModelData::BufferData &buffer_data = it.second;
+    uint64_t offset = result.size();
+    uint64_t size = buffer_data.size();
+
+    circle::Buffer *mutable_buffer = mutable_buffers->GetMutableObject(buffer_index);
+    mutable_buffer->mutate_offset(offset);
+    mutable_buffer->mutate_size(size);
+
+    result.append(buffer_data.begin(), buffer_data.end());
+    padalign16(result);
+  }
+  padalign16(result);
+
+  // use final result
+  _fb_data_with_ext = result;
 }
 
 const char *CircleExporterImpl::getBufferPointer() const
