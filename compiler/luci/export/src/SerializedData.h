@@ -123,6 +123,7 @@ struct SerializedModelData final
 
   std::unordered_map<OpCode, uint32_t> _operator_codes;
   std::vector<flatbuffers::Offset<circle::Buffer>> _buffers;
+  flatbuffers::Offset<circle::Buffer> _empty_buffer;
   CircleExportMetadata _metadata;
 
   // This is used for removing buffers with same values
