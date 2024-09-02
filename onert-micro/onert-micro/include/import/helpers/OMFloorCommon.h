@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-#include "SerializedData.h"
+#ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_FLOOR_KERNEL_COMMON_H
+#define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_FLOOR_KERNEL_COMMON_H
 
-namespace luci
+#include "import/OMKernelConfigureBuilder.h"
+#include "core/OMUtils.h"
+#include "OMStatus.h"
+#include "execute/OMRuntimeKernel.h"
+
+namespace onert_micro
+{
+namespace import
+{
+namespace helpers
 {
 
-void CircleExportMetadata::clear(void)
-{
-  _source_table.clear();
-  _op_table.clear();
-  _execution_plan_table.clear();
-}
+OMStatus configure_floor_kernel_common(const OMConfigureArgs &config_args);
 
-void SerializedModelData::clear(void)
-{
-  _operator_codes.clear();
-  _buffers.clear();
-  _metadata.clear();
-  _cached_buffer_id.clear();
+} // namespace helpers
+} // namespace import
+} // namespace onert_micro
 
-  // clear extended buffer mode
-  _ext_buffer = false;
-  _require_ext_buffer = false;
-  _buffer_data_map.clear();
-}
-
-} // namespace luci
+#endif // ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_FLOOR_KERNEL_COMMON_H

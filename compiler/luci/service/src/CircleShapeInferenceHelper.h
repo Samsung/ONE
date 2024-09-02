@@ -52,6 +52,10 @@ loco::TensorShape own_shape(const luci::CircleNode *node);
 
 std::ostream &operator<<(std::ostream &os, const loco::TensorShape &tensor_shape);
 
+// Return shape of pad ops using paddings.
+loco::TensorShape pad_shape(const loco::TensorShape &input_shape,
+                            const luci::CircleConst *paddings);
+
 /**
  * @brief Create a higher-rank TensorShape following NumPy broadcasting semantics
  *

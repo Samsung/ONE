@@ -156,8 +156,11 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
     return nullptr;
   }
 
-  assert(reader->buffers()[const_tensor->buffer()] != nullptr);
-  const auto buffer = wrap(reader->buffers()[const_tensor->buffer()]->data());
+  const auto r_buffers = reader->buffers();
+  const auto c_buffer = const_tensor->buffer();
+  const auto r_buffer = r_buffers[c_buffer];
+  assert(r_buffer != nullptr);
+  const auto buffer = wrap(r_buffer->data());
   const auto const_dims = wrap(const_tensor->shape()); // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {

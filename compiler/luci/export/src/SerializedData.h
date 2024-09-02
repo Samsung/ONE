@@ -128,6 +128,16 @@ struct SerializedModelData final
   // This is used for removing buffers with same values
   std::map<luci::CircleConst *, uint32_t> _cached_buffer_id;
 
+  // flag to use extended Buffer mode for file size > 2G
+  bool _ext_buffer = false;
+  // flag to indicate flatbuffer area got size > 2G
+  bool _require_ext_buffer = false;
+
+  using BufferData = std::vector<uint8_t>;
+  using MapBufferData = std::map<int32_t, BufferData>;
+  // temporary store for BufferData to put after flatbuffers area
+  MapBufferData _buffer_data_map;
+
   /**
    * @brief if opcode is not registered in table of opcodes add it
    * @param builtin_code
