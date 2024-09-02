@@ -19,6 +19,8 @@
 #include <luci/IR/Nodes/CircleConst.h>
 #include <luci/IR/Nodes/CircleReshape.h>
 
+#include <iostream>
+
 namespace luci
 {
 
