@@ -310,9 +310,16 @@ void CircleExporterImpl::finalizeWithExtendedBuffer(SerializedModelData &md)
 
 const char *CircleExporterImpl::getBufferPointer() const
 {
+  if (_ext_buffer)
+    return reinterpret_cast<const char *>(_fb_data_with_ext.data());
   return reinterpret_cast<const char *>(_builder.GetBufferPointer());
 }
 
-size_t CircleExporterImpl::getBufferSize() const { return _builder.GetSize(); }
+size_t CircleExporterImpl::getBufferSize() const
+{
+  if (_ext_buffer)
+    return _fb_data_with_ext.size();
+  return _builder.GetSize();
+}
 
 } // namespace luci
