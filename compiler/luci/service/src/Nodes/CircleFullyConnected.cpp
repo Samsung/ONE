@@ -61,9 +61,38 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
   LUCI_ASSERT(weights_shape.rank() == 2, "Weights of FullyConnected should be 2");
 
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
+
+  /*
+   * [CircleNode]			  [CircleNode]
+   *   (input)						(weight)
+   *         \			     	/
+   *     [CircleFullyConnected]
+   *            		|
+   *            (output)
+   *
+   * **Pre-conditions:**
+   *    input_shape.rank() <= 4
+   *      * remark: TFLite allows <=3 ranks, but there are rank 4 input recipes in ONE
+   *    weight_shape.rank() == 2 and all dimensions are known.
+   *    Regardless of whether input_shape[-1] is known or not, input_shape[-1] == weight_shape[-1]
+   *    If above conditions are not met, throw an error.
+   *
+   * **Shape Inference Rule:**
+   *    **Input Shape:**
+   *      input_shape : (A, B, C, D)
+   *      weight_shape : (E, F)
+   *      A, B, C, D are "positive numbers" or "unknown".
+   *      E, F are always "positive numbers".
+   *
+   *    **Output Shape:**
+   *      If keep_dims = True : (A, B, C, E)
+   *      If keep_dims = False : (G, E)
+   *       * G = unknown (if any of A, B, or C is unknown.)
+   *       * G = A * B * C  (otherwise.)
+   */
+
   if (node->keep_num_dims())
   {
-    // [1,10,?,20] X [15,20] -> [1,10,?,15] (weights_shape =[15,20])
     out_shape.rank(input_shape.rank());
     for (uint32_t i = 0; i < input_shape.rank(); ++i)
       out_shape.dim(i) = input_shape.dim(i);
@@ -82,22 +111,12 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
       }
     }
 
-    // Originally, BatchSize = input_size / weights_shape(0).value()
-    // The output BatchSize is determined by the input_size,
-    // which is calculated by multiplying dimensions up to rank()-2.
-
     uint32_t batch_size = 1;
 
     for (uint32_t i = 0; i < input_shape.rank() - 1; i++)
     {
       batch_size *= input_shape.dim(i).value();
     }
-
-    // input_shape = [batch_size, ..., weights_shape.dim(1).value()]
-    // out_shape = [batch_size, weights_shape.dim(0).value()]
-    // if the fullyconnected operation doesn't keep dimensions, input_shape will be flattened.
-    // [1,10,?,20] X [15,20] -> [?,15] (weights_shape = [15,20])
-    // batch_size = 1 * 10 * ?
 
     out_shape.rank(2);
     if (is_dynamic_shape)

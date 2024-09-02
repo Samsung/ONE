@@ -220,7 +220,7 @@ TEST(ShapeRuleTest, fully_connected_nullptr_bias_NEG)
   luci::CircleConst bias;
   luci::CircleFullyConnected fully_connected;
 
-  input.shape({1,15,20});
+  input.shape({1, 15, 20});
   input.shape_status(luci::ShapeStatus::VALID);
 
   weights.shape({15, 20});
