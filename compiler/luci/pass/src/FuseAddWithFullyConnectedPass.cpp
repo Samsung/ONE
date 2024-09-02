@@ -31,6 +31,44 @@ namespace
   if (not(cond))                  \
     return false;
 
+inline bool common_pass_checks(const loco::DataType dtype, luci::CircleAdd **add,
+                               luci::CircleFullyConnected **fc, luci::CircleConst **addition,
+                               luci::CircleConst **weights, luci::CircleNode **bias)
+{
+  RETURN_FALSE_UNLESS((*add)->dtype() == dtype);
+
+  RETURN_FALSE_UNLESS(luci::fill(fc, addition).with_commutative_args_of(*add));
+
+  // Check if fc has only one successor to limit possible weights size increase.
+  RETURN_FALSE_UNLESS(loco::succs(*fc).size() == 1);
+  RETURN_FALSE_UNLESS((*fc)->dtype() == dtype);
+  RETURN_FALSE_UNLESS((*fc)->fusedActivationFunction() == luci::FusedActFunc::NONE);
+
+  *weights = dynamic_cast<luci::CircleConst *>((*fc)->weights());
+  RETURN_FALSE_UNLESS(*weights);
+
+  RETURN_FALSE_UNLESS((*addition)->dtype() == dtype);
+
+  auto rank = (*addition)->rank();
+  // TODO Support scalar addition
+  RETURN_FALSE_UNLESS(rank != 0);
+
+  for (uint32_t i = 0; i < rank - 1; i++)
+  {
+    RETURN_FALSE_UNLESS((*addition)->dim(i).value() == 1);
+  }
+  // Check the last dimesion of addition is the same with the number of neurons of FC
+  RETURN_FALSE_UNLESS((*addition)->dim(rank - 1) == (*weights)->dim(0));
+
+  // We only support (1) constant bias (2) no bias
+  // If bias is neither (1) nor (2), it would be a feature map
+  *bias = loco::must_cast<luci::CircleNode *>((*fc)->bias());
+  RETURN_FALSE_UNLESS((*bias)->opcode() == luci::CircleOpcode::CIRCLECONST or
+                      (*bias)->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE);
+
+  return true;
+}
+
 /**
  *  Fuse Add to FullyConnected if the added value is a channel(last dimension)-wise constant
  *
@@ -49,39 +87,14 @@ namespace
  */
 bool fuse_add_with_fc(luci::CircleAdd *add)
 {
-  RETURN_FALSE_UNLESS(add->dtype() == loco::DataType::FLOAT32);
-
   luci::CircleFullyConnected *fc = nullptr;
   // addition must be const
   luci::CircleConst *addition = nullptr;
-  RETURN_FALSE_UNLESS(luci::fill(&fc, &addition).with_commutative_args_of(add));
+  luci::CircleConst *weights = nullptr;
+  luci::CircleNode *bias = nullptr;
 
-  // Check if fc has only one successor to limit possible weights size increase.
-  RETURN_FALSE_UNLESS(loco::succs(fc).size() == 1);
-  RETURN_FALSE_UNLESS(fc->dtype() == loco::DataType::FLOAT32);
-  RETURN_FALSE_UNLESS(fc->fusedActivationFunction() == luci::FusedActFunc::NONE);
-
-  auto weights = dynamic_cast<luci::CircleConst *>(fc->weights());
-  RETURN_FALSE_UNLESS(weights);
-
-  RETURN_FALSE_UNLESS(addition->dtype() == loco::DataType::FLOAT32);
-
-  auto rank = addition->rank();
-  // TODO Support scalar addition
-  RETURN_FALSE_UNLESS(rank != 0);
-
-  for (uint32_t i = 0; i < rank - 1; i++)
-  {
-    RETURN_FALSE_UNLESS(addition->dim(i).value() == 1);
-  }
-  // Check the last dimesion of addition is the same with the number of neurons of FC
-  RETURN_FALSE_UNLESS(addition->dim(rank - 1) == weights->dim(0));
-
-  // We only support (1) constant bias (2) no bias
-  // If bias is neither (1) nor (2), it would be a feature map
-  auto bias = loco::must_cast<luci::CircleNode *>(fc->bias());
-  RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST or
-                      bias->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE);
+  RETURN_FALSE_UNLESS(
+    common_pass_checks(loco::DataType::FLOAT32, &add, &fc, &addition, &weights, &bias));
 
   auto fused_bias = luci::clone(addition);
 
@@ -131,45 +144,20 @@ luci::CircleQuantParam *get_qparam(luci::CircleNode *node, uint32_t len)
 
 bool fuse_add_with_s16_fc(luci::CircleAdd *add)
 {
-  RETURN_FALSE_UNLESS(add->dtype() == loco::DataType::S16);
-
   luci::CircleFullyConnected *fc = nullptr;
   // addition must be const
   luci::CircleConst *addition = nullptr;
-  RETURN_FALSE_UNLESS(luci::fill(&fc, &addition).with_commutative_args_of(add));
+  luci::CircleConst *weights = nullptr;
+  luci::CircleNode *bias = nullptr;
 
-  // Check if fc has only one successor to limit possible weights size increase.
-  RETURN_FALSE_UNLESS(loco::succs(fc).size() == 1);
-  RETURN_FALSE_UNLESS(fc->dtype() == loco::DataType::S16);
-  RETURN_FALSE_UNLESS(fc->fusedActivationFunction() == luci::FusedActFunc::NONE);
-
-  auto weights = dynamic_cast<luci::CircleConst *>(fc->weights());
-  RETURN_FALSE_UNLESS(weights);
-
-  RETURN_FALSE_UNLESS(addition->dtype() == loco::DataType::S16);
-
-  auto rank = addition->rank();
-  // TODO Support scalar addition
-  RETURN_FALSE_UNLESS(rank != 0);
-
-  for (uint32_t i = 0; i < rank - 1; i++)
-  {
-    RETURN_FALSE_UNLESS(addition->dim(i).value() == 1);
-  }
-  // Check the last dim of addition is the same with the output dim of weight
-  RETURN_FALSE_UNLESS(addition->dim(rank - 1) == weights->dim(0));
-
-  // We only support (1) constant bias (2) no bias
-  // If bias is neither (1) nor (2), it would be a feature map
-  auto bias = loco::must_cast<luci::CircleNode *>(fc->bias());
-  RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST or
-                      bias->opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE);
+  RETURN_FALSE_UNLESS(
+    common_pass_checks(loco::DataType::S16, &add, &fc, &addition, &weights, &bias));
 
   // If bias is const, its dtype must be s64
   RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST and
                       bias->dtype() == loco::DataType::S64);
 
-  const auto last_dim = addition->dim(rank - 1).value();
+  const auto last_dim = addition->dim(addition->rank() - 1).value();
 
   const auto addition_qparam = get_qparam(addition, last_dim);
   RETURN_FALSE_UNLESS(addition_qparam);
