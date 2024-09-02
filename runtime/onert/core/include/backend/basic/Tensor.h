@@ -41,8 +41,8 @@ public:
 
 public:
   Tensor(const ir::OperandInfo &info, DynamicMemoryManager *dynamic_mem_mgr)
-    : IPortableTensor(info), _layout(ir::Layout::NHWC), _buffer(nullptr), _size(info.total_size()),
-      _num_references(0), _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
+    : IPortableTensor(info), _buffer(nullptr), _size(info.total_size()), _num_references(0),
+      _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
   }
@@ -71,7 +71,6 @@ public:
 
 public:
   uint8_t *buffer() const override { return _buffer; }
-  ir::Layout layout() const override { return _layout; }
   void set_dynamic() override { _info.setDynamic(); }
   bool applyShape(const ir::Shape &new_shape) override;
 
@@ -126,7 +125,6 @@ public:
   void setShape(const ir::Shape &new_shape) override;
 
 protected:
-  const ir::Layout _layout;
   uint8_t *_buffer;
   size_t _size;
   int32_t _num_references;

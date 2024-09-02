@@ -16,6 +16,8 @@
 
 #include "luci/Pass/ForwardTransposeOpPass.h"
 
+#include "helpers/NodeFiller.h"
+
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 #include <luci/Profile/CircleNodeOrigin.h>
@@ -27,26 +29,52 @@ using namespace luci;
 namespace
 {
 
+// Return true if below conditions are met
+// 1. t->perm() is CircleConst
+// 2. t->perm() is S32
+bool check_perm(const CircleTranspose *t)
+{
+  auto perm = dynamic_cast<CircleConst *>(t->perm());
+  if (not perm)
+    return false;
+
+  switch (perm->dtype())
+  {
+    case loco::DataType::S32:
+      for (uint32_t i = 0; i < perm->size<loco::DataType::S32>(); i++)
+      {
+        auto data = perm->at<loco::DataType::S32>(i);
+        // TODO Support not normalized index
+        if (data < 0 or data >= static_cast<int32_t>(t->rank()))
+          return false;
+      }
+      break;
+    // TODO Support S64 data type
+    default:
+      return false;
+  }
+
+  return true;
+}
+
 // Create new Transpose Op including perm
-// Return nullptr if failed
+// Never return nullptr
 CircleTranspose *create_cloned_transpose(CircleTranspose *transpose)
 {
-  assert(transpose != nullptr); // FIX_CALLER_UNLESS
+  assert(transpose != nullptr);  // FIX_CALLER_UNLESS
+  assert(check_perm(transpose)); // FIX_CALLER_UNLESS
 
-  auto perm = dynamic_cast<CircleConst *>(transpose->perm());
-  if (not perm)
-    return nullptr;
+  auto perm = loco::must_cast<CircleConst *>(transpose->perm());
+  assert(perm); // FIX_CALLER_UNLESS
 
   CircleConst *cloned_perm = clone(perm);
-  if (cloned_perm == nullptr)
-    return nullptr;
+  assert(cloned_perm); // FIX_ME_UNLESS
 
   cloned_perm->name(perm->name() + "_C");
   luci::add_origin(cloned_perm, luci::get_origin(perm));
 
   auto cloned_node = clone_node(transpose, transpose->graph());
-  if (cloned_node == nullptr)
-    return nullptr;
+  assert(cloned_node); // FIX_ME_UNLESS
 
   auto new_transpose = loco::must_cast<luci::CircleTranspose *>(cloned_node);
   new_transpose->perm(cloned_perm);
@@ -122,32 +150,23 @@ CircleConst *reverse_transposed(CircleConst *node, std::vector<uint32_t> &t)
 
 bool check_rank_four(const CircleConst *c) { return c->rank() == 4; }
 
-// Return true if below conditions are met
-// 1. t->perm() is CircleConst
-// 2. t->perm() is S32
-bool check_perm(const CircleTranspose *t)
+bool has_single_element(const luci::CircleConst *node)
 {
-  auto perm = dynamic_cast<CircleConst *>(t->perm());
-  if (not perm)
-    return false;
-
-  switch (perm->dtype())
+  bool has_single_elem = false;
+  switch (node->dtype())
   {
-    case loco::DataType::S32:
-      for (uint32_t i = 0; i < perm->size<loco::DataType::S32>(); i++)
-      {
-        auto data = perm->at<loco::DataType::S32>(i);
-        // TODO Support not normalized index
-        if (data < 0 or data >= static_cast<int32_t>(t->rank()))
-          return false;
-      }
+    case loco::DataType::FLOAT32:
+      has_single_elem = node->size<loco::DataType::FLOAT32>() == 1;
       break;
-    // TODO Support S64 data type
     default:
-      return false;
+      // NYI
+      break;
   }
 
-  return true;
+  if (has_single_elem)
+    assert(node->rank() == 0 or node->rank() == 1); // FIX_ME_UNLESS
+
+  return has_single_elem;
 }
 
 #define RETURN_FALSE_UNLESS(COND) \
@@ -158,60 +177,67 @@ bool check_perm(const CircleTranspose *t)
 class EBOWithConstPattern final : public CircleNodeMutableVisitor<bool>
 {
 private:
-  template <typename CIRCLE_OP_PTR> bool has_pattern(CIRCLE_OP_PTR node)
+  template <typename CIRCLE_OP_PTR> bool has_commutative_xy(CIRCLE_OP_PTR node)
   {
-    if (auto x = dynamic_cast<luci::CircleConst *>(node->x()))
+    luci::CircleTranspose *transpose = nullptr;
+    luci::CircleConst *const_value = nullptr;
+
+    RETURN_FALSE_UNLESS(luci::fill(&transpose, &const_value).with_commutative_args_of(node));
+
+    if (has_single_element(const_value))
     {
-      if (auto y = dynamic_cast<luci::CircleTranspose *>(node->y()))
+      RETURN_FALSE_UNLESS(check_perm(transpose));
+      auto new_transpose = create_cloned_transpose(transpose);
+      assert(new_transpose); // FIX_ME_UNLESS
+
+      if (node->x() == const_value)
       {
-        RETURN_FALSE_UNLESS(node->rank() == y->rank());
-        RETURN_FALSE_UNLESS(check_rank_four(x));
-        RETURN_FALSE_UNLESS(check_perm(y));
-
-        auto new_const = gen_new_const(y, x);
-        assert(new_const); // FIX_ME_UNLESS
-
-        auto new_transpose = create_cloned_transpose(y);
-        assert(new_transpose); // FIX_ME_UNLESS
-
-        // Reconnect network
-        node->x(new_const);
-        node->y(y->a());
-        loco::replace(node).with(new_transpose);
-        new_transpose->a(node);
-
-        // Do shape inference for this node again.
-        node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-        return true;
+        node->y(transpose->a());
       }
+      else
+      {
+        assert(node->y() == const_value);
+        node->x(transpose->a());
+      }
+      loco::replace(node).with(new_transpose);
+      new_transpose->a(node);
+
+      // Do shape inference for this node again.
+      node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+      return true;
     }
-
-    if (auto y = dynamic_cast<luci::CircleConst *>(node->y()))
+    else if (const_value->rank() == transpose->rank())
     {
-      if (auto x = dynamic_cast<luci::CircleTranspose *>(node->x()))
+      // Only support rank 4 for now
+      RETURN_FALSE_UNLESS(check_rank_four(const_value));
+      RETURN_FALSE_UNLESS(check_perm(transpose));
+
+      auto new_const = gen_new_const(transpose, const_value);
+      assert(new_const); // FIX_ME_UNLESS
+
+      auto new_transpose = create_cloned_transpose(transpose);
+      assert(new_transpose); // FIX_ME_UNLESS
+
+      // Reconnect network
+      if (node->x() == const_value)
       {
-        RETURN_FALSE_UNLESS(node->rank() == x->rank());
-        RETURN_FALSE_UNLESS(check_rank_four(y));
-        RETURN_FALSE_UNLESS(check_perm(x));
-
-        auto new_const = gen_new_const(x, y);
-        assert(new_const); // FIX_ME_UNLESS
-
-        auto new_transpose = create_cloned_transpose(x);
-        assert(new_transpose); // FIX_ME_UNLESS
-
-        // Reconnect network
-        node->y(new_const);
-        node->x(x->a());
-        loco::replace(node).with(new_transpose);
-        new_transpose->a(node);
-
-        // Do shape inference for this node again.
-        node->shape_status(luci::ShapeStatus::UNDEFINED);
-
-        return true;
+        node->x(new_const);
+        node->y(transpose->a());
       }
+      else
+      {
+        node->x(transpose->a());
+        node->y(new_const);
+      }
+
+      loco::replace(node).with(new_transpose);
+      new_transpose->a(node);
+
+      // Do shape inference for this node again.
+      node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+      return true;
     }
 
     return false;
@@ -221,20 +247,21 @@ public:
   // Default
   bool visit(luci::CircleNode *) { return false; }
 
-  bool visit(luci::CircleAdd *node) { return has_pattern(node); }
+  bool visit(luci::CircleAdd *node) { return has_commutative_xy(node); }
 
-  bool visit(luci::CircleMul *node) { return has_pattern(node); }
+  bool visit(luci::CircleMul *node) { return has_commutative_xy(node); }
 
 private:
   // Return a new const node after Tranpose Op is forwarded
-  // Return nullptr if unsupported cases
+  // Never return nullptr
   CircleConst *gen_new_const(CircleTranspose *t, CircleConst *c)
   {
-    const auto perm = dynamic_cast<CircleConst *>(t->perm());
+    assert(t);             // FIX_CALLER_UNLESS
+    assert(c);             // FIX_CALLER_UNLESS
+    assert(check_perm(t)); // FIX_CALLER_UNLESS
 
-    // Only support constant perm
-    if (not perm)
-      return nullptr;
+    const auto perm = loco::must_cast<CircleConst *>(t->perm());
+    assert(perm); // FIX_ME_UNLESS
 
     std::vector<uint32_t> perm_data;
     switch (perm->dtype())
@@ -249,7 +276,8 @@ private:
         break;
       // TODO Support S64 data type
       default:
-        return nullptr;
+        // Unreachable. FIX_check_perm_UNLESS
+        throw std::runtime_error("Unsupported dtype");
     }
 
     assert(perm_data.size() == t->rank()); // FIX_CALLER_UNLESS

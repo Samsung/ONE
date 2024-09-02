@@ -77,8 +77,6 @@ public:
 public:
   void forward(const IPortableTensor *in, IPortableTensor *out)
   {
-    assert(in->layout() == ir::Layout::NHWC);
-
     auto out_shape = getShape(out);
     auto out_data = getBuffer<float>(out);
     auto arg_max_index = _arg_max_index.get();
@@ -90,8 +88,6 @@ public:
 
   void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
   {
-    assert(back_prop_out->layout() == ir::Layout::NHWC);
-
     // activation backward
     try
     {

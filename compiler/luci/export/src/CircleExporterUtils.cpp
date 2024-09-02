@@ -293,6 +293,12 @@ void set_tensor_index(loco::Node *node, const CircleTensorIndex &tensor_id)
   node->annot(std::make_unique<CircleTensorIndexAnnotation>(tensor_id));
 }
 
+void clear_tensor_index(loco::Node *node)
+{
+  if (node->annot<CircleTensorIndexAnnotation>() != nullptr)
+    node->annot<CircleTensorIndexAnnotation>(nullptr);
+}
+
 CircleTensorIndex get_tensor_index(loco::Node *node)
 {
   assert(node->annot<CircleTensorIndexAnnotation>() != nullptr);

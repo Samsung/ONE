@@ -701,6 +701,10 @@ struct ModelT;
 
 enum TensorType : int8_t
 {
+  TensorType_Q8_1 = -5,
+  TensorType_Q8_0 = -4,
+  TensorType_Q4_1 = -3,
+  TensorType_Q4_0 = -2,
   TensorType_UINT4 = -1,
   TensorType_FLOAT32 = 0,
   TensorType_FLOAT16 = 1,
@@ -720,13 +724,14 @@ enum TensorType : int8_t
   TensorType_UINT32 = 15,
   TensorType_UINT16 = 16,
   TensorType_INT4 = 17,
-  TensorType_MIN = TensorType_UINT4,
+  TensorType_MIN = TensorType_Q8_1,
   TensorType_MAX = TensorType_INT4
 };
 
-inline const TensorType (&EnumValuesTensorType())[19]
+inline const TensorType (&EnumValuesTensorType())[23]
 {
   static const TensorType values[] = {
+    TensorType_Q8_1,       TensorType_Q8_0,      TensorType_Q4_1,     TensorType_Q4_0,
     TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,  TensorType_INT32,
     TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,   TensorType_BOOL,
     TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,     TensorType_FLOAT64,
@@ -737,18 +742,18 @@ inline const TensorType (&EnumValuesTensorType())[19]
 
 inline const char *const *EnumNamesTensorType()
 {
-  static const char *const names[20] = {"UINT4",   "FLOAT32", "FLOAT16",    "INT32",  "UINT8",
-                                        "INT64",   "STRING",  "BOOL",       "INT16",  "COMPLEX64",
-                                        "INT8",    "FLOAT64", "COMPLEX128", "UINT64", "RESOURCE",
-                                        "VARIANT", "UINT32",  "UINT16",     "INT4",   nullptr};
+  static const char *const names[24] = {
+    "Q8_1",       "Q8_0",   "Q4_1",     "Q4_0",    "UINT4",  "FLOAT32",   "FLOAT16", "INT32",
+    "UINT8",      "INT64",  "STRING",   "BOOL",    "INT16",  "COMPLEX64", "INT8",    "FLOAT64",
+    "COMPLEX128", "UINT64", "RESOURCE", "VARIANT", "UINT32", "UINT16",    "INT4",    nullptr};
   return names;
 }
 
 inline const char *EnumNameTensorType(TensorType e)
 {
-  if (::flatbuffers::IsOutRange(e, TensorType_UINT4, TensorType_INT4))
+  if (::flatbuffers::IsOutRange(e, TensorType_Q8_1, TensorType_INT4))
     return "";
-  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_UINT4);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_Q8_1);
   return EnumNamesTensorType()[index];
 }
 

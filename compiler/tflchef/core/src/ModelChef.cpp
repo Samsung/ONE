@@ -700,7 +700,7 @@ void ModelChef::cook_operations(const T &graph, std::map<std::string, int32_t> &
     else
     {
       assert(not operation.custom_code().empty());
-      auto custom_code = operation.custom_code();
+      const auto &custom_code = operation.custom_code();
       auto op_it = std::find(_custom_code_vec.begin(), _custom_code_vec.end(), custom_code);
       assert(op_it != _custom_code_vec.end());
       opcode_index = _builtin_code_map.size();
@@ -815,7 +815,7 @@ void ModelChef::gather_operator_codes(const ::tflchef::ModelRecipe &model_recipe
     _custom_code_vec = custom_code_vec;
   }
 
-  for (auto opcode : _custom_code_vec)
+  for (const auto &opcode : _custom_code_vec)
   {
     auto custom_code = _flatbuffer_builder->CreateString(opcode);
     tflite::OperatorCodeBuilder code_builder{*_flatbuffer_builder};
@@ -861,7 +861,7 @@ void ModelChef::gather_signature_defs(const ::tflchef::ModelRecipe &model_recipe
     for (int si = 0; si < rec_signature_def.inputs_size(); ++si)
     {
       // recipe for input TensorMap
-      auto rec_tm_input = rec_signature_def.inputs(si);
+      const auto &rec_tm_input = rec_signature_def.inputs(si);
       auto name = _flatbuffer_builder->CreateString(rec_tm_input.name());
       uint32_t tensor_index = 0;
       // either tensor or tensor_index should exist
@@ -869,7 +869,7 @@ void ModelChef::gather_signature_defs(const ::tflchef::ModelRecipe &model_recipe
       if (rec_tm_input.has_tensor())
       {
         // we can get tensor_index from symbol_table
-        auto tensor = rec_tm_input.tensor();
+        const auto &tensor = rec_tm_input.tensor();
         tensor_index = symbol_table[tensor];
       }
       else
@@ -886,13 +886,13 @@ void ModelChef::gather_signature_defs(const ::tflchef::ModelRecipe &model_recipe
     // cook for outputs, same as inputs
     for (int so = 0; so < rec_signature_def.outputs_size(); ++so)
     {
-      auto rec_tm_output = rec_signature_def.outputs(so);
+      const auto &rec_tm_output = rec_signature_def.outputs(so);
       auto name = _flatbuffer_builder->CreateString(rec_tm_output.name());
       uint32_t tensor_index = 0;
       assert(rec_tm_output.has_tensor() || rec_tm_output.has_tensor_index());
       if (rec_tm_output.has_tensor())
       {
-        auto tensor = rec_tm_output.tensor();
+        const auto &tensor = rec_tm_output.tensor();
         tensor_index = symbol_table[tensor];
       }
       else

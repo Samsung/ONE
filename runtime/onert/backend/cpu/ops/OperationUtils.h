@@ -97,9 +97,6 @@ inline nnfw::cker::Shape getShape(const IPortableTensor *tensor)
     return nnfw::cker::Shape();
 
   const ir::Shape &shape = tensor->get_info().shape();
-
-  assert(tensor->layout() == ir::Layout::NHWC);
-
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
   auto data = ret.DimsData();

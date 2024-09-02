@@ -44,9 +44,6 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   _activation = activation;
   _output = output;
 
-  // TODO Support not nhwc layer
-  assert(_input->layout() == ir::Layout::NHWC);
-
   assert(_activation == ir::Activation::NONE || _activation == ir::Activation::RELU ||
          _activation == ir::Activation::RELU1 || _activation == ir::Activation::RELU6);
 }

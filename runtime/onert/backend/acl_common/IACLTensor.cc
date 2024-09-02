@@ -41,8 +41,6 @@ size_t IACLTensor::calcOffset(const ir::Coordinates &coords) const
   return info()->offset_element_in_bytes(acl_coords);
 }
 
-ir::Layout IACLTensor::layout() const { return acl_common::asRuntimeLayout(info()->data_layout()); }
-
 ir::DataType IACLTensor::data_type() const
 {
   return acl_common::asRuntimeDataType(info()->data_type());

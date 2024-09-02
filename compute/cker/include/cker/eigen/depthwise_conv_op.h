@@ -368,7 +368,7 @@ template <typename T> struct DepthwiseConv2DKernel
     typedef typename Eigen::internal::packet_traits<T>::type Packet;
     static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
 
-    const int64_t filter_spatial_size = filter_rows * filter_cols;
+    const int64_t filter_spatial_size = static_cast<int64_t>(filter_rows) * filter_cols;
     const int64_t output_scalar_size = out_depth % kPacketSize;
     const int64_t output_vectorized_size = (out_depth / kPacketSize) * kPacketSize;
     const int64_t base_output_index = (out_r * out_cols + out_c) * out_depth;
@@ -458,9 +458,9 @@ template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
       assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
 
       static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
-      const int64_t input_image_size = in_rows * in_cols * in_depth;
-      const int64_t output_image_size = out_rows * out_cols * out_depth;
-      const int64_t filter_spatial_size = filter_rows * filter_cols;
+      const int64_t input_image_size = static_cast<int64_t>(in_rows) * in_cols * in_depth;
+      const int64_t output_image_size = static_cast<int64_t>(out_rows) * out_cols * out_depth;
+      const int64_t filter_spatial_size = static_cast<int64_t>(filter_rows) * filter_cols;
       const int64_t padded_filter_inner_dim_size =
         ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
       const int64_t padded_filter_size = filter_spatial_size * padded_filter_inner_dim_size;
@@ -491,7 +491,7 @@ template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
       }
     };
 
-    const int64_t total_shards = batch * out_rows;
+    const int64_t total_shards = static_cast<int64_t>(batch) * out_rows;
 
     // Empirically tested to give reasonable performance boosts at batch size 1
     // without reducing throughput at batch size 32.
@@ -501,8 +501,8 @@ template <typename T> struct LaunchDepthwiseConvOp<CPUDevice, T>
     // flops/loads/stores required to compute one shard.
     const int64_t shard_cost = kCostMultiplier * out_cols * out_depth;
 
-    const int64_t input_bytes = in_rows * in_cols * in_depth * sizeof(T);
-    const int64_t output_bytes = out_rows * out_cols * out_depth * sizeof(T);
+    const int64_t input_bytes = static_cast<int64_t>(in_rows) * in_cols * in_depth * sizeof(T);
+    const int64_t output_bytes = static_cast<int64_t>(out_rows) * out_cols * out_depth * sizeof(T);
     const Eigen::TensorOpCost cost(input_bytes, output_bytes, shard_cost);
     d.parallelFor(total_shards, cost, shard);
   }

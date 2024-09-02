@@ -14,34 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_EXTRA_H__
-#define __ONERT_BACKEND_EXTRA_H__
+#include "SerializedData.h"
 
-#include <backend/basic/Tensor.h>
-
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace luci
 {
 
-// ExtraTensor is a tensor that is accessed within one operation layer.
-// In other words, the scope of the extra tensor is confined to one specific layer.
-class ExtraTensor final : public basic::Tensor
+void CircleExportMetadata::clear(void)
 {
-public:
-  ExtraTensor() = delete;
+  _source_table.clear();
+  _op_table.clear();
+  _execution_plan_table.clear();
+}
 
-public:
-  ExtraTensor(const ir::OperandInfo &info) : basic::Tensor(info, nullptr)
-  {
-    // DO NOTHING
-  }
-};
+void SerializedModelData::clear(void)
+{
+  _operator_codes.clear();
+  _buffers.clear();
+  _metadata.clear();
+  _cached_buffer_id.clear();
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+  // clear extended buffer mode
+  _ext_buffer = false;
+  _require_ext_buffer = false;
+  _buffer_data_map.clear();
+}
 
-#endif // __ONERT_BACKEND_EXTRA_TENSOR_H__
+} // namespace luci

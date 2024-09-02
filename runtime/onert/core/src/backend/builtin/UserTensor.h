@@ -45,7 +45,7 @@ public:
 
 public:
   uint8_t *buffer() const override { return _buffer; }
-  ir::Layout layout() const override { return _layout; }
+  ir::Layout layout() const { return _layout; }
   void set_dynamic() override { _info.setDynamic(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
   bool applyShape(const ir::Shape &) override;

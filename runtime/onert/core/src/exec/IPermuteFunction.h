@@ -93,7 +93,7 @@ private:
       // Now there is no case where both src and dst have cl buffer.
       assert(!src->needMemoryMap());
 
-      if (!src->has_padding() && !dst->has_padding() && src->layout() == dst->layout())
+      if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::COPY)
       {
         src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
       }
@@ -110,7 +110,7 @@ private:
       }
     }
     else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
-             !dst->has_padding() && src->layout() == dst->layout())
+             !dst->has_padding() && permute_type == ir::PermuteType::COPY)
     {
       assert(!dst->needMemoryMap());
       dst->access([&](backend::ITensor &) { src->enqueueReadBuffer(dst->buffer(), true); });
@@ -252,23 +252,14 @@ class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
   PermuteLayer(const std::vector<onert::backend::ITensor *> &inputs,
-               const std::vector<onert::backend::ITensor *> &outputs)
+               const std::vector<onert::backend::ITensor *> &outputs,
+               const std::vector<ir::PermuteType> &types)
   {
     assert(inputs.size() == outputs.size());
+    assert(inputs.size() == types.size());
     _src_tensors = inputs;
     _dst_tensors = outputs;
-    _permute_types.resize(inputs.size());
-
-    // TODO Get from constructor parameter
-    for (uint32_t i = 0; i < inputs.size(); i++)
-    {
-      if (inputs[i]->layout() == outputs[i]->layout())
-        _permute_types[i] = ir::PermuteType::COPY;
-      else if (inputs[i]->layout() == ir::Layout::NHWC)
-        _permute_types[i] = ir::PermuteType::NHWC_TO_NCHW;
-      else
-        _permute_types[i] = ir::PermuteType::NCHW_TO_NHWC;
-    }
+    _permute_types = types;
   }
   virtual ~PermuteLayer() {}
   void optimize() override {}

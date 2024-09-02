@@ -49,7 +49,6 @@ public:
   uint8_t *buffer() const final { return handle()->buffer(); }
   size_t total_size() const final { return info()->total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const final;
-  ir::Layout layout() const final;
   ir::DataType data_type() const final;
   float data_scale() const override;
   int32_t data_zero_point() const override;

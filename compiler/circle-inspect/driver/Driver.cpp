@@ -85,7 +85,7 @@ int entry(int argc, char **argv)
 
   for (auto &dump : dumps)
   {
-    dump->run(std::cout, circleModel);
+    dump->run(std::cout, circleModel, &modelData);
   }
 
   return 0;

@@ -68,6 +68,22 @@ bool is_scale_shift_shape(luci::CircleConst *node)
   return true;
 }
 
+/**
+ * @brief Check if CircleConst has valid dtype and rank.
+ */
+bool valid_const_dtype_rank(const loco::Node *node, const loco::DataType dtype, const uint32_t rank)
+{
+  auto const_node = dynamic_cast<const luci::CircleConst *>(node);
+  if (not const_node)
+    return false;
+  if (const_node->dtype() != dtype)
+    return false;
+  if (const_node->rank() != rank)
+    return false;
+
+  return true;
+}
+
 bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
 {
   assert(add != nullptr);
@@ -98,13 +114,9 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
     return false;
 
   // get weight of dwconv
-  auto filter = dynamic_cast<luci::CircleConst *>(dwconv->filter());
-  if (not filter)
+  if (not valid_const_dtype_rank(dwconv->filter(), loco::DataType::FLOAT32, 4 /* rank */))
     return false;
-  if (filter->dtype() != loco::DataType::FLOAT32)
-    return false;
-  if (filter->rank() != 4)
-    return false;
+  auto filter = loco::must_cast<luci::CircleConst *>(dwconv->filter());
 
   // check attributes of dwconv
   if (dwconv->fusedActivationFunction() != luci::FusedActFunc::NONE)
@@ -113,13 +125,9 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
     return false;
 
   // get bias of dwconv
-  auto bias = dynamic_cast<luci::CircleConst *>(dwconv->bias());
-  if (not bias)
+  if (not valid_const_dtype_rank(dwconv->bias(), loco::DataType::FLOAT32, 1 /* rank */))
     return false;
-  if (bias->dtype() != loco::DataType::FLOAT32)
-    return false;
-  if (bias->rank() != 1)
-    return false;
+  auto bias = loco::must_cast<luci::CircleConst *>(dwconv->bias());
 
   // filter represents as [1, H, W, C*M] where M is multiplier.
   auto filter_out_chn = filter->dim(3).value();

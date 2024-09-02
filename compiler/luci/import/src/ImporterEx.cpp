@@ -40,22 +40,27 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
     return nullptr;
   }
 
-  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
+  auto data_data = reinterpret_cast<uint8_t *>(model_data.data());
+  auto data_size = model_data.size();
+
+  flatbuffers::Verifier verifier{data_data, data_size};
   if (!circle::VerifyModelBuffer(verifier))
   {
     std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
     return nullptr;
   }
 
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
-    return nullptr;
-  }
+  Importer importer(_source);
+  return importer.importModule(data_data, data_size);
+}
 
-  Importer importer;
-  return importer.importModule(circle_model);
+std::unique_ptr<Module> ImporterEx::importModule(std::vector<char> &model_data) const
+{
+  auto data_data = reinterpret_cast<uint8_t *>(model_data.data());
+  auto data_size = model_data.size();
+
+  Importer importer(_source);
+  return importer.importModule(data_data, data_size);
 }
 
 } // namespace luci
