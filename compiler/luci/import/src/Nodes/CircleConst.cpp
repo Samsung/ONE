@@ -25,6 +25,7 @@
 #include <oops/UserExn.h>
 
 #include <cassert>
+#include <limits>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -164,12 +165,22 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   const auto c_buffer = const_tensor->buffer();
   const auto r_buffer = r_buffers[c_buffer];
   assert(r_buffer != nullptr);
+  if (r_buffer->offset() == 1 || r_buffer->size() == 1)
+  {
+    // NOTE this shouldn't happen
+    throw std::runtime_error("Cirlce file with invalid extended Buffer.");
+  }
   // temporary buffer to provide raw data from file
   // must have life time same or longer than 'buffer' variable
   std::vector<uint8_t> temp_buffer;
   luci::VectorWrapper<uint8_t> buffer(nullptr);
   if (r_buffer->offset() > 1)
   {
+    if (r_buffer->size() >= std::numeric_limits<uint32_t>::max())
+    {
+      // NOTE uint32_t limit is to match "uoffset_t flatbuffers::Vector::size()"
+      throw std::runtime_error("Cirlce file with invalid extended Buffer.");
+    }
     uint32_t r_size = static_cast<uint32_t>(r_buffer->size());
     // match binary level to flatbuffers::Vector
     temp_buffer.resize(r_size + sizeof(uint32_t));
