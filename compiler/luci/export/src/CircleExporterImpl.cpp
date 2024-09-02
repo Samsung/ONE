@@ -159,10 +159,29 @@ void CircleExporterImpl::exportModule(Module *module)
   // prepare model data
   prepareModelData(_builder, md);
 
-  exportModuleData(module, md);
+  // if source is extended buffer mode, force export to use extended buffer
+  md._ext_buffer = module->ext_buffer();
+
+  if (!exportModuleData(module, md) && md._require_ext_buffer)
+  {
+    assert(md._ext_buffer == false);
+
+    // do some cleanups for re-run
+    _builder.Clear();
+    for (size_t g = 0; g < module->size(); ++g)
+    {
+      auto graph = module->graph(g);
+      clearExportInfo(graph);
+    }
+    prepareModelData(_builder, md);
+
+    // run again with ext_buffer mode
+    md._ext_buffer = true;
+    exportModuleData(module, md);
+  }
 }
 
-void CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &md)
+bool CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &md)
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgraph_vec;
 
@@ -208,6 +227,8 @@ void CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &m
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
+  // TODO check current total size exceeds limit
+
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
@@ -215,6 +236,8 @@ void CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &m
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
                                   buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
+
+  return true;
 }
 
 const char *CircleExporterImpl::getBufferPointer() const
