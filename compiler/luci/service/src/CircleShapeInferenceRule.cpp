@@ -2268,8 +2268,6 @@ public:
     return loco::NodeShape{input_shape};
   }
 
-  loco::NodeShape visit(const luci::CircleRsqrt *node) final { return use_x(node); }
-
   loco::NodeShape visit(const luci::CircleScatterNd *node) final { return infer_scatter_nd(node); }
 
   loco::NodeShape visit(const luci::CircleSegmentSum *node) final

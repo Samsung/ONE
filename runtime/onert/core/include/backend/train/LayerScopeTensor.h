@@ -26,6 +26,12 @@ namespace backend
 namespace train
 {
 
+enum class LayerScopeTensorLifeTime : unsigned char
+{
+  BACKWARD,            // alive during backward()
+  FORWARD_TO_BACKWARD, // alive from forward() to backward()
+};
+
 // LayerScopeTensor is a tensor that is not shown in graph but required by each layer.
 // It is accessed within one operation layer.
 class LayerScopeTensor final : public basic::Tensor
@@ -34,10 +40,22 @@ public:
   LayerScopeTensor() = delete;
 
 public:
-  LayerScopeTensor(const ir::OperandInfo &info) : basic::Tensor(info, nullptr)
+  LayerScopeTensor(const ir::OperandInfo &info, LayerScopeTensorLifeTime lt)
+    : basic::Tensor(info, nullptr), _lifetime(lt)
   {
     // DO NOTHING
   }
+
+  LayerScopeTensor(const ir::OperandInfo &info)
+    : basic::Tensor(info, nullptr), _lifetime(LayerScopeTensorLifeTime::BACKWARD)
+  {
+    // DO NOTHING
+  }
+
+  LayerScopeTensorLifeTime lifetime() const { return _lifetime; }
+
+private:
+  LayerScopeTensorLifeTime _lifetime;
 };
 
 } // namespace train
