@@ -30,7 +30,7 @@ size_t OperandInfo::total_size() const
   }
   catch (const std::runtime_error &e)
   {
-    // Caclulate total size for ggml block quantization type on exception handling
+    // Calculate total size for ggml block quantization type on exception handling
     // because it is rare case and we should care about performance on non-block case.
     if (data_type != DataType::QUANT_GGML_Q4_0 && data_type != DataType::QUANT_GGML_Q8_0)
       throw e;
