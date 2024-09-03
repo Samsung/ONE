@@ -71,6 +71,12 @@ else ()
 
     set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.8/circle_schema.fbs")
 
+    # need patch to circle schema 0.8 to resolve SAM issue
+    set(PATCH_FILE ${CMAKE_CURRENT_SOURCE_DIR}/remove_stablehlo_from_cir0.8.patch)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E chdir ${NNAS_PROJECT_SOURCE_DIR} git apply ${PATCH_FILE}
+            WORKING_DIRECTORY "${NNAS_PROJECT_SOURCE_DIR}"
+            )
+
     # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
     add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
             COMMAND ${CMAKE_COMMAND} -E copy "${SCHEMA_FILE}" schema.fbs
