@@ -1,0 +1,9 @@
+# This checks if:
+#   Add -> Cast(input_type == output_type) -> Add
+# is converted to:
+#   Add -> Add
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_CAST"                 $(op_count CAST) '=' 0
+RULE    "ADD_EXIST"               $(op_count ADD) '=' 2
