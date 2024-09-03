@@ -23,8 +23,11 @@ import configparser
 def main():
     parser = argparse.ArgumentParser(
         description='Export CONSTANT value with given file format.')
-    parser.add_argument(
-        '-c', '--constant', type=str, required=True, help='Constant name to export')
+    parser.add_argument('-c',
+                        '--constant',
+                        type=str,
+                        required=True,
+                        help='Constant name to export')
     parser.add_argument(
         '-f',
         '--format',
@@ -38,8 +41,11 @@ def main():
         '--exclusive',
         action='store_true',
         help='Exports the rest of the options except for the given constant')
-    parser.add_argument(
-        '-o', '--output_path', type=str, required=True, help='Path to output')
+    parser.add_argument('-o',
+                        '--output_path',
+                        type=str,
+                        required=True,
+                        help='Path to output')
 
     args = parser.parse_args()
 

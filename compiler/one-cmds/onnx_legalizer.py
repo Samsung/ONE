@@ -86,7 +86,6 @@ class _ModelTransformerHelper:
             in that case _base_name_idx["t_"] == 4.
             This attribute is used for unique tensor name generation.
     """
-
     def __init__(self, model):
         self._model = model
         self._nodes_to_delete = []
@@ -156,8 +155,10 @@ class _ModelTransformerHelper:
         Returns:
             list: list of output tensor names
         """
-        return self.make_node(
-            'Split', [input], len(split_sizes), axis=axis, split=split_sizes)
+        return self.make_node('Split', [input],
+                              len(split_sizes),
+                              axis=axis,
+                              split=split_sizes)
 
     def make_concat(self, inputs, axis):
         """Create Concat operation and insert it in graph.
@@ -210,8 +211,10 @@ class _ModelTransformerHelper:
         Returns:
             str: output tensor name
         """
-        return self.make_node(
-            'Gemm', [A, B, C], 1, transA=bool(trans_a), transB=bool(trans_b))[0]
+        return self.make_node('Gemm', [A, B, C],
+                              1,
+                              transA=bool(trans_a),
+                              transB=bool(trans_b))[0]
 
     def make_add(self, a, b):
         """Creates Add operation and insert it in graph.
@@ -386,8 +389,10 @@ def _generate_one_direction_RNN(transformer, X, W, R, B, initial_h, clip,
 
     for i in range(first_iter, seq_length):
         state_tensor = transformer.make_gemm(X[i], W, B, trans_b=True)
-        state_tensor = transformer.make_gemm(
-            previous_state_tensor, R, state_tensor, trans_b=True)
+        state_tensor = transformer.make_gemm(previous_state_tensor,
+                                             R,
+                                             state_tensor,
+                                             trans_b=True)
         if clip != None:
             state_tensor = transformer.make_clip(state_tensor, min=-clip, max=clip)
         previous_state_tensor = transformer.make_act(state_tensor, activation_name)
@@ -420,13 +425,14 @@ def _transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, a
     r = transformer.make_squeeze(inputs[2], axes=[0])
     if len(inputs) > 3 and inputs[3] != '':
         raw_bias_tensor = transformer.make_squeeze(inputs[3], axes=[0])
-        splitted_bias_tensors = transformer.make_split(
-            raw_bias_tensor, split_sizes=[hidden_size] * 2, axis=0)
+        splitted_bias_tensors = transformer.make_split(raw_bias_tensor,
+                                                       split_sizes=[hidden_size] * 2,
+                                                       axis=0)
         b = transformer.make_add(splitted_bias_tensors[0], splitted_bias_tensors[1])
     else:
         data_type = _dtype_to_np(tensor_infos[inputs[2]].dtype)
-        b = transformer.make_constant_tensor(
-            np.zeros(hidden_size, dtype=data_type), "zero_bias")
+        b = transformer.make_constant_tensor(np.zeros(hidden_size, dtype=data_type),
+                                             "zero_bias")
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
         initial_h = transformer.make_squeeze(inputs[5], axes=[direction_dim])
@@ -445,8 +451,8 @@ def _transform_unidirectional_RNN(transformer, original_node, x, tensor_infos, a
 
     # use low-level interface to attach to existing tensors
     Y_h = outputs[1]
-    transformer.make_node(
-        'Unsqueeze', [state_tensors[-1]], [Y_h], axes=[y_h_direction_dim])
+    transformer.make_node('Unsqueeze', [state_tensors[-1]], [Y_h],
+                          axes=[y_h_direction_dim])
     Y = outputs[0]
     transformer.make_node('Concat', state_layout_tensors, [Y], axis=seq_length_dim)
 
@@ -481,24 +487,26 @@ def _transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, ac
     if len(inputs) > 3 and inputs[3] != '':
         raw_bias_tensors = transformer.make_split(inputs[3], split_sizes=[1, 1], axis=0)
         for d in range(2):
-            raw_bias_tensors_squeezed = transformer.make_squeeze(
-                raw_bias_tensors[d], axes=[0])
-            splitted_bias_tensors = transformer.make_split(
-                raw_bias_tensors_squeezed, split_sizes=[hidden_size] * 2, axis=0)
+            raw_bias_tensors_squeezed = transformer.make_squeeze(raw_bias_tensors[d],
+                                                                 axes=[0])
+            splitted_bias_tensors = transformer.make_split(raw_bias_tensors_squeezed,
+                                                           split_sizes=[hidden_size] * 2,
+                                                           axis=0)
             b += [
                 transformer.make_add(splitted_bias_tensors[0], splitted_bias_tensors[1])
             ]
     else:
         data_type = _dtype_to_np(tensor_infos[inputs[2]].dtype)
         b = [
-            transformer.make_constant_tensor(
-                np.zeros(hidden_size, dtype=data_type), "zero_bias")
+            transformer.make_constant_tensor(np.zeros(hidden_size, dtype=data_type),
+                                             "zero_bias")
         ] * 2
     initial_h = [None, None]
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
-        initial_h = transformer.make_split(
-            inputs[5], split_sizes=[1, 1], axis=direction_dim)
+        initial_h = transformer.make_split(inputs[5],
+                                           split_sizes=[1, 1],
+                                           axis=direction_dim)
         for d in range(2):
             initial_h[d] = transformer.make_squeeze(initial_h[d], axes=[direction_dim])
 
@@ -522,20 +530,20 @@ def _transform_bidirectional_RNN(transformer, original_node, x, tensor_infos, ac
         state_layout_tensors_b = transformer.make_unsqueeze(
             state_b, axes=[seq_length_dim, y_direction_dim])
         state_layout_tensors += [
-            transformer.make_concat(
-                [state_layout_tensors_f, state_layout_tensors_b], axis=y_direction_dim)
+            transformer.make_concat([state_layout_tensors_f, state_layout_tensors_b],
+                                    axis=y_direction_dim)
         ]
 
-    last_f_state_layout_tensor = transformer.make_unsqueeze(
-        state_f_tensors[-1], axes=[y_h_direction_dim])
-    last_b_state_layout_tensor = transformer.make_unsqueeze(
-        state_b_tensors[0], axes=[y_h_direction_dim])
+    last_f_state_layout_tensor = transformer.make_unsqueeze(state_f_tensors[-1],
+                                                            axes=[y_h_direction_dim])
+    last_b_state_layout_tensor = transformer.make_unsqueeze(state_b_tensors[0],
+                                                            axes=[y_h_direction_dim])
 
     # use low-level interface to attach to existing tensors
     Y_h = outputs[1]
-    transformer.make_node(
-        'Concat', [last_f_state_layout_tensor, last_b_state_layout_tensor], [Y_h],
-        axis=y_h_direction_dim)
+    transformer.make_node('Concat',
+                          [last_f_state_layout_tensor, last_b_state_layout_tensor], [Y_h],
+                          axis=y_h_direction_dim)
 
     Y = outputs[0]
     transformer.make_node('Concat', state_layout_tensors, [Y], axis=seq_length_dim)
@@ -589,8 +597,9 @@ def _legalize_RNN(transformer, tensor_infos, node):
     if hidden_size == 0:
         hidden_size = tensor_infos[inputs[2]].shape[2]
 
-    input_split_tensor = transformer.make_split(
-        inputs[0], split_sizes=[1] * seq_length, axis=seq_length_dim)
+    input_split_tensor = transformer.make_split(inputs[0],
+                                                split_sizes=[1] * seq_length,
+                                                axis=seq_length_dim)
     x = []
     for i in range(len(input_split_tensor)):
         input_frame_tensor = input_split_tensor[i]
@@ -668,8 +677,9 @@ def _generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, 
     R = {'i': r_tensors[0], 'o': r_tensors[1], 'f': r_tensors[2], 'c': r_tensors[3]}
 
     if B is not None:
-        separate_b_tensors = transformer.make_split(
-            B, split_sizes=[hidden_size] * 8, axis=0)
+        separate_b_tensors = transformer.make_split(B,
+                                                    split_sizes=[hidden_size] * 8,
+                                                    axis=0)
         b_tensors = []
         for i in range(4):
             b_tensors += [
@@ -677,8 +687,8 @@ def _generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, 
             ]
     else:
         b_tensors = [
-            transformer.make_constant_tensor(
-                np.zeros((hidden_size), dtype=dtype), 'zero_b')
+            transformer.make_constant_tensor(np.zeros(
+                (hidden_size), dtype=dtype), 'zero_b')
         ] * 4
     B = {'i': b_tensors[0], 'o': b_tensors[1], 'f': b_tensors[2], 'c': b_tensors[3]}
 
@@ -698,8 +708,8 @@ def _generate_one_direction_LSTM(transformer, X, W, R, B, initial_h, initial_c, 
         p_tensors = transformer.make_split(P, split_sizes=[hidden_size] * 3, axis=0)
         P = {'i': p_tensors[0], 'o': p_tensors[1], 'f': p_tensors[2]}
     else:
-        zero = transformer.make_constant_tensor(
-            np.zeros((hidden_size), dtype=dtype), 'zero_peephole')
+        zero = transformer.make_constant_tensor(np.zeros((hidden_size), dtype=dtype),
+                                                'zero_peephole')
         P = {'i': zero, 'o': zero, 'f': zero}
 
     for i in range(seq_length):
@@ -814,8 +824,8 @@ def _transform_unidirectional_LSTM(transformer, original_node, x, tensor_infos,
 
     # use low-level interface to attach to existing tensors
     Y_h = outputs[1]
-    transformer.make_node(
-        'Unsqueeze', [state_h_tensors[-1]], [Y_h], axes=[y_h_direction_dim])
+    transformer.make_node('Unsqueeze', [state_h_tensors[-1]], [Y_h],
+                          axes=[y_h_direction_dim])
     Y_c = outputs[2]
     transformer.make_node('Unsqueeze', [state_c_tensor], [Y_c], axes=[y_h_direction_dim])
     if direction == 'reverse':
@@ -858,16 +868,18 @@ def _transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos,
     initial_h = [None, None]
     if len(inputs) > 5 and inputs[5] != '':
         direction_dim = layout
-        initial_h = transformer.make_split(
-            inputs[5], split_sizes=[1, 1], axis=direction_dim)
+        initial_h = transformer.make_split(inputs[5],
+                                           split_sizes=[1, 1],
+                                           axis=direction_dim)
         for d in range(2):
             initial_h[d] = transformer.make_squeeze(initial_h[d], axes=[direction_dim])
 
     initial_c = [None, None]
     if len(inputs) > 6 and inputs[6] != '':
         direction_dim = layout
-        initial_c = transformer.make_split(
-            inputs[6], split_sizes=[1, 1], axis=direction_dim)
+        initial_c = transformer.make_split(inputs[6],
+                                           split_sizes=[1, 1],
+                                           axis=direction_dim)
         for d in range(2):
             initial_c[d] = transformer.make_squeeze(initial_c[d], axes=[direction_dim])
 
@@ -909,19 +921,19 @@ def _transform_bidirectional_LSTM(transformer, original_node, x, tensor_infos,
         state_b_layout_tensors = transformer.make_unsqueeze(
             b_h_state, axes=[seq_length_dim, y_direction_dim])
         state_layout_tensors += [
-            transformer.make_concat(
-                [state_f_layout_tensors, state_b_layout_tensors], axis=y_direction_dim)
+            transformer.make_concat([state_f_layout_tensors, state_b_layout_tensors],
+                                    axis=y_direction_dim)
         ]
 
-    last_f_state_layout_tensor = transformer.make_unsqueeze(
-        state_f_h_tensors[-1], axes=[y_c_direction_dim])
-    last_b_state_layout_tensor = transformer.make_unsqueeze(
-        state_b_h_tensors[0], axes=[y_c_direction_dim])
+    last_f_state_layout_tensor = transformer.make_unsqueeze(state_f_h_tensors[-1],
+                                                            axes=[y_c_direction_dim])
+    last_b_state_layout_tensor = transformer.make_unsqueeze(state_b_h_tensors[0],
+                                                            axes=[y_c_direction_dim])
 
     Y_h = outputs[1]
-    transformer.make_node(
-        'Concat', [last_f_state_layout_tensor, last_b_state_layout_tensor], [Y_h],
-        axis=y_c_direction_dim)
+    transformer.make_node('Concat',
+                          [last_f_state_layout_tensor, last_b_state_layout_tensor], [Y_h],
+                          axis=y_c_direction_dim)
 
     Y_f_c = transformer.make_unsqueeze(state_f_c_tensor, axes=[y_c_direction_dim])
     Y_b_c = transformer.make_unsqueeze(state_b_c_tensor, axes=[y_c_direction_dim])
@@ -986,8 +998,9 @@ def _legalize_LSTM(transformer, tensor_infos, node):
     if hidden_size == 0:
         hidden_size = tensor_infos[inputs[2]].shape[2]
 
-    input_split_tensor = transformer.make_split(
-        inputs[0], split_sizes=[1] * seq_length, axis=seq_length_dim)
+    input_split_tensor = transformer.make_split(inputs[0],
+                                                split_sizes=[1] * seq_length,
+                                                axis=seq_length_dim)
     x = []
     for i in range(len(input_split_tensor)):
         input_frame_tensor = input_split_tensor[i]

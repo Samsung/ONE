@@ -138,30 +138,33 @@ def _get_parser():
     tf2tfliteV2_group = parser.add_argument_group('converter arguments')
 
     # input and output path.
-    tf2tfliteV2_group.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input file')
-    tf2tfliteV2_group.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output file')
+    tf2tfliteV2_group.add_argument('-i',
+                                   '--input_path',
+                                   type=str,
+                                   help='full filepath of the input file')
+    tf2tfliteV2_group.add_argument('-o',
+                                   '--output_path',
+                                   type=str,
+                                   help='full filepath of the output file')
 
     # input and output arrays.
-    tf2tfliteV2_group.add_argument(
-        '-I',
-        '--input_arrays',
-        type=str,
-        help='names of the input arrays, comma-separated')
-    tf2tfliteV2_group.add_argument(
-        '-O',
-        '--output_arrays',
-        type=str,
-        help='names of the output arrays, comma-separated')
+    tf2tfliteV2_group.add_argument('-I',
+                                   '--input_arrays',
+                                   type=str,
+                                   help='names of the input arrays, comma-separated')
+    tf2tfliteV2_group.add_argument('-O',
+                                   '--output_arrays',
+                                   type=str,
+                                   help='names of the output arrays, comma-separated')
 
     # fixed options
     tf2tfliteV2_group.add_argument('--model_format', default='saved_model')
     tf2tfliteV2_group.add_argument('--converter_version', default='v2')
 
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
-    parser.add_argument(
-        '--unroll_lstm', action='store_true', help='Unroll LSTM operators')
+    parser.add_argument('--unroll_lstm',
+                        action='store_true',
+                        help='Unroll LSTM operators')
     parser.add_argument(
         '--keep_io_order',
         action='store_true',
@@ -170,22 +173,19 @@ def _get_parser():
     )
 
     # force use onnx-tf for one-import-onnx-ext is installed
-    parser.add_argument(
-        '--disable_ext',
-        action='store_true',
-        help='Disable one-import-onnx-ext and use legacy onnx-tf package')
+    parser.add_argument('--disable_ext',
+                        action='store_true',
+                        help='Disable one-import-onnx-ext and use legacy onnx-tf package')
 
     # save intermediate file(s)
-    parser.add_argument(
-        '--save_intermediate',
-        action='store_true',
-        help='Save intermediate files to output folder')
+    parser.add_argument('--save_intermediate',
+                        action='store_true',
+                        help='Save intermediate files to output folder')
 
     # experimental options
-    parser.add_argument(
-        '--experimental_disable_batchmatmul_unfold',
-        action='store_true',
-        help='Experimental disable BatchMatMul unfold')
+    parser.add_argument('--experimental_disable_batchmatmul_unfold',
+                        action='store_true',
+                        help='Experimental disable BatchMatMul unfold')
 
     return parser
 
@@ -321,8 +321,9 @@ def _convert(args):
             args.output_path))[0] + '.tflite'
         tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
 
-        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(
-            args, tf2tfliteV2_path, savedmodel_output_path, tf2tfliteV2_output_path)
+        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(args, tf2tfliteV2_path,
+                                                         savedmodel_output_path,
+                                                         tf2tfliteV2_output_path)
 
         f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
 

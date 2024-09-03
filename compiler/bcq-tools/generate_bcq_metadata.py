@@ -37,24 +37,21 @@ def _get_parser():
         description=("Command line tool to generate metadata of BCQ nodes"))
 
     # Input and output path.
-    parser.add_argument(
-        "-i",
-        "--input_path",
-        type=str,
-        help="Full filepath of the input file.",
-        required=True)
-    parser.add_argument(
-        "-o",
-        "--output_path",
-        type=str,
-        help="Full filepath of the output file.",
-        required=True)
-    parser.add_argument(
-        "-O",
-        "--output_arrays",
-        type=str,
-        help="Original model output arrays",
-        required=True)
+    parser.add_argument("-i",
+                        "--input_path",
+                        type=str,
+                        help="Full filepath of the input file.",
+                        required=True)
+    parser.add_argument("-o",
+                        "--output_path",
+                        type=str,
+                        help="Full filepath of the output file.",
+                        required=True)
+    parser.add_argument("-O",
+                        "--output_arrays",
+                        type=str,
+                        help="Original model output arrays",
+                        required=True)
 
     return parser
 

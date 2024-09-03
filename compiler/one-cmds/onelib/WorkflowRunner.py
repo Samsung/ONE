@@ -88,12 +88,14 @@ class WorkflowRunner:
 
         # each workflow should have either WORKFLOW_STEPS_K or CFG_REFERENCE_K
         for workflow_k in workflows:
-            if not self.WORKFLOW_STEPS_K in json_contents[workflow_k] and not self.CFG_REFERENCE_K in json_contents[workflow_k]:
+            if not self.WORKFLOW_STEPS_K in json_contents[
+                    workflow_k] and not self.CFG_REFERENCE_K in json_contents[workflow_k]:
                 raise ValueError("Each workflow should have either \"" +
                                  self.WORKFLOW_STEPS_K + "\" or \"" +
                                  self.CFG_REFERENCE_K + "\"")
         for workflow_k in workflows:
-            if self.WORKFLOW_STEPS_K in json_contents[workflow_k] and self.CFG_REFERENCE_K in json_contents[workflow_k]:
+            if self.WORKFLOW_STEPS_K in json_contents[
+                    workflow_k] and self.CFG_REFERENCE_K in json_contents[workflow_k]:
                 raise ValueError("\"" + self.WORKFLOW_STEPS_K + "\" and \"" +
                                  self.CFG_REFERENCE_K + "\" are exclusive key")
 

@@ -59,18 +59,16 @@ def one_cmd_list():
 
 def add_default_arg(parser):
     # version
-    parser.add_argument(
-        '-v',
-        '--version',
-        action='store_true',
-        help='show program\'s version number and exit')
+    parser.add_argument('-v',
+                        '--version',
+                        action='store_true',
+                        help='show program\'s version number and exit')
 
     # verbose
-    parser.add_argument(
-        '-V',
-        '--verbose',
-        action='store_true',
-        help='output additional information to stdout or stderr')
+    parser.add_argument('-V',
+                        '--verbose',
+                        action='store_true',
+                        help='output additional information to stdout or stderr')
 
     # configuration file
     parser.add_argument('-C', '--config', type=str, help='run with configuation file')
@@ -83,18 +81,16 @@ def add_default_arg_no_CS(parser):
     This adds -v -V args only (no -C nor -S)
     """
     # version
-    parser.add_argument(
-        '-v',
-        '--version',
-        action='store_true',
-        help='show program\'s version number and exit')
+    parser.add_argument('-v',
+                        '--version',
+                        action='store_true',
+                        help='show program\'s version number and exit')
 
     # verbose
-    parser.add_argument(
-        '-V',
-        '--verbose',
-        action='store_true',
-        help='output additional information to stdout or stderr')
+    parser.add_argument('-V',
+                        '--verbose',
+                        action='store_true',
+                        help='output additional information to stdout or stderr')
 
 
 def is_accumulated_arg(arg, driver):

@@ -15,7 +15,6 @@ def num_elems(tensor_info):
 
 class session(libnnfw_api_pybind.nnfw_session):
     """Class inherited nnfw_session for easily processing input/output"""
-
     def __init__(self, nnpackage_path, backends="cpu"):
         super().__init__(nnpackage_path, backends)
         self.inputs = []
@@ -33,8 +32,8 @@ class session(libnnfw_api_pybind.nnfw_session):
                 print(
                     f"model's input size is {size} but given inputs_array size is {len(inputs_array)}.\n{i}-th index input is replaced by an array filled with 0."
                 )
-                input_array = np.zeros(
-                    (num_elems(input_tensorinfo)), dtype=input_tensorinfo.dtype)
+                input_array = np.zeros((num_elems(input_tensorinfo)),
+                                       dtype=input_tensorinfo.dtype)
 
             self.set_input(i, input_array)
             self.inputs.append(input_array)
@@ -43,8 +42,8 @@ class session(libnnfw_api_pybind.nnfw_session):
         """Set outputs for each index"""
         for i in range(size):
             output_tensorinfo = self.output_tensorinfo(i)
-            output_array = np.zeros(
-                (num_elems(output_tensorinfo)), dtype=output_tensorinfo.dtype)
+            output_array = np.zeros((num_elems(output_tensorinfo)),
+                                    dtype=output_tensorinfo.dtype)
             self.set_output(i, output_array)
             self.outputs.append(output_array)
 
