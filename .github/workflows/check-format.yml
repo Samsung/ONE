@@ -30,7 +30,7 @@ jobs:
           python-version: '3.x'
 
       # C format: clang-format-16
-      # Python format: yapf==0.22.0
+      # Python format: yapf==0.40.2
       - name: Install packages
         run: |
           sudo apt-get install -y gnupg2 software-properties-common

@@ -56,7 +56,7 @@ $ cmake /usr/src/gtest
 $ make
 $ sudo mv *.a /usr/lib
 
-$ pip install yapf==0.22.0 numpy
+$ pip install yapf==0.40.2 numpy
 ```
 
 Additional install python3.8 if you are using Ubuntu 18.04.
