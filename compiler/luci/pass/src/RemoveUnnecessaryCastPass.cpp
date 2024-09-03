@@ -25,6 +25,26 @@ namespace
   if (not(cond))                  \
     return false;
 
+/**
+ * BEFORE
+ *
+ *      [CircleNode]
+ *            |
+ *            |
+ *      [CircleCast] (in_data_type == out_data_type)
+ *            |
+ *            |
+ *      [CircleNode]
+ *
+ * AFTER
+ *
+ *      [CircleNode]
+ *            |
+ *            |           [CircleCast removed]
+ *            |
+ *      [CircleNode]
+ *
+ **/
 bool remove_unnecessary_cast(luci::CircleCast *cast)
 {
   RETURN_FALSE_UNLESS(cast->in_data_type() == cast->out_data_type());
