@@ -40,7 +40,7 @@ namespace
  *
  *      [CircleNode]
  *            |
- *            |           [CircleCast removed]
+ *            |           [CircleCast]
  *            |
  *      [CircleNode]
  *

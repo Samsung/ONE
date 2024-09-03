@@ -59,7 +59,7 @@ luci::CircleConst *const_node_of_dtype(loco::Graph *g, const loco::DataType dtyp
  *
  *           |
  *      [CircleAdd]
- *           |           [CircleCast removed]
+ *           |           [CircleCast]
  *      [CircleAdd]
  *           |
  *
