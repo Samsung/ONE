@@ -41,14 +41,7 @@ loco::TensorShape Algorithm::visit(const luci::CirclePad *node)
   }
   else
   {
-    loco::TensorShape output_shape;
-    int32_t n = input_shape.rank();
-    output_shape.rank(n);
-    for (int32_t ni = 0; ni < n; ++ni)
-    {
-      output_shape.dim(ni).unset();
-    }
-    return output_shape;
+    return unknown_shape(input_shape);
   }
 }
 
