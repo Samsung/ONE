@@ -268,6 +268,10 @@ Importer::Importer()
 
 std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 {
+  assert(model);
+  assert(_file_data);
+  assert(_file_size);
+
   auto module = make_module();
 
   const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
@@ -279,17 +283,8 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   }
 
   CircleReader reader;
-  if (_file_data && _file_size)
-  {
-    if (!reader.parse(model, _file_data, _file_size))
-      return nullptr;
-  }
-  else
-  {
-    // TODO remove this
-    if (!reader.parse(model))
-      return nullptr;
-  }
+  if (!reader.parse(model, _file_data, _file_size))
+    return nullptr;
 
   for (uint32_t g = 0; g < reader.num_subgraph(); ++g)
   {
