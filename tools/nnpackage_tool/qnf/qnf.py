@@ -99,11 +99,15 @@ def dequantize(h5_path, circle_path, h5_out_path):
 
 def makeArgParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        'h5', type=str, help='path to h5 file either input or output to model')
+    parser.add_argument('h5',
+                        type=str,
+                        help='path to h5 file either input or output to model')
     parser.add_argument('circle', type=str, help='path to quantized circle model')
-    parser.add_argument(
-        '-o', '--output', action='store', dest="out_path", help="output file")
+    parser.add_argument('-o',
+                        '--output',
+                        action='store',
+                        dest="out_path",
+                        help="output file")
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         '-q',

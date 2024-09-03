@@ -10,8 +10,9 @@ def extract_test_args(s):
 def pytest_addoption(parser):
     parser.addoption("--test_list", action="store", help="Path to test list")
     parser.addoption("--bin_dir", action="store", help="Directory including artifacts")
-    parser.addoption(
-        "--circle_part_driver", action="store", help="Path to circle part driver")
+    parser.addoption("--circle_part_driver",
+                     action="store",
+                     help="Path to circle part driver")
 
 
 def pytest_generate_tests(metafunc):

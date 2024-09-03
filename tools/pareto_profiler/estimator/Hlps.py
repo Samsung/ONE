@@ -26,7 +26,6 @@ class Hlps:
     """ 
     Initialize Runner and Pareto data structure
   """
-
     def __init__(self, runner, num_backends, num_samples):
         self._runner = runner
         self._num_backends = num_backends
@@ -187,8 +186,10 @@ class Hlps:
             round_cnt += 1
 
             utils.progressbar(round_cnt, nsolutions, prefix="% samples computed. : ")
-            self._pareto_obj.update_pareto_solutions(
-                s, time_val, memory_val, explore_flag=True)
+            self._pareto_obj.update_pareto_solutions(s,
+                                                     time_val,
+                                                     memory_val,
+                                                     explore_flag=True)
 
             for key in self._pareto_obj.get_pareto_keys():
                 pareto_sample = self._pareto_obj.get_config(key)

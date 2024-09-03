@@ -38,7 +38,7 @@ jobs:
           sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
           sudo apt-get update && sudo apt-get install -qqy clang-format-16
           python -m pip install --upgrade pip
-          pip install yapf==0.22.0
+          pip install yapf==0.40.2
 
       - name: Check
         run: ./nnas format

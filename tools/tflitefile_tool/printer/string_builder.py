@@ -76,8 +76,8 @@ def GetStringTensor(tensor):
 
         buffer = ["("]
         if tensor.buffer is not None:
-            buffer.append(
-                "{:5}: ".format(CHAR_SYMBOLS['buffer'] + str(tensor.buffer_index)))
+            buffer.append("{:5}: ".format(CHAR_SYMBOLS['buffer'] +
+                                          str(tensor.buffer_index)))
             # if too big, just skip it.
             if tensor.buffer.size > 4:
                 buffer.append("".join(['[' for _ in range(tensor.buffer.ndim)]))
@@ -85,12 +85,11 @@ def GetStringTensor(tensor):
                 buffer.append("".join([']' for _ in range(tensor.buffer.ndim)]))
             else:
                 buffer.append(
-                    np.array2string(
-                        tensor.buffer,
-                        precision=3,
-                        separator=', ',
-                        threshold=4,
-                        edgeitems=2))
+                    np.array2string(tensor.buffer,
+                                    precision=3,
+                                    separator=', ',
+                                    threshold=4,
+                                    edgeitems=2))
         else:
             buffer.append("Empty")
         buffer.append(")")

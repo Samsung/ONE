@@ -44,10 +44,14 @@ def _get_parser():
     tflite2circle_group = parser.add_argument_group('converter arguments')
 
     # input and output path.
-    tflite2circle_group.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input file')
-    tflite2circle_group.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output file')
+    tflite2circle_group.add_argument('-i',
+                                     '--input_path',
+                                     type=str,
+                                     help='full filepath of the input file')
+    tflite2circle_group.add_argument('-o',
+                                     '--output_path',
+                                     type=str,
+                                     help='full filepath of the output file')
 
     return parser
 

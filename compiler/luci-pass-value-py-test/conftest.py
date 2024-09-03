@@ -9,12 +9,15 @@ def extract_test_args(s):
 
 def pytest_addoption(parser):
     parser.addoption("--test_list", action="store", help="Path to test list")
-    parser.addoption(
-        "--tflite_dir", action="store", help="Directory including tflite file")
-    parser.addoption(
-        "--circle_dir", action="store", help="Directory including circle file")
-    parser.addoption(
-        "--luci_eval_driver", action="store", help="Path to luci eval driver")
+    parser.addoption("--tflite_dir",
+                     action="store",
+                     help="Directory including tflite file")
+    parser.addoption("--circle_dir",
+                     action="store",
+                     help="Directory including circle file")
+    parser.addoption("--luci_eval_driver",
+                     action="store",
+                     help="Path to luci eval driver")
 
 
 def pytest_generate_tests(metafunc):
