@@ -19,7 +19,6 @@
 #include "Check.h"
 
 #include "CircleShapeInferenceHelper.h"
-#include "ShapeInfer_StridedSlice.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
@@ -1384,21 +1383,6 @@ loco::NodeShape infer_sparse_to_dense(const luci::CircleSparseToDense *node)
   return loco::NodeShape{shape};
 }
 
-loco::NodeShape infer_strided_slice(const luci::CircleStridedSlice *node)
-{
-  auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
-  auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
-  auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
-
-  if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
-  {
-    return use_own(node);
-  }
-
-  loco::TensorShape shape = infer_output_shape(node);
-  return loco::NodeShape{shape};
-}
-
 loco::NodeShape infer_squeeze(const luci::CircleSqueeze *node)
 {
   auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
@@ -2319,11 +2303,6 @@ public:
   loco::NodeShape visit(const luci::CircleSquaredDifference *node) final
   {
     return broadcast_xy(node);
-  }
-
-  loco::NodeShape visit(const luci::CircleStridedSlice *node) final
-  {
-    return infer_strided_slice(node);
   }
 
   loco::NodeShape visit(const luci::CircleSqueeze *node) final { return infer_squeeze(node); }

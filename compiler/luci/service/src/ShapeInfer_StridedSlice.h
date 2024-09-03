@@ -23,8 +23,12 @@
 
 namespace luci
 {
+namespace sinf
+{
 
 loco::TensorShape infer_output_shape(const CircleStridedSlice *node);
+
+} // namespace sinf
 
 } // namespace luci
 

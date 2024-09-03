@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "luci/Service/CircleShapeInference.h"
 
 #include "CircleCloneNode.h"
+#include "ShapeInfer_StridedSlice.h"
 
 namespace luci
 {
@@ -32,5 +34,15 @@ luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleStridedSlice *
   }
   return cloned;
 }
+
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
+{
+  return infer_output_shape(node);
+}
+
+} // namespace sinf
 
 } // namespace luci

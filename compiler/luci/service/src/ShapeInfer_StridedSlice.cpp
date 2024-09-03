@@ -81,7 +81,7 @@ struct StridedSliceContext
     end = loco::must_cast<luci::CircleConst *>(node->end());
     strides = loco::must_cast<luci::CircleConst *>(node->strides());
 
-    loco::TensorShape input_shape = luci::shape_get(input).as<loco::TensorShape>();
+    loco::TensorShape input_shape = luci::sinf::circle_shape(input);
     input_dims = input_shape.rank();
   }
   StridedSliceParams params;
@@ -244,7 +244,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   op_params.shrink_axis_mask = 0;
 
   // Count indexes where the new_axis_mask is set but the ellipsis_mask is not.
-  loco::TensorShape begin_shape = luci::shape_get(op_context->begin).as<loco::TensorShape>();
+  loco::TensorShape begin_shape = luci::sinf::circle_shape(op_context->begin);
   const int64_t begin_count = static_cast<int64_t>(begin_shape.dim(0).value());
   int64_t num_add_axis = 0;
   for (int64_t i = 0; i < begin_count; ++i)
@@ -292,7 +292,7 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   }
 
   // Calculate effective_input_shape and its corresponding begin, end, strides.
-  loco::TensorShape input_shape = luci::shape_get(op_context->input).as<loco::TensorShape>();
+  loco::TensorShape input_shape = luci::sinf::circle_shape(op_context->input);
   int64_t added_ellipsis = 0, added_axises = 0;
   op_context->effective_input_shape.rank(effective_dims);
 
@@ -367,6 +367,8 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
 
 namespace luci
 {
+namespace sinf
+{
 
 loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
 {
@@ -390,7 +392,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
   LUCI_ASSERT(end_node->rank() == 1, "Only support rank 1 for end_node");
   LUCI_ASSERT(strides_node->rank() == 1, "Only support rank 1 for strides_node");
 
-  loco::TensorShape input_shape = luci::shape_get(input_node).as<loco::TensorShape>();
+  loco::TensorShape input_shape = circle_shape(input_node);
 
   assert(begin_node->size<S32>() <= input_shape.rank());
   assert(end_node->size<S32>() <= input_shape.rank());
@@ -400,6 +402,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
   auto op_params = BuildStridedSliceParams(&op_context);
   auto &effective_input_shape = op_context.effective_input_shape;
   std::vector<int64_t> output_shape_vector;
+  std::vector<bool> output_known_vector;
 
   for (int32_t idx = effective_input_shape.rank() - 1; idx >= 0; --idx)
   {
@@ -425,6 +428,7 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
     if (!shrink_axis)
     {
       output_shape_vector.push_back(dim_shape);
+      output_known_vector.push_back(effective_input_shape.dim(idx).known());
     }
   }
 
@@ -433,12 +437,18 @@ loco::TensorShape infer_output_shape(const CircleStridedSlice *node)
   for (uint32_t idx = 0; idx < shape_size; ++idx)
   {
     int64_t dim = output_shape_vector.at(shape_size - 1u - idx);
+    bool known = output_known_vector[shape_size - 1u - idx];
     LUCI_ASSERT(0 <= dim && dim < 0xfffffffL, "Dimension size exceeds limit");
     // reverse copy
-    output_shape.dim(idx) = static_cast<uint32_t>(dim);
+    if (known)
+    {
+      output_shape.dim(idx) = static_cast<uint32_t>(dim);
+    }
   }
 
   return output_shape;
 }
+
+} // namespace sinf
 
 } // namespace luci
