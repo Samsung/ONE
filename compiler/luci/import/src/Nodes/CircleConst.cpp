@@ -168,7 +168,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
   if (r_buffer->offset() == 1 || r_buffer->size() == 1)
   {
     // NOTE this shouldn't happen
-    throw std::runtime_error("Cirlce file with invalid extended Buffer.");
+    throw std::runtime_error("CircleConst: Circle file with invalid extended Buffer.");
   }
   // temporary buffer to provide raw data from file
   // must have life time same or longer than 'buffer' variable
@@ -179,7 +179,7 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
     if (r_buffer->size() >= std::numeric_limits<uint32_t>::max())
     {
       // NOTE uint32_t limit is to match "uoffset_t flatbuffers::Vector::size()"
-      throw std::runtime_error("Cirlce file with invalid extended Buffer.");
+      throw std::runtime_error("CircleConst: Circle file with invalid extended Buffer.");
     }
     uint32_t r_size = static_cast<uint32_t>(r_buffer->size());
     // match binary level to flatbuffers::Vector

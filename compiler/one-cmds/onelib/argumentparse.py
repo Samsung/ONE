@@ -120,8 +120,8 @@ class ArgumentParser():
 
     def __init__(self):
         # List[args, action type, data type, option type]
-        self._actions: List[Tuple[Tuple[str], Action, Union[Type[str], Type[
-            bool]]]] = list()
+        self._actions: List[Tuple[Tuple[str], Action, Union[Type[str],
+                                                            Type[bool]]]] = list()
         self.driver: str = None
         self.target: str = None
 

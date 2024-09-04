@@ -53,6 +53,7 @@ size_t sizeOfDataType(DataType data_type)
     case DataType::QUANT_INT16_SYMM:
       return sizeof(int16_t);
     default:
+      // ggml block quantize type data size is not supported
       throw std::runtime_error{"Unsupported type size"};
   }
 }

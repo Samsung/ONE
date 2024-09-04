@@ -128,11 +128,10 @@ class DotBuilder:
 
             if op_name in qerror_map:
                 qerror = qerror_map[op_name]
-                node = pydot.Node(
-                    _quote(op_name),
-                    style="filled",
-                    fillcolor=self._get_color(qerror),
-                    xlabel=self._metric + ": {:.4f}".format(qerror))
+                node = pydot.Node(_quote(op_name),
+                                  style="filled",
+                                  fillcolor=self._get_color(qerror),
+                                  xlabel=self._metric + ": {:.4f}".format(qerror))
             else:
                 # qerror_map does not have qerror info for the op. Color gray.
                 # When this happen? visq does not collect qerror info of some Ops

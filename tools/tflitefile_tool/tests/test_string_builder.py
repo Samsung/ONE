@@ -33,28 +33,24 @@ class StringBuilderTestCase(unittest.TestCase):
         self.assertEqual(ConvertBytesToHuman(bytes), 0)
 
         bytes = 1
-        self.assertEqual(
-            ConvertBytesToHuman(bytes), format_str % dict(symb=SYMBOLS[0], val=(bytes)))
+        self.assertEqual(ConvertBytesToHuman(bytes),
+                         format_str % dict(symb=SYMBOLS[0], val=(bytes)))
 
         bytes = 1024
-        self.assertEqual(
-            ConvertBytesToHuman(bytes),
-            format_str % dict(symb=SYMBOLS[1], val=(bytes / 1024)))
+        self.assertEqual(ConvertBytesToHuman(bytes),
+                         format_str % dict(symb=SYMBOLS[1], val=(bytes / 1024)))
 
         bytes = 1024**2
-        self.assertEqual(
-            ConvertBytesToHuman(bytes),
-            format_str % dict(symb=SYMBOLS[2], val=(bytes / (1024**2))))
+        self.assertEqual(ConvertBytesToHuman(bytes),
+                         format_str % dict(symb=SYMBOLS[2], val=(bytes / (1024**2))))
 
         bytes = 1024**3
-        self.assertEqual(
-            ConvertBytesToHuman(bytes),
-            format_str % dict(symb=SYMBOLS[3], val=(bytes / (1024**3))))
+        self.assertEqual(ConvertBytesToHuman(bytes),
+                         format_str % dict(symb=SYMBOLS[3], val=(bytes / (1024**3))))
 
         bytes = 1024**4
-        self.assertEqual(
-            ConvertBytesToHuman(bytes),
-            format_str % dict(symb=SYMBOLS[4], val=(bytes / (1024**4))))
+        self.assertEqual(ConvertBytesToHuman(bytes),
+                         format_str % dict(symb=SYMBOLS[4], val=(bytes / (1024**4))))
 
     # TODO: More tests
 

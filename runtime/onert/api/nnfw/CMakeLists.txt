@@ -22,7 +22,9 @@ if (ANDROID)
 endif (ANDROID)
 
 target_include_directories(${ONERT_DEV} PUBLIC include)
-set_target_properties(${ONERT_DEV} PROPERTIES PUBLIC_HEADER "${NNFW_API_HEADERS}")
+set_target_properties(${ONERT_DEV} PROPERTIES
+  PUBLIC_HEADER "${NNFW_API_HEADERS}"
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/nnfw")
 
 install(TARGETS ${ONERT_DEV}
         LIBRARY DESTINATION lib

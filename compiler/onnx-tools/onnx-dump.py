@@ -29,8 +29,8 @@ def _data_type_str(data_type):
 
 def _get_attribute_value(attr):
     if attr.type == AttributeProto.TENSOR:
-        return "{}, {}".format(
-            _data_type_str(attr.t.data_type), numpy_helper.to_array(attr.t))
+        return "{}, {}".format(_data_type_str(attr.t.data_type),
+                               numpy_helper.to_array(attr.t))
     if attr.type == AttributeProto.GRAPH:
         # TODO revise when graph node is available
         return "<graph>"

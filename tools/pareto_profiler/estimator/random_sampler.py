@@ -13,8 +13,10 @@ from utils import progressbar
 if __name__ == "__main__":
     t_start = time.time()
     parser = ProfileArgs("random_sampler.py", description="Random sampler")
-    parser.add_argument(
-        '--iterations', type=int, default=100, help='Number of iterations')
+    parser.add_argument('--iterations',
+                        type=int,
+                        default=100,
+                        help='Number of iterations')
 
     # Parse arguments
     args = parser.parse_args()

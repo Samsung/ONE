@@ -33,14 +33,16 @@ from pathlib import Path
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='Command line tool to equalize feature map (FM) value distribution')
-    parser.add_argument(
-        "-i", "--input", type=str, help="Path to the input circle model.", required=True)
-    parser.add_argument(
-        "-o",
-        "--output",
-        type=str,
-        help="Path to the output circle model.",
-        required=True)
+    parser.add_argument("-i",
+                        "--input",
+                        type=str,
+                        help="Path to the input circle model.",
+                        required=True)
+    parser.add_argument("-o",
+                        "--output",
+                        type=str,
+                        help="Path to the output circle model.",
+                        required=True)
     parser.add_argument(
         "-f",
         "--fme_patterns",
@@ -133,11 +135,10 @@ def main():
             Path(output_model).with_suffix('.fme_patterns.json').name)
 
         # Step 1. Run fme-detect to find equalization patterns
-        _run_fme_detect(
-            str(input_model),
-            str(fme_patterns),
-            verbose=verbose,
-            allow_dup_op=allow_dup_op)
+        _run_fme_detect(str(input_model),
+                        str(fme_patterns),
+                        verbose=verbose,
+                        allow_dup_op=allow_dup_op)
 
         # Copy fme_patterns to the given path
         if args.fme_patterns != None:
@@ -152,8 +153,10 @@ def main():
             os.system(f'cp {fme_patterns} {args.fme_patterns}')
 
         # Step 3. Run fme-apply
-        _run_fme_apply(
-            str(input_model), str(fme_patterns), str(output_model), verbose=verbose)
+        _run_fme_apply(str(input_model),
+                       str(fme_patterns),
+                       str(output_model),
+                       verbose=verbose)
 
 
 if __name__ == '__main__':

@@ -93,8 +93,8 @@ def search_driver(driver):
         return driver_path
 
     # CASE 2: one/backends/**/bin/{driver} is found
-    for driver_path in glob.glob(
-            dir_path + '/../../backends/**/bin/' + driver, recursive=True):
+    for driver_path in glob.glob(dir_path + '/../../backends/**/bin/' + driver,
+                                 recursive=True):
         if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
             return driver_path
 

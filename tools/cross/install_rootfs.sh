@@ -102,7 +102,7 @@ if [ $__IsProxySet == 1 ]; then
 fi
 
 if [[ -n $__LinuxCodeName ]]; then
-    qemu-debootstrap --arch $__QemuArch $__LinuxCodeName $__RootfsDir $__UbuntuRepo
+    debootstrap --arch $__QemuArch $__LinuxCodeName $__RootfsDir $__UbuntuRepo
     cp $__CrossDir/$__BuildArch/sources.list.$__LinuxCodeName $__RootfsDir/etc/apt/sources.list
     chroot $__RootfsDir apt-get update
     chroot $__RootfsDir apt-get -f -y install

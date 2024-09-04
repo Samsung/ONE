@@ -42,18 +42,16 @@ from visqlib.DotBuilder import DotBuilder
 def _get_parser():
     parser = argparse.ArgumentParser(
         description='Command line tool to visualize layer-wise quantization errors')
-    parser.add_argument(
-        "-f",
-        "--fp32_circle",
-        type=str,
-        help="Path to the fp32 circle model.",
-        required=True)
-    parser.add_argument(
-        "-q",
-        "--q_circle",
-        type=str,
-        help="Path to the quantized circle model.",
-        required=True)
+    parser.add_argument("-f",
+                        "--fp32_circle",
+                        type=str,
+                        help="Path to the fp32 circle model.",
+                        required=True)
+    parser.add_argument("-q",
+                        "--q_circle",
+                        type=str,
+                        help="Path to the quantized circle model.",
+                        required=True)
     parser.add_argument(
         "-d",
         "--data",
@@ -61,34 +59,31 @@ def _get_parser():
         help=
         "Path to the data used for inference. Random data will be used if this option is not given.",
         required=False)
-    parser.add_argument(
-        "--mpeir_output",
-        type=str,
-        help="Path to the output json file (qerror metric = MPEIR).",
-        required=False)
-    parser.add_argument(
-        "--mse_output",
-        type=str,
-        help="Path to the output json file (qerror metric = MSE).",
-        required=False)
-    parser.add_argument(
-        "--tae_output",
-        type=str,
-        help="Path to the output json file (qerror metric = TAE).",
-        required=False)
-    parser.add_argument(
-        "--srmse_output",
-        type=str,
-        help="Path to the output json file (qerror metric = SRMSE).",
-        required=False)
-    parser.add_argument(
-        "--dump_dot_graph", action="store_true", help="Dump dot graph.", required=False)
-    parser.add_argument(
-        "-b",
-        "--batch_size",
-        type=int,
-        help="Batch size to process large datasets.",
-        required=False)
+    parser.add_argument("--mpeir_output",
+                        type=str,
+                        help="Path to the output json file (qerror metric = MPEIR).",
+                        required=False)
+    parser.add_argument("--mse_output",
+                        type=str,
+                        help="Path to the output json file (qerror metric = MSE).",
+                        required=False)
+    parser.add_argument("--tae_output",
+                        type=str,
+                        help="Path to the output json file (qerror metric = TAE).",
+                        required=False)
+    parser.add_argument("--srmse_output",
+                        type=str,
+                        help="Path to the output json file (qerror metric = SRMSE).",
+                        required=False)
+    parser.add_argument("--dump_dot_graph",
+                        action="store_true",
+                        help="Dump dot graph.",
+                        required=False)
+    parser.add_argument("-b",
+                        "--batch_size",
+                        type=int,
+                        help="Batch size to process large datasets.",
+                        required=False)
 
     return parser
 
@@ -248,8 +243,10 @@ def _save_dot(circle_path: str, dot_path: str, metric: str, colors: list, qerror
     # metric: Metric name (ex: MPEIR, MSE)
     # colors: list [{'b': begin, 'e': end, 'c':color}, ..]
     # qerror: dict {tensor_name (str) -> qerror (float)}
-    builder = DotBuilder(
-        circle_path=circle_path, dot_path=dot_path, metric=metric, colors=colors)
+    builder = DotBuilder(circle_path=circle_path,
+                         dot_path=dot_path,
+                         metric=metric,
+                         colors=colors)
 
     builder.save(qerror)
 
@@ -273,21 +270,19 @@ def run_on_data_batchwise(fp32_model, q_model, data, dump_dot_graph, computers,
             qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
-            result = _build_json(
-                metric=metric_key,
-                model=Path(fp32_model).name,
-                colorscheme=palette.colorscheme(),
-                error=qerror_map)
+            result = _build_json(metric=metric_key,
+                                 model=Path(fp32_model).name,
+                                 colorscheme=palette.colorscheme(),
+                                 error=qerror_map)
             with open(output, "w") as f:
                 json.dump(result, f)
 
             if dump_dot_graph:
-                _save_dot(
-                    circle_path=fp32_model,
-                    dot_path=output + '.dot',
-                    metric=metric_key,
-                    colors=palette.colorscheme(),
-                    qerror=qerror_map)
+                _save_dot(circle_path=fp32_model,
+                          dot_path=output + '.dot',
+                          metric=metric_key,
+                          colors=palette.colorscheme(),
+                          qerror=qerror_map)
 
 
 def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
@@ -320,21 +315,19 @@ def run_on_data(fp32_model, q_model, data, dump_dot_graph, computers):
             qerror_map, q_min, q_max = cur_computer.get_final_result()
 
             palette = YLORRD9Palette(qerror_min=q_min, qerror_max=q_max)
-            result = _build_json(
-                metric=metric_key,
-                model=Path(fp32_model).name,
-                colorscheme=palette.colorscheme(),
-                error=qerror_map)
+            result = _build_json(metric=metric_key,
+                                 model=Path(fp32_model).name,
+                                 colorscheme=palette.colorscheme(),
+                                 error=qerror_map)
             with open(output, "w") as f:
                 json.dump(result, f)
 
             if dump_dot_graph:
-                _save_dot(
-                    circle_path=fp32_model,
-                    dot_path=output + '.dot',
-                    metric=metric_key,
-                    colors=palette.colorscheme(),
-                    qerror=qerror_map)
+                _save_dot(circle_path=fp32_model,
+                          dot_path=output + '.dot',
+                          metric=metric_key,
+                          colors=palette.colorscheme(),
+                          qerror=qerror_map)
 
 
 def main():

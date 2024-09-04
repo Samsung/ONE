@@ -70,8 +70,9 @@ class OnnxRunner:
         options.intra_op_num_threads = 4
         # NOTE set `providers` for https://github.com/microsoft/onnxruntime/issues/17631
         providers = ort.get_available_providers()
-        self.session = ort.InferenceSession(
-            self.filepath, sess_options=options, providers=providers)
+        self.session = ort.InferenceSession(self.filepath,
+                                            sess_options=options,
+                                            providers=providers)
 
     def feed_random_inputs(self):
         self.inputs = self.session.get_inputs()
@@ -113,13 +114,11 @@ onnx_runner.get_outputs()
 
 # Execute luci interpreter
 print("Run luci-interpreter...")
-process = subprocess.run(
-    [
-        driver, circle_filepath,
-        str(onnx_runner.inputs_size), circle_filepath + ".input",
-        circle_filepath + ".output"
-    ],
-    check=True)
+process = subprocess.run([
+    driver, circle_filepath,
+    str(onnx_runner.inputs_size), circle_filepath + ".input", circle_filepath + ".output"
+],
+                         check=True)
 
 # Compare results
 rtolerance = 1e-03

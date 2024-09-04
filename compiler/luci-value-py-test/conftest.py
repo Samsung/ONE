@@ -10,10 +10,12 @@ def extract_test_args(s):
 def pytest_addoption(parser):
     parser.addoption("--test_list", action="store", help="Path to test list")
     parser.addoption("--artifacts", action="store", help="Path to test artifacts")
-    parser.addoption(
-        "--target_artifacts", action="store", help="Path to test target artifacts")
-    parser.addoption(
-        "--luci_eval_driver", action="store", help="Path to luci eval driver")
+    parser.addoption("--target_artifacts",
+                     action="store",
+                     help="Path to test target artifacts")
+    parser.addoption("--luci_eval_driver",
+                     action="store",
+                     help="Path to luci eval driver")
 
 
 def pytest_generate_tests(metafunc):
@@ -56,10 +58,9 @@ def pytest_generate_tests(metafunc):
                                   eval_driver_path) for arg in test_args
                                  if len(arg.split()) == 1]
         # eval(TEST_NAME RTOL ATOL)
-        ref_tests_with_tol = [(arg.split()[0], artifacts_path,
-                               target_artifacts_path, eval_driver_path, arg.split()[1],
-                               arg.split()[2]) for arg in test_args
-                              if len(arg.split()) == 3]
+        ref_tests_with_tol = [(arg.split()[0], artifacts_path, target_artifacts_path,
+                               eval_driver_path, arg.split()[1], arg.split()[2])
+                              for arg in test_args if len(arg.split()) == 3]
         #
         # for cross platform test
         #

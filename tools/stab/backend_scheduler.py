@@ -27,7 +27,6 @@ class BackendScheduler:
 
     TODO : Use permutation time for better scheduling
     """
-
     def __init__(self, nnpkg_dir, num_threads):
         self.nnpkg_dir = Path(nnpkg_dir).resolve()
         self.num_threads = num_threads

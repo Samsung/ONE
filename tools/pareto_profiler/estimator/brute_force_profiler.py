@@ -7,8 +7,8 @@ from runner import Runner
 from utils import progressbar
 
 if __name__ == "__main__":
-    parser = ProfileArgs(
-        prog="brute_force_profiler.py", description="Profiles onert_run using oplist")
+    parser = ProfileArgs(prog="brute_force_profiler.py",
+                         description="Profiles onert_run using oplist")
     # Parse arguments
     args = parser.parse_args()
     modelfile = args.model
@@ -68,4 +68,4 @@ if __name__ == "__main__":
 
     with open(dumpfile, "w") as ofile:
         json.dump(profile_results, ofile)
-    print "\nDone.."
+    print("\nDone..")

@@ -23,7 +23,6 @@ class OpListParser():
 
     TODO : Reads supported tensor type for each operation (FP32 or INT8)
     """
-
     def __init__(self):
         self.file_name = "op_list.txt"
         self.op_list_file = Path(__file__).parent / self.file_name

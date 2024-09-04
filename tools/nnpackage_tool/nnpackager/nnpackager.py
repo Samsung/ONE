@@ -62,13 +62,14 @@ def compress(path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('path', type=str, help='the path to nnpackage')
-    parser.add_argument(
-        '-v', '--verify', action='store_true', help="verify nnpackage (default: false)")
-    parser.add_argument(
-        '-c',
-        '--compress',
-        action='store_true',
-        help="compress nnpackage (default: false)")
+    parser.add_argument('-v',
+                        '--verify',
+                        action='store_true',
+                        help="verify nnpackage (default: false)")
+    parser.add_argument('-c',
+                        '--compress',
+                        action='store_true',
+                        help="compress nnpackage (default: false)")
 
     args = parser.parse_args()
 

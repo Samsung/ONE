@@ -23,7 +23,6 @@ class NnpkgHelper:
     """
     Helper class for nnpackage
     """
-
     def __init__(self):
         self.config_name = 'config.cfg'
 

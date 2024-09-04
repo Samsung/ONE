@@ -17,8 +17,10 @@ def b(ii):
 
 
 # this loop changes i's shape from [1, 0] -> [1, 1] -> [1, 2] -> ... -> [1, 10]
-r = tf.compat.v1.while_loop(
-    c, b, [i], name="While", shape_invariants=[tf.TensorShape([1, None])])
+r = tf.compat.v1.while_loop(c,
+                            b, [i],
+                            name="While",
+                            shape_invariants=[tf.TensorShape([1, None])])
 
 output = tf.compat.v1.identity(r, name="Output")
 

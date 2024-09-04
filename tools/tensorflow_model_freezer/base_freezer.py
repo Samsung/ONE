@@ -75,26 +75,25 @@ class BaseFreezer(object):
                 tf_tensor = tf.placeholder(shape=[], dtype=tensor.getDType())
                 input_list.append(tf_tensor)
             else:
-                tf_tensor = tf.constant(
-                    value=tensor.getConstVal(), dtype=tensor.getDType())
+                tf_tensor = tf.constant(value=tensor.getConstVal(),
+                                        dtype=tensor.getDType())
         else:
             if (tensor.getConstVal() == None):
-                tf_tensor = tf.placeholder(
-                    shape=tensor.getShape(), dtype=tensor.getDType())
+                tf_tensor = tf.placeholder(shape=tensor.getShape(),
+                                           dtype=tensor.getDType())
                 input_list.append(tf_tensor)
             else:
-                tf_tensor = tf.constant(
-                    shape=tensor.getShape(),
-                    value=tensor.getConstVal(),
-                    dtype=tensor.getDType())
+                tf_tensor = tf.constant(shape=tensor.getShape(),
+                                        value=tensor.getConstVal(),
+                                        dtype=tensor.getDType())
 
         return tf_tensor
 
     def saveRelatedFiles(self, sess, input_node_list, output_node_list, fn_prefix):
         # saves pb, pbtxt, chpt files and then freeze graph under top_node_name into directory
         # produce pb, pbtxt, and ckpt files
-        (pb_path, pbtxt_path, checkpoint_path) = util.savePbAndCkpt(
-            sess, self.getOutputDirectory(), fn_prefix)
+        (pb_path, pbtxt_path,
+         checkpoint_path) = util.savePbAndCkpt(sess, self.getOutputDirectory(), fn_prefix)
 
         print("")
         print("# 1. Created Tensorflow model files :\n\t-{}\n\t-{}\n\t-{}\n".format(
@@ -170,12 +169,14 @@ class BaseFreezer(object):
                 print("# files will be saved into " + self.getOutputDirectory())
 
                 # build model
-                (input_node_list, output_node_list) = self.buildModel(
-                    sess, test_cases.get(tc_name), tc_name)
+                (input_node_list,
+                 output_node_list) = self.buildModel(sess, test_cases.get(tc_name),
+                                                     tc_name)
 
                 # Now, save to proto buffer format and checkpoint
-                (pb_path, frozen_pb_path, tflite_path) = self.saveRelatedFiles(
-                    sess, input_node_list, output_node_list, tc_name)
+                (pb_path, frozen_pb_path,
+                 tflite_path) = self.saveRelatedFiles(sess, input_node_list,
+                                                      output_node_list, tc_name)
 
                 sess.close()
         # when there is not test cases but the model itself
@@ -191,11 +192,12 @@ class BaseFreezer(object):
             print("# files will be saved into " + self.getOutputDirectory())
 
             # build model
-            (input_node_list, output_node_list) = self.buildModel(
-                sess, test_cases.get(tc_name), tc_name)
+            (input_node_list,
+             output_node_list) = self.buildModel(sess, test_cases.get(tc_name), tc_name)
 
             # Now, save to proto buffer format and checkpoint
-            (pb_path, frozen_pb_path, tflite_path) = self.saveRelatedFiles(
-                sess, input_node_list, output_node_list, tc_name)
+            (pb_path, frozen_pb_path,
+             tflite_path) = self.saveRelatedFiles(sess, input_node_list, output_node_list,
+                                                  tc_name)
 
             sess.close()
