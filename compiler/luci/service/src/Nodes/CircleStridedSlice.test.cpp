@@ -225,7 +225,7 @@ TEST(ShapeRuleTest, strided_slice_dynamic_shape_2)
   ASSERT_EQ(8, shape.dim(4).value());
 }
 
-TEST(ShapeRuleTest, strided_slice_NEG_1)
+TEST(ShapeRuleTest, strided_slice_nullptr_input_NEG)
 {
   luci::CircleConst begin;
   luci::CircleConst end;
@@ -271,7 +271,7 @@ TEST(ShapeRuleTest, strided_slice_NEG_1)
   ASSERT_ANY_THROW(shape_inf_rule.infer(&strided_slice, shape));
 }
 
-TEST(ShapeRuleTest, strided_slice_NEG_2)
+TEST(ShapeRuleTest, strided_slice_nullptr_begin_NEG)
 {
   luci::CircleInput input;
   luci::CircleConst end;
@@ -311,7 +311,7 @@ TEST(ShapeRuleTest, strided_slice_NEG_2)
   ASSERT_ANY_THROW(shape_inf_rule.infer(&strided_slice, shape));
 }
 
-TEST(ShapeRuleTest, strided_slice_NEG_3)
+TEST(ShapeRuleTest, strided_slice_nullptr_end_NEG)
 {
   luci::CircleInput input;
   luci::CircleConst begin;
@@ -351,7 +351,7 @@ TEST(ShapeRuleTest, strided_slice_NEG_3)
   ASSERT_ANY_THROW(shape_inf_rule.infer(&strided_slice, shape));
 }
 
-TEST(ShapeRuleTest, strided_slice_NEG_4)
+TEST(ShapeRuleTest, strided_slice_nullptr_strides_NEG)
 {
   luci::CircleInput input;
   luci::CircleConst begin;
