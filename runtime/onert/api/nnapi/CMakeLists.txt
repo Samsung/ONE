@@ -11,6 +11,7 @@ target_link_libraries(${LIB_ONERT} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT} PROPERTIES OUTPUT_NAME neuralnetworks)
+set_target_properties(${LIB_ONERT} PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/nnfw")
 
 install(TARGETS ${LIB_ONERT} DESTINATION lib)
 
@@ -23,5 +24,8 @@ add_executable(test_onert_frontend_nnapi ${TESTS_FRONTEND})
 target_link_libraries(test_onert_frontend_nnapi PRIVATE ${LIB_ONERT} dl)
 target_link_libraries(test_onert_frontend_nnapi PRIVATE gtest)
 target_link_libraries(test_onert_frontend_nnapi PRIVATE gtest_main)
+# INSTALL_RPATH is for onert_core public link
+# TODO Remove INSTALL_RPATH
+set_target_properties(test_onert_frontend_nnapi PROPERTIES INSTALL_RPATH "$ORIGIN/../lib:$ORIGIN/../lib/nnfw")
 
 install(TARGETS test_onert_frontend_nnapi DESTINATION unittest)
