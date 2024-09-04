@@ -79,11 +79,11 @@ luci::CircleConst *create_mul_const_with_new_value(luci::CircleConst *mul_const,
  * BEFORE
  *             [CircleNode]                                [Scalar_Mul_Const]
  *                  |                                               |
- *          [CirlceMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
+ *          [CircleMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
  *                  |
  *                  |                                     [Scalar_Div_Const]
  *                  |                                             |
- *           [CircleDiv, (x=Scalar_Div_Const, y=CirlceMul)] ------
+ *           [CircleDiv, (x=Scalar_Div_Const, y=CircleMul)] ------
  *                  |
  *             [CircleNode]
  *
@@ -156,11 +156,11 @@ bool fuse_mul_with_div_to_div(luci::CircleDiv *div)
  * BEFORE
  *             [CircleNode]                                [Scalar_Mul_Const]
  *                  |                                               |
- *          [CirlceMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
+ *          [CircleMul, (x=CircleNode, y=Scalar_Mul_Const)] --------
  *                  |
  *                  |                                     [Scalar_Div_Const]
  *                  |                                             |
- *           [CircleDiv, (x=CirlceMul, y=Scalar_Div_Const)] ------
+ *           [CircleDiv, (x=CircleMul, y=Scalar_Div_Const)] ------
  *                  |
  *             [CircleNode]
  *

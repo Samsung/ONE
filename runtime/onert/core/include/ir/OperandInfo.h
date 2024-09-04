@@ -120,7 +120,7 @@ public:
    * @brief   Return size of tensor (bytes)
    * @return  Tensor size
    */
-  size_t total_size() const { return _shape.num_elements() * sizeOfDataType(_typeInfo.type()); }
+  size_t total_size() const;
 
   MemAllocType memAllocType() const { return _alloc_type; }
   void setAsConstant() { _const = true; }

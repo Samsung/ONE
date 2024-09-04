@@ -39,8 +39,8 @@ class TFLiteSubgraphParserTestCase(unittest.TestCase):
             self.assertEqual(len(subg.outputs), tf_subgraph.OutputsLength())
             # if there is optional tensors, this assert could be wrong
             self.assertEqual(len(subg.tensors_map.keys()), tf_subgraph.TensorsLength())
-            self.assertEqual(
-                len(subg.operators_map.keys()), tf_subgraph.OperatorsLength())
+            self.assertEqual(len(subg.operators_map.keys()),
+                             tf_subgraph.OperatorsLength())
             # because TEST_MODEL_PATH has an op(ADD)
             self.assertEqual(len(subg.optypes_map.keys()), tf_subgraph.OperatorsLength())
 

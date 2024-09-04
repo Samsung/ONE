@@ -92,6 +92,7 @@ public:
       ConvertNCHWToNHWC,
       CommonSubExpressionElimination,
       RemoveUnnecessaryAdd,
+      RemoveUnnecessaryCast,
       RemoveUnnecessarySlice,
       RemoveUnnecessaryStridedSlice,
       RemoveUnnecessarySplit,

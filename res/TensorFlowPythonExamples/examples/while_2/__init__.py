@@ -9,8 +9,10 @@ c = lambda i: tf.compat.v1.less(tf.compat.v1.size(i[0]), 10)
 b = lambda i: tf.concat([i, x], axis=1)
 
 # this loop changs i's shape from [1, 0] -> [1, 1] -> [1, 2] -> ... -> [1, 10]
-r = tf.compat.v1.while_loop(
-    c, b, [i], name="While", shape_invariants=[tf.TensorShape([1, None])])
+r = tf.compat.v1.while_loop(c,
+                            b, [i],
+                            name="While",
+                            shape_invariants=[tf.TensorShape([1, None])])
 
 output = tf.compat.v1.identity(r, name="Output")
 

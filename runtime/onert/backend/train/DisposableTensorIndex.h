@@ -88,8 +88,6 @@ private:
   ir::OperandIndex _operand_index;
 };
 
-template <typename T> using DisposableTensorIndexMap = std::unordered_map<DisposableTensorIndex, T>;
-
 inline std::ostream &operator<<(std::ostream &o, const DisposableTensorIndex &i)
 {
   return operator<<(o, i.operand_index());

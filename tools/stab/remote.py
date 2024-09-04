@@ -24,7 +24,6 @@ class RemoteSSH():
 
     TODO : Using SSH library instead of direct ssh call
     """
-
     def __init__(self, user, ip, nnpkg_dir, num_threads):
         self.base_dir = Path('/tmp/ONE')
         self.trace_dir = 'traces'

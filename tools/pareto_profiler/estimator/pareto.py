@@ -40,10 +40,12 @@ class ParetoData:
         new_item = True
         if self._pareto_solutions:
             for key in list(self._pareto_solutions):
-                if self._pareto_solutions[key][0] < exec_time and self._pareto_solutions[key][1] < max_rss:
+                if self._pareto_solutions[key][0] < exec_time and self._pareto_solutions[
+                        key][1] < max_rss:
                     new_item = False
                     break
-                elif self._pareto_solutions[key][0] > exec_time and self._pareto_solutions[key][1] > max_rss:
+                elif self._pareto_solutions[key][
+                        0] > exec_time and self._pareto_solutions[key][1] > max_rss:
                     self.add_pareto_entry(sample, exec_time, max_rss, key, explore_flag,
                                           True)
                     new_item = False

@@ -49,8 +49,7 @@ def _request_recent_version(token=None):
         # Return the latest version containing one-compiler-focal_{version}_amd64.deb in assets
         version = release_item["tag_name"]
         for asset in release_item["assets"]:
-            if bool(
-                    re.match(r'one-compiler-focal_\d+\.\d+\.\d_amd64.deb',
+            if bool(re.match(r'one-compiler-focal_\d+\.\d+\.\d_amd64.deb',
                              asset["name"])):
                 return version
 
@@ -59,8 +58,10 @@ def _request_recent_version(token=None):
 
 # 10 sec timeout is set based on github.com/Samsung/ONE/issues/11134
 def _run(cmd, is_shell=False, timeout=10):
-    result = subprocess.Popen(
-        cmd, shell=is_shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    result = subprocess.Popen(cmd,
+                              shell=is_shell,
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
 
     stdout, stderr = result.communicate(timeout=timeout)
     stdout = stdout.decode('utf-8')
@@ -85,8 +86,8 @@ def main():
 
     onecc_docker_usage = 'onecc-docker [-h] [-t TOKEN] [COMMAND <args>]'
     onecc_docker_desc = 'Run onecc via docker'
-    parser = argparse.ArgumentParser(
-        usage=onecc_docker_usage, description=onecc_docker_desc)
+    parser = argparse.ArgumentParser(usage=onecc_docker_usage,
+                                     description=onecc_docker_desc)
     parser.add_argument(
         "-t",
         "--token",

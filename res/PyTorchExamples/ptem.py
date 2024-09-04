@@ -54,8 +54,10 @@ for example in args.examples:
 
     onnx_model_path = output_folder + example + ".onnx"
 
-    torch.onnx.export(
-        module._model_, module._dummy_, onnx_model_path, opset_version=opset_version)
+    torch.onnx.export(module._model_,
+                      module._dummy_,
+                      onnx_model_path,
+                      opset_version=opset_version)
     print("Generate '" + example + ".onnx' - Done")
 
     onnx_model = onnx.load(onnx_model_path)
