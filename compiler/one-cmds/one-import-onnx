@@ -244,12 +244,16 @@ def _remap_io_names(onnx_model):
     remapper.update()
 
 
-def _check_ext(args):
+def _disable_ext(args):
     if oneutils.is_valid_attr(args, 'disable_ext'):
-        return None
+        return True
     env_disable_ext = os.getenv('ONE_IMPORT_ONNX_EXT_DISABLE')
     if env_disable_ext == '1' or env_disable_ext == 'Y':
-        return None
+        return True
+    return False
+
+
+def _check_ext():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     ext_path = os.path.join(dir_path, 'one-import-onnx-ext')
     if (os.path.isfile(ext_path)):
@@ -263,7 +267,11 @@ def _convert(args):
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
-    ext_path = _check_ext(args)
+
+    # get import onnx extension path
+    ext_path = None
+    if not _disable_ext(args):
+        ext_path = _check_ext()
 
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # save intermediate
