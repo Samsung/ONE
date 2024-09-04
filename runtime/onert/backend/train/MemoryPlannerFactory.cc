@@ -29,21 +29,22 @@ MemoryPlannerFactory &MemoryPlannerFactory::get()
   return instance;
 }
 
+// TODO: Update to use template varialbe instead of DisposableTensorIndex
 basic::IMemoryPlanner<DisposableTensorIndex> *MemoryPlannerFactory::create(const std::string &key)
 {
   if (key == "FirstFit")
   {
-    return new FirstFitPlanner;
+    return new FirstFitPlanner<DisposableTensorIndex>();
   }
   else if (key == "Bump")
   {
-    return new BumpPlanner;
+    return new BumpPlanner<DisposableTensorIndex>();
   }
   else if (key == "WIC")
   {
-    return new WICPlanner;
+    return new WICPlanner<DisposableTensorIndex>();
   }
-  return new FirstFitPlanner; // Default Planner
+  return new FirstFitPlanner<DisposableTensorIndex>(); // Default Planner
 }
 
 } // namespace train
