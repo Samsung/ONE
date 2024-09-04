@@ -163,6 +163,10 @@ void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Ten
 OMStatus SISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input,
                     const circle::Tensor **output, uint8_t **input_data, uint8_t **output_data);
 
+OMStatus TISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input1,
+                    const circle::Tensor **input2, const circle::Tensor **output,
+                    OMRuntimeKernel *runtime_kernel);
+
 } // namespace execute
 } // namespace onert_micro
 
