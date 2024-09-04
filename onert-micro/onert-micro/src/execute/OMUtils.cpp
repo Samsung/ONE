@@ -237,9 +237,11 @@ void onert_micro::execute::calculateQuantParams(core::ArithmeticQuantParams &par
                                     &params.quantized_activation_max);
 }
 
-OMStatus onert_micro::execute::TISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input1,
-                                         const circle::Tensor **input2, const circle::Tensor **output,
-                                         OMRuntimeKernel *runtime_kernel)
+OMStatus onert_micro::execute::TISOHeader(const OMExecuteArgs &execute_args,
+                                          const circle::Tensor **input1,
+                                          const circle::Tensor **input2,
+                                          const circle::Tensor **output,
+                                          OMRuntimeKernel *runtime_kernel)
 {
   OMStatus status;
 
