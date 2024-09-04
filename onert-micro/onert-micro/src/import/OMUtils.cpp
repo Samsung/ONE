@@ -42,8 +42,10 @@ OMStatus onert_micro::import::SISOHeader(const OMConfigureArgs &execute_args,
   return status;
 }
 
-OMStatus onert_micro::import::TISOHeader(const OMConfigureArgs &execute_args, const circle::Tensor **input1,
-                                         const circle::Tensor **input2, const circle::Tensor **output)
+OMStatus onert_micro::import::TISOHeader(const OMConfigureArgs &execute_args,
+                                         const circle::Tensor **input1,
+                                         const circle::Tensor **input2,
+                                         const circle::Tensor **output)
 {
   OMStatus status;
 

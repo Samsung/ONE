@@ -40,8 +40,7 @@ OMStatus SISOHeader(const OMConfigureArgs &execute_args, const circle::Tensor **
 OMStatus TISOHeader(const OMConfigureArgs &execute_args, const circle::Tensor **input1,
                     const circle::Tensor **input2, const circle::Tensor **output);
 
-
-} // namespace execute
+} // namespace import
 } // namespace onert_micro
 
 #endif // ONERT_MICRO_IMPORT_UTILS_H
