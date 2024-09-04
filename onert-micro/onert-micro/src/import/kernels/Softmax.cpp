@@ -21,6 +21,7 @@
 #include "import/OMKernelConfigureBuilder.h"
 
 #include "execute/OMRuntimeKernel.h"
+#include "import/OMUtils.h"
 
 using namespace onert_micro;
 using namespace onert_micro::core;
@@ -35,21 +36,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 OMStatus onert_micro::import::configure_kernel_CircleSoftmax(const OMConfigureArgs &config_args)
 {
-  OMRuntimeContext &runtime_context = config_args.runtime_context;
-  uint16_t op_index = config_args.kernel_index;
+  const circle::Tensor *input;
+  const circle::Tensor *output;
 
-  onert_micro::execute::OMRuntimeKernel runtime_kernel;
+  SISOHeader(config_args, &input, &output);
 
-  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-  if (status != Ok)
-    return status;
-
-  const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input != nullptr);
-  assert(output != nullptr);
-
+  OMStatus status;
   status = utils::checkCondition(input->type() == output->type());
   if (status != Ok)
     return status;
