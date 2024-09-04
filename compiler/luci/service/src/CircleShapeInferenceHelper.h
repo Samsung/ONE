@@ -49,11 +49,7 @@ loco::TensorShape circle_shape(const luci::CircleNode *node);
 loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::TensorShape &y);
 
 // Return shape of pad ops using const paddings.
-loco::TensorShape pad_shape(const loco::TensorShape &input_shape,
-                            const luci::CircleConst *paddings);
-
-// Return shape that only rank is known. All deminsions of shape is unknown.
-loco::TensorShape unknown_shape(const loco::TensorShape &input_shape);
+loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::CircleNode *paddings);
 
 /**
  * @brief Create a higher-rank TensorShape following NumPy broadcasting semantics
