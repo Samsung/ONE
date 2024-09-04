@@ -72,9 +72,6 @@ OMStatus onert_micro::import::configure_kernel_CircleSVDF(const OMConfigureArgs 
 
   OMStatus status = Ok;
 
-  if (status != Ok)
-    return status;
-
   const auto *options = runtime_kernel.first_operator->builtin_options_as_SVDFOptions();
   status = utils::checkCondition(options != nullptr);
   if (status != Ok)

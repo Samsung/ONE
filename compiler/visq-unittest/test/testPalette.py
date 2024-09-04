@@ -34,8 +34,10 @@ class VisqPaletteTest(unittest.TestCase):
 
         for min_val, max_val in zip(min_test, max_test):
             # min must be less than max
-            self.assertRaises(
-                RuntimeError, YLORRD9Palette, qerror_min=min_val, qerror_max=max_val)
+            self.assertRaises(RuntimeError,
+                              YLORRD9Palette,
+                              qerror_min=min_val,
+                              qerror_max=max_val)
 
 
 if __name__ == '__main__':

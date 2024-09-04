@@ -11,19 +11,17 @@ def regular_step():
     """
     parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter)
 
-    parser.add_argument(
-        '-m',
-        '--model',
-        help=("specify input file with NN model, \n[depends from model, "
-              " two for caffe and caffe2, one for onnx and tflite]"),
-        nargs='+')
-    parser.add_argument(
-        '-i',
-        '--input',
-        help=(" specify file with neural"
-              " network input data, hdf5 for caffe caffe2 tflite "
-              "and pb for onnx"),
-        required=True)
+    parser.add_argument('-m',
+                        '--model',
+                        help=("specify input file with NN model, \n[depends from model, "
+                              " two for caffe and caffe2, one for onnx and tflite]"),
+                        nargs='+')
+    parser.add_argument('-i',
+                        '--input',
+                        help=(" specify file with neural"
+                              " network input data, hdf5 for caffe caffe2 tflite "
+                              "and pb for onnx"),
+                        required=True)
     parser.add_argument(
         '-o',
         '--output_path',

@@ -37,7 +37,7 @@ software-properties-common \
 unzip \
 wget
 
-$ pip3 install yapf==0.22.0 numpy
+$ pip3 install yapf==0.40.2 numpy
 
 ```
 

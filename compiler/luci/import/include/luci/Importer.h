@@ -41,9 +41,10 @@ public:
     // DO NOTHING
   }
 
-public:
-  // TODO move to private
+private:
   std::unique_ptr<Module> importModule(const circle::Model *model) const;
+
+public:
   std::unique_ptr<Module> importModule(const uint8_t *data, size_t size);
 
 private:

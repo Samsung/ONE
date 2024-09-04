@@ -1,6 +1,6 @@
 Name:    nnfw
 Summary: nnfw
-Version: 1.29.0
+Version: 1.30.0
 Release: 1
 Group:   Development
 License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
@@ -232,6 +232,7 @@ mkdir -p %{buildroot}%{_libdir}/nnfw/loader
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
+install -m 644 build/out/lib/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
 install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
 install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
 install -m 755 build/out/bin/onert-minimal-app %{buildroot}%{_bindir}
@@ -294,6 +295,7 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/*.so
+%{_libdir}/nnfw/*.so
 %{_libdir}/nnfw/backend/*.so
 %{_libdir}/nnfw/loader/*.so
 %exclude %{_includedir}/CL/*
