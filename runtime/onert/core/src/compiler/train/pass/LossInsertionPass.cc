@@ -64,8 +64,14 @@ void LossInsertionPass::run()
   auto output_index = _trainable_graph.addOperand(output_shape, float_op);
   ir::OperandIndexSequence outputs{output_index};
 
+  // The last node information may be required in some loss layers (e.g.,
+  // CategoricalCrossEntropy(SoftmaxCrossEntropy));
+  auto &last_node = _trainable_graph.operations().at(y_pred.getDef());
+  const auto last_node_code = last_node.opcode();
+
   auto loss_op = std::make_unique<ir::operation::Loss>(inputs, outputs);
-  auto trainable_loss_op = std::make_unique<ir::train::operation::Loss>(*loss_op, loss_info);
+  auto trainable_loss_op =
+    std::make_unique<ir::train::operation::Loss>(*loss_op, loss_info, last_node_code);
   trainable_loss_op->enableBackward();
 
   _trainable_graph.addOperation(std::move(trainable_loss_op));

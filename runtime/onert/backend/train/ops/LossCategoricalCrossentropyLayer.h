@@ -36,13 +36,14 @@ public:
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
                  IPortableTensor *output, IPortableTensor *back_prop_y_pred, int32_t axis,
-                 float label_smoothing);
+                 float label_smoothing, bool is_required_normalization);
   void forward(bool training) override;
   void backward() override;
 
 private:
   int32_t _axis{-1};
   float _label_smoothing{0.0f};
+  bool _is_required_normalization{false};
 };
 
 } // namespace ops

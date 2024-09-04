@@ -417,9 +417,11 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
     }
     case ir::train::LossCode::CategoricalCrossentropy:
     {
+      const auto last_node = node.last_node_code();
+      bool is_required_normalization = (last_node != ir::OpCode::Softmax);
       auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    loss_param.cce.axis, loss_param.cce.label_smoothing);
+                    loss_param.cce.axis, loss_param.cce.label_smoothing, is_required_normalization);
       _return_fn = std::move(fn);
       break;
     }

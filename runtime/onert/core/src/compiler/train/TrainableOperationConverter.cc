@@ -68,7 +68,13 @@ void TrainableOperationConverter::visit(const ir::operation::FullyConnected &nod
 
 void TrainableOperationConverter::visit(const ir::operation::Loss &node)
 {
-  _return_op = std::make_unique<ir::train::operation::Loss>(node, _training_info->lossInfo());
+  const auto &y_pred_index = node.getInputs().at(ir::operation::Loss::Input::Y_PRED);
+  const auto &y_pred = _tgraph.operands().at(y_pred_index);
+  const auto &last_node = _tgraph.operations().at(y_pred.getDef());
+  const auto &last_node_code = last_node.opcode();
+
+  _return_op =
+    std::make_unique<ir::train::operation::Loss>(node, _training_info->lossInfo(), last_node_code);
 }
 
 void TrainableOperationConverter::visit(const ir::operation::Pad &node)

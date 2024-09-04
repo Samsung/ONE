@@ -38,7 +38,7 @@ private:
   using OperationType = ir::operation::Loss;
 
 public:
-  Loss(const OperationType &operation, const LossInfo &info);
+  Loss(const OperationType &operation, const LossInfo &info, ir::OpCode last_node_code);
 
 public:
   std::unique_ptr<ITrainableOperation> clone() const override;
@@ -49,9 +49,11 @@ public:
 
 public:
   const LossInfo &param() const { return _param; }
+  ir::OpCode last_node_code() const { return _last_node_code; }
 
 private:
   LossInfo _param;
+  ir::OpCode _last_node_code; // Last node code of graph
 };
 
 } // namespace operation

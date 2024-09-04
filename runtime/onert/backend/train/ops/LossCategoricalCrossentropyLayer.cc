@@ -32,12 +32,14 @@ void LossCategoricalCrossentropyLayer::configure(const IPortableTensor *y_pred,
                                                  const IPortableTensor *y_true,
                                                  IPortableTensor *output,
                                                  IPortableTensor *back_prop_y_pred, int32_t axis,
-                                                 float label_smoothing)
+                                                 float label_smoothing,
+                                                 bool is_required_normalization)
 {
   LossLayer::configure(y_pred, y_true, output, back_prop_y_pred);
 
   _axis = axis;
   _label_smoothing = label_smoothing;
+  _is_required_normalization = is_required_normalization;
 }
 
 void LossCategoricalCrossentropyLayer::forward(bool)
@@ -60,9 +62,20 @@ void LossCategoricalCrossentropyLayer::backward()
 
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
-    nnfw::cker::train::CategoricalCrossEntropyGrad(
-      getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
-      getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
+    if (_is_required_normalization)
+    {
+      // TODO Eliminate duplicate calculations for output
+      nnfw::cker::train::CategoricalCrossEntropyWithLogits(
+        getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
+        getShape(_output), getBuffer<float>(_output), getShape(_back_prop_y_pred),
+        getBuffer<float>(_back_prop_y_pred));
+    }
+    else
+    {
+      nnfw::cker::train::CategoricalCrossEntropyGrad(
+        getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
+        getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
+    }
   }
   else
   {

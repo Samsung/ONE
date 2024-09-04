@@ -70,8 +70,14 @@ OperationIndex addLossOperation(train::TrainableGraph &tgraph, const OperandInde
                                 const OperandIndexSequence outputs)
 {
   // Add "Loss" operation
+  const auto &y_pred_index = inputs.at(0);
+  const auto &y_pred = tgraph.operands().at(y_pred_index);
+  const auto &last_node = tgraph.operations().at(y_pred.getDef());
+  const auto &last_node_code = last_node.opcode();
+
   auto loss_op = operation::Loss(inputs, outputs);
-  return tgraph.addOperation(std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}));
+  return tgraph.addOperation(
+    std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}, last_node_code));
 }
 
 train::UseDefChain createUseDefChain(const Operand &operand,
