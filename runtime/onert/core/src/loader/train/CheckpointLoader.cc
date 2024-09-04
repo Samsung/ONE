@@ -105,7 +105,8 @@ public:
       throw std::runtime_error{"Invalid SCHEMA VERSION"};
 
     _tensor_data.setSize(_header.length);
-    _file.read(_tensor_data.getOffsetBuf(), _header.length * sizeof(uint32_t));
+    _file.read(_tensor_data.getOffsetBuf(),
+               static_cast<std::streamsize>(_header.length * sizeof(uint32_t)));
     if (_file.fail())
       throw std::runtime_error{"Failed to load tensor data"};
     _tensor_data.calculateSize(_header.opt1_offset);
@@ -113,8 +114,9 @@ public:
     if (_header.opt1_offset)
     {
       DataBuffer opt1_data(_header.length);
-      _file.seekg(_header.opt1_offset, std::ios::beg);
-      _file.read(opt1_data.getOffsetBuf(), _header.length * sizeof(uint32_t));
+      _file.seekg(static_cast<std::streamoff>(_header.opt1_offset), std::ios::beg);
+      _file.read(opt1_data.getOffsetBuf(),
+                 static_cast<std::streamsize>(_header.length * sizeof(uint32_t)));
       opt1_data.calculateSize(_header.opt2_offset);
       _optimizer_data.emplace_back(std::move(opt1_data));
     }
@@ -122,8 +124,9 @@ public:
     if (_header.opt2_offset)
     {
       DataBuffer opt2_data(_header.length);
-      _file.seekg(_header.opt2_offset, std::ios::beg);
-      _file.read(opt2_data.getOffsetBuf(), _header.length * sizeof(uint32_t));
+      _file.seekg(static_cast<std::streamoff>(_header.opt2_offset), std::ios::beg);
+      _file.read(opt2_data.getOffsetBuf(),
+                 static_cast<std::streamsize>(_header.length * sizeof(uint32_t)));
       opt2_data.calculateSize(_header.other_offset);
       _optimizer_data.emplace_back(std::move(opt2_data));
     }
@@ -132,7 +135,7 @@ public:
       throw std::runtime_error{"Invalid checkpoint file footer data"};
 
     memset(reinterpret_cast<char *>(&_footer), 0, sizeof(_footer));
-    _file.seekg(_header.other_offset, std::ios::beg);
+    _file.seekg(static_cast<std::streamoff>(_header.other_offset), std::ios::beg);
     _file.read(reinterpret_cast<char *>(&_footer), sizeof(_footer));
   }
 
@@ -160,8 +163,9 @@ public:
       [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
         assert(tensor);
         assert(_tensor_data[vindex].size == tensor->total_size());
-        _file.seekg(_tensor_data[vindex].offset, std::ios::beg);
-        _file.read(reinterpret_cast<char *>(tensor->buffer()), tensor->total_size());
+        _file.seekg(static_cast<std::streamoff>(_tensor_data[vindex].offset), std::ios::beg);
+        _file.read(reinterpret_cast<char *>(tensor->buffer()),
+                   static_cast<std::streamsize>(tensor->total_size()));
         vindex++;
       });
   }
@@ -204,23 +208,24 @@ private:
     _file.clear();
 
     auto vindex = 0;
-    exec->iterateTrainableTensors(
-      [&](const ir::OperandIndex &, const backend::train::ITrainableTensor *tensor) {
-        assert(tensor);
-        auto trainable_tensor = const_cast<backend::train::ITrainableTensor *>(tensor);
-        const auto opt_vars = trainable_tensor->optVars();
+    exec->iterateTrainableTensors([&](const ir::OperandIndex &,
+                                      const backend::train::ITrainableTensor *tensor) {
+      assert(tensor);
+      auto trainable_tensor = const_cast<backend::train::ITrainableTensor *>(tensor);
+      const auto opt_vars = trainable_tensor->optVars();
 
-        // Untrainable tensor should not have any optimizer variables.
-        assert(opt_vars.size() == ADAM_VARIABLE_COUNT || opt_vars.size() == 0);
+      // Untrainable tensor should not have any optimizer variables.
+      assert(opt_vars.size() == ADAM_VARIABLE_COUNT || opt_vars.size() == 0);
 
-        for (size_t i = 0; i < opt_vars.size(); ++i)
-        {
-          assert(opt_vars[i]->total_size() == _optimizer_data[i][vindex].size);
-          _file.seekg(_optimizer_data[i][vindex].offset, std::ios::beg);
-          _file.read(reinterpret_cast<char *>(opt_vars[i]->buffer()), opt_vars[i]->total_size());
-        }
-        vindex++;
-      });
+      for (size_t i = 0; i < opt_vars.size(); ++i)
+      {
+        assert(opt_vars[i]->total_size() == _optimizer_data[i][vindex].size);
+        _file.seekg(static_cast<std::streamoff>(_optimizer_data[i][vindex].offset), std::ios::beg);
+        _file.read(reinterpret_cast<char *>(opt_vars[i]->buffer()),
+                   static_cast<std::streamsize>(opt_vars[i]->total_size()));
+      }
+      vindex++;
+    });
   }
 
 private:
