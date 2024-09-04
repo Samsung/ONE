@@ -425,7 +425,7 @@ void UseDefGenerator::initForForwardingNodes()
     }
 
     assert(_training_usedefs.at(forwarding_operand_index).getTrainingUses().size() == 0);
-    const auto &uses = operand.getUses();
+    const auto uses(operand.getUses());
     for (const auto &use : uses)
       insertUse(forwarding_operand_index, TrainingOperationIndex{use, is_forward});
   });
