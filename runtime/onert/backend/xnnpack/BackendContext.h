@@ -42,7 +42,7 @@ public:
     : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
       tensor_builder{tensor_builder}, kernel_gen{kernel_gen}, _external_context(nullptr)
   {
-    int num_threads = util::getConfigInt(util::config::XNNPACK_THREADS);
+    int num_threads = util::getConfigInt(util::config::NUM_THREADS);
     if (num_threads < 1)
       num_threads = kDefaultNumThreadpoolThreads; // default num of threads
     _external_context.reset(new ExternalContext(static_cast<size_t>(num_threads)));

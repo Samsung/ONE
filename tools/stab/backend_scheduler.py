@@ -145,8 +145,7 @@ class BackendScheduler:
                 for op in op_list:
                     cmd += [f"OP_BACKEND_{op}={default_backend}"]
         cmd += [f"BACKENDS={';'.join(backend_list)}"]
-        cmd += [f"RUY_THREADS={self.num_threads}"]
-        cmd += [f"XNNPACK_THREADS={self.num_threads}"]
+        cmd += [f"NUM_THREADS={self.num_threads}"]
         logging.info(' '.join(cmd))
 
         # Create nnpackage with backend mapping

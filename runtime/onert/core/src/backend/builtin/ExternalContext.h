@@ -42,7 +42,7 @@ private:
 public:
   ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())
   {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
     initPerThreadState();
   }
 

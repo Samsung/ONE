@@ -37,7 +37,7 @@ private:
 public:
   ExternalContext() : _ruy_context(new ::ruy::Context)
   {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
   }
 
   void setMaxNumThreads(int max_num_threads)
