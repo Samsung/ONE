@@ -218,10 +218,6 @@ loco::TensorShape unknown_shape(const loco::TensorShape &input_shape)
   loco::TensorShape output_shape;
   int32_t n = input_shape.rank();
   output_shape.rank(n);
-  for (int32_t ni = 0; ni < n; ++ni)
-  {
-    output_shape.dim(ni).unset();
-  }
   return output_shape;
 }
 
