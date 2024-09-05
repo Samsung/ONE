@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
+#include "HelperConv2Ds.h"
+#include "luci/Service/CircleShapeInference.h"
+
 #include "CircleCloneNode.h"
+#include "CircleShapeInferenceHelper.h"
+
+#include <luci/Log.h>
 
 namespace luci
 {
@@ -38,5 +44,38 @@ luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleConv2D *node)
   }
   return cloned;
 }
+
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleConv2D *node)
+{
+  LOGGER(l);
+
+  std::cout << "CircleConv2D ShapeInf" << std::endl;
+  
+  auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
+  auto ker_shape = luci::shape_get(node->filter()).as<loco::TensorShape>(); // in OHWI
+
+  assert(ifm_shape.rank() == 4);
+  assert(ker_shape.rank() == 4);
+  assert(ifm_shape.dim(3) == ker_shape.dim(3));
+
+  loco::TensorShape ofm_shape = conv2d_output_shape(node);
+  // Height and width have already been determined by conv2d_output_shape
+  ofm_shape.dim(0) = ifm_shape.dim(0);
+  ofm_shape.dim(3) = ker_shape.dim(0);
+
+  INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
+          << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
+          << ofm_shape.dim(2).value() << "," << ofm_shape.dim(3).value() << ") " << node->name()
+          << std::endl;
+
+  std::cout << "CircleConv2D ShapeInf end" << std::endl;
+
+  return ofm_shape;
+}
+
+} // namespace sinf
 
 } // namespace luci

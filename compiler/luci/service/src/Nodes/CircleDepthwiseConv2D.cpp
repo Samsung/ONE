@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
+#include "HelperConv2Ds.h"
+#include "luci/Service/CircleShapeInference.h"
+
 #include "CircleCloneNode.h"
+#include "CircleShapeInferenceHelper.h"
 
 namespace luci
 {
@@ -39,5 +43,28 @@ luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleDepthwiseConv2D
   }
   return cloned;
 }
+
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleDepthwiseConv2D *node)
+{
+  auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
+  auto ker_shape = luci::shape_get(node->filter()).as<loco::TensorShape>(); // in 1 H W CM
+
+  assert(ifm_shape.rank() == 4);
+  assert(ker_shape.rank() == 4);
+  assert(ker_shape.dim(0).value() == 1);
+  assert(ifm_shape.dim(3).value() * node->depthMultiplier() == ker_shape.dim(3).value());
+
+  loco::TensorShape ofm_shape = conv2d_output_shape(node);
+  // Height and width have already been determined by conv2d_output_shape
+  ofm_shape.dim(0) = ifm_shape.dim(0);
+  ofm_shape.dim(3) = ker_shape.dim(3);
+  
+  return ofm_shape;
+}
+
+} // namespace sinf
 
 } // namespace luci
