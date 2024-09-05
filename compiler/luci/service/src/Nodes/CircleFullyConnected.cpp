@@ -59,7 +59,8 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
 
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L225
   LUCI_ASSERT(weights_shape.rank() == 2, "Weights of FullyConnected should be 2");
-
+  LUCI_ASSERT(weights_shape.dim(0).known() && weights_shape.dim(1).known(),
+              "Weights of FullyConnected should be known")
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
 
   /*
@@ -73,14 +74,14 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
    * **Pre-conditions:**
    *    input_shape.rank() <= 4
    *      * remark: TFLite allows <=3 ranks, but there are rank 4 input recipes in ONE
-   *    weight_shape.rank() == 2 and all dimensions are known.
-   *    Regardless of whether input_shape[-1] is known or not, input_shape[-1] == weight_shape[-1]
+   *    weights_shape.rank() == 2 and all dimensions are known.
    *    If above conditions are not met, throw an error.
+   *    When runtime(input_shape[-1] and weights_shape[-1] are both known), it should be same value.
    *
    * **Shape Inference Rule:**
    *    **Input Shape:**
    *      input_shape : (A, B, C, D)
-   *      weight_shape : (E, F)
+   *      weights_shape : (E, F)
    *      A, B, C, D are "positive numbers" or "unknown".
    *      E, F are always "positive numbers".
    *
