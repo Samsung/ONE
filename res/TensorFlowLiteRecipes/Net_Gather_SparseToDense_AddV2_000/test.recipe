@@ -34,7 +34,6 @@ operand {
   name: "default_value_s2d"
   type: INT64
   shape {  }
-  filler { tag: "explicit" arg: "1"} << << scalar needs only 1 arg 
 }
 operand {
   name: "ofm_sparse"
