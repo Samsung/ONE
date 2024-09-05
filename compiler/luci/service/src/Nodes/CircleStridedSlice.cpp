@@ -388,9 +388,14 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
   auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
   auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
   auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
-  if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
+  if (strides_node == nullptr)
   {
-    INTERNAL_EXN("StridedSlice begin/end/strides nodes are not Constant");
+    INTERNAL_EXN("StridedSlice strides node are not Constant");
+  }
+  if (begin_node == nullptr || end_node == nullptr)
+  {
+    output_shape.rank(input_node->rank());
+    return output_shape;
   }
 
   LUCI_ASSERT(begin_node->dtype() == S32, "Only support S32 for begin_node");
