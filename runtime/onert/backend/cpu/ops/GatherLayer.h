@@ -17,6 +17,7 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_GATHERLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_GATHERLAYER_H__
 
+#include "../ExternalContext.h"
 #include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
@@ -40,17 +41,19 @@ public:
 
 public:
   void configure(const IPortableTensor *input, const IPortableTensor *indices,
-                 IPortableTensor *output, int32_t axis);
+                 IPortableTensor *output, int32_t axis, ExternalContext *ctx);
 
   void run() override;
 
 private:
   template <typename OpType> void runByInputType();
+  void runByBlockQuantInputType();
 
 private:
   const IPortableTensor *_input;
   const IPortableTensor *_indices;
   IPortableTensor *_output;
+  ExternalContext *_ctx;
 
   int32_t _axis;
 };
