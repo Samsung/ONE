@@ -2,13 +2,13 @@ operand {
   name: "param_gather"
   type: INT64
   shape { dim: 3 }
-  filler { tag: "explicit" arg: "1" arg: "2" }
+  filler { tag: "explicit" arg: "1" arg: "2"  arg: "0"} << dim=3, so 3 args needed 
 }
 operand {
   name: "indices_gather"
   type: INT64
   shape { dim: 1 }
-  filler { tag: "explicit" arg: "1" arg: "2" }
+  filler { tag: "explicit" arg: "1" } << dim=1, only 1 arg required
 }
 operand {
   name: "ofm_gather"
@@ -16,36 +16,36 @@ operand {
   shape { dim: 1 }
 }
 operand {
-  name: "shape_sparse"
+  name: "indices_s2d" << this operand used for indices, not shape
   type: INT64
   shape { dim: 1 dim: 1 }
   filler {
       tag: "explicit"
-      arg: "3" arg: "5"
+      arg: "0" << only 1 arg required
   }
 }
 operand {
-  name: "values_sparse"
+ name: "shape_s2d" << this operand used for output_shape of sparse_to_dense, not values
   type: INT64
   shape { dim: 1 }
-  filler { tag: "explicit" arg: "1" arg: "2" }
+  filler { tag: "explicit" arg: "3" } << dim =1, only 1 arg required, arg value should be match with ofm_sparse shape 
 }
 operand {
-  name: "defalut_value_sparse"
+  name: "default_value_s2d"
   type: INT64
   shape {  }
-  filler { tag: "explicit" arg: "1" arg: "2" }
+  filler { tag: "explicit" arg: "1"} << << scalar needs only 1 arg 
 }
 operand {
   name: "ofm_sparse"
   type: INT64
-  shape { dim: 3 }
+  shape { dim: 3 } 
 }
 operand {
   name: "add_v2_2"
   type: INT64
   shape { dim: 3 }
-  filler { tag: "explicit" arg: "1" arg: "2" }
+  filler { tag: "explicit" arg: "1" arg: "2" arg : "0"} << dim=3, 3 args required
 }
 operand {
   name: "ofm_add_v2"
@@ -76,7 +76,7 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 1 dim: 10 }
+  shape { dim: 1 dim: 10 dim: 1} << Reshape/shape.dim()(=ofm_cast) and ofm.rank() should be same  
 }
 operation {
   type: "Gather"
@@ -92,10 +92,10 @@ operation {
   sparse_to_dense_options {
     validate_indices: false
   }
-  input: "shape_sparse"
-  input: "values_sparse"
+  input: "indices_s2d"
+  input: "shape_s2d"
   input: "ofm_gather"
-  input: "defalut_value_sparse"
+  input: "default_value_s2d"
   output: "ofm_sparse"
 }
 operation {
