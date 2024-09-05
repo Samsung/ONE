@@ -63,11 +63,11 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
 
   /*
-   * [CircleNode]			  [CircleNode]
-   *   (input)						(weight)
-   *         \			     	/
+   * [CircleNode]       [CircleNode]
+   *   (input)            (weight)
+   *         \            /
    *     [CircleFullyConnected]
-   *            		|
+   *               |
    *            (output)
    *
    * **Pre-conditions:**
