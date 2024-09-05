@@ -64,13 +64,6 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
   // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
 
   /*
-   * [CircleNode]       [CircleNode]
-   *   (input)            (weight)
-   *         \            /
-   *     [CircleFullyConnected]
-   *               |
-   *            (output)
-   *
    * **Pre-conditions:**
    *    input_shape.rank() <= 4
    *      * remark: TFLite allows <=3 ranks, but there are rank 4 input recipes in ONE
