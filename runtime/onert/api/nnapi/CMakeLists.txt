@@ -5,7 +5,7 @@ list(REMOVE_ITEM SOURCES_FRONTEND ${TESTS_FRONTEND})
 set(LIB_ONERT onert)
 
 add_library(${LIB_ONERT} SHARED ${SOURCES_FRONTEND})
-target_link_libraries(${LIB_ONERT} PUBLIC nnfw-nnapi-header)
+target_include_directories(${LIB_ONERT} PUBLIC include)
 target_link_libraries(${LIB_ONERT} PUBLIC onert_core) # TODO Link PRIVATE onert_core
 target_link_libraries(${LIB_ONERT} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT} PRIVATE nnfw_coverage)
