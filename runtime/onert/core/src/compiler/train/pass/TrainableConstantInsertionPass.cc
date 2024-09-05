@@ -40,7 +40,7 @@ void TrainableConstantInsertionPass::callback(const ir::OperationIndex &node_ind
       continue;
 
     // Insert new operands for shared constant except for the current node.
-    const auto &uses = object.getUses();
+    const auto uses(object.getUses());
     for (const auto &use_index : uses)
     {
       if (use_index == node_index)
