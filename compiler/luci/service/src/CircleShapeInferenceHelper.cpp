@@ -161,7 +161,7 @@ loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::Tensor
   return output_shape;
 }
 
-loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::CircleConst *paddings)
+loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::CircleNode *paddings)
 {
   const loco::DataType S32 = loco::DataType::S32;
   const loco::DataType S64 = loco::DataType::S64;
@@ -180,6 +180,12 @@ loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::Ci
   loco::TensorShape output_shape;
 
   output_shape.rank(input_shape.rank());
+
+  auto const_padding = dynamic_cast<const luci::CircleConst *>(paddings);
+
+  if (const_padding == nullptr)
+    return output_shape;
+
   for (int32_t ni = 0; ni < n; ++ni)
   {
     if (not input_shape.dim(ni).known())
@@ -189,15 +195,15 @@ loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::Ci
     }
     int32_t idx = ni * 2;
     int value = input_shape.dim(ni).value();
-    if (paddings->dtype() == S32)
+    if (const_padding->dtype() == S32)
     {
-      value += paddings->at<S32>(idx + 0); // left
-      value += paddings->at<S32>(idx + 1); // right
+      value += const_padding->at<S32>(idx + 0); // left
+      value += const_padding->at<S32>(idx + 1); // right
     }
     else
     {
-      auto pl = paddings->at<S64>(idx + 0);
-      auto pr = paddings->at<S64>(idx + 1);
+      auto pl = const_padding->at<S64>(idx + 0);
+      auto pr = const_padding->at<S64>(idx + 1);
       auto max = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
       auto low = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
       LUCI_ASSERT(pl <= max, "paddings is over 32 bit limit");
