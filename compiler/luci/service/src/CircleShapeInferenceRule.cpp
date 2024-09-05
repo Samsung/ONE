@@ -2142,8 +2142,6 @@ public:
 
   loco::NodeShape visit(const luci::CircleMirrorPad *node) final { return infer_mirror_pad(node); }
 
-  loco::NodeShape visit(const luci::CircleNeg *node) final { return use_x(node); }
-
   loco::NodeShape visit(const luci::CircleNonMaxSuppressionV4 *node) final
   {
     const auto boxes_shape = luci::shape_get(node->boxes()).as<loco::TensorShape>();
