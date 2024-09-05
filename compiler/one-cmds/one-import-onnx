@@ -195,8 +195,6 @@ def _get_parser():
                                action='store_true',
                                help='Disable one-import-onnx-ext for second attempt')
 
-    parser.add_argument('--use_extension', type=str, help=argparse.SUPPRESS)
-
     # save intermediate file(s)
     parser.add_argument('--save_intermediate',
                         action='store_true',
