@@ -16,6 +16,8 @@
 
 #include "execute/kernels/MathCommon.h"
 
+#include "execute/OMUtils.h"
+
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
@@ -33,39 +35,15 @@ OMStatus onert_micro::execute::execute_math_common(
   const std::function<OMStatus(const core::OMRuntimeShape &, const float *,
                                const core::OMRuntimeShape &, float *)> &f_float)
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
-
   const circle::Tensor *input = nullptr;
   const circle::Tensor *output = nullptr;
 
   uint8_t *input_data = nullptr;
   uint8_t *output_data = nullptr;
 
-  OMStatus status = Ok;
+  SISOHeader(execute_args, &input, &output, &input_data, &output_data);
 
-  {
-    OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
-
-    input = runtime_kernel.inputs[inputTensorIdx];
-    output = runtime_kernel.outputs[outputTensorIdx];
-
-    assert(input != nullptr);
-    assert(output != nullptr);
-
-    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
-    if (status != Ok)
-      return status;
-
-    input_data = runtime_kernel.inputs_data[inputTensorIdx];
-    output_data = runtime_kernel.outputs_data[outputTensorIdx];
-  }
-
-  assert(input_data != nullptr);
-  assert(output_data != nullptr);
-
+  OMStatus status;
   switch (input->type())
   {
 #ifndef DIS_FLOAT
