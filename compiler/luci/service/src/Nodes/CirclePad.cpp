@@ -32,6 +32,7 @@ namespace sinf
 
 loco::TensorShape Algorithm::visit(const luci::CirclePad *node)
 {
+
   auto paddings = loco::must_cast<const luci::CircleNode *>(node->paddings());
 
   auto circle_input = loco::must_cast<const luci::CircleNode *>(node->input());

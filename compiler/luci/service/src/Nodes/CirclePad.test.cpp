@@ -104,7 +104,6 @@ TEST(ShapeRuleTest, pad_non_const_paddings)
 
   node_input->shape({1, 2, 3, 4});
   node_input->shape_status(luci::ShapeStatus::VALID);
-  node_input->dim(2).unset();
 
   node_paddings->dtype(loco::DataType::S64);
   node_paddings->shape({4, 2});

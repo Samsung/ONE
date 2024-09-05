@@ -48,7 +48,8 @@ loco::TensorShape circle_shape(const luci::CircleNode *node);
 // Throw an exception if x and y are not broadcastable.
 loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::TensorShape &y);
 
-// Return shape of pad ops using const paddings.
+// Return shape of pad ops using paddings.
+// If paddings is static, return the shape filled with unknown dimensions.
 loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::CircleNode *paddings);
 
 /**
