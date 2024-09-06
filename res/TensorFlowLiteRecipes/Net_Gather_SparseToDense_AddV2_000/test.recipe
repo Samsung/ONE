@@ -16,7 +16,7 @@ operand {
   shape { dim: 1 }
 }
 operand {
-  name: "shape_sparse"
+  name: "indices_sparse2dense"
   type: INT64
   shape { dim: 1 dim: 1 }
   filler {
@@ -25,19 +25,19 @@ operand {
   }
 }
 operand {
-  name: "values_sparse"
+  name: "shape_sparse2dense"
   type: INT64
   shape { dim: 1 }
   filler { tag: "explicit" arg: "1" arg: "2" }
 }
 operand {
-  name: "defalut_value_sparse"
+  name: "defalut_value_sparse2dense"
   type: INT64
   shape {  }
   filler { tag: "explicit" arg: "1" arg: "2" }
 }
 operand {
-  name: "ofm_sparse"
+  name: "ofm_sparse2dense"
   type: INT64
   shape { dim: 3 }
 }
@@ -92,15 +92,15 @@ operation {
   sparse_to_dense_options {
     validate_indices: false
   }
-  input: "shape_sparse"
-  input: "values_sparse"
+  input: "indices_sparse2dense"
+  input: "shape_sparse2dense"
   input: "ofm_gather"
-  input: "defalut_value_sparse"
-  output: "ofm_sparse"
+  input: "defalut_value_sparse2dense"
+  output: "ofm_sparse2dense"
 }
 operation {
   type: "Custom"
-  input: "ofm_sparse"
+  input: "ofm_sparse2dense"
   input: "add_v2_2"
   output: "ofm_add_v2"
   custom_code: "AddV2"
