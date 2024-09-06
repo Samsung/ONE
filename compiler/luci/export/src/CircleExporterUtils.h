@@ -27,7 +27,7 @@
 #include <mio/circle/schema_generated.h>
 
 // limitation of current flatbuffers file size
-inline constexpr unsigned int FLATBUFFERS_SIZE_MAX = 2147483648;
+inline constexpr uint64_t FLATBUFFERS_SIZE_MAX = 2147483648UL; // 2GB
 
 namespace luci
 {
