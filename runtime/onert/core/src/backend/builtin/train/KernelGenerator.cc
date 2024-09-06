@@ -72,18 +72,18 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   for (uint32_t i = 0; i < input_tensors.size(); i++)
     permute_types.emplace_back(ir::PermuteType::COPY);
 
-  // NOTE The output buffers of IOTensors are not essential for training. If there
-  //      is no output buffer provided by the user, permute is not performed.
-  bool ignore_forward_in_training = false;
-  for (const auto dst_tensor : output_tensors)
-  {
-    if (dst_tensor->buffer() == nullptr || dst_tensor->total_size() == 0)
-      ignore_forward_in_training = true;
-  }
+  // // NOTE The output buffers of IOTensors are not essential for training. If there
+  // //      is no output buffer provided by the user, permute is not performed.
+  // bool ignore_forward_in_training = false;
+  // for (const auto dst_tensor : output_tensors)
+  // {
+  //   if (dst_tensor->buffer() == nullptr || dst_tensor->total_size() == 0)
+  //     ignore_forward_in_training = true;
+  // }
 
   auto fn = std::make_unique<kernel::PermuteLayer>(
     input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors, permute_types,
-    ignore_forward_in_training, _external_context);
+    _external_context);
 
   _return_fn = std::move(fn);
 }
