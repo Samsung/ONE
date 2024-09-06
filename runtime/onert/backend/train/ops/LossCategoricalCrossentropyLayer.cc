@@ -58,6 +58,7 @@ void LossCategoricalCrossentropyLayer::backward()
 {
   assert(_back_prop_y_pred != nullptr);
 
+  const auto reduction_type = convertLossReductionType(_reduction_type);
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
     if (_is_required_normalization)
@@ -66,13 +67,13 @@ void LossCategoricalCrossentropyLayer::backward()
       nnfw::cker::train::CategoricalCrossEntropyWithLogits(
         getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
         getShape(_output), getBuffer<float>(_output), getShape(_back_prop_y_pred),
-        getBuffer<float>(_back_prop_y_pred));
+        getBuffer<float>(_back_prop_y_pred), reduction_type);
     }
     else
     {
       nnfw::cker::train::CategoricalCrossEntropyGrad(
         getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
-        getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
+        getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred), reduction_type);
     }
   }
   else
