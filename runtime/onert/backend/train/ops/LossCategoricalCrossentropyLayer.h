@@ -19,6 +19,7 @@
 
 #include "LossLayer.h"
 #include "../Tensor.h"
+#include <ir/train/LossInfo.h>
 
 namespace onert
 {
@@ -35,8 +36,9 @@ public:
   LossCategoricalCrossentropyLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred, int32_t axis,
-                 float label_smoothing, bool is_required_normalization);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 ir::train::LossReductionType reduction_type, int32_t axis, float label_smoothing,
+                 bool is_required_normalization);
   void forward(bool training) override;
   void backward() override;
 

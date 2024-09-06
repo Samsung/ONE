@@ -405,13 +405,15 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
 
   auto loss_code = node.param().loss_code;
   auto loss_param = node.param().loss_param;
+  const auto reduction_type = node.param().reduction_type;
 
   switch (loss_code)
   {
     case ir::train::LossCode::MeanSquaredError:
     {
       auto fn = std::make_unique<ops::LossMeanSquaredErrorLayer>();
-      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor);
+      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
+                    reduction_type);
       _return_fn = std::move(fn);
       break;
     }
@@ -421,7 +423,8 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
       bool is_required_normalization = (last_node != ir::OpCode::Softmax);
       auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    loss_param.cce.axis, loss_param.cce.label_smoothing, is_required_normalization);
+                    reduction_type, loss_param.cce.axis, loss_param.cce.label_smoothing,
+                    is_required_normalization);
       _return_fn = std::move(fn);
       break;
     }
