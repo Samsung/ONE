@@ -12,5 +12,4 @@ It is part of ggml, not all code to reduce the binary size.
 
 Code marking
 
-- `[Line:XXX]`: Original code start line number
-- `[FIX: disable unused]`: Manually disable unused code
+- `#if 0 // [FIX] disable` & `#endif // [FIX] end` pair: Manually disable unused code
