@@ -2,7 +2,7 @@ operand {
   name: "param_gather"
   type: INT64
   shape { dim: 3 }
-  filler { tag: "explicit" arg: "2" arg: "512" arg: "2002"}
+  filler { tag: "explicit" arg: "2" arg: "5" arg: "10"}
 }
 operand {
   name: "indices_gather"
@@ -60,7 +60,7 @@ operand {
 operand {
   name: "ifm"
   type: FLOAT32
-  shape { dim: 2 dim: 2002 dim: 512 }
+  shape { dim: 2 dim: 10 dim: 5 }
 }
 operand {
   name: "perm"
@@ -71,12 +71,12 @@ operand {
 operand {
   name: "ofm_trans"
   type: FLOAT32
-  shape { dim: 2 dim: 512 dim: 2002 }
+  shape { dim: 2 dim: 5 dim: 10 }
 }
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 2 dim: 1 dim:1025024 }
+  shape { dim: 2 dim: 1 dim: 50 }
 }
 operation {
   type: "Gather"
