@@ -64,6 +64,7 @@ struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)
 
   res.op = GGML_OP_NONE;
   res.grad = nullptr;
+  res.data = (void *)(tensor->buffer());
 
   return res;
 }
