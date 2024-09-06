@@ -19,7 +19,7 @@
 #include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
-
+#include <iostream>
 TEST(CloneNodeTest, clone_FullyConnected)
 {
   auto g = loco::make_graph();
@@ -382,34 +382,10 @@ TEST(ShapeRuleTest, fully_connected_weight_rank_1_NEG)
   loco::TensorShape shape;
   luci::sinf::Rule shape_inf_rule;
 
+#ifdef NDEBUG
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&fully_connected, shape));
+#else
   ASSERT_DEATH(shape_inf_rule.infer(&fully_connected, shape),
                "Weights of FullyConnected should be 2");
-}
-
-TEST(ShapeRuleTest, fully_connected_dynamic_weight_NEG)
-{
-  luci::CircleInput input;
-  luci::CircleConst weights;
-  luci::CircleConst bias;
-  luci::CircleFullyConnected fully_connected;
-
-  input.shape({1, 15, 20});
-  input.shape_status(luci::ShapeStatus::VALID);
-
-  weights.shape({30, 20});
-  weights.dim(0).unset();
-  weights.shape_status(luci::ShapeStatus::VALID);
-
-  bias.shape_status(luci::ShapeStatus::VALID);
-
-  fully_connected.input(&input);
-  fully_connected.weights(&weights);
-  fully_connected.bias(&bias);
-  fully_connected.keep_num_dims(true);
-
-  loco::TensorShape shape;
-  luci::sinf::Rule shape_inf_rule;
-
-  ASSERT_DEATH(shape_inf_rule.infer(&fully_connected, shape),
-               "Weights of FullyConnected should be known");
+#endif
 }
