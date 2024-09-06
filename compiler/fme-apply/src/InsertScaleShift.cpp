@@ -59,8 +59,12 @@ std::vector<float> minus(const std::vector<float> &val)
 
 bool calculate_smooth_quant_scale(luci::CircleNode *node, EqualizePattern *p)
 {
-  luci::CircleConst *weight = nullptr;
+  if (p->scale.size() != 0)
+  {
+    throw std::runtime_error("scale should be empty at this moment.");
+  }
 
+  luci::CircleConst *weight = nullptr;
   switch (node->opcode())
   {
     case luci::CircleOpcode::CONV_2D:
@@ -73,6 +77,12 @@ bool calculate_smooth_quant_scale(luci::CircleNode *node, EqualizePattern *p)
     {
       auto conv = loco::must_cast<luci::CircleDepthwiseConv2D *>(node);
       weight = dynamic_cast<luci::CircleConst *>(conv->filter());
+      break;
+    }
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    {
+      auto fc = loco::must_cast<luci::CircleFullyConnected *>(node);
+      weight = dynamic_cast<luci::CircleConst *>(fc->weights());
       break;
     }
     case luci::CircleOpcode::TRANSPOSE_CONV:
@@ -91,50 +101,101 @@ bool calculate_smooth_quant_scale(luci::CircleNode *node, EqualizePattern *p)
     return false;
   if (weight->dtype() != loco::DataType::FLOAT32)
     return false;
-  auto weight_rank = weight->rank();
-  if (weight_rank != 4)
-    return false;
 
   auto act_scale = p->act_scale;
-  if (act_scale.size() != weight->dim(3).value())
+  switch (node->opcode())
   {
-    throw std::runtime_error("Mismatch between 'act_scale' size and 'filter' input channel size" +
-                             std::to_string(act_scale.size()) +
-                             " != " + std::to_string(weight->dim(3).value()));
-  }
-
-  // Find filter max along with In-channel dimension
-  auto weight_size = weight->size<loco::DataType::FLOAT32>();
-  const auto weight_O = weight->dim(0).value();
-  const auto weight_H = weight->dim(1).value();
-  const auto weight_W = weight->dim(2).value();
-  const auto weight_I = weight->dim(3).value();
-  const auto norm_dim = weight_O * weight_H * weight_W;
-  std::vector<float> weight_max(weight_I, std::numeric_limits<float>::min());
-  uint32_t cur = 0;
-  for (uint32_t i = 0; i < weight_I; i++)
-  {
-    cur = i;
-    for (uint32_t j = 0; j < norm_dim; j++)
+    case luci::CircleOpcode::CONV_2D:
+    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+    case luci::CircleOpcode::TRANSPOSE_CONV:
     {
-      weight_max.at(i) = std::max(weight_max.at(i), weight->at<loco::DataType::FLOAT32>(cur));
-      cur += weight_I;
-    }
-  }
-  // Check if it properly iterates the filter.
-  assert(cur - weight_I == weight_size - 1);
+      auto weight_rank = weight->rank();
+      if (weight_rank != 4)
+        return false;
 
-  // TODO parameterize "alpha"
-  auto alpha = 0.5f;
-  if (p->scale.size() != 0)
-  {
-    throw std::runtime_error("scale should be empty at this moment.");
-  }
-  assert(p->act_scale.size() == weight_max.size());
-  for (uint32_t i = 0; i < p->act_scale.size(); i++)
-  {
-    p->scale.push_back(std::max(
-      std::pow(p->act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));
+      if (act_scale.size() != weight->dim(3).value())
+      {
+        throw std::runtime_error(
+          "Mismatch between 'act_scale' size and 'filter' input channel size" +
+          std::to_string(act_scale.size()) + " != " + std::to_string(weight->dim(3).value()));
+      }
+
+      // Find filter max along with In-channel dimension
+      auto weight_size = weight->size<loco::DataType::FLOAT32>();
+      const auto weight_O = weight->dim(0).value();
+      const auto weight_H = weight->dim(1).value();
+      const auto weight_W = weight->dim(2).value();
+      const auto weight_I = weight->dim(3).value();
+      const auto norm_dim = weight_O * weight_H * weight_W;
+      std::vector<float> weight_max(weight_I, std::numeric_limits<float>::min());
+      uint32_t cur = 0;
+      for (uint32_t i = 0; i < weight_I; i++)
+      {
+        cur = i;
+        for (uint32_t j = 0; j < norm_dim; j++)
+        {
+          weight_max.at(i) = std::max(weight_max.at(i), weight->at<loco::DataType::FLOAT32>(cur));
+          cur += weight_I;
+        }
+      }
+      // Check if it properly iterates the filter.
+      assert(cur - weight_I == weight_size - 1);
+
+      // TODO parameterize "alpha"
+      auto alpha = 0.5f;
+      assert(p->act_scale.size() == weight_max.size());
+      for (uint32_t i = 0; i < p->act_scale.size(); i++)
+      {
+        p->scale.push_back(std::max(
+          std::pow(p->act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));
+      }
+      break;
+    }
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    {
+      auto weight_rank = weight->rank();
+      if (weight_rank != 2)
+        return false;
+
+      if (act_scale.size() != weight->dim(1).value())
+      {
+        throw std::runtime_error(
+          "Mismatch between 'act_scale' size and 'filter' input channel size" +
+          std::to_string(act_scale.size()) + " != " + std::to_string(weight->dim(1).value()));
+      }
+
+      // Find filter max along with In-channel dimension
+      auto weight_size = weight->size<loco::DataType::FLOAT32>();
+      const auto weight_O = weight->dim(0).value();
+      const auto weight_I = weight->dim(1).value();
+      std::vector<float> weight_max(weight_I, std::numeric_limits<float>::min());
+      uint32_t cur = 0;
+      for (uint32_t i = 0; i < weight_I; i++)
+      {
+        cur = i;
+        for (uint32_t j = 0; j < weight_O; j++)
+        {
+          weight_max.at(i) = std::max(weight_max.at(i), weight->at<loco::DataType::FLOAT32>(cur));
+          cur += weight_I;
+        }
+      }
+      // Check if it properly iterates the filter.
+      assert(cur - weight_I == weight_size - 1);
+
+      // TODO parameterize "alpha"
+      auto alpha = 0.5f;
+      assert(p->act_scale.size() == weight_max.size());
+      for (uint32_t i = 0; i < p->act_scale.size(); i++)
+      {
+        p->scale.push_back(std::max(
+          std::pow(p->act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));
+      }
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("(calculate_smooth_quant_scale) NYI operator: " + node->name());
+    }
   }
 
   return true;
@@ -150,16 +211,22 @@ void set_input(luci::CircleNode *node, luci::CircleCustom *scale)
       conv->input(scale);
       break;
     }
+    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+    {
+      auto dconv = loco::must_cast<luci::CircleDepthwiseConv2D *>(node);
+      dconv->input(scale);
+      break;
+    }
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    {
+      auto fc = loco::must_cast<luci::CircleFullyConnected *>(node);
+      fc->input(scale);
+      break;
+    }
     case luci::CircleOpcode::GELU:
     {
       auto gelu = loco::must_cast<luci::CircleGelu *>(node);
       gelu->features(scale);
-      break;
-    }
-    case luci::CircleOpcode::RELU:
-    {
-      auto relu = loco::must_cast<luci::CircleLeakyRelu *>(node);
-      relu->features(scale);
       break;
     }
     case luci::CircleOpcode::LEAKY_RELU:
@@ -178,6 +245,18 @@ void set_input(luci::CircleNode *node, luci::CircleCustom *scale)
     {
       auto pad = loco::must_cast<luci::CirclePad *>(node);
       pad->input(scale);
+      break;
+    }
+    case luci::CircleOpcode::RELU:
+    {
+      auto relu = loco::must_cast<luci::CircleLeakyRelu *>(node);
+      relu->features(scale);
+      break;
+    }
+    case luci::CircleOpcode::TRANSPOSE_CONV:
+    {
+      auto tconv = loco::must_cast<luci::CircleTransposeConv *>(node);
+      tconv->outBackprop(scale);
       break;
     }
     default:
@@ -319,6 +398,8 @@ private:
   void visit(luci::CircleConv2D *node) { insert(node); }
 
   void visit(luci::CircleDepthwiseConv2D *node) { insert(node); }
+
+  void visit(luci::CircleFullyConnected *node) { insert(node); }
 
   void visit(luci::CircleTransposeConv *node) { insert(node); }
 };

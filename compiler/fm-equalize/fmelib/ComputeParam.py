@@ -45,6 +45,6 @@ def getActivationMax(tensor: np.ndarray) -> float:
     :param tensors: a list of numpy array (each is a tensor)
     :return: a list of scale (float) for each channel
     """
-    assert len(tensor.shape) == 4
+    assert len(tensor.shape) == 4 or len(tensor.shape) == 3
     # max along with last dimension
     return np.abs(tensor.reshape(-1, tensor.shape[-1])).max(axis=0)

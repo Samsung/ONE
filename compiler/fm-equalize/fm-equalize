@@ -150,12 +150,11 @@ def main():
             os.system(f'cp {fme_patterns} {args.fme_patterns}')
 
         # Step 2. Run dalgona
-        _run_dalgona(
-            str(input_model),
-            data,
-            str(dump_fme_param_py),
-            str(fme_patterns),
-            verbose=verbose)
+        _run_dalgona(str(input_model),
+                     data,
+                     str(dump_fme_param_py),
+                     str(fme_patterns),
+                     verbose=verbose)
 
         # Copy fme_patterns to the given path
         # Why copy twice? To observe the result of fme-detect too

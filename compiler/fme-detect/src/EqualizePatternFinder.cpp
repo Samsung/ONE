@@ -71,31 +71,31 @@ struct GetFusability final : public luci::CircleNodeMutableVisitor<Fusability>
     return f;
   }
 
-  // Fusability visit(luci::CircleDepthwiseConv2D *node)
-  // {
-  //   Fusability f;
-  //   {
-  //     f.pre_scale = true;
-  //     // PreShift would be fused with DConv when DConv
-  //     // does not use padding
-  //     // TODO Check the above condition and enable the below line
-  //     // f.pre_shift = true;
+  Fusability visit(luci::CircleDepthwiseConv2D *node)
+  {
+    Fusability f;
+    {
+      f.pre_scale = true;
+      // PreShift would be fused with DConv when DConv
+      // does not use padding
+      // TODO Check the above condition and enable the below line
+      // f.pre_shift = true;
 
-  //     if (node->fusedActivationFunction() == luci::FusedActFunc::NONE)
-  //     {
-  //       f.post_scale = true;
-  //       f.post_shift = true;
-  //     }
-  //     // Negative scale is not fusable across ReLU, but fme-detect does not
-  //     // know the scale value. So, we assume that the scale is positive.
-  //     // NOTE If a pattern has negative scales, fm-equalize rejects the pattern
-  //     else if (node->fusedActivationFunction() == luci::FusedActFunc::RELU)
-  //     {
-  //       f.post_scale = true;
-  //     }
-  //   }
-  //   return f;
-  // }
+      if (node->fusedActivationFunction() == luci::FusedActFunc::NONE)
+      {
+        f.post_scale = true;
+        f.post_shift = true;
+      }
+      // Negative scale is not fusable across ReLU, but fme-detect does not
+      // know the scale value. So, we assume that the scale is positive.
+      // NOTE If a pattern has negative scales, fm-equalize rejects the pattern
+      else if (node->fusedActivationFunction() == luci::FusedActFunc::RELU)
+      {
+        f.post_scale = true;
+      }
+    }
+    return f;
+  }
 
   Fusability visit(luci::CircleInstanceNorm *node)
   {

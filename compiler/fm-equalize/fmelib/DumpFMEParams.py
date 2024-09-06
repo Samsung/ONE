@@ -113,7 +113,21 @@ class DumpFMEParams:
         # if fused_act == "relu":
         #     self._relu_fused_act.add(name)
 
+    def DepthwiseConv2DPost(self, name, input, filter, bias, padding, stride,
+                            depthMultiplier, dilation, output, fused_act):
+        if name in self._target_tensors:
+            self.record_activaion_max(output)
+
+    def FullyConnectedPost(self, name, input, weights, bias, output, fused_act):
+        if name in self._target_tensors:
+            self.record_activaion_max(output)
+
     def InstanceNormPost(self, name, input, gamma, beta, epsilon, output, fused_act):
+        if name in self._target_tensors:
+            self.record_activaion_max(output)
+
+    def TransposeConvPost(self, name, input, filter, output_shape, bias, padding, stride,
+                          output):
         if name in self._target_tensors:
             self.record_activaion_max(output)
 
