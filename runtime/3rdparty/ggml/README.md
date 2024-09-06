@@ -13,3 +13,6 @@ It is part of ggml, not all code to reduce the binary size.
 Code marking
 
 - `#if 0 // [FIX] disable` & `#endif // [FIX] end` pair: Manually disable unused code
+
+Cmake marking
+- `# [FIX] comment~ `: Manually fix for build
