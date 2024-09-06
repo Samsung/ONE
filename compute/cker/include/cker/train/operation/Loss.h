@@ -21,6 +21,7 @@
 
 #include "cker/Shape.h"
 #include "cker/eigen/Utils.h"
+#include "cker/train/Types.h"
 
 namespace nnfw
 {
@@ -59,17 +60,38 @@ inline void MSE(const Shape &y_pred_shape, const T *y_pred_data, const Shape &y_
 
 template <typename T>
 inline void MSEGrad(const Shape &y_pred_shape, const T *y_pred_data, const Shape &y_true_shape,
-                    const T *y_true_data, const Shape &grad_shape, T *grad_data)
+                    const T *y_true_data, const Shape &grad_shape, T *grad_data,
+                    LossReductionType reduction_type)
 {
   if (y_pred_shape != y_true_shape)
     throw std::runtime_error("cker::MSEGrad: y_pred_shape != y_true_shape");
   if (y_pred_shape != grad_shape)
     throw std::runtime_error("cker::MSEGrad: y_pred_shape != grad_shape");
 
-  const int size = grad_shape.FlatSize();
-  for (int i = 0; i < size; ++i)
+  const int batch_size = grad_shape.Dims(0);
+  const auto flat_size = FlatSizeSkipDim(grad_shape, 0);
+  auto reduction_size = 1;
+  switch (reduction_type)
   {
-    grad_data[i] = static_cast<T>(-2 * (y_true_data[i] - y_pred_data[i]) / size);
+    case LossReductionType::SUM_OVER_BATCH_SIZE:
+      reduction_size = batch_size * flat_size;
+      break;
+    case LossReductionType::SUM:
+      reduction_size = flat_size;
+      break;
+    default:
+      throw std::runtime_error("Unsupported reduction type");
+  }
+
+  for (int b = 0; b < batch_size; ++b)
+  {
+    for (int i = 0; i < flat_size; ++i)
+    {
+      const int offset = b * flat_size + i;
+      assert(offset >= 0);
+      grad_data[offset] =
+        static_cast<T>(-2 * (y_true_data[offset] - y_pred_data[offset]) / reduction_size);
+    }
   }
 }
 

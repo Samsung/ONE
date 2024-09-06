@@ -31,10 +31,11 @@ namespace ops
 void LossCategoricalCrossentropyLayer::configure(const IPortableTensor *y_pred,
                                                  const IPortableTensor *y_true,
                                                  IPortableTensor *output,
-                                                 IPortableTensor *back_prop_y_pred, int32_t axis,
-                                                 float label_smoothing)
+                                                 IPortableTensor *back_prop_y_pred,
+                                                 ir::train::LossReductionType reduction_type,
+                                                 int32_t axis, float label_smoothing)
 {
-  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred);
+  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred, reduction_type);
 
   _axis = axis;
   _label_smoothing = label_smoothing;
