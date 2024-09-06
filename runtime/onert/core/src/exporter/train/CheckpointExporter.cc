@@ -73,9 +73,9 @@ struct DataBuffer
 private:
   std::vector<uint32_t> _offset;
   std::vector<char> _data;
-  uint32_t _start_offset;
+  uint32_t _start_offset = 0;
   std::vector<uint32_t>::iterator _offset_it;
-  char *_data_ptr;
+  char *_data_ptr = nullptr;
 };
 
 class CheckpointExporter
