@@ -416,6 +416,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
   auto op_params = BuildStridedSliceParams(&op_context);
   auto &effective_input_shape = op_context.effective_input_shape;
   std::vector<int64_t> output_shape_vector;
+  std::vector<bool> output_known_vector;
 
   for (int32_t idx = effective_input_shape.rank() - 1; idx >= 0; --idx)
   {
@@ -441,6 +442,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
     if (!shrink_axis)
     {
       output_shape_vector.push_back(dim_shape);
+      output_known_vector.push_back(effective_input_shape.dim(idx).known());
     }
   }
 
@@ -448,6 +450,9 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
   output_shape.rank(shape_size);
   for (uint32_t idx = 0; idx < shape_size; ++idx)
   {
+    bool known = output_known_vector[shape_size - 1u - idx];
+    if (not known)
+      continue;
     int64_t dim = output_shape_vector.at(shape_size - 1u - idx);
     LUCI_ASSERT(0 <= dim && dim < 0xfffffffL, "Dimension size exceeds limit");
     // reverse copy

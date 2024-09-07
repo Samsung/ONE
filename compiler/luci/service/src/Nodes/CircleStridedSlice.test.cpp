@@ -102,18 +102,17 @@ TEST(ShapeRuleTest, strided_slice_static_shape)
   ASSERT_EQ(7, shape.dim(3).value());
 }
 
-TEST(ShapeRuleTest, strided_slice_dynamic_begin)
+TEST(ShapeRuleTest, strided_slice_non_const_begin_end)
 {
   luci::CircleInput input;
   luci::CircleInput begin;
-  luci::CircleConst end;
+  luci::CircleInput end;
   luci::CircleConst strides;
 
   luci::CircleStridedSlice strided_slice;
 
   input.shape({5, 6, 7, 8});
   input.shape_status(luci::ShapeStatus::VALID);
-  input.dim(0).unset();
 
   begin.dtype(loco::DataType::S32);
   begin.shape({4});
@@ -121,12 +120,8 @@ TEST(ShapeRuleTest, strided_slice_dynamic_begin)
 
   end.dtype(loco::DataType::S32);
   end.shape({4});
-  end.size<loco::DataType::S32>(4);
-  end.at<loco::DataType::S32>(0) = 1;
-  end.at<loco::DataType::S32>(1) = 3;
-  end.at<loco::DataType::S32>(2) = 5;
-  end.at<loco::DataType::S32>(3) = 7;
   end.shape_status(luci::ShapeStatus::VALID);
+  end.dim(0).unset();
 
   strides.dtype(loco::DataType::S32);
   strides.shape({4});
@@ -157,18 +152,18 @@ TEST(ShapeRuleTest, strided_slice_dynamic_begin)
   ASSERT_EQ(0, shape.dim(3).value());
 }
 
-TEST(ShapeRuleTest, strided_slice_dynamic_end)
+TEST(ShapeRuleTest, strided_slice_dynamic_input)
 {
   luci::CircleInput input;
   luci::CircleConst begin;
-  luci::CircleInput end;
+  luci::CircleConst end;
   luci::CircleConst strides;
 
   luci::CircleStridedSlice strided_slice;
 
   input.shape({5, 6, 7, 8});
   input.shape_status(luci::ShapeStatus::VALID);
-  input.dim(0).unset();
+  input.dim(2).unset();
 
   begin.dtype(loco::DataType::S32);
   begin.shape({4});
@@ -181,6 +176,11 @@ TEST(ShapeRuleTest, strided_slice_dynamic_end)
 
   end.dtype(loco::DataType::S32);
   end.shape({4});
+  end.size<loco::DataType::S32>(4);
+  end.at<loco::DataType::S32>(0) = 1;
+  end.at<loco::DataType::S32>(1) = 3;
+  end.at<loco::DataType::S32>(2) = 5;
+  end.at<loco::DataType::S32>(3) = 7;
   end.shape_status(luci::ShapeStatus::VALID);
 
   strides.dtype(loco::DataType::S32);
@@ -202,14 +202,14 @@ TEST(ShapeRuleTest, strided_slice_dynamic_end)
 
   ASSERT_TRUE(shape_inf_rule.infer(&strided_slice, shape));
   ASSERT_EQ(4, shape.rank());
-  ASSERT_FALSE(shape.dim(0).known());
-  ASSERT_FALSE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
   ASSERT_FALSE(shape.dim(2).known());
-  ASSERT_FALSE(shape.dim(3).known());
-  ASSERT_EQ(0, shape.dim(0).value());
-  ASSERT_EQ(0, shape.dim(1).value());
+  ASSERT_TRUE(shape.dim(3).known());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(3, shape.dim(1).value());
   ASSERT_EQ(0, shape.dim(2).value());
-  ASSERT_EQ(0, shape.dim(3).value());
+  ASSERT_EQ(7, shape.dim(3).value());
 }
 
 TEST(ShapeRuleTest, strided_slice_nullptr_input_NEG)
