@@ -442,7 +442,6 @@ loco::NodeShape infer_broadcast_to(const luci::CircleBroadcastTo *node)
   return loco::NodeShape{shape_by_input};
 }
 
-
 loco::NodeShape infer_depth_to_space(const luci::CircleDepthToSpace *node)
 {
   auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
@@ -474,7 +473,6 @@ loco::NodeShape infer_depth_to_space(const luci::CircleDepthToSpace *node)
 
   return loco::NodeShape{output_shape};
 }
-
 
 loco::NodeShape infer_expand_dims(const luci::CircleExpandDims *node)
 {
@@ -1906,7 +1904,6 @@ public:
   {
     return infer_depth_to_space(node);
   }
-
 
   loco::NodeShape visit(const luci::CircleDequantize *node) final
   {

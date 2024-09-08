@@ -54,7 +54,6 @@ loco::TensorShape Algorithm::visit(const luci::CircleDepthwiseConv2D *node)
   auto ker = loco::must_cast<luci::CircleNode *>(node->filter());
   auto ker_shape = circle_shape(ker); // in 1 H W CM
 
-
   assert(ifm_shape.rank() == 4);
   assert(ker_shape.rank() == 4);
   assert(ker_shape.dim(0).value() == 1);
@@ -64,7 +63,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleDepthwiseConv2D *node)
   // Height and width have already been determined by conv2d_output_shape
   ofm_shape.dim(0) = ifm_shape.dim(0);
   ofm_shape.dim(3) = ker_shape.dim(3);
-  
+
   return ofm_shape;
 }
 

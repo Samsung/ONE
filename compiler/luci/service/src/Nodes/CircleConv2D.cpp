@@ -51,7 +51,7 @@ namespace sinf
 loco::TensorShape Algorithm::visit(const luci::CircleConv2D *node)
 {
   LOGGER(l);
-  
+
   auto ifm = loco::must_cast<luci::CircleNode *>(node->input());
   auto ifm_shape = circle_shape(ifm); // in NHWC
   auto ker = loco::must_cast<luci::CircleNode *>(node->filter());

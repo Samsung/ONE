@@ -61,7 +61,6 @@ TEST(CloneNodeTest, clone_DepthwiseConv2D_padding_NEG)
   ASSERT_EQ(nullptr, cloned);
 }
 
-
 TEST(ShapeRuleTest, DepthwiseConv2D_sinf_dynamic)
 {
   luci::CircleInput ifm;
@@ -85,8 +84,7 @@ TEST(ShapeRuleTest, DepthwiseConv2D_sinf_dynamic)
   loco::TensorShape shape;
   luci::sinf::Rule shape_inf_rule;
   shape_inf_rule.infer(&node_dwconv2d, shape);
-  
-  
+
   ASSERT_EQ(false, shape.dim(0).known());
   ASSERT_EQ(true, shape.dim(1).known());
   ASSERT_EQ(true, shape.dim(2).known());

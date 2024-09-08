@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 #include "Check.h"
 #include "CircleShapeInferenceHelper.h"
 
@@ -24,8 +23,7 @@ namespace luci
 namespace sinf
 {
 
-template <class Conv2DType>
-loco::TensorShape conv2d_output_shape(const Conv2DType *node)
+template <class Conv2DType> loco::TensorShape conv2d_output_shape(const Conv2DType *node)
 {
   auto ifm_shape = circle_shape(loco::must_cast<const luci::CircleNode *>(node->input()));
   auto ker_shape = circle_shape(loco::must_cast<const luci::CircleNode *>(node->filter()));
@@ -62,7 +60,8 @@ loco::TensorShape conv2d_output_shape(const Conv2DType *node)
     if (node->padding() == luci::Padding::VALID)
     {
       LUCI_ASSERT(input_height + stride_height > effective_ker_height, "Invalid shape");
-      output_shape.dim(1).set((input_height + stride_height - effective_ker_height) / stride_height);
+      output_shape.dim(1).set((input_height + stride_height - effective_ker_height) /
+                              stride_height);
     }
     else if (node->padding() == luci::Padding::SAME)
     {
