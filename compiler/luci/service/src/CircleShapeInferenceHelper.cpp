@@ -182,7 +182,6 @@ loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::Ci
   output_shape.rank(input_shape.rank());
 
   auto const_padding = dynamic_cast<const luci::CircleConst *>(paddings);
-
   if (const_padding == nullptr)
     return output_shape;
 
