@@ -15,6 +15,7 @@
  */
 
 #include "luci/Service/CircleNodeClone.h"
+#include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
 
@@ -58,4 +59,60 @@ TEST(CloneNodeTest, clone_Conv2D_padding_NEG)
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_conv2d, gc.get());
   ASSERT_EQ(nullptr, cloned);
+}
+
+
+TEST(ShapeRuleTest, Conv2D_sinf_dynamic)
+{
+  luci::CircleInput ifm;
+  ifm.shape({3, 28, 28, 4});
+  ifm.dim(0).unset();
+  ifm.dim(1).unset();
+  ifm.shape_status(luci::ShapeStatus::VALID);
+  luci::CircleInput ker;
+  ker.shape({2, 3, 3, 4});
+  ker.shape_status(luci::ShapeStatus::VALID);
+  luci::CircleInput bias;
+  bias.shape({2});
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConv2D node_conv2d;
+  node_conv2d.input(&ifm);
+  node_conv2d.filter(&ker);
+  node_conv2d.bias(&bias);
+  node_conv2d.padding(luci::Padding::VALID);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+  shape_inf_rule.infer(&node_conv2d, shape);
+  
+  
+  ASSERT_EQ(false, shape.dim(0).known());
+  ASSERT_EQ(false, shape.dim(1).known());
+  ASSERT_EQ(true, shape.dim(2).known());
+  ASSERT_EQ(true, shape.dim(3).known());
+  ASSERT_EQ(0, shape.dim(0).value());
+  ASSERT_EQ(0, shape.dim(1).value());
+  ASSERT_EQ(26, shape.dim(2).value());
+  ASSERT_EQ(2, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, Conv2D_sinf_without_input_NEG)
+{
+  luci::CircleInput ker;
+  ker.shape({2, 3, 3, 4});
+  ker.shape_status(luci::ShapeStatus::VALID);
+  luci::CircleInput bias;
+  bias.shape({2});
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  luci::CircleConv2D node_conv2d;
+  node_conv2d.input(nullptr);
+  node_conv2d.filter(&ker);
+  node_conv2d.bias(&bias);
+  node_conv2d.padding(luci::Padding::VALID);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&node_conv2d, shape));
 }
