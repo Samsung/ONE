@@ -52,8 +52,10 @@ loco::TensorShape Algorithm::visit(const luci::CircleConv2D *node)
 {
   LOGGER(l);
   
-  auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
-  auto ker_shape = luci::shape_get(node->filter()).as<loco::TensorShape>(); // in OHWI
+  auto ifm = loco::must_cast<luci::CircleNode *>(node->input());
+  auto ifm_shape = circle_shape(ifm); // in NHWC
+  auto ker = loco::must_cast<luci::CircleNode *>(node->filter());
+  auto ker_shape = circle_shape(ker); // in OHWI
 
   assert(ifm_shape.rank() == 4);
   assert(ker_shape.rank() == 4);
