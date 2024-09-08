@@ -33,6 +33,7 @@
 // Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
 // Version 0.8: GRU op is added. UINT4 is added.
+// Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added
 
 namespace circle;
 
@@ -46,7 +47,6 @@ file_extension "circle";
 
 // The type of data stored in a tensor.
 enum TensorType : byte {
-  UINT4 = -1,
   FLOAT32 = 0,
   FLOAT16 = 1,
   INT32 = 2,
@@ -68,6 +68,15 @@ enum TensorType : byte {
   UINT32 = 15,
   UINT16 = 16,
   INT4 = 17,
+
+  // Belows are using negative value to represent not existing TensorType on TensorFlow Lite schema
+
+  UINT4 = -1,
+  // GGML_Q{X}_{Y} are follow ggml quantization spec (https://github.com/ggerganov/ggml)
+  GGML_Q4_0 = -2,
+  GGML_Q4_1 = -3,
+  GGML_Q8_0 = -4,
+  GGML_Q8_1 = -5,
 }
 
 // Custom quantization parameters for experimenting with new quantization
@@ -221,6 +230,11 @@ table VariantSubType {
   has_rank: bool = false;
 }
 
+enum CompressionType : byte {
+  NONE = 0,
+  HUFFMAN = 1
+}
+
 table Tensor {
   // The tensor shape. The meaning of each entry is operator-specific but
   // builtin ops use: [batch size, height, width, number of channels] (That's
@@ -262,6 +276,8 @@ table Tensor {
   // Currently only 1 subtype is supported. The field is defined as an array for
   // flexibility of supporting multiple subtypes in the future.
   variant_tensors:[VariantSubType];
+
+  compression_type:CompressionType = NONE;
 }
 
 // A list of builtin operators. Builtin operators are slightly faster than custom
