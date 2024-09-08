@@ -51,8 +51,6 @@ namespace sinf
 loco::TensorShape Algorithm::visit(const luci::CircleConv2D *node)
 {
   LOGGER(l);
-
-  std::cout << "CircleConv2D ShapeInf" << std::endl;
   
   auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
   auto ker_shape = luci::shape_get(node->filter()).as<loco::TensorShape>(); // in OHWI
@@ -70,8 +68,6 @@ loco::TensorShape Algorithm::visit(const luci::CircleConv2D *node)
           << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
           << ofm_shape.dim(2).value() << "," << ofm_shape.dim(3).value() << ") " << node->name()
           << std::endl;
-
-  std::cout << "CircleConv2D ShapeInf end" << std::endl;
 
   return ofm_shape;
 }
