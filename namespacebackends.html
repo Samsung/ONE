@@ -218,8 +218,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> driver_path</div>
 <div class="line"><span class="lineno">   94</span> </div>
 <div class="line"><span class="lineno">   95</span>    <span class="comment"># CASE 2: one/backends/**/bin/{driver} is found</span></div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">for</span> driver_path <span class="keywordflow">in</span> glob.glob(</div>
-<div class="line"><span class="lineno">   97</span>            dir_path + <span class="stringliteral">&#39;/../../backends/**/bin/&#39;</span> + driver, recursive=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">for</span> driver_path <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/bin/&#39;</span> + driver,</div>
+<div class="line"><span class="lineno">   97</span>                                 recursive=<span class="keyword">True</span>):</div>
 <div class="line"><span class="lineno">   98</span>        <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
 <div class="line"><span class="lineno">   99</span>            <span class="keywordflow">return</span> driver_path</div>
 <div class="line"><span class="lineno">  100</span> </div>

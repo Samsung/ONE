@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('_read_module_8h.html',''); initResizab
   <div class="headertitle"><div class="title">ReadModule.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="luci_2import_2include_2luci_2_importer_8h_source.html">luci/Importer.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_module_8h_source.html">luci/IR/Module.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="_file_loader_8h_source.html">foder/FileLoader.h</a>&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
@@ -123,43 +123,43 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_read_module_8cpp_source.html#l00029">29</a> of file <a class="el" href="_read_module_8cpp_source.html">ReadModule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// Load model from the file</span></div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_class" href="classfoder_1_1_file_loader.html">foder::FileLoader</a> file_loader{input_path};</div>
-<div class="line"><span class="lineno">   33</span>  std::vector&lt;char&gt; model_data = file_loader.<a class="code hl_function" href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">load</a>();</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> circle::Model *<a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a> = circle::GetModel(model_data.data());</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (circle_model == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to load circle &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <a class="code hl_class" href="classluci_1_1_importer.html">luci::Importer</a> importer;</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> <span class="keyword">module</span> = importer.importModule(circle_model);</div>
-<div class="line"><span class="lineno">   43</span>  assert(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>-&gt;size() &gt; 0);</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> &lt; <span class="keyword">module</span>-&gt;size(); ++<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <span class="keyword">module</span>-&gt;graph(g);</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (graph == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>    {</div>
-<div class="line"><span class="lineno">   52</span>      <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>      phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">   55</span>      phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>      <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>};</div>
-<div class="line"><span class="lineno">   58</span>      phase_runner.run(phase);</div>
-<div class="line"><span class="lineno">   59</span>    }</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a3f8123e9327a4ce0405499ce4ebe175c">luci::validate</a>(graph))</div>
-<div class="line"><span class="lineno">   62</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">return</span> <span class="keyword">module</span>;</div>
-<div class="line"><span class="lineno">   65</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_read_module_8cpp_source.html#l00031">31</a> of file <a class="el" href="_read_module_8cpp_source.html">ReadModule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  <span class="comment">// Load model from the file</span></div>
+<div class="line"><span class="lineno">   34</span>  <a class="code hl_class" href="classfoder_1_1_file_loader.html">foder::FileLoader</a> file_loader{input_path};</div>
+<div class="line"><span class="lineno">   35</span>  std::vector&lt;char&gt; model_data = file_loader.<a class="code hl_function" href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">load</a>();</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">auto</span> *data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_class" href="classluci_1_1_importer.html">luci::Importer</a> importer;</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">auto</span> <span class="keyword">module</span> = importer.importModule(data_data, model_data.size());</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (module == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to load circle &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+<div class="line"><span class="lineno">   45</span>  assert(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>-&gt;size() &gt; 0);</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> g = 0; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a> &lt; <span class="keyword">module</span>-&gt;size(); ++<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)</div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = <span class="keyword">module</span>-&gt;graph(g);</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> (graph == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>    {</div>
+<div class="line"><span class="lineno">   54</span>      <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>      phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">   57</span>      phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>      <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>};</div>
+<div class="line"><span class="lineno">   60</span>      phase_runner.run(phase);</div>
+<div class="line"><span class="lineno">   61</span>    }</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a3f8123e9327a4ce0405499ce4ebe175c">luci::validate</a>(graph))</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">return</span> <span class="keyword">module</span>;</div>
+<div class="line"><span class="lineno">   67</span>}</div>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html"><div class="ttname"><a href="classfoder_1_1_file_loader.html">foder::FileLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00026">FileLoader.h:27</a></div></div>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html_adc903eb7f252ed7fac779a6869139ec4"><div class="ttname"><a href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">foder::FileLoader::load</a></div><div class="ttdeci">DataBuffer load(void) const</div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00039">FileLoader.h:39</a></div></div>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_html"><div class="ttname"><a href="classlogo_1_1_phase_runner.html">logo::PhaseRunner</a></div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00158">Phase.h:158</a></div></div>
@@ -168,7 +168,6 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 <div class="ttc" id="anamespacelogo_html_ad0979fe288c253875f561bc041393cd4"><div class="ttname"><a href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Pass &gt; &gt; Phase</div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00031">Phase.h:31</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a3f8123e9327a4ce0405499ce4ebe175c"><div class="ttname"><a href="namespaceluci.html#a3f8123e9327a4ce0405499ce4ebe175c">luci::validate</a></div><div class="ttdeci">bool validate(luci::PartitionTable &amp;partition)</div><div class="ttdef"><b>Definition</b> <a href="_partition_validate_8cpp_source.html#l00028">PartitionValidate.cpp:28</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_ab8593f39f8c0562457496ffafe7c2932"><div class="ttname"><a href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">part_eval_one.circle_model</a></div><div class="ttdeci">str circle_model</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00025">part_eval_one.py:25</a></div></div>
 <div class="ttc" id="anamespaceq__implant__qparam__test_html_a3cf5671ec6dbd34a67d0ea30316e2dc9"><div class="ttname"><a href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">q_implant_qparam_test.module</a></div><div class="ttdeci">module</div><div class="ttdef"><b>Definition</b> <a href="q__implant__qparam__test_8py_source.html#l00039">q_implant_qparam_test.py:39</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>, and <a class="el" href="_partition_validate_8cpp_source.html#l00028">luci::validate()</a>.</p>

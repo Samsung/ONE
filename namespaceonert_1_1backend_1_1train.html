@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('namespaceonert_1_1backend_1_1train.htm
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">onert::backend::train Namespace Reference</div></div>
 </div><!--header-->
@@ -167,9 +168,6 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a3941bee692651dbecf8a48dd142c8ad4" id="r_a3941bee692651dbecf8a48dd142c8ad4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a3941bee692651dbecf8a48dd142c8ad4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a3941bee692651dbecf8a48dd142c8ad4">DisposableTensorIndexMap</a> = std::unordered_map&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a>, T &gt;</td></tr>
-<tr class="separator:a3941bee692651dbecf8a48dd142c8ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c1e11c7f580abe1841baa9258e4ac66" id="r_a3c1e11c7f580abe1841baa9258e4ac66"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a3c1e11c7f580abe1841baa9258e4ac66">ExternalContext</a> = <a class="el" href="classonert_1_1backend_1_1cpu_1_1_external_context.html">cpu::ExternalContext</a></td></tr>
 <tr class="separator:a3c1e11c7f580abe1841baa9258e4ac66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75c58052c0a9c6d3340d8240ed9b52c0" id="r_a75c58052c0a9c6d3340d8240ed9b52c0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a> = <a class="el" href="classonert_1_1backend_1_1basic_1_1_memory_manager.html">backend::basic::MemoryManager</a></td></tr>
@@ -184,6 +182,13 @@ Typedefs</h2></td></tr>
 <tr class="separator:adfca2674d6ad05cee6fc454ca4791f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21fcc843f3525a88a84dc135310daf3e" id="r_a21fcc843f3525a88a84dc135310daf3e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e">TrainableBackendContexts</a> = std::unordered_map&lt; const <a class="el" href="classonert_1_1backend_1_1train_1_1_backend.html">Backend</a> *, std::unique_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">TrainableBackendContext</a> &gt; &gt;</td></tr>
 <tr class="separator:a21fcc843f3525a88a84dc135310daf3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a4ffbd043f15ff6299f6fe7adbe181ceb" id="r_a4ffbd043f15ff6299f6fe7adbe181ceb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceb">LayerScopeTensorLifeTime</a> : unsigned char { <a class="el" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1">BACKWARD</a>
+, <a class="el" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a">FORWARD_TO_BACKWARD</a>
+ }</td></tr>
+<tr class="separator:a4ffbd043f15ff6299f6fe7adbe181ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -208,24 +213,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_tensor_8h_source.html#l00047">47</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_tensor_8h_source.html">Tensor.h</a>.</p>
-
-</div>
-</div>
-<a id="a3941bee692651dbecf8a48dd142c8ad4" name="a3941bee692651dbecf8a48dd142c8ad4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3941bee692651dbecf8a48dd142c8ad4">&#9670;&#160;</a></span>DisposableTensorIndexMap</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespaceonert_1_1backend_1_1train.html#a3941bee692651dbecf8a48dd142c8ad4">onert::backend::train::DisposableTensorIndexMap</a> = typedef std::unordered_map&lt;<a class="el" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a>, T&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00091">91</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
 
 </div>
 </div>
@@ -325,6 +312,41 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a4ffbd043f15ff6299f6fe7adbe181ceb" name="a4ffbd043f15ff6299f6fe7adbe181ceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ffbd043f15ff6299f6fe7adbe181ceb">&#9670;&#160;</a></span>LayerScopeTensorLifeTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceb">onert::backend::train::LayerScopeTensorLifeTime</a> : unsigned char</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1" name="a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1"></a>BACKWARD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a" name="a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a"></a>FORWARD_TO_BACKWARD&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_layer_scope_tensor_8h_source.html#l00029">29</a> of file <a class="el" href="_layer_scope_tensor_8h_source.html">LayerScopeTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1">BACKWARD</a>,            <span class="comment">// alive during backward()</span></div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a">FORWARD_TO_BACKWARD</a>, <span class="comment">// alive from forward() to backward()</span></div>
+<div class="line"><span class="lineno">   33</span>};</div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a">onert::backend::train::LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD</a></div><div class="ttdeci">@ FORWARD_TO_BACKWARD</div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1">onert::backend::train::LayerScopeTensorLifeTime::BACKWARD</a></div><div class="ttdeci">@ BACKWARD</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a9487515b281a36b5c774eb456275e89e" name="a9487515b281a36b5c774eb456275e89e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9487515b281a36b5c774eb456275e89e">&#9670;&#160;</a></span>createOptimizer()</h2>
@@ -400,16 +422,16 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00093">93</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="circledump_2include_2circledump_2_dump_8h.html#a4020666fff86e3f1d52dde5bf16b776d">operator&lt;&lt;</a>(o, i.<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>());</div>
-<div class="line"><span class="lineno">   96</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_disposable_tensor_index_8h_source.html#l00091">91</a> of file <a class="el" href="_disposable_tensor_index_8h_source.html">DisposableTensorIndex.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
+<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="circledump_2include_2circledump_2_dump_8h.html#a4020666fff86e3f1d52dde5bf16b776d">operator&lt;&lt;</a>(o, i.<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">operand_index</a>());</div>
+<div class="line"><span class="lineno">   94</span>}</div>
 <div class="ttc" id="acircledump_2include_2circledump_2_dump_8h_html_a4020666fff86e3f1d52dde5bf16b776d"><div class="ttname"><a href="circledump_2include_2circledump_2_dump_8h.html#a4020666fff86e3f1d52dde5bf16b776d">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const circledump::ModelEx &amp;model)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00467">Dump.cpp:467</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_disposable_tensor_index_html_a2b8b52ab48b63a5c2d49289977df20d1"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html#a2b8b52ab48b63a5c2d49289977df20d1">onert::backend::train::DisposableTensorIndex::operand_index</a></div><div class="ttdeci">const ir::OperandIndex &amp; operand_index() const</div><div class="ttdoc">Get operand index.</div><div class="ttdef"><b>Definition</b> <a href="_disposable_tensor_index_8h_source.html#l00067">DisposableTensorIndex.h:67</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_disposable_tensor_index_8h_source.html#l00067">onert::backend::train::DisposableTensorIndex::operand_index()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00093">operator&lt;&lt;()</a>.</p>
+<p class="reference">References <a class="el" href="_disposable_tensor_index_8h_source.html#l00067">onert::backend::train::DisposableTensorIndex::operand_index()</a>, and <a class="el" href="_disposable_tensor_index_8h_source.html#l00091">operator&lt;&lt;()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_disposable_tensor_index_8h_source.html#l00093">operator&lt;&lt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_disposable_tensor_index_8h_source.html#l00091">operator&lt;&lt;()</a>.</p>
 
 </div>
 </div>

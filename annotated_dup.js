@@ -1351,6 +1351,7 @@ var annotated_dup =
       [ "RemoveRedundantReshapePass", "structluci_1_1_remove_redundant_reshape_pass.html", "structluci_1_1_remove_redundant_reshape_pass" ],
       [ "RemoveRedundantTransposePass", "structluci_1_1_remove_redundant_transpose_pass.html", "structluci_1_1_remove_redundant_transpose_pass" ],
       [ "RemoveUnnecessaryAddPass", "structluci_1_1_remove_unnecessary_add_pass.html", "structluci_1_1_remove_unnecessary_add_pass" ],
+      [ "RemoveUnnecessaryCastPass", "structluci_1_1_remove_unnecessary_cast_pass.html", "structluci_1_1_remove_unnecessary_cast_pass" ],
       [ "RemoveUnnecessaryReshapeNetPass", "structluci_1_1_remove_unnecessary_reshape_net_pass.html", "structluci_1_1_remove_unnecessary_reshape_net_pass" ],
       [ "RemoveUnnecessaryReshapePass", "structluci_1_1_remove_unnecessary_reshape_pass.html", "structluci_1_1_remove_unnecessary_reshape_pass" ],
       [ "RemoveUnnecessarySlicePass", "structluci_1_1_remove_unnecessary_slice_pass.html", "structluci_1_1_remove_unnecessary_slice_pass" ],

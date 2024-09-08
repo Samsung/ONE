@@ -67,6 +67,7 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "RemoveRedundantReshapePass.h", "_remove_redundant_reshape_pass_8h.html", "_remove_redundant_reshape_pass_8h" ],
     [ "RemoveRedundantTransposePass.h", "_remove_redundant_transpose_pass_8h.html", "_remove_redundant_transpose_pass_8h" ],
     [ "RemoveUnnecessaryAddPass.h", "_remove_unnecessary_add_pass_8h.html", "_remove_unnecessary_add_pass_8h" ],
+    [ "RemoveUnnecessaryCastPass.h", "_remove_unnecessary_cast_pass_8h.html", "_remove_unnecessary_cast_pass_8h" ],
     [ "RemoveUnnecessaryReshapeNetPass.h", "_remove_unnecessary_reshape_net_pass_8h.html", "_remove_unnecessary_reshape_net_pass_8h" ],
     [ "RemoveUnnecessaryReshapePass.h", "_remove_unnecessary_reshape_pass_8h.html", "_remove_unnecessary_reshape_pass_8h" ],
     [ "RemoveUnnecessarySlicePass.h", "_remove_unnecessary_slice_pass_8h.html", "_remove_unnecessary_slice_pass_8h" ],

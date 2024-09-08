@@ -138,14 +138,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00042">42</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  std::istringstream ss;</div>
-<div class="line"><span class="lineno">   45</span>  ss.str(str);</div>
-<div class="line"><span class="lineno">   46</span>  T data;</div>
-<div class="line"><span class="lineno">   47</span>  ss &gt;&gt; data;</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> data;</div>
-<div class="line"><span class="lineno">   49</span>}</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00043">43</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
+<div class="line"><span class="lineno">   45</span>  std::istringstream ss;</div>
+<div class="line"><span class="lineno">   46</span>  ss.str(str);</div>
+<div class="line"><span class="lineno">   47</span>  T data;</div>
+<div class="line"><span class="lineno">   48</span>  ss &gt;&gt; data;</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> data;</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -175,13 +175,13 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00051">51</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordtype">bool</span> data = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">if</span> (str == <span class="stringliteral">&quot;false&quot;</span> || str == <span class="stringliteral">&quot;False&quot;</span> || str == <span class="stringliteral">&quot;FALSE&quot;</span> || str == <span class="stringliteral">&quot;0&quot;</span>)</div>
-<div class="line"><span class="lineno">   55</span>    data = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">return</span> data;</div>
-<div class="line"><span class="lineno">   57</span>}</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00052">52</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordtype">bool</span> data = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">if</span> (str == <span class="stringliteral">&quot;false&quot;</span> || str == <span class="stringliteral">&quot;False&quot;</span> || str == <span class="stringliteral">&quot;FALSE&quot;</span> || str == <span class="stringliteral">&quot;0&quot;</span>)</div>
+<div class="line"><span class="lineno">   56</span>    data = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">return</span> data;</div>
+<div class="line"><span class="lineno">   58</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -211,13 +211,13 @@ template&lt;&gt; </div>
 
 <p>Returns the string that created by concatenating the elements of a vector with commas. </p>
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00082">82</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>{</div>
-<div class="line"><span class="lineno">   84</span>  std::ostringstream oss;</div>
-<div class="line"><span class="lineno">   85</span>  std::copy(vec.begin(), std::prev(vec.end()), std::ostream_iterator&lt;std::string&gt;(oss, <span class="stringliteral">&quot;, &quot;</span>));</div>
-<div class="line"><span class="lineno">   86</span>  oss &lt;&lt; vec.back();</div>
-<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">return</span> oss.str();</div>
-<div class="line"><span class="lineno">   88</span>}</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00083">83</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>{</div>
+<div class="line"><span class="lineno">   85</span>  std::ostringstream oss;</div>
+<div class="line"><span class="lineno">   86</span>  std::copy(vec.begin(), std::prev(vec.end()), std::ostream_iterator&lt;std::string&gt;(oss, <span class="stringliteral">&quot;, &quot;</span>));</div>
+<div class="line"><span class="lineno">   87</span>  oss &lt;&lt; vec.back();</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">return</span> oss.str();</div>
+<div class="line"><span class="lineno">   89</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -248,14 +248,14 @@ template&lt;&gt; </div>
 <p>Returns the string with the leading dash removed. </p>
 <p>If there is no dash, it returns as it is. </p>
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00070">70</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
-<div class="line"><span class="lineno">   72</span>  std::string ret{str};</div>
-<div class="line"><span class="lineno">   73</span>  <span class="keyword">auto</span> pos = ret.find_first_not_of(<span class="charliteral">&#39;-&#39;</span>);</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (pos == std::string::npos)</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">return</span> ret.substr(pos);</div>
-<div class="line"><span class="lineno">   77</span>}</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00071">71</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
+<div class="line"><span class="lineno">   73</span>  std::string ret{str};</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keyword">auto</span> pos = ret.find_first_not_of(<span class="charliteral">&#39;-&#39;</span>);</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">if</span> (pos == std::string::npos)</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> ret.substr(pos);</div>
+<div class="line"><span class="lineno">   78</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -285,8 +285,8 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00063">63</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> value ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00064">64</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> value ? <span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,8 +316,8 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00061">61</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{ <span class="keywordflow">return</span> std::string(value); }</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00062">62</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> std::string(value); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -347,10 +347,10 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00059">59</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> std::to_string(value); }</div>
+<p class="definition">Definition at line <a class="el" href="arser_8h_source.html#l00060">60</a> of file <a class="el" href="arser_8h_source.html">arser.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> std::to_string(value); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="arser_8h_source.html#l00274">arser::Argument::default_value()</a>, and <a class="el" href="arser_8h_source.html#l00290">arser::Argument::default_value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="arser_8h_source.html#l00275">arser::Argument::default_value()</a>, and <a class="el" href="arser_8h_source.html#l00291">arser::Argument::default_value()</a>.</p>
 
 </div>
 </div>

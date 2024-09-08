@@ -2503,11 +2503,10 @@ var hierarchy =
       [ "luci_interpreter::StaticMemoryManager", "classluci__interpreter_1_1_static_memory_manager.html", null ],
       [ "luci_interpreter::TestMemoryManager", "classluci__interpreter_1_1_test_memory_manager.html", null ]
     ] ],
-    [ "onert::backend::basic::IMemoryPlanner< Index >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", null ],
-    [ "onert::backend::basic::IMemoryPlanner< DisposableTensorIndex >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
-      [ "onert::backend::train::BumpPlanner", "classonert_1_1backend_1_1train_1_1_bump_planner.html", null ],
-      [ "onert::backend::train::FirstFitPlanner", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", null ],
-      [ "onert::backend::train::WICPlanner", "classonert_1_1backend_1_1train_1_1_w_i_c_planner.html", null ]
+    [ "onert::backend::basic::IMemoryPlanner< Index >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
+      [ "onert::backend::train::BumpPlanner< Index >", "classonert_1_1backend_1_1train_1_1_bump_planner.html", null ],
+      [ "onert::backend::train::FirstFitPlanner< Index >", "classonert_1_1backend_1_1train_1_1_first_fit_planner.html", null ],
+      [ "onert::backend::train::WICPlanner< Index >", "classonert_1_1backend_1_1train_1_1_w_i_c_planner.html", null ]
     ] ],
     [ "onert::backend::basic::IMemoryPlanner< ir::OperandIndex >", "structonert_1_1backend_1_1basic_1_1_i_memory_planner.html", [
       [ "onert::backend::basic::BumpPlanner", "classonert_1_1backend_1_1basic_1_1_bump_planner.html", null ],
@@ -3685,6 +3684,7 @@ var hierarchy =
     [ "nnfw::misc::tensor::Comparator::Observer", "structnnfw_1_1misc_1_1tensor_1_1_comparator_1_1_observer.html", null ],
     [ "flatbuffers::Offset< T >", "structflatbuffers_1_1_offset.html", null ],
     [ "tflite2circle::Offset< T >", "classtflite2circle_1_1_offset.html", null ],
+    [ "flatbuffers::Offset< circle::Buffer >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< flatbuffers::Vector< typename T::CIR > >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< void >", "structflatbuffers_1_1_offset.html", null ],
@@ -4563,6 +4563,7 @@ var hierarchy =
       [ "luci::RemoveRedundantReshapePass", "structluci_1_1_remove_redundant_reshape_pass.html", null ],
       [ "luci::RemoveRedundantTransposePass", "structluci_1_1_remove_redundant_transpose_pass.html", null ],
       [ "luci::RemoveUnnecessaryAddPass", "structluci_1_1_remove_unnecessary_add_pass.html", null ],
+      [ "luci::RemoveUnnecessaryCastPass", "structluci_1_1_remove_unnecessary_cast_pass.html", null ],
       [ "luci::RemoveUnnecessaryReshapeNetPass", "structluci_1_1_remove_unnecessary_reshape_net_pass.html", null ],
       [ "luci::RemoveUnnecessaryReshapePass", "structluci_1_1_remove_unnecessary_reshape_pass.html", null ],
       [ "luci::RemoveUnnecessarySlicePass", "structluci_1_1_remove_unnecessary_slice_pass.html", null ],

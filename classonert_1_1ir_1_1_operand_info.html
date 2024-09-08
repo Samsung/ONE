@@ -771,9 +771,6 @@ Static Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">size_t onert::ir::OperandInfo::total_size </td>
@@ -782,18 +779,36 @@ Static Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Return size of tensor (bytes) </p>
 <dl class="section return"><dt>Returns</dt><dd>Tensor size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00123">123</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  123</span>{ <span class="keywordflow">return</span> _shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(_typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>()); }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8cc_source.html#l00024">24</a> of file <a class="el" href="_operand_info_8cc_source.html">OperandInfo.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>();</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">   28</span>  {</div>
+<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> _shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(data_type);</div>
+<div class="line"><span class="lineno">   30</span>  }</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;e)</div>
+<div class="line"><span class="lineno">   32</span>  {</div>
+<div class="line"><span class="lineno">   33</span>    <span class="comment">// Calculate total size for ggml block quantization type on exception handling</span></div>
+<div class="line"><span class="lineno">   34</span>    <span class="comment">// because it is rare case and we should care about performance on non-block case.</span></div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (data_type != DataType::QUANT_GGML_Q4_0 &amp;&amp; data_type != DataType::QUANT_GGML_Q8_0)</div>
+<div class="line"><span class="lineno">   36</span>      <span class="keywordflow">throw</span> e;</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (_shape.dim(_shape.rank() - 1) % 32 != 0)</div>
+<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   40</span>        <span class="stringliteral">&quot;Block quantization requires the last dimension to be a multiple of 32&quot;</span>};</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>    <span class="keyword">const</span> <span class="keyword">auto</span> num_blocks = _shape.num_elements() / 32;</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keyword">const</span> <span class="keyword">auto</span> block_size = data_type == DataType::QUANT_GGML_Q4_0</div>
+<div class="line"><span class="lineno">   44</span>                              ? (<span class="keyword">sizeof</span>(uint8_t) * 32 / 2 + <span class="keyword">sizeof</span>(uint16_t))</div>
+<div class="line"><span class="lineno">   45</span>                              : (sizeof(uint8_t) * 32 + sizeof(uint16_t));</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> num_blocks * block_size;</div>
+<div class="line"><span class="lineno">   47</span>  }</div>
+<div class="line"><span class="lineno">   48</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_type_info_html_ac59d0c3025a812eba13a113a7c7c85a5"><div class="ttname"><a href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">onert::ir::TypeInfo::type</a></div><div class="ttdeci">DataType type() const</div><div class="ttdef"><b>Definition</b> <a href="_type_info_8h_source.html#l00052">TypeInfo.h:52</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00029">DataType.cc:29</a></div></div>
 </div><!-- fragment -->
@@ -913,8 +928,9 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>runtime/onert/core/include/ir/<a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a></li>
+<li>runtime/onert/core/src/ir/<a class="el" href="_operand_info_8cc_source.html">OperandInfo.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

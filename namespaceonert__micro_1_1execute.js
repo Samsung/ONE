@@ -34,6 +34,7 @@ var namespaceonert__micro_1_1execute =
     [ "readDataKernel", "namespaceonert__micro_1_1execute.html#a20e362151b5cbe06c7c8c9e5b54ec543", null ],
     [ "readKernelDataTISO", "namespaceonert__micro_1_1execute.html#aae8042c5195cffff37e348a20caca812", null ],
     [ "readQuantParams", "namespaceonert__micro_1_1execute.html#a40e42e3586514350a03c2b8b7f3b3f22", null ],
+    [ "SISOHeader", "namespaceonert__micro_1_1execute.html#a1ed56945d0defdaf5aa8823d3a3ed0d9", null ],
     [ "kernel_builtin_execute", "namespaceonert__micro_1_1execute.html#a628d7ac02011d8c04aff4375f9803240", null ],
     [ "kernel_custom_execute", "namespaceonert__micro_1_1execute.html#a9d940352336b4e93813c268fbc8e59ee", null ]
 ];

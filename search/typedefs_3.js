@@ -10,7 +10,6 @@ var searchData=
   ['difference_5ftype_7',['difference_type',['../structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429',1,'flatbuffers::VectorIterator']]],
   ['dimensiontype_8',['DimensionType',['../classonert_1_1loader_1_1_base_loader.html#aaa50097b9099f455cdbbc54bd022af98',1,'onert::loader::BaseLoader']]],
   ['dims_9',['dims',['../namespacemorph.html#a7e45f169b086c0fffd2fddb857256ee3',1,'morph::Dims'],['../namespacesouschef.html#af6901c7c7d76de2d622df38926a477da',1,'souschef::Dims']]],
-  ['disposabletensorindexmap_10',['DisposableTensorIndexMap',['../namespaceonert_1_1backend_1_1train.html#a3941bee692651dbecf8a48dd142c8ad4',1,'onert::backend::train']]],
-  ['dlhandle_5fdestroy_5ft_11',['dlhandle_destroy_t',['../classonert_1_1odc_1_1_quantizer_loader.html#a607a22d82042c81cc76173939256c8a6',1,'onert::odc::QuantizerLoader::dlhandle_destroy_t'],['../classonert_1_1odc_1_1_codegen_loader.html#af54139f703f79ca630fb77ba785c6aab',1,'onert::odc::CodegenLoader::dlhandle_destroy_t'],['../classonert_1_1compiler_1_1_backend_manager.html#aa0e17a9ffd4eb27df6afd7d421835c5f',1,'onert::compiler::BackendManager::dlhandle_destroy_t']]],
-  ['dynamictensormanager_12',['DynamicTensorManager',['../namespaceonert_1_1backend_1_1builtin.html#af1fe1e637c2978de29ade945417c7e20',1,'onert::backend::builtin']]]
+  ['dlhandle_5fdestroy_5ft_10',['dlhandle_destroy_t',['../classonert_1_1odc_1_1_quantizer_loader.html#a607a22d82042c81cc76173939256c8a6',1,'onert::odc::QuantizerLoader::dlhandle_destroy_t'],['../classonert_1_1odc_1_1_codegen_loader.html#af54139f703f79ca630fb77ba785c6aab',1,'onert::odc::CodegenLoader::dlhandle_destroy_t'],['../classonert_1_1compiler_1_1_backend_manager.html#aa0e17a9ffd4eb27df6afd7d421835c5f',1,'onert::compiler::BackendManager::dlhandle_destroy_t']]],
+  ['dynamictensormanager_11',['DynamicTensorManager',['../namespaceonert_1_1backend_1_1builtin.html#af1fe1e637c2978de29ade945417c7e20',1,'onert::backend::builtin']]]
 ];

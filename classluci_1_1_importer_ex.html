@@ -186,17 +186,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_importer_ex_8cpp_source.html#l00061">61</a> of file <a class="el" href="_importer_ex_8cpp_source.html">ImporterEx.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keyword">auto</span> data_size = model_data.size();</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  Importer importer(_source);</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> importer.importModule(data_data, data_size);</div>
-<div class="line"><span class="lineno">   68</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_importer_ex_8cpp_source.html#l00057">57</a> of file <a class="el" href="_importer_ex_8cpp_source.html">ImporterEx.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keyword">auto</span> data_size = model_data.size();</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>  Importer importer(_source);</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">return</span> importer.importModule(data_data, data_size);</div>
+<div class="line"><span class="lineno">   64</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::importModule()</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="_test_driver_8cpp_source.html#l00120">entry()</a>.</p>
 
 </div>
@@ -232,28 +230,23 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   41</span>  }</div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  flatbuffers::Verifier verifier{<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data()), model_data.size()};</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (!circle::VerifyModelBuffer(verifier))</div>
-<div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Invalid input file &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keyword">const</span> circle::Model *<a class="code hl_variable" href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">circle_model</a> = circle::GetModel(model_data.data());</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (circle_model == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Failed to load circle &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>  Importer importer;</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> importer.importModule(circle_model);</div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> data_size = model_data.size();</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>  flatbuffers::Verifier verifier{data_data, data_size};</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (!circle::VerifyModelBuffer(verifier))</div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;ERROR: Invalid input file &#39;&quot;</span> &lt;&lt; input_path &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   51</span>  }</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>  Importer importer(_source);</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> importer.importModule(data_data, data_size);</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html"><div class="ttname"><a href="classfoder_1_1_file_loader.html">foder::FileLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00026">FileLoader.h:27</a></div></div>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html_adc903eb7f252ed7fac779a6869139ec4"><div class="ttname"><a href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">foder::FileLoader::load</a></div><div class="ttdeci">DataBuffer load(void) const</div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00039">FileLoader.h:39</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_ab8593f39f8c0562457496ffafe7c2932"><div class="ttname"><a href="namespacepart__eval__one.html#ab8593f39f8c0562457496ffafe7c2932">part_eval_one.circle_model</a></div><div class="ttdeci">str circle_model</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00025">part_eval_one.py:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2import_2src_2_importer_8cpp_source.html#l00267">luci::Importer::importModule()</a>, and <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>.</p>
+<p class="reference">References <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_data_provider_8cpp_source.html#l00052">mpqsolver::core::H5FileDataProvider::H5FileDataProvider()</a>, <a class="el" href="_dalgona_8cpp_source.html#l00099">dalgona::Dalgona::initialize()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00182">record_minmax::RecordMinMax::initialize()</a>.</p>
 

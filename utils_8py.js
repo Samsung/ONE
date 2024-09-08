@@ -15,6 +15,7 @@ var utils_8py =
     [ "remove_prefix", "utils_8py.html#a924d96dd678d3702bbee70371eef5bc7", null ],
     [ "remove_suffix", "utils_8py.html#a1a4f8082a07c3c321517c652ca02b766", null ],
     [ "run", "utils_8py.html#aa79a1665a950a40985c4e993a5c762a4", null ],
+    [ "run_ret", "utils_8py.html#a3d2644bbb5ac137878151f14ba3944f8", null ],
     [ "safemain", "utils_8py.html#ad649859d6b883a0cc14c3f37f7f86773", null ],
     [ "ONE_CMD", "utils_8py.html#a86abd957ffb10c3c9efa74ade08d8e28", null ]
 ];

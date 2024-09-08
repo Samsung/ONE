@@ -94,7 +94,7 @@ var searchData=
   ['builtinoptionsmappingrule_91',['BuiltinOptionsMappingRule',['../classluci_1_1_builtin_options_mapping_rule.html',1,'luci']]],
   ['bulk_92',['Bulk',['../classonert_1_1ir_1_1operation_1_1_bulk.html',1,'onert::ir::operation']]],
   ['bulklayer_93',['BulkLayer',['../classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html',1,'onert::backend::trix::ops']]],
-  ['bumpplanner_94',['bumpplanner',['../classonert_1_1backend_1_1basic_1_1_bump_planner.html',1,'onert::backend::basic::BumpPlanner'],['../classonert_1_1backend_1_1train_1_1_bump_planner.html',1,'onert::backend::train::BumpPlanner']]],
+  ['bumpplanner_94',['bumpplanner',['../classonert_1_1backend_1_1basic_1_1_bump_planner.html',1,'onert::backend::basic::BumpPlanner'],['../classonert_1_1backend_1_1train_1_1_bump_planner.html',1,'onert::backend::train::BumpPlanner&lt; Index &gt;']]],
   ['bundle_95',['Bundle',['../classenco_1_1_bundle.html',1,'enco']]],
   ['bypassgenerationpass_96',['BypassGenerationPass',['../structenco_1_1_bypass_generation_pass.html',1,'enco']]]
 ];

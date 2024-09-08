@@ -187,94 +187,90 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span>    <span class="keywordflow">for</span> i <span class="keywordflow">in</span> range(num_inputs):</div>
 <div class="line"><span class="lineno">   58</span>        input_details = interpreter.get_input_details()[i]</div>
 <div class="line"><span class="lineno">   59</span>        <span class="keywordflow">if</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.float32:</div>
-<div class="line"><span class="lineno">   60</span>            input_data = np.array(</div>
-<div class="line"><span class="lineno">   61</span>                np.random.random_sample(input_details[<span class="stringliteral">&quot;shape&quot;</span>]), input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
+<div class="line"><span class="lineno">   60</span>            input_data = np.array(np.random.random_sample(input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
+<div class="line"><span class="lineno">   61</span>                                  input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
 <div class="line"><span class="lineno">   62</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.uint8:</div>
-<div class="line"><span class="lineno">   63</span>            input_data = np.array(</div>
-<div class="line"><span class="lineno">   64</span>                np.random.randint(0, 256, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
-<div class="line"><span class="lineno">   65</span>                input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
-<div class="line"><span class="lineno">   66</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
-<div class="line"><span class="lineno">   67</span>            input_data = np.array(</div>
-<div class="line"><span class="lineno">   68</span>                np.random.randint(0, 100, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
-<div class="line"><span class="lineno">   69</span>                input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
-<div class="line"><span class="lineno">   70</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
-<div class="line"><span class="lineno">   71</span>            input_data = np.array(</div>
-<div class="line"><span class="lineno">   72</span>                np.random.randint(0, 100, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
-<div class="line"><span class="lineno">   73</span>                input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
+<div class="line"><span class="lineno">   63</span>            input_data = np.array(np.random.randint(0, 256, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
+<div class="line"><span class="lineno">   64</span>                                  input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
+<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
+<div class="line"><span class="lineno">   66</span>            input_data = np.array(np.random.randint(0, 100, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
+<div class="line"><span class="lineno">   67</span>                                  input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
+<div class="line"><span class="lineno">   68</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
+<div class="line"><span class="lineno">   69</span>            input_data = np.array(np.random.randint(0, 100, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
+<div class="line"><span class="lineno">   70</span>                                  input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
+<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
+<div class="line"><span class="lineno">   72</span>            input_data = np.array(np.random.randint(0, 100, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
+<div class="line"><span class="lineno">   73</span>                                  input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
+<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
 <div class="line"><span class="lineno">   75</span>            input_data = np.array(</div>
-<div class="line"><span class="lineno">   76</span>                np.random.randint(0, 100, size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
+<div class="line"><span class="lineno">   76</span>                np.random.choice(a=[<span class="keyword">True</span>, <span class="keyword">False</span>], size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
 <div class="line"><span class="lineno">   77</span>                input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
-<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">elif</span> input_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
-<div class="line"><span class="lineno">   79</span>            input_data = np.array(</div>
-<div class="line"><span class="lineno">   80</span>                np.random.choice(a=[<span class="keyword">True</span>, <span class="keyword">False</span>], size=input_details[<span class="stringliteral">&quot;shape&quot;</span>]),</div>
-<div class="line"><span class="lineno">   81</span>                input_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   83</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported input dtype&quot;</span></div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>        interpreter.set_tensor(input_details[<span class="stringliteral">&quot;index&quot;</span>], input_data)</div>
-<div class="line"><span class="lineno">   86</span>        input_data.tofile(circle_model + <span class="stringliteral">&quot;.input&quot;</span> + str(i))</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>    <span class="comment"># Do inference</span></div>
-<div class="line"><span class="lineno">   89</span>    interpreter.invoke()</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>    <span class="comment"># Execute circle-part-driver.</span></div>
-<div class="line"><span class="lineno">   92</span>    partition_command = [</div>
-<div class="line"><span class="lineno">   93</span>        circle_part_driver, partition_conn_ini,</div>
-<div class="line"><span class="lineno">   94</span>        str(num_inputs), circle_model + <span class="stringliteral">&quot;.input&quot;</span>, circle_model + <span class="stringliteral">&quot;.output&quot;</span></div>
-<div class="line"><span class="lineno">   95</span>    ]</div>
-<div class="line"><span class="lineno">   96</span>    print(<span class="stringliteral">&quot;Run: &quot;</span>)</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> partition_command:</div>
-<div class="line"><span class="lineno">   98</span>        print(<span class="stringliteral">&quot;    &quot;</span>, arg, <span class="stringliteral">&quot;\\&quot;</span>)</div>
-<div class="line"><span class="lineno">   99</span>    print(<span class="stringliteral">&quot;&quot;</span>, flush=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>    <span class="comment"># working directory into the folder as ini has relative filename of the model</span></div>
-<div class="line"><span class="lineno">  102</span>    subprocess.run(partition_command, check=<span class="keyword">True</span>, cwd=artifacts_dir)</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment"># Compare the results.</span></div>
-<div class="line"><span class="lineno">  105</span>    inpt_output_details = interpreter.get_output_details()</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">for</span> idx <span class="keywordflow">in</span> range(len(inpt_output_details)):</div>
-<div class="line"><span class="lineno">  107</span>        output_details = inpt_output_details[idx]</div>
-<div class="line"><span class="lineno">  108</span>        output_data = np.fromfile(circle_model + <span class="stringliteral">&quot;.output&quot;</span> + str(idx),</div>
-<div class="line"><span class="lineno">  109</span>                                  output_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
-<div class="line"><span class="lineno">  110</span>        shape_file = open(circle_model + <span class="stringliteral">&quot;.output&quot;</span> + str(idx) + <span class="stringliteral">&quot;.shape&quot;</span>, <span class="stringliteral">&#39;r&#39;</span>)</div>
-<div class="line"><span class="lineno">  111</span>        output_shape = [int(i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> shape_file.read().split(<span class="stringliteral">&#39;,&#39;</span>)]</div>
-<div class="line"><span class="lineno">  112</span>        luci_output_data = np.reshape(output_data, output_shape)</div>
-<div class="line"><span class="lineno">  113</span>        output_tensor = output_details[<span class="stringliteral">&quot;index&quot;</span>]</div>
-<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">if</span> full_signatures_outputs_remap != <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  115</span>            output_tensor = full_signatures_outputs_remap[idx]</div>
-<div class="line"><span class="lineno">  116</span>        intp_output_data = interpreter.get_tensor(output_tensor)</div>
-<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">if</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.uint8:</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   79</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported input dtype&quot;</span></div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>        interpreter.set_tensor(input_details[<span class="stringliteral">&quot;index&quot;</span>], input_data)</div>
+<div class="line"><span class="lineno">   82</span>        input_data.tofile(circle_model + <span class="stringliteral">&quot;.input&quot;</span> + str(i))</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <span class="comment"># Do inference</span></div>
+<div class="line"><span class="lineno">   85</span>    interpreter.invoke()</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="comment"># Execute circle-part-driver.</span></div>
+<div class="line"><span class="lineno">   88</span>    partition_command = [</div>
+<div class="line"><span class="lineno">   89</span>        circle_part_driver, partition_conn_ini,</div>
+<div class="line"><span class="lineno">   90</span>        str(num_inputs), circle_model + <span class="stringliteral">&quot;.input&quot;</span>, circle_model + <span class="stringliteral">&quot;.output&quot;</span></div>
+<div class="line"><span class="lineno">   91</span>    ]</div>
+<div class="line"><span class="lineno">   92</span>    print(<span class="stringliteral">&quot;Run: &quot;</span>)</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> partition_command:</div>
+<div class="line"><span class="lineno">   94</span>        print(<span class="stringliteral">&quot;    &quot;</span>, arg, <span class="stringliteral">&quot;\\&quot;</span>)</div>
+<div class="line"><span class="lineno">   95</span>    print(<span class="stringliteral">&quot;&quot;</span>, flush=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>    <span class="comment"># working directory into the folder as ini has relative filename of the model</span></div>
+<div class="line"><span class="lineno">   98</span>    subprocess.run(partition_command, check=<span class="keyword">True</span>, cwd=artifacts_dir)</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span>    <span class="comment"># Compare the results.</span></div>
+<div class="line"><span class="lineno">  101</span>    inpt_output_details = interpreter.get_output_details()</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">for</span> idx <span class="keywordflow">in</span> range(len(inpt_output_details)):</div>
+<div class="line"><span class="lineno">  103</span>        output_details = inpt_output_details[idx]</div>
+<div class="line"><span class="lineno">  104</span>        output_data = np.fromfile(circle_model + <span class="stringliteral">&quot;.output&quot;</span> + str(idx),</div>
+<div class="line"><span class="lineno">  105</span>                                  output_details[<span class="stringliteral">&quot;dtype&quot;</span>])</div>
+<div class="line"><span class="lineno">  106</span>        shape_file = open(circle_model + <span class="stringliteral">&quot;.output&quot;</span> + str(idx) + <span class="stringliteral">&quot;.shape&quot;</span>, <span class="stringliteral">&#39;r&#39;</span>)</div>
+<div class="line"><span class="lineno">  107</span>        output_shape = [int(i) <span class="keywordflow">for</span> i <span class="keywordflow">in</span> shape_file.read().split(<span class="stringliteral">&#39;,&#39;</span>)]</div>
+<div class="line"><span class="lineno">  108</span>        luci_output_data = np.reshape(output_data, output_shape)</div>
+<div class="line"><span class="lineno">  109</span>        output_tensor = output_details[<span class="stringliteral">&quot;index&quot;</span>]</div>
+<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">if</span> full_signatures_outputs_remap != <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  111</span>            output_tensor = full_signatures_outputs_remap[idx]</div>
+<div class="line"><span class="lineno">  112</span>        intp_output_data = interpreter.get_tensor(output_tensor)</div>
+<div class="line"><span class="lineno">  113</span>        <span class="keywordflow">if</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.uint8:</div>
+<div class="line"><span class="lineno">  114</span>            <span class="keyword">assert</span> np.allclose(</div>
+<div class="line"><span class="lineno">  115</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
+<div class="line"><span class="lineno">  116</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.float32:</div>
 <div class="line"><span class="lineno">  118</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  119</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
+<div class="line"><span class="lineno">  119</span>                luci_output_data, intp_output_data, rtol=1.e-5, atol=1.e-5</div>
 <div class="line"><span class="lineno">  120</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.float32:</div>
+<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
 <div class="line"><span class="lineno">  122</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  123</span>                luci_output_data, intp_output_data, rtol=1.e-5, atol=1.e-5</div>
+<div class="line"><span class="lineno">  123</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
 <div class="line"><span class="lineno">  124</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int64:</div>
+<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
 <div class="line"><span class="lineno">  126</span>            <span class="keyword">assert</span> np.allclose(</div>
 <div class="line"><span class="lineno">  127</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
 <div class="line"><span class="lineno">  128</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int32:</div>
+<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
 <div class="line"><span class="lineno">  130</span>            <span class="keyword">assert</span> np.allclose(</div>
 <div class="line"><span class="lineno">  131</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
 <div class="line"><span class="lineno">  132</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.int16:</div>
+<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
 <div class="line"><span class="lineno">  134</span>            <span class="keyword">assert</span> np.allclose(</div>
 <div class="line"><span class="lineno">  135</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
 <div class="line"><span class="lineno">  136</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">elif</span> output_details[<span class="stringliteral">&quot;dtype&quot;</span>] == np.bool_:</div>
-<div class="line"><span class="lineno">  138</span>            <span class="keyword">assert</span> np.allclose(</div>
-<div class="line"><span class="lineno">  139</span>                luci_output_data, intp_output_data, rtol=0, atol=0</div>
-<div class="line"><span class="lineno">  140</span>            ), <span class="stringliteral">&quot;Execution result of &quot;</span> + tflite_model + <span class="stringliteral">&quot; does not match with &quot;</span> + circle_model</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  142</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_details[<span class="stringliteral">&quot;dtype&quot;</span>]</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span><span class="comment"># arguments must be in sync with `conftest.py`</span></div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  138</span>            <span class="keyword">assert</span> <span class="keyword">False</span>, <span class="stringliteral">&quot;Unsupported data type: &quot;</span> + output_details[<span class="stringliteral">&quot;dtype&quot;</span>]</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span><span class="comment"># arguments must be in sync with `conftest.py`</span></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="test__circle__part__value_8py_source.html#l00146">test_circle_part_value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="test__circle__part__value_8py_source.html#l00142">test_circle_part_value()</a>.</p>
 
 </div>
 </div>
@@ -310,9 +306,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="test__circle__part__value_8py_source.html#l00146">146</a> of file <a class="el" href="test__circle__part__value_8py_source.html">test_circle_part_value.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  146</span><span class="keyword">def </span><a class="code hl_namespace" href="namespacetest__circle__part__value.html">test_circle_part_value</a>(test_name: str, bin_dir: str, part_driver_path: str):</div>
-<div class="line"><span class="lineno">  147</span>    part_eval(test_name, bin_dir, part_driver_path)</div>
+<p class="definition">Definition at line <a class="el" href="test__circle__part__value_8py_source.html#l00142">142</a> of file <a class="el" href="test__circle__part__value_8py_source.html">test_circle_part_value.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span><span class="keyword">def </span><a class="code hl_namespace" href="namespacetest__circle__part__value.html">test_circle_part_value</a>(test_name: str, bin_dir: str, part_driver_path: str):</div>
+<div class="line"><span class="lineno">  143</span>    part_eval(test_name, bin_dir, part_driver_path)</div>
 <div class="ttc" id="anamespacetest__circle__part__value_html"><div class="ttname"><a href="namespacetest__circle__part__value.html">test_circle_part_value</a></div><div class="ttdef"><b>Definition</b> <a href="test__circle__part__value_8py_source.html#l00001">test_circle_part_value.py:1</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="test__circle__part__value_8py_source.html#l00009">part_eval()</a>.</p>

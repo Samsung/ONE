@@ -134,36 +134,35 @@ $(document).ready(function(){initNavTree('q__implant__validator_8py_source.html'
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                <span class="keywordflow">if</span> tensor_name == <span class="stringliteral">&quot;value&quot;</span>:</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                    expected_weights = np.load(np_path)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                    h5_weights = model[node_name][<span class="stringliteral">&quot;weights&quot;</span>][:]</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                    <span class="keywordflow">if</span> np.allclose(</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                            h5_weights, expected_weights, rtol=1.e-5,</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                            atol=1.e-5) == <span class="keyword">False</span>:</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                        print(<span class="stringliteral">&quot;Implanted weights of &quot;</span> + node_name + <span class="stringliteral">&quot;.&quot;</span> + tensor_name +</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                              <span class="stringliteral">&quot; (&quot;</span> + str(h5_weights) +</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                              <span class="stringliteral">&quot;) do not match with expected value (&quot;</span> +</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                              str(expected_weights) + <span class="stringliteral">&quot;).&quot;</span>)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                        valid = <span class="keyword">False</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">if</span> tensor_name == <span class="stringliteral">&quot;scale&quot;</span>:</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                    expected_scale = np.load(np_path)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                    h5_scale = model[node_name][<span class="stringliteral">&quot;scale&quot;</span>][:]</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                    <span class="keywordflow">if</span> np.allclose(</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                            h5_scale, expected_scale, rtol=1.e-5, atol=1.e-5) == <span class="keyword">False</span>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                        print(<span class="stringliteral">&quot;Implanted scale of &quot;</span> + node_name + <span class="stringliteral">&quot;.&quot;</span> + tensor_name +</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                              <span class="stringliteral">&quot; (&quot;</span> + str(h5_scale) +</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                              <span class="stringliteral">&quot;) do not match with expected value (&quot;</span> +</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                              str(expected_scale) + <span class="stringliteral">&quot;).&quot;</span>)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                        valid = <span class="keyword">False</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                <span class="keywordflow">if</span> tensor_name == <span class="stringliteral">&quot;zerop&quot;</span>:</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    expected_zerop = np.load(np_path)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    input_zerop = model[node_name][<span class="stringliteral">&quot;zero_point&quot;</span>][:]</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    <span class="keywordflow">if</span> np.allclose(input_zerop, expected_zerop, rtol=0, atol=1) == <span class="keyword">False</span>:</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                        print(<span class="stringliteral">&quot;Implanted zero point of &quot;</span> + tensor_name + <span class="stringliteral">&quot; (&quot;</span> +</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                              str(input_zerop) + <span class="stringliteral">&quot;) do not match with expected value (&quot;</span> +</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                              str(expected_zerop) + <span class="stringliteral">&quot;).&quot;</span>)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                        valid = <span class="keyword">False</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">return</span> valid</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                    <span class="keywordflow">if</span> np.allclose(h5_weights, expected_weights, rtol=1.e-5,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                                   atol=1.e-5) == <span class="keyword">False</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                        print(<span class="stringliteral">&quot;Implanted weights of &quot;</span> + node_name + <span class="stringliteral">&quot;.&quot;</span> + tensor_name +</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                              <span class="stringliteral">&quot; (&quot;</span> + str(h5_weights) +</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                              <span class="stringliteral">&quot;) do not match with expected value (&quot;</span> +</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                              str(expected_weights) + <span class="stringliteral">&quot;).&quot;</span>)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                        valid = <span class="keyword">False</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <span class="keywordflow">if</span> tensor_name == <span class="stringliteral">&quot;scale&quot;</span>:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                    expected_scale = np.load(np_path)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                    h5_scale = model[node_name][<span class="stringliteral">&quot;scale&quot;</span>][:]</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                    <span class="keywordflow">if</span> np.allclose(h5_scale, expected_scale, rtol=1.e-5,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                   atol=1.e-5) == <span class="keyword">False</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                        print(<span class="stringliteral">&quot;Implanted scale of &quot;</span> + node_name + <span class="stringliteral">&quot;.&quot;</span> + tensor_name +</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                              <span class="stringliteral">&quot; (&quot;</span> + str(h5_scale) +</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                              <span class="stringliteral">&quot;) do not match with expected value (&quot;</span> +</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                              str(expected_scale) + <span class="stringliteral">&quot;).&quot;</span>)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                        valid = <span class="keyword">False</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                <span class="keywordflow">if</span> tensor_name == <span class="stringliteral">&quot;zerop&quot;</span>:</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                    expected_zerop = np.load(np_path)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    input_zerop = model[node_name][<span class="stringliteral">&quot;zero_point&quot;</span>][:]</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    <span class="keywordflow">if</span> np.allclose(input_zerop, expected_zerop, rtol=0, atol=1) == <span class="keyword">False</span>:</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                        print(<span class="stringliteral">&quot;Implanted zero point of &quot;</span> + tensor_name + <span class="stringliteral">&quot; (&quot;</span> +</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                              str(input_zerop) + <span class="stringliteral">&quot;) do not match with expected value (&quot;</span> +</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                              str(expected_zerop) + <span class="stringliteral">&quot;).&quot;</span>)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                        valid = <span class="keyword">False</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> valid</div>
 </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

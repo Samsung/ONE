@@ -1,7 +1,7 @@
 var group___neural_networks =
 [
     [ "NeuralNetworks.h", "compiler_2ann-api_2include_2_neural_networks_8h.html", null ],
-    [ "NeuralNetworks.h", "runtime_2nnapi-header_2include_2_neural_networks_8h.html", null ],
+    [ "NeuralNetworks.h", "runtime_2onert_2api_2nnapi_2include_2_neural_networks_8h.html", null ],
     [ "ANeuralNetworksOperandType", "struct_a_neural_networks_operand_type.html", [
       [ "dimensionCount", "group___neural_networks.html#ga8e9b0f8229777661e6005b9d1847f026", null ],
       [ "dimensions", "group___neural_networks.html#ga72b87e2d8faea1f6a24cc2f8a7649d5c", null ],

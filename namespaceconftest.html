@@ -139,15 +139,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00053">53</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>copy_circle_model(model_src, model_dst):</div>
-<div class="line"><span class="lineno">   54</span>    copy_if_changed(model_src, model_dst)</div>
-<div class="line"><span class="lineno">   55</span> </div>
+<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00054">54</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span><span class="keyword">def </span>copy_circle_model(model_src, model_dst):</div>
+<div class="line"><span class="lineno">   55</span>    copy_if_changed(model_src, model_dst)</div>
 <div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00022">copy_if_changed()</a>.</p>
+<p class="reference">References <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00023">copy_if_changed()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00058">prepare_materials()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00059">prepare_materials()</a>.</p>
 
 </div>
 </div>
@@ -177,27 +177,27 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00022">22</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span><span class="keyword">def </span>copy_if_changed(src_filepath, dst_filepath):</div>
-<div class="line"><span class="lineno">   23</span>    do_copy = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   24</span>    <span class="keywordflow">if</span> (os.path.isfile(dst_filepath)):</div>
-<div class="line"><span class="lineno">   25</span>        file_diff = os.stat(src_filepath).st_mtime - os.stat(dst_filepath).st_mtime</div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> file_diff &gt; 1:</div>
-<div class="line"><span class="lineno">   27</span>            print(<span class="stringliteral">&quot;file:&quot;</span> + src_filepath + <span class="stringliteral">&quot; changed, update&quot;</span>)</div>
-<div class="line"><span class="lineno">   28</span>            do_copy = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   30</span>        do_copy = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> do_copy:</div>
-<div class="line"><span class="lineno">   33</span>        print(<span class="stringliteral">&quot;file:&quot;</span> + src_filepath + <span class="stringliteral">&quot; copy to: &quot;</span> + dst_filepath)</div>
-<div class="line"><span class="lineno">   34</span>        shutil.copyfile(src_filepath, dst_filepath)</div>
-<div class="line"><span class="lineno">   35</span> </div>
+<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00023">23</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span><span class="keyword">def </span>copy_if_changed(src_filepath, dst_filepath):</div>
+<div class="line"><span class="lineno">   24</span>    do_copy = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">if</span> (os.path.isfile(dst_filepath)):</div>
+<div class="line"><span class="lineno">   26</span>        file_diff = os.stat(src_filepath).st_mtime - os.stat(dst_filepath).st_mtime</div>
+<div class="line"><span class="lineno">   27</span>        <span class="keywordflow">if</span> file_diff &gt; 1:</div>
+<div class="line"><span class="lineno">   28</span>            print(<span class="stringliteral">&quot;file:&quot;</span> + src_filepath + <span class="stringliteral">&quot; changed, update&quot;</span>)</div>
+<div class="line"><span class="lineno">   29</span>            do_copy = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   31</span>        do_copy = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> do_copy:</div>
+<div class="line"><span class="lineno">   34</span>        print(<span class="stringliteral">&quot;file:&quot;</span> + src_filepath + <span class="stringliteral">&quot; copy to: &quot;</span> + dst_filepath)</div>
+<div class="line"><span class="lineno">   35</span>        shutil.copyfile(src_filepath, dst_filepath)</div>
 <div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span><span class="comment"># prepare reference input/output files to build folder for luci-eval-driver</span></div>
-<div class="line"><span class="lineno">   38</span><span class="comment"># from ref data in res/TensorFlowLiteRecipes/*/ref.input* and ref.output*</span></div>
-<div class="line"><span class="lineno">   39</span><span class="comment"># as model_name.ref.input* and model_name.ref.output*</span></div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span><span class="comment"># prepare reference input/output files to build folder for luci-eval-driver</span></div>
+<div class="line"><span class="lineno">   39</span><span class="comment"># from ref data in res/TensorFlowLiteRecipes/*/ref.input* and ref.output*</span></div>
+<div class="line"><span class="lineno">   40</span><span class="comment"># as model_name.ref.input* and model_name.ref.output*</span></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00053">copy_circle_model()</a>, and <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00040">copy_ref_files()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00054">copy_circle_model()</a>, and <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00041">copy_ref_files()</a>.</p>
 
 </div>
 </div>
@@ -227,24 +227,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00040">40</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span><span class="keyword">def </span>copy_ref_files(ref_file_src, ref_file_dst):</div>
-<div class="line"><span class="lineno">   41</span>    num_data = 0</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
-<div class="line"><span class="lineno">   43</span>        input_file_src = ref_file_src + str(num_data)</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">if</span> (<span class="keywordflow">not</span> os.path.isfile(input_file_src)):</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">break</span></div>
-<div class="line"><span class="lineno">   46</span>        input_file_dst = ref_file_dst + str(num_data)</div>
-<div class="line"><span class="lineno">   47</span>        copy_if_changed(input_file_src, input_file_dst)</div>
-<div class="line"><span class="lineno">   48</span>        <span class="comment"># try next file</span></div>
-<div class="line"><span class="lineno">   49</span>        num_data = num_data + 1</div>
-<div class="line"><span class="lineno">   50</span> </div>
+<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00041">41</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span><span class="keyword">def </span>copy_ref_files(ref_file_src, ref_file_dst):</div>
+<div class="line"><span class="lineno">   42</span>    num_data = 0</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line"><span class="lineno">   44</span>        input_file_src = ref_file_src + str(num_data)</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">if</span> (<span class="keywordflow">not</span> os.path.isfile(input_file_src)):</div>
+<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">break</span></div>
+<div class="line"><span class="lineno">   47</span>        input_file_dst = ref_file_dst + str(num_data)</div>
+<div class="line"><span class="lineno">   48</span>        copy_if_changed(input_file_src, input_file_dst)</div>
+<div class="line"><span class="lineno">   49</span>        <span class="comment"># try next file</span></div>
+<div class="line"><span class="lineno">   50</span>        num_data = num_data + 1</div>
 <div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span><span class="comment"># copy circle mode from common-artifacts to build binary</span></div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span><span class="comment"># copy circle mode from common-artifacts to build binary</span></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00022">copy_if_changed()</a>.</p>
+<p class="reference">References <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00023">copy_if_changed()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00058">prepare_materials()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00059">prepare_materials()</a>.</p>
 
 </div>
 </div>
@@ -272,7 +272,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">    8</span> </div>
 <div class="line"><span class="lineno">    9</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00058">prepare_materials()</a>, and <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00017">pytest_generate_tests()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00059">prepare_materials()</a>, and <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00018">pytest_generate_tests()</a>.</p>
 
 </div>
 </div>
@@ -320,32 +320,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00057">57</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>                      artifacts_path):</div>
-<div class="line"><span class="lineno">   59</span>    <span class="comment"># tfl? or circle?</span></div>
-<div class="line"><span class="lineno">   60</span>    recipe_path = tflrecipe_path</div>
-<div class="line"><span class="lineno">   61</span>    <span class="comment"># check with &#39;test.recipe&#39; file as &#39;ref.input?&#39; can be absent for no input model</span></div>
-<div class="line"><span class="lineno">   62</span>    test_recipe = os.path.join(recipe_path, test_name, <span class="stringliteral">&#39;test.recipe&#39;</span>)</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> os.path.isfile(test_recipe)):</div>
-<div class="line"><span class="lineno">   64</span>        recipe_path = circlerecipe_path</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>    ref_input_src = os.path.join(recipe_path, test_name, <span class="stringliteral">&#39;ref.input&#39;</span>)</div>
-<div class="line"><span class="lineno">   67</span>    ref_input_dst = os.path.join(binary_path, test_name + <span class="stringliteral">&#39;.ref.input&#39;</span>)</div>
-<div class="line"><span class="lineno">   68</span>    copy_ref_files(ref_input_src, ref_input_dst)</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>    ref_input_src = os.path.join(recipe_path, test_name, <span class="stringliteral">&#39;ref.output&#39;</span>)</div>
-<div class="line"><span class="lineno">   71</span>    ref_input_dst = os.path.join(binary_path, test_name + <span class="stringliteral">&#39;.ref.output&#39;</span>)</div>
-<div class="line"><span class="lineno">   72</span>    copy_ref_files(ref_input_src, ref_input_dst)</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    cirle_model_src = os.path.join(artifacts_path, test_name + <span class="stringliteral">&#39;.circle&#39;</span>)</div>
-<div class="line"><span class="lineno">   75</span>    cicle_model_dst = os.path.join(binary_path, test_name + <span class="stringliteral">&#39;.circle&#39;</span>)</div>
-<div class="line"><span class="lineno">   76</span>    copy_circle_model(cirle_model_src, cicle_model_dst)</div>
-<div class="line"><span class="lineno">   77</span> </div>
+<p class="definition">Definition at line <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00058">58</a> of file <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>                      artifacts_path):</div>
+<div class="line"><span class="lineno">   60</span>    <span class="comment"># tfl? or circle?</span></div>
+<div class="line"><span class="lineno">   61</span>    recipe_path = tflrecipe_path</div>
+<div class="line"><span class="lineno">   62</span>    <span class="comment"># check with &#39;test.recipe&#39; file as &#39;ref.input?&#39; can be absent for no input model</span></div>
+<div class="line"><span class="lineno">   63</span>    test_recipe = os.path.join(recipe_path, test_name, <span class="stringliteral">&#39;test.recipe&#39;</span>)</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (<span class="keywordflow">not</span> os.path.isfile(test_recipe)):</div>
+<div class="line"><span class="lineno">   65</span>        recipe_path = circlerecipe_path</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>    ref_input_src = os.path.join(recipe_path, test_name, <span class="stringliteral">&#39;ref.input&#39;</span>)</div>
+<div class="line"><span class="lineno">   68</span>    ref_input_dst = os.path.join(binary_path, test_name + <span class="stringliteral">&#39;.ref.input&#39;</span>)</div>
+<div class="line"><span class="lineno">   69</span>    copy_ref_files(ref_input_src, ref_input_dst)</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>    ref_input_src = os.path.join(recipe_path, test_name, <span class="stringliteral">&#39;ref.output&#39;</span>)</div>
+<div class="line"><span class="lineno">   72</span>    ref_input_dst = os.path.join(binary_path, test_name + <span class="stringliteral">&#39;.ref.output&#39;</span>)</div>
+<div class="line"><span class="lineno">   73</span>    copy_ref_files(ref_input_src, ref_input_dst)</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>    cirle_model_src = os.path.join(artifacts_path, test_name + <span class="stringliteral">&#39;.circle&#39;</span>)</div>
+<div class="line"><span class="lineno">   76</span>    cicle_model_dst = os.path.join(binary_path, test_name + <span class="stringliteral">&#39;.circle&#39;</span>)</div>
+<div class="line"><span class="lineno">   77</span>    copy_circle_model(cirle_model_src, cicle_model_dst)</div>
 <div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00053">copy_circle_model()</a>, <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00040">copy_ref_files()</a>, <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00004">extract_test_args()</a>, and <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00058">prepare_materials()</a>.</p>
+<p class="reference">References <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00054">copy_circle_model()</a>, <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00041">copy_ref_files()</a>, <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00004">extract_test_args()</a>, and <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00059">prepare_materials()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00058">prepare_materials()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="luci-ref-value-py-test_2conftest_8py_source.html#l00059">prepare_materials()</a>.</p>
 
 </div>
 </div>
@@ -369,10 +369,11 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   10</span><span class="keyword">def </span>pytest_addoption(parser):</div>
 <div class="line"><span class="lineno">   11</span>    parser.addoption(<span class="stringliteral">&quot;--test_list&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, help=<span class="stringliteral">&quot;Path to test list&quot;</span>)</div>
 <div class="line"><span class="lineno">   12</span>    parser.addoption(<span class="stringliteral">&quot;--bin_dir&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, help=<span class="stringliteral">&quot;Directory including artifacts&quot;</span>)</div>
-<div class="line"><span class="lineno">   13</span>    parser.addoption(</div>
-<div class="line"><span class="lineno">   14</span>        <span class="stringliteral">&quot;--circle_part_driver&quot;</span>, action=<span class="stringliteral">&quot;store&quot;</span>, help=<span class="stringliteral">&quot;Path to circle part driver&quot;</span>)</div>
-<div class="line"><span class="lineno">   15</span> </div>
+<div class="line"><span class="lineno">   13</span>    parser.addoption(<span class="stringliteral">&quot;--circle_part_driver&quot;</span>,</div>
+<div class="line"><span class="lineno">   14</span>                     action=<span class="stringliteral">&quot;store&quot;</span>,</div>
+<div class="line"><span class="lineno">   15</span>                     help=<span class="stringliteral">&quot;Path to circle part driver&quot;</span>)</div>
 <div class="line"><span class="lineno">   16</span> </div>
+<div class="line"><span class="lineno">   17</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -392,23 +393,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00017">17</a> of file <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   17</span><span class="keyword">def </span>pytest_generate_tests(metafunc):</div>
-<div class="line"><span class="lineno">   18</span>    list_path = metafunc.config.getoption(<span class="stringliteral">&#39;test_list&#39;</span>)</div>
-<div class="line"><span class="lineno">   19</span>    bin_dir = metafunc.config.getoption(<span class="stringliteral">&#39;bin_dir&#39;</span>)</div>
-<div class="line"><span class="lineno">   20</span>    circle_part_driver = metafunc.config.getoption(<span class="stringliteral">&#39;circle_part_driver&#39;</span>)</div>
-<div class="line"><span class="lineno">   21</span> </div>
-<div class="line"><span class="lineno">   22</span>    <span class="keyword">with</span> open(list_path) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   23</span>        contents = [line.rstrip() <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f]</div>
-<div class="line"><span class="lineno">   24</span> </div>
-<div class="line"><span class="lineno">   25</span>    comment_removed = [line <span class="keywordflow">for</span> line <span class="keywordflow">in</span> contents <span class="keywordflow">if</span> <span class="keywordflow">not</span> line.startswith(<span class="stringliteral">&#39;#&#39;</span>)]</div>
-<div class="line"><span class="lineno">   26</span>    newline_removed = [line <span class="keywordflow">for</span> line <span class="keywordflow">in</span> comment_removed <span class="keywordflow">if</span> line.startswith(<span class="stringliteral">&#39;add(&#39;</span>)]</div>
-<div class="line"><span class="lineno">   27</span>    test_args = [extract_test_args(line) <span class="keywordflow">for</span> line <span class="keywordflow">in</span> newline_removed]</div>
-<div class="line"><span class="lineno">   28</span>    <span class="comment"># add(RECIPE_NAME PARTITION_NAME EXPECTED_OUTPUT_COUNT)</span></div>
-<div class="line"><span class="lineno">   29</span>    partition_list = [(arg.split()[1], bin_dir, circle_part_driver) <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> test_args]</div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;test_name&#39;</span> <span class="keywordflow">in</span> metafunc.fixturenames:</div>
-<div class="line"><span class="lineno">   32</span>        metafunc.parametrize(<span class="stringliteral">&#39;test_name,bin_dir,part_driver_path&#39;</span>, partition_list)</div>
+<p class="definition">Definition at line <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00018">18</a> of file <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html">conftest.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span><span class="keyword">def </span>pytest_generate_tests(metafunc):</div>
+<div class="line"><span class="lineno">   19</span>    list_path = metafunc.config.getoption(<span class="stringliteral">&#39;test_list&#39;</span>)</div>
+<div class="line"><span class="lineno">   20</span>    bin_dir = metafunc.config.getoption(<span class="stringliteral">&#39;bin_dir&#39;</span>)</div>
+<div class="line"><span class="lineno">   21</span>    circle_part_driver = metafunc.config.getoption(<span class="stringliteral">&#39;circle_part_driver&#39;</span>)</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>    <span class="keyword">with</span> open(list_path) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   24</span>        contents = [line.rstrip() <span class="keywordflow">for</span> line <span class="keywordflow">in</span> f]</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>    comment_removed = [line <span class="keywordflow">for</span> line <span class="keywordflow">in</span> contents <span class="keywordflow">if</span> <span class="keywordflow">not</span> line.startswith(<span class="stringliteral">&#39;#&#39;</span>)]</div>
+<div class="line"><span class="lineno">   27</span>    newline_removed = [line <span class="keywordflow">for</span> line <span class="keywordflow">in</span> comment_removed <span class="keywordflow">if</span> line.startswith(<span class="stringliteral">&#39;add(&#39;</span>)]</div>
+<div class="line"><span class="lineno">   28</span>    test_args = [extract_test_args(line) <span class="keywordflow">for</span> line <span class="keywordflow">in</span> newline_removed]</div>
+<div class="line"><span class="lineno">   29</span>    <span class="comment"># add(RECIPE_NAME PARTITION_NAME EXPECTED_OUTPUT_COUNT)</span></div>
+<div class="line"><span class="lineno">   30</span>    partition_list = [(arg.split()[1], bin_dir, circle_part_driver) <span class="keywordflow">for</span> arg <span class="keywordflow">in</span> test_args]</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> <span class="stringliteral">&#39;test_name&#39;</span> <span class="keywordflow">in</span> metafunc.fixturenames:</div>
+<div class="line"><span class="lineno">   33</span>        metafunc.parametrize(<span class="stringliteral">&#39;test_name,bin_dir,part_driver_path&#39;</span>, partition_list)</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="circle-part-value-py-test_2conftest_8py_source.html#l00004">extract_test_args()</a>.</p>
 

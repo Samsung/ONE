@@ -117,59 +117,65 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="export__constant_8py_source.html#l00023">23</a> of file <a class="el" href="export__constant_8py_source.html">export_constant.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   23</span><span class="keyword">def </span><a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
+<div class="fragment"><div class="line"><span class="lineno">   23</span><span class="keyword">def </span><a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
 <div class="line"><span class="lineno">   24</span>    parser = argparse.ArgumentParser(</div>
 <div class="line"><span class="lineno">   25</span>        description=<span class="stringliteral">&#39;Export CONSTANT value with given file format.&#39;</span>)</div>
-<div class="line"><span class="lineno">   26</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   27</span>        <span class="stringliteral">&#39;-c&#39;</span>, <span class="stringliteral">&#39;--constant&#39;</span>, type=str, required=<span class="keyword">True</span>, help=<span class="stringliteral">&#39;Constant name to export&#39;</span>)</div>
-<div class="line"><span class="lineno">   28</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   29</span>        <span class="stringliteral">&#39;-f&#39;</span>,</div>
-<div class="line"><span class="lineno">   30</span>        <span class="stringliteral">&#39;--format&#39;</span>,</div>
-<div class="line"><span class="lineno">   31</span>        type=str,</div>
-<div class="line"><span class="lineno">   32</span>        required=<span class="keyword">True</span>,</div>
-<div class="line"><span class="lineno">   33</span>        choices=[<span class="stringliteral">&#39;cfg&#39;</span>, <span class="stringliteral">&#39;txt&#39;</span>],</div>
-<div class="line"><span class="lineno">   34</span>        help=</div>
-<div class="line"><span class="lineno">   35</span>        <span class="stringliteral">&#39;File format to export. The created cfg file contains CONSTANT under the one-optimize section.&#39;</span></div>
-<div class="line"><span class="lineno">   36</span>    )</div>
-<div class="line"><span class="lineno">   37</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   38</span>        <span class="stringliteral">&#39;--exclusive&#39;</span>,</div>
-<div class="line"><span class="lineno">   39</span>        action=<span class="stringliteral">&#39;store_true&#39;</span>,</div>
-<div class="line"><span class="lineno">   40</span>        help=<span class="stringliteral">&#39;Exports the rest of the options except for the given constant&#39;</span>)</div>
-<div class="line"><span class="lineno">   41</span>    parser.add_argument(</div>
-<div class="line"><span class="lineno">   42</span>        <span class="stringliteral">&#39;-o&#39;</span>, <span class="stringliteral">&#39;--output_path&#39;</span>, type=str, required=<span class="keyword">True</span>, help=<span class="stringliteral">&#39;Path to output&#39;</span>)</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>    args = parser.parse_args()</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(CONSTANT, args.constant):</div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">raise</span> NameError(<span class="stringliteral">&#39;Not found given constant name&#39;</span>)</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> args.exclusive:</div>
-<div class="line"><span class="lineno">   50</span>        constant_to_exclude = getattr(CONSTANT, args.constant)</div>
-<div class="line"><span class="lineno">   51</span>        constant_to_export = []</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> CONSTANT.OPTIMIZATION_OPTS:</div>
-<div class="line"><span class="lineno">   53</span>            <span class="keywordflow">if</span> opt[0] <span class="keywordflow">in</span> constant_to_exclude:</div>
-<div class="line"><span class="lineno">   54</span>                <span class="keywordflow">continue</span></div>
-<div class="line"><span class="lineno">   55</span>            constant_to_export.append(opt[0])</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   57</span>        constant_to_export = getattr(CONSTANT, args.constant)</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> args.format == <span class="stringliteral">&#39;cfg&#39;</span>:</div>
-<div class="line"><span class="lineno">   60</span>        SECTION_TO_EXPORT = <span class="stringliteral">&#39;one-optimize&#39;</span></div>
-<div class="line"><span class="lineno">   61</span>        config = configparser.ConfigParser()</div>
-<div class="line"><span class="lineno">   62</span>        config[SECTION_TO_EXPORT] = dict()</div>
-<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">for</span> constant <span class="keywordflow">in</span> constant_to_export:</div>
-<div class="line"><span class="lineno">   64</span>            config[SECTION_TO_EXPORT][constant] = <span class="stringliteral">&#39;True&#39;</span></div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>        <span class="keyword">with</span> open(args.output_path, <span class="stringliteral">&#39;w&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   67</span>            config.write(f)</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> args.format == <span class="stringliteral">&#39;txt&#39;</span>:</div>
-<div class="line"><span class="lineno">   70</span>        <span class="keyword">with</span> open(args.output_path, <span class="stringliteral">&#39;w&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   71</span>            <span class="keywordflow">for</span> constant <span class="keywordflow">in</span> constant_to_export:</div>
-<div class="line"><span class="lineno">   72</span>                f.write(f<span class="stringliteral">&quot;{constant}\n&quot;</span>)</div>
-<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   26</span>    parser.add_argument(<span class="stringliteral">&#39;-c&#39;</span>,</div>
+<div class="line"><span class="lineno">   27</span>                        <span class="stringliteral">&#39;--constant&#39;</span>,</div>
+<div class="line"><span class="lineno">   28</span>                        type=str,</div>
+<div class="line"><span class="lineno">   29</span>                        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   30</span>                        help=<span class="stringliteral">&#39;Constant name to export&#39;</span>)</div>
+<div class="line"><span class="lineno">   31</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">   32</span>        <span class="stringliteral">&#39;-f&#39;</span>,</div>
+<div class="line"><span class="lineno">   33</span>        <span class="stringliteral">&#39;--format&#39;</span>,</div>
+<div class="line"><span class="lineno">   34</span>        type=str,</div>
+<div class="line"><span class="lineno">   35</span>        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   36</span>        choices=[<span class="stringliteral">&#39;cfg&#39;</span>, <span class="stringliteral">&#39;txt&#39;</span>],</div>
+<div class="line"><span class="lineno">   37</span>        help=</div>
+<div class="line"><span class="lineno">   38</span>        <span class="stringliteral">&#39;File format to export. The created cfg file contains CONSTANT under the one-optimize section.&#39;</span></div>
+<div class="line"><span class="lineno">   39</span>    )</div>
+<div class="line"><span class="lineno">   40</span>    parser.add_argument(</div>
+<div class="line"><span class="lineno">   41</span>        <span class="stringliteral">&#39;--exclusive&#39;</span>,</div>
+<div class="line"><span class="lineno">   42</span>        action=<span class="stringliteral">&#39;store_true&#39;</span>,</div>
+<div class="line"><span class="lineno">   43</span>        help=<span class="stringliteral">&#39;Exports the rest of the options except for the given constant&#39;</span>)</div>
+<div class="line"><span class="lineno">   44</span>    parser.add_argument(<span class="stringliteral">&#39;-o&#39;</span>,</div>
+<div class="line"><span class="lineno">   45</span>                        <span class="stringliteral">&#39;--output_path&#39;</span>,</div>
+<div class="line"><span class="lineno">   46</span>                        type=str,</div>
+<div class="line"><span class="lineno">   47</span>                        required=<span class="keyword">True</span>,</div>
+<div class="line"><span class="lineno">   48</span>                        help=<span class="stringliteral">&#39;Path to output&#39;</span>)</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    args = parser.parse_args()</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> hasattr(CONSTANT, args.constant):</div>
+<div class="line"><span class="lineno">   53</span>        <span class="keywordflow">raise</span> NameError(<span class="stringliteral">&#39;Not found given constant name&#39;</span>)</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> args.exclusive:</div>
+<div class="line"><span class="lineno">   56</span>        constant_to_exclude = getattr(CONSTANT, args.constant)</div>
+<div class="line"><span class="lineno">   57</span>        constant_to_export = []</div>
+<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> CONSTANT.OPTIMIZATION_OPTS:</div>
+<div class="line"><span class="lineno">   59</span>            <span class="keywordflow">if</span> opt[0] <span class="keywordflow">in</span> constant_to_exclude:</div>
+<div class="line"><span class="lineno">   60</span>                <span class="keywordflow">continue</span></div>
+<div class="line"><span class="lineno">   61</span>            constant_to_export.append(opt[0])</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   63</span>        constant_to_export = getattr(CONSTANT, args.constant)</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> args.format == <span class="stringliteral">&#39;cfg&#39;</span>:</div>
+<div class="line"><span class="lineno">   66</span>        SECTION_TO_EXPORT = <span class="stringliteral">&#39;one-optimize&#39;</span></div>
+<div class="line"><span class="lineno">   67</span>        config = configparser.ConfigParser()</div>
+<div class="line"><span class="lineno">   68</span>        config[SECTION_TO_EXPORT] = dict()</div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">for</span> constant <span class="keywordflow">in</span> constant_to_export:</div>
+<div class="line"><span class="lineno">   70</span>            config[SECTION_TO_EXPORT][constant] = <span class="stringliteral">&#39;True&#39;</span></div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>        <span class="keyword">with</span> open(args.output_path, <span class="stringliteral">&#39;w&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   73</span>            config.write(f)</div>
 <div class="line"><span class="lineno">   74</span> </div>
-<div class="ttc" id="aonert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_source.html#l00058">main.cpp:58</a></div></div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> args.format == <span class="stringliteral">&#39;txt&#39;</span>:</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keyword">with</span> open(args.output_path, <span class="stringliteral">&#39;w&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   77</span>            <span class="keywordflow">for</span> constant <span class="keywordflow">in</span> constant_to_export:</div>
+<div class="line"><span class="lineno">   78</span>                f.write(f<span class="stringliteral">&quot;{constant}\n&quot;</span>)</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="ttc" id="aonert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp_source.html#l00058">main.cpp:58</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="export__constant_8py_source.html#l00023">main()</a>.</p>
 

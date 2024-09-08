@@ -1,6 +1,7 @@
 var luci_2export_2src_2_circle_exporter_utils_8h =
 [
     [ "CircleTensorIndex", "luci_2export_2src_2_circle_exporter_utils_8h.html#a9567887715016bcac656b4d6d82ec85f", null ],
+    [ "check_size_limit", "luci_2export_2src_2_circle_exporter_utils_8h.html#a0d304b981082b398c813c2b3d6abfc26", null ],
     [ "circle_builtin_operator", "luci_2export_2src_2_circle_exporter_utils_8h.html#ad347becc1c796cb1690787021f4d48ae", null ],
     [ "circle_builtin_options", "luci_2export_2src_2_circle_exporter_utils_8h.html#a08c9aa2161dd029a07f7ddc7c27d625e", null ],
     [ "circle_custom_code", "luci_2export_2src_2_circle_exporter_utils_8h.html#afa04f0a17858ae3c31dda2cab68d569b", null ],
@@ -16,5 +17,6 @@ var luci_2export_2src_2_circle_exporter_utils_8h =
     [ "to_circle_sparse_index_vector", "luci_2export_2src_2_circle_exporter_utils_8h.html#a0636044ee702bafa7341008a89346717", null ],
     [ "to_circle_sparse_index_vector_type", "luci_2export_2src_2_circle_exporter_utils_8h.html#a4ac9e8dbfad0e6e557eda3737c97ee59", null ],
     [ "to_circle_tensortype", "luci_2export_2src_2_circle_exporter_utils_8h.html#aa7800375ef05ce2b3cfac68dac9fefcf", null ],
-    [ "to_circle_weightsformat", "luci_2export_2src_2_circle_exporter_utils_8h.html#a43b3b196b135db0c28dc6370133bb331", null ]
+    [ "to_circle_weightsformat", "luci_2export_2src_2_circle_exporter_utils_8h.html#a43b3b196b135db0c28dc6370133bb331", null ],
+    [ "FLATBUFFERS_SIZE_MAX", "luci_2export_2src_2_circle_exporter_utils_8h.html#af3e4ff0083e8b78c66b7e8f849993d0f", null ]
 ];

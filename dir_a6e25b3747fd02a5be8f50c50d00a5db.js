@@ -12,6 +12,7 @@ var dir_a6e25b3747fd02a5be8f50c50d00a5db =
     [ "OpCode.cc", "_op_code_8cc.html", "_op_code_8cc" ],
     [ "Operand.cc", "_operand_8cc.html", null ],
     [ "OperandIndexSequence.cc", "_operand_index_sequence_8cc.html", "_operand_index_sequence_8cc" ],
+    [ "OperandInfo.cc", "_operand_info_8cc.html", null ],
     [ "Operands.cc", "_operands_8cc.html", null ],
     [ "Operation.cc", "_operation_8cc.html", null ],
     [ "OperationCloner.cc", "_operation_cloner_8cc.html", "_operation_cloner_8cc" ],

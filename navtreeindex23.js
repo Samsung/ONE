@@ -1,5 +1,8 @@
 var NAVTREEINDEX23 =
 {
+"_permuting_codec_8cpp_source.html":[40,0,0,48,1,1,26],
+"_permuting_codec_8h.html":[40,0,0,48,0,0,1,45],
+"_permuting_codec_8h_source.html":[40,0,0,48,0,0,1,45],
 "_phase_8cpp.html":[40,0,0,53,1,1],
 "_phase_8cpp_source.html":[40,0,0,53,1,1],
 "_phase_8h.html":[40,0,0,53,0,0,1],
@@ -61,12 +64,12 @@ var NAVTREEINDEX23 =
 "_post_operator_hook_8h.html#a9c5698e46b02b428a0b5ec4749aeae3c":[40,0,0,31,3,1,2],
 "_post_operator_hook_8h.html#ab407d20f0083f71e177b635488f54cd5":[40,0,0,31,3,1,1],
 "_post_operator_hook_8h_source.html":[40,0,0,31,3,1],
-"_pow_8cc.html":[40,0,4,2,2,1,5,0,42],
-"_pow_8cc_source.html":[40,0,4,2,2,1,5,0,42],
-"_pow_layer_8cc.html":[40,0,4,2,1,4,0,62],
-"_pow_layer_8cc_source.html":[40,0,4,2,1,4,0,62],
-"_pow_layer_8h.html":[40,0,4,2,1,4,0,63],
-"_pow_layer_8h_source.html":[40,0,4,2,1,4,0,63],
+"_pow_8cc.html":[40,0,4,1,2,1,5,0,42],
+"_pow_8cc_source.html":[40,0,4,1,2,1,5,0,42],
+"_pow_layer_8cc.html":[40,0,4,1,1,4,0,62],
+"_pow_layer_8cc_source.html":[40,0,4,1,1,4,0,62],
+"_pow_layer_8h.html":[40,0,4,1,1,4,0,63],
+"_pow_layer_8h_source.html":[40,0,4,1,1,4,0,63],
 "_pow_options_8cpp.html":[40,0,0,129,2,0,112],
 "_pow_options_8cpp.html#a72658f3262e3e1f1a09a1a0d1c7165a3":[40,0,0,129,2,0,112,0],
 "_pow_options_8cpp_source.html":[40,0,0,129,2,0,112],
@@ -246,8 +249,5 @@ var NAVTREEINDEX23 =
 "_quantization_utils_8h.html#a3a93288835d5987bf66c18340aa2498d":[40,0,0,55,7,1,67,1],
 "_quantization_utils_8h.html#a45fe577e9e1a457fe33918624cd4a9a5":[40,0,0,55,7,1,67,16],
 "_quantization_utils_8h.html#a4f572f265dd92ec416a29e155f3e60c6":[40,0,0,55,7,1,67,6],
-"_quantization_utils_8h.html#a778ba1acea30cadd3985b4023df5b2f2":[40,0,0,55,7,1,67,17],
-"_quantization_utils_8h.html#a78b1db0d7d2e1f81aa2b268b465a2962":[40,0,0,55,7,1,67,5],
-"_quantization_utils_8h.html#a7f4594820696716f29dade1d31a7bb93":[40,0,0,55,7,1,67,11],
-"_quantization_utils_8h.html#a92c776392acf3d65c602775dcf6078e8":[40,0,0,55,7,1,67,10]
+"_quantization_utils_8h.html#a778ba1acea30cadd3985b4023df5b2f2":[40,0,0,55,7,1,67,17]
 };

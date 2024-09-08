@@ -169,8 +169,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a1a1619e7b6fff2cb7a0a75731b870957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16e6926b139d69b6efb6df18893bb2ed" id="r_a16e6926b139d69b6efb6df18893bb2ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4">ir::Activation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#a16e6926b139d69b6efb6df18893bb2ed">convertActivation</a> (<a class="el" href="classonert_1_1loader_1_1_base_loader.html#ad105ca158ef35b2446c5b5c800b94eed">ActivationFunctionType</a> type)</td></tr>
 <tr class="separator:a16e6926b139d69b6efb6df18893bb2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7fe8c8dd6e212a0c61f3138cf66a4b5" id="r_ab7fe8c8dd6e212a0c61f3138cf66a4b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#ab7fe8c8dd6e212a0c61f3138cf66a4b5">tensorTypeToDataType</a> (<a class="el" href="classonert_1_1loader_1_1_base_loader.html#ab16bd58299d7fa1a5f71cec1c2d84985">TensorType</a> type)</td></tr>
-<tr class="separator:ab7fe8c8dd6e212a0c61f3138cf66a4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c0b1679a03af6121a87d7650972cdf" id="r_a39c0b1679a03af6121a87d7650972cdf"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#a39c0b1679a03af6121a87d7650972cdf">tensorTypeToDataType</a> (const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#ab16bd58299d7fa1a5f71cec1c2d84985">TensorType</a> type)</td></tr>
+<tr class="separator:a39c0b1679a03af6121a87d7650972cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f1b2a2d1e1a0f137bab24a956956ede" id="r_a7f1b2a2d1e1a0f137bab24a956956ede"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#a7f1b2a2d1e1a0f137bab24a956956ede">tensorIdxToOperandIdx</a> (int32_t tensorIdx)</td></tr>
 <tr class="separator:a7f1b2a2d1e1a0f137bab24a956956ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afea095fe18ade0717e781939f22ba32b" id="r_afea095fe18ade0717e781939f22ba32b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classflexbuffers_1_1_map.html">flexbuffers::Map</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#afea095fe18ade0717e781939f22ba32b">getCustomOpAttrMap</a> (const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#a55006562f36bcf4ad0bf3aee7b0be7aa">Operator</a> *op)</td></tr>
@@ -1047,7 +1047,7 @@ template&lt;typename LoaderDomain &gt; </div>
 <div class="line"><span class="lineno">  381</span>  <span class="comment">//       be used.</span></div>
 <div class="line"><span class="lineno">  382</span> </div>
 <div class="line"><span class="lineno">  383</span>  <span class="comment">// TypeInfo</span></div>
-<div class="line"><span class="lineno">  384</span>  ir::TypeInfo type_info(<a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#ab7fe8c8dd6e212a0c61f3138cf66a4b5">tensorTypeToDataType</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;type()));</div>
+<div class="line"><span class="lineno">  384</span>  ir::TypeInfo type_info(<a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#a39c0b1679a03af6121a87d7650972cdf">tensorTypeToDataType</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;type()));</div>
 <div class="line"><span class="lineno">  385</span>  <a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#a732065268f4ac9826cff33839f2470d2">loadQuantization</a>(tensor, type_info);</div>
 <div class="line"><span class="lineno">  386</span>  <a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#aa0baf85a7a5fb30d1145b7f99206867e">loadSparsity</a>(tensor, type_info);</div>
 <div class="line"><span class="lineno">  387</span> </div>
@@ -1120,9 +1120,9 @@ template&lt;typename LoaderDomain &gt; </div>
 <div class="line"><span class="lineno">  454</span>  <span class="keywordflow">return</span> operand_index;</div>
 <div class="line"><span class="lineno">  455</span>}</div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a1ff0c207573994546820d8dfe1e5791c"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a1ff0c207573994546820d8dfe1e5791c">onert::loader::BaseLoader::_buf_to_data</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::shared_ptr&lt; ir::Data &gt; &gt; _buf_to_data</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00205">BaseLoader.h:205</a></div></div>
+<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a39c0b1679a03af6121a87d7650972cdf"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a39c0b1679a03af6121a87d7650972cdf">onert::loader::BaseLoader::tensorTypeToDataType</a></div><div class="ttdeci">virtual ir::DataType tensorTypeToDataType(const TensorType type)</div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a732065268f4ac9826cff33839f2470d2"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a732065268f4ac9826cff33839f2470d2">onert::loader::BaseLoader::loadQuantization</a></div><div class="ttdeci">void loadQuantization(const Tensor *tensor, ir::TypeInfo &amp;typeInfo)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00458">BaseLoader.h:458</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_aa0baf85a7a5fb30d1145b7f99206867e"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#aa0baf85a7a5fb30d1145b7f99206867e">onert::loader::BaseLoader::loadSparsity</a></div><div class="ttdeci">void loadSparsity(const Tensor *tensor, ir::TypeInfo &amp;typeInfo)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00497">BaseLoader.h:497</a></div></div>
-<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_ab7fe8c8dd6e212a0c61f3138cf66a4b5"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#ab7fe8c8dd6e212a0c61f3138cf66a4b5">onert::loader::BaseLoader::tensorTypeToDataType</a></div><div class="ttdeci">ir::DataType tensorTypeToDataType(TensorType type)</div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_ad9a70ddc189dd15c49c1ead64df3eca0"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#ad9a70ddc189dd15c49c1ead64df3eca0">onert::loader::BaseLoader::_tensor_names</a></div><div class="ttdeci">std::unordered_map&lt; ir::OperandIndex, std::string &gt; _tensor_names</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00198">BaseLoader.h:198</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
@@ -1628,7 +1628,7 @@ template&lt;typename Param &gt; </div>
 <div class="line"><span class="lineno">  654</span>}</div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a16e6926b139d69b6efb6df18893bb2ed"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a16e6926b139d69b6efb6df18893bb2ed">onert::loader::BaseLoader::convertActivation</a></div><div class="ttdeci">ir::Activation convertActivation(ActivationFunctionType type)</div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_ab60b38e7eba5685b0d7132103075225a"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#ab60b38e7eba5685b0d7132103075225a">onert::loader::BaseLoader::loadStridesAndPaddings</a></div><div class="ttdeci">void loadStridesAndPaddings(Param &amp;param, const OptionsType *options)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00618">BaseLoader.h:618</a></div></div>
-<div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="onnx__legalizer_8py_source.html#l01057">onnx_legalizer.py:1057</a></div></div>
+<div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="onnx__legalizer_8py_source.html#l01070">onnx_legalizer.py:1070</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1938,8 +1938,8 @@ template&lt;typename LoaderDomain &gt; </div>
 
 </div>
 </div>
-<a id="ab7fe8c8dd6e212a0c61f3138cf66a4b5" name="ab7fe8c8dd6e212a0c61f3138cf66a4b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7fe8c8dd6e212a0c61f3138cf66a4b5">&#9670;&#160;</a></span>tensorTypeToDataType()</h2>
+<a id="a39c0b1679a03af6121a87d7650972cdf" name="a39c0b1679a03af6121a87d7650972cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c0b1679a03af6121a87d7650972cdf">&#9670;&#160;</a></span>tensorTypeToDataType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1950,16 +1950,16 @@ template&lt;typename LoaderDomain &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> <a class="el" href="classonert_1_1loader_1_1_base_loader.html">onert::loader::BaseLoader</a>&lt; LoaderDomain &gt;::tensorTypeToDataType </td>
+          <td class="memname">virtual <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> <a class="el" href="classonert_1_1loader_1_1_base_loader.html">onert::loader::BaseLoader</a>&lt; LoaderDomain &gt;::tensorTypeToDataType </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classonert_1_1loader_1_1_base_loader.html#ab16bd58299d7fa1a5f71cec1c2d84985">TensorType</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1loader_1_1_base_loader.html#ab16bd58299d7fa1a5f71cec1c2d84985">TensorType</a>&#160;</td>
           <td class="paramname"><em>type</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2097,7 +2097,7 @@ template&lt;typename LoaderDomain &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00194">194</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx__legalizer_8py_source.html#l00290">onnx_legalizer._ModelTransformerHelper::delete_marked_nodes()</a>, <a class="el" href="onnx__legalizer_8py_source.html#l00266">onnx_legalizer._ModelTransformerHelper::make_constant_tensor()</a>, <a class="el" href="onnx__legalizer_8py_source.html#l00126">onnx_legalizer._ModelTransformerHelper::make_node()</a>, and <a class="el" href="_dot_builder_8py_source.html#l00090">DotBuilder.DotBuilder::save()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx__legalizer_8py_source.html#l00293">onnx_legalizer._ModelTransformerHelper::delete_marked_nodes()</a>, <a class="el" href="onnx__legalizer_8py_source.html#l00269">onnx_legalizer._ModelTransformerHelper::make_constant_tensor()</a>, <a class="el" href="onnx__legalizer_8py_source.html#l00125">onnx_legalizer._ModelTransformerHelper::make_node()</a>, and <a class="el" href="_dot_builder_8py_source.html#l00090">DotBuilder.DotBuilder::save()</a>.</p>
 
 </div>
 </div>

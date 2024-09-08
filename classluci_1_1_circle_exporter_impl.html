@@ -211,10 +211,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>pointer to buffer with serialized graph </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html#l00215">215</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html">CircleExporterImpl.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  216</span>{</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">GetBufferPointer</a>());</div>
-<div class="line"><span class="lineno">  218</span>}</div>
+<p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html#l00311">311</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html">CircleExporterImpl.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  312</span>{</div>
+<div class="line"><span class="lineno">  313</span>  <span class="keywordflow">if</span> (_ext_buffer)</div>
+<div class="line"><span class="lineno">  314</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb_data_with_ext.data());</div>
+<div class="line"><span class="lineno">  315</span>  <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">GetBufferPointer</a>());</div>
+<div class="line"><span class="lineno">  316</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a79ced315a0621131b8d301f36fe76800"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">flatbuffers::FlatBufferBuilder::GetBufferPointer</a></div><div class="ttdeci">uint8_t * GetBufferPointer() const</div><div class="ttdoc">Get the serialized buffer (after you call Finish()).</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01270">flatbuffers.h:1270</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01270">flatbuffers::FlatBufferBuilder::GetBufferPointer()</a>.</p>
@@ -239,8 +241,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>size of buffer with serialized graph </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html#l00220">220</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html">CircleExporterImpl.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span>{ <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">GetSize</a>(); }</div>
+<p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html#l00318">318</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html">CircleExporterImpl.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  319</span>{</div>
+<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">if</span> (_ext_buffer)</div>
+<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">return</span> _fb_data_with_ext.size();</div>
+<div class="line"><span class="lineno">  322</span>  <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">GetSize</a>();</div>
+<div class="line"><span class="lineno">  323</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a66c8fd33ab9b3b237954c9ea38648f7f"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">flatbuffers::FlatBufferBuilder::GetSize</a></div><div class="ttdeci">uoffset_t GetSize() const</div><div class="ttdoc">The current size of the serialized buffer, counting from the end.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01265">flatbuffers.h:1265</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01265">flatbuffers::FlatBufferBuilder::GetSize()</a>.</p>

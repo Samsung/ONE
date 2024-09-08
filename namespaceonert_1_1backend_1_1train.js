@@ -29,13 +29,16 @@ var namespaceonert_1_1backend_1_1train =
     [ "TrainableMemoryManager", "classonert_1_1backend_1_1train_1_1_trainable_memory_manager.html", "classonert_1_1backend_1_1train_1_1_trainable_memory_manager" ],
     [ "WICPlanner", "classonert_1_1backend_1_1train_1_1_w_i_c_planner.html", "classonert_1_1backend_1_1train_1_1_w_i_c_planner" ],
     [ "BackPropTensor", "namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745", null ],
-    [ "DisposableTensorIndexMap", "namespaceonert_1_1backend_1_1train.html#a3941bee692651dbecf8a48dd142c8ad4", null ],
     [ "ExternalContext", "namespaceonert_1_1backend_1_1train.html#a3c1e11c7f580abe1841baa9258e4ac66", null ],
     [ "FunctionMap", "namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67", null ],
     [ "GradientTensor", "namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0", null ],
     [ "MemoryManager", "namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0", null ],
     [ "TrainableBackendContexts", "namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e", null ],
     [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ],
+    [ "LayerScopeTensorLifeTime", "namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceb", [
+      [ "BACKWARD", "namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1", null ],
+      [ "FORWARD_TO_BACKWARD", "namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a", null ]
+    ] ],
     [ "createOptimizer", "namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e", null ],
     [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ad643bd209405eb6d4500363a4687ccc4", null ],
     [ "operator<<", "namespaceonert_1_1backend_1_1train.html#ae6fb39e2071d806ff8c84d4beda1bbf1", null ]
