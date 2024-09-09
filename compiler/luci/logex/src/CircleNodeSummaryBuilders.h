@@ -583,6 +583,14 @@ private:
   std::vector<std::string> get_input_names(const luci::CircleNode *);
 };
 
+class CircleRmsNormSummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  bool validate(const luci::CircleNode *node);
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+  void build_attributes(const luci::CircleNode *node, locop::NodeSummary &s);
+};
+
 class CircleRoundSummaryBuilder final : public CircleNodeWithXSummaryBuilder
 {
 };
