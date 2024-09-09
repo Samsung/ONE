@@ -17,6 +17,7 @@
 #ifndef __FME_APPLY_RANDOM_STRING_H__
 #define __FME_APPLY_RANDOM_STRING_H__
 
+#include <cstdint>
 #include <string>
 
 namespace fme_apply
