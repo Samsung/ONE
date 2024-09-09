@@ -103,10 +103,8 @@ nnfw::cker::train::LossReductionType convertLossReductionType(ir::train::LossRed
   {
     case ir::train::LossReductionType::SumOverBatchSize:
       return nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE;
-      break;
     case ir::train::LossReductionType::Sum:
       return nnfw::cker::train::LossReductionType::SUM;
-      break;
     default:
       throw std::runtime_error("Unsupported LossReductionType");
   }
