@@ -502,3 +502,21 @@ int ANeuralNetworksExecution_getOutputOperandDimensions(ANeuralNetworksExecution
 
   return ANEURALNETWORKS_NO_ERROR;
 }
+
+int ANeuralNetworksBurst_create(ANeuralNetworksCompilation *, ANeuralNetworksBurst **)
+{
+  VERBOSE(NNAPI::Execution) << "BurstCreate: NYI" << std::endl;
+  return ANEURALNETWORKS_BAD_STATE;
+}
+
+void ANeuralNetworksBurst_free(ANeuralNetworksBurst *)
+{
+  // TODO delete burst
+  // delete burst;
+}
+
+int ANeuralNetworksExecution_burstCompute(ANeuralNetworksExecution *, ANeuralNetworksBurst *)
+{
+  VERBOSE(NNAPI::Execution) << "burstCompute: NYI" << std::endl;
+  return ANEURALNETWORKS_BAD_STATE;
+}

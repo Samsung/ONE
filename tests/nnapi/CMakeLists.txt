@@ -49,9 +49,11 @@ target_include_directories(${RUNTIME_NNAPI_TEST} PRIVATE ${RUNTIME_NNAPI_TEST_SR
 # Define NNTEST_ONLY_PUBLIC_API to avoid android dependency
 target_compile_definitions(${RUNTIME_NNAPI_TEST} PRIVATE NNTEST_ONLY_PUBLIC_API)
 
-target_link_libraries(${RUNTIME_NNAPI_TEST} onert)
+target_link_libraries(${RUNTIME_NNAPI_TEST} onert_nnapi)
 target_link_libraries(${RUNTIME_NNAPI_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNAPI_TEST} ${LIB_PTHREAD} dl)
+# Set INSTALL_RPATH to find onert_core
+set_target_properties(${RUNTIME_NNAPI_TEST} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib/nnfw")
 
 install(TARGETS ${RUNTIME_NNAPI_TEST} DESTINATION nnapi-gtest)
 

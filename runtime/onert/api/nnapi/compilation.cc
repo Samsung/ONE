@@ -104,3 +104,10 @@ int ANeuralNetworksCompilation_setPreference(ANeuralNetworksCompilation *compila
   // NYI: nothing to set
   return ANEURALNETWORKS_NO_ERROR;
 }
+
+int ANeuralNetworksCompilation_setCaching(ANeuralNetworksCompilation *, const char *,
+                                          const uint8_t *)
+{
+  VERBOSE(NNAPI::Compilation) << "setCaching: NYI" << std::endl;
+  return ANEURALNETWORKS_BAD_STATE;
+}

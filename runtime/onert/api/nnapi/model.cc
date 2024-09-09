@@ -174,6 +174,13 @@ int ANeuralNetworksModel_setOperandValue(ANeuralNetworksModel *model, int32_t in
   return ANEURALNETWORKS_NO_ERROR;
 }
 
+int ANeuralNetworksModel_setOperandSymmPerChannelQuantParams(
+  ANeuralNetworksModel *, int32_t, const ANeuralNetworksSymmPerChannelQuantParams *)
+{
+  VERBOSE(NNAPI::Model) << "setOperandSymmPerChannelQuantParams: NYI" << std::endl;
+  return ANEURALNETWORKS_BAD_STATE;
+}
+
 int ANeuralNetworksModel_setOperandValueFromMemory(ANeuralNetworksModel *model, int32_t index,
                                                    const ANeuralNetworksMemory *memory,
                                                    size_t offset, size_t length)
