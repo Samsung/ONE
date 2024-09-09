@@ -65,7 +65,7 @@ public:
   DataBufferPair operator[](uint32_t i) const
   {
     assert(_offset.size() == _size.size());
-    assert(i <= _offset.size());
+    assert(i < _offset.size());
     return DataBufferPair{_offset[i], _size[i]};
   }
 
@@ -202,12 +202,12 @@ private:
   void updateAdamOptimizer(const std::unique_ptr<onert::exec::Execution> &exec)
   {
     // Adam optimizer has two optimizer variables. (mean, variance)
-    [[maybe_unused]] constexpr auto ADAM_VARIABLE_COUNT = 2;
+    [[maybe_unused]] const std::size_t ADAM_VARIABLE_COUNT = 2;
 
     // Reset EOF bit
     _file.clear();
 
-    auto vindex = 0;
+    uint32_t vindex = 0;
     exec->iterateTrainableTensors([&](const ir::OperandIndex &,
                                       const backend::train::ITrainableTensor *tensor) {
       assert(tensor);
