@@ -49,7 +49,7 @@ template <typename Device, typename T> struct XentFunctor
                   const Eigen::array<Eigen::DenseIndex, 2> &labels_bcast,
                   typename TTypes<T>::ConstMatrix logits, typename TTypes<T>::ConstMatrix labels,
                   typename TTypes<T>::Matrix scratch, typename TTypes<T>::Vec loss,
-                  typename TTypes<T>::Matrix backprop);
+                  typename TTypes<T>::Matrix backprop, T reduction_size);
 };
 
 } // namespace functor
@@ -80,7 +80,7 @@ template <typename Device, typename T> struct XentFunctorBase
                   const Eigen::array<Eigen::DenseIndex, 2> &labels_bcast,
                   typename TTypes<T>::ConstMatrix logits, typename TTypes<T>::ConstMatrix labels,
                   typename TTypes<T>::Matrix scratch, typename TTypes<T>::Vec loss,
-                  typename TTypes<T>::Matrix backprop)
+                  typename TTypes<T>::Matrix backprop, T reduction_size)
   {
     T *scratch_ptr = scratch.data();
     T *backprop_ptr = backprop.data();
@@ -124,7 +124,7 @@ template <typename Device, typename T> struct XentFunctorBase
           for (int j = 0; j < row_size; j++)
           {
             loss_sum += this_labels[j] * (log_sum - this_backprop[j]);
-            this_backprop[j] = (exp(this_backprop[j]) / sum) - this_labels[j];
+            this_backprop[j] = ((exp(this_backprop[j]) / sum) - this_labels[j]) / reduction_size;
           }
           loss_ptr[i] = loss_sum;
         }
