@@ -75,6 +75,7 @@ private:
   SKIP(luci::CircleFullyConnected)
   SKIP(luci::CircleInstanceNorm)
   SKIP(luci::CirclePRelu)
+  SKIP(luci::CircleRmsNorm)
   SKIP(luci::CircleTransposeConv)
 
   // Handled in PropagateQParamBackwardPass
