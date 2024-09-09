@@ -701,10 +701,10 @@ struct ModelT;
 
 enum TensorType : int8_t
 {
-  TensorType_Q8_1 = -5,
-  TensorType_Q8_0 = -4,
-  TensorType_Q4_1 = -3,
-  TensorType_Q4_0 = -2,
+  TensorType_GGML_Q8_1 = -5,
+  TensorType_GGML_Q8_0 = -4,
+  TensorType_GGML_Q4_1 = -3,
+  TensorType_GGML_Q4_0 = -2,
   TensorType_UINT4 = -1,
   TensorType_FLOAT32 = 0,
   TensorType_FLOAT16 = 1,
@@ -724,18 +724,18 @@ enum TensorType : int8_t
   TensorType_UINT32 = 15,
   TensorType_UINT16 = 16,
   TensorType_INT4 = 17,
-  TensorType_MIN = TensorType_Q8_1,
+  TensorType_MIN = TensorType_GGML_Q8_1,
   TensorType_MAX = TensorType_INT4
 };
 
 inline const TensorType (&EnumValuesTensorType())[23]
 {
   static const TensorType values[] = {
-    TensorType_Q8_1,       TensorType_Q8_0,      TensorType_Q4_1,     TensorType_Q4_0,
-    TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,  TensorType_INT32,
-    TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,   TensorType_BOOL,
-    TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,     TensorType_FLOAT64,
-    TensorType_COMPLEX128, TensorType_UINT64,    TensorType_RESOURCE, TensorType_VARIANT,
+    TensorType_GGML_Q8_1,  TensorType_GGML_Q8_0, TensorType_GGML_Q4_1, TensorType_GGML_Q4_0,
+    TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,   TensorType_INT32,
+    TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,    TensorType_BOOL,
+    TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,      TensorType_FLOAT64,
+    TensorType_COMPLEX128, TensorType_UINT64,    TensorType_RESOURCE,  TensorType_VARIANT,
     TensorType_UINT32,     TensorType_UINT16,    TensorType_INT4};
   return values;
 }
@@ -743,17 +743,18 @@ inline const TensorType (&EnumValuesTensorType())[23]
 inline const char *const *EnumNamesTensorType()
 {
   static const char *const names[24] = {
-    "Q8_1",       "Q8_0",   "Q4_1",     "Q4_0",    "UINT4",  "FLOAT32",   "FLOAT16", "INT32",
-    "UINT8",      "INT64",  "STRING",   "BOOL",    "INT16",  "COMPLEX64", "INT8",    "FLOAT64",
-    "COMPLEX128", "UINT64", "RESOURCE", "VARIANT", "UINT32", "UINT16",    "INT4",    nullptr};
+    "GGML_Q8_1", "GGML_Q8_0", "GGML_Q4_1", "GGML_Q4_0", "UINT4",      "FLOAT32",
+    "FLOAT16",   "INT32",     "UINT8",     "INT64",     "STRING",     "BOOL",
+    "INT16",     "COMPLEX64", "INT8",      "FLOAT64",   "COMPLEX128", "UINT64",
+    "RESOURCE",  "VARIANT",   "UINT32",    "UINT16",    "INT4",       nullptr};
   return names;
 }
 
 inline const char *EnumNameTensorType(TensorType e)
 {
-  if (::flatbuffers::IsOutRange(e, TensorType_Q8_1, TensorType_INT4))
+  if (::flatbuffers::IsOutRange(e, TensorType_GGML_Q8_1, TensorType_INT4))
     return "";
-  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_Q8_1);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_GGML_Q8_1);
   return EnumNamesTensorType()[index];
 }
 
@@ -1065,6 +1066,34 @@ bool VerifySparseIndexVector(::flatbuffers::Verifier &verifier, const void *obj,
 bool VerifySparseIndexVectorVector(::flatbuffers::Verifier &verifier,
                                    const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values,
                                    const ::flatbuffers::Vector<uint8_t> *types);
+
+enum CompressionType : int8_t
+{
+  CompressionType_NONE = 0,
+  CompressionType_HUFFMAN = 1,
+  CompressionType_MIN = CompressionType_NONE,
+  CompressionType_MAX = CompressionType_HUFFMAN
+};
+
+inline const CompressionType (&EnumValuesCompressionType())[2]
+{
+  static const CompressionType values[] = {CompressionType_NONE, CompressionType_HUFFMAN};
+  return values;
+}
+
+inline const char *const *EnumNamesCompressionType()
+{
+  static const char *const names[3] = {"NONE", "HUFFMAN", nullptr};
+  return names;
+}
+
+inline const char *EnumNameCompressionType(CompressionType e)
+{
+  if (::flatbuffers::IsOutRange(e, CompressionType_NONE, CompressionType_HUFFMAN))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesCompressionType()[index];
+}
 
 enum BuiltinOperator : int32_t
 {
@@ -7061,6 +7090,7 @@ struct TensorT : public ::flatbuffers::NativeTable
   std::vector<int32_t> shape_signature{};
   bool has_rank = false;
   std::vector<std::unique_ptr<circle::VariantSubTypeT>> variant_tensors{};
+  circle::CompressionType compression_type = circle::CompressionType_NONE;
   TensorT() = default;
   TensorT(const TensorT &o);
   TensorT(TensorT &&) FLATBUFFERS_NOEXCEPT = default;
@@ -7082,7 +7112,8 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
     VT_SPARSITY = 16,
     VT_SHAPE_SIGNATURE = 18,
     VT_HAS_RANK = 20,
-    VT_VARIANT_TENSORS = 22
+    VT_VARIANT_TENSORS = 22,
+    VT_COMPRESSION_TYPE = 24
   };
   const ::flatbuffers::Vector<int32_t> *shape() const
   {
@@ -7117,6 +7148,10 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<circle::VariantSubType>> *>(
       VT_VARIANT_TENSORS);
   }
+  circle::CompressionType compression_type() const
+  {
+    return static_cast<circle::CompressionType>(GetField<int8_t>(VT_COMPRESSION_TYPE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SHAPE) &&
@@ -7129,7 +7164,8 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
            VerifyOffset(verifier, VT_SHAPE_SIGNATURE) && verifier.VerifyVector(shape_signature()) &&
            VerifyField<uint8_t>(verifier, VT_HAS_RANK, 1) &&
            VerifyOffset(verifier, VT_VARIANT_TENSORS) && verifier.VerifyVector(variant_tensors()) &&
-           verifier.VerifyVectorOfTables(variant_tensors()) && verifier.EndTable();
+           verifier.VerifyVectorOfTables(variant_tensors()) &&
+           VerifyField<int8_t>(verifier, VT_COMPRESSION_TYPE, 1) && verifier.EndTable();
   }
   TensorT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
   void UnPackTo(TensorT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
@@ -7182,6 +7218,10 @@ struct TensorBuilder
   {
     fbb_.AddOffset(Tensor::VT_VARIANT_TENSORS, variant_tensors);
   }
+  void add_compression_type(circle::CompressionType compression_type)
+  {
+    fbb_.AddElement<int8_t>(Tensor::VT_COMPRESSION_TYPE, static_cast<int8_t>(compression_type), 0);
+  }
   explicit TensorBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
@@ -7203,7 +7243,8 @@ inline ::flatbuffers::Offset<Tensor> CreateTensor(
   ::flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
   ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shape_signature = 0, bool has_rank = false,
   ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<circle::VariantSubType>>>
-    variant_tensors = 0)
+    variant_tensors = 0,
+  circle::CompressionType compression_type = circle::CompressionType_NONE)
 {
   TensorBuilder builder_(_fbb);
   builder_.add_variant_tensors(variant_tensors);
@@ -7213,6 +7254,7 @@ inline ::flatbuffers::Offset<Tensor> CreateTensor(
   builder_.add_name(name);
   builder_.add_buffer(buffer);
   builder_.add_shape(shape);
+  builder_.add_compression_type(compression_type);
   builder_.add_has_rank(has_rank);
   builder_.add_is_variable(is_variable);
   builder_.add_type(type);
@@ -7226,7 +7268,8 @@ inline ::flatbuffers::Offset<Tensor> CreateTensorDirect(
   ::flatbuffers::Offset<circle::QuantizationParameters> quantization = 0, bool is_variable = false,
   ::flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
   const std::vector<int32_t> *shape_signature = nullptr, bool has_rank = false,
-  const std::vector<::flatbuffers::Offset<circle::VariantSubType>> *variant_tensors = nullptr)
+  const std::vector<::flatbuffers::Offset<circle::VariantSubType>> *variant_tensors = nullptr,
+  circle::CompressionType compression_type = circle::CompressionType_NONE)
 {
   auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
@@ -7236,7 +7279,8 @@ inline ::flatbuffers::Offset<Tensor> CreateTensorDirect(
       ? _fbb.CreateVector<::flatbuffers::Offset<circle::VariantSubType>>(*variant_tensors)
       : 0;
   return circle::CreateTensor(_fbb, shape__, type, buffer, name__, quantization, is_variable,
-                              sparsity, shape_signature__, has_rank, variant_tensors__);
+                              sparsity, shape_signature__, has_rank, variant_tensors__,
+                              compression_type);
 }
 
 ::flatbuffers::Offset<Tensor>
@@ -21280,7 +21324,7 @@ inline TensorT::TensorT(const TensorT &o)
     quantization((o.quantization) ? new circle::QuantizationParametersT(*o.quantization) : nullptr),
     is_variable(o.is_variable),
     sparsity((o.sparsity) ? new circle::SparsityParametersT(*o.sparsity) : nullptr),
-    shape_signature(o.shape_signature), has_rank(o.has_rank)
+    shape_signature(o.shape_signature), has_rank(o.has_rank), compression_type(o.compression_type)
 {
   variant_tensors.reserve(o.variant_tensors.size());
   for (const auto &variant_tensors_ : o.variant_tensors)
@@ -21302,6 +21346,7 @@ inline TensorT &TensorT::operator=(TensorT o) FLATBUFFERS_NOEXCEPT
   std::swap(shape_signature, o.shape_signature);
   std::swap(has_rank, o.has_rank);
   std::swap(variant_tensors, o.variant_tensors);
+  std::swap(compression_type, o.compression_type);
   return *this;
 }
 
@@ -21426,6 +21471,10 @@ inline void Tensor::UnPackTo(TensorT *_o, const ::flatbuffers::resolver_function
       _o->variant_tensors.resize(0);
     }
   }
+  {
+    auto _e = compression_type();
+    _o->compression_type = _e;
+  }
 }
 
 inline ::flatbuffers::Offset<Tensor>
@@ -21468,8 +21517,10 @@ CreateTensor(::flatbuffers::FlatBufferBuilder &_fbb, const TensorT *_o,
           },
           &_va)
       : 0;
+  auto _compression_type = _o->compression_type;
   return circle::CreateTensor(_fbb, _shape, _type, _buffer, _name, _quantization, _is_variable,
-                              _sparsity, _shape_signature, _has_rank, _variant_tensors);
+                              _sparsity, _shape_signature, _has_rank, _variant_tensors,
+                              _compression_type);
 }
 
 inline StablehloGatherOptionsT *
