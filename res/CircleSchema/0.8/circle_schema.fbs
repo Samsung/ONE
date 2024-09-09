@@ -270,6 +270,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  RMS_NORM = -6,
   GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
@@ -623,6 +624,7 @@ union BuiltinOptions {
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
   InstanceNormOptions = 254,
+  RmsNormOptions = 255,
 }
 
 union BuiltinOptions2{
@@ -1499,6 +1501,11 @@ table BCQFullyConnectedOptions {
 }
 
 table InstanceNormOptions {
+  epsilon:float;
+  fused_activation_function:ActivationFunctionType;
+}
+
+table RmsNormOptions {
   epsilon:float;
   fused_activation_function:ActivationFunctionType;
 }
