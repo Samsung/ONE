@@ -388,10 +388,12 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
   auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
   auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
   auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
+  // TODO support non-const strides
   if (strides_node == nullptr)
   {
     INTERNAL_EXN("StridedSlice strides node are not Constant");
   }
+  // TODO Support cases where mask attributes are set.
   if (begin_node == nullptr || end_node == nullptr)
   {
     output_shape.rank(input_node->rank());
