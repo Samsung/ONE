@@ -5,6 +5,7 @@ set(SOURCES
         OMKernelConfiguration.cpp
         OMKernelConfigureBuilder.cpp
         OMDynamicShapesHandler.cpp
+        OMUtils.cpp
         helpers/OMConfigureSISOKernel.cpp
         helpers/OMPadCommon.cpp
         helpers/OMConfigureTISOKernel.cpp
