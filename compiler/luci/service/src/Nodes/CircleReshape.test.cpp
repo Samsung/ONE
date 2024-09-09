@@ -39,25 +39,25 @@ TEST(CloneNodeTest, clone_Reshape)
   ASSERT_EQ(node_reshape->newShape()->dim(1), cloned_reshape->newShape()->dim(1));
 }
 
-TEST(ShapeRuleTest, reshape_by_input_const_static)
+TEST(ShapeRuleTest, reshape_by_circle_const)
 {
   auto g = loco::make_graph();
   auto node_reshape = g->nodes()->create<luci::CircleReshape>();
   auto tensor_input = g->nodes()->create<luci::CircleInput>();
-  auto shape_by_input = g->nodes()->create<luci::CircleConst>();
+  auto shape_input = g->nodes()->create<luci::CircleConst>();
 
   tensor_input->dtype(loco::DataType::S32);
   tensor_input->shape({2, 3, 4});
   tensor_input->shape_status(luci::ShapeStatus::VALID);
 
-  shape_by_input->dtype(loco::DataType::S32);
-  shape_by_input->size<loco::DataType::S32>(2);
-  shape_by_input->at<loco::DataType::S32>(0) = 6;
-  shape_by_input->at<loco::DataType::S32>(1) = 4;
-  shape_by_input->shape_status(luci::ShapeStatus::VALID);
+  shape_input->dtype(loco::DataType::S32);
+  shape_input->size<loco::DataType::S32>(2);
+  shape_input->at<loco::DataType::S32>(0) = -1;
+  shape_input->at<loco::DataType::S32>(1) = 4;
+  shape_input->shape_status(luci::ShapeStatus::VALID);
 
   node_reshape->tensor(tensor_input);
-  node_reshape->shape(shape_by_input);
+  node_reshape->shape(shape_input);
 
   loco::TensorShape output_shape;
   luci::sinf::Rule shape_inf_rule;
@@ -71,25 +71,25 @@ TEST(ShapeRuleTest, reshape_by_input_const_static)
   ASSERT_EQ(4, output_shape.dim(1).value());
 }
 
-TEST(ShapeRuleTest, reshape_by_input_const_dynamic)
+TEST(ShapeRuleTest, reshape_by_circle_dummy)
 {
   auto g = loco::make_graph();
   auto node_reshape = g->nodes()->create<luci::CircleReshape>();
   auto tensor_input = g->nodes()->create<luci::CircleInput>();
-  auto shape_by_input = g->nodes()->create<luci::CircleConst>();
+  auto shape_input = g->nodes()->create<luci::CircleOutputDummy>();
 
   tensor_input->dtype(loco::DataType::S32);
   tensor_input->shape({2, 3, 4});
   tensor_input->shape_status(luci::ShapeStatus::VALID);
 
-  shape_by_input->dtype(loco::DataType::S32);
-  shape_by_input->size<loco::DataType::S32>(2);
-  shape_by_input->at<loco::DataType::S32>(0) = -1;
-  shape_by_input->at<loco::DataType::S32>(1) = 4;
-  shape_by_input->shape_status(luci::ShapeStatus::VALID);
+  shape_input->dtype(loco::DataType::S32);
+  shape_input->shape_status(luci::ShapeStatus::VALID);
 
   node_reshape->tensor(tensor_input);
-  node_reshape->shape(shape_by_input);
+  node_reshape->shape(shape_input);
+  node_reshape->newShape()->rank(2);
+  node_reshape->newShape()->dim(0) = -1;
+  node_reshape->newShape()->dim(1) = 4;
 
   loco::TensorShape output_shape;
   luci::sinf::Rule shape_inf_rule;
@@ -101,6 +101,34 @@ TEST(ShapeRuleTest, reshape_by_input_const_dynamic)
   ASSERT_TRUE(output_shape.dim(1).known());
   ASSERT_EQ(6, output_shape.dim(0).value());
   ASSERT_EQ(4, output_shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, reshape_by_circle_node)
+{
+  auto g = loco::make_graph();
+  auto node_reshape = g->nodes()->create<luci::CircleReshape>();
+  auto tensor_input = g->nodes()->create<luci::CircleInput>();
+  auto shape_input = g->nodes()->create<luci::CircleInput>();
+
+  tensor_input->dtype(loco::DataType::S32);
+  tensor_input->shape({2, 3, 4});
+  tensor_input->shape_status(luci::ShapeStatus::VALID);
+
+  shape_input->dtype(loco::DataType::S32);
+  shape_input->shape({2});
+  shape_input->shape_status(luci::ShapeStatus::VALID);
+
+  node_reshape->tensor(tensor_input);
+  node_reshape->shape(shape_input);
+
+  loco::TensorShape output_shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(node_reshape, output_shape));
+
+  ASSERT_EQ(2, output_shape.rank());
+  ASSERT_FALSE(output_shape.dim(0).known());
+  ASSERT_FALSE(output_shape.dim(1).known());
 }
 
 TEST(ShapeRuleTest, reshape_input_tensor_undefined_NEG)
@@ -153,4 +181,49 @@ TEST(ShapeRuleTest, reshape_input_shape_undefined_NEG)
   luci::sinf::Rule shape_inf_rule;
 
   ASSERT_FALSE(shape_inf_rule.infer(node_reshape, output_shape));
+}
+
+TEST(ShapeRuleTest, reshape_no_input_shape_NEG)
+{
+  auto g = loco::make_graph();
+  auto node_reshape = g->nodes()->create<luci::CircleReshape>();
+  auto tensor_input = g->nodes()->create<luci::CircleInput>();
+
+  tensor_input->dtype(loco::DataType::S32);
+  tensor_input->shape({2, 3, 4});
+  tensor_input->shape_status(luci::ShapeStatus::VALID);
+
+  node_reshape->tensor(tensor_input);
+  node_reshape->shape(nullptr);
+
+  loco::TensorShape output_shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(node_reshape, output_shape));
+}
+
+TEST(ShapeRuleTest, reshape_too_many_unknown_NEG)
+{
+  auto g = loco::make_graph();
+  auto node_reshape = g->nodes()->create<luci::CircleReshape>();
+  auto tensor_input = g->nodes()->create<luci::CircleInput>();
+  auto shape_input = g->nodes()->create<luci::CircleConst>();
+
+  tensor_input->dtype(loco::DataType::S32);
+  tensor_input->shape({2, 3, 4});
+  tensor_input->shape_status(luci::ShapeStatus::VALID);
+
+  shape_input->dtype(loco::DataType::S32);
+  shape_input->size<loco::DataType::S32>(2);
+  shape_input->at<loco::DataType::S32>(0) = -1;
+  shape_input->at<loco::DataType::S32>(1) = -1;
+  shape_input->shape_status(luci::ShapeStatus::VALID);
+
+  node_reshape->tensor(tensor_input);
+  node_reshape->shape(shape_input);
+
+  loco::TensorShape output_shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(node_reshape, output_shape));
 }
