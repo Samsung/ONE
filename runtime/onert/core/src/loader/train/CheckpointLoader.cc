@@ -66,7 +66,7 @@ public:
       throw std::runtime_error{"Invalid checkpoint file footer data"};
 
     memset(reinterpret_cast<char *>(&_footer), 0, sizeof(_footer));
-    _file.seekg(_header.other_offset, std::ios::beg);
+    _file.seekg(static_cast<std::streamoff>(_header.other_offset), std::ios::beg);
     _file.read(reinterpret_cast<char *>(&_footer), sizeof(_footer));
   }
 
