@@ -99,6 +99,11 @@ message BCQGatherOptions {
   optional int32 axis = 2 [default = 0];
 }
 
+message RmsNormOptions {
+  optional float epsilon = 1 [default = 1e-06];
+  optional Activation activation = 2 [default = NONE];
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -112,6 +117,7 @@ message Operation {
   optional BCQGatherOptions bcq_gather_options = 103;
   optional GRUOptions gru_options = 104;
   optional FullyConnectedOptions fullyconnected_options = 105;
+  optional RmsNormOptions rms_norm_options = 106;
 }
 
 // For additional subgraphs

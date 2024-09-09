@@ -41,5 +41,16 @@ operation {
     activation: NONE
   }
 }
+operation {
+  type: "RmsNorm"
+  input: "ifm"
+  input: "gamma"
+  input: "beta"
+  output: "ofm"
+  rms_norm_options {
+    epsilon: 0.000001
+    activation: NONE
+  }
+}
 input: "ifm"
 output: "ofm"
