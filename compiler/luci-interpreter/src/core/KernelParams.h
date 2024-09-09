@@ -181,6 +181,12 @@ struct ResizeNearestNeighborParams
   bool half_pixel_centers;
 };
 
+struct RmsNormParams
+{
+  float epsilon;
+  Activation activation;
+};
+
 struct ShapeParams
 {
   loco::DataType out_type;
