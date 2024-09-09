@@ -97,6 +97,19 @@ void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad)
                                            bias_grad_buffer, bias_grad_shape);
 }
 
+nnfw::cker::train::LossReductionType convertLossReductionType(ir::train::LossReductionType type)
+{
+  switch (type)
+  {
+    case ir::train::LossReductionType::SumOverBatchSize:
+      return nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE;
+    case ir::train::LossReductionType::Sum:
+      return nnfw::cker::train::LossReductionType::SUM;
+    default:
+      throw std::runtime_error("Unsupported LossReductionType");
+  }
+}
+
 } // namespace ops
 } // namespace train
 } // namespace backend
