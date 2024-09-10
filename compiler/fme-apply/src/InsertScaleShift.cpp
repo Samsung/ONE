@@ -266,6 +266,81 @@ void set_input(luci::CircleNode *node, luci::CircleCustom *scale)
   }
 }
 
+loco::Node *get_input(luci::CircleNode *node)
+{
+  switch (node->opcode())
+  {
+    case luci::CircleOpcode::CONV_2D:
+    {
+      auto conv = loco::must_cast<luci::CircleConv2D *>(node);
+      return conv->input();
+    }
+    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+    {
+      auto dconv = loco::must_cast<luci::CircleDepthwiseConv2D *>(node);
+      return dconv->input();
+    }
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    {
+      auto fc = loco::must_cast<luci::CircleFullyConnected *>(node);
+      return fc->input();
+    }
+    case luci::CircleOpcode::GELU:
+    {
+      auto gelu = loco::must_cast<luci::CircleGelu *>(node);
+      return gelu->features();
+    }
+    case luci::CircleOpcode::LEAKY_RELU:
+    {
+      auto relu = loco::must_cast<luci::CircleLeakyRelu *>(node);
+      return relu->features();
+    }
+    case luci::CircleOpcode::MAX_POOL_2D:
+    {
+      auto maxpool = loco::must_cast<luci::CircleMaxPool2D *>(node);
+      return maxpool->value();
+    }
+    case luci::CircleOpcode::PAD:
+    {
+      auto pad = loco::must_cast<luci::CirclePad *>(node);
+      return pad->input();
+    }
+    case luci::CircleOpcode::RELU:
+    {
+      auto relu = loco::must_cast<luci::CircleLeakyRelu *>(node);
+      return relu->features();
+    }
+    case luci::CircleOpcode::TRANSPOSE_CONV:
+    {
+      auto tconv = loco::must_cast<luci::CircleTransposeConv *>(node);
+      return tconv->outBackprop();
+    }
+    default:
+    {
+      throw std::runtime_error("(get_input) NYI operator: " + node->name());
+    }
+  }
+}
+
+luci::CircleNode *find_arg_with_name(const luci::CircleNode *node, const std::string &name,
+                                     const uint32_t &depth)
+{
+  if (depth == 0)
+    return nullptr;
+
+  const auto arity = node->arity();
+  for (uint32_t idx = 0; idx < arity; idx++)
+  {
+    auto front_node = loco::must_cast<luci::CircleNode *>(node->arg(idx));
+    if (front_node->name() == name)
+      return front_node;
+    front_node = find_arg_with_name(front_node, name, depth - 1);
+    if (front_node)
+      return front_node;
+  }
+  return nullptr;
+}
+
 struct InsertScaleShiftVisitor final : public luci::CircleNodeMutableVisitor<void>
 {
   InsertScaleShiftVisitor(EqualizePattern *p) : _pattern(p)
@@ -280,7 +355,7 @@ private:
   void insert_scale_before(luci::CircleNode *node, const std::vector<float> &scale)
   {
     assert(node);
-    auto previous_node = loco::must_cast<luci::CircleNode *>(node->arg(0));
+    auto previous_node = loco::must_cast<luci::CircleNode *>(get_input(node));
 
     // Create const for scale
     auto param = node->graph()->nodes()->create<luci::CircleConst>();
@@ -319,7 +394,10 @@ private:
 
   void insert_scale_after(luci::CircleNode *node, const std::vector<float> &scale)
   {
-    assert(node);
+    if (not node)
+    {
+      throw std::runtime_error("(insert_scale_after) Invalid node.");
+    }
 
     // Create const for scale
     auto param = node->graph()->nodes()->create<luci::CircleConst>();
@@ -372,16 +450,10 @@ private:
     auto valid = ::calculate_smooth_quant_scale(node, _pattern);
     auto back_node = node;
     // Find front node.
-    auto front_node = loco::must_cast<luci::CircleNode *>(node->arg(0));
-    // If `node->input()` is not the front node, check the input of `node->input()`.
-    if (front_node->name() != _pattern->front)
+    auto front_node = find_arg_with_name(node, _pattern->front, 2);
+    if (not front_node)
     {
-      // TODO Decide which nodes should be allowed.
-      front_node = loco::must_cast<luci::CircleNode *>(front_node->arg(0));
-      if (front_node->name() != _pattern->front)
-      {
-        throw std::runtime_error("Cannot find front node");
-      }
+      throw std::runtime_error("Cannot find front node: " + _pattern->front);
     }
     insert_scale_after(front_node, reciprocal(_pattern->scale));
     insert_scale_before(back_node, _pattern->scale);

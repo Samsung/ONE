@@ -55,7 +55,7 @@ luci::CircleCustom *to_pre_shift(loco::Node *node)
   if (not pre_shift)
     return nullptr;
 
-  if (pre_shift->custom_code() != "PreShift")
+  if (pre_shift->custom_code() != "scale")
     return nullptr;
 
   // TODO Return false?
@@ -70,7 +70,7 @@ luci::CircleCustom *to_post_shift(loco::Node *node)
   if (not post_shift)
     return nullptr;
 
-  if (post_shift->custom_code() != "PostShift")
+  if (post_shift->custom_code() != "scale")
     return nullptr;
 
   // TODO Return false?

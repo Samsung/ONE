@@ -69,7 +69,7 @@ public:
     _prescale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _prescale->shape({1, 4, 4, 3});
-    _prescale->custom_code("PreScale");
+    _prescale->custom_code("scale");
     _prescale->name("prescale");
 
     std::vector<float> filter_val(3 * 3 * 3 * 3 /* size */, 1.0 /*value */);
@@ -126,7 +126,7 @@ public:
     _prescale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _prescale->shape({1, 4, 4, 3});
-    _prescale->custom_code("PreScale");
+    _prescale->custom_code("scale");
     _prescale->name("prescale");
 
     std::vector<float> filter_val(3 * 3 * 3 * 3 /* size */, 1.0 /*value */);
@@ -182,7 +182,7 @@ public:
     _prescale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _prescale->shape({1, 4, 4, 3});
-    _prescale->custom_code("PreScale");
+    _prescale->custom_code("scale");
     _prescale->name("prescale");
 
     std::vector<float> filter_val(1 * 3 * 3 * 3 /* size */, 1.0 /*value */);

@@ -24,7 +24,7 @@ TEST(SupportCastTest, pre_scale)
 {
   loco::Graph g;
   auto node = g.nodes()->create<luci::CircleCustom>(2, 1);
-  node->custom_code("PreScale");
+  node->custom_code("scale");
 
   EXPECT_EQ(node, to_pre_scale(g.nodes()->at(0)));
 }
@@ -44,7 +44,7 @@ TEST(SupportCastTest, pre_shift)
 {
   loco::Graph g;
   auto node = g.nodes()->create<luci::CircleCustom>(2, 1);
-  node->custom_code("PreShift");
+  node->custom_code("scale");
 
   EXPECT_EQ(node, to_pre_shift(g.nodes()->at(0)));
 }
@@ -64,7 +64,7 @@ TEST(SupportCastTest, post_scale)
 {
   loco::Graph g;
   auto node = g.nodes()->create<luci::CircleCustom>(2, 1);
-  node->custom_code("PostScale");
+  node->custom_code("scale");
 
   EXPECT_EQ(node, to_post_scale(g.nodes()->at(0)));
 }
@@ -84,7 +84,7 @@ TEST(SupportCastTest, post_shift)
 {
   loco::Graph g;
   auto node = g.nodes()->create<luci::CircleCustom>(2, 1);
-  node->custom_code("PostShift");
+  node->custom_code("scale");
 
   EXPECT_EQ(node, to_post_shift(g.nodes()->at(0)));
 }

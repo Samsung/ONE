@@ -81,7 +81,7 @@ luci::CircleCustom *pre_scale(loco::Node *node)
   if (not n)
     return nullptr;
 
-  if (n->custom_code() != "PreScale")
+  if (n->custom_code() != "scale")
     return nullptr;
 
   return n;
@@ -93,7 +93,7 @@ luci::CircleCustom *post_scale(loco::Node *node)
   if (not n)
     return nullptr;
 
-  if (n->custom_code() != "PostScale")
+  if (n->custom_code() != "scale")
     return nullptr;
 
   return n;
@@ -105,7 +105,7 @@ luci::CircleCustom *pre_shift(loco::Node *node)
   if (not n)
     return nullptr;
 
-  if (n->custom_code() != "PreShift")
+  if (n->custom_code() != "scale")
     return nullptr;
 
   return n;
@@ -117,7 +117,7 @@ luci::CircleCustom *post_shift(loco::Node *node)
   if (not n)
     return nullptr;
 
-  if (n->custom_code() != "PostShift")
+  if (n->custom_code() != "scale")
     return nullptr;
 
   return n;
@@ -134,7 +134,7 @@ TEST(InsertScaleShiftTest, scale_only)
     pattern.back = "conv2";
     pattern.type = EqualizePattern::Type::ScaleOnly;
     for (uint32_t i = 0; i < 16; i++)
-      pattern.scale.push_back(1.0);
+      pattern.act_scale.push_back(1.0);
   }
   p.emplace_back(pattern);
 
@@ -150,131 +150,4 @@ TEST(InsertScaleShiftTest, scale_only)
 
   auto post = post_scale(pre->inputs(0));
   EXPECT_NE(nullptr, post);
-}
-
-TEST(InsertScaleShiftTest, shift_only)
-{
-  std::vector<EqualizePattern> p;
-  // Conv-Conv is not ShiftOnly, but we use it for testing InsertScaleShift
-  EqualizePattern pattern;
-  {
-    pattern.front = "conv1";
-    pattern.back = "conv2";
-    pattern.type = EqualizePattern::Type::ShiftOnly;
-    for (uint32_t i = 0; i < 16; i++)
-      pattern.shift.push_back(1.0);
-  }
-  p.emplace_back(pattern);
-
-  InsertScaleShift iss(p);
-
-  ConvConvGraph g;
-  g.init();
-
-  EXPECT_NO_THROW(iss.run(g.g()));
-
-  auto pre = pre_shift(g._conv2->input());
-  EXPECT_NE(nullptr, pre);
-
-  auto post = post_shift(pre->inputs(0));
-  EXPECT_NE(nullptr, post);
-}
-
-TEST(InsertScaleShiftTest, scale_shift)
-{
-  std::vector<EqualizePattern> p;
-  // Conv-Conv is not ScaleShift, but we use it for testing InsertScaleShift
-  EqualizePattern pattern;
-  {
-    pattern.front = "conv1";
-    pattern.back = "conv2";
-    pattern.type = EqualizePattern::Type::ScaleShift;
-    for (uint32_t i = 0; i < 16; i++)
-      pattern.scale.push_back(1.0);
-    for (uint32_t i = 0; i < 16; i++)
-      pattern.shift.push_back(1.0);
-  }
-  p.emplace_back(pattern);
-
-  InsertScaleShift iss(p);
-
-  ConvConvGraph g;
-  g.init();
-
-  EXPECT_NO_THROW(iss.run(g.g()));
-
-  auto pre_sc = pre_scale(g._conv2->input());
-  EXPECT_NE(nullptr, pre_sc);
-
-  auto pre_sh = pre_shift(pre_sc->inputs(0));
-  EXPECT_NE(nullptr, pre_sh);
-
-  auto post_sh = post_shift(pre_sh->inputs(0));
-  EXPECT_NE(nullptr, post_sh);
-
-  auto post_sc = post_scale(post_sh->inputs(0));
-  EXPECT_NE(nullptr, post_sc);
-}
-
-TEST(InsertScaleShiftTest, invalid_type_NEG)
-{
-  std::vector<EqualizePattern> p;
-  // Conv-Conv is not ScaleShift, but we use it for testing InsertScaleShift
-  EqualizePattern pattern;
-  {
-    pattern.front = "conv1";
-    pattern.back = "conv2";
-    pattern.type = EqualizePattern::Type::Invalid;
-  }
-  p.emplace_back(pattern);
-
-  InsertScaleShift iss(p);
-
-  ConvConvGraph g;
-  g.init();
-
-  EXPECT_ANY_THROW(iss.run(g.g()));
-}
-
-TEST(InsertScaleShiftTest, zero_scale_NEG)
-{
-  std::vector<EqualizePattern> p;
-  EqualizePattern pattern;
-  {
-    pattern.front = "conv1";
-    pattern.back = "conv2";
-    pattern.type = EqualizePattern::Type::ScaleOnly;
-    for (uint32_t i = 0; i < 16; i++)
-      pattern.scale.push_back(0.0);
-  }
-  p.emplace_back(pattern);
-
-  InsertScaleShift iss(p);
-
-  ConvConvGraph g;
-  g.init();
-
-  EXPECT_ANY_THROW(iss.run(g.g()));
-}
-
-TEST(InsertScaleShiftTest, channel_mismatch_NEG)
-{
-  std::vector<EqualizePattern> p;
-  EqualizePattern pattern;
-  {
-    pattern.front = "conv1";
-    pattern.back = "conv2";
-    pattern.type = EqualizePattern::Type::ScaleOnly;
-    // channel size is 16 (mismatch)
-    for (uint32_t i = 0; i < 13; i++)
-      pattern.scale.push_back(1.0);
-  }
-  p.emplace_back(pattern);
-
-  InsertScaleShift iss(p);
-
-  ConvConvGraph g;
-  g.init();
-
-  EXPECT_ANY_THROW(iss.run(g.g()));
 }

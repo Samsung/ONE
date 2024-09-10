@@ -17,12 +17,8 @@
 #include "FMEqualizer.h"
 #include "InsertScaleShift.h"
 #include "EqualizePatternCheck.h"
-#include "pass/ForwardPreScalePass.h"
-#include "pass/ForwardPreShiftPass.h"
 #include "pass/FusePostScalePass.h"
-#include "pass/FusePostShiftPass.h"
 #include "pass/FusePreScalePass.h"
-#include "pass/FusePreShiftPass.h"
 #include "ProgressReporter.h"
 
 #include <luci/IR/CircleNode.h>
@@ -82,15 +78,9 @@ void FMEqualizer::equalize(loco::Graph *g, std::vector<EqualizePattern> &p)
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  // Forward PreScale/PreShift
-  // phase.emplace_back(std::make_unique<fme_apply::ForwardPreScalePass>());
-  // phase.emplace_back(std::make_unique<fme_apply::ForwardPreShiftPass>());
-
-  // Fuse Pre/Post Scale/Shift
+  // Fuse Pre/Post Scale
   phase.emplace_back(std::make_unique<fme_apply::FusePreScalePass>());
   phase.emplace_back(std::make_unique<fme_apply::FusePostScalePass>());
-  // phase.emplace_back(std::make_unique<fme_apply::FusePreShiftPass>());
-  // phase.emplace_back(std::make_unique<fme_apply::FusePostShiftPass>());
 
   ProgressReporter prog(g, logo::PhaseStrategy::Restart);
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
