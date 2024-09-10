@@ -35,8 +35,8 @@ public:
   LossCategoricalCrossentropyLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred, int32_t axis,
-                 float label_smoothing);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 ir::train::LossReductionType reduction_type, int32_t axis, float label_smoothing);
   void forward(bool training) override;
   void backward() override;
 

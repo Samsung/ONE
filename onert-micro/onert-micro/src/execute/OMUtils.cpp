@@ -236,3 +236,32 @@ void onert_micro::execute::calculateQuantParams(core::ArithmeticQuantParams &par
                                     &params.quantized_activation_min,
                                     &params.quantized_activation_max);
 }
+
+OMStatus onert_micro::execute::TISOHeader(const OMExecuteArgs &execute_args,
+                                          const circle::Tensor **input1,
+                                          const circle::Tensor **input2,
+                                          const circle::Tensor **output,
+                                          OMRuntimeKernel *runtime_kernel)
+{
+  OMStatus status;
+
+  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
+  uint16_t op_index = execute_args.kernel_index;
+
+  status = runtime_kernel->readKernel(op_index, runtime_context);
+
+  *input1 = runtime_kernel->inputs[0];
+  *input2 = runtime_kernel->inputs[1];
+  *output = runtime_kernel->outputs[0];
+
+  assert(*input1 != nullptr);
+  assert(*input2 != nullptr);
+  assert(*output != nullptr);
+
+  status = runtime_kernel->getDataFromStorage(op_index, runtime_storage, runtime_context);
+  if (status != Ok)
+    return status;
+
+  return status;
+}
