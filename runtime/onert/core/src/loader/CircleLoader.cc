@@ -70,6 +70,7 @@ protected:
   void loadInstanceNorm(const Operator *op, ir::Graph &subg);
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
+  void loadRmsNorm(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -150,6 +151,9 @@ private:
       case circle::BuiltinOperator::BuiltinOperator_BCQ_GATHER:
         loadBCQGather(op, subg);
         return;
+      case circle::BuiltinOperator::BuiltinOperator_RMS_NORM:
+        loadRmsNorm(op, subg);
+        return;
       default:
         BaseLoader::loadOperation(op, subg);
         return;
@@ -222,6 +226,24 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
 
   std::unique_ptr<ir::Operation> new_op(
     new ir::operation::BCQFullyConnected(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadRmsNorm(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::RmsNorm::Param param;
+  const auto *options = op->builtin_options_as_RmsNormOptions();
+
+  param.activation = convertActivation(options->fused_activation_function());
+  // Use default value 1e-6 if value of epsilon is zero
+  param.epsilon = options->epsilon() == 0.f ? 1e-6 : options->epsilon();
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::RmsNorm(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
