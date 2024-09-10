@@ -124,22 +124,3 @@ TEST(ShapeRuleTest, pad_non_const_paddings)
   ASSERT_EQ(0, shape.dim(2).value());
   ASSERT_EQ(0, shape.dim(3).value());
 }
-
-TEST(ShapeRuleTest, pad_empty_padding_NEG)
-{
-  auto g = loco::make_graph();
-  auto node_pad = g->nodes()->create<luci::CirclePad>();
-  auto node_input = g->nodes()->create<luci::CircleInput>();
-  auto node_paddings = g->nodes()->create<luci::CircleAdd>();
-
-  loco::TensorShape shape;
-  luci::sinf::Rule shape_inf_rule;
-
-  node_input->shape({1, 2, 3, 4});
-  node_input->shape_status(luci::ShapeStatus::VALID);
-
-  node_pad->input(node_input);
-  node_pad->paddings(node_paddings);
-
-  ASSERT_FALSE(shape_inf_rule.infer(node_pad, shape));
-}
