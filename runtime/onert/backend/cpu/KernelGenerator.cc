@@ -69,6 +69,7 @@
 #include "ops/FusedBatchNormLayer.h"
 #include "ops/LogSoftMaxLayer.h"
 #include "ops/StatelessRandomUniformLayer.h"
+#include "ops/RmsNormLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -1097,6 +1098,27 @@ void KernelGenerator::visit(const ir::operation::Rank &node)
   auto fn = std::make_unique<ops::RankLayer>();
 
   fn->configure(ifm_tensor, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::RmsNorm &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
+  const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
+  const auto beta_index{node.getInputs().at(ir::operation::RmsNorm::Input::BETA)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+  auto gamma_tensor = _tensor_reg->getPortableTensor(gamma_index);
+  auto beta_tensor = _tensor_reg->getPortableTensor(beta_index);
+  auto epsilon = node.param().epsilon;
+  auto activation = node.param().activation;
+
+  auto fn = std::make_unique<ops::RmsNormLayer>();
+
+  fn->configure(ifm_tensor, gamma_tensor, beta_tensor, epsilon, activation, ofm_tensor);
 
   _return_fn = std::move(fn);
 }
