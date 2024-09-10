@@ -120,7 +120,7 @@ int entry(int argc, char **argv)
              "This will fuse Mul operation with a Div operation whose numerator is const.");
   add_switch(arser, "--fuse_mul_with_fullyconnected",
              "This will fuse Mul operator with a preceding FullyConnected operator.");
-  add_switch(arser, "--fuse_rmsnorm", "This will fuse operators to RmsNorm operator");           
+  add_switch(arser, "--fuse_rmsnorm", "This will fuse operators to RmsNorm operator");
   add_switch(arser, "--fuse_slice_with_tconv",
              "This will fuse Slice operation with a preceding TConv if possible.");
   add_switch(arser, "--fuse_transpose_with_mean",

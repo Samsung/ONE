@@ -29,11 +29,10 @@ namespace luci
 /**
  * @brief RMS_NORM in Circle
  */
-class CircleRmsNorm final
-  : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::RMS_NORM>>,
-    public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
+class CircleRmsNorm final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::RMS_NORM>>,
+                            public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
 {
-public:  
+public:
   loco::Node *input(void) const { return at(0)->node(); }
   void input(loco::Node *node) { at(0)->node(node); }
 

@@ -905,7 +905,7 @@ std::vector<std::string> CircleRmsNormSummaryBuilder::get_input_names(const luci
 }
 
 void CircleRmsNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
-                                                        locop::NodeSummary &s)
+                                                   locop::NodeSummary &s)
 {
   auto rmsnorm = loco::must_cast<const luci::CircleRmsNorm *>(node);
   s.args().append("epsilon", std::to_string(rmsnorm->epsilon()));

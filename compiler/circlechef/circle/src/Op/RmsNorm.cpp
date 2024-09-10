@@ -22,7 +22,7 @@ namespace circlechef
 {
 
 void CircleOpRmsNorm::filler(const circle::Operator *op, CircleImport *import,
-                                  circlechef::ModelRecipe *model_recipe) const
+                             circlechef::ModelRecipe *model_recipe) const
 {
   // index 1 and 2 maybe constant
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
@@ -33,7 +33,7 @@ void CircleOpRmsNorm::filler(const circle::Operator *op, CircleImport *import,
 }
 
 circlechef::Operation *CircleOpRmsNorm::build(const circle::Operator *op, CircleImport *import,
-                                                   circlechef::ModelRecipe *model_recipe) const
+                                              circlechef::ModelRecipe *model_recipe) const
 {
   auto operation = model_recipe->add_operation();
 

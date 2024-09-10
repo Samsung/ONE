@@ -30,8 +30,8 @@ bool CircleRmsNormGraphBuilder::validate(const ValidateArgs &args) const
 }
 
 CircleNode *CircleRmsNormGraphBuilder::build_node(const circle::OperatorT &op,
-                                                       const std::vector<CircleNode *> &inputs,
-                                                       loco::Graph *graph) const
+                                                  const std::vector<CircleNode *> &inputs,
+                                                  loco::Graph *graph) const
 {
   auto *node = graph->nodes()->create<CircleRmsNorm>();
   node->input(inputs.at(0));

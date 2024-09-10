@@ -551,7 +551,7 @@ public:
   flatbuffers::Offset<void> visit(luci::CircleRmsNorm *node)
   {
     return circle::CreateRmsNormOptions(_builder, node->epsilon(),
-                                             to_circle_actfunc(node->fusedActivationFunction()))
+                                        to_circle_actfunc(node->fusedActivationFunction()))
       .Union();
   }
 

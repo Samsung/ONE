@@ -32,8 +32,7 @@ flatbuffers::Offset<void> RmsNormChef::value(flatbuffers::FlatBufferBuilder &fbb
   return options_builder.Finish().Union();
 }
 
-std::unique_ptr<OpChef>
-RmsNormChefFactory::create(const circlechef::Operation *operation) const
+std::unique_ptr<OpChef> RmsNormChefFactory::create(const circlechef::Operation *operation) const
 {
   return std::unique_ptr<OpChef>{new RmsNormChef{operation}};
 }

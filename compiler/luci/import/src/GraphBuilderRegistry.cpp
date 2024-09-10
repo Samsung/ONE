@@ -118,7 +118,7 @@ GraphBuilderRegistry::GraphBuilderRegistry()
   CIRCLE_NODE(REVERSE_V2, CircleReverseV2GraphBuilder);                                    // 105
   CIRCLE_NODE(RMS_NORM, CircleRmsNormGraphBuilder);                                        // 255
   CIRCLE_NODE(ROUND, CircleRoundGraphBuilder);                                             // 116
-  CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                                             // 76  
+  CIRCLE_NODE(RSQRT, CircleRsqrtGraphBuilder);                                             // 76
   CIRCLE_NODE(SCATTER_ND, CircleScatterNdGraphBuilder);                                    // 122
   CIRCLE_NODE(SEGMENT_SUM, CircleSegmentSumGraphBuilder);                                  // 125
   CIRCLE_NODE(SELECT, CircleSelectGraphBuilder);                                           // 64

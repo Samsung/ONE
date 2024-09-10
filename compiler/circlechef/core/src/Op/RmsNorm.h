@@ -28,15 +28,9 @@ public:
   }
 
 public:
-  circle::BuiltinOperator code(void) const override
-  {
-    return circle::BuiltinOperator_RMS_NORM;
-  }
+  circle::BuiltinOperator code(void) const override { return circle::BuiltinOperator_RMS_NORM; }
 
-  circle::BuiltinOptions type(void) const override
-  {
-    return circle::BuiltinOptions_RmsNormOptions;
-  }
+  circle::BuiltinOptions type(void) const override { return circle::BuiltinOptions_RmsNormOptions; }
 
   flatbuffers::Offset<void> value(flatbuffers::FlatBufferBuilder &fbb) const override;
 

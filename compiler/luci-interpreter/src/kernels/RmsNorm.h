@@ -29,7 +29,7 @@ class RmsNorm : public KernelWithParams<RmsNormParams>
 {
 public:
   RmsNorm(const Tensor *input, const Tensor *gamma, const Tensor *beta, Tensor *output,
-               const RmsNormParams &params);
+          const RmsNormParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *gamma() const { return _inputs[1]; }
