@@ -48,7 +48,6 @@ class CONSTANT:
         'fuse_instnorm',
         'fuse_prelu',
         'fuse_gelu',
-        'fuse_rmsnorm',
         'fuse_rsqrt',
         'fuse_mean_with_mean',
         'fuse_mul_with_conv',
