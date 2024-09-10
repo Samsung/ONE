@@ -68,7 +68,6 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
    *    input_shape.rank() <= 4
    *      * remark: TFLite allows <=3 ranks, but there are rank 4 input recipes in ONE
    *    weights_shape.rank() == 2 and all dimensions are known.
-   *    If above conditions are not met, throw an error.
    *    When runtime(input_shape[-1] and weights_shape[-1] are both known), it should be same value.
    *
    * **Shape Inference Rule:**

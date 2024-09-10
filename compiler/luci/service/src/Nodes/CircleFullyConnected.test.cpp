@@ -19,7 +19,7 @@
 #include "luci/Service/CircleShapeInference.h"
 
 #include <gtest/gtest.h>
-#include <iostream>
+
 TEST(CloneNodeTest, clone_FullyConnected)
 {
   auto g = loco::make_graph();
