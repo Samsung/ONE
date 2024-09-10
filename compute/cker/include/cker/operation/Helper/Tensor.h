@@ -157,6 +157,10 @@ public:
   {
     return typename TTypes<T>::ConstScalar(base<T>());
   }
+
+  template <typename T> typename TTypes<T>::Vec vec() { return shaped<T, 1>(); }
+
+  template <typename T> typename TTypes<T>::Matrix matrix() { return shaped<T, 2>(); }
 }; // Tensor
 
 template <typename DSizes> Eigen::DSizes<Index32, DSizes::count> To32BitDims(const DSizes &in)
