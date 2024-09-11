@@ -404,7 +404,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
   // TODO support non-const strides_node
   if (strides_const == nullptr)
   {
-    INTERNAL_EXN("StridedSlice strides node are not Constant");
+    INTERNAL_EXN("StridedSlice strides node is not Constant");
   }
   if (begin_const == nullptr || end_const == nullptr)
   {
