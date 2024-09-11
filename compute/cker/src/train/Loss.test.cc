@@ -86,6 +86,31 @@ public:
     }
   }
 
+  void verifyBackwardWithLogits(const std::vector<T> &logits, const std::vector<T> &y_true,
+                                const std::vector<T> &expected_loss_out,
+                                const std::vector<T> &expected_grad)
+  {
+    assert(logits.size() == y_true.size());
+    assert(logits.size() == expected_grad.size());
+
+    std::vector<T> loss_out(_out_shape.FlatSize());
+    std::vector<T> grad(_in_shape.FlatSize());
+
+    nnfw::cker::train::CategoricalCrossEntropyWithLogits(_in_shape, logits.data(), _in_shape,
+                                                         y_true.data(), _out_shape, loss_out.data(),
+                                                         _in_shape, grad.data());
+
+    for (int i = 0; i < loss_out.size(); ++i)
+    {
+      EXPECT_NEAR(loss_out[i], expected_loss_out[i], 1e-3f);
+    }
+
+    for (int i = 0; i < grad.size(); ++i)
+    {
+      EXPECT_NEAR(grad[i], expected_grad[i], 1e-3f);
+    }
+  }
+
   void throwBackward(const std::vector<T> &y_pred, const std::vector<T> &y_true,
                      const std::vector<T> &expected)
   {
@@ -97,6 +122,21 @@ public:
 
     EXPECT_ANY_THROW(nnfw::cker::train::CategoricalCrossEntropyGrad(
       _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data()));
+  }
+
+  void throwBackwardWithLogits(const std::vector<T> &logits, const std::vector<T> &y_true,
+                               const std::vector<T> &expected_loss_out,
+                               const std::vector<T> &expected_grad)
+  {
+    assert(logits.size() == y_true.size());
+    assert(logits.size() == expected_grad.size());
+
+    std::vector<T> loss_out(_out_shape.FlatSize());
+    std::vector<T> grad(_in_shape.FlatSize());
+
+    EXPECT_ANY_THROW(nnfw::cker::train::CategoricalCrossEntropyWithLogits(
+      _in_shape, logits.data(), _in_shape, y_true.data(), _out_shape, loss_out.data(), _in_shape,
+      grad.data()));
   }
 
 private:
@@ -391,6 +431,33 @@ TEST(CKer_Operation, LossCategoricalCrossEntropyGrad)
     LossCCEVerifier<float> verifier(in_shape, grad_shape);
     verifier.verifyBackward(y_pred, y_true, expected);
   }
+
+  {
+    nnfw::cker::Shape in_shape{1, 10};
+    nnfw::cker::Shape out_shape{1};
+
+    std::vector<float> logits = {1, 3, 5, 35, 4, 5, 28, 9, 4, 6};
+    std::vector<float> y_true = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+    std::vector<float> expected_loss_out = {29.0009};
+    std::vector<float> expected_grad = {0, 0, 0, 0.9991, 0, 0, 0.0009, 0, 0, -1};
+
+    LossCCEVerifier<float> verifier(in_shape, out_shape);
+    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad);
+  }
+
+  {
+    nnfw::cker::Shape in_shape{2, 10};
+    nnfw::cker::Shape out_shape{2};
+
+    std::vector<float> logits = {1, 3, 5, 35, 4, 5, 28, 9, 4, 6, 89, 3, 4, 5, 23, 1, 4, 5, 1, 101};
+    std::vector<float> y_true = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<float> expected_loss_out = {29.0009, 12};
+    std::vector<float> expected_grad = {0,  0, 0, 0.9991, 0, 0, 0.0009, 0, 0, -1,
+                                        -1, 0, 0, 0,      0, 0, 0,      0, 0, 1};
+
+    LossCCEVerifier<float> verifier(in_shape, out_shape);
+    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad);
+  }
 }
 
 TEST(CKer_Operation, neg_LossCategoricalCrossEntropyGrad)
@@ -406,5 +473,22 @@ TEST(CKer_Operation, neg_LossCategoricalCrossEntropyGrad)
 
     LossCCEVerifier<float> verifier(in_shape, grad_shape);
     verifier.throwBackward(y_pred, y_true, expected);
+  }
+}
+
+TEST(CKer_Operation, neg_LossCategoricalCrossEntropyWithLogits)
+{
+  // Invalid out shape
+  {
+    nnfw::cker::Shape in_shape{1, 10};
+    nnfw::cker::Shape out_shape{1, 1};
+
+    std::vector<float> logits = {1, 3, 5, 35, 4, 5, 28, 9, 4, 6};
+    std::vector<float> y_true = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+    std::vector<float> expected_loss_out = {29.0009};
+    std::vector<float> expected_grad = {0, 0, 0, 0.9991, 0, 0, 0.0009, 0, 0, -1};
+
+    LossCCEVerifier<float> verifier(in_shape, out_shape);
+    verifier.throwBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad);
   }
 }
