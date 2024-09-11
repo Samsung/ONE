@@ -35,7 +35,6 @@ std::unique_ptr<Kernel> build_kernel_CircleRmsNorm(const luci::CircleNode *circl
 
   RmsNormParams params{};
   params.epsilon = node->epsilon();
-  params.activation = node->fusedActivationFunction();
 
   return std::make_unique<kernels::RmsNorm>(input, gamma, beta, output, params);
 }

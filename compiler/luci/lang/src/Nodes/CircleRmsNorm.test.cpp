@@ -32,7 +32,6 @@ TEST(CircleRmsNormTest, constructor)
   ASSERT_EQ(nullptr, rms_norm.gamma());
   ASSERT_EQ(nullptr, rms_norm.beta());
   ASSERT_FLOAT_EQ(rms_norm.epsilon(), 1e-06);
-  ASSERT_EQ(luci::FusedActFunc::UNDEFINED, rms_norm.fusedActivationFunction());
 }
 
 TEST(CircleRmsNormTest, input_NEG)
@@ -53,9 +52,6 @@ TEST(CircleRmsNormTest, input_NEG)
   ASSERT_EQ(nullptr, rms_norm.input());
   ASSERT_EQ(nullptr, rms_norm.gamma());
   ASSERT_EQ(nullptr, rms_norm.beta());
-
-  rms_norm.fusedActivationFunction(luci::FusedActFunc::RELU);
-  ASSERT_NE(luci::FusedActFunc::UNDEFINED, rms_norm.fusedActivationFunction());
 }
 
 TEST(CircleRmsNormTest, arity_NEG)

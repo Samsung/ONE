@@ -44,7 +44,6 @@ TEST_F(RmsNormTest, Simple)
 
   RmsNormParams params{};
   params.epsilon = 0.00001f;
-  params.activation = Activation::NONE;
 
   RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   kernel.configure();
@@ -65,7 +64,6 @@ TEST_F(RmsNormTest, Default_gamma_beta)
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
-  params.activation = Activation::NONE;
 
   RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   kernel.configure();
@@ -88,7 +86,6 @@ TEST_F(RmsNormTest, Have_gamma)
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
-  params.activation = Activation::NONE;
 
   RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   kernel.configure();
@@ -111,23 +108,6 @@ TEST_F(RmsNormTest, Wrong_gamma_beta_dim_NEG)
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
-  params.activation = Activation::NONE;
-
-  RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
-  EXPECT_ANY_THROW(kernel.configure());
-}
-
-TEST_F(RmsNormTest, Wrong_activation_NEG)
-{
-  Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 2, 2}, {0, 1, 2, 3, 4, 5, 6, 7},
-                                                           _memory_manager.get());
-  Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {0}, _memory_manager.get());
-  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
-
-  RmsNormParams params{};
-  params.epsilon = 0.001f;
-  params.activation = Activation::RELU;
 
   RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
@@ -143,7 +123,6 @@ TEST_F(RmsNormTest, Unsupported_dims_NEG)
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
-  params.activation = Activation::NONE;
 
   RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());

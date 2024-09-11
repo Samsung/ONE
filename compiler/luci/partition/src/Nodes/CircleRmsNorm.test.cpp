@@ -36,8 +36,6 @@ public:
   void init(loco::Graph *g) override
   {
     NodeGraphletT<luci::CircleRmsNorm>::init(g);
-
-    _node->fusedActivationFunction(luci::FusedActFunc::NONE);
   }
 };
 

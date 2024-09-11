@@ -1106,10 +1106,8 @@ TEST_F(KernelBuilderTest, RmsNorm)
   op->input(input);
   op->gamma(gamma);
   op->beta(beta);
-
   op->epsilon(1e-06);
-  op->fusedActivationFunction(luci::FusedActFunc::NONE);
-
+  
   auto kernel = buildKernel<kernels::RmsNorm>(op);
   ASSERT_THAT(kernel, NotNull());
 
@@ -1118,7 +1116,6 @@ TEST_F(KernelBuilderTest, RmsNorm)
   checkTensor(kernel->beta(), beta);
   checkTensor(kernel->output(), op);
   EXPECT_THAT(kernel->params().epsilon, Eq(op->epsilon()));
-  EXPECT_THAT(kernel->params().activation, Eq(op->fusedActivationFunction()));
 }
 
 TEST_F(KernelBuilderTest, Rsqrt)

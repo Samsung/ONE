@@ -23,12 +23,10 @@ flatbuffers::Offset<void> RmsNormChef::value(flatbuffers::FlatBufferBuilder &fbb
   auto &operation = (*_operation);
 
   assert(operation.has_rms_norm_options());
-  auto circle_activation = as_circle_activation(operation.rms_norm_options().activation());
-
+  
   circle::RmsNormOptionsBuilder options_builder{fbb};
   options_builder.add_epsilon(operation.rms_norm_options().epsilon());
-  options_builder.add_fused_activation_function(circle_activation);
-
+  
   return options_builder.Finish().Union();
 }
 

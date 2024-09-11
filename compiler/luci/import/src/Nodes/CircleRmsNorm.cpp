@@ -40,8 +40,7 @@ CircleNode *CircleRmsNormGraphBuilder::build_node(const circle::OperatorT &op,
 
   const auto *options = op.builtin_options.AsRmsNormOptions();
   node->epsilon(options->epsilon);
-  node->fusedActivationFunction(luci_actfunc(options->fused_activation_function));
-
+  
   return node;
 }
 

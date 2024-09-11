@@ -49,7 +49,6 @@ operation {
   output: "ofm"
   rms_norm_options {
     epsilon: 0.000001
-    activation: NONE
   }
 }
 input: "ifm"

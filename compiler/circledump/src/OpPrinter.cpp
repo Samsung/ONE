@@ -834,8 +834,6 @@ public:
     {
       os << "    ";
       os << "epsilon(" << params->epsilon() << ") ";
-      os << "Activation(" << EnumNameActivationFunctionType(params->fused_activation_function())
-         << ") ";
       os << std::endl;
     }
   }

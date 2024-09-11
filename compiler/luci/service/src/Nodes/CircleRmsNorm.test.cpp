@@ -22,7 +22,6 @@ TEST(CloneNodeTest, clone_RmsNorm)
 {
   auto g = loco::make_graph();
   auto node_fc = g->nodes()->create<luci::CircleRmsNorm>();
-  node_fc->fusedActivationFunction(luci::FusedActFunc::NONE);
   node_fc->epsilon(3);
 
   auto gc = loco::make_graph();
@@ -32,17 +31,5 @@ TEST(CloneNodeTest, clone_RmsNorm)
 
   auto cloned_fc = dynamic_cast<luci::CircleRmsNorm *>(cloned);
   ASSERT_NE(nullptr, cloned_fc);
-  ASSERT_EQ(node_fc->fusedActivationFunction(), cloned_fc->fusedActivationFunction());
   ASSERT_EQ(node_fc->epsilon(), cloned_fc->epsilon());
-}
-
-TEST(CloneNodeTest, clone_RmsNorm_fusedact_NEG)
-{
-  auto g = loco::make_graph();
-  auto node_fc = g->nodes()->create<luci::CircleRmsNorm>();
-  node_fc->fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
-
-  auto gc = loco::make_graph();
-  auto cloned = luci::clone_node(node_fc, gc.get());
-  ASSERT_EQ(nullptr, cloned);
 }

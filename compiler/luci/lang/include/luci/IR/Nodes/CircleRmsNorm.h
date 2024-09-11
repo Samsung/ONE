@@ -20,7 +20,6 @@
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
-#include "luci/IR/AttrFusedActFunc.h"
 #include "luci/IR/CircleNodeMixins.h"
 
 namespace luci
@@ -29,8 +28,7 @@ namespace luci
 /**
  * @brief RMS_NORM in Circle
  */
-class CircleRmsNorm final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::RMS_NORM>>,
-                            public CircleNodeMixin<CircleNodeTrait::FusedActFunc>
+class CircleRmsNorm final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::RMS_NORM>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }

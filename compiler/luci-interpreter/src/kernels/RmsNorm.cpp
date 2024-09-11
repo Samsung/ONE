@@ -45,8 +45,7 @@ void RmsNorm::configure()
                          (gamma()->shape().dim(0) == 1));
   LUCI_INTERPRETER_CHECK((beta()->shape().dim(0) == input()->shape().dim(num_dims - 1)) ||
                          (beta()->shape().dim(0) == 1));
-  LUCI_INTERPRETER_CHECK(params().activation == Activation::NONE);
-
+  
   output()->resize(input()->shape());
 }
 

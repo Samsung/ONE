@@ -184,7 +184,6 @@ struct ResizeNearestNeighborParams
 struct RmsNormParams
 {
   float epsilon;
-  Activation activation;
 };
 
 struct ShapeParams

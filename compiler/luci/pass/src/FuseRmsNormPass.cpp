@@ -150,7 +150,6 @@ luci::CircleRmsNorm *FuseRmsNorm::create_rms_norm(loco::Graph *graph)
   float epsilon = _p->_const_epsilon->at<loco::DataType::FLOAT32>(0);
   rms_norm->epsilon(epsilon);
 
-  rms_norm->fusedActivationFunction(_p->_mul_input->fusedActivationFunction());
   rms_norm->name("FusedRmsNorm/" + _p->_mul_input->name());
 
   return rms_norm;

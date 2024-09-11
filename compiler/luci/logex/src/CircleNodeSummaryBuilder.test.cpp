@@ -280,20 +280,6 @@ TEST_F(CircleNodeSummaryBuilderTest, Mul_validate_fused_NEG)
   EXPECT_FALSE(mock_build(&node));
 }
 
-TEST_F(CircleNodeSummaryBuilderTest, RmsNorm_validate)
-{
-  luci::CircleRmsNorm node;
-  node.fusedActivationFunction(luci::FusedActFunc::RELU);
-  EXPECT_TRUE(mock_build(&node));
-}
-
-TEST_F(CircleNodeSummaryBuilderTest, RmsNorm_validate_fused_NEG)
-{
-  luci::CircleRmsNorm node;
-  node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
-  EXPECT_FALSE(mock_build(&node));
-}
-
 TEST_F(CircleNodeSummaryBuilderTest, SVDF_validate)
 {
   luci::CircleSVDF node;

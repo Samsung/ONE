@@ -21,13 +21,9 @@ namespace luci
 
 luci::CircleNode *CloneNode::visit(const luci::CircleRmsNorm *node)
 {
-  if (node->fusedActivationFunction() == luci::FusedActFunc::UNDEFINED)
-    return nullptr;
-
   auto *cloned = _graph->nodes()->create<luci::CircleRmsNorm>();
   if (cloned != nullptr)
   {
-    cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->epsilon(node->epsilon());
   }
   return cloned;

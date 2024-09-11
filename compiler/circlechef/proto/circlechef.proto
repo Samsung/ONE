@@ -101,7 +101,6 @@ message BCQGatherOptions {
 
 message RmsNormOptions {
   optional float epsilon = 1 [default = 1e-06];
-  optional Activation activation = 2 [default = NONE];
 }
 
 message Operation {

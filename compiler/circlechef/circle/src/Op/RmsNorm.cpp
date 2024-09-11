@@ -45,7 +45,6 @@ circlechef::Operation *CircleOpRmsNorm::build(const circle::Operator *op, Circle
   assert(op_params != nullptr);
 
   op_options->set_epsilon(op_params->epsilon());
-  op_options->set_activation(as_circlechef_activation(op_params->fused_activation_function()));
 
   return operation;
 }
