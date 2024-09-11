@@ -126,13 +126,22 @@ TEST(ShapeRuleTest, range_non_const_param)
   ASSERT_EQ(0, shape.dim(0).value());
 }
 
-TEST(ShapeRuleTest, range_nullptr_input_NEG)
+TEST(ShapeRuleTest, range_nullptr_start_NEG)
 {
+  luci::CircleInput limit, delta;
   luci::CircleRange range;
 
+  limit.dtype(loco::DataType::S32);
+  limit.shape({1});
+  limit.shape_status(luci::ShapeStatus::VALID);
+
+  delta.dtype(loco::DataType::S32);
+  delta.shape({1});
+  delta.shape_status(luci::ShapeStatus::VALID);
+
   range.start(nullptr);
-  range.limit(nullptr);
-  range.delta(nullptr);
+  range.limit(&limit);
+  range.delta(&delta);
 
   loco::TensorShape shape;
   luci::sinf::Rule shape_inf_rule;
