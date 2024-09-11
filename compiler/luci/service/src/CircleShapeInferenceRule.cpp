@@ -911,49 +911,6 @@ loco::NodeShape infer_p_relu(const luci::CirclePRelu *node)
   return loco::NodeShape{output_shape};
 }
 
-loco::NodeShape infer_range(const luci::CircleRange *node)
-{
-  loco::TensorShape output_shape;
-  output_shape.rank(1);
-
-  auto start_node = dynamic_cast<luci::CircleConst *>(node->start());
-  auto limit_node = dynamic_cast<luci::CircleConst *>(node->limit());
-  auto delta_node = dynamic_cast<luci::CircleConst *>(node->delta());
-
-  if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
-  {
-    return use_own(node);
-  }
-
-  double start = 0, limit = 0, delta = 0;
-
-#define GET_RANGE_PARAM(DT)         \
-  start = start_node->scalar<DT>(); \
-  limit = limit_node->scalar<DT>(); \
-  delta = delta_node->scalar<DT>();
-
-  switch (start_node->dtype())
-  {
-    case loco::DataType::FLOAT32:
-      GET_RANGE_PARAM(loco::DataType::FLOAT32)
-      break;
-    case loco::DataType::S32:
-      GET_RANGE_PARAM(loco::DataType::S32)
-      break;
-    default:
-      INTERNAL_EXN("Range data type not supported");
-  }
-
-#undef GET_RANGE_PARAM
-
-  if (delta == 0)
-    INTERNAL_EXN("Delta can not be zero");
-
-  output_shape.dim(0) = ceil((limit - start) / delta);
-
-  return loco::NodeShape{output_shape};
-}
-
 loco::NodeShape infer_reshape(const luci::CircleReshape *node)
 {
   LOGGER(l);
@@ -2103,8 +2060,6 @@ public:
   loco::NodeShape visit(const luci::CirclePow *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CirclePRelu *node) final { return infer_p_relu(node); }
-
-  loco::NodeShape visit(const luci::CircleRange *node) final { return infer_range(node); }
 
   loco::NodeShape visit(const luci::CircleRank *) final
   {
