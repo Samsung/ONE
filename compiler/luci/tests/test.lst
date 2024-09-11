@@ -222,6 +222,7 @@ addread(Net_InstanceNorm_001)
 addread(Net_InstanceNorm_002)
 addread(Net_UnpackAdd_001)
 addread(Net_ZeroDim_001)
+addread(Net_RoPE_000)
 
 # from res/CircleRecipes
 addread(BCQFullyConnected_000)
@@ -229,6 +230,7 @@ addread(BCQFullyConnected_001)
 addread(BCQGather_000)
 addread(CircleBatchMatMul_000)
 addread(InstanceNorm_000)
+addread(RoPE_000)
 
 addwrite(Abs_000)
 addwrite(Add_000)
@@ -453,6 +455,7 @@ addwrite(Net_InstanceNorm_001)
 addwrite(Net_InstanceNorm_002)
 addwrite(Net_UnpackAdd_001)
 addwrite(Net_ZeroDim_001)
+addwrite(Net_RoPE_000)
 
 # from res/CircleRecipes
 addwrite(BCQFullyConnected_000)
@@ -460,3 +463,4 @@ addwrite(BCQFullyConnected_001)
 addwrite(BCQGather_000)
 addwrite(CircleBatchMatMul_000)
 addwrite(InstanceNorm_000)
+addwrite(RoPE_000)

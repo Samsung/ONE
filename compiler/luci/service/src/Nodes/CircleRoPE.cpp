@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CHEFS_H__
-#define __CIRCLE_OP_CHEFS_H__
+#include "CircleCloneNode.h"
 
-// In alphabet order
-#include "Op/BatchMatMul.h"
-#include "Op/BCQFullyConnected.h"
-#include "Op/BCQGather.h"
-#include "Op/GRU.h"
-#include "Op/InstanceNorm.h"
-#include "Op/RoPE.h"
-#endif // __CIRCLE_OP_CHEFS_H__
+namespace luci
+{
+
+luci::CircleNode *CloneNode::visit(const luci::CircleRoPE *node)
+{
+  auto *cloned = _graph->nodes()->create<luci::CircleRoPE>();
+  
+  return cloned;
+}
+
+} // namespace luci

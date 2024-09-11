@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CHEFS_H__
-#define __CIRCLE_OP_CHEFS_H__
+#include "RoPE.h"
 
-// In alphabet order
-#include "Op/BatchMatMul.h"
-#include "Op/BCQFullyConnected.h"
-#include "Op/BCQGather.h"
-#include "Op/GRU.h"
-#include "Op/InstanceNorm.h"
-#include "Op/RoPE.h"
-#endif // __CIRCLE_OP_CHEFS_H__
+#include "Convert.h"
+
+flatbuffers::Offset<void> RoPEChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+{
+  auto &operation = (*_operation);
+
+  circle::RoPEOptionsBuilder options_builder{fbb};
+
+  return options_builder.Finish().Union();
+}
+
+std::unique_ptr<OpChef>
+RoPEChefFactory::create(const circlechef::Operation *operation) const
+{
+  return std::unique_ptr<OpChef>{new RoPEChef{operation}};
+}

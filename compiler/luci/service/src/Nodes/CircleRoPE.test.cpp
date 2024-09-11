@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CHEFS_H__
-#define __CIRCLE_OP_CHEFS_H__
+#include "luci/Service/CircleNodeClone.h"
 
-// In alphabet order
-#include "Op/BatchMatMul.h"
-#include "Op/BCQFullyConnected.h"
-#include "Op/BCQGather.h"
-#include "Op/GRU.h"
-#include "Op/InstanceNorm.h"
-#include "Op/RoPE.h"
-#endif // __CIRCLE_OP_CHEFS_H__
+#include <gtest/gtest.h>
+
+TEST(CloneNodeTest, clone_RoPE)
+{
+  auto g = loco::make_graph();
+  auto node_fc = g->nodes()->create<luci::CircleRoPE>();
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_fc, gc.get());
+  ASSERT_NE(nullptr, cloned);
+  ASSERT_EQ(gc.get(), cloned->graph());
+
+  auto cloned_fc = dynamic_cast<luci::CircleRoPE *>(cloned);
+  ASSERT_NE(nullptr, cloned_fc);
+}

@@ -68,6 +68,7 @@
 #include <kernels/ResizeBilinear.h>
 #include <kernels/ResizeNearestNeighbor.h>
 #include <kernels/ReverseV2.h>
+#include <kernels/RoPE.h>
 #include <kernels/Rsqrt.h>
 #include <kernels/Sin.h>
 #include <kernels/Slice.h>
@@ -1092,6 +1093,26 @@ TEST_F(KernelBuilderTest, ReverseV2)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->axes(), axes);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, RoPE)
+{
+  auto *input = createInputNode();
+  auto *sin_table = createInputNode();
+  auto *cos_table = createInputNode();  
+
+  auto *op = createNode<luci::CircleRoPE>();
+  op->input(input);
+  op->sin_table(sin_table);
+  op->cos_table(cos_table);
+
+  auto kernel = buildKernel<kernels::RoPE>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->sin_table(), sin_table);
+  checkTensor(kernel->cos_table(), cos_table);
   checkTensor(kernel->output(), op);
 }
 

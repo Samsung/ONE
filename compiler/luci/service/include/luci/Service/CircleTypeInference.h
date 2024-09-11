@@ -164,6 +164,7 @@ public:
   // loco::DataType visit(const luci::CircleBCQFullyConnected *node) final;
   // loco::DataType visit(const luci::CircleBCQGather *node) final;
   // loco::DataType visit(const luci::CircleInstanceNorm *node) final;
+  // loco::DataType visit(const luci::CircleRoPE *node) final;
 
   // Virtual
   // loco::DataType visit(const luci::CircleInput *node) final;

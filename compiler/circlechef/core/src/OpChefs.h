@@ -23,5 +23,6 @@
 #include "Op/FullyConnected.h"
 #include "Op/GRU.h"
 #include "Op/InstanceNorm.h"
+#include "Op/RoPE.h"
 
 #endif // __OP_CHEFS_H__
