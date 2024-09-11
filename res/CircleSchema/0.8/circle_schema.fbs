@@ -270,6 +270,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  ROPE = -6,
   GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
@@ -619,6 +620,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RoPEOptions = 250,
   GRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
@@ -1480,6 +1482,9 @@ enum ReduceWindowFunction : int {
 
 table ReduceWindowOptions{
   reduce_function: ReduceWindowFunction;
+}
+
+table RoPEOptions {
 }
 
 table GRUOptions {
