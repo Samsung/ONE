@@ -112,7 +112,7 @@ public:
   // loco::TensorShape visit(const luci::CirclePow *node) final;
   // loco::TensorShape visit(const luci::CirclePRelu *node) final;
   loco::TensorShape visit(const luci::CircleQuantize *node) final;
-  // loco::TensorShape visit(const luci::CircleRange *node) final;
+  loco::TensorShape visit(const luci::CircleRange *node) final;
   // loco::TensorShape visit(const luci::CircleRank *node) final;
   // loco::TensorShape visit(const luci::CircleReduceAny *node) final;
   // loco::TensorShape visit(const luci::CircleReduceMax *node) final;
