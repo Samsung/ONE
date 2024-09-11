@@ -156,7 +156,7 @@ OMStatus training_configure_tool::runTrainProcessWithCurConfig(
         case onert_micro::CROSS_ENTROPY_METRICS:
         {
           float cross_entropy_metric = 0.f;
-          train_interpreter.evaluateMetric(onert_micro::CROSS_ENTROPY_METRICS,
+          train_interpreter.evaluateMetric(config, onert_micro::CROSS_ENTROPY_METRICS,
                                            reinterpret_cast<void *>(&cross_entropy_metric),
                                            cur_batch_size);
           cross_entropy_v.push_back(cross_entropy_metric);
@@ -165,7 +165,7 @@ OMStatus training_configure_tool::runTrainProcessWithCurConfig(
         case onert_micro::ACCURACY:
         {
           float accuracy = 0.f;
-          train_interpreter.evaluateMetric(onert_micro::ACCURACY,
+          train_interpreter.evaluateMetric(config, onert_micro::ACCURACY,
                                            reinterpret_cast<void *>(&accuracy), cur_batch_size);
           accuracy_v.push_back(accuracy);
         }
@@ -173,16 +173,16 @@ OMStatus training_configure_tool::runTrainProcessWithCurConfig(
         case onert_micro::MSE_METRICS:
         {
           float mse = 0.f;
-          train_interpreter.evaluateMetric(onert_micro::MSE_METRICS, reinterpret_cast<void *>(&mse),
-                                           cur_batch_size);
+          train_interpreter.evaluateMetric(config, onert_micro::MSE_METRICS,
+                                           reinterpret_cast<void *>(&mse), cur_batch_size);
           mse_v.push_back(mse);
         }
         break;
         case onert_micro::MAE_METRICS:
         {
           float mae = 0.f;
-          train_interpreter.evaluateMetric(onert_micro::MAE_METRICS, reinterpret_cast<void *>(&mae),
-                                           cur_batch_size);
+          train_interpreter.evaluateMetric(config, onert_micro::MAE_METRICS,
+                                           reinterpret_cast<void *>(&mae), cur_batch_size);
           mae_v.push_back(mae);
         }
         break;
