@@ -56,6 +56,7 @@
 #include "luci/Pass/FuseSliceWithTConvPass.h"
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
+#include "luci/Pass/FuseRoPEPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/RemoveDuplicateConstPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
@@ -384,6 +385,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::DecomposeHardSwishPass] = &createPassInstance<luci::DecomposeHardSwishPass>;
   option_to_pass[Options::Algorithm::DecomposeSoftmaxPass] = &createPassInstance<luci::DecomposeSoftmaxPass>;
   option_to_pass[Options::Algorithm::UnrollUnidirSeqLSTM] = &createPassInstance<luci::UnrollUnidirectionalSequenceLSTMPass>;
+  option_to_pass[Options::Algorithm::FuseRoPE] = &createPassInstance<luci::FuseRoPEPass>;
   // NOTE Experimental options; these will be removed someday
   //      Add experimental options here
   option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] = &createPassInstance<luci::XpSepActFromTransposeConvPass>;

@@ -257,6 +257,7 @@ CircleNodeSummaryBuilder::create_builder(const luci::CircleNode *node)
     CIRCLE_NODE(WHERE, CircleWhereSummaryBuilder)
     CIRCLE_NODE(WHILE, CircleWhileSummaryBuilder)
     CIRCLE_NODE(ZEROS_LIKE, CircleZerosLikeSummaryBuilder)
+    CIRCLE_NODE(ROPE, CircleRoPESummaryBuilder)
 
     CIRCLE_NODE(CIRCLEBIDIRECTIONAL_SEQUENCE_LSTM_OUT,
                 CircleBidirectionalSequenceLSTMOutSummaryBuilder)

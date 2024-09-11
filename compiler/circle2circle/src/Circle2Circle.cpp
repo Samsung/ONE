@@ -216,6 +216,7 @@ int entry(int argc, char **argv)
   add_switch(arser, "--disable_validation",
              "This will turn off operator validations. May help input model investigation.");
   add_switch(arser, "--generate_profile_data", "This will turn on profiling data generation.");
+  add_switch(arser, "--fuse_rope", "This will fuse operators to rope operator");
 
   // NOTE Experimental options; these will be removed someday
   //      Add experimental options here
@@ -343,6 +344,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["decompose_softmax"] = Algorithms::DecomposeSoftmaxPass;
   option_str_to_enum["expand_broadcast_const"] = Algorithms::ExpandBroadcastConst;
   option_str_to_enum["unroll_unidirseqlstm"] = Algorithms::UnrollUnidirSeqLSTM;
+  option_str_to_enum["fuse_rope"] = Algorithms::FuseRoPE;  
   // clang-format on
 
   if (arser.get<bool>("--verbose"))

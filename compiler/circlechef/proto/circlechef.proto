@@ -99,6 +99,9 @@ message BCQGatherOptions {
   optional int32 axis = 2 [default = 0];
 }
 
+message RoPEOptions {
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;

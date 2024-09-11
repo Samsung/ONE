@@ -548,6 +548,10 @@ public:
                                              to_circle_actfunc(node->fusedActivationFunction()))
       .Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleRoPE *)
+  {
+    return circle::CreateRoPEOptions(_builder).Union();
+  }
 
 protected:
   flatbuffers::FlatBufferBuilder &_builder;

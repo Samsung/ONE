@@ -142,5 +142,6 @@
 #include "Nodes/CircleWhere.h"
 #include "Nodes/CircleWhile.h"
 #include "Nodes/CircleZerosLike.h"
+#include "Nodes/CircleRoPE.h"
 
 #endif // __LUCI_IMPORT_NODES_H__

@@ -855,6 +855,12 @@ private:
   std::vector<std::string> get_input_names(const luci::CircleNode *);
 };
 
+class CircleRoPESummaryBuilder final : public CircleNodeSummaryBuilder
+{
+private:
+  std::vector<std::string> get_input_names(const luci::CircleNode *);
+};
+
 } // namespace luci
 
 #endif // __LUCI_LOGEX_CIRCLE_NODE_SUMMARY_BUILDERS__

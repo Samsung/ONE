@@ -1195,4 +1195,9 @@ std::vector<std::string> CircleWhileOutSummaryBuilder::get_input_names(const luc
   return {"while"};
 }
 
+std::vector<std::string> CircleRoPESummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "sin_table", "cos_table"};
+}
+
 } // namespace luci

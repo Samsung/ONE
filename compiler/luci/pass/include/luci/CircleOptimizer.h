@@ -51,6 +51,7 @@ public:
       FuseMulWithDiv,
       FuseMulWithFullyConnected,
       FuseTransposeWithMean,
+      FuseRoPE,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,
       ResolveCustomOpMatMul,

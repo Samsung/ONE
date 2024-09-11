@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_OP_CHEFS_H__
-#define __CIRCLE_OP_CHEFS_H__
+#ifndef __LUCI_IMPORT_OP_CIRCLE_ROPE_H__
+#define __LUCI_IMPORT_OP_CIRCLE_ROPE_H__
 
-// In alphabet order
-#include "Op/BatchMatMul.h"
-#include "Op/BCQFullyConnected.h"
-#include "Op/BCQGather.h"
-#include "Op/GRU.h"
-#include "Op/InstanceNorm.h"
-#include "Op/RoPE.h"
-#endif // __CIRCLE_OP_CHEFS_H__
+#include "luci/Import/GraphBuilder.h"
+
+namespace luci
+{
+
+class CircleRoPEGraphBuilder : public GraphBuilder
+{
+public:
+  bool validate(const ValidateArgs &args) const final;
+
+private:
+  CircleNode *build_node(const circle::OperatorT &op, const std::vector<CircleNode *> &inputs,
+                         loco::Graph *graph) const final;
+};
+
+} // namespace luci
+
+#endif // __LUCI_IMPORT_OP_CIRCLE_ROPE_H__
