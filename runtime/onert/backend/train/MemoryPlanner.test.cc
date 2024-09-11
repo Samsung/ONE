@@ -15,7 +15,6 @@
  */
 
 #include <gtest/gtest.h>
-#include <stdexcept>
 
 #include "DisposableTensorIndex.h"
 #include "LayerScopeTensorIndex.h"
