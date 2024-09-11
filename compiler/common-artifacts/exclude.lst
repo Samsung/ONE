@@ -7,6 +7,7 @@
 ## TensorFlowLiteRecipes
 optimize(Add_STR_000) # STRING is not supported
 optimize(Add_STR_001) # STRING is not supported
+optimize(Net_Gather_SparseToDense_AddV2_000) # Constant folding is not generally supported
 
 ## CircleRecipes
 
