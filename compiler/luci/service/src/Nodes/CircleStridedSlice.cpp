@@ -406,7 +406,6 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
   {
     INTERNAL_EXN("StridedSlice strides node are not Constant");
   }
-  // TODO Support cases where the mask attributes are non-zero.
   if (begin_const == nullptr || end_const == nullptr)
   {
     // The dimensions of the output shape are all set to unknown.
