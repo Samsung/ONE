@@ -1107,7 +1107,7 @@ TEST_F(KernelBuilderTest, RmsNorm)
   op->gamma(gamma);
   op->beta(beta);
   op->epsilon(1e-06);
-  
+
   auto kernel = buildKernel<kernels::RmsNorm>(op);
   ASSERT_THAT(kernel, NotNull());
 

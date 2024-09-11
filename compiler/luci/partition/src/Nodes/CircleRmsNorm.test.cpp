@@ -33,10 +33,7 @@ public:
   NodeGraphlet() = default;
 
 public:
-  void init(loco::Graph *g) override
-  {
-    NodeGraphletT<luci::CircleRmsNorm>::init(g);
-  }
+  void init(loco::Graph *g) override { NodeGraphletT<luci::CircleRmsNorm>::init(g); }
 };
 
 class TestNodeGraph : public TestIsOGraph<3>, public NodeGraphlet

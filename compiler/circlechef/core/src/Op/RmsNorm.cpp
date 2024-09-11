@@ -23,10 +23,10 @@ flatbuffers::Offset<void> RmsNormChef::value(flatbuffers::FlatBufferBuilder &fbb
   auto &operation = (*_operation);
 
   assert(operation.has_rms_norm_options());
-  
+
   circle::RmsNormOptionsBuilder options_builder{fbb};
   options_builder.add_epsilon(operation.rms_norm_options().epsilon());
-  
+
   return options_builder.Finish().Union();
 }
 
