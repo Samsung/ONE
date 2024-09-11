@@ -123,7 +123,8 @@ inline void CategoricalCrossEntropy(const Shape &y_pred_shape, const T *y_pred_d
 template <typename T>
 inline void CategoricalCrossEntropyGrad(const Shape &y_pred_shape, const T *y_pred_data,
                                         const Shape &y_true_shape, const T *y_true_data,
-                                        const Shape &grad_shape, T *grad_data)
+                                        const Shape &grad_shape, T *grad_data,
+                                        LossReductionType reduction_type)
 {
   if (y_pred_shape != y_true_shape)
     throw std::runtime_error(
@@ -136,14 +137,31 @@ inline void CategoricalCrossEntropyGrad(const Shape &y_pred_shape, const T *y_pr
   const auto y_true = MapAsMatrixWithLastDimAsRows(y_true_data, y_true_shape);
   auto grad = MapAsMatrixWithLastDimAsRows(grad_data, grad_shape);
 
-  grad = -(y_true.array() / y_pred.array().cwiseMax(log_threshold<T>()));
+  const int32_t batch_size = grad_shape.Dims(0);
+  int32_t reduction_size = 1;
+  switch (reduction_type)
+  {
+    case LossReductionType::SUM_OVER_BATCH_SIZE:
+      reduction_size = batch_size;
+      break;
+    case LossReductionType::SUM:
+      reduction_size = 1;
+      break;
+    default:
+      throw std::runtime_error("Unsupported reduction type");
+  }
+  assert(reduction_size > 0);
+
+  grad = -(y_true.array() / y_pred.array().cwiseMax(log_threshold<T>())) /
+         static_cast<T>(reduction_size);
 }
 
 template <typename T>
 void CategoricalCrossEntropyWithLogits(const Shape &logits_shape, const T *logits_data,
                                        const Shape &y_true_shape, const T *y_true_data,
                                        const Shape &loss_out_shape, T *loss_out_data,
-                                       const Shape &grad_shape, T *grad_data)
+                                       const Shape &grad_shape, T *grad_data,
+                                       LossReductionType reduction_type)
 {
   // TODO Enable sparse shapes
   if (loss_out_shape.DimensionsCount() != 1)
@@ -191,6 +209,21 @@ void CategoricalCrossEntropyWithLogits(const Shape &logits_shape, const T *logit
 
   if (shape_in.Dims(0) > 0)
   {
+    const int32_t batch_size = grad_shape.Dims(0);
+    int32_t reduction_size = 1;
+    switch (reduction_type)
+    {
+      case LossReductionType::SUM_OVER_BATCH_SIZE:
+        reduction_size = batch_size;
+        break;
+      case LossReductionType::SUM:
+        reduction_size = 1;
+        break;
+      default:
+        throw std::runtime_error("Unsupported reduction type");
+    }
+    assert(reduction_size > 0);
+
     const xent_ops::CPUDevice &device = *eigen_support::GetThreadPoolDevice();
     xent_ops::functor::XentFunctor<xent_ops::CPUDevice, T> functor;
     const Eigen::DSizes<Eigen::DenseIndex, 2> shape{shape_in.Dims(0), shape_in.Dims(1)};
@@ -199,7 +232,7 @@ void CategoricalCrossEntropyWithLogits(const Shape &logits_shape, const T *logit
             BCast::ToIndexArray<2>(bcast.y_bcast()),
             logits_in.template shaped<const T, 2>(bcast.x_reshape()),
             labels_in.template shaped<const T, 2>(bcast.y_reshape()), scratch.matrix<T>(),
-            loss_out.vec<T>(), back_out.matrix<T>());
+            loss_out.vec<T>(), back_out.matrix<T>(), static_cast<T>(reduction_size));
   }
 }
 

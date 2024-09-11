@@ -48,7 +48,7 @@ public:
     // because it involes calculations such as log or exp.
     for (int i = 0; i < output.size(); ++i)
     {
-      EXPECT_NEAR(output[i], expected[i], 1e-3f);
+      EXPECT_NEAR(output[i], expected[i], 1e-4f);
     }
   }
 
@@ -66,7 +66,8 @@ public:
   }
 
   void verifyBackward(const std::vector<T> &y_pred, const std::vector<T> &y_true,
-                      const std::vector<T> &expected)
+                      const std::vector<T> &expected,
+                      nnfw::cker::train::LossReductionType reduction)
   {
     assert(y_pred.size() == y_true.size());
 
@@ -74,21 +75,22 @@ public:
     const int N = _in_shape.Dims(0);
     const int D = _in_shape.FlatSize() / N;
 
-    nnfw::cker::train::CategoricalCrossEntropyGrad(_in_shape, y_pred.data(), _in_shape,
-                                                   y_true.data(), _out_shape, output.data());
+    nnfw::cker::train::CategoricalCrossEntropyGrad(
+      _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data(), reduction);
 
     // Don't be panic when it fails after kernel implementation or input is changed.
     // CrossEntropy Gradient formula can be calculated slightly differently depending on the
     // environment because it involes calculations such as log or exp.
     for (int i = 0; i < output.size(); ++i)
     {
-      EXPECT_NEAR(output[i], expected[i], 1e-3f);
+      EXPECT_NEAR(output[i], expected[i], 1e-4f);
     }
   }
 
   void verifyBackwardWithLogits(const std::vector<T> &logits, const std::vector<T> &y_true,
                                 const std::vector<T> &expected_loss_out,
-                                const std::vector<T> &expected_grad)
+                                const std::vector<T> &expected_grad,
+                                nnfw::cker::train::LossReductionType reduction)
   {
     assert(logits.size() == y_true.size());
     assert(logits.size() == expected_grad.size());
@@ -98,21 +100,21 @@ public:
 
     nnfw::cker::train::CategoricalCrossEntropyWithLogits(_in_shape, logits.data(), _in_shape,
                                                          y_true.data(), _out_shape, loss_out.data(),
-                                                         _in_shape, grad.data());
+                                                         _in_shape, grad.data(), reduction);
 
     for (int i = 0; i < loss_out.size(); ++i)
     {
-      EXPECT_NEAR(loss_out[i], expected_loss_out[i], 1e-3f);
+      EXPECT_NEAR(loss_out[i], expected_loss_out[i], 1e-4f);
     }
 
     for (int i = 0; i < grad.size(); ++i)
     {
-      EXPECT_NEAR(grad[i], expected_grad[i], 1e-3f);
+      EXPECT_NEAR(grad[i], expected_grad[i], 1e-4f);
     }
   }
 
   void throwBackward(const std::vector<T> &y_pred, const std::vector<T> &y_true,
-                     const std::vector<T> &expected)
+                     const std::vector<T> &expected, nnfw::cker::train::LossReductionType reduction)
   {
     assert(y_pred.size() == y_true.size());
 
@@ -121,12 +123,13 @@ public:
     const int D = _in_shape.FlatSize() / N;
 
     EXPECT_ANY_THROW(nnfw::cker::train::CategoricalCrossEntropyGrad(
-      _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data()));
+      _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data(), reduction));
   }
 
   void throwBackwardWithLogits(const std::vector<T> &logits, const std::vector<T> &y_true,
                                const std::vector<T> &expected_loss_out,
-                               const std::vector<T> &expected_grad)
+                               const std::vector<T> &expected_grad,
+                               nnfw::cker::train::LossReductionType reduction)
   {
     assert(logits.size() == y_true.size());
     assert(logits.size() == expected_grad.size());
@@ -136,7 +139,7 @@ public:
 
     EXPECT_ANY_THROW(nnfw::cker::train::CategoricalCrossEntropyWithLogits(
       _in_shape, logits.data(), _in_shape, y_true.data(), _out_shape, loss_out.data(), _in_shape,
-      grad.data()));
+      grad.data(), reduction));
   }
 
 private:
@@ -415,7 +418,7 @@ TEST(CKer_Operation, LossCategoricalCrossEntropyGrad)
     std::vector<float> expected = {0, 0, 0, 0, 0, 0, 0, 0, 0, -16.66666667};
 
     LossCCEVerifier<float> verifier(in_shape, grad_shape);
-    verifier.verifyBackward(y_pred, y_true, expected);
+    verifier.verifyBackward(y_pred, y_true, expected, nnfw::cker::train::LossReductionType::SUM);
   }
 
   {
@@ -429,7 +432,21 @@ TEST(CKer_Operation, LossCategoricalCrossEntropyGrad)
                                    0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     LossCCEVerifier<float> verifier(in_shape, grad_shape);
-    verifier.verifyBackward(y_pred, y_true, expected);
+    verifier.verifyBackward(y_pred, y_true, expected, nnfw::cker::train::LossReductionType::SUM);
+  }
+
+  {
+    nnfw::cker::Shape in_shape{2, 10};
+    nnfw::cker::Shape grad_shape{2, 10};
+    std::vector<float> y_pred = {0.01, 0.03, 0.05, 0.35,  0.04,  0.05,  0.28,  0.09,  0.04,  0.06,
+                                 0.89, 0.03, 0.04, 0.005, 0.023, 0.001, 0.004, 0.005, 0.001, 0.001};
+    std::vector<float> y_true = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<float> expected = {0, 0, 0, 0, 0, 0, 0, 0, 0, -8.333333, -0.561797738,
+                                   0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+    LossCCEVerifier<float> verifier(in_shape, grad_shape);
+    verifier.verifyBackward(y_pred, y_true, expected,
+                            nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE);
   }
 
   {
@@ -442,7 +459,8 @@ TEST(CKer_Operation, LossCategoricalCrossEntropyGrad)
     std::vector<float> expected_grad = {0, 0, 0, 0.9991, 0, 0, 0.0009, 0, 0, -1};
 
     LossCCEVerifier<float> verifier(in_shape, out_shape);
-    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad);
+    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad,
+                                      nnfw::cker::train::LossReductionType::SUM);
   }
 
   {
@@ -456,7 +474,23 @@ TEST(CKer_Operation, LossCategoricalCrossEntropyGrad)
                                         -1, 0, 0, 0,      0, 0, 0,      0, 0, 1};
 
     LossCCEVerifier<float> verifier(in_shape, out_shape);
-    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad);
+    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad,
+                                      nnfw::cker::train::LossReductionType::SUM);
+  }
+
+  {
+    nnfw::cker::Shape in_shape{2, 10};
+    nnfw::cker::Shape out_shape{2};
+
+    std::vector<float> logits = {1, 3, 5, 35, 4, 5, 28, 9, 4, 6, 89, 3, 4, 5, 23, 1, 4, 5, 1, 101};
+    std::vector<float> y_true = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    std::vector<float> expected_loss_out = {29.0009, 12};
+    std::vector<float> expected_grad = {0,    0, 0, 0.4995, 0, 0, 0.0005, 0, 0, -0.5,
+                                        -0.5, 0, 0, 0,      0, 0, 0,      0, 0, 0.5};
+
+    LossCCEVerifier<float> verifier(in_shape, out_shape);
+    verifier.verifyBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad,
+                                      nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE);
   }
 }
 
@@ -472,7 +506,7 @@ TEST(CKer_Operation, neg_LossCategoricalCrossEntropyGrad)
     std::vector<float> expected = {0, 0, 0, 0, 0, 0, 0, 0, 0, -16.66666667};
 
     LossCCEVerifier<float> verifier(in_shape, grad_shape);
-    verifier.throwBackward(y_pred, y_true, expected);
+    verifier.throwBackward(y_pred, y_true, expected, nnfw::cker::train::LossReductionType::SUM);
   }
 }
 
@@ -489,6 +523,7 @@ TEST(CKer_Operation, neg_LossCategoricalCrossEntropyWithLogits)
     std::vector<float> expected_grad = {0, 0, 0, 0.9991, 0, 0, 0.0009, 0, 0, -1};
 
     LossCCEVerifier<float> verifier(in_shape, out_shape);
-    verifier.throwBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad);
+    verifier.throwBackwardWithLogits(logits, y_true, expected_loss_out, expected_grad,
+                                     nnfw::cker::train::LossReductionType::SUM);
   }
 }
