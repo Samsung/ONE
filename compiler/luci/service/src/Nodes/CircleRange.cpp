@@ -48,6 +48,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleRange *node)
     shape.rank(node->rank());
     for (uint32_t r = 0; r < node->rank(); ++r)
     {
+      // TODO remove this copy from `use_own(node);`
       // Shape inference rules in this file did not consider unknown dimension.
       // If some node has unknown dimension, 0 is inserted and wrong shape
       // inference was done as a result.
