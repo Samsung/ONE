@@ -39,11 +39,11 @@ def _channelwiseMinMax(tensors: Tensors, channel: int) -> Tuple[List[float], Lis
     return channel_wise_min, channel_wise_max
 
 
-def getActivationMax(tensor: np.ndarray) -> float:
+def getActivationMax(tensor: np.ndarray) -> np.ndarray:
     """
     Get max values of activation.
     :param tensors: a list of numpy array (each is a tensor)
-    :return: a list of scale (float) for each channel
+    :return: 1D array of max absolute values for each channel
     """
     # max along with last dimension
     return np.abs(tensor.reshape(-1, tensor.shape[-1])).max(axis=0)
