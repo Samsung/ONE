@@ -61,13 +61,13 @@ DisposableMemoryManager::DisposableMemoryManager() : _mem_planner{createMemoryPl
 basic::IMemoryPlanner<DisposableTensorIndex> *DisposableMemoryManager::createMemoryPlanner()
 {
   auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-  return MemoryPlannerFactory::get().create(planner_id);
+  return MemoryPlannerFactory<DisposableTensorIndex>::get().create(planner_id);
 }
 
 basic::IMemoryPlanner<DisposableTensorIndex> *
 DisposableMemoryManager::createMemoryPlanner(const std::string planner_id)
 {
-  return MemoryPlannerFactory::get().create(planner_id);
+  return MemoryPlannerFactory<DisposableTensorIndex>::get().create(planner_id);
 }
 
 void DisposableMemoryManager::claimPlan(const DisposableTensorIndex &ind, uint32_t size)
