@@ -16,6 +16,8 @@
 
 #include "luci/Service/CircleNodeClone.h"
 
+#include "luci/Service/CircleShapeInference.h"
+
 #include <gtest/gtest.h>
 
 TEST(CloneNodeTest, clone_FullyConnected)
@@ -58,4 +60,301 @@ TEST(CloneNodeTest, clone_FullyConnected_wf_NEG)
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_fc, gc.get());
   ASSERT_EQ(nullptr, cloned);
+}
+
+TEST(ShapeRuleTest, fully_connected_dynamic_shape_keep_dims)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 10, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(1).unset();
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&fully_connected, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_FALSE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(0, shape.dim(1).value());
+  ASSERT_EQ(15, shape.dim(2).value());
+  ASSERT_EQ(30, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, fully_connected_last_dim_dynamic_keep_dims)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 10, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(3).unset();
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&fully_connected, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(10, shape.dim(1).value());
+  ASSERT_EQ(15, shape.dim(2).value());
+  ASSERT_EQ(30, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, fully_connected_dynamic_shape_no_keep_dims)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 10, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(2).unset();
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(false);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&fully_connected, shape));
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_FALSE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+
+  ASSERT_EQ(0, shape.dim(0).value());
+  ASSERT_EQ(30, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, fully_connected_last_dim_dynamic_no_keep_dims)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 10, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(3).unset();
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(false);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&fully_connected, shape));
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+
+  ASSERT_EQ(150, shape.dim(0).value());
+  ASSERT_EQ(30, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, fully_connected_all_dim_dynamic_no_keep_dims)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 10, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+  input.dim(0).unset();
+  input.dim(1).unset();
+  input.dim(2).unset();
+  input.dim(3).unset();
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(false);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&fully_connected, shape));
+  ASSERT_EQ(2, shape.rank());
+  ASSERT_FALSE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+
+  ASSERT_EQ(0, shape.dim(0).value());
+  ASSERT_EQ(30, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, fully_connected_nullptr_weights_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 10, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(nullptr);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&fully_connected, shape));
+}
+
+TEST(ShapeRuleTest, fully_connected_nullptr_input_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(nullptr);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&fully_connected, shape));
+}
+
+TEST(ShapeRuleTest, fully_connected_nullptr_bias_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(nullptr);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&fully_connected, shape));
+}
+
+TEST(ShapeRuleTest, fully_connected_undefined_bias_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape({1, 15, 20});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::UNDEFINED);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_FALSE(shape_inf_rule.infer(&fully_connected, shape));
+}
+
+TEST(ShapeRuleTest, fully_connected_undefined_input_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleConst weights;
+  luci::CircleConst bias;
+  luci::CircleFullyConnected fully_connected;
+
+  input.shape_status(luci::ShapeStatus::UNDEFINED);
+
+  weights.shape({30, 20});
+  weights.shape_status(luci::ShapeStatus::VALID);
+
+  bias.shape_status(luci::ShapeStatus::VALID);
+
+  fully_connected.input(&input);
+  fully_connected.weights(&weights);
+  fully_connected.bias(&bias);
+  fully_connected.keep_num_dims(true);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_FALSE(shape_inf_rule.infer(&fully_connected, shape));
 }
