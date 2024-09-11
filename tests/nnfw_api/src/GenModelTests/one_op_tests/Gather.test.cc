@@ -27,11 +27,11 @@ TEST_F(GenModelTest, OneOp_Gather_Q4_0)
   {
     uint32_t sign_bit = i % 2;
     uint32_t multiple = i / 32 + 1;
-    uint32_t base = (i / 2) % 8;
+    uint32_t base = (i / 2) % 8 + 1;
     params[i] = base * (0.01 * multiple) * (sign_bit ? -1 : 1);
   }
 
-  auto input_vector = castBuffer(params, circle::TensorType::TensorType_GGML_Q4_0);
+  auto input_vector = quantBuffer(params, circle::TensorType::TensorType_GGML_Q4_0);
   auto input_buf = cgen.addBuffer(input_vector);
   int input = cgen.addTensor({{4, 32}, circle::TensorType::TensorType_GGML_Q4_0, input_buf});
   int indice = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_INT32});
@@ -45,8 +45,8 @@ TEST_F(GenModelTest, OneOp_Gather_Q4_0)
   TestCaseData tc;
   tc.addInput<int32_t>({2});
   tc.addOutput<float>({0.03,  -0.03, 0.06,  -0.06, 0.09,  -0.09, 0.12,  -0.12, 0.15,  -0.15, 0.18,
-                       -0.18, 0.21,  -0.21, 0.24,  -0.24, 0.27,  -0.27, 0.30,  -0.30, 0.33,  -0.33,
-                       0.36,  -0.36, 0.39,  -0.39, 0.42,  -0.42, 0.45,  -0.45, 0.48,  -0.48});
+                       -0.18, 0.21,  -0.21, 0.24,  -0.24, 0.03,  -0.03, 0.06,  -0.06, 0.09,  -0.09,
+                       0.12,  -0.12, 0.15,  -0.15, 0.18,  -0.18, 0.21,  -0.21, 0.24,  -0.24});
   _context->addTestCase(tc);
   _context->setBackends({"cpu"});
 
