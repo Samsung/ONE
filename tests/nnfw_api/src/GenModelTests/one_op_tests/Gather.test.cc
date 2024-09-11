@@ -27,7 +27,9 @@ TEST_F(GenModelTest, OneOp_Gather_Q4_0)
   {
     uint32_t sign_bit = i % 2;
     uint32_t multiple = i / 32 + 1;
-    uint32_t base = (i / 2) % 8 + 1;
+    uint32_t base = (i / 2) % 8;
+    if (sign_bit == 0)
+      base += 1;
     params[i] = base * (0.01 * multiple) * (sign_bit ? -1 : 1);
   }
 
@@ -44,9 +46,7 @@ TEST_F(GenModelTest, OneOp_Gather_Q4_0)
 
   TestCaseData tc;
   tc.addInput<int32_t>({2});
-  tc.addOutput<float>({0.03,  -0.03, 0.06,  -0.06, 0.09,  -0.09, 0.12,  -0.12, 0.15,  -0.15, 0.18,
-                       -0.18, 0.21,  -0.21, 0.24,  -0.24, 0.03,  -0.03, 0.06,  -0.06, 0.09,  -0.09,
-                       0.12,  -0.12, 0.15,  -0.15, 0.18,  -0.18, 0.21,  -0.21, 0.24,  -0.24});
+  tc.addOutput<float>(std::vector<float>{params.begin() + 64, params.begin() + 96});
   _context->addTestCase(tc);
   _context->setBackends({"cpu"});
 
