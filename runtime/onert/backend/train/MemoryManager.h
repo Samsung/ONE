@@ -67,6 +67,8 @@ private:
   std::shared_ptr<basic::Allocator> _mem_alloc;
 };
 
+// TODO: Add LayerScopeMemoryManager using MemoryPlannerFactory<LayerScopeTensorIndex>
+
 } // namespace train
 } // namespace backend
 } // namespace onert
