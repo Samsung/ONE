@@ -163,7 +163,7 @@ void CategoricalCrossEntropyWithLogits(const Shape &logits_shape, const T *logit
                                        const Shape &grad_shape, T *grad_data,
                                        LossReductionType reduction_type)
 {
-  // TODO Enable sparse shapes
+  // TODO Enable broadcast shapes
   if (loss_out_shape.DimensionsCount() != 1)
     throw std::runtime_error(
       "cker::CategoricalCrossEntropyWithLogits: loss output dimension count should be 1");
