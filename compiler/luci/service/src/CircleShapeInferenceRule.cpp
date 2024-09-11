@@ -636,47 +636,6 @@ loco::NodeShape infer_fill(const luci::CircleFill *node)
   return loco::NodeShape{shape};
 }
 
-loco::NodeShape infer_fully_connected(const luci::CircleFullyConnected *node)
-{
-  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
-  auto weights_shape = luci::shape_get(node->weights()).as<loco::TensorShape>();
-
-  loco::TensorShape out_shape;
-
-  // NOTE Some recipes in some repositories are using rank 4 input for FullyConnected.
-  //      Until they are all fixed, disable following assert.
-  // TODO Enable following assert after related fixes are applied
-  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L194
-  // LUCI_ASSERT(input_shape.rank() == 2 || input_shape.rank() == 3,
-  //             "Input rank of FullyConnected should be 2 or 3");
-
-  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L225
-  LUCI_ASSERT(weights_shape.rank() == 2, "Weights of FullyConnected should be 2");
-
-  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
-  if (node->keep_num_dims())
-  {
-    out_shape.rank(input_shape.rank());
-    for (uint32_t i = 0; i < input_shape.rank(); ++i)
-      out_shape.dim(i) = input_shape.dim(i);
-    out_shape.dim(out_shape.rank() - 1) = weights_shape.dim(0);
-  }
-  else
-  {
-    uint32_t input_size = 1;
-    for (uint32_t i = 0; i < input_shape.rank(); i++)
-    {
-      input_size = input_size * input_shape.dim(i).value();
-    }
-    const uint32_t batch_size = input_size / weights_shape.dim(1).value();
-    out_shape.rank(2);
-    out_shape.dim(0) = batch_size;
-    out_shape.dim(1) = weights_shape.dim(0);
-  }
-
-  return loco::NodeShape{out_shape};
-}
-
 loco::NodeShape infer_gather(const luci::CircleGather *node)
 {
   loco::TensorShape output_shape;
@@ -2028,11 +1987,6 @@ public:
   loco::NodeShape visit(const luci::CircleFloorDiv *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CircleFloorMod *node) final { return broadcast_xy(node); }
-
-  loco::NodeShape visit(const luci::CircleFullyConnected *node) final
-  {
-    return infer_fully_connected(node);
-  }
 
   loco::NodeShape visit(const luci::CircleGather *node) final { return infer_gather(node); }
 
