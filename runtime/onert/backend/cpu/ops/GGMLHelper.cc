@@ -59,7 +59,8 @@ struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)
   }
 
   res.nb[0] = ggml_type_size(res.type);
-  for (int i = 1; i < GGML_MAX_DIMS; ++i)
+  res.nb[1] = res.nb[0] * (res.ne[0] / ggml_blck_size(res.type));
+  for (int i = 2; i < GGML_MAX_DIMS; ++i)
     res.nb[i] = res.nb[i - 1] * res.ne[i - 1];
 
   res.op = GGML_OP_NONE;

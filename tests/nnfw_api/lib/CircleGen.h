@@ -176,6 +176,7 @@ public:
   uint32_t addOperatorFullyConnected(const OperatorParams &params,
                                      circle::FullyConnectedOptionsWeightsFormat weights_format =
                                        circle::FullyConnectedOptionsWeightsFormat_DEFAULT);
+  uint32_t addOperatorGather(const OperatorParams &params, int axis = 0, int batchdim = 0);
   uint32_t addOperatorGreater(const OperatorParams &params);
   uint32_t addOperatorGreaterEqual(const OperatorParams &params);
   uint32_t addOperatorIf(const OperatorParams &params, uint32_t then_subg, uint32_t else_subg);

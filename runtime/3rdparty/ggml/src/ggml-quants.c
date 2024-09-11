@@ -1636,7 +1636,6 @@ void dequantize_row_q8_0(const block_q8_0 * restrict x, float * restrict y, int6
 //
 // ===================== Helper functions
 //
-#if 0 // [FIX] disable
 static inline int nearest_int(float fval) {
     assert(fval <= 4194303.f);
     float val = fval + 12582912.f;
@@ -1713,6 +1712,7 @@ static float make_qx_quants(int n, int nmax, const float * restrict x, int8_t * 
     return scale;
 }
 
+#if 0 // [FIX] disable
 static float make_q3_quants(int n, int nmax, const float * restrict x, int8_t * restrict L, bool do_rmse) {
     float max = 0;
     float amax = 0;
@@ -3111,6 +3111,7 @@ size_t quantize_q6_K(const float * restrict src, void * restrict dst, int64_t nr
     }
     return nrow * row_size;
 }
+#endif // [FIX] end
 
 static void quantize_row_q4_0_impl(const float * restrict x, block_q4_0 * restrict y, int64_t n_per_row, const float * quant_weights) {
     static_assert(QK4_0 == 32, "QK4_0 must be 32");
@@ -3155,6 +3156,7 @@ size_t quantize_q4_0(const float * restrict src, void * restrict dst, int64_t nr
     return nrow * row_size;
 }
 
+#if 0 // [FIX] disable
 static void quantize_row_q4_1_impl(const float * restrict x, block_q4_1 * restrict y, int64_t n_per_row, const float * quant_weights) {
     static_assert(QK4_1 == 32, "QK4_1 must be 32");
 
@@ -3306,6 +3308,7 @@ size_t quantize_q5_1(const float * restrict src, void * restrict dst, int64_t nr
     }
     return nrow * row_size;
 }
+#endif // [FIX] end
 
 size_t quantize_q8_0(const float * restrict src, void * restrict dst, int64_t nrow, int64_t n_per_row, const float * quant_weights) {
     (void)quant_weights; // not used
@@ -3316,6 +3319,7 @@ size_t quantize_q8_0(const float * restrict src, void * restrict dst, int64_t nr
 
 // ====================== "True" 2-bit (de)-quantization
 
+#if 0 // [FIX] disable
 void dequantize_row_iq2_xxs(const block_iq2_xxs * restrict x, float * restrict y, int64_t k) {
     assert(k % QK_K == 0);
     const int64_t nb = k / QK_K;

@@ -645,7 +645,6 @@ static void ggml_vec_dot_f16(int n, float * restrict s, size_t bs, ggml_fp16_t *
 static void ggml_vec_dot_bf16(int n, float * restrict s, size_t bs, ggml_bf16_t * restrict x, size_t bx, ggml_bf16_t * restrict y, size_t by, int nrc);
 
 static const ggml_type_traits_t type_traits[GGML_TYPE_COUNT] = {
-#if 0 // [FIX] disable
     [GGML_TYPE_I8] = {
         .type_name                = "i8",
         .blck_size                = 1,
@@ -677,7 +676,6 @@ static const ggml_type_traits_t type_traits[GGML_TYPE_COUNT] = {
         .is_quantized             = false,
         .nrows                    = 1,
     },
-#endif // [FIX] end
     [GGML_TYPE_F32] = {
         .type_name                = "f32",
         .blck_size                = 1,
@@ -20670,6 +20668,7 @@ void ggml_quantize_free(void) {
 
     ggml_critical_section_end();
 }
+#endif // [FIX] end
 
 bool ggml_quantize_requires_imatrix(enum ggml_type type) {
     return
@@ -20696,7 +20695,9 @@ size_t ggml_quantize_chunk(
     GGML_ASSERT(start % type_traits[type].blck_size == 0);
     GGML_ASSERT(start % n_per_row == 0);
 
+#if 0 // [FIX] disable
     ggml_quantize_init(type); // this is noop if already initialized
+#endif // [FIX] end
 
     const size_t start_row = start / n_per_row;
     const size_t row_size  = ggml_row_size(type, n_per_row);
@@ -20705,10 +20706,13 @@ size_t ggml_quantize_chunk(
 
     switch (type) {
         case GGML_TYPE_Q4_0:    result = quantize_q4_0(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
+#if 0 // [FIX] disable
         case GGML_TYPE_Q4_1:    result = quantize_q4_1(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
         case GGML_TYPE_Q5_0:    result = quantize_q5_0(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
         case GGML_TYPE_Q5_1:    result = quantize_q5_1(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
+#endif // [FIX] end
         case GGML_TYPE_Q8_0:    result = quantize_q8_0(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
+#if 0 // [FIX] disable
         case GGML_TYPE_Q2_K:    result = quantize_q2_K(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
         case GGML_TYPE_Q3_K:    result = quantize_q3_K(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
         case GGML_TYPE_Q4_K:    result = quantize_q4_K(src + start, (char *) dst + start_row * row_size, nrows, n_per_row, imatrix); break;
@@ -20744,6 +20748,7 @@ size_t ggml_quantize_chunk(
                 result = n * elemsize;
                 memcpy((uint8_t *)dst + start * elemsize, src + start, result);
             } break;
+#endif // [FIX] end
         default:
             assert(false);
     }
@@ -20752,6 +20757,7 @@ size_t ggml_quantize_chunk(
 
     return result;
 }
+#if 0 // [FIX] disable
 
 ////////////////////////////////////////////////////////////////////////////////
 
