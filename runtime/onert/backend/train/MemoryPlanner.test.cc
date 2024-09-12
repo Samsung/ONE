@@ -92,29 +92,6 @@ private:
 TEST(BumpPlanner, disposable_claim_test)
 {
   PlannerVerifier<BumpPlanner, DisposableTensorIndex> p;
-  /*
-  TODO - remove commented code
-  BumpPlanner<DisposableTensorIndex> planner;
-
-  auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
-                          uint32_t expected_offset) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.claim(mem_idx, size);
-    auto mem_blk = planner.memory_plans()[mem_idx];
-    ASSERT_EQ(mem_blk.offset, expected_offset);
-    ASSERT_EQ(mem_blk.size, size);
-  };
-
-  auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.release(mem_idx);
-  };
-
-  auto capacity = [&planner](uint32_t expected_capacity) {
-    auto actual_capacity = planner.capacity();
-    ASSERT_EQ(actual_capacity, expected_capacity);
-  };
-  */
 
   ASSERT_NO_FATAL_FAILURE({
     p.claim(0, 0, 10, 0);
@@ -128,29 +105,6 @@ TEST(BumpPlanner, disposable_claim_test)
 TEST(FirstFitPlanner, disposable_claim_release_test)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
-  /*
-  TODO - remove commented code
-  FirstFitPlanner<DisposableTensorIndex> planner;
-
-  auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
-                          uint32_t expected_offset) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.claim(mem_idx, size);
-    auto mem_blk = planner.memory_plans()[mem_idx];
-    ASSERT_EQ(mem_blk.offset, expected_offset);
-    ASSERT_EQ(mem_blk.size, size);
-  };
-
-  auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.release(mem_idx);
-  };
-
-  auto capacity = [&planner](uint32_t expected_capacity) {
-    auto actual_capacity = planner.capacity();
-    ASSERT_EQ(actual_capacity, expected_capacity);
-  };
-  */
 
   ASSERT_NO_FATAL_FAILURE({
     // 0 CLAIM - 10
@@ -227,23 +181,6 @@ TEST(FirstFitPlanner, disposable_claim_release_test)
 TEST(FirstFitPlanner, disposable_neg_release_non_existing_index)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
-  /*
-  FirstFitPlanner<DisposableTensorIndex> planner;
-
-  auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
-                          uint32_t expected_offset) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.claim(mem_idx, size);
-    auto mem_blk = planner.memory_plans()[mem_idx];
-    ASSERT_EQ(mem_blk.offset, expected_offset);
-    ASSERT_EQ(mem_blk.size, size);
-  };
-
-  auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.release(mem_idx);
-  };
-  */
 
   auto on_only_debug_mode = [&p]() {
     EXPECT_DEATH({ p.release(0, 1); },
@@ -269,23 +206,7 @@ TEST(FirstFitPlanner, disposable_neg_release_non_existing_index)
 TEST(FirstFitPlanner, disposable_neg_release_twice)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
-  /*
-  FirstFitPlanner<DisposableTensorIndex> planner;
 
-  auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size,
-                          uint32_t expected_offset) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.claim(mem_idx, size);
-    auto mem_blk = planner.memory_plans()[mem_idx];
-    ASSERT_EQ(mem_blk.offset, expected_offset);
-    ASSERT_EQ(mem_blk.size, size);
-  };
-
-  auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.release(mem_idx);
-  };
-  */
   auto on_only_debug_mode = [&p]() {
     EXPECT_EXIT({ p.release(0, 0); }, ::testing::KilledBySignal(SIGABRT),
                 "Cannot release for given index. It has been not claimed or released already.");
@@ -313,32 +234,6 @@ TEST(FirstFitPlanner, disposable_neg_release_twice)
 TEST(WICPlanner, disposable_claim_release_test)
 {
   PlannerVerifier<WICPlanner, DisposableTensorIndex> p;
-  /*
-  WICPlanner<DisposableTensorIndex> planner;
-
-  auto claim = [&planner](uint32_t op_index, uint32_t operand_index, size_t size) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.claim(mem_idx, size);
-  };
-
-  auto release = [&planner](uint32_t op_index, uint32_t operand_index) {
-    DisposableTensorIndex mem_idx{OperationIndex{op_index}, OperandIndex{operand_index}};
-    planner.release(mem_idx);
-  };
-
-  auto verify = [&planner](uint32_t op_index, uint32_t operand_index, uint32_t size,
-                           uint32_t expected_offset) {
-    DisposableTensorIndex mem_idx(OperationIndex{op_index}, OperandIndex{operand_index});
-    auto mem_blk = planner.memory_plans()[mem_idx];
-    ASSERT_EQ(mem_blk.offset, expected_offset);
-    ASSERT_EQ(mem_blk.size, size);
-  };
-
-  auto capacity = [&planner](uint32_t expected_capacity) {
-    auto actual_capacity = planner.capacity();
-    ASSERT_EQ(actual_capacity, expected_capacity);
-  };
-  */
 
   ASSERT_NO_FATAL_FAILURE({
     p.claim(0, 0, 20);
