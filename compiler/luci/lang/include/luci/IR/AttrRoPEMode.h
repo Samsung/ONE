@@ -24,8 +24,8 @@ enum class RoPEMode
 {
   UNDEFINED, // This is not defined by Circle. This was added to prevent programming error.
 
-  NEOX,
-  GPT,
+  GPT_NEOX,
+  GPT_J,
 };
 
 } // namespace luci

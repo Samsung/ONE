@@ -60,7 +60,7 @@ void RoPE::evalFloat() const
   const float *cos_table_data = getTensorData<float>(cos_table());
   float *output_data = getTensorData<float>(output());
 
-  if (params().mode == RoPEMode::NEOX)
+  if (params().mode == RoPEMode::GPT_NEOX)
   {
     const int32_t i0_n = input_shape.Dims(0);
     const int32_t multihead_n = input_shape.Dims(1);

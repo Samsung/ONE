@@ -22,7 +22,7 @@ TEST(CloneNodeTest, clone_RoPE)
 {
   auto g = loco::make_graph();
   auto node_rp = g->nodes()->create<luci::CircleRoPE>();
-  node_rp->mode(luci::RoPEMode::NEOX);
+  node_rp->mode(luci::RoPEMode::GPT_NEOX);
 
   auto gc = loco::make_graph();
   auto cloned = luci::clone_node(node_rp, gc.get());

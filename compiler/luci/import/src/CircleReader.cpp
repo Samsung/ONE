@@ -126,6 +126,18 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
   return MirrorPadMode::UNDEFINED;
 }
 
+RoPEMode luci_rope_mode(const circle::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case circle::RoPEMode::RoPEMode_GPT_NEOX:
+      return RoPEMode::GPT_NEOX;
+    case circle::RoPEMode::RoPEMode_GPT_J:
+      return RoPEMode::GPT_J;
+  }
+  assert(false);
+  return RoPEMode::UNDEFINED;
+}
 luci::CircleFullyConnected::WeightsFormat
 luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format)
 {

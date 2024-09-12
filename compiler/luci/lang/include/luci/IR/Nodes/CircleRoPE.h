@@ -47,7 +47,7 @@ public:
   void mode(RoPEMode mode) { _mode = mode; }
 
 private:
-  RoPEMode _mode{RoPEMode::NEOX};
+  RoPEMode _mode{RoPEMode::GPT_NEOX};
 };
 
 } // namespace luci

@@ -269,7 +269,7 @@ TEST_F(CircleNodeSummaryBuilderTest, MirrorPad_validate_mirror_padding_NEG)
 TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate)
 {
   luci::CircleRoPE node;
-  node.mode(luci::RoPEMode::NEOX);
+  node.mode(luci::RoPEMode::GPT_NEOX);
   EXPECT_TRUE(mock_build(&node));
 }
 

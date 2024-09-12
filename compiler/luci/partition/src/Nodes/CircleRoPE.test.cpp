@@ -37,7 +37,7 @@ public:
   {
     NodeGraphletT<luci::CircleRoPE>::init(g);
 
-    _node->mode(luci::RoPEMode::NEOX);
+    _node->mode(luci::RoPEMode::GPT_NEOX);
   }
 };
 

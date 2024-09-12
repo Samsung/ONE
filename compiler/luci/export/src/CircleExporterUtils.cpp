@@ -99,10 +99,10 @@ circle::RoPEMode to_circle_rope(luci::RoPEMode mode)
 {
   switch (mode)
   {
-    case luci::RoPEMode::NEOX:
-      return circle::RoPEMode::RoPEMode_NEOX;
-    case luci::RoPEMode::GPT:
-      return circle::RoPEMode::RoPEMode_GPT;
+    case luci::RoPEMode::GPT_NEOX:
+      return circle::RoPEMode::RoPEMode_GPT_NEOX;
+    case luci::RoPEMode::GPT_J:
+      return circle::RoPEMode::RoPEMode_GPT_J;
     default:
       INTERNAL_EXN_V("trying to convert unsupported luci::RoPEMode", oops::to_uint32(mode));
   }

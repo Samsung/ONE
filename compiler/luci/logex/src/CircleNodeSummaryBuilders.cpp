@@ -139,10 +139,10 @@ std::string to_str(luci::RoPEMode mode)
 {
   switch (mode)
   {
-    case luci::RoPEMode::NEOX:
-      return "NEOX";
-    case luci::RoPEMode::GPT:
-      return "GPT";
+    case luci::RoPEMode::GPT_NEOX:
+      return "GPT_NEOX";
+    case luci::RoPEMode::GPT_J:
+      return "GPT_J";
     default:
       return "Error";
   }

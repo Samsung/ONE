@@ -197,7 +197,7 @@ luci::CircleRoPE *FuseRoPE::create_rope(loco::Graph *graph)
   rope->sin_table(_p.sin_table);
 
   if(_p.mode() == RoPEPattern::PatternMode::Mode_NEOX)
-    rope->mode(luci::RoPEMode::NEOX);
+    rope->mode(luci::RoPEMode::GPT_NEOX);
 
   rope->name(_p.add_ofm->name() + "_rope");
   return rope;
