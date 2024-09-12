@@ -89,7 +89,7 @@ TEST_F(RoPETest, Unsupported_dims_NEG)
   Tensor cos_table = makeInputTensor<DataType::FLOAT32>(cos_shape, cos_data, _memory_manager.get());
 
   RoPEParams params{};
-  params.mode = RoPEMode::NEOX;
+  params.mode = RoPEMode::GPT;
 
   RoPE kernel(&input_tensor, &sin_table, &cos_table, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
