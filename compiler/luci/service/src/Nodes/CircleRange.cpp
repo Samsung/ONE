@@ -84,6 +84,14 @@ loco::TensorShape Algorithm::visit(const luci::CircleRange *node)
   if (delta == 0)
     INTERNAL_EXN("Delta can not be zero");
 
+  /*
+   * Pre-condition
+   *    'limit - start' and 'delta' have the same sign.
+   *       c1. '(limit - start) >= 0' -> 'delta > 0'
+   *       c2. '(limit - start) < 0' -> 'delta < 0'
+   * https://github.com/tensorflow/tensorflow/blob/da82fa9/tensorflow/lite/kernels/range.cc#L49-L50
+   */
+  assert((start >= limit && delta < 0) || (start <= limit && delta > 0));
   output_shape.dim(0) = ceil((limit - start) / delta);
 
   return output_shape;
