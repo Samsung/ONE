@@ -43,6 +43,21 @@ def _get_attribute_value(attr):
     return helper.get_attribute_value(attr)
 
 
+def _gather_value_infos(onnx_model):
+    vis = dict()
+
+    for mod_input in onnx_model.graph.input:
+        vis[mod_input.name] = mod_input.type
+
+    for mod_output in onnx_model.graph.output:
+        vis[mod_output.name] = mod_output.type
+
+    for vi in onnx_model.graph.value_info:
+        vis[vi.name] = vi.type
+
+    return vis
+
+
 def _dump_header(onnx_model):
     print("[General] -----------------------------")
     print("IR version =", onnx_model.ir_version)
@@ -77,6 +92,8 @@ def _dump_initializers(onnx_model):
 
 def _dump_nodes(onnx_model):
     print("[Nodes] -------------------------------")
+
+    vis = _gather_value_infos(onnx_model)
 
     for node in onnx_model.graph.node:
         print('{0}("{1}")'.format(node.op_type, node.name))
