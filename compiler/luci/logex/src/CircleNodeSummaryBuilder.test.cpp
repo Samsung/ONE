@@ -266,6 +266,20 @@ TEST_F(CircleNodeSummaryBuilderTest, MirrorPad_validate_mirror_padding_NEG)
   EXPECT_FALSE(mock_build(&node));
 }
 
+TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate)
+{
+  luci::CircleRoPE node;
+  node.mode(luci::RoPEMode::NEOX);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate_NEG)
+{
+  luci::CircleRoPE node;
+  node.mode(luci::RoPEMode::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
 TEST_F(CircleNodeSummaryBuilderTest, Mul_validate)
 {
   luci::CircleMul node;

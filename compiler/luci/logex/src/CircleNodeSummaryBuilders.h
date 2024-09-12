@@ -858,6 +858,7 @@ private:
 class CircleRoPESummaryBuilder final : public CircleNodeSummaryBuilder
 {
 private:
+  bool validate(const luci::CircleNode *node);
   std::vector<std::string> get_input_names(const luci::CircleNode *);
 };
 

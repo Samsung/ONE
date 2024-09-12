@@ -62,6 +62,9 @@ operation {
   input: "sin_table"
   input: "cos_table"
   output: "ofm"
+  rope_options {
+    mode: 0
+  }
 }
 input: "ifm"
 output: "ofm"

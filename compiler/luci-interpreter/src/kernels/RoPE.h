@@ -18,17 +18,18 @@
 #define LUCI_INTERPRETER_KERNELS_ROPE_H
 
 #include "core/Kernel.h"
+#include "core/KernelParams.h"
 
 namespace luci_interpreter
 {
 namespace kernels
 {
 
-class RoPE : public Kernel
+class RoPE : public KernelWithParams<RoPEParams>
 {
 public:
   RoPE(const Tensor *input, const Tensor *sin_table, const Tensor *cos_table, 
-      Tensor *output);
+      Tensor *output, const RoPEParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *sin_table() const { return _inputs[1]; }

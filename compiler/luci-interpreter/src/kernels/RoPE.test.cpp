@@ -55,7 +55,10 @@ TEST_F(RoPETest, floatTest)
   Tensor sin_table = makeInputTensor<DataType::FLOAT32>(sin_shape, sin_data, _memory_manager.get());
   Tensor cos_table = makeInputTensor<DataType::FLOAT32>(cos_shape, cos_data, _memory_manager.get());
 
-  RoPE kernel(&input_tensor, &sin_table, &cos_table, &output_tensor);
+  RoPEParams params{};
+  params.mode = RoPEMode::NEOX;
+
+  RoPE kernel(&input_tensor, &sin_table, &cos_table, &output_tensor, params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
@@ -85,7 +88,10 @@ TEST_F(RoPETest, Unsupported_dims_NEG)
   Tensor sin_table = makeInputTensor<DataType::FLOAT32>(sin_shape, sin_data, _memory_manager.get());
   Tensor cos_table = makeInputTensor<DataType::FLOAT32>(cos_shape, cos_data, _memory_manager.get());
 
-  RoPE kernel(&input_tensor, &sin_table, &cos_table, &output_tensor);
+  RoPEParams params{};
+  params.mode = RoPEMode::NEOX;
+
+  RoPE kernel(&input_tensor, &sin_table, &cos_table, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 

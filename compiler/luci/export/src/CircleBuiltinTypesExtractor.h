@@ -548,9 +548,9 @@ public:
                                              to_circle_actfunc(node->fusedActivationFunction()))
       .Union();
   }
-  flatbuffers::Offset<void> visit(luci::CircleRoPE *)
+  flatbuffers::Offset<void> visit(luci::CircleRoPE *node)
   {
-    return circle::CreateRoPEOptions(_builder).Union();
+    return circle::CreateRoPEOptions(_builder, to_circle_rope(node->mode())).Union();
   }
 
 protected:

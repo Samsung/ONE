@@ -42,7 +42,7 @@ namespace
  *
  *    TODO support other semantically same patterns for RoPE
  *
- * Version_1
+ * NEOX
  *                           [In]
  *                            |
  *                            V
@@ -74,26 +74,27 @@ namespace
 class RoPEPattern final
 {
 public:
-  enum PatternVersion
+  enum PatternMode
   {
-    Version_Unknown,
-    Version_1,
+    Mode_Unknown,
+    Mode_NEOX,
+    Mode_GPT,
   };
 
-  RoPEPattern(luci::CircleAdd *candidate, PatternVersion pv)
+  RoPEPattern(luci::CircleAdd *candidate, PatternMode pm)
   {
     assert(candidate);
     add_ofm = candidate;
-    _pv = pv;
+    _pm = pm;
   }
 
 private:
-  template <enum PatternVersion> bool match();
+  template <enum PatternMode> bool match();
 
 public:
   bool matched();
   bool matched() const { return _matched; }
-  PatternVersion version() const { return _pv; }
+  PatternMode mode() const { return _pm; }
 
 public:
   // Context
@@ -113,14 +114,14 @@ public:
 
 private:
   bool _matched = false;
-  PatternVersion _pv;
+  PatternMode _pm;
 };
 
 #define CHECK_OR_FALSE(condition) \
   if (not(condition))             \
     return false;
 
-template <> bool RoPEPattern::match<RoPEPattern::PatternVersion::Version_1>()
+template <> bool RoPEPattern::match<RoPEPattern::PatternMode::Mode_NEOX>()
 {
   // check pattern
   CHECK_OR_FALSE(luci::fill(&mul_cos, &mul_sin).with_commutative_args_of(add_ofm));
@@ -154,16 +155,16 @@ bool RoPEPattern::matched()
 
   // Check order is DFS
 
-  switch (_pv)
+  switch (_pm)
   {
-    case PatternVersion::Version_1:
-      return match<PatternVersion::Version_1>();
+    case PatternMode::Mode_NEOX:
+      return match<PatternMode::Mode_NEOX>();
 
     default:
       break;
   }
 
-  throw std::runtime_error("Invalid RoPE PatternVersion.");
+  throw std::runtime_error("Invalid RoPE Pattern.");
 }
 
 #undef CHECK_OR_FALSE
@@ -177,7 +178,7 @@ public:
   void apply(void);
 
 private:
-  template <RoPEPattern::PatternVersion> void apply(void);
+  template <RoPEPattern::PatternMode> void apply(void);
 
 private:
   luci::CircleRoPE *create_rope(loco::Graph *graph);
@@ -195,11 +196,14 @@ luci::CircleRoPE *FuseRoPE::create_rope(loco::Graph *graph)
   rope->cos_table(_p.cos_table);
   rope->sin_table(_p.sin_table);
 
+  if(_p.mode() == RoPEPattern::PatternMode::Mode_NEOX)
+    rope->mode(luci::RoPEMode::NEOX);
+
   rope->name(_p.add_ofm->name() + "_rope");
   return rope;
 }
 
-template <> void FuseRoPE::apply<RoPEPattern::PatternVersion::Version_1>()
+template <> void FuseRoPE::apply<RoPEPattern::PatternMode::Mode_NEOX>()
 {
   auto graph = _p.add_ofm->graph();
 
@@ -224,10 +228,10 @@ void FuseRoPE::apply()
 {
   assert(_p.matched());
 
-  switch (_p.version())
+  switch (_p.mode())
   {
-    case RoPEPattern::PatternVersion::Version_1:
-      apply<RoPEPattern::PatternVersion::Version_1>();
+    case RoPEPattern::PatternMode::Mode_NEOX:
+      apply<RoPEPattern::PatternMode::Mode_NEOX>();
       break;
 
     default:
@@ -241,11 +245,11 @@ namespace
 
 bool fuse_rope(luci::CircleAdd *add)
 {
-  RoPEPattern::PatternVersion pv = RoPEPattern::PatternVersion::Version_1;
+  RoPEPattern::PatternMode pm = RoPEPattern::PatternMode::Mode_NEOX;
 
   assert(add);
 
-  RoPEPattern pattern(add, pv);
+  RoPEPattern pattern(add, pm);
   if (pattern.matched())
   {
     FuseRoPE fuse(pattern);

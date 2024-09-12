@@ -1500,7 +1500,13 @@ table ReduceWindowOptions{
   reduce_function: ReduceWindowFunction;
 }
 
+enum RoPEMode : int {
+  NEOX,
+  GPT,
+}
+
 table RoPEOptions {
+  mode: RoPEMode;
 }
 
 table GRUOptions {

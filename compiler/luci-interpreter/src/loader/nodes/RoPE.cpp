@@ -33,8 +33,11 @@ std::unique_ptr<Kernel> build_kernel_CircleRoPE(const luci::CircleNode *circle_n
   const Tensor *cos_table = helper.getInputTensor(node->cos_table());
 
   Tensor *output = helper.getOutputTensor(node);
+  
+  RoPEParams params{};
+  params.mode = node->mode();
 
-  return std::make_unique<kernels::RoPE>(input, sin_table, cos_table, output);
+  return std::make_unique<kernels::RoPE>(input, sin_table, cos_table, output, params);
 }
 
 } // namespace luci_interpreter

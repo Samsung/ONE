@@ -30,7 +30,9 @@ TEST(CircleRoPETest, constructor)
 
   ASSERT_EQ(nullptr, rope.input());
   ASSERT_EQ(nullptr, rope.sin_table());
-  ASSERT_EQ(nullptr, rope.cos_table());    
+  ASSERT_EQ(nullptr, rope.cos_table());
+
+  ASSERT_EQ(luci::RoPEMode::NEOX, rope.mode());
 }
 
 TEST(CircleRoPETest, input_NEG)
@@ -51,6 +53,9 @@ TEST(CircleRoPETest, input_NEG)
   ASSERT_EQ(nullptr, rope.input());
   ASSERT_EQ(nullptr, rope.sin_table());
   ASSERT_EQ(nullptr, rope.cos_table());
+
+  rope.mode(luci::RoPEMode::GPT);
+  ASSERT_NE(luci::RoPEMode::NEOX, rope.mode());
 }
 
 TEST(CircleRoPETest, arity_NEG)

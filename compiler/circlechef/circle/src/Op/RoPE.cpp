@@ -37,8 +37,12 @@ circlechef::Operation *CircleOpRoPE::build(const circle::Operator *op, CircleImp
 
   operation->set_type("RoPE");
 
+  auto op_options = operation->mutable_rope_options();
+
   auto op_params = op->builtin_options_as_RoPEOptions();
   assert(op_params != nullptr);
+
+  op_options->set_mode(op_params->mode());
 
   return operation;
 }

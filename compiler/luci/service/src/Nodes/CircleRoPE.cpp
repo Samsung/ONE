@@ -21,6 +21,9 @@ namespace luci
 
 luci::CircleNode *CloneNode::visit(const luci::CircleRoPE *node)
 {
+  if (node->mode() == luci::RoPEMode::UNDEFINED)
+    return nullptr;
+
   auto *cloned = _graph->nodes()->create<luci::CircleRoPE>();
   
   return cloned;

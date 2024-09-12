@@ -33,7 +33,12 @@ public:
   NodeGraphlet() = default;
 
 public:
-  void init(loco::Graph *g) override { NodeGraphletT<luci::CircleRoPE>::init(g); }
+  void init(loco::Graph *g) override
+  {
+    NodeGraphletT<luci::CircleRoPE>::init(g);
+
+    _node->mode(luci::RoPEMode::NEOX);
+  }
 };
 
 class TestNodeGraph : public TestIsOGraph<3>, public NodeGraphlet
@@ -51,6 +56,7 @@ public:
     node()->sin_table(input(1));
     node()->cos_table(input(2));
 
+    
     output()->from(node());
   }
 };

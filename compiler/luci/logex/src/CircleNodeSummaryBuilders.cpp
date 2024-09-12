@@ -135,6 +135,19 @@ std::string to_str(luci::MirrorPadMode mode)
   }
 }
 
+std::string to_str(luci::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case luci::RoPEMode::NEOX:
+      return "NEOX";
+    case luci::RoPEMode::GPT:
+      return "GPT";
+    default:
+      return "Error";
+  }
+}
+
 } // namespace
 
 namespace luci
@@ -1193,6 +1206,15 @@ std::vector<std::string> CircleUnpackOutSummaryBuilder::get_input_names(const lu
 std::vector<std::string> CircleWhileOutSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
   return {"while"};
+}
+
+bool CircleRoPESummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto rope = loco::must_cast<const luci::CircleRoPE *>(node);
+  if (rope->mode() == luci::RoPEMode::UNDEFINED)
+    return false;
+
+  return true;
 }
 
 std::vector<std::string> CircleRoPESummaryBuilder::get_input_names(const luci::CircleNode *)

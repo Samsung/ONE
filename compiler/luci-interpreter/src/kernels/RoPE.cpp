@@ -24,7 +24,8 @@ namespace kernels
 {
 
 RoPE::RoPE(const Tensor *input, const Tensor *sin_table, const Tensor *cos_table,
-          Tensor *output) : Kernel({input, sin_table, cos_table}, {output})
+          Tensor *output, const RoPEParams &params)
+  : KernelWithParams<RoPEParams>({input, sin_table, cos_table}, {output}, params)
 {
 }
 
@@ -59,7 +60,7 @@ void RoPE::evalFloat() const
   const float *cos_table_data = getTensorData<float>(cos_table());
   float *output_data = getTensorData<float>(output());
 
-  if (input_shape.DimensionsCount() == 4)
+  if (params().mode == RoPEMode::NEOX)
   {
     const int32_t i0_n = input_shape.Dims(0);
     const int32_t multihead_n = input_shape.Dims(1);
@@ -86,7 +87,7 @@ void RoPE::evalFloat() const
     }
   } 
   else
-    throw std::runtime_error("luci-intp RoPE unsupported rank.");
+    throw std::runtime_error("luci-intp RoPE unsupported mode.");
 }
 
 } // namespace kernels

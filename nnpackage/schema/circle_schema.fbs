@@ -1521,7 +1521,13 @@ table InstanceNormOptions {
   fused_activation_function:ActivationFunctionType;
 }
 
+enum RoPEMode : int {
+  NEOX,
+  GPT,
+}
+
 table RoPEOptions {
+  mode: RoPEMode;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a

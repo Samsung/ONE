@@ -21,13 +21,26 @@
 TEST(CloneNodeTest, clone_RoPE)
 {
   auto g = loco::make_graph();
-  auto node_fc = g->nodes()->create<luci::CircleRoPE>();
+  auto node_rp = g->nodes()->create<luci::CircleRoPE>();
+  node_rp->mode(luci::RoPEMode::NEOX);
 
   auto gc = loco::make_graph();
-  auto cloned = luci::clone_node(node_fc, gc.get());
+  auto cloned = luci::clone_node(node_rp, gc.get());
   ASSERT_NE(nullptr, cloned);
   ASSERT_EQ(gc.get(), cloned->graph());
 
-  auto cloned_fc = dynamic_cast<luci::CircleRoPE *>(cloned);
-  ASSERT_NE(nullptr, cloned_fc);
+  auto cloned_rp = dynamic_cast<luci::CircleRoPE *>(cloned);
+  ASSERT_NE(nullptr, cloned_rp);
+  ASSERT_EQ(node_rp->mode(), cloned_rp->mode());
+}
+
+TEST(CloneNodeTest, clone_RoPE_NEG)
+{
+  auto g = loco::make_graph();
+  auto node_rp = g->nodes()->create<luci::CircleRoPE>();
+  node_rp->mode(luci::RoPEMode::UNDEFINED);
+
+  auto gc = loco::make_graph();
+  auto cloned = luci::clone_node(node_rp, gc.get());
+  ASSERT_EQ(nullptr, cloned);
 }

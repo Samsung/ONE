@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-#include "RoPE.h"
+#ifndef __LUCI_IR_ATTR_ROPE_MODE_H__
+#define __LUCI_IR_ATTR_ROPE_MODE_H__
 
-#include "Convert.h"
-
-flatbuffers::Offset<void> RoPEChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+namespace luci
 {
-  auto &operation = (*_operation);
-  assert(operation.has_rope_options());
 
-  circle::RoPEOptionsBuilder options_builder{fbb};
-  options_builder.add_mode(static_cast<circle::RoPEMode>(operation.rope_options().mode()));
-
-  return options_builder.Finish().Union();
-}
-
-std::unique_ptr<OpChef>
-RoPEChefFactory::create(const circlechef::Operation *operation) const
+enum class RoPEMode
 {
-  return std::unique_ptr<OpChef>{new RoPEChef{operation}};
-}
+  UNDEFINED, // This is not defined by Circle. This was added to prevent programming error.
+
+  NEOX,
+  GPT,
+};
+
+} // namespace luci
+
+#endif // __LUCI_IR_ATTR_ROPE_MODE_H__

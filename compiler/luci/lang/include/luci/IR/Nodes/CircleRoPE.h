@@ -21,6 +21,7 @@
 #include "luci/IR/CircleOpcode.h"
 
 #include "luci/IR/CircleNodeMixins.h"
+#include "luci/IR/AttrRoPEMode.h"
 
 namespace luci
 {
@@ -40,6 +41,13 @@ public:
 
   loco::Node *cos_table(void) const { return at(2)->node(); }
   void cos_table(loco::Node *node) { at(2)->node(node); }
+
+public:
+  RoPEMode mode() const { return _mode; }
+  void mode(RoPEMode mode) { _mode = mode; }
+
+private:
+  RoPEMode _mode{RoPEMode::NEOX};
 };
 
 } // namespace luci
