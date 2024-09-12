@@ -69,7 +69,7 @@ public:
     _prescale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _prescale->shape({1, 4, 4, 3});
-    _prescale->custom_code("PreScale");
+    _prescale->custom_code("scale");
     _prescale->name("prescale");
 
     std::vector<float> filter_val(3 * 3 * 3 * 3 /* size */, 1.0 /*value */);
@@ -126,7 +126,7 @@ public:
     _prescale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _prescale->shape({1, 4, 4, 3});
-    _prescale->custom_code("PreScale");
+    _prescale->custom_code("scale");
     _prescale->name("prescale");
 
     std::vector<float> filter_val(3 * 3 * 3 * 3 /* size */, 1.0 /*value */);
@@ -182,7 +182,7 @@ public:
     _prescale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _prescale->shape({1, 4, 4, 3});
-    _prescale->custom_code("PreScale");
+    _prescale->custom_code("scale");
     _prescale->name("prescale");
 
     std::vector<float> filter_val(1 * 3 * 3 * 3 /* size */, 1.0 /*value */);
@@ -235,7 +235,7 @@ TEST(FusePreScalePassTest, prescale_conv)
   auto conv = dynamic_cast<luci::CircleConv2D *>(g.output()->from());
   EXPECT_NE(nullptr, conv);
 
-  auto pre_scale = to_pre_scale(conv->input());
+  auto pre_scale = to_scale(conv->input());
   EXPECT_EQ(nullptr, pre_scale); // No pre_scale
 
   // Check weights
@@ -270,7 +270,7 @@ TEST(FusePreScalePassTest, prescale_tconv)
   auto tconv = dynamic_cast<luci::CircleTransposeConv *>(g.output()->from());
   EXPECT_NE(nullptr, tconv);
 
-  auto pre_scale = to_pre_scale(tconv->outBackprop());
+  auto pre_scale = to_scale(tconv->outBackprop());
   EXPECT_EQ(nullptr, pre_scale); // No pre_scale
 
   // Check weights
@@ -305,7 +305,7 @@ TEST(FusePreScalePassTest, prescale_dconv)
   auto dconv = dynamic_cast<luci::CircleDepthwiseConv2D *>(g.output()->from());
   EXPECT_NE(nullptr, dconv);
 
-  auto pre_scale = to_pre_scale(dconv->input());
+  auto pre_scale = to_scale(dconv->input());
   EXPECT_EQ(nullptr, pre_scale); // No pre_scale
 
   // Check weights

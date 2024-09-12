@@ -86,7 +86,7 @@ TEST(EqualizePatternCheckTest, simple)
     pattern.back = "conv2";
     pattern.type = EqualizePattern::Type::ScaleOnly;
     for (uint32_t i = 0; i < 16; i++)
-      pattern.scale.push_back(1.0);
+      pattern.act_scale.push_back(1.0);
   }
   p.emplace_back(pattern);
 
@@ -96,16 +96,16 @@ TEST(EqualizePatternCheckTest, simple)
   EXPECT_NO_THROW(check_patterns_valid(g.g(), p));
 }
 
-TEST(EqualizePatternCheckTest, negative_scale_across_relu_scaleonly_NEG)
+TEST(EqualizePatternCheckTest, invalid_names_NEG)
 {
   std::vector<EqualizePattern> p;
   EqualizePattern pattern;
   {
     pattern.front = "conv1";
-    pattern.back = "conv2";
+    pattern.back = "conv3"; // invalid
     pattern.type = EqualizePattern::Type::ScaleOnly;
     for (uint32_t i = 0; i < 16; i++)
-      pattern.scale.push_back(-1.0); // Negative value
+      pattern.act_scale.push_back(1.0);
   }
   p.emplace_back(pattern);
 
@@ -116,16 +116,16 @@ TEST(EqualizePatternCheckTest, negative_scale_across_relu_scaleonly_NEG)
   EXPECT_ANY_THROW(check_patterns_valid(g.g(), p));
 }
 
-TEST(EqualizePatternCheckTest, negative_scale_across_relu_scalshift_NEG)
+TEST(EqualizePatternCheckTest, invalid_scale_NEG)
 {
   std::vector<EqualizePattern> p;
   EqualizePattern pattern;
   {
     pattern.front = "conv1";
     pattern.back = "conv2";
-    pattern.type = EqualizePattern::Type::ScaleShift;
+    pattern.type = EqualizePattern::Type::ScaleOnly;
     for (uint32_t i = 0; i < 16; i++)
-      pattern.scale.push_back(-1.0); // Negative value
+      pattern.scale.push_back(1.0); // invalid
   }
   p.emplace_back(pattern);
 
