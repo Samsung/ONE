@@ -1523,7 +1523,6 @@ table InstanceNormOptions {
 
 table RmsNormOptions {
   epsilon:float;
-  fused_activation_function:ActivationFunctionType;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
