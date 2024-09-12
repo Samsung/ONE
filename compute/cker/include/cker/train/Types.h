@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __SHAPE_INFER_STRIDED_SLICE_H__
-#define __SHAPE_INFER_STRIDED_SLICE_H__
+#ifndef __NNFW_CKER_TRAIN_TYPES_H__
+#define __NNFW_CKER_TRAIN_TYPES_H__
 
-#include <luci/IR/CircleNodes.h>
-
-#include <loco/IR/NodeShape.h>
-
-namespace luci
+namespace nnfw
+{
+namespace cker
+{
+namespace train
 {
 
-loco::TensorShape infer_output_shape(const CircleStridedSlice *node);
+enum class LossReductionType
+{
+  SUM_OVER_BATCH_SIZE,
+  SUM,
+};
 
-} // namespace luci
+} // namespace train
+} // namespace cker
+} // namespace nnfw
 
-#endif // __SHAPE_INFER_STRIDED_SLICE_H__
+#endif // __NNFW_CKER_TYPES_H__

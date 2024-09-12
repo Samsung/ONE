@@ -19,7 +19,6 @@
 #include "Check.h"
 
 #include "CircleShapeInferenceHelper.h"
-#include "ShapeInfer_StridedSlice.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleDialect.h>
@@ -637,47 +636,6 @@ loco::NodeShape infer_fill(const luci::CircleFill *node)
   return loco::NodeShape{shape};
 }
 
-loco::NodeShape infer_fully_connected(const luci::CircleFullyConnected *node)
-{
-  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
-  auto weights_shape = luci::shape_get(node->weights()).as<loco::TensorShape>();
-
-  loco::TensorShape out_shape;
-
-  // NOTE Some recipes in some repositories are using rank 4 input for FullyConnected.
-  //      Until they are all fixed, disable following assert.
-  // TODO Enable following assert after related fixes are applied
-  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L194
-  // LUCI_ASSERT(input_shape.rank() == 2 || input_shape.rank() == 3,
-  //             "Input rank of FullyConnected should be 2 or 3");
-
-  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L225
-  LUCI_ASSERT(weights_shape.rank() == 2, "Weights of FullyConnected should be 2");
-
-  // https://github.com/tensorflow/tensorflow/blob/ea33c1e7a25d8025e8ee405ad8ab7be261798d76/tensorflow/lite/kernels/fully_connected.cc#L353-L367
-  if (node->keep_num_dims())
-  {
-    out_shape.rank(input_shape.rank());
-    for (uint32_t i = 0; i < input_shape.rank(); ++i)
-      out_shape.dim(i) = input_shape.dim(i);
-    out_shape.dim(out_shape.rank() - 1) = weights_shape.dim(0);
-  }
-  else
-  {
-    uint32_t input_size = 1;
-    for (uint32_t i = 0; i < input_shape.rank(); i++)
-    {
-      input_size = input_size * input_shape.dim(i).value();
-    }
-    const uint32_t batch_size = input_size / weights_shape.dim(1).value();
-    out_shape.rank(2);
-    out_shape.dim(0) = batch_size;
-    out_shape.dim(1) = weights_shape.dim(0);
-  }
-
-  return loco::NodeShape{out_shape};
-}
-
 loco::NodeShape infer_gather(const luci::CircleGather *node)
 {
   loco::TensorShape output_shape;
@@ -949,49 +907,6 @@ loco::NodeShape infer_p_relu(const luci::CirclePRelu *node)
   auto alpha_shape = luci::shape_get(node->alpha()).as<loco::TensorShape>();
 
   auto output_shape = broadcast_shape(input_shape, alpha_shape);
-
-  return loco::NodeShape{output_shape};
-}
-
-loco::NodeShape infer_range(const luci::CircleRange *node)
-{
-  loco::TensorShape output_shape;
-  output_shape.rank(1);
-
-  auto start_node = dynamic_cast<luci::CircleConst *>(node->start());
-  auto limit_node = dynamic_cast<luci::CircleConst *>(node->limit());
-  auto delta_node = dynamic_cast<luci::CircleConst *>(node->delta());
-
-  if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
-  {
-    return use_own(node);
-  }
-
-  double start = 0, limit = 0, delta = 0;
-
-#define GET_RANGE_PARAM(DT)         \
-  start = start_node->scalar<DT>(); \
-  limit = limit_node->scalar<DT>(); \
-  delta = delta_node->scalar<DT>();
-
-  switch (start_node->dtype())
-  {
-    case loco::DataType::FLOAT32:
-      GET_RANGE_PARAM(loco::DataType::FLOAT32)
-      break;
-    case loco::DataType::S32:
-      GET_RANGE_PARAM(loco::DataType::S32)
-      break;
-    default:
-      INTERNAL_EXN("Range data type not supported");
-  }
-
-#undef GET_RANGE_PARAM
-
-  if (delta == 0)
-    INTERNAL_EXN("Delta can not be zero");
-
-  output_shape.dim(0) = ceil((limit - start) / delta);
 
   return loco::NodeShape{output_shape};
 }
@@ -1303,21 +1218,6 @@ loco::NodeShape infer_sparse_to_dense(const luci::CircleSparseToDense *node)
     }
   }
 
-  return loco::NodeShape{shape};
-}
-
-loco::NodeShape infer_strided_slice(const luci::CircleStridedSlice *node)
-{
-  auto begin_node = dynamic_cast<luci::CircleConst *>(node->begin());
-  auto end_node = dynamic_cast<luci::CircleConst *>(node->end());
-  auto strides_node = dynamic_cast<luci::CircleConst *>(node->strides());
-
-  if (begin_node == nullptr || end_node == nullptr || strides_node == nullptr)
-  {
-    return use_own(node);
-  }
-
-  loco::TensorShape shape = infer_output_shape(node);
   return loco::NodeShape{shape};
 }
 
@@ -1967,11 +1867,6 @@ public:
 
   loco::NodeShape visit(const luci::CircleFloorMod *node) final { return broadcast_xy(node); }
 
-  loco::NodeShape visit(const luci::CircleFullyConnected *node) final
-  {
-    return infer_fully_connected(node);
-  }
-
   loco::NodeShape visit(const luci::CircleGather *node) final { return infer_gather(node); }
 
   loco::NodeShape visit(const luci::CircleGatherNd *node) final { return infer_gather_nd(node); }
@@ -2087,8 +1982,6 @@ public:
   loco::NodeShape visit(const luci::CirclePow *node) final { return broadcast_xy(node); }
 
   loco::NodeShape visit(const luci::CirclePRelu *node) final { return infer_p_relu(node); }
-
-  loco::NodeShape visit(const luci::CircleRange *node) final { return infer_range(node); }
 
   loco::NodeShape visit(const luci::CircleRank *) final
   {
@@ -2232,11 +2125,6 @@ public:
   loco::NodeShape visit(const luci::CircleSquaredDifference *node) final
   {
     return broadcast_xy(node);
-  }
-
-  loco::NodeShape visit(const luci::CircleStridedSlice *node) final
-  {
-    return infer_strided_slice(node);
   }
 
   loco::NodeShape visit(const luci::CircleSqueeze *node) final { return infer_squeeze(node); }

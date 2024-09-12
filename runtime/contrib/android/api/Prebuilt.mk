@@ -18,7 +18,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := onert_core
 PREBUILT_LIB += onert_core
 LOCAL_SRC_FILES := \
-		$(ONERT_PREBUILT_LIB_DIR)/libonert_core.so
+		$(ONERT_PREBUILT_LIB_DIR)/nnfw/libonert_core.so
 include $(PREBUILT_SHARED_LIBRARY)
 
 # backend_cpu

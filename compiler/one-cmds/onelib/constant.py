@@ -63,7 +63,7 @@ class CONSTANT:
         'remove_redundant_reshape',
         'remove_redundant_transpose',
         'remove_unnecessary_add',
-        'remove_unnecessary_cast'
+        'remove_unnecessary_cast',
         'remove_unnecessary_reshape',
         'remove_unnecessary_slice',
         'remove_unnecessary_strided_slice',

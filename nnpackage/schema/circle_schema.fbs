@@ -286,6 +286,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  RMS_NORM = -6,
   GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
@@ -635,6 +636,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RmsNormOptions = 250,
   GRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
@@ -1517,6 +1519,10 @@ table BCQFullyConnectedOptions {
 table InstanceNormOptions {
   epsilon:float;
   fused_activation_function:ActivationFunctionType;
+}
+
+table RmsNormOptions {
+  epsilon:float;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
