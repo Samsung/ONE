@@ -139,7 +139,27 @@ class ArgumentParser():
 
         oneutils.run([driver_path, '-h'], err_prefix=self.driver)
 
+    def get_option_names(self, *, flatten=False, without_dash=False):
+        names = []
+        for action in self._actions:
+            names.append(action[0])
+
+        if flatten:
+            names = [name for name_l in names for name in name_l]
+        if without_dash:
+            names = [name.split('-')[-1] for name in names]
+
+        return names
+
     def check_if_valid_option_name(self, *args, **kwargs):
+        if any(a.startswith('---') for a in args):
+            raise RuntimeError(
+                "Invalid option name. Please use '-' or '--' prefix for optional arguments."
+            )
+        existing_options = self.get_option_names(flatten=True, without_dash=True)
+        args_without_dash = [arg.split('-')[-1] for arg in args]
+        if any(arg in existing_options for arg in args_without_dash):
+            raise RuntimeError('Duplicate option names')
         if not 'action' in kwargs:
             raise RuntimeError('"action" keyword argument is required')
 

@@ -1,7 +1,9 @@
 # dummy driver for interface test
 set(DUMMY_COMPILER_SRC src/dummy-compiler.cpp)
+set(DUMMY_V2_COMPILER_SRC src/dummyV2-compiler.cpp)
 set(DUMMY_DRIVER_SRC src/dummy-compile.cpp)
 set(DUMMY_V2_DRIVER_SRC src/dummyV2-compile.cpp)
+set(DUMMY_V3_DRIVER_SRC src/dummyV3-compile.cpp)
 set(HELP_DRIVER_SRC src/help-compile.cpp)
 set(DUMMY_INFER_SRC src/dummy-infer.cpp)
 set(DUMMY_INFER_V2_SRC src/dummy-inferV2.cpp)
@@ -17,8 +19,10 @@ set(DUMMY_ONNX_EXT src/dummy-onnx-ext.cpp)
 # Without command schema, codegen drivers have "-compile" suffix in their names.
 # Such restriction can be relieved with the command schema.
 add_executable(dummy-compiler ${DUMMY_COMPILER_SRC})
+add_executable(dummyV2-compiler ${DUMMY_V2_COMPILER_SRC})
 add_executable(dummy-compile ${DUMMY_DRIVER_SRC})
 add_executable(dummyV2-compile ${DUMMY_V2_DRIVER_SRC})
+add_executable(dummyV3-compile ${DUMMY_V3_DRIVER_SRC})
 add_executable(help-compile ${HELP_DRIVER_SRC})
 add_executable(dummy-infer ${DUMMY_INFER_SRC})
 add_executable(dummy-inferV2 ${DUMMY_INFER_V2_SRC})
@@ -31,8 +35,10 @@ add_executable(dummyEnv-compile ${DUMMY_ENV_SRC})
 add_executable(dummy-onnx-ext ${DUMMY_ONNX_EXT})
 
 set(DUMMY_COMPILER "${CMAKE_CURRENT_BINARY_DIR}/dummy-compiler")
+set(DUMMY_V2_COMPILER "${CMAKE_CURRENT_BINARY_DIR}/dummyV2-compiler")
 set(DUMMY_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/dummy-compile")
 set(DUMMY_V2_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/dummyV2-compile")
+set(DUMMY_V3_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/dummyV3-compile")
 set(HELP_DRIVER "${CMAKE_CURRENT_BINARY_DIR}/help-compile")
 set(DUMMY_INFER "${CMAKE_CURRENT_BINARY_DIR}/dummy-infer")
 set(DUMMY_INFER_V2 "${CMAKE_CURRENT_BINARY_DIR}/dummy-inferV2")
@@ -49,6 +55,13 @@ install(FILES ${DUMMY_COMPILER}
                     GROUP_READ GROUP_EXECUTE
                     WORLD_READ WORLD_EXECUTE
         DESTINATION test)
+        
+install(FILES ${DUMMY_V2_COMPILER}
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                    GROUP_READ GROUP_EXECUTE
+                    WORLD_READ WORLD_EXECUTE
+        DESTINATION test)
+
 install(FILES ${DUMMY_DRIVER}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                     GROUP_READ GROUP_EXECUTE
@@ -56,6 +69,12 @@ install(FILES ${DUMMY_DRIVER}
         DESTINATION test)
 
 install(FILES ${DUMMY_V2_DRIVER}
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                    GROUP_READ GROUP_EXECUTE
+                    WORLD_READ WORLD_EXECUTE
+        DESTINATION test)
+
+install(FILES ${DUMMY_V3_DRIVER}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                     GROUP_READ GROUP_EXECUTE
                     WORLD_READ WORLD_EXECUTE

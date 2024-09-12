@@ -14,19 +14,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# commands for the backend is missing
+# use both backend and target option simultaneously.
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
+TARGET_ALREADY_EXIST=true
+
+targetfile="one-codegen_neg_006.ini"
+
+clean_envir()
+{
+  rm -rf ../target/${targetfile}
+  if [ "$TARGET_ALREADY_EXIST" = false ]; then
+    rm -rf ../target/
+  fi
+}
+
 trap_err_onexit()
 {
-  if grep -q "error: Not found the command for given backend" "${filename}.log"; then
+  if grep -q "'backend' option and 'target' option cannot be used simultaneously" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
+    clean_envir
     exit 0
   fi
 
   echo "${filename_ext} FAILED"
+  clean_envir
   exit 255
 }
 
@@ -34,8 +48,16 @@ trap trap_err_onexit ERR
 
 rm -f ${filename}.log
 
+if [ ! -d "../target/" ]; then
+  mkdir -p ../target/
+  TARGET_ALREADY_EXIST=false
+fi
+
+cp ${targetfile} ../target/
+
 # run test
-one-profile -b dummy > ${filename}.log 2>&1
+one-codegen -b dummy -T one-codegen_neg_006 > ${filename}.log 2>&1
 
 echo "${filename_ext} FAILED"
+clean_envir
 exit 255

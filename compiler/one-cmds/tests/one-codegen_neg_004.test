@@ -21,7 +21,7 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "error: 'command' key is missing in the configuration file" "${filename}.log"; then
+  if grep -q "error: Not found the command for given backend" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi

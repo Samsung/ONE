@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# one-codegen -T {target} -- ${command}
+# one-codgen.backend is given.
 
 : '
 This test assumes below directories.
@@ -22,6 +22,8 @@ This test assumes below directories.
 [one hierarchy]
     one
     ├── backends
+    │   └── command
+    │       └── codegen
     ├── bin
     ├── doc
     ├── include
@@ -31,22 +33,37 @@ This test assumes below directories.
     └── test # pwd
 '
 
+BACKENDS_ALREADY_EXIST=true
+CMD_ALREADY_EXIST=true
+DUMMY_ALREADY_EXIST=true
 TARGET_ALREADY_EXIST=true
+
+BACKEND_NAME="dummyV3"
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
-configfile="one-codegen_011.cfg"
-inputfile="one-codegen_011.circle"
-outputfile="one-codegen_011.tvn"
-targetfile="one-codegen_011.ini"
+driver_name="dummyV3-compile"
+configfile="onecc_072.cfg"
+outputfile="onecc_072.tvn"
+targetfile="onecc_072.ini"
 
 clean_envir()
 {
-  rm -rf ../bin/dummy-compile
+  rm -rf ../bin/${driver_name}
   rm -rf ../target/${targetfile}
+  rm -rf "../backends/command/${BACKEND_NAME}/codegen.py"
   if [ "$TARGET_ALREADY_EXIST" = false ]; then
     rm -rf ../target/
+  fi
+  if [ "$DUMMY_ALREADY_EXIST" = false ]; then
+    rm -rf "../backends/command/${BACKEND_NAME}/"
+  fi
+  if [ "$CMD_ALREADY_EXIST" = false ]; then
+    rm -rf ../backends/command/
+  fi
+  if [ "$BACKENDS_ALREADY_EXIST" = false ]; then
+    rm -rf ../backends/
   fi
 }
 
@@ -59,26 +76,39 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-rm -rf ${outputfile}
 rm -f ${filename}.log
+rm -rf ${outputfile}
 
 if [ ! -d "../target/" ]; then
   mkdir -p ../target/
   TARGET_ALREADY_EXIST=false
 fi
+if [ ! -d "../backends/" ]; then
+  mkdir -p ../backends/
+  BACKENDS_ALREADY_EXIST=false
+fi
+if [ ! -d "../backends/command/" ]; then
+  mkdir -p ../backends/command/
+  CMD_ALREADY_EXIST=false
+fi
+if [ ! -d "../backends/command/${BACKEND_NAME}/" ]; then
+  mkdir -p ../backends/command/${BACKEND_NAME}/
+  DUMMY_ALREADY_EXIST=false
+fi
 
-# copy dummy-compile to bin folder
-cp dummy-compile ../bin/dummy-compile
+# copy dummy tools to bin folder
+cp ${driver_name} ../bin/
 cp ${targetfile} ../target/
+cp onecc_072.py "../backends/command/${BACKEND_NAME}/codegen.py"
 
 # run test
-one-codegen -T one-codegen_011 -- -o ${outputfile} ${inputfile} > ${filename}.log 2>&1
+onecc -C ${configfile} > ${filename}.log 2>&1
 
 clean_envir
 
-if grep -q "dummy-compile with one-codegen_011 target" "${outputfile}"; then
-  echo "${filename_ext} SUCCESS"
-  exit 0
+if grep -q "${driver_name} with onecc_072 target" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
 fi
 
 trap_err_onexit

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Boolean type option has multiple options. 
+# Have invalid options in the [one-codegen]
 
 : '
 This test assumes below directories.
@@ -44,9 +44,9 @@ filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 driver_name="dummy-compiler"
-configfile="onecc_neg_038.cfg"
-outputfile="onecc_neg_038.tvn"
-targetfile="onecc_neg_038.ini"
+configfile="onecc_neg_039.cfg"
+outputfile="onecc_neg_039.tvn"
+targetfile="onecc_neg_039.ini"
 
 clean_envir()
 {
@@ -69,7 +69,7 @@ clean_envir()
 
 trap_err_onexit()
 {
-  if grep -q "Only either of option type is allowed: positional or optional" "${filename}.log"; then
+  if grep -q "Invalid option in \[one-codegen\] section" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     clean_envir
     exit 0
@@ -105,7 +105,7 @@ fi
 # copy dummy tools to bin folder
 cp ${driver_name} ../bin/
 cp ${targetfile} ../target/
-cp onecc_neg_038.py "../backends/command/${BACKEND_NAME}/codegen.py"
+cp onecc_neg_039.py "../backends/command/${BACKEND_NAME}/codegen.py"
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
