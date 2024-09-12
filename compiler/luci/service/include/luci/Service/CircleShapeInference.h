@@ -122,7 +122,7 @@ public:
   // loco::TensorShape visit(const luci::CircleRelu0To1 *node) final;
   // loco::TensorShape visit(const luci::CircleRelu6 *node) final;
   // loco::TensorShape visit(const luci::CircleReluN1To1 *node) final;
-  // loco::TensorShape visit(const luci::CircleReshape *node) final;
+  loco::TensorShape visit(const luci::CircleReshape *node) final;
   // loco::TensorShape visit(const luci::CircleResizeBilinear *node) final;
   // loco::TensorShape visit(const luci::CircleResizeNearestNeighbor *node) final;
   // loco::TensorShape visit(const luci::CircleReverseSequence *node) final;
