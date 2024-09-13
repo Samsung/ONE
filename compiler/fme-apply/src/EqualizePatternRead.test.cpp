@@ -58,7 +58,7 @@ TEST_F(EqualizePatternReadTest, simple)
                                "\"front\": \"f\","
                                "\"back\": \"b\","
                                "\"type\": \"ScaleOnly\","
-                               "\"scale\": [1.0, 2.0, 3.0]"
+                               "\"act_scale\": [4.0, 5.0, 6.0]"
                                "}"
                                "]";
 
@@ -70,11 +70,10 @@ TEST_F(EqualizePatternReadTest, simple)
   EXPECT_EQ("f", patterns[0].front);
   EXPECT_EQ("b", patterns[0].back);
   EXPECT_EQ(EqualizePattern::Type::ScaleOnly, patterns[0].type);
-  EXPECT_EQ(3, patterns[0].scale.size());
-  EXPECT_FLOAT_EQ(1.0, patterns[0].scale[0]);
-  EXPECT_FLOAT_EQ(2.0, patterns[0].scale[1]);
-  EXPECT_FLOAT_EQ(3.0, patterns[0].scale[2]);
-  EXPECT_TRUE(patterns[0].shift.empty());
+  EXPECT_EQ(3, patterns[0].act_scale.size());
+  EXPECT_FLOAT_EQ(4.0, patterns[0].act_scale[0]);
+  EXPECT_FLOAT_EQ(5.0, patterns[0].act_scale[1]);
+  EXPECT_FLOAT_EQ(6.0, patterns[0].act_scale[2]);
 }
 
 TEST_F(EqualizePatternReadTest, no_file_NEG) { EXPECT_ANY_THROW(fme_apply::read(_filename)); }

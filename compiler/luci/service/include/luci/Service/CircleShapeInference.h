@@ -91,7 +91,7 @@ public:
   // loco::TensorShape visit(const luci::CircleLogicalAnd *node) final;
   // loco::TensorShape visit(const luci::CircleLogicalNot *node) final;
   // loco::TensorShape visit(const luci::CircleLogicalOr *node) final;
-  // loco::TensorShape visit(const luci::CircleLogistic *node) final;
+  loco::TensorShape visit(const luci::CircleLogistic *node) final;
   // loco::TensorShape visit(const luci::CircleLogSoftmax *node) final;
   // loco::TensorShape visit(const luci::CircleMatrixDiag *node) final;
   // loco::TensorShape visit(const luci::CircleMatrixSetDiag *node) final;
@@ -112,7 +112,7 @@ public:
   // loco::TensorShape visit(const luci::CirclePow *node) final;
   // loco::TensorShape visit(const luci::CirclePRelu *node) final;
   loco::TensorShape visit(const luci::CircleQuantize *node) final;
-  // loco::TensorShape visit(const luci::CircleRange *node) final;
+  loco::TensorShape visit(const luci::CircleRange *node) final;
   // loco::TensorShape visit(const luci::CircleRank *node) final;
   // loco::TensorShape visit(const luci::CircleReduceAny *node) final;
   // loco::TensorShape visit(const luci::CircleReduceMax *node) final;
@@ -122,7 +122,7 @@ public:
   // loco::TensorShape visit(const luci::CircleRelu0To1 *node) final;
   // loco::TensorShape visit(const luci::CircleRelu6 *node) final;
   // loco::TensorShape visit(const luci::CircleReluN1To1 *node) final;
-  // loco::TensorShape visit(const luci::CircleReshape *node) final;
+  loco::TensorShape visit(const luci::CircleReshape *node) final;
   // loco::TensorShape visit(const luci::CircleResizeBilinear *node) final;
   // loco::TensorShape visit(const luci::CircleResizeNearestNeighbor *node) final;
   // loco::TensorShape visit(const luci::CircleReverseSequence *node) final;

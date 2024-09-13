@@ -26,10 +26,6 @@ runtime/libs/circle-schema/include/circle_schema_generated.h
 runtime/libs/circle-schema/include/circle_traininfo_generated.h
 runtime/onert/core/src/loader/tflite_schema_generated.h
 
-# External code: Android NN API
-runtime/onert/api/nnapi/include/NeuralNetworks.h
-runtime/onert/api/nnapi/include/NeuralNetworksExtensions.h
-
 # External code: Tensorflow lite
 runtime/libs/profiling/
 

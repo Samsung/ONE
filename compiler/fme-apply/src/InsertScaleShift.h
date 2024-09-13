@@ -30,7 +30,7 @@ namespace fme_apply
 class InsertScaleShift
 {
 public:
-  InsertScaleShift(const std::vector<EqualizePattern> &patterns) : _patterns{patterns}
+  InsertScaleShift(std::vector<EqualizePattern> &patterns) : _patterns{patterns}
   {
     // DO NOTHING
   }
@@ -39,7 +39,7 @@ public:
   void run(loco::Graph *graph);
 
 private:
-  const std::vector<EqualizePattern> &_patterns;
+  std::vector<EqualizePattern> &_patterns;
 };
 
 } // namespace fme_apply
