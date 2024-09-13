@@ -23,5 +23,6 @@
 #include "Op/BCQGather.h"
 #include "Op/GRU.h"
 #include "Op/InstanceNorm.h"
+#include "Op/RmsNorm.h"
 
 #endif // __CIRCLE_OP_CHEFS_H__
