@@ -364,7 +364,7 @@ TEST(FirstFitPlanner, layerscope_claim_release_test)
   });
 }
 
-TEST(FirstFitPlanner, layerscope_neg_release_non_existing_index)
+TEST(FirstFitPlanner, neg_layerscope_release_non_existing_index)
 {
   PlannerVerifier<FirstFitPlanner, LayerScopeTensorIndex> p;
 
@@ -389,7 +389,7 @@ TEST(FirstFitPlanner, layerscope_neg_release_non_existing_index)
   });
 }
 
-TEST(FirstFitPlanner, layerscope_neg_release_twice)
+TEST(FirstFitPlanner, neg_layerscope_release_twice)
 {
   PlannerVerifier<FirstFitPlanner, LayerScopeTensorIndex> p;
 
@@ -417,7 +417,7 @@ TEST(FirstFitPlanner, layerscope_neg_release_twice)
   });
 }
 
-TEST(WICPlanner, claim_release_test)
+TEST(WICPlanner, layerscope_claim_release_test)
 {
   PlannerVerifier<WICPlanner, LayerScopeTensorIndex> p;
 
