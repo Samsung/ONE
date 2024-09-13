@@ -890,6 +890,18 @@ std::vector<std::string> CircleReverseV2SummaryBuilder::get_input_names(const lu
   return {"tensor", "axis"};
 }
 
+std::vector<std::string> CircleRmsNormSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "gamma", "beta"};
+}
+
+void CircleRmsNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                   locop::NodeSummary &s)
+{
+  auto rmsnorm = loco::must_cast<const luci::CircleRmsNorm *>(node);
+  s.args().append("epsilon", std::to_string(rmsnorm->epsilon()));
+}
+
 std::vector<std::string> CircleScatterNdSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
   return {"indices", "updates", "shape"};
