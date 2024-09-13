@@ -178,3 +178,4 @@ tcgenerate(CircleFullyConnected_U4_002)
 tcgenerate(GRU_000) # luci-interpreter does not support custom GRU
 tcgenerate(InstanceNorm_000)
 tcgenerate(InstanceNorm_001)
+tcgenerate(RmsNorm_000)
