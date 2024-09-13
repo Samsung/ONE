@@ -6,7 +6,6 @@ operand {
     dim: 1
     dim: 1440
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Mul/Square"
@@ -16,7 +15,6 @@ operand {
     dim: 1
     dim: 1440
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Mean/Axis"
@@ -27,7 +25,6 @@ operand {
     tag: "explicit"
     arg: "-1"
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Mean/MeanSquare"
@@ -37,7 +34,6 @@ operand {
     dim: 1
     dim: 1
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Add/Epsilon"
@@ -48,7 +44,6 @@ operand {
     tag: "explicit"
     arg: "1e-06"
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Add/MeanSquare_plus_eps"
@@ -58,7 +53,6 @@ operand {
     dim: 1
     dim: 1
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Sqrt/RMS"
@@ -68,7 +62,6 @@ operand {
     dim: 1
     dim: 1
   }
-  is_variable: false
 }
 operand {
   name: "RmsNorm/Mul/RmsNorm"
@@ -78,7 +71,6 @@ operand {
     dim: 1
     dim: 1440
   }
-  is_variable: false
 }
 operation {
   type: "Mul"
