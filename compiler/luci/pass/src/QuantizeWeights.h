@@ -44,6 +44,7 @@ private:
   void visit(luci::CircleConv2D *node);
   void visit(luci::CircleDepthwiseConv2D *node);
   void visit(luci::CircleInstanceNorm *node);
+  void visit(luci::CircleRmsNorm *node);
   void visit(luci::CirclePRelu *node);
   void visit(luci::CircleTransposeConv *node);
   void visit(luci::CircleFullyConnected *node);

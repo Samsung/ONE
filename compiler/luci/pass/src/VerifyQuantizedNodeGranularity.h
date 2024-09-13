@@ -93,6 +93,8 @@ private:
 
   virtual bool visit(const luci::CircleInstanceNorm *node) = 0;
 
+  virtual bool visit(const luci::CircleRmsNorm *node) = 0;
+
   bool visit(const luci::CirclePack *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
@@ -511,6 +513,15 @@ private:
     return true;
   }
 
+  bool visit(const luci::CircleRmsNorm *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
+    RETURN_FALSE_UNLESS(is_cwq_const(node->gamma(), rank(node->gamma()) - 1))
+    RETURN_FALSE_UNLESS(is_cwq_const(node->beta(), rank(node->beta()) - 1))
+    return true;
+  }
+
   bool visit(const luci::CirclePRelu *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
@@ -587,6 +598,15 @@ private:
   }
 
   bool visit(const luci::CircleInstanceNorm *node)
+  {
+    RETURN_FALSE_UNLESS(is_lwq(node))
+    RETURN_FALSE_UNLESS(is_lwq(node->input()))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->gamma()))
+    RETURN_FALSE_UNLESS(is_lwq_const(node->beta()))
+    return true;
+  }
+
+  bool visit(const luci::CircleRmsNorm *node)
   {
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
