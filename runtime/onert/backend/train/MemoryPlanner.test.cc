@@ -178,7 +178,7 @@ TEST(FirstFitPlanner, disposable_claim_release_test)
   });
 }
 
-TEST(FirstFitPlanner, disposable_neg_release_non_existing_index)
+TEST(FirstFitPlanner, neg_disposable_release_non_existing_index)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
 
@@ -203,7 +203,7 @@ TEST(FirstFitPlanner, disposable_neg_release_non_existing_index)
   });
 }
 
-TEST(FirstFitPlanner, disposable_neg_release_twice)
+TEST(FirstFitPlanner, neg_disposable_release_twice)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
 
