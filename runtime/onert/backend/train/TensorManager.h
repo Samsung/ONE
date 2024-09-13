@@ -61,6 +61,7 @@ public:
   void releaseGradientPlan(const ir::OperandIndex &ind);
   void claimDisposableBackPropPlan(const DisposableTensorIndex &ind);
   void releaseDisposableBackPropPlan(const DisposableTensorIndex &ind);
+  // TODO Add member functions related to LayerScopeMemoryManager
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
@@ -68,6 +69,8 @@ private:
   std::unique_ptr<MemoryManager> _back_prop_mgr;
   std::unique_ptr<MemoryManager> _gradient_mgr;
   std::unique_ptr<DisposableMemoryManager> _disposable_back_prop_mgr;
+  // TODO: enable _layer_scope_mgr
+  // std::unique_ptr<LayerScopeMemoryManager> _layer_scope_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 };
 
