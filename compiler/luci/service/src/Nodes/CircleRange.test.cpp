@@ -95,3 +95,56 @@ TEST(ShapeRuleTest, range_zero_delta_NEG)
 
   ASSERT_ANY_THROW(shape_inf_rule.infer(&range, shape));
 }
+
+TEST(ShapeRuleTest, range_non_const_param)
+{
+  luci::CircleInput start, limit, delta;
+  luci::CircleRange range;
+
+  start.dtype(loco::DataType::S32);
+  start.shape({1});
+  start.shape_status(luci::ShapeStatus::VALID);
+
+  limit.dtype(loco::DataType::S32);
+  limit.shape({1});
+  limit.shape_status(luci::ShapeStatus::VALID);
+
+  delta.dtype(loco::DataType::S32);
+  delta.shape({1});
+  delta.shape_status(luci::ShapeStatus::VALID);
+
+  range.start(&start);
+  range.limit(&limit);
+  range.delta(&delta);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&range, shape));
+  ASSERT_EQ(1, shape.rank());
+  ASSERT_FALSE(shape.dim(0).known());
+  ASSERT_EQ(0, shape.dim(0).value());
+}
+
+TEST(ShapeRuleTest, range_nullptr_start_NEG)
+{
+  luci::CircleInput limit, delta;
+  luci::CircleRange range;
+
+  limit.dtype(loco::DataType::S32);
+  limit.shape({1});
+  limit.shape_status(luci::ShapeStatus::VALID);
+
+  delta.dtype(loco::DataType::S32);
+  delta.shape({1});
+  delta.shape_status(luci::ShapeStatus::VALID);
+
+  range.start(nullptr);
+  range.limit(&limit);
+  range.delta(&delta);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&range, shape));
+}

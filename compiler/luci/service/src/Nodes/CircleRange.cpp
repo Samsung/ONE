@@ -43,21 +43,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleRange *node)
 
   if (start_node == nullptr || limit_node == nullptr || delta_node == nullptr)
   {
-    // We use shape from the node itself
-    loco::TensorShape shape;
-    shape.rank(node->rank());
-    for (uint32_t r = 0; r < node->rank(); ++r)
-    {
-      // TODO remove this copy from `use_own(node);`
-      // Shape inference rules in this file did not consider unknown dimension.
-      // If some node has unknown dimension, 0 is inserted and wrong shape
-      // inference was done as a result.
-      // To fix this, new shape inference algorithm is being implemented.
-      // Until new inference algorithm is fully implemented, unknown dimension
-      // would be represented as 1 along with TFLite expression.
-      shape.dim(r) = node->dim(r).known() ? node->dim(r).value() : 1;
-    }
-    return shape;
+    return output_shape;
   }
 
   double start = 0, limit = 0, delta = 0;
