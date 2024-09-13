@@ -252,19 +252,6 @@ std::unique_ptr<AclFunction> asAclFunction(std::unique_ptr<::arm_compute::IFunct
   return std::make_unique<AclFunction>(std::move(layer));
 }
 
-ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout)
-{
-  switch (data_layout)
-  {
-    case ::arm_compute::DataLayout::NHWC:
-      return ir::Layout::NHWC;
-    case ::arm_compute::DataLayout::NCHW:
-      return ir::Layout::NCHW;
-    default:
-      return ir::Layout::UNKNOWN;
-  }
-}
-
 ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
 {
   switch (data_type)

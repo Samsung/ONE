@@ -73,7 +73,6 @@ std::unique_ptr<T_Function> asFunction(std::unique_ptr<::arm_compute::IFunction>
   return std::make_unique<T_Function>(std::move(fn));
 }
 
-ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout);
 ir::DataType asRuntimeDataType(::arm_compute::DataType data_type);
 
 arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_type_ir);
