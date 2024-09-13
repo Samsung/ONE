@@ -69,6 +69,8 @@ clean_envir()
 
 trap_err_onexit()
 {
+  clean_envir
+
   if grep -q "Only either of option type is allowed: positional or optional" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
@@ -107,6 +109,8 @@ cp onecc_neg_038.py "../backends/command/${BACKEND_NAME}/codegen.py"
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
+
+clean_envir
 
 echo "${filename_ext} FAILED"
 exit 255
