@@ -17,6 +17,8 @@
 
 #include "common.h"
 
+#include <ggml.h>
+
 bool tensorInfoEqual(const nnfw_tensorinfo &info1, const nnfw_tensorinfo &info2)
 {
   if (info1.dtype != info2.dtype)
@@ -37,4 +39,24 @@ uint64_t tensorInfoNumElements(const nnfw_tensorinfo &ti)
     n *= ti.dims[i];
   }
   return n;
+}
+
+std::vector<uint8_t> quantData(const std::vector<float> &buf_val, const circle::TensorType type)
+{
+  switch (type)
+  {
+    case circle::TensorType::TensorType_GGML_Q4_0:
+    {
+      size_t num_elems = buf_val.size();
+      const size_t block_size = ggml_blck_size(GGML_TYPE_Q4_0);
+      const int64_t num_block = num_elems / block_size;
+      const size_t block_struct_size = ggml_type_size(GGML_TYPE_Q4_0);
+
+      auto buf = std::vector<uint8_t>(num_block * block_struct_size);
+      ggml_quantize_chunk(GGML_TYPE_Q4_0, buf_val.data(), buf.data(), 0, 1, num_elems, nullptr);
+      return buf;
+    }
+    default:
+      throw std::runtime_error("Unsupported tensor type");
+  }
 }

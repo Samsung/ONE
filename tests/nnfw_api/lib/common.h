@@ -19,8 +19,10 @@
 
 #include <gtest/gtest.h>
 #include <nnfw.h>
+#include <circle_schema_generated.h>
 
 bool tensorInfoEqual(const nnfw_tensorinfo &info1, const nnfw_tensorinfo &info2);
 uint64_t tensorInfoNumElements(const nnfw_tensorinfo &info);
+std::vector<uint8_t> quantData(const std::vector<float> &buf_val, const circle::TensorType type);
 
 #endif // __NNFW_API_TEST_COMMON_H__
