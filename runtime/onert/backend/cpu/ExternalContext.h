@@ -40,11 +40,6 @@ public:
   {
     setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
   }
-  ~ExternalContext()
-  {
-    if (_ggml_context)
-      ggml_free(_ggml_context);
-  }
 
   void setMaxNumThreads(int max_num_threads)
   {
@@ -54,14 +49,16 @@ public:
   }
 
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
-  void init_ggml_context()
+  void initGgmlContext()
   {
-    _ggml_context = ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true});
+    if (_ggml_context == nullptr)
+      _ggml_context = std::unique_ptr<ggml_context, decltype(&ggml_free)>(
+        ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true}), &ggml_free);
   }
 
 private:
   const std::unique_ptr<ruy::Context> _ruy_context;
-  struct ggml_context *_ggml_context;
+  std::unique_ptr<ggml_context, decltype(&ggml_free)> _ggml_context{nullptr, &ggml_free};
 };
 
 } // namespace cpu

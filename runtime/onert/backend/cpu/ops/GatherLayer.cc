@@ -40,7 +40,7 @@ void GatherLayer::configure(const IPortableTensor *input, const IPortableTensor 
   _ctx = ctx;
 
   if (_input->data_type() == OperandType::QUANT_GGML_Q4_0)
-    ctx->init_ggml_context();
+    ctx->initGgmlContext();
 }
 
 template <typename InputType> void GatherLayer::runByInputType()
