@@ -44,6 +44,7 @@
 #include "arm_compute/core/Validate.h"
 #include "arm_compute/core/utils/misc/ShapeCalculatorEx.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
+#include "arm_compute/core/CL/CLKernelLibrary.h"
 
 #include "src/core/helpers/AutoConfiguration.h"
 
@@ -164,7 +165,7 @@ void CLDirectTransposeConvLayer::configure(const CLCompileContext &compile_conte
   _original_weights = weights;
   _flip_axis.allocator()->init(TensorInfo(TensorShape(2U), 1, DataType::U32));
   _weights_flipped.allocator()->init(weights->info()->clone()->set_data_layout(data_layout));
-  _flip_weights.configure(compile_context, weights, &_weights_flipped, &_flip_axis);
+  _flip_weights.configure(compile_context, weights, &_weights_flipped, &_flip_axis, false);
 
   auto out_dims = transposeconv_output_dimensions(
     input->info()->dimension(idx_w), input->info()->dimension(idx_h),

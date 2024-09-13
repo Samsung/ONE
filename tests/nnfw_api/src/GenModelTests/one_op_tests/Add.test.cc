@@ -293,7 +293,7 @@ TEST_F(GenModelTest, neg_OneOp_Add_VarToVarInt16)
   cgen.setInputsAndOutputs({lhs, rhs}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  // _context->addTestCase(uniformTCD<int8_t>({{1, 3, 2, 4}, {5, -4, -7, 4}}, {{0, -32, -46, 2}}));
+  _context->addTestCase(uniformTCD<int8_t>({{1, 3, 2, 4}, {5, -4, -7, 4}}, {{0, -32, -46, 2}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
   _context->expectFailCompile();
 

@@ -50,45 +50,15 @@
 #include "arm_compute/runtime/CL/functions/CLGEMMLowpMatrixMultiplyCore.h"
 #include "arm_compute/runtime/IWeightsManager.h"
 #include "arm_compute/runtime/MemoryGroup.h"
-#include "src/core/CL/kernels/CLTransposeKernel.h"
+#include "arm_compute/runtime/CL/functions/CLTranspose.h"
 
 namespace arm_compute
 {
-/** Basic function to reshape the weights of Fully Connected layer with OpenCL. This function calls
- * the following kernels:
- *
- *  -# @ref CLTransposeKernel
- *
- * @note  The fully connected layer accepts "weights" tensors only with 2 dimensions.
- */
-class CLFullyConnectedLayerReshapeWeightsEx : public ICLSimpleFunction
-{
-public:
-  /** Set the input and output tensors.
-   *
-   * @param[in]  input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * QASYMM8/F16/F32.
-   * @param[out] output Destination tensor which stores the transposed input tensor. Data type
-   * supported: Same as @p input.
-   */
-  void configure(const ICLTensor *input, ICLTensor *output);
-  /** Static function to check if given info will lead to a valid configuration of @ref
-   * CLFullyConnectedLayerReshapeWeightsEx
-   *
-   * @param[in] input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * QASYMM8/F16/F32.
-   * @param[in] output Destination tensor which stores the transposed input tensor. Data type
-   * supported: Same as @p input.
-   *
-   * @return a status
-   */
-  static Status validate(const ITensorInfo *input, const ITensorInfo *output);
-};
 
 namespace weights_transformations
 {
 /** Basic function to manage the reshape weights generated from @ref
- * CLFullyConnectedLayerReshapeWeightsEx */
+ * CLTranspose */
 class CLFullyConnectedLayerReshapeWeightsExManaged : public ITransformWeights
 {
 public:
@@ -118,7 +88,7 @@ public:
 private:
   static constexpr uint32_t _uid = 0x0;
   CLTensor _output{};
-  CLFullyConnectedLayerReshapeWeightsEx _func{};
+  CLTranspose _func{};
 };
 } // namespace weights_transformations
 
@@ -209,7 +179,7 @@ private:
   weights_transformations::CLFullyConnectedLayerReshapeWeightsExManaged
     _reshape_weights_managed_function;
   CLFlattenLayer _flatten_layer;
-  CLFullyConnectedLayerReshapeWeightsEx _reshape_weights_function;
+  CLTranspose _reshape_weights_function;
   CLGEMM _mm_gemm;
   CLGEMMLowpMatrixMultiplyCore _mm_gemmlowp;
   CLTensor _flatten_output;

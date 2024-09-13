@@ -50,46 +50,16 @@
 #include "arm_compute/runtime/CL/CLTensor.h"
 #include "arm_compute/runtime/CL/functions/CLGEMMLowpMatrixMultiplyCore.h"
 #include "arm_compute/runtime/MemoryGroup.h"
-#include "src/core/CL/kernels/CLTransposeKernel.h"
+#include "arm_compute/runtime/CL/functions/CLTranspose.h"
 
 namespace arm_compute
 {
-/** Basic function to reshape the weights of Fully Connected layer with OpenCL. This function calls
- * the following kernels:
- *
- *  -# @ref CLTransposeKernel
- *
- * @note  The fully connected layer accepts "weights" tensors only with 2 dimensions.
- */
-class CLFullyConnectedHybridLayerReshapeWeights : public ICLSimpleFunction
-{
-public:
-  /** Set the input and output tensors.
-   *
-   * @param[in]  input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * S8.
-   * @param[out] output Destination tensor which stores the transposed input tensor. Data type
-   * supported: Same as @p input.
-   */
-  void configure(const ICLTensor *input, ICLTensor *output);
-  /** Static function to check if given info will lead to a valid configuration of @ref
-   * CLFullyConnectedHybridLayerReshapeWeights
-   *
-   * @param[in] input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * S8.
-   * @param[in] output Destination tensor which stores the transposed input tensor. Data type
-   * supported: Same as @p input.
-   *
-   * @return a status
-   */
-  static Status validate(const ITensorInfo *input, const ITensorInfo *output);
-};
 
 /** Basic function to compute a Fully Connected layer on OpenCL. This function calls the following
  * OpenCL kernels:
  *
  *  -# @ref CLIm2ColKernel (called when the input comes from a convolutional layer)
- *  -# @ref CLFullyConnectedHybridLayerReshapeWeights (if @p are_weights_reshaped is set to false
+ *  -# @ref CLTranspose (if @p are_weights_reshaped is set to false
  * and transpose_weights is set to true ) (called once)
  *  -# @ref CLGEMMLowpMatrixMultiplyCore (if quantized symmetric)
  *  -# @ref CLGEMMMatrixAccumulateBiasesKernel (if @p biases is not equal to nullptr)
@@ -165,7 +135,7 @@ private:
                     bool retain_internal_weights);
 
   MemoryGroup _memory_group;
-  CLFullyConnectedHybridLayerReshapeWeights _reshape_weights_kernel;
+  CLTranspose _reshape_weights_kernel;
   CLScaleFactorSymm8Kernel _scale_factor_kernel;
   CLQuantizationSymmetricKernel _quant_input_kernel;
   CLGEMMLowpMatrixMultiplyCore _mm_gemmlowp;

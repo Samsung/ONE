@@ -92,12 +92,16 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
-  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
 
-  assert(_ctx.at(block_size_index).data());
+  if (!_ctx.at(block_size_index).data())
+    throw std::runtime_error("ACL CL does not support dynamic block size for BatchToSpaceND");
+
+  auto block = _ctx.at(block_size_index).asVector<int32_t>();
+  int32_t height = block[0];
+  int32_t width = block[1];
 
   auto fn = acl_common::generateLayer<arm_compute::CLBatchToSpaceLayer>(
-    ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
+    ifm_tensor->handle(), width, height, ofm_tensor->handle());
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -121,6 +125,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   {
     case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
     {
+      arm_compute::CLArithmeticAddition::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                  ofm_tensor->info(),
+                                                  arm_compute::ConvertPolicy::SATURATE, act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLArithmeticAddition>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE, act_info);
@@ -128,6 +136,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
     {
+      arm_compute::CLArithmeticSubtraction::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                     ofm_tensor->info(),
+                                                     arm_compute::ConvertPolicy::SATURATE, act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLArithmeticSubtraction>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE, act_info);
@@ -135,6 +147,11 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
     {
+      arm_compute::CLPixelWiseMultiplication::validate(
+        lhs_tensor->info(), rhs_tensor->info(), ofm_tensor->info(), 1.0,
+        arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_NEAREST_EVEN,
+        act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLPixelWiseMultiplication>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
         arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_NEAREST_EVEN,
@@ -143,6 +160,9 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
     {
+      arm_compute::CLArithmeticDivision::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                  ofm_tensor->info(), act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLArithmeticDivision>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), act_info);
       break;
@@ -1529,7 +1549,7 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   }
 
   auto fn = acl_common::generateLayer<arm_compute::CLReverse>(
-    ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle());
+    ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle(), false);
 
   _return_fn = asAclFunction(std::move(fn));
 }

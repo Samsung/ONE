@@ -118,12 +118,16 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
-  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
 
-  assert(_ctx.at(block_size_index).data());
+  if (!_ctx.at(block_size_index).data())
+    throw std::runtime_error("ACL NEON does not support dynamic block size for BatchToSpaceND");
+
+  auto block = _ctx.at(block_size_index).asVector<int32_t>();
+  int32_t height = block[0];
+  int32_t width = block[1];
 
   auto fn = acl_common::generateLayer<arm_compute::NEBatchToSpaceLayer>(
-    ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
+    ifm_tensor->handle(), width, height, ofm_tensor->handle());
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -145,6 +149,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   {
     case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
     {
+      arm_compute::NEArithmeticAddition::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                  ofm_tensor->info(),
+                                                  arm_compute::ConvertPolicy::SATURATE)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::NEArithmeticAddition>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE);
@@ -152,6 +160,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
     {
+      arm_compute::NEArithmeticSubtraction::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                     ofm_tensor->info(),
+                                                     arm_compute::ConvertPolicy::SATURATE)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::NEArithmeticSubtraction>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE);
@@ -159,6 +171,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
     {
+      arm_compute::NEPixelWiseMultiplication::validate(
+        lhs_tensor->info(), rhs_tensor->info(), ofm_tensor->info(), 1.0,
+        arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_ZERO)
+        .throw_if_error();
       // RoundingPolicy for scale:1.0 is only allowed RoundingPolicy::TO_ZERO
       fn = acl_common::generateLayer<arm_compute::NEPixelWiseMultiplication>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
@@ -167,6 +183,9 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
     {
+      arm_compute::NEElementwiseDivision::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                   ofm_tensor->info())
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::NEElementwiseDivision>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
       break;
