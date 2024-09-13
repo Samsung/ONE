@@ -1,6 +1,7 @@
 set(ONNX_TOOL_FILES
     onnx-dump.py
     onnx-ops.py
+    onnx-si.py
 )
 
 foreach(ONNX_TOOL IN ITEMS ${ONNX_TOOL_FILES})
