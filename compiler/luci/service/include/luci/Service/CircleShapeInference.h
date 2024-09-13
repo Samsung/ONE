@@ -91,7 +91,7 @@ public:
   // loco::TensorShape visit(const luci::CircleLogicalAnd *node) final;
   // loco::TensorShape visit(const luci::CircleLogicalNot *node) final;
   // loco::TensorShape visit(const luci::CircleLogicalOr *node) final;
-  // loco::TensorShape visit(const luci::CircleLogistic *node) final;
+  loco::TensorShape visit(const luci::CircleLogistic *node) final;
   // loco::TensorShape visit(const luci::CircleLogSoftmax *node) final;
   // loco::TensorShape visit(const luci::CircleMatrixDiag *node) final;
   // loco::TensorShape visit(const luci::CircleMatrixSetDiag *node) final;
