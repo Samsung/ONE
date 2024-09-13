@@ -168,14 +168,17 @@ loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::Ci
 
   // TODO support other data type
   LUCI_ASSERT(paddings->dtype() == S32 || paddings->dtype() == S64, "Support int 32/64 for now");
-  LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2");
+  if (paddings->rank() != 2)
+    INTERNAL_EXN("paddings should be rank 2");
 
   int32_t n = paddings->dim(0).value();
   int32_t v = paddings->dim(1).value();
 
-  LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
-  LUCI_ASSERT(n == int32_t(input_shape.rank()),
-              "paddings [n, 2] should have same value of input rank");
+  if (v != 2)
+    INTERNAL_EXN("paddings should be [n, 2]");
+
+  if (n != int32_t(input_shape.rank()))
+    INTERNAL_EXN("paddings [n, 2] should have same value of input rank");
 
   loco::TensorShape output_shape;
 
