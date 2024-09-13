@@ -286,6 +286,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  ROPE = -7,
   RMS_NORM = -6,
   GRU = -5,
   BCQ_GATHER = -4,
@@ -636,6 +637,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RoPEOptions = 249,
   RmsNormOptions = 250,
   GRUOptions = 251,
   BCQGatherOptions = 252,
@@ -1523,6 +1525,15 @@ table InstanceNormOptions {
 
 table RmsNormOptions {
   epsilon:float;
+}
+
+enum RoPEMode : int {
+  GPT_NEOX,
+  GPT_J,
+}
+
+table RoPEOptions {
+  mode: RoPEMode;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
