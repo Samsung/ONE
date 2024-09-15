@@ -113,22 +113,45 @@ $(document).ready(function(){initNavTree('service_2src_2_nodes_2_circle_logistic
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_circle_clone_node_8h.html">CircleCloneNode.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_circle_shape_inference_8h.html">luci/Service/CircleShapeInference.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_circle_clone_node_8h.html">CircleCloneNode.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_circle_shape_inference_helper_8h.html">CircleShapeInferenceHelper.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classluci_1_1_clone_node_let_3_01_c_n_1_1_k_l_m_n_01_4.html#a531863130c3112dde0e7edcebbfefc00">   22</a></span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<a class="code hl_class" href="classluci_1_1_clone_node_let.html">CloneNodeLet&lt;CN::KLMN&gt;::visit</a>(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a> *)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">return</span> _graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a>&gt;();</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classluci_1_1_clone_node_let_3_01_c_n_1_1_k_l_m_n_01_4.html#a531863130c3112dde0e7edcebbfefc00">   25</a></span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<a class="code hl_class" href="classluci_1_1_clone_node_let.html">CloneNodeLet&lt;CN::KLMN&gt;::visit</a>(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a> *)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordflow">return</span> _graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a>&gt;();</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
 </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>sinf</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classluci_1_1sinf_1_1_algorithm.html#a1537ee48f2219edef522ded589b5d0a0">   33</a></span><a class="code hl_class" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> <a class="code hl_function" href="classluci_1_1sinf_1_1_algorithm.html#abc4706e0b6ad799bba4df046b092fc5e">Algorithm::visit</a>(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a> *node)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_x = loco::must_cast&lt;luci::CircleNode *&gt;(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_logistic.html#a0e062686983e7826c0b2c37c0d6580e0">x</a>());</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_shape = <a class="code hl_function" href="namespaceluci_1_1sinf.html#ad447b12ebc79e35e776cbd1c0bb2bc93">circle_shape</a>(input_x);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">return</span> input_shape;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <span class="comment">// namespace sinf</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_circle_clone_node_8h_html"><div class="ttname"><a href="_circle_clone_node_8h.html">CircleCloneNode.h</a></div></div>
+<div class="ttc" id="a_circle_shape_inference_8h_html"><div class="ttname"><a href="_circle_shape_inference_8h.html">CircleShapeInference.h</a></div></div>
+<div class="ttc" id="a_circle_shape_inference_helper_8h_html"><div class="ttname"><a href="_circle_shape_inference_helper_8h.html">CircleShapeInferenceHelper.h</a></div></div>
+<div class="ttc" id="aclassloco_1_1_tensor_shape_html"><div class="ttname"><a href="classloco_1_1_tensor_shape.html">loco::TensorShape</a></div><div class="ttdef"><b>Definition</b> <a href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00028">TensorShape.h:29</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_logistic_html"><div class="ttname"><a href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a></div><div class="ttdoc">LOGISTIC in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h_source.html#l00031">CircleLogistic.h:32</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_logistic_html_a0e062686983e7826c0b2c37c0d6580e0"><div class="ttname"><a href="classluci_1_1_circle_logistic.html#a0e062686983e7826c0b2c37c0d6580e0">luci::CircleLogistic::x</a></div><div class="ttdeci">loco::Node * x(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h_source.html#l00034">CircleLogistic.h:34</a></div></div>
 <div class="ttc" id="aclassluci_1_1_clone_node_let_html"><div class="ttname"><a href="classluci_1_1_clone_node_let.html">luci::CloneNodeLet</a></div><div class="ttdef"><b>Definition</b> <a href="_circle_clone_node_8h_source.html#l00039">CircleCloneNode.h:39</a></div></div>
+<div class="ttc" id="aclassluci_1_1sinf_1_1_algorithm_html_abc4706e0b6ad799bba4df046b092fc5e"><div class="ttname"><a href="classluci_1_1sinf_1_1_algorithm.html#abc4706e0b6ad799bba4df046b092fc5e">luci::sinf::Algorithm::visit</a></div><div class="ttdeci">loco::TensorShape visit(const luci::CircleNode *node) final</div><div class="ttdoc">Default fallback.</div><div class="ttdef"><b>Definition</b> <a href="_circle_shape_inference_8h_source.html#l00042">CircleShapeInference.h:42</a></div></div>
+<div class="ttc" id="anamespaceluci_1_1sinf_html_ad447b12ebc79e35e776cbd1c0bb2bc93"><div class="ttname"><a href="namespaceluci_1_1sinf.html#ad447b12ebc79e35e776cbd1c0bb2bc93">luci::sinf::circle_shape</a></div><div class="ttdeci">loco::TensorShape circle_shape(const luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="_circle_shape_inference_helper_8cpp_source.html#l00143">CircleShapeInferenceHelper.cpp:143</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-compute_2include_2luci__compute_2_depthwise_conv2_d_8h_source.html#l00023">DepthwiseConv2D.h:24</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

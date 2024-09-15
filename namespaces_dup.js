@@ -15,8 +15,8 @@ var namespaces_dup =
     [ "arser", "namespacearser.html", "namespacearser" ],
     [ "AveragePool2D_000", "namespace_average_pool2_d__000.html", "namespace_average_pool2_d__000" ],
     [ "backends", "namespacebackends.html", [
-      [ "get_backend_from_target_conf", "namespacebackends.html#a3331bdac18aa86edf4ba7a4e4dce446e", null ],
       [ "get_list", "namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999", null ],
+      [ "get_value_from_target_conf", "namespacebackends.html#ae2c0dc9f14888673957e4c36029fc88b", null ],
       [ "search_driver", "namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b", null ]
     ] ],
     [ "bino", "namespacebino.html", "namespacebino" ],
@@ -502,14 +502,20 @@ var namespaces_dup =
       [ "_dump_inputoutputs", "namespaceonnx-dump.html#aefbd5a0b00f5c909321fc5558afe56ba", null ],
       [ "_dump_nodes", "namespaceonnx-dump.html#ae5fa21932fe5499ad2415ef91369ca8f", null ],
       [ "_dump_operators", "namespaceonnx-dump.html#aea523e85c3a39dd7135a74db5594bc54", null ],
+      [ "_gather_value_infos", "namespaceonnx-dump.html#afba835ecefdc27e7838fb32a0fc3b2fe", null ],
       [ "_get_attribute_value", "namespaceonnx-dump.html#a93a7ad875ac19383958db4440142bcfb", null ],
       [ "_help_exit", "namespaceonnx-dump.html#a62a1191ac123437be4c8f977c1325a14", null ],
+      [ "_type_format", "namespaceonnx-dump.html#a20346dfd4d7eefa09589d2c966f4df5b", null ],
       [ "main", "namespaceonnx-dump.html#a29808a7af00710ab7a4b7b22b8109cfd", null ]
     ] ],
     [ "onnx-ops", "namespaceonnx-ops.html", [
       [ "_dump_operators", "namespaceonnx-ops.html#a1dd3ac826af809699b0127fbea83a4d1", null ],
       [ "_help_exit", "namespaceonnx-ops.html#afd4b05a277e970dc671dde08d3968291", null ],
       [ "main", "namespaceonnx-ops.html#aaa187e4234a0df97048518b20dca4174", null ]
+    ] ],
+    [ "onnx-si", "namespaceonnx-si.html", [
+      [ "_help_exit", "namespaceonnx-si.html#aa2c59da9ee04e4e92953263236958d15", null ],
+      [ "main", "namespaceonnx-si.html#a9f3debc8e967cdf0e543891031632bca", null ]
     ] ],
     [ "onnx_legalizer", "namespaceonnx__legalizer.html", "namespaceonnx__legalizer" ],
     [ "oops", "namespaceoops.html", "namespaceoops" ],
@@ -625,13 +631,13 @@ var namespaces_dup =
     ] ],
     [ "test_luci_eval", "namespacetest__luci__eval.html", [
       [ "luci_eval_verify", "namespacetest__luci__eval.html#a031d8185f1be6e03a3fbda989a7b9070", null ],
-      [ "luci_eval_verify", "namespacetest__luci__eval.html#ac7f24712340d3488b638d8267c5f6328", null ],
+      [ "luci_eval_verify", "namespacetest__luci__eval.html#ad57bc69f6e5ae58479bf93529886e278", null ],
       [ "recover_fromfile", "namespacetest__luci__eval.html#a033016b5ca8d85015c56f67706e07fe8", null ],
       [ "recover_inputs", "namespacetest__luci__eval.html#a869bc35a187205c11afbee3023ed1373", null ],
       [ "recover_outputs", "namespacetest__luci__eval.html#ab58859b5bab4a4e3b95e52e0d030e07a", null ],
       [ "save_binary_inputs", "namespacetest__luci__eval.html#a640d96b5d00ab853c185725ffe4a140b", null ],
       [ "test_luci_eval", "namespacetest__luci__eval.html#a9a927666210565341f0024ca281c765e", null ],
-      [ "test_luci_eval", "namespacetest__luci__eval.html#a8535a6ca849d5bb86624649fc1abcebb", null ],
+      [ "test_luci_eval", "namespacetest__luci__eval.html#a0a6649ae17820a43c8fe73fc039e5fad", null ],
       [ "test_luci_eval_tol", "namespacetest__luci__eval.html#a6ccfad5e1f12f70feb5c2e391921a5da", null ]
     ] ],
     [ "test_luci_eval_ref", "namespacetest__luci__eval__ref.html", [

@@ -100,6 +100,8 @@ $(document).ready(function(){initNavTree('namespacefmelib_1_1_compute_param.html
 Functions</h2></td></tr>
 <tr class="memitem:a8c88c5acdc62301838cfa23179c1b542" id="r_a8c88c5acdc62301838cfa23179c1b542"><td class="memItemLeft" align="right" valign="top">Tuple[List[float], List[float]]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefmelib_1_1_compute_param.html#a8c88c5acdc62301838cfa23179c1b542">_channelwiseMinMax</a> (<a class="el" href="namespacefmelib_1_1_compute_param.html#adb29a713fa6bb4744ce115e455e2194a">Tensors</a> tensors, int channel)</td></tr>
 <tr class="separator:a8c88c5acdc62301838cfa23179c1b542"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19e981ca5e87a62490049013a04a6728" id="r_a19e981ca5e87a62490049013a04a6728"><td class="memItemLeft" align="right" valign="top">np.ndarray&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefmelib_1_1_compute_param.html#a19e981ca5e87a62490049013a04a6728">getActivationMax</a> (np.ndarray tensor)</td></tr>
+<tr class="separator:a19e981ca5e87a62490049013a04a6728"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -161,6 +163,39 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>        channel_wise_min.append(float(np.min(min_act[:, :, :, c])))</div>
 <div class="line"><span class="lineno">   38</span>        channel_wise_max.append(float(np.max(max_act[:, :, :, c])))</div>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> channel_wise_min, channel_wise_max</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span> </div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a19e981ca5e87a62490049013a04a6728" name="a19e981ca5e87a62490049013a04a6728"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19e981ca5e87a62490049013a04a6728">&#9670;&#160;</a></span>getActivationMax()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> np.ndarray fmelib.ComputeParam.getActivationMax </td>
+          <td>(</td>
+          <td class="paramtype">np.ndarray&#160;</td>
+          <td class="paramname"><em>tensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Get max values of activation.
+:param tensors: a list of numpy array (each is a tensor)
+:return: 1D array of max absolute values for each channel
+</pre> 
+<p class="definition">Definition at line <a class="el" href="_compute_param_8py_source.html#l00042">42</a> of file <a class="el" href="_compute_param_8py_source.html">ComputeParam.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span><span class="keyword">def </span>getActivationMax(tensor: np.ndarray) -&gt; np.ndarray:</div>
+<div class="line"><span class="lineno">   43</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   44</span><span class="stringliteral">    Get max values of activation.</span></div>
+<div class="line"><span class="lineno">   45</span><span class="stringliteral">    :param tensors: a list of numpy array (each is a tensor)</span></div>
+<div class="line"><span class="lineno">   46</span><span class="stringliteral">    :return: 1D array of max absolute values for each channel</span></div>
+<div class="line"><span class="lineno">   47</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   48</span>    <span class="comment"># max along with last dimension</span></div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> np.abs(tensor.reshape(-1, tensor.shape[-1])).max(axis=0)</div>
 </div><!-- fragment -->
 </div>
 </div>

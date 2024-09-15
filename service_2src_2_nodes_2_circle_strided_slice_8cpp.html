@@ -90,18 +90,59 @@ $(document).ready(function(){initNavTree('service_2src_2_nodes_2_circle_strided_
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">CircleStridedSlice.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_circle_clone_node_8h_source.html">CircleCloneNode.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_circle_shape_inference_8h_source.html">luci/Service/CircleShapeInference.h</a>&quot;</code><br />
+<code>#include &quot;Check.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="_circle_clone_node_8h_source.html">CircleCloneNode.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_circle_shape_inference_helper_8h_source.html">CircleShapeInferenceHelper.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_8h_source.html">luci/IR/CircleNode.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="compiler_2loco_2include_2loco_2_i_r_2_data_type_8h_source.html">loco/IR/DataType.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="_node_shape_8h_source.html">loco/IR/NodeShape.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="_internal_exn_8h_source.html">oops/InternalExn.h</a>&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 </div>
 <p><a href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1sinf_1_1_strided_slice_params.html">luci::sinf::StridedSliceParams</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1sinf_1_1_strided_slice_context.html">luci::sinf::StridedSliceContext</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci" id="r_namespaceluci"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html">luci</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceluci_1_1sinf" id="r_namespaceluci_1_1sinf"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html">luci::sinf</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aca9ed8a1bc31893cbc00a6c795f7a22e" id="r_aca9ed8a1bc31893cbc00a6c795f7a22e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">luci::sinf::Clamp</a> (const int32_t v, const int32_t lo, const int32_t hi)</td></tr>
+<tr class="separator:aca9ed8a1bc31893cbc00a6c795f7a22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada00142f5e1d44a0acb255a000942646" id="r_ada00142f5e1d44a0acb255a000942646"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html#ada00142f5e1d44a0acb255a000942646">luci::sinf::StartForAxis</a> (const <a class="el" href="structluci_1_1sinf_1_1_strided_slice_params.html">StridedSliceParams</a> &amp;params, const <a class="el" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> &amp;input_shape, int64_t axis)</td></tr>
+<tr class="separator:ada00142f5e1d44a0acb255a000942646"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4895513abefd2cbadf96fe4d4f1fdbfa" id="r_a4895513abefd2cbadf96fe4d4f1fdbfa"><td class="memItemLeft" align="right" valign="top">int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html#a4895513abefd2cbadf96fe4d4f1fdbfa">luci::sinf::StopForAxis</a> (const <a class="el" href="structluci_1_1sinf_1_1_strided_slice_params.html">StridedSliceParams</a> &amp;params, const <a class="el" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> &amp;input_shape, int64_t axis, int64_t start_for_axis)</td></tr>
+<tr class="separator:a4895513abefd2cbadf96fe4d4f1fdbfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae751dcf8758b6d6ff28a156ff79950ba" id="r_ae751dcf8758b6d6ff28a156ff79950ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structluci_1_1sinf_1_1_strided_slice_params.html">StridedSliceParams</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html#ae751dcf8758b6d6ff28a156ff79950ba">luci::sinf::BuildStridedSliceParams</a> (<a class="el" href="structluci_1_1sinf_1_1_strided_slice_context.html">StridedSliceContext</a> *op_context)</td></tr>
+<tr class="separator:ae751dcf8758b6d6ff28a156ff79950ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:af72f361067bef9d075656b04affaf238" id="r_af72f361067bef9d075656b04affaf238"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html#af72f361067bef9d075656b04affaf238">luci::sinf::kMaxDim</a> = 5</td></tr>
+<tr class="separator:af72f361067bef9d075656b04affaf238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d1149b7cc2c5dd9fca6891e5cec512" id="r_a52d1149b7cc2c5dd9fca6891e5cec512"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html#a52d1149b7cc2c5dd9fca6891e5cec512">luci::sinf::S32</a> = loco::DataType::S32</td></tr>
+<tr class="separator:a52d1149b7cc2c5dd9fca6891e5cec512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

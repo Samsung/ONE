@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('struct_a_neural_networks_operand_type.
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html">NeuralNetworks.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_neural_networks_8h_source.html">NeuralNetworks.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for ANeuralNetworksOperandType:</div>
 <div class="dyncontent">
@@ -113,36 +113,19 @@ Data Fields</h2></td></tr>
 <tr class="separator:gaebe0bf8514de064d1d68e8857a3dccfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8e9b0f8229777661e6005b9d1847f026" id="r_ga8e9b0f8229777661e6005b9d1847f026"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___neural_networks.html#ga8e9b0f8229777661e6005b9d1847f026">dimensionCount</a></td></tr>
 <tr class="separator:ga8e9b0f8229777661e6005b9d1847f026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga72b87e2d8faea1f6a24cc2f8a7649d5c" id="r_ga72b87e2d8faea1f6a24cc2f8a7649d5c"><td class="memItemLeft" align="right" valign="top">const uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___neural_networks.html#ga72b87e2d8faea1f6a24cc2f8a7649d5c">dimensions</a></td></tr>
-<tr class="separator:ga72b87e2d8faea1f6a24cc2f8a7649d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d70bf7a7ea5d2e61e674cf7b3393548" id="r_ga6d70bf7a7ea5d2e61e674cf7b3393548"><td class="memItemLeft" align="right" valign="top">const uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___neural_networks.html#ga6d70bf7a7ea5d2e61e674cf7b3393548">dimensions</a></td></tr>
+<tr class="separator:ga6d70bf7a7ea5d2e61e674cf7b3393548"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaee95637670d7b7179b28a9d5a22f621a" id="r_gaee95637670d7b7179b28a9d5a22f621a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___neural_networks.html#gaee95637670d7b7179b28a9d5a22f621a">scale</a></td></tr>
 <tr class="separator:gaee95637670d7b7179b28a9d5a22f621a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad7e11ae6e4a5c0e338cfe5c9a1e9dbe8" id="r_gad7e11ae6e4a5c0e338cfe5c9a1e9dbe8"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___neural_networks.html#gad7e11ae6e4a5c0e338cfe5c9a1e9dbe8">zeroPoint</a></td></tr>
 <tr class="separator:gad7e11ae6e4a5c0e338cfe5c9a1e9dbe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ANeuralNetworksOperandType describes the type of an operand. This structure is used to describe both scalars and tensors.</p>
-<p>ANeuralNetworksOperandType describes the type of an operand.</p>
-<p>This structure is used to describe both scalars and tensors.</p>
-<p>A tensor operand type with all dimensions specified is "fully
-specified". Whenever possible (i.e., whenever the dimensions are known at model construction time), a tensor operand type should be (but is not required to be) fully specified, in order to enable the best possible performance.</p>
-<p>If a tensor operand's type is not fully specified, the dimensions of the operand are deduced from the operand types and values of the operation for which that operand is an output or from the corresponding <code><a class="el" href="group___neural_networks.html#ggaabbe492c60331b13038e39d4207940e0ad9eb50679d1077710a6a4b3eb5207218">ANEURALNETWORKS_IF</a></code> or <code><a class="el" href="group___neural_networks.html#ggaabbe492c60331b13038e39d4207940e0afdc0927832c42f93845fd9a2361b35f9">ANEURALNETWORKS_WHILE</a></code> operation input operand type in the case of referenced model input operands.</p>
-<p>In the following situations, a tensor operand type must be fully specified:</p><ul>
-<li>
-The operand has a constant value, set by <code><a class="el" href="group___neural_networks.html#gab95e96267e0f955086b87a743dad44ca">ANeuralNetworksModel_setOperandValue</a></code> (with a non-nullptr buffer) or <code><a class="el" href="group___neural_networks.html#gadd7a4261e062051516fd49c7217c20b8">ANeuralNetworksModel_setOperandValueFromMemory</a></code>. </li>
-<li>
-The operand is a model input (see <code><a class="el" href="group___neural_networks.html#ga9bb7cd668b49da24e0c70ee6bf237a40">ANeuralNetworksModel_identifyInputsAndOutputs</a></code>) of the main model within a compilation. A fully specified tensor operand type must either be provided to <code><a class="el" href="group___neural_networks.html#gab4bf35bfd0530a80c1cbd38294bc3007">ANeuralNetworksModel_addOperand</a></code>; or it must be provided to the corresponding <code><a class="el" href="group___neural_networks.html#gaf5540f8785a31b550ba7e7a78eed6a85">ANeuralNetworksExecution_setInput</a></code>, or <code><a class="el" href="group___neural_networks.html#gaa8a30670b12f540765f00b1b6d3be011">ANeuralNetworksExecution_setInputFromMemory</a></code>. EXCEPTION: If the input is optional and omitted (by passing nullptr for buffer to <code><a class="el" href="group___neural_networks.html#gaf5540f8785a31b550ba7e7a78eed6a85">ANeuralNetworksExecution_setInput</a></code>) then it need not have a fully specified tensor operand type. </li>
-<li>
-The operand is a model output (see <code><a class="el" href="group___neural_networks.html#ga9bb7cd668b49da24e0c70ee6bf237a40">ANeuralNetworksModel_identifyInputsAndOutputs</a></code>) of the main model within a compilation and is to be used with <code><a class="el" href="group___neural_networks.html#gaef81e30daa0304832eb728eec95ed8a7">ANeuralNetworksExecution_startComputeWithDependencies</a></code>. A fully specified tensor operand type must either be provided to <code><a class="el" href="group___neural_networks.html#gab4bf35bfd0530a80c1cbd38294bc3007">ANeuralNetworksModel_addOperand</a></code>; or it must be provided to the corresponding <code><a class="el" href="group___neural_networks.html#ga16ce3c18aa2574df91f7b7932bfdf48d">ANeuralNetworksExecution_setOutput</a></code>, or <code><a class="el" href="group___neural_networks.html#ga379a9efd313e22d7d8e1e1bef7c0defb">ANeuralNetworksExecution_setOutputFromMemory</a></code>.</li>
-</ul>
-<p>A tensor operand type of specified rank but some number of unspecified dimensions is represented by setting dimensionCount to the rank and each unspecified dimension to 0.</p>
-<p>Available since API level 27.</p>
-<p>Starting at API level 29, a tensor operand type of unspecified rank is represented by setting dimensionCount to 0 and dimensions to NULL (just as if it were a scalar operand type). </p>
+<div class="textblock"><p>ANeuralNetworksOperandType describes the type of an operand. This structure is used to describe both scalars and tensors. </p>
 
-<p class="definition">Definition at line <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html#l01521">1521</a> of file <a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html">NeuralNetworks.h</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following files:<ul>
-<li>compiler/ann-api/include/<a class="el" href="compiler_2ann-api_2include_2_neural_networks_8h_source.html">NeuralNetworks.h</a></li>
-<li>runtime/onert/api/nnapi/include/<a class="el" href="runtime_2onert_2api_2nnapi_2include_2_neural_networks_8h_source.html">NeuralNetworks.h</a></li>
+<p class="definition">Definition at line <a class="el" href="_neural_networks_8h_source.html#l01521">1521</a> of file <a class="el" href="_neural_networks_8h_source.html">NeuralNetworks.h</a>.</p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>compiler/ann-api/include/<a class="el" href="_neural_networks_8h_source.html">NeuralNetworks.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

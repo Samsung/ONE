@@ -98,7 +98,6 @@ $(document).ready(function(){initNavTree('luci_2service_2src_2_circle_shape_infe
 <div class="textblock"><code>#include &quot;<a class="el" href="luci_2service_2include_2luci_2_service_2_circle_shape_inference_rule_8h_source.html">luci/Service/CircleShapeInferenceRule.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="luci_2service_2src_2_check_8h_source.html">Check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_circle_shape_inference_helper_8h_source.html">CircleShapeInferenceHelper.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_shape_infer___strided_slice_8h_source.html">ShapeInfer_StridedSlice.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_source.html">luci/IR/CircleNodes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_dialect_8h_source.html">luci/IR/CircleDialect.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_source.html">luci/IR/CircleNodeVisitor.h</a>&gt;</code><br />
@@ -120,8 +119,6 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a17b7562c56c39e9f31ee838996cb5615" id="r_a17b7562c56c39e9f31ee838996cb5615"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="luci_2service_2src_2_circle_shape_inference_rule_8cpp.html#a17b7562c56c39e9f31ee838996cb5615">DECLARE_USE_SINGLE</a>(NAME)</td></tr>
 <tr class="separator:a17b7562c56c39e9f31ee838996cb5615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a915318bfe65b1174d8e7038e7842d58e" id="r_a915318bfe65b1174d8e7038e7842d58e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="luci_2service_2src_2_circle_shape_inference_rule_8cpp.html#a915318bfe65b1174d8e7038e7842d58e">GET_RANGE_PARAM</a>(DT)</td></tr>
-<tr class="separator:a915318bfe65b1174d8e7038e7842d58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a17b7562c56c39e9f31ee838996cb5615" name="a17b7562c56c39e9f31ee838996cb5615"></a>
@@ -147,32 +144,11 @@ Macros</h2></td></tr>
 <div class="ttc" id="aclassloco_1_1_node_shape_html"><div class="ttname"><a href="classloco_1_1_node_shape.html">loco::NodeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_node_shape_8h_source.html#l00034">NodeShape.h:35</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a0c5cc60f970e1dd72972fe6c0628faa8"><div class="ttname"><a href="namespaceluci.html#a0c5cc60f970e1dd72972fe6c0628faa8">luci::shape_get</a></div><div class="ttdeci">loco::NodeShape shape_get(const loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="_circle_shape_inference_helper_8cpp_source.html#l00124">CircleShapeInferenceHelper.cpp:124</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_shape_inference_rule_8cpp_source.html#l00200">200</a> of file <a class="el" href="luci_2service_2src_2_circle_shape_inference_rule_8cpp_source.html">CircleShapeInferenceRule.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  202</span>  {                                                                                     \</div>
-<div class="line"><span class="lineno">  203</span>    <span class="keyword">auto</span> inputs_shape = <a class="code hl_function" href="namespaceluci.html#a0c5cc60f970e1dd72972fe6c0628faa8">luci::shape_get</a>(node-&gt;NAME()).template as&lt;loco::TensorShape&gt;(); \</div>
-<div class="line"><span class="lineno">  204</span>    <span class="keywordflow">return</span> <a class="code hl_class" href="classloco_1_1_node_shape.html">loco::NodeShape</a>{inputs_shape};                                               \</div>
-<div class="line"><span class="lineno">  205</span>  }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a915318bfe65b1174d8e7038e7842d58e" name="a915318bfe65b1174d8e7038e7842d58e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a915318bfe65b1174d8e7038e7842d58e">&#9670;&#160;</a></span>GET_RANGE_PARAM</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define GET_RANGE_PARAM</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">DT</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  start = start_node-&gt;scalar&lt;DT&gt;(); \</div>
-<div class="line">  limit = limit_node-&gt;scalar&lt;DT&gt;(); \</div>
-<div class="line">  delta = delta_node-&gt;scalar&lt;DT&gt;();</div>
+<p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_shape_inference_rule_8cpp_source.html#l00199">199</a> of file <a class="el" href="luci_2service_2src_2_circle_shape_inference_rule_8cpp_source.html">CircleShapeInferenceRule.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  201</span>  {                                                                                     \</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keyword">auto</span> inputs_shape = <a class="code hl_function" href="namespaceluci.html#a0c5cc60f970e1dd72972fe6c0628faa8">luci::shape_get</a>(node-&gt;NAME()).template as&lt;loco::TensorShape&gt;(); \</div>
+<div class="line"><span class="lineno">  203</span>    <span class="keywordflow">return</span> <a class="code hl_class" href="classloco_1_1_node_shape.html">loco::NodeShape</a>{inputs_shape};                                               \</div>
+<div class="line"><span class="lineno">  204</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

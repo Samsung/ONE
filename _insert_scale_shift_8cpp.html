@@ -95,8 +95,12 @@ $(document).ready(function(){initNavTree('_insert_scale_shift_8cpp.html',''); in
   <div class="headertitle"><div class="title">InsertScaleShift.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_insert_scale_shift_8h_source.html">InsertScaleShift.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &quot;<a class="el" href="_insert_scale_shift_8h_source.html">InsertScaleShift.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html">EqualizePattern.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_support_8_misc_8h_source.html">Support.Misc.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_8h_source.html">luci/IR/CircleNode.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_source.html">luci/IR/CircleNodeVisitor.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_circle_node_origin_8h_source.html">luci/Profile/CircleNodeOrigin.h</a>&gt;</code><br />
@@ -142,271 +146,369 @@ Macros</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (not(COND))                \</div>
 <div class="line">    <span class="keywordflow">throw</span> std::runtime_error(MSG);</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_insert_scale_shift_8cpp_source.html#l00026">26</a> of file <a class="el" href="_insert_scale_shift_8cpp_source.html">InsertScaleShift.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span> </div>
-<div class="line"><span class="lineno">   40</span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *create_scale_or_shift(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> std::vector&lt;float&gt; &amp;val,</div>
-<div class="line"><span class="lineno">   41</span>                                          <span class="keyword">const</span> std::string &amp;code)</div>
-<div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<p class="definition">Definition at line <a class="el" href="_insert_scale_shift_8cpp_source.html#l00031">31</a> of file <a class="el" href="_insert_scale_shift_8cpp_source.html">InsertScaleShift.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>std::vector&lt;float&gt; reciprocal(<span class="keyword">const</span> std::vector&lt;float&gt; &amp;val)</div>
+<div class="line"><span class="lineno">   38</span>{</div>
+<div class="line"><span class="lineno">   39</span>  std::vector&lt;float&gt; res(val.size());</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; res.size(); i++)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (val[i] == 0.0)</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Scale is zero. Divide-by-zero error.&quot;</span>);</div>
 <div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_define" href="_insert_scale_shift_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(node-&gt;rank() == 4, <span class="stringliteral">&quot;Node rank is not four&quot;</span>);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="comment">// Assume NHWC (index of C: 3)</span></div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">auto</span> channel_size = node-&gt;dim(3).value();</div>
-<div class="line"><span class="lineno">   49</span>  <a class="code hl_define" href="_insert_scale_shift_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(val.size() == channel_size, <span class="stringliteral">&quot;Channel and scale/shift size mismatch&quot;</span>);</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <span class="comment">// Create parameter</span></div>
-<div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> param = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>()-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
+<div class="line"><span class="lineno">   45</span>    res[i] = 1.0 / val[i];</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   48</span>}</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span><span class="keywordtype">bool</span> calculate_smooth_quant_scale(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p)</div>
+<div class="line"><span class="lineno">   51</span>{</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() != 0)</div>
 <div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    param-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;_&quot;</span> + <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> + <span class="stringliteral">&quot;_param&quot;</span>);</div>
-<div class="line"><span class="lineno">   55</span>    param-&gt;dtype(loco::DataType::FLOAT32);</div>
-<div class="line"><span class="lineno">   56</span>    param-&gt;rank(1);</div>
-<div class="line"><span class="lineno">   57</span>    param-&gt;dim(0).set(channel_size);</div>
-<div class="line"><span class="lineno">   58</span>    param-&gt;size&lt;loco::DataType::FLOAT32&gt;(channel_size);</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; channel_size; i++)</div>
-<div class="line"><span class="lineno">   60</span>    {</div>
-<div class="line"><span class="lineno">   61</span>      param-&gt;at&lt;loco::DataType::FLOAT32&gt;(i) = val[i];</div>
-<div class="line"><span class="lineno">   62</span>    }</div>
-<div class="line"><span class="lineno">   63</span>    param-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
-<div class="line"><span class="lineno">   64</span>    luci::add_origin(param, luci::get_origin(node));</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  <span class="comment">// Create Scale/Shift Op</span></div>
-<div class="line"><span class="lineno">   68</span>  <span class="keyword">auto</span> ss = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>()-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a>&gt;(2, 1);</div>
-<div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    ss-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;_&quot;</span> + <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a>);</div>
-<div class="line"><span class="lineno">   71</span>    ss-&gt;dtype(loco::DataType::FLOAT32);</div>
-<div class="line"><span class="lineno">   72</span>    ss-&gt;rank(node-&gt;rank());</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;rank(); i++)</div>
-<div class="line"><span class="lineno">   74</span>      ss-&gt;dim(i).set(node-&gt;dim(i).value());</div>
-<div class="line"><span class="lineno">   75</span>    ss-&gt;custom_code(code);</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>    ss-&gt;inputs(0, node);</div>
-<div class="line"><span class="lineno">   78</span>    ss-&gt;inputs(1, param);</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    ss-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
-<div class="line"><span class="lineno">   81</span>    luci::add_origin(ss, luci::get_origin(node));</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">return</span> ss;</div>
-<div class="line"><span class="lineno">   85</span>}</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>std::vector&lt;float&gt; reciprocal(<span class="keyword">const</span> std::vector&lt;float&gt; &amp;val)</div>
-<div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  std::vector&lt;float&gt; res(val.size());</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; res.size(); i++)</div>
-<div class="line"><span class="lineno">   91</span>  {</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> (val[i] == 0.0)</div>
-<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Scale is zero. Divide-by-zero error.&quot;</span>);</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;scale should be empty at this moment.&quot;</span>);</div>
+<div class="line"><span class="lineno">   55</span>  }</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *weight = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
+<div class="line"><span class="lineno">   59</span>  {</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
+<div class="line"><span class="lineno">   61</span>    {</div>
+<div class="line"><span class="lineno">   62</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a> = loco::must_cast&lt;luci::CircleConv2D *&gt;(node);</div>
+<div class="line"><span class="lineno">   63</span>      weight = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter());</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">case</span> luci::CircleOpcode::DEPTHWISE_CONV_2D:</div>
+<div class="line"><span class="lineno">   67</span>    {</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a> = loco::must_cast&lt;luci::CircleDepthwiseConv2D *&gt;(node);</div>
+<div class="line"><span class="lineno">   69</span>      weight = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter());</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   71</span>    }</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">case</span> luci::CircleOpcode::FULLY_CONNECTED:</div>
+<div class="line"><span class="lineno">   73</span>    {</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keyword">auto</span> fc = loco::must_cast&lt;luci::CircleFullyConnected *&gt;(node);</div>
+<div class="line"><span class="lineno">   75</span>      weight = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(fc-&gt;weights());</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   77</span>    }</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TRANSPOSE_CONV:</div>
+<div class="line"><span class="lineno">   79</span>    {</div>
+<div class="line"><span class="lineno">   80</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a> = loco::must_cast&lt;luci::CircleTransposeConv *&gt;(node);</div>
+<div class="line"><span class="lineno">   81</span>      weight = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter());</div>
+<div class="line"><span class="lineno">   82</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   83</span>    }</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   85</span>    {</div>
+<div class="line"><span class="lineno">   86</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;(calculate_smooth_quant_scale) NYI operator: &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">   87</span>    }</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">if</span> (not weight)</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (weight-&gt;dtype() != loco::DataType::FLOAT32)</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    res[i] = 1.0 / val[i];</div>
-<div class="line"><span class="lineno">   96</span>  }</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">   98</span>}</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>std::vector&lt;float&gt; <a class="code hl_enumvalue" href="namespacennc.html#a958b56e423709246f446a0dd3e7255a9adabe6e597b70e5760826aea1dcc564f7">minus</a>(<span class="keyword">const</span> std::vector&lt;float&gt; &amp;val)</div>
-<div class="line"><span class="lineno">  101</span>{</div>
-<div class="line"><span class="lineno">  102</span>  std::vector&lt;float&gt; res(val.size());</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; res.size(); i++)</div>
-<div class="line"><span class="lineno">  104</span>  {</div>
-<div class="line"><span class="lineno">  105</span>    res[i] = -val[i];</div>
-<div class="line"><span class="lineno">  106</span>  }</div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  108</span>}</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span><span class="comment">// Create PreScale and insert it after node</span></div>
-<div class="line"><span class="lineno">  111</span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *create_pre_scale(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p)</div>
-<div class="line"><span class="lineno">  112</span>{</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keyword">auto</span> param = reciprocal(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>);</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">return</span> create_scale_or_shift(node, param, <span class="stringliteral">&quot;PreScale&quot;</span>);</div>
-<div class="line"><span class="lineno">  116</span>}</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span><span class="comment">// Create PostScale and insert it after node</span></div>
-<div class="line"><span class="lineno">  119</span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *create_post_scale(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p)</div>
-<div class="line"><span class="lineno">  120</span>{</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">return</span> create_scale_or_shift(node, p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>, <span class="stringliteral">&quot;PostScale&quot;</span>);</div>
-<div class="line"><span class="lineno">  122</span>}</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span><span class="comment">// Create PreShift and insert it after node</span></div>
-<div class="line"><span class="lineno">  125</span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *create_pre_shift(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p)</div>
-<div class="line"><span class="lineno">  126</span>{</div>
-<div class="line"><span class="lineno">  127</span>  <span class="keyword">auto</span> param = <a class="code hl_enumvalue" href="namespacennc.html#a958b56e423709246f446a0dd3e7255a9adabe6e597b70e5760826aea1dcc564f7">minus</a>(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a92dede5c9ac7ff0dacd861a39552f4a3">shift</a>);</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">return</span> create_scale_or_shift(node, param, <span class="stringliteral">&quot;PreShift&quot;</span>);</div>
-<div class="line"><span class="lineno">  130</span>}</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span><span class="comment">// Create PostShift and insert it after node</span></div>
-<div class="line"><span class="lineno">  133</span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *create_post_shift(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p)</div>
-<div class="line"><span class="lineno">  134</span>{</div>
-<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">return</span> create_scale_or_shift(node, p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a92dede5c9ac7ff0dacd861a39552f4a3">shift</a>, <span class="stringliteral">&quot;PostShift&quot;</span>);</div>
-<div class="line"><span class="lineno">  136</span>}</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span><span class="keyword">struct </span>InsertScaleShiftVisitor final : <span class="keyword">public</span> <a class="code hl_struct" href="structluci_1_1_circle_node_mutable_visitor.html">luci::CircleNodeMutableVisitor</a>&lt;void&gt;</div>
-<div class="line"><span class="lineno">  139</span>{</div>
-<div class="line"><span class="lineno">  140</span>  InsertScaleShiftVisitor(<span class="keyword">const</span> <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p) : _pattern(p)</div>
-<div class="line"><span class="lineno">  141</span>  {</div>
-<div class="line"><span class="lineno">  142</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  143</span>  }</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keyword">const</span> <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *_pattern = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">  149</span>  <span class="comment">// Generate scale/shift Ops and return the last one</span></div>
-<div class="line"><span class="lineno">  150</span>  <span class="comment">// lnode: &#39;front&#39; of EqualizePattern</span></div>
-<div class="line"><span class="lineno">  151</span>  <span class="comment">// Never return nullptr</span></div>
-<div class="line"><span class="lineno">  152</span>  <a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *gen_scale_shift(<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *lnode)<span class="keyword"> const</span></div>
-<div class="line"><span class="lineno">  153</span><span class="keyword">  </span>{</div>
-<div class="line"><span class="lineno">  154</span>    <span class="keyword">auto</span> node = loco::must_cast&lt;luci::CircleNode *&gt;(lnode);</div>
-<div class="line"><span class="lineno">  155</span> </div>
-<div class="line"><span class="lineno">  156</span>    assert(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() == _pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">front</a>); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *bottom = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">switch</span> (_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#ac394d1bcd56e7a13938f178a6b4bd90b">type</a>)</div>
-<div class="line"><span class="lineno">  161</span>    {</div>
-<div class="line"><span class="lineno">  162</span>      <span class="keywordflow">case</span> EqualizePattern::Type::ScaleOnly:</div>
-<div class="line"><span class="lineno">  163</span>      {</div>
-<div class="line"><span class="lineno">  164</span>        <span class="keyword">auto</span> post_scale = create_post_scale(node, _pattern);</div>
-<div class="line"><span class="lineno">  165</span>        bottom = create_pre_scale(post_scale, _pattern);</div>
-<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  167</span>      }</div>
-<div class="line"><span class="lineno">  168</span>      <span class="keywordflow">case</span> EqualizePattern::Type::ShiftOnly:</div>
-<div class="line"><span class="lineno">  169</span>      {</div>
-<div class="line"><span class="lineno">  170</span>        <span class="keyword">auto</span> post_shift = create_post_shift(node, _pattern);</div>
-<div class="line"><span class="lineno">  171</span>        bottom = create_pre_shift(post_shift, _pattern);</div>
-<div class="line"><span class="lineno">  172</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  173</span>      }</div>
-<div class="line"><span class="lineno">  174</span>      <span class="keywordflow">case</span> EqualizePattern::Type::ScaleShift:</div>
-<div class="line"><span class="lineno">  175</span>      {</div>
-<div class="line"><span class="lineno">  176</span>        <span class="keyword">auto</span> post_scale = create_post_scale(node, _pattern);</div>
-<div class="line"><span class="lineno">  177</span>        <span class="keyword">auto</span> post_shift = create_post_shift(post_scale, _pattern);</div>
-<div class="line"><span class="lineno">  178</span>        <span class="keyword">auto</span> pre_shift = create_pre_shift(post_shift, _pattern);</div>
-<div class="line"><span class="lineno">  179</span>        bottom = create_pre_scale(pre_shift, _pattern);</div>
-<div class="line"><span class="lineno">  180</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  181</span>      }</div>
-<div class="line"><span class="lineno">  182</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported EqualizePattern type&quot;</span>);</div>
+<div class="line"><span class="lineno">   95</span>  <span class="keyword">auto</span> act_scale = p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>;</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
+<div class="line"><span class="lineno">   97</span>  {</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">case</span> luci::CircleOpcode::DEPTHWISE_CONV_2D:</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TRANSPOSE_CONV:</div>
+<div class="line"><span class="lineno">  101</span>    {</div>
+<div class="line"><span class="lineno">  102</span>      <span class="keyword">auto</span> weight_rank = weight-&gt;rank();</div>
+<div class="line"><span class="lineno">  103</span>      <span class="keywordflow">if</span> (weight_rank != 4)</div>
+<div class="line"><span class="lineno">  104</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">if</span> (act_scale.size() != weight-&gt;dim(3).value())</div>
+<div class="line"><span class="lineno">  107</span>      {</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  109</span>          <span class="stringliteral">&quot;Mismatch between &#39;act_scale&#39; size and &#39;filter&#39; input channel size&quot;</span> +</div>
+<div class="line"><span class="lineno">  110</span>          std::to_string(act_scale.size()) + <span class="stringliteral">&quot; != &quot;</span> + std::to_string(weight-&gt;dim(3).value()));</div>
+<div class="line"><span class="lineno">  111</span>      }</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>      <span class="comment">// Find filter max along with In-channel dimension</span></div>
+<div class="line"><span class="lineno">  114</span>      <span class="keyword">auto</span> weight_size = weight-&gt;size&lt;loco::DataType::FLOAT32&gt;();</div>
+<div class="line"><span class="lineno">  115</span>      <span class="keyword">const</span> <span class="keyword">auto</span> weight_O = weight-&gt;dim(0).value();</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keyword">const</span> <span class="keyword">auto</span> weight_H = weight-&gt;dim(1).value();</div>
+<div class="line"><span class="lineno">  117</span>      <span class="keyword">const</span> <span class="keyword">auto</span> weight_W = weight-&gt;dim(2).value();</div>
+<div class="line"><span class="lineno">  118</span>      <span class="keyword">const</span> <span class="keyword">auto</span> weight_I = weight-&gt;dim(3).value();</div>
+<div class="line"><span class="lineno">  119</span>      <span class="keyword">const</span> <span class="keyword">auto</span> norm_dim = weight_O * weight_H * weight_W;</div>
+<div class="line"><span class="lineno">  120</span>      std::vector&lt;float&gt; weight_max(weight_I, std::numeric_limits&lt;float&gt;::min());</div>
+<div class="line"><span class="lineno">  121</span>      uint32_t cur = 0;</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; weight_I; i++)</div>
+<div class="line"><span class="lineno">  123</span>      {</div>
+<div class="line"><span class="lineno">  124</span>        cur = i;</div>
+<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">for</span> (uint32_t j = 0; j &lt; norm_dim; j++)</div>
+<div class="line"><span class="lineno">  126</span>        {</div>
+<div class="line"><span class="lineno">  127</span>          weight_max.at(i) = std::max(weight_max.at(i), weight-&gt;at&lt;loco::DataType::FLOAT32&gt;(cur));</div>
+<div class="line"><span class="lineno">  128</span>          cur += weight_I;</div>
+<div class="line"><span class="lineno">  129</span>        }</div>
+<div class="line"><span class="lineno">  130</span>      }</div>
+<div class="line"><span class="lineno">  131</span>      <span class="comment">// Check if it properly iterates the filter.</span></div>
+<div class="line"><span class="lineno">  132</span>      assert(cur - weight_I == weight_size - 1);</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>      <span class="comment">// TODO parameterize &quot;alpha&quot;</span></div>
+<div class="line"><span class="lineno">  135</span>      <span class="keyword">auto</span> alpha = 0.5f;</div>
+<div class="line"><span class="lineno">  136</span>      assert(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size() == weight_max.size());</div>
+<div class="line"><span class="lineno">  137</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size(); i++)</div>
+<div class="line"><span class="lineno">  138</span>      {</div>
+<div class="line"><span class="lineno">  139</span>        p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.push_back(std::max(</div>
+<div class="line"><span class="lineno">  140</span>          std::pow(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));</div>
+<div class="line"><span class="lineno">  141</span>      }</div>
+<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  143</span>    }</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> luci::CircleOpcode::FULLY_CONNECTED:</div>
+<div class="line"><span class="lineno">  145</span>    {</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keyword">auto</span> weight_rank = weight-&gt;rank();</div>
+<div class="line"><span class="lineno">  147</span>      <span class="keywordflow">if</span> (weight_rank != 2)</div>
+<div class="line"><span class="lineno">  148</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>      <span class="keywordflow">if</span> (act_scale.size() != weight-&gt;dim(1).value())</div>
+<div class="line"><span class="lineno">  151</span>      {</div>
+<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  153</span>          <span class="stringliteral">&quot;Mismatch between &#39;act_scale&#39; size and &#39;filter&#39; input channel size&quot;</span> +</div>
+<div class="line"><span class="lineno">  154</span>          std::to_string(act_scale.size()) + <span class="stringliteral">&quot; != &quot;</span> + std::to_string(weight-&gt;dim(1).value()));</div>
+<div class="line"><span class="lineno">  155</span>      }</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>      <span class="comment">// Find filter max along with In-channel dimension</span></div>
+<div class="line"><span class="lineno">  158</span>      <span class="keyword">auto</span> weight_size = weight-&gt;size&lt;loco::DataType::FLOAT32&gt;();</div>
+<div class="line"><span class="lineno">  159</span>      <span class="keyword">const</span> <span class="keyword">auto</span> weight_O = weight-&gt;dim(0).value();</div>
+<div class="line"><span class="lineno">  160</span>      <span class="keyword">const</span> <span class="keyword">auto</span> weight_I = weight-&gt;dim(1).value();</div>
+<div class="line"><span class="lineno">  161</span>      std::vector&lt;float&gt; weight_max(weight_I, std::numeric_limits&lt;float&gt;::min());</div>
+<div class="line"><span class="lineno">  162</span>      uint32_t cur = 0;</div>
+<div class="line"><span class="lineno">  163</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; weight_I; i++)</div>
+<div class="line"><span class="lineno">  164</span>      {</div>
+<div class="line"><span class="lineno">  165</span>        cur = i;</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">for</span> (uint32_t j = 0; j &lt; weight_O; j++)</div>
+<div class="line"><span class="lineno">  167</span>        {</div>
+<div class="line"><span class="lineno">  168</span>          weight_max.at(i) = std::max(weight_max.at(i), weight-&gt;at&lt;loco::DataType::FLOAT32&gt;(cur));</div>
+<div class="line"><span class="lineno">  169</span>          cur += weight_I;</div>
+<div class="line"><span class="lineno">  170</span>        }</div>
+<div class="line"><span class="lineno">  171</span>      }</div>
+<div class="line"><span class="lineno">  172</span>      <span class="comment">// Check if it properly iterates the filter.</span></div>
+<div class="line"><span class="lineno">  173</span>      assert(cur - weight_I == weight_size - 1);</div>
+<div class="line"><span class="lineno">  174</span> </div>
+<div class="line"><span class="lineno">  175</span>      <span class="comment">// TODO parameterize &quot;alpha&quot;</span></div>
+<div class="line"><span class="lineno">  176</span>      <span class="keyword">auto</span> alpha = 0.5f;</div>
+<div class="line"><span class="lineno">  177</span>      assert(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size() == weight_max.size());</div>
+<div class="line"><span class="lineno">  178</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size(); i++)</div>
+<div class="line"><span class="lineno">  179</span>      {</div>
+<div class="line"><span class="lineno">  180</span>        p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.push_back(std::max(</div>
+<div class="line"><span class="lineno">  181</span>          std::pow(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));</div>
+<div class="line"><span class="lineno">  182</span>      }</div>
+<div class="line"><span class="lineno">  183</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  184</span>    }</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>    assert(bottom != <span class="keyword">nullptr</span>); <span class="comment">// FIX_ME_UNLESS</span></div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">return</span> bottom;</div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  186</span>    {</div>
+<div class="line"><span class="lineno">  187</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;(calculate_smooth_quant_scale) NYI operator: &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">  188</span>    }</div>
 <div class="line"><span class="lineno">  189</span>  }</div>
 <div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_output.html">luci::CircleOutput</a> *) {}</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) { <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;NYI operator: &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()); }</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_conv2_d.html">luci::CircleConv2D</a> *node)</div>
-<div class="line"><span class="lineno">  196</span>  {</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keyword">auto</span> bottom = gen_scale_shift(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_conv2_d.html#a9b88e67ac454fd2798a13c97821e5765">input</a>());</div>
-<div class="line"><span class="lineno">  198</span>    node-&gt;<a class="code hl_function" href="classluci_1_1_circle_conv2_d.html#a9b88e67ac454fd2798a13c97821e5765">input</a>(bottom);</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  192</span>}</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span><span class="keyword">struct </span>InsertScaleShiftVisitor final : <span class="keyword">public</span> <a class="code hl_struct" href="structluci_1_1_circle_node_mutable_visitor.html">luci::CircleNodeMutableVisitor</a>&lt;void&gt;</div>
+<div class="line"><span class="lineno">  195</span>{</div>
+<div class="line"><span class="lineno">  196</span>  InsertScaleShiftVisitor(<a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p) : _pattern(p)</div>
+<div class="line"><span class="lineno">  197</span>  {</div>
+<div class="line"><span class="lineno">  198</span>    <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">  199</span>  }</div>
 <div class="line"><span class="lineno">  200</span> </div>
-<div class="line"><span class="lineno">  201</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_depthwise_conv2_d.html">luci::CircleDepthwiseConv2D</a> *node)</div>
-<div class="line"><span class="lineno">  202</span>  {</div>
-<div class="line"><span class="lineno">  203</span>    <span class="keyword">auto</span> bottom = gen_scale_shift(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#ab9ed667196be22a547c5d21fddddabd7">input</a>());</div>
-<div class="line"><span class="lineno">  204</span>    node-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#ab9ed667196be22a547c5d21fddddabd7">input</a>(bottom);</div>
-<div class="line"><span class="lineno">  205</span>  }</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_transpose_conv.html">luci::CircleTransposeConv</a> *node)</div>
-<div class="line"><span class="lineno">  208</span>  {</div>
-<div class="line"><span class="lineno">  209</span>    <span class="keyword">auto</span> bottom = gen_scale_shift(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose_conv.html#aed27cacdf5156862faa7d62ae3aeef16">outBackprop</a>());</div>
-<div class="line"><span class="lineno">  210</span>    node-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose_conv.html#aed27cacdf5156862faa7d62ae3aeef16">outBackprop</a>(bottom);</div>
-<div class="line"><span class="lineno">  211</span>  }</div>
-<div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_instance_norm.html">luci::CircleInstanceNorm</a> *node)</div>
-<div class="line"><span class="lineno">  214</span>  {</div>
-<div class="line"><span class="lineno">  215</span>    <span class="keyword">auto</span> bottom = gen_scale_shift(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_instance_norm.html#a9ba6981ac025b8d39b3d68b12b5c9596">input</a>());</div>
-<div class="line"><span class="lineno">  216</span>    node-&gt;<a class="code hl_function" href="classluci_1_1_circle_instance_norm.html#a9ba6981ac025b8d39b3d68b12b5c9596">input</a>(bottom);</div>
-<div class="line"><span class="lineno">  217</span>  }</div>
-<div class="line"><span class="lineno">  218</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_pad.html">luci::CirclePad</a> *node)</div>
-<div class="line"><span class="lineno">  219</span>  {</div>
-<div class="line"><span class="lineno">  220</span>    <span class="keyword">auto</span> bottom = gen_scale_shift(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_pad.html#a39606948f8fa7aded005a5dbf85f01b6">input</a>());</div>
-<div class="line"><span class="lineno">  221</span>    node-&gt;<a class="code hl_function" href="classluci_1_1_circle_pad.html#a39606948f8fa7aded005a5dbf85f01b6">input</a>(bottom);</div>
-<div class="line"><span class="lineno">  222</span>  }</div>
-<div class="line"><span class="lineno">  223</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_slice.html">luci::CircleSlice</a> *node)</div>
-<div class="line"><span class="lineno">  224</span>  {</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keyword">auto</span> bottom = gen_scale_shift(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_slice.html#aeea8c30adfec8310e656b7848955fdfd">input</a>());</div>
-<div class="line"><span class="lineno">  226</span>    node-&gt;<a class="code hl_function" href="classluci_1_1_circle_slice.html#aeea8c30adfec8310e656b7848955fdfd">input</a>(bottom);</div>
-<div class="line"><span class="lineno">  227</span>  }</div>
-<div class="line"><span class="lineno">  228</span>};</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>} <span class="comment">// namespace</span></div>
-<div class="line"><span class="lineno">  231</span> </div>
-<div class="line"><span class="lineno">  232</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacefme__apply.html">fme_apply</a></div>
-<div class="line"><span class="lineno">  233</span>{</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span><span class="keywordtype">void</span> <a class="code hl_function" href="classfme__apply_1_1_insert_scale_shift.html#a43a0b635308679540ff37f97e2a55536">InsertScaleShift::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
-<div class="line"><span class="lineno">  236</span>{</div>
-<div class="line"><span class="lineno">  237</span>  <span class="comment">// Create a map for pattern matching</span></div>
-<div class="line"><span class="lineno">  238</span>  <span class="comment">// { back(string) -&gt; EqualizationPattern*}</span></div>
-<div class="line"><span class="lineno">  239</span>  <span class="comment">// This assumes that each EqualizePattern has a unique &#39;back&#39;</span></div>
-<div class="line"><span class="lineno">  240</span>  std::map&lt;std::string, const EqualizePattern *&gt; pattern_by_back;</div>
-<div class="line"><span class="lineno">  241</span>  {</div>
-<div class="line"><span class="lineno">  242</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pattern : _patterns)</div>
-<div class="line"><span class="lineno">  243</span>    {</div>
-<div class="line"><span class="lineno">  244</span>      <span class="keyword">auto</span> back = pattern.back;</div>
-<div class="line"><span class="lineno">  245</span>      pattern_by_back[back] = &amp;pattern;</div>
-<div class="line"><span class="lineno">  246</span>    }</div>
-<div class="line"><span class="lineno">  247</span>  }</div>
-<div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">postorder_traversal</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  250</span>  {</div>
-<div class="line"><span class="lineno">  251</span>    <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  252</span> </div>
-<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">if</span> (pattern_by_back.find(cnode-&gt;name()) == pattern_by_back.end())</div>
-<div class="line"><span class="lineno">  254</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>    <span class="keyword">auto</span> pattern = pattern_by_back.at(cnode-&gt;name());</div>
-<div class="line"><span class="lineno">  257</span>    InsertScaleShiftVisitor issv(pattern);</div>
-<div class="line"><span class="lineno">  258</span>    cnode-&gt;accept(&amp;issv);</div>
-<div class="line"><span class="lineno">  259</span>  }</div>
-<div class="line"><span class="lineno">  260</span>}</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>} <span class="comment">// namespace fme_apply</span></div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span><span class="preprocessor">#undef THROW_UNLESS</span></div>
-<div class="ttc" id="a_insert_scale_shift_8cpp_html_ad1515c4010b62f2e17704bb149a64d6b"><div class="ttname"><a href="_insert_scale_shift_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a></div><div class="ttdeci">#define THROW_UNLESS(COND, MSG)</div><div class="ttdef"><b>Definition</b> <a href="_insert_scale_shift_8cpp_source.html#l00026">InsertScaleShift.cpp:26</a></div></div>
-<div class="ttc" id="aclassfme__apply_1_1_insert_scale_shift_html_a43a0b635308679540ff37f97e2a55536"><div class="ttname"><a href="classfme__apply_1_1_insert_scale_shift.html#a43a0b635308679540ff37f97e2a55536">fme_apply::InsertScaleShift::run</a></div><div class="ttdeci">void run(loco::Graph *graph)</div><div class="ttdef"><b>Definition</b> <a href="_insert_scale_shift_8cpp_source.html#l00236">InsertScaleShift.cpp:236</a></div></div>
+<div class="line"><span class="lineno">  201</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">  202</span>  <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *_pattern = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  203</span> </div>
+<div class="line"><span class="lineno">  204</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">  205</span>  <span class="keywordtype">void</span> insert_scale_before(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> std::vector&lt;float&gt; &amp;scale)</div>
+<div class="line"><span class="lineno">  206</span>  {</div>
+<div class="line"><span class="lineno">  207</span>    assert(node);</div>
+<div class="line"><span class="lineno">  208</span>    <span class="keyword">auto</span> previous_node = loco::must_cast&lt;luci::CircleNode *&gt;(<a class="code hl_function" href="namespacefme__apply.html#a20774f91b4379cb7c75758ed9a5dc91f">get_input</a>(node));</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>    <span class="comment">// Create const for scale</span></div>
+<div class="line"><span class="lineno">  211</span>    <span class="keyword">auto</span> param = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>()-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
+<div class="line"><span class="lineno">  212</span>    {</div>
+<div class="line"><span class="lineno">  213</span>      param-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;_scale_const&quot;</span>);</div>
+<div class="line"><span class="lineno">  214</span>      param-&gt;dtype(loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  215</span>      param-&gt;rank(1);</div>
+<div class="line"><span class="lineno">  216</span>      param-&gt;dim(0).set(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.size());</div>
+<div class="line"><span class="lineno">  217</span>      param-&gt;size&lt;loco::DataType::FLOAT32&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.size());</div>
+<div class="line"><span class="lineno">  218</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.size(); i++)</div>
+<div class="line"><span class="lineno">  219</span>      {</div>
+<div class="line"><span class="lineno">  220</span>        param-&gt;at&lt;loco::DataType::FLOAT32&gt;(i) = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.at(i);</div>
+<div class="line"><span class="lineno">  221</span>      }</div>
+<div class="line"><span class="lineno">  222</span>      param-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line"><span class="lineno">  223</span>      luci::add_origin(param, luci::get_origin(node));</div>
+<div class="line"><span class="lineno">  224</span>    }</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>    <span class="comment">// Create Scale Op</span></div>
+<div class="line"><span class="lineno">  227</span>    <span class="keyword">auto</span> ss = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>()-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a>&gt;(2, 1);</div>
+<div class="line"><span class="lineno">  228</span>    {</div>
+<div class="line"><span class="lineno">  229</span>      ss-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;_scale&quot;</span>);</div>
+<div class="line"><span class="lineno">  230</span>      ss-&gt;dtype(loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  231</span>      ss-&gt;rank(previous_node-&gt;rank());</div>
+<div class="line"><span class="lineno">  232</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; previous_node-&gt;rank(); i++)</div>
+<div class="line"><span class="lineno">  233</span>        ss-&gt;dim(i).set(previous_node-&gt;dim(i).value());</div>
+<div class="line"><span class="lineno">  234</span>      ss-&gt;custom_code(<span class="stringliteral">&quot;scale&quot;</span>);</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>      ss-&gt;inputs(0, previous_node);</div>
+<div class="line"><span class="lineno">  237</span>      ss-&gt;inputs(1, param);</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>      ss-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line"><span class="lineno">  240</span>      luci::add_origin(ss, luci::get_origin(node));</div>
+<div class="line"><span class="lineno">  241</span>    }</div>
+<div class="line"><span class="lineno">  242</span>    <a class="code hl_function" href="namespacefme__apply.html#af9d62364685d0c5a7d8477a94d3e1875">set_input</a>(node, ss);</div>
+<div class="line"><span class="lineno">  243</span>  }</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>  <span class="keywordtype">void</span> insert_scale_after(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> std::vector&lt;float&gt; &amp;scale)</div>
+<div class="line"><span class="lineno">  246</span>  {</div>
+<div class="line"><span class="lineno">  247</span>    <span class="keywordflow">if</span> (not node)</div>
+<div class="line"><span class="lineno">  248</span>    {</div>
+<div class="line"><span class="lineno">  249</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;(insert_scale_after) Invalid node.&quot;</span>);</div>
+<div class="line"><span class="lineno">  250</span>    }</div>
+<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  252</span>    <span class="comment">// Create const for scale</span></div>
+<div class="line"><span class="lineno">  253</span>    <span class="keyword">auto</span> param = node-&gt;graph()-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
+<div class="line"><span class="lineno">  254</span>    {</div>
+<div class="line"><span class="lineno">  255</span>      param-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(node-&gt;name() + <span class="stringliteral">&quot;_scale_const&quot;</span>);</div>
+<div class="line"><span class="lineno">  256</span>      param-&gt;dtype(loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  257</span>      param-&gt;rank(1);</div>
+<div class="line"><span class="lineno">  258</span>      param-&gt;dim(0).set(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.size());</div>
+<div class="line"><span class="lineno">  259</span>      param-&gt;size&lt;loco::DataType::FLOAT32&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.size());</div>
+<div class="line"><span class="lineno">  260</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.size(); i++)</div>
+<div class="line"><span class="lineno">  261</span>      {</div>
+<div class="line"><span class="lineno">  262</span>        param-&gt;at&lt;loco::DataType::FLOAT32&gt;(i) = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>.at(i);</div>
+<div class="line"><span class="lineno">  263</span>      }</div>
+<div class="line"><span class="lineno">  264</span>      param-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line"><span class="lineno">  265</span>      luci::add_origin(param, luci::get_origin(node));</div>
+<div class="line"><span class="lineno">  266</span>    }</div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span>    <span class="comment">// NOTE. Get a node user before setting CircleCustom(&quot;scale&quot;)&#39;s input.</span></div>
+<div class="line"><span class="lineno">  269</span>    <span class="keyword">auto</span> uses = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(node);</div>
+<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">if</span> (uses.size() != 1)</div>
+<div class="line"><span class="lineno">  271</span>    {</div>
+<div class="line"><span class="lineno">  272</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Not support multiple output nodes.&quot;</span>);</div>
+<div class="line"><span class="lineno">  273</span>    }</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>    <span class="comment">// Create Scale Op</span></div>
+<div class="line"><span class="lineno">  276</span>    <span class="keyword">auto</span> ss = node-&gt;graph()-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a>&gt;(2, 1);</div>
+<div class="line"><span class="lineno">  277</span>    {</div>
+<div class="line"><span class="lineno">  278</span>      ss-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(node-&gt;name() + <span class="stringliteral">&quot;_scale&quot;</span>);</div>
+<div class="line"><span class="lineno">  279</span>      ss-&gt;dtype(loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">  280</span>      ss-&gt;rank(node-&gt;rank());</div>
+<div class="line"><span class="lineno">  281</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;rank(); i++)</div>
+<div class="line"><span class="lineno">  282</span>        ss-&gt;dim(i).set(node-&gt;dim(i).value());</div>
+<div class="line"><span class="lineno">  283</span>      ss-&gt;custom_code(<span class="stringliteral">&quot;scale&quot;</span>);</div>
+<div class="line"><span class="lineno">  284</span> </div>
+<div class="line"><span class="lineno">  285</span>      ss-&gt;inputs(0, node);</div>
+<div class="line"><span class="lineno">  286</span>      ss-&gt;inputs(1, param);</div>
+<div class="line"><span class="lineno">  287</span> </div>
+<div class="line"><span class="lineno">  288</span>      ss-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line"><span class="lineno">  289</span>      luci::add_origin(ss, luci::get_origin(node));</div>
+<div class="line"><span class="lineno">  290</span>    }</div>
+<div class="line"><span class="lineno">  291</span> </div>
+<div class="line"><span class="lineno">  292</span>    <a class="code hl_function" href="namespacefme__apply.html#af9d62364685d0c5a7d8477a94d3e1875">set_input</a>(loco::must_cast&lt;luci::CircleNode *&gt;(*uses.begin()), ss);</div>
+<div class="line"><span class="lineno">  293</span>  }</div>
+<div class="line"><span class="lineno">  294</span> </div>
+<div class="line"><span class="lineno">  295</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">  296</span>  <span class="keywordtype">void</span> insert(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</div>
+<div class="line"><span class="lineno">  297</span>  {</div>
+<div class="line"><span class="lineno">  298</span>    assert(_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() ==</div>
+<div class="line"><span class="lineno">  299</span>           0); <span class="comment">// scale for smooth qaunt is not calculated yet at this moment.</span></div>
+<div class="line"><span class="lineno">  300</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespacecwrap.html#afa0fb0fd415f44ef83e60757f2fd0580">valid</a> = ::calculate_smooth_quant_scale(node, _pattern);</div>
+<div class="line"><span class="lineno">  301</span>    <span class="keyword">auto</span> back_node = node;</div>
+<div class="line"><span class="lineno">  302</span>    <span class="comment">// Find front node.</span></div>
+<div class="line"><span class="lineno">  303</span>    <span class="keyword">const</span> <span class="keyword">auto</span> support_depth = 2;</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keyword">auto</span> front_node = <a class="code hl_function" href="namespacefme__apply.html#a40e5483942e412d96167570070388447">find_arg_with_name</a>(node, _pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">front</a>, support_depth);</div>
+<div class="line"><span class="lineno">  305</span>    <span class="keywordflow">if</span> (not front_node)</div>
+<div class="line"><span class="lineno">  306</span>    {</div>
+<div class="line"><span class="lineno">  307</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot find front node: &quot;</span> + _pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">front</a>);</div>
+<div class="line"><span class="lineno">  308</span>    }</div>
+<div class="line"><span class="lineno">  309</span>    insert_scale_after(front_node, reciprocal(_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>));</div>
+<div class="line"><span class="lineno">  310</span>    insert_scale_before(back_node, _pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>);</div>
+<div class="line"><span class="lineno">  311</span>  }</div>
+<div class="line"><span class="lineno">  312</span> </div>
+<div class="line"><span class="lineno">  313</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">  314</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_output.html">luci::CircleOutput</a> *) {}</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</div>
+<div class="line"><span class="lineno">  317</span>  {</div>
+<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;(InsertScaleShiftVisitor) NYI operator: &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">  319</span>  }</div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_conv2_d.html">luci::CircleConv2D</a> *node) { insert(node); }</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_depthwise_conv2_d.html">luci::CircleDepthwiseConv2D</a> *node) { insert(node); }</div>
+<div class="line"><span class="lineno">  324</span> </div>
+<div class="line"><span class="lineno">  325</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a> *node) { insert(node); }</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_transpose_conv.html">luci::CircleTransposeConv</a> *node) { insert(node); }</div>
+<div class="line"><span class="lineno">  328</span>};</div>
+<div class="line"><span class="lineno">  329</span> </div>
+<div class="line"><span class="lineno">  330</span>} <span class="comment">// namespace</span></div>
+<div class="line"><span class="lineno">  331</span> </div>
+<div class="line"><span class="lineno">  332</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacefme__apply.html">fme_apply</a></div>
+<div class="line"><span class="lineno">  333</span>{</div>
+<div class="line"><span class="lineno">  334</span> </div>
+<div class="line"><span class="lineno">  335</span><span class="keywordtype">void</span> <a class="code hl_function" href="classfme__apply_1_1_insert_scale_shift.html#a43a0b635308679540ff37f97e2a55536">InsertScaleShift::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><span class="lineno">  336</span>{</div>
+<div class="line"><span class="lineno">  337</span>  <span class="comment">// Create a map for pattern matching</span></div>
+<div class="line"><span class="lineno">  338</span>  <span class="comment">// { back(string) -&gt; EqualizationPattern*}</span></div>
+<div class="line"><span class="lineno">  339</span>  <span class="comment">// This assumes that each EqualizePattern has a unique &#39;back&#39;</span></div>
+<div class="line"><span class="lineno">  340</span>  std::map&lt;std::string, EqualizePattern *&gt; pattern_by_back;</div>
+<div class="line"><span class="lineno">  341</span>  {</div>
+<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pattern : _patterns)</div>
+<div class="line"><span class="lineno">  343</span>    {</div>
+<div class="line"><span class="lineno">  344</span>      <span class="keyword">auto</span> back = pattern.back;</div>
+<div class="line"><span class="lineno">  345</span>      pattern_by_back[back] = &amp;pattern;</div>
+<div class="line"><span class="lineno">  346</span>    }</div>
+<div class="line"><span class="lineno">  347</span>  }</div>
+<div class="line"><span class="lineno">  348</span> </div>
+<div class="line"><span class="lineno">  349</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">postorder_traversal</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  350</span>  {</div>
+<div class="line"><span class="lineno">  351</span>    <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  352</span> </div>
+<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">if</span> (pattern_by_back.find(cnode-&gt;name()) == pattern_by_back.end())</div>
+<div class="line"><span class="lineno">  354</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span>    <span class="keyword">auto</span> pattern = pattern_by_back.at(cnode-&gt;name());</div>
+<div class="line"><span class="lineno">  357</span>    InsertScaleShiftVisitor issv(pattern);</div>
+<div class="line"><span class="lineno">  358</span>    cnode-&gt;accept(&amp;issv);</div>
+<div class="line"><span class="lineno">  359</span>  }</div>
+<div class="line"><span class="lineno">  360</span>}</div>
+<div class="line"><span class="lineno">  361</span> </div>
+<div class="line"><span class="lineno">  362</span>} <span class="comment">// namespace fme_apply</span></div>
+<div class="line"><span class="lineno">  363</span> </div>
+<div class="line"><span class="lineno">  364</span><span class="preprocessor">#undef THROW_UNLESS</span></div>
+<div class="ttc" id="aclassfme__apply_1_1_insert_scale_shift_html_a43a0b635308679540ff37f97e2a55536"><div class="ttname"><a href="classfme__apply_1_1_insert_scale_shift.html#a43a0b635308679540ff37f97e2a55536">fme_apply::InsertScaleShift::run</a></div><div class="ttdeci">void run(loco::Graph *graph)</div><div class="ttdef"><b>Definition</b> <a href="_insert_scale_shift_8cpp_source.html#l00336">InsertScaleShift.cpp:336</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html_a5450552b152b5c3c5b25ca0f16770b07"><div class="ttname"><a href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">loco::Graph::nodes</a></div><div class="ttdeci">NodeContext * nodes(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00218">Graph.h:218</a></div></div>
-<div class="ttc" id="aclassloco_1_1_node_html"><div class="ttname"><a href="classloco_1_1_node.html">loco::Node</a></div><div class="ttdoc">Logical unit of computation.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00053">Node.h:54</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html_a117bfe99976cf71eb9d85f4b018f26ad"><div class="ttname"><a href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">loco::Node::graph</a></div><div class="ttdeci">Graph * graph(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00070">Node.h:70</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_pool_html_a802022e739457e648436d44c30ad4537"><div class="ttname"><a href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">loco::NodePool::create</a></div><div class="ttdeci">Derived * create(Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition</b> <a href="_node_pool_8h_source.html#l00037">NodePool.h:37</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html"><div class="ttname"><a href="classluci_1_1_circle_const.html">luci::CircleConst</a></div><div class="ttdoc">Class to build tensor data.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html#l00034">CircleConst.h:35</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_conv2_d_html"><div class="ttname"><a href="classluci_1_1_circle_conv2_d.html">luci::CircleConv2D</a></div><div class="ttdoc">CONV_2D in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_conv2_d_8h_source.html#l00035">CircleConv2D.h:38</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_conv2_d_html_a9b88e67ac454fd2798a13c97821e5765"><div class="ttname"><a href="classluci_1_1_circle_conv2_d.html#a9b88e67ac454fd2798a13c97821e5765">luci::CircleConv2D::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_conv2_d_8h_source.html#l00040">CircleConv2D.h:40</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_custom_html"><div class="ttname"><a href="classluci_1_1_circle_custom.html">luci::CircleCustom</a></div><div class="ttdoc">CUSTOM in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_custom_8h_source.html#l00029">CircleCustom.h:30</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_depthwise_conv2_d_html"><div class="ttname"><a href="classluci_1_1_circle_depthwise_conv2_d.html">luci::CircleDepthwiseConv2D</a></div><div class="ttdoc">DEPTHWISE_CONV_2D in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_depthwise_conv2_d_8h_source.html#l00036">CircleDepthwiseConv2D.h:40</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_depthwise_conv2_d_html_ab9ed667196be22a547c5d21fddddabd7"><div class="ttname"><a href="classluci_1_1_circle_depthwise_conv2_d.html#ab9ed667196be22a547c5d21fddddabd7">luci::CircleDepthwiseConv2D::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_depthwise_conv2_d_8h_source.html#l00042">CircleDepthwiseConv2D.h:42</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_instance_norm_html"><div class="ttname"><a href="classluci_1_1_circle_instance_norm.html">luci::CircleInstanceNorm</a></div><div class="ttdoc">INSTANCE_NORM in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_instance_norm_8h_source.html#l00032">CircleInstanceNorm.h:35</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_instance_norm_html_a9ba6981ac025b8d39b3d68b12b5c9596"><div class="ttname"><a href="classluci_1_1_circle_instance_norm.html#a9ba6981ac025b8d39b3d68b12b5c9596">luci::CircleInstanceNorm::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_instance_norm_8h_source.html#l00038">CircleInstanceNorm.h:38</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_fully_connected_html"><div class="ttname"><a href="classluci_1_1_circle_fully_connected.html">luci::CircleFullyConnected</a></div><div class="ttdoc">FULLY_CONNECTED in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_fully_connected_8h_source.html#l00032">CircleFullyConnected.h:36</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_output_html"><div class="ttname"><a href="classluci_1_1_circle_output.html">luci::CircleOutput</a></div><div class="ttdoc">CircleNode for Output of the Graph.</div><div class="ttdef"><b>Definition</b> <a href="_circle_output_8h_source.html#l00034">CircleOutput.h:35</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_pad_html"><div class="ttname"><a href="classluci_1_1_circle_pad.html">luci::CirclePad</a></div><div class="ttdoc">PAD in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_pad_8h_source.html#l00031">CirclePad.h:32</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_pad_html_a39606948f8fa7aded005a5dbf85f01b6"><div class="ttname"><a href="classluci_1_1_circle_pad.html#a39606948f8fa7aded005a5dbf85f01b6">luci::CirclePad::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_pad_8h_source.html#l00034">CirclePad.h:34</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_slice_html"><div class="ttname"><a href="classluci_1_1_circle_slice.html">luci::CircleSlice</a></div><div class="ttdoc">SLICE in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_slice_8h_source.html#l00031">CircleSlice.h:32</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_slice_html_aeea8c30adfec8310e656b7848955fdfd"><div class="ttname"><a href="classluci_1_1_circle_slice.html#aeea8c30adfec8310e656b7848955fdfd">luci::CircleSlice::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_slice_8h_source.html#l00034">CircleSlice.h:34</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_transpose_conv_html"><div class="ttname"><a href="classluci_1_1_circle_transpose_conv.html">luci::CircleTransposeConv</a></div><div class="ttdoc">TRANSPOSE_CONV in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_transpose_conv_8h_source.html#l00036">CircleTransposeConv.h:40</a></div></div>
-<div class="ttc" id="aclassluci_1_1_circle_transpose_conv_html_aed27cacdf5156862faa7d62ae3aeef16"><div class="ttname"><a href="classluci_1_1_circle_transpose_conv.html#aed27cacdf5156862faa7d62ae3aeef16">luci::CircleTransposeConv::outBackprop</a></div><div class="ttdeci">loco::Node * outBackprop(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_transpose_conv_8h_source.html#l00048">CircleTransposeConv.h:48</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
-<div class="ttc" id="anamespaceenco_html_a3d4e56ec31be86ad47be84f20622bc0e"><div class="ttname"><a href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">enco::code</a></div><div class="ttdeci">Code * code(const SessionID &amp;sess)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00054">Session.cpp:54</a></div></div>
+<div class="ttc" id="anamespacecwrap_html_afa0fb0fd415f44ef83e60757f2fd0580"><div class="ttname"><a href="namespacecwrap.html#afa0fb0fd415f44ef83e60757f2fd0580">cwrap::valid</a></div><div class="ttdeci">bool valid(const Fildes &amp;)</div><div class="ttdef"><b>Definition</b> <a href="_fildes_8cpp_source.html#l00098">Fildes.cpp:98</a></div></div>
 <div class="ttc" id="anamespacefme__apply_html"><div class="ttname"><a href="namespacefme__apply.html">fme_apply</a></div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00022">EqualizePattern.h:23</a></div></div>
+<div class="ttc" id="anamespacefme__apply_html_a20774f91b4379cb7c75758ed9a5dc91f"><div class="ttname"><a href="namespacefme__apply.html#a20774f91b4379cb7c75758ed9a5dc91f">fme_apply::get_input</a></div><div class="ttdeci">loco::Node * get_input(luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="_support_8_misc_8cpp_source.html#l00040">Support.Misc.cpp:40</a></div></div>
+<div class="ttc" id="anamespacefme__apply_html_a40e5483942e412d96167570070388447"><div class="ttname"><a href="namespacefme__apply.html#a40e5483942e412d96167570070388447">fme_apply::find_arg_with_name</a></div><div class="ttdeci">luci::CircleNode * find_arg_with_name(const luci::CircleNode *node, const std::string &amp;name, const uint32_t &amp;depth)</div><div class="ttdef"><b>Definition</b> <a href="_support_8_misc_8cpp_source.html#l00174">Support.Misc.cpp:174</a></div></div>
+<div class="ttc" id="anamespacefme__apply_html_af9d62364685d0c5a7d8477a94d3e1875"><div class="ttname"><a href="namespacefme__apply.html#af9d62364685d0c5a7d8477a94d3e1875">fme_apply::set_input</a></div><div class="ttdeci">void set_input(luci::CircleNode *node, luci::CircleCustom *input)</div><div class="ttdef"><b>Definition</b> <a href="_support_8_misc_8cpp_source.html#l00099">Support.Misc.cpp:99</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a117fa82db86ebda898ee54200c42928d"><div class="ttname"><a href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">loco::postorder_traversal</a></div><div class="ttdeci">std::vector&lt; loco::Node * &gt; postorder_traversal(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Generate postorder traversal sequence starting from &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00053">Algorithm.cpp:53</a></div></div>
+<div class="ttc" id="anamespaceloco_html_a43df4bfde8658322cb87ab5654ba4052"><div class="ttname"><a href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a></div><div class="ttdeci">std::set&lt; Node * &gt; succs(const Node *node)</div><div class="ttdoc">Enumerate all the successors of a given node.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">Node.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
-<div class="ttc" id="anamespacennc_html_a958b56e423709246f446a0dd3e7255a9adabe6e597b70e5760826aea1dcc564f7"><div class="ttname"><a href="namespacennc.html#a958b56e423709246f446a0dd3e7255a9adabe6e597b70e5760826aea1dcc564f7">nnc::ArtifactBinOp::minus</a></div><div class="ttdeci">@ minus</div></div>
+<div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
+<div class="ttc" id="anamespacennop_html_acf3d089479785117472a0b30cebc048d"><div class="ttname"><a href="namespacennop.html#acf3d089479785117472a0b30cebc048d">nnop::conv</a></div><div class="ttdeci">void conv(const nncc::core::ADT::feature::Shape &amp;out_shape, nncc::core::ADT::feature::Accessor&lt; OutputDType &gt; &amp;out_data, const nncc::core::ADT::feature::Shape &amp;in_shape, const nncc::core::ADT::feature::Reader&lt; InputDType &gt; &amp;in_data, const nncc::core::ADT::kernel::Shape &amp;ker_shape, const nncc::core::ADT::kernel::Reader&lt; KernelDType &gt; &amp;ker_data, const PadInfo &amp;pad_info, const StrideInfo &amp;stride_info)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2nnop_2include_2nnop_2_conv2_d_8h_source.html#l00034">Conv2D.h:34</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html">fme_apply::EqualizePattern</a></div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00025">EqualizePattern.h:26</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a186c00fdb5463c62c18b47a5e7fa377a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">fme_apply::EqualizePattern::front</a></div><div class="ttdeci">std::string front</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00035">EqualizePattern.h:35</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a39712f2bd2845c5aad882727cfab4b99"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">fme_apply::EqualizePattern::scale</a></div><div class="ttdeci">std::vector&lt; float &gt; scale</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00038">EqualizePattern.h:38</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a92dede5c9ac7ff0dacd861a39552f4a3"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a92dede5c9ac7ff0dacd861a39552f4a3">fme_apply::EqualizePattern::shift</a></div><div class="ttdeci">std::vector&lt; float &gt; shift</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00039">EqualizePattern.h:39</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_ac394d1bcd56e7a13938f178a6b4bd90b"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#ac394d1bcd56e7a13938f178a6b4bd90b">fme_apply::EqualizePattern::type</a></div><div class="ttdeci">Type type</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00037">EqualizePattern.h:37</a></div></div>
+<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a39712f2bd2845c5aad882727cfab4b99"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">fme_apply::EqualizePattern::scale</a></div><div class="ttdeci">std::vector&lt; float &gt; scale</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00039">EqualizePattern.h:39</a></div></div>
+<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a40af9d56a439e0e66f1dd1254cac8e1a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">fme_apply::EqualizePattern::act_scale</a></div><div class="ttdeci">std::vector&lt; float &gt; act_scale</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00038">EqualizePattern.h:38</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_mutable_visitor_html"><div class="ttname"><a href="structluci_1_1_circle_node_mutable_visitor.html">luci::CircleNodeMutableVisitor</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_source.html#l00076">CircleNodeVisitor.h:77</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_mutable_visitor_html_a31a678e6ebcccccd9b5b934cfaa24ae4"><div class="ttname"><a href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">luci::CircleNodeMutableVisitor::visit</a></div><div class="ttdeci">virtual T visit(CircleNode *)</div><div class="ttdoc">Default fallback.</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_source.html#l00090">CircleNodeVisitor.h:90</a></div></div>
 </div><!-- fragment -->

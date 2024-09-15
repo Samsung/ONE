@@ -7,12 +7,10 @@ var searchData=
   ['depthwiseconvoutputrounding_4',['DepthwiseConvOutputRounding',['../namespacennfw_1_1cker_1_1optimized__integer__ops.html#af69aaad83122d70918d5361141587c9a',1,'nnfw::cker::optimized_integer_ops']]],
   ['depthwisefilteraxis_5',['DepthwiseFilterAxis',['../namespaceloco.html#a1e51c7b6399c983e010e448c36d7ee8d',1,'loco']]],
   ['depthwisefilterlayout_6',['DepthwiseFilterLayout',['../namespaceexo.html#a02102d34572ab4b37ff937cb6eaaa5a6',1,'exo']]],
-  ['devicetypecode_7',['DeviceTypeCode',['../group___neural_networks.html#ga61f16b495d2e04593c819c12e42ac9f2',1,'NeuralNetworks.h']]],
-  ['dialect_8',['Dialect',['../namespaceexo.html#a465d1d127ead8680688e6a734ccc67e8',1,'exo']]],
-  ['dimensiontype_9',['dimensiontype',['../namespaceluci.html#a75d1b28634c64ffe78d7ab4f307135c0',1,'luci::DimensionType'],['../namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484',1,'nnfw::cker::DimensionType']]],
-  ['direction_10',['Direction',['../classpp_1_1_linear_document.html#ab505a05bf31a02af92bf4f26cee097cf',1,'pp::LinearDocument']]],
-  ['divisor_11',['Divisor',['../classcoco_1_1_avg_pool2_d.html#a2e513a9634366acb3c4037148d715545',1,'coco::AvgPool2D']]],
-  ['domain_12',['Domain',['../namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6',1,'loco']]],
-  ['dtype_13',['DType',['../namespaceann.html#aee20fd9c9824d834a0d7ffaf7bfa0ad3',1,'ann']]],
-  ['durationcode_14',['DurationCode',['../group___neural_networks.html#ga4adbdd519e2d3f770784fc55d197159f',1,'NeuralNetworks.h']]]
+  ['dialect_7',['Dialect',['../namespaceexo.html#a465d1d127ead8680688e6a734ccc67e8',1,'exo']]],
+  ['dimensiontype_8',['dimensiontype',['../namespaceluci.html#a75d1b28634c64ffe78d7ab4f307135c0',1,'luci::DimensionType'],['../namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484',1,'nnfw::cker::DimensionType']]],
+  ['direction_9',['Direction',['../classpp_1_1_linear_document.html#ab505a05bf31a02af92bf4f26cee097cf',1,'pp::LinearDocument']]],
+  ['divisor_10',['Divisor',['../classcoco_1_1_avg_pool2_d.html#a2e513a9634366acb3c4037148d715545',1,'coco::AvgPool2D']]],
+  ['domain_11',['Domain',['../namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6',1,'loco']]],
+  ['dtype_12',['DType',['../namespaceann.html#aee20fd9c9824d834a0d7ffaf7bfa0ad3',1,'ann']]]
 ];

@@ -98,12 +98,8 @@ $(document).ready(function(){initNavTree('_f_m_equalizer_8cpp.html',''); initRes
 <div class="textblock"><code>#include &quot;<a class="el" href="_f_m_equalizer_8h_source.html">FMEqualizer.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_insert_scale_shift_8h_source.html">InsertScaleShift.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_equalize_pattern_check_8h_source.html">EqualizePatternCheck.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_forward_pre_scale_pass_8h_source.html">pass/ForwardPreScalePass.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_forward_pre_shift_pass_8h_source.html">pass/ForwardPreShiftPass.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_fuse_post_scale_pass_8h_source.html">pass/FusePostScalePass.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_fuse_post_shift_pass_8h_source.html">pass/FusePostShiftPass.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_fuse_pre_scale_pass_8h_source.html">pass/FusePreScalePass.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="_fuse_pre_shift_pass_8h_source.html">pass/FusePreShiftPass.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fme-apply_2src_2_progress_reporter_8h_source.html">ProgressReporter.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_8h_source.html">luci/IR/CircleNode.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_phase_8h_source.html">logo/Phase.h</a>&gt;</code><br />
@@ -152,74 +148,68 @@ Macros</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (not(COND))                \</div>
 <div class="line">    <span class="keywordflow">throw</span> std::runtime_error(MSG);</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_f_m_equalizer_8cpp_source.html#l00037">37</a> of file <a class="el" href="_f_m_equalizer_8cpp_source.html">FMEqualizer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span><span class="comment">// Throw exception if virtual Op (Scale/Shift) exists</span></div>
-<div class="line"><span class="lineno">   44</span><span class="keywordtype">void</span> check_no_scale_shift(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
-<div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keyword">const</span> <span class="keyword">auto</span> custom = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">if</span> (custom == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (custom-&gt;numInputs() != 2)</div>
-<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> = custom-&gt;custom_code();</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> (code == <span class="stringliteral">&quot;PreScale&quot;</span> or code == <span class="stringliteral">&quot;PreShift&quot;</span> or code == <span class="stringliteral">&quot;PostScale&quot;</span> or code == <span class="stringliteral">&quot;PostShift&quot;</span>)</div>
-<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Virtual node(&quot;</span> + code + <span class="stringliteral">&quot;) remains. &quot;</span> + custom-&gt;name());</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-<div class="line"><span class="lineno">   59</span>}</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>} <span class="comment">// namespace</span></div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacefme__apply.html">fme_apply</a></div>
-<div class="line"><span class="lineno">   64</span>{</div>
+<p class="definition">Definition at line <a class="el" href="_f_m_equalizer_8cpp_source.html#l00033">33</a> of file <a class="el" href="_f_m_equalizer_8cpp_source.html">FMEqualizer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span><span class="comment">// Throw exception if virtual Op (Scale) exists</span></div>
+<div class="line"><span class="lineno">   40</span><span class="keywordtype">void</span> check_no_scale(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">   43</span>  {</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keyword">const</span> <span class="keyword">auto</span> custom = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">if</span> (custom == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (custom-&gt;numInputs() != 2)</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">code</a> = custom-&gt;custom_code();</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (code == <span class="stringliteral">&quot;scale&quot;</span>)</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Virtual node(&quot;</span> + code + <span class="stringliteral">&quot;) remains.&quot;</span>);</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>}</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>} <span class="comment">// namespace</span></div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacefme__apply.html">fme_apply</a></div>
+<div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span><span class="keywordtype">void</span> <a class="code hl_function" href="classfme__apply_1_1_f_m_equalizer.html#af41c2ba1b069739f2e0b16b767e3ac56">FMEqualizer::equalize</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g, std::vector&lt;EqualizePattern&gt; &amp;p)</div>
+<div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(g != <span class="keyword">nullptr</span>, <span class="stringliteral">&quot;Invalid argument g&quot;</span>);</div>
 <div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span><span class="keywordtype">void</span> <a class="code hl_function" href="classfme__apply_1_1_f_m_equalizer.html#adad6b29a7d27ba6959c2a76abd04faa9">FMEqualizer::equalize</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g, <span class="keyword">const</span> std::vector&lt;EqualizePattern&gt; &amp;p)</div>
-<div class="line"><span class="lineno">   67</span>{</div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(g != <span class="keyword">nullptr</span>, <span class="stringliteral">&quot;Invalid argument g&quot;</span>);</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  <span class="comment">// Check the patterns are valid on the graph</span></div>
-<div class="line"><span class="lineno">   71</span>  <a class="code hl_function" href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">check_patterns_valid</a>(g, p);</div>
+<div class="line"><span class="lineno">   66</span>  <span class="comment">// Check the patterns are valid on the graph</span></div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_function" href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">check_patterns_valid</a>(g, p);</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  <span class="comment">// Insert Scale/Shift based on patterns</span></div>
+<div class="line"><span class="lineno">   70</span>  <a class="code hl_class" href="classfme__apply_1_1_insert_scale_shift.html">InsertScaleShift</a> issp(p);</div>
+<div class="line"><span class="lineno">   71</span>  issp.run(g);</div>
 <div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// Insert Scale/Shift based on patterns</span></div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_class" href="classfme__apply_1_1_insert_scale_shift.html">InsertScaleShift</a> issp(p);</div>
-<div class="line"><span class="lineno">   75</span>  issp.run(g);</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>  <span class="comment">// Default passes</span></div>
-<div class="line"><span class="lineno">   80</span>  phase.emplace_back(std::make_unique&lt;logo::RemoveDeadNodeWithQueryPass&gt;());</div>
-<div class="line"><span class="lineno">   81</span>  phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
-<div class="line"><span class="lineno">   82</span>  phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">   73</span>  <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  <span class="comment">// Default passes</span></div>
+<div class="line"><span class="lineno">   76</span>  phase.emplace_back(std::make_unique&lt;logo::RemoveDeadNodeWithQueryPass&gt;());</div>
+<div class="line"><span class="lineno">   77</span>  phase.emplace_back(std::make_unique&lt;luci::CircleShapeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">   78</span>  phase.emplace_back(std::make_unique&lt;luci::CircleTypeInferencePass&gt;());</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>  <span class="comment">// Fuse Pre/Post Scale</span></div>
+<div class="line"><span class="lineno">   81</span>  phase.emplace_back(std::make_unique&lt;fme_apply::FusePreScalePass&gt;());</div>
+<div class="line"><span class="lineno">   82</span>  phase.emplace_back(std::make_unique&lt;fme_apply::FusePostScalePass&gt;());</div>
 <div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>  <span class="comment">// Forward PreScale/PreShift</span></div>
-<div class="line"><span class="lineno">   85</span>  phase.emplace_back(std::make_unique&lt;fme_apply::ForwardPreScalePass&gt;());</div>
-<div class="line"><span class="lineno">   86</span>  phase.emplace_back(std::make_unique&lt;fme_apply::ForwardPreShiftPass&gt;());</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  <span class="comment">// Fuse Pre/Post Scale/Shift</span></div>
-<div class="line"><span class="lineno">   89</span>  phase.emplace_back(std::make_unique&lt;fme_apply::FusePreScalePass&gt;());</div>
-<div class="line"><span class="lineno">   90</span>  phase.emplace_back(std::make_unique&lt;fme_apply::FusePostScalePass&gt;());</div>
-<div class="line"><span class="lineno">   91</span>  phase.emplace_back(std::make_unique&lt;fme_apply::FusePreShiftPass&gt;());</div>
-<div class="line"><span class="lineno">   92</span>  phase.emplace_back(std::make_unique&lt;fme_apply::FusePostShiftPass&gt;());</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  <a class="code hl_class" href="classfme__apply_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a>);</div>
-<div class="line"><span class="lineno">   95</span>  <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>};</div>
-<div class="line"><span class="lineno">   96</span>  phase_runner.attach(&amp;prog);</div>
-<div class="line"><span class="lineno">   97</span>  phase_runner.run(phase);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>  <span class="comment">// Check if all Scale/Shift nodes are removed</span></div>
-<div class="line"><span class="lineno">  100</span>  check_no_scale_shift(g);</div>
-<div class="line"><span class="lineno">  101</span>}</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>} <span class="comment">// namespace fme_apply</span></div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span><span class="preprocessor">#undef THROW_UNLESS</span></div>
+<div class="line"><span class="lineno">   84</span>  <a class="code hl_class" href="classfme__apply_1_1_progress_reporter.html">ProgressReporter</a> prog(g, <a class="code hl_enumvalue" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a>);</div>
+<div class="line"><span class="lineno">   85</span>  <a class="code hl_class" href="classlogo_1_1_phase_runner.html">logo::PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;</a> phase_runner{<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>};</div>
+<div class="line"><span class="lineno">   86</span>  phase_runner.attach(&amp;prog);</div>
+<div class="line"><span class="lineno">   87</span>  phase_runner.run(phase);</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="comment">// Check if all Scale/Shift nodes are removed</span></div>
+<div class="line"><span class="lineno">   90</span>  check_no_scale(g);</div>
+<div class="line"><span class="lineno">   91</span>}</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>} <span class="comment">// namespace fme_apply</span></div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span><span class="preprocessor">#undef THROW_UNLESS</span></div>
 <div class="ttc" id="a_metric_printer_8cpp_html_ad1515c4010b62f2e17704bb149a64d6b"><div class="ttname"><a href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a></div><div class="ttdeci">#define THROW_UNLESS(COND, MSG)</div><div class="ttdef"><b>Definition</b> <a href="_metric_printer_8cpp_source.html#l00027">MetricPrinter.cpp:27</a></div></div>
-<div class="ttc" id="aclassfme__apply_1_1_f_m_equalizer_html_adad6b29a7d27ba6959c2a76abd04faa9"><div class="ttname"><a href="classfme__apply_1_1_f_m_equalizer.html#adad6b29a7d27ba6959c2a76abd04faa9">fme_apply::FMEqualizer::equalize</a></div><div class="ttdeci">void equalize(loco::Graph *g, const std::vector&lt; EqualizePattern &gt; &amp;p)</div><div class="ttdef"><b>Definition</b> <a href="_f_m_equalizer_8cpp_source.html#l00067">FMEqualizer.cpp:67</a></div></div>
+<div class="ttc" id="aclassfme__apply_1_1_f_m_equalizer_html_af41c2ba1b069739f2e0b16b767e3ac56"><div class="ttname"><a href="classfme__apply_1_1_f_m_equalizer.html#af41c2ba1b069739f2e0b16b767e3ac56">fme_apply::FMEqualizer::equalize</a></div><div class="ttdeci">void equalize(loco::Graph *g, std::vector&lt; EqualizePattern &gt; &amp;p)</div><div class="ttdef"><b>Definition</b> <a href="_f_m_equalizer_8cpp_source.html#l00063">FMEqualizer.cpp:63</a></div></div>
 <div class="ttc" id="aclassfme__apply_1_1_insert_scale_shift_html"><div class="ttname"><a href="classfme__apply_1_1_insert_scale_shift.html">fme_apply::InsertScaleShift</a></div><div class="ttdoc">Class to insert scale/shift virtual Ops to loco::Graph.</div><div class="ttdef"><b>Definition</b> <a href="_insert_scale_shift_8h_source.html#l00030">InsertScaleShift.h:31</a></div></div>
 <div class="ttc" id="aclassfme__apply_1_1_progress_reporter_html"><div class="ttname"><a href="classfme__apply_1_1_progress_reporter.html">fme_apply::ProgressReporter</a></div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_progress_reporter_8h_source.html#l00029">ProgressReporter.h:30</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
@@ -228,7 +218,7 @@ Macros</h2></td></tr>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceenco_html_a3d4e56ec31be86ad47be84f20622bc0e"><div class="ttname"><a href="namespaceenco.html#a3d4e56ec31be86ad47be84f20622bc0e">enco::code</a></div><div class="ttdeci">Code * code(const SessionID &amp;sess)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00054">Session.cpp:54</a></div></div>
 <div class="ttc" id="anamespacefme__apply_html"><div class="ttname"><a href="namespacefme__apply.html">fme_apply</a></div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00022">EqualizePattern.h:23</a></div></div>
-<div class="ttc" id="anamespacefme__apply_html_a98ba68695a1067f1c7288172ca9a3692"><div class="ttname"><a href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">fme_apply::check_patterns_valid</a></div><div class="ttdeci">void check_patterns_valid(loco::Graph *g, const std::vector&lt; EqualizePattern &gt; &amp;patterns)</div><div class="ttdef"><b>Definition</b> <a href="_equalize_pattern_check_8cpp_source.html#l00031">EqualizePatternCheck.cpp:31</a></div></div>
+<div class="ttc" id="anamespacefme__apply_html_a98ba68695a1067f1c7288172ca9a3692"><div class="ttname"><a href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">fme_apply::check_patterns_valid</a></div><div class="ttdeci">void check_patterns_valid(loco::Graph *g, const std::vector&lt; EqualizePattern &gt; &amp;patterns)</div><div class="ttdef"><b>Definition</b> <a href="_equalize_pattern_check_8cpp_source.html#l00037">EqualizePatternCheck.cpp:37</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>

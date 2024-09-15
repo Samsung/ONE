@@ -69,7 +69,7 @@ var searchData=
   ['memory_66',['Memory',['../struct_memory.html',1,'']]],
   ['memorycontext_67',['MemoryContext',['../classenco_1_1_memory_context.html',1,'enco']]],
   ['memorymanager_68',['MemoryManager',['../classonert_1_1backend_1_1basic_1_1_memory_manager.html',1,'onert::backend::basic']]],
-  ['memoryplannerfactory_69',['memoryplannerfactory',['../classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html',1,'onert::backend::basic::MemoryPlannerFactory'],['../classonert_1_1backend_1_1train_1_1_memory_planner_factory.html',1,'onert::backend::train::MemoryPlannerFactory']]],
+  ['memoryplannerfactory_69',['memoryplannerfactory',['../classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html',1,'onert::backend::basic::MemoryPlannerFactory'],['../classonert_1_1backend_1_1train_1_1_memory_planner_factory.html',1,'onert::backend::train::MemoryPlannerFactory&lt; Index &gt;']]],
   ['memorytracker_70',['MemoryTracker',['../class_memory_tracker.html',1,'']]],
   ['mergecommand_71',['MergeCommand',['../struct_merge_command.html',1,'']]],
   ['mergeconcatnodespass_72',['MergeConcatNodesPass',['../classexo_1_1_merge_concat_nodes_pass.html',1,'exo']]],

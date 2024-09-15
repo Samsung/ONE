@@ -7,7 +7,9 @@ var onnx_dump_8py =
     [ "_dump_inputoutputs", "onnx-dump_8py.html#aefbd5a0b00f5c909321fc5558afe56ba", null ],
     [ "_dump_nodes", "onnx-dump_8py.html#ae5fa21932fe5499ad2415ef91369ca8f", null ],
     [ "_dump_operators", "onnx-dump_8py.html#aea523e85c3a39dd7135a74db5594bc54", null ],
+    [ "_gather_value_infos", "onnx-dump_8py.html#afba835ecefdc27e7838fb32a0fc3b2fe", null ],
     [ "_get_attribute_value", "onnx-dump_8py.html#a93a7ad875ac19383958db4440142bcfb", null ],
     [ "_help_exit", "onnx-dump_8py.html#a62a1191ac123437be4c8f977c1325a14", null ],
+    [ "_type_format", "onnx-dump_8py.html#a20346dfd4d7eefa09589d2c966f4df5b", null ],
     [ "main", "onnx-dump_8py.html#a29808a7af00710ab7a4b7b22b8109cfd", null ]
 ];

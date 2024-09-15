@@ -99,54 +99,12 @@ $(document).ready(function(){initNavTree('namespacebackends.html',''); initResiz
 Functions</h2></td></tr>
 <tr class="memitem:a434b047085c0ef9f50bd5be9edf0d999" id="r_a434b047085c0ef9f50bd5be9edf0d999"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">get_list</a> (cmdname)</td></tr>
 <tr class="separator:a434b047085c0ef9f50bd5be9edf0d999"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3331bdac18aa86edf4ba7a4e4dce446e" id="r_a3331bdac18aa86edf4ba7a4e4dce446e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebackends.html#a3331bdac18aa86edf4ba7a4e4dce446e">get_backend_from_target_conf</a> (str target)</td></tr>
-<tr class="separator:a3331bdac18aa86edf4ba7a4e4dce446e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2c0dc9f14888673957e4c36029fc88b" id="r_ae2c0dc9f14888673957e4c36029fc88b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebackends.html#ae2c0dc9f14888673957e4c36029fc88b">get_value_from_target_conf</a> (str target, str key)</td></tr>
+<tr class="separator:ae2c0dc9f14888673957e4c36029fc88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94b8c501b87d45da78b692ec69c1c87b" id="r_a94b8c501b87d45da78b692ec69c1c87b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">search_driver</a> (driver)</td></tr>
 <tr class="separator:a94b8c501b87d45da78b692ec69c1c87b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a3331bdac18aa86edf4ba7a4e4dce446e" name="a3331bdac18aa86edf4ba7a4e4dce446e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3331bdac18aa86edf4ba7a4e4dce446e">&#9670;&#160;</a></span>get_backend_from_target_conf()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">backends.get_backend_from_target_conf </td>
-          <td>(</td>
-          <td class="paramtype">str&#160;</td>
-          <td class="paramname"><em>target</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="backends_8py_source.html#l00065">65</a> of file <a class="el" href="backends_8py_source.html">backends.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span><span class="keyword">def </span>get_backend_from_target_conf(target: str):</div>
-<div class="line"><span class="lineno">   66</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">   67</span>    target_conf_path = dir_path + f<span class="stringliteral">&#39;/../../target/{target}.ini&#39;</span></div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(target_conf_path):</div>
-<div class="line"><span class="lineno">   69</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <span class="comment"># target config doesn&#39;t have section.</span></div>
-<div class="line"><span class="lineno">   72</span>    <span class="comment"># but, configparser needs configs to have one or more sections.</span></div>
-<div class="line"><span class="lineno">   73</span>    DUMMY_SECTION = <span class="stringliteral">&#39;dummy_section&#39;</span></div>
-<div class="line"><span class="lineno">   74</span>    <span class="keyword">with</span> open(target_conf_path, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><span class="lineno">   75</span>        config_str = f<span class="stringliteral">&#39;[{DUMMY_SECTION}]\n&#39;</span> + f.read()</div>
-<div class="line"><span class="lineno">   76</span>    parser = oneutils.get_config_parser()</div>
-<div class="line"><span class="lineno">   77</span>    parser.read_string(config_str)</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keyword">assert</span> parser.has_section(DUMMY_SECTION)</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>    BACKEND_KEY = <span class="stringliteral">&#39;BACKEND&#39;</span></div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> BACKEND_KEY <span class="keywordflow">in</span> parser[DUMMY_SECTION]:</div>
-<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">return</span> parser[DUMMY_SECTION][BACKEND_KEY]</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span> </div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a434b047085c0ef9f50bd5be9edf0d999" name="a434b047085c0ef9f50bd5be9edf0d999"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a434b047085c0ef9f50bd5be9edf0d999">&#9670;&#160;</a></span>get_list()</h2>
 
@@ -163,33 +121,90 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backends_8py_source.html#l00042">42</a> of file <a class="el" href="backends_8py_source.html">backends.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span><span class="keyword">def </span>get_list(cmdname):</div>
-<div class="line"><span class="lineno">   43</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">   44</span>    backend_set = set()</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    <span class="comment"># bin folder</span></div>
-<div class="line"><span class="lineno">   47</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../&#39;</span> + cmdname)]</div>
-<div class="line"><span class="lineno">   48</span>    <span class="comment"># backends folder</span></div>
-<div class="line"><span class="lineno">   49</span>    files += [</div>
-<div class="line"><span class="lineno">   50</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/&#39;</span> + cmdname, recursive=<span class="keyword">True</span>)</div>
-<div class="line"><span class="lineno">   51</span>    ]</div>
-<div class="line"><span class="lineno">   52</span>    <span class="comment"># TODO find backends in `$PATH`</span></div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    backends_list = []</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
-<div class="line"><span class="lineno">   56</span>        base = ntpath.basename(cand)</div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">if</span> (<span class="keywordflow">not</span> base <span class="keywordflow">in</span> backend_set) <span class="keywordflow">and</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(</div>
-<div class="line"><span class="lineno">   58</span>                cand, os.X_OK):</div>
-<div class="line"><span class="lineno">   59</span>            backend_set.add(base)</div>
-<div class="line"><span class="lineno">   60</span>            backends_list.append(cand)</div>
+<p class="definition">Definition at line <a class="el" href="backends_8py_source.html#l00058">58</a> of file <a class="el" href="backends_8py_source.html">backends.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span><span class="keyword">def </span>get_list(cmdname):</div>
+<div class="line"><span class="lineno">   59</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">   60</span>    backend_set = set()</div>
 <div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> backends_list</div>
-<div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="comment"># bin folder</span></div>
+<div class="line"><span class="lineno">   63</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../&#39;</span> + cmdname)]</div>
+<div class="line"><span class="lineno">   64</span>    <span class="comment"># backends folder</span></div>
+<div class="line"><span class="lineno">   65</span>    files += [</div>
+<div class="line"><span class="lineno">   66</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/&#39;</span> + cmdname, recursive=<span class="keyword">True</span>)</div>
+<div class="line"><span class="lineno">   67</span>    ]</div>
+<div class="line"><span class="lineno">   68</span>    <span class="comment"># TODO find backends in `$PATH`</span></div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>    backends_list = []</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
+<div class="line"><span class="lineno">   72</span>        base = ntpath.basename(cand)</div>
+<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">if</span> (<span class="keywordflow">not</span> base <span class="keywordflow">in</span> backend_set) <span class="keywordflow">and</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(</div>
+<div class="line"><span class="lineno">   74</span>                cand, os.X_OK):</div>
+<div class="line"><span class="lineno">   75</span>            backend_set.add(base)</div>
+<div class="line"><span class="lineno">   76</span>            backends_list.append(cand)</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> backends_list</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span> </div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="argumentparse_8py_source.html#l00128">argumentparse.ArgumentParser.print_help()</a>.</p>
 
+</div>
+</div>
+<a id="ae2c0dc9f14888673957e4c36029fc88b" name="ae2c0dc9f14888673957e4c36029fc88b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2c0dc9f14888673957e4c36029fc88b">&#9670;&#160;</a></span>get_value_from_target_conf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">backends.get_value_from_target_conf </td>
+          <td>(</td>
+          <td class="paramtype">str&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">str&#160;</td>
+          <td class="paramname"><em>key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backends_8py_source.html#l00081">81</a> of file <a class="el" href="backends_8py_source.html">backends.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span><span class="keyword">def </span>get_value_from_target_conf(target: str, key: str):</div>
+<div class="line"><span class="lineno">   82</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">   83</span>    target_conf_path = dir_path + f<span class="stringliteral">&#39;/../../target/{target}.ini&#39;</span></div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(target_conf_path):</div>
+<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;Not found given target configuration: {target}&quot;</span>)</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="comment"># target config doesn&#39;t have section.</span></div>
+<div class="line"><span class="lineno">   88</span>    <span class="comment"># but, configparser needs configs to have one or more sections.</span></div>
+<div class="line"><span class="lineno">   89</span>    DUMMY_SECTION = <span class="stringliteral">&#39;dummy_section&#39;</span></div>
+<div class="line"><span class="lineno">   90</span>    <span class="keyword">with</span> open(target_conf_path, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><span class="lineno">   91</span>        config_str = f<span class="stringliteral">&#39;[{DUMMY_SECTION}]\n&#39;</span> + f.read()</div>
+<div class="line"><span class="lineno">   92</span>    parser = oneutils.get_config_parser()</div>
+<div class="line"><span class="lineno">   93</span>    parser.read_string(config_str)</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">assert</span> parser.has_section(DUMMY_SECTION)</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>    <span class="comment"># Check if target file is valid</span></div>
+<div class="line"><span class="lineno">   97</span>    TARGET_KEY = <span class="stringliteral">&#39;TARGET&#39;</span></div>
+<div class="line"><span class="lineno">   98</span>    <span class="keyword">assert</span> TARGET_KEY <span class="keywordflow">in</span> parser[DUMMY_SECTION]</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">if</span> target != parser[DUMMY_SECTION][TARGET_KEY]:</div>
+<div class="line"><span class="lineno">  100</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;Invalid target file.&quot;</span>)</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> parser[DUMMY_SECTION]:</div>
+<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">return</span> parser[DUMMY_SECTION][key]</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Not found &#39;{key}&#39; key in target configuration.&quot;</span>)</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span> </div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a94b8c501b87d45da78b692ec69c1c87b" name="a94b8c501b87d45da78b692ec69c1c87b"></a>
@@ -208,23 +223,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backends_8py_source.html#l00087">87</a> of file <a class="el" href="backends_8py_source.html">backends.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   87</span><span class="keyword">def </span>search_driver(driver):</div>
-<div class="line"><span class="lineno">   88</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>    <span class="comment"># CASE 1: one/bin/{driver} is found</span></div>
-<div class="line"><span class="lineno">   91</span>    driver_path = dir_path + <span class="stringliteral">&#39;/../&#39;</span> + driver</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">return</span> driver_path</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    <span class="comment"># CASE 2: one/backends/**/bin/{driver} is found</span></div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">for</span> driver_path <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/bin/&#39;</span> + driver,</div>
-<div class="line"><span class="lineno">   97</span>                                 recursive=<span class="keyword">True</span>):</div>
-<div class="line"><span class="lineno">   98</span>        <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
-<div class="line"><span class="lineno">   99</span>            <span class="keywordflow">return</span> driver_path</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>    <span class="comment"># CASE 3: {driver} is found in nowhere</span></div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<p class="definition">Definition at line <a class="el" href="backends_8py_source.html#l00108">108</a> of file <a class="el" href="backends_8py_source.html">backends.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span><span class="keyword">def </span>search_driver(driver):</div>
+<div class="line"><span class="lineno">  109</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>    <span class="comment"># CASE 1: one/bin/{driver} is found</span></div>
+<div class="line"><span class="lineno">  112</span>    driver_path = dir_path + <span class="stringliteral">&#39;/../&#39;</span> + driver</div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
+<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">return</span> driver_path</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>    <span class="comment"># CASE 2: one/backends/**/bin/{driver} is found</span></div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">for</span> driver_path <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/bin/&#39;</span> + driver,</div>
+<div class="line"><span class="lineno">  118</span>                                 recursive=<span class="keyword">True</span>):</div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
+<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">return</span> driver_path</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>    <span class="comment"># CASE 3: {driver} is found in nowhere</span></div>
+<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 </div><!-- fragment -->
 </div>
 </div>

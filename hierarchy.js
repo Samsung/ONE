@@ -75,13 +75,7 @@ var hierarchy =
       [ "flatbuffers::grpc::SliceAllocator", "classflatbuffers_1_1grpc_1_1_slice_allocator.html", null ]
     ] ],
     [ "onert::backend::basic::Allocator", "classonert_1_1backend_1_1basic_1_1_allocator.html", null ],
-    [ "ANeuralNetworksCompilation", "struct_a_neural_networks_compilation.html", null ],
-    [ "ANeuralNetworksEvent", "struct_a_neural_networks_event.html", null ],
-    [ "ANeuralNetworksExecution", "struct_a_neural_networks_execution.html", null ],
-    [ "ANeuralNetworksMemory", "struct_a_neural_networks_memory.html", null ],
-    [ "ANeuralNetworksModel", "struct_a_neural_networks_model.html", null ],
     [ "ANeuralNetworksOperandType", "struct_a_neural_networks_operand_type.html", null ],
-    [ "ANeuralNetworksSymmPerChannelQuantParams", "struct_a_neural_networks_symm_per_channel_quant_params.html", null ],
     [ "ANNBinder", "class_a_n_n_binder.html", null ],
     [ "ANNContext", "struct_a_n_n_context.html", null ],
     [ "loco::AnnotatedItem< Annotation >", "classloco_1_1_annotated_item.html", null ],
@@ -816,6 +810,11 @@ var hierarchy =
               [ "luci::CircleReverseV2", "classluci_1_1_circle_reverse_v2.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::RMS_NORM >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 3, CircleNodeImpl< CircleOpcode::RMS_NORM > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleRmsNorm", "classluci_1_1_circle_rms_norm.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::ROUND >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::ROUND > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleRound", "classluci_1_1_circle_round.html", null ]
@@ -1508,7 +1507,8 @@ var hierarchy =
       [ "circlechef::CircleOpBCQGather", "classcirclechef_1_1_circle_op_b_c_q_gather.html", null ],
       [ "circlechef::CircleOpBatchMatMul", "classcirclechef_1_1_circle_op_batch_mat_mul.html", null ],
       [ "circlechef::CircleOpGRU", "classcirclechef_1_1_circle_op_g_r_u.html", null ],
-      [ "circlechef::CircleOpInstanceNorm", "classcirclechef_1_1_circle_op_instance_norm.html", null ]
+      [ "circlechef::CircleOpInstanceNorm", "classcirclechef_1_1_circle_op_instance_norm.html", null ],
+      [ "circlechef::CircleOpRmsNorm", "classcirclechef_1_1_circle_op_rms_norm.html", null ]
     ] ],
     [ "circlechef::CircleOpRegistry", "classcirclechef_1_1_circle_op_registry.html", null ],
     [ "luci::CircleOptimizer", "classluci_1_1_circle_optimizer.html", null ],
@@ -1785,6 +1785,7 @@ var hierarchy =
     [ "nnc::Driver", "classnnc_1_1_driver.html", null ],
     [ "mpqsolver::core::Dumper", "classmpqsolver_1_1core_1_1_dumper.html", null ],
     [ "DumpFakeQuantFM.DumpFakeQuantFM", "class_dump_fake_quant_f_m_1_1_dump_fake_quant_f_m.html", null ],
+    [ "fmelib.DumpFMEParams.DumpFMEParams", "classfmelib_1_1_dump_f_m_e_params_1_1_dump_f_m_e_params.html", null ],
     [ "DumpFP32FM.DumpFP32FM", "class_dump_f_p32_f_m_1_1_dump_f_p32_f_m.html", null ],
     [ "circleinspect::DumpInterface", "classcircleinspect_1_1_dump_interface.html", [
       [ "circleinspect::DumpConstants", "classcircleinspect_1_1_dump_constants.html", null ],
@@ -2191,6 +2192,7 @@ var hierarchy =
         [ "luci::CircleResizeNearestNeighborGraphBuilder", "classluci_1_1_circle_resize_nearest_neighbor_graph_builder.html", null ],
         [ "luci::CircleReverseSequenceGraphBuilder", "classluci_1_1_circle_reverse_sequence_graph_builder.html", null ],
         [ "luci::CircleReverseV2GraphBuilder", "classluci_1_1_circle_reverse_v2_graph_builder.html", null ],
+        [ "luci::CircleRmsNormGraphBuilder", "classluci_1_1_circle_rms_norm_graph_builder.html", null ],
         [ "luci::CircleRoundGraphBuilder", "classluci_1_1_circle_round_graph_builder.html", null ],
         [ "luci::CircleRsqrtGraphBuilder", "classluci_1_1_circle_rsqrt_graph_builder.html", null ],
         [ "luci::CircleSVDFBuilder", "classluci_1_1_circle_s_v_d_f_builder.html", null ],
@@ -3182,7 +3184,7 @@ var hierarchy =
       [ "onert::backend::train::TrainableMemoryManager", "classonert_1_1backend_1_1train_1_1_trainable_memory_manager.html", null ]
     ] ],
     [ "onert::backend::basic::MemoryPlannerFactory", "classonert_1_1backend_1_1basic_1_1_memory_planner_factory.html", null ],
-    [ "onert::backend::train::MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", null ],
+    [ "onert::backend::train::MemoryPlannerFactory< Index >", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", null ],
     [ "MemoryTracker", "class_memory_tracker.html", null ],
     [ "flatbuffers::grpc::Message< T >", "classflatbuffers_1_1grpc_1_1_message.html", null ],
     [ "hermes::Message", "classhermes_1_1_message.html", null ],
@@ -3552,7 +3554,6 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataWrongInputShapeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_input_shape_slice.html", null ],
       [ "onert_micro::test_model::TestDataWrongSizeTypeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_size_type_slice.html", null ]
     ] ],
-    [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
     [ "nnfw_adam_option", "structnnfw__adam__option.html", null ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", null ],
@@ -3834,6 +3835,7 @@ var hierarchy =
       [ "ResizeNearestNeighborChef", "class_resize_nearest_neighbor_chef.html", null ],
       [ "ReverseSequenceChef", "class_reverse_sequence_chef.html", null ],
       [ "ReverseV2Chef", "class_reverse_v2_chef.html", null ],
+      [ "RmsNormChef", "class_rms_norm_chef.html", null ],
       [ "RoundChef", "class_round_chef.html", null ],
       [ "RsqrtChef", "class_rsqrt_chef.html", null ],
       [ "SVDFChef", "class_s_v_d_f_chef.html", null ],
@@ -3968,6 +3970,7 @@ var hierarchy =
       [ "ResizeNearestNeighborChefFactory", "struct_resize_nearest_neighbor_chef_factory.html", null ],
       [ "ReverseSequenceChefFactory", "struct_reverse_sequence_chef_factory.html", null ],
       [ "ReverseV2ChefFactory", "struct_reverse_v2_chef_factory.html", null ],
+      [ "RmsNormChefFactory", "struct_rms_norm_chef_factory.html", null ],
       [ "RoundChefFactory", "struct_round_chef_factory.html", null ],
       [ "RsqrtChefFactory", "struct_rsqrt_chef_factory.html", null ],
       [ "SVDFChefFactory", "struct_s_v_d_f_chef_factory.html", null ],
@@ -4065,7 +4068,6 @@ var hierarchy =
       [ "mir::ops::TransposeOp", "classmir_1_1ops_1_1_transpose_op.html", null ]
     ] ],
     [ "Operation", "struct_operation.html", null ],
-    [ "OperationFactory", "class_operation_factory.html", null ],
     [ "onert::ir::OperationIndexSet", "classonert_1_1ir_1_1_operation_index_set.html", null ],
     [ "ann::OperationInventory", "classann_1_1_operation_inventory.html", null ],
     [ "OperationType", null, [
@@ -4295,7 +4297,6 @@ var hierarchy =
     [ "onert::ir::operation::TransposeConv::Param", "structonert_1_1ir_1_1operation_1_1_transpose_conv_1_1_param.html", null ],
     [ "onert::ir::operation::Unpack::Param", "structonert_1_1ir_1_1operation_1_1_unpack_1_1_param.html", null ],
     [ "onert::ir::operation::While::Param", "structonert_1_1ir_1_1operation_1_1_while_1_1_param.html", null ],
-    [ "OperationFactory::Param", "struct_operation_factory_1_1_param.html", null ],
     [ "moco::PlaneInference::Parameters", "structmoco_1_1_plane_inference_1_1_parameters.html", null ],
     [ "onert::backend::cl_common::ParentInfo", "structonert_1_1backend_1_1cl__common_1_1_parent_info.html", null ],
     [ "nnkit::support::tftestinfo::ParsedTensor", "classnnkit_1_1support_1_1tftestinfo_1_1_parsed_tensor.html", null ],
@@ -4477,12 +4478,8 @@ var hierarchy =
       [ "exo::ShapeInferencePass", "classexo_1_1_shape_inference_pass.html", null ],
       [ "exo::TensorBroadcastConverter", "classexo_1_1_tensor_broadcast_converter.html", null ],
       [ "exo::TypeInferencePass", "classexo_1_1_type_inference_pass.html", null ],
-      [ "fme_apply::ForwardPreScalePass", "classfme__apply_1_1_forward_pre_scale_pass.html", null ],
-      [ "fme_apply::ForwardPreShiftPass", "classfme__apply_1_1_forward_pre_shift_pass.html", null ],
       [ "fme_apply::FusePostScalePass", "classfme__apply_1_1_fuse_post_scale_pass.html", null ],
-      [ "fme_apply::FusePostShiftPass", "classfme__apply_1_1_fuse_post_shift_pass.html", null ],
       [ "fme_apply::FusePreScalePass", "classfme__apply_1_1_fuse_pre_scale_pass.html", null ],
-      [ "fme_apply::FusePreShiftPass", "classfme__apply_1_1_fuse_pre_shift_pass.html", null ],
       [ "logo::ConstantFoldingPass", "classlogo_1_1_constant_folding_pass.html", null ],
       [ "logo::RemoveDeadNodePass", "structlogo_1_1_remove_dead_node_pass.html", null ],
       [ "logo::RemoveDeadNodeWithQueryPass", "structlogo_1_1_remove_dead_node_with_query_pass.html", null ],
@@ -4950,6 +4947,8 @@ var hierarchy =
     [ "onert::ir::Stride", "structonert_1_1ir_1_1_stride.html", null ],
     [ "coco::Stride2D", "classcoco_1_1_stride2_d.html", null ],
     [ "loco::Stride< 2 >", "classloco_1_1_stride_3_012_01_4.html", null ],
+    [ "luci::sinf::StridedSliceContext", "structluci_1_1sinf_1_1_strided_slice_context.html", null ],
+    [ "luci::sinf::StridedSliceParams", "structluci_1_1sinf_1_1_strided_slice_params.html", null ],
     [ "luci_interpreter::StridedSliceParams", "structluci__interpreter_1_1_strided_slice_params.html", null ],
     [ "luci_interpreter_pal::StridedSliceParams", "structluci__interpreter__pal_1_1_strided_slice_params.html", null ],
     [ "nnfw::cker::StridedSliceParams", "structnnfw_1_1cker_1_1_strided_slice_params.html", null ],
@@ -6145,5 +6144,10 @@ var hierarchy =
     [ "loco::With< Trait >", "structloco_1_1_with.html", null ],
     [ "WorkflowRunner.WorkflowRunner", "class_workflow_runner_1_1_workflow_runner.html", null ],
     [ "onert::exec::WorkQueue", "classonert_1_1exec_1_1_work_queue.html", null ],
+    [ "nnfw::cker::xent_ops::functor::XentFunctor< Device, T >", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor.html", null ],
+    [ "nnfw::cker::xent_ops::functor::XentFunctorBase< Device, T >", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_base.html", null ],
+    [ "nnfw::cker::xent_ops::functor::XentFunctorBase< CPUDevice, T >", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_base.html", [
+      [ "nnfw::cker::xent_ops::functor::XentFunctor< CPUDevice, T >", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_3_01_c_p_u_device_00_01_t_01_4.html", null ]
+    ] ],
     [ "nnfw::misc::tensor::Zipper< T >", "classnnfw_1_1misc_1_1tensor_1_1_zipper.html", null ]
 ];

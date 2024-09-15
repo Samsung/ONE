@@ -90,11 +90,15 @@ $(document).ready(function(){initNavTree('service_2src_2_nodes_2_circle_range_8c
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">CircleRange.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_circle_clone_node_8h_source.html">CircleCloneNode.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_circle_shape_inference_8h_source.html">luci/Service/CircleShapeInference.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_circle_clone_node_8h_source.html">CircleCloneNode.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_circle_shape_inference_helper_8h_source.html">CircleShapeInferenceHelper.h</a>&quot;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
 </div>
 <p><a href="service_2src_2_nodes_2_circle_range_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -102,7 +106,36 @@ $(document).ready(function(){initNavTree('service_2src_2_nodes_2_circle_range_8c
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci" id="r_namespaceluci"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html">luci</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceluci_1_1sinf" id="r_namespaceluci_1_1sinf"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1sinf.html">luci::sinf</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a915318bfe65b1174d8e7038e7842d58e" id="r_a915318bfe65b1174d8e7038e7842d58e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="service_2src_2_nodes_2_circle_range_8cpp.html#a915318bfe65b1174d8e7038e7842d58e">GET_RANGE_PARAM</a>(DT)</td></tr>
+<tr class="separator:a915318bfe65b1174d8e7038e7842d58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a915318bfe65b1174d8e7038e7842d58e" name="a915318bfe65b1174d8e7038e7842d58e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a915318bfe65b1174d8e7038e7842d58e">&#9670;&#160;</a></span>GET_RANGE_PARAM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GET_RANGE_PARAM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">DT</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  start = start_node-&gt;scalar&lt;DT&gt;(); \</div>
+<div class="line">  limit = limit_node-&gt;scalar&lt;DT&gt;(); \</div>
+<div class="line">  delta = delta_node-&gt;scalar&lt;DT&gt;();</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

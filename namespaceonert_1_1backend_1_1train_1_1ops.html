@@ -169,6 +169,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a21e32e6cbd040fe9e236ec567839491f" id="r_a21e32e6cbd040fe9e236ec567839491f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f">biasGrad</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *input_backprop, <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *bias_grad)</td></tr>
 <tr class="memdesc:a21e32e6cbd040fe9e236ec567839491f"><td class="mdescLeft">&#160;</td><td class="mdescRight">backpropagate bias  <br /></td></tr>
 <tr class="separator:a21e32e6cbd040fe9e236ec567839491f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe733ad1790a31ce858685f858a395b2" id="r_afe733ad1790a31ce858685f858a395b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8">nnfw::cker::train::LossReductionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1train_1_1ops.html#afe733ad1790a31ce858685f858a395b2">convertLossReductionType</a> (<a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226d">ir::train::LossReductionType</a> type)</td></tr>
+<tr class="memdesc:afe733ad1790a31ce858685f858a395b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert loss reduction type  <br /></td></tr>
+<tr class="separator:afe733ad1790a31ce858685f858a395b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a36997d521390a4beeccc6475e08fca7e" name="a36997d521390a4beeccc6475e08fca7e"></a>
@@ -183,7 +186,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_operation_utils_8h_source.html#l00031">31</a> of file <a class="el" href="train_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_operation_utils_8h_source.html#l00033">33</a> of file <a class="el" href="train_2ops_2_operation_utils_8h_source.html">OperationUtils.h</a>.</p>
 
 </div>
 </div>
@@ -277,10 +280,10 @@ Functions</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8" name="a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8"></a>kMSE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00034">34</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">kMSE</a>,</div>
-<div class="line"><span class="lineno">   37</span>};</div>
+<p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00035">35</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">kMSE</a>,</div>
+<div class="line"><span class="lineno">   38</span>};</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720a78cd7f5949714b9bd2f18712b1a976d8">onert::backend::train::ops::LossType::kMSE</a></div><div class="ttdeci">@ kMSE</div></div>
 </div><!-- fragment -->
 </div>
@@ -465,6 +468,52 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="afe733ad1790a31ce858685f858a395b2" name="afe733ad1790a31ce858685f858a395b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe733ad1790a31ce858685f858a395b2">&#9670;&#160;</a></span>convertLossReductionType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8">nnfw::cker::train::LossReductionType</a> onert::backend::train::ops::convertLossReductionType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226d">ir::train::LossReductionType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>convert loss reduction type </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>loss reduction type defined in ir::train::LossReductionType </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>corresponding type defined in cker::train::LossReductionType </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00100">100</a> of file <a class="el" href="train_2ops_2_operation_utils_8cc_source.html">OperationUtils.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  101</span>{</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  103</span>  {</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">case</span> ir::train::LossReductionType::SumOverBatchSize:</div>
+<div class="line"><span class="lineno">  105</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8af6794d70817220bfb80ca985d7b7c238">nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE</a>;</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> ir::train::LossReductionType::Sum:</div>
+<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8a6970bdc2201030b9c03fbdcf3973858a">nnfw::cker::train::LossReductionType::SUM</a>;</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported LossReductionType&quot;</span>);</div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="line"><span class="lineno">  111</span>}</div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a1175c776880a330984f05bf7ba5e26b8a6970bdc2201030b9c03fbdcf3973858a"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8a6970bdc2201030b9c03fbdcf3973858a">nnfw::cker::train::LossReductionType::SUM</a></div><div class="ttdeci">@ SUM</div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_a1175c776880a330984f05bf7ba5e26b8af6794d70817220bfb80ca985d7b7c238"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8af6794d70817220bfb80ca985d7b7c238">nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ SUM_OVER_BATCH_SIZE</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8a6970bdc2201030b9c03fbdcf3973858a">nnfw::cker::train::SUM</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5">onert::ir::train::Sum</a>, <a class="el" href="namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8af6794d70817220bfb80ca985d7b7c238">nnfw::cker::train::SUM_OVER_BATCH_SIZE</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>.</p>
+
+</div>
+</div>
 <a id="a9a41239d90a397bd0f075ddedfa72322" name="a9a41239d90a397bd0f075ddedfa72322"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a41239d90a397bd0f075ddedfa72322">&#9670;&#160;</a></span>getShape()</h2>
 
@@ -511,7 +560,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00114">nnfw::cker::Shape::DimsData()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00050">backpropActivation()</a>, <a class="el" href="_back_prop_accumulator_8cc_source.html#l00052">onert::backend::train::ops::BackPropAccumulator::backward()</a>, <a class="el" href="train_2ops_2_binary_arithmetic_layer_8cc_source.html#l00065">onert::backend::train::ops::BinaryArithmeticLayer::backward()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00057">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00052">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, <a class="el" href="train_2ops_2_mean_layer_8cc_source.html#l00049">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="train_2ops_2_soft_max_layer_8cc_source.html#l00047">onert::backend::train::ops::SoftMaxLayer::backward()</a>, <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00086">biasGrad()</a>, <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00038">onert::backend::train::ops::ElementwiseActivationLayer::configureBackward()</a>, <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html#l00042">onert::backend::train::ops::DepthwiseConvolutionLayer::configureBackward()</a>, <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00035">onert::backend::train::ops::PadLayer::depad()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00043">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00038">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00050">backpropActivation()</a>, <a class="el" href="_back_prop_accumulator_8cc_source.html#l00052">onert::backend::train::ops::BackPropAccumulator::backward()</a>, <a class="el" href="train_2ops_2_binary_arithmetic_layer_8cc_source.html#l00065">onert::backend::train::ops::BinaryArithmeticLayer::backward()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, <a class="el" href="train_2ops_2_mean_layer_8cc_source.html#l00049">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="train_2ops_2_soft_max_layer_8cc_source.html#l00047">onert::backend::train::ops::SoftMaxLayer::backward()</a>, <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00086">biasGrad()</a>, <a class="el" href="train_2ops_2_elementwise_activation_layer_8cc_source.html#l00038">onert::backend::train::ops::ElementwiseActivationLayer::configureBackward()</a>, <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html#l00042">onert::backend::train::ops::DepthwiseConvolutionLayer::configureBackward()</a>, <a class="el" href="train_2ops_2_pad_layer_8cc_source.html#l00035">onert::backend::train::ops::PadLayer::depad()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
 
 </div>
 </div>

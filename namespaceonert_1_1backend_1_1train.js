@@ -32,6 +32,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "ExternalContext", "namespaceonert_1_1backend_1_1train.html#a3c1e11c7f580abe1841baa9258e4ac66", null ],
     [ "FunctionMap", "namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67", null ],
     [ "GradientTensor", "namespaceonert_1_1backend_1_1train.html#a3e0ce1cec6fbbec4489109783c51aee0", null ],
+    [ "LayerScopeTensors", "namespaceonert_1_1backend_1_1train.html#a86b587cd2ff7a8482786e96a0b0f5235", null ],
     [ "MemoryManager", "namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0", null ],
     [ "TrainableBackendContexts", "namespaceonert_1_1backend_1_1train.html#a21fcc843f3525a88a84dc135310daf3e", null ],
     [ "TrainableTensor", "namespaceonert_1_1backend_1_1train.html#aa21cf6936b7fa20f14110a1890c0fcfc", null ],

@@ -5,7 +5,7 @@ var searchData=
   ['layout_2',['Layout',['../namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2',1,'onert::ir']]],
   ['level_3',['Level',['../classonert_1_1dumper_1_1dot_1_1_dot_dumper.html#aab4b91404d692bd9a81d28accdaa291f',1,'onert::dumper::dot::DotDumper']]],
   ['losscode_4',['LossCode',['../namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52',1,'onert::ir::train']]],
-  ['lossreductiontype_5',['LossReductionType',['../namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226d',1,'onert::ir::train']]],
+  ['lossreductiontype_5',['lossreductiontype',['../namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8',1,'nnfw::cker::train::LossReductionType'],['../namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226d',1,'onert::ir::train::LossReductionType']]],
   ['losstype_6',['LossType',['../namespaceonert_1_1backend_1_1train_1_1ops.html#a5c3e46703479fd9e80ecc390791d0720',1,'onert::backend::train::ops']]],
   ['lstmkerneltype_7',['LSTMKernelType',['../namespacennfw_1_1cker.html#a9a5853680a568a8f2952cfe53d02dc63',1,'nnfw::cker']]]
 ];

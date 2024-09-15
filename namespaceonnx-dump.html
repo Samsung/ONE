@@ -101,6 +101,10 @@ Functions</h2></td></tr>
 <tr class="separator:a3466caddb497112bbf2bc438f74ffbc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93a7ad875ac19383958db4440142bcfb" id="r_a93a7ad875ac19383958db4440142bcfb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonnx-dump.html#a93a7ad875ac19383958db4440142bcfb">_get_attribute_value</a> (attr)</td></tr>
 <tr class="separator:a93a7ad875ac19383958db4440142bcfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afba835ecefdc27e7838fb32a0fc3b2fe" id="r_afba835ecefdc27e7838fb32a0fc3b2fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonnx-dump.html#afba835ecefdc27e7838fb32a0fc3b2fe">_gather_value_infos</a> (onnx_model)</td></tr>
+<tr class="separator:afba835ecefdc27e7838fb32a0fc3b2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20346dfd4d7eefa09589d2c966f4df5b" id="r_a20346dfd4d7eefa09589d2c966f4df5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonnx-dump.html#a20346dfd4d7eefa09589d2c966f4df5b">_type_format</a> (type)</td></tr>
+<tr class="separator:a20346dfd4d7eefa09589d2c966f4df5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace81da97620aa10cc489525b5f9d218f" id="r_ace81da97620aa10cc489525b5f9d218f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonnx-dump.html#ace81da97620aa10cc489525b5f9d218f">_dump_header</a> (onnx_model)</td></tr>
 <tr class="separator:ace81da97620aa10cc489525b5f9d218f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea523e85c3a39dd7135a74db5594bc54" id="r_aea523e85c3a39dd7135a74db5594bc54"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonnx-dump.html#aea523e85c3a39dd7135a74db5594bc54">_dump_operators</a> (onnx_model)</td></tr>
@@ -149,7 +153,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   28</span> </div>
 <div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00068">_dump_initializers()</a>, <a class="el" href="onnx-dump_8py_source.html#l00101">_dump_inputoutputs()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00030">_get_attribute_value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00090">_dump_initializers()</a>, <a class="el" href="onnx-dump_8py_source.html#l00133">_dump_inputoutputs()</a>, <a class="el" href="onnx-dump_8py_source.html#l00030">_get_attribute_value()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00061">_type_format()</a>.</p>
 
 </div>
 </div>
@@ -177,19 +181,19 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00120">120</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span><span class="keyword">def </span>_dump_graph(onnx_model):</div>
-<div class="line"><span class="lineno">  121</span>    _dump_header(onnx_model)</div>
-<div class="line"><span class="lineno">  122</span>    _dump_operators(onnx_model)</div>
-<div class="line"><span class="lineno">  123</span>    _dump_initializers(onnx_model)</div>
-<div class="line"><span class="lineno">  124</span>    _dump_nodes(onnx_model)</div>
-<div class="line"><span class="lineno">  125</span>    _dump_inputoutputs(onnx_model)</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00152">152</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  152</span><span class="keyword">def </span>_dump_graph(onnx_model):</div>
+<div class="line"><span class="lineno">  153</span>    _dump_header(onnx_model)</div>
+<div class="line"><span class="lineno">  154</span>    _dump_operators(onnx_model)</div>
+<div class="line"><span class="lineno">  155</span>    _dump_initializers(onnx_model)</div>
+<div class="line"><span class="lineno">  156</span>    _dump_nodes(onnx_model)</div>
+<div class="line"><span class="lineno">  157</span>    _dump_inputoutputs(onnx_model)</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00046">_dump_header()</a>, <a class="el" href="onnx-dump_8py_source.html#l00068">_dump_initializers()</a>, <a class="el" href="onnx-dump_8py_source.html#l00101">_dump_inputoutputs()</a>, <a class="el" href="onnx-dump_8py_source.html#l00078">_dump_nodes()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00053">_dump_operators()</a>.</p>
+<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00068">_dump_header()</a>, <a class="el" href="onnx-dump_8py_source.html#l00090">_dump_initializers()</a>, <a class="el" href="onnx-dump_8py_source.html#l00133">_dump_inputoutputs()</a>, <a class="el" href="onnx-dump_8py_source.html#l00100">_dump_nodes()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00075">_dump_operators()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00135">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00167">main()</a>.</p>
 
 </div>
 </div>
@@ -217,16 +221,16 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00046">46</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>_dump_header(onnx_model):</div>
-<div class="line"><span class="lineno">   47</span>    print(<span class="stringliteral">&quot;[General] -----------------------------&quot;</span>)</div>
-<div class="line"><span class="lineno">   48</span>    print(<span class="stringliteral">&quot;IR version =&quot;</span>, onnx_model.ir_version)</div>
-<div class="line"><span class="lineno">   49</span>    print(<span class="stringliteral">&quot;Producer   =&quot;</span>, onnx_model.producer_name, onnx_model.producer_version)</div>
-<div class="line"><span class="lineno">   50</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00068">68</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span><span class="keyword">def </span>_dump_header(onnx_model):</div>
+<div class="line"><span class="lineno">   69</span>    print(<span class="stringliteral">&quot;[General] -----------------------------&quot;</span>)</div>
+<div class="line"><span class="lineno">   70</span>    print(<span class="stringliteral">&quot;IR version =&quot;</span>, onnx_model.ir_version)</div>
+<div class="line"><span class="lineno">   71</span>    print(<span class="stringliteral">&quot;Producer   =&quot;</span>, onnx_model.producer_name, onnx_model.producer_version)</div>
+<div class="line"><span class="lineno">   72</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00120">_dump_graph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00152">_dump_graph()</a>.</p>
 
 </div>
 </div>
@@ -254,21 +258,21 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00068">68</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span><span class="keyword">def </span>_dump_initializers(onnx_model):</div>
-<div class="line"><span class="lineno">   69</span>    print(<span class="stringliteral">&quot;[Initializers] ------------------------&quot;</span>)</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">for</span> initializer <span class="keywordflow">in</span> onnx_model.graph.initializer:</div>
-<div class="line"><span class="lineno">   71</span>        init_name = <span class="stringliteral">&#39;&quot;{}&quot;&#39;</span>.format(initializer.name)</div>
-<div class="line"><span class="lineno">   72</span>        dtstr = _data_type_str(initializer.data_type)</div>
-<div class="line"><span class="lineno">   73</span>        print(<span class="stringliteral">&#39;{:&lt;15} {} {}&#39;</span>.format(init_name, dtstr, initializer.dims))</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00090">90</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span><span class="keyword">def </span>_dump_initializers(onnx_model):</div>
+<div class="line"><span class="lineno">   91</span>    print(<span class="stringliteral">&quot;[Initializers] ------------------------&quot;</span>)</div>
+<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">for</span> initializer <span class="keywordflow">in</span> onnx_model.graph.initializer:</div>
+<div class="line"><span class="lineno">   93</span>        init_name = <span class="stringliteral">&#39;&quot;{}&quot;&#39;</span>.format(initializer.name)</div>
+<div class="line"><span class="lineno">   94</span>        dtstr = _data_type_str(initializer.data_type)</div>
+<div class="line"><span class="lineno">   95</span>        print(<span class="stringliteral">&#39;{:&lt;15} {} {}&#39;</span>.format(init_name, dtstr, initializer.dims))</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00026">_data_type_str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00120">_dump_graph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00152">_dump_graph()</a>.</p>
 
 </div>
 </div>
@@ -296,30 +300,30 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00101">101</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span>_dump_inputoutputs(onnx_model):</div>
-<div class="line"><span class="lineno">  102</span>    print(<span class="stringliteral">&quot;[Graph Input/Output]-------------------&quot;</span>)</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">for</span> mod_input <span class="keywordflow">in</span> onnx_model.graph.input:</div>
-<div class="line"><span class="lineno">  104</span>        io_name = <span class="stringliteral">&#39;&quot;{}&quot;&#39;</span>.format(mod_input.name)</div>
-<div class="line"><span class="lineno">  105</span>        dtstr = _data_type_str(mod_input.type.tensor_type.elem_type)</div>
-<div class="line"><span class="lineno">  106</span>        shape = mod_input.type.tensor_type.shape</div>
-<div class="line"><span class="lineno">  107</span>        input_shape = [dim.dim_value <span class="keywordflow">for</span> dim <span class="keywordflow">in</span> shape.dim]</div>
-<div class="line"><span class="lineno">  108</span>        print(<span class="stringliteral">&#39;    I: {:&lt;15} {} {}&#39;</span>.format(io_name, dtstr, input_shape))</div>
-<div class="line"><span class="lineno">  109</span> </div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">for</span> mod_output <span class="keywordflow">in</span> onnx_model.graph.output:</div>
-<div class="line"><span class="lineno">  111</span>        io_name = <span class="stringliteral">&#39;&quot;{}&quot;&#39;</span>.format(mod_output.name)</div>
-<div class="line"><span class="lineno">  112</span>        dtstr = _data_type_str(mod_output.type.tensor_type.elem_type)</div>
-<div class="line"><span class="lineno">  113</span>        shape = mod_output.type.tensor_type.shape</div>
-<div class="line"><span class="lineno">  114</span>        output_shape = [dim.dim_value <span class="keywordflow">for</span> dim <span class="keywordflow">in</span> shape.dim]</div>
-<div class="line"><span class="lineno">  115</span>        print(<span class="stringliteral">&#39;    O: {:&lt;15} {} {}&#39;</span>.format(io_name, dtstr, output_shape))</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00133">133</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  133</span><span class="keyword">def </span>_dump_inputoutputs(onnx_model):</div>
+<div class="line"><span class="lineno">  134</span>    print(<span class="stringliteral">&quot;[Graph Input/Output]-------------------&quot;</span>)</div>
+<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">for</span> mod_input <span class="keywordflow">in</span> onnx_model.graph.input:</div>
+<div class="line"><span class="lineno">  136</span>        io_name = <span class="stringliteral">&#39;&quot;{}&quot;&#39;</span>.format(mod_input.name)</div>
+<div class="line"><span class="lineno">  137</span>        dtstr = _data_type_str(mod_input.type.tensor_type.elem_type)</div>
+<div class="line"><span class="lineno">  138</span>        shape = mod_input.type.tensor_type.shape</div>
+<div class="line"><span class="lineno">  139</span>        input_shape = [dim.dim_value <span class="keywordflow">for</span> dim <span class="keywordflow">in</span> shape.dim]</div>
+<div class="line"><span class="lineno">  140</span>        print(<span class="stringliteral">&#39;    I: {:&lt;15} {} {}&#39;</span>.format(io_name, dtstr, input_shape))</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">for</span> mod_output <span class="keywordflow">in</span> onnx_model.graph.output:</div>
+<div class="line"><span class="lineno">  143</span>        io_name = <span class="stringliteral">&#39;&quot;{}&quot;&#39;</span>.format(mod_output.name)</div>
+<div class="line"><span class="lineno">  144</span>        dtstr = _data_type_str(mod_output.type.tensor_type.elem_type)</div>
+<div class="line"><span class="lineno">  145</span>        shape = mod_output.type.tensor_type.shape</div>
+<div class="line"><span class="lineno">  146</span>        output_shape = [dim.dim_value <span class="keywordflow">for</span> dim <span class="keywordflow">in</span> shape.dim]</div>
+<div class="line"><span class="lineno">  147</span>        print(<span class="stringliteral">&#39;    O: {:&lt;15} {} {}&#39;</span>.format(io_name, dtstr, output_shape))</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00026">_data_type_str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00120">_dump_graph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00152">_dump_graph()</a>.</p>
 
 </div>
 </div>
@@ -347,34 +351,44 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00078">78</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span><span class="keyword">def </span>_dump_nodes(onnx_model):</div>
-<div class="line"><span class="lineno">   79</span>    print(<span class="stringliteral">&quot;[Nodes] -------------------------------&quot;</span>)</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">for</span> node <span class="keywordflow">in</span> onnx_model.graph.node:</div>
-<div class="line"><span class="lineno">   82</span>        print(<span class="stringliteral">&#39;{0}(&quot;{1}&quot;)&#39;</span>.format(node.op_type, node.name))</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>        attribute = <span class="stringliteral">&#39;&#39;</span></div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">for</span> attr <span class="keywordflow">in</span> node.attribute:</div>
-<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">if</span> attribute != <span class="stringliteral">&#39;&#39;</span>:</div>
-<div class="line"><span class="lineno">   87</span>                attribute += <span class="stringliteral">&#39;, &#39;</span></div>
-<div class="line"><span class="lineno">   88</span>            attribute += <span class="stringliteral">&quot;{}: {}&quot;</span>.format(attr.name, _get_attribute_value(attr))</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">if</span> attribute != <span class="stringliteral">&#39;&#39;</span>:</div>
-<div class="line"><span class="lineno">   91</span>            print(<span class="stringliteral">&#39;    A {0}&#39;</span>.format(attribute))</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>        <span class="keywordflow">for</span> inp <span class="keywordflow">in</span> node.input:</div>
-<div class="line"><span class="lineno">   94</span>            print(<span class="stringliteral">&#39;    I &quot;{0}&quot;&#39;</span>.format(inp))</div>
-<div class="line"><span class="lineno">   95</span>        <span class="keywordflow">for</span> out <span class="keywordflow">in</span> node.output:</div>
-<div class="line"><span class="lineno">   96</span>            print(<span class="stringliteral">&#39;    O &quot;{0}&quot;&#39;</span>.format(out))</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00100">100</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span><span class="keyword">def </span>_dump_nodes(onnx_model):</div>
+<div class="line"><span class="lineno">  101</span>    print(<span class="stringliteral">&quot;[Nodes] -------------------------------&quot;</span>)</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>    vis = _gather_value_infos(onnx_model)</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">for</span> node <span class="keywordflow">in</span> onnx_model.graph.node:</div>
+<div class="line"><span class="lineno">  106</span>        print(<span class="stringliteral">&#39;{0}(&quot;{1}&quot;)&#39;</span>.format(node.op_type, node.name))</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>        attribute = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">for</span> attr <span class="keywordflow">in</span> node.attribute:</div>
+<div class="line"><span class="lineno">  110</span>            <span class="keywordflow">if</span> attribute != <span class="stringliteral">&#39;&#39;</span>:</div>
+<div class="line"><span class="lineno">  111</span>                attribute += <span class="stringliteral">&#39;, &#39;</span></div>
+<div class="line"><span class="lineno">  112</span>            attribute += <span class="stringliteral">&quot;{}: {}&quot;</span>.format(attr.name, _get_attribute_value(attr))</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">if</span> attribute != <span class="stringliteral">&#39;&#39;</span>:</div>
+<div class="line"><span class="lineno">  115</span>            print(<span class="stringliteral">&#39;    A {0}&#39;</span>.format(attribute))</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">for</span> inp <span class="keywordflow">in</span> node.input:</div>
+<div class="line"><span class="lineno">  118</span>            inp_vi_str = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  119</span>            <span class="keywordflow">if</span> inp <span class="keywordflow">in</span> vis:</div>
+<div class="line"><span class="lineno">  120</span>                inp_vi = vis[inp]</div>
+<div class="line"><span class="lineno">  121</span>                inp_vi_str = _type_format(inp_vi)</div>
+<div class="line"><span class="lineno">  122</span>            print(<span class="stringliteral">&#39;    I &quot;{0}&quot; {1}&#39;</span>.format(inp, inp_vi_str))</div>
+<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">for</span> out <span class="keywordflow">in</span> node.output:</div>
+<div class="line"><span class="lineno">  124</span>            out_vi_str = <span class="stringliteral">&#39;&#39;</span></div>
+<div class="line"><span class="lineno">  125</span>            <span class="keywordflow">if</span> out <span class="keywordflow">in</span> vis:</div>
+<div class="line"><span class="lineno">  126</span>                out_vi = vis[out]</div>
+<div class="line"><span class="lineno">  127</span>                out_vi_str = _type_format(out_vi)</div>
+<div class="line"><span class="lineno">  128</span>            print(<span class="stringliteral">&#39;    O &quot;{0}&quot; {1}&#39;</span>.format(out, out_vi_str))</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00030">_get_attribute_value()</a>.</p>
+<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00046">_gather_value_infos()</a>, <a class="el" href="onnx-dump_8py_source.html#l00030">_get_attribute_value()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00061">_type_format()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00120">_dump_graph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00152">_dump_graph()</a>.</p>
 
 </div>
 </div>
@@ -402,24 +416,69 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00053">53</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span><span class="keyword">def </span>_dump_operators(onnx_model):</div>
-<div class="line"><span class="lineno">   54</span>    opcodes_dict = dict()</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> node <span class="keywordflow">in</span> onnx_model.graph.node:</div>
-<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">if</span> node.op_type <span class="keywordflow">in</span> opcodes_dict:</div>
-<div class="line"><span class="lineno">   57</span>            opcodes_dict[node.op_type] = opcodes_dict[node.op_type] + 1</div>
-<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   59</span>            opcodes_dict[node.op_type] = 1</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>    print(<span class="stringliteral">&quot;[Operators] ---------------------------&quot;</span>)</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">for</span> opcode_key <span class="keywordflow">in</span> opcodes_dict:</div>
-<div class="line"><span class="lineno">   63</span>        print(<span class="stringliteral">&quot;{:&gt;5} {}&quot;</span>.format(opcodes_dict[opcode_key], opcode_key))</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00075">75</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span><span class="keyword">def </span>_dump_operators(onnx_model):</div>
+<div class="line"><span class="lineno">   76</span>    opcodes_dict = dict()</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">for</span> node <span class="keywordflow">in</span> onnx_model.graph.node:</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">if</span> node.op_type <span class="keywordflow">in</span> opcodes_dict:</div>
+<div class="line"><span class="lineno">   79</span>            opcodes_dict[node.op_type] = opcodes_dict[node.op_type] + 1</div>
+<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   81</span>            opcodes_dict[node.op_type] = 1</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>    print(<span class="stringliteral">&quot;[Operators] ---------------------------&quot;</span>)</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">for</span> opcode_key <span class="keywordflow">in</span> opcodes_dict:</div>
+<div class="line"><span class="lineno">   85</span>        print(<span class="stringliteral">&quot;{:&gt;5} {}&quot;</span>.format(opcodes_dict[opcode_key], opcode_key))</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    print(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00120">_dump_graph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00152">_dump_graph()</a>.</p>
+
+</div>
+</div>
+<a id="afba835ecefdc27e7838fb32a0fc3b2fe" name="afba835ecefdc27e7838fb32a0fc3b2fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afba835ecefdc27e7838fb32a0fc3b2fe">&#9670;&#160;</a></span>_gather_value_infos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">onnx-dump._gather_value_infos </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>onnx_model</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00046">46</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span><span class="keyword">def </span>_gather_value_infos(onnx_model):</div>
+<div class="line"><span class="lineno">   47</span>    vis = dict()</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">for</span> mod_input <span class="keywordflow">in</span> onnx_model.graph.input:</div>
+<div class="line"><span class="lineno">   50</span>        vis[mod_input.name] = mod_input.type</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">for</span> mod_output <span class="keywordflow">in</span> onnx_model.graph.output:</div>
+<div class="line"><span class="lineno">   53</span>        vis[mod_output.name] = mod_output.type</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> vi <span class="keywordflow">in</span> onnx_model.graph.value_info:</div>
+<div class="line"><span class="lineno">   56</span>        vis[vi.name] = vi.type</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> vis</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span> </div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00100">_dump_nodes()</a>.</p>
 
 </div>
 </div>
@@ -467,7 +526,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00026">_data_type_str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00078">_dump_nodes()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00100">_dump_nodes()</a>.</p>
 
 </div>
 </div>
@@ -495,16 +554,55 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00128">128</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span><span class="keyword">def </span>_help_exit(cmd_name):</div>
-<div class="line"><span class="lineno">  129</span>    print(<span class="stringliteral">&#39;Dump ONNX model file Graph&#39;</span>)</div>
-<div class="line"><span class="lineno">  130</span>    print(<span class="stringliteral">&#39;Usage: {0} [onnx_path]&#39;</span>.format(cmd_name))</div>
-<div class="line"><span class="lineno">  131</span>    print(<span class="stringliteral">&#39;&#39;</span>)</div>
-<div class="line"><span class="lineno">  132</span>    exit()</div>
-<div class="line"><span class="lineno">  133</span> </div>
-<div class="line"><span class="lineno">  134</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00160">160</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  160</span><span class="keyword">def </span>_help_exit(cmd_name):</div>
+<div class="line"><span class="lineno">  161</span>    print(<span class="stringliteral">&#39;Dump ONNX model file Graph&#39;</span>)</div>
+<div class="line"><span class="lineno">  162</span>    print(<span class="stringliteral">&#39;Usage: {0} [onnx_path]&#39;</span>.format(cmd_name))</div>
+<div class="line"><span class="lineno">  163</span>    print(<span class="stringliteral">&#39;&#39;</span>)</div>
+<div class="line"><span class="lineno">  164</span>    exit()</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00135">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00167">main()</a>.</p>
+
+</div>
+</div>
+<a id="a20346dfd4d7eefa09589d2c966f4df5b" name="a20346dfd4d7eefa09589d2c966f4df5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20346dfd4d7eefa09589d2c966f4df5b">&#9670;&#160;</a></span>_type_format()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">onnx-dump._type_format </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00061">61</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span><span class="keyword">def </span>_type_format(type):</div>
+<div class="line"><span class="lineno">   62</span>    dtstr = _data_type_str(type.tensor_type.elem_type)</div>
+<div class="line"><span class="lineno">   63</span>    shape = type.tensor_type.shape</div>
+<div class="line"><span class="lineno">   64</span>    shape_ar = [dim.dim_value <span class="keywordflow">for</span> dim <span class="keywordflow">in</span> shape.dim]</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <span class="stringliteral">&#39;{} {}&#39;</span>.format(dtstr, shape_ar)</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span> </div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00026">_data_type_str()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00100">_dump_nodes()</a>.</p>
 
 </div>
 </div>
@@ -523,22 +621,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00135">135</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span><span class="keyword">def </span><a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">if</span> len(sys.argv) &lt; 2:</div>
-<div class="line"><span class="lineno">  137</span>        _help_exit(os.path.basename(sys.argv[0]))</div>
-<div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>    onnx.checker.check_model(sys.argv[1])</div>
-<div class="line"><span class="lineno">  140</span>    onnx_model = onnx.load(sys.argv[1])</div>
-<div class="line"><span class="lineno">  141</span> </div>
-<div class="line"><span class="lineno">  142</span>    _dump_graph(onnx_model)</div>
-<div class="line"><span class="lineno">  143</span> </div>
-<div class="line"><span class="lineno">  144</span> </div>
+<p class="definition">Definition at line <a class="el" href="onnx-dump_8py_source.html#l00167">167</a> of file <a class="el" href="onnx-dump_8py_source.html">onnx-dump.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span><span class="keyword">def </span><a class="code hl_function" href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>():</div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">if</span> len(sys.argv) &lt; 2:</div>
+<div class="line"><span class="lineno">  169</span>        _help_exit(os.path.basename(sys.argv[0]))</div>
+<div class="line"><span class="lineno">  170</span> </div>
+<div class="line"><span class="lineno">  171</span>    onnx.checker.check_model(sys.argv[1])</div>
+<div class="line"><span class="lineno">  172</span>    onnx_model = onnx.load(sys.argv[1])</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>    _dump_graph(onnx_model)</div>
+<div class="line"><span class="lineno">  175</span> </div>
+<div class="line"><span class="lineno">  176</span> </div>
 <div class="ttc" id="aonert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2main_8cpp_source.html#l00058">main.cpp:58</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00120">_dump_graph()</a>, <a class="el" href="onnx-dump_8py_source.html#l00128">_help_exit()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00135">main()</a>.</p>
+<p class="reference">References <a class="el" href="onnx-dump_8py_source.html#l00152">_dump_graph()</a>, <a class="el" href="onnx-dump_8py_source.html#l00160">_help_exit()</a>, and <a class="el" href="onnx-dump_8py_source.html#l00167">main()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00135">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onnx-dump_8py_source.html#l00167">main()</a>.</p>
 
 </div>
 </div>

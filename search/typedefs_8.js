@@ -1,7 +1,7 @@
 var searchData=
 [
   ['image_0',['Image',['../helpers_8h.html#acf12205a65321baefe5174db248f56f6',1,'helpers.h']]],
-  ['index_1',['Index',['../namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d',1,'nnfw::cker::training_ops']]],
+  ['index_1',['index',['../namespacennfw_1_1cker_1_1xent__ops.html#a72e1ec035904ce0185bfd8880f17724c',1,'nnfw::cker::xent_ops::Index'],['../namespacennfw_1_1cker_1_1training__ops.html#a71315b19998df5f166543488ffe4033d',1,'nnfw::cker::training_ops::Index']]],
   ['index32_2',['Index32',['../namespacennfw_1_1cker.html#aab2a370f7e046a4262f70ddb92962083',1,'nnfw::cker']]],
   ['index_5fsequence_3',['index_sequence',['../namespacendarray.html#ae86ee1587edde7e66255916b8a830d6a',1,'ndarray']]],
   ['indexdivisor_4',['IndexDivisor',['../class_eigen_1_1internal_1_1_tensor_contraction_sub_mapper_3_01_scalar_00_01_index_00_01_side_00_37c830c35f0835aebb1579eda8e950cd.html#a57e71acdafc10923f18d653c03d23b6d',1,'Eigen::internal::TensorContractionSubMapper&lt; Scalar, Index, Side, TensorEvaluator&lt; const TensorReshapingOp&lt; NewDimension, const TensorImagePatchOp&lt; Rows, Cols, ArgType &gt; &gt;, Device &gt;, nocontract_t, contract_t, packet_size, inner_dim_contiguous, inner_dim_reordered, Alignment &gt;']]],

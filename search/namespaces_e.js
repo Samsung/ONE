@@ -306,9 +306,10 @@ var searchData=
   ['onert_5ftest_3a_3air_303',['ir',['../namespaceonert__test_1_1ir.html',1,'onert_test']]],
   ['onnx_2ddump_304',['onnx-dump',['../namespaceonnx-dump.html',1,'']]],
   ['onnx_2dops_305',['onnx-ops',['../namespaceonnx-ops.html',1,'']]],
-  ['onnx_5flegalizer_306',['onnx_legalizer',['../namespaceonnx__legalizer.html',1,'']]],
-  ['oops_307',['oops',['../namespaceoops.html',1,'']]],
-  ['opselector_308',['opselector',['../namespaceopselector.html',1,'']]],
-  ['optimized_5fops_309',['optimized_ops',['../namespaceoptimized__ops.html',1,'']]],
-  ['optionbuilder_310',['OptionBuilder',['../namespace_option_builder.html',1,'']]]
+  ['onnx_2dsi_306',['onnx-si',['../namespaceonnx-si.html',1,'']]],
+  ['onnx_5flegalizer_307',['onnx_legalizer',['../namespaceonnx__legalizer.html',1,'']]],
+  ['oops_308',['oops',['../namespaceoops.html',1,'']]],
+  ['opselector_309',['opselector',['../namespaceopselector.html',1,'']]],
+  ['optimized_5fops_310',['optimized_ops',['../namespaceoptimized__ops.html',1,'']]],
+  ['optionbuilder_311',['OptionBuilder',['../namespace_option_builder.html',1,'']]]
 ];

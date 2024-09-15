@@ -35,5 +35,6 @@ var namespaceonert_1_1backend_1_1train_1_1ops =
     ] ],
     [ "backpropActivation", "namespaceonert_1_1backend_1_1train_1_1ops.html#a6d9e6c6534c3e65e1aaf3adec0a379dc", null ],
     [ "biasGrad", "namespaceonert_1_1backend_1_1train_1_1ops.html#a21e32e6cbd040fe9e236ec567839491f", null ],
+    [ "convertLossReductionType", "namespaceonert_1_1backend_1_1train_1_1ops.html#afe733ad1790a31ce858685f858a395b2", null ],
     [ "getShape", "namespaceonert_1_1backend_1_1train_1_1ops.html#a9a41239d90a397bd0f075ddedfa72322", null ]
 ];

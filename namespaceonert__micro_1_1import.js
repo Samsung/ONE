@@ -16,6 +16,8 @@ var namespaceonert__micro_1_1import =
     [ "OMExecutionPlanCreator", "structonert__micro_1_1import_1_1_o_m_execution_plan_creator.html", null ],
     [ "OMKernelConfiguration", "structonert__micro_1_1import_1_1_o_m_kernel_configuration.html", null ],
     [ "KernelConfigureFunc", "namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703", null ],
+    [ "SISOHeader", "namespaceonert__micro_1_1import.html#a8fbe751054a8034e39d117f235962fd7", null ],
+    [ "TISOHeader", "namespaceonert__micro_1_1import.html#a35bc7209ee3705a074db2a3fb578c421", null ],
     [ "kernel_builtin_configure", "namespaceonert__micro_1_1import.html#a03571a359df65e4bf7120d48edb3c3d4", null ],
     [ "kernel_custom_configure", "namespaceonert__micro_1_1import.html#ad1c9480dab4ad185fa8f2954466ee160", null ]
 ];

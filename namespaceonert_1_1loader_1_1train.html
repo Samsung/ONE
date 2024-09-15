@@ -133,19 +133,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_checkpoint_loader_8cc_source.html#l00094">94</a> of file <a class="el" href="_checkpoint_loader_8cc_source.html">CheckpointLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  CheckpointLoader loader(filename);</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  <span class="comment">// TODO Load tensor data</span></div>
-<div class="line"><span class="lineno">  101</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(exec);</div>
-<div class="line"><span class="lineno">  102</span>  <span class="comment">// TODO Update step in train_info</span></div>
-<div class="line"><span class="lineno">  103</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(train_info);</div>
-<div class="line"><span class="lineno">  104</span>}</div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_checkpoint_loader_8cc_source.html#l00248">248</a> of file <a class="el" href="_checkpoint_loader_8cc_source.html">CheckpointLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  251</span>{</div>
+<div class="line"><span class="lineno">  252</span>  CheckpointLoader loader(filename);</div>
+<div class="line"><span class="lineno">  253</span>  loader.updateTensor(exec);</div>
+<div class="line"><span class="lineno">  254</span>  loader.updateOptimizer(train_info, exec);</div>
+<div class="line"><span class="lineno">  255</span>  loader.updateTrainingInfo(train_info);</div>
+<div class="line"><span class="lineno">  256</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
-
 </div>
 </div>
 </div><!-- contents -->

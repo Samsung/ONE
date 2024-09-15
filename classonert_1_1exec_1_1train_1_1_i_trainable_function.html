@@ -105,10 +105,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1902f86c136b2f95027a29ba9909d94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2d337b03208fe6ecc83d6278e74ad24" id="r_ac2d337b03208fe6ecc83d6278e74ad24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">backward</a> ()=0</td></tr>
 <tr class="separator:ac2d337b03208fe6ecc83d6278e74ad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a705e014cf6621a3ec28369099788e6c4" id="r_a705e014cf6621a3ec28369099788e6c4"><td class="memItemLeft" align="right" valign="top">virtual std::optional&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a86b587cd2ff7a8482786e96a0b0f5235">backend::train::LayerScopeTensors</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a705e014cf6621a3ec28369099788e6c4">registerLayerScopeTensors</a> ()</td></tr>
+<tr class="separator:a705e014cf6621a3ec28369099788e6c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i_trainable_function_8h_source.html#l00029">29</a> of file <a class="el" href="_i_trainable_function_8h_source.html">ITrainableFunction.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_trainable_function_8h_source.html#l00032">32</a> of file <a class="el" href="_i_trainable_function_8h_source.html">ITrainableFunction.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a18d3e6fafe8019272fe7b37d0248bc69" name="a18d3e6fafe8019272fe7b37d0248bc69"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18d3e6fafe8019272fe7b37d0248bc69">&#9670;&#160;</a></span>~ITrainableFunction()</h2>
@@ -189,6 +191,36 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_accumulator.html#a40acff684cdb94a5b254011ce378c4ff">onert::backend::train::ops::BackPropAccumulator</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_back_prop_initializer.html#acdfc8ba7e0d1041db3ec040febd95630">onert::backend::train::ops::BackPropInitializer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_binary_arithmetic_layer.html#a72ab68ec30f6611c42a3d3666e34f752">onert::backend::train::ops::BinaryArithmeticLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_convolution_layer.html#a9690f1e9536de9fc662af1f195d9b646">onert::backend::train::ops::ConvolutionLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html#ab7ccdbbc342724526f898f2e280a2612">onert::backend::train::ops::DepthwiseConvolutionLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html#a78220270bf4bec4768954bb5091f7854">onert::backend::train::ops::ElementwiseActivationLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_fully_connected_layer.html#a4e1fcfae1fb174deef27e52e877b5764">onert::backend::train::ops::FullyConnectedLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_categorical_crossentropy_layer.html#ac3f41386abee602eb91f675e3bda8473">onert::backend::train::ops::LossCategoricalCrossentropyLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_mean_squared_error_layer.html#a4093963f0337b10540443783d7446a3b">onert::backend::train::ops::LossMeanSquaredErrorLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html#a0ef609c3c58f4b97f73f9e5d070489d5">onert::backend::train::ops::MeanLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pad_layer.html#ab88c087b5d27a1fe1d78116ed11d360d">onert::backend::train::ops::PadLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_pool_layer.html#aa41e4483ddb805e8b79af595130d3769">onert::backend::train::ops::PoolLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_reshape_layer.html#aefde44be2f1b6bf6b51dc0c0c76b144f">onert::backend::train::ops::ReshapeLayer</a>, <a class="el" href="classonert_1_1backend_1_1train_1_1ops_1_1_soft_max_layer.html#a6faf378dd3db0a20f8744856a6e1be02">onert::backend::train::ops::SoftMaxLayer</a>, and <a class="el" href="classonert_1_1backend_1_1builtin_1_1train_1_1kernel_1_1_permute_layer.html#a7e73001f90362a4a5f63533a3b8c7e19">onert::backend::builtin::train::kernel::PermuteLayer</a>.</p>
 
+</div>
+</div>
+<a id="a705e014cf6621a3ec28369099788e6c4" name="a705e014cf6621a3ec28369099788e6c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a705e014cf6621a3ec28369099788e6c4">&#9670;&#160;</a></span>registerLayerScopeTensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::optional&lt; <a class="el" href="namespaceonert_1_1backend_1_1train.html#a86b587cd2ff7a8482786e96a0b0f5235">backend::train::LayerScopeTensors</a> &gt; onert::exec::train::ITrainableFunction::registerLayerScopeTensors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_i_trainable_function_8h_source.html#l00040">40</a> of file <a class="el" href="_i_trainable_function_8h_source.html">ITrainableFunction.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> std::nullopt;</div>
+<div class="line"><span class="lineno">   43</span>  }</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

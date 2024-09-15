@@ -90,6 +90,7 @@ var dir_130a5ab0c1ea8d564ec8825a7293e954 =
     [ "CircleResizeNearestNeighbor.h", "import_2include_2luci_2_import_2_nodes_2_circle_resize_nearest_neighbor_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_resize_nearest_neighbor_8h" ],
     [ "CircleReverseSequence.h", "import_2include_2luci_2_import_2_nodes_2_circle_reverse_sequence_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_reverse_sequence_8h" ],
     [ "CircleReverseV2.h", "import_2include_2luci_2_import_2_nodes_2_circle_reverse_v2_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_reverse_v2_8h" ],
+    [ "CircleRmsNorm.h", "import_2include_2luci_2_import_2_nodes_2_circle_rms_norm_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_rms_norm_8h" ],
     [ "CircleRound.h", "import_2include_2luci_2_import_2_nodes_2_circle_round_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_round_8h" ],
     [ "CircleRsqrt.h", "import_2include_2luci_2_import_2_nodes_2_circle_rsqrt_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_rsqrt_8h" ],
     [ "CircleScatterNd.h", "import_2include_2luci_2_import_2_nodes_2_circle_scatter_nd_8h.html", "import_2include_2luci_2_import_2_nodes_2_circle_scatter_nd_8h" ],

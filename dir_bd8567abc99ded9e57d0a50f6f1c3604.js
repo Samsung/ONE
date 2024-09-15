@@ -9,5 +9,7 @@ var dir_bd8567abc99ded9e57d0a50f6f1c3604 =
     [ "GRU.cpp", "compiler_2circlechef_2circle_2src_2_op_2_g_r_u_8cpp.html", null ],
     [ "GRU.h", "circle_2src_2_op_2_g_r_u_8h.html", "circle_2src_2_op_2_g_r_u_8h" ],
     [ "InstanceNorm.cpp", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8cpp.html", null ],
-    [ "InstanceNorm.h", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h" ]
+    [ "InstanceNorm.h", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h" ],
+    [ "RmsNorm.cpp", "circle_2src_2_op_2_rms_norm_8cpp.html", null ],
+    [ "RmsNorm.h", "circle_2src_2_op_2_rms_norm_8h.html", "circle_2src_2_op_2_rms_norm_8h" ]
 ];

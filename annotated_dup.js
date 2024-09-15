@@ -171,6 +171,7 @@ var annotated_dup =
       [ "CircleOpGRU", "classcirclechef_1_1_circle_op_g_r_u.html", "classcirclechef_1_1_circle_op_g_r_u" ],
       [ "CircleOpInstanceNorm", "classcirclechef_1_1_circle_op_instance_norm.html", "classcirclechef_1_1_circle_op_instance_norm" ],
       [ "CircleOpRegistry", "classcirclechef_1_1_circle_op_registry.html", "classcirclechef_1_1_circle_op_registry" ],
+      [ "CircleOpRmsNorm", "classcirclechef_1_1_circle_op_rms_norm.html", "classcirclechef_1_1_circle_op_rms_norm" ],
       [ "GeneratedModel", "classcirclechef_1_1_generated_model.html", "classcirclechef_1_1_generated_model" ],
       [ "Logger", "classcirclechef_1_1_logger.html", "classcirclechef_1_1_logger" ],
       [ "LoggerConfig", "classcirclechef_1_1_logger_config.html", "classcirclechef_1_1_logger_config" ],
@@ -598,18 +599,19 @@ var annotated_dup =
     [ "fme_apply", "namespacefme__apply.html", [
       [ "EqualizePattern", "structfme__apply_1_1_equalize_pattern.html", "structfme__apply_1_1_equalize_pattern" ],
       [ "FMEqualizer", "classfme__apply_1_1_f_m_equalizer.html", "classfme__apply_1_1_f_m_equalizer" ],
-      [ "ForwardPreScalePass", "classfme__apply_1_1_forward_pre_scale_pass.html", "classfme__apply_1_1_forward_pre_scale_pass" ],
-      [ "ForwardPreShiftPass", "classfme__apply_1_1_forward_pre_shift_pass.html", "classfme__apply_1_1_forward_pre_shift_pass" ],
       [ "FusePostScalePass", "classfme__apply_1_1_fuse_post_scale_pass.html", "classfme__apply_1_1_fuse_post_scale_pass" ],
-      [ "FusePostShiftPass", "classfme__apply_1_1_fuse_post_shift_pass.html", "classfme__apply_1_1_fuse_post_shift_pass" ],
       [ "FusePreScalePass", "classfme__apply_1_1_fuse_pre_scale_pass.html", "classfme__apply_1_1_fuse_pre_scale_pass" ],
-      [ "FusePreShiftPass", "classfme__apply_1_1_fuse_pre_shift_pass.html", "classfme__apply_1_1_fuse_pre_shift_pass" ],
       [ "InsertScaleShift", "classfme__apply_1_1_insert_scale_shift.html", "classfme__apply_1_1_insert_scale_shift" ],
       [ "ProgressReporter", "classfme__apply_1_1_progress_reporter.html", "classfme__apply_1_1_progress_reporter" ]
     ] ],
     [ "fme_detect", "namespacefme__detect.html", [
       [ "EqualizePattern", "structfme__detect_1_1_equalize_pattern.html", "structfme__detect_1_1_equalize_pattern" ],
       [ "EqualizePatternFinder", "classfme__detect_1_1_equalize_pattern_finder.html", "classfme__detect_1_1_equalize_pattern_finder" ]
+    ] ],
+    [ "fmelib", "namespacefmelib.html", [
+      [ "DumpFMEParams", "namespacefmelib_1_1_dump_f_m_e_params.html", [
+        [ "DumpFMEParams", "classfmelib_1_1_dump_f_m_e_params_1_1_dump_f_m_e_params.html", "classfmelib_1_1_dump_f_m_e_params_1_1_dump_f_m_e_params" ]
+      ] ]
     ] ],
     [ "foder", "namespacefoder.html", [
       [ "FileLoader", "classfoder_1_1_file_loader.html", "classfoder_1_1_file_loader" ]
@@ -914,6 +916,8 @@ var annotated_dup =
       [ "sinf", "namespaceluci_1_1sinf.html", [
         [ "Algorithm", "classluci_1_1sinf_1_1_algorithm.html", "classluci_1_1sinf_1_1_algorithm" ],
         [ "Rule", "structluci_1_1sinf_1_1_rule.html", "structluci_1_1sinf_1_1_rule" ],
+        [ "StridedSliceContext", "structluci_1_1sinf_1_1_strided_slice_context.html", "structluci_1_1sinf_1_1_strided_slice_context" ],
+        [ "StridedSliceParams", "structluci_1_1sinf_1_1_strided_slice_params.html", "structluci_1_1sinf_1_1_strided_slice_params" ],
         [ "TensorShapeExpander", "classluci_1_1sinf_1_1_tensor_shape_expander.html", "classluci_1_1sinf_1_1_tensor_shape_expander" ]
       ] ],
       [ "test", "namespaceluci_1_1test.html", [
@@ -1145,6 +1149,8 @@ var annotated_dup =
       [ "CircleReverseSequenceGraphBuilder", "classluci_1_1_circle_reverse_sequence_graph_builder.html", "classluci_1_1_circle_reverse_sequence_graph_builder" ],
       [ "CircleReverseV2", "classluci_1_1_circle_reverse_v2.html", "classluci_1_1_circle_reverse_v2" ],
       [ "CircleReverseV2GraphBuilder", "classluci_1_1_circle_reverse_v2_graph_builder.html", "classluci_1_1_circle_reverse_v2_graph_builder" ],
+      [ "CircleRmsNorm", "classluci_1_1_circle_rms_norm.html", "classluci_1_1_circle_rms_norm" ],
+      [ "CircleRmsNormGraphBuilder", "classluci_1_1_circle_rms_norm_graph_builder.html", "classluci_1_1_circle_rms_norm_graph_builder" ],
       [ "CircleRound", "classluci_1_1_circle_round.html", "classluci_1_1_circle_round" ],
       [ "CircleRoundGraphBuilder", "classluci_1_1_circle_round_graph_builder.html", "classluci_1_1_circle_round_graph_builder" ],
       [ "CircleRsqrt", "classluci_1_1_circle_rsqrt.html", "classluci_1_1_circle_rsqrt" ],
@@ -2587,6 +2593,13 @@ var annotated_dup =
             [ "ApplyAdamNonCuda", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_adam_non_cuda" ],
             [ "ApplyGradientDescent", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent" ],
             [ "ApplyGradientDescent< CPUDevice, T >", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4.html", "structnnfw_1_1cker_1_1training__ops_1_1functor_1_1_apply_gradient_descent_3_01_c_p_u_device_00_01_t_01_4" ]
+          ] ]
+        ] ],
+        [ "xent_ops", "namespacennfw_1_1cker_1_1xent__ops.html", [
+          [ "functor", "namespacennfw_1_1cker_1_1xent__ops_1_1functor.html", [
+            [ "XentFunctor", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor.html", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor" ],
+            [ "XentFunctor< CPUDevice, T >", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_3_01_c_p_u_device_00_01_t_01_4.html", null ],
+            [ "XentFunctorBase", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_base.html", "structnnfw_1_1cker_1_1xent__ops_1_1functor_1_1_xent_functor_base" ]
           ] ]
         ] ],
         [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
@@ -4137,13 +4150,7 @@ var annotated_dup =
     [ "AllChef", "class_all_chef.html", "class_all_chef" ],
     [ "AllChefFactory", "struct_all_chef_factory.html", "struct_all_chef_factory" ],
     [ "AllocatedMemory", "class_allocated_memory.html", "class_allocated_memory" ],
-    [ "ANeuralNetworksCompilation", "struct_a_neural_networks_compilation.html", "struct_a_neural_networks_compilation" ],
-    [ "ANeuralNetworksEvent", "struct_a_neural_networks_event.html", "struct_a_neural_networks_event" ],
-    [ "ANeuralNetworksExecution", "struct_a_neural_networks_execution.html", "struct_a_neural_networks_execution" ],
-    [ "ANeuralNetworksMemory", "struct_a_neural_networks_memory.html", "struct_a_neural_networks_memory" ],
-    [ "ANeuralNetworksModel", "struct_a_neural_networks_model.html", "struct_a_neural_networks_model" ],
     [ "ANeuralNetworksOperandType", "struct_a_neural_networks_operand_type.html", "struct_a_neural_networks_operand_type" ],
-    [ "ANeuralNetworksSymmPerChannelQuantParams", "struct_a_neural_networks_symm_per_channel_quant_params.html", "struct_a_neural_networks_symm_per_channel_quant_params" ],
     [ "ANNBinder", "class_a_n_n_binder.html", "class_a_n_n_binder" ],
     [ "ANNContext", "struct_a_n_n_context.html", "struct_a_n_n_context" ],
     [ "ANNConv2D", "class_a_n_n_conv2_d.html", "class_a_n_n_conv2_d" ],
@@ -4344,7 +4351,6 @@ var annotated_dup =
     [ "NdArrayDesc", "struct_nd_array_desc.html", "struct_nd_array_desc" ],
     [ "NegChef", "class_neg_chef.html", "class_neg_chef" ],
     [ "NegChefFactory", "struct_neg_chef_factory.html", "struct_neg_chef_factory" ],
-    [ "NNAPIConvert", "class_n_n_a_p_i_convert.html", null ],
     [ "nnfw_adam_option", "structnnfw__adam__option.html", "structnnfw__adam__option" ],
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
@@ -4366,7 +4372,6 @@ var annotated_dup =
     [ "OpChefFactory", "struct_op_chef_factory.html", "struct_op_chef_factory" ],
     [ "Operand", "struct_operand.html", "struct_operand" ],
     [ "Operation", "struct_operation.html", "struct_operation" ],
-    [ "OperationFactory", "class_operation_factory.html", "class_operation_factory" ],
     [ "OpPrinter", "struct_op_printer.html", "struct_op_printer" ],
     [ "OpSeqDurationEvent", "struct_op_seq_duration_event.html", "struct_op_seq_duration_event" ],
     [ "OutputLayer", "struct_output_layer.html", "struct_output_layer" ],
@@ -4423,6 +4428,8 @@ var annotated_dup =
     [ "ReverseSequenceChefFactory", "struct_reverse_sequence_chef_factory.html", "struct_reverse_sequence_chef_factory" ],
     [ "ReverseV2Chef", "class_reverse_v2_chef.html", "class_reverse_v2_chef" ],
     [ "ReverseV2ChefFactory", "struct_reverse_v2_chef_factory.html", "struct_reverse_v2_chef_factory" ],
+    [ "RmsNormChef", "class_rms_norm_chef.html", "class_rms_norm_chef" ],
+    [ "RmsNormChefFactory", "struct_rms_norm_chef_factory.html", "struct_rms_norm_chef_factory" ],
     [ "RoundChef", "class_round_chef.html", "class_round_chef" ],
     [ "RoundChefFactory", "struct_round_chef_factory.html", "struct_round_chef_factory" ],
     [ "RsqrtChef", "class_rsqrt_chef.html", "class_rsqrt_chef" ],

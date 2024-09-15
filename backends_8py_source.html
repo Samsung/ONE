@@ -127,87 +127,108 @@ $(document).ready(function(){initNavTree('backends_8py_source.html',''); initRes
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="stringliteral">├── include</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="stringliteral">├── lib</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="stringliteral">├── optimization</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="stringliteral">└── test</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral">The list where `one-XXXX` finds its backends</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="stringliteral">- `bin` folder where `one-XXXX` exists</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="stringliteral">- `backends` folder</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="stringliteral">NOTE If there are backends of the same name in different places,</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="stringliteral">    the closer to the top in the list, the higher the priority.</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="foldopen" id="foldopen00042" data-start="" data-end="">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">   42</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">get_list</a>(cmdname):</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    backend_set = set()</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment"># bin folder</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../&#39;</span> + cmdname)]</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="comment"># backends folder</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    files += [</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/&#39;</span> + cmdname, recursive=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    ]</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment"># TODO find backends in `$PATH`</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    backends_list = []</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        base = ntpath.basename(cand)</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordflow">if</span> (<span class="keywordflow">not</span> base <span class="keywordflow">in</span> backend_set) <span class="keywordflow">and</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                cand, os.X_OK):</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            backend_set.add(base)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            backends_list.append(cand)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="stringliteral">├── target</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="stringliteral">└── test</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="stringliteral">The list where `one-XXXX` finds its backends</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="stringliteral">- `bin` folder where `one-XXXX` exists</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="stringliteral">- `backends` folder</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="stringliteral">NOTE If there are backends of the same name in different places,</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="stringliteral">    the closer to the top in the list, the higher the priority.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="stringliteral">[About TARGET and BACKEND]</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="stringliteral">  &quot;Target&quot; refers to an instance from the core of the system and</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="stringliteral">  &quot;Backend&quot; refers to an architecture. Say there is a NPU that has</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="stringliteral">  multiple cores. Its cores may have different global buffer </span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="stringliteral">  size, DSPM size and clock rate, etc, which are described in </span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="stringliteral">  each configuration file of &quot;Target&quot;. Even though they</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="stringliteral">  are different target, they may follow same architecture, which means</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="stringliteral">  they have same &quot;Backend&quot;.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="stringliteral">[Path for TARGET configuration]</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="stringliteral">  - /usr/share/one/target/${TARGET}.ini</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="stringliteral">[Path for BACKEND tools]</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="stringliteral">  - /usr/share/one/backends/${BACKEND}</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="" data-end="">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">   58</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">get_list</a>(cmdname):</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    backend_set = set()</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span> backends_list</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-</div>
-<div class="foldopen" id="foldopen00065" data-start="" data-end="">
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="namespacebackends.html#a3331bdac18aa86edf4ba7a4e4dce446e">   65</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacebackends.html#a3331bdac18aa86edf4ba7a4e4dce446e">get_backend_from_target_conf</a>(target: str):</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    target_conf_path = dir_path + f<span class="stringliteral">&#39;/../../target/{target}.ini&#39;</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(target_conf_path):</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment"># target config doesn&#39;t have section.</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment"># but, configparser needs configs to have one or more sections.</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    DUMMY_SECTION = <span class="stringliteral">&#39;dummy_section&#39;</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">with</span> open(target_conf_path, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        config_str = f<span class="stringliteral">&#39;[{DUMMY_SECTION}]\n&#39;</span> + f.read()</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    parser = oneutils.get_config_parser()</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    parser.read_string(config_str)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">assert</span> parser.has_section(DUMMY_SECTION)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment"># bin folder</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    files = [f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../&#39;</span> + cmdname)]</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment"># backends folder</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    files += [</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        f <span class="keywordflow">for</span> f <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/&#39;</span> + cmdname, recursive=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    ]</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment"># TODO find backends in `$PATH`</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    backends_list = []</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">for</span> cand <span class="keywordflow">in</span> files:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        base = ntpath.basename(cand)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">if</span> (<span class="keywordflow">not</span> base <span class="keywordflow">in</span> backend_set) <span class="keywordflow">and</span> os.path.isfile(cand) <span class="keywordflow">and</span> os.access(</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                cand, os.X_OK):</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            backend_set.add(base)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            backends_list.append(cand)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">return</span> backends_list</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    BACKEND_KEY = <span class="stringliteral">&#39;BACKEND&#39;</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">if</span> BACKEND_KEY <span class="keywordflow">in</span> parser[DUMMY_SECTION]:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">return</span> parser[DUMMY_SECTION][BACKEND_KEY]</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+</div>
+<div class="foldopen" id="foldopen00081" data-start="" data-end="">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="namespacebackends.html#ae2c0dc9f14888673957e4c36029fc88b">   81</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacebackends.html#ae2c0dc9f14888673957e4c36029fc88b">get_value_from_target_conf</a>(target: str, key: str):</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    target_conf_path = dir_path + f<span class="stringliteral">&#39;/../../target/{target}.ini&#39;</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">if</span> <span class="keywordflow">not</span> os.path.isfile(target_conf_path):</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;Not found given target configuration: {target}&quot;</span>)</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="comment"># target config doesn&#39;t have section.</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment"># but, configparser needs configs to have one or more sections.</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    DUMMY_SECTION = <span class="stringliteral">&#39;dummy_section&#39;</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">with</span> open(target_conf_path, <span class="stringliteral">&#39;r&#39;</span>) <span class="keyword">as</span> f:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        config_str = f<span class="stringliteral">&#39;[{DUMMY_SECTION}]\n&#39;</span> + f.read()</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    parser = oneutils.get_config_parser()</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    parser.read_string(config_str)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">assert</span> parser.has_section(DUMMY_SECTION)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment"># Check if target file is valid</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    TARGET_KEY = <span class="stringliteral">&#39;TARGET&#39;</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keyword">assert</span> TARGET_KEY <span class="keywordflow">in</span> parser[DUMMY_SECTION]</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">if</span> target != parser[DUMMY_SECTION][TARGET_KEY]:</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordflow">raise</span> RuntimeError(<span class="stringliteral">&quot;Invalid target file.&quot;</span>)</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">if</span> key <span class="keywordflow">in</span> parser[DUMMY_SECTION]:</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">return</span> parser[DUMMY_SECTION][key]</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">raise</span> RuntimeError(f<span class="stringliteral">&quot;Not found &#39;{key}&#39; key in target configuration.&quot;</span>)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
 </div>
-<div class="foldopen" id="foldopen00087" data-start="" data-end="">
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">   87</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">search_driver</a>(driver):</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment"># CASE 1: one/bin/{driver} is found</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    driver_path = dir_path + <span class="stringliteral">&#39;/../&#39;</span> + driver</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">return</span> driver_path</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment"># CASE 2: one/backends/**/bin/{driver} is found</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">for</span> driver_path <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/bin/&#39;</span> + driver,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                                 recursive=<span class="keyword">True</span>):</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">return</span> driver_path</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment"># CASE 3: {driver} is found in nowhere</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
+<div class="foldopen" id="foldopen00108" data-start="" data-end="">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">  108</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">search_driver</a>(driver):</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    dir_path = os.path.dirname(os.path.realpath(__file__))</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment"># CASE 1: one/bin/{driver} is found</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    driver_path = dir_path + <span class="stringliteral">&#39;/../&#39;</span> + driver</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">return</span> driver_path</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment"># CASE 2: one/backends/**/bin/{driver} is found</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordflow">for</span> driver_path <span class="keywordflow">in</span> glob.glob(dir_path + <span class="stringliteral">&#39;/../../backends/**/bin/&#39;</span> + driver,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                                 recursive=<span class="keyword">True</span>):</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordflow">if</span> os.path.isfile(driver_path) <span class="keywordflow">and</span> os.access(driver_path, os.X_OK):</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            <span class="keywordflow">return</span> driver_path</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="comment"># CASE 3: {driver} is found in nowhere</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> <span class="keywordtype">None</span></div>
 </div>
-<div class="ttc" id="anamespacebackends_html_a3331bdac18aa86edf4ba7a4e4dce446e"><div class="ttname"><a href="namespacebackends.html#a3331bdac18aa86edf4ba7a4e4dce446e">backends.get_backend_from_target_conf</a></div><div class="ttdeci">get_backend_from_target_conf(str target)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00065">backends.py:65</a></div></div>
-<div class="ttc" id="anamespacebackends_html_a434b047085c0ef9f50bd5be9edf0d999"><div class="ttname"><a href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a></div><div class="ttdeci">get_list(cmdname)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00042">backends.py:42</a></div></div>
-<div class="ttc" id="anamespacebackends_html_a94b8c501b87d45da78b692ec69c1c87b"><div class="ttname"><a href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">backends.search_driver</a></div><div class="ttdeci">search_driver(driver)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00087">backends.py:87</a></div></div>
+<div class="ttc" id="anamespacebackends_html_a434b047085c0ef9f50bd5be9edf0d999"><div class="ttname"><a href="namespacebackends.html#a434b047085c0ef9f50bd5be9edf0d999">backends.get_list</a></div><div class="ttdeci">get_list(cmdname)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00058">backends.py:58</a></div></div>
+<div class="ttc" id="anamespacebackends_html_a94b8c501b87d45da78b692ec69c1c87b"><div class="ttname"><a href="namespacebackends.html#a94b8c501b87d45da78b692ec69c1c87b">backends.search_driver</a></div><div class="ttdeci">search_driver(driver)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00108">backends.py:108</a></div></div>
+<div class="ttc" id="anamespacebackends_html_ae2c0dc9f14888673957e4c36029fc88b"><div class="ttname"><a href="namespacebackends.html#ae2c0dc9f14888673957e4c36029fc88b">backends.get_value_from_target_conf</a></div><div class="ttdeci">get_value_from_target_conf(str target, str key)</div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00081">backends.py:81</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

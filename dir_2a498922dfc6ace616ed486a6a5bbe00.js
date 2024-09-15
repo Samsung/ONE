@@ -11,5 +11,6 @@ var dir_2a498922dfc6ace616ed486a6a5bbe00 =
     [ "EigenSupport.h", "_eigen_support_8h.html", "_eigen_support_8h" ],
     [ "redux_functor.h", "redux__functor_8h.html", "redux__functor_8h" ],
     [ "training_ops.h", "training__ops_8h.html", "training__ops_8h" ],
-    [ "Utils.h", "compute_2cker_2include_2cker_2eigen_2_utils_8h.html", "compute_2cker_2include_2cker_2eigen_2_utils_8h" ]
+    [ "Utils.h", "compute_2cker_2include_2cker_2eigen_2_utils_8h.html", "compute_2cker_2include_2cker_2eigen_2_utils_8h" ],
+    [ "xent_op.h", "xent__op_8h.html", "xent__op_8h" ]
 ];

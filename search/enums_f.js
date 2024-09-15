@@ -5,6 +5,6 @@ var searchData=
   ['remove_2',['Remove',['../namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54',1,'onert::ir']]],
   ['reshapetype_3',['ReshapeType',['../namespaceloco.html#ac8f11af7ae71ac5f71c6627ad66a2efb',1,'loco']]],
   ['resizemethod_4',['ResizeMethod',['../classmir_1_1ops_1_1_resize_op.html#ae33f312834b76bcd09dc38f0c3deddbe',1,'mir::ops::ResizeOp']]],
-  ['resultcode_5',['resultcode',['../group___neural_networks.html#gad8097859ab1bdd06be52a8421df152d4',1,'ResultCode:&#160;NeuralNetworks.h'],['../group___neural_networks.html#gad8097859ab1bdd06be52a8421df152d4',1,'ResultCode:&#160;NeuralNetworks.h']]],
+  ['resultcode_5',['ResultCode',['../group___neural_networks.html#gad8097859ab1bdd06be52a8421df152d4',1,'NeuralNetworks.h']]],
   ['runtimetype_6',['RuntimeType',['../namespacecircle__planner.html#a564e76d27b50b73a788d5809e3475581',1,'circle_planner']]]
 ];

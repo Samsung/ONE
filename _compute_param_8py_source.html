@@ -137,6 +137,18 @@ $(document).ready(function(){initNavTree('_compute_param_8py_source.html',''); i
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        channel_wise_min.append(float(np.min(min_act[:, :, :, c])))</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        channel_wise_max.append(float(np.max(max_act[:, :, :, c])))</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> channel_wise_min, channel_wise_max</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+</div>
+<div class="foldopen" id="foldopen00042" data-start="" data-end="">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespacefmelib_1_1_compute_param.html#a19e981ca5e87a62490049013a04a6728">   42</a></span><span class="keyword">def </span>getActivationMax(tensor: np.ndarray) -&gt; np.ndarray:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="stringliteral">    Get max values of activation.</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="stringliteral">    :param tensors: a list of numpy array (each is a tensor)</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="stringliteral">    :return: 1D array of max absolute values for each channel</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="comment"># max along with last dimension</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> np.abs(tensor.reshape(-1, tensor.shape[-1])).max(axis=0)</div>
 </div>
 <div class="ttc" id="anamespacefmelib_1_1_compute_param_html_a8c88c5acdc62301838cfa23179c1b542"><div class="ttname"><a href="namespacefmelib_1_1_compute_param.html#a8c88c5acdc62301838cfa23179c1b542">fmelib.ComputeParam._channelwiseMinMax</a></div><div class="ttdeci">Tuple[List[float], List[float]] _channelwiseMinMax(Tensors tensors, int channel)</div><div class="ttdef"><b>Definition</b> <a href="_compute_param_8py_source.html#l00025">ComputeParam.py:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

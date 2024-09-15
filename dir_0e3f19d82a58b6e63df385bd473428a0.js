@@ -11,5 +11,7 @@ var dir_0e3f19d82a58b6e63df385bd473428a0 =
     [ "GRU.cpp", "compiler_2circlechef_2core_2src_2_op_2_g_r_u_8cpp.html", null ],
     [ "GRU.h", "core_2src_2_op_2_g_r_u_8h.html", "core_2src_2_op_2_g_r_u_8h" ],
     [ "InstanceNorm.cpp", "compiler_2circlechef_2core_2src_2_op_2_instance_norm_8cpp.html", null ],
-    [ "InstanceNorm.h", "compiler_2circlechef_2core_2src_2_op_2_instance_norm_8h.html", "compiler_2circlechef_2core_2src_2_op_2_instance_norm_8h" ]
+    [ "InstanceNorm.h", "compiler_2circlechef_2core_2src_2_op_2_instance_norm_8h.html", "compiler_2circlechef_2core_2src_2_op_2_instance_norm_8h" ],
+    [ "RmsNorm.cpp", "core_2src_2_op_2_rms_norm_8cpp.html", null ],
+    [ "RmsNorm.h", "core_2src_2_op_2_rms_norm_8h.html", "core_2src_2_op_2_rms_norm_8h" ]
 ];

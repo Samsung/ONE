@@ -47,6 +47,7 @@ var namespacennfw_1_1cker =
     ] ],
     [ "train", "namespacennfw_1_1cker_1_1train.html", "namespacennfw_1_1cker_1_1train" ],
     [ "training_ops", "namespacennfw_1_1cker_1_1training__ops.html", "namespacennfw_1_1cker_1_1training__ops" ],
+    [ "xent_ops", "namespacennfw_1_1cker_1_1xent__ops.html", "namespacennfw_1_1cker_1_1xent__ops" ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
     [ "BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", "classnnfw_1_1cker_1_1_batch_mat_mul" ],
     [ "BCast", "classnnfw_1_1cker_1_1_b_cast.html", "classnnfw_1_1cker_1_1_b_cast" ],
