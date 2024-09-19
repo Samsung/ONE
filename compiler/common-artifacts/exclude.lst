@@ -9,6 +9,7 @@ optimize(Add_STR_000) # STRING is not supported
 optimize(Add_STR_001) # STRING is not supported
 
 ## CircleRecipes
+optimize(RmsNorm_000)
 
 #[[ tcgenerate : Exclude from test data generation(TestDataGenerator) ]]
 ## TensorFlowLiteRecipes
