@@ -39,7 +39,7 @@ TEST(CloneNodeTest, clone_Reshape)
   ASSERT_EQ(node_reshape->newShape()->dim(1), cloned_reshape->newShape()->dim(1));
 }
 
-TEST(ShapeRuleTest, reshape_by_input_const_static)
+TEST(ShapeRuleTest, reshape_by_const_static)
 {
   auto g = loco::make_graph();
   auto node_reshape = g->nodes()->create<luci::CircleReshape>();
@@ -71,7 +71,7 @@ TEST(ShapeRuleTest, reshape_by_input_const_static)
   ASSERT_EQ(4, output_shape.dim(1).value());
 }
 
-TEST(ShapeRuleTest, reshape_by_input_const_dynamic)
+TEST(ShapeRuleTest, reshape_by_const_dynamic)
 {
   auto g = loco::make_graph();
   auto node_reshape = g->nodes()->create<luci::CircleReshape>();
