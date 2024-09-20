@@ -365,6 +365,12 @@ bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleResizeNe
 }
 
 template <loco::DataType Qtype, loco::DataType Btype>
+bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleRmsNorm *node)
+{
+  return group_has_type(node, Qtype);
+}
+
+template <loco::DataType Qtype, loco::DataType Btype>
 bool VerifyQuantizedNodeTypeBase<Qtype, Btype>::visit(const luci::CircleRsqrt *node)
 {
   return group_has_type(node, Qtype);
