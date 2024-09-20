@@ -20,6 +20,7 @@
 #include <backend/basic/MemoryManager.h>
 
 #include "DisposableTensorIndex.h"
+#include "LayerScopeTensorIndex.h"
 
 namespace onert
 {
@@ -67,7 +68,25 @@ private:
   std::shared_ptr<basic::Allocator> _mem_alloc;
 };
 
-// TODO: Add LayerScopeMemoryManager using MemoryPlannerFactory<LayerScopeTensorIndex>
+class LayerScopeMemoryManager
+{
+public:
+  LayerScopeMemoryManager();
+
+  void allocate(void);
+  uint8_t *getBuffer(const LayerScopeTensorIndex &ind) const;
+  void deallocate(void);
+
+  void claimPlan(const LayerScopeTensorIndex &ind, uint32_t size);
+  void releasePlan(const LayerScopeTensorIndex &ind);
+
+private:
+  basic::IMemoryPlanner<LayerScopeTensorIndex> *createMemoryPlanner();
+
+private:
+  std::shared_ptr<basic::IMemoryPlanner<LayerScopeTensorIndex>> _mem_planner;
+  std::shared_ptr<basic::Allocator> _mem_alloc;
+};
 
 } // namespace train
 } // namespace backend
