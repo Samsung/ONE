@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "train/tests/simple_mnist_task/SimpleMnistClassificationTask.h"
+#include "train/tests/simple_mnist_task/SimpleMnistTask.h"
 #include "train/tests/OMTestUtils.h"
 
 #include <gtest/gtest.h>
@@ -69,7 +69,6 @@ public:
 
 TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
 {
-  // Create BostonHousing data handler
   SimpleMnistTask<float> simpleMnistTask;
 
   config.model_ptr = simpleMnistTask.getModelPtr();
@@ -78,8 +77,7 @@ TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
 
   // Create and import train interpreter
   OMTrainingInterpreter train_interpreter;
-  OMStatus status =
-    train_interpreter.importTrainModel(simpleMnistTask.getModelPtr(), config);
+  OMStatus status = train_interpreter.importTrainModel(simpleMnistTask.getModelPtr(), config);
   EXPECT_EQ(status, Ok);
 
   // Evaluate result before training
@@ -104,6 +102,19 @@ TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_P)
 
   // Compare with gold value (should be greater or equal)
   EXPECT_GE(acc_metric_after_training, golden_accuracy_metric);
+}
+
+TEST_F(SimpleMnistClassificationTaskTest, ADAM_SPARSE_CROSS_ENTROPY_N)
+{
+  SimpleMnistTask<float> simpleMnistTask;
+
+  config.model_ptr = nullptr;
+  config.train_mode = true;
+
+  // Model pointer is nullptr
+  OMTrainingInterpreter train_interpreter;
+  OMStatus status = train_interpreter.importTrainModel(config.model_ptr, config);
+  EXPECT_EQ(status, UnknownError);
 }
 
 } // namespace test

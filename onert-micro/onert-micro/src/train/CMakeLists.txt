@@ -50,7 +50,8 @@ nnas_find_package(GTest REQUIRED)
 set (TEST_SOURCES
         tests/BostonHousingTask.test.cpp
         tests/CheckpointsHandler.test.cpp
-        tests/NumbersClassificationTask.test.cpp)
+        tests/NumbersClassificationTask.test.cpp
+        tests/SimpleMnistTask.test.cpp)
 
 GTest_AddTest(${OM_TRAIN_LIB}_test ${TEST_SOURCES})
 target_include_directories(${OM_TRAIN_LIB}_test PUBLIC "${OM_INCLUDE_DIR}")
