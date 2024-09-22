@@ -161,22 +161,25 @@ $(document).ready(function(){initNavTree('train_2_tensor_manager_8h_source.html'
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a102a42f51f9ac843132263c5ce7e9819">releaseGradientPlan</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ind);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#aceb1479356f0fd080bc4bed1c8ab04f6">claimDisposableBackPropPlan</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a> &amp;ind);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#aeaba41543fd542ea3c2d183078b918b1">releaseDisposableBackPropPlan</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a> &amp;ind);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  std::unique_ptr&lt;MemoryManager&gt; _nonconst_mgr;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  std::unique_ptr&lt;TrainableMemoryManager&gt; _trainable_mgr;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  std::unique_ptr&lt;MemoryManager&gt; _back_prop_mgr;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  std::unique_ptr&lt;MemoryManager&gt; _gradient_mgr;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  std::unique_ptr&lt;DisposableMemoryManager&gt; _disposable_back_prop_mgr;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">const</span> std::shared_ptr&lt;TensorRegistry&gt; _tensors;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>};</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// TODO Add member functions related to LayerScopeMemoryManager</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  std::unique_ptr&lt;MemoryManager&gt; _nonconst_mgr;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  std::unique_ptr&lt;TrainableMemoryManager&gt; _trainable_mgr;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  std::unique_ptr&lt;MemoryManager&gt; _back_prop_mgr;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  std::unique_ptr&lt;MemoryManager&gt; _gradient_mgr;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  std::unique_ptr&lt;DisposableMemoryManager&gt; _disposable_back_prop_mgr;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="comment">// TODO: enable _layer_scope_mgr</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="comment">// std::unique_ptr&lt;LayerScopeMemoryManager&gt; _layer_scope_mgr;</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">const</span> std::shared_ptr&lt;TensorRegistry&gt; _tensors;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
 </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_TRAIN_TENSOR_MANAGER_H__</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_TRAIN_TENSOR_MANAGER_H__</span></div>
 <div class="ttc" id="a_disposable_tensor_index_8h_html"><div class="ttname"><a href="_disposable_tensor_index_8h.html">DisposableTensorIndex.h</a></div></div>
 <div class="ttc" id="a_operand_index_map_8h_html"><div class="ttname"><a href="_operand_index_map_8h.html">OperandIndexMap.h</a></div></div>
 <div class="ttc" id="a_operand_info_8h_html"><div class="ttname"><a href="_operand_info_8h.html">OperandInfo.h</a></div><div class="ttdoc">This file contains OperandInfo class.</div></div>

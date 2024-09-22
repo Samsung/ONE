@@ -1,7 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"_max_pool_canonicalizer_8cpp.html":[40,0,0,82,1,0,20],
-"_max_pool_canonicalizer_8cpp_source.html":[40,0,0,82,1,0,20],
 "_max_pool_canonicalizer_8h.html":[40,0,0,82,1,0,21],
 "_max_pool_canonicalizer_8h_source.html":[40,0,0,82,1,0,21],
 "_max_pool_with_argmax_8cpp.html":[40,0,0,128,0,1,0,14],
@@ -249,5 +247,7 @@ var NAVTREEINDEX16 =
 "_n_e_hashtable_lookup_8cpp.html":[40,0,1,0,1,1,1,0,6],
 "_n_e_hashtable_lookup_8cpp_source.html":[40,0,1,0,1,1,1,0,6],
 "_n_e_hashtable_lookup_8h.html":[40,0,1,0,0,1,1,0,6],
-"_n_e_hashtable_lookup_8h_source.html":[40,0,1,0,0,1,1,0,6]
+"_n_e_hashtable_lookup_8h_source.html":[40,0,1,0,0,1,1,0,6],
+"_n_e_hashtable_lookup_kernel_8cpp.html":[40,0,1,0,1,0,1,0,4],
+"_n_e_hashtable_lookup_kernel_8cpp_source.html":[40,0,1,0,1,0,1,0,4]
 };

@@ -123,44 +123,25 @@ $(document).ready(function(){initNavTree('trix_2_convert_8cc_source.html',''); i
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1trix.html#a6ada1583f4d04ae12ca76b94e4edfc63">   26</a></span>data_layout <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#a6ada1583f4d04ae12ca76b94e4edfc63">convertDataLayout</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> layout)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">   26</a></span>data_type <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">convertDataType</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">switch</span> (layout)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">switch</span> (type)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">ir::Layout::NCHW</a>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keywordflow">return</span> DATA_LAYOUT_NCHW;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>:</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <span class="keywordflow">return</span> DATA_LAYOUT_NHWC;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keywordflow">return</span> DATA_TYPE_QASYMM8;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>      <span class="keywordflow">return</span> DATA_TYPE_QSYMM16;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unknown Layout&quot;</span>);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
 </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">   39</a></span>data_type <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">convertDataType</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="keywordflow">return</span> DATA_TYPE_QASYMM8;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordflow">return</span> DATA_TYPE_QSYMM16;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
-</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace trix</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>} <span class="comment">// namespace onert</span></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1trix_html_a6ada1583f4d04ae12ca76b94e4edfc63"><div class="ttname"><a href="namespaceonert_1_1backend_1_1trix.html#a6ada1583f4d04ae12ca76b94e4edfc63">onert::backend::trix::convertDataLayout</a></div><div class="ttdeci">data_layout convertDataLayout(const ir::Layout layout)</div><div class="ttdoc">Convert type of layout from onert type to npu type.</div><div class="ttdef"><b>Definition</b> <a href="trix_2_convert_8cc_source.html#l00026">Convert.cc:26</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1trix_html_af093836fb3cc989d2d9ee6984a56c887"><div class="ttname"><a href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">onert::backend::trix::convertDataType</a></div><div class="ttdeci">data_type convertDataType(const ir::DataType type)</div><div class="ttdoc">Convert type of data from onert type to npu type.</div><div class="ttdef"><b>Definition</b> <a href="trix_2_convert_8cc_source.html#l00039">Convert.cc:39</a></div></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <span class="comment">// namespace trix</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>} <span class="comment">// namespace onert</span></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1trix_html_af093836fb3cc989d2d9ee6984a56c887"><div class="ttname"><a href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">onert::backend::trix::convertDataType</a></div><div class="ttdeci">data_type convertDataType(const ir::DataType type)</div><div class="ttdoc">Convert type of data from onert type to npu type.</div><div class="ttdef"><b>Definition</b> <a href="trix_2_convert_8cc_source.html#l00026">Convert.cc:26</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">onert::ir::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_data_type_8h_source.html#l00027">DataType.h:28</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">onert::ir::Layout</a></div><div class="ttdeci">Layout</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00029">Layout.h:30</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::Layout::NCHW</a></div><div class="ttdeci">@ NCHW</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 <div class="ttc" id="aruntime_2onert_2backend_2trix_2_convert_8h_html"><div class="ttname"><a href="runtime_2onert_2backend_2trix_2_convert_8h.html">Convert.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

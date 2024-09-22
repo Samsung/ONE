@@ -11,7 +11,6 @@ var namespaceonert_1_1backend_1_1trix =
     [ "ModelID", "namespaceonert_1_1backend_1_1trix.html#a8cdd2f2c9c846f5f8142ad38759c8b2f", null ],
     [ "Tensor", "namespaceonert_1_1backend_1_1trix.html#a311e3d32e7db10c45c572e85a8965f47", null ],
     [ "TensorBuilder", "namespaceonert_1_1backend_1_1trix.html#ae5d0e2c339f567794e60a2a6249232dd", null ],
-    [ "convertDataLayout", "namespaceonert_1_1backend_1_1trix.html#a6ada1583f4d04ae12ca76b94e4edfc63", null ],
     [ "convertDataType", "namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887", null ],
     [ "setBuffers", "namespaceonert_1_1backend_1_1trix.html#a8fd40669f0be41766be62342fd8a6a8c", null ],
     [ "setDataInfo", "namespaceonert_1_1backend_1_1trix.html#afa1aae7d72debd8521204d20c149d8c6", null ]

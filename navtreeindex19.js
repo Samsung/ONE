@@ -1,7 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"_o_m_spaces_batches_n_d_common_8h_source.html":[40,0,3,5,0,2,0,6],
-"_o_m_status_8h.html":[40,0,3,5,0,9],
 "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cb":[40,0,3,5,0,9,0],
 "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba03ed23ba368809d1c6922fc1a6ce3be3":[40,0,3,5,0,9,0,6],
 "_o_m_status_8h.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d":[40,0,3,5,0,9,0,5],
@@ -138,14 +136,14 @@ var NAVTREEINDEX19 =
 "_op_8forward_8h_source.html":[40,0,0,27,0,0,0,1,41],
 "_op_8h.html":[40,0,0,27,0,0,0,1,42],
 "_op_8h.html#a4ee17d3cfd5da67014063855016d56c2":[40,0,0,27,0,0,0,1,42,15],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,12],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,11],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,7],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,10],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,8],
-"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,13],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,9],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,8],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,11],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,10],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,7],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,13],
 "_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,14],
+"_op_8h.html#af4b897c94610035ef1fcaccd251a8eaa":[40,0,0,27,0,0,0,1,42,12],
 "_op_8h_source.html":[40,0,0,27,0,0,0,1,42],
 "_op_code_8cc.html":[40,0,4,1,2,1,5,9],
 "_op_code_8cc.html#a7d9fa9cc526f6b52c4f951a0a9a19ef3":[40,0,4,1,2,1,5,9,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX19 =
 "_operands_8h.html":[40,0,4,1,2,0,4,19],
 "_operands_8h_source.html":[40,0,4,1,2,0,4,19],
 "_operation_8cc.html":[40,0,4,1,2,1,5,14],
-"_operation_8cc_source.html":[40,0,4,1,2,1,5,14]
+"_operation_8cc_source.html":[40,0,4,1,2,1,5,14],
+"_operation_cloner_8cc.html":[40,0,4,1,2,1,5,15],
+"_operation_cloner_8cc.html#a0ea35d40e64c151039c40fed046e88e8":[40,0,4,1,2,1,5,15,2]
 };

@@ -10,7 +10,6 @@ var acl__common_2_convert_8cc =
     [ "asPixelValue", "acl__common_2_convert_8cc.html#ab35e2e7957ea640768d8c3a94276520f", null ],
     [ "asQuantizationInfo", "acl__common_2_convert_8cc.html#af79972415de719f6abaff34f6c365936", null ],
     [ "asRuntimeDataType", "acl__common_2_convert_8cc.html#afebe4e8803e47e7307983392384ffb1e", null ],
-    [ "asRuntimeLayout", "acl__common_2_convert_8cc.html#acea79f8a74bc4c546ab0ac41b3ffa5ba", null ],
     [ "asSet", "acl__common_2_convert_8cc.html#a796b83b8352d68e72d08fb18d49ca9e0", null ],
     [ "asTensorCoordinate", "acl__common_2_convert_8cc.html#a37706f7d37afc27542975c0e32c84254", null ],
     [ "asTensorInfo", "acl__common_2_convert_8cc.html#addae505ea8c82f75b493082a4738ae13", null ],

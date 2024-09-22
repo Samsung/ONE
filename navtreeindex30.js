@@ -1,7 +1,5 @@
 var NAVTREEINDEX30 =
 {
-"_tensor_axis_8h_source.html":[40,0,0,49,0,0,1,47],
-"_tensor_axis_set_8cpp.html":[40,0,0,49,1,1,28],
 "_tensor_axis_set_8cpp_source.html":[40,0,0,49,1,1,28],
 "_tensor_axis_set_8h.html":[40,0,0,49,0,0,1,48],
 "_tensor_axis_set_8h_source.html":[40,0,0,49,0,0,1,48],
@@ -249,5 +247,7 @@ var NAVTREEINDEX30 =
 "_trainable_operation_converter_8cc.html":[40,0,4,1,2,1,1,1,5],
 "_trainable_operation_converter_8cc_source.html":[40,0,4,1,2,1,1,1,5],
 "_trainable_operation_converter_8h.html":[40,0,4,1,2,1,1,1,6],
-"_trainable_operation_converter_8h_source.html":[40,0,4,1,2,1,1,1,6]
+"_trainable_operation_converter_8h_source.html":[40,0,4,1,2,1,1,1,6],
+"_trainable_operation_visitor_8h.html":[40,0,4,1,2,0,4,1,11],
+"_trainable_operation_visitor_8h.html#a483f3fdd345d5f6e4a4062a15104a44a":[40,0,4,1,2,0,4,1,11,1]
 };

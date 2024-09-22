@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"_propagate_q_param_backward_pass_8cpp.html":[40,0,0,56,7,1,64],
-"_propagate_q_param_backward_pass_8cpp.html#a0157f75d4d983ccb4e0a520d16d277e7":[40,0,0,56,7,1,64,3],
 "_propagate_q_param_backward_pass_8cpp.html#a0869ffef04bd651c00a81cb7b10b4f4f":[40,0,0,56,7,1,64,1],
 "_propagate_q_param_backward_pass_8cpp.html#a08927f7d3d5ed8512d8958335add0378":[40,0,0,56,7,1,64,2],
 "_propagate_q_param_backward_pass_8cpp.html#acd6355225daabf033d129b51d6c88f8e":[40,0,0,56,7,1,64,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX23 =
 "_quantize_with_min_max_pass_8cpp_source.html":[40,0,0,56,7,1,86],
 "_quantize_with_min_max_pass_8h.html":[40,0,0,56,7,0,0,0,56],
 "_quantize_with_min_max_pass_8h_source.html":[40,0,0,56,7,0,0,0,56],
-"_quantize_with_predecessor_pass_8cpp.html":[40,0,0,56,7,1,87]
+"_quantize_with_predecessor_pass_8cpp.html":[40,0,0,56,7,1,87],
+"_quantize_with_predecessor_pass_8cpp_source.html":[40,0,0,56,7,1,87],
+"_quantize_with_predecessor_pass_8h.html":[40,0,0,56,7,1,88]
 };

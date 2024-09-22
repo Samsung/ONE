@@ -1,7 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"_n_e_hashtable_lookup_kernel_8cpp.html":[40,0,1,0,1,0,1,0,4],
-"_n_e_hashtable_lookup_kernel_8cpp_source.html":[40,0,1,0,1,0,1,0,4],
 "_n_e_hashtable_lookup_kernel_8h.html":[40,0,1,0,0,0,1,0,4],
 "_n_e_hashtable_lookup_kernel_8h_source.html":[40,0,1,0,0,0,1,0,4],
 "_n_e_instance_normalization_layer_ex_8cpp.html":[40,0,1,0,1,1,1,0,7],
@@ -249,5 +247,7 @@ var NAVTREEINDEX17 =
 "_non_max_suppression_v4_options_8cpp.html#a46143d1adfbe7b54315820d931eb1200":[40,0,0,130,2,0,96,0],
 "_non_max_suppression_v4_options_8cpp_source.html":[40,0,0,130,2,0,96],
 "_non_max_suppression_v4_options_8h.html":[40,0,0,130,2,0,97],
-"_non_max_suppression_v4_options_8h.html#a46143d1adfbe7b54315820d931eb1200":[40,0,0,130,2,0,97,0]
+"_non_max_suppression_v4_options_8h.html#a46143d1adfbe7b54315820d931eb1200":[40,0,0,130,2,0,97,0],
+"_non_max_suppression_v4_options_8h_source.html":[40,0,0,130,2,0,97],
+"_non_max_suppression_v5_options_8cpp.html":[40,0,0,130,2,0,98]
 };

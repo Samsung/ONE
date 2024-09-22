@@ -1,7 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"_lexical_layout_8h.html":[40,0,0,1,0,1,0,0,2,5],
-"_lexical_layout_8h_source.html":[40,0,0,1,0,1,0,0,2,5],
 "_lifetime_map_8cc.html":[40,0,4,1,1,3,1,0],
 "_lifetime_map_8cc.html#a8b47b87d413d0d63c33c70d2e21b6e4e":[40,0,4,1,1,3,1,0,0],
 "_lifetime_map_8cc_source.html":[40,0,4,1,1,3,1,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX15 =
 "_max_pool2_d_op_8cpp.html":[40,0,0,77,1,4,9],
 "_max_pool2_d_op_8cpp_source.html":[40,0,0,77,1,4,9],
 "_max_pool2_d_op_8h.html":[40,0,0,77,0,0,0,23],
-"_max_pool2_d_op_8h_source.html":[40,0,0,77,0,0,0,23]
+"_max_pool2_d_op_8h_source.html":[40,0,0,77,0,0,0,23],
+"_max_pool_canonicalizer_8cpp.html":[40,0,0,82,1,0,20],
+"_max_pool_canonicalizer_8cpp_source.html":[40,0,0,82,1,0,20]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"_quantize_with_predecessor_pass_8cpp_source.html":[40,0,0,56,7,1,87],
-"_quantize_with_predecessor_pass_8h.html":[40,0,0,56,7,1,88],
 "_quantize_with_predecessor_pass_8h_source.html":[40,0,0,56,7,1,88],
 "_quantized_model_verifier_8cpp.html":[40,0,0,56,7,1,73],
 "_quantized_model_verifier_8cpp_source.html":[40,0,0,56,7,1,73],
@@ -249,5 +247,7 @@ var NAVTREEINDEX24 =
 "_remove_duplicate_const_pass_8h_source.html":[40,0,0,56,7,0,0,0,57],
 "_remove_fake_quant_pass_8cpp.html":[40,0,0,56,7,1,90],
 "_remove_fake_quant_pass_8cpp_source.html":[40,0,0,56,7,1,90],
-"_remove_fake_quant_pass_8h.html":[40,0,0,56,7,0,0,0,58]
+"_remove_fake_quant_pass_8h.html":[40,0,0,56,7,0,0,0,58],
+"_remove_fake_quant_pass_8h_source.html":[40,0,0,56,7,0,0,0,58],
+"_remove_forward_node_pass_8cpp.html":[40,0,0,53,1,0,3]
 };

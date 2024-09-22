@@ -1,7 +1,5 @@
 var NAVTREEINDEX31 =
 {
-"_trainable_operation_visitor_8h.html":[40,0,4,1,2,0,4,1,11],
-"_trainable_operation_visitor_8h.html#a483f3fdd345d5f6e4a4062a15104a44a":[40,0,4,1,2,0,4,1,11,1],
 "_trainable_operation_visitor_8h_source.html":[40,0,4,1,2,0,4,1,11],
 "_trainable_tensor_8cc.html":[40,0,4,1,2,1,0,0,0,0],
 "_trainable_tensor_8cc_source.html":[40,0,4,1,2,1,0,0,0,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX31 =
 "_usage_8h.html#a0f847509e0324ff458c26b4d5e840399":[40,0,0,35,1,1,23,0],
 "_usage_8h.html#ac986b450ed8a39d5721a646501b09d46":[40,0,0,35,1,1,23,1],
 "_usage_8h_source.html":[40,0,0,35,1,1,23],
-"_use_8forward_8h.html":[40,0,0,27,0,0,0,1,61]
+"_use_8forward_8h.html":[40,0,0,27,0,0,0,1,61],
+"_use_8forward_8h_source.html":[40,0,0,27,0,0,0,1,61],
+"_use_def_chain_8cc.html":[40,0,4,1,2,1,5,1,5]
 };

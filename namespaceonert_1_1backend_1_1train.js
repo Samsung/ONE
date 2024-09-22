@@ -15,6 +15,7 @@ var namespaceonert_1_1backend_1_1train =
     [ "ITrainableTensor", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor.html", "classonert_1_1backend_1_1train_1_1_i_trainable_tensor" ],
     [ "KernelGenerator", "classonert_1_1backend_1_1train_1_1_kernel_generator.html", "classonert_1_1backend_1_1train_1_1_kernel_generator" ],
     [ "KernelGeneratorBase", "classonert_1_1backend_1_1train_1_1_kernel_generator_base.html", "classonert_1_1backend_1_1train_1_1_kernel_generator_base" ],
+    [ "LayerScopeMemoryManager", "classonert_1_1backend_1_1train_1_1_layer_scope_memory_manager.html", "classonert_1_1backend_1_1train_1_1_layer_scope_memory_manager" ],
     [ "LayerScopeTensor", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor.html", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor" ],
     [ "LayerScopeTensorIndex", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index" ],
     [ "MemoryPlannerFactory", "classonert_1_1backend_1_1train_1_1_memory_planner_factory.html", "classonert_1_1backend_1_1train_1_1_memory_planner_factory" ],

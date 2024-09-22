@@ -3086,6 +3086,7 @@ var hierarchy =
     [ "luci::LayerInfo", "structluci_1_1_layer_info.html", null ],
     [ "luci::CircleQuantizer::Options::LayerParam", "structluci_1_1_circle_quantizer_1_1_options_1_1_layer_param.html", null ],
     [ "luci::CircleQuantizer::Options::LayerParamsSet", "classluci_1_1_circle_quantizer_1_1_options_1_1_layer_params_set.html", null ],
+    [ "onert::backend::train::LayerScopeMemoryManager", "classonert_1_1backend_1_1train_1_1_layer_scope_memory_manager.html", null ],
     [ "onert::backend::train::LayerScopeTensorIndex", "classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html", null ],
     [ "nncc::core::ADT::feature::Layout", "classnncc_1_1core_1_1_a_d_t_1_1feature_1_1_layout.html", [
       [ "nncc::core::ADT::feature::CHWLayout", "structnncc_1_1core_1_1_a_d_t_1_1feature_1_1_c_h_w_layout.html", null ],
@@ -3561,8 +3562,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],

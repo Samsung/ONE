@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"_floor_mod_options_8cpp.html#a8b7e74320907dee1427d418783c146cc":[40,0,0,130,2,0,50,0],
-"_floor_mod_options_8cpp_source.html":[40,0,0,130,2,0,50],
 "_floor_mod_options_8h.html":[40,0,0,130,2,0,51],
 "_floor_mod_options_8h.html#a8b7e74320907dee1427d418783c146cc":[40,0,0,130,2,0,51,0],
 "_floor_mod_options_8h_source.html":[40,0,0,130,2,0,51],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "_fuse_pre_scale_pass_8cpp_source.html":[40,0,0,42,1,0,2],
 "_fuse_pre_scale_pass_8h.html":[40,0,0,42,1,0,3],
 "_fuse_pre_scale_pass_8h_source.html":[40,0,0,42,1,0,3],
-"_fuse_relu_pass_8cpp.html":[40,0,0,38,1,3,8]
+"_fuse_relu_pass_8cpp.html":[40,0,0,38,1,3,8],
+"_fuse_relu_pass_8cpp_source.html":[40,0,0,38,1,3,8],
+"_fuse_relu_pass_8h.html":[40,0,0,38,1,3,9]
 };

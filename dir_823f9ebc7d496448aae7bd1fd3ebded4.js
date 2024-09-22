@@ -90,7 +90,7 @@ var dir_823f9ebc7d496448aae7bd1fd3ebded4 =
     [ "CircleResizeNearestNeighbor.cpp", "import_2src_2_nodes_2_circle_resize_nearest_neighbor_8cpp.html", null ],
     [ "CircleReverseSequence.cpp", "import_2src_2_nodes_2_circle_reverse_sequence_8cpp.html", null ],
     [ "CircleReverseV2.cpp", "import_2src_2_nodes_2_circle_reverse_v2_8cpp.html", null ],
-    [ "CircleRmsNorm.cpp", "_circle_rms_norm_8cpp.html", null ],
+    [ "CircleRmsNorm.cpp", "import_2src_2_nodes_2_circle_rms_norm_8cpp.html", null ],
     [ "CircleRound.cpp", "import_2src_2_nodes_2_circle_round_8cpp.html", null ],
     [ "CircleRsqrt.cpp", "import_2src_2_nodes_2_circle_rsqrt_8cpp.html", null ],
     [ "CircleScatterNd.cpp", "import_2src_2_nodes_2_circle_scatter_nd_8cpp.html", null ],

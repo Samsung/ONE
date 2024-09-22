@@ -14,5 +14,5 @@ var searchData=
   ['executionplangen_11',['ExecutionPlanGen',['../structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8ba82fe1bb7285274710984577afbfb2a92',1,'luci::UserSettings']]],
   ['exp_12',['exp',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a8c670f8c37b95e1ed14a0ce414b049c7',1,'onert::ir::operation::ElementwiseUnary::EXP'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab0ab0254bd58eb87eaee3172ba49fefb',1,'mir_caffe::exp']]],
   ['expandbroadcastconst_13',['ExpandBroadcastConst',['../structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaafb594aed7792f32b5e84ef852102fb0',1,'luci::CircleOptimizer::Options']]],
-  ['explicit_14',['explicit',['../namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3',1,'onert::ir::EXPLICIT'],['../namespacemir_1_1ops.html#a7b286b230aedffa7e02cc957a427286fa9d71760e2dd451db2df354d0fd29cd7f',1,'mir::ops::Explicit']]]
+  ['explicit_14',['explicit',['../namespacemir_1_1ops.html#a7b286b230aedffa7e02cc957a427286fa9d71760e2dd451db2df354d0fd29cd7f',1,'mir::ops::Explicit'],['../namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3',1,'onert::ir::EXPLICIT']]]
 ];

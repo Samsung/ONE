@@ -170,7 +170,7 @@ var searchData=
   ['nnfw_5fcustom_5fkernel_5fparams_167',['nnfw_custom_kernel_params',['../structnnfw__custom__kernel__params.html',1,'']]],
   ['nnfw_5floss_5finfo_168',['nnfw_loss_info',['../structnnfw__loss__info.html',1,'']]],
   ['nnfw_5foperand_169',['nnfw_operand',['../structnnfw__operand.html',1,'']]],
-  ['nnfw_5fsession_170',['nnfw_session',['../class_n_n_f_w___s_e_s_s_i_o_n.html',1,'NNFW_SESSION'],['../structnnfw__session.html',1,'nnfw_session']]],
+  ['nnfw_5fsession_170',['nnfw_session',['../structnnfw__session.html',1,'nnfw_session'],['../class_n_n_f_w___s_e_s_s_i_o_n.html',1,'NNFW_SESSION']]],
   ['nnfw_5ftensorinfo_171',['nnfw_tensorinfo',['../structnnfw__tensorinfo.html',1,'']]],
   ['nnfw_5ftrain_5finfo_172',['nnfw_train_info',['../structnnfw__train__info.html',1,'']]],
   ['nnpkg_173',['NNPkg',['../classonert_1_1ir_1_1_n_n_pkg.html',1,'onert::ir']]],
