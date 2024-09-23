@@ -75,8 +75,8 @@ public:
   luci::CircleRsqrt *_rsqrt = nullptr;
   luci::CircleMul *_mul_input = nullptr;
   luci::CircleConst *_const_epsilon = nullptr;
-  luci::CircleConst *_const_gamma = nullptr; // use default gamma(scale) 1.0
-  luci::CircleConst *_const_beta = nullptr;  // use default beta(offset) 0.0
+  luci::CircleConst *_const_gamma = nullptr;
+  luci::CircleConst *_const_beta = nullptr;
 };
 
 #define CHECK_OR_FALSE(condition) \
@@ -108,7 +108,7 @@ bool RmsNormPattern::matched()
   assert(_const_gamma == nullptr);
   assert(_const_beta == nullptr);
 
-  /* Current FuseRmsNormPass assumes no gamma(scale) and beta(bias).
+  /* NOTE: Current FuseRmsNormPass assumes no gamma(scale) and beta(bias).
    But, RmsNorm kernel expects gamma and beta.
    So, it creates default gamma(1.0) and beta(0.0).
   */
