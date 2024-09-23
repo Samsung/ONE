@@ -264,6 +264,10 @@ void DumpTensorShape::run(std::ostream &os, const circle::Model *model,
       for (int8_t i = 0; i < shape->size(); i++)
       {
         os << shape->Get(i);
+        if (i != shape->size() - 1)
+        {
+          os << ",";
+        }
       }
       os << std::endl;
     }

@@ -96,6 +96,7 @@ Add(PadV2_001 PASS substitute_padv2_to_pad)
 Add(Softmax_001 PASS decompose_softmax)
 Add(Softmax_002 PASS decompose_softmax)
 Add(StridedSlice_003 PASS substitute_strided_slice_to_reshape)
+Add(Pad_002 PASS)
 
 # CSE test
 

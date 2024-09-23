@@ -2,8 +2,8 @@
 operand {
   name: "ifm"
   type: FLOAT32
-  shape { dim: 1 dim: 3 dim: 3 dim: 2 }
-  shape_signature { dim: -1 dim: 3 dim: 3 dim: 2 }
+  shape { dim: 1 dim: 1 dim: 3 dim: 2 }
+  shape_signature { dim: 1 dim: -1 dim: 3 dim: 2 }
 }
 operand {
   name: "padding"
@@ -20,8 +20,8 @@ operand {
 operand {
   name: "ofm"
   type: FLOAT32
-  shape { dim: 1 dim: 5 dim: 7 dim: 2 }
-  shape_signature { dim: -1 dim: 5 dim: 7 dim: 2 }
+  shape { dim: 1 dim: 1 dim: 7 dim: 2 }
+  shape_signature { dim: 1 dim: -1 dim: 7 dim: 2 }
 }
 operation {
   type: "Pad"
