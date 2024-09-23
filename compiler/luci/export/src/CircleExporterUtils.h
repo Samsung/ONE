@@ -66,7 +66,7 @@ CircleTensorIndex get_tensor_index(loco::Node *node);
 // check if Flatbuffer builder can no longer hold the given amount of the data
 inline bool check_size_limit(const flatbuffers::FlatBufferBuilder &fb, const uint64_t data_size)
 {
-  return data_size > FLATBUFFERS_SIZE_MAX - fb.GetSize();
+  return FLATBUFFERS_SIZE_MAX < data_size + fb.GetSize();
 }
 
 } // namespace luci
