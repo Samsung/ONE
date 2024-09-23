@@ -108,7 +108,7 @@ bool RmsNormPattern::matched()
   assert(_const_gamma == nullptr);
   assert(_const_beta == nullptr);
 
-  /* 
+  /*
    NOTE: Current FuseRmsNormPass assumes no gamma(scale) and beta(bias).
    But, RmsNorm kernel expects gamma and beta.
    So, it creates default gamma(1.0) and beta(0.0).
