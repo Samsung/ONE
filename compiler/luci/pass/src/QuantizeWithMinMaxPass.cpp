@@ -301,6 +301,7 @@ private:
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleResizeBilinear, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleResizeNearestNeighbor, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleReverseSequence, input)
+  INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRmsNorm, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleRsqrt, x)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSlice, input)
   INSERT_QUANTIZE_TO_UNARY_OP(luci::CircleSoftmax, logits)
