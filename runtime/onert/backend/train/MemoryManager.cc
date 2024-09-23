@@ -61,13 +61,13 @@ DisposableMemoryManager::DisposableMemoryManager() : _mem_planner{createMemoryPl
 basic::IMemoryPlanner<DisposableTensorIndex> *DisposableMemoryManager::createMemoryPlanner()
 {
   auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
-  return MemoryPlannerFactory::get().create(planner_id);
+  return MemoryPlannerFactory<DisposableTensorIndex>::get().create(planner_id);
 }
 
 basic::IMemoryPlanner<DisposableTensorIndex> *
 DisposableMemoryManager::createMemoryPlanner(const std::string planner_id)
 {
-  return MemoryPlannerFactory::get().create(planner_id);
+  return MemoryPlannerFactory<DisposableTensorIndex>::get().create(planner_id);
 }
 
 void DisposableMemoryManager::claimPlan(const DisposableTensorIndex &ind, uint32_t size)
@@ -91,6 +91,42 @@ uint8_t *DisposableMemoryManager::getBuffer(const DisposableTensorIndex &ind) co
   assert(_mem_planner->memory_plans().find(ind) != _mem_planner->memory_plans().end());
   const auto &mem_blk = _mem_planner->memory_plans().at(ind);
   return _mem_alloc->base() + mem_blk.offset;
+}
+
+LayerScopeMemoryManager::LayerScopeMemoryManager() : _mem_planner{createMemoryPlanner()}
+{
+  // DO NOTHING
+}
+
+basic::IMemoryPlanner<LayerScopeTensorIndex> *LayerScopeMemoryManager::createMemoryPlanner()
+{
+  auto planner_id = util::getConfigString(util::config::CPU_MEMORY_PLANNER);
+  return MemoryPlannerFactory<LayerScopeTensorIndex>::get().create(planner_id);
+}
+
+void LayerScopeMemoryManager::allocate(void)
+{
+  _mem_alloc = std::make_shared<basic::Allocator>(_mem_planner->capacity());
+  assert(_mem_alloc->base());
+}
+
+uint8_t *LayerScopeMemoryManager::getBuffer(const LayerScopeTensorIndex &ind) const
+{
+  assert(_mem_planner->memory_plans().find(ind) != _mem_planner->memory_plans().end());
+  const auto &mem_blk = _mem_planner->memory_plans().at(ind);
+  return _mem_alloc->base() + mem_blk.offset;
+}
+
+void LayerScopeMemoryManager::deallocate(void) { _mem_alloc->release(); }
+
+void LayerScopeMemoryManager::claimPlan(const LayerScopeTensorIndex &ind, uint32_t size)
+{
+  _mem_planner->claim(ind, size);
+}
+
+void LayerScopeMemoryManager::releasePlan(const LayerScopeTensorIndex &ind)
+{
+  _mem_planner->release(ind);
 }
 
 } // namespace train

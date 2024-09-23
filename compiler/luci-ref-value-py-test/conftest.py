@@ -15,8 +15,9 @@ def pytest_addoption(parser):
     parser.addoption("--tflrecipe", action="store", help="Path to tfl recipies")
     parser.addoption("--circlerecipe", action="store", help="Path to circle recipies")
     parser.addoption("--binary", action="store", help="Path to test binary")
-    parser.addoption(
-        "--luci_eval_driver", action="store", help="Path to luci eval driver")
+    parser.addoption("--luci_eval_driver",
+                     action="store",
+                     help="Path to luci eval driver")
 
 
 def copy_if_changed(src_filepath, dst_filepath):

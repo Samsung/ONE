@@ -87,6 +87,17 @@ public:
     }
   }
 
+protected:
+  ir::DataType tensorTypeToDataType(const TensorType type) override
+  {
+    if (type == TensorType::TensorType_GGML_Q4_0)
+      return ir::DataType::QUANT_GGML_Q4_0;
+    if (type == TensorType::TensorType_GGML_Q8_0)
+      return ir::DataType::QUANT_GGML_Q8_0;
+
+    return BaseLoader::tensorTypeToDataType(type);
+  }
+
 private:
   std::unique_ptr<ir::Graph> loadSubgraph(const circle::SubGraph *circle_subg) override
   {

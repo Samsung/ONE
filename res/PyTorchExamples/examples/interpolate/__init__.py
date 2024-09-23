@@ -13,12 +13,11 @@ class net_interpolate(nn.Module):
         self.scale_factor = scale_factor
 
     def forward(self, input):
-        return torch.nn.functional.interpolate(
-            input,
-            scale_factor=self.scale_factor,
-            mode='bilinear',
-            align_corners=True,
-            recompute_scale_factor=True)
+        return torch.nn.functional.interpolate(input,
+                                               scale_factor=self.scale_factor,
+                                               mode='bilinear',
+                                               align_corners=True,
+                                               recompute_scale_factor=True)
 
     def onnx_opset_version(self):
         return 11

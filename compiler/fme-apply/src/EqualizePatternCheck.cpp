@@ -28,6 +28,12 @@ using namespace fme_apply;
 namespace fme_apply
 {
 
+/**
+ * It checks if given patterns are valid as follows.
+ *
+ * - "scale" is empty.
+ * - "front" and "back" of the patterns are in the graph.
+ */
 void check_patterns_valid(loco::Graph *g, const std::vector<EqualizePattern> &patterns)
 {
   // Create a map to find node by its name
@@ -40,27 +46,21 @@ void check_patterns_valid(loco::Graph *g, const std::vector<EqualizePattern> &pa
     }
   }
 
-  auto check_negative_scale_across_relu = [&node_by_name](const EqualizePattern *p) {
-    auto front = node_by_name.at(p->front); // FIX_ME_UNLESS
-    auto node =
-      dynamic_cast<const luci::CircleNodeMixin<luci::CircleNodeTrait::FusedActFunc> *>(front);
-    if (not node)
-      return;
-
-    if (node->fusedActivationFunction() != luci::FusedActFunc::RELU)
-      return;
-
-    if (p->type != EqualizePattern::Type::ScaleOnly && p->type != EqualizePattern::Type::ScaleShift)
-      return;
-
-    for (auto s : p->scale)
-      if (s < 0.0)
-        throw std::runtime_error("Negative scale cannot be fused across ReLU");
-  };
-
-  for (const auto &pattern : patterns)
+  for (const auto &p : patterns)
   {
-    check_negative_scale_across_relu(&pattern);
+    // "scale" is empty.
+    // "scale" is calculated in the runtime.
+    if (not p.scale.empty())
+    {
+      throw std::runtime_error{"'scale' shouldn't exist."};
+    }
+
+    // "front" and "back" of the patterns are in the graph.
+    if (node_by_name.find(p.front) == node_by_name.end() or
+        node_by_name.find(p.back) == node_by_name.end())
+    {
+      throw std::runtime_error{"Given front or back don't exist in the graph."};
+    }
   }
 }
 

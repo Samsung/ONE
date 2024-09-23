@@ -131,8 +131,9 @@ for testcase in testcases:
                         narr = np.append(narr, mixed_ch)
                     elif fw == 'caf':
                         dset_shape = (1, 3, h, w)
-                        narr = np.fromstring(
-                            rfb + gfb + bfb, count=(3 * h * w), dtype='float32')
+                        narr = np.fromstring(rfb + gfb + bfb,
+                                             count=(3 * h * w),
+                                             dtype='float32')
                         for i in range(3 * h * w):
                             narr[i] /= 255.0
                     if remove_existing:

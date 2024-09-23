@@ -58,6 +58,8 @@ private:
   LayerScopeTensorLifeTime _lifetime;
 };
 
+using LayerScopeTensors = std::vector<std::shared_ptr<LayerScopeTensor>>;
+
 } // namespace train
 } // namespace backend
 } // namespace onert

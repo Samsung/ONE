@@ -19,11 +19,16 @@
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
+clean_envir()
+{
+  rm -rf ../bin/dummyV2-profile
+  rm -rf ../bin/dummyV3-profile
+}
+
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummyV2-profile
-  rm -rf ../bin/dummyV3-profile
+  clean_envir
   exit 255
 }
 
@@ -45,7 +50,6 @@ if ! grep -q "dummyV3-profile with onecc_057_overwrite" "${filename}.log"; then
   trap_err_onexit
 fi
 
-rm -rf ../bin/dummyV2-profile
-rm -rf ../bin/dummyV3-profile
+clean_envir
 
 echo "${filename_ext} SUCCESS"

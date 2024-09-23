@@ -66,6 +66,7 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 #include "luci/Pass/RemoveRedundantQuantizePass.h"
 #include "luci/Pass/RemoveUnnecessaryAddPass.h"
+#include "luci/Pass/RemoveUnnecessaryCastPass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapePass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapeNetPass.h"
 #include "luci/Pass/RemoveUnnecessarySlicePass.h"
@@ -365,6 +366,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::RemoveQDQForMixedPrecisionOp] = &createPassInstance<luci::RemoveQDQForMixedPrecisionOpPass>;
   option_to_pass[Options::Algorithm::RemoveQuantDequantSeq] = &createPassInstance<luci::RemoveQuantDequantSeqPass>;
   option_to_pass[Options::Algorithm::RemoveUnnecessaryAdd] = &createPassInstance<luci::RemoveUnnecessaryAddPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryCast] = &createPassInstance<luci::RemoveUnnecessaryCastPass>;
   option_to_pass[Options::Algorithm::RemoveUnnecessarySlice] = &createPassInstance<luci::RemoveUnnecessarySlicePass>;
   option_to_pass[Options::Algorithm::RemoveUnnecessaryStridedSlice] = &createPassInstance<luci::RemoveUnnecessaryStridedSlicePass>;
   option_to_pass[Options::Algorithm::RemoveUnnecessarySplit] = &createPassInstance<luci::RemoveUnnecessarySplitPass>;

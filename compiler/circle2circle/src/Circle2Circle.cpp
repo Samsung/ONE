@@ -148,6 +148,8 @@ int entry(int argc, char **argv)
              "This will fuse or remove subsequent Transpose operators");
   add_switch(arser, "--remove_unnecessary_add",
              "This will remove unnecessary add of zero constant");
+  add_switch(arser, "--remove_unnecessary_cast",
+             "This will remove unnecessary cast with the same input and output type.");
   add_switch(arser, "--remove_unnecessary_reshape",
              "This will remove unnecessary reshape operators");
   add_switch(arser, "--remove_unnecessary_slice", "This will remove unnecessary slice operators");
@@ -310,6 +312,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["remove_redundant_reshape"] = Algorithms::RemoveRedundantReshape;
   option_str_to_enum["remove_redundant_transpose"] = Algorithms::RemoveRedundantTranspose;
   option_str_to_enum["remove_unnecessary_add"] = Algorithms::RemoveUnnecessaryAdd;
+  option_str_to_enum["remove_unnecessary_cast"] = Algorithms::RemoveUnnecessaryCast;
   option_str_to_enum["remove_unnecessary_reshape"] = Algorithms::RemoveUnnecessaryReshape;
   option_str_to_enum["remove_unnecessary_slice"] = Algorithms::RemoveUnnecessarySlice;
   option_str_to_enum["remove_unnecessary_strided_slice"] = Algorithms::RemoveUnnecessaryStridedSlice;

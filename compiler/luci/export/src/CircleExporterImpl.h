@@ -69,8 +69,15 @@ private:
    */
   bool exportModuleData(Module *module, SerializedModelData &md);
 
+  /**
+   * @brief finalizes file stream with extended buffer from internal buffer
+   */
+  void finalizeWithExtendedBuffer(SerializedModelData &md);
+
 private:
   flatbuffers::FlatBufferBuilder _builder;
+  bool _ext_buffer = false;
+  std::string _fb_data_with_ext;
 };
 
 } // namespace luci

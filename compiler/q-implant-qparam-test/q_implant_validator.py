@@ -34,9 +34,8 @@ def validate(h5_path, qparam_dir, qparam_json):
                 if tensor_name == "value":
                     expected_weights = np.load(np_path)
                     h5_weights = model[node_name]["weights"][:]
-                    if np.allclose(
-                            h5_weights, expected_weights, rtol=1.e-5,
-                            atol=1.e-5) == False:
+                    if np.allclose(h5_weights, expected_weights, rtol=1.e-5,
+                                   atol=1.e-5) == False:
                         print("Implanted weights of " + node_name + "." + tensor_name +
                               " (" + str(h5_weights) +
                               ") do not match with expected value (" +
@@ -46,8 +45,8 @@ def validate(h5_path, qparam_dir, qparam_json):
                 if tensor_name == "scale":
                     expected_scale = np.load(np_path)
                     h5_scale = model[node_name]["scale"][:]
-                    if np.allclose(
-                            h5_scale, expected_scale, rtol=1.e-5, atol=1.e-5) == False:
+                    if np.allclose(h5_scale, expected_scale, rtol=1.e-5,
+                                   atol=1.e-5) == False:
                         print("Implanted scale of " + node_name + "." + tensor_name +
                               " (" + str(h5_scale) +
                               ") do not match with expected value (" +

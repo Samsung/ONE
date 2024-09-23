@@ -48,43 +48,15 @@
 #include "arm_compute/runtime/NEON/functions/NEGEMMLowpMatrixMultiplyCore.h"
 #include "arm_compute/runtime/NEON/INESimpleFunctionNoBorder.h"
 #include "arm_compute/runtime/Tensor.h"
-#include "src/core/NEON/kernels/NETransposeKernel.h"
+#include "arm_compute/runtime/NEON/functions/NETranspose.h"
 
 namespace arm_compute
 {
-/** Basic function to reshape the weights of Fully Connected layer with NEON. This function calls
- * the following kernels:
- *
- *  -# @ref NETransposeKernel
- *
- * @note  The fully connected layer accepts "weights" tensors only with 2 dimensions.
- */
-class NEFullyConnectedHybridLayerReshapeWeights : public INESimpleFunctionNoBorder
-{
-public:
-  /** Set the input and output tensors.
-   *
-   * @param[in]  input  Weights tensor. The weights must be 2 dimensional. Data types supported:
-   * QASYMM8/F16/F32.
-   * @param[out] output Destination tensor. Data type supported: Same as @p input.
-   */
-  void configure(const ITensor *input, ITensor *output);
-  /** Static function to check if given info will lead to a valid configuration of @ref
-   * NEFullyConnectedHybridLayerReshapeWeights
-   *
-   * @param[in] input  Weights tensor info. The weights must be 2 dimensional. Data types supported:
-   * QASYMM8/F16/F32.
-   * @param[in] output Destination tensor info. Data type supported: Same as @p input.
-   *
-   * @return a status
-   */
-  static Status validate(const ITensorInfo *input, const ITensorInfo *output);
-};
 
 /** Basic function to compute a Fully Connected layer on NEON. This function calls the following
  * NEON kernels:
  *  -# @ref NEIm2ColKernel (called when the input comes from a convolutional layer)
- *  -# @ref NEFullyConnectedHybridLayerReshapeWeights (if @p are_weights_reshaped is set to false
+ *  -# @ref NETranspose (if @p are_weights_reshaped is set to false
  * and transpose_weights is set to true ) (called once)
  *  -# @ref NEGEMMMatrixMultiplyKernel or @ref NEGEMMLowpMatrixMultiplyCore (if quantized
  * asymmetric)
@@ -162,7 +134,7 @@ private:
   void configure_mm(const ITensor *input, const ITensor *weights, ITensor *output);
 
   MemoryGroup _memory_group;
-  NEFullyConnectedHybridLayerReshapeWeights _reshape_weights_function;
+  NETranspose _reshape_weights_function;
   NEQuantizationSymmetricKernel _quant_input_kernel;
   NEGEMMLowpMatrixMultiplyCore _mm_gemmlowp;
   NEMultiplyScaleFactorKernel _multiply_scale_kernel;

@@ -161,25 +161,33 @@ loco::TensorShape broadcast_shape(const loco::TensorShape &x, const loco::Tensor
   return output_shape;
 }
 
-loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::CircleConst *paddings)
+loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::CircleNode *paddings)
 {
   const loco::DataType S32 = loco::DataType::S32;
   const loco::DataType S64 = loco::DataType::S64;
 
   // TODO support other data type
   LUCI_ASSERT(paddings->dtype() == S32 || paddings->dtype() == S64, "Support int 32/64 for now");
-  LUCI_ASSERT(paddings->rank() == 2, "paddings should be rank 2");
+  if (paddings->rank() != 2)
+    INTERNAL_EXN("paddings should be rank 2");
 
   int32_t n = paddings->dim(0).value();
   int32_t v = paddings->dim(1).value();
 
-  LUCI_ASSERT(v == 2, "paddings should be [n, 2]");
-  LUCI_ASSERT(n == int32_t(input_shape.rank()),
-              "paddings [n, 2] should have same value of input rank");
+  if (v != 2)
+    INTERNAL_EXN("paddings should be [n, 2]");
+
+  if (n != int32_t(input_shape.rank()))
+    INTERNAL_EXN("paddings [n, 2] should have same value of input rank");
 
   loco::TensorShape output_shape;
 
   output_shape.rank(input_shape.rank());
+
+  auto const_padding = dynamic_cast<const luci::CircleConst *>(paddings);
+  if (const_padding == nullptr)
+    return output_shape;
+
   for (int32_t ni = 0; ni < n; ++ni)
   {
     if (not input_shape.dim(ni).known())
@@ -189,15 +197,15 @@ loco::TensorShape pad_shape(const loco::TensorShape &input_shape, const luci::Ci
     }
     int32_t idx = ni * 2;
     int value = input_shape.dim(ni).value();
-    if (paddings->dtype() == S32)
+    if (const_padding->dtype() == S32)
     {
-      value += paddings->at<S32>(idx + 0); // left
-      value += paddings->at<S32>(idx + 1); // right
+      value += const_padding->at<S32>(idx + 0); // left
+      value += const_padding->at<S32>(idx + 1); // right
     }
     else
     {
-      auto pl = paddings->at<S64>(idx + 0);
-      auto pr = paddings->at<S64>(idx + 1);
+      auto pl = const_padding->at<S64>(idx + 0);
+      auto pr = const_padding->at<S64>(idx + 1);
       auto max = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
       auto low = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
       LUCI_ASSERT(pl <= max, "paddings is over 32 bit limit");

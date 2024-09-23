@@ -24,7 +24,6 @@ class RemoteSSH():
 
     TODO : Using SSH library instead of direct ssh call
     """
-
     def __init__(self, user, ip, nnpkg_dir, num_threads):
         self.base_dir = Path('/tmp/ONE')
         self.trace_dir = 'traces'
@@ -75,8 +74,7 @@ class RemoteSSH():
             if backend == target_backend:
                 for op in op_list:
                     cmd += [f"OP_BACKEND_{op}={backend}"]
-        cmd += [f"XNNPACK_THREADS={self.num_threads}"]
-        cmd += [f"RUY_THREADS={self.num_threads}"]
+        cmd += [f"NUM_THREADS={self.num_threads}"]
         cmd += [f"BACKENDS=\'{';'.join(['cpu', backend])}\'"]
         cmd += [f"{nnpkg_run_path}"]
         cmd += [f"-w5 -r50"]

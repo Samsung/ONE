@@ -19,6 +19,7 @@
 
 #include <util/ConfigSource.h>
 #include <ruy/context.h>
+#include <ggml.h>
 
 #include <memory>
 
@@ -37,7 +38,7 @@ private:
 public:
   ExternalContext() : _ruy_context(new ruy::Context)
   {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
   }
 
   void setMaxNumThreads(int max_num_threads)
@@ -47,10 +48,18 @@ public:
     _ruy_context->set_max_num_threads(target_num_threads);
   }
 
+  void initGgmlContext()
+  {
+    if (_ggml_context == nullptr)
+      _ggml_context = std::unique_ptr<ggml_context, decltype(&ggml_free)>(
+        ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true}), &ggml_free);
+  }
+
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
 
 private:
   const std::unique_ptr<ruy::Context> _ruy_context;
+  std::unique_ptr<ggml_context, decltype(&ggml_free)> _ggml_context{nullptr, &ggml_free};
 };
 
 } // namespace cpu

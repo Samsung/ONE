@@ -202,7 +202,7 @@ runtime_tar_internal:
 	tar -zcf $(WORKSPACE)/onert-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
 acl_tar_internal:
-	tar -zcf $(WORKSPACE)/onert-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_core.so lib/libarm_compute_graph.so
+	tar -zcf $(WORKSPACE)/onert-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_graph.so
 
 install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)

@@ -5,7 +5,7 @@
 Install required packages
 
 ```
-$ sudo apt-get install qemu qemu-user-static binfmt-support debootstrap
+$ sudo apt-get install qemu-user-static binfmt-support debootstrap
 ```
 
 Use `install_rootfs.sh` script to prepare Root File System. You should have `sudo`

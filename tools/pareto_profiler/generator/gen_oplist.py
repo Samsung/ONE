@@ -2,6 +2,7 @@
 import argparse
 import tensorflow as tf
 import sys
+
 sys.path.append("../estimator")
 import subprocess
 import os
@@ -113,21 +114,21 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='''gen_backend: Generates oplist and uploads to target''',
         epilog="""Success.""")
-    parser.add_argument(
-        '--auth', type=str, default=None, help='authentication: <user@host>')
-    parser.add_argument(
-        '--mode',
-        type=str.lower,
-        choices=["index", "name"],
-        default="name",
-        help='Profile by operation index or name')
+    parser.add_argument('--auth',
+                        type=str,
+                        default=None,
+                        help='authentication: <user@host>')
+    parser.add_argument('--mode',
+                        type=str.lower,
+                        choices=["index", "name"],
+                        default="name",
+                        help='Profile by operation index or name')
     parser.add_argument('model', type=str, default=None, help='tflite name with path')
-    parser.add_argument(
-        'target',
-        type=str.lower,
-        choices=['tizen', 'odroid'],
-        default="odroid",
-        help='target name')
+    parser.add_argument('target',
+                        type=str.lower,
+                        choices=['tizen', 'odroid'],
+                        default="odroid",
+                        help='target name')
 
     # Parse arguments
     args = parser.parse_args()

@@ -20,16 +20,14 @@ parser.add_argument(
     help=
     'All the param list to test. e.g. ${RECIPE_NAME_0} ${GRANULARITY_0} ${DTYPE_0} ${RECIPE_NAME_1} ${GRANULARITY_1} ${DTYPE_1}..'
 )
-parser.add_argument(
-    '--bin_dir',
-    type=str,
-    required=True,
-    help='Directory path wehre test files are generated')
-parser.add_argument(
-    '--source_dir',
-    type=str,
-    required=True,
-    help='Directory path where expected outputs exist')
+parser.add_argument('--bin_dir',
+                    type=str,
+                    required=True,
+                    help='Directory path wehre test files are generated')
+parser.add_argument('--source_dir',
+                    type=str,
+                    required=True,
+                    help='Directory path where expected outputs exist')
 parser.add_argument('--mode', type=str, required=True, help='Mode to test')
 args = parser.parse_args()
 
@@ -117,11 +115,12 @@ def compare_quantization(tensor, tensor_name, expect_dir):
             if tensor["weights"].dtype == 'int64':
                 abs_tolerance = 5
 
-            if np.allclose(
-                    input_weights, expected_weights, rtol=0, atol=abs_tolerance) == False:
-                logging.error(
-                    "Quantized weights of " + tensor_name + " (" + str(input_weights) +
-                    ") do not match with expected value (" + str(expected_weights) + ").")
+            if np.allclose(input_weights, expected_weights, rtol=0,
+                           atol=abs_tolerance) == False:
+                logging.error("Quantized weights of " + tensor_name + " (" +
+                              str(input_weights) +
+                              ") do not match with expected value (" +
+                              str(expected_weights) + ").")
                 test_result = False
 
         if key == "scale":
@@ -136,8 +135,8 @@ def compare_quantization(tensor, tensor_name, expect_dir):
         if key == "zero_point":
             expected_zero_point = np.array(json_load["zero_point"])
             input_zero_point = tensor["zero_point"][:]
-            if np.allclose(
-                    input_zero_point, expected_zero_point, rtol=0, atol=1) == False:
+            if np.allclose(input_zero_point, expected_zero_point, rtol=0,
+                           atol=1) == False:
                 logging.error("Quantized zero_point of " + tensor_name + " (" +
                               str(input_zero_point) +
                               ") do not match with expected value (" +

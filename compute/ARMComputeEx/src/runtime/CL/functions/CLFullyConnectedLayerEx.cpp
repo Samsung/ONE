@@ -45,6 +45,7 @@
 #include "arm_compute/core/utils/misc/ShapeCalculator.h"
 #include "arm_compute/core/utils/quantization/AsymmHelpers.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
+#include "arm_compute/function_info/GEMMInfo.h"
 
 #include "support/Cast.h"
 
@@ -109,8 +110,13 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
                                        fc_info.retain_internal_weights, // retain_internal_weights
                                        gemmlowp_output_stage,           // gemmlowp_output_stage
                                        fc_info.fp_mixed_precision,      // fp_mixed_precision
+                                       false,                           // fast_math
                                        true,                            // broadcast_bias
-                                       ActivationLayerInfo());          // activation_info
+                                       ActivationLayerInfo(),           // activation_info
+                                       false,                           // fixed_format
+                                       WeightFormat::OHWI,              // weight_format
+                                       false,                           // pretranspose_B
+                                       bias != nullptr);                // acccumulate
 
   if (is_data_type_quantized_asymmetric(input.data_type()))
   {
@@ -139,19 +145,6 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 }
 } // namespace
 
-void CLFullyConnectedLayerReshapeWeightsEx::configure(const ICLTensor *input, ICLTensor *output)
-{
-  auto k = std::make_unique<CLTransposeKernel>();
-  k->configure(input, output);
-  _kernel = std::move(k);
-}
-
-Status CLFullyConnectedLayerReshapeWeightsEx::validate(const ITensorInfo *input,
-                                                       const ITensorInfo *output)
-{
-  return CLTransposeKernel::validate(input, output);
-}
-
 CLFullyConnectedLayerEx::CLFullyConnectedLayerEx(std::shared_ptr<IMemoryManager> memory_manager,
                                                  IWeightsManager *weights_manager)
   : _memory_group(memory_manager), _weights_manager(weights_manager), _convert_weights(),
@@ -178,8 +171,13 @@ void CLFullyConnectedLayerEx::configure_mm(const ICLTensor *input, const ICLTens
                                        fc_info.retain_internal_weights, // retain_internal_weights
                                        gemmlowp_output_stage,           // gemmlowp_output_stage
                                        fc_info.fp_mixed_precision,      // fp_mixed_precision
+                                       false,                           // fast_math
                                        true,                            // broadcast_bias
-                                       ActivationLayerInfo());          // activation_info
+                                       ActivationLayerInfo(),           // activation_info
+                                       false,                           // fixed_format
+                                       WeightFormat::OHWI,              // weight_format
+                                       false,                           // pretranspose_B
+                                       bias != nullptr);                // acccumulate
 
   if (_is_quantized)
   {
@@ -358,11 +356,9 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   bool weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
   bool is_fc_after_conv = true;
 
-  const ITensorInfo &flatten_input = TensorInfo(input->clone()
-                                                  ->set_is_resizable(true)
-                                                  .reset_padding()
-                                                  .set_tensor_shape(compute_flatten_shape(input))
-                                                  .set_data_layout(DataLayout::NCHW));
+  const ITensorInfo &flatten_input =
+    TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
+      compute_flatten_shape(input)));
   const ITensorInfo &reshaped_weights =
     TensorInfo(weights->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
       compute_transposed_shape(*weights)));
@@ -395,8 +391,7 @@ Status CLFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   if (!weights_reshaped)
   {
     // Validate reshape weights kernel
-    ARM_COMPUTE_RETURN_ON_ERROR(
-      CLFullyConnectedLayerReshapeWeightsEx::validate(weights, &reshaped_weights));
+    ARM_COMPUTE_RETURN_ON_ERROR(CLTranspose::validate(weights, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 
@@ -507,77 +502,6 @@ void CLFullyConnectedLayerEx::run()
 
 void CLFullyConnectedLayerEx::prepare()
 {
-#if 0 // TODO Remove this block
-    if(!_is_prepared)
-    {
-        if(!_weights_manager)
-        {
-            ARM_COMPUTE_ERROR_ON(!_original_weights->is_used());
-        }
-
-        auto release_unused = [](CLTensor * w)
-        {
-            if(!w->is_used())
-            {
-                CLScheduler::get().queue().finish();
-                w->allocator()->free();
-            }
-        };
-
-        // Pointer to current weights
-        const ICLTensor *cur_weights = _original_weights;
-
-        // Reshape of the weights if needed (happens only once)
-        if(!_are_weights_reshaped)
-        {
-            if(_weights_manager && _weights_manager->are_weights_managed(_original_weights))
-            {
-                cur_weights = utils::cast::polymorphic_downcast<ICLTensor *>(_weights_manager->run(cur_weights, &_reshape_weights_managed_function));
-            }
-            else
-            {
-                // Run reshape weights kernel and mark weights as unused
-                _reshape_weights_output.allocator()->allocate();
-                _reshape_weights_function.run();
-
-                cur_weights->mark_as_unused();
-                cur_weights = &_reshape_weights_output;
-            }
-            _are_weights_reshaped = true;
-        }
-
-        // Convert weights if needed (happens only once)
-        if(!_are_weights_converted)
-        {
-            if(_weights_manager && _weights_manager->are_weights_managed(cur_weights))
-            {
-                _weights_manager->run(cur_weights, &_convert_weights_managed);
-            }
-            else
-            {
-                _converted_weights_output.allocator()->allocate();
-                _convert_weights.run();
-                cur_weights->mark_as_unused();
-            }
-
-            _are_weights_converted = true;
-        }
-
-        // Release reshaped weights if unused
-        release_unused(&_reshape_weights_output);
-
-        // Prepare GEMM prepare and release unused weights
-        if(!_is_quantized)
-        {
-            _mm_gemm.prepare();
-        }
-
-        // Release converted weights if unused
-        release_unused(&_reshape_weights_output);
-        release_unused(&_converted_weights_output);
-
-        _is_prepared = true;
-    }
-#endif
+  // DO NOTHING
 }
 } // namespace arm_compute

@@ -27,7 +27,7 @@
 #include <mio/circle/schema_generated.h>
 
 // limitation of current flatbuffers file size
-inline constexpr unsigned int FLATBUFFERS_SIZE_MAX = 2147483648;
+inline constexpr uint64_t FLATBUFFERS_SIZE_MAX = 2147483648UL; // 2GB
 
 namespace luci
 {
@@ -64,9 +64,9 @@ void clear_tensor_index(loco::Node *node);
 CircleTensorIndex get_tensor_index(loco::Node *node);
 
 // check if Flatbuffer builder can no longer hold the given amount of the data
-inline bool check_size_limit(flatbuffers::FlatBufferBuilder &fb, const uint64_t data_size)
+inline bool check_size_limit(const flatbuffers::FlatBufferBuilder &fb, const uint64_t data_size)
 {
-  return data_size > FLATBUFFERS_SIZE_MAX - fb.GetSize();
+  return FLATBUFFERS_SIZE_MAX < data_size + fb.GetSize();
 }
 
 } // namespace luci

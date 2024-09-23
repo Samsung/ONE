@@ -74,12 +74,11 @@ def luci_eval_verify_ref(test_name,
     assert num_outputs != 0, "output file not exist for " + circle_model_ref
 
     # Execute luci interpreter with reference input
-    subprocess.run(
-        [
-            eval_driver, circle_model_ref,
-            str(num_inputs), circle_model_ref + ".input", circle_model + ".output"
-        ],
-        check=True)
+    subprocess.run([
+        eval_driver, circle_model_ref,
+        str(num_inputs), circle_model_ref + ".input", circle_model + ".output"
+    ],
+                   check=True)
 
     # Compare the results.
     for idx in range(num_outputs):
@@ -96,28 +95,33 @@ def luci_eval_verify_ref(test_name,
 
         err_msg = "Execution result of " + circle_model_ref + " does not match with " + circle_model
         if output_dtype == np.uint8:
-            assert np.allclose(
-                luci_output_data, luci_output_data_ref, rtol=rtolint,
-                atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               luci_output_data_ref,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
         elif output_dtype == np.float32:
-            assert np.allclose(
-                luci_output_data, luci_output_data_ref, rtol=rtolf32,
-                atol=atolf32), err_msg
+            assert np.allclose(luci_output_data,
+                               luci_output_data_ref,
+                               rtol=rtolf32,
+                               atol=atolf32), err_msg
         elif output_dtype == np.int64:
-            assert np.allclose(
-                luci_output_data, luci_output_data_ref, rtol=rtolint,
-                atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               luci_output_data_ref,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
         elif output_dtype == np.int32:
-            assert np.allclose(
-                luci_output_data, luci_output_data_ref, rtol=rtolint,
-                atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               luci_output_data_ref,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
         elif output_dtype == np.int16:
-            assert np.allclose(
-                luci_output_data, luci_output_data_ref, rtol=rtolint,
-                atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               luci_output_data_ref,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
         elif output_dtype == np.bool_:
-            assert np.allclose(
-                luci_output_data, luci_output_data_ref, rtol=0, atol=0), err_msg
+            assert np.allclose(luci_output_data, luci_output_data_ref, rtol=0,
+                               atol=0), err_msg
         else:
             assert False, "Unsupported data type: " + output_dtype
 

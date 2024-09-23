@@ -25,25 +25,18 @@ namespace fme_apply
 {
 
 /**
- * @brief Pass to fuse CircleCustom(PostScale) to preceding Ops
+ * @brief Pass to fuse CircleCustom(PostScale) to succeeding Ops
  *
  * BEFORE
  *
- *             [Node1]
- *               |
- *              [Op]
- *             /    \
- *    [PostScale]    [Node2]
+ *         [Node]
+ *           |
+ *       [PostScale]
  *
  * AFTER
  *
- *       [Node1]
- *        /  \
- *    [Op']   [Op]
- *              |
- *            [Node2]
+ *        [Node'] (Weights are updated)
  *
- * NOTE Op' is clone of Op with updated weights/bias.
  */
 class FusePostScalePass : public logo::Pass
 {

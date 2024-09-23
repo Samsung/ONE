@@ -33,4 +33,6 @@ target_compile_definitions(arm_compute_ex PRIVATE EMBEDDED_KERNELS
 add_library(ignore_unused_warning INTERFACE)
 target_compile_options(ignore_unused_warning INTERFACE -Wno-unused-parameter -Wno-unused-function)
 target_link_libraries(arm_compute_ex PRIVATE $<$<NOT:$<CONFIG:Debug>>:ignore_unused_warning>)
-install(TARGETS arm_compute_ex DESTINATION lib)
+# Install arm_compute_ex with acl backend
+install(TARGETS arm_compute_ex DESTINATION lib/nnfw/backend)
+set_target_properties(arm_compute_ex PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/..:$ORIGIN/../..")

@@ -25,7 +25,6 @@ class BackendProfiler():
 
     TODO : Support Android device profiling
     """
-
     def __init__(self, user, ip, nnpackage_dir, num_threads):
         self.remote_ssh = RemoteSSH(user, ip, nnpackage_dir, num_threads)
         self.backend_op_list = OpListParser().parse()

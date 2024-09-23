@@ -27,7 +27,7 @@ function(_FlatBuffers_import)
     list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/util.cpp")
 
     if(NOT TARGET flatbuffers::flatbuffers-23.5.26)
-      add_library(flatbuffers-23.5.26 ${FlatBuffers_Library_SRCS})
+      add_library(flatbuffers-23.5.26 STATIC ${FlatBuffers_Library_SRCS})
       target_include_directories(flatbuffers-23.5.26 PUBLIC "${FlatBuffersSource_DIR}/include")
       set_property(TARGET flatbuffers-23.5.26 PROPERTY POSITION_INDEPENDENT_CODE ON)
       target_compile_options(flatbuffers-23.5.26 PUBLIC $<$<CONFIG:Debug>:-Wno-sign-compare>)

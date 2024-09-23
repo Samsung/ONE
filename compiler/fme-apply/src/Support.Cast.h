@@ -23,21 +23,9 @@
 namespace fme_apply
 {
 
-// Cast loco::Node* to CircleCustom(PreScale)*
+// Cast loco::Node* to CircleCustom(scale)*
 // Return nullptr if impossible
-luci::CircleCustom *to_pre_scale(loco::Node *node);
-
-// Cast loco::Node* to CircleCustom(PostScale)*
-// Return nullptr if impossible
-luci::CircleCustom *to_post_scale(loco::Node *node);
-
-// Cast loco::Node* to CircleCustom(PreShift)*
-// Return nullptr if impossible
-luci::CircleCustom *to_pre_shift(loco::Node *node);
-
-// Cast loco::Node* to CircleCustom(PostShift)*
-// Return nullptr if impossible
-luci::CircleCustom *to_post_shift(loco::Node *node);
+luci::CircleCustom *to_scale(loco::Node *node);
 
 } // namespace fme_apply
 

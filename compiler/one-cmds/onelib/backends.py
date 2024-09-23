@@ -28,6 +28,7 @@ one
 ├── include
 ├── lib
 ├── optimization
+├── target
 └── test
 
 The list where `one-XXXX` finds its backends
@@ -36,6 +37,21 @@ The list where `one-XXXX` finds its backends
 
 NOTE If there are backends of the same name in different places,
     the closer to the top in the list, the higher the priority.
+
+[About TARGET and BACKEND]
+  "Target" refers to an instance from the core of the system and
+  "Backend" refers to an architecture. Say there is a NPU that has
+  multiple cores. Its cores may have different global buffer 
+  size, DSPM size and clock rate, etc, which are described in 
+  each configuration file of "Target". Even though they
+  are different target, they may follow same architecture, which means
+  they have same "Backend".
+
+[Path for TARGET configuration]
+  - /usr/share/one/target/${TARGET}.ini
+
+[Path for BACKEND tools]
+  - /usr/share/one/backends/${BACKEND}
 """
 
 
@@ -62,11 +78,11 @@ def get_list(cmdname):
     return backends_list
 
 
-def get_backend_from_target_conf(target: str):
+def get_value_from_target_conf(target: str, key: str):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     target_conf_path = dir_path + f'/../../target/{target}.ini'
     if not os.path.isfile(target_conf_path):
-        return None
+        raise FileNotFoundError(f"Not found given target configuration: {target}")
 
     # target config doesn't have section.
     # but, configparser needs configs to have one or more sections.
@@ -77,11 +93,16 @@ def get_backend_from_target_conf(target: str):
     parser.read_string(config_str)
     assert parser.has_section(DUMMY_SECTION)
 
-    BACKEND_KEY = 'BACKEND'
-    if BACKEND_KEY in parser[DUMMY_SECTION]:
-        return parser[DUMMY_SECTION][BACKEND_KEY]
+    # Check if target file is valid
+    TARGET_KEY = 'TARGET'
+    assert TARGET_KEY in parser[DUMMY_SECTION]
+    if target != parser[DUMMY_SECTION][TARGET_KEY]:
+        raise RuntimeError("Invalid target file.")
 
-    return None
+    if key in parser[DUMMY_SECTION]:
+        return parser[DUMMY_SECTION][key]
+
+    raise RuntimeError(f"Not found '{key}' key in target configuration.")
 
 
 def search_driver(driver):
@@ -93,8 +114,8 @@ def search_driver(driver):
         return driver_path
 
     # CASE 2: one/backends/**/bin/{driver} is found
-    for driver_path in glob.glob(
-            dir_path + '/../../backends/**/bin/' + driver, recursive=True):
+    for driver_path in glob.glob(dir_path + '/../../backends/**/bin/' + driver,
+                                 recursive=True):
         if os.path.isfile(driver_path) and os.access(driver_path, os.X_OK):
             return driver_path
 

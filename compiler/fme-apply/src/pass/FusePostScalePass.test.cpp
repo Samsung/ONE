@@ -83,7 +83,7 @@ public:
     _postscale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _postscale->shape({1, 4, 4, 3});
-    _postscale->custom_code("PostScale");
+    _postscale->custom_code("scale");
     _postscale->name("postscale");
   }
 
@@ -140,7 +140,7 @@ public:
     _postscale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _postscale->shape({1, 4, 4, 3});
-    _postscale->custom_code("PostScale");
+    _postscale->custom_code("scale");
     _postscale->name("postscale");
   }
 
@@ -196,7 +196,7 @@ public:
     _postscale->inputs(
       1, create_const_node(g, loco::DataType::FLOAT32, {3} /* shape */, {2, 2, 2} /* value */));
     _postscale->shape({1, 4, 4, 3});
-    _postscale->custom_code("PostScale");
+    _postscale->custom_code("scale");
     _postscale->name("postscale");
   }
 

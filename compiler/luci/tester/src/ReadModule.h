@@ -17,7 +17,8 @@
 #ifndef __LUCI_TESTER_READ_MODULE_H__
 #define __LUCI_TESTER_READ_MODULE_H__
 
-#include <luci/Importer.h>
+#include "luci/IR/Module.h"
+
 #include <foder/FileLoader.h>
 
 #include <memory>

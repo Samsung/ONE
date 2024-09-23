@@ -120,8 +120,8 @@ class ArgumentParser():
 
     def __init__(self):
         # List[args, action type, data type, option type]
-        self._actions: List[Tuple[Tuple[str], Action, Union[Type[str], Type[
-            bool]]]] = list()
+        self._actions: List[Tuple[Tuple[str], Action, Union[Type[str],
+                                                            Type[bool]]]] = list()
         self.driver: str = None
         self.target: str = None
 
@@ -139,7 +139,46 @@ class ArgumentParser():
 
         oneutils.run([driver_path, '-h'], err_prefix=self.driver)
 
+    def get_option_names(self, *, flatten=False, without_dash=False):
+        """
+        Get registered option names.
+
+        :param flatten: single option can have multiple names. 
+          If it is True, such options are returned after flattened.
+        :param without_dash: optional argument has leading dash on its names. 
+          If it is True, option names are returned without such dashes.
+
+        For example, say there are options like these.
+
+          parser.add_argument("--verbose", action=NormalOption, dtype=bool)
+          parser.add_argument("--output", "--output_path", action=NormalOption)
+        
+        [EXAMPLES]
+          get_option_names()
+            [[--verbose], [--output, --output_path]]
+          get_option_names(without_dash=True)
+            [[verbose], [output, output_path]]
+          get_option_names(flatten=True)
+            [--verbose, --output, --output_path]
+          get_option_names(flatten=True, without_dash=True)
+            [verbose, output, output_path]
+        """
+        names = []
+        for action in self._actions:
+            names.append(action[0])
+
+        if flatten:
+            names = [name for name_l in names for name in name_l]
+        if without_dash:
+            names = [name.lstrip('-') for name in names]
+
+        return names
+
     def check_if_valid_option_name(self, *args, **kwargs):
+        existing_options = self.get_option_names(flatten=True, without_dash=True)
+        args_without_dash = [arg.lstrip('-') for arg in args]
+        if any(arg in existing_options for arg in args_without_dash):
+            raise RuntimeError('Duplicate option names')
         if not 'action' in kwargs:
             raise RuntimeError('"action" keyword argument is required')
 

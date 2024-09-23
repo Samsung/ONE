@@ -21,10 +21,9 @@
 #define __NNFW_RT_NEURAL_NETWORKS_WRAPPER_H__
 
 // Fix for onert:
-//  NeuralNetworks.h => NeuralNetworksShim.h
-//  Additional include NeuralNetworksExShim.h
-#include "NeuralNetworksShim.h"
-#include "NeuralNetworksExShim.h"
+//  Additional include NeuralNetworksEx.h
+#include "NeuralNetworks.h"
+#include "NeuralNetworksEx.h"
 
 #include <math.h>
 #include <optional>

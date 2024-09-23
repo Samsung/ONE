@@ -23,6 +23,10 @@ namespace fme_apply
 {
 
 void copy_shape(luci::CircleNode *from, luci::CircleNode *to);
+loco::Node *get_input(luci::CircleNode *node);
+void set_input(luci::CircleNode *node, luci::CircleCustom *scale);
+luci::CircleNode *find_arg_with_name(const luci::CircleNode *node, const std::string &name,
+                                     const uint32_t &depth = 1);
 
 } // namespace fme_apply
 

@@ -27,7 +27,6 @@ class BackendScheduler:
 
     TODO : Use permutation time for better scheduling
     """
-
     def __init__(self, nnpkg_dir, num_threads):
         self.nnpkg_dir = Path(nnpkg_dir).resolve()
         self.num_threads = num_threads
@@ -146,8 +145,7 @@ class BackendScheduler:
                 for op in op_list:
                     cmd += [f"OP_BACKEND_{op}={default_backend}"]
         cmd += [f"BACKENDS={';'.join(backend_list)}"]
-        cmd += [f"RUY_THREADS={self.num_threads}"]
-        cmd += [f"XNNPACK_THREADS={self.num_threads}"]
+        cmd += [f"NUM_THREADS={self.num_threads}"]
         logging.info(' '.join(cmd))
 
         # Create nnpackage with backend mapping

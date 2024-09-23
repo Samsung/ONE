@@ -156,6 +156,41 @@ void onert_micro::execute::readQuantParams(const circle::Tensor *tensor, long &z
   scale = tensor->quantization()->scale()->operator[](0);
 }
 
+OMStatus onert_micro::execute::SISOHeader(const OMExecuteArgs &execute_args,
+                                          const circle::Tensor **input,
+                                          const circle::Tensor **output, uint8_t **input_data,
+                                          uint8_t **output_data)
+{
+  OMStatus status;
+
+  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
+  uint16_t op_index = execute_args.kernel_index;
+
+  {
+    OMRuntimeKernel runtime_kernel;
+    runtime_kernel.readKernel(op_index, runtime_context);
+
+    *input = runtime_kernel.inputs[0];
+    *output = runtime_kernel.outputs[0];
+
+    assert(*input != nullptr);
+    assert(*output != nullptr);
+
+    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+    if (status != Ok)
+      return status;
+
+    *input_data = runtime_kernel.inputs_data[0];
+    *output_data = runtime_kernel.outputs_data[0];
+  }
+
+  assert(*input_data != nullptr);
+  assert(*output_data != nullptr);
+
+  return status;
+}
+
 void onert_micro::execute::calculateQuantParams(core::ArithmeticQuantParams &params,
                                                 const circle::Tensor *input1,
                                                 const circle::Tensor *input2,
@@ -200,4 +235,33 @@ void onert_micro::execute::calculateQuantParams(core::ArithmeticQuantParams &par
   calculateActivationRangeQuantized(act, output_zp, output_scale, output->type(),
                                     &params.quantized_activation_min,
                                     &params.quantized_activation_max);
+}
+
+OMStatus onert_micro::execute::TISOHeader(const OMExecuteArgs &execute_args,
+                                          const circle::Tensor **input1,
+                                          const circle::Tensor **input2,
+                                          const circle::Tensor **output,
+                                          OMRuntimeKernel *runtime_kernel)
+{
+  OMStatus status;
+
+  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
+  uint16_t op_index = execute_args.kernel_index;
+
+  status = runtime_kernel->readKernel(op_index, runtime_context);
+
+  *input1 = runtime_kernel->inputs[0];
+  *input2 = runtime_kernel->inputs[1];
+  *output = runtime_kernel->outputs[0];
+
+  assert(*input1 != nullptr);
+  assert(*input2 != nullptr);
+  assert(*output != nullptr);
+
+  status = runtime_kernel->getDataFromStorage(op_index, runtime_storage, runtime_context);
+  if (status != Ok)
+    return status;
+
+  return status;
 }

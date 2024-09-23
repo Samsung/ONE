@@ -64,19 +64,6 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 }
 } // namespace
 
-void NEFullyConnectedHybridLayerReshapeWeights::configure(const ITensor *input, ITensor *output)
-{
-  auto k = std::make_unique<NETransposeKernel>();
-  k->configure(input, output);
-  _kernel = std::move(k);
-}
-
-Status NEFullyConnectedHybridLayerReshapeWeights::validate(const ITensorInfo *input,
-                                                           const ITensorInfo *output)
-{
-  return NETransposeKernel::validate(input, output);
-}
-
 NEFullyConnectedHybridLayer::NEFullyConnectedHybridLayer(
   std::shared_ptr<IMemoryManager> memory_manager)
   : _memory_group(std::move(memory_manager)), _reshape_weights_function(), _quant_input_kernel(),
@@ -108,6 +95,7 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
 
   _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
   _accumulate_biases = false;
+  _is_prepared = fc_info.retain_internal_weights;
   _original_weights = weights;
 
   // Configure accumulate biases kernel for non quantized asymmetric types
@@ -129,7 +117,7 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
 
   // Check if we have a fully connected layer with batches
   const bool is_batched_fc_layer = output->info()->dimension(1) > 1;
-  bool _is_fc_after_conv;
+  bool _is_fc_after_conv = false;
   if (is_batched_fc_layer)
   {
     _is_fc_after_conv =
@@ -143,7 +131,7 @@ void NEFullyConnectedHybridLayer::configure(const ITensor *input, const ITensor 
   }
   ARM_COMPUTE_ERROR_ON_MSG(_is_fc_after_conv,
                            "NEFullyConnectedHybridLayer does not support after conv");
-  (void)_is_fc_after_conv;
+  ARM_COMPUTE_UNUSED(_is_fc_after_conv);
 
   // Reshape weights if needed
   if (!_are_weights_reshaped)
@@ -216,8 +204,7 @@ Status NEFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   if (!weights_reshaped)
   {
     // Validate reshape weights kernel
-    ARM_COMPUTE_RETURN_ON_ERROR(
-      NEFullyConnectedHybridLayerReshapeWeights::validate(weights_to_use, &reshaped_weights));
+    ARM_COMPUTE_RETURN_ON_ERROR(NETranspose::validate(weights_to_use, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 

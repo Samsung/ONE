@@ -244,16 +244,20 @@ def main():
     # Option
     use = "Usage: %prog [options] filename"
     parser = argparse.ArgumentParser(usage=use)
-    parser.add_argument(
-        "-i", "--input_dir", dest="input_dir", default=".", help="dir to have csv files")
-    parser.add_argument(
-        "-o",
-        "--output_dir",
-        dest="output_dir",
-        default=".",
-        help="dir to be moved csv files into")
-    parser.add_argument(
-        "-l", "--model_list", dest="model_list", help="file to have model list")
+    parser.add_argument("-i",
+                        "--input_dir",
+                        dest="input_dir",
+                        default=".",
+                        help="dir to have csv files")
+    parser.add_argument("-o",
+                        "--output_dir",
+                        dest="output_dir",
+                        default=".",
+                        help="dir to be moved csv files into")
+    parser.add_argument("-l",
+                        "--model_list",
+                        dest="model_list",
+                        help="file to have model list")
 
     options = parser.parse_args()
 

@@ -23,6 +23,9 @@
 #include "core/OMRuntimeShape.h"
 #include "core/OMKernelData.h"
 
+#include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMRuntimeKernel.h"
+
 namespace onert_micro
 {
 namespace execute
@@ -156,6 +159,13 @@ inline void computePaddingHeightWidth(int32_t stride_height, int32_t stride_widt
 void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
                           const circle::Tensor *input2, const circle::Tensor *output,
                           circle::ActivationFunctionType act);
+
+OMStatus SISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input,
+                    const circle::Tensor **output, uint8_t **input_data, uint8_t **output_data);
+
+OMStatus TISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input1,
+                    const circle::Tensor **input2, const circle::Tensor **output,
+                    OMRuntimeKernel *runtime_kernel);
 
 } // namespace execute
 } // namespace onert_micro

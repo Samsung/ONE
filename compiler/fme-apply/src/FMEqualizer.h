@@ -27,7 +27,7 @@ namespace fme_apply
 class FMEqualizer final
 {
 public:
-  void equalize(loco::Graph *g, const std::vector<EqualizePattern> &p);
+  void equalize(loco::Graph *g, std::vector<EqualizePattern> &p);
 };
 
 } // namespace fme_apply

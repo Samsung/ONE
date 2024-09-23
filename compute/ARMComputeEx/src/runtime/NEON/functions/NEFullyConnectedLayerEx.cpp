@@ -56,8 +56,66 @@ using namespace arm_compute::misc::shape_calculator;
 
 namespace
 {
-Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const ITensorInfo &output)
+Status construct_gemmlowp_output_stage(const ITensorInfo &input, const ITensorInfo &weights,
+                                       const ITensorInfo &output,
+                                       GEMMLowpOutputStageInfo &gemmlowp_output_stage)
 {
+  gemmlowp_output_stage.type = GEMMLowpOutputStageType::QUANTIZE_DOWN_FIXEDPOINT;
+  gemmlowp_output_stage.gemmlowp_offset = 0;
+  gemmlowp_output_stage.gemmlowp_multiplier = 0;
+  gemmlowp_output_stage.gemmlowp_shift = 0;
+
+  // Configure output stage for quantized case
+  if (is_data_type_quantized_asymmetric(input.data_type()))
+  {
+    const UniformQuantizationInfo iq_info = input.quantization_info().uniform();
+    const UniformQuantizationInfo wq_info = weights.quantization_info().uniform();
+    const UniformQuantizationInfo oq_info = output.quantization_info().uniform();
+
+    const auto output_quant_info = (output.total_size() == 0) ? iq_info : oq_info;
+
+    const float multiplier = (iq_info.scale * wq_info.scale) / output_quant_info.scale;
+    int output_multiplier = 0;
+    int output_shift = 0;
+    ARM_COMPUTE_RETURN_ON_ERROR(quantization::calculate_quantized_multiplier_less_than_one(
+      multiplier, &output_multiplier, &output_shift));
+
+    // Set the GEMMLowp output stage info
+    gemmlowp_output_stage.gemmlowp_offset = output_quant_info.offset;
+    gemmlowp_output_stage.gemmlowp_multiplier = output_multiplier;
+    gemmlowp_output_stage.gemmlowp_shift = output_shift;
+    gemmlowp_output_stage.gemmlowp_min_bound = 0;
+    gemmlowp_output_stage.gemmlowp_max_bound = 255;
+    gemmlowp_output_stage.gemmlowp_multipliers.push_back(output_multiplier);
+    gemmlowp_output_stage.gemmlowp_shifts.push_back(output_shift);
+  }
+
+  return Status{};
+}
+
+Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const ITensorInfo *bias,
+                   const ITensorInfo &output, const FullyConnectedLayerInfo &fc_info)
+{
+  GEMMLowpOutputStageInfo gemmlowp_output_stage;
+  ARM_COMPUTE_RETURN_ON_ERROR(
+    construct_gemmlowp_output_stage(input, weights, output, gemmlowp_output_stage));
+
+  const GEMMInfo &gemm_info = GEMMInfo(false, // is_a_reshaped
+                                       false, // is_b_reshaped
+                                       true,  // reshape_b_only_on_first_run
+                                       0,     // depth_output_gemm3d
+                                       false, // reinterpret_input_as_3d
+                                       fc_info.retain_internal_weights, // retain_internal_weights
+                                       gemmlowp_output_stage,           // gemmlowp_output_stage
+                                       fc_info.fp_mixed_precision,      // fp_mixed_precision
+                                       false,                           // fast_math
+                                       true,                            // broadcast_bias
+                                       ActivationLayerInfo(),           // activation_info
+                                       false,                           // fixed_format
+                                       WeightFormat::OHWI,              // weight_format
+                                       false,                           // pretranspose_B
+                                       bias != nullptr);                // acccumulate
+
   if (is_data_type_quantized_asymmetric(input.data_type()))
   {
     // Since we need negative offsets for computing convolution, we need to change
@@ -71,13 +129,13 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
     // Validate gemmlowp function
     ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMLowpMatrixMultiplyCore::validate(
       &input.clone()->set_quantization_info(input_quantization_info),
-      &weights.clone()->set_quantization_info(weights_quantization_info), nullptr, &output));
+      &weights.clone()->set_quantization_info(weights_quantization_info), bias, &output,
+      gemm_info));
   }
   else
   {
     ARM_COMPUTE_RETURN_ON_ERROR(
-      NEGEMM::validate(&input, &weights, nullptr, &output, 1.f, 0.0f,
-                       GEMMInfo(false, false, false /* Reshape weights only for the first run */)));
+      NEGEMM::validate(&input, &weights, bias, &output, 1.f, 0.0f, gemm_info));
   }
 
   return Status{};
@@ -85,18 +143,38 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 } // namespace
 
 NEFullyConnectedLayerEx::NEFullyConnectedLayerEx(std::shared_ptr<IMemoryManager> memory_manager)
-  : _memory_group(std::move(memory_manager)), _flatten_kernel(), _convert_weights(),
-    _reshape_weights_function(), _mm_gemm(), _mm_gemmlowp(), _gemmlowp_output_stage(),
-    _accumulate_biases_kernel(), _flatten_output(), _gemmlowp_output(), _converted_weights_output(),
-    _reshape_weights_output(), _original_weights(nullptr), _are_weights_converted(true),
-    _are_weights_reshaped(false), _is_fc_after_conv(false), _accumulate_biases(false),
-    _is_quantized(false), _is_prepared(false)
+  : _memory_group(std::move(memory_manager)), _convert_weights(), _flatten_kernel(),
+    _reshape_weights_function(), _mm_gemm(), _mm_gemmlowp(), _flatten_output(),
+    _converted_weights_output(), _reshape_weights_output(), _are_weights_converted(true),
+    _are_weights_reshaped(false), _is_fc_after_conv(false), _is_quantized(false),
+    _is_prepared(false), _original_weights(nullptr)
 {
 }
 
 void NEFullyConnectedLayerEx::configure_mm(const ITensor *input, const ITensor *weights,
-                                           ITensor *output)
+                                           const ITensor *bias, ITensor *output,
+                                           const FullyConnectedLayerInfo &fc_info)
 {
+  GEMMLowpOutputStageInfo gemmlowp_output_stage;
+  construct_gemmlowp_output_stage(*input->info(), *weights->info(), *output->info(),
+                                  gemmlowp_output_stage);
+
+  const GEMMInfo &gemm_info = GEMMInfo(false, // is_a_reshaped
+                                       false, // is_b_reshaped
+                                       true,  // reshape_b_only_on_first_run
+                                       0,     // depth_output_gemm3d
+                                       false, // reinterpret_input_as_3d
+                                       fc_info.retain_internal_weights, // retain_internal_weights
+                                       gemmlowp_output_stage,           // gemmlowp_output_stage
+                                       fc_info.fp_mixed_precision,      // fp_mixed_precision
+                                       false,                           // fast_math
+                                       true,                            // broadcast_bias
+                                       ActivationLayerInfo(),           // activation_info
+                                       false,                           // fixed_format
+                                       WeightFormat::OHWI,              // weight_format
+                                       false,                           // pretranspose_B
+                                       bias != nullptr);                // acccumulate
+
   if (_is_quantized)
   {
     // Since we need negative offsets for computing convolution, we need to change
@@ -111,7 +189,7 @@ void NEFullyConnectedLayerEx::configure_mm(const ITensor *input, const ITensor *
       weights_quantization_info.uniform().scale, -weights_quantization_info.uniform().offset));
 
     // Configure gemmlowp function
-    _mm_gemmlowp.configure(input, weights, nullptr, output);
+    _mm_gemmlowp.configure(input, weights, bias, output, gemm_info);
 
     // Revert back QuantizatioInfo as input and weights could be used in other fully connected
     // layers
@@ -121,13 +199,13 @@ void NEFullyConnectedLayerEx::configure_mm(const ITensor *input, const ITensor *
   else
   {
     // Configure matrix multiply kernel
-    _mm_gemm.configure(input, weights, nullptr, output, 1.f, 0.0f,
-                       GEMMInfo(false, false, false /* Reshape weights only for the first run */));
+    _mm_gemm.configure(input, weights, bias, output, 1.f, 1.0f, gemm_info);
   }
 }
 
 void NEFullyConnectedLayerEx::configure_conv_fc(const ITensor *input, const ITensor *weights,
-                                                ITensor *output)
+                                                const ITensor *bias, ITensor *output,
+                                                const FullyConnectedLayerInfo &fc_info)
 {
   ARM_COMPUTE_ERROR_ON(
     (weights->info()->dimension(1) !=
@@ -146,19 +224,20 @@ void NEFullyConnectedLayerEx::configure_conv_fc(const ITensor *input, const ITen
   _flatten_kernel.configure(input, &_flatten_output);
 
   // Configure matrix multiply kernel
-  configure_mm(&_flatten_output, weights, output);
+  configure_mm(&_flatten_output, weights, bias, output, fc_info);
 
   // Allocate the output tensor for flatten once all the configure methods have been called
   _flatten_output.allocator()->allocate();
 }
 
 void NEFullyConnectedLayerEx::configure_fc_fc(const ITensor *input, const ITensor *weights,
-                                              ITensor *output)
+                                              const ITensor *bias, ITensor *output,
+                                              const FullyConnectedLayerInfo &fc_info)
 {
   ARM_COMPUTE_ERROR_ON(input->info()->dimension(0) != weights->info()->dimension(1));
 
   // Configure matrix multiply kernel
-  configure_mm(input, weights, output);
+  configure_mm(input, weights, bias, output, fc_info);
 }
 
 void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *weights,
@@ -174,25 +253,8 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
   _are_weights_converted = true;
   _are_weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
   _is_fc_after_conv = true;
-  _accumulate_biases = false;
   _is_quantized = is_data_type_quantized_asymmetric(input->info()->data_type());
   _original_weights = weights;
-
-  // Configure gemmlowp output
-  if (_is_quantized)
-  {
-    _gemmlowp_output.allocator()->init(
-      output->info()->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
-  }
-
-  // Configure accumulate biases kernel for non quantized asymmetric types
-  if (biases != nullptr && !_is_quantized)
-  {
-    _accumulate_biases = true;
-
-    // Configure accumulate biases kernel
-    _accumulate_biases_kernel.configure(output, biases);
-  }
 
   // With the Fully Connected layer we can have 4 different cases:
   //  1) Convolution layer -> Fully Connected layer without batches
@@ -235,32 +297,15 @@ void NEFullyConnectedLayerEx::configure(const ITensor *input, const ITensor *wei
     _are_weights_converted = false;
   }
 
-  ITensor *tmp_output = (_is_quantized) ? &_gemmlowp_output : output;
   if (_is_fc_after_conv)
   {
     // Fully Connected layer after a Convolution Layer without batches
-    configure_conv_fc(input, weights_to_use, tmp_output);
+    configure_conv_fc(input, weights_to_use, biases, output, fc_info);
   }
   else
   {
     // Fully Connected layer after a Fully Connected Layer without batches
-    configure_fc_fc(input, weights_to_use, tmp_output);
-  }
-
-  // Configure output stage for asymmetric quantized types
-  if (_is_quantized)
-  {
-    float multiplier = input->info()->quantization_info().uniform().scale *
-                       weights->info()->quantization_info().uniform().scale /
-                       output->info()->quantization_info().uniform().scale;
-    int output_multiplier;
-    int output_shift;
-    quantization::calculate_quantized_multiplier_less_than_one(multiplier, &output_multiplier,
-                                                               &output_shift);
-    _gemmlowp_output_stage.configure(&_gemmlowp_output, biases, output, output_multiplier,
-                                     output_shift,
-                                     output->info()->quantization_info().uniform().offset);
-    _gemmlowp_output.allocator()->allocate();
+    configure_fc_fc(input, weights_to_use, biases, output, fc_info);
   }
 
   _are_weights_reshaped = _are_weights_reshaped || fc_info.retain_internal_weights;
@@ -279,7 +324,6 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
 
   bool weights_reshaped = fc_info.transpose_weights ? fc_info.are_weights_reshaped : true;
   bool is_fc_after_conv = true;
-  bool is_quantized = is_data_type_quantized_asymmetric(input->data_type());
 
   const ITensorInfo &flatten_input =
     TensorInfo(input->clone()->set_is_resizable(true).reset_padding().set_tensor_shape(
@@ -290,15 +334,6 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   const ITensorInfo &converted_weights =
     weights_reshaped ? TensorInfo(weights->clone()->set_is_resizable(true).reset_padding())
                      : TensorInfo(*reshaped_weights.clone());
-  const ITensorInfo &gemmlowp_output = TensorInfo(
-    output->clone()->set_is_resizable(true).reset_padding().set_data_type(DataType::S32));
-
-  // Configure accumulate biases kernel for non quantized asymmetric types
-  if (biases != nullptr && !is_quantized)
-  {
-    ARM_COMPUTE_RETURN_ERROR_ON_MISMATCHING_DATA_TYPES(input, biases);
-    ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMMatrixAccumulateBiasesKernel::validate(output, biases));
-  }
 
   // With the Fully Connected layer we can have 4 different cases:
   //  1) Convolution layer -> Fully Connected layer without batches
@@ -308,7 +343,6 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
 
   const ITensorInfo *input_to_use = input;
   const ITensorInfo *weights_to_use = weights;
-  const ITensorInfo *tmp_output = (is_quantized) ? &gemmlowp_output : output;
 
   // Check if we have a fully connected layer with batches
   const bool is_batched_fc_layer = output->dimension(1) > 1;
@@ -327,8 +361,7 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
   if (!weights_reshaped)
   {
     // Validate reshape weights kernel
-    ARM_COMPUTE_RETURN_ON_ERROR(
-      NEFullyConnectedLayerReshapeWeights::validate(weights, &reshaped_weights));
+    ARM_COMPUTE_RETURN_ON_ERROR(NETranspose::validate(weights, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 
@@ -357,14 +390,8 @@ Status NEFullyConnectedLayerEx::validate(const ITensorInfo *input, const ITensor
     ARM_COMPUTE_RETURN_ERROR_ON(input->dimension(0) != weights_to_use->dimension(1));
   }
   // Validate matrix multiply kernel
-  ARM_COMPUTE_RETURN_ON_ERROR(validate_mm(*input_to_use, *weights_to_use, *tmp_output));
-
-  // Validate output stage for asymmetric quantized types
-  if (is_quantized)
-  {
-    ARM_COMPUTE_RETURN_ON_ERROR(NEGEMMLowpQuantizeDownInt32ToUint8ScaleByFixedPoint::validate(
-      &gemmlowp_output, biases, output));
-  }
+  ARM_COMPUTE_RETURN_ON_ERROR(
+    validate_mm(*input_to_use, *weights_to_use, biases, *output, fc_info));
 
   return Status{};
 }
@@ -374,13 +401,9 @@ void NEFullyConnectedLayerEx::run()
   if (!_is_prepared)
   {
     if (!_are_weights_reshaped)
-    {
       _reshape_weights_output.allocator()->allocate();
-    }
     if (!_are_weights_converted)
-    {
       _converted_weights_output.allocator()->allocate();
-    }
     _is_prepared = true;
   }
 
@@ -423,75 +446,10 @@ void NEFullyConnectedLayerEx::run()
   {
     _mm_gemm.run();
   }
-
-  // Accumulate biases if provided
-  if (_is_quantized)
-  {
-    _gemmlowp_output_stage.run();
-  }
-  else
-  {
-    if (_accumulate_biases)
-    {
-      NEScheduler::get().schedule(&_accumulate_biases_kernel, Window::DimY);
-    }
-  }
 }
 
 void NEFullyConnectedLayerEx::prepare()
 {
-#if 0 // TODO Remove this block
-  if (!_is_prepared)
-  {
-    ARM_COMPUTE_ERROR_ON(!_original_weights->is_used());
-
-    auto release_unused = [](Tensor *w) {
-      if (!w->is_used())
-      {
-        w->allocator()->free();
-      }
-    };
-
-    // Pointer to current weights
-    const ITensor *cur_weights = _original_weights;
-
-    // Reshape of the weights (happens only once)
-    if (!_are_weights_reshaped)
-    {
-      // Run reshape weights kernel and mark weights as unused
-      _reshape_weights_output.allocator()->allocate();
-      _reshape_weights_function.run();
-
-      cur_weights->mark_as_unused();
-      cur_weights = &_reshape_weights_output;
-      _are_weights_reshaped = true;
-    }
-
-    // Convert weights if needed (happens only once)
-    if (!_are_weights_converted)
-    {
-      _converted_weights_output.allocator()->allocate();
-      _convert_weights.run();
-
-      cur_weights->mark_as_unused();
-      _are_weights_converted = true;
-    }
-
-    // Release reshaped weights if unused
-    release_unused(&_reshape_weights_output);
-
-    // Prepare GEMM prepare and release unused weights
-    if (!_is_quantized)
-    {
-      _mm_gemm.prepare();
-    }
-
-    // Release converted weights if unused
-    release_unused(&_reshape_weights_output);
-    release_unused(&_converted_weights_output);
-
-    _is_prepared = true;
-  }
-#endif
+  // DO NOTHING
 }
 } // namespace arm_compute

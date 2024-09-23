@@ -43,8 +43,7 @@
 #include "arm_compute/runtime/CL/CLTensor.h"
 #include "arm_compute/runtime/IFunction.h"
 #include "arm_compute/core/CL/kernels/CLPadLayerKernelEx.h"
-#include "src/core/gpu/cl/kernels/ClCopyKernel.h"
-// #include "arm_compute/runtime/CL/functions/CLCopy.h"
+#include "arm_compute/runtime/CL/functions/CLCopy.h"
 #include <memory>
 
 namespace arm_compute
@@ -123,7 +122,7 @@ private:
   void configure_reflect_mode(ICLTensor *input, ICLTensor *output);
 
   std::unique_ptr<CLPadLayerKernelEx> _pad_kernel;
-  std::unique_ptr<opencl::kernels::ClCopyKernel> _copy_kernel;
+  std::unique_ptr<CLCopy> _copy_kernel;
   bool _perform_pad;
 };
 } // namespace arm_compute
