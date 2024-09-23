@@ -363,6 +363,21 @@ void OperationValidator::visit(const operation::Fill &node)
                           {DataType::FLOAT32, DataType::INT32, DataType::INT64, DataType::BOOL8}));
 }
 
+void OperationValidator::visit(const operation::Gather &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Gather::INPUT)};
+  const auto indices_index{node.getInputs().at(operation::Gather::INDICES)};
+
+  const auto input_type = operandType(input_index);
+  if (input_type == DataType::QUANT_GGML_Q4_0 || input_type == DataType::QUANT_GGML_Q8_0)
+    OP_REQUIRES(isValidType(output_index, {DataType::FLOAT32}));
+  else
+    OP_REQUIRES(isSameType(output_index, input_index));
+
+  OP_REQUIRES(isValidType(indices_index, {DataType::INT32, DataType::INT64}));
+}
+
 void OperationValidator::visit(const operation::HashtableLookup &node)
 {
   const auto hits_index{node.getOutputs().at(operation::HashtableLookup::Output::HITS)};
