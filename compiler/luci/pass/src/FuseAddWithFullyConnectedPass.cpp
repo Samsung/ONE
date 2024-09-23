@@ -31,7 +31,7 @@ namespace
   if (not(cond))                  \
     return false;
 
-inline bool common_pass_checks(const loco::DataType dtype, luci::CircleAdd **add,
+bool fc_with_add_pattern_check(const loco::DataType dtype, luci::CircleAdd **add,
                                luci::CircleFullyConnected **fc, luci::CircleConst **addition,
                                luci::CircleConst **weights, luci::CircleNode **bias)
 {
@@ -94,7 +94,7 @@ bool fuse_add_with_fc(luci::CircleAdd *add)
   luci::CircleNode *bias = nullptr;
 
   RETURN_FALSE_UNLESS(
-    common_pass_checks(loco::DataType::FLOAT32, &add, &fc, &addition, &weights, &bias));
+    fc_with_add_pattern_check(loco::DataType::FLOAT32, &add, &fc, &addition, &weights, &bias));
 
   auto fused_bias = luci::clone(addition);
 
@@ -151,7 +151,7 @@ bool fuse_add_with_s16_fc(luci::CircleAdd *add)
   luci::CircleNode *bias = nullptr;
 
   RETURN_FALSE_UNLESS(
-    common_pass_checks(loco::DataType::S16, &add, &fc, &addition, &weights, &bias));
+    fc_with_add_pattern_check(loco::DataType::S16, &add, &fc, &addition, &weights, &bias));
 
   // If bias is const, its dtype must be s64
   RETURN_FALSE_UNLESS(bias->opcode() == luci::CircleOpcode::CIRCLECONST and
