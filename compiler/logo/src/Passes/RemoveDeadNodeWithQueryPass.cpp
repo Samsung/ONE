@@ -43,15 +43,17 @@ bool RemoveDeadNodeWithQueryPass::run(loco::Graph *g)
   }
 
   // Find the nodes that should not be dead node in candidates
-  for (auto node : candidates)
+  for (auto it = candidates.begin(); it != candidates.end();)
   {
-    if (auto service = node->dialect()->service<DeadNodeQueryService>())
+    if (auto service = (*it)->dialect()->service<DeadNodeQueryService>())
     {
-      if (!service->isDeadNode(node))
+      if (!service->isDeadNode(*it))
       {
-        candidates.erase(node);
+        it = candidates.erase(it);
+        continue;
       }
     }
+    ++it;
   }
 
   for (auto node : candidates)
