@@ -65,19 +65,6 @@ Status validate_mm(const ITensorInfo &input, const ITensorInfo &weights, const I
 }
 } // namespace
 
-void CLFullyConnectedHybridLayerReshapeWeights::configure(const ICLTensor *input, ICLTensor *output)
-{
-  auto k = std::make_unique<CLTransposeKernel>();
-  k->configure(input, output);
-  _kernel = std::move(k);
-}
-
-Status CLFullyConnectedHybridLayerReshapeWeights::validate(const ITensorInfo *input,
-                                                           const ITensorInfo *output)
-{
-  return CLTransposeKernel::validate(input, output);
-}
-
 CLFullyConnectedHybridLayer::CLFullyConnectedHybridLayer(
   std::shared_ptr<IMemoryManager> memory_manager)
   : _memory_group(memory_manager), _reshape_weights_kernel(), _quant_input_kernel(),
@@ -245,8 +232,7 @@ Status CLFullyConnectedHybridLayer::validate(const ITensorInfo *input, const ITe
   if (!weights_reshaped)
   {
     // Validate reshape weights kernel
-    ARM_COMPUTE_RETURN_ON_ERROR(
-      CLFullyConnectedHybridLayerReshapeWeights::validate(weights_to_use, &reshaped_weights));
+    ARM_COMPUTE_RETURN_ON_ERROR(CLTranspose::validate(weights_to_use, &reshaped_weights));
     weights_to_use = &reshaped_weights;
   }
 

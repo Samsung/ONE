@@ -44,6 +44,7 @@
 #include "arm_compute/core/utils/misc/ShapeCalculator.h"
 #include "arm_compute/core/utils/quantization/AsymmHelpers.h"
 #include "arm_compute/runtime/CL/CLScheduler.h"
+#include "arm_compute/core/CL/CLKernelLibrary.h"
 
 #include <cmath>
 #include <memory>

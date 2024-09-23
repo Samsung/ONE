@@ -43,8 +43,8 @@
 namespace arm_compute
 {
 CLPadLayerEx::CLPadLayerEx()
-  : _pad_kernel(std::make_unique<CLPadLayerKernelEx>()),
-    _copy_kernel(std::make_unique<opencl::kernels::ClCopyKernel>()), _perform_pad(false)
+  : _pad_kernel(std::make_unique<CLPadLayerKernelEx>()), _copy_kernel(std::make_unique<CLCopy>()),
+    _perform_pad(false)
 {
 }
 
@@ -74,7 +74,7 @@ void CLPadLayerEx::configure(const CLCompileContext &compile_context, ICLTensor 
     Window copy_window = Window();
     copy_window.use_tensor_dimensions(output->info()->tensor_shape());
     // Copy the input to the whole output if no padding is applied
-    _copy_kernel->configure(compile_context, input->info(), output->info(), &copy_window);
+    _copy_kernel->configure(compile_context, input, output, &copy_window);
   }
 }
 Status CLPadLayerEx::validate(const ITensorInfo *input, const ITensorInfo *output,
@@ -92,7 +92,7 @@ Status CLPadLayerEx::validate(const ITensorInfo *input, const ITensorInfo *outpu
   }
   else
   {
-    ARM_COMPUTE_RETURN_ON_ERROR(opencl::kernels::ClCopyKernel::validate(input, output));
+    ARM_COMPUTE_RETURN_ON_ERROR(CLCopy::validate(input, output));
   }
   return Status{};
 }
@@ -104,7 +104,7 @@ void CLPadLayerEx::run()
   }
   else
   {
-    CLScheduler::get().enqueue(*_copy_kernel);
+    _copy_kernel->run();
   }
 }
 } // namespace arm_compute

@@ -41,7 +41,9 @@ void NEFullyConnectedReshapingLayer::configure(const arm_compute::ITensor *input
   if (_needs_reshape)
   {
     // reshape
-    auto_init_if_empty(*_neon_buffer.info(), _input->info()->clone()->set_tensor_shape(reshape));
+    auto_init_if_empty(*_neon_buffer.info(),
+                       _input->info()->clone()->set_tensor_shape(reshape).set_data_layout(
+                         _input->info()->data_layout()));
     _neon_reshape.configure(_input, &_neon_buffer);
     input_to_use = &_neon_buffer;
   }
@@ -53,11 +55,10 @@ void NEFullyConnectedReshapingLayer::configure(const arm_compute::ITensor *input
       fc->configure(input_to_use, _weights, _biases, _output);
       return std::unique_ptr<arm_compute::IFunction>(fc);
     }
-    else
+    else if (kernel_type == KernelType::PREPROCESSED_WEIGHTS)
     {
-      assert(kernel_type == KernelType::PREPROCESSED_WEIGHTS);
-
-      bool is_hybrid = input->info()->data_type() == DataType::F32 &&
+      bool is_hybrid = (input->info()->data_type() == DataType::F32 ||
+                        input->info()->data_type() == DataType::F16) &&
                        (weights->info()->data_type() == DataType::QSYMM8 ||
                         weights->info()->data_type() == DataType::QASYMM8_SIGNED);
 
@@ -77,6 +78,10 @@ void NEFullyConnectedReshapingLayer::configure(const arm_compute::ITensor *input
         fc->configure(input_to_use, _weights, _biases, _output);
         return std::unique_ptr<arm_compute::IFunction>(fc);
       }
+    }
+    else
+    {
+      throw std::runtime_error("NEFullyConnectedReshapingLayer: Unsupported kernel type");
     }
   }();
 
