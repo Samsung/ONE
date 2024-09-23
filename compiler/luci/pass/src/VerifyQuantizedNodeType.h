@@ -110,6 +110,7 @@ private:
   bool visit(const luci::CircleReshape *node);
   bool visit(const luci::CircleResizeBilinear *node);
   bool visit(const luci::CircleResizeNearestNeighbor *node);
+  bool visit(const luci::CircleRmsNorm *node);
   bool visit(const luci::CircleRsqrt *node);
   bool visit(const luci::CircleSlice *node);
   bool visit(const luci::CircleSpaceToBatchND *node);
