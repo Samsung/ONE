@@ -88,6 +88,8 @@ luci::CircleConst *make_const_one(loco::Graph *graph, float value)
   auto const_one = graph->nodes()->create<luci::CircleConst>();
   const_one->dtype(loco::DataType::FLOAT32);
   const_one->rank(1);
+  const_one->dim(0) = 1;
+  const_one->shape_status(luci::ShapeStatus::VALID);
   const_one->size<loco::DataType::FLOAT32>(1);
   const_one->at<loco::DataType::FLOAT32>(0) = value;
   return const_one;
@@ -201,7 +203,6 @@ bool FuseRmsNormPass::run(loco::Graph *g)
 {
   bool changed = false;
 
-  // default gamma(scale) 1.0 and beta(offset) 0.0
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto mul = dynamic_cast<luci::CircleMul *>(node);
