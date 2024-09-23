@@ -17,6 +17,8 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_GATHERLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_GATHERLAYER_H__
 
+#include "../ExternalContext.h"
+
 #include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
@@ -33,19 +35,20 @@ namespace ops
 class GatherLayer : public ::onert::exec::IFunction
 {
 public:
-  GatherLayer() : _input{nullptr}, _indices{nullptr}, _output{nullptr}, _axis{-1}
+  GatherLayer() : _input{nullptr}, _indices{nullptr}, _output{nullptr}, _axis{-1}, _ctx{nullptr}
   {
     // DO NOTHING
   }
 
 public:
   void configure(const IPortableTensor *input, const IPortableTensor *indices,
-                 IPortableTensor *output, int32_t axis);
+                 IPortableTensor *output, int32_t axis, ExternalContext *ctx);
 
   void run() override;
 
 private:
   template <typename OpType> void runByInputType();
+  void runByGGMLQuantInputType();
 
 private:
   const IPortableTensor *_input;
@@ -53,6 +56,7 @@ private:
   IPortableTensor *_output;
 
   int32_t _axis;
+  ExternalContext *_ctx;
 };
 
 } // namespace ops
