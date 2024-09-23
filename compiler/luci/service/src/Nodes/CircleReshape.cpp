@@ -143,7 +143,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
   for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
   {
     const uint32_t dim_value = output_shape.dim(dim_index).value();
-    if (output_shape.dim(dim_index).known() == false)
+    if (not output_shape.dim(dim_index).known())
     {
       LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
       unknown_dim_index = dim_index;
