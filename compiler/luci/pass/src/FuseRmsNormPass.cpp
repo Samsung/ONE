@@ -74,8 +74,6 @@ public:
   luci::CircleAdd *_add_epsilon = nullptr;
   luci::CircleRsqrt *_rsqrt = nullptr;
   luci::CircleMul *_mul_input = nullptr;
-  luci::CircleMul *_mul_gamma = nullptr; // not used
-  luci::CircleAdd *_add_beta = nullptr;  // not used
   luci::CircleConst *_const_epsilon = nullptr;
   luci::CircleConst *_const_gamma = nullptr; // use default gamma(scale) 1.0
   luci::CircleConst *_const_beta = nullptr;  // use default beta(offset) 0.0
@@ -97,7 +95,6 @@ luci::CircleConst *make_const_one(loco::Graph *graph, float value)
 
 bool RmsNormPattern::matched()
 {
-  // Check pattern
   CHECK_OR_FALSE(luci::fill(&_ifm, &_rsqrt).with_commutative_args_of(_mul_input));
   _add_epsilon = dynamic_cast<luci::CircleAdd *>(_rsqrt->x());
   CHECK_OR_FALSE(_add_epsilon);
@@ -108,12 +105,13 @@ bool RmsNormPattern::matched()
   CHECK_OR_FALSE(_mul_pow->x() == _ifm);
   CHECK_OR_FALSE(_mul_pow->y() == _ifm);
 
-  assert(_mul_gamma == nullptr);
-  assert(_add_beta == nullptr);
   assert(_const_gamma == nullptr);
   assert(_const_beta == nullptr);
 
-  // create gamma(1.0) and beta(0.0)
+  /* Current FuseRmsNormPass assumes no gamma(scale) and beta(bias).
+   But, RmsNorm kernel expects gamma and beta.
+   So, it creates default gamma(1.0) and beta(0.0).
+  */
   auto graph = _mul_input->graph();
   _const_gamma = make_const_one(graph, 1.0f);
   _const_beta = make_const_one(graph, 0.0f);
