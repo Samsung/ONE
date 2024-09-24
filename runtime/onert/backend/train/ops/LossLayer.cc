@@ -26,7 +26,8 @@ namespace ops
 {
 
 LossLayer::LossLayer()
-  : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _back_prop_y_pred(nullptr)
+  : _y_pred(nullptr), _y_true(nullptr), _output(nullptr), _back_prop_y_pred(nullptr),
+    _reduction_type(ir::train::LossReductionType::Undefined)
 {
   // DO NOTHING
 }
