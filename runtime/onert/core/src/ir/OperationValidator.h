@@ -62,6 +62,7 @@ public:
   void visit(const operation::EmbeddingLookup &node) override;
   void visit(const operation::ExpandDims &node) override;
   void visit(const operation::Fill &node) override;
+  void visit(const operation::Gather &node) override;
   void visit(const operation::HashtableLookup &node) override;
   void visit(const operation::Pack &node) override;
   void visit(const operation::Pad &node) override;
