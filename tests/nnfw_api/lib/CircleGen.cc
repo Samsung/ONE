@@ -280,6 +280,13 @@ uint32_t CircleGen::addOperatorFloorMod(const OperatorParams &params)
                                 circle::BuiltinOptions_NONE, 0);
 }
 
+uint32_t CircleGen::addOperatorGather(const OperatorParams &params, int axis, int batchdim)
+{
+  auto options = circle::CreateGatherOptions(_fbb, axis, batchdim).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_GATHER,
+                                circle::BuiltinOptions_GatherOptions, options);
+}
+
 uint32_t CircleGen::addOperatorGreater(const OperatorParams &params)
 {
   auto options = circle::CreateLessOptions(_fbb).Union();
