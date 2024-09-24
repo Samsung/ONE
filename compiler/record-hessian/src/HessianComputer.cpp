@@ -31,7 +31,9 @@ void HessianComputer::unfold(std::vector<float> &buf, uint32_t input_n, uint32_t
                              uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
                              uint32_t kernel_ic)
 {
-  assert(input_c == kernel_ic);
+  if (input_c != kernel_ic) {
+    throw std::runtime_error("Input channels do not match kernel channels.");
+  }
   int out_height = (input_h - dilation_h * (kernel_h - 1) - 1) / stride_h + 1;
   int out_width = (input_w - dilation_w * (kernel_w - 1) - 1) / stride_w + 1;
   int patch_size = kernel_h * kernel_w * kernel_ic;
@@ -71,6 +73,10 @@ void HessianComputer::unfold(std::vector<float> &buf, uint32_t input_n, uint32_t
 void HessianComputer::recordHessian(const luci::CircleNode *node,
                                     const luci_interpreter::Tensor *input_tensor)
 {
+  if (node == nullptr || input_tensor == nullptr)
+  {
+    throw std::invalid_argument("node or input_tensor is null.");
+  }
   uint32_t size_in_ch;
   uint32_t length;
 

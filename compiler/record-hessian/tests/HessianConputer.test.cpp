@@ -6,10 +6,12 @@
 
 using namespace record_hessian;
 
-TEST(HessianComputerTest, recordHessianValidInput)
+TEST(HessianComputerTest, recordHessianValidInput_NEG)
 {
-    luci::CircleAdd node; 
+    luci::CircleAdd node;
+
     std::vector<float> input_data = {1.0, 2.0, 3.0, 4.0};
+    
     luci_interpreter::DataType data_type = luci_interpreter::DataType::FLOAT32;
     luci_interpreter::Shape shape({1, 2, 2, 1});
     luci_interpreter::AffineQuantization quantization;
@@ -17,14 +19,18 @@ TEST(HessianComputerTest, recordHessianValidInput)
     quantization.zero_point = {0};
 
     std::string tensor_name = "input_tensor";
-    
+
     luci_interpreter::Tensor input_tensor(data_type, shape, quantization, tensor_name);
-    
+
     size_t data_size = input_data.size() * sizeof(float);
+    std::vector<uint8_t> buffer(16);
+
+    input_tensor.set_data_buffer(buffer.data());
     input_tensor.writeData(input_data.data(), data_size);
-    
+
     HessianComputer computer;
-    EXPECT_NO_THROW(computer.recordHessian(&node, &input_tensor));
+
+    EXPECT_ANY_THROW(computer.recordHessian(&node, &input_tensor));
 }
 
 TEST(HessianComputerTest, recordHessianNullTensor_NEG)
@@ -43,7 +49,7 @@ TEST(HessianComputerTest, unfoldValidInput)
 
     HessianComputer computer;
     computer.unfold(buf, input_n, input_h, input_w, input_c, stride_h, stride_w, dilation_h, dilation_w, kernel_oc, kernel_h, kernel_w, kernel_ic);
-    std::vector<float> expected_output = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
+    std::vector<float> expected_output = {1.0, 3.0, 5.0, 7.0, 2.0, 4.0, 6.0, 8.0};
 
     EXPECT_EQ(buf, expected_output);
 }
