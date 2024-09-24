@@ -24,5 +24,6 @@
 #include "Op/GRU.h"
 #include "Op/InstanceNorm.h"
 #include "Op/RmsNorm.h"
+#include "Op/RoPE.h"
 
 #endif // __CIRCLE_OP_CHEFS_H__
