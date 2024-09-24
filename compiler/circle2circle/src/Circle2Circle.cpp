@@ -120,6 +120,7 @@ int entry(int argc, char **argv)
              "This will fuse Mul operation with a Div operation whose numerator is const.");
   add_switch(arser, "--fuse_mul_with_fullyconnected",
              "This will fuse Mul operator with a preceding FullyConnected operator.");
+  add_switch(arser, "--fuse_rmsnorm", "This will fuse operators to RmsNorm operator");
   add_switch(arser, "--fuse_slice_with_tconv",
              "This will fuse Slice operation with a preceding TConv if possible.");
   add_switch(arser, "--fuse_transpose_with_mean",
@@ -301,6 +302,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["fuse_preactivation_batchnorm"] = Algorithms::FusePreActivationBatchNorm;
   option_str_to_enum["fuse_prelu"] = Algorithms::FusePRelu;
   option_str_to_enum["fuse_gelu"] = Algorithms::FuseGelu;
+  option_str_to_enum["fuse_rmsnorm"] = Algorithms::FuseRmsNorm;
   option_str_to_enum["fuse_rsqrt"] = Algorithms::FuseRsqrt;
   option_str_to_enum["fuse_transpose_with_mean"] = Algorithms::FuseTransposeWithMean;
   option_str_to_enum["remove_duplicate_const"] = Algorithms::RemoveDuplicateConst;
