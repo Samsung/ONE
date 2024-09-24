@@ -84,15 +84,34 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     {
       LUCI_ASSERT(const_shape_node->dtype() == S32, "Only support int32 CircleConst");
 
+      // NOTE for rank(shape_by_input before) < rank(shape_by_input after),
+      //      shape_by_input after will be filled with unknown dims
       shape_by_input.rank(const_shape_node->size<S32>());
 
       for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
       {
-        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
         if (const_shape_node->at<S32>(axis) < 0)
         {
           shape_by_input.dim(axis).unset();
         }
+        else if (const_shape_node->at<S32>(axis) == 0)
+        {
+          const auto node_tensor = loco::must_cast<luci::CircleNode *>(node->tensor());
+          // set dim value to input
+          if (node_tensor->shape_status() == luci::ShapeStatus::VALID && axis < node_tensor->rank())
+            shape_by_input.dim(axis) = node_tensor->dim(axis);
+          else
+          {
+            // stop to check if this case exist for debugging
+            LUCI_ASSERT(false, "Check Reshape shape with 0");
+          }
+        }
+        else
+        {
+          shape_by_input.dim(axis).set(const_shape_node->at<S32>(axis));
+        }
+        // check valid or stop for debugging
+        assert(shape_by_input.dim(axis).value() > 0 || !shape_by_input.dim(axis).known());
       }
     }
     else
@@ -143,7 +162,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
   {
     for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
     {
-      const uint32_t dim_value = output_shape.dim(dim_index).value();
+      uint32_t dim_value = output_shape.dim(dim_index).value();
       if (not output_shape.dim(dim_index).known())
       {
         LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
@@ -151,6 +170,18 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
       }
       else
       {
+        if (!dim_value)
+        {
+          // refer https://github.com/Samsung/ONE/issues/14074#issuecomment-2370795003
+          // set dim value to follow input
+          if (dim_index < input_shape.rank())
+            dim_value = input_shape.dim(dim_index).value();
+          else
+          {
+            // stop to check if this case exist for debugging
+            LUCI_ASSERT(false, "Check Reshape shape with 0");
+          }
+        }
         output_element_count *= dim_value;
       }
     }
