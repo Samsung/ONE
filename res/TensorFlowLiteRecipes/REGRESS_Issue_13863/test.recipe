@@ -1,3 +1,9 @@
+# This recipe was created using tflchef-reverse with badDead.zip
+# from the How_to_reproduce section of Issue_13863.
+# In the model, the dim value was changed to a single digit value,
+# and the shape_signature was removed.
+# https://github.com/Samsung/ONE/issues/13863
+
 operand {
   name: "serving_default_input:0"
   type: FLOAT32
