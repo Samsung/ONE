@@ -33,7 +33,8 @@
 // Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
 // Version 0.8: GRU op is added. UINT4 is added.
-// Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added
+// Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
+//              ROPE op is added.
 
 namespace circle;
 
@@ -286,6 +287,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  ROPE = -7,
   RMS_NORM = -6,
   GRU = -5,
   BCQ_GATHER = -4,
@@ -636,6 +638,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RoPEOptions = 249,
   RmsNormOptions = 250,
   GRUOptions = 251,
   BCQGatherOptions = 252,
@@ -1523,6 +1526,15 @@ table InstanceNormOptions {
 
 table RmsNormOptions {
   epsilon:float;
+}
+
+enum RoPEMode : int {
+  GPT_NEOX,
+  GPT_J,
+}
+
+table RoPEOptions {
+  mode: RoPEMode;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
