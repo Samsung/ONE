@@ -6,6 +6,34 @@
 
 using namespace record_hessian;
 
+TEST(HessianComputerTest, recordHessianValidInput)
+{
+
+    luci::CircleFullyConnected node;
+
+    std::vector<float> input_data = {1.0, 2.0, 3.0, 4.0};
+
+    luci_interpreter::DataType data_type = luci_interpreter::DataType::FLOAT32;
+    luci_interpreter::Shape shape({1, 4}); 
+    luci_interpreter::AffineQuantization quantization;
+    quantization.scale = {1.0};
+    quantization.zero_point = {0};
+
+    std::string tensor_name = "input_tensor";
+
+    luci_interpreter::Tensor input_tensor(data_type, shape, quantization, tensor_name);
+
+    size_t data_size = input_data.size() * sizeof(float);
+    std::vector<uint8_t> buffer(data_size);  
+
+    input_tensor.set_data_buffer(buffer.data());
+    input_tensor.writeData(input_data.data(), data_size);
+
+    HessianComputer computer;
+
+    EXPECT_NO_THROW(computer.recordHessian(&node, &input_tensor));
+}
+
 TEST(HessianComputerTest, recordHessianValidInput_NEG)
 {
     luci::CircleAdd node;
@@ -23,7 +51,7 @@ TEST(HessianComputerTest, recordHessianValidInput_NEG)
     luci_interpreter::Tensor input_tensor(data_type, shape, quantization, tensor_name);
 
     size_t data_size = input_data.size() * sizeof(float);
-    std::vector<uint8_t> buffer(16);
+    std::vector<uint8_t> buffer(data_size);
 
     input_tensor.set_data_buffer(buffer.data());
     input_tensor.writeData(input_data.data(), data_size);
