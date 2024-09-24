@@ -33,7 +33,8 @@
 // Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
 // Version 0.8: GRU op is added. UINT4 is added.
-// Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added
+// Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
+                ROPE op is added.
 
 namespace circle;
 
