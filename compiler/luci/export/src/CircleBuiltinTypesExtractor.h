@@ -548,6 +548,10 @@ public:
                                              to_circle_actfunc(node->fusedActivationFunction()))
       .Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleRmsNorm *node)
+  {
+    return circle::CreateRmsNormOptions(_builder, node->epsilon()).Union();
+  }
 
 protected:
   flatbuffers::FlatBufferBuilder &_builder;
