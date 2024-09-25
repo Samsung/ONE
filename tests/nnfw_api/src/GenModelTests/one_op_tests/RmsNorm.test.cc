@@ -26,7 +26,7 @@ TEST_F(GenModelTest, OneOp_RmsNorm)
   int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorRmsNorm({{in, gamma, beta}, {out}}, 0.00001f, circle::ActivationFunctionType_NONE);
+  cgen.addOperatorRmsNorm({{in, gamma, beta}, {out}}, 0.00001f);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -36,18 +36,17 @@ TEST_F(GenModelTest, OneOp_RmsNorm)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, neg_OneOp_RmsNorm_InvalidActivation)
+TEST_F(GenModelTest, neg_OneOp_RmsNorm_InvalidType)
 {
   CircleGen cgen;
   uint32_t beta_buf = cgen.addBuffer(std::vector<float>{1});
   uint32_t gamma_buf = cgen.addBuffer(std::vector<float>{2});
   int beta = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, beta_buf});
   int gamma = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32, gamma_buf});
-  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_UINT8});
   int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorRmsNorm({{in, gamma, beta}, {out}}, 0.00001f,
-                               static_cast<circle::ActivationFunctionType>(128) /* Invalid value*/);
+  cgen.addOperatorRmsNorm({{in, gamma, beta}, {out}}, 0.00001f);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());

@@ -589,10 +589,9 @@ uint32_t CircleGen::addOperatorBatchToSpaceND(const OperatorParams &params)
                                 circle::BuiltinOptions_BatchToSpaceNDOptions, options);
 }
 
-uint32_t CircleGen::addOperatorRmsNorm(const OperatorParams &params, float epsilon,
-                                       circle::ActivationFunctionType actfn)
+uint32_t CircleGen::addOperatorRmsNorm(const OperatorParams &params, float epsilon)
 {
-  auto options = circle::CreateRmsNormOptions(_fbb, epsilon, actfn).Union();
+  auto options = circle::CreateRmsNormOptions(_fbb, epsilon).Union();
   return addOperatorWithOptions(params, circle::BuiltinOperator_RMS_NORM,
                                 circle::BuiltinOptions_RmsNormOptions, options);
 }

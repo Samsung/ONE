@@ -415,7 +415,6 @@ operation::Reverse generateReverse()
 operation::RmsNorm generateRmsNorm()
 {
   operation::RmsNorm::Param param;
-  param.activation = Activation::NONE;
   param.epsilon = 0.f;
 
   return operation::RmsNorm{OperandIndexSequence{1, 2, 3}, OperandIndexSequence{0}, param};

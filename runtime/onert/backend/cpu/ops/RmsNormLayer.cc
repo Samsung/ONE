@@ -31,13 +31,10 @@ namespace ops
 {
 
 void RmsNormLayer::configure(const IPortableTensor *input, const IPortableTensor *gamma,
-                             const IPortableTensor *beta, float epsilon,
-                             const ir::Activation activation, IPortableTensor *output)
+                             const IPortableTensor *beta, float epsilon, IPortableTensor *output)
 {
   assert(input != nullptr);
   assert(output != nullptr);
-
-  UNUSED_RELEASE(activation);
 
   _input = input;
   _output = output;

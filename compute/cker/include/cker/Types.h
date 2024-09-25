@@ -319,8 +319,6 @@ struct ResizeBilinearParams
 struct RmsNormParams
 {
   float epsilon;
-  float float_activation_min;
-  float float_activation_max;
 };
 
 struct TransposeConvParams

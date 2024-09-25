@@ -39,13 +39,12 @@ public:
 
   struct Param
   {
-    Activation activation;
     float epsilon;
   };
 
 public:
   RmsNorm(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-               const Param &param);
+          const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;

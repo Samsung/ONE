@@ -239,7 +239,6 @@ void CircleLoader::loadRmsNorm(const Operator *op, ir::Graph &subg)
   ir::operation::RmsNorm::Param param;
   const auto *options = op->builtin_options_as_RmsNormOptions();
 
-  param.activation = convertActivation(options->fused_activation_function());
   // Use default value 1e-6 if value of epsilon is zero
   param.epsilon = options->epsilon() == 0.f ? 1e-6 : options->epsilon();
 

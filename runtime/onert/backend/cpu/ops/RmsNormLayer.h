@@ -40,8 +40,7 @@ public:
 
 public:
   void configure(const IPortableTensor *input, const IPortableTensor *gamma,
-                 const IPortableTensor *beta, float epsilon, const ir::Activation activation,
-                 IPortableTensor *output);
+                 const IPortableTensor *beta, float epsilon, IPortableTensor *output);
 
   void run() override;
 

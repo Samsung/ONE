@@ -1114,11 +1114,10 @@ void KernelGenerator::visit(const ir::operation::RmsNorm &node)
   auto gamma_tensor = _tensor_reg->getPortableTensor(gamma_index);
   auto beta_tensor = _tensor_reg->getPortableTensor(beta_index);
   auto epsilon = node.param().epsilon;
-  auto activation = node.param().activation;
 
   auto fn = std::make_unique<ops::RmsNormLayer>();
 
-  fn->configure(ifm_tensor, gamma_tensor, beta_tensor, epsilon, activation, ofm_tensor);
+  fn->configure(ifm_tensor, gamma_tensor, beta_tensor, epsilon, ofm_tensor);
 
   _return_fn = std::move(fn);
 }
