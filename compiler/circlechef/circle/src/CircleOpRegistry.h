@@ -61,6 +61,7 @@ private:
     REG_TFL_OP(GRU, CircleOpGRU);
     REG_TFL_OP(INSTANCE_NORM, CircleOpInstanceNorm);
     REG_TFL_OP(RMS_NORM, CircleOpRmsNorm);
+    REG_TFL_OP(ROPE, CircleOpRoPE);
 #undef REG_TFL_OP
   }
 

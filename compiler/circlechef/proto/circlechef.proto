@@ -103,6 +103,10 @@ message RmsNormOptions {
   optional float epsilon = 1 [default = 1e-06];
 }
 
+message RoPEOptions {
+  optional int32 mode = 1 [default = 0];;
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -117,6 +121,7 @@ message Operation {
   optional GRUOptions gru_options = 104;
   optional FullyConnectedOptions fullyconnected_options = 105;
   optional RmsNormOptions rms_norm_options = 106;
+  optional RoPEOptions rope_options = 107;  
 }
 
 // For additional subgraphs
