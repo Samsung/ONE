@@ -1,6 +1,6 @@
-# To check if dynamic dimension properly infered
+# To check if dynamic dimension properly inferred
 
 RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
 
 RULE    "PAD_EXIST"               $(op_count PAD) '=' 1
-RULE    "PAD_SHAPE"               $(tensor_shape ofm) '=' 1,-1,7,2
+RULE    "PAD_SHAPE"               $(tensor_shape ofm) '=' [1,-1,7,2]

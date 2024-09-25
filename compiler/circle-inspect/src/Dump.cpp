@@ -260,8 +260,8 @@ void DumpTensorShape::run(std::ostream &os, const circle::Model *model,
     {
       const auto tensor = tensors->Get(i);
       auto shape = tensor->shape_signature() ? tensor->shape_signature() : tensor->shape();
-      os << reader.tensor_name(tensor) << " ";
-      for (int8_t i = 0; i < shape->size(); i++)
+      os << reader.tensor_name(tensor) << " [";
+      for (uint32_t i = 0; i < shape->size(); i++)
       {
         os << shape->Get(i);
         if (i != shape->size() - 1)
@@ -269,7 +269,7 @@ void DumpTensorShape::run(std::ostream &os, const circle::Model *model,
           os << ",";
         }
       }
-      os << std::endl;
+      os << "]" << std::endl;
     }
   }
 }
