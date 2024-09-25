@@ -27,7 +27,7 @@ namespace operation
 void RmsNorm::accept(OperationVisitor &v) const { v.visit(*this); }
 
 RmsNorm::RmsNorm(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-                           const Param &param)
+                 const Param &param)
   : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
 {
 }
