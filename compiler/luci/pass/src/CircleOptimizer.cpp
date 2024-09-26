@@ -57,6 +57,7 @@
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
 #include "luci/Pass/FuseRmsNormPass.h"
+#include "luci/Pass/FuseRoPEPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/RemoveDuplicateConstPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
