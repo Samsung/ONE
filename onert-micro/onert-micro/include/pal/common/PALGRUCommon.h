@@ -144,10 +144,17 @@ void calculateGRU(const float *input_data, const float *weight_input_data,
   }
   for (int i = 0; i < num_elements; ++i)
   {
-    if(second_hidden_part[i] > 19) {second_hidden_part[i] = 1;}
-    else if(second_hidden_part[i] < -19) {second_hidden_part[i] = -1;}
-    else {
-    second_hidden_part[i] = std::tanh(second_hidden_part[i]);
+    if (second_hidden_part[i] > 19)
+    {
+      second_hidden_part[i] = 1;
+    }
+    else if (second_hidden_part[i] < -19)
+    {
+      second_hidden_part[i] = -1;
+    }
+    else
+    {
+      second_hidden_part[i] = std::tanh(second_hidden_part[i]);
     }
   }
 
