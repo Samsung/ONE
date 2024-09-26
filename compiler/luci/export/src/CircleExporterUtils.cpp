@@ -95,6 +95,19 @@ circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode)
   }
 }
 
+circle::RoPEMode to_circle_rope(luci::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case luci::RoPEMode::GPT_NEOX:
+      return circle::RoPEMode::RoPEMode_GPT_NEOX;
+    case luci::RoPEMode::GPT_J:
+      return circle::RoPEMode::RoPEMode_GPT_J;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::RoPEMode", oops::to_uint32(mode));
+  }
+}
+
 circle::FullyConnectedOptionsWeightsFormat
 to_circle_weightsformat(luci::CircleFullyConnected::WeightsFormat format)
 {

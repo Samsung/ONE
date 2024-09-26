@@ -552,6 +552,10 @@ public:
   {
     return circle::CreateRmsNormOptions(_builder, node->epsilon()).Union();
   }
+  flatbuffers::Offset<void> visit(luci::CircleRoPE *node)
+  {
+    return circle::CreateRoPEOptions(_builder, to_circle_rope(node->mode())).Union();
+  }
 
 protected:
   flatbuffers::FlatBufferBuilder &_builder;
