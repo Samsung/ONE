@@ -9,7 +9,6 @@ optimize(Add_STR_000) # STRING is not supported
 optimize(Add_STR_001) # STRING is not supported
 
 ## CircleRecipes
-optimize(RmsNorm_000)
 optimize(RoPE_000)
 
 #[[ tcgenerate : Exclude from test data generation(TestDataGenerator) ]]
@@ -180,5 +179,4 @@ tcgenerate(CircleFullyConnected_U4_002)
 tcgenerate(GRU_000) # luci-interpreter does not support custom GRU
 tcgenerate(InstanceNorm_000)
 tcgenerate(InstanceNorm_001)
-tcgenerate(RmsNorm_000)
 tcgenerate(RoPE_000)
