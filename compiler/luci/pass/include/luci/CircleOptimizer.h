@@ -79,6 +79,7 @@ public:
       FuseGelu,
       FuseRsqrt,
       FuseRmsNorm,
+      FuseRoPE,
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
