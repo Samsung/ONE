@@ -52,3 +52,41 @@ TEST_F(GenModelTest, OneOp_Gather_Q4_0)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_InvalidOutType)
+{
+  CircleGen cgen;
+
+  std::vector<float> params(4 * 32);
+
+  auto input_vector = quantData(params, circle::TensorType::TensorType_GGML_Q4_0);
+  auto input_buf = cgen.addBuffer(input_vector);
+  int input = cgen.addTensor({{4, 32}, circle::TensorType::TensorType_GGML_Q4_0, input_buf});
+  int indice = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_INT32});
+  int output = cgen.addTensor({{1, 32}, circle::TensorType::TensorType_GGML_Q4_0});
+
+  cgen.addOperatorGather({{input, indice}, {output}});
+  cgen.setInputsAndOutputs({indice}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_shape)
+{
+  CircleGen cgen;
+
+  auto input_vector = std::vector<uint8_t>(18);
+  auto input_buf = cgen.addBuffer(input_vector);
+  int input = cgen.addTensor({{4, 18}, circle::TensorType::TensorType_GGML_Q4_0, input_buf});
+  int indice = cgen.addTensor({{1, 1}, circle::TensorType::TensorType_INT32});
+  int output = cgen.addTensor({{1, 18}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorGather({{input, indice}, {output}});
+  cgen.setInputsAndOutputs({indice}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+}
