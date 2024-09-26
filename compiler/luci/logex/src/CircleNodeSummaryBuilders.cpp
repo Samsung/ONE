@@ -135,6 +135,19 @@ std::string to_str(luci::MirrorPadMode mode)
   }
 }
 
+std::string to_str(luci::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case luci::RoPEMode::GPT_NEOX:
+      return "GPT_NEOX";
+    case luci::RoPEMode::GPT_J:
+      return "GPT_J";
+    default:
+      return "Error";
+  }
+}
+
 } // namespace
 
 namespace luci
@@ -900,6 +913,26 @@ void CircleRmsNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
 {
   auto rmsnorm = loco::must_cast<const luci::CircleRmsNorm *>(node);
   s.args().append("epsilon", std::to_string(rmsnorm->epsilon()));
+}
+
+bool CircleRoPESummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto rope = loco::must_cast<const luci::CircleRoPE *>(node);
+  if (rope->mode() == luci::RoPEMode::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleRoPESummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "sin_table", "cos_table"};
+}
+
+void CircleRoPESummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto rope = loco::must_cast<const luci::CircleRoPE *>(node);
+  s.args().append("mode", to_str(rope->mode()));
 }
 
 std::vector<std::string> CircleScatterNdSummaryBuilder::get_input_names(const luci::CircleNode *)
