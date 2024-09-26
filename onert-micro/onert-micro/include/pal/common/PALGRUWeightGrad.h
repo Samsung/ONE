@@ -151,8 +151,8 @@ OMStatus GRUWeightGrads(
   two_dim_output_shape.setDim(0, output_shape.dims(dim_count - 2));
   two_dim_output_shape.setDim(1, output_shape.dims(dim_count - 1));
 
-  std::memset(weight_input_grad_data, 0, output_shape.flatSize() * sizeof(float) * time);
-  std::memset(weight_hidden_grad_data, 0, input_shape.dims(2) * sizeof(float) * time);
+  std::memset(weight_input_grad_data, 0, weight_input_shape.flatSize() * sizeof(float));
+  std::memset(weight_hidden_grad_data, 0, weight_hidden_shape.flatSize() * sizeof(float));
 
   for (int i = 0; i < time; ++i)
   {
