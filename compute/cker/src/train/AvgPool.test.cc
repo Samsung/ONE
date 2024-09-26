@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,8 +48,8 @@ public:
     assert(expected_output.size() == _out_shape.FlatSize());
 
     std::vector<T> cacluated_output(_out_shape.FlatSize());
-    nnfw::cker::train::AvgPool2D(_op_params, _in_shape, input.data(), _out_shape,
-                                 cacluated_output.data());
+    nnfw::cker::AveragePool(_op_params, _in_shape, input.data(), _out_shape,
+                            cacluated_output.data());
 
     if (expect_eq)
       EXPECT_EQ(expected_output, cacluated_output);
@@ -231,7 +231,7 @@ TEST(CKer_Operation, AvgPool2D)
   }
 }
 
-TEST(CKer_Operation, neg_AvgPool)
+TEST(CKer_Operation, neg_AvgPoolInvalidExpectedValue)
 {
   // Invalid expected value
   {
