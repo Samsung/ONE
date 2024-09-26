@@ -280,6 +280,20 @@ TEST_F(CircleNodeSummaryBuilderTest, Mul_validate_fused_NEG)
   EXPECT_FALSE(mock_build(&node));
 }
 
+TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate)
+{
+  luci::CircleRoPE node;
+  node.mode(luci::RoPEMode::GPT_NEOX);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate_NEG)
+{
+  luci::CircleRoPE node;
+  node.mode(luci::RoPEMode::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
 TEST_F(CircleNodeSummaryBuilderTest, SVDF_validate)
 {
   luci::CircleSVDF node;
