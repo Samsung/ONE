@@ -78,6 +78,15 @@ public:
   void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
 };
 
+class DumpTensorShape final : public DumpInterface
+{
+public:
+  DumpTensorShape() = default;
+
+public:
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
+};
+
 } // namespace circleinspect
 
 #endif // __DUMP_H__

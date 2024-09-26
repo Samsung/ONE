@@ -240,3 +240,38 @@ void DumpConstants::run(std::ostream &os, const circle::Model *model, const std:
 }
 
 } // namespace circleinspect
+
+namespace circleinspect
+{
+
+void DumpTensorShape::run(std::ostream &os, const circle::Model *model,
+                          const std::vector<char> *data)
+{
+  mio::circle::Reader reader(model, data);
+
+  const uint32_t subgraph_size = reader.num_subgraph();
+
+  for (uint32_t g = 0; g < subgraph_size; g++)
+  {
+    reader.select_subgraph(g);
+    auto tensors = reader.tensors();
+
+    for (uint32_t i = 0; i < tensors->size(); ++i)
+    {
+      const auto tensor = tensors->Get(i);
+      auto shape = tensor->shape_signature() ? tensor->shape_signature() : tensor->shape();
+      os << reader.tensor_name(tensor) << " [";
+      for (uint32_t i = 0; i < shape->size(); i++)
+      {
+        os << shape->Get(i);
+        if (i != shape->size() - 1)
+        {
+          os << ",";
+        }
+      }
+      os << "]" << std::endl;
+    }
+  }
+}
+
+} // namespace circleinspect
