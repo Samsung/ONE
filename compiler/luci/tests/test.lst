@@ -141,7 +141,7 @@ addread(ReLUN1To1_000)
 addread(Reshape_000)
 addread(Reshape_001)
 addread(Reshape_002)
-#addread(Reshape_003)
+#addread(Reshape_003) # no input, no option is not supported
 addread(Reshape_U8_000)
 addread(ResizeBilinear_000)
 addread(ResizeBilinear_U8_000)
