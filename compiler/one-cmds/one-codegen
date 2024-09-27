@@ -63,114 +63,17 @@ def _get_parser(backends_list):
     return parser
 
 
-def _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_args):
-    """verify given arguments"""
-    cmd_backend_exist = oneutils.is_valid_attr(args, 'backend')
-    cmd_target_exist = oneutils.is_valid_attr(args, 'target')
-    if cmd_backend_exist and cmd_target_exist:
-        parser.error(
-            '\'backend\' option and \'target\' option cannot be used simultaneously.')
-    cfg_backend_exist = oneutils.is_valid_attr(cfg_args, 'backend')
-    cfg_backends_exist = oneutils.is_valid_attr(cfg_args, 'backends')
-    target_exist = cmd_target_exist or oneutils.is_valid_attr(cfg_target_args, 'target')
+def _verify_arg(parser, cmd_codegen_args, cfg_codegen_args, cfg_backend_args,
+                cmd_backend_args):
+    """
+    Verify given arguments.
 
-    # check if required arguments is given
-    missing = []
-    if not cmd_backend_exist and not cfg_backend_exist and not cfg_backends_exist:
-        if target_exist:
-            target_to_run = None
-            if oneutils.is_valid_attr(cfg_target_args, 'target'):
-                target_to_run = getattr(cfg_target_args, 'target')
-            # overwrite the value if it exists as command line option has higher priority.
-            if oneutils.is_valid_attr(args, 'target'):
-                target_to_run = args.target
-            given_backend = backends.get_value_from_target_conf(
-                target_to_run, BACKEND_KEY)
-            if not given_backend:
-                parser.error(f'Not found {target_to_run} target.')
-        else:
-            missing.append('[-b/--backend | -T/--target]')
-    if len(missing):
-        parser.error('the following arguments are required: ' + ' '.join(missing))
-
-    if not oneutils.is_valid_attr(args, 'config'):
-        if not backend_args and not unknown_args:
-            parser.error('commands for the backend is missing.')
-
-    if cfg_backend_exist and cfg_backends_exist:
-        parser.error(
-            '\'backend\' option and \'backends\' option cannot be used simultaneously.')
-
-    # Check if given backend from command line exists in the configuration file
-    if cmd_backend_exist and cfg_backend_exist:
-        if args.backend != cfg_args.backend:
-            parser.error('Not found the command of given backend')
-
-    if cfg_backend_exist and not oneutils.is_valid_attr(cfg_args, 'command'):
-        parser.error('\'command\' key is missing in the configuration file.')
-
-    if cfg_backends_exist:
-        cfg_backends = getattr(cfg_args, 'backends').split(',')
-        # check if commands of given backends exist
-        for b in cfg_backends:
-            if not oneutils.is_valid_attr(cfg_args, b):
-                parser.error('Not found the command for ' + b)
-
-        # Check if given backend from command line exists in the configuration file
-        if cmd_backend_exist:
-            if args.backend not in cfg_backends:
-                parser.error('Not found the command of given backend')
-
-
-def _parse_arg(parser):
-    codegen_args = []
-    backend_args = []
-    unknown_args = []
-    argv = copy.deepcopy(sys.argv)
-    # delete file name
-    del argv[0]
-    # split by '--'
-    args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
-    if len(args) == 0:
-        codegen_args = parser.parse_args(codegen_args)
-    # one-codegen has two interfaces
-    # 1. one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] [COMMANDS FOR BACKEND]
-    if len(args) == 1:
-        codegen_args = args[0]
-        codegen_args, unknown_args = parser.parse_known_args(codegen_args)
-    # 2. one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] -- [COMMANDS FOR BACKEND]
-    if len(args) == 2:
-        codegen_args = args[0]
-        backend_args = args[1]
-        codegen_args = parser.parse_args(codegen_args)
-    # print version
-    if len(args) and codegen_args.version:
-        oneutils.print_version_and_exit(__file__)
-
-    return codegen_args, backend_args, unknown_args
-
-
-def main():
-    # get backend list
-    backends_list = backends.get_list('*-compile')
-
-    # parse arguments
-    parser = _get_parser(backends_list)
-    args, backend_args, unknown_args = _parse_arg(parser)
-
-    # parse configuration file
-    cfg_args = SimpleNamespace()
-    oneutils.parse_cfg(args.config, 'one-codegen', cfg_args)
-    cfg_target_args = SimpleNamespace()
-    oneutils.parse_cfg(args.config, 'backend', cfg_target_args, quiet=True)
-
-    # parse configuration file (args has arguments parsed from command line + cfg)
-    # oneutils.parse_cfg(args.config, 'one-codegen', args)
-
-    # verify arguments
-    _verify_arg(parser, args, cfg_args, cfg_target_args, backend_args, unknown_args)
-    '''
-    one-codegen defines its behavior for below cases.
+      cmd_codegen_args: arguments from command line.
+      cfg_codegen_args: arguments from onecc configuration file in [one-codegen] section
+      cfg_backend_args: arguments from onecc configuration file in [backend] section
+      cmd_backend_args: arguments from command line for backend driver
+    
+    # one-codegen defines its behavior for below cases.
 
     [1] one-codegen -h
     [2] one-codegen -v
@@ -192,111 +95,270 @@ def main():
     [16] one-codegen -T {target} -- ${command} (ignore command schema)
 
     All other cases are not allowed or an undefined behavior.
-    '''
-    # decide target
-    target_to_run = None
-    if oneutils.is_valid_attr(cfg_target_args, 'target'):
-        target_to_run = getattr(cfg_target_args, 'target')
-    # overwrite the value if it exists as command line option has higher priority.
-    if oneutils.is_valid_attr(args, 'target'):
-        target_to_run = args.target
 
-    cmd_overwrite = False
-    parser = None
-    # decide which backend to run
-    if oneutils.is_valid_attr(args, 'config'):
-        # [9], [10]
-        if backend_args and not unknown_args:
-            given_backends = [args.backend]
-            cmd_overwrite = True
-        else:
-            # [7], [8]
-            if oneutils.is_valid_attr(args, 'backend'):
-                given_backends = [args.backend]
-                if oneutils.is_valid_attr(cfg_args, 'backend'):
-                    assert (oneutils.is_valid_attr(cfg_args, 'command'))
-                    setattr(cfg_args, args.backend, cfg_args.command)
+    # We allow a few styles in [one-codegen] section.
+
+    [Style 1]
+    backend=dummy
+    command=${command for 'dummy' backend}
+
+    [Style 2]
+    backends=dummy1,dummy2
+    dummy1=${command for 'dummy1' backend}
+    dummy2=${command for 'dummy2' backend}
+
+    [Style 3]
+    option1=${argument for option1}
+    option2=${argument for option2}
+
+    NOTE [Style 3] refers to a style that has a command schema.
+    """
+    cmd_backend_exist = oneutils.is_valid_attr(cmd_codegen_args, 'backend')
+    cmd_target_exist = oneutils.is_valid_attr(cmd_codegen_args, 'target')
+    cfg_backend_exist = oneutils.is_valid_attr(cfg_codegen_args, 'backend')
+    cfg_backends_exist = oneutils.is_valid_attr(cfg_codegen_args, 'backends')
+    target_exist = cmd_target_exist or oneutils.is_valid_attr(cfg_backend_args, 'target')
+    cmd_key_exist = any(
+        oneutils.is_valid_attr(cfg_codegen_args, cmd_key) for cmd_key in COMMAND_KEYS)
+
+    backend = None
+    # get backend from target configuration
+    if target_exist:
+        target = None
+        if oneutils.is_valid_attr(cfg_backend_args, 'target'):
+            target = getattr(cfg_backend_args, 'target')
+        # overwrite the value if it exists in command line option as it has higher priority.
+        if oneutils.is_valid_attr(cmd_codegen_args, 'target'):
+            target = cmd_codegen_args.target
+        assert target
+        backend = backends.get_value_from_target_conf(target, BACKEND_KEY)
+
+    # backend information should exist.
+    missing = []
+    if all(not e
+           for e in [backend, cmd_backend_exist, cfg_backend_exist, cfg_backends_exist]):
+        missing.append('[-b/--backend | -T/--target]')
+    if len(missing):
+        parser.error('the following arguments are required: ' + ' '.join(missing))
+
+    ### verify commnad line
+    if cmd_backend_exist and cmd_target_exist:
+        parser.error(
+            '\'backend\' option and \'target\' option cannot be used simultaneously.')
+    # if config option is not given, both backend and command option should be given.
+    if not oneutils.is_valid_attr(cmd_codegen_args, 'config'):
+        if not cmd_backend_args:
+            parser.error('Not found the command for given backend')
+    # if command for backend driver is given in commnad line, backend option should be given as well.
+    if cmd_backend_args:
+        if all(not e for e in [backend, cmd_backend_exist]):
+            parser.error('[-b/--backend | -T/--target] option is missing.')
+
+    ### verify onecc configuration file
+    use_command_schema = False
+    if oneutils.is_valid_attr(cmd_codegen_args, 'config'):
+        # Style 3
+        if target_exist and backend:
+            cmd_parser = oneutils.get_arg_parser(backend, cmd="codegen", target=target)
+            if not cmd_parser:
+                use_command_schema = False
             else:
-                given_backend = None
-                # get backend information
-                if target_to_run:
-                    given_backend = backends.get_value_from_target_conf(
-                        target_to_run, BACKEND_KEY)
-                # check if command schema for the backend exists
-                # 1. if it exists, run the command according to the schema.
-                # 2. if it doesn't exist, insert "--target ${TARGET}" at the beginning of the given command.
-                parser = oneutils.get_arg_parser(given_backend,
-                                                 cmd="codegen",
-                                                 target=target_to_run)
-                # [11], [13]
-                if target_to_run and parser:
-                    if oneutils.is_valid_attr(cfg_args, 'command'):
-                        given_backends = [given_backend]
-                        setattr(cfg_args, given_backend, cfg_args.command)
-                        # If "command" key exists with target option, command schema is not used. ${BACKEND}-compile will be run as before.
+                # check if given keys in conf file are from the command schema.
+                schema_option_names = cmd_parser.get_option_names(flatten=True,
+                                                                  without_dash=True)
+                if oneutils.is_valid_attr(cfg_codegen_args, 'command'):
+                    if 'command' in schema_option_names:
+                        use_command_schema = True
+                    else:
                         print(
                             "WARNING: 'command' key in the [one-codegen] will be deprecated as of September 1, 2025."
                         )
-                    else:
-                        # DO NOTHING
-                        pass
-                # [12], [14]
+                        use_command_schema = False
                 else:
-                    # [3]
-                    if oneutils.is_valid_attr(cfg_args, 'backend'):
-                        assert (oneutils.is_valid_attr(cfg_args, 'command'))
-                        given_backends = [cfg_args.backend]
-                        setattr(cfg_args, cfg_args.backend, cfg_args.command)
-                    # [4]
-                    if oneutils.is_valid_attr(cfg_args, 'backends'):
-                        given_backends = cfg_args.backends.split(',')
-    else:
-        assert (backend_args or unknown_args)
-        # [5], [6]
-        if oneutils.is_valid_attr(args, 'backend'):
-            given_backends = [args.backend]
-        # [15], [16]
-        else:
-            assert oneutils.is_valid_attr(args, 'target')
-            given_backends = [
-                backends.get_value_from_target_conf(target_to_run, BACKEND_KEY)
-            ]
+                    for cfg_codegen_arg in vars(cfg_codegen_args):
+                        if cfg_codegen_arg not in schema_option_names:
+                            cmd_parser.print_help()
+                            parser.error('Invalid option in [one-codegen] section')
+                    use_command_schema = True
 
-    # make commands
-    # 1. if command schema exists
-    if parser and not oneutils.is_valid_attr(cfg_args, 'command'):
-        codegen_cmd = parser.make_cmd(cfg_args)
-        # run backend driver
-        oneutils.run(codegen_cmd, err_prefix=parser.driver)
-    # 2. if command schema doesn't exist
-    else:
-        for given_backend in given_backends:
-            # make a command to run given backend driver
-            codegen_path = None
-            backend_base = given_backend + '-compile'
-            for cand in backends_list:
-                if ntpath.basename(cand) == backend_base:
-                    codegen_path = cand
-            if not codegen_path:
-                # Find backend from system path
-                codegen_path = shutil.which(backend_base)
+        if not use_command_schema:
+            # both backend and backends keys are in [one-codgen] section
+            if cfg_backend_exist and cfg_backends_exist:
+                parser.error(
+                    '\'backend\' and \'backends\' keys cannot be used simultaneously.')
 
-            if not codegen_path:
-                raise FileNotFoundError(backend_base + ' not found')
+            # Style 2
+            if cfg_backends_exist:
+                # backends and [command, __command] key in [one-codegen] section
+                if cmd_key_exist:
+                    parser.error(
+                        '\'backends\' and \'(__)command\' keys cannot be used simultaneously.'
+                    )
 
-            codegen_cmd = [codegen_path]
-            # "--target" option is intentionally inserted at the beginning of the command.
-            # It would match the command of backends' tool.
-            if target_to_run:
-                codegen_cmd += ['--target', target_to_run]
-            if not cmd_overwrite and oneutils.is_valid_attr(cfg_args, given_backend):
-                codegen_cmd += getattr(cfg_args, given_backend).split()
+                # commands for given backends should exist
+                cfg_backends = getattr(cfg_codegen_args, 'backends').split(',')
+                for b in cfg_backends:
+                    if not oneutils.is_valid_attr(cfg_codegen_args, b):
+                        parser.error('Not found the command for ' + b)
+
+                # Check if given backend from command line exists in the configuration file
+                if cmd_backend_exist:
+                    if cmd_codegen_args.backend not in cfg_backends:
+                        parser.error('Not found the command for given backend')
+            # Style 1
             else:
-                codegen_cmd += backend_args
-                codegen_cmd += unknown_args
+                # both backend and command should exist.
+                assert any(e for e in [backend, cmd_backend_exist, cfg_backend_exist])
+                if not cmd_key_exist:
+                    parser.error('Not found the command for given backend')
+
+
+def _parse_arg(parser):
+    # args for `one-codegen`
+    codegen_args = []
+    # args for backend tool
+    backend_args = []
+    argv = copy.deepcopy(sys.argv)
+    # delete file name
+    del argv[0]
+    # split by '--'
+    args = [list(y) for x, y in itertools.groupby(argv, lambda z: z == '--') if not x]
+    if len(args) == 0:
+        codegen_args = parser.parse_args(codegen_args)
+    # one-codegen has two interfaces
+    # 1. one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] [COMMANDS FOR BACKEND]
+    if len(args) == 1:
+        codegen_args = args[0]
+        codegen_args, backend_args = parser.parse_known_args(codegen_args)
+    # 2. one-codegen [-h] [-v] [-C CONFIG] [-b BACKEND | -T TARGET] -- [COMMANDS FOR BACKEND]
+    if len(args) == 2:
+        codegen_args = args[0]
+        backend_args = args[1]
+        codegen_args = parser.parse_args(codegen_args)
+    # print version
+    if len(args) and codegen_args.version:
+        oneutils.print_version_and_exit(__file__)
+
+    return codegen_args, backend_args
+
+
+def main():
+    # get backend list
+    backends_list = backends.get_list('*-compile')
+
+    # parse arguments
+    parser = _get_parser(backends_list)
+    cmd_codegen_args, cmd_backend_args = _parse_arg(parser)
+
+    # parse configuration file
+    cfg_codegen_args = SimpleNamespace()
+    oneutils.parse_cfg(cmd_codegen_args.config, 'one-codegen', cfg_codegen_args)
+    cfg_backend_args = SimpleNamespace()
+    oneutils.parse_cfg(cmd_codegen_args.config, 'backend', cfg_backend_args, quiet=True)
+
+    # verify arguments
+    _verify_arg(parser, cmd_codegen_args, cfg_codegen_args, cfg_backend_args,
+                cmd_backend_args)
+    """
+    get target and backend
+
+    NOTE each retrieval should be processed in order for the priorities. Values that have
+         lower priority will be overwritten by those that have higher priority.
+    """
+    ### get target
+    # NOTE each step overwrites existing `backend_to_run` for considering priorities.
+    target_to_run = None
+    # 1. get target from onecc configuration
+    if oneutils.is_valid_attr(cfg_backend_args, 'target'):
+        target_to_run = getattr(cfg_backend_args, 'target')
+    # 2. get target from command line
+    if oneutils.is_valid_attr(cmd_codegen_args, 'target'):
+        target_to_run = cmd_codegen_args.target
+
+    ### get backend
+    backend_to_run = []
+    parser = None
+    # 1. get backend from target configuration
+    if target_to_run:
+        backend = backends.get_value_from_target_conf(target_to_run, BACKEND_KEY)
+        backend_to_run.append(backend)
+        # check if given backend has command schema
+        # NOTE command schema could exist only if target is given.
+        parser = oneutils.get_arg_parser(backend, cmd="codegen", target=target_to_run)
+    # 2. get backend from onecc configuration
+    if oneutils.is_valid_attr(cmd_codegen_args, 'config'):
+        if parser:
+            # command schema exist (Style 3)
+            # "backend" key assumes one of backend options
+            # DO NOTHING
+            pass
+        else:
+            assert oneutils.is_valid_attr(cfg_codegen_args,
+                                          'backend') or oneutils.is_valid_attr(
+                                              cfg_codegen_args, 'backends')
+            # Style 1
+            if oneutils.is_valid_attr(cfg_codegen_args, 'backend'):
+                backend_to_run = [cfg_codegen_args.backend]
+            # Style 2
+            if oneutils.is_valid_attr(cfg_codegen_args, 'backends'):
+                backend_to_run = cfg_codegen_args.backends.split(',')
+    # 3. get backend from command line
+    if oneutils.is_valid_attr(cmd_codegen_args, 'backend'):
+        backend_to_run = [cmd_codegen_args.backend]
+
+    ### make commands
+    use_command_schema = False
+    if parser:
+        schema_option_names = parser.get_option_names(flatten=True, without_dash=True)
+        # if reserved keys exist, run without command schema.
+        if oneutils.is_valid_attr(cfg_codegen_args, 'command'):
+            if 'command' in schema_option_names:
+                use_command_schema = True
+            else:
+                use_command_schema = False
+        else:
+            use_command_schema = True
+
+    if use_command_schema:
+        codegen_cmd = parser.make_cmd(cfg_codegen_args)
+        oneutils.run(codegen_cmd, err_prefix=parser.driver)
+    else:
+        for backend in backend_to_run:
+            # get driver for the backend
+            codegen_driver = f'{backend}-compile'
+            codegen_path = None
+            for cand in backends_list:
+                if ntpath.basename(cand) == codegen_driver:
+                    codegen_path = cand
+                    break
+            if not codegen_path:
+                # find backend from system path
+                codegen_path = shutil.which(codegen_driver)
+            if not codegen_path:
+                raise FileNotFoundError(codegen_driver + ' not found')
+
+            codegen_cmd_base = [codegen_path]
+            # "--target" option is intentionally inserted at the beginning of the command.
+            # it would match the command of backends' tool.
+            if target_to_run:
+                codegen_cmd_base += ['--target', target_to_run]
+
+            # Style 2
+            if oneutils.is_valid_attr(cfg_codegen_args, backend):
+                codegen_cmd = codegen_cmd_base + getattr(cfg_codegen_args,
+                                                         backend).split()
+            # Style 1, Style 3 (without command schema)
+            else:
+                if oneutils.is_valid_attr(cfg_codegen_args, 'command'):
+                    codegen_cmd = codegen_cmd_base + getattr(cfg_codegen_args,
+                                                             'command').split()
+
+            # if backend command exists in command line arguments, overwrite the ones from onecc configuration file.
+            if cmd_backend_args:
+                codegen_cmd = codegen_cmd_base + cmd_backend_args
 
             # run backend driver
-            oneutils.run(codegen_cmd, err_prefix=backend_base)
+            oneutils.run(codegen_cmd, err_prefix=codegen_driver)
 
 
 if __name__ == '__main__':
