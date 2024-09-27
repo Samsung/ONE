@@ -37,8 +37,12 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
   const int32_t widths = MatchingDim(input_shape, 2, output_shape, 2);
   const int32_t channels = MatchingDim(input_shape, 3, output_shape, 3);
 
-  UNUSED_RELEASE(gamma_shape);
-  UNUSED_RELEASE(beta_shape);
+  if (gamma_shape.DimensionsCount() != 1 ||
+      gamma_shape.Dims(0) != input_shape.Dims(input_shape.DimensionsCount() - 1))
+    throw std::runtime_error("cker::RmsNorm: Unmatched gamma shape");
+  if (beta_shape.DimensionsCount() != 1 ||
+      beta_shape.Dims(0) != input_shape.Dims(input_shape.DimensionsCount() - 1))
+    throw std::runtime_error("cker::RmsNorm: Unmatched beta shape");
 
   for (int32_t batch = 0; batch < batches; batch++)
   {
