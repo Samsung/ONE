@@ -1,0 +1,33 @@
+# padding with dynamic shape, others same as Pad_000
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 3 dim: 2 }
+  shape_signature { dim: 1 dim: -1 dim: 3 dim: 2 }
+}
+operand {
+  name: "padding"
+  type: INT32
+  shape { dim: 4 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "1" arg: "1"
+    arg: "2" arg: "2"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 7 dim: 2 }
+  shape_signature { dim: 1 dim: -1 dim: 7 dim: 2 }
+}
+operation {
+  type: "Pad"
+  input: "ifm"
+  input: "padding"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
