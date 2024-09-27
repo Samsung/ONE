@@ -7,7 +7,7 @@ operand {
 }
 operand {
   name: "padding"
-  type: INT64
+  type: INT32
   shape { dim: 4 dim: 2 }
   filler {
     tag: "explicit"
