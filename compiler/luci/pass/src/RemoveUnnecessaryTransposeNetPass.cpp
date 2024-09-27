@@ -76,9 +76,14 @@ bool inference_incomplete_shape(const Shape &src, Shape &dst)
 class TaggedShapeAnalyzer final
 {
 public:
-  template <loco::DataType DType>
-  bool can_remove_transposes(const luci::CircleTranspose *f_tr, const luci::CircleReshape *m_rs,
-                             const luci::CircleTranspose *b_tr);
+  TaggedShapeAnalyzer(const luci::CircleTranspose *front_transpose,
+                      const luci::CircleReshape *mid_reshape,
+                      const luci::CircleTranspose *back_transpose)
+    : _front_transpose(front_transpose), _mid_reshape(mid_reshape), _back_transpose(back_transpose)
+  {
+  }
+
+  template <loco::DataType DType> bool can_remove_transposes();
 
 private:
   void init_shape_with_tag(const luci::CircleNode *);
@@ -88,6 +93,11 @@ private:
   template <loco::DataType ShapeType> bool analyze_reshape(const luci::CircleReshape *);
 
   bool verify_tag() const;
+
+private:
+  const luci::CircleTranspose *_front_transpose;
+  const luci::CircleReshape *_mid_reshape;
+  const luci::CircleTranspose *_back_transpose;
 
   const uint8_t START_TAG = 0;
   Shape _shape;
@@ -302,25 +312,22 @@ bool TaggedShapeAnalyzer::verify_tag() const
  *  Transpose has no effect in final shape, which they can be removed as
  *  unnecessary Ops.
  */
-template <loco::DataType DType>
-bool TaggedShapeAnalyzer::can_remove_transposes(const luci::CircleTranspose *f_tr,
-                                                const luci::CircleReshape *m_rs,
-                                                const luci::CircleTranspose *b_tr)
+template <loco::DataType DType> bool TaggedShapeAnalyzer::can_remove_transposes()
 {
-  assert(loco::must_cast<luci::CircleConst *>(f_tr->perm())->dtype() == DType);
-  assert(loco::must_cast<luci::CircleConst *>(m_rs->shape())->dtype() == DType);
-  assert(loco::must_cast<luci::CircleConst *>(b_tr->perm())->dtype() == DType);
+  assert(loco::must_cast<luci::CircleConst *>(_front_transpose->perm())->dtype() == DType);
+  assert(loco::must_cast<luci::CircleConst *>(_mid_reshape->shape())->dtype() == DType);
+  assert(loco::must_cast<luci::CircleConst *>(_back_transpose->perm())->dtype() == DType);
 
-  const luci::CircleNode *in_tensor = loco::must_cast<luci::CircleNode *>(f_tr->a());
+  const luci::CircleNode *in_tensor = loco::must_cast<luci::CircleNode *>(_front_transpose->a());
 
   init_shape_with_tag(in_tensor);
 
-  analyze_transpose<DType>(f_tr);
+  analyze_transpose<DType>(_front_transpose);
 
-  if (not analyze_reshape<DType>(m_rs))
+  if (not analyze_reshape<DType>(_mid_reshape))
     return false;
 
-  analyze_transpose<DType>(b_tr);
+  analyze_transpose<DType>(_back_transpose);
 
   if (not verify_tag())
     return false;
@@ -420,9 +427,8 @@ bool remove_unnecessary_transpose(luci::CircleTranspose *node)
     return false;
 
   // analyze pattern to check this pass is applicable
-  TaggedShapeAnalyzer analyzer;
-  if (not analyzer.can_remove_transposes<loco::DataType::S32>(front_transpose, mid_reshape,
-                                                              back_transpose))
+  TaggedShapeAnalyzer analyzer(front_transpose, mid_reshape, back_transpose);
+  if (not analyzer.can_remove_transposes<loco::DataType::S32>())
     return false;
 
   // repalce with new_node
