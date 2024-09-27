@@ -142,6 +142,7 @@ CIRCLE_NODE(CircleBCQGather, BuiltinOperator_BCQ_GATHER, BuiltinOptions_BCQGathe
 CIRCLE_NODE(CircleGRU, BuiltinOperator_GRU, BuiltinOptions_GRUOptions)
 CIRCLE_NODE(CircleInstanceNorm, BuiltinOperator_INSTANCE_NORM, BuiltinOptions_InstanceNormOptions)
 CIRCLE_NODE(CircleRmsNorm, BuiltinOperator_RMS_NORM, BuiltinOptions_RmsNormOptions)
+CIRCLE_NODE(CircleRoPE, BuiltinOperator_ROPE, BuiltinOptions_RoPEOptions)
 // Virtual node(s)
 CIRCLE_VNODE(CircleBidirectionalSequenceLSTMOut)
 CIRCLE_VNODE(CircleConst)

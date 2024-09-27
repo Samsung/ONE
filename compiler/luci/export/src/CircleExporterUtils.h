@@ -35,6 +35,7 @@ namespace luci
 circle::ActivationFunctionType to_circle_actfunc(luci::FusedActFunc func);
 circle::TensorType to_circle_tensortype(loco::DataType type);
 circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode);
+circle::RoPEMode to_circle_rope(luci::RoPEMode mode);
 circle::FullyConnectedOptionsWeightsFormat
 to_circle_weightsformat(luci::CircleFullyConnected::WeightsFormat format);
 circle::DimensionType to_circle_dimensiontype(luci::DimensionType type);
