@@ -2205,6 +2205,13 @@ public:
     return loco::NodeShape{input_shape};
   }
 
+  loco::NodeShape visit(const luci::CircleRoPE *node) final
+  {
+    auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+
+    return loco::NodeShape{input_shape};
+  }
+
   // Virtual
   loco::NodeShape visit(const luci::CircleInput *node) final { return infer_input(node); }
 
