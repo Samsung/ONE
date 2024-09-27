@@ -364,3 +364,23 @@ TEST(RemoveUnnecessaryTransposeNetPass, incomplete_reshape_pattern1_NEG)
 //   EXPECT_FALSE(pass.run(g.g()));
 //   EXPECT_FALSE(is_transpose_removed(g.g()));
 // }
+
+TEST(RemoveUnnecessaryTransposeNetPass, rank_expand1)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+  luci::CircleShapeInferencePass _shapeinf;
+  /**
+   * (1, 16384, 512)
+   *      |
+   * (1, 512, 16384)
+   *      |
+   * (1, 512, 128, 128)
+   *      |
+   * (1, 128, 128, 512)
+   */
+  g.init_whole_graph(/*in*/ {1, 16384, 512}, /*perm*/ {0, 2, 1}, /*reshape*/ {1, 512, 128, 128},
+                     /*perm*/ {0, 2, 3, 1}, /*out*/ {1, 128, 128, 512});
+  EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
+}
