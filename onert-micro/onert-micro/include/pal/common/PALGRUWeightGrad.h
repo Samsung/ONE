@@ -62,6 +62,15 @@ void calculateGRUWeightGrads(
     float tanh_grad_value;
     {
       float tanh = std::tanh(tanh_data[i]);
+      if (tanh_data[i] > 19)
+      {
+        tanh = 1;
+      }
+      else if (tanh_data[i] < -19)
+      {
+        tanh = -1;
+      }
+
       tanh_grad_value = (1 - tanh * tanh) * right_middle_mul;
     }
 
