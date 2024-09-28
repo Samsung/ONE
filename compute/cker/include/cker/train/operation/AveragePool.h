@@ -30,8 +30,8 @@ namespace cker
 namespace train
 {
 
-inline void AvgPool2DGrad(const PoolParams &params, const Shape &incoming_shape,
-                          const float *incoming_data, const Shape &grad_shape, float *grad_data)
+inline void AveragePool2DGrad(const PoolParams &params, const Shape &incoming_shape,
+                              const float *incoming_data, const Shape &grad_shape, float *grad_data)
 {
   assert(grad_shape.DimensionsCount() == 4);
   assert(incoming_shape.DimensionsCount() == 4);

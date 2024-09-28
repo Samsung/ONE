@@ -19,8 +19,9 @@
 #include "../Tensor.h"
 
 #include <cker/Utils.h>
+#include <cker/operation/AveragePool.h>
 #include <cker/train/operation/MaxPool.h>
-#include <cker/train/operation/AvgPool.h>
+#include <cker/train/operation/AveragePool.h>
 #include <cker/train/operation/ReLU.h>
 
 namespace onert
@@ -109,7 +110,7 @@ public:
   }
 };
 
-class AvgPool2D final : public TrainingKernelRegistry
+class AveragePool2D final : public TrainingKernelRegistry
 {
 private:
   const ir::Activation _activation;
@@ -120,10 +121,10 @@ private:
   std::unique_ptr<Tensor> _arg_avg_index;
 
 public:
-  AvgPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t paddingTop, const uint32_t,
-            const uint32_t strideWidth, const uint32_t strideHeight, const uint32_t kernelWidth,
-            const uint32_t kernelHeight, const ir::Activation activation,
-            const IPortableTensor *output)
+  AveragePool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t paddingTop,
+                const uint32_t, const uint32_t strideWidth, const uint32_t strideHeight,
+                const uint32_t kernelWidth, const uint32_t kernelHeight,
+                const ir::Activation activation, const IPortableTensor *output)
     : _activation(activation), _output(output)
   {
     {
@@ -144,7 +145,7 @@ public:
     }
   };
 
-  ~AvgPool2D() {}
+  ~AveragePool2D() {}
 
 public:
   void forward(const IPortableTensor *in, IPortableTensor *out)
@@ -153,8 +154,8 @@ public:
     auto out_data = getBuffer<float>(out);
 
     // avgpool forward
-    nnfw::cker::train::AvgPool2D(_op_params, getShape(in), getBuffer<float>(in), out_shape,
-                                 out_data);
+    nnfw::cker::AveragePool<float>(_op_params, getShape(in), getBuffer<float>(in), out_shape,
+                                   out_data);
   }
 
   void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
@@ -172,9 +173,9 @@ public:
     assert(back_prop_out != nullptr);
 
     // averagepool baackward
-    nnfw::cker::train::AvgPool2DGrad(_op_params, getShape(back_prop_out),
-                                     getBuffer<float>(back_prop_out), getShape(back_prop_in),
-                                     getBuffer<float>(back_prop_in));
+    nnfw::cker::train::AveragePool2DGrad(_op_params, getShape(back_prop_out),
+                                         getBuffer<float>(back_prop_out), getShape(back_prop_in),
+                                         getBuffer<float>(back_prop_in));
   }
 };
 
@@ -211,9 +212,9 @@ void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t pad
                                             activation, output);
       break;
     case PoolType::kAvg:
-      _kernel = std::make_unique<AvgPool2D>(paddingLeft, paddingRight, paddingTop, paddingBottom,
-                                            strideWidth, strideHeight, kernelWidth, kernelHeight,
-                                            activation, output);
+      _kernel = std::make_unique<AveragePool2D>(paddingLeft, paddingRight, paddingTop,
+                                                paddingBottom, strideWidth, strideHeight,
+                                                kernelWidth, kernelHeight, activation, output);
       break;
     default:
       throw std::runtime_error("PoolLayer: Unsupported pool type");
