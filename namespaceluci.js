@@ -227,6 +227,8 @@ var namespaceluci =
     [ "CircleReverseV2GraphBuilder", "classluci_1_1_circle_reverse_v2_graph_builder.html", "classluci_1_1_circle_reverse_v2_graph_builder" ],
     [ "CircleRmsNorm", "classluci_1_1_circle_rms_norm.html", "classluci_1_1_circle_rms_norm" ],
     [ "CircleRmsNormGraphBuilder", "classluci_1_1_circle_rms_norm_graph_builder.html", "classluci_1_1_circle_rms_norm_graph_builder" ],
+    [ "CircleRoPE", "classluci_1_1_circle_ro_p_e.html", "classluci_1_1_circle_ro_p_e" ],
+    [ "CircleRoPEGraphBuilder", "classluci_1_1_circle_ro_p_e_graph_builder.html", "classluci_1_1_circle_ro_p_e_graph_builder" ],
     [ "CircleRound", "classluci_1_1_circle_round.html", "classluci_1_1_circle_round" ],
     [ "CircleRoundGraphBuilder", "classluci_1_1_circle_round_graph_builder.html", "classluci_1_1_circle_round_graph_builder" ],
     [ "CircleRsqrt", "classluci_1_1_circle_rsqrt.html", "classluci_1_1_circle_rsqrt" ],
@@ -368,6 +370,8 @@ var namespaceluci =
     [ "FuseMulWithFullyConnectedPass", "structluci_1_1_fuse_mul_with_fully_connected_pass.html", "structluci_1_1_fuse_mul_with_fully_connected_pass" ],
     [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
     [ "FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", "structluci_1_1_fuse_p_relu_pass" ],
+    [ "FuseRmsNormPass", "structluci_1_1_fuse_rms_norm_pass.html", "structluci_1_1_fuse_rms_norm_pass" ],
+    [ "FuseRoPEPass", "structluci_1_1_fuse_ro_p_e_pass.html", "structluci_1_1_fuse_ro_p_e_pass" ],
     [ "FuseRsqrtPass", "structluci_1_1_fuse_rsqrt_pass.html", "structluci_1_1_fuse_rsqrt_pass" ],
     [ "FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", "structluci_1_1_fuse_slice_with_t_conv_pass" ],
     [ "FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", "structluci_1_1_fuse_transpose_with_mean_pass" ],
@@ -563,6 +567,11 @@ var namespaceluci =
       [ "LayerWise", "namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aa13518975ce40714bedf36b2df7d3e42a", null ],
       [ "ChannelWise", "namespaceluci.html#a1dbbe7778504a3210934cf9f1415315aacf412d006a6d6229f10554753b62b9b2", null ]
     ] ],
+    [ "RoPEMode", "namespaceluci.html#ae74fb4623d3434a4397915a354d68359", [
+      [ "UNDEFINED", "namespaceluci.html#ae74fb4623d3434a4397915a354d68359a0db45d2a4141101bdfe48e3314cfbca3", null ],
+      [ "GPT_NEOX", "namespaceluci.html#ae74fb4623d3434a4397915a354d68359ab0547ba602f994b911d7a1f4d7db3e32", null ],
+      [ "GPT_J", "namespaceluci.html#ae74fb4623d3434a4397915a354d68359a93b4be6c749809861b0ba3ab347daaf9", null ]
+    ] ],
     [ "ShapeStatus", "namespaceluci.html#afb90d250392bef9190f8277d358e0172", [
       [ "UNDEFINED", "namespaceluci.html#afb90d250392bef9190f8277d358e0172a0db45d2a4141101bdfe48e3314cfbca3", null ],
       [ "NOSHAPE", "namespaceluci.html#afb90d250392bef9190f8277d358e0172a2278004a12e3bb9c7a95950447015e7f", null ],
@@ -670,6 +679,7 @@ var namespaceluci =
     [ "luci_padding", "namespaceluci.html#a74041f680f0151e1d8bbb3b88260f3d5", null ],
     [ "luci_quantparam", "namespaceluci.html#a0111f725fe709fc649e669d2a3f4892f", null ],
     [ "luci_quantparam", "namespaceluci.html#aa21f5f0b59bca42cfa1a4ef15df25ac8", null ],
+    [ "luci_rope_mode", "namespaceluci.html#aede2cde5be00af421bf3d891ce55c098", null ],
     [ "luci_sparse_index_vector", "namespaceluci.html#aca9baf110e824189f38075e0aa043b23", null ],
     [ "luci_sparsityparam", "namespaceluci.html#ab30706cacc1cda785d4e0e78e87710c7", null ],
     [ "luci_sparsityparam", "namespaceluci.html#a2225be8e56fb53cecb4c45583362d795", null ],
@@ -718,6 +728,7 @@ var namespaceluci =
     [ "to_circle_actfunc", "namespaceluci.html#a614753df4ca4a0c483b1de2e3120ed89", null ],
     [ "to_circle_dimensiontype", "namespaceluci.html#a398724fcb3d7625c4f321e0b7bcd84ad", null ],
     [ "to_circle_mirrorpadmode", "namespaceluci.html#adf4a2a01c11ad48c96419b083acec0b3", null ],
+    [ "to_circle_rope", "namespaceluci.html#a5dafd6eb59501a259e77c322f6be3c7e", null ],
     [ "to_circle_sparse_index_vector", "namespaceluci.html#a0636044ee702bafa7341008a89346717", null ],
     [ "to_circle_sparse_index_vector_type", "namespaceluci.html#a4ac9e8dbfad0e6e557eda3737c97ee59", null ],
     [ "to_circle_tensortype", "namespaceluci.html#aa7800375ef05ce2b3cfac68dac9fefcf", null ],

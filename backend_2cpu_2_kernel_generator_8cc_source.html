@@ -697,7 +697,7 @@ $(document).ready(function(){initNavTree('backend_2cpu_2_kernel_generator_8cc_so
 <div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span> </div>
 <div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::GatherLayer&gt;();</div>
 <div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span> </div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>  fn-&gt;configure(input_tensor, indices_tensor, output_tensor, axis);</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>  fn-&gt;configure(input_tensor, indices_tensor, output_tensor, axis, _external_context.get());</div>
 <div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span> </div>
 <div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>  _return_fn = std::move(fn);</div>
 <div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>}</div>

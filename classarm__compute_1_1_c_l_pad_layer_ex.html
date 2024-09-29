@@ -139,7 +139,7 @@ Static Public Member Functions</h2></td></tr>
 <li>CLCopyKernel otherwise </li>
 </ol>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_pad_layer_ex_8h_source.html#l00059">59</a> of file <a class="el" href="_c_l_pad_layer_ex_8h_source.html">CLPadLayerEx.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_l_pad_layer_ex_8h_source.html#l00058">58</a> of file <a class="el" href="_c_l_pad_layer_ex_8h_source.html">CLPadLayerEx.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae9808d01bb5463badf0181fd1958f646" name="ae9808d01bb5463badf0181fd1958f646"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9808d01bb5463badf0181fd1958f646">&#9670;&#160;</a></span>CLPadLayerEx() <span class="overload">[1/3]</span></h2>
@@ -158,8 +158,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Default constructor </p>
 
 <p class="definition">Definition at line <a class="el" href="_c_l_pad_layer_ex_8cpp_source.html#l00045">45</a> of file <a class="el" href="_c_l_pad_layer_ex_8cpp_source.html">CLPadLayerEx.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>  : _pad_kernel(std::make_unique&lt;CLPadLayerKernelEx&gt;()),</div>
-<div class="line"><span class="lineno">   47</span>    _copy_kernel(std::make_unique&lt;opencl::kernels::ClCopyKernel&gt;()), _perform_pad(<span class="keyword">false</span>)</div>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>  : _pad_kernel(std::make_unique&lt;CLPadLayerKernelEx&gt;()), _copy_kernel(std::make_unique&lt;CLCopy&gt;()),</div>
+<div class="line"><span class="lineno">   47</span>    _perform_pad(<span class="keyword">false</span>)</div>
 <div class="line"><span class="lineno">   48</span>{</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
@@ -299,7 +299,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   74</span>    Window copy_window = Window();</div>
 <div class="line"><span class="lineno">   75</span>    copy_window.use_tensor_dimensions(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info()-&gt;tensor_shape());</div>
 <div class="line"><span class="lineno">   76</span>    <span class="comment">// Copy the input to the whole output if no padding is applied</span></div>
-<div class="line"><span class="lineno">   77</span>    _copy_kernel-&gt;configure(compile_context, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info(), <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info(), &amp;copy_window);</div>
+<div class="line"><span class="lineno">   77</span>    _copy_kernel-&gt;configure(compile_context, input, output, &amp;copy_window);</div>
 <div class="line"><span class="lineno">   78</span>  }</div>
 <div class="line"><span class="lineno">   79</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_pad_layer_ex_html_a700ce28db66b78483cd9e5cb88239950"><div class="ttname"><a href="classarm__compute_1_1_c_l_pad_layer_ex.html#a700ce28db66b78483cd9e5cb88239950">arm_compute::CLPadLayerEx::validate</a></div><div class="ttdeci">static Status validate(const ITensorInfo *input, const ITensorInfo *output, const PaddingList &amp;padding, PixelValue constant_value=PixelValue(), PaddingMode mode=PaddingMode::CONSTANT)</div><div class="ttdef"><b>Definition</b> <a href="_c_l_pad_layer_ex_8cpp_source.html#l00080">CLPadLayerEx.cpp:80</a></div></div>
@@ -466,7 +466,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  104</span>  }</div>
 <div class="line"><span class="lineno">  105</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  106</span>  {</div>
-<div class="line"><span class="lineno">  107</span>    CLScheduler::get().enqueue(*_copy_kernel);</div>
+<div class="line"><span class="lineno">  107</span>    _copy_kernel-&gt;run();</div>
 <div class="line"><span class="lineno">  108</span>  }</div>
 <div class="line"><span class="lineno">  109</span>}</div>
 </div><!-- fragment -->
@@ -550,7 +550,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   92</span>  }</div>
 <div class="line"><span class="lineno">   93</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   94</span>  {</div>
-<div class="line"><span class="lineno">   95</span>    ARM_COMPUTE_RETURN_ON_ERROR(opencl::kernels::ClCopyKernel::validate(input, output));</div>
+<div class="line"><span class="lineno">   95</span>    ARM_COMPUTE_RETURN_ON_ERROR(CLCopy::validate(input, output));</div>
 <div class="line"><span class="lineno">   96</span>  }</div>
 <div class="line"><span class="lineno">   97</span>  <span class="keywordflow">return</span> Status{};</div>
 <div class="line"><span class="lineno">   98</span>}</div>

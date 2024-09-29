@@ -5,10 +5,12 @@ var searchData=
   ['ghij_2',['GHIJ',['../namespaceluci.html#abfe38a0f46ae1d230b93c381022bcc99ab5dc7b0dea794ec4cdbc4d80bef64421',1,'luci']]],
   ['giventensorfill_3',['givenTensorFill',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a3ef4b66afe73d19cf63005d19e1edd74',1,'mir_caffe2']]],
   ['giventensorint64fill_4',['givenTensorInt64Fill',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8ae9641faf6d4d9c2d63ab93267c879c00',1,'mir_caffe2']]],
-  ['great_5',['great',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9aacaa16770db76c1ffb9cee51c3cabfcf',1,'nnc']]],
-  ['greater_6',['greater',['../classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8a8768a6821cd735aea4f5b0df88c1fc6a',1,'onert::ir::operation::Comparison::Greater'],['../namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6a8768a6821cd735aea4f5b0df88c1fc6a',1,'nnfw::cker::Greater']]],
-  ['greaterequal_7',['greaterequal',['../classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8a758b05d899def79c9eb864ad4f96be1f',1,'onert::ir::operation::Comparison::GreaterEqual'],['../namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6a758b05d899def79c9eb864ad4f96be1f',1,'nnfw::cker::GreaterEqual']]],
-  ['greatoreq_8',['greatOrEq',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9a95e6ec034296ed0f1cc7b7a336022827',1,'nnc']]],
-  ['greedy_9',['Greedy',['../namespacekuma.html#af8c611896759acfcb36f1174428b4d8ba00dd9aff4cb9a1496aed07b3e8718db7',1,'kuma']]],
-  ['green_10',['GREEN',['../namespaceonert_1_1dumper_1_1dot.html#a90d59b21adf6277edec4301d4617f1bea7f7fede5286427cb36651e51810b0819',1,'onert::dumper::dot']]]
+  ['gpt_5fj_5',['GPT_J',['../namespaceluci.html#ae74fb4623d3434a4397915a354d68359a93b4be6c749809861b0ba3ab347daaf9',1,'luci']]],
+  ['gpt_5fneox_6',['GPT_NEOX',['../namespaceluci.html#ae74fb4623d3434a4397915a354d68359ab0547ba602f994b911d7a1f4d7db3e32',1,'luci']]],
+  ['great_7',['great',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9aacaa16770db76c1ffb9cee51c3cabfcf',1,'nnc']]],
+  ['greater_8',['greater',['../classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8a8768a6821cd735aea4f5b0df88c1fc6a',1,'onert::ir::operation::Comparison::Greater'],['../namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6a8768a6821cd735aea4f5b0df88c1fc6a',1,'nnfw::cker::Greater']]],
+  ['greaterequal_9',['greaterequal',['../classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8a758b05d899def79c9eb864ad4f96be1f',1,'onert::ir::operation::Comparison::GreaterEqual'],['../namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6a758b05d899def79c9eb864ad4f96be1f',1,'nnfw::cker::GreaterEqual']]],
+  ['greatoreq_10',['greatOrEq',['../namespacennc.html#a958b56e423709246f446a0dd3e7255a9a95e6ec034296ed0f1cc7b7a336022827',1,'nnc']]],
+  ['greedy_11',['Greedy',['../namespacekuma.html#af8c611896759acfcb36f1174428b4d8ba00dd9aff4cb9a1496aed07b3e8718db7',1,'kuma']]],
+  ['green_12',['GREEN',['../namespaceonert_1_1dumper_1_1dot.html#a90d59b21adf6277edec4301d4617f1bea7f7fede5286427cb36651e51810b0819',1,'onert::dumper::dot']]]
 ];

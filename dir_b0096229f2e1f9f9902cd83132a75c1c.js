@@ -98,6 +98,7 @@ var dir_b0096229f2e1f9f9902cd83132a75c1c =
     [ "CircleReverseSequence.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_reverse_sequence_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_reverse_sequence_8h" ],
     [ "CircleReverseV2.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_reverse_v2_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_reverse_v2_8h" ],
     [ "CircleRmsNorm.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_rms_norm_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_rms_norm_8h" ],
+    [ "CircleRoPE.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_ro_p_e_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_ro_p_e_8h" ],
     [ "CircleRound.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_round_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_round_8h" ],
     [ "CircleRsqrt.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_rsqrt_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_rsqrt_8h" ],
     [ "CircleScatterNd.h", "lang_2include_2luci_2_i_r_2_nodes_2_circle_scatter_nd_8h.html", "lang_2include_2luci_2_i_r_2_nodes_2_circle_scatter_nd_8h" ],

@@ -9,6 +9,7 @@ var _circle_reader_8h =
     [ "luci_mirrorpad_mode", "_circle_reader_8h.html#ac9799a0576bf12d496b2ef97da0b8cfc", null ],
     [ "luci_padding", "_circle_reader_8h.html#a74041f680f0151e1d8bbb3b88260f3d5", null ],
     [ "luci_quantparam", "_circle_reader_8h.html#a0111f725fe709fc649e669d2a3f4892f", null ],
+    [ "luci_rope_mode", "_circle_reader_8h.html#aede2cde5be00af421bf3d891ce55c098", null ],
     [ "luci_weights_format", "_circle_reader_8h.html#a300d09cf8582e6d501c43758fe10b609", null ],
     [ "tensor_name", "_circle_reader_8h.html#a4438f6b29d02d97c6d8aef9a31481cb9", null ],
     [ "tensor_quantization", "_circle_reader_8h.html#afc7e41d5c520bb4a9fbfff971f1c4487", null ],

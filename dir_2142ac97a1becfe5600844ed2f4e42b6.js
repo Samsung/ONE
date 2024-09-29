@@ -96,6 +96,7 @@ var dir_2142ac97a1becfe5600844ed2f4e42b6 =
     [ "CircleReverseSequence.cpp", "service_2src_2_nodes_2_circle_reverse_sequence_8cpp.html", null ],
     [ "CircleReverseV2.cpp", "service_2src_2_nodes_2_circle_reverse_v2_8cpp.html", null ],
     [ "CircleRmsNorm.cpp", "service_2src_2_nodes_2_circle_rms_norm_8cpp.html", null ],
+    [ "CircleRoPE.cpp", "service_2src_2_nodes_2_circle_ro_p_e_8cpp.html", null ],
     [ "CircleRound.cpp", "service_2src_2_nodes_2_circle_round_8cpp.html", null ],
     [ "CircleRsqrt.cpp", "service_2src_2_nodes_2_circle_rsqrt_8cpp.html", null ],
     [ "CircleScatterNd.cpp", "service_2src_2_nodes_2_circle_scatter_nd_8cpp.html", null ],

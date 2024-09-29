@@ -285,6 +285,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a3eab9c641dc437bfc3a5b3414a16e790" id="r_a3eab9c641dc437bfc3a5b3414a16e790"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3eab9c641dc437bfc3a5b3414a16e790"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classndarray_1_1_array.html">Array</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a3eab9c641dc437bfc3a5b3414a16e790">toArray</a> (uint8_t *ptr, std::vector&lt; int32_t &gt; &amp;descr)</td></tr>
 <tr class="separator:a3eab9c641dc437bfc3a5b3414a16e790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad21affbdb0784c5ad3e7feda7abe2d26" id="r_ad21affbdb0784c5ad3e7feda7abe2d26"><td class="memItemLeft" align="right" valign="top">ggml_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">getGGMLType</a> (<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type)</td></tr>
+<tr class="separator:ad21affbdb0784c5ad3e7feda7abe2d26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f6dbde496876ba47f2b9299bb62ab91" id="r_a1f6dbde496876ba47f2b9299bb62ab91"><td class="memItemLeft" align="right" valign="top">struct ggml_tensor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91">getGGMLTensor</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
+<tr class="separator:a1f6dbde496876ba47f2b9299bb62ab91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bd3b9d30711a87ca05dd34c92d35e6d" id="r_a8bd3b9d30711a87ca05dd34c92d35e6d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a8bd3b9d30711a87ca05dd34c92d35e6d">getNumberOfDimensions</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
 <tr class="separator:a8bd3b9d30711a87ca05dd34c92d35e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26b5e969b47cf039ff14a095c294271d" id="r_a26b5e969b47cf039ff14a095c294271d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a26b5e969b47cf039ff14a095c294271d">getNumberOfElements</a> (const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *tensor)</td></tr>
@@ -1085,6 +1089,92 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   92</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a1f6dbde496876ba47f2b9299bb62ab91" name="a1f6dbde496876ba47f2b9299bb62ab91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f6dbde496876ba47f2b9299bb62ab91">&#9670;&#160;</a></span>getGGMLTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct ggml_tensor onert::backend::cpu::ops::getGGMLTensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">IPortableTensor</a> *&#160;</td>
+          <td class="paramname"><em>tensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_g_m_l_helper_8cc_source.html#l00047">47</a> of file <a class="el" href="_g_g_m_l_helper_8cc_source.html">GGMLHelper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keyword">struct </span>ggml_tensor res;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  res.type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">getGGMLType</a>(tensor-&gt;data_type());</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rank = tensor-&gt;getShape().rank();</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; GGML_MAX_DIMS; ++i)</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (i &gt;= rank)</div>
+<div class="line"><span class="lineno">   56</span>      res.ne[i] = 1;</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   58</span>      res.ne[i] = tensor-&gt;getShape().dim(rank - i - 1);</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>  res.nb[0] = ggml_type_size(res.type);</div>
+<div class="line"><span class="lineno">   62</span>  res.nb[1] = res.nb[0] * (res.ne[0] / ggml_blck_size(res.type));</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 2; i &lt; GGML_MAX_DIMS; ++i)</div>
+<div class="line"><span class="lineno">   64</span>    res.nb[i] = res.nb[i - 1] * res.ne[i - 1];</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  res.op = GGML_OP_NONE;</div>
+<div class="line"><span class="lineno">   67</span>  res.grad = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   68</span>  res.data = (<span class="keywordtype">void</span> *)(tensor-&gt;buffer());</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   71</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_ad21affbdb0784c5ad3e7feda7abe2d26"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#ad21affbdb0784c5ad3e7feda7abe2d26">onert::backend::cpu::ops::getGGMLType</a></div><div class="ttdeci">ggml_type getGGMLType(ir::DataType type)</div><div class="ttdef"><b>Definition</b> <a href="_g_g_m_l_helper_8cc_source.html#l00028">GGMLHelper.cc:28</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_g_g_m_l_helper_8cc_source.html#l00028">getGGMLType()</a>.</p>
+
+</div>
+</div>
+<a id="ad21affbdb0784c5ad3e7feda7abe2d26" name="ad21affbdb0784c5ad3e7feda7abe2d26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad21affbdb0784c5ad3e7feda7abe2d26">&#9670;&#160;</a></span>getGGMLType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ggml_type onert::backend::cpu::ops::getGGMLType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_g_g_m_l_helper_8cc_source.html#l00028">28</a> of file <a class="el" href="_g_g_m_l_helper_8cc_source.html">GGMLHelper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   31</span>  {</div>
+<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">   33</span>      <span class="keywordflow">return</span> GGML_TYPE_F32;</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_GGML_Q4_0:</div>
+<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">return</span> GGML_TYPE_Q4_0;</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_GGML_Q8_0:</div>
+<div class="line"><span class="lineno">   37</span>      <span class="keywordflow">return</span> GGML_TYPE_Q8_0;</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
+<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">return</span> GGML_TYPE_I32;</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
+<div class="line"><span class="lineno">   41</span>      <span class="keywordflow">return</span> GGML_TYPE_I64;</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+<div class="line"><span class="lineno">   45</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_g_g_m_l_helper_8cc_source.html#l00047">getGGMLTensor()</a>.</p>
+
 </div>
 </div>
 <a id="a8bd3b9d30711a87ca05dd34c92d35e6d" name="a8bd3b9d30711a87ca05dd34c92d35e6d"></a>

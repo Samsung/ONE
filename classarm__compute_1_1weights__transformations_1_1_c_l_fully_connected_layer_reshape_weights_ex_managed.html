@@ -121,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a18c1a2a9e067de8df4dc7129ae88e294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Basic function to manage the reshape weights generated from <a class="el" href="classarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex.html">CLFullyConnectedLayerReshapeWeightsEx</a> </p>
+<div class="textblock"><p>Basic function to manage the reshape weights generated from CLTranspose </p>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00092">92</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00062">62</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a18c1a2a9e067de8df4dc7129ae88e294" name="a18c1a2a9e067de8df4dc7129ae88e294"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18c1a2a9e067de8df4dc7129ae88e294">&#9670;&#160;</a></span>configure()</h2>
@@ -148,7 +148,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Configures the <a class="el" href="classarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex.html">CLFullyConnectedLayerReshapeWeightsEx</a> function</p>
+<p>Configures the CLFullyConnectedLayerReshapeWeightsEx function</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>Source tensor. Data type supported: QASYMM8/F16/F32. </td></tr>
@@ -156,13 +156,10 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00116">116</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{ _func.<a class="code hl_function" href="classarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex.html#a944a8c553990873707254d35e72e9273">configure</a>(input, &amp;_output); }</div>
-<div class="ttc" id="aclassarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex_html_a944a8c553990873707254d35e72e9273"><div class="ttname"><a href="classarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex.html#a944a8c553990873707254d35e72e9273">arm_compute::CLFullyConnectedLayerReshapeWeightsEx::configure</a></div><div class="ttdeci">void configure(const ICLTensor *input, ICLTensor *output)</div><div class="ttdef"><b>Definition</b> <a href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00142">CLFullyConnectedLayerEx.cpp:142</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00086">86</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ _func.configure(input, &amp;_output); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00142">arm_compute::CLFullyConnectedLayerReshapeWeightsEx::configure()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00253">arm_compute::CLFullyConnectedLayerEx::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_c_l_fully_connected_layer_ex_8cpp_source.html#l00251">arm_compute::CLFullyConnectedLayerEx::configure()</a>.</p>
 
 </div>
 </div>
@@ -189,8 +186,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00107">107</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <span class="keywordflow">return</span> &amp;_output; }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00077">77</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{ <span class="keywordflow">return</span> &amp;_output; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -217,8 +214,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00104">104</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{ _output.allocator()-&gt;free(); }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00074">74</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{ _output.allocator()-&gt;free(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -245,12 +242,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00096">96</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>  {</div>
-<div class="line"><span class="lineno">   98</span>    _output.allocator()-&gt;allocate();</div>
-<div class="line"><span class="lineno">   99</span>    _func.run();</div>
-<div class="line"><span class="lineno">  100</span>    _reshape_run = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  101</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00066">66</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    _output.allocator()-&gt;allocate();</div>
+<div class="line"><span class="lineno">   69</span>    _func.run();</div>
+<div class="line"><span class="lineno">   70</span>    _reshape_run = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   71</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="infer_8py_source.html#l00050">package.infer.session::inference()</a>.</p>
 
@@ -279,8 +276,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00110">110</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{ <span class="keywordflow">return</span> _uid; }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html#l00080">80</a> of file <a class="el" href="_c_l_fully_connected_layer_ex_8h_source.html">CLFullyConnectedLayerEx.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{ <span class="keywordflow">return</span> _uid; }</div>
 </div><!-- fragment -->
 </div>
 </div>

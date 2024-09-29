@@ -6,6 +6,7 @@ var dir_55cdba77db264bef9ba580dd866c72a0 =
     [ "AttrFusedActFunc.h", "_attr_fused_act_func_8h.html", "_attr_fused_act_func_8h" ],
     [ "AttrMirrorPadMode.h", "_attr_mirror_pad_mode_8h.html", "_attr_mirror_pad_mode_8h" ],
     [ "AttrPadding.h", "_attr_padding_8h.html", "_attr_padding_8h" ],
+    [ "AttrRoPEMode.h", "_attr_ro_p_e_mode_8h.html", "_attr_ro_p_e_mode_8h" ],
     [ "AttrStride.h", "_attr_stride_8h.html", "_attr_stride_8h" ],
     [ "CircleDialect.h", "luci_2lang_2include_2luci_2_i_r_2_circle_dialect_8h.html", "luci_2lang_2include_2luci_2_i_r_2_circle_dialect_8h" ],
     [ "CircleNode.h", "luci_2lang_2include_2luci_2_i_r_2_circle_node_8h.html", null ],

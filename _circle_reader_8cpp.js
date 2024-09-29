@@ -10,6 +10,7 @@ var _circle_reader_8cpp =
     [ "luci_padding", "_circle_reader_8cpp.html#a74041f680f0151e1d8bbb3b88260f3d5", null ],
     [ "luci_quantparam", "_circle_reader_8cpp.html#a0111f725fe709fc649e669d2a3f4892f", null ],
     [ "luci_quantparam", "_circle_reader_8cpp.html#aa21f5f0b59bca42cfa1a4ef15df25ac8", null ],
+    [ "luci_rope_mode", "_circle_reader_8cpp.html#aede2cde5be00af421bf3d891ce55c098", null ],
     [ "luci_sparse_index_vector", "_circle_reader_8cpp.html#aca9baf110e824189f38075e0aa043b23", null ],
     [ "luci_sparsityparam", "_circle_reader_8cpp.html#ab30706cacc1cda785d4e0e78e87710c7", null ],
     [ "luci_sparsityparam", "_circle_reader_8cpp.html#a2225be8e56fb53cecb4c45583362d795", null ],

@@ -149,13 +149,14 @@ var searchData=
   ['dumpoption_146',['DumpOption',['../structcirops_1_1_dump_option.html',1,'cirops']]],
   ['dumptensordtype_147',['DumpTensorDType',['../classcircleinspect_1_1_dump_tensor_d_type.html',1,'circleinspect']]],
   ['dumptensors_148',['DumpTensors',['../classcircletensordump_1_1_dump_tensors.html',1,'circletensordump']]],
-  ['dumptensorstohdf5_149',['DumpTensorsToHdf5',['../classcircletensordump_1_1_dump_tensors_to_hdf5.html',1,'circletensordump']]],
-  ['dumpvisitor_150',['DumpVisitor',['../classnnc_1_1_dump_visitor.html',1,'nnc']]],
-  ['duplicatedobjectreductionpass_151',['DuplicatedObjectReductionPass',['../structenco_1_1_duplicated_object_reduction_pass.html',1,'enco']]],
-  ['durationevent_152',['DurationEvent',['../struct_duration_event.html',1,'']]],
-  ['dynamicbatchtosinglebatchpass_153',['DynamicBatchToSingleBatchPass',['../classluci_1_1_dynamic_batch_to_single_batch_pass.html',1,'luci']]],
-  ['dynamicmemorymanager_154',['DynamicMemoryManager',['../classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html',1,'onert::backend::basic']]],
-  ['dynamicshapeinferer_155',['DynamicShapeInferer',['../classonert_1_1exec_1_1_dynamic_shape_inferer.html',1,'onert::exec']]],
-  ['dynamictensorctx_156',['DynamicTensorCtx',['../structonert_1_1exec_1_1_function_sequence_1_1_dynamic_tensor_ctx.html',1,'onert::exec::FunctionSequence']]],
-  ['dynamictensormanager_157',['DynamicTensorManager',['../classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html',1,'onert::backend::basic']]]
+  ['dumptensorshape_149',['DumpTensorShape',['../classcircleinspect_1_1_dump_tensor_shape.html',1,'circleinspect']]],
+  ['dumptensorstohdf5_150',['DumpTensorsToHdf5',['../classcircletensordump_1_1_dump_tensors_to_hdf5.html',1,'circletensordump']]],
+  ['dumpvisitor_151',['DumpVisitor',['../classnnc_1_1_dump_visitor.html',1,'nnc']]],
+  ['duplicatedobjectreductionpass_152',['DuplicatedObjectReductionPass',['../structenco_1_1_duplicated_object_reduction_pass.html',1,'enco']]],
+  ['durationevent_153',['DurationEvent',['../struct_duration_event.html',1,'']]],
+  ['dynamicbatchtosinglebatchpass_154',['DynamicBatchToSingleBatchPass',['../classluci_1_1_dynamic_batch_to_single_batch_pass.html',1,'luci']]],
+  ['dynamicmemorymanager_155',['DynamicMemoryManager',['../classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html',1,'onert::backend::basic']]],
+  ['dynamicshapeinferer_156',['DynamicShapeInferer',['../classonert_1_1exec_1_1_dynamic_shape_inferer.html',1,'onert::exec']]],
+  ['dynamictensorctx_157',['DynamicTensorCtx',['../structonert_1_1exec_1_1_function_sequence_1_1_dynamic_tensor_ctx.html',1,'onert::exec::FunctionSequence']]],
+  ['dynamictensormanager_158',['DynamicTensorManager',['../classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html',1,'onert::backend::basic']]]
 ];

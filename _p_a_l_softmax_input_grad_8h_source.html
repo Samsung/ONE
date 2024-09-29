@@ -137,29 +137,34 @@ $(document).ready(function(){initNavTree('_p_a_l_softmax_input_grad_8h_source.ht
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  assert(dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>() == 2);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  assert(dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(0) == 1);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> uint32_t output_dim = dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>() - 1);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; output_dim; ++i)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> uint32_t width = dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(dloss_doutput_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>() - 1);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w1 = 0; w1 &lt; width; ++w1)</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_dim; ++j)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      jacobian_row_data[j] = -calculated_data[i] * calculated_data[j];</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    jacobian_row_data[i] += calculated_data[i];</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">float</span> total = 0.f;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; output_dim; ++j)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      total += jacobian_row_data[j] * dloss_doutput_data[j];</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    dloss_dinput_data[i] = total;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">float</span> sum = 0.0f;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w2 = 0; w2 &lt; width; ++w2)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordtype">float</span> val;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">if</span> (w1 == w2)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        val = calculated_data[w2] * (1.f - calculated_data[w2]);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        val = -calculated_data[w2] * calculated_data[w1];</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      val *= dloss_doutput_data[w2];</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      sum += val;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    dloss_dinput_data[w1] = sum;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// namespace pal</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace train</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_COMMON_SOFTMAX_INPUT_GRAD_H</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>} <span class="comment">// namespace pal</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace train</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_PAL_COMMON_SOFTMAX_INPUT_GRAD_H</span></div>
 <div class="ttc" id="a_o_m_status_8h_html"><div class="ttname"><a href="_o_m_status_8h.html">OMStatus.h</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00033">OMRuntimeShape.h:34</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aa5351b75c2dbb83f63423eb21afe3461"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">onert_micro::core::OMRuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00129">OMRuntimeShape.h:129</a></div></div>

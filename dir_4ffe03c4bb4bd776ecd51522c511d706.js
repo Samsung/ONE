@@ -95,6 +95,8 @@ var dir_4ffe03c4bb4bd776ecd51522c511d706 =
     [ "CircleResizeNearestNeighbor.cpp", "partition_2src_2_nodes_2_circle_resize_nearest_neighbor_8cpp.html", null ],
     [ "CircleReverseSequence.cpp", "partition_2src_2_nodes_2_circle_reverse_sequence_8cpp.html", null ],
     [ "CircleReverseV2.cpp", "partition_2src_2_nodes_2_circle_reverse_v2_8cpp.html", null ],
+    [ "CircleRmsNorm.cpp", "partition_2src_2_nodes_2_circle_rms_norm_8cpp.html", null ],
+    [ "CircleRoPE.cpp", "partition_2src_2_nodes_2_circle_ro_p_e_8cpp.html", null ],
     [ "CircleRound.cpp", "partition_2src_2_nodes_2_circle_round_8cpp.html", null ],
     [ "CircleRsqrt.cpp", "partition_2src_2_nodes_2_circle_rsqrt_8cpp.html", null ],
     [ "CircleScatterNd.cpp", "partition_2src_2_nodes_2_circle_scatter_nd_8cpp.html", null ],

@@ -40,6 +40,8 @@ var namespacecircledump =
     [ "ResizeBilinearPrinter", "classcircledump_1_1_resize_bilinear_printer.html", "classcircledump_1_1_resize_bilinear_printer" ],
     [ "ResizeNearestNeighborPrinter", "classcircledump_1_1_resize_nearest_neighbor_printer.html", "classcircledump_1_1_resize_nearest_neighbor_printer" ],
     [ "ReverseSequencePrinter", "classcircledump_1_1_reverse_sequence_printer.html", "classcircledump_1_1_reverse_sequence_printer" ],
+    [ "RmsNormPrinter", "classcircledump_1_1_rms_norm_printer.html", "classcircledump_1_1_rms_norm_printer" ],
+    [ "RoPEPrinter", "classcircledump_1_1_ro_p_e_printer.html", "classcircledump_1_1_ro_p_e_printer" ],
     [ "ShapePrinter", "classcircledump_1_1_shape_printer.html", "classcircledump_1_1_shape_printer" ],
     [ "SoftmaxPrinter", "classcircledump_1_1_softmax_printer.html", "classcircledump_1_1_softmax_printer" ],
     [ "SourceTablePrinter", "classcircledump_1_1_source_table_printer.html", "classcircledump_1_1_source_table_printer" ],

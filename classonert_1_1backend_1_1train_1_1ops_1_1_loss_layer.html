@@ -163,14 +163,17 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00028">28</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">_y_pred</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">_y_true</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#aefc9b61143ef1b6e96ab89b5390ca838">_output</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a45038ed63c5778b849cc65ed83095910">_back_prop_y_pred</a>(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   32</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">_y_pred</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">_y_true</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#aefc9b61143ef1b6e96ab89b5390ca838">_output</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a45038ed63c5778b849cc65ed83095910">_back_prop_y_pred</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab98cc20775d6ef28c83aac606c6ad7a5">_reduction_type</a>(<a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360">ir::train::LossReductionType::Undefined</a>)</div>
+<div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   33</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1ops_1_1_loss_layer_html_a45038ed63c5778b849cc65ed83095910"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a45038ed63c5778b849cc65ed83095910">onert::backend::train::ops::LossLayer::_back_prop_y_pred</a></div><div class="ttdeci">IPortableTensor * _back_prop_y_pred</div><div class="ttdef"><b>Definition</b> <a href="_loss_layer_8h_source.html#l00053">LossLayer.h:53</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1ops_1_1_loss_layer_html_a595cd14a7dc903f59caa91f09c2b5b89"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">onert::backend::train::ops::LossLayer::_y_pred</a></div><div class="ttdeci">const IPortableTensor * _y_pred</div><div class="ttdef"><b>Definition</b> <a href="_loss_layer_8h_source.html#l00050">LossLayer.h:50</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1ops_1_1_loss_layer_html_ab6e20d858278d254a50737b543b927a1"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">onert::backend::train::ops::LossLayer::_y_true</a></div><div class="ttdeci">const IPortableTensor * _y_true</div><div class="ttdef"><b>Definition</b> <a href="_loss_layer_8h_source.html#l00051">LossLayer.h:51</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1ops_1_1_loss_layer_html_ab98cc20775d6ef28c83aac606c6ad7a5"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab98cc20775d6ef28c83aac606c6ad7a5">onert::backend::train::ops::LossLayer::_reduction_type</a></div><div class="ttdeci">ir::train::LossReductionType _reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_layer_8h_source.html#l00054">LossLayer.h:54</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1ops_1_1_loss_layer_html_aefc9b61143ef1b6e96ab89b5390ca838"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#aefc9b61143ef1b6e96ab89b5390ca838">onert::backend::train::ops::LossLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="_loss_layer_8h_source.html#l00052">LossLayer.h:52</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360">onert::ir::train::LossReductionType::Undefined</a></div><div class="ttdeci">@ Undefined</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -219,20 +222,19 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00034">34</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   39</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   40</span>  assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   41</span>  <span class="comment">// back_prop_y_pred can be nullptr if backwarding is not required</span></div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">_y_pred</a> = y_pred;</div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">_y_true</a> = y_true;</div>
-<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#aefc9b61143ef1b6e96ab89b5390ca838">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a45038ed63c5778b849cc65ed83095910">_back_prop_y_pred</a> = back_prop_y_pred;</div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab98cc20775d6ef28c83aac606c6ad7a5">_reduction_type</a> = reduction_type;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1ops_1_1_loss_layer_html_ab98cc20775d6ef28c83aac606c6ad7a5"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab98cc20775d6ef28c83aac606c6ad7a5">onert::backend::train::ops::LossLayer::_reduction_type</a></div><div class="ttdeci">ir::train::LossReductionType _reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_layer_8h_source.html#l00054">LossLayer.h:54</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_loss_layer_8cc_source.html#l00035">35</a> of file <a class="el" href="_loss_layer_8cc_source.html">LossLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
+<div class="line"><span class="lineno">   39</span>  assert(y_pred != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   40</span>  assert(y_true != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   41</span>  assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   42</span>  <span class="comment">// back_prop_y_pred can be nullptr if backwarding is not required</span></div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a595cd14a7dc903f59caa91f09c2b5b89">_y_pred</a> = y_pred;</div>
+<div class="line"><span class="lineno">   45</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab6e20d858278d254a50737b543b927a1">_y_true</a> = y_true;</div>
+<div class="line"><span class="lineno">   46</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#aefc9b61143ef1b6e96ab89b5390ca838">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#a45038ed63c5778b849cc65ed83095910">_back_prop_y_pred</a> = back_prop_y_pred;</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1ops_1_1_loss_layer.html#ab98cc20775d6ef28c83aac606c6ad7a5">_reduction_type</a> = reduction_type;</div>
+<div class="line"><span class="lineno">   49</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_loss_layer_8h_source.html#l00053">_back_prop_y_pred</a>, <a class="el" href="_loss_layer_8h_source.html#l00052">_output</a>, <a class="el" href="_loss_layer_8h_source.html#l00054">_reduction_type</a>, <a class="el" href="_loss_layer_8h_source.html#l00050">_y_pred</a>, and <a class="el" href="_loss_layer_8h_source.html#l00051">_y_true</a>.</p>
@@ -264,7 +266,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00053">53</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, and <a class="el" href="_loss_layer_8cc_source.html#l00034">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, and <a class="el" href="_loss_layer_8cc_source.html#l00035">configure()</a>.</p>
 
 </div>
 </div>
@@ -290,7 +292,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00052">52</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_loss_layer_8cc_source.html#l00034">configure()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_layer_8cc_source.html#l00035">configure()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
 
 </div>
 </div>
@@ -316,7 +318,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00054">54</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, and <a class="el" href="_loss_layer_8cc_source.html#l00034">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, and <a class="el" href="_loss_layer_8cc_source.html#l00035">configure()</a>.</p>
 
 </div>
 </div>
@@ -342,7 +344,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00050">50</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, <a class="el" href="_loss_layer_8cc_source.html#l00034">configure()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, <a class="el" href="_loss_layer_8cc_source.html#l00035">configure()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
 
 </div>
 </div>
@@ -368,7 +370,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_loss_layer_8h_source.html#l00051">51</a> of file <a class="el" href="_loss_layer_8h_source.html">LossLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, <a class="el" href="_loss_layer_8cc_source.html#l00034">configure()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00058">onert::backend::train::ops::LossCategoricalCrossentropyLayer::backward()</a>, <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00053">onert::backend::train::ops::LossMeanSquaredErrorLayer::backward()</a>, <a class="el" href="_loss_layer_8cc_source.html#l00035">configure()</a>, <a class="el" href="_loss_categorical_crossentropy_layer_8cc_source.html#l00044">onert::backend::train::ops::LossCategoricalCrossentropyLayer::forward()</a>, and <a class="el" href="_loss_mean_squared_error_layer_8cc_source.html#l00039">onert::backend::train::ops::LossMeanSquaredErrorLayer::forward()</a>.</p>
 
 </div>
 </div>

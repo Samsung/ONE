@@ -1492,7 +1492,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  571</span> </div>
 <div class="line"><span class="lineno">  572</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;ops::GatherLayer&gt;();</div>
 <div class="line"><span class="lineno">  573</span> </div>
-<div class="line"><span class="lineno">  574</span>  fn-&gt;configure(input_tensor, indices_tensor, output_tensor, axis);</div>
+<div class="line"><span class="lineno">  574</span>  fn-&gt;configure(input_tensor, indices_tensor, output_tensor, axis, _external_context.get());</div>
 <div class="line"><span class="lineno">  575</span> </div>
 <div class="line"><span class="lineno">  576</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = std::move(fn);</div>
 <div class="line"><span class="lineno">  577</span>}</div>

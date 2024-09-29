@@ -158,17 +158,18 @@ $(document).ready(function(){initNavTree('_circle_op_registry_8h_source.html',''
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <a class="code hl_define" href="_circle_op_registry_8h.html#aa66c2999fc9be140c8089f1a1525fe60">REG_TFL_OP</a>(GRU, <a class="code hl_class" href="classcirclechef_1_1_circle_op_g_r_u.html">CircleOpGRU</a>);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <a class="code hl_define" href="_circle_op_registry_8h.html#aa66c2999fc9be140c8089f1a1525fe60">REG_TFL_OP</a>(INSTANCE_NORM, <a class="code hl_class" href="classcirclechef_1_1_circle_op_instance_norm.html">CircleOpInstanceNorm</a>);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <a class="code hl_define" href="_circle_op_registry_8h.html#aa66c2999fc9be140c8089f1a1525fe60">REG_TFL_OP</a>(RMS_NORM, <a class="code hl_class" href="classcirclechef_1_1_circle_op_rms_norm.html">CircleOpRmsNorm</a>);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#undef REG_TFL_OP</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  std::map&lt;circle::BuiltinOperator, std::unique_ptr&lt;CircleOpChef&gt;&gt; _circleop_map;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>};</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_define" href="_circle_op_registry_8h.html#aa66c2999fc9be140c8089f1a1525fe60">REG_TFL_OP</a>(ROPE, <a class="code hl_class" href="classcirclechef_1_1_circle_op_ro_p_e.html">CircleOpRoPE</a>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#undef REG_TFL_OP</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  std::map&lt;circle::BuiltinOperator, std::unique_ptr&lt;CircleOpChef&gt;&gt; _circleop_map;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
 </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace circlechef</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">// __CIRCLE_OP_REGISTRY_H__</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <span class="comment">// namespace circlechef</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif </span><span class="comment">// __CIRCLE_OP_REGISTRY_H__</span></div>
 <div class="ttc" id="a_circle_op_chef_8h_html"><div class="ttname"><a href="_circle_op_chef_8h.html">CircleOpChef.h</a></div></div>
 <div class="ttc" id="a_circle_op_chefs_8h_html"><div class="ttname"><a href="_circle_op_chefs_8h.html">CircleOpChefs.h</a></div></div>
 <div class="ttc" id="a_circle_op_registry_8h_html_aa66c2999fc9be140c8089f1a1525fe60"><div class="ttname"><a href="_circle_op_registry_8h.html#aa66c2999fc9be140c8089f1a1525fe60">REG_TFL_OP</a></div><div class="ttdeci">#define REG_TFL_OP(OPCODE, CLASS)</div></div>
@@ -181,7 +182,8 @@ $(document).ready(function(){initNavTree('_circle_op_registry_8h_source.html',''
 <div class="ttc" id="aclasscirclechef_1_1_circle_op_registry_html"><div class="ttname"><a href="classcirclechef_1_1_circle_op_registry.html">circlechef::CircleOpRegistry</a></div><div class="ttdoc">circlechef operator registry</div><div class="ttdef"><b>Definition</b> <a href="_circle_op_registry_8h_source.html#l00031">CircleOpRegistry.h:32</a></div></div>
 <div class="ttc" id="aclasscirclechef_1_1_circle_op_registry_html_a7511b0514c6ecad60cd717ef1a7ec73f"><div class="ttname"><a href="classcirclechef_1_1_circle_op_registry.html#a7511b0514c6ecad60cd717ef1a7ec73f">circlechef::CircleOpRegistry::get</a></div><div class="ttdeci">static CircleOpRegistry &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_circle_op_registry_8h_source.html#l00046">CircleOpRegistry.h:46</a></div></div>
 <div class="ttc" id="aclasscirclechef_1_1_circle_op_registry_html_aa92cb4f84a89147ec53c305b95e8644f"><div class="ttname"><a href="classcirclechef_1_1_circle_op_registry.html#aa92cb4f84a89147ec53c305b95e8644f">circlechef::CircleOpRegistry::lookup</a></div><div class="ttdeci">const CircleOpChef * lookup(circle::BuiltinOperator op) const</div><div class="ttdoc">Returns registered CircleOpChef pointer for BuiltinOperator or nullptr if not registered.</div><div class="ttdef"><b>Definition</b> <a href="_circle_op_registry_8h_source.html#l00038">CircleOpRegistry.h:38</a></div></div>
-<div class="ttc" id="aclasscirclechef_1_1_circle_op_rms_norm_html"><div class="ttname"><a href="classcirclechef_1_1_circle_op_rms_norm.html">circlechef::CircleOpRmsNorm</a></div><div class="ttdoc">circlechef operator builder for RMS_NORM</div><div class="ttdef"><b>Definition</b> <a href="circle_2src_2_op_2_rms_norm_8h_source.html#l00028">RmsNorm.h:29</a></div></div>
+<div class="ttc" id="aclasscirclechef_1_1_circle_op_rms_norm_html"><div class="ttname"><a href="classcirclechef_1_1_circle_op_rms_norm.html">circlechef::CircleOpRmsNorm</a></div><div class="ttdoc">circlechef operator builder for RMS_NORM</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2circle_2src_2_op_2_rms_norm_8h_source.html#l00028">RmsNorm.h:29</a></div></div>
+<div class="ttc" id="aclasscirclechef_1_1_circle_op_ro_p_e_html"><div class="ttname"><a href="classcirclechef_1_1_circle_op_ro_p_e.html">circlechef::CircleOpRoPE</a></div><div class="ttdoc">circlechef operator builder for RoPE</div><div class="ttdef"><b>Definition</b> <a href="circle_2src_2_op_2_ro_p_e_8h_source.html#l00028">RoPE.h:29</a></div></div>
 <div class="ttc" id="anamespacecirclechef_html"><div class="ttname"><a href="namespacecirclechef.html">circlechef</a></div><div class="ttdef"><b>Definition</b> <a href="circlechef_2circle_2include_2circlechef_2_recipe_chef_8h_source.html#l00026">RecipeChef.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

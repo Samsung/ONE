@@ -9,6 +9,7 @@ var namespacecirclechef =
     [ "CircleOpInstanceNorm", "classcirclechef_1_1_circle_op_instance_norm.html", "classcirclechef_1_1_circle_op_instance_norm" ],
     [ "CircleOpRegistry", "classcirclechef_1_1_circle_op_registry.html", "classcirclechef_1_1_circle_op_registry" ],
     [ "CircleOpRmsNorm", "classcirclechef_1_1_circle_op_rms_norm.html", "classcirclechef_1_1_circle_op_rms_norm" ],
+    [ "CircleOpRoPE", "classcirclechef_1_1_circle_op_ro_p_e.html", "classcirclechef_1_1_circle_op_ro_p_e" ],
     [ "GeneratedModel", "classcirclechef_1_1_generated_model.html", "classcirclechef_1_1_generated_model" ],
     [ "Logger", "classcirclechef_1_1_logger.html", "classcirclechef_1_1_logger" ],
     [ "LoggerConfig", "classcirclechef_1_1_logger_config.html", "classcirclechef_1_1_logger_config" ],

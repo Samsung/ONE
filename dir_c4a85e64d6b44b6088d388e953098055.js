@@ -137,6 +137,8 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "ResizeNearestNeighbor.h", "compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8h" ],
     [ "ReverseV2.cpp", "compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp.html", null ],
     [ "ReverseV2.h", "compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8h" ],
+    [ "RmsNorm.cpp", "luci-interpreter_2src_2kernels_2_rms_norm_8cpp.html", null ],
+    [ "RmsNorm.h", "luci-interpreter_2src_2kernels_2_rms_norm_8h.html", "luci-interpreter_2src_2kernels_2_rms_norm_8h" ],
     [ "Rsqrt.cpp", "compiler_2luci-interpreter_2src_2kernels_2_rsqrt_8cpp.html", null ],
     [ "Rsqrt.h", "luci-interpreter_2src_2kernels_2_rsqrt_8h.html", "luci-interpreter_2src_2kernels_2_rsqrt_8h" ],
     [ "Select.cpp", "luci-interpreter_2src_2kernels_2_select_8cpp.html", null ],

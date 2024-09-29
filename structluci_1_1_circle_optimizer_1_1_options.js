@@ -45,6 +45,8 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "FusePRelu", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea34202927f543664fcb80f36bf30c26ae", null ],
       [ "FuseGelu", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea4a7837e492c5f1003d81a24538089d3f", null ],
       [ "FuseRsqrt", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea8990f026f661f6c62a516a463fc84e6d", null ],
+      [ "FuseRmsNorm", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea32876b5759485dac1096ceba8797a619", null ],
+      [ "FuseRoPE", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea933296c433f58cdcfc2da2c729479ae1", null ],
       [ "ShuffleWeightTo16x1Float32", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea8087c9df5329fea6b3b8c8273223567b", null ],
       [ "RemoveRedundantTranspose", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeadbff75368fde1acc32973a4028256629", null ],
       [ "ReplaceMulAddWithDepthwiseConv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeacd6163f03e8989d2d462a43507dd4772", null ],

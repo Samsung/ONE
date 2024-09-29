@@ -286,186 +286,186 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_source.html#l01279">1279</a> of file <a class="el" href="_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_source.html">ConvertNCHWToNHWCPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1280</span>{</div>
-<div class="line"><span class="lineno"> 1281</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno"> 1282</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;ConvertNCHWToNHWCPass Start&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1283</span> </div>
-<div class="line"><span class="lineno"> 1284</span>  <span class="comment">// Annotate NHWC operators</span></div>
-<div class="line"><span class="lineno"> 1285</span>  <span class="comment">// NHWC operators are detected by pattern matching</span></div>
-<div class="line"><span class="lineno"> 1286</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno"> 1287</span>  <span class="comment">// Pattern</span></div>
-<div class="line"><span class="lineno"> 1288</span>  <span class="comment">//    pre-Transose (or pre-Reshape) + [intermediate Ops] + post-Transpose (or post-Reshape)</span></div>
-<div class="line"><span class="lineno"> 1289</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno"> 1290</span>  <span class="comment">// [intermediate Ops] are annotated as NHWC</span></div>
-<div class="line"><span class="lineno"> 1291</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno"> 1292</span>  <span class="comment">// NOTE A single pre-Transpose/Reshape can have multiple post-Transpose/Reshape.</span></div>
-<div class="line"><span class="lineno"> 1293</span>  <span class="comment">// For example,</span></div>
-<div class="line"><span class="lineno"> 1294</span>  <span class="comment">// pre-Transpose --- [intermediate Ops] --- post-Transpose</span></div>
-<div class="line"><span class="lineno"> 1295</span>  <span class="comment">//                |</span></div>
-<div class="line"><span class="lineno"> 1296</span>  <span class="comment">//                +--[intermediate Ops] --- post-Transpose</span></div>
-<div class="line"><span class="lineno"> 1297</span>  <span class="comment">//</span></div>
-<div class="line"><span class="lineno"> 1298</span>  <span class="comment">// NOTE Intermediate Ops SHOULD NOT contain pre-Transpose/Reshape</span></div>
-<div class="line"><span class="lineno"> 1299</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">postorder_traversal</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno"> 1300</span>  {</div>
-<div class="line"><span class="lineno"> 1301</span>    <span class="keywordflow">if</span> (has_data_format(node))</div>
-<div class="line"><span class="lineno"> 1302</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1303</span> </div>
-<div class="line"><span class="lineno"> 1304</span>    <span class="keywordflow">if</span> (is_pre_transpose(node) || is_pre_reshape(node))</div>
-<div class="line"><span class="lineno"> 1305</span>    {</div>
-<div class="line"><span class="lineno"> 1306</span>      std::set&lt;loco::Node *&gt; intermediate;</div>
-<div class="line"><span class="lineno"> 1307</span> </div>
-<div class="line"><span class="lineno"> 1308</span>      <span class="comment">// Variable to check intermediate Ops contain pre-Transpose/Reshape</span></div>
-<div class="line"><span class="lineno"> 1309</span>      <span class="keywordtype">bool</span> has_pre = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1310</span> </div>
-<div class="line"><span class="lineno"> 1311</span>      <span class="comment">// Variable to check the pattern is closed with post-Transpose/Reshape</span></div>
-<div class="line"><span class="lineno"> 1312</span>      <span class="keywordtype">bool</span> is_closed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1313</span> </div>
-<div class="line"><span class="lineno"> 1314</span>      <span class="comment">// For recursive call of lambda</span></div>
-<div class="line"><span class="lineno"> 1315</span>      std::function&lt;void(<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *)&gt; collect_intermediate;</div>
-<div class="line"><span class="lineno"> 1316</span>      collect_intermediate = [&amp;](<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *n) {</div>
-<div class="line"><span class="lineno"> 1317</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> succ : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">succs</a>(n))</div>
-<div class="line"><span class="lineno"> 1318</span>        {</div>
-<div class="line"><span class="lineno"> 1319</span>          <span class="comment">// Skip unnecessary traversal</span></div>
-<div class="line"><span class="lineno"> 1320</span>          <span class="keywordflow">if</span> (intermediate.find(succ) != intermediate.end())</div>
-<div class="line"><span class="lineno"> 1321</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1322</span> </div>
-<div class="line"><span class="lineno"> 1323</span>          <span class="comment">// Exit condition</span></div>
-<div class="line"><span class="lineno"> 1324</span>          <span class="keywordflow">if</span> (is_post_transpose(succ) || is_post_reshape(succ))</div>
-<div class="line"><span class="lineno"> 1325</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1326</span> </div>
-<div class="line"><span class="lineno"> 1327</span>          <span class="keywordflow">if</span> (is_pre_transpose(succ) || is_pre_reshape(succ))</div>
-<div class="line"><span class="lineno"> 1328</span>          {</div>
-<div class="line"><span class="lineno"> 1329</span>            has_pre = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1330</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1331</span>          }</div>
-<div class="line"><span class="lineno"> 1332</span> </div>
-<div class="line"><span class="lineno"> 1333</span>          <span class="keywordflow">if</span> (is_output(succ))</div>
-<div class="line"><span class="lineno"> 1334</span>          {</div>
-<div class="line"><span class="lineno"> 1335</span>            is_closed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1336</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1337</span>          }</div>
-<div class="line"><span class="lineno"> 1338</span> </div>
-<div class="line"><span class="lineno"> 1339</span>          intermediate.emplace(succ);</div>
-<div class="line"><span class="lineno"> 1340</span> </div>
-<div class="line"><span class="lineno"> 1341</span>          collect_intermediate(succ);</div>
-<div class="line"><span class="lineno"> 1342</span>        }</div>
-<div class="line"><span class="lineno"> 1343</span>      };</div>
-<div class="line"><span class="lineno"> 1344</span> </div>
-<div class="line"><span class="lineno"> 1345</span>      collect_intermediate(node);</div>
-<div class="line"><span class="lineno"> 1346</span> </div>
-<div class="line"><span class="lineno"> 1347</span>      <span class="keywordflow">if</span> (has_pre or not is_closed)</div>
-<div class="line"><span class="lineno"> 1348</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1349</span> </div>
-<div class="line"><span class="lineno"> 1350</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> inter : intermediate)</div>
-<div class="line"><span class="lineno"> 1351</span>      {</div>
-<div class="line"><span class="lineno"> 1352</span>        <span class="keywordflow">if</span> (not has_data_format(inter))</div>
-<div class="line"><span class="lineno"> 1353</span>          set_data_format(inter, DataFormat::NHWC);</div>
-<div class="line"><span class="lineno"> 1354</span>      }</div>
-<div class="line"><span class="lineno"> 1355</span>    }</div>
-<div class="line"><span class="lineno"> 1356</span>  }</div>
-<div class="line"><span class="lineno"> 1357</span> </div>
-<div class="line"><span class="lineno"> 1358</span>  <span class="comment">// Annotate NCHW operators</span></div>
-<div class="line"><span class="lineno"> 1359</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno"> 1360</span>  {</div>
-<div class="line"><span class="lineno"> 1361</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno"> 1362</span>    <span class="keywordflow">switch</span> (circle_node-&gt;opcode())</div>
-<div class="line"><span class="lineno"> 1363</span>    {</div>
-<div class="line"><span class="lineno"> 1364</span>      <span class="comment">// List of supported Ops</span></div>
-<div class="line"><span class="lineno"> 1365</span>      <span class="keywordflow">case</span> luci::CircleOpcode::CIRCLEINPUT:</div>
-<div class="line"><span class="lineno"> 1366</span>        <span class="keywordflow">if</span> (!_preserve_input &amp;&amp; !has_data_format(node))</div>
-<div class="line"><span class="lineno"> 1367</span>        {</div>
-<div class="line"><span class="lineno"> 1368</span>          set_data_format(node, DataFormat::NCHW);</div>
-<div class="line"><span class="lineno"> 1369</span>        }</div>
-<div class="line"><span class="lineno"> 1370</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1371</span>      <span class="keywordflow">case</span> luci::CircleOpcode::CIRCLEOUTPUT:</div>
-<div class="line"><span class="lineno"> 1372</span>        <span class="keywordflow">if</span> (!_preserve_output &amp;&amp; !has_data_format(node))</div>
-<div class="line"><span class="lineno"> 1373</span>        {</div>
-<div class="line"><span class="lineno"> 1374</span>          set_data_format(node, DataFormat::NCHW);</div>
-<div class="line"><span class="lineno"> 1375</span>        }</div>
-<div class="line"><span class="lineno"> 1376</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1377</span>      <span class="comment">// SOFTMAX, LOG_SOFTMAX are not converted, because</span></div>
-<div class="line"><span class="lineno"> 1378</span>      <span class="comment">// tflite/circle assumes the last channel is always axis</span></div>
-<div class="line"><span class="lineno"> 1379</span>      <span class="keywordflow">case</span> luci::CircleOpcode::ADD:</div>
-<div class="line"><span class="lineno"> 1380</span>      <span class="keywordflow">case</span> luci::CircleOpcode::CONCATENATION:</div>
-<div class="line"><span class="lineno"> 1381</span>      <span class="keywordflow">case</span> luci::CircleOpcode::DIV:</div>
-<div class="line"><span class="lineno"> 1382</span>      <span class="keywordflow">case</span> luci::CircleOpcode::ELU:</div>
-<div class="line"><span class="lineno"> 1383</span>      <span class="keywordflow">case</span> luci::CircleOpcode::GELU:</div>
-<div class="line"><span class="lineno"> 1384</span>      <span class="keywordflow">case</span> luci::CircleOpcode::LEAKY_RELU:</div>
-<div class="line"><span class="lineno"> 1385</span>      <span class="keywordflow">case</span> luci::CircleOpcode::LOGISTIC:</div>
-<div class="line"><span class="lineno"> 1386</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MAXIMUM:</div>
-<div class="line"><span class="lineno"> 1387</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MEAN:</div>
-<div class="line"><span class="lineno"> 1388</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MINIMUM:</div>
-<div class="line"><span class="lineno"> 1389</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MIRROR_PAD:</div>
-<div class="line"><span class="lineno"> 1390</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MUL:</div>
-<div class="line"><span class="lineno"> 1391</span>      <span class="keywordflow">case</span> luci::CircleOpcode::NEG:</div>
-<div class="line"><span class="lineno"> 1392</span>      <span class="keywordflow">case</span> luci::CircleOpcode::PAD:</div>
-<div class="line"><span class="lineno"> 1393</span>      <span class="keywordflow">case</span> luci::CircleOpcode::PADV2:</div>
-<div class="line"><span class="lineno"> 1394</span>      <span class="keywordflow">case</span> luci::CircleOpcode::REDUCE_MAX:</div>
-<div class="line"><span class="lineno"> 1395</span>      <span class="keywordflow">case</span> luci::CircleOpcode::REDUCE_MIN:</div>
-<div class="line"><span class="lineno"> 1396</span>      <span class="keywordflow">case</span> luci::CircleOpcode::RELU:</div>
-<div class="line"><span class="lineno"> 1397</span>      <span class="keywordflow">case</span> luci::CircleOpcode::RELU6:</div>
-<div class="line"><span class="lineno"> 1398</span>      <span class="keywordflow">case</span> luci::CircleOpcode::RSQRT:</div>
-<div class="line"><span class="lineno"> 1399</span>      <span class="keywordflow">case</span> luci::CircleOpcode::SPLIT_V:</div>
-<div class="line"><span class="lineno"> 1400</span>      <span class="keywordflow">case</span> luci::CircleOpcode::SQUARED_DIFFERENCE:</div>
-<div class="line"><span class="lineno"> 1401</span>      <span class="keywordflow">case</span> luci::CircleOpcode::SUB:</div>
-<div class="line"><span class="lineno"> 1402</span>        <span class="keywordflow">if</span> (!has_data_format(node))</div>
-<div class="line"><span class="lineno"> 1403</span>        {</div>
-<div class="line"><span class="lineno"> 1404</span>          set_data_format(node, DataFormat::NCHW);</div>
-<div class="line"><span class="lineno"> 1405</span>        }</div>
-<div class="line"><span class="lineno"> 1406</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1407</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno"> 1408</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1409</span>    }</div>
-<div class="line"><span class="lineno"> 1410</span>  }</div>
-<div class="line"><span class="lineno"> 1411</span> </div>
-<div class="line"><span class="lineno"> 1412</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno"> 1413</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno"> 1414</span>  {</div>
-<div class="line"><span class="lineno"> 1415</span>    <span class="keywordflow">if</span> (!has_data_format(node))</div>
-<div class="line"><span class="lineno"> 1416</span>    {</div>
-<div class="line"><span class="lineno"> 1417</span>      <span class="comment">// Unsupported Op</span></div>
-<div class="line"><span class="lineno"> 1418</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1419</span>    }</div>
-<div class="line"><span class="lineno"> 1420</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (get_data_format(node) == DataFormat::NHWC)</div>
-<div class="line"><span class="lineno"> 1421</span>    {</div>
-<div class="line"><span class="lineno"> 1422</span>      <span class="comment">// Already converted to NHWC</span></div>
-<div class="line"><span class="lineno"> 1423</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1424</span>    }</div>
-<div class="line"><span class="lineno"> 1425</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a88465bfcb8ca42ce86cbea2bbaa52400">has_dynamic_shape</a>(node))</div>
-<div class="line"><span class="lineno"> 1426</span>    {</div>
-<div class="line"><span class="lineno"> 1427</span>      <span class="comment">// This pass only works for static-shaped node</span></div>
-<div class="line"><span class="lineno"> 1428</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Skip the node with a dynamic shape.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1429</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1430</span>    }</div>
-<div class="line"><span class="lineno"> 1431</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1432</span>    {</div>
-<div class="line"><span class="lineno"> 1433</span>      ConvertNCHWToNHWC converter;</div>
-<div class="line"><span class="lineno"> 1434</span>      <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno"> 1435</span>      <span class="keywordflow">if</span> (circle_node-&gt;rank() != 4)</div>
-<div class="line"><span class="lineno"> 1436</span>      {</div>
-<div class="line"><span class="lineno"> 1437</span>        <span class="comment">// TODO replace the check above with the input rank check, and remove the condition below</span></div>
-<div class="line"><span class="lineno"> 1438</span>        <span class="keywordflow">if</span> (not <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_mean.html">luci::CircleMean</a> *<span class="keyword">&gt;</span>(node) and</div>
-<div class="line"><span class="lineno"> 1439</span>            not <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_reduce_max.html">luci::CircleReduceMax</a> *<span class="keyword">&gt;</span>(node) and</div>
-<div class="line"><span class="lineno"> 1440</span>            not <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_reduce_min.html">luci::CircleReduceMin</a> *<span class="keyword">&gt;</span>(node))</div>
-<div class="line"><span class="lineno"> 1441</span>          <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1442</span>      }</div>
-<div class="line"><span class="lineno"> 1443</span> </div>
-<div class="line"><span class="lineno"> 1444</span>      <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;converter))</div>
-<div class="line"><span class="lineno"> 1445</span>      {</div>
-<div class="line"><span class="lineno"> 1446</span>        set_data_format(node, DataFormat::NHWC);</div>
-<div class="line"><span class="lineno"> 1447</span>        changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno"> 1448</span>      }</div>
-<div class="line"><span class="lineno"> 1449</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1450</span>      {</div>
-<div class="line"><span class="lineno"> 1451</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno"> 1452</span>      }</div>
-<div class="line"><span class="lineno"> 1453</span>    }</div>
-<div class="line"><span class="lineno"> 1454</span>  }</div>
-<div class="line"><span class="lineno"> 1455</span> </div>
-<div class="line"><span class="lineno"> 1456</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;ConvertNCHWToNHWCPass End&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno"> 1457</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno"> 1458</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_source.html#l01033">1033</a> of file <a class="el" href="_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_source.html">ConvertNCHWToNHWCPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1034</span>{</div>
+<div class="line"><span class="lineno"> 1035</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno"> 1036</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;ConvertNCHWToNHWCPass Start&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1037</span> </div>
+<div class="line"><span class="lineno"> 1038</span>  <span class="comment">// Annotate NHWC operators</span></div>
+<div class="line"><span class="lineno"> 1039</span>  <span class="comment">// NHWC operators are detected by pattern matching</span></div>
+<div class="line"><span class="lineno"> 1040</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno"> 1041</span>  <span class="comment">// Pattern</span></div>
+<div class="line"><span class="lineno"> 1042</span>  <span class="comment">//    pre-Transose (or pre-Reshape) + [intermediate Ops] + post-Transpose (or post-Reshape)</span></div>
+<div class="line"><span class="lineno"> 1043</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno"> 1044</span>  <span class="comment">// [intermediate Ops] are annotated as NHWC</span></div>
+<div class="line"><span class="lineno"> 1045</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno"> 1046</span>  <span class="comment">// NOTE A single pre-Transpose/Reshape can have multiple post-Transpose/Reshape.</span></div>
+<div class="line"><span class="lineno"> 1047</span>  <span class="comment">// For example,</span></div>
+<div class="line"><span class="lineno"> 1048</span>  <span class="comment">// pre-Transpose --- [intermediate Ops] --- post-Transpose</span></div>
+<div class="line"><span class="lineno"> 1049</span>  <span class="comment">//                |</span></div>
+<div class="line"><span class="lineno"> 1050</span>  <span class="comment">//                +--[intermediate Ops] --- post-Transpose</span></div>
+<div class="line"><span class="lineno"> 1051</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno"> 1052</span>  <span class="comment">// NOTE Intermediate Ops SHOULD NOT contain pre-Transpose/Reshape</span></div>
+<div class="line"><span class="lineno"> 1053</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">postorder_traversal</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno"> 1054</span>  {</div>
+<div class="line"><span class="lineno"> 1055</span>    <span class="keywordflow">if</span> (has_data_format(node))</div>
+<div class="line"><span class="lineno"> 1056</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1057</span> </div>
+<div class="line"><span class="lineno"> 1058</span>    <span class="keywordflow">if</span> (is_pre_transpose(node) || is_pre_reshape(node))</div>
+<div class="line"><span class="lineno"> 1059</span>    {</div>
+<div class="line"><span class="lineno"> 1060</span>      std::set&lt;loco::Node *&gt; intermediate;</div>
+<div class="line"><span class="lineno"> 1061</span> </div>
+<div class="line"><span class="lineno"> 1062</span>      <span class="comment">// Variable to check intermediate Ops contain pre-Transpose/Reshape</span></div>
+<div class="line"><span class="lineno"> 1063</span>      <span class="keywordtype">bool</span> has_pre = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno"> 1064</span> </div>
+<div class="line"><span class="lineno"> 1065</span>      <span class="comment">// Variable to check the pattern is closed with post-Transpose/Reshape</span></div>
+<div class="line"><span class="lineno"> 1066</span>      <span class="keywordtype">bool</span> is_closed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno"> 1067</span> </div>
+<div class="line"><span class="lineno"> 1068</span>      <span class="comment">// For recursive call of lambda</span></div>
+<div class="line"><span class="lineno"> 1069</span>      std::function&lt;void(<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *)&gt; collect_intermediate;</div>
+<div class="line"><span class="lineno"> 1070</span>      collect_intermediate = [&amp;](<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *n) {</div>
+<div class="line"><span class="lineno"> 1071</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> succ : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">succs</a>(n))</div>
+<div class="line"><span class="lineno"> 1072</span>        {</div>
+<div class="line"><span class="lineno"> 1073</span>          <span class="comment">// Skip unnecessary traversal</span></div>
+<div class="line"><span class="lineno"> 1074</span>          <span class="keywordflow">if</span> (intermediate.find(succ) != intermediate.end())</div>
+<div class="line"><span class="lineno"> 1075</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1076</span> </div>
+<div class="line"><span class="lineno"> 1077</span>          <span class="comment">// Exit condition</span></div>
+<div class="line"><span class="lineno"> 1078</span>          <span class="keywordflow">if</span> (is_post_transpose(succ) || is_post_reshape(succ))</div>
+<div class="line"><span class="lineno"> 1079</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1080</span> </div>
+<div class="line"><span class="lineno"> 1081</span>          <span class="keywordflow">if</span> (is_pre_transpose(succ) || is_pre_reshape(succ))</div>
+<div class="line"><span class="lineno"> 1082</span>          {</div>
+<div class="line"><span class="lineno"> 1083</span>            has_pre = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno"> 1084</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1085</span>          }</div>
+<div class="line"><span class="lineno"> 1086</span> </div>
+<div class="line"><span class="lineno"> 1087</span>          <span class="keywordflow">if</span> (is_output(succ))</div>
+<div class="line"><span class="lineno"> 1088</span>          {</div>
+<div class="line"><span class="lineno"> 1089</span>            is_closed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno"> 1090</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1091</span>          }</div>
+<div class="line"><span class="lineno"> 1092</span> </div>
+<div class="line"><span class="lineno"> 1093</span>          intermediate.emplace(succ);</div>
+<div class="line"><span class="lineno"> 1094</span> </div>
+<div class="line"><span class="lineno"> 1095</span>          collect_intermediate(succ);</div>
+<div class="line"><span class="lineno"> 1096</span>        }</div>
+<div class="line"><span class="lineno"> 1097</span>      };</div>
+<div class="line"><span class="lineno"> 1098</span> </div>
+<div class="line"><span class="lineno"> 1099</span>      collect_intermediate(node);</div>
+<div class="line"><span class="lineno"> 1100</span> </div>
+<div class="line"><span class="lineno"> 1101</span>      <span class="keywordflow">if</span> (has_pre or not is_closed)</div>
+<div class="line"><span class="lineno"> 1102</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1103</span> </div>
+<div class="line"><span class="lineno"> 1104</span>      <span class="keywordflow">for</span> (<span class="keyword">auto</span> inter : intermediate)</div>
+<div class="line"><span class="lineno"> 1105</span>      {</div>
+<div class="line"><span class="lineno"> 1106</span>        <span class="keywordflow">if</span> (not has_data_format(inter))</div>
+<div class="line"><span class="lineno"> 1107</span>          set_data_format(inter, DataFormat::NHWC);</div>
+<div class="line"><span class="lineno"> 1108</span>      }</div>
+<div class="line"><span class="lineno"> 1109</span>    }</div>
+<div class="line"><span class="lineno"> 1110</span>  }</div>
+<div class="line"><span class="lineno"> 1111</span> </div>
+<div class="line"><span class="lineno"> 1112</span>  <span class="comment">// Annotate NCHW operators</span></div>
+<div class="line"><span class="lineno"> 1113</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno"> 1114</span>  {</div>
+<div class="line"><span class="lineno"> 1115</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno"> 1116</span>    <span class="keywordflow">switch</span> (circle_node-&gt;opcode())</div>
+<div class="line"><span class="lineno"> 1117</span>    {</div>
+<div class="line"><span class="lineno"> 1118</span>      <span class="comment">// List of supported Ops</span></div>
+<div class="line"><span class="lineno"> 1119</span>      <span class="keywordflow">case</span> luci::CircleOpcode::CIRCLEINPUT:</div>
+<div class="line"><span class="lineno"> 1120</span>        <span class="keywordflow">if</span> (!_preserve_input &amp;&amp; !has_data_format(node))</div>
+<div class="line"><span class="lineno"> 1121</span>        {</div>
+<div class="line"><span class="lineno"> 1122</span>          set_data_format(node, DataFormat::NCHW);</div>
+<div class="line"><span class="lineno"> 1123</span>        }</div>
+<div class="line"><span class="lineno"> 1124</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1125</span>      <span class="keywordflow">case</span> luci::CircleOpcode::CIRCLEOUTPUT:</div>
+<div class="line"><span class="lineno"> 1126</span>        <span class="keywordflow">if</span> (!_preserve_output &amp;&amp; !has_data_format(node))</div>
+<div class="line"><span class="lineno"> 1127</span>        {</div>
+<div class="line"><span class="lineno"> 1128</span>          set_data_format(node, DataFormat::NCHW);</div>
+<div class="line"><span class="lineno"> 1129</span>        }</div>
+<div class="line"><span class="lineno"> 1130</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1131</span>      <span class="comment">// SOFTMAX, LOG_SOFTMAX are not converted, because</span></div>
+<div class="line"><span class="lineno"> 1132</span>      <span class="comment">// tflite/circle assumes the last channel is always axis</span></div>
+<div class="line"><span class="lineno"> 1133</span>      <span class="keywordflow">case</span> luci::CircleOpcode::ADD:</div>
+<div class="line"><span class="lineno"> 1134</span>      <span class="keywordflow">case</span> luci::CircleOpcode::CONCATENATION:</div>
+<div class="line"><span class="lineno"> 1135</span>      <span class="keywordflow">case</span> luci::CircleOpcode::DIV:</div>
+<div class="line"><span class="lineno"> 1136</span>      <span class="keywordflow">case</span> luci::CircleOpcode::ELU:</div>
+<div class="line"><span class="lineno"> 1137</span>      <span class="keywordflow">case</span> luci::CircleOpcode::GELU:</div>
+<div class="line"><span class="lineno"> 1138</span>      <span class="keywordflow">case</span> luci::CircleOpcode::LEAKY_RELU:</div>
+<div class="line"><span class="lineno"> 1139</span>      <span class="keywordflow">case</span> luci::CircleOpcode::LOGISTIC:</div>
+<div class="line"><span class="lineno"> 1140</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MAXIMUM:</div>
+<div class="line"><span class="lineno"> 1141</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MEAN:</div>
+<div class="line"><span class="lineno"> 1142</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MINIMUM:</div>
+<div class="line"><span class="lineno"> 1143</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MIRROR_PAD:</div>
+<div class="line"><span class="lineno"> 1144</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MUL:</div>
+<div class="line"><span class="lineno"> 1145</span>      <span class="keywordflow">case</span> luci::CircleOpcode::NEG:</div>
+<div class="line"><span class="lineno"> 1146</span>      <span class="keywordflow">case</span> luci::CircleOpcode::PAD:</div>
+<div class="line"><span class="lineno"> 1147</span>      <span class="keywordflow">case</span> luci::CircleOpcode::PADV2:</div>
+<div class="line"><span class="lineno"> 1148</span>      <span class="keywordflow">case</span> luci::CircleOpcode::REDUCE_MAX:</div>
+<div class="line"><span class="lineno"> 1149</span>      <span class="keywordflow">case</span> luci::CircleOpcode::REDUCE_MIN:</div>
+<div class="line"><span class="lineno"> 1150</span>      <span class="keywordflow">case</span> luci::CircleOpcode::RELU:</div>
+<div class="line"><span class="lineno"> 1151</span>      <span class="keywordflow">case</span> luci::CircleOpcode::RELU6:</div>
+<div class="line"><span class="lineno"> 1152</span>      <span class="keywordflow">case</span> luci::CircleOpcode::RSQRT:</div>
+<div class="line"><span class="lineno"> 1153</span>      <span class="keywordflow">case</span> luci::CircleOpcode::SPLIT_V:</div>
+<div class="line"><span class="lineno"> 1154</span>      <span class="keywordflow">case</span> luci::CircleOpcode::SQUARED_DIFFERENCE:</div>
+<div class="line"><span class="lineno"> 1155</span>      <span class="keywordflow">case</span> luci::CircleOpcode::SUB:</div>
+<div class="line"><span class="lineno"> 1156</span>        <span class="keywordflow">if</span> (!has_data_format(node))</div>
+<div class="line"><span class="lineno"> 1157</span>        {</div>
+<div class="line"><span class="lineno"> 1158</span>          set_data_format(node, DataFormat::NCHW);</div>
+<div class="line"><span class="lineno"> 1159</span>        }</div>
+<div class="line"><span class="lineno"> 1160</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1161</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno"> 1162</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1163</span>    }</div>
+<div class="line"><span class="lineno"> 1164</span>  }</div>
+<div class="line"><span class="lineno"> 1165</span> </div>
+<div class="line"><span class="lineno"> 1166</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno"> 1167</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno"> 1168</span>  {</div>
+<div class="line"><span class="lineno"> 1169</span>    <span class="keywordflow">if</span> (!has_data_format(node))</div>
+<div class="line"><span class="lineno"> 1170</span>    {</div>
+<div class="line"><span class="lineno"> 1171</span>      <span class="comment">// Unsupported Op</span></div>
+<div class="line"><span class="lineno"> 1172</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1173</span>    }</div>
+<div class="line"><span class="lineno"> 1174</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (get_data_format(node) == DataFormat::NHWC)</div>
+<div class="line"><span class="lineno"> 1175</span>    {</div>
+<div class="line"><span class="lineno"> 1176</span>      <span class="comment">// Already converted to NHWC</span></div>
+<div class="line"><span class="lineno"> 1177</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1178</span>    }</div>
+<div class="line"><span class="lineno"> 1179</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a88465bfcb8ca42ce86cbea2bbaa52400">has_dynamic_shape</a>(node))</div>
+<div class="line"><span class="lineno"> 1180</span>    {</div>
+<div class="line"><span class="lineno"> 1181</span>      <span class="comment">// This pass only works for static-shaped node</span></div>
+<div class="line"><span class="lineno"> 1182</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Skip the node with a dynamic shape.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1183</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1184</span>    }</div>
+<div class="line"><span class="lineno"> 1185</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1186</span>    {</div>
+<div class="line"><span class="lineno"> 1187</span>      ConvertNCHWToNHWC converter;</div>
+<div class="line"><span class="lineno"> 1188</span>      <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno"> 1189</span>      <span class="keywordflow">if</span> (circle_node-&gt;rank() != 4)</div>
+<div class="line"><span class="lineno"> 1190</span>      {</div>
+<div class="line"><span class="lineno"> 1191</span>        <span class="comment">// TODO replace the check above with the input rank check, and remove the condition below</span></div>
+<div class="line"><span class="lineno"> 1192</span>        <span class="keywordflow">if</span> (not <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_mean.html">luci::CircleMean</a> *<span class="keyword">&gt;</span>(node) and</div>
+<div class="line"><span class="lineno"> 1193</span>            not <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_reduce_max.html">luci::CircleReduceMax</a> *<span class="keyword">&gt;</span>(node) and</div>
+<div class="line"><span class="lineno"> 1194</span>            not <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_reduce_min.html">luci::CircleReduceMin</a> *<span class="keyword">&gt;</span>(node))</div>
+<div class="line"><span class="lineno"> 1195</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1196</span>      }</div>
+<div class="line"><span class="lineno"> 1197</span> </div>
+<div class="line"><span class="lineno"> 1198</span>      <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;converter))</div>
+<div class="line"><span class="lineno"> 1199</span>      {</div>
+<div class="line"><span class="lineno"> 1200</span>        set_data_format(node, DataFormat::NHWC);</div>
+<div class="line"><span class="lineno"> 1201</span>        changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno"> 1202</span>      }</div>
+<div class="line"><span class="lineno"> 1203</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1204</span>      {</div>
+<div class="line"><span class="lineno"> 1205</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno"> 1206</span>      }</div>
+<div class="line"><span class="lineno"> 1207</span>    }</div>
+<div class="line"><span class="lineno"> 1208</span>  }</div>
+<div class="line"><span class="lineno"> 1209</span> </div>
+<div class="line"><span class="lineno"> 1210</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;ConvertNCHWToNHWCPass End&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno"> 1211</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno"> 1212</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html"><div class="ttname"><a href="classloco_1_1_node.html">loco::Node</a></div><div class="ttdoc">Logical unit of computation.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00053">Node.h:54</a></div></div>

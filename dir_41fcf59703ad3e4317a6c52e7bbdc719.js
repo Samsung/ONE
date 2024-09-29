@@ -42,6 +42,8 @@ var dir_41fcf59703ad3e4317a6c52e7bbdc719 =
     [ "FusedBatchNormLayer.h", "_fused_batch_norm_layer_8h.html", "_fused_batch_norm_layer_8h" ],
     [ "GatherLayer.cc", "_gather_layer_8cc.html", null ],
     [ "GatherLayer.h", "_gather_layer_8h.html", "_gather_layer_8h" ],
+    [ "GGMLHelper.cc", "_g_g_m_l_helper_8cc.html", "_g_g_m_l_helper_8cc" ],
+    [ "GGMLHelper.h", "_g_g_m_l_helper_8h.html", "_g_g_m_l_helper_8h" ],
     [ "L2NormLayer.cc", "_l2_norm_layer_8cc.html", null ],
     [ "L2NormLayer.h", "_l2_norm_layer_8h.html", "_l2_norm_layer_8h" ],
     [ "LogSoftMaxLayer.cc", "_log_soft_max_layer_8cc.html", null ],

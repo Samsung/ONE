@@ -1,0 +1,5 @@
+<map id="luci::FuseRoPEPass" name="luci::FuseRoPEPass">
+<area shape="rect" id="Node000001" title="Class to fuse certain pattern of subgraph into CircleRoPE with auxiliary nodes." alt="" coords="5,79,145,105"/>
+<area shape="rect" id="Node000002" href="$classlogo_1_1_pass.html" title=" " alt="" coords="34,5,116,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,46,78,79,72,79,72,46"/>
+</map>

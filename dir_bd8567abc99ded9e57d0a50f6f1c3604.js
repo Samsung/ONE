@@ -10,6 +10,8 @@ var dir_bd8567abc99ded9e57d0a50f6f1c3604 =
     [ "GRU.h", "circle_2src_2_op_2_g_r_u_8h.html", "circle_2src_2_op_2_g_r_u_8h" ],
     [ "InstanceNorm.cpp", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8cpp.html", null ],
     [ "InstanceNorm.h", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_instance_norm_8h" ],
-    [ "RmsNorm.cpp", "circle_2src_2_op_2_rms_norm_8cpp.html", null ],
-    [ "RmsNorm.h", "circle_2src_2_op_2_rms_norm_8h.html", "circle_2src_2_op_2_rms_norm_8h" ]
+    [ "RmsNorm.cpp", "circlechef_2circle_2src_2_op_2_rms_norm_8cpp.html", null ],
+    [ "RmsNorm.h", "circlechef_2circle_2src_2_op_2_rms_norm_8h.html", "circlechef_2circle_2src_2_op_2_rms_norm_8h" ],
+    [ "RoPE.cpp", "circle_2src_2_op_2_ro_p_e_8cpp.html", null ],
+    [ "RoPE.h", "circle_2src_2_op_2_ro_p_e_8h.html", "circle_2src_2_op_2_ro_p_e_8h" ]
 ];

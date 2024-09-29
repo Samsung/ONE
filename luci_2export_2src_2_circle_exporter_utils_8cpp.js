@@ -12,6 +12,7 @@ var luci_2export_2src_2_circle_exporter_utils_8cpp =
     [ "to_circle_actfunc", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#a614753df4ca4a0c483b1de2e3120ed89", null ],
     [ "to_circle_dimensiontype", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#a398724fcb3d7625c4f321e0b7bcd84ad", null ],
     [ "to_circle_mirrorpadmode", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#adf4a2a01c11ad48c96419b083acec0b3", null ],
+    [ "to_circle_rope", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#a5dafd6eb59501a259e77c322f6be3c7e", null ],
     [ "to_circle_sparse_index_vector", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#a0636044ee702bafa7341008a89346717", null ],
     [ "to_circle_sparse_index_vector_type", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#a4ac9e8dbfad0e6e557eda3737c97ee59", null ],
     [ "to_circle_tensortype", "luci_2export_2src_2_circle_exporter_utils_8cpp.html#aa7800375ef05ce2b3cfac68dac9fefcf", null ],

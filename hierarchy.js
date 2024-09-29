@@ -815,6 +815,11 @@ var hierarchy =
               [ "luci::CircleRmsNorm", "classluci_1_1_circle_rms_norm.html", null ]
             ] ]
           ] ],
+          [ "luci::CircleNodeImpl< CircleOpcode::ROPE >", "structluci_1_1_circle_node_impl.html", [
+            [ "luci::FixedArityNode< 3, CircleNodeImpl< CircleOpcode::ROPE > >", "classluci_1_1_fixed_arity_node.html", [
+              [ "luci::CircleRoPE", "classluci_1_1_circle_ro_p_e.html", null ]
+            ] ]
+          ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::ROUND >", "structluci_1_1_circle_node_impl.html", [
             [ "luci::FixedArityNode< 1, CircleNodeImpl< CircleOpcode::ROUND > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleRound", "classluci_1_1_circle_round.html", null ]
@@ -1508,7 +1513,8 @@ var hierarchy =
       [ "circlechef::CircleOpBatchMatMul", "classcirclechef_1_1_circle_op_batch_mat_mul.html", null ],
       [ "circlechef::CircleOpGRU", "classcirclechef_1_1_circle_op_g_r_u.html", null ],
       [ "circlechef::CircleOpInstanceNorm", "classcirclechef_1_1_circle_op_instance_norm.html", null ],
-      [ "circlechef::CircleOpRmsNorm", "classcirclechef_1_1_circle_op_rms_norm.html", null ]
+      [ "circlechef::CircleOpRmsNorm", "classcirclechef_1_1_circle_op_rms_norm.html", null ],
+      [ "circlechef::CircleOpRoPE", "classcirclechef_1_1_circle_op_ro_p_e.html", null ]
     ] ],
     [ "circlechef::CircleOpRegistry", "classcirclechef_1_1_circle_op_registry.html", null ],
     [ "luci::CircleOptimizer", "classluci_1_1_circle_optimizer.html", null ],
@@ -1792,7 +1798,8 @@ var hierarchy =
       [ "circleinspect::DumpConv2DWeight", "classcircleinspect_1_1_dump_conv2_d_weight.html", null ],
       [ "circleinspect::DumpOperatorVersion", "classcircleinspect_1_1_dump_operator_version.html", null ],
       [ "circleinspect::DumpOperators", "classcircleinspect_1_1_dump_operators.html", null ],
-      [ "circleinspect::DumpTensorDType", "classcircleinspect_1_1_dump_tensor_d_type.html", null ]
+      [ "circleinspect::DumpTensorDType", "classcircleinspect_1_1_dump_tensor_d_type.html", null ],
+      [ "circleinspect::DumpTensorShape", "classcircleinspect_1_1_dump_tensor_shape.html", null ]
     ] ],
     [ "circletensordump::DumpInterface", "classcircletensordump_1_1_dump_interface.html", [
       [ "circletensordump::DumpTensors", "classcircletensordump_1_1_dump_tensors.html", null ],
@@ -2193,6 +2200,7 @@ var hierarchy =
         [ "luci::CircleReverseSequenceGraphBuilder", "classluci_1_1_circle_reverse_sequence_graph_builder.html", null ],
         [ "luci::CircleReverseV2GraphBuilder", "classluci_1_1_circle_reverse_v2_graph_builder.html", null ],
         [ "luci::CircleRmsNormGraphBuilder", "classluci_1_1_circle_rms_norm_graph_builder.html", null ],
+        [ "luci::CircleRoPEGraphBuilder", "classluci_1_1_circle_ro_p_e_graph_builder.html", null ],
         [ "luci::CircleRoundGraphBuilder", "classluci_1_1_circle_round_graph_builder.html", null ],
         [ "luci::CircleRsqrtGraphBuilder", "classluci_1_1_circle_rsqrt_graph_builder.html", null ],
         [ "luci::CircleSVDFBuilder", "classluci_1_1_circle_s_v_d_f_builder.html", null ],
@@ -2309,8 +2317,6 @@ var hierarchy =
       [ "arm_compute::CLBinaryLogicalOp", "classarm__compute_1_1_c_l_binary_logical_op.html", null ],
       [ "arm_compute::CLCastBool", "classarm__compute_1_1_c_l_cast_bool.html", null ],
       [ "arm_compute::CLEmbeddingLookup", "classarm__compute_1_1_c_l_embedding_lookup.html", null ],
-      [ "arm_compute::CLFullyConnectedHybridLayerReshapeWeights", "classarm__compute_1_1_c_l_fully_connected_hybrid_layer_reshape_weights.html", null ],
-      [ "arm_compute::CLFullyConnectedLayerReshapeWeightsEx", "classarm__compute_1_1_c_l_fully_connected_layer_reshape_weights_ex.html", null ],
       [ "arm_compute::CLGatherEx", "classarm__compute_1_1_c_l_gather_ex.html", null ],
       [ "arm_compute::CLHashtableLookup", "classarm__compute_1_1_c_l_hashtable_lookup.html", null ],
       [ "arm_compute::CLInstanceNormalizationLayerEx", "classarm__compute_1_1_c_l_instance_normalization_layer_ex.html", null ],
@@ -2564,7 +2570,6 @@ var hierarchy =
     [ "INESimpleFunctionNoBorder", null, [
       [ "arm_compute::NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", null ],
       [ "arm_compute::NEEmbeddingLookup", "classarm__compute_1_1_n_e_embedding_lookup.html", null ],
-      [ "arm_compute::NEFullyConnectedHybridLayerReshapeWeights", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer_reshape_weights.html", null ],
       [ "arm_compute::NEGatherEx", "classarm__compute_1_1_n_e_gather_ex.html", null ],
       [ "arm_compute::NEHashtableLookup", "classarm__compute_1_1_n_e_hashtable_lookup.html", null ],
       [ "arm_compute::NEOneHot", "classarm__compute_1_1_n_e_one_hot.html", null ]
@@ -2958,6 +2963,9 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::KernelWithParams< ResizeNearestNeighborParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::ResizeNearestNeighbor", "classluci__interpreter_1_1kernels_1_1_resize_nearest_neighbor.html", null ]
+      ] ],
+      [ "luci_interpreter::KernelWithParams< RmsNormParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
+        [ "luci_interpreter::kernels::RmsNorm", "classluci__interpreter_1_1kernels_1_1_rms_norm.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< SVDFParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::SVDF", "classluci__interpreter_1_1kernels_1_1_s_v_d_f.html", null ]
@@ -3562,8 +3570,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -3837,6 +3845,7 @@ var hierarchy =
       [ "ReverseSequenceChef", "class_reverse_sequence_chef.html", null ],
       [ "ReverseV2Chef", "class_reverse_v2_chef.html", null ],
       [ "RmsNormChef", "class_rms_norm_chef.html", null ],
+      [ "RoPEChef", "class_ro_p_e_chef.html", null ],
       [ "RoundChef", "class_round_chef.html", null ],
       [ "RsqrtChef", "class_rsqrt_chef.html", null ],
       [ "SVDFChef", "class_s_v_d_f_chef.html", null ],
@@ -3972,6 +3981,7 @@ var hierarchy =
       [ "ReverseSequenceChefFactory", "struct_reverse_sequence_chef_factory.html", null ],
       [ "ReverseV2ChefFactory", "struct_reverse_v2_chef_factory.html", null ],
       [ "RmsNormChefFactory", "struct_rms_norm_chef_factory.html", null ],
+      [ "RoPEChefFactory", "struct_ro_p_e_chef_factory.html", null ],
       [ "RoundChefFactory", "struct_round_chef_factory.html", null ],
       [ "RsqrtChefFactory", "struct_rsqrt_chef_factory.html", null ],
       [ "SVDFChefFactory", "struct_s_v_d_f_chef_factory.html", null ],
@@ -4136,6 +4146,8 @@ var hierarchy =
       [ "circledump::ResizeBilinearPrinter", "classcircledump_1_1_resize_bilinear_printer.html", null ],
       [ "circledump::ResizeNearestNeighborPrinter", "classcircledump_1_1_resize_nearest_neighbor_printer.html", null ],
       [ "circledump::ReverseSequencePrinter", "classcircledump_1_1_reverse_sequence_printer.html", null ],
+      [ "circledump::RmsNormPrinter", "classcircledump_1_1_rms_norm_printer.html", null ],
+      [ "circledump::RoPEPrinter", "classcircledump_1_1_ro_p_e_printer.html", null ],
       [ "circledump::SVDFPrinter", "classcircledump_1_1_s_v_d_f_printer.html", null ],
       [ "circledump::ShapePrinter", "classcircledump_1_1_shape_printer.html", null ],
       [ "circledump::SoftmaxPrinter", "classcircledump_1_1_softmax_printer.html", null ],
@@ -4532,6 +4544,8 @@ var hierarchy =
       [ "luci::FuseMulWithFullyConnectedPass", "structluci_1_1_fuse_mul_with_fully_connected_pass.html", null ],
       [ "luci::FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", null ],
       [ "luci::FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", null ],
+      [ "luci::FuseRmsNormPass", "structluci_1_1_fuse_rms_norm_pass.html", null ],
+      [ "luci::FuseRoPEPass", "structluci_1_1_fuse_ro_p_e_pass.html", null ],
       [ "luci::FuseRsqrtPass", "structluci_1_1_fuse_rsqrt_pass.html", null ],
       [ "luci::FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", null ],
       [ "luci::FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", null ],
@@ -4810,6 +4824,7 @@ var hierarchy =
     [ "std::reverse_iterator", null, [
       [ "flatbuffers::VectorReverseIterator< Iterator >", "structflatbuffers_1_1_vector_reverse_iterator.html", null ]
     ] ],
+    [ "luci_interpreter::RmsNormParams", "structluci__interpreter_1_1_rms_norm_params.html", null ],
     [ "luci::sinf::Rule", "structluci_1_1sinf_1_1_rule.html", null ],
     [ "luci::tinf::Rule", "structluci_1_1tinf_1_1_rule.html", null ],
     [ "nnkit::support::onnx::Runner", "classnnkit_1_1support_1_1onnx_1_1_runner.html", null ],

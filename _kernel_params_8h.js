@@ -24,6 +24,7 @@ var _kernel_params_8h =
     [ "luci_interpreter::ReducerParams", "structluci__interpreter_1_1_reducer_params.html", "structluci__interpreter_1_1_reducer_params" ],
     [ "luci_interpreter::ResizeBilinearParams", "structluci__interpreter_1_1_resize_bilinear_params.html", "structluci__interpreter_1_1_resize_bilinear_params" ],
     [ "luci_interpreter::ResizeNearestNeighborParams", "structluci__interpreter_1_1_resize_nearest_neighbor_params.html", "structluci__interpreter_1_1_resize_nearest_neighbor_params" ],
+    [ "luci_interpreter::RmsNormParams", "structluci__interpreter_1_1_rms_norm_params.html", "structluci__interpreter_1_1_rms_norm_params" ],
     [ "luci_interpreter::ShapeParams", "structluci__interpreter_1_1_shape_params.html", "structluci__interpreter_1_1_shape_params" ],
     [ "luci_interpreter::SubParams", "structluci__interpreter_1_1_sub_params.html", "structluci__interpreter_1_1_sub_params" ],
     [ "luci_interpreter::SVDFParams", "structluci__interpreter_1_1_s_v_d_f_params.html", "structluci__interpreter_1_1_s_v_d_f_params" ],
