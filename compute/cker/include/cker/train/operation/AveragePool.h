@@ -29,66 +29,9 @@ namespace cker
 {
 namespace train
 {
-inline void AvgPool2D(const PoolParams &params, const Shape &input_shape, const float *input_data,
-                      const Shape &output_shape, float *output_data)
-{
-  assert(input_shape.DimensionsCount() == 4);
-  assert(output_shape.DimensionsCount() == 4);
-  const int batches = MatchingDim(input_shape, 0, output_shape, 0);
-  const int input_height = input_shape.Dims(1);
-  const int input_width = input_shape.Dims(2);
-  const int output_height = output_shape.Dims(1);
-  const int output_width = output_shape.Dims(2);
-  const int stride_height = params.stride_height;
-  const int stride_width = params.stride_width;
 
-  // TODO(benoitjacob) make this a proper reference impl without Eigen!
-  const auto in_mat = MapAsMatrixWithLastDimAsRows(input_data, input_shape);
-  auto out_mat = MapAsMatrixWithLastDimAsRows(output_data, output_shape);
-
-  // Prefill the output to 0.
-  out_mat.setZero();
-
-  for (int b = 0; b < batches; ++b)
-  {
-    for (int h = 0; h < output_height; ++h)
-    {
-      for (int w = 0; w < output_width; ++w)
-      {
-        // (h_start, h_end) * (w_start, w_end) is input range
-        // that output is projected from.
-        int h_start = h * stride_height - params.padding_values.height;
-        int h_end = std::min(h_start + params.filter_height, input_height);
-        h_start = h_start < 0 ? 0 : h_start;
-
-        int w_start = w * stride_width - params.padding_values.width;
-        int w_end = std::min(w_start + params.filter_width, input_width);
-        w_start = w_start < 0 ? 0 : w_start;
-
-        int count = (h_end - h_start) * (w_end - w_start);
-        if (h_end <= 0 || w_end <= 0 || count <= 0 || h_start >= input_height ||
-            w_start >= input_width)
-          continue;
-
-        int out_offset = NodeOffset(b, h, w, output_height, output_width);
-        for (int ph = h_start; ph < h_end; ++ph)
-        {
-          for (int pw = w_start; pw < w_end; ++pw)
-          {
-            int in_offset = NodeOffset(b, ph, pw, input_height, input_width);
-            out_mat.col(out_offset) += in_mat.col(in_offset);
-          }
-        }
-        out_mat.col(out_offset) /= count;
-      }
-    }
-  }
-
-  out_mat.cwiseMin(params.float_activation_min).cwiseMax(params.float_activation_max);
-}
-
-inline void AvgPool2DGrad(const PoolParams &params, const Shape &incoming_shape,
-                          const float *incoming_data, const Shape &grad_shape, float *grad_data)
+inline void AveragePool2DGrad(const PoolParams &params, const Shape &incoming_shape,
+                              const float *incoming_data, const Shape &grad_shape, float *grad_data)
 {
   assert(grad_shape.DimensionsCount() == 4);
   assert(incoming_shape.DimensionsCount() == 4);

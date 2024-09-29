@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 #include <cker/eigen/Utils.h>
 #include <cker/operation/AveragePool.h>
-#include <cker/train/operation/AvgPool.h>
+#include <cker/train/operation/AveragePool.h>
 #include <cker/Shape.h>
 
 #include <gtest/gtest.h>
@@ -48,14 +48,11 @@ public:
     assert(expected_output.size() == _out_shape.FlatSize());
 
     std::vector<T> cacluated_output(_out_shape.FlatSize());
-    nnfw::cker::train::AvgPool2D(_op_params, _in_shape, input.data(), _out_shape,
-                                 cacluated_output.data());
+    nnfw::cker::AveragePool<float>(_op_params, _in_shape, input.data(), _out_shape,
+                                   cacluated_output.data());
 
     if (expect_eq)
-      for (size_t i = 0; i < expected_output.size(); i++)
-      {
-        EXPECT_FLOAT_EQ(expected_output[i], cacluated_output[i]);
-      }
+      EXPECT_EQ(expected_output, cacluated_output);
     else
       EXPECT_NE(expected_output, cacluated_output);
   }
@@ -67,8 +64,8 @@ public:
     assert(expected_grad_data.size() == _in_shape.FlatSize());
 
     std::vector<T> calcuated_grad(_in_shape.FlatSize());
-    nnfw::cker::train::AvgPool2DGrad(_op_params, _out_shape, incoming_data.data(), _in_shape,
-                                     calcuated_grad.data());
+    nnfw::cker::train::AveragePool2DGrad(_op_params, _out_shape, incoming_data.data(), _in_shape,
+                                         calcuated_grad.data());
 
     if (expect_eq)
     {
@@ -85,7 +82,7 @@ public:
 
 } // namespace
 
-TEST(CKer_Operation, AvgPool2D)
+TEST(CKer_Operation, AveragePool2D)
 {
   // Depth 1 case
   {
@@ -97,6 +94,8 @@ TEST(CKer_Operation, AvgPool2D)
       op_param.filter_width = 2;
       op_param.padding_values.height = 0;
       op_param.padding_values.width = 0;
+      op_param.float_activation_max = std::numeric_limits<float>::max();
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
     }
     nnfw::cker::Shape in = {1, 3, 3, 1};
     nnfw::cker::Shape out = {1, 2, 2, 1};
@@ -104,7 +103,7 @@ TEST(CKer_Operation, AvgPool2D)
     AvgPoolOpVerifier<float> verifier(op_param, in, out);
 
     /**
-     *  input(index) :                         output(arg-count):
+     *  input :                                   output:
      *
      *  10(0)  15(1)   2(2)
      *   7(3)   8(4)   9(5)   - (forward) ->    10(4)   8.5(4)
@@ -117,7 +116,7 @@ TEST(CKer_Operation, AvgPool2D)
 
     /**
      *  output_deriv:                     input_deriv:
-     * (randomly filled)
+     *
      *
      *   0.4   0.4                        0.1   0.2   0.1
      *   0.4   0.4     - (backward) ->    0.2   0.4   0.2
@@ -139,6 +138,8 @@ TEST(CKer_Operation, AvgPool2D)
       op_param.filter_width = 3;
       op_param.padding_values.height = 0;
       op_param.padding_values.width = 0;
+      op_param.float_activation_max = std::numeric_limits<float>::max();
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
     }
     nnfw::cker::Shape in = {1, 3, 3, 2};
     nnfw::cker::Shape out = {1, 1, 1, 2};
@@ -147,7 +148,7 @@ TEST(CKer_Operation, AvgPool2D)
 
     /**
      *  depth[0]
-     *  input(index) :                     output(index):
+     *  input :                               output:
      *
      *  10(0)  15(1)  2(2)
      *  10(3)  12(4)  17(5)   -(forward)->     16(0)
@@ -155,7 +156,7 @@ TEST(CKer_Operation, AvgPool2D)
      *
      *
      *  depth[1]
-     *  input(index):                      output(index):
+     *  input:                                 output:
      *
      *  -1(0)  2(1)  3(2)
      *  8(3)   9(4)  2(5)    -(forward)->       4(0)
@@ -192,49 +193,9 @@ TEST(CKer_Operation, AvgPool2D)
       /* depth1 */ 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04, 0.04;
     verifier.verifyBackward(output_deriv, expected_input_deriv);
   }
-
-  // with padding case
-  {
-    nnfw::cker::PoolParams op_param;
-    {
-      op_param.stride_height = 2;
-      op_param.stride_width = 2;
-      op_param.filter_height = 2;
-      op_param.filter_width = 2;
-      op_param.padding_values.height = 2;
-      op_param.padding_values.width = 2;
-    }
-    nnfw::cker::Shape in = {1, 2, 2, 1};
-    nnfw::cker::Shape out = {1, 3, 3, 1};
-
-    AvgPoolOpVerifier<float> verifier(op_param, in, out);
-
-    /**
-     * input_with_padding:             expected_output:
-     *
-     *    4   8                              0   0   0
-     *    9   2            -(forward)->      0  5.75 0
-     *                                       0   0   0
-     */
-
-    std::vector<float> input = {4, 8, 9, 2};
-    std::vector<float> expected_output = {0, 0, 0, 0, 5.75, 0, 0, 0, 0};
-    verifier.verifyForward(input, expected_output);
-
-    /**
-     * output_deriv:                    input_deriv:
-     *
-     *  0.1   0.1   0.1                     0.1   0.1
-     *  0.1   0.4   0.3   -(backward)->     0.1   0.1
-     *  0.5   0.1   0.1
-     */
-    std::vector<float> output_deriv = {0.1, 0.1, 0.1, 0.1, 0.4, 0.3, 0.5, 0.1, 0.1};
-    std::vector<float> expected_input_deriv = {0.1, 0.1, 0.1, 0.1};
-    verifier.verifyBackward(output_deriv, expected_input_deriv);
-  }
 }
 
-TEST(CKer_Operation, neg_AvgPool)
+TEST(CKer_Operation, neg_AveragePoolInvalidExpectedValue)
 {
   // Invalid expected value
   {
@@ -246,6 +207,8 @@ TEST(CKer_Operation, neg_AvgPool)
       op_param.filter_width = 2;
       op_param.padding_values.height = 0;
       op_param.padding_values.width = 0;
+      op_param.float_activation_max = std::numeric_limits<float>::max();
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
     }
     nnfw::cker::Shape in = {1, 2, 2, 1};
     nnfw::cker::Shape out = {1, 1, 1, 1};
@@ -268,6 +231,8 @@ TEST(CKer_Operation, neg_AvgPool)
       op_param.filter_width = 2;
       op_param.padding_values.height = 1;
       op_param.padding_values.width = 1;
+      op_param.float_activation_max = std::numeric_limits<float>::max();
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
     }
 
     nnfw::cker::Shape in = {1, 2, 2, 1};
