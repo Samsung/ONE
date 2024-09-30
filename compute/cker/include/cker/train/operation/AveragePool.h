@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNFW_CKER_TRAIN_OPERATION_AVGPOOL_H__
-#define __NNFW_CKER_TRAIN_OPERATION_AVGPOOL_H__
+#ifndef __NNFW_CKER_TRAIN_OPERATION_AVERAGEPOOL_H__
+#define __NNFW_CKER_TRAIN_OPERATION_AVERAGEPOOL_H__
 
 #include "cker/Shape.h"
 #include "cker/Utils.h"
@@ -90,4 +90,4 @@ inline void AveragePool2DGrad(const PoolParams &params, const Shape &incoming_sh
 } // namespace cker
 } // namespace nnfw
 
-#endif // __NNFW_CKER_TRAIN_OPERATION_AVGPOOL_H__
+#endif // __NNFW_CKER_TRAIN_OPERATION_AVERAGEPOOL_H__
