@@ -1,0 +1,5 @@
+# To check if dynamic shape properly infered
+
+RULE    "VERIFY_FILE_FORMAT"    $(verify_file_format) '=' 1
+
+RULE    "RANGE_SHAPE"           $(tensor_shape ofm) '=' [4,-1]
