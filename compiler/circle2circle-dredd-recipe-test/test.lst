@@ -144,3 +144,6 @@ Add(REGRESS_ONNX_Mul_Mul_000 PASS
       convert_nchw_to_nhwc)
 
 Add(REGRESS_Issue_13863 PASS substitute_pack_to_reshape)
+
+# SHAPE INFERENCE test
+Add(Inf_Pad_000 PASS)
