@@ -73,6 +73,29 @@ bool inference_incomplete_shape(const TagShape &src, TagShape &dst)
   return true;
 }
 
+template <loco::DataType DTYPE> std::vector<int> extract_const(const luci::CircleConst *const_node)
+{
+  std::vector<int> values;
+  auto size = const_node->size<DTYPE>();
+  for (auto i = 0u; i < size; ++i)
+  {
+    auto v = const_node->at<DTYPE>(i);
+    values.push_back(v);
+  }
+  return values;
+};
+
+std::vector<int> extract_shape(const luci::CircleNode *node)
+{
+  std::vector<int> shape;
+  auto rank = node->rank();
+  for (auto i = 0u; i < rank; ++i)
+  {
+    shape.push_back(node->dim(i).value());
+  }
+  return shape;
+};
+
 class TaggedShapeAnalyzer final
 {
 public:
@@ -81,9 +104,9 @@ public:
                              const luci::CircleTranspose *b_tr);
 
 private:
-  void init_shape_with_tag(const luci::CircleNode *);
+  void init_shape_with_tag(const std::vector<int> &in_shape);
 
-  template <loco::DataType PermType> void analyze_transpose(const luci::CircleTranspose *);
+  void analyze_transpose(const std::vector<int> &perm);
 
   template <loco::DataType ShapeType> bool analyze_reshape(const luci::CircleReshape *);
 
@@ -94,29 +117,29 @@ private:
 };
 
 /**
- * @brief initalize _shape with input tensor named in_tensor
+ * @brief initalize _shape based on 'in_shape'
  *
  * @note 'tags' are attached to non-1 valued dimension.
  */
-void TaggedShapeAnalyzer::init_shape_with_tag(const luci::CircleNode *in_tensor)
+void TaggedShapeAnalyzer::init_shape_with_tag(const std::vector<int> &in_shape)
 {
   _shape.clear();
   uint8_t tag = START_TAG;
 
-  for (uint32_t i = 0; i < in_tensor->rank(); i++)
+  for (auto i : in_shape)
   {
     TagDim dim;
-    {
-      dim.value = in_tensor->dim(i).value();
-      if (dim.value != 1)
-        dim.tags.push_back(tag++);
-    }
+    dim.value = i;
+
+    if (dim.value != 1)
+      dim.tags.push_back(tag++);
+
     _shape.push_back(dim);
   }
 }
 
 /**
- * @brief update _shape based on 'Transpose' permutation value
+ * @brief update _shape based on 'perm'
  *
  * @example Let's assume Transpose(perm=0, 3, 1, 2) is given to [before] _shape.
  *
@@ -130,18 +153,12 @@ void TaggedShapeAnalyzer::init_shape_with_tag(const luci::CircleNode *in_tensor)
  *              - value :   (1)   (448)  (7)  (7)
  *              - tags  :   (-)   (2)    (0)  (1)
  */
-template <loco::DataType PermType>
-void TaggedShapeAnalyzer::analyze_transpose(const luci::CircleTranspose *transpose_node)
+void TaggedShapeAnalyzer::analyze_transpose(const std::vector<int> &perm)
 {
-  const luci::CircleConst *perm_node = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
-  assert(perm_node->dtype() == PermType);
-
   TagShape new_shape;
-  const auto size = perm_node->size<PermType>();
-  for (uint32_t i = 0; i < size; i++)
+  for (auto i : perm)
   {
-    auto perm_idx = perm_node->at<PermType>(i);
-    new_shape.push_back(_shape.at(perm_idx));
+    new_shape.push_back(_shape.at(i));
   }
   _shape = new_shape;
 }
@@ -161,6 +178,7 @@ void TaggedShapeAnalyzer::analyze_transpose(const luci::CircleTranspose *transpo
  *              - value :   (1)   (448)  (49)
  *              - tags  :   (-)   (2)    (0, 1)
  */
+// TODO: Update analyze_reshape get std::vector<int>&
 template <loco::DataType ReshapeType>
 bool TaggedShapeAnalyzer::analyze_reshape(const luci::CircleReshape *reshape_node)
 {
@@ -313,14 +331,19 @@ bool TaggedShapeAnalyzer::can_remove_transposes(const luci::CircleTranspose *f_t
 
   const luci::CircleNode *in_tensor = loco::must_cast<luci::CircleNode *>(f_tr->a());
 
-  init_shape_with_tag(in_tensor);
+  auto in_shape = extract_shape(in_tensor);
+  auto front_perm = extract_const<DType>(f_tr);
+  auto back_perm = extract_const<DType>(b_tr);
 
-  analyze_transpose<DType>(f_tr);
+  init_shape_with_tag(in_shape);
 
-  if (not analyze_reshape<DType>(m_rs))
+  analyze_transpose(front_perm);
+
+  // TODO : update analyze_reshape gets std::vector<int> like analyze_transpose
+  if (not analyze_reshape(m_rs))
     return false;
 
-  analyze_transpose<DType>(b_tr);
+  analyze_transpose(back_perm);
 
   if (not verify_tag())
     return false;
