@@ -63,11 +63,11 @@ const loco::DataType S32 = loco::DataType::S32;
 struct StridedSliceParams
 {
   int8_t start_indices_count = 0;
-  int32_t start_indices[kMaxDim];
+  int32_t start_indices[kMaxDim] = {0};
   int8_t stop_indices_count = 0;
-  int32_t stop_indices[kMaxDim];
+  int32_t stop_indices[kMaxDim] = {0};
   int8_t strides_count = 0;
-  int32_t strides[kMaxDim];
+  int32_t strides[kMaxDim] = {0};
 
   int16_t begin_mask = 0;
   int16_t ellipsis_mask = 0;
@@ -311,6 +311,8 @@ StridedSliceParams BuildStridedSliceParams(StridedSliceContext *op_context)
   // Calculate effective_input_shape and its corresponding begin, end, strides.
   loco::TensorShape input_shape = circle_shape(op_context->input);
   int64_t added_ellipsis = 0, added_axises = 0;
+  // make sure no overflow
+  assert(static_cast<uint32_t>(effective_dims) == effective_dims);
   op_context->effective_input_shape.rank(effective_dims);
 
   for (int64_t i = 0; i < effective_dims; ++i)
