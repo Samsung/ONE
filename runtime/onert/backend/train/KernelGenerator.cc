@@ -68,6 +68,8 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
     // TODO Implement AVG PoolType
     case ir::operation::Pool2D::PoolType::MAX:
       return ops::PoolType::kMax;
+    case ir::operation::Pool2D::PoolType::AVG:
+      return ops::PoolType::kAvg;
     default:
       throw std::runtime_error("train KernelGenerator : Not supported operation yet");
   }
@@ -496,6 +498,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
     {
       case train::ops::PoolType::kMax:
         return cpu::ops::PoolType::kMax;
+      case train::ops::PoolType::kAvg:
+        return cpu::ops::PoolType::kAvg;
       default:
         throw std::runtime_error("PoolLayer: Unsupported pool type yet");
     }

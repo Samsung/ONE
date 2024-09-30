@@ -45,6 +45,7 @@ public:
 enum class PoolType
 {
   kMax,
+  kAvg,
 };
 
 class PoolLayer : public ::onert::exec::train::ITrainableFunction, public cpu::ops::PoolLayer

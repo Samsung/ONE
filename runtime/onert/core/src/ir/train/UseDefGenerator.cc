@@ -290,7 +290,8 @@ void UseDefGenerator::visit(const train::operation::Pad &node)
 
 void UseDefGenerator::visit(const train::operation::Pool2D &node)
 {
-  if (node.param().op_type != ir::operation::Pool2D::PoolType::MAX)
+  if (node.param().op_type != ir::operation::Pool2D::PoolType::MAX &&
+      node.param().op_type != ir::operation::Pool2D::PoolType::AVG)
   {
     throw std::runtime_error{"UseDefGenerator: Not yet supported pool type"};
   }
