@@ -33,20 +33,17 @@ TEST(CKer_Operation, RmsNorm)
     std::vector<float> gamma = {1};
     nnfw::cker::Shape gamma_shape{1};
 
-    std::vector<float> beta = {0};
-    nnfw::cker::Shape beta_shape{1};
-
     nnfw::cker::RmsNormParams param;
     param.epsilon = 0.00001f;
 
-    nnfw::cker::RmsNorm(param, input_shape, input.data(), gamma_shape, gamma.data(), beta_shape,
-                        beta.data(), output_shape, output.data());
+    nnfw::cker::RmsNorm(param, input_shape, input.data(), gamma_shape, gamma.data(), output_shape,
+                        output.data());
 
     for (size_t i = 0; i < expected_output.size(); ++i)
       EXPECT_NEAR(output[i], expected_output[i], 1e-5f);
   }
 
-  // Default gamma and beta
+  // Default gamma
   {
     std::vector<float> input = {0, 1, 2, 3, 4, 5, 6, 7};
     nnfw::cker::Shape input_shape{1, 2, 2, 2};
@@ -59,14 +56,11 @@ TEST(CKer_Operation, RmsNorm)
     std::vector<float> gamma = {1, 1};
     nnfw::cker::Shape gamma_shape{2};
 
-    std::vector<float> beta = {0, 0};
-    nnfw::cker::Shape beta_shape{2};
-
     nnfw::cker::RmsNormParams param;
     param.epsilon = 0.001f;
 
-    nnfw::cker::RmsNorm(param, input_shape, input.data(), gamma_shape, gamma.data(), beta_shape,
-                        beta.data(), output_shape, output.data());
+    nnfw::cker::RmsNorm(param, input_shape, input.data(), gamma_shape, gamma.data(), output_shape,
+                        output.data());
 
     for (size_t i = 0; i < expected_output.size(); ++i)
       EXPECT_NEAR(output[i], expected_output[i], 1e-5f);
@@ -87,14 +81,10 @@ TEST(CKer_Operation, neg_RmsNormWrongGammaDims)
     std::vector<float> gamma = {1};
     nnfw::cker::Shape gamma_shape{1};
 
-    std::vector<float> beta = {0, 0};
-    nnfw::cker::Shape beta_shape{2};
-
     nnfw::cker::RmsNormParams param;
     param.epsilon = 0.001f;
 
     EXPECT_ANY_THROW(nnfw::cker::RmsNorm(param, input_shape, input.data(), gamma_shape,
-                                         gamma.data(), beta_shape, beta.data(), output_shape,
-                                         output.data()));
+                                         gamma.data(), output_shape, output.data()));
   }
 }

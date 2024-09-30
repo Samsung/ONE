@@ -29,8 +29,8 @@ namespace cker
 {
 
 inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const float *input_data,
-                    const Shape &gamma_shape, const float *gamma_data, const Shape &beta_shape,
-                    const float *beta_data, const Shape &output_shape, float *output_data)
+                    const Shape &gamma_shape, const float *gamma_data, const Shape &output_shape,
+                    float *output_data)
 {
   const int32_t batches = MatchingDim(input_shape, 0, output_shape, 0);
   const int32_t heights = MatchingDim(input_shape, 1, output_shape, 1);
@@ -40,9 +40,6 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
   if (gamma_shape.DimensionsCount() != 1 ||
       gamma_shape.Dims(0) != input_shape.Dims(input_shape.DimensionsCount() - 1))
     throw std::runtime_error("cker::RmsNorm: Unmatched gamma shape");
-  if (beta_shape.DimensionsCount() != 1 ||
-      beta_shape.Dims(0) != input_shape.Dims(input_shape.DimensionsCount() - 1))
-    throw std::runtime_error("cker::RmsNorm: Unmatched beta shape");
 
   for (int32_t batch = 0; batch < batches; batch++)
   {
@@ -60,9 +57,8 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
         for (int32_t channel = 0; channel < channels; channel++)
         {
           double gamma = (gamma_data ? gamma_data[channel] : 1.0);
-          double beta = (beta_data ? beta_data[channel] : 0.0);
           output_data[Offset(output_shape, batch, height, width, channel)] =
-            (gamma * (input_data[Offset(input_shape, batch, height, width, channel)] / rms) + beta);
+            gamma * (input_data[Offset(input_shape, batch, height, width, channel)] / rms);
         }
       }
     }
