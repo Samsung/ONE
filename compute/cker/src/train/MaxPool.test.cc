@@ -233,7 +233,7 @@ TEST(CKer_Operation, MaxPool2D)
     verifier.verifyBackward(output_deriv, expected_input_deriv);
   }
 
-  // with min, max params
+  // with ReLU6
   {
     nnfw::cker::PoolParams op_param;
     {
