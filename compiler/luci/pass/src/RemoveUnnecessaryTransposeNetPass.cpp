@@ -24,15 +24,15 @@
 namespace
 {
 
-struct Dim final
+struct TagDim final
 {
   int32_t value;
   std::vector<uint8_t> tags;
 };
 
-using Shape = std::vector<Dim>;
+using TagShape = std::vector<TagDim>;
 
-int32_t flatsize(const Shape &shape)
+int32_t flatsize(const TagShape &shape)
 {
   int32_t size = 1;
   for (const auto &dim : shape)
@@ -49,7 +49,7 @@ int32_t flatsize(const Shape &shape)
  * @return  ture, if successfully replace -1 value
  *          false, otherwise
  */
-bool inference_incomplete_shape(const Shape &src, Shape &dst)
+bool inference_incomplete_shape(const TagShape &src, TagShape &dst)
 {
   std::vector<size_t> incomplete_indexes;
   for (size_t i = 0; i < dst.size(); i++)
@@ -90,7 +90,7 @@ private:
   bool verify_tag() const;
 
   const uint8_t START_TAG = 0;
-  Shape _shape;
+  TagShape _shape;
 };
 
 /**
@@ -105,7 +105,7 @@ void TaggedShapeAnalyzer::init_shape_with_tag(const luci::CircleNode *in_tensor)
 
   for (uint32_t i = 0; i < in_tensor->rank(); i++)
   {
-    Dim dim;
+    TagDim dim;
     {
       dim.value = in_tensor->dim(i).value();
       if (dim.value != 1)
@@ -136,7 +136,7 @@ void TaggedShapeAnalyzer::analyze_transpose(const luci::CircleTranspose *transpo
   const luci::CircleConst *perm_node = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
   assert(perm_node->dtype() == PermType);
 
-  Shape new_shape;
+  TagShape new_shape;
   const auto size = perm_node->size<PermType>();
   for (uint32_t i = 0; i < size; i++)
   {
@@ -172,10 +172,10 @@ bool TaggedShapeAnalyzer::analyze_reshape(const luci::CircleReshape *reshape_nod
     return false;
 
   // Create new_shape based on reshape_node/shape
-  Shape new_shape;
+  TagShape new_shape;
   for (uint32_t i = 0; i < shape_node->size<ReshapeType>(); i++)
   {
-    Dim dim;
+    TagDim dim;
     dim.value = shape_node->at<ReshapeType>(i);
 
     new_shape.push_back(dim);
@@ -213,7 +213,7 @@ bool TaggedShapeAnalyzer::analyze_reshape(const luci::CircleReshape *reshape_nod
   uint32_t new_shape_idx = 0;
   while (new_shape_idx < new_shape.size())
   {
-    Dim &target_dim = new_shape[new_shape_idx];
+    TagDim &target_dim = new_shape[new_shape_idx];
 
     // Ignore dim == 1
     if (target_dim.value == 1)
