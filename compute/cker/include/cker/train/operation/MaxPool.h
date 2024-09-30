@@ -123,7 +123,7 @@ inline void MaxPool2D(const PoolParams &params, const Shape &input_shape, const 
     }
   }
 
-  out_mat.cwiseMin(params.float_activation_min).cwiseMax(params.float_activation_max);
+  out_mat = out_mat.cwiseMin(params.float_activation_max).cwiseMax(params.float_activation_min);
 }
 
 inline void MaxPool2DGrad(const Shape &incoming_shape, const float *incoming_data,
