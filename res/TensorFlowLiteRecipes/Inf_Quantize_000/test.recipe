@@ -1,0 +1,21 @@
+# quantize with dynamic shape
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 4 dim: 1 }
+  shape_signature { dim: 4 dim: -1 }
+}
+operand {
+  name: "ofm"
+  type: UINT8
+  shape { dim: 4 dim: 1 }
+  shape_signature { dim: 4 dim: -1 }
+  quant { min: 0 max: 255 scale: 1.0 zero_point: 0 }
+}
+operation {
+  type: "Quantize"
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
