@@ -321,8 +321,7 @@ void OperationDumper::visit(const Reverse &node)
 void OperationDumper::visit(const RmsNorm &node)
 {
   std::string inputs =
-    "Gamma(" + std::to_string(node.getInputs().at(RmsNorm::Input::GAMMA).value()) + ") Beta(" +
-    std::to_string(node.getInputs().at(RmsNorm::Input::BETA).value()) + ")";
+    "Gamma(" + std::to_string(node.getInputs().at(RmsNorm::Input::GAMMA).value()) + ")";
   dumpUnaryInputOp(node, inputs);
 }
 

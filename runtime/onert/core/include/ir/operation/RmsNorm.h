@@ -34,7 +34,6 @@ public:
   {
     INPUT = 0,
     GAMMA,
-    BETA
   };
 
   struct Param

@@ -1132,12 +1132,10 @@ void ShapeValidator::visit(const ir::operation::RmsNorm &node)
 
   const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
   const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
-  const auto beta_index{node.getInputs().at(ir::operation::RmsNorm::Input::BETA)};
 
   OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
   OP_REQUIRES(operands.at(ifm_index).shape() == operands.at(ofm_index).shape());
   OP_REQUIRES(operands.at(gamma_index).shape().rank() == 1);
-  OP_REQUIRES(operands.at(beta_index).shape().rank() == 1);
 }
 
 } // namespace compiler

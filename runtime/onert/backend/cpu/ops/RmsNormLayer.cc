@@ -31,7 +31,7 @@ namespace ops
 {
 
 void RmsNormLayer::configure(const IPortableTensor *input, const IPortableTensor *gamma,
-                             const IPortableTensor *beta, float epsilon, IPortableTensor *output)
+                             float epsilon, IPortableTensor *output)
 {
   assert(input != nullptr);
   assert(output != nullptr);
@@ -39,7 +39,6 @@ void RmsNormLayer::configure(const IPortableTensor *input, const IPortableTensor
   _input = input;
   _output = output;
   _gamma = gamma;
-  _beta = beta;
   _epsilon = epsilon;
 }
 
@@ -51,8 +50,7 @@ void RmsNormLayer::run()
       nnfw::cker::RmsNormParams param;
       param.epsilon = _epsilon;
       nnfw::cker::RmsNorm(param, getShape(_input), getBuffer<float>(_input), getShape(_gamma),
-                          getBuffer<float>(_gamma), getShape(_beta), getBuffer<float>(_beta),
-                          getShape(_output), getBuffer<float>(_output));
+                          getBuffer<float>(_gamma), getShape(_output), getBuffer<float>(_output));
       break;
 
     default:
