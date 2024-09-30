@@ -97,8 +97,11 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     }
     else
     {
-      auto shape = loco::must_cast<luci::CircleNode *>(node->shape());
-      shape_by_input.rank(shape->dim(0).value());
+      auto shape_node = loco::must_cast<luci::CircleNode *>(node->shape());
+      assert(shape_node->rank() == 1);
+      // shape_node tensor values will provide new shape, like [2, 3, 4]
+      auto num_elements = shape_node->dim(0).value(); // above example will give 3
+      shape_by_input.rank(num_elements);
       for (uint32_t r = 0; r < shape_by_input.rank(); ++r)
       {
         shape_by_input.dim(r).unset();
