@@ -32,6 +32,8 @@ RoPE::RoPE(const Tensor *input, const Tensor *sin_table, const Tensor *cos_table
 void RoPE::configure()
 {
   LUCI_INTERPRETER_CHECK(input()->shape().num_dims() == 4);
+  LUCI_INTERPRETER_CHECK(sin_table()->shape().dim(3) == input()->shape().dim(3));
+  LUCI_INTERPRETER_CHECK(cos_table()->shape().dim(3) == input()->shape().dim(3));
 
   output()->resize(input()->shape());
 }
