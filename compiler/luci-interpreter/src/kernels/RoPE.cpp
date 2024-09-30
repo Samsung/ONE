@@ -35,6 +35,8 @@ void RoPE::configure()
   LUCI_INTERPRETER_CHECK(sin_table()->shape().dim(3) == input()->shape().dim(3));
   LUCI_INTERPRETER_CHECK(cos_table()->shape().dim(3) == input()->shape().dim(3));
 
+  LUCI_INTERPRETER_CHECK(params().mode == RoPEMode::GPT_NEOX);
+
   output()->resize(input()->shape());
 }
 

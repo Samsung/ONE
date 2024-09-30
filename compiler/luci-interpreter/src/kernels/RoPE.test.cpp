@@ -97,6 +97,34 @@ TEST_F(RoPETest, Unsupported_dims_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
+TEST_F(RoPETest, Unsupported_mode_NEG)
+{
+  Shape input_shape{1, 1, 1, 4};
+  std::vector<float> input_data{0, 1.0, 2.0, 3.0};
+
+  Shape sin_shape{1, 1, 1, 4};
+  std::vector<float> sin_data{0.5, 1.0, 1.0, 0.5};
+
+  Shape cos_shape{1, 1, 1, 4};
+  std::vector<float> cos_data{1.0, 0.5, 0.5, 1.0};
+
+  Shape ref_output_shape{1, 1, 1, 4};
+  std::vector<float> ref_output_data{-1.0, -2.5, 1.0, 3.5};
+
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Tensor sin_table = makeInputTensor<DataType::FLOAT32>(sin_shape, sin_data, _memory_manager.get());
+  Tensor cos_table = makeInputTensor<DataType::FLOAT32>(cos_shape, cos_data, _memory_manager.get());
+
+  RoPEParams params{};
+  params.mode = RoPEMode::GPT_J;
+
+  RoPE kernel(&input_tensor, &sin_table, &cos_table, &output_tensor, params);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 TEST_F(RoPETest, Invalid_input_sin_table_NEG)
 {
   Shape input_shape{1, 1, 1, 4};
