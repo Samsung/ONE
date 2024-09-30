@@ -102,6 +102,7 @@ private:
   void visit(luci::CircleDepthToSpace *node);
   void visit(luci::CircleElu *node);
   void visit(luci::CircleExp *node);
+  void visit(luci::CircleExpandDims *node);
   void visit(luci::CircleFloor *node);
   void visit(luci::CircleGather *node);
   void visit(luci::CircleGelu *node);
