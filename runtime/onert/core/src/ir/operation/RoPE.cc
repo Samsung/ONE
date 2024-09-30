@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_LOADER_CIRCLE_LOADER_H__
-#define __ONERT_LOADER_CIRCLE_LOADER_H__
-
-#include "ir/Graph.h"
 #include "ir/operation/RoPE.h"
-
-#include <memory>
+#include "ir/OperationVisitor.h"
 
 namespace onert
 {
-namespace loader
+namespace ir
 {
-std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename);
-std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size);
-} // namespace loader
-} // namespace onert
+namespace operation
+{
 
-#endif // __ONERT_LOADER_CIRCLE_LOADER_H__
+void RoPE::accept(OperationVisitor &v) const { v.visit(*this); }
+
+RoPE::RoPE(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+           const Param &param)
+  : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
+{
+}
+
+} // namespace operation
+} // namespace ir
+} // namespace onert

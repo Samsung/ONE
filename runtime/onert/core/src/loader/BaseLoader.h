@@ -1133,8 +1133,7 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     {"BroadcastTo", BuiltinOP::BroadcastTo},
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
     {"Erf", BuiltinOP::Erf},
-    {"TFLite_Detection_PostProcess", BuiltinOP::DetectionPostProcess},
-  };
+    {"TFLite_Detection_PostProcess", BuiltinOP::DetectionPostProcess}};
 
   try
   {

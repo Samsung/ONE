@@ -451,6 +451,17 @@ void OperationValidator::visit(const operation::Reverse &node)
   OP_REQUIRES(isSameType(output_index, input_index));
 }
 
+void OperationValidator::visit(const operation::RoPE &node)
+{
+  const auto input_index{node.getInputs().at(operation::RoPE::Input::INPUT)};
+  const auto sin_index{node.getInputs().at(operation::RoPE::Input::SIN_TABLE)};
+  const auto cos_index{node.getInputs().at(operation::RoPE::Input::COS_TABLE)};
+  const auto output_index{node.getOutputs().at(operation::RoPE::Output::OUTPUT)};
+
+  OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+  OP_REQUIRES(isSameType(input_index, output_index));
+}
+
 void OperationValidator::visit(const operation::Select &node)
 {
   const auto condition_index{node.getInputs().at(operation::Select::Input::CONDITION)};

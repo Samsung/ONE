@@ -63,6 +63,12 @@ enum class ComparisonOpType
   LessEqual
 };
 
+enum class RoPEMode
+{
+  kGptNeox = 0,
+  kGptJ = 1,
+};
+
 struct PaddingValues
 {
   int16_t width;
