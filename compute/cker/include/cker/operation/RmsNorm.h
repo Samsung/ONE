@@ -59,8 +59,8 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
         double rms = std::sqrt((square_sum / channels) + params.epsilon);
         for (int32_t channel = 0; channel < channels; channel++)
         {
-          double gamma = gamma_data[channel];
-          double beta = beta_data[channel];
+          double gamma = (gamma_data ? gamma_data[channel] : 1.0);
+          double beta = (beta_data ? beta_data[channel] : 0.0);
           output_data[Offset(output_shape, batch, height, width, channel)] =
             (gamma * (input_data[Offset(input_shape, batch, height, width, channel)] / rms) + beta);
         }
