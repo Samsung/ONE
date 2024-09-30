@@ -134,3 +134,31 @@ TEST(ShapeRuleTest, reshape_should_infer)
   ASSERT_TRUE(output_shape.dim(1).known());
   ASSERT_EQ(4, output_shape.dim(1).value());
 }
+
+TEST(ShapeRuleTest, reshape_by_input_node)
+{
+  auto g = loco::make_graph();
+  auto node_reshape = g->nodes()->create<luci::CircleReshape>();
+  auto tensor_input = g->nodes()->create<luci::CircleInput>();
+  auto shape_by_input = g->nodes()->create<luci::CircleInput>();
+
+  tensor_input->dtype(loco::DataType::S32);
+  tensor_input->shape({2, 3, 4});
+  tensor_input->shape_status(luci::ShapeStatus::VALID);
+
+  shape_by_input->dtype(loco::DataType::S32);
+  shape_by_input->shape({2});
+  shape_by_input->shape_status(luci::ShapeStatus::VALID);
+
+  node_reshape->tensor(tensor_input);
+  node_reshape->shape(shape_by_input);
+
+  loco::TensorShape output_shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(node_reshape, output_shape));
+
+  ASSERT_EQ(2, output_shape.rank());
+  ASSERT_FALSE(output_shape.dim(0).known());
+  ASSERT_FALSE(output_shape.dim(1).known());
+}
