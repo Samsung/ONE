@@ -25,6 +25,14 @@
 namespace luci
 {
 
+namespace
+{
+
+// limitation of current flatbuffers file size
+inline constexpr uint64_t FLATBUFFERS_SIZE_MAX = 2147483648UL; // 2GB
+
+} // namespace
+
 std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path) const
 {
   foder::FileLoader file_loader{input_path};
@@ -43,11 +51,14 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
   auto data_data = reinterpret_cast<uint8_t *>(model_data.data());
   auto data_size = model_data.size();
 
-  flatbuffers::Verifier verifier{data_data, data_size};
-  if (!circle::VerifyModelBuffer(verifier))
+  if (data_size < FLATBUFFERS_SIZE_MAX)
   {
-    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-    return nullptr;
+    flatbuffers::Verifier verifier{data_data, data_size};
+    if (!circle::VerifyModelBuffer(verifier))
+    {
+      std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
+      return nullptr;
+    }
   }
 
   Importer importer(_source);
