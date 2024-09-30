@@ -27,46 +27,6 @@ namespace
 class TaggedShapeAnalyzer final
 {
 public:
-  /**
-   * @brief check 'Transpose-Reshape-Transpose' can be replaced by one 'Reshape'.
-   *
-   * @example
-   *  Let's explain how analyzer check Transpose-Reshape-Transpose pattern with an exact example.
-   *
-   *  Let's assume under pattern is given :
-   *
-   *      Input(1, 7, 7, 448)
-   *            |
-   *      Transpose(perm=(0, 3, 1, 2))
-   *            |
-   *      Resahape(shape=(1, 448, 49))
-   *            |
-   *      Transpose(perm=(0, 2, 1))
-   *            |
-   *      Output(1, 49, 448)
-   *
-   *  It simulates how each dimension of the tensor's shape are transformed/moved
-   *  using a member variable named '_shape'.
-   *  'tags' in _shape record the initial order of each dimension.
-   *
-   *   TIMELINE              |   _shape states :
-   *                         |
-   *   init_shape_with_tag   |    - value :   (1)   (7)   (7)   (448)
-   *                         |    - tags  :   (-)   (0)   (1)   (2)
-   *                         |
-   *   analyze_transpose     |    - value :   (1)   (448)  (7)  (7)
-   *                         |    - tags  :   (-)   (2)    (0)  (1)
-   *                         |
-   *   analyze_reshape       |    - value :   (1)   (448)   (49)
-   *                         |    - tags  :   (-)   (2)     (0, 1)
-   *                         |
-   *   anaylze_transpose     |    - value  :   (1)   (49)    (448)
-   *                         |    - tags   :   (-)   (0, 1)  (2)
-   *
-   *  After all simulation done, if tags are in same order as initial _shape,
-   *  Transpose has no effect in final shape, which they can be removed as
-   *  unnecessary Ops.
-   */
   template <loco::DataType DType>
   bool can_remove_transposes(const luci::CircleTranspose *f_tr, const luci::CircleReshape *m_rs,
                              const luci::CircleTranspose *b_tr);
@@ -305,7 +265,46 @@ bool TaggedShapeAnalyzer::verify_tag() const
   return true;
 }
 
-// For implementation details, please refer the comment with declaration.
+/**
+ * @brief check 'Transpose-Reshape-Transpose' can be replaced by one 'Reshape'.
+ *
+ * @example
+ *  Let's explain how analyzer check Transpose-Reshape-Transpose pattern with an exact example.
+ *
+ *  Let's assume under pattern is given :
+ *
+ *      Input(1, 7, 7, 448)
+ *            |
+ *      Transpose(perm=(0, 3, 1, 2))
+ *            |
+ *      Resahape(shape=(1, 448, 49))
+ *            |
+ *      Transpose(perm=(0, 2, 1))
+ *            |
+ *      Output(1, 49, 448)
+ *
+ *  It simulates how each dimension of the tensor's shape are transformed/moved
+ *  using a member variable named '_shape'.
+ *  'tags' in _shape record the initial order of each dimension.
+ *
+ *   TIMELINE              |   _shape states :
+ *                         |
+ *   init_shape_with_tag   |    - value :   (1)   (7)   (7)   (448)
+ *                         |    - tags  :   (-)   (0)   (1)   (2)
+ *                         |
+ *   analyze_transpose     |    - value :   (1)   (448)  (7)  (7)
+ *                         |    - tags  :   (-)   (2)    (0)  (1)
+ *                         |
+ *   analyze_reshape       |    - value :   (1)   (448)   (49)
+ *                         |    - tags  :   (-)   (2)     (0, 1)
+ *                         |
+ *   anaylze_transpose     |    - value  :   (1)   (49)    (448)
+ *                         |    - tags   :   (-)   (0, 1)  (2)
+ *
+ *  After all simulation done, if tags are in same order as initial _shape,
+ *  Transpose has no effect in final shape, which they can be removed as
+ *  unnecessary Ops.
+ */
 template <loco::DataType DType>
 bool TaggedShapeAnalyzer::can_remove_transposes(const luci::CircleTranspose *f_tr,
                                                 const luci::CircleReshape *m_rs,
