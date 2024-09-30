@@ -1,0 +1,30 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 1 }
+  shape_signature { dim: 1 dim: 1 dim: -1 dim: -1}
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 4 dim: 1}
+  shape_signature { dim: 1 dim: -1 dim: 4 dim: -1}
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 4 dim: 1 }
+  shape_signature { dim: 1 dim: -1 dim: 4 dim: -1}
+}
+operation {
+  type: "Mul"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  mul_options {
+   activation: NONE
+  } 
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
