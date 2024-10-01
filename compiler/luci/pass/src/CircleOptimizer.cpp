@@ -347,6 +347,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::FuseHorizontalFullyConnected] = &createPassInstance<luci::FuseHorizontalFullyConnectedPass>;
   option_to_pass[Options::Algorithm::FuseTransposeWithMean] = &createPassInstance<luci::FuseTransposeWithMeanPass>;
   option_to_pass[Options::Algorithm::FuseRmsNorm] = &createPassInstance<luci::FuseRmsNormPass>;
+  option_to_pass[Options::Algorithm::FuseRoPE] = &createPassInstance<luci::FuseRoPEPass>;
   option_to_pass[Options::Algorithm::FoldAddV2] = &createPassInstance<luci::FoldAddV2Pass>;
   option_to_pass[Options::Algorithm::FoldCast] = &createPassInstance<luci::FoldCastPass>;
   option_to_pass[Options::Algorithm::FoldDensify] = &createPassInstance<luci::FoldDensifyPass>;
