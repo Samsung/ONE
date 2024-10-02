@@ -316,6 +316,11 @@ struct ResizeBilinearParams
   bool half_pixel_centers;
 };
 
+struct RmsNormParams
+{
+  float epsilon;
+};
+
 struct TransposeConvParams
 {
   PaddingType padding_type;
