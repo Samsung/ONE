@@ -21,8 +21,6 @@
 #include "cker/Types.h"
 #include "cker/Utils.h"
 
-#include <cmath>
-
 namespace nnfw
 {
 namespace cker
@@ -30,9 +28,18 @@ namespace cker
 
 template <typename T>
 inline void RoPE(const RoPEMode mode, const Shape &input_shape, const T *input_data,
-                 const T *sin_table_data, const T *cos_table_data, const Shape &output_shape,
+                 const Shape &sin_table_shape, const T *sin_table_data,
+                 const Shape &cos_table_shape, const T *cos_table_data, const Shape &output_shape,
                  T *output_data)
 {
+  assert(input_shape.DimensionsCount() == 4);
+  assert(input_shape.DimensionsCount() == output_shape.DimensionsCount());
+  assert(input_shape.Dims(3) == sin_table_shape.Dims(3));
+  assert(input_shape.Dims(3) == cos_table_shape.Dims(3));
+
+  UNUSED_RELEASE(sin_table_shape);
+  UNUSED_RELEASE(cos_table_shape);
+
   const int32_t i0_n = MatchingDim(input_shape, 0, output_shape, 0);
   const int32_t i1_n = MatchingDim(input_shape, 1, output_shape, 1);
   const int32_t i2_n = MatchingDim(input_shape, 2, output_shape, 2);

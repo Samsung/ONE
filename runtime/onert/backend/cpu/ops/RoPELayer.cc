@@ -56,10 +56,10 @@ template <typename T> void RoPELayer::rope()
 {
   auto input_shape = _input->getShape();
   assert(input_shape.rank() == 4);
-  assert(_mode == nnfw::cker::RoPEMode::kGptNeox);
 
-  nnfw::cker::RoPE(_mode, getShape(_input), getBuffer<T>(_input), getBuffer<T>(_sin),
-                   getBuffer<T>(_cos), getShape(_output), getBuffer<T>(_output));
+  nnfw::cker::RoPE(_mode, getShape(_input), getBuffer<T>(_input), getShape(_sin),
+                   getBuffer<T>(_sin), getShape(_cos), getBuffer<T>(_cos), getShape(_output),
+                   getBuffer<T>(_output));
 }
 
 void RoPELayer::run()
