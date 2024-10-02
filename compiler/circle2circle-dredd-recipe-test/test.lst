@@ -147,4 +147,5 @@ Add(REGRESS_ONNX_Mul_Mul_000 PASS
 Add(REGRESS_Issue_13863 PASS substitute_pack_to_reshape)
 
 # SHAPE INFERENCE test
+Add(Inf_Mul_000 PASS)
 Add(Inf_Pad_000 PASS)
