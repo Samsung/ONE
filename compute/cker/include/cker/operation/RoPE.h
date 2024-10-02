@@ -32,13 +32,11 @@ inline void RoPE(const RoPEMode mode, const Shape &input_shape, const T *input_d
                  const Shape &cos_table_shape, const T *cos_table_data, const Shape &output_shape,
                  T *output_data)
 {
-  assert(input_shape.DimensionsCount() == 4);
-  assert(input_shape.DimensionsCount() == output_shape.DimensionsCount());
-  assert(input_shape.Dims(3) == sin_table_shape.Dims(3));
-  assert(input_shape.Dims(3) == cos_table_shape.Dims(3));
+  if (input_shape.Dims(3) != sin_table_shape.Dims(3))
+    throw std::runtime_error("the dimension(3) of input and sin_table do not match");
 
-  UNUSED_RELEASE(sin_table_shape);
-  UNUSED_RELEASE(cos_table_shape);
+  if (input_shape.Dims(3) != cos_table_shape.Dims(3))
+    throw std::runtime_error("the dimension(3) of input and cos_table do not match");
 
   const int32_t i0_n = MatchingDim(input_shape, 0, output_shape, 0);
   const int32_t i1_n = MatchingDim(input_shape, 1, output_shape, 1);
@@ -67,9 +65,9 @@ inline void RoPE(const RoPEMode mode, const Shape &input_shape, const T *input_d
       }
     }
   }
-  else if (mode == RoPEMode::kGptJ)
+  else
   {
-    // TODO: Implement GPT-J mode
+    throw std::runtime_error("Unsupported RoPE mode");
   }
 }
 
