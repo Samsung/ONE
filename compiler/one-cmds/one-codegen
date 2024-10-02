@@ -148,7 +148,7 @@ def _verify_arg(parser, cmd_codegen_args, cfg_codegen_args, cfg_backend_args,
     # if config option is not given, both backend and command option should be given.
     if not oneutils.is_valid_attr(cmd_codegen_args, 'config'):
         if not cmd_backend_args:
-            parser.error('Not found the command for given backend')
+            parser.error('Command for given backend not found')
     # if command for backend driver is given in commnad line, backend option should be given as well.
     if cmd_backend_args:
         if all(not e for e in [backend, cmd_backend_exist]):
@@ -204,13 +204,13 @@ def _verify_arg(parser, cmd_codegen_args, cfg_codegen_args, cfg_backend_args,
                 # Check if given backend from command line exists in the configuration file
                 if cmd_backend_exist:
                     if cmd_codegen_args.backend not in cfg_backends:
-                        parser.error('Not found the command for given backend')
+                        parser.error('Command for given backend not found')
             # Style 1
             else:
                 # both backend and command should exist.
                 assert any(e for e in [backend, cmd_backend_exist, cfg_backend_exist])
                 if not cmd_key_exist:
-                    parser.error('Not found the command for given backend')
+                    parser.error('Command for given backend not found')
 
 
 def _parse_arg(parser):
