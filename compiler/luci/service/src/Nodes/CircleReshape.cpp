@@ -22,6 +22,8 @@
 
 #include <luci/Log.h>
 
+#include <oops/InternalExn.h>
+
 namespace
 {
 
@@ -88,11 +90,29 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
 
       for (uint32_t axis = 0; axis < shape_by_input.rank(); ++axis)
       {
-        shape_by_input.dim(axis) = const_shape_node->at<S32>(axis);
         if (const_shape_node->at<S32>(axis) < 0)
         {
           shape_by_input.dim(axis).unset();
         }
+        else if (const_shape_node->at<S32>(axis) == 0)
+        {
+          const auto node_tensor = loco::must_cast<luci::CircleNode *>(node->tensor());
+          // set dim value to input
+          if (node_tensor->shape_status() == luci::ShapeStatus::VALID && axis < node_tensor->rank())
+            shape_by_input.dim(axis) = node_tensor->dim(axis);
+          else
+          {
+            // stop to check if this case exist for debugging
+            INTERNAL_EXN("Check Reshape shape with 0");
+          }
+        }
+        else
+        {
+          shape_by_input.dim(axis).set(const_shape_node->at<S32>(axis));
+        }
+        // check valid or stop for debugging
+        LUCI_ASSERT(shape_by_input.dim(axis).value() > 0 || !shape_by_input.dim(axis).known(),
+                    "Reshape infer shape is invalid.");
       }
     }
     else
@@ -143,7 +163,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
   {
     for (uint32_t dim_index = 0; dim_index < output_shape.rank(); ++dim_index)
     {
-      const uint32_t dim_value = output_shape.dim(dim_index).value();
+      uint32_t dim_value = output_shape.dim(dim_index).value();
       if (not output_shape.dim(dim_index).known())
       {
         LUCI_ASSERT(unknown_dim_index == UINT32_MAX, "More than one unknown dimension");
@@ -151,6 +171,18 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
       }
       else
       {
+        if (!dim_value)
+        {
+          // refer https://github.com/Samsung/ONE/issues/14074#issuecomment-2370795003
+          // set dim value to follow input
+          if (dim_index < input_shape.rank())
+            dim_value = input_shape.dim(dim_index).value();
+          else
+          {
+            // stop to check if this case exist for debugging
+            INTERNAL_EXN("Check Reshape shape with 0");
+          }
+        }
         output_element_count *= dim_value;
       }
     }
