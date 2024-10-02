@@ -47,14 +47,14 @@ TEST(CKer_Operation, RoPE)
 
     for (size_t i = 0; i < ref_output_data.size(); ++i)
     {
-      EXPECT_FLOAT_EQ(ref_output_data[i], output[i]); // Same as input
+      EXPECT_FLOAT_EQ(ref_output_data[i], output[i]);
     }
   }
 }
 
 TEST(CKer_Operation, neg_RoPE)
 {
-  // input, sin_table, cos_table size mismatch
+  // the dimension(3) of sin_table and input do not match
   {
     RoPEMode mode = RoPEMode::kGptNeox;
 
@@ -63,6 +63,29 @@ TEST(CKer_Operation, neg_RoPE)
 
     Shape sin_table_shape{1, 1, 1, 3};
     std::vector<float> sin_table{0.5, 1.0, 1.0};
+    Shape cos_table_shape{1, 1, 1, 4};
+    std::vector<float> cos_table{1.0, 0.5, 0.5, 1.0};
+
+    Shape ref_output_shape{1, 1, 1, 4};
+    std::vector<float> ref_output_data{-1.0, -2.5, 1.0, 3.5};
+
+    std::vector<float> output(ref_output_data.size());
+    Shape output_shape{1, 1, 1, 4};
+
+    EXPECT_ANY_THROW(nnfw::cker::RoPE<float>(mode, input_shape, input.data(), sin_table_shape,
+                                             sin_table.data(), cos_table_shape, cos_table.data(),
+                                             ref_output_shape, output.data()));
+  }
+
+  // the dimension(3) of cos_table and input do not match
+  {
+    RoPEMode mode = RoPEMode::kGptNeox;
+
+    Shape input_shape{1, 1, 1, 4};
+    std::vector<float> input{0, 1.0, 2.0, 3.0};
+
+    Shape sin_table_shape{1, 1, 1, 4};
+    std::vector<float> sin_table{0.5, 1.0, 1.0, 0.5};
     Shape cos_table_shape{1, 1, 1, 3};
     std::vector<float> cos_table{1.0, 0.5, 0.5};
 
@@ -71,6 +94,29 @@ TEST(CKer_Operation, neg_RoPE)
 
     std::vector<float> output(ref_output_data.size());
     Shape output_shape{1, 1, 1, 4};
+
+    EXPECT_ANY_THROW(nnfw::cker::RoPE<float>(mode, input_shape, input.data(), sin_table_shape,
+                                             sin_table.data(), cos_table_shape, cos_table.data(),
+                                             ref_output_shape, output.data()));
+  }
+
+  // unsupported RoPE Mode
+  {
+    RoPEMode mode = RoPEMode::kGptJ;
+
+    Shape input_shape{1, 1, 1, 4};
+    std::vector<float> input{0, 1.0, 2.0, 3.0};
+
+    Shape sin_table_shape{1, 1, 1, 4};
+    std::vector<float> sin_table{0.5, 1.0, 1.0, 0.5};
+    Shape cos_table_shape{1, 1, 1, 4};
+    std::vector<float> cos_table{1.0, 0.5, 0.5, 1.0};
+
+    Shape ref_output_shape{1, 1, 1, 4};
+    std::vector<float> ref_output_data{-1.0, -2.5, 1.0, 3.5};
+
+    Shape output_shape{1, 1, 1, 4};
+    std::vector<float> output(ref_output_data.size());
 
     EXPECT_ANY_THROW(nnfw::cker::RoPE<float>(mode, input_shape, input.data(), sin_table_shape,
                                              sin_table.data(), cos_table_shape, cos_table.data(),
