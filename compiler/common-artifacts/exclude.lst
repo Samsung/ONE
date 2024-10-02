@@ -51,6 +51,7 @@ tcgenerate(FullyConnected_I4_002)
 tcgenerate(FullyConnected_U8_000)
 tcgenerate(GatherNd_000)
 tcgenerate(GatherNd_001)
+tcgenerate(Inf_Mul_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(L2Pool2D_U8_000)
 tcgenerate(Log_000)
 tcgenerate(MatMul_000)
