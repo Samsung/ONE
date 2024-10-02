@@ -126,6 +126,7 @@ tcgenerate(ReLU6_dynamic_000) # TestDataGenerator does not support unknown dimen
 tcgenerate(ReLUN1To1_000)
 tcgenerate(ReLUN1To1_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(Reshape_003) # luci-interpreter doesn't support reshape without built-in option
+tcgenerate(Reshape_004) # has 0 in shape
 tcgenerate(ReverseSequence_000)
 tcgenerate(ReverseV2_000)
 tcgenerate(Round_000)
