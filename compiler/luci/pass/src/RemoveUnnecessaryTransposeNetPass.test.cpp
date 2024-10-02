@@ -15,6 +15,7 @@
  */
 
 #include "luci/Pass/RemoveUnnecessaryTransposeNetPass.h"
+#include "luci/Pass/CircleShapeInferencePass.h"
 
 #include <luci/IR/CircleNode.h>
 
@@ -77,6 +78,7 @@ public:
     }
 
     output()->from(_back_transpose);
+    _shape_inf.run(g());
   }
 
   // create input-transpose-transpose-output graph
@@ -112,6 +114,7 @@ public:
     }
 
     output()->from(_back_transpose);
+    _shape_inf.run(g());
   }
 
 private:
@@ -145,6 +148,8 @@ private:
 
   luci::CircleTranspose *_back_transpose = nullptr;
   luci::CircleConst *_back_perm = nullptr;
+
+  luci::CircleShapeInferencePass _shape_inf;
 };
 
 bool is_transpose_removed(loco::Graph *g)
@@ -347,11 +352,11 @@ TEST(RemoveUnnecessaryTransposeNetPass, incomplete_reshape_pattern2_NEG)
    *     |
    * (1, 14, 10, 10)
    *      |
-   * (1, 14, -1, -1)  # unexpected shape
+   * (1, 14, -1, 50)  # (1, 14, 2, 50)
    *      |
    * (1, 14, 50, 2)
    */
-  g.init_whole_graph(/*in*/ {1, 10, 10, 14}, /*perm*/ {0, 3, 1, 2}, /*reshape*/ {1, 14, -1, -1},
+  g.init_whole_graph(/*in*/ {1, 10, 10, 14}, /*perm*/ {0, 3, 1, 2}, /*reshape*/ {1, 14, -1, 50},
                      /*perm*/ {0, 1, 3, 2}, /*out*/ {1, 14, 50, 2});
 
   EXPECT_FALSE(pass.run(g.g()));
