@@ -20,6 +20,7 @@
 #include <cker/Shape.h>
 
 #include <gtest/gtest.h>
+#include <limits>
 #include <vector>
 
 namespace
@@ -90,6 +91,8 @@ TEST(CKer_Operation, MaxPool2D)
       op_param.filter_width = 2;
       op_param.padding_values.height = 0;
       op_param.padding_values.width = 0;
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
+      op_param.float_activation_max = std::numeric_limits<float>::max();
     }
     nnfw::cker::Shape in = {1, 3, 3, 1};
     nnfw::cker::Shape out = {1, 2, 2, 1};
@@ -132,6 +135,8 @@ TEST(CKer_Operation, MaxPool2D)
       op_param.filter_width = 3;
       op_param.padding_values.height = 0;
       op_param.padding_values.width = 0;
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
+      op_param.float_activation_max = std::numeric_limits<float>::max();
     }
     nnfw::cker::Shape in = {1, 3, 3, 2};
     nnfw::cker::Shape out = {1, 1, 1, 2};
@@ -196,6 +201,8 @@ TEST(CKer_Operation, MaxPool2D)
       op_param.filter_width = 2;
       op_param.padding_values.height = 2;
       op_param.padding_values.width = 2;
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
+      op_param.float_activation_max = std::numeric_limits<float>::max();
     }
     nnfw::cker::Shape in = {1, 2, 2, 1};
     nnfw::cker::Shape out = {1, 3, 3, 1};
@@ -225,6 +232,50 @@ TEST(CKer_Operation, MaxPool2D)
     std::vector<float> expected_input_deriv = {0, 0, 0.2, 0};
     verifier.verifyBackward(output_deriv, expected_input_deriv);
   }
+
+  // with ReLU6
+  {
+    nnfw::cker::PoolParams op_param;
+    {
+      op_param.stride_height = 1;
+      op_param.stride_width = 1;
+      op_param.filter_height = 2;
+      op_param.filter_width = 2;
+      op_param.padding_values.height = 0;
+      op_param.padding_values.width = 0;
+      op_param.float_activation_min = 0.0;
+      op_param.float_activation_max = 6.0;
+    }
+    nnfw::cker::Shape in = {1, 3, 3, 1};
+    nnfw::cker::Shape out = {1, 2, 2, 1};
+
+    MaxPoolOpVerifier<float> verifier(op_param, in, out);
+
+    /**
+     *  input(index) :                         output(arg-index):
+     *
+     *   1(0)   2(1)   3(2)
+     *   4(3)   5(4)   6(5)   - (forward) ->    5(4)  6(5)
+     *   7(6)   8(7)   9(8)                     6(7)  6(8)
+     */
+
+    std::vector<float> input = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<float> expected_output = {5, 6, 6, 6};
+    verifier.verifyForward(input, expected_output);
+
+    /**
+     *  output_deriv:                     input_deriv:
+     * (randomly filled)
+     *
+     *   0.1   0.2                        0     0     0
+     *   0.3   0.4     - (backward) ->    0     0.1   0.2
+     *                                    0     0.3   0.4
+     */
+
+    std::vector<float> output_deriv = {0.1, 0.2, 0.3, 0.4};
+    std::vector<float> expected_input_deriv = {0, 0, 0, 0, 0.1, 0.2, 0, 0.3, 0.4};
+    verifier.verifyBackward(output_deriv, expected_input_deriv);
+  }
 }
 
 TEST(CKer_Operation, neg_MaxPool)
@@ -239,6 +290,8 @@ TEST(CKer_Operation, neg_MaxPool)
       op_param.filter_width = 2;
       op_param.padding_values.height = 0;
       op_param.padding_values.width = 0;
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
+      op_param.float_activation_max = std::numeric_limits<float>::max();
     }
     nnfw::cker::Shape in = {1, 2, 2, 1};
     nnfw::cker::Shape out = {1, 1, 1, 1};
@@ -261,6 +314,8 @@ TEST(CKer_Operation, neg_MaxPool)
       op_param.filter_width = 2;
       op_param.padding_values.height = 1;
       op_param.padding_values.width = 1;
+      op_param.float_activation_min = std::numeric_limits<float>::lowest();
+      op_param.float_activation_max = std::numeric_limits<float>::max();
     }
 
     nnfw::cker::Shape in = {1, 2, 2, 1};
