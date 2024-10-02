@@ -99,7 +99,7 @@ struct StridedSliceContext
     strides = loco::must_cast<luci::CircleConst *>(node->strides());
 
     loco::TensorShape input_shape = circle_shape(input);
-    input_dims = input_shape.rank();
+    input_dims = static_cast<int64_t>(input_shape.rank());
   }
   StridedSliceParams params;
   luci::CircleNode *input = nullptr;
