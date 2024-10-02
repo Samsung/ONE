@@ -459,6 +459,8 @@ void OperationValidator::visit(const operation::RoPE &node)
   const auto output_index{node.getOutputs().at(operation::RoPE::Output::OUTPUT)};
 
   OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+  OP_REQUIRES(isValidType(sin_index, DataType::FLOAT32));
+  OP_REQUIRES(isValidType(cos_index, DataType::FLOAT32));
   OP_REQUIRES(isSameType(input_index, output_index));
 }
 
