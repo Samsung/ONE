@@ -37,8 +37,10 @@ namespace basic
 class TensorBuilder
 {
 public:
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
+                const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id,
+                const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend

@@ -46,6 +46,8 @@ struct ContextData
   std::shared_ptr<custom::IKernelBuilder> custom_kernel_builder;
   /* Is linear executor or not */
   bool is_linear_executor;
+  /* Map of operands which share memory where the values are sources of memory */
+  ir::OperandIndexMap<ir::OperandIndex> shared_memory_operand_map;
 };
 
 class BackendContext

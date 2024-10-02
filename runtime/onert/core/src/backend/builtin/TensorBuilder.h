@@ -37,7 +37,8 @@ namespace builtin
 class TensorBuilder
 {
 public:
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
+                const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend

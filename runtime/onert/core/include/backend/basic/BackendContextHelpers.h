@@ -210,10 +210,15 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 
 inline void initConsts(const ir::Operands &operands,
                        const util::Set<ir::OperandIndex> &external_operands,
-                       ITensorRegistry *tensor_registry)
+                       ITensorRegistry *tensor_registry,
+                       const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operands_map)
 {
   operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-    if (external_operands.contains(ind) || !operand.isConstant())
+    const bool has_const_shared_memory =
+      shared_memory_operands_map.find(ind) != std::end(shared_memory_operands_map) &&
+      operands.at(shared_memory_operands_map.at(ind)).isConstant();
+    const bool can_be_initialized_as_const = operand.isConstant() || has_const_shared_memory;
+    if (external_operands.contains(ind) || !can_be_initialized_as_const)
       return;
 
     auto tensor = tensor_registry->getNativeITensor(ind);
@@ -221,20 +226,30 @@ inline void initConsts(const ir::Operands &operands,
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
 
-    auto data = operand.shareData();
-    assert(data && data->base());
     ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
-
     if (ext_tensor == nullptr)
       throw std::runtime_error{"This tensor is not external tensor"};
 
-    ext_tensor->setData(data);
+    if (has_const_shared_memory)
+    {
+      const auto &memory_source_operand = operands.at(shared_memory_operands_map.at(ind));
+      auto memory_source_data = memory_source_operand.shareData();
+      assert(memory_source_data && memory_source_data->base());
+      ext_tensor->setData(memory_source_data);
+    }
+    else
+    {
+      auto data = operand.shareData();
+      assert(data && data->base());
+      ext_tensor->setData(data);
+    }
   });
 }
 
 inline void initConsts(BackendContext &ctx)
 {
-  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get());
+  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(),
+             ctx.data().shared_memory_operand_map);
 }
 
 } // namespace basic
