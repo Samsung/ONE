@@ -24,6 +24,38 @@
 namespace
 {
 
+#define RET_FALSE_UNLESS(condition) \
+  if (not(condition))               \
+    return false;
+
+std::vector<int32_t> extract_shape(const luci::CircleNode *node)
+{
+  std::vector<int32_t> shape;
+  auto rank = node->rank();
+  for (auto i = 0u; i < rank; ++i)
+  {
+    shape.push_back(static_cast<int32_t>(node->dim(i).value()));
+  }
+  return shape;
+};
+
+template <loco::DataType DTYPE>
+std::vector<int32_t> extract_const(const luci::CircleConst *const_node)
+{
+  static_assert(DTYPE == loco::DataType::S32 || DTYPE == loco::DataType::S16 ||
+                  DTYPE == loco::DataType::S8,
+                "unsupported data type");
+
+  std::vector<int32_t> values;
+  auto size = const_node->size<DTYPE>();
+  for (auto i = 0u; i < size; ++i)
+  {
+    auto v = const_node->at<DTYPE>(i);
+    values.push_back(static_cast<int32_t>(v));
+  }
+  return values;
+};
+
 struct TagDim final
 {
   int32_t value;
@@ -36,8 +68,10 @@ class TaggedShapeAnalyzer final
 {
 public:
   template <loco::DataType DType>
-  bool can_remove_transposes(const luci::CircleTranspose *f_tr, const luci::CircleReshape *m_rs,
-                             const luci::CircleTranspose *b_tr);
+  bool init(const luci::CircleTranspose *, const luci::CircleReshape *,
+            const luci::CircleTranspose *);
+
+  template <loco::DataType DType> bool can_remove_transposes();
 
 private:
   void init_shape_with_tag(const luci::CircleNode *);
@@ -47,6 +81,17 @@ private:
   bool analyze_reshape(const luci::CircleReshape *);
 
   bool verify_tag() const;
+
+private:
+  const luci::CircleNode *_in = nullptr;
+  const luci::CircleTranspose *_front_transpose = nullptr;
+  const luci::CircleReshape *_mid_reshape = nullptr;
+  const luci::CircleTranspose *_back_transpose = nullptr;
+
+  std::vector<int32_t> _in_shape;
+  std::vector<int32_t> _front_perm;
+  std::vector<int32_t> _mid_shape;
+  std::vector<int32_t> _back_perm;
 
   const uint8_t START_TAG = 0;
   TagShape _shape;
@@ -216,7 +261,63 @@ bool TaggedShapeAnalyzer::verify_tag() const
 }
 
 /**
+ * @brief Initialize the class member and checks under conditions
+ *
+ *  Condtiions that have to be met for analyzer
+ *    c1: input rank >= output rank
+ *    c2: The 'perm' of tranpose should be a CircleConst* type
+ *    c3: The shapes of the given nodes should be all known
+ *
+ * @return True, if all conditions are satisfied and class members are initialized successfully
+ *         False, otherwise
+ */
+template <loco::DataType DType>
+bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
+                               const luci::CircleReshape *mid_reshape,
+                               const luci::CircleTranspose *back_transpose)
+{
+  _in = dynamic_cast<luci::CircleNode *>(front_transpose->a());
+  _front_transpose = front_transpose;
+  _mid_reshape = mid_reshape;
+  _back_transpose = back_transpose;
+
+  // check c1
+  RET_FALSE_UNLESS(_in->rank() >= _back_transpose->rank());
+
+  const auto front_perm = dynamic_cast<luci::CircleConst *>(_front_transpose->perm());
+  const auto back_perm = dynamic_cast<luci::CircleConst *>(_back_transpose->perm());
+
+  // check c2
+  RET_FALSE_UNLESS(front_perm != nullptr);
+  RET_FALSE_UNLESS(front_perm->dtype() == DType);
+  RET_FALSE_UNLESS(back_perm != nullptr);
+  RET_FALSE_UNLESS(back_perm->dtype() == DType);
+
+  _in_shape = extract_shape(_in);
+  _front_perm = extract_const<DType>(front_perm);
+  _mid_shape = extract_shape(_mid_reshape);
+  _back_perm = extract_const<DType>(back_perm);
+
+  auto all_known = [](const std::vector<int32_t> &v) -> bool {
+    for (auto i : v)
+      if (i <= 0)
+        return false;
+    return true;
+  };
+
+  // check c3
+  RET_FALSE_UNLESS(all_known(_in_shape));
+  RET_FALSE_UNLESS(all_known(extract_shape(_front_transpose)));
+  RET_FALSE_UNLESS(all_known(_mid_shape));
+  RET_FALSE_UNLESS(all_known(extract_shape(_back_transpose)));
+
+  return true;
+}
+
+/**
  * @brief check 'Transpose-Reshape-Transpose' can be replaced by one 'Reshape'.
+ *
+ * @warning '@init' have to be called first
  *
  * @example
  *  Let's explain how analyzer check Transpose-Reshape-Transpose pattern with an exact example.
@@ -255,24 +356,21 @@ bool TaggedShapeAnalyzer::verify_tag() const
  *  Transpose has no effect in final shape, which they can be removed as
  *  unnecessary Ops.
  */
-template <loco::DataType DType>
-bool TaggedShapeAnalyzer::can_remove_transposes(const luci::CircleTranspose *f_tr,
-                                                const luci::CircleReshape *m_rs,
-                                                const luci::CircleTranspose *b_tr)
+template <loco::DataType DType> bool TaggedShapeAnalyzer::can_remove_transposes()
 {
-  assert(loco::must_cast<luci::CircleConst *>(f_tr->perm())->dtype() == DType);
-  assert(loco::must_cast<luci::CircleConst *>(b_tr->perm())->dtype() == DType);
+  // TODO: Update methods to use std::vector<int32_t&> intead of CircleNode
+  // For example,
+  //  init_shape_with_tag(_in_shape);
+  //  analyze_transpose(_fornt_perm);
 
-  const luci::CircleNode *in_tensor = loco::must_cast<luci::CircleNode *>(f_tr->a());
+  init_shape_with_tag(_in);
 
-  init_shape_with_tag(in_tensor);
+  analyze_transpose<DType>(_front_transpose);
 
-  analyze_transpose<DType>(f_tr);
-
-  if (not analyze_reshape(m_rs))
+  if (not analyze_reshape(_mid_reshape))
     return false;
 
-  analyze_transpose<DType>(b_tr);
+  analyze_transpose<DType>(_back_transpose);
 
   if (not verify_tag())
     return false;
@@ -339,34 +437,12 @@ bool remove_unnecessary_transpose(luci::CircleTranspose *node)
       return false;
   }
 
-  // check perm and shape are CircleConst node and its' datatype is S32
-  const auto back_perm = dynamic_cast<luci::CircleConst *>(back_transpose->perm());
-  {
-    if (back_perm == nullptr)
-      return false;
+  TaggedShapeAnalyzer analyzer;
 
-    if (back_perm->dtype() != loco::DataType::S32)
-      return false;
-  }
-  const auto front_perm = dynamic_cast<luci::CircleConst *>(front_transpose->perm());
-  {
-    if (front_perm == nullptr)
-      return false;
-
-    if (front_perm->dtype() != loco::DataType::S32)
-      return false;
-  }
-
-  // for now, handle only rank reduction equal (not expansion) cases
-  const auto output_rank = back_transpose->rank();
-  const auto input_rank = front_transpose->rank();
-  if (input_rank < output_rank)
+  if (not analyzer.init<loco::DataType::S32>(front_transpose, mid_reshape, back_transpose))
     return false;
 
-  // analyze pattern to check this pass is applicable
-  TaggedShapeAnalyzer analyzer;
-  if (not analyzer.can_remove_transposes<loco::DataType::S32>(front_transpose, mid_reshape,
-                                                              back_transpose))
+  if (not analyzer.can_remove_transposes<loco::DataType::S32>())
     return false;
 
   // repalce with new_node
