@@ -217,7 +217,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
-  // find operands which can share memory
+  const std::unordered_set<std::string> memory_sharing_supported_backends = {"cpu", "builtin"};
   const std::unordered_set<ir::OpCode> ops_with_possible_memory_sharing = {
     ir::OpCode::Reshape, ir::OpCode::ExpandDims, ir::OpCode::Squeeze};
   const auto memory_sharing_allowed = [&ops_with_possible_memory_sharing,
@@ -269,15 +269,18 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
                  [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
     data.custom_kernel_builder = custom_kernel_builder;
-    for (const auto &op_ind : op_order)
+    if (memory_sharing_supported_backends.count(backend->config()->id()))
     {
-      const auto &op = graph->operations().at(op_ind);
-      if (memory_sharing_allowed(op))
+      for (const auto &op_ind : op_order)
       {
-        data.shared_memory_operand_map[op.getOutputs().at(0)] = op.getInputs().at(0);
+        const auto &op = graph->operations().at(op_ind);
+        if (memory_sharing_allowed(op))
+        {
+          data.shared_memory_operand_map[op.getOutputs().at(0)] = op.getInputs().at(0);
+        }
       }
+      contexts.emplace(backend, backend->newContext(std::move(data)));
     }
-    contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
 }
