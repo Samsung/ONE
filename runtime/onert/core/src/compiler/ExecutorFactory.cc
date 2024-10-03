@@ -269,7 +269,7 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
                  [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
     data.custom_kernel_builder = custom_kernel_builder;
-    if (memory_sharing_supported_backends.count(backend->config()->id()))
+    if (memory_sharing_supported_backends.count(backend->config()->id()) > 0)
     {
       for (const auto &op_ind : op_order)
       {
@@ -279,8 +279,8 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           data.shared_memory_operand_map[op.getOutputs().at(0)] = op.getInputs().at(0);
         }
       }
-      contexts.emplace(backend, backend->newContext(std::move(data)));
     }
+    contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
 }
