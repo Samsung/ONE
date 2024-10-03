@@ -261,7 +261,7 @@ bool TaggedShapeAnalyzer::verify_tag() const
 }
 
 /**
- * @brief Initialize the class member and checks under conditions
+ * @brief Initialize the class members and check under conditions
  *
  *  Condtiions that have to be met for analyzer
  *    c1: input rank >= output rank
@@ -358,7 +358,7 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
  */
 template <loco::DataType DType> bool TaggedShapeAnalyzer::can_remove_transposes()
 {
-  // TODO: Update methods to use std::vector<int32_t&> intead of CircleNode
+  // TODO: Update methods to use std::vector<int32_t&> intead of CircleNode ptr
   // For example,
   //  init_shape_with_tag(_in_shape);
   //  analyze_transpose(_fornt_perm);
