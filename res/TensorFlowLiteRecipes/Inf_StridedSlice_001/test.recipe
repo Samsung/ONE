@@ -1,0 +1,46 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 3 dim: 5 }
+}
+operand {
+  name: "begin"
+  type: INT32
+  shape { dim: 4 }
+}
+operand {
+  name: "end"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "1" arg: "8" arg: "3" arg: "5" }
+}
+operand {
+  name: "strides"
+  type: INT32
+  shape { dim: 4 }
+  filler { tag: "explicit" arg: "1" arg: "1" arg: "1" arg: "1" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 0 dim: 0 dim: 0 dim: 0 }
+  shape_signature { dim: -1 dim: -1 dim: -1 dim: -1 }
+}
+operation {
+  type: "StridedSlice"
+  input: "ifm"
+  input: "begin"
+  input: "end"
+  input: "strides"
+  output: "ofm"
+  strided_slice_options {
+    begin_mask: 0
+    end_mask: 0
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+}
+input: "ifm"
+input: "begin"
+output: "ofm"
