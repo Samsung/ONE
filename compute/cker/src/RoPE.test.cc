@@ -24,7 +24,7 @@ using nnfw::cker::RoPEMode;
 
 TEST(CKer_Operation, RoPE)
 {
-  // Simple
+  // float
   {
     RoPEMode mode = RoPEMode::kGptNeox;
 
@@ -48,6 +48,33 @@ TEST(CKer_Operation, RoPE)
     for (size_t i = 0; i < ref_output_data.size(); ++i)
     {
       EXPECT_FLOAT_EQ(ref_output_data[i], output[i]);
+    }
+  }
+
+  // int64_t
+  {
+    RoPEMode mode = RoPEMode::kGptNeox;
+
+    Shape input_shape{1, 1, 1, 4};
+    std::vector<int64_t> input{0, 1, 2, 3};
+
+    Shape sin_table_shape{1, 1, 1, 4};
+    std::vector<int64_t> sin_table{0, 1, 1, 0};
+    Shape cos_table_shape{1, 1, 1, 4};
+    std::vector<int64_t> cos_table{1, 0, 0, 1};
+
+    Shape ref_output_shape{1, 1, 1, 4};
+    std::vector<int64_t> ref_output_data{0, -3, 0, 3};
+
+    Shape output_shape{1, 1, 1, 4};
+    std::vector<int64_t> output(ref_output_data.size());
+
+    nnfw::cker::RoPE<int64_t>(mode, input_shape, input.data(), sin_table_shape, sin_table.data(),
+                              cos_table_shape, cos_table.data(), ref_output_shape, output.data());
+
+    for (size_t i = 0; i < ref_output_data.size(); ++i)
+    {
+      EXPECT_EQ(ref_output_data[i], output[i]);
     }
   }
 }

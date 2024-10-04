@@ -64,20 +64,25 @@ template <typename T> void RoPELayer::rope()
 
 void RoPELayer::run()
 {
-  if (_mode == nnfw::cker::RoPEMode::kGptNeox)
+  switch (_input->data_type())
   {
-    if (_input->data_type() == OperandType::FLOAT32)
-    {
+    case OperandType::FLOAT32:
       rope<float>();
-    }
-    else
-    {
-      throw std::runtime_error{"RoPE: unsupported data type"};
-    }
-  }
-  else // TODO: GPT_J
-  {
-    throw std::runtime_error{"RoPE: unsupported mode"};
+      break;
+    case OperandType::INT32:
+      rope<int32_t>();
+      break;
+    case OperandType::INT64:
+      rope<int64_t>();
+      break;
+    case OperandType::QUANT_UINT8_ASYMM:
+      rope<uint8_t>();
+      break;
+    case OperandType::QUANT_INT8_ASYMM:
+      rope<int8_t>();
+      break;
+    default:
+      throw std::runtime_error("RoPE: unsupported data type");
   }
 }
 
