@@ -28,32 +28,50 @@ namespace
   if (not(condition))               \
     return false;
 
-std::vector<int32_t> extract_shape(const luci::CircleNode *node)
+bool extract_shape(const luci::CircleNode *node, std::vector<int32_t> &shape)
 {
-  std::vector<int32_t> shape;
+  uint32_t max_i32 = static_cast<uint32_t>(std::numeric_limits<int32_t>::max());
+
   auto rank = node->rank();
   for (auto i = 0u; i < rank; ++i)
   {
-    shape.push_back(static_cast<int32_t>(node->dim(i).value()));
+    uint32_t v = node->dim(i).value();
+    RET_FALSE_UNLESS(v <= max_i32)
+    shape.push_back(static_cast<int32_t>(v));
   }
-  return shape;
+  return true;
 };
 
-template <loco::DataType DTYPE>
-std::vector<int32_t> extract_const(const luci::CircleConst *const_node)
+bool extract_const(const luci::CircleConst *const_node, std::vector<int32_t> &values)
 {
-  static_assert(DTYPE == loco::DataType::S32 || DTYPE == loco::DataType::S16 ||
-                  DTYPE == loco::DataType::S8,
-                "unsupported data type");
+  auto dtype = const_node->dtype();
 
-  std::vector<int32_t> values;
-  auto size = const_node->size<DTYPE>();
-  for (auto i = 0u; i < size; ++i)
+  if (dtype == loco::DataType::S32)
   {
-    auto v = const_node->at<DTYPE>(i);
-    values.push_back(static_cast<int32_t>(v));
+    auto size = const_node->size<loco::DataType::S32>();
+    for (auto i = 0u; i < size; ++i)
+    {
+      int32_t v = const_node->at<loco::DataType::S32>(i);
+      values.push_back(v);
+    }
   }
-  return values;
+  else if (dtype == loco::DataType::S64)
+  {
+    int64_t max_i32 = static_cast<int64_t>(std::numeric_limits<int32_t>::max());
+    int64_t min_i32 = static_cast<int64_t>(std::numeric_limits<int32_t>::lowest());
+
+    auto size = const_node->size<loco::DataType::S64>();
+    for (auto i = 0u; i < size; ++i)
+    {
+      int64_t v = const_node->at<loco::DataType::S64>(i);
+      RET_FALSE_UNLESS(min_i32 <= v && v <= max_i32);
+      values.push_back(static_cast<int32_t>(v));
+    }
+  }
+  else
+    return false;
+
+  return true;
 };
 
 struct TagDim final
@@ -67,7 +85,6 @@ using TagShape = std::vector<TagDim>;
 class TaggedShapeAnalyzer final
 {
 public:
-  template <loco::DataType DType>
   bool init(const luci::CircleTranspose *, const luci::CircleReshape *,
             const luci::CircleTranspose *);
 
@@ -88,10 +105,10 @@ private:
   const luci::CircleReshape *_mid_reshape = nullptr;
   const luci::CircleTranspose *_back_transpose = nullptr;
 
-  std::vector<int32_t> _in_shape;
-  std::vector<int32_t> _front_perm;
-  std::vector<int32_t> _mid_shape;
-  std::vector<int32_t> _back_perm;
+  std::vector<int32_t> _in_shape_v;
+  std::vector<int32_t> _front_perm_v;
+  std::vector<int32_t> _mid_shape_v;
+  std::vector<int32_t> _back_perm_v;
 
   const uint8_t START_TAG = 0;
   TagShape _shape;
@@ -266,12 +283,11 @@ bool TaggedShapeAnalyzer::verify_tag() const
  *  Condtiions that have to be met for analyzer
  *    c1: input rank >= output rank
  *    c2: The 'perm' of tranpose should be a CircleConst* type
- *    c3: The shapes of the given nodes should be all known
+ *    c3: The shapes of input node and reshape node should be known
  *
  * @return True, if all conditions are satisfied and class members are initialized successfully
  *         False, otherwise
  */
-template <loco::DataType DType>
 bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
                                const luci::CircleReshape *mid_reshape,
                                const luci::CircleTranspose *back_transpose)
@@ -289,14 +305,12 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
 
   // check c2
   RET_FALSE_UNLESS(front_perm != nullptr);
-  RET_FALSE_UNLESS(front_perm->dtype() == DType);
   RET_FALSE_UNLESS(back_perm != nullptr);
-  RET_FALSE_UNLESS(back_perm->dtype() == DType);
 
-  _in_shape = extract_shape(_in);
-  _front_perm = extract_const<DType>(front_perm);
-  _mid_shape = extract_shape(_mid_reshape);
-  _back_perm = extract_const<DType>(back_perm);
+  RET_FALSE_UNLESS(extract_shape(_in, _in_shape_v));
+  RET_FALSE_UNLESS(extract_const(front_perm, _front_perm_v));
+  RET_FALSE_UNLESS(extract_shape(_mid_reshape, _mid_shape_v));
+  RET_FALSE_UNLESS(extract_const(back_perm, _back_perm_v));
 
   auto all_known = [](const std::vector<int32_t> &v) -> bool {
     for (auto i : v)
@@ -306,10 +320,8 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
   };
 
   // check c3
-  RET_FALSE_UNLESS(all_known(_in_shape));
-  RET_FALSE_UNLESS(all_known(extract_shape(_front_transpose)));
-  RET_FALSE_UNLESS(all_known(_mid_shape));
-  RET_FALSE_UNLESS(all_known(extract_shape(_back_transpose)));
+  RET_FALSE_UNLESS(all_known(_in_shape_v));
+  RET_FALSE_UNLESS(all_known(_mid_shape_v));
 
   return true;
 }
@@ -358,10 +370,13 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
  */
 template <loco::DataType DType> bool TaggedShapeAnalyzer::can_remove_transposes()
 {
+  assert(_in != nullptr || _front_transpose != nullptr || _mid_reshape != nullptr ||
+         _back_transpose != nullptr);
+
   // TODO: Update methods to use std::vector<int32_t&> intead of CircleNode ptr
   // For example,
-  //  init_shape_with_tag(_in_shape);
-  //  analyze_transpose(_fornt_perm);
+  //  init_shape_with_tag(_in_shape_v);
+  //  analyze_transpose(_fornt_perm_v);
 
   init_shape_with_tag(_in);
 
@@ -439,7 +454,7 @@ bool remove_unnecessary_transpose(luci::CircleTranspose *node)
 
   TaggedShapeAnalyzer analyzer;
 
-  if (not analyzer.init<loco::DataType::S32>(front_transpose, mid_reshape, back_transpose))
+  if (not analyzer.init(front_transpose, mid_reshape, back_transpose))
     return false;
 
   if (not analyzer.can_remove_transposes<loco::DataType::S32>())
