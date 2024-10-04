@@ -19,6 +19,7 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
+#include <limits>
 #include <vector>
 
 namespace
