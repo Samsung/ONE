@@ -38,7 +38,8 @@ TEST_F(GenModelTest, OptimizedReshapeInferenceSuccessfully)
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -61,7 +62,8 @@ TEST_F(GenModelTest, OptimizedExpandDimsInferenceSuccessfully)
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -84,7 +86,8 @@ TEST_F(GenModelTest, OptimizedReshapeConstInput)
   cgen.setInputsAndOutputs({}, {cos_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({}, {{0.54030231, -0.41614684, -0.9899925, -0.65364362}}));
+  _context->addTestCase(
+    uniformTCD<float>({}, {{0.54030231, -0.41614684, -0.9899925, -0.65364362}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -100,10 +103,10 @@ TEST_F(GenModelTest, OptimizedReshapeDynOutput)
   int cast2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_INT32});
 
   cgen.addOperatorCast({{cast_in}, {cast_out}}, circle::TensorType::TensorType_INT32,
-                        circle::TensorType::TensorType_FLOAT32);
+                       circle::TensorType::TensorType_FLOAT32);
   cgen.addOperatorReshape({{cast_out, new_shape}, {reshape_out}});
   cgen.addOperatorCast({{reshape_out}, {cast2_out}}, circle::TensorType::TensorType_FLOAT32,
-                        circle::TensorType::TensorType_INT32);
+                       circle::TensorType::TensorType_INT32);
   cgen.setInputsAndOutputs({cast_in, new_shape}, {cast2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -128,7 +131,8 @@ TEST_F(GenModelTest, OptimizedSqueezeInferenceSuccessfully)
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -171,7 +175,9 @@ TEST_F(GenModelTest, ReshapeInputModelOutput)
   cgen.setInputsAndOutputs({input}, {cos1_out, cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{0.54030231, -0.41614684, -0.9899925, -0.65364362}, {0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.54030231, -0.41614684, -0.9899925, -0.65364362},
+                                       {0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -192,9 +198,9 @@ TEST_F(GenModelTest, ReshapeOutputModelOutput)
   cgen.setInputsAndOutputs({input}, {reshape_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{0.54030231, -0.41614684, -0.9899925, -0.65364362}}));
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.54030231, -0.41614684, -0.9899925, -0.65364362}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
 }
-

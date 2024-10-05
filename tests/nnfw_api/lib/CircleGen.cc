@@ -582,7 +582,8 @@ uint32_t CircleGen::addOperatorSquare(const OperatorParams &params)
                                 circle::BuiltinOptions_SquareOptions, options);
 }
 
-uint32_t CircleGen::addOperatorSqueeze(const OperatorParams &params, const std::vector<int32_t>& squeeze_dims)
+uint32_t CircleGen::addOperatorSqueeze(const OperatorParams &params,
+                                       const std::vector<int32_t> &squeeze_dims)
 {
   auto squeeze_dims_vec = _fbb.CreateVector(squeeze_dims.data(), squeeze_dims.size());
   auto options = circle::CreateSqueezeOptions(_fbb, squeeze_dims_vec).Union();

@@ -56,7 +56,7 @@ public:
 
   void allocate(void);
 
-  const ir::OperandIndexMap<ir::OperandIndex>& getOperandsWithSharedMemory() const;
+  const ir::OperandIndexMap<ir::OperandIndex> &getOperandsWithSharedMemory() const;
 
   DynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
 

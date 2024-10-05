@@ -184,7 +184,8 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 
   // process source tensors for shared memory at first
   std::vector<ir::OperandIndex> registered_source_ind;
-  for(const auto& [_, source_ind] : tensor_builder->getOperandsWithSharedMemory()) {
+  for (const auto &[_, source_ind] : tensor_builder->getOperandsWithSharedMemory())
+  {
     if (ctx.external_operands().contains(source_ind))
       continue;
     tensor_builder->registerTensorInfo(source_ind, graph.operands().at(source_ind).info());
@@ -194,7 +195,8 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (ctx.external_operands().contains(ind))
       return;
-    if(std::find(std::begin(registered_source_ind), std::end(registered_source_ind), ind) != std::end(registered_source_ind)) // skip tensors already registered
+    if (std::find(std::begin(registered_source_ind), std::end(registered_source_ind), ind) !=
+        std::end(registered_source_ind)) // skip tensors already registered
       return;
     tensor_builder->registerTensorInfo(ind, obj.info());
   });
