@@ -90,6 +90,29 @@ TEST_F(GenModelTest, OptimizedReshapeConstInput)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OptimizedReshapeDynOutput)
+{
+  CircleGen cgen;
+  int cast_in = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32});
+  int cast_out = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
+  int new_shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
+  int reshape_out = cgen.addTensor({{}, circle::TensorType::TensorType_FLOAT32});
+  int cast2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_INT32});
+
+  cgen.addOperatorCast({{cast_in}, {cast_out}}, circle::TensorType::TensorType_INT32,
+                        circle::TensorType::TensorType_FLOAT32);
+  cgen.addOperatorReshape({{cast_out, new_shape}, {reshape_out}});
+  cgen.addOperatorCast({{reshape_out}, {cast2_out}}, circle::TensorType::TensorType_FLOAT32,
+                        circle::TensorType::TensorType_INT32);
+  cgen.setInputsAndOutputs({cast_in, new_shape}, {cast2_out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int32_t>({{1, 2, 3, 4}, {2, 2}}, {{1, 2, 3, 4}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OptimizedSqueezeInferenceSuccessfully)
 {
   CircleGen cgen;

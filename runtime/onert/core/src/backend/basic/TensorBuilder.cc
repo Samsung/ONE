@@ -32,7 +32,8 @@ TensorBuilder::TensorBuilder(
   const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
     _static_tensor_mgr{
-      new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get(), operands_with_shared_memory)}
+      new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get(), operands_with_shared_memory)},
+       _operands_with_shared_memory{operands_with_shared_memory}
 {
   /* empty */
 }
@@ -87,6 +88,10 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 }
 
 void TensorBuilder::allocate(void) { _static_tensor_mgr->allocateNonconsts(); }
+
+const ir::OperandIndexMap<ir::OperandIndex>& TensorBuilder::getOperandsWithSharedMemory() const {
+  return _operands_with_shared_memory;
+}
 
 } // namespace basic
 } // namespace backend

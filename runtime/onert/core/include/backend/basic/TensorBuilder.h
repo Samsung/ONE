@@ -56,6 +56,8 @@ public:
 
   void allocate(void);
 
+  const ir::OperandIndexMap<ir::OperandIndex>& getOperandsWithSharedMemory() const;
+
   DynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
 
 private:
@@ -63,6 +65,7 @@ private:
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
+  ir::OperandIndexMap<ir::OperandIndex> _operands_with_shared_memory;
 };
 
 } // namespace basic
