@@ -1,5 +1,7 @@
 var NAVTREEINDEX30 =
 {
+"_t_i_s_o_kernel_8h_source.html":[40,0,3,4,2,1,111],
+"_tanh_canonicalizer_8cpp.html":[40,0,0,82,1,0,50],
 "_tanh_canonicalizer_8cpp_source.html":[40,0,0,82,1,0,50],
 "_tanh_canonicalizer_8h.html":[40,0,0,82,1,0,51],
 "_tanh_canonicalizer_8h_source.html":[40,0,0,82,1,0,51],
@@ -247,7 +249,5 @@ var NAVTREEINDEX30 =
 "_trainable_code_map_8h.html":[40,0,4,1,2,0,1,0,1],
 "_trainable_code_map_8h.html#a4b95d54cba123f90b639e9cdb670f6f8":[40,0,4,1,2,0,1,0,1,1],
 "_trainable_code_map_8h_source.html":[40,0,4,1,2,0,1,0,1],
-"_trainable_constant_insertion_pass_8cc.html":[40,0,4,1,2,1,1,1,0,3],
-"_trainable_constant_insertion_pass_8cc_source.html":[40,0,4,1,2,1,1,1,0,3],
-"_trainable_constant_insertion_pass_8h.html":[40,0,4,1,2,1,1,1,0,4]
+"_trainable_constant_insertion_pass_8cc.html":[40,0,4,1,2,1,1,1,0,3]
 };

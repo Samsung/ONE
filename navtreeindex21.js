@@ -1,5 +1,6 @@
 var NAVTREEINDEX21 =
 {
+"_p_a_l_g_r_u_weight_grad_8h.html":[40,0,3,5,0,4,1,30],
 "_p_a_l_g_r_u_weight_grad_8h.html#a99c93f6fa72bdcac318b81e3bd3f9dc0":[40,0,3,5,0,4,1,30,0],
 "_p_a_l_g_r_u_weight_grad_8h_source.html":[40,0,3,5,0,4,1,30],
 "_p_a_l_gather_8h.html":[40,0,0,59,1,1,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX21 =
 "_padding_utils_8h.html#abdd2136a79306f9abcfb2bda4784c480":[40,0,0,35,2,0,0,21,3],
 "_padding_utils_8h.html#aeb2d91673872bb7821ee7b9113ece3a7":[40,0,0,35,2,0,0,21,2],
 "_padding_utils_8h_source.html":[40,0,0,35,2,0,0,21],
-"_palette_8py.html":[40,0,0,132,0,3],
-"_palette_8py_source.html":[40,0,0,132,0,3]
+"_palette_8py.html":[40,0,0,132,0,3]
 };

@@ -93,7 +93,8 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 </div><!--header-->
 <div class="contents">
 <p>check 'Transpose-Reshape-Transpose' can be replaced by one 'Reshape'.</p>
-<p>check 'Transpose-Reshape-Transpose' can be replaced by one 'Reshape'. Let's explain how analyzer check Transpose-Reshape-Transpose pattern with an exact example.</p>
+<p>check 'Transpose-Reshape-Transpose' can be replaced by one 'Reshape'.</p><dl class="section warning"><dt>Warning</dt><dd>'@init' have to be called first</dd></dl>
+<p>Let's explain how analyzer check Transpose-Reshape-Transpose pattern with an exact example.</p>
 <p>Let's assume under pattern is given : </p><pre class="fragment">Input(1, 7, 7, 448)
       |
 Transpose(perm=(0, 3, 1, 2))
@@ -127,76 +128,101 @@ Output(1, 49, 448)
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">luci/IR/CircleNodes.h</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="_circle_node_origin_8h.html">luci/Profile/CircleNodeOrigin.h</a>&gt;</span></div>
 <div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;limits&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">namespace</span></div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">class </span>TaggedShapeAnalyzer final</div>
+<div class="line"><span class="preprocessor">#define CHECK_OR_FALSE(condition) \</span></div>
+<div class="line"><span class="preprocessor">  if (not(condition))             \</span></div>
+<div class="line"><span class="preprocessor">    return false;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">bool</span> extract_shape(<span class="keyword">const</span> <a id="_a0" name="_a0"></a><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, std::vector&lt;int32_t&gt; &amp;shape)</div>
 <div class="line">{</div>
-<div class="line"><span class="keyword">public</span>:</div>
-<div class="line">  <span class="keyword">template</span> &lt;loco::DataType DType&gt;</div>
-<div class="line">  <span class="keywordtype">bool</span> can_remove_transposes(<span class="keyword">const</span> <a id="_a0" name="_a0"></a><a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *f_tr, <span class="keyword">const</span> <a id="_a1" name="_a1"></a><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *m_rs,</div>
-<div class="line">                             <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *b_tr);</div>
+<div class="line">  uint32_t max_i32 = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(std::numeric_limits&lt;int32_t&gt;::max());</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">private</span>:</div>
-<div class="line">  <span class="keywordtype">void</span> init_shape_with_tag(<span class="keyword">const</span> <a id="_a2" name="_a2"></a><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *);</div>
-<div class="line"> </div>
-<div class="line">  <span class="keyword">template</span> &lt;loco::DataType PermType&gt; <span class="keywordtype">void</span> analyze_transpose(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *);</div>
-<div class="line"> </div>
-<div class="line">  <span class="keyword">template</span> &lt;loco::DataType ShapeType&gt; <span class="keywordtype">bool</span> analyze_reshape(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *);</div>
-<div class="line"> </div>
-<div class="line">  <span class="keywordtype">bool</span> verify_tag() <span class="keyword">const</span>;</div>
-<div class="line"> </div>
-<div class="line">  <span class="keyword">struct </span>Dim final</div>
+<div class="line">  <span class="keyword">auto</span> rank = node-&gt;rank();</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0u; i &lt; rank; ++i)</div>
 <div class="line">  {</div>
-<div class="line">    int32_t value;</div>
-<div class="line">    std::vector&lt;uint8_t&gt; tags;</div>
-<div class="line">  };</div>
-<div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> uint8_t START_TAG = 0;</div>
-<div class="line"> </div>
-<div class="line">  <span class="keyword">using </span><a id="_a3" name="_a3"></a><a class="code hl_struct" href="struct_shape.html">Shape</a> = std::vector&lt;Dim&gt;;</div>
-<div class="line">  <a class="code hl_struct" href="struct_shape.html">Shape</a> _shape;</div>
-<div class="line"> </div>
-<div class="line">  int32_t flatsize(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;shape) <span class="keyword">const</span>;</div>
-<div class="line">  <span class="keywordtype">bool</span> inference_incomplete_shape(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;src, <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;dst);</div>
+<div class="line">    uint32_t v = node-&gt;dim(i).value();</div>
+<div class="line">    <a id="a1" name="a1"></a><a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(v &lt;= max_i32)</div>
+<div class="line">    shape.push_back(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(v));</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">};</div>
 <div class="line"> </div>
-<div class="line">int32_t TaggedShapeAnalyzer::flatsize(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;shape)<span class="keyword"> const</span></div>
-<div class="line"><span class="keyword"></span>{</div>
-<div class="line">  int32_t <a id="a4" name="a4"></a><a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = 1;</div>
-<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;dim : shape)</div>
-<div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (dim.value &gt;= 1)</div>
-<div class="line">      <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> *= dim.value;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> TaggedShapeAnalyzer::inference_incomplete_shape(<span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;src, <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;dst)</div>
+<div class="line"><span class="keywordtype">bool</span> extract_const(<span class="keyword">const</span> <a id="_a2" name="_a2"></a><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *const_node, std::vector&lt;int32_t&gt; &amp;values)</div>
 <div class="line">{</div>
-<div class="line">  std::vector&lt;size_t&gt; incomplete_indexes;</div>
-<div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; dst.size(); i++)</div>
-<div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (dst[i].value == -1)</div>
-<div class="line">      incomplete_indexes.push_back(i);</div>
-<div class="line">  }</div>
+<div class="line">  <span class="keyword">auto</span> dtype = const_node-&gt;dtype();</div>
 <div class="line"> </div>
-<div class="line">  <span class="keywordflow">if</span> (incomplete_indexes.size() == 0)</div>
-<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line">  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (incomplete_indexes.size() == 1)</div>
+<div class="line">  <span class="keywordflow">if</span> (dtype == loco::DataType::S32)</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (flatsize(src) % flatsize(dst) == 0)</div>
-<div class="line">      dst[incomplete_indexes[0]].value = flatsize(src) / flatsize(dst);</div>
-<div class="line">    <span class="keywordflow">else</span></div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">    <span class="keyword">auto</span> <a id="a3" name="a3"></a><a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = const_node-&gt;<a id="a4" name="a4"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::S32&gt;();</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0u; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
+<div class="line">    {</div>
+<div class="line">      int32_t v = const_node-&gt;<a id="a5" name="a5"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::S32&gt;(i);</div>
+<div class="line">      values.push_back(v);</div>
+<div class="line">    }</div>
 <div class="line">  }</div>
-<div class="line">  <span class="keywordflow">else</span> <span class="comment">// incomplete_indexes.size() &gt;= 2</span></div>
+<div class="line">  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dtype == loco::DataType::S64)</div>
+<div class="line">  {</div>
+<div class="line">    int64_t max_i32 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(std::numeric_limits&lt;int32_t&gt;::max());</div>
+<div class="line">    int64_t min_i32 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(std::numeric_limits&lt;int32_t&gt;::lowest());</div>
+<div class="line"> </div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = const_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::S64&gt;();</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0u; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++i)</div>
+<div class="line">    {</div>
+<div class="line">      int64_t v = const_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::S64&gt;(i);</div>
+<div class="line">      <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(min_i32 &lt;= v &amp;&amp; v &lt;= max_i32);</div>
+<div class="line">      values.push_back(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(v));</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">else</span></div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line">}</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">struct </span>TagDim final</div>
+<div class="line">{</div>
+<div class="line">  int32_t value;</div>
+<div class="line">  std::vector&lt;uint8_t&gt; tags;</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">using </span>TagShape = std::vector&lt;TagDim&gt;;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">class </span>TaggedShapeAnalyzer final</div>
+<div class="line">{</div>
+<div class="line"><span class="keyword">public</span>:</div>
+<div class="line">  <span class="keywordtype">bool</span> init(<span class="keyword">const</span> <a id="_a6" name="_a6"></a><a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *, <span class="keyword">const</span> <a id="_a7" name="_a7"></a><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *,</div>
+<div class="line">            <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">template</span> &lt;loco::DataType DType&gt; <span class="keywordtype">bool</span> can_remove_transposes();</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">private</span>:</div>
+<div class="line">  <span class="keywordtype">void</span> init_shape_with_tag(<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">template</span> &lt;loco::DataType PermType&gt; <span class="keywordtype">void</span> analyze_transpose(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordtype">bool</span> analyze_reshape(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordtype">bool</span> verify_tag() <span class="keyword">const</span>;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">private</span>:</div>
+<div class="line">  <span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *_in = <span class="keyword">nullptr</span>;</div>
+<div class="line">  <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *_front_transpose = <span class="keyword">nullptr</span>;</div>
+<div class="line">  <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *_mid_reshape = <span class="keyword">nullptr</span>;</div>
+<div class="line">  <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *_back_transpose = <span class="keyword">nullptr</span>;</div>
+<div class="line"> </div>
+<div class="line">  std::vector&lt;int32_t&gt; _in_shape_v;</div>
+<div class="line">  std::vector&lt;int32_t&gt; _front_perm_v;</div>
+<div class="line">  std::vector&lt;int32_t&gt; _mid_shape_v;</div>
+<div class="line">  std::vector&lt;int32_t&gt; _back_perm_v;</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">const</span> uint8_t START_TAG = 0;</div>
+<div class="line">  TagShape _shape;</div>
+<div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> TaggedShapeAnalyzer::init_shape_with_tag(<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *in_tensor)</div>
 <div class="line">{</div>
@@ -205,7 +231,7 @@ Output(1, 49, 448)
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; in_tensor-&gt;rank(); i++)</div>
 <div class="line">  {</div>
-<div class="line">    TaggedShapeAnalyzer::Dim dim;</div>
+<div class="line">    TagDim dim;</div>
 <div class="line">    {</div>
 <div class="line">      dim.value = in_tensor-&gt;dim(i).value();</div>
 <div class="line">      <span class="keywordflow">if</span> (dim.value != 1)</div>
@@ -218,42 +244,36 @@ Output(1, 49, 448)
 <div class="line"><span class="keyword">template</span> &lt;loco::DataType PermType&gt;</div>
 <div class="line"><span class="keywordtype">void</span> TaggedShapeAnalyzer::analyze_transpose(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *transpose_node)</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">const</span> <a id="_a5" name="_a5"></a><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *perm_node = loco::must_cast&lt;luci::CircleConst *&gt;(transpose_node-&gt;<a id="a6" name="a6"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>());</div>
+<div class="line">  <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *perm_node = loco::must_cast&lt;luci::CircleConst *&gt;(transpose_node-&gt;<a id="a8" name="a8"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>());</div>
 <div class="line">  assert(perm_node-&gt;dtype() == PermType);</div>
 <div class="line"> </div>
-<div class="line">  TaggedShapeAnalyzer::Shape new_shape;</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = perm_node-&gt;<a id="a7" name="a7"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;PermType&gt;();</div>
+<div class="line">  TagShape new_shape;</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = perm_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;PermType&gt;();</div>
 <div class="line">  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; i++)</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keyword">auto</span> perm_idx = perm_node-&gt;<a id="a8" name="a8"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;PermType&gt;(i);</div>
+<div class="line">    <span class="keyword">auto</span> perm_idx = perm_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;PermType&gt;(i);</div>
 <div class="line">    new_shape.push_back(_shape.at(perm_idx));</div>
 <div class="line">  }</div>
 <div class="line">  _shape = new_shape;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">template</span> &lt;loco::DataType ReshapeType&gt;</div>
 <div class="line"><span class="keywordtype">bool</span> TaggedShapeAnalyzer::analyze_reshape(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *reshape_node)</div>
 <div class="line">{</div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *shape_node = loco::must_cast&lt;luci::CircleConst *&gt;(reshape_node-&gt;<a id="a9" name="a9"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a20830b31257a39b81057b10793f4cc4c">shape</a>());</div>
-<div class="line">  assert(shape_node-&gt;dtype() == ReshapeType);</div>
-<div class="line"> </div>
 <div class="line">  <span class="comment">// At least one element must be in reshape&#39;s output-tensor.</span></div>
-<div class="line">  <span class="keywordflow">if</span> (shape_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;ReshapeType&gt;() &lt;= 0)</div>
+<div class="line">  <span class="keywordflow">if</span> (reshape_node-&gt;rank() &lt;= 0)</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// Create new_shape based on reshape_node/shape</span></div>
-<div class="line">  <a class="code hl_struct" href="struct_shape.html">Shape</a> new_shape;</div>
-<div class="line">  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; shape_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;ReshapeType&gt;(); i++)</div>
+<div class="line">  <span class="comment">// Create new_shape based on reshape_node</span></div>
+<div class="line">  TagShape new_shape;</div>
+<div class="line">  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; reshape_node-&gt;rank(); i++)</div>
 <div class="line">  {</div>
-<div class="line">    TaggedShapeAnalyzer::Dim dim;</div>
-<div class="line">    dim.value = shape_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;ReshapeType&gt;(i);</div>
+<div class="line">    <span class="keywordflow">if</span> (not reshape_node-&gt;dim(i).known())</div>
+<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
+<div class="line">    TagDim dim;</div>
+<div class="line">    dim.value = reshape_node-&gt;dim(i).value();</div>
 <div class="line">    new_shape.push_back(dim);</div>
 <div class="line">  }</div>
-<div class="line"> </div>
-<div class="line">  <span class="comment">// inference new_shape dim with -1 value</span></div>
-<div class="line">  <span class="keywordflow">if</span> (inference_incomplete_shape(_shape, new_shape) == <span class="keyword">false</span>)</div>
-<div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// indexing for _shape [old_shape_start_idx, old_shape_end_idx)</span></div>
 <div class="line">  uint32_t old_shape_start_idx = 0;</div>
@@ -283,7 +303,7 @@ Output(1, 49, 448)
 <div class="line">  uint32_t new_shape_idx = 0;</div>
 <div class="line">  <span class="keywordflow">while</span> (new_shape_idx &lt; new_shape.size())</div>
 <div class="line">  {</div>
-<div class="line">    Dim &amp;target_dim = new_shape[new_shape_idx];</div>
+<div class="line">    TagDim &amp;target_dim = new_shape[new_shape_idx];</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Ignore dim == 1</span></div>
 <div class="line">    <span class="keywordflow">if</span> (target_dim.value == 1)</div>
@@ -332,26 +352,58 @@ Output(1, 49, 448)
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// For implementation details, please refer the comment with declaration.</span></div>
-<div class="line"><span class="keyword">template</span> &lt;loco::DataType DType&gt;</div>
-<div class="line"><span class="keywordtype">bool</span> TaggedShapeAnalyzer::can_remove_transposes(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *f_tr,</div>
-<div class="line">                                                <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *m_rs,</div>
-<div class="line">                                                <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *b_tr)</div>
+<div class="line"><span class="keywordtype">bool</span> TaggedShapeAnalyzer::init(<span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *front_transpose,</div>
+<div class="line">                               <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *mid_reshape,</div>
+<div class="line">                               <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *back_transpose)</div>
 <div class="line">{</div>
-<div class="line">  assert(loco::must_cast&lt;luci::CircleConst *&gt;(f_tr-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>())-&gt;dtype() == DType);</div>
-<div class="line">  assert(loco::must_cast&lt;luci::CircleConst *&gt;(m_rs-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a20830b31257a39b81057b10793f4cc4c">shape</a>())-&gt;dtype() == DType);</div>
-<div class="line">  assert(loco::must_cast&lt;luci::CircleConst *&gt;(b_tr-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>())-&gt;dtype() == DType);</div>
+<div class="line">  _in = loco::must_cast&lt;luci::CircleNode *&gt;(front_transpose-&gt;<a id="a9" name="a9"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
+<div class="line">  _front_transpose = front_transpose;</div>
+<div class="line">  _mid_reshape = mid_reshape;</div>
+<div class="line">  _back_transpose = back_transpose;</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *in_tensor = loco::must_cast&lt;luci::CircleNode *&gt;(f_tr-&gt;<a id="a10" name="a10"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
+<div class="line">  <span class="comment">// check c1</span></div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(_in-&gt;rank() &gt;= _back_transpose-&gt;rank());</div>
 <div class="line"> </div>
-<div class="line">  init_shape_with_tag(in_tensor);</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> front_perm = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(_front_transpose-&gt;perm());</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> back_perm = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(_back_transpose-&gt;perm());</div>
 <div class="line"> </div>
-<div class="line">  analyze_transpose&lt;DType&gt;(f_tr);</div>
+<div class="line">  <span class="comment">// check c2</span></div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(front_perm != <span class="keyword">nullptr</span>);</div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(back_perm != <span class="keyword">nullptr</span>);</div>
 <div class="line"> </div>
-<div class="line">  <span class="keywordflow">if</span> (not analyze_reshape&lt;DType&gt;(m_rs))</div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(extract_shape(_in, _in_shape_v));</div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(extract_const(front_perm, _front_perm_v));</div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(extract_shape(_mid_reshape, _mid_shape_v));</div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(extract_const(back_perm, _back_perm_v));</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">auto</span> all_known = [](<span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;v) -&gt; <span class="keywordtype">bool</span> {</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> i : v)</div>
+<div class="line">      <span class="keywordflow">if</span> (i &lt;= 0)</div>
+<div class="line">        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">  };</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// check c3</span></div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(all_known(_in_shape_v));</div>
+<div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(all_known(_mid_shape_v));</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">template</span> &lt;loco::DataType DType&gt; <span class="keywordtype">bool</span> TaggedShapeAnalyzer::can_remove_transposes()</div>
+<div class="line">{</div>
+<div class="line">  assert(_in != <span class="keyword">nullptr</span> &amp;&amp; _front_transpose != <span class="keyword">nullptr</span> &amp;&amp; _mid_reshape != <span class="keyword">nullptr</span> &amp;&amp;</div>
+<div class="line">         _back_transpose != <span class="keyword">nullptr</span>);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// TODO: Update under methods to use std::vector&lt;int32_t&amp;&gt; intead of CircleNode*</span></div>
+<div class="line">  init_shape_with_tag(_in);</div>
+<div class="line"> </div>
+<div class="line">  analyze_transpose&lt;DType&gt;(_front_transpose);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (not analyze_reshape(_mid_reshape))</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
-<div class="line">  analyze_transpose&lt;DType&gt;(b_tr);</div>
+<div class="line">  analyze_transpose&lt;DType&gt;(_back_transpose);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">if</span> (not verify_tag())</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -360,18 +412,18 @@ Output(1, 49, 448)
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">template</span> &lt;loco::DataType ShapeType&gt;</div>
-<div class="line"><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *create_reshape_node(<a id="_a11" name="_a11"></a><a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *graph,</div>
+<div class="line"><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *create_reshape_node(<a id="_a10" name="_a10"></a><a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *graph,</div>
 <div class="line">                                         <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *front_transpose,</div>
 <div class="line">                                         <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *mid_reshape,</div>
 <div class="line">                                         <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *back_transpose)</div>
 <div class="line">{</div>
 <div class="line">  std::string composed_name =</div>
-<div class="line">    front_transpose-&gt;<a id="a12" name="a12"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + mid_reshape-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + back_transpose-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
+<div class="line">    front_transpose-&gt;<a id="a11" name="a11"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + mid_reshape-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + back_transpose-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
 <div class="line"> </div>
 <div class="line">  std::vector&lt;std::shared_ptr&lt;luci::CircleNodeOrigin&gt;&gt; src_origin{luci::get_origin(front_transpose),</div>
 <div class="line">                                                                  luci::get_origin(mid_reshape),</div>
 <div class="line">                                                                  luci::get_origin(back_transpose)};</div>
-<div class="line">  <span class="keyword">auto</span> <span class="keyword">const</span> composed_origin = <a id="a13" name="a13"></a><a class="code hl_function" href="namespaceluci.html#a39f2a346aed87be9f6be0b865668e387">luci::composite_origin</a>(src_origin);</div>
+<div class="line">  <span class="keyword">auto</span> <span class="keyword">const</span> composed_origin = <a id="a12" name="a12"></a><a class="code hl_function" href="namespaceluci.html#a39f2a346aed87be9f6be0b865668e387">luci::composite_origin</a>(src_origin);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> shape_node = graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
 <div class="line">  {</div>
@@ -384,7 +436,7 @@ Output(1, 49, 448)
 <div class="line">    {</div>
 <div class="line">      shape_node-&gt;at&lt;ShapeType&gt;(i) = back_transpose-&gt;dim(i).value();</div>
 <div class="line">    }</div>
-<div class="line">    shape_node-&gt;<a id="a14" name="a14"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#acacef6d89b0ea391f613395f920074b4">shape_status</a>(<a id="a15" name="a15"></a><a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line">    shape_node-&gt;<a id="a13" name="a13"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#acacef6d89b0ea391f613395f920074b4">shape_status</a>(<a id="a14" name="a14"></a><a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
 <div class="line">    shape_node-&gt;name(composed_name + <span class="stringliteral">&quot;/shape&quot;</span>);</div>
 <div class="line">    luci::add_origin(shape_node, composed_origin);</div>
 <div class="line">  }</div>
@@ -392,8 +444,8 @@ Output(1, 49, 448)
 <div class="line">  <span class="keyword">auto</span> reshape_node = graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a>&gt;();</div>
 <div class="line">  {</div>
 <div class="line">    reshape_node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(composed_name);</div>
-<div class="line">    reshape_node-&gt;<a id="a16" name="a16"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a7d61e674bf5b1a8572bb8f25bf2947b2">tensor</a>(front_transpose-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
-<div class="line">    reshape_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a20830b31257a39b81057b10793f4cc4c">shape</a>(shape_node);</div>
+<div class="line">    reshape_node-&gt;<a id="a15" name="a15"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a7d61e674bf5b1a8572bb8f25bf2947b2">tensor</a>(front_transpose-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
+<div class="line">    reshape_node-&gt;<a id="a16" name="a16"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a20830b31257a39b81057b10793f4cc4c">shape</a>(shape_node);</div>
 <div class="line">    luci::add_origin(reshape_node, composed_origin);</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keywordflow">return</span> reshape_node;</div>
@@ -414,42 +466,12 @@ Output(1, 49, 448)
 <div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// check perm and shape are CircleConst node and its&#39; datatype is S32</span></div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> back_perm = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(back_transpose-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>());</div>
-<div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (back_perm == <span class="keyword">nullptr</span>)</div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line">  TaggedShapeAnalyzer analyzer;</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (back_perm-&gt;dtype() != loco::DataType::S32)</div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> shape = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(mid_reshape-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a20830b31257a39b81057b10793f4cc4c">shape</a>());</div>
-<div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (shape == <span class="keyword">nullptr</span>)</div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (shape-&gt;dtype() != loco::DataType::S32)</div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">  }</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> front_perm = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(front_transpose-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">perm</a>());</div>
-<div class="line">  {</div>
-<div class="line">    <span class="keywordflow">if</span> (front_perm == <span class="keyword">nullptr</span>)</div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (front_perm-&gt;dtype() != loco::DataType::S32)</div>
-<div class="line">      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">  }</div>
-<div class="line"> </div>
-<div class="line">  <span class="comment">// for now, handle only rank reduction equal (not expansion) cases</span></div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> output_rank = back_transpose-&gt;rank();</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> input_rank = front_transpose-&gt;rank();</div>
-<div class="line">  <span class="keywordflow">if</span> (input_rank &lt; output_rank)</div>
+<div class="line">  <span class="keywordflow">if</span> (not analyzer.init(front_transpose, mid_reshape, back_transpose))</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
-<div class="line">  <span class="comment">// analyze pattern to check this pass is applicable</span></div>
-<div class="line">  TaggedShapeAnalyzer analyzer;</div>
-<div class="line">  <span class="keywordflow">if</span> (not analyzer.can_remove_transposes&lt;loco::DataType::S32&gt;(front_transpose, mid_reshape,</div>
-<div class="line">                                                              back_transpose))</div>
+<div class="line">  <span class="keywordflow">if</span> (not analyzer.can_remove_transposes&lt;loco::DataType::S32&gt;())</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// repalce with new_node</span></div>
@@ -484,6 +506,7 @@ Output(1, 49, 448)
 <div class="line"> </div>
 <div class="line">} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_circle_node_origin_8h_html"><div class="ttname"><a href="_circle_node_origin_8h.html">CircleNodeOrigin.h</a></div></div>
+<div class="ttc" id="a_pattern_resolver_8cpp_html_afb821ee62cded6ec74a36455b3cfcf51"><div class="ttname"><a href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a></div><div class="ttdeci">#define CHECK_OR_FALSE(condition)</div><div class="ttdef"><b>Definition</b> <a href="_pattern_resolver_8cpp_source.html#l00095">PatternResolver.cpp:95</a></div></div>
 <div class="ttc" id="a_remove_unnecessary_transpose_net_pass_8h_html"><div class="ttname"><a href="_remove_unnecessary_transpose_net_pass_8h.html">RemoveUnnecessaryTransposeNetPass.h</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html_a117bfe99976cf71eb9d85f4b018f26ad"><div class="ttname"><a href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">loco::Node::graph</a></div><div class="ttdeci">Graph * graph(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00070">Node.h:70</a></div></div>
@@ -503,11 +526,10 @@ Output(1, 49, 448)
 <div class="ttc" id="anamespaceluci_html_a39f2a346aed87be9f6be0b865668e387"><div class="ttname"><a href="namespaceluci.html#a39f2a346aed87be9f6be0b865668e387">luci::composite_origin</a></div><div class="ttdeci">std::shared_ptr&lt; CircleNodeOrigin &gt; composite_origin(const std::initializer_list&lt; std::shared_ptr&lt; CircleNodeOrigin &gt; &gt; origins)</div><div class="ttdef"><b>Definition</b> <a href="_circle_node_origin_8cpp_source.html#l00126">CircleNodeOrigin.cpp:126</a></div></div>
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
-<div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_acacef6d89b0ea391f613395f920074b4"><div class="ttname"><a href="structluci_1_1_circle_node.html#acacef6d89b0ea391f613395f920074b4">luci::CircleNode::shape_status</a></div><div class="ttdeci">ShapeStatus shape_status(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00064">CircleNodeDecl.h:64</a></div></div>
-<div class="ttc" id="astructluci_1_1_remove_unnecessary_transpose_net_pass_html_ae67319dd51cf61ce6807ccd78233d19d"><div class="ttname"><a href="structluci_1_1_remove_unnecessary_transpose_net_pass.html#ae67319dd51cf61ce6807ccd78233d19d">luci::RemoveUnnecessaryTransposeNetPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition</b> <a href="_remove_unnecessary_transpose_net_pass_8cpp_source.html#l00482">RemoveUnnecessaryTransposeNetPass.cpp:482</a></div></div>
+<div class="ttc" id="astructluci_1_1_remove_unnecessary_transpose_net_pass_html_ae67319dd51cf61ce6807ccd78233d19d"><div class="ttname"><a href="structluci_1_1_remove_unnecessary_transpose_net_pass.html#ae67319dd51cf61ce6807ccd78233d19d">luci::RemoveUnnecessaryTransposeNetPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition</b> <a href="_remove_unnecessary_transpose_net_pass_8cpp_source.html#l00510">RemoveUnnecessaryTransposeNetPass.cpp:510</a></div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

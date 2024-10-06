@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"_let-example.html":[41,0],
 "_level_8cpp.html":[40,0,0,84,0,2,7],
 "_level_8cpp.html#a1442db07b7bf039082bd57501f611a9a":[40,0,0,84,0,2,7,0],
 "_level_8cpp.html#a845da47e19a99676757ce549cd29403c":[40,0,0,84,0,2,7,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "_matrix_set_diag_options_8h.html#a376cbd2ff766b20178cb76e6d632544f":[40,0,0,130,2,0,87,0],
 "_matrix_set_diag_options_8h_source.html":[40,0,0,130,2,0,87],
 "_matrix_shape_8h.html":[40,0,0,49,0,0,1,35],
-"_matrix_shape_8h_source.html":[40,0,0,49,0,0,1,35],
-"_max_min_8h.html":[40,0,1,1,0,0,3,40]
+"_matrix_shape_8h_source.html":[40,0,0,49,0,0,1,35]
 };

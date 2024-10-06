@@ -92,6 +92,7 @@ var namespaceluci__interpreter_1_1kernels =
     [ "ResizeNearestNeighbor", "classluci__interpreter_1_1kernels_1_1_resize_nearest_neighbor.html", "classluci__interpreter_1_1kernels_1_1_resize_nearest_neighbor" ],
     [ "ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", "classluci__interpreter_1_1kernels_1_1_reverse_v2" ],
     [ "RmsNorm", "classluci__interpreter_1_1kernels_1_1_rms_norm.html", "classluci__interpreter_1_1kernels_1_1_rms_norm" ],
+    [ "RoPE", "classluci__interpreter_1_1kernels_1_1_ro_p_e.html", "classluci__interpreter_1_1kernels_1_1_ro_p_e" ],
     [ "Rsqrt", "classluci__interpreter_1_1kernels_1_1_rsqrt.html", "classluci__interpreter_1_1kernels_1_1_rsqrt" ],
     [ "Select", "classluci__interpreter_1_1kernels_1_1_select.html", "classluci__interpreter_1_1kernels_1_1_select" ],
     [ "SelectV2", "classluci__interpreter_1_1kernels_1_1_select_v2.html", "classluci__interpreter_1_1kernels_1_1_select_v2" ],

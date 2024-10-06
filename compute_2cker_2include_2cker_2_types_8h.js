@@ -17,6 +17,7 @@ var compute_2cker_2include_2cker_2_types_8h =
     [ "nnfw::cker::GatherParams", "structnnfw_1_1cker_1_1_gather_params.html", "structnnfw_1_1cker_1_1_gather_params" ],
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", "structnnfw_1_1cker_1_1_instance_norm_params" ],
     [ "nnfw::cker::ResizeBilinearParams", "structnnfw_1_1cker_1_1_resize_bilinear_params.html", "structnnfw_1_1cker_1_1_resize_bilinear_params" ],
+    [ "nnfw::cker::RmsNormParams", "structnnfw_1_1cker_1_1_rms_norm_params.html", "structnnfw_1_1cker_1_1_rms_norm_params" ],
     [ "nnfw::cker::TransposeConvParams", "structnnfw_1_1cker_1_1_transpose_conv_params.html", "structnnfw_1_1cker_1_1_transpose_conv_params" ],
     [ "nnfw::cker::SliceParams", "structnnfw_1_1cker_1_1_slice_params.html", "structnnfw_1_1cker_1_1_slice_params" ],
     [ "nnfw::cker::StridedSliceParams", "structnnfw_1_1cker_1_1_strided_slice_params.html", "structnnfw_1_1cker_1_1_strided_slice_params" ],

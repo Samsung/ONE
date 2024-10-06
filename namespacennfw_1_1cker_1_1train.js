@@ -15,6 +15,7 @@ var namespacennfw_1_1cker_1_1train =
       [ "SUM", "namespacennfw_1_1cker_1_1train.html#a1175c776880a330984f05bf7ba5e26b8a6970bdc2201030b9c03fbdcf3973858a", null ]
     ] ],
     [ "Adam", "namespacennfw_1_1cker_1_1train.html#abad94c85023d66d3bc85d6a460750b41", null ],
+    [ "AveragePool2DGrad", "namespacennfw_1_1cker_1_1train.html#a2e2cc358f0ad7b12d5c8c7dc062b486b", null ],
     [ "backpropFilter", "namespacennfw_1_1cker_1_1train.html#aa557edc3da8f89cd18ec72143ceae8ab", null ],
     [ "backpropInput", "namespacennfw_1_1cker_1_1train.html#ab5e2c300d9ed295648666756c71feb62", null ],
     [ "BinaryArithmeticGrad", "namespacennfw_1_1cker_1_1train.html#aa7aedda115b13096ec895b04b6c7ef42", null ],

@@ -178,6 +178,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1ed56945d0defdaf5aa8823d3a3ed0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1fbc767b93e7fc36d3f0accc5bd546a" id="r_ad1fbc767b93e7fc36d3f0accc5bd546a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#ad1fbc767b93e7fc36d3f0accc5bd546a">TISOHeader</a> (const <a class="el" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">OMExecuteArgs</a> &amp;execute_args, const circle::Tensor **input1, const circle::Tensor **input2, const circle::Tensor **output, <a class="el" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">OMRuntimeKernel</a> *runtime_kernel)</td></tr>
 <tr class="separator:ad1fbc767b93e7fc36d3f0accc5bd546a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae269f05865c4f02be3146e57e383b1fb" id="r_ae269f05865c4f02be3146e57e383b1fb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#ae269f05865c4f02be3146e57e383b1fb">calculateInputRadius</a> (int input_integer_bits, int input_left_shift, int total_signed_bits)</td></tr>
+<tr class="separator:ae269f05865c4f02be3146e57e383b1fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -356,6 +358,59 @@ template&lt;typename T &gt; </div>
 
 <p class="reference">Referenced by <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00194">calculateQuantParams()</a>, and <a class="el" href="onert-micro_2src_2execute_2kernels_2_convolution_common_8cpp_source.html#l00023">createConvParams()</a>.</p>
 
+</div>
+</div>
+<a id="ae269f05865c4f02be3146e57e383b1fb" name="ae269f05865c4f02be3146e57e383b1fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae269f05865c4f02be3146e57e383b1fb">&#9670;&#160;</a></span>calculateInputRadius()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int onert_micro::execute::calculateInputRadius </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>input_integer_bits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>input_left_shift</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>total_signed_bits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="execute_2_o_m_utils_8h_source.html#l00170">170</a> of file <a class="el" href="execute_2_o_m_utils_8h_source.html">OMUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  171</span>{</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> max_input_rescaled = 1.0 * ((1 &lt;&lt; input_integer_bits) - 1) *</div>
+<div class="line"><span class="lineno">  173</span>                                    (1LL &lt;&lt; (total_signed_bits - input_integer_bits)) /</div>
+<div class="line"><span class="lineno">  174</span>                                    (1LL &lt;&lt; input_left_shift);</div>
+<div class="line"><span class="lineno">  175</span>  <span class="comment">// Tighten bound using floor.  Suppose that we could use the exact value.</span></div>
+<div class="line"><span class="lineno">  176</span>  <span class="comment">// After scaling the difference, the result would be at the maximum.  Thus we</span></div>
+<div class="line"><span class="lineno">  177</span>  <span class="comment">// must ensure that our value has lower magnitude.</span></div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::floor(max_input_rescaled));</div>
+<div class="line"><span class="lineno">  179</span>}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a5a622cd75dd3948e0b23940c4884b326" name="a5a622cd75dd3948e0b23940c4884b326"></a>

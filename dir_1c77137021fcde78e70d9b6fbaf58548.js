@@ -70,6 +70,7 @@ var dir_1c77137021fcde78e70d9b6fbaf58548 =
     [ "ResizeNearestNeighbor.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_resize_nearest_neighbor_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_resize_nearest_neighbor_8cpp" ],
     [ "ReverseV2.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_reverse_v2_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_reverse_v2_8cpp" ],
     [ "RmsNorm.cpp", "luci-interpreter_2src_2loader_2nodes_2_rms_norm_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_rms_norm_8cpp" ],
+    [ "RoPE.cpp", "luci-interpreter_2src_2loader_2nodes_2_ro_p_e_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_ro_p_e_8cpp" ],
     [ "Rsqrt.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_rsqrt_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_rsqrt_8cpp" ],
     [ "Select.cpp", "luci-interpreter_2src_2loader_2nodes_2_select_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_select_8cpp" ],
     [ "SelectV2.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_select_v2_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_select_v2_8cpp" ],

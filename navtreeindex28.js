@@ -1,5 +1,7 @@
 var NAVTREEINDEX28 =
 {
+"_squared_diff_layer_8h.html":[40,0,4,1,1,4,0,97],
+"_squared_diff_layer_8h_source.html":[40,0,4,1,1,4,0,97],
 "_squared_difference_8cc.html":[40,0,4,1,2,1,5,0,60],
 "_squared_difference_8cc_source.html":[40,0,4,1,2,1,5,0,60],
 "_squared_difference_options_8cpp.html":[40,0,0,130,2,0,154],
@@ -240,14 +242,12 @@ var NAVTREEINDEX28 =
 "_t_f_fake_quant_with_min_max_vars_8h_source.html":[40,0,0,80,1,0,0,0,0,8],
 "_t_f_formatted_graph_8cpp.html":[40,0,0,82,1,24],
 "_t_f_formatted_graph_8cpp.html#a0a78e414a5224f1ca6f9f8a02bc1ff5e":[40,0,0,82,1,24,0],
-"_t_f_formatted_graph_8cpp.html#a2b5916874e9600c373b5f79dbd738018":[40,0,0,82,1,24,3],
-"_t_f_formatted_graph_8cpp.html#a2b5916874e9600c373b5f79dbd738018":[40,0,0,82,1,24,1],
 "_t_f_formatted_graph_8cpp.html#a2b5916874e9600c373b5f79dbd738018":[40,0,0,82,1,24,2],
+"_t_f_formatted_graph_8cpp.html#a2b5916874e9600c373b5f79dbd738018":[40,0,0,82,1,24,1],
+"_t_f_formatted_graph_8cpp.html#a2b5916874e9600c373b5f79dbd738018":[40,0,0,82,1,24,3],
 "_t_f_formatted_graph_8cpp_source.html":[40,0,0,82,1,24],
 "_t_f_formatted_graph_8h.html":[40,0,0,82,1,25],
 "_t_f_formatted_graph_8h_source.html":[40,0,0,82,1,25],
 "_t_f_fused_batch_norm_8h.html":[40,0,0,80,1,0,0,0,0,9],
-"_t_f_fused_batch_norm_8h_source.html":[40,0,0,80,1,0,0,0,0,9],
-"_t_f_identity_8h.html":[40,0,0,80,1,0,0,0,0,10],
-"_t_f_identity_8h_source.html":[40,0,0,80,1,0,0,0,0,10]
+"_t_f_fused_batch_norm_8h_source.html":[40,0,0,80,1,0,0,0,0,9]
 };

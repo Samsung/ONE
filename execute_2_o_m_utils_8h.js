@@ -2,6 +2,7 @@ var execute_2_o_m_utils_8h =
 [
     [ "calculateActivationRange", "execute_2_o_m_utils_8h.html#acef69ab956e54b4b2e15c7372baca2ef", null ],
     [ "calculateActivationRangeQuantized", "execute_2_o_m_utils_8h.html#a4162f05d689856864535c2adcea44f70", null ],
+    [ "calculateInputRadius", "execute_2_o_m_utils_8h.html#ae269f05865c4f02be3146e57e383b1fb", null ],
     [ "calculateQuantParams", "execute_2_o_m_utils_8h.html#a5a622cd75dd3948e0b23940c4884b326", null ],
     [ "computeOutSize", "execute_2_o_m_utils_8h.html#a179e123f603902f20e7f4f78573bcdfd", null ],
     [ "computePadding", "execute_2_o_m_utils_8h.html#afa7ceac3620b2b1f2610dbbe5367edff", null ],

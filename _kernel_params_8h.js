@@ -25,6 +25,7 @@ var _kernel_params_8h =
     [ "luci_interpreter::ResizeBilinearParams", "structluci__interpreter_1_1_resize_bilinear_params.html", "structluci__interpreter_1_1_resize_bilinear_params" ],
     [ "luci_interpreter::ResizeNearestNeighborParams", "structluci__interpreter_1_1_resize_nearest_neighbor_params.html", "structluci__interpreter_1_1_resize_nearest_neighbor_params" ],
     [ "luci_interpreter::RmsNormParams", "structluci__interpreter_1_1_rms_norm_params.html", "structluci__interpreter_1_1_rms_norm_params" ],
+    [ "luci_interpreter::RoPEParams", "structluci__interpreter_1_1_ro_p_e_params.html", "structluci__interpreter_1_1_ro_p_e_params" ],
     [ "luci_interpreter::ShapeParams", "structluci__interpreter_1_1_shape_params.html", "structluci__interpreter_1_1_shape_params" ],
     [ "luci_interpreter::SubParams", "structluci__interpreter_1_1_sub_params.html", "structluci__interpreter_1_1_sub_params" ],
     [ "luci_interpreter::SVDFParams", "structluci__interpreter_1_1_s_v_d_f_params.html", "structluci__interpreter_1_1_s_v_d_f_params" ],
@@ -37,5 +38,6 @@ var _kernel_params_8h =
     [ "luci_interpreter::UnpackParams", "structluci__interpreter_1_1_unpack_params.html", "structluci__interpreter_1_1_unpack_params" ],
     [ "Activation", "_kernel_params_8h.html#a8d7c785096a52951aadcd97f6d83bbb8", null ],
     [ "MirrorPadMode", "_kernel_params_8h.html#a228e5a1fc6979fe43bba60cd7d80ef2d", null ],
-    [ "Padding", "_kernel_params_8h.html#a2695bf46949a48f22f2b49d96a3c339b", null ]
+    [ "Padding", "_kernel_params_8h.html#a2695bf46949a48f22f2b49d96a3c339b", null ],
+    [ "RoPEMode", "_kernel_params_8h.html#a8da1ba46c9da01110c6899b9d13c74f3", null ]
 ];

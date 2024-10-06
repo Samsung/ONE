@@ -860,20 +860,20 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="service_2src_2_nodes_2_circle_reshape_8cpp_source.html#l00050">50</a> of file <a class="el" href="service_2src_2_nodes_2_circle_reshape_8cpp_source.html">CircleReshape.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> *cloned = <a class="code hl_variable" href="classluci_1_1_clone_node_let_3_01_c_n_1_1_o_p_q_r_01_4.html#a12f60af62722a3dacfa998d43dca20f9">_graph</a>-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a>&gt;();</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (cloned != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    uint32_t rank = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a1589783e5f526b5e0dd4e9230cc261b7">newShape</a>()-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape_1_1_shape.html#aa5867d6e13f2bbcacb110008e5732ab7">rank</a>();</div>
-<div class="line"><span class="lineno">   56</span>    cloned-&gt;newShape()-&gt;rank(rank);</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">for</span> (uint32_t r = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> &lt; rank; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a>)</div>
-<div class="line"><span class="lineno">   58</span>    {</div>
-<div class="line"><span class="lineno">   59</span>      cloned-&gt;newShape()-&gt;dim(r) = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a1589783e5f526b5e0dd4e9230cc261b7">newShape</a>()-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape_1_1_shape.html#aea32d0fe52fd0ff9434489cde90e0b79">dim</a>(r);</div>
-<div class="line"><span class="lineno">   60</span>    }</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> cloned;</div>
-<div class="line"><span class="lineno">   63</span>}</div>
+<p class="definition">Definition at line <a class="el" href="service_2src_2_nodes_2_circle_reshape_8cpp_source.html#l00052">52</a> of file <a class="el" href="service_2src_2_nodes_2_circle_reshape_8cpp_source.html">CircleReshape.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keyword">auto</span> *cloned = <a class="code hl_variable" href="classluci_1_1_clone_node_let_3_01_c_n_1_1_o_p_q_r_01_4.html#a12f60af62722a3dacfa998d43dca20f9">_graph</a>-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a>&gt;();</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">if</span> (cloned != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   56</span>  {</div>
+<div class="line"><span class="lineno">   57</span>    uint32_t rank = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a1589783e5f526b5e0dd4e9230cc261b7">newShape</a>()-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape_1_1_shape.html#aa5867d6e13f2bbcacb110008e5732ab7">rank</a>();</div>
+<div class="line"><span class="lineno">   58</span>    cloned-&gt;newShape()-&gt;rank(rank);</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">for</span> (uint32_t r = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a> &lt; rank; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">r</a>)</div>
+<div class="line"><span class="lineno">   60</span>    {</div>
+<div class="line"><span class="lineno">   61</span>      cloned-&gt;newShape()-&gt;dim(r) = node-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape.html#a1589783e5f526b5e0dd4e9230cc261b7">newShape</a>()-&gt;<a class="code hl_function" href="classluci_1_1_circle_reshape_1_1_shape.html#aea32d0fe52fd0ff9434489cde90e0b79">dim</a>(r);</div>
+<div class="line"><span class="lineno">   62</span>    }</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">return</span> cloned;</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_reshape_1_1_shape_html_aa5867d6e13f2bbcacb110008e5732ab7"><div class="ttname"><a href="classluci_1_1_circle_reshape_1_1_shape.html#aa5867d6e13f2bbcacb110008e5732ab7">luci::CircleReshape::Shape::rank</a></div><div class="ttdeci">uint32_t rank(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_reshape_8h_source.html#l00046">CircleReshape.h:46</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_reshape_1_1_shape_html_aea32d0fe52fd0ff9434489cde90e0b79"><div class="ttname"><a href="classluci_1_1_circle_reshape_1_1_shape.html#aea32d0fe52fd0ff9434489cde90e0b79">luci::CircleReshape::Shape::dim</a></div><div class="ttdeci">int32_t dim(uint32_t n) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_reshape_8h_source.html#l00049">CircleReshape.h:49</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_reshape_html"><div class="ttname"><a href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a></div><div class="ttdoc">RESHAPE in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_reshape_8h_source.html#l00031">CircleReshape.h:32</a></div></div>

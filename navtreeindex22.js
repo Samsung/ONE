@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"_palette_8py_source.html":[40,0,0,132,0,3],
 "_parallel_executor_8cc.html":[40,0,4,1,2,1,3,33],
 "_parallel_executor_8cc_source.html":[40,0,4,1,2,1,3,33],
 "_parallel_executor_8h.html":[40,0,4,1,2,1,3,34],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "_pooling_spec_8h_source.html":[40,0,0,35,2,0,0,23],
 "_post_import_8cpp.html":[40,0,0,56,2,1,10],
 "_post_import_8cpp_source.html":[40,0,0,56,2,1,10],
-"_post_import_8h.html":[40,0,0,56,2,1,11],
-"_post_import_8h_source.html":[40,0,0,56,2,1,11]
+"_post_import_8h.html":[40,0,0,56,2,1,11]
 };

@@ -1,5 +1,6 @@
 var dir_e3302c86a35009c6918ecea43e72c8c5 =
 [
+    [ "AveragePool.h", "compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h.html", "compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h" ],
     [ "BinaryArithmetic.h", "compute_2cker_2include_2cker_2train_2operation_2_binary_arithmetic_8h.html", "compute_2cker_2include_2cker_2train_2operation_2_binary_arithmetic_8h" ],
     [ "Conv.h", "compute_2cker_2include_2cker_2train_2operation_2_conv_8h.html", "compute_2cker_2include_2cker_2train_2operation_2_conv_8h" ],
     [ "DepthwiseConv.h", "train_2operation_2_depthwise_conv_8h.html", "train_2operation_2_depthwise_conv_8h" ],

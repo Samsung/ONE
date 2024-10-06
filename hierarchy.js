@@ -2967,6 +2967,9 @@ var hierarchy =
       [ "luci_interpreter::KernelWithParams< RmsNormParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::RmsNorm", "classluci__interpreter_1_1kernels_1_1_rms_norm.html", null ]
       ] ],
+      [ "luci_interpreter::KernelWithParams< RoPEParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
+        [ "luci_interpreter::kernels::RoPE", "classluci__interpreter_1_1kernels_1_1_ro_p_e.html", null ]
+      ] ],
       [ "luci_interpreter::KernelWithParams< SVDFParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::SVDF", "classluci__interpreter_1_1kernels_1_1_s_v_d_f.html", null ]
       ] ],
@@ -3570,8 +3573,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4825,6 +4828,8 @@ var hierarchy =
       [ "flatbuffers::VectorReverseIterator< Iterator >", "structflatbuffers_1_1_vector_reverse_iterator.html", null ]
     ] ],
     [ "luci_interpreter::RmsNormParams", "structluci__interpreter_1_1_rms_norm_params.html", null ],
+    [ "nnfw::cker::RmsNormParams", "structnnfw_1_1cker_1_1_rms_norm_params.html", null ],
+    [ "luci_interpreter::RoPEParams", "structluci__interpreter_1_1_ro_p_e_params.html", null ],
     [ "luci::sinf::Rule", "structluci_1_1sinf_1_1_rule.html", null ],
     [ "luci::tinf::Rule", "structluci_1_1tinf_1_1_rule.html", null ],
     [ "nnkit::support::onnx::Runner", "classnnkit_1_1support_1_1onnx_1_1_runner.html", null ],

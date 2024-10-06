@@ -127,6 +127,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a2e2cc358f0ad7b12d5c8c7dc062b486b" id="r_a2e2cc358f0ad7b12d5c8c7dc062b486b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#a2e2cc358f0ad7b12d5c8c7dc062b486b">AveragePool2DGrad</a> (const <a class="el" href="structnnfw_1_1cker_1_1_pool_params.html">PoolParams</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const float *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;grad_shape, float *grad_data)</td></tr>
+<tr class="separator:a2e2cc358f0ad7b12d5c8c7dc062b486b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7aedda115b13096ec895b04b6c7ef42" id="r_aa7aedda115b13096ec895b04b6c7ef42"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa7aedda115b13096ec895b04b6c7ef42"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1train.html#aa7aedda115b13096ec895b04b6c7ef42">BinaryArithmeticGrad</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;lhs_shape, const T *lhs_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;rhs_shape, const T *rhs_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;incoming_shape, const T *incoming_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;lhs_grad_shape, T *lhs_grad_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;rhs_grad_shape, T *rhs_grad_data, <a class="el" href="namespacennfw_1_1cker_1_1train.html#a5e75d80aacc1046441d15fd8b96890c9">ArithmeticType</a> arithmetic_type)</td></tr>
 <tr class="separator:aa7aedda115b13096ec895b04b6c7ef42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -449,6 +451,129 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a2e2cc358f0ad7b12d5c8c7dc062b486b" name="a2e2cc358f0ad7b12d5c8c7dc062b486b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e2cc358f0ad7b12d5c8c7dc062b486b">&#9670;&#160;</a></span>AveragePool2DGrad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::train::AveragePool2DGrad </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnnfw_1_1cker_1_1_pool_params.html">PoolParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>incoming_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>incoming_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>grad_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>grad_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h_source.html#l00033">33</a> of file <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h_source.html">AveragePool.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  assert(grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno">   37</span>  assert(incoming_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batches = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(incoming_shape, 0, grad_shape, 0);</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> grad_height = grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> grad_width = grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> incoming_height = incoming_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> incoming_width = incoming_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_height = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#a920a18b024aaece07792b53fd7985c45">stride_height</a>;</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_width = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#ab2571df6660224a127a90f06eccafe4d">stride_width</a>;</div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="comment">// initialize grad_data</span></div>
+<div class="line"><span class="lineno">   48</span>  std::fill(grad_data, grad_data + grad_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>(), 0.0);</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_mat = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(incoming_data, incoming_shape);</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keyword">auto</span> grad_mat = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">MapAsMatrixWithLastDimAsRows</a>(grad_data, grad_shape);</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; batches; ++b)</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> h = 0; h &lt; incoming_height; ++h)</div>
+<div class="line"><span class="lineno">   56</span>    {</div>
+<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> w = 0; w &lt; incoming_width; ++w)</div>
+<div class="line"><span class="lineno">   58</span>      {</div>
+<div class="line"><span class="lineno">   59</span>        <span class="comment">// (h_start, h_end) * (w_start, w_end) is input range</span></div>
+<div class="line"><span class="lineno">   60</span>        <span class="comment">// that output is projected from.</span></div>
+<div class="line"><span class="lineno">   61</span>        <span class="keywordtype">int</span> h_start = h * stride_height - params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#aef09bc53314176a8b709a6cd07d601d7">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">height</a>;</div>
+<div class="line"><span class="lineno">   62</span>        <span class="keywordtype">int</span> h_end = std::min(h_start + params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#af962d4c51d9cfff5445f8fd0fa79d1f2">filter_height</a>, grad_height);</div>
+<div class="line"><span class="lineno">   63</span>        h_start = h_start &lt; 0 ? 0 : h_start;</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>        <span class="keywordtype">int</span> w_start = w * stride_width - params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#aef09bc53314176a8b709a6cd07d601d7">padding_values</a>.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">width</a>;</div>
+<div class="line"><span class="lineno">   66</span>        <span class="keywordtype">int</span> w_end = std::min(w_start + params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#aa7c5c48b0487880dfed428a212ea0e8c">filter_width</a>, grad_width);</div>
+<div class="line"><span class="lineno">   67</span>        w_start = w_start &lt; 0 ? 0 : w_start;</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>        <span class="keywordtype">int</span> count = (h_end - h_start) * (w_end - w_start);</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>        <span class="keywordflow">if</span> (h_end &lt;= 0 || w_end &lt;= 0 || count &lt;= 0 || h_start &gt;= grad_height ||</div>
+<div class="line"><span class="lineno">   72</span>            w_start &gt;= grad_width)</div>
+<div class="line"><span class="lineno">   73</span>          <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordtype">int</span> incoming_offset = <a class="code hl_function" href="_feature_map_8h.html#a4281d2df268d543e163b49e29b46e48d">NodeOffset</a>(b, h, w, incoming_height, incoming_width);</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> ph = h_start; ph &lt; h_end; ++ph)</div>
+<div class="line"><span class="lineno">   77</span>        {</div>
+<div class="line"><span class="lineno">   78</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> pw = w_start; pw &lt; w_end; ++pw)</div>
+<div class="line"><span class="lineno">   79</span>          {</div>
+<div class="line"><span class="lineno">   80</span>            <span class="keywordtype">int</span> grad_offset = <a class="code hl_function" href="_feature_map_8h.html#a4281d2df268d543e163b49e29b46e48d">NodeOffset</a>(b, ph, pw, grad_height, grad_width);</div>
+<div class="line"><span class="lineno">   81</span>            grad_mat.col(grad_offset) += incoming_mat.col(incoming_offset) / count;</div>
+<div class="line"><span class="lineno">   82</span>          }</div>
+<div class="line"><span class="lineno">   83</span>        }</div>
+<div class="line"><span class="lineno">   84</span>      }</div>
+<div class="line"><span class="lineno">   85</span>    }</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span>}</div>
+<div class="ttc" id="a_feature_map_8h_html_a4281d2df268d543e163b49e29b46e48d"><div class="ttname"><a href="_feature_map_8h.html#a4281d2df268d543e163b49e29b46e48d">NodeOffset</a></div><div class="ttdeci">int NodeOffset(int b, int h, int w, int height, int width)</div><div class="ttdef"><b>Definition</b> <a href="_feature_map_8h_source.html#l00021">FeatureMap.h:21</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a5661008cc0dc7e29714ea90ca28efea4"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">nnfw::cker::MapAsMatrixWithLastDimAsRows</a></div><div class="ttdeci">MatrixMap&lt; Scalar &gt; MapAsMatrixWithLastDimAsRows(Scalar *data, const Shape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">Utils.h:60</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a1dc41a9ebbd61a7c34ed2b5dd2ec10eb"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">nnfw::cker::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">Types.h:69</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a2a3dd79d28c30c5da865290160601fd1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">nnfw::cker::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">Types.h:68</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_a920a18b024aaece07792b53fd7985c45"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#a920a18b024aaece07792b53fd7985c45">nnfw::cker::PoolParams::stride_height</a></div><div class="ttdeci">int stride_height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00084">Types.h:84</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_aa7c5c48b0487880dfed428a212ea0e8c"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#aa7c5c48b0487880dfed428a212ea0e8c">nnfw::cker::PoolParams::filter_width</a></div><div class="ttdeci">int filter_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00087">Types.h:87</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_ab2571df6660224a127a90f06eccafe4d"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#ab2571df6660224a127a90f06eccafe4d">nnfw::cker::PoolParams::stride_width</a></div><div class="ttdeci">int stride_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00085">Types.h:85</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_aef09bc53314176a8b709a6cd07d601d7"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#aef09bc53314176a8b709a6cd07d601d7">nnfw::cker::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00083">Types.h:83</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_af962d4c51d9cfff5445f8fd0fa79d1f2"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#af962d4c51d9cfff5445f8fd0fa79d1f2">nnfw::cker::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00086">Types.h:86</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00086">nnfw::cker::PoolParams::filter_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00087">nnfw::cker::PoolParams::filter_width</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">nnfw::cker::PaddingValues::height</a>, <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00144">nnfw::cker::NodeOffset()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00083">nnfw::cker::PoolParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00084">nnfw::cker::PoolParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00085">nnfw::cker::PoolParams::stride_width</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">nnfw::cker::PaddingValues::width</a>.</p>
+
+</div>
+</div>
 <a id="aa557edc3da8f89cd18ec72143ceae8ab" name="aa557edc3da8f89cd18ec72143ceae8ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa557edc3da8f89cd18ec72143ceae8ab">&#9670;&#160;</a></span>backpropFilter()</h2>
 
@@ -546,16 +671,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   92</span>    stride, pad_height, pad_width, incoming_height, incoming_width, output_depth, incoming_data,</div>
 <div class="line"><span class="lineno">   93</span>    input_data, filter_grad_data, padded_filter_data, filter_buffers_data);</div>
 <div class="line"><span class="lineno">   94</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2a11fa7f567b0faa4551dfe628d6de2b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a></div><div class="ttdeci">int16_t dilation_height_factor</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00232">Types.h:232</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a50d46dad3a5d5bec206a3f10f1168768"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a></div><div class="ttdeci">int16_t dilation_width_factor</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">Types.h:231</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a65cb7bfeb2b801d8a574a85da10598ff"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">nnfw::cker::DepthwiseConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00229">Types.h:229</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_aaa0e9f0f50f1ed3c8e25886d51a45f75"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">nnfw::cker::DepthwiseConvParams::depth_multiplier</a></div><div class="ttdeci">int16_t depth_multiplier</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00233">Types.h:233</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_ab424f92784d7f28eba2b61dcb1be277b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ab424f92784d7f28eba2b61dcb1be277b">nnfw::cker::DepthwiseConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00228">Types.h:228</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_ad2dbdcb99cb6434e20c073adf4266bef"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#ad2dbdcb99cb6434e20c073adf4266bef">nnfw::cker::DepthwiseConvParams::stride_height</a></div><div class="ttdeci">int16_t stride_height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00230">Types.h:230</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a1dc41a9ebbd61a7c34ed2b5dd2ec10eb"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">nnfw::cker::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">Types.h:69</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a2a3dd79d28c30c5da865290160601fd1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">nnfw::cker::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">Types.h:68</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1depthwise__conv__op_1_1_launch_depthwise_conv_backprop_filter_op.html">nnfw::cker::depthwise_conv_op::LaunchDepthwiseConvBackpropFilterOp</a></div><div class="ttdef"><b>Definition</b> <a href="depthwise__conv__op_8h_source.html#l00053">depthwise_conv_op.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00233">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00232">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">nnfw::cker::PaddingValues::height</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00228">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00230">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00229">nnfw::cker::DepthwiseConvParams::stride_width</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">nnfw::cker::PaddingValues::width</a>.</p>
@@ -890,7 +1011,6 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  120</span>  output = -(y_true.array() * y_pred.array().cwiseMax(log_threshold&lt;T&gt;()).log()).colwise().sum();</div>
 <div class="line"><span class="lineno">  121</span>}</div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a5661008cc0dc7e29714ea90ca28efea4"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5661008cc0dc7e29714ea90ca28efea4">nnfw::cker::MapAsMatrixWithLastDimAsRows</a></div><div class="ttdeci">MatrixMap&lt; Scalar &gt; MapAsMatrixWithLastDimAsRows(Scalar *data, const Shape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">Utils.h:60</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>, <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">nnfw::cker::MapAsVector()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
@@ -1630,7 +1750,6 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>  grad_mat = in_mat.rowwise().sum();</div>
 <div class="line"><span class="lineno">   43</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>.</p>
 
@@ -1898,17 +2017,11 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  123</span>    }</div>
 <div class="line"><span class="lineno">  124</span>  }</div>
 <div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>  out_mat.cwiseMin(params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#abb165d50d083ff41957b00a06250a79e">float_activation_min</a>).cwiseMax(params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#a724b505369bda13ddeb9bc803d0f0ad6">float_activation_max</a>);</div>
+<div class="line"><span class="lineno">  126</span>  out_mat = out_mat.cwiseMin(params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#a724b505369bda13ddeb9bc803d0f0ad6">float_activation_max</a>).cwiseMax(params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_pool_params.html#abb165d50d083ff41957b00a06250a79e">float_activation_min</a>);</div>
 <div class="line"><span class="lineno">  127</span>}</div>
-<div class="ttc" id="a_feature_map_8h_html_a4281d2df268d543e163b49e29b46e48d"><div class="ttname"><a href="_feature_map_8h.html#a4281d2df268d543e163b49e29b46e48d">NodeOffset</a></div><div class="ttdeci">int NodeOffset(int b, int h, int w, int height, int width)</div><div class="ttdef"><b>Definition</b> <a href="_feature_map_8h_source.html#l00021">FeatureMap.h:21</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_a724b505369bda13ddeb9bc803d0f0ad6"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#a724b505369bda13ddeb9bc803d0f0ad6">nnfw::cker::PoolParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00093">Types.h:93</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_a920a18b024aaece07792b53fd7985c45"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#a920a18b024aaece07792b53fd7985c45">nnfw::cker::PoolParams::stride_height</a></div><div class="ttdeci">int stride_height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00084">Types.h:84</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_aa7c5c48b0487880dfed428a212ea0e8c"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#aa7c5c48b0487880dfed428a212ea0e8c">nnfw::cker::PoolParams::filter_width</a></div><div class="ttdeci">int filter_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00087">Types.h:87</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_ab2571df6660224a127a90f06eccafe4d"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#ab2571df6660224a127a90f06eccafe4d">nnfw::cker::PoolParams::stride_width</a></div><div class="ttdeci">int stride_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00085">Types.h:85</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_abb165d50d083ff41957b00a06250a79e"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#abb165d50d083ff41957b00a06250a79e">nnfw::cker::PoolParams::float_activation_min</a></div><div class="ttdeci">float float_activation_min</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00092">Types.h:92</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_aef09bc53314176a8b709a6cd07d601d7"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#aef09bc53314176a8b709a6cd07d601d7">nnfw::cker::PoolParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00083">Types.h:83</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_pool_params_html_af962d4c51d9cfff5445f8fd0fa79d1f2"><div class="ttname"><a href="structnnfw_1_1cker_1_1_pool_params.html#af962d4c51d9cfff5445f8fd0fa79d1f2">nnfw::cker::PoolParams::filter_height</a></div><div class="ttdeci">int filter_height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00086">Types.h:86</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00086">nnfw::cker::PoolParams::filter_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00087">nnfw::cker::PoolParams::filter_width</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00093">nnfw::cker::PoolParams::float_activation_max</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00092">nnfw::cker::PoolParams::float_activation_min</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00069">nnfw::cker::PaddingValues::height</a>, <a class="el" href="compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00060">nnfw::cker::MapAsMatrixWithLastDimAsRows()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00144">nnfw::cker::NodeOffset()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00083">nnfw::cker::PoolParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00084">nnfw::cker::PoolParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00085">nnfw::cker::PoolParams::stride_width</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00068">nnfw::cker::PaddingValues::width</a>.</p>
 

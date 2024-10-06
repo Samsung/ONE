@@ -1,6 +1,6 @@
 var NAVTREEINDEX0 =
 {
-"_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html":[41,0],
+"_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html":[41,1],
 "_abs_op_8h.html":[40,0,0,77,0,0,0,0],
 "_abs_op_8h_source.html":[40,0,0,77,0,0,0,0],
 "_abs_options_8cpp.html":[40,0,0,130,2,0,0],

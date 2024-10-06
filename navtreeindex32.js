@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"_update_8h_source.html":[40,0,0,27,0,0,0,1,59],
+"_update_set_8h.html":[40,0,0,27,0,0,0,1,60],
 "_update_set_8h.html#ab4d0fe8a736c29e3d5397d9ad3bb0e2d":[40,0,0,27,0,0,0,1,60,0],
 "_update_set_8h_source.html":[40,0,0,27,0,0,0,1,60],
 "_updater_8mock_8h.html":[40,0,0,27,0,1,1,40],
@@ -247,7 +249,5 @@ var NAVTREEINDEX32 =
 "acl__neon_2_tensor_manager_8h_source.html":[40,0,4,1,1,2,13],
 "acl__neon_8cc.html":[40,0,4,1,1,2,1],
 "acl__neon_8cc.html#a1d7114a0448122974a3df458ef21f2f8":[40,0,4,1,1,2,1,1],
-"acl__neon_8cc.html#ac05b7edc89ea7fbb0fb60f42db522c49":[40,0,4,1,1,2,1,0],
-"acl__neon_8cc_source.html":[40,0,4,1,1,2,1],
-"activation__float__helpers_8h.html":[40,0,1,0,1,0,0,0,0]
+"acl__neon_8cc.html#ac05b7edc89ea7fbb0fb60f42db522c49":[40,0,4,1,1,2,1,0]
 };

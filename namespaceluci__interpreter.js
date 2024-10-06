@@ -58,6 +58,7 @@ var namespaceluci__interpreter =
     [ "ResizeBilinearParams", "structluci__interpreter_1_1_resize_bilinear_params.html", "structluci__interpreter_1_1_resize_bilinear_params" ],
     [ "ResizeNearestNeighborParams", "structluci__interpreter_1_1_resize_nearest_neighbor_params.html", "structluci__interpreter_1_1_resize_nearest_neighbor_params" ],
     [ "RmsNormParams", "structluci__interpreter_1_1_rms_norm_params.html", "structluci__interpreter_1_1_rms_norm_params" ],
+    [ "RoPEParams", "structluci__interpreter_1_1_ro_p_e_params.html", "structluci__interpreter_1_1_ro_p_e_params" ],
     [ "RuntimeGraph", "classluci__interpreter_1_1_runtime_graph.html", "classluci__interpreter_1_1_runtime_graph" ],
     [ "RuntimeModule", "classluci__interpreter_1_1_runtime_module.html", "classluci__interpreter_1_1_runtime_module" ],
     [ "RuntimeShape", "classluci__interpreter_1_1_runtime_shape.html", "classluci__interpreter_1_1_runtime_shape" ],
@@ -85,6 +86,7 @@ var namespaceluci__interpreter =
     [ "MemoryManager", "namespaceluci__interpreter.html#a9f6d3069ae5a00cda9601b213a0d2548", null ],
     [ "MirrorPadMode", "namespaceluci__interpreter.html#a228e5a1fc6979fe43bba60cd7d80ef2d", null ],
     [ "Padding", "namespaceluci__interpreter.html#a2695bf46949a48f22f2b49d96a3c339b", null ],
+    [ "RoPEMode", "namespaceluci__interpreter.html#a8da1ba46c9da01110c6899b9d13c74f3", null ],
     [ "BuilderId", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8", [
       [ "Size", "namespaceluci__interpreter.html#a1f2a0f001c3cf88ea589d4b263616ab8a6f6cb72d544962fa333e2e34ce64f719", null ]
     ] ],
@@ -194,6 +196,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleResizeNearestNeighbor", "namespaceluci__interpreter.html#aaa3d01622e4f1d4ed63d26bb52e36a05", null ],
     [ "build_kernel_CircleReverseV2", "namespaceluci__interpreter.html#a2115ebec668555dc7d3112a4d5152f46", null ],
     [ "build_kernel_CircleRmsNorm", "namespaceluci__interpreter.html#a945fb11fcdec21599e4dce0d0877b325", null ],
+    [ "build_kernel_CircleRoPE", "namespaceluci__interpreter.html#a212280e5f9b585e19e4c397a8407553e", null ],
     [ "build_kernel_CircleRsqrt", "namespaceluci__interpreter.html#aebe078291eb8ba330430acefc8214626", null ],
     [ "build_kernel_CircleSelect", "namespaceluci__interpreter.html#a4d3244588083f0e28a4322335721f7a9", null ],
     [ "build_kernel_CircleSelectV2", "namespaceluci__interpreter.html#a6bfb38d068bf49af2e7f316fe143e916", null ],
