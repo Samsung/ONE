@@ -21,6 +21,7 @@
 #include <ir/DataType.h>
 #include <ir/Operand.h>
 #include <ir/Padding.h>
+#include <ir/operation/RoPE.h>
 #include <util/CalculateActivationRange.h>
 
 #include <cker/Shape.h>
@@ -168,6 +169,8 @@ uint32_t sizeOfData(OperandType type, const std::vector<int32_t> &dimensions);
 nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
 std::vector<int32_t> getReducerAxes(const IPortableTensor *axes);
+
+nnfw::cker::RoPEMode getRoPEMode(ir::operation::RoPE::RoPEMode rope_mode);
 
 template <typename T> const T *getBuffer(const IPortableTensor *tensor)
 {

@@ -69,6 +69,7 @@ public:
   void visit(const operation::Rank &node) override;
   void visit(const operation::ResizeBilinear &node) override;
   void visit(const operation::Reverse &node) override;
+  void visit(const operation::RoPE &node) override;
   void visit(const operation::Select &node) override;
   void visit(const operation::Shape &node) override;
   void visit(const operation::Slice &node) override;
