@@ -22,6 +22,7 @@
 #include "cker/Utils.h"
 
 #include <cmath>
+#include <stdexcept>
 
 namespace nnfw
 {
