@@ -25,18 +25,17 @@ std::unique_ptr<Kernel> build_kernel_CircleRmsNorm(const luci::CircleNode *circl
                                                    KernelBuilderHelper &helper)
 {
   const auto *node = loco::must_cast<const luci::CircleRmsNorm *>(circle_node);
-  assert(node->arity() == 3);
+  assert(node->arity() == 2);
 
   const Tensor *input = helper.getInputTensor(node->input());
   const Tensor *gamma = helper.getInputTensor(node->gamma());
-  const Tensor *beta = helper.getInputTensor(node->beta());
 
   Tensor *output = helper.getOutputTensor(node);
 
   RmsNormParams params{};
   params.epsilon = node->epsilon();
 
-  return std::make_unique<kernels::RmsNorm>(input, gamma, beta, output, params);
+  return std::make_unique<kernels::RmsNorm>(input, gamma, output, params);
 }
 
 } // namespace luci_interpreter

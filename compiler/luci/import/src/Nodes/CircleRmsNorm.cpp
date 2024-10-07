@@ -26,7 +26,7 @@ namespace luci
 bool CircleRmsNormGraphBuilder::validate(const ValidateArgs &args) const
 {
   // TODO check dtypes
-  return GraphBuilder::validate(args, 3);
+  return GraphBuilder::validate(args, 2);
 }
 
 CircleNode *CircleRmsNormGraphBuilder::build_node(const circle::OperatorT &op,
@@ -36,7 +36,6 @@ CircleNode *CircleRmsNormGraphBuilder::build_node(const circle::OperatorT &op,
   auto *node = graph->nodes()->create<CircleRmsNorm>();
   node->input(inputs.at(0));
   node->gamma(inputs.at(1));
-  node->beta(inputs.at(2));
 
   const auto *options = op.builtin_options.AsRmsNormOptions();
   node->epsilon(options->epsilon);
