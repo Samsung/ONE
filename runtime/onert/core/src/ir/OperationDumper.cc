@@ -318,6 +318,13 @@ void OperationDumper::visit(const Reverse &node)
   dumpUnaryInputOp(node, axis);
 }
 
+void OperationDumper::visit(const RmsNorm &node)
+{
+  std::string inputs =
+    "Gamma(" + std::to_string(node.getInputs().at(RmsNorm::Input::GAMMA).value()) + ")";
+  dumpUnaryInputOp(node, inputs);
+}
+
 void OperationDumper::visit(const RNN &node)
 {
   VERBOSE(LIR) << "* RNN" << std::endl;
