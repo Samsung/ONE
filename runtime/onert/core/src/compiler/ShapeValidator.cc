@@ -1123,5 +1123,20 @@ void ShapeValidator::visit(const ir::operation::LogSoftmax &node)
   OP_REQUIRES(operands.at(output_index).shape().rank() == operands.at(input_index).shape().rank());
 }
 
+void ShapeValidator::visit(const ir::operation::RmsNorm &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
+  const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
+  
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ifm_index).shape() == operands.at(ofm_index).shape());
+  OP_REQUIRES(operands.at(gamma_index).shape().rank() == 1);
+}
+
 } // namespace compiler
 } // namespace onert
