@@ -1,0 +1,5 @@
+# To check if dynamic dimension properly inferred if begin is non-const
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "STRIDED_SLICE_SHAPE"     $(tensor_shape ofm) '=' [-1,-1,-1,-1]
