@@ -19,11 +19,9 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 
-#include <bitset>
-#include <vector>
-
 /**
  * @brief Convert expand_dims op to reshape op
+ *        (expand_dims op with const axis ONLY)
  * @example
  *             input.shape = [2,3,4]
  *             expand_dims(input, axis=1)
@@ -46,23 +44,32 @@ int32_t unknown_dim_count(luci::CircleNode *node)
   return count;
 }
 
+/**
+ * @brief Return value in position on CircleConst with int32 format.
+ */
+int32_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
+{
+  assert(node->rank() == 1 && node->dim(0).value() > idx);
+  assert(node->dtype() == loco::DataType::S64 || node->dtype() == loco::DataType::S32);
+
+  if (node->dtype() == loco::DataType::S64)
+    return node->at<loco::DataType::S64>(idx);
+  return static_cast<int32_t>(node->at<loco::DataType::S32>(idx));
+}
+
 bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
 {
   auto target_node = dynamic_cast<luci::CircleExpandDims *>(node);
   if (target_node == nullptr)
     return false;
-  if (target_node->shape_status() != luci::ShapeStatus::VALID) //
-    return false;
   auto input_node = loco::must_cast<luci::CircleNode *>(target_node->input());
   if (input_node->rank() <= 0)
     return false;
-  if (input_node->shape_status() != luci::ShapeStatus::VALID) //
-    return false;
-  auto axis_node = loco::must_cast<luci::CircleConst *>(target_node->axis());
+  auto axis_node = dynamic_cast<luci::CircleConst *>(target_node->axis());
   if (axis_node == nullptr)
     return false;
 
-  auto axis = axis_node->at<loco::DataType::S32>(0);
+  int32_t axis = value_from_circle_const(axis_node, 0);
   if (axis < 0)
     axis = axis + static_cast<int32_t>(input_node->rank()) + 1;
 
@@ -89,13 +96,11 @@ bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
     }
     else if (i < axis)
     {
-      const_node->at<loco::DataType::S32>(i) =
-        input_node->dim(i).known() ? input_node->dim(i).value() : -1;
+      const_node->at<loco::DataType::S32>(i) = input_node->dim(i).value();
     }
     else
     {
-      const_node->at<loco::DataType::S32>(i) =
-        input_node->dim(i - 1).known() ? input_node->dim(i - 1).value() : -1;
+      const_node->at<loco::DataType::S32>(i) = input_node->dim(i - 1).value();
     }
   }
   const_node->name(name + "/Reshape/shape");

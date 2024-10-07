@@ -24,7 +24,6 @@ namespace
 {
 
 using uilist = std::initializer_list<uint32_t>;
-using ilist = std::initializer_list<int32_t>;
 
 class PassTestGraph
 {
