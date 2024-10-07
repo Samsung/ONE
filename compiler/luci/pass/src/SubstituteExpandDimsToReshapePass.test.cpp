@@ -15,15 +15,17 @@
  */
 #include "luci/Pass/SubstituteExpandDimsToReshapePass.h"
 #include "luci/Pass/CircleShapeInferencePass.h"
-
+#include "helpers/CreateCircleConst.h"
 #include <luci/IR/CircleNodes.h>
 
 #include <gtest/gtest.h>
+#include <vector>
 
 namespace
 {
 
 using uilist = std::initializer_list<uint32_t>;
+using ilist = std::initializer_list<int32_t>;
 
 class PassTestGraph
 {
@@ -31,7 +33,7 @@ public:
   PassTestGraph() = default;
 
 public:
-  void init(const uilist shape_in, const uilist shape_out, const int val)
+  void init(const uilist shape_in, const uilist shape_out)
   {
     _graph_input = _g.inputs()->create();
     _graph_output = _g.outputs()->create();
@@ -45,12 +47,6 @@ public:
     _output->shape(shape_out);
     _output->shape_status(luci::ShapeStatus::VALID);
     _output->name("output");
-
-    _const = _g.nodes()->create<luci::CircleConst>();
-    _const->dtype(loco::DataType::S32);
-    _const->size<loco::DataType::S32>(1);
-    _const->at<loco::DataType::S32>(0) = val;
-    _const->name("const");
 
     _input->index(_graph_input->index());
     _output->index(_graph_output->index());
@@ -83,26 +79,63 @@ protected:
   loco::GraphOutput *_graph_output = nullptr;
   luci::CircleInput *_input = nullptr;
   luci::CircleOutput *_output = nullptr;
-  luci::CircleConst *_const = nullptr;
 };
 
-class SubstituteExpandDimsToReshapeGraph : public PassTestGraph
+class ExpandDimsWithInputAxisGraph : public PassTestGraph
 {
 public:
-  SubstituteExpandDimsToReshapeGraph() = default;
-
-public:
-  void init(const uilist shape_in, const uilist shape_out, const int axis)
+  void init(const uilist shape_in, const uilist shape_out, const uilist shape_axis)
   {
-    PassTestGraph::init(shape_in, shape_out, axis);
+
+    PassTestGraph::init(shape_in, shape_out);
+    _graph_axis = _g.inputs()->create();
+
+    _axis = _g.nodes()->create<luci::CircleInput>();
+    _axis->shape(shape_axis);
+    _axis->shape_status(luci::ShapeStatus::VALID);
+    _axis->name("axis");
+
+    _axis->index(_graph_axis->index());
+
+    auto axis_shape = std::make_unique<loco::TensorShape>();
+    set(axis_shape.get(), shape_axis);
+    _graph_axis->shape(std::move(axis_shape));
 
     _expand_dims = _g.nodes()->create<luci::CircleExpandDims>();
     _expand_dims->input(_input);
-    _expand_dims->axis(_const);
+    _expand_dims->axis(_axis);
     _expand_dims->name("expand_dims");
 
     _output->from(_expand_dims);
   }
+
+protected:
+  loco::GraphInput *_graph_axis = nullptr;
+  luci::CircleInput *_axis = nullptr;
+
+protected:
+  luci::CircleExpandDims *_expand_dims = nullptr;
+};
+
+class ExpandDimsWithConstAxisGraph : public PassTestGraph
+{
+public:
+  void init(const uilist shape_in, const uilist shape_out, const int32_t axis)
+  {
+    PassTestGraph::init(shape_in, shape_out);
+    _axis = luci::create_const_node<int32_t>(g(), loco::DataType::S32, {1}, axis);
+    _axis->name("axis");
+
+    _expand_dims = _g.nodes()->create<luci::CircleExpandDims>();
+    _expand_dims->input(_input);
+    _expand_dims->axis(_axis);
+    _expand_dims->name("expand_dims");
+
+    _output->from(_expand_dims);
+  }
+
+protected:
+  luci::CircleConst *_axis = nullptr;
 
 protected:
   luci::CircleExpandDims *_expand_dims = nullptr;
@@ -120,7 +153,24 @@ public:
   }
 
 protected:
-  SubstituteExpandDimsToReshapeGraph _graph;
+  ExpandDimsWithConstAxisGraph _graph; // *W*ith *C*onst axis
+  luci::SubstituteExpandDimsToReshapePass _pass;
+  luci::CircleShapeInferencePass _shapeinf;
+};
+
+class SubstituteExpandDimsToReshapeNegTest : public ::testing::Test
+{
+public:
+  SubstituteExpandDimsToReshapeNegTest() = default;
+
+  void run_pass(void)
+  {
+    while (_shapeinf.run(_graph.g()) || _pass.run(_graph.g()))
+      ;
+  }
+
+protected:
+  ExpandDimsWithInputAxisGraph _graph; // *W*ith *N*on *C*onst axis
   luci::SubstituteExpandDimsToReshapePass _pass;
   luci::CircleShapeInferencePass _shapeinf;
 };
@@ -171,7 +221,8 @@ TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_M1)
 
 TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_2)
 {
-  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 2);
+  // NOTE Incorrect output shape is allowed
+  _graph.init({16, 3, 1}, {16, 3, 4, 1}, 2);
 
   run_pass();
 
@@ -187,14 +238,17 @@ TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_2)
   ASSERT_EQ(1, reshape_shape->at<loco::DataType::S32>(3));
 }
 
-TEST_F(SubstituteExpandDimsToReshapeTest, nothing_to_expand_dims)
+TEST_F(SubstituteExpandDimsToReshapeTest, neg_invalid_axis)
 {
-  _graph.init({2, 16, 16, 3}, {2, 16, 16, 3}, {});
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 5);
 
-  run_pass();
+  EXPECT_DEATH(run_pass(), "assert");
+}
 
-  auto reshape = dynamic_cast<luci::CircleReshape *>(_graph.output()->from());
-  auto expand_dims = dynamic_cast<luci::CircleExpandDims *>(_graph.output()->from());
-  ASSERT_NE(nullptr, reshape);
-  ASSERT_EQ(nullptr, expand_dims);
+TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis)
+{
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, {1});
+
+  // non const axis is not supported from the pass
+  EXPECT_ANY_THROW(run_pass());
 }
