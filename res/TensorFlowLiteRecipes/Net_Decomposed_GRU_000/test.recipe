@@ -206,23 +206,8 @@ operation {
     body_subgraph_index: 2
   }
 }
-operation {
-  type: "StridedSlice"
-  input: "while2"
-  input: "strided_slice_2"
-  input: "strided_slice_21"
-  input: "strided_slice_22"
-  output: "StatefulPartitionedCall:0"
-  strided_slice_options {
-    begin_mask: 6
-    end_mask: 6
-    ellipsis_mask: 0
-    new_axis_mask: 0
-    shrink_axis_mask: 1
-  }
-}
 input: "serving_default_x:0"
-output: "StatefulPartitionedCall:0"
+output: "while2"
 graph {
   operand {
     name: "arg0"
