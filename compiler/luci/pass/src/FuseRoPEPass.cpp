@@ -68,8 +68,8 @@ public:
   enum PatternMode
   {
     Mode_Unknown,
-    Mode_NEOX,
-    Mode_GPT,
+    Mode_GPT_NEOX,
+    Mode_GPT_J,
   };
 
   RoPEPattern(luci::CircleAdd *candidate, PatternMode pm)
@@ -112,7 +112,7 @@ private:
   if (not(condition))             \
     return false;
 
-template <> bool RoPEPattern::match<RoPEPattern::PatternMode::Mode_NEOX>()
+template <> bool RoPEPattern::match<RoPEPattern::PatternMode::Mode_GPT_NEOX>()
 {
   CHECK_OR_FALSE(luci::fill(&mul_cos, &mul_sin).with_commutative_args_of(add_ofm));
   CHECK_OR_FALSE(luci::fill(&ifm, &cos_table).with_commutative_args_of(mul_cos));
@@ -145,8 +145,8 @@ bool RoPEPattern::matched()
 
   switch (_pm)
   {
-    case PatternMode::Mode_NEOX:
-      return match<PatternMode::Mode_NEOX>();
+    case PatternMode::Mode_GPT_NEOX:
+      return match<PatternMode::Mode_GPT_NEOX>();
 
     default:
       break;
@@ -184,14 +184,14 @@ luci::CircleRoPE *FuseRoPE::create_rope(loco::Graph *graph)
   rope->cos_table(_p.cos_table);
   rope->sin_table(_p.sin_table);
 
-  if (_p.mode() == RoPEPattern::PatternMode::Mode_NEOX)
+  if (_p.mode() == RoPEPattern::PatternMode::Mode_GPT_NEOX)
     rope->mode(luci::RoPEMode::GPT_NEOX);
 
   rope->name(_p.add_ofm->name() + "_rope");
   return rope;
 }
 
-template <> void FuseRoPE::apply<RoPEPattern::PatternMode::Mode_NEOX>()
+template <> void FuseRoPE::apply<RoPEPattern::PatternMode::Mode_GPT_NEOX>()
 {
   auto graph = _p.add_ofm->graph();
 
@@ -218,8 +218,8 @@ void FuseRoPE::apply()
 
   switch (_p.mode())
   {
-    case RoPEPattern::PatternMode::Mode_NEOX:
-      apply<RoPEPattern::PatternMode::Mode_NEOX>();
+    case RoPEPattern::PatternMode::Mode_GPT_NEOX:
+      apply<RoPEPattern::PatternMode::Mode_GPT_NEOX>();
       break;
 
     default:
@@ -233,7 +233,7 @@ namespace
 
 bool fuse_rope(luci::CircleAdd *add)
 {
-  RoPEPattern::PatternMode pm = RoPEPattern::PatternMode::Mode_NEOX;
+  RoPEPattern::PatternMode pm = RoPEPattern::PatternMode::Mode_GPT_NEOX;
 
   // TODO support other modes (ex. GPT_J)
 
