@@ -150,6 +150,12 @@ public:
       ;
   }
 
+  void run_pass_without_shape_infer(void)
+  {
+    while (_pass.run(_graph.g()))
+      ;
+  }
+
 protected:
   ExpandDimsWithConstAxisGraph _graph;
   luci::SubstituteExpandDimsToReshapePass _pass;
@@ -167,7 +173,13 @@ public:
       ;
   }
 
-protected:
+  void run_pass_without_shape_infer(void)
+  {
+    while (_pass.run(_graph.g()))
+      ;
+  }
+
+public:
   ExpandDimsWithInputAxisGraph _graph;
   luci::SubstituteExpandDimsToReshapePass _pass;
   luci::CircleShapeInferencePass _shapeinf;
@@ -219,8 +231,7 @@ TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_M1)
 
 TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_2)
 {
-  // NOTE Incorrect output shape is allowed
-  _graph.init({16, 3, 1}, {16, 3, 4, 1}, 2);
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 2);
 
   run_pass();
 
@@ -238,14 +249,27 @@ TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_2)
 
 TEST_F(SubstituteExpandDimsToReshapeTest, neg_invalid_axis)
 {
-  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 5);
+  _graph.init({1, 2, 3}, {1, 2, 3}, 5);
+  EXPECT_ANY_THROW(run_pass_without_shape_infer());
+}
 
-  EXPECT_DEATH(run_pass(), "assert");
+TEST_F(SubstituteExpandDimsToReshapeTest, neg_invalid_axis_2)
+{
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 10);
+  EXPECT_ANY_THROW(run_pass_without_shape_infer());
 }
 
 TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis)
 {
-  _graph.init({16, 3, 1}, {16, 3, 1, 1}, {1});
+  _graph.init({1, 2, 3}, {1, 2, 3}, {1});
+
+  // non const axis is not supported from the pass
+  EXPECT_ANY_THROW(run_pass());
+}
+
+TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis_2)
+{
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, {1, 2});
 
   // non const axis is not supported from the pass
   EXPECT_ANY_THROW(run_pass());
