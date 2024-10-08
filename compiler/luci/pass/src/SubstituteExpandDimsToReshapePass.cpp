@@ -115,6 +115,8 @@ bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
   const_node->shape_status(luci::ShapeStatus::VALID);
   const_node->rank(1);
   const_node->dim(0).set(input_node->rank() + 1);
+  luci::add_origin(const_node, luci::get_origin(node));
+
   for (int32_t i = 0; i < static_cast<int32_t>(input_node->rank()) + 1; i++)
   {
     if (i == axis)
