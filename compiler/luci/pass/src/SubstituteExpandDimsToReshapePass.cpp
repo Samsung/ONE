@@ -95,6 +95,9 @@ bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
 
   int32_t axis = value_from_circle_const(axis_node, 0);
   if (axis < 0)
+    // WHY ADD +1?
+    // As minux index is calculated from the last index,
+    // it must expect the new expanded(+1) rank.
     axis = axis + static_cast<int32_t>(input_node->rank()) + 1;
 
   auto name = node->name();

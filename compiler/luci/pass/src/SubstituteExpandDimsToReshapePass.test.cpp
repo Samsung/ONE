@@ -247,19 +247,19 @@ TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_2)
   ASSERT_EQ(1, reshape_shape->at<loco::DataType::S32>(3));
 }
 
-TEST_F(SubstituteExpandDimsToReshapeTest, neg_invalid_axis)
+TEST_F(SubstituteExpandDimsToReshapeTest, invalid_axis_NEG)
 {
   _graph.init({1, 2, 3}, {1, 2, 3}, 5);
   EXPECT_ANY_THROW(run_pass_without_shape_infer());
 }
 
-TEST_F(SubstituteExpandDimsToReshapeTest, neg_invalid_axis_2)
+TEST_F(SubstituteExpandDimsToReshapeTest, invalid_axis_2_NEG)
 {
-  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 10);
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, -5);
   EXPECT_ANY_THROW(run_pass_without_shape_infer());
 }
 
-TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis)
+TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis_NEG)
 {
   _graph.init({1, 2, 3}, {1, 2, 3}, {1});
 
@@ -267,7 +267,7 @@ TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis)
   EXPECT_ANY_THROW(run_pass());
 }
 
-TEST_F(SubstituteExpandDimsToReshapeNegTest, neg_non_const_axis_2)
+TEST_F(SubstituteExpandDimsToReshapeNegTest, non_const_axis_2_NEG)
 {
   _graph.init({16, 3, 1}, {16, 3, 1, 1}, {1, 2});
 
