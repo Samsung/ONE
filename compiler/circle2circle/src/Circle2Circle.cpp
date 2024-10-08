@@ -287,7 +287,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["fuse_batchnorm_with_conv"] = Algorithms::FuseBatchNormWithConv;
   option_str_to_enum["fuse_add_to_fullyconnected_bias"] = Algorithms::FuseAddToFullyConnectedBias;
   option_str_to_enum["fuse_add_with_conv"] = Algorithms::FuseAddWithConv;
-  option_str_to_enum["fuse_add_with_fully_connected"] = Algorithms::FuseAddToFullyConnectedBias;
+  option_str_to_enum["fuse_add_with_fully_connected"] = Algorithms::FuseAddWithFullyConnected;
   option_str_to_enum["fuse_add_with_tconv"] = Algorithms::FuseAddWithTConv;
   option_str_to_enum["fuse_batchnorm_with_dwconv"] = Algorithms::FuseBatchNormWithDwConv;
   option_str_to_enum["fuse_batchnorm_with_tconv"] = Algorithms::FuseBatchNormWithTConv;
