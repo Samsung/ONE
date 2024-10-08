@@ -70,7 +70,6 @@ public:
                                  const std::initializer_list<uint32_t> vals) {
         auto node = build_rank1_const(graph, vals);
         node->name(name);
-
         return node;
       };
 
