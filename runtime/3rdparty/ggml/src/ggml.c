@@ -3204,9 +3204,14 @@ void ggml_numa_init(enum ggml_numa_strategy numa_flag) {
     // TODO
 #endif
 }
+#endif // [FIX] end
 
 bool ggml_is_numa(void) {
+#if 0 // [FIX] disable
     return g_state.numa.n_nodes > 1;
+#endif
+    return false;
+// [FIX] end
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3228,7 +3233,6 @@ void ggml_print_objects(const struct ggml_context * ctx) {
 
     GGML_PRINT("%s: --- end ---\n", __func__);
 }
-#endif // [FIX] end
 
 GGML_CALL int64_t ggml_nelements(const struct ggml_tensor * tensor) {
     static_assert(GGML_MAX_DIMS == 4, "GGML_MAX_DIMS is not 4 - update this function");
@@ -3339,6 +3343,7 @@ bool ggml_is_3d(const struct ggml_tensor * tensor) {
     return tensor->ne[3] == 1;
 }
 
+#endif // [FIX] disable
 int ggml_n_dims(const struct ggml_tensor * tensor) {
     for (int i = GGML_MAX_DIMS - 1; i >= 1; --i) {
         if (tensor->ne[i] > 1) {
@@ -3347,6 +3352,7 @@ int ggml_n_dims(const struct ggml_tensor * tensor) {
     }
     return 1;
 }
+#if 0 // [FIX] disable
 
 static inline bool ggml_can_mul_mat(const struct ggml_tensor * t0, const struct ggml_tensor * t1) {
     static_assert(GGML_MAX_DIMS == 4, "GGML_MAX_DIMS is not 4 - update this function");
@@ -3410,6 +3416,7 @@ GGML_CALL bool ggml_is_transposed(const struct ggml_tensor * tensor) {
     return tensor->nb[0] > tensor->nb[1];
 }
 
+#endif // [FIX] disable
 static bool ggml_is_contiguous_n(const struct ggml_tensor * tensor, int n) {
     size_t next_nb = ggml_type_size(tensor->type);
     if (tensor->ne[0] != ggml_blck_size(tensor->type) && tensor->nb[0] != next_nb) {
@@ -3447,6 +3454,7 @@ GGML_CALL bool ggml_is_contiguous_1(const struct ggml_tensor * tensor) {
 GGML_CALL bool ggml_is_contiguous_2(const struct ggml_tensor * tensor) {
     return ggml_is_contiguous_n(tensor, 2);
 }
+#if 0 // [FIX] disable
 
 GGML_CALL bool ggml_is_permuted(const struct ggml_tensor * tensor) {
     static_assert(GGML_MAX_DIMS == 4, "GGML_MAX_DIMS is not 4 - update this function");
@@ -12254,6 +12262,7 @@ static void ggml_compute_forward_group_norm(
 
 // ggml_compute_forward_mul_mat
 
+#endif // [FIX] end
 static void ggml_compute_forward_mul_mat_one_chunk(
     const struct ggml_compute_params * params,
     struct ggml_tensor * dst,
@@ -12559,6 +12568,7 @@ UseGgmlGemm2:;
         current_chunk = atomic_fetch_add(&params->shared->current_chunk, 1);
     }
 }
+#if 0 // [FIX] disable
 
 // ggml_compute_forward_mul_mat_id
 
@@ -16898,10 +16908,12 @@ static void ggml_compute_forward(struct ggml_compute_params * params, struct ggm
             {
                 ggml_compute_forward_group_norm(params, tensor);
             } break;
+#endif // [FIX] end
         case GGML_OP_MUL_MAT:
             {
                 ggml_compute_forward_mul_mat(params, tensor);
             } break;
+#if 0 // [FIX] disable
         case GGML_OP_MUL_MAT_ID:
             {
                 ggml_compute_forward_mul_mat_id(params, tensor);
