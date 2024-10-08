@@ -151,7 +151,7 @@ public:
   }
 
 protected:
-  ExpandDimsWithConstAxisGraph _graph; // *W*ith *C*onst axis
+  ExpandDimsWithConstAxisGraph _graph;
   luci::SubstituteExpandDimsToReshapePass _pass;
   luci::CircleShapeInferencePass _shapeinf;
 };
@@ -168,7 +168,7 @@ public:
   }
 
 protected:
-  ExpandDimsWithInputAxisGraph _graph; // *W*ith *N*on *C*onst axis
+  ExpandDimsWithInputAxisGraph _graph;
   luci::SubstituteExpandDimsToReshapePass _pass;
   luci::CircleShapeInferencePass _shapeinf;
 };

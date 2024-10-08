@@ -29,6 +29,24 @@
  *             can be converted to
  *
  *             reshape(input, [2,1,3,4])
+ *
+ * BEFORE
+ *           |
+ *      [CircleNode]   [CircleConst]
+ *           \               /
+ *          [CircleExpandDims]
+ *                   |
+ *              [CircleNode]
+ *                   |
+ *
+ * AFTER
+ *           |
+ *      [CircleNode]  [CircleConst]
+ *           \              /
+ *           [CircleReshape]
+ *                   |
+ *              [CircleNode]
+ *                   |
  */
 namespace
 {
@@ -53,8 +71,8 @@ int32_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
   assert(node->dtype() == loco::DataType::S64 || node->dtype() == loco::DataType::S32);
 
   if (node->dtype() == loco::DataType::S64)
-    return node->at<loco::DataType::S64>(idx);
-  return static_cast<int32_t>(node->at<loco::DataType::S32>(idx));
+    return static_cast<int32_t>(node->at<loco::DataType::S64>(idx));
+  return node->at<loco::DataType::S32>(idx);
 }
 
 bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
@@ -68,6 +86,12 @@ bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
   auto axis_node = dynamic_cast<luci::CircleConst *>(target_node->axis());
   if (axis_node == nullptr)
     return false;
+
+  if (axis_node->dtype() != loco::DataType::S64 && axis_node->dtype() != loco::DataType::S32)
+  {
+    // Abnormal model with unexpected dtype in axis
+    return false;
+  }
 
   int32_t axis = value_from_circle_const(axis_node, 0);
   if (axis < 0)
@@ -114,25 +138,6 @@ bool substitute_expand_dims_to_reshape(luci::CircleNode *node)
 namespace luci
 {
 
-/**
- * BEFORE
- *           |
- *      [CircleNode]   [CircleConst]
- *           \               /
- *          [CircleExpandDims]
- *                   |
- *              [CircleNode]
- *                   |
- *
- * AFTER
- *           |
- *      [CircleNode]  [CircleConst]
- *           \              /
- *           [CircleReshape]
- *                   |
- *              [CircleNode]
- *                   |
- */
 bool SubstituteExpandDimsToReshapePass::run(loco::Graph *g)
 {
   bool changed = false;
