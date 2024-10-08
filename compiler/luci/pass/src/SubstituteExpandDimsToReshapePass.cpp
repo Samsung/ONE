@@ -63,7 +63,7 @@ int32_t unknown_dim_count(luci::CircleNode *node)
 }
 
 /**
- * @brief Return value in position on CircleConst with int32 format.
+ * @brief Return value in position on CircleConst as int32 format.
  */
 int32_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
