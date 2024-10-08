@@ -81,6 +81,7 @@ public:
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &) override;
+  void visit(const ir::operation::RmsNorm &) override;
   void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Shape &) override;
   void visit(const ir::operation::Slice &) override;
