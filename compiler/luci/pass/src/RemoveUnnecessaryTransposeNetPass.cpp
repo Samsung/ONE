@@ -385,7 +385,7 @@ bool TaggedShapeAnalyzer::can_remove_transposes()
   assert(_in != nullptr && _front_transpose != nullptr && _mid_reshape != nullptr &&
          _back_transpose != nullptr);
 
-  auto count_not_1_dim = [](std::vector<int32_t> &shape) -> int {
+  auto count_not_1_dim = [](const std::vector<int32_t> &shape) -> int {
     int count = 0;
     for (auto i : shape)
     {
