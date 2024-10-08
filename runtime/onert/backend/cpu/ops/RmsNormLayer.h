@@ -32,15 +32,14 @@ namespace ops
 class RmsNormLayer : public ::onert::exec::IFunction
 {
 public:
-  RmsNormLayer()
-    : _input(nullptr), _output(nullptr), _gamma(nullptr), _epsilon(1e-06f)
+  RmsNormLayer() : _input(nullptr), _output(nullptr), _gamma(nullptr), _epsilon(1e-06f)
   {
     // Nothing
   }
 
 public:
-  void configure(const IPortableTensor *input, const IPortableTensor *gamma,
-                 float epsilon, IPortableTensor *output);
+  void configure(const IPortableTensor *input, const IPortableTensor *gamma, float epsilon,
+                 IPortableTensor *output);
 
   void run() override;
 
