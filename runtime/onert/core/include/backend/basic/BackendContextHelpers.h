@@ -188,6 +188,8 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   {
     if (ctx.external_operands().contains(source_ind))
       continue;
+    if(tensor_builder->isRegistered(source_ind)) // some tensors can have the same source
+      continue;
     tensor_builder->registerTensorInfo(source_ind, graph.operands().at(source_ind).info());
     registered_source_ind.emplace_back(source_ind);
   }

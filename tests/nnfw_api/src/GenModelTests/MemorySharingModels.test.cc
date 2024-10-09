@@ -116,6 +116,60 @@ TEST_F(GenModelTest, OptimizedReshapeDynOutput)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OptimizedReshapeReshapeChainInferenceSuccessfully)
+{
+  CircleGen cgen;
+  std::vector<int32_t> new_shape_data{2, 2};
+  uint32_t new_shape_buf = cgen.addBuffer(new_shape_data);
+  int input = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
+  int cos1_out = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
+  int new_shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, new_shape_buf});
+  int reshape1_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int reshape2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorCos({{input}, {cos1_out}});
+  cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape1_out}}, &new_shape_data);
+  cgen.addOperatorReshape({{reshape1_out, new_shape}, {reshape2_out}}, &new_shape_data);
+  cgen.addOperatorCos({{reshape2_out}, {cos2_out}});
+  cgen.setInputsAndOutputs({input}, {cos2_out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OptimizedReshapeReshapeReshapeChainInferenceSuccessfully)
+{
+  CircleGen cgen;
+  std::vector<int32_t> new_shape_data{2, 2};
+  uint32_t new_shape_buf = cgen.addBuffer(new_shape_data);
+  int input = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
+  int cos1_out = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
+  int new_shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, new_shape_buf});
+  int reshape1_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int reshape2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int reshape3_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorCos({{input}, {cos1_out}});
+  cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape1_out}}, &new_shape_data);
+  cgen.addOperatorReshape({{reshape1_out, new_shape}, {reshape2_out}}, &new_shape_data);
+    cgen.addOperatorReshape({{reshape2_out, new_shape}, {reshape3_out}}, &new_shape_data);
+  cgen.addOperatorCos({{reshape3_out}, {cos2_out}});
+  cgen.setInputsAndOutputs({input}, {cos2_out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OptimizedSqueezeInferenceSuccessfully)
 {
   CircleGen cgen;
