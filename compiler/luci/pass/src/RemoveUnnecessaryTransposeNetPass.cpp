@@ -75,6 +75,29 @@ bool extract_const(const luci::CircleConst *const_node, std::vector<int32_t> &va
   return true;
 };
 
+/**
+ * @brief For a given a perm P, this function returns Q (the inverse of P),
+ *        which satisfies 'Q(P(x))==x'
+ *
+ * @example If perm={1, 3, 0, 2} is given, it returns {2, 0, 3, 1}.
+ *
+ *           x:       [0, 1, 2, 3]
+ *                          | -----> apply perm {1, 3, 0, 2}
+ *           P(x):    [1, 3, 0, 2]
+ *                          | -----> apply perm {2, 0, 3, 1}
+ *           Q(P(x))  [0, 1, 2, 3]
+ *
+ */
+std::vector<int32_t> inverse_perm(const std::vector<int32_t> &perm)
+{
+  std::vector<int32_t> inv_perm(perm.size());
+  for (auto i = 0u; i < perm.size(); ++i)
+  {
+    inv_perm[perm[i]] = i;
+  }
+  return inv_perm;
+};
+
 struct TagDim final
 {
   TagDim(int32_t v) : value(v) {}
@@ -106,8 +129,10 @@ private:
 
   std::vector<int32_t> _in_shape_v;
   std::vector<int32_t> _front_perm_v;
+  std::vector<int32_t> _front_shape_v;
   std::vector<int32_t> _mid_shape_v;
   std::vector<int32_t> _back_perm_v;
+  std::vector<int32_t> _out_shape_v;
 
   const uint8_t START_TAG = 0;
   TagShape _shape;
@@ -268,9 +293,8 @@ bool TaggedShapeAnalyzer::verify_tag() const
  * @brief Initialize the class members and check under conditions
  *
  *  Condtiions that have to be met for analyzer
- *    c1: input rank >= output rank
  *    c2: The 'perm' of tranpose should be a CircleConst* type
- *    c3: The input shape and the reshape node's shape should be known
+ *    c3: All extracted shapes (named as '*_shape_v' in member variable) should be known
  *
  * @return True, if all conditions are satisfied and class members are initialized successfully
  *         False, otherwise
@@ -284,9 +308,6 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
   _mid_reshape = mid_reshape;
   _back_transpose = back_transpose;
 
-  // check c1
-  CHECK_OR_FALSE(_in->rank() >= _back_transpose->rank());
-
   const auto front_perm = dynamic_cast<luci::CircleConst *>(_front_transpose->perm());
   const auto back_perm = dynamic_cast<luci::CircleConst *>(_back_transpose->perm());
 
@@ -296,8 +317,10 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
 
   CHECK_OR_FALSE(extract_shape(_in, _in_shape_v));
   CHECK_OR_FALSE(extract_const(front_perm, _front_perm_v));
+  CHECK_OR_FALSE(extract_shape(_front_transpose, _front_shape_v));
   CHECK_OR_FALSE(extract_shape(_mid_reshape, _mid_shape_v));
   CHECK_OR_FALSE(extract_const(back_perm, _back_perm_v));
+  CHECK_OR_FALSE(extract_shape(_back_transpose, _out_shape_v));
 
   auto all_known = [](const std::vector<int32_t> &v) -> bool {
     for (auto i : v)
@@ -308,7 +331,9 @@ bool TaggedShapeAnalyzer::init(const luci::CircleTranspose *front_transpose,
 
   // check c3
   CHECK_OR_FALSE(all_known(_in_shape_v));
+  CHECK_OR_FALSE(all_known(_front_shape_v));
   CHECK_OR_FALSE(all_known(_mid_shape_v));
+  CHECK_OR_FALSE(all_known(_out_shape_v));
 
   return true;
 }
@@ -360,14 +385,33 @@ bool TaggedShapeAnalyzer::can_remove_transposes()
   assert(_in != nullptr && _front_transpose != nullptr && _mid_reshape != nullptr &&
          _back_transpose != nullptr);
 
-  init_shape_with_tag(_in_shape_v);
+  auto count_not_1_dim = [](const std::vector<int32_t> &shape) -> int {
+    int count = 0;
+    for (auto i : shape)
+    {
+      if (i != 1)
+        count++;
+    }
+    return count;
+  };
 
-  analyze_transpose(_front_perm_v);
+  auto in_rank = count_not_1_dim(_in_shape_v);
+  auto out_rank = count_not_1_dim(_out_shape_v);
 
-  if (not analyze_reshape(_mid_shape_v))
-    return false;
-
-  analyze_transpose(_back_perm_v);
+  if (in_rank >= out_rank)
+  {
+    init_shape_with_tag(_in_shape_v);
+    analyze_transpose(_front_perm_v);
+    CHECK_OR_FALSE(analyze_reshape(_mid_shape_v));
+    analyze_transpose(_back_perm_v);
+  }
+  else
+  {
+    init_shape_with_tag(_out_shape_v);
+    analyze_transpose(inverse_perm(_back_perm_v));
+    CHECK_OR_FALSE(analyze_reshape(_front_shape_v));
+    analyze_transpose(inverse_perm(_front_perm_v));
+  }
 
   if (not verify_tag())
     return false;
@@ -460,8 +504,9 @@ namespace luci
  * BEFORE
  *
  * Current pass only targets below cases:
- *  - in.rank() >= out.rank()
  *  - 'Reshape' used to reduce N dimension into one (e.g. A x B x C => A x BC)
+ *    or
+ *  - 'Reshape' devides a single dimension into consecutive N dimensions. (e.g. ABC => A x B x C)
  *
  *
  *     [CircleNode]      [CircleConst]
