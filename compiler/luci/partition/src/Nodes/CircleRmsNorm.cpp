@@ -25,11 +25,9 @@ void connect(luci::ConnectNode *cn, const luci::CircleRmsNorm *node)
 
   luci::CircleNode *input = loco::must_cast<luci::CircleNode *>(node->input());
   luci::CircleNode *gamma = loco::must_cast<luci::CircleNode *>(node->gamma());
-  luci::CircleNode *beta = loco::must_cast<luci::CircleNode *>(node->beta());
 
   cloned->input(cn->find_clone(input));
   cloned->gamma(cn->find_clone(gamma));
-  cloned->beta(cn->find_clone(beta));
 }
 
 } // namespace

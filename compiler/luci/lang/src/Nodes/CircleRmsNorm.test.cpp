@@ -30,7 +30,6 @@ TEST(CircleRmsNormTest, constructor)
 
   ASSERT_EQ(nullptr, rms_norm.input());
   ASSERT_EQ(nullptr, rms_norm.gamma());
-  ASSERT_EQ(nullptr, rms_norm.beta());
   ASSERT_FLOAT_EQ(rms_norm.epsilon(), 1e-06);
 }
 
@@ -41,25 +40,21 @@ TEST(CircleRmsNormTest, input_NEG)
 
   rms_norm.input(&node);
   rms_norm.gamma(&node);
-  rms_norm.beta(&node);
   ASSERT_NE(nullptr, rms_norm.input());
   ASSERT_NE(nullptr, rms_norm.gamma());
-  ASSERT_NE(nullptr, rms_norm.beta());
 
   rms_norm.input(nullptr);
   rms_norm.gamma(nullptr);
-  rms_norm.beta(nullptr);
   ASSERT_EQ(nullptr, rms_norm.input());
   ASSERT_EQ(nullptr, rms_norm.gamma());
-  ASSERT_EQ(nullptr, rms_norm.beta());
 }
 
 TEST(CircleRmsNormTest, arity_NEG)
 {
   luci::CircleRmsNorm rms_norm;
 
-  ASSERT_NO_THROW(rms_norm.arg(2));
-  ASSERT_THROW(rms_norm.arg(3), std::out_of_range);
+  ASSERT_NO_THROW(rms_norm.arg(1));
+  ASSERT_THROW(rms_norm.arg(2), std::out_of_range);
 }
 
 TEST(CircleRmsNormTest, visit_mutable_NEG)

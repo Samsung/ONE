@@ -199,20 +199,18 @@ public:
   {
     rms_norm_node = g.nodes()->create<luci::CircleRmsNorm>();
     input_1 = g.nodes()->create<luci::CircleInput>();
-    gamma = g.nodes()->create<luci::CircleConst>();
 
     rms_norm_node->input(input_1);
-    rms_norm_node->gamma(gamma);
 
     if (make_valid)
     {
-      beta = g.nodes()->create<luci::CircleConst>();
-      rms_norm_node->beta(beta);
+      gamma = g.nodes()->create<luci::CircleConst>();
+      rms_norm_node->gamma(gamma);
     }
     else
     {
       input_2 = g.nodes()->create<luci::CircleInput>();
-      rms_norm_node->beta(input_2);
+      rms_norm_node->gamma(input_2);
     }
 
     output = g.nodes()->create<luci::CircleOutput>();
@@ -231,7 +229,6 @@ private:
   luci::CircleInput *input_1 = nullptr;
   luci::CircleInput *input_2 = nullptr;
   luci::CircleConst *gamma = nullptr;
-  luci::CircleConst *beta = nullptr;
   luci::CircleOutput *output = nullptr;
 };
 

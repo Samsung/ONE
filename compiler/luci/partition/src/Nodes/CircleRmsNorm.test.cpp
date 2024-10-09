@@ -36,7 +36,7 @@ public:
   void init(loco::Graph *g) override { NodeGraphletT<luci::CircleRmsNorm>::init(g); }
 };
 
-class TestNodeGraph : public TestIsOGraph<3>, public NodeGraphlet
+class TestNodeGraph : public TestIsOGraph<2>, public NodeGraphlet
 {
 public:
   TestNodeGraph() = default;
@@ -44,12 +44,11 @@ public:
 public:
   void init(const ShapeU32 shape)
   {
-    TestIsOGraph<3>::init({shape, shape, shape}, shape);
+    TestIsOGraph<2>::init({shape, shape}, shape);
     NodeGraphlet::init(g());
 
     node()->input(input(0));
     node()->gamma(input(1));
-    node()->beta(input(2));
 
     output()->from(node());
   }
@@ -73,10 +72,9 @@ TEST(ConnectNodeTest, connect_RmsNorm)
 
   cth.clone_connect(node, clone);
 
-  ASSERT_EQ(3, clone->arity());
+  ASSERT_EQ(2, clone->arity());
   ASSERT_EQ(cth.inputs(0), clone->arg(0));
   ASSERT_EQ(cth.inputs(1), clone->arg(1));
-  ASSERT_EQ(cth.inputs(2), clone->arg(2));
 }
 
 TEST(ConnectNodeTest, connect_RmsNorm_NEG)

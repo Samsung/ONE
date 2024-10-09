@@ -76,7 +76,6 @@ public:
   luci::CircleMul *_mul_input = nullptr;
   luci::CircleConst *_const_epsilon = nullptr;
   luci::CircleConst *_const_gamma = nullptr;
-  luci::CircleConst *_const_beta = nullptr;
 };
 
 #define CHECK_OR_FALSE(condition) \
@@ -108,18 +107,15 @@ bool RmsNormPattern::matched()
   CHECK_OR_FALSE(_mul_pow->y() == _ifm);
 
   assert(_const_gamma == nullptr);
-  assert(_const_beta == nullptr);
 
   /*
-   NOTE: Current FuseRmsNormPass assumes no gamma(scale) and beta(bias).
-   But, RmsNorm kernel expects gamma and beta.
-   So, it creates default gamma(1.0) and beta(0.0).
+   NOTE: Current FuseRmsNormPass assumes no gamma(scale).
+   But, RmsNorm kernel expects gamma.
+   So, it creates default gamma(1.0).
   */
   auto graph = _mul_input->graph();
   _const_gamma = make_const_one(graph, 1.0f);
-  _const_beta = make_const_one(graph, 0.0f);
   _const_gamma->name(_mul_input->name() + "/gamma");
-  _const_beta->name(_mul_input->name() + "/beta");
 
   return true;
 }
@@ -147,7 +143,6 @@ luci::CircleRmsNorm *FuseRmsNorm::create_rms_norm(loco::Graph *graph)
   auto rms_norm = graph->nodes()->create<luci::CircleRmsNorm>();
   rms_norm->input(_p->_ifm);
   rms_norm->gamma(_p->_const_gamma);
-  rms_norm->beta(_p->_const_beta);
   float epsilon = _p->_const_epsilon->at<loco::DataType::FLOAT32>(0);
   rms_norm->epsilon(epsilon);
 

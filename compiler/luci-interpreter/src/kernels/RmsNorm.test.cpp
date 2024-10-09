@@ -39,13 +39,12 @@ TEST_F(RmsNormTest, Simple)
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>({1, 2, 2, 1}, {0, 1, 2, 3}, _memory_manager.get());
   Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   RmsNormParams params{};
   params.epsilon = 0.00001f;
 
-  RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  RmsNorm kernel(&input_tensor, &gamma_tensor, &output_tensor, params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
@@ -54,18 +53,17 @@ TEST_F(RmsNormTest, Simple)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 1}));
 }
 
-TEST_F(RmsNormTest, Default_gamma_beta)
+TEST_F(RmsNormTest, Default_gamma)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 2, 2}, {0, 1, 2, 3, 4, 5, 6, 7},
                                                            _memory_manager.get());
   Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
 
-  RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  RmsNorm kernel(&input_tensor, &gamma_tensor, &output_tensor, params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
@@ -81,13 +79,12 @@ TEST_F(RmsNormTest, Have_gamma)
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 2, 2}, {0, 1, 2, 3, 4, 5, 6, 7},
                                                            _memory_manager.get());
   Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {2}, _memory_manager.get());
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
 
-  RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  RmsNorm kernel(&input_tensor, &gamma_tensor, &output_tensor, params);
   kernel.configure();
   _memory_manager->allocate_memory(output_tensor);
   kernel.execute();
@@ -98,18 +95,17 @@ TEST_F(RmsNormTest, Have_gamma)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 2, 2, 2}));
 }
 
-TEST_F(RmsNormTest, Wrong_gamma_beta_dim_NEG)
+TEST_F(RmsNormTest, Wrong_gamma_dim_NEG)
 {
   Tensor input_tensor = makeInputTensor<DataType::FLOAT32>({1, 2, 2, 2}, {0, 1, 2, 3, 4, 5, 6, 7},
                                                            _memory_manager.get());
   Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({3}, {1, 1, 1}, _memory_manager.get());
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({3}, {0, 0, 0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
 
-  RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  RmsNorm kernel(&input_tensor, &gamma_tensor, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
@@ -118,13 +114,12 @@ TEST_F(RmsNormTest, Unsupported_dims_NEG)
   Tensor input_tensor =
     makeInputTensor<DataType::FLOAT32>({2, 2}, {0, 1, 2, 3}, _memory_manager.get());
   Tensor gamma_tensor = makeInputTensor<DataType::FLOAT32>({1}, {1}, _memory_manager.get());
-  Tensor beta_tensor = makeInputTensor<DataType::FLOAT32>({1}, {0}, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
 
   RmsNormParams params{};
   params.epsilon = 0.001f;
 
-  RmsNorm kernel(&input_tensor, &gamma_tensor, &beta_tensor, &output_tensor, params);
+  RmsNorm kernel(&input_tensor, &gamma_tensor, &output_tensor, params);
   EXPECT_ANY_THROW(kernel.configure());
 }
 
