@@ -58,10 +58,10 @@ public:
       _op_params.stride_width = strideWidth;
       _op_params.filter_height = kernelHeight;
       _op_params.filter_width = kernelWidth;
-      assert(paddingTop < (1 << 8));
-      assert(paddingLeft < (1 << 8));
-      _op_params.padding_values.height = static_cast<uint8_t>(paddingTop);
-      _op_params.padding_values.width = static_cast<uint8_t>(paddingLeft);
+      assert(paddingTop < (1 << 15));
+      assert(paddingLeft < (1 << 15));
+      _op_params.padding_values.height = static_cast<int16_t>(paddingTop);
+      _op_params.padding_values.width = static_cast<int16_t>(paddingLeft);
       CalculateActivationRange<float>(activation, &_op_params.float_activation_min,
                                       &_op_params.float_activation_max);
     }
