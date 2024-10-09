@@ -85,6 +85,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
     std::swap(perm[circle_lhs->rank() - 1], perm[circle_lhs->rank() - 2]);
     auto perm_node = luci::create_const_node(graph, S32, {circle_lhs->rank()}, perm);
     perm_node->name(name + "/lhs/Transpose/perm");
+    luci::add_origin(perm_node, luci::get_origin(cop));
     // Now make a transpose node
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(lhs);
@@ -102,6 +103,7 @@ bool resolve_matmul(luci::CircleCustom *cop)
     const std::vector<int32_t> perm{1, 0};
     auto perm_node = luci::create_const_node(graph, S32, {2}, perm);
     perm_node->name(name + "/rhs/Transpose/perm");
+    luci::add_origin(perm_node, luci::get_origin(cop));
     auto transpose_node = graph->nodes()->create<luci::CircleTranspose>();
     transpose_node->a(rhs);
     transpose_node->perm(perm_node);
