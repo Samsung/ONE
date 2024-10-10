@@ -26,9 +26,9 @@ namespace luci_interpreter
 namespace kernels
 {
 
-RmsNorm::RmsNorm(const Tensor *input, const Tensor *gamma, const Tensor *beta, Tensor *output,
+RmsNorm::RmsNorm(const Tensor *input, const Tensor *gamma, Tensor *output,
                  const RmsNormParams &params)
-  : KernelWithParams<RmsNormParams>({input, gamma, beta}, {output}, params)
+  : KernelWithParams<RmsNormParams>({input, gamma}, {output}, params)
 {
 }
 
@@ -38,13 +38,9 @@ void RmsNorm::configure()
   LUCI_INTERPRETER_CHECK(num_dims == 3 || num_dims == 4);
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
   LUCI_INTERPRETER_CHECK(gamma()->element_type() == input()->element_type());
-  LUCI_INTERPRETER_CHECK(beta()->element_type() == input()->element_type());
   LUCI_INTERPRETER_CHECK(gamma()->shape().num_dims() == 1);
-  LUCI_INTERPRETER_CHECK(beta()->shape().num_dims() == 1);
   LUCI_INTERPRETER_CHECK((gamma()->shape().dim(0) == input()->shape().dim(num_dims - 1)) ||
                          (gamma()->shape().dim(0) == 1));
-  LUCI_INTERPRETER_CHECK((beta()->shape().dim(0) == input()->shape().dim(num_dims - 1)) ||
-                         (beta()->shape().dim(0) == 1));
 
   output()->resize(input()->shape());
 }
@@ -70,9 +66,6 @@ void RmsNorm::evalFloat() const
   const float *gamma_data = getTensorData<float>(gamma());
   auto gamma_shape = getTensorShape(gamma());
   bool single_gamma = gamma_shape.DimensionsCount() == 1 && gamma_shape.Dims(0) == 1;
-  const float *beta_data = getTensorData<float>(beta());
-  auto beta_shape = getTensorShape(beta());
-  bool single_beta = beta_shape.DimensionsCount() == 1 && beta_shape.Dims(0) == 1;
   float *output_data = getTensorData<float>(output());
 
   if (input_shape.DimensionsCount() == 4)
@@ -99,11 +92,9 @@ void RmsNorm::evalFloat() const
           for (int32_t channel = 0; channel < channels; channel++)
           {
             double gamma = single_gamma ? gamma_data[0] : gamma_data[channel];
-            double beta = single_beta ? beta_data[0] : beta_data[channel];
             output_data[tflite::Offset(output_shape, batch, height, width, channel)] =
-              (gamma *
-                 (input_data[tflite::Offset(input_shape, batch, height, width, channel)] / rms) +
-               beta);
+              gamma *
+              (input_data[tflite::Offset(input_shape, batch, height, width, channel)] / rms);
           }
         }
       }
@@ -131,8 +122,7 @@ void RmsNorm::evalFloat() const
         for (int32_t i = 0; i < size; i++)
         {
           double gamma = single_gamma ? gamma_data[0] : gamma_data[i];
-          double beta = single_beta ? beta_data[0] : beta_data[i];
-          output_data[offset + i] = (gamma * (input_data[offset + i] / rms) + beta);
+          output_data[offset + i] = gamma * (input_data[offset + i] / rms);
         }
       }
     }

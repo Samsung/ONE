@@ -28,12 +28,10 @@ namespace kernels
 class RmsNorm : public KernelWithParams<RmsNormParams>
 {
 public:
-  RmsNorm(const Tensor *input, const Tensor *gamma, const Tensor *beta, Tensor *output,
-          const RmsNormParams &params);
+  RmsNorm(const Tensor *input, const Tensor *gamma, Tensor *output, const RmsNormParams &params);
 
   const Tensor *input() const { return _inputs[0]; }
   const Tensor *gamma() const { return _inputs[1]; }
-  const Tensor *beta() const { return _inputs[2]; }
   Tensor *output() const { return _outputs[0]; }
 
   void configure() override;
