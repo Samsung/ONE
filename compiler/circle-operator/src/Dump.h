@@ -29,6 +29,7 @@ struct DumpOption
   bool names = false;
   bool codes = false;
   bool all_graphs = false;
+  bool shapes = false;
 };
 
 class DumpOperators
