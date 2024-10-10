@@ -113,7 +113,7 @@ void GatherLayer::runByGGMLQuantInputType()
   }
 
   // get cplan
-  auto cplan = ggml_graph_plan(&graph, _ctx->ruy_context()->max_num_threads());
+  auto cplan = ggml_graph_plan(&graph, _ctx->maxNumThreads());
   cplan.work_data = (uint8_t *)(malloc(cplan.work_size));
 
   // compute
