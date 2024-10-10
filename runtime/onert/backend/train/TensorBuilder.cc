@@ -95,6 +95,25 @@ void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorI
   _disposable_backprops.add(index);
 }
 
+void TensorBuilder::registerLayerScopeTensor(const LayerScopeTensorIndex &index,
+                                             std::shared_ptr<LayerScopeTensor> &tensor)
+{
+  auto pair = _layerscope_map.find(index.op_index());
+  if (pair == _layerscope_map.end())
+  {
+    util::Set<LayerScopeTensorIndex> indices;
+    indices.add(index);
+    _layerscope_map[index.op_index()] = indices;
+  }
+  else
+  {
+    assert(!pair->second.contains(index));
+    pair->second.add(index);
+  }
+
+  _tensor_reg->setLayerScopeTensor(index, tensor);
+}
+
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &index)
 {
   // TODO Support momory plan
@@ -155,6 +174,16 @@ void TensorBuilder::notifyDisposableBackPropLastUse(const DisposableTensorIndex 
   _tensor_mgr->releaseDisposableBackPropPlan(index);
 }
 
+void TensorBuilder::notifyLayerScopeFirstUse(const LayerScopeTensorIndex &index)
+{
+  _tensor_mgr->claimLayerScopePlan(index);
+}
+
+void TensorBuilder::notifyLayerScopeLastUse(const LayerScopeTensorIndex &index)
+{
+  _tensor_mgr->releaseLayerScopePlan(index);
+}
+
 bool TensorBuilder::isRegistered(const ir::OperandIndex &index) const
 {
   return _tensor_info_map.find(index) != _tensor_info_map.end();
@@ -170,6 +199,29 @@ bool TensorBuilder::isRegisteredDisposableBackwardTensor(const DisposableTensorI
   return _disposable_backprops.contains(index);
 }
 
+bool TensorBuilder::isRegisteredLayerScopeTensor(const ir::OperationIndex &index) const
+{
+  const auto pair = _layerscope_map.find(index);
+  return (pair != _layerscope_map.end());
+}
+
+util::Set<LayerScopeTensorIndex>
+TensorBuilder::getRegisteredLayerScopeTensorIndex(const ir::OperationIndex &index) const
+{
+  const auto pair = _layerscope_map.find(index);
+  assert(pair != _layerscope_map.end());
+
+  return pair->second;
+}
+
+LayerScopeTensorLifeTime
+TensorBuilder::getLayerScopeTensorLifeTime(const LayerScopeTensorIndex &index) const
+{
+  const auto &ls_tensors = _tensor_reg->layerscope_tensors();
+  const auto &tensor = ls_tensors.at(index);
+  return tensor->lifetime();
+}
+
 void TensorBuilder::allocate(void)
 {
   _tensor_mgr->allocateNonConstTensors();
@@ -182,6 +234,8 @@ void TensorBuilder::allocateBackward(void)
   _tensor_mgr->allocateGradientTensors();
   _tensor_mgr->allocateDisposableBackPropTensors();
 }
+
+void TensorBuilder::allocateLayerScope(void) { _tensor_mgr->allocateLayerScopeTensors(); }
 
 } // namespace train
 } // namespace backend

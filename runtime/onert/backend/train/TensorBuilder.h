@@ -18,10 +18,12 @@
 #define __ONERT_BACKEND_TRAIN_TENSOR_BUILDER_H__
 
 #include "DisposableTensorIndex.h"
+#include "LayerScopeTensorIndex.h"
 #include "TensorManager.h"
 #include "TensorRegistry.h"
 #include "util/Set.h"
 
+#include <ir/OperationIndexMap.h>
 #include <exec/train/optimizer/Optimizer.h>
 
 namespace onert
@@ -55,6 +57,9 @@ public:
   void registerDisposableBackwardTensorInfo(const DisposableTensorIndex &index,
                                             const ir::OperandInfo &info);
 
+  void registerLayerScopeTensor(const LayerScopeTensorIndex &index,
+                                std::shared_ptr<LayerScopeTensor> &info);
+
   // TODO Support memory plan of all tensors
   void notifyFirstUse(const ir::OperandIndex &);
   void notifyLastUse(const ir::OperandIndex &);
@@ -62,13 +67,21 @@ public:
   void notifyBackwardLastUse(const ir::OperandIndex &);
   void notifyDisposableBackPropFirstUse(const DisposableTensorIndex &);
   void notifyDisposableBackPropLastUse(const DisposableTensorIndex &);
+  void notifyLayerScopeFirstUse(const LayerScopeTensorIndex &);
+  void notifyLayerScopeLastUse(const LayerScopeTensorIndex &);
 
   bool isRegistered(const ir::OperandIndex &) const;
   bool isRegisteredBackward(const ir::OperandIndex &) const;
   bool isRegisteredDisposableBackwardTensor(const DisposableTensorIndex &index) const;
+  bool isRegisteredLayerScopeTensor(const ir::OperationIndex &) const;
+
+  util::Set<LayerScopeTensorIndex>
+  getRegisteredLayerScopeTensorIndex(const ir::OperationIndex &) const;
+  LayerScopeTensorLifeTime getLayerScopeTensorLifeTime(const LayerScopeTensorIndex &) const;
 
   void allocate(void);
   void allocateBackward(void);
+  void allocateLayerScope(void); // <- this have to called after
 
 private:
   const std::shared_ptr<TensorRegistry> _tensor_reg;
@@ -77,6 +90,7 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _backward_tensor_info_map;
   ir::OperandIndexMap<bool> _as_constants;
   util::Set<DisposableTensorIndex> _disposable_backprops;
+  ir::OperationIndexMap<util::Set<LayerScopeTensorIndex>> _layerscope_map;
   const exec::train::optimizer::Optimizer *_optimizer;
 };
 
