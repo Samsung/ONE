@@ -31,7 +31,7 @@ namespace
 using namespace onert;
 
 template <typename Tensor>
-std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *origin_weights)
+std::shared_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *origin_weights)
 {
   const auto &origin_shape = origin_weights->getShape();
   assert(origin_shape.rank() == 4);
@@ -42,7 +42,7 @@ std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *
     ir::Shape{origin_shape.dim(1), origin_shape.dim(2), origin_shape.dim(3), origin_shape.dim(0)};
   transposed_info.shape(transposed_shape);
 
-  return std::make_unique<Tensor>(transposed_info);
+  return std::make_shared<Tensor>(transposed_info);
 }
 
 } // namespace
@@ -79,25 +79,29 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
   if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
     throw std::runtime_error("train ConvolutionLayer: Unsupported dilation yet");
 
-  // TODO Optimize transposed tensors
-  _transposed_weights = createTransposedWeights<Tensor>(weights);
-  _transposed_weights->setBuffer(
-    std::make_shared<basic::Allocator>(_transposed_weights->total_size()));
+  _transposed_weights = createTransposedWeights<LayerScopeTensor>(weights);
 
-  _conv_back_prop_output = std::make_unique<BackPropTensor>(back_prop_output->get_info());
-  _conv_back_prop_output->setBuffer(
-    std::make_shared<basic::Allocator>(_conv_back_prop_output->total_size()));
+  _conv_back_prop_output = std::make_shared<LayerScopeTensor>(back_prop_output->get_info());
 
-  _transposed_grad_weights = createTransposedWeights<GradientTensor>(weights);
-  _transposed_grad_weights->setBuffer(
-    std::make_shared<basic::Allocator>(_transposed_grad_weights->total_size()));
+  _transposed_grad_weights = createTransposedWeights<LayerScopeTensor>(weights);
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output = std::make_unique<BackPropTensor>(_back_prop_output->get_info());
-    _act_back_prop_output->setBuffer(
-      std::make_shared<basic::Allocator>(_act_back_prop_output->total_size()));
+    _act_back_prop_output = std::make_unique<LayerScopeTensor>(_back_prop_output->get_info());
   }
+}
+
+std::optional<LayerScopeTensors> ConvolutionLayer::registerLayerScopeTensors()
+{
+  LayerScopeTensors tensors = {_transposed_weights, _conv_back_prop_output,
+                               _transposed_grad_weights};
+
+  if (_act_back_prop_output != nullptr)
+  {
+    tensors.push_back(_act_back_prop_output);
+  }
+
+  return std::optional<LayerScopeTensors>(tensors);
 }
 
 void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }

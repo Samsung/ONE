@@ -28,7 +28,7 @@ namespace
 
 using namespace onert;
 
-std::unique_ptr<backend::train::Tensor>
+std::shared_ptr<backend::train::LayerScopeTensor>
 createTransposedTensor(const backend::IPortableTensor *origin_tensor)
 {
   const auto &origin_shape = origin_tensor->getShape();
@@ -38,7 +38,7 @@ createTransposedTensor(const backend::IPortableTensor *origin_tensor)
   auto transposed_shape = ir::Shape{origin_shape.dim(1), origin_shape.dim(0)};
   transposed_info.shape(transposed_shape);
 
-  return std::make_unique<backend::train::Tensor>(transposed_info);
+  return std::make_shared<backend::train::LayerScopeTensor>(transposed_info);
 }
 
 } // namespace
@@ -86,21 +86,27 @@ void FullyConnectedLayer::configureBackward(
       "train FullyConnectedLayer: Input other ranks than 2 are not supported."};
 
   _transposed_weights = createTransposedTensor(weights);
-  _transposed_weights->setBuffer(std::make_shared<basic::Allocator>(weights->total_size()));
 
   _transposed_input = createTransposedTensor(input);
-  _transposed_input->setBuffer(std::make_shared<basic::Allocator>(input->total_size()));
 
   _transposed_back_prop_output = createTransposedTensor(back_prop_output);
-  _transposed_back_prop_output->setBuffer(
-    std::make_shared<basic::Allocator>(back_prop_output->total_size()));
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output = std::make_unique<Tensor>(_back_prop_output->get_info());
-    _act_back_prop_output->setBuffer(
-      std::make_shared<basic::Allocator>(_back_prop_output->total_size()));
+    _act_back_prop_output = std::make_shared<LayerScopeTensor>(_back_prop_output->get_info());
   }
+}
+
+std::optional<LayerScopeTensors> FullyConnectedLayer::registerLayerScopeTensors()
+{
+  LayerScopeTensors tensors = {_transposed_weights, _transposed_input,
+                               _transposed_back_prop_output};
+  if (_act_back_prop_output != nullptr)
+  {
+    tensors.push_back(_act_back_prop_output);
+  }
+
+  return tensors;
 }
 
 void FullyConnectedLayer::forward(bool) { cpu::ops::FullyConnectedLayer::run(); }
