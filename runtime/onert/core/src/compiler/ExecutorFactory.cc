@@ -145,18 +145,22 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 
 // To handle cases like Reshape->Reshape->Reshape... chain where the memory is shared.
 // In such a case we should re-assign indexes to the first Reshape input.
-void reassign_indexes_to_single_sources(ir::OperandIndexMap<ir::OperandIndex>& shared_memory_operand_map)
+void reassign_indexes_to_single_sources(
+  ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_map)
 {
-  for(auto [shared_ind, source_ind] : shared_memory_operand_map) {
+  for (auto [shared_ind, source_ind] : shared_memory_operand_map)
+  {
     bool other_source_found = false;
     auto it = std::end(shared_memory_operand_map);
-    while((it = shared_memory_operand_map.find(source_ind)) != std::end(shared_memory_operand_map)) {
-        source_ind = shared_memory_operand_map[source_ind];
-        other_source_found = true;
+    while ((it = shared_memory_operand_map.find(source_ind)) != std::end(shared_memory_operand_map))
+    {
+      source_ind = shared_memory_operand_map[source_ind];
+      other_source_found = true;
     }
-    if(other_source_found) {
-        std::cout << shared_ind << "->" << source_ind << "\n";
-        shared_memory_operand_map[shared_ind] = source_ind;
+    if (other_source_found)
+    {
+      std::cout << shared_ind << "->" << source_ind << "\n";
+      shared_memory_operand_map[shared_ind] = source_ind;
     }
   }
 }

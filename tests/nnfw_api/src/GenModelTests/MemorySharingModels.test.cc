@@ -157,7 +157,8 @@ TEST_F(GenModelTest, optimized_reshape_input_used_in_many_places_inference)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}, {0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345},
+                                       {0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -183,7 +184,8 @@ TEST_F(GenModelTest, optimized_reshape_output_used_in_many_places_inference)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(
-    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345}, {0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
+    uniformTCD<float>({{1, 2, 3, 4}}, {{0.85755322, 0.91465333, 0.54869613, 0.79387345},
+                                       {0.85755322, 0.91465333, 0.54869613, 0.79387345}}));
   _context->setBackends({"cpu"});
 
   SUCCEED();
@@ -231,7 +233,7 @@ TEST_F(GenModelTest, optimized_reshape_reshape_reshape_chain_inference)
   cgen.addOperatorCos({{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape1_out}}, &new_shape_data);
   cgen.addOperatorReshape({{reshape1_out, new_shape}, {reshape2_out}}, &new_shape_data);
-    cgen.addOperatorReshape({{reshape2_out, new_shape}, {reshape3_out}}, &new_shape_data);
+  cgen.addOperatorReshape({{reshape2_out, new_shape}, {reshape3_out}}, &new_shape_data);
   cgen.addOperatorCos({{reshape3_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
