@@ -68,6 +68,8 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
     // TODO Implement AVG PoolType
     case ir::operation::Pool2D::PoolType::MAX:
       return ops::PoolType::kMax;
+    case ir::operation::Pool2D::PoolType::AVG:
+      return ops::PoolType::kAvg;
     default:
       throw std::runtime_error("train KernelGenerator : Not supported operation yet");
   }
@@ -419,9 +421,12 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
     }
     case ir::train::LossCode::CategoricalCrossentropy:
     {
+      const auto y_pred_op_code = node.y_pred_op_code();
+      bool is_normalization_required = (y_pred_op_code != ir::OpCode::Softmax);
       auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    reduction_type, loss_param.cce.axis, loss_param.cce.label_smoothing);
+                    reduction_type, loss_param.cce.axis, loss_param.cce.label_smoothing,
+                    is_normalization_required);
       _return_fn = std::move(fn);
       break;
     }
@@ -496,6 +501,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
     {
       case train::ops::PoolType::kMax:
         return cpu::ops::PoolType::kMax;
+      case train::ops::PoolType::kAvg:
+        return cpu::ops::PoolType::kAvg;
       default:
         throw std::runtime_error("PoolLayer: Unsupported pool type yet");
     }

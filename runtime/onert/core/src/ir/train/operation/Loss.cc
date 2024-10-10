@@ -36,8 +36,9 @@ void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Loss::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
 
-Loss::Loss(const OperationType &operation, const LossInfo &param)
-  : OperationType{operation.getInputs(), operation.getOutputs()}, _param{param}
+Loss::Loss(const OperationType &operation, const LossInfo &param, ir::OpCode y_pred_op_code)
+  : OperationType{operation.getInputs(), operation.getOutputs()}, _param{param},
+    _y_pred_op_code{y_pred_op_code}
 {
   // DO NOTHING
 }

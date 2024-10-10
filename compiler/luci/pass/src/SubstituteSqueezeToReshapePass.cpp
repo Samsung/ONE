@@ -134,6 +134,7 @@ bool substitute_squeeze_to_reshape(luci::CircleSqueeze *squeeze)
   reshape->name(name + "/Reshape");
   luci::add_origin(reshape, luci::get_origin(squeeze));
   shape_const->name(name + "/Reshape/shape");
+  luci::add_origin(shape_const, luci::get_origin(squeeze));
 
   // graph connection
   reshape->tensor(input);

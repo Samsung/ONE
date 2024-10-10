@@ -237,7 +237,13 @@ typedef struct nnfw_train_info
   float learning_rate = 0.001f;
   /** Batch size */
   uint32_t batch_size = 1;
-  /** loss info */
+  /** loss info
+   * Note that you don't need to worry about whether the model you use does not include softmax
+   * when you try to use NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY. Using
+   * NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY will ensure that the predicted input of loss is
+   * the result of performing softmax once regardless of whether the output of the model is
+   * the result of softmax or not.
+   */
   nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR,
                            .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE};
   /** optimizer type */

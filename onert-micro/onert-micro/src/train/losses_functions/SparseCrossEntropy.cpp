@@ -38,6 +38,13 @@ void SparseCrossEntropy::calculateErrorBackpropagation(const uint32_t flat_size,
 
   for (uint32_t i = 0; i < flat_size; ++i)
   {
-    output_grad[i] = (calculated_data[i] + float(10.0e-32)) - (i == label);
+    if (i == label)
+    {
+      output_grad[i] = -1.0 / (calculated_data[i] + float(10.0e-20));
+    }
+    else
+    {
+      output_grad[i] = 0.0;
+    }
   }
 }

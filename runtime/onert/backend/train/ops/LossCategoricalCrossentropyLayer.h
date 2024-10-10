@@ -36,13 +36,15 @@ public:
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
                  IPortableTensor *output, IPortableTensor *back_prop_y_pred,
-                 ir::train::LossReductionType reduction_type, int32_t axis, float label_smoothing);
+                 ir::train::LossReductionType reduction_type, int32_t axis, float label_smoothing,
+                 bool is_normalization_required);
   void forward(bool training) override;
   void backward() override;
 
 private:
   int32_t _axis{-1};
   float _label_smoothing{0.0f};
+  bool _is_normalization_required{false};
 };
 
 } // namespace ops

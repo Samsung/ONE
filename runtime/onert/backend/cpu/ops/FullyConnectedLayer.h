@@ -55,6 +55,8 @@ public:
 
   void fullyConnectedSparseWeight();
 
+  void fullyConnectedGGMLWeight();
+
   void fullyConnected16x1Float32();
 
   void configure(const IPortableTensor *input, const IPortableTensor *weights,

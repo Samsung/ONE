@@ -32,32 +32,20 @@ namespace cpu
 
 class ExternalContext
 {
-private:
-  static const int kDefaultNumThreadpoolThreads = 1;
+public:
+  ExternalContext();
 
 public:
-  ExternalContext() : _ruy_context(new ruy::Context)
-  {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
-  }
+  void setMaxNumThreads(int max_num_threads);
 
-  void setMaxNumThreads(int max_num_threads)
-  {
-    const int target_num_threads =
-      max_num_threads > -1 ? max_num_threads : kDefaultNumThreadpoolThreads;
-    _ruy_context->set_max_num_threads(target_num_threads);
-  }
+  int32_t maxNumThreads() const { return _max_num_threads; }
 
-  void initGgmlContext()
-  {
-    if (_ggml_context == nullptr)
-      _ggml_context = std::unique_ptr<ggml_context, decltype(&ggml_free)>(
-        ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true}), &ggml_free);
-  }
+  void initGgmlContext();
 
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
 
 private:
+  int32_t _max_num_threads;
   const std::unique_ptr<ruy::Context> _ruy_context;
   std::unique_ptr<ggml_context, decltype(&ggml_free)> _ggml_context{nullptr, &ggml_free};
 };
