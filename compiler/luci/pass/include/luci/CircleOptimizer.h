@@ -86,6 +86,7 @@ public:
       ReplaceNonConstFCWithBatchMatMul,
       ReplaceSubWithAdd,
       ReplaceWithFCGeluFC,
+      SubstituteExpandDimsToReshape,
       SubstitutePackToReshape,
       SubstitutePadV2ToPad,
       SubstituteSplitVToSplit,
