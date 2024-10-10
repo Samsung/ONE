@@ -24,12 +24,12 @@ namespace circlechef
 void CircleOpRmsNorm::filler(const circle::Operator *op, CircleImport *import,
                              circlechef::ModelRecipe *model_recipe) const
 {
-  // index 1 and 2 maybe constant
+  // index 1 maybe constant
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
-  assert(inputs.size() == 3);
+  // TODO: Enable assert after recipe updated.
+  // assert(inputs.size() == 2);
 
   import->set_tensor_filler(inputs[1]); // set gaussian filler
-  import->set_tensor_filler(inputs[2]);
 }
 
 circlechef::Operation *CircleOpRmsNorm::build(const circle::Operator *op, CircleImport *import,
