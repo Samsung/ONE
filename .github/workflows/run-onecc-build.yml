@@ -36,8 +36,6 @@ defaults:
 
 jobs:
   onecc-test:
-    # Tested ubuntu version is decided by docker image, not runner
-    runs-on: ubuntu-latest
     if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
@@ -48,9 +46,7 @@ jobs:
             ubuntu_ver: 20.04
           - ubuntu_code: jammy
             ubuntu_ver: 22.04
-    container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
-      options: --user root
+    runs-on: ubuntu-${{ matrix.ubuntu_ver }}
     env:
       NNCC_WORKSPACE : build
       NNCC_INSTALL_PREFIX : install
@@ -59,6 +55,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # dalgona uses pybind11, but pybind11 cannot bind packages in virtualenv.
+      # So we need to install packages for dalgona-test globally.
+      - name: Install required packages
+        run: |
+          python3 -m pip install numpy h5py==3.11.0 flatbuffers==23.5.26
 
       - name: Caching externals
         uses: actions/cache@v4
@@ -119,3 +121,13 @@ jobs:
           ## onecc workflows
           bash onecc_032.test
           bash onecc_041.test
+
+      # Upload log if failed
+      - name: Upload log
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: fail-${{ matrix.ubuntu_code }}-${{ matrix.type }}
+          path: |
+            ${{ env.NNCC_WORKSPACE }}/compiler/**/*.log
+            ${{ env.NNCC_INSTALL_PATH }}/test/**/*.log
