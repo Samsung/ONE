@@ -165,7 +165,7 @@ public:
   ~AveragePool2D() {}
 
 public:
-  void forward(const IPortableTensor *in, IPortableTensor *out)
+  void forward(const IPortableTensor *in, IPortableTensor *out) override
   {
     auto out_shape = getShape(out);
     auto out_data = getBuffer<float>(out);
@@ -175,7 +175,7 @@ public:
                                    out_data);
   }
 
-  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
+  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) override
   {
     // activation backward
     try
