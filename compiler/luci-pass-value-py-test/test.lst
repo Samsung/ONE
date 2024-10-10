@@ -99,3 +99,5 @@ eval(CSE_Transpose_000 common_subexpression_elimination)
 # eval(Pad_001 fuse_instnorm) --> tflite(v2.12.1) does not support INT64 paddings
 # TODO enable PadV2_002 when TF version up supports INT64 paddings
 # eval(PadV2_002 fuse_instnorm) --> tflite(v2.12.1) does not support INT64 paddings
+
+eval(Net_Decomposed_GRU_000 fuse_gru)
