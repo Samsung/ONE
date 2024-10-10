@@ -28,7 +28,7 @@ namespace
 
 using namespace onert;
 
-std::shared_ptr<backend::train::ExtraTensor>
+std::shared_ptr<backend::train::LayerScopeTensor>
 createTransposedTensor(const backend::IPortableTensor *origin_tensor)
 {
   const auto &origin_shape = origin_tensor->getShape();
@@ -38,7 +38,7 @@ createTransposedTensor(const backend::IPortableTensor *origin_tensor)
   auto transposed_shape = ir::Shape{origin_shape.dim(1), origin_shape.dim(0)};
   transposed_info.shape(transposed_shape);
 
-  return std::make_shared<backend::train::ExtraTensor>(transposed_info);
+  return std::make_shared<backend::train::LayerScopeTensor>(transposed_info);
 }
 
 } // namespace
@@ -93,13 +93,14 @@ void FullyConnectedLayer::configureBackward(
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output = std::make_shared<ExtraTensor>(_back_prop_output->get_info());
+    _act_back_prop_output = std::make_shared<LayerScopeTensor>(_back_prop_output->get_info());
   }
 }
 
-std::optional<ExtraTensors> FullyConnectedLayer::registerExtraTensors()
+std::optional<LayerScopeTensors> FullyConnectedLayer::registerLayerScopeTensors()
 {
-  ExtraTensors tensors = {_transposed_weights, _transposed_input, _transposed_back_prop_output};
+  LayerScopeTensors tensors = {_transposed_weights, _transposed_input,
+                               _transposed_back_prop_output};
   if (_act_back_prop_output != nullptr)
   {
     tensors.push_back(_act_back_prop_output);

@@ -220,7 +220,7 @@ void BackendContext::planLayerScopeTensors(const FunctionMap &fn_map)
     if (not trainable_op->isRequiredForBackward())
       continue;
 
-    VERBOSE(ExtraTensor) << "register tensor for " << trainable_op->name() << std::endl;
+    VERBOSE(LayerScopeTensor) << "register tensor for " << trainable_op->name() << std::endl;
 
     fn_seq->iterate([&](exec::train::ITrainableFunction &fn) {
       register_tensors(op_idx, (&fn)->registerLayerScopeTensors());

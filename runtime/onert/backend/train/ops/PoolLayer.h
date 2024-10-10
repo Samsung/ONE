@@ -38,7 +38,7 @@ class TrainingKernelRegistry
 public:
   virtual void forward(const IPortableTensor *in, IPortableTensor *out) = 0;
   virtual void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) = 0;
-  virtual std::optional<ExtraTensors> registerExtraTensors() = 0;
+  virtual std::optional<LayerScopeTensors> registerLayerScopeTensors() = 0;
 
   TrainingKernelRegistry() = default;
   virtual ~TrainingKernelRegistry() = default;
@@ -64,7 +64,7 @@ public:
                          IPortableTensor *output, IPortableTensor *back_prop_input,
                          const IPortableTensor *back_prop_output);
 
-  std::optional<ExtraTensors> registerExtraTensors() override;
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override;
   void forward(bool training) override;
   void backward() override;
 

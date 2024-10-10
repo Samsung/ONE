@@ -79,28 +79,29 @@ void ConvolutionLayer::configureBackward(const IPortableTensor *weights,
   if (_dilationHeightFactor != 1 || _dilationWidthFactor != 1)
     throw std::runtime_error("train ConvolutionLayer: Unsupported dilation yet");
 
-  _transposed_weights = createTransposedWeights<ExtraTensor>(weights);
+  _transposed_weights = createTransposedWeights<LayerScopeTensor>(weights);
 
-  _conv_back_prop_output = std::make_shared<ExtraTensor>(back_prop_output->get_info());
+  _conv_back_prop_output = std::make_shared<LayerScopeTensor>(back_prop_output->get_info());
 
-  _transposed_grad_weights = createTransposedWeights<ExtraTensor>(weights);
+  _transposed_grad_weights = createTransposedWeights<LayerScopeTensor>(weights);
 
   if (activation != ir::Activation::NONE)
   {
-    _act_back_prop_output = std::make_unique<ExtraTensor>(_back_prop_output->get_info());
+    _act_back_prop_output = std::make_unique<LayerScopeTensor>(_back_prop_output->get_info());
   }
 }
 
-std::optional<ExtraTensors> ConvolutionLayer::registerExtraTensors()
+std::optional<LayerScopeTensors> ConvolutionLayer::registerLayerScopeTensors()
 {
-  ExtraTensors tensors = {_transposed_weights, _conv_back_prop_output, _transposed_grad_weights};
+  LayerScopeTensors tensors = {_transposed_weights, _conv_back_prop_output,
+                               _transposed_grad_weights};
 
   if (_act_back_prop_output != nullptr)
   {
     tensors.push_back(_act_back_prop_output);
   }
 
-  return std::optional<ExtraTensors>(tensors);
+  return std::optional<LayerScopeTensors>(tensors);
 }
 
 void ConvolutionLayer::forward(bool) { cpu::ops::ConvolutionLayer::run(); }

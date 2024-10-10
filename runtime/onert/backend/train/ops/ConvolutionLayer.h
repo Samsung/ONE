@@ -41,7 +41,7 @@ public:
   void configureBackward(const IPortableTensor *weights, IPortableTensor *back_prop_input,
                          IPortableTensor *grad_weights, IPortableTensor *grad_bias,
                          const IPortableTensor *back_prop_output, const ir::Activation activation);
-  std::optional<ExtraTensors> registerExtraTensors() override;
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override;
   void forward(bool training) override;
   void backward() override;
 
@@ -55,10 +55,10 @@ private:
   const IPortableTensor *_back_prop_output;
 
   // TODO Consider if these tensors should be built in TensorBuilder
-  std::shared_ptr<ExtraTensor> _transposed_weights;
-  std::shared_ptr<ExtraTensor> _conv_back_prop_output;
-  std::shared_ptr<ExtraTensor> _transposed_grad_weights;
-  std::shared_ptr<ExtraTensor> _act_back_prop_output;
+  std::shared_ptr<LayerScopeTensor> _transposed_weights;
+  std::shared_ptr<LayerScopeTensor> _conv_back_prop_output;
+  std::shared_ptr<LayerScopeTensor> _transposed_grad_weights;
+  std::shared_ptr<LayerScopeTensor> _act_back_prop_output;
 };
 
 } // namespace ops

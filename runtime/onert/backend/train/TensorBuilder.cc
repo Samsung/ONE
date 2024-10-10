@@ -98,12 +98,14 @@ void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorI
 void TensorBuilder::registerLayerScopeTensor(const LayerScopeTensorIndex &index,
                                              std::shared_ptr<LayerScopeTensor> &tensor)
 {
-  auto pair = _layerscope_map.find(index.op_index());
-  if (pair == _layerscope_map.end())
+  const auto op_idx = index.op_index();
+
+  const auto pair = _operation_to_layerscope.find(op_idx);
+  if (pair == _operation_to_layerscope.end())
   {
-    util::Set<LayerScopeTensorIndex> indices;
-    indices.add(index);
-    _layerscope_map[index.op_index()] = indices;
+    util::Set<LayerScopeTensorIndex> tensor_indices;
+    tensor_indices.add(index);
+    _operation_to_layerscope[op_idx] = tensor_indices;
   }
   else
   {
@@ -201,15 +203,15 @@ bool TensorBuilder::isRegisteredDisposableBackwardTensor(const DisposableTensorI
 
 bool TensorBuilder::isRegisteredLayerScopeTensor(const ir::OperationIndex &index) const
 {
-  const auto pair = _layerscope_map.find(index);
-  return (pair != _layerscope_map.end());
+  const auto pair = _operation_to_layerscope.find(index);
+  return (pair != _operation_to_layerscope.end());
 }
 
-util::Set<LayerScopeTensorIndex>
+const util::Set<LayerScopeTensorIndex> &
 TensorBuilder::getRegisteredLayerScopeTensorIndex(const ir::OperationIndex &index) const
 {
-  const auto pair = _layerscope_map.find(index);
-  assert(pair != _layerscope_map.end());
+  const auto pair = _operation_to_layerscope.find(index);
+  assert(pair != _operation_to_layerscope.end());
 
   return pair->second;
 }

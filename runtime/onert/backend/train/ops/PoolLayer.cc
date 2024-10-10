@@ -24,6 +24,8 @@
 #include <cker/train/operation/MaxPool.h>
 #include <cker/train/operation/ReLU.h>
 
+#include <optional>
+
 namespace onert
 {
 namespace backend
@@ -43,8 +45,8 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
-  std::shared_ptr<ExtraTensor> _act_back_prop_output;
-  std::shared_ptr<ExtraTensor> _arg_max_index;
+  std::shared_ptr<LayerScopeTensor> _act_back_prop_output;
+  std::shared_ptr<LayerScopeTensor> _arg_max_index;
 
 public:
   MaxPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t paddingTop, const uint32_t,
@@ -66,26 +68,27 @@ public:
                                       &_op_params.float_activation_max);
     }
 
-    _arg_max_index = std::make_shared<ExtraTensor>(_output->get_info());
+    _arg_max_index = std::make_shared<LayerScopeTensor>(
+      _output->get_info(), LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD);
 
     if (activation != ir::Activation::NONE)
     {
-      _act_back_prop_output = std::make_shared<ExtraTensor>(_output->get_info());
+      _act_back_prop_output = std::make_shared<LayerScopeTensor>(_output->get_info());
     }
   };
 
   ~MaxPool2D() {}
 
 public:
-  std::optional<ExtraTensors> registerExtraTensors() override
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override
   {
-    ExtraTensors tensors = {_arg_max_index};
+    LayerScopeTensors tensors = {_arg_max_index};
     if (_act_back_prop_output != nullptr)
     {
       tensors.push_back(_act_back_prop_output);
     }
 
-    return std::optional<ExtraTensors>(tensors);
+    return std::optional<LayerScopeTensors>(tensors);
   }
 
 public:
@@ -191,6 +194,9 @@ public:
                                          getBuffer<float>(back_prop_out), getShape(back_prop_in),
                                          getBuffer<float>(back_prop_in));
   }
+
+public:
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override { return std::nullopt; }
 };
 
 } // namespace
@@ -235,9 +241,9 @@ void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t pad
   }
 }
 
-std::optional<ExtraTensors> PoolLayer::registerExtraTensors()
+std::optional<LayerScopeTensors> PoolLayer::registerLayerScopeTensors()
 {
-  return _kernel->registerExtraTensors();
+  return _kernel->registerLayerScopeTensors();
 }
 
 void PoolLayer::forward(bool training)

@@ -75,7 +75,7 @@ public:
   bool isRegisteredDisposableBackwardTensor(const DisposableTensorIndex &index) const;
   bool isRegisteredLayerScopeTensor(const ir::OperationIndex &) const;
 
-  util::Set<LayerScopeTensorIndex>
+  const util::Set<LayerScopeTensorIndex> &
   getRegisteredLayerScopeTensorIndex(const ir::OperationIndex &) const;
   LayerScopeTensorLifeTime getLayerScopeTensorLifeTime(const LayerScopeTensorIndex &) const;
 
@@ -90,7 +90,7 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _backward_tensor_info_map;
   ir::OperandIndexMap<bool> _as_constants;
   util::Set<DisposableTensorIndex> _disposable_backprops;
-  ir::OperationIndexMap<util::Set<LayerScopeTensorIndex>> _layerscope_map;
+  ir::OperationIndexMap<util::Set<LayerScopeTensorIndex>> _operation_to_layerscope;
   const exec::train::optimizer::Optimizer *_optimizer;
 };
 
