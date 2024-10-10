@@ -78,6 +78,7 @@ class CONSTANT:
         'resolve_customop_matmul',
         'resolve_customop_max_pool_with_argmax',
         'resolve_customop_splitv',
+        'substitute_expand_dims_to_reshape',
         'substitute_pack_to_reshape',
         'substitute_padv2_to_pad',
         'substitute_splitv_to_split',
@@ -179,6 +180,8 @@ class CONSTANT:
         ('shuffle_weight_to_16x1float32',
          'convert weight format of FullyConnected op to SHUFFLED16x1FLOAT32.'
          ' Note that it only converts weights whose row is a multiple of 16'),
+        ('substitute_expand_dims_to_reshape',
+         'convert ExpandDims with constant axis to Reshape op'),
         ('substitute_pack_to_reshape', 'convert single input Pack op to Reshape op'),
         ('substitute_padv2_to_pad', 'convert certain condition PadV2 to Pad'),
         ('substitute_splitv_to_split', 'convert certain condition SplitV to Split'),
