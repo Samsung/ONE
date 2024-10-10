@@ -179,6 +179,11 @@ FunctionMap BackendContext::gen()
   //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
   // }
 
+  // NOTE: Since LayerScopeTensors is defined in each kernel(layer),
+  //       It should be planned and allocated after the kernels generated.
+  planLayerScopeTensors(fn_map);
+  _tensor_builder->allocateLayerScope();
+
   return fn_map;
 }
 
@@ -253,6 +258,16 @@ FunctionMap BackendContext::generateFunctionMap()
   AddBackPropInitializers(tgraph, *tensor_reg, ret);
 
   return ret;
+}
+
+void BackendContext::planLayerScopeTensors([[maybe_unused]] const FunctionMap &fn_map)
+{
+  // TODO: Register LayerScopeTensors
+
+  const auto ctx_data = data();
+  TensorPlanner tensor_planner{*ctx_data->tgraph.get(), ctx_data->external_operands};
+  tensor_planner.planLayerScopeTensors(_tensor_builder.get());
+  return;
 }
 
 } // namespace train
