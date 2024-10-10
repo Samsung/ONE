@@ -114,13 +114,11 @@ void GatherLayer::runByGGMLQuantInputType()
 
   // get cplan
   auto cplan = ggml_graph_plan(&graph, _ctx->maxNumThreads());
-  cplan.work_data = (uint8_t *)(malloc(cplan.work_size));
+  std::vector<uint8_t> buf(cplan.work_size);
+  cplan.work_data = buf.data();
 
   // compute
   ggml_graph_compute(&graph, &cplan);
-
-  // free
-  free(cplan.work_data);
 }
 
 void GatherLayer::run()
