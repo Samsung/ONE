@@ -49,6 +49,11 @@ enum class DataType
 
   // WARNING STRING is NOT fully supported yet
   STRING, // String
+
+  Q4_0,
+  Q4_1,
+  Q8_0,
+  Q8_1,
 };
 
 } // namespace loco

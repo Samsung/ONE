@@ -47,6 +47,7 @@ file_extension "circle";
 // end to ensure backwards compatibility.
 
 // The type of data stored in a tensor.
+// Q4_0, Q4_1, Q8_0, Q8_1 are follow ggml quantization spec (https://github.com/ggerganov/ggml)
 enum TensorType : byte {
   FLOAT32 = 0,
   FLOAT16 = 1,
@@ -88,7 +89,7 @@ table CustomQuantization {
 
 // Represents a specific quantization technique's parameters.
 union QuantizationDetails {
-  CustomQuantization,
+  CustomQuantization
 }
 
 // Parameters for converting a quantized tensor back to float.
