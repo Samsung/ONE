@@ -255,6 +255,16 @@ FunctionMap BackendContext::generateFunctionMap()
   return ret;
 }
 
+void BackendContext::planLayerScopeTensors(const FunctionMap &fn_map)
+{
+  // TODO: Register LayerScopeTensors
+
+  const auto ctx_data = data();
+  TensorPlanner tensor_planner{*ctx_data->tgraph.get(), ctx_data->external_operands};
+  tensor_planner.planLayerScopeTensors(_tensor_builder.get());
+  return;
+}
+
 } // namespace train
 } // namespace backend
 } // namespace onert

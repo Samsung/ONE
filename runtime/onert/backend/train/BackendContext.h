@@ -73,6 +73,7 @@ public:
 private:
   void planForwardTensors();
   void planBackwardTensors();
+  void planLayerScopeTensors(const FunctionMap &fn_map);
 
 public:
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
