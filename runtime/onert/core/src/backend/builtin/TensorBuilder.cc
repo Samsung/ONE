@@ -27,10 +27,13 @@ namespace backend
 namespace builtin
 {
 
-TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
+TensorBuilder::TensorBuilder(
+  const std::shared_ptr<TensorRegistry> &tensor_reg,
+  const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg->base_reg())},
-    _static_tensor_mgr{
-      new basic::StaticTensorManager(_tensor_reg->base_reg(), _dynamic_tensor_mgr.get())}
+    _static_tensor_mgr{new basic::StaticTensorManager(
+      _tensor_reg->base_reg(), _dynamic_tensor_mgr.get(), operands_with_shared_memory)},
+    _operands_with_shared_memory{operands_with_shared_memory}
 {
   /* empty */
 }
@@ -97,6 +100,11 @@ DynamicTensorManager *TensorBuilder::dynamicTensorManager(void)
 basic::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 {
   return _tensor_reg->getNativeOwnTensor(ind);
+}
+
+const ir::OperandIndexMap<ir::OperandIndex> &TensorBuilder::getOperandsWithSharedMemory() const
+{
+  return _operands_with_shared_memory;
 }
 
 } // namespace builtin

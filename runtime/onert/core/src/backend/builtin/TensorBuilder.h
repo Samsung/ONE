@@ -37,7 +37,8 @@ namespace builtin
 class TensorBuilder
 {
 public:
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
+                const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory);
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -52,6 +53,8 @@ public:
   bool isRegistered(const ir::OperandIndex &) const;
 
   void allocate(void);
+
+  const ir::OperandIndexMap<ir::OperandIndex> &getOperandsWithSharedMemory() const;
 
   DynamicTensorManager *dynamicTensorManager(void);
 
@@ -68,6 +71,7 @@ private:
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   std::unique_ptr<basic::StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
+  ir::OperandIndexMap<ir::OperandIndex> _operands_with_shared_memory;
 };
 
 } // namespace builtin

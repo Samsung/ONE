@@ -38,8 +38,12 @@ void ExpandDimsLayer::configure(const IPortableTensor *input, IPortableTensor *o
 
 void ExpandDimsLayer::run()
 {
-  size_t count = _input->total_size();
-  memcpy(_output->buffer(), _input->buffer(), count);
+  // output buffer equals to input buffer means that copy is not needed
+  if (_output->buffer() != _input->buffer())
+  {
+    size_t count = _input->total_size();
+    memcpy(_output->buffer(), _input->buffer(), count);
+  }
 }
 
 } // namespace ops
