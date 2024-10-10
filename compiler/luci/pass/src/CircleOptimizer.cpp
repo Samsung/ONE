@@ -87,6 +87,7 @@
 #include "luci/Pass/ResolveFormerCustomOpPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
+#include "luci/Pass/SubstituteExpandDimsToReshapePass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
 #include "luci/Pass/SubstitutePadV2ToPadPass.h"
 #include "luci/Pass/SubstituteSplitVToSplitPass.h"
@@ -291,6 +292,10 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   // 1. SubstituteXXXToReshape
   // 2. RemoveRedundantReshape/Transpose
   // See https://github.com/Samsung/ONE/pull/10596 for more details
+  if (_options->query(Options::Algorithm::SubstituteExpandDimsToReshape))
+  {
+    phase.emplace_back(std::make_unique<luci::SubstituteExpandDimsToReshapePass>());
+  }
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
