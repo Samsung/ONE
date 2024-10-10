@@ -58,11 +58,11 @@ public:
   // loco::TensorShape visit(const luci::CircleCeil *node) final;
   loco::TensorShape visit(const luci::CircleConcatenation *node) final;
   // loco::TensorShape visit(const luci::CircleConst *node) final;
-  // loco::TensorShape visit(const luci::CircleConv2D *node) final;
+  loco::TensorShape visit(const luci::CircleConv2D *node) final;
   // loco::TensorShape visit(const luci::CircleCos *node) final;
   // loco::TensorShape visit(const luci::CircleCustom *node) final;
   // loco::TensorShape visit(const luci::CircleDepthToSpace *node) final;
-  // loco::TensorShape visit(const luci::CircleDepthwiseConv2D *node) final;
+  loco::TensorShape visit(const luci::CircleDepthwiseConv2D *node) final;
   // loco::TensorShape visit(const luci::CircleDequantize *node) final;
   loco::TensorShape visit(const luci::CircleDiv *node) final;
   // loco::TensorShape visit(const luci::CircleElu *node) final;

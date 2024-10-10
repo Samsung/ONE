@@ -411,57 +411,6 @@ loco::NodeShape infer_batch_to_space_nd(const luci::CircleBatchToSpaceND *node)
   return loco::NodeShape{shape_output};
 }
 
-struct OutputSize
-{
-  uint32_t height = 0;
-  uint32_t width = 0;
-};
-
-template <class Conv2DType> OutputSize infer_conv2d_type(const Conv2DType *node)
-{
-  auto ifm_shape = luci::shape_get(node->input()).template as<loco::TensorShape>();
-  auto ker_shape = luci::shape_get(node->filter()).template as<loco::TensorShape>();
-  assert(ifm_shape.rank() == 4);
-  assert(ker_shape.rank() == 4);
-  assert(ifm_shape.dim(1).known());
-  assert(ifm_shape.dim(2).known());
-  assert(ker_shape.dim(1).known());
-  assert(ker_shape.dim(2).known());
-
-  uint32_t input_height = ifm_shape.dim(1).value();
-  uint32_t input_width = ifm_shape.dim(2).value();
-  uint32_t stride_height = node->stride()->h();
-  uint32_t stride_width = node->stride()->w();
-  uint32_t ker_height = ker_shape.dim(1).value();
-  uint32_t ker_width = ker_shape.dim(2).value();
-  uint32_t dilation_height = node->dilation()->h();
-  uint32_t dilation_width = node->dilation()->w();
-  uint32_t effective_ker_height = dilation_height * (ker_height - 1) + 1;
-  uint32_t effective_ker_width = dilation_width * (ker_width - 1) + 1;
-
-  uint32_t output_height = 0;
-  uint32_t output_width = 0;
-
-  if (node->padding() == luci::Padding::VALID)
-  {
-    LUCI_ASSERT(input_height + stride_height > effective_ker_height, "Invalid shape");
-    LUCI_ASSERT(input_width + stride_width > effective_ker_width, "Invalid shape");
-    output_height = (input_height + stride_height - effective_ker_height) / stride_height;
-    output_width = (input_width + stride_width - effective_ker_width) / stride_width;
-  }
-  else if (node->padding() == luci::Padding::SAME)
-  {
-    output_height = (input_height + stride_height - 1) / stride_height;
-    output_width = (input_width + stride_width - 1) / stride_width;
-  }
-  else
-    LUCI_ASSERT(false, "Wrong padding type");
-
-  OutputSize os{output_height, output_width};
-
-  return os;
-}
-
 loco::NodeShape infer_broadcast_to(const luci::CircleBroadcastTo *node)
 {
   const loco::DataType S32 = loco::DataType::S32;
@@ -490,34 +439,6 @@ loco::NodeShape infer_broadcast_to(const luci::CircleBroadcastTo *node)
   }
 
   return loco::NodeShape{shape_by_input};
-}
-
-loco::NodeShape infer_conv2d(const luci::CircleConv2D *node)
-{
-  LOGGER(l);
-
-  auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
-  auto ker_shape = luci::shape_get(node->filter()).as<loco::TensorShape>(); // in OHWI
-
-  assert(ifm_shape.rank() == 4);
-  assert(ker_shape.rank() == 4);
-  assert(ifm_shape.dim(3) == ker_shape.dim(3));
-
-  auto os = infer_conv2d_type(node);
-
-  loco::TensorShape ofm_shape;
-  ofm_shape.rank(4);
-  ofm_shape.dim(0) = ifm_shape.dim(0);
-  ofm_shape.dim(1) = os.height;
-  ofm_shape.dim(2) = os.width;
-  ofm_shape.dim(3) = ker_shape.dim(0);
-
-  INFO(l) << "[luci] CircleConv2D ShapeInf ifm(" << ifm_shape.rank() << ") ker(" << ker_shape.rank()
-          << ") output(" << ofm_shape.dim(0).value() << "," << ofm_shape.dim(1).value() << ","
-          << ofm_shape.dim(2).value() << "," << ofm_shape.dim(3).value() << ") " << node->name()
-          << std::endl;
-
-  return loco::NodeShape{ofm_shape};
 }
 
 loco::NodeShape infer_depth_to_space(const luci::CircleDepthToSpace *node)
@@ -550,28 +471,6 @@ loco::NodeShape infer_depth_to_space(const luci::CircleDepthToSpace *node)
   output_shape.dim(3) = depth / (block_size * block_size);
 
   return loco::NodeShape{output_shape};
-}
-
-loco::NodeShape infer_depthwise_conv2d(const luci::CircleDepthwiseConv2D *node)
-{
-  auto ifm_shape = luci::shape_get(node->input()).as<loco::TensorShape>();  // in NHWC
-  auto ker_shape = luci::shape_get(node->filter()).as<loco::TensorShape>(); // in 1 H W CM
-
-  assert(ifm_shape.rank() == 4);
-  assert(ker_shape.rank() == 4);
-  assert(ker_shape.dim(0).value() == 1);
-  assert(ifm_shape.dim(3).value() * node->depthMultiplier() == ker_shape.dim(3).value());
-
-  auto os = infer_conv2d_type(node);
-
-  loco::TensorShape ofm_shape;
-  ofm_shape.rank(4);
-  ofm_shape.dim(0) = ifm_shape.dim(0);
-  ofm_shape.dim(1) = os.height;
-  ofm_shape.dim(2) = os.width;
-  ofm_shape.dim(3) = ker_shape.dim(3);
-
-  return loco::NodeShape{ofm_shape};
 }
 
 loco::NodeShape infer_expand_dims(const luci::CircleExpandDims *node)
@@ -1815,8 +1714,6 @@ public:
 
   loco::NodeShape visit(const luci::CircleConst *node) final { return use_own(node); }
 
-  loco::NodeShape visit(const luci::CircleConv2D *node) final { return infer_conv2d(node); }
-
   loco::NodeShape visit(const luci::CircleCos *node) final { return use_x(node); }
 
   loco::NodeShape visit(const luci::CircleCumSum *node) final { return use_input(node); }
@@ -1828,11 +1725,6 @@ public:
   loco::NodeShape visit(const luci::CircleDepthToSpace *node) final
   {
     return infer_depth_to_space(node);
-  }
-
-  loco::NodeShape visit(const luci::CircleDepthwiseConv2D *node) final
-  {
-    return infer_depthwise_conv2d(node);
   }
 
   loco::NodeShape visit(const luci::CircleDequantize *node) final
