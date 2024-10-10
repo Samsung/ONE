@@ -518,7 +518,6 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_cwq_const(node->gamma(), rank(node->gamma()) - 1))
-    RETURN_FALSE_UNLESS(is_cwq_const(node->beta(), rank(node->beta()) - 1))
     return true;
   }
 
@@ -611,7 +610,6 @@ private:
     RETURN_FALSE_UNLESS(is_lwq(node))
     RETURN_FALSE_UNLESS(is_lwq(node->input()))
     RETURN_FALSE_UNLESS(is_lwq_const(node->gamma()))
-    RETURN_FALSE_UNLESS(is_lwq_const(node->beta()))
     return true;
   }
 

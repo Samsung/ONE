@@ -78,13 +78,13 @@ struct ConstInputChecker final : public luci::CircleNodeMutableVisitor<void>
 
   // Ops that receive one const nodes as inputs
   CHECK_NODE_WITH_ONE_INPUT_CONST(luci::CirclePRelu, alpha)
+  CHECK_NODE_WITH_ONE_INPUT_CONST(luci::CircleRmsNorm, gamma)
 
   // Ops that receive two const node as an inputs
   CHECK_NODE_WITH_TWO_INPUT_CONST(luci::CircleConv2D, filter, bias)
   CHECK_NODE_WITH_TWO_INPUT_CONST(luci::CircleDepthwiseConv2D, filter, bias)
   CHECK_NODE_WITH_TWO_INPUT_CONST(luci::CircleFullyConnected, weights, bias)
   CHECK_NODE_WITH_TWO_INPUT_CONST(luci::CircleInstanceNorm, gamma, beta)
-  CHECK_NODE_WITH_TWO_INPUT_CONST(luci::CircleRmsNorm, gamma, beta)
 
   // Ops that receive three const nodes as an inputs
   CHECK_NODE_WITH_THREE_INPUT_CONST(luci::CircleTransposeConv, inputSizes, filter, bias)
