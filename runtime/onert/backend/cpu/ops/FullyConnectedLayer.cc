@@ -204,14 +204,12 @@ void FullyConnectedLayer::fullyConnectedGGMLWeight()
   }
 
   // get cplan
-  auto cplan = ggml_graph_plan(&graph, _external_context->ruy_context()->max_num_threads());
-  cplan.work_data = (uint8_t *)(malloc(cplan.work_size));
+  auto cplan = ggml_graph_plan(&graph, _external_context->maxNumThreads());
+  std::vector<uint8_t> buf(cplan.work_size);
+  cplan.work_data = buf.data();
 
   // compute
   ggml_graph_compute(&graph, &cplan);
-
-  // free
-  free(cplan.work_data);
 }
 
 void FullyConnectedLayer::fullyConnected16x1Float32()
