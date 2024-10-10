@@ -20,8 +20,7 @@
 #include "GenModelTest.h"
 #include "CircleGen.h"
 
-// Check if inference is successful
-TEST_F(GenModelTest, OptimizedReshapeInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_reshape_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -45,7 +44,7 @@ TEST_F(GenModelTest, OptimizedReshapeInferenceSuccessfully)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedExpandDimsInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_expand_dims_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> axes_data{0, 1};
@@ -69,7 +68,7 @@ TEST_F(GenModelTest, OptimizedExpandDimsInferenceSuccessfully)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedSqueezeInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_squeeze_inference)
 {
   CircleGen cgen;
   const std::vector<int32_t> squeeze_dims{0, 2};
@@ -91,7 +90,7 @@ TEST_F(GenModelTest, OptimizedSqueezeInferenceSuccessfully)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedReshapeConstInput)
+TEST_F(GenModelTest, optimized_reshape_const_input_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -115,7 +114,30 @@ TEST_F(GenModelTest, OptimizedReshapeConstInput)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedReshapeInputUsedInManyPlacesInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_reshape_dynamic_output)
+{
+  CircleGen cgen;
+  int cast_in = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32});
+  int cast_out = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
+  int new_shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
+  int reshape_out = cgen.addTensor({{}, circle::TensorType::TensorType_FLOAT32});
+  int cast2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_INT32});
+
+  cgen.addOperatorCast({{cast_in}, {cast_out}}, circle::TensorType::TensorType_INT32,
+                       circle::TensorType::TensorType_FLOAT32);
+  cgen.addOperatorReshape({{cast_out, new_shape}, {reshape_out}});
+  cgen.addOperatorCast({{reshape_out}, {cast2_out}}, circle::TensorType::TensorType_FLOAT32,
+                       circle::TensorType::TensorType_INT32);
+  cgen.setInputsAndOutputs({cast_in, new_shape}, {cast2_out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<int32_t>({{1, 2, 3, 4}, {2, 2}}, {{1, 2, 3, 4}}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, optimized_reshape_input_used_in_many_places_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -141,7 +163,7 @@ TEST_F(GenModelTest, OptimizedReshapeInputUsedInManyPlacesInferenceSuccessfully)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedReshapeOutputUsedInManyPlacesInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_reshape_output_used_in_many_places_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -167,30 +189,7 @@ TEST_F(GenModelTest, OptimizedReshapeOutputUsedInManyPlacesInferenceSuccessfully
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedReshapeDynOutput)
-{
-  CircleGen cgen;
-  int cast_in = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32});
-  int cast_out = cgen.addTensor({{4}, circle::TensorType::TensorType_FLOAT32});
-  int new_shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32});
-  int reshape_out = cgen.addTensor({{}, circle::TensorType::TensorType_FLOAT32});
-  int cast2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_INT32});
-
-  cgen.addOperatorCast({{cast_in}, {cast_out}}, circle::TensorType::TensorType_INT32,
-                       circle::TensorType::TensorType_FLOAT32);
-  cgen.addOperatorReshape({{cast_out, new_shape}, {reshape_out}});
-  cgen.addOperatorCast({{reshape_out}, {cast2_out}}, circle::TensorType::TensorType_FLOAT32,
-                       circle::TensorType::TensorType_INT32);
-  cgen.setInputsAndOutputs({cast_in, new_shape}, {cast2_out});
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<int32_t>({{1, 2, 3, 4}, {2, 2}}, {{1, 2, 3, 4}}));
-  _context->setBackends({"cpu"});
-
-  SUCCEED();
-}
-
-TEST_F(GenModelTest, OptimizedReshapeReshapeChainInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_reshape_reshape_chain_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -216,7 +215,7 @@ TEST_F(GenModelTest, OptimizedReshapeReshapeChainInferenceSuccessfully)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OptimizedReshapeReshapeReshapeChainInferenceSuccessfully)
+TEST_F(GenModelTest, optimized_reshape_reshape_reshape_chain_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -244,8 +243,7 @@ TEST_F(GenModelTest, OptimizedReshapeReshapeReshapeChainInferenceSuccessfully)
   SUCCEED();
 }
 
-// Optimization not applied but inference successful
-TEST_F(GenModelTest, ReshapeInputModelInput)
+TEST_F(GenModelTest, reshape_input_model_input_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -264,7 +262,7 @@ TEST_F(GenModelTest, ReshapeInputModelInput)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, ReshapeInputModelOutput)
+TEST_F(GenModelTest, reshape_input_model_output_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
@@ -289,7 +287,7 @@ TEST_F(GenModelTest, ReshapeInputModelOutput)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, ReshapeOutputModelOutput)
+TEST_F(GenModelTest, reshape_output_model_output_inference)
 {
   CircleGen cgen;
   std::vector<int32_t> new_shape_data{2, 2};
