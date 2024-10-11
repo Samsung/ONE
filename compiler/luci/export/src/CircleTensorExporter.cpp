@@ -458,6 +458,27 @@ encodeOpBufferPack4bit(FlatBufferBuilder &builder, SerializedModelData &, luci::
   return CreateBuffer(builder, array_offset);
 }
 
+flatbuffers::Offset<circle::Buffer> encodeOpBufferBlocked(FlatBufferBuilder &builder,
+                                                          luci::CircleConst *c)
+{
+  // use uint8_t
+  const uint32_t size = c->size<loco::DataType::U8>();
+  std::vector<uint8_t> raw_data;
+  raw_data.reserve(size);
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    raw_data.push_back(c->at<loco::DataType::U8>(i));
+  }
+
+  for (uint32_t i = 0; i < size; ++i)
+  {
+    raw_data.push_back(c->at<loco::DataType::U8>(i));
+  }
+
+  auto array_offset = builder.CreateVector(reinterpret_cast<uint8_t *>(raw_data.data()), size);
+  return CreateBuffer(builder, array_offset);
+}
+
 template <>
 flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder,
                                                    SerializedModelData &md, luci::CircleConst *c)
@@ -484,6 +505,10 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder,
       return encodeOpBufferByDType<loco::DataType::BOOL>(builder, md, c);
     case loco::DataType::STRING:
       return encodeOpBufferByDType<loco::DataType::STRING>(builder, md, c);
+    case loco::DataType::GGML_Q4_0:
+      return encodeOpBufferBlocked(builder, c);
+    case loco::DataType::GGML_Q8_0:
+      return encodeOpBufferBlocked(builder, c);
     default:
       break;
   }

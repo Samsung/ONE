@@ -17,6 +17,7 @@
 #include "souschef/LexicalCast.h"
 
 #include <cassert>
+#include <cstdint>
 #include <limits>
 #include <stdexcept>
 

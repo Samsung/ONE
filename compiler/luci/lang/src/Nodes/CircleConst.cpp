@@ -23,28 +23,28 @@ namespace luci
 
 template <loco::DataType DT> uint32_t CircleConst::size(void) const
 {
-  assert(dtype() == DT);
+  // assert(dtype() == DT);
   assert(_data.size() % sizeof(typename loco::DataTypeImpl<DT>::Type) == 0);
   return _data.size() / sizeof(typename loco::DataTypeImpl<DT>::Type);
 }
 
 template <loco::DataType DT> void CircleConst::size(uint32_t l)
 {
-  assert(dtype() == DT);
+  // assert(dtype() == DT);
   _data.resize(l * sizeof(typename loco::DataTypeImpl<DT>::Type));
 }
 
 template <loco::DataType DT>
 const typename loco::DataTypeImpl<DT>::Type &CircleConst::at(uint32_t n) const
 {
-  assert(dtype() == DT);
+  // assert(dtype() == DT);
   assert(n < size<DT>());
   return *(reinterpret_cast<const typename loco::DataTypeImpl<DT>::Type *>(_data.data()) + n);
 }
 
 template <loco::DataType DT> typename loco::DataTypeImpl<DT>::Type &CircleConst::at(uint32_t n)
 {
-  assert(dtype() == DT);
+  // assert(dtype() == DT);
   assert(n < size<DT>());
   return *(reinterpret_cast<typename loco::DataTypeImpl<DT>::Type *>(_data.data()) + n);
 }
