@@ -26,8 +26,7 @@ void CircleOpRmsNorm::filler(const circle::Operator *op, CircleImport *import,
 {
   // index 1 maybe constant
   const std::vector<int32_t> &inputs = as_index_vector(op->inputs());
-  // TODO: Enable assert after recipe updated.
-  // assert(inputs.size() == 2);
+  assert(inputs.size() == 2);
 
   import->set_tensor_filler(inputs[1]); // set gaussian filler
 }
