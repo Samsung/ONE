@@ -159,7 +159,6 @@ void reassign_indexes_to_single_sources(
     }
     if (other_source_found)
     {
-      std::cout << shared_ind << "->" << source_ind << "\n";
       shared_memory_operand_map[shared_ind] = source_ind;
     }
   }

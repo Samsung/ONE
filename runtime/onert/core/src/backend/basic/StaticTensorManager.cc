@@ -122,21 +122,24 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
+  ir::OperandIndex claim_ind;
   const auto source_ind = _operands_with_shared_memory.find(ind);
   if (source_ind == std::end(_operands_with_shared_memory))
   {
-    if (!_as_constants[ind])
-    {
-      _nonconst_mgr->claimPlan(ind, size);
-      ++_source_operands_ref_counter[ind];
-    }
+    claim_ind = ind;
   }
   else
   {
-    if (!_as_constants[source_ind->second])
-    {
-      ++_source_operands_ref_counter[source_ind->second];
-    }
+    claim_ind = source_ind->second;
+  }
+  if (_as_constants[claim_ind])
+  {
+    return;
+  }
+  ++_source_operands_ref_counter[claim_ind];
+  // notify only first usage
+  if (1 == _source_operands_ref_counter[claim_ind]) {
+    _nonconst_mgr->claimPlan(claim_ind, size);
   }
 }
 
@@ -147,11 +150,8 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  const auto source_operand_ind =
-    std::find_if(std::begin(_operands_with_shared_memory), std::end(_operands_with_shared_memory),
-                 [&ind](const auto &op) { return op.second == ind; });
-
   ir::OperandIndex release_ind;
+  const auto source_operand_ind = _operands_with_shared_memory.find(ind);
   if (source_operand_ind == std::end(_operands_with_shared_memory))
   {
     release_ind = ind;
@@ -160,7 +160,14 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   {
     release_ind = source_operand_ind->second;
   }
-  if (!_as_constants[release_ind] && 0 == _source_operands_ref_counter[release_ind])
+  if(_as_constants[release_ind]) {
+    return;
+  }
+  if(_source_operands_ref_counter[release_ind] > 0) {
+    --_source_operands_ref_counter[release_ind];
+  }
+  // notify only last usage
+  if (0 == _source_operands_ref_counter[release_ind])
   {
     _nonconst_mgr->releasePlan(release_ind);
   }
