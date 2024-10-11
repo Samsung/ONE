@@ -46,6 +46,7 @@ public:
                          const IPortableTensor *back_prop_output, ir::Activation activation,
                          ir::FullyConnectedWeightsFormat weights_format);
 
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override;
   void forward(bool training) override;
   void backward() override;
 
@@ -58,11 +59,10 @@ private:
   IPortableTensor *_back_prop_input;
   const IPortableTensor *_back_prop_output;
 
-  // TODO Optimize memory
-  std::unique_ptr<Tensor> _transposed_weights;
-  std::unique_ptr<Tensor> _transposed_input;
-  std::unique_ptr<Tensor> _transposed_back_prop_output;
-  std::unique_ptr<Tensor> _act_back_prop_output;
+  std::shared_ptr<LayerScopeTensor> _transposed_weights;
+  std::shared_ptr<LayerScopeTensor> _transposed_input;
+  std::shared_ptr<LayerScopeTensor> _transposed_back_prop_output;
+  std::shared_ptr<LayerScopeTensor> _act_back_prop_output;
 };
 
 } // namespace ops

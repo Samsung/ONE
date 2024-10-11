@@ -45,6 +45,7 @@ public:
   void planBackPropTensors(TensorBuilder *tensor_builder);
   void planGradientTensors(TensorBuilder *tensor_builder);
   void planDisposableBackPropTensors(TensorBuilder *tensor_builder);
+  void planLayerScopeTensors(TensorBuilder *tensor_builder);
 
 private:
   ir::OperandIndexSequence getOutgoingBackPropSeq(const ir::OperationIndex &op_index,

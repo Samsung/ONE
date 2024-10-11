@@ -24,6 +24,8 @@
 #include <cker/train/operation/MaxPool.h>
 #include <cker/train/operation/ReLU.h>
 
+#include <optional>
+
 namespace onert
 {
 namespace backend
@@ -43,8 +45,8 @@ private:
   const IPortableTensor *_output;
   nnfw::cker::PoolParams _op_params;
 
-  std::unique_ptr<Tensor> _act_back_prop_output;
-  std::unique_ptr<Tensor> _arg_max_index;
+  std::shared_ptr<LayerScopeTensor> _act_back_prop_output;
+  std::shared_ptr<LayerScopeTensor> _arg_max_index;
 
 public:
   MaxPool2D(const uint32_t paddingLeft, const uint32_t, const uint32_t paddingTop, const uint32_t,
@@ -66,20 +68,31 @@ public:
                                       &_op_params.float_activation_max);
     }
 
-    _arg_max_index = std::make_unique<Tensor>(_output->get_info());
-    _arg_max_index->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+    _arg_max_index = std::make_shared<LayerScopeTensor>(
+      _output->get_info(), LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD);
 
     if (activation != ir::Activation::NONE)
     {
-      _act_back_prop_output = std::make_unique<Tensor>(_output->get_info());
-      _act_back_prop_output->setBuffer(std::make_shared<basic::Allocator>(_output->total_size()));
+      _act_back_prop_output = std::make_shared<LayerScopeTensor>(_output->get_info());
     }
   };
 
   ~MaxPool2D() {}
 
 public:
-  void forward(const IPortableTensor *in, IPortableTensor *out)
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override
+  {
+    LayerScopeTensors tensors = {_arg_max_index};
+    if (_act_back_prop_output != nullptr)
+    {
+      tensors.push_back(_act_back_prop_output);
+    }
+
+    return std::optional<LayerScopeTensors>(tensors);
+  }
+
+public:
+  void forward(const IPortableTensor *in, IPortableTensor *out) override
   {
     auto out_shape = getShape(out);
     auto out_data = getBuffer<float>(out);
@@ -90,7 +103,7 @@ public:
                                  out_data, getBuffer<int>(arg_max_index));
   }
 
-  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
+  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) override
   {
     // activation backward
     try
@@ -110,7 +123,7 @@ public:
                                      getBuffer<int>(arg_max_index), getShape(back_prop_in),
                                      getBuffer<float>(back_prop_in));
   }
-};
+}; // namespace ops
 
 class AveragePool2D final : public TrainingKernelRegistry
 {
@@ -152,7 +165,7 @@ public:
   ~AveragePool2D() {}
 
 public:
-  void forward(const IPortableTensor *in, IPortableTensor *out)
+  void forward(const IPortableTensor *in, IPortableTensor *out) override
   {
     auto out_shape = getShape(out);
     auto out_data = getBuffer<float>(out);
@@ -162,7 +175,7 @@ public:
                                    out_data);
   }
 
-  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in)
+  void backward(const IPortableTensor *back_prop_out, IPortableTensor *back_prop_in) override
   {
     // activation backward
     try
@@ -181,6 +194,9 @@ public:
                                          getBuffer<float>(back_prop_out), getShape(back_prop_in),
                                          getBuffer<float>(back_prop_in));
   }
+
+public:
+  std::optional<LayerScopeTensors> registerLayerScopeTensors() override { return std::nullopt; }
 };
 
 } // namespace
@@ -223,6 +239,11 @@ void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t pad
     default:
       throw std::runtime_error("PoolLayer: Unsupported pool type");
   }
+}
+
+std::optional<LayerScopeTensors> PoolLayer::registerLayerScopeTensors()
+{
+  return _kernel->registerLayerScopeTensors();
 }
 
 void PoolLayer::forward(bool training)
