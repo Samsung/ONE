@@ -138,7 +138,8 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   }
   ++_source_operands_ref_counter[claim_ind];
   // notify only first usage
-  if (1 == _source_operands_ref_counter[claim_ind]) {
+  if (1 == _source_operands_ref_counter[claim_ind])
+  {
     _nonconst_mgr->claimPlan(claim_ind, size);
   }
 }
@@ -160,10 +161,12 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   {
     release_ind = source_operand_ind->second;
   }
-  if(_as_constants[release_ind]) {
+  if (_as_constants[release_ind])
+  {
     return;
   }
-  if(_source_operands_ref_counter[release_ind] > 0) {
+  if (_source_operands_ref_counter[release_ind] > 0)
+  {
     --_source_operands_ref_counter[release_ind];
   }
   // notify only last usage
