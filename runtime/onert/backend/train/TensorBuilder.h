@@ -76,7 +76,7 @@ public:
   bool isRegisteredLayerScopeTensor(const ir::OperationIndex &) const;
 
   const util::Set<LayerScopeTensorIndex> &
-  getRegisteredLayerScopeTensorIndex(const ir::OperationIndex &) const;
+  getRegisteredLayerScopeTensorIndices(const ir::OperationIndex &) const;
   LayerScopeTensorLifeTime getLayerScopeTensorLifeTime(const LayerScopeTensorIndex &) const;
 
   void allocate(void);

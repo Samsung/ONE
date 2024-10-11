@@ -208,7 +208,7 @@ bool TensorBuilder::isRegisteredLayerScopeTensor(const ir::OperationIndex &index
 }
 
 const util::Set<LayerScopeTensorIndex> &
-TensorBuilder::getRegisteredLayerScopeTensorIndex(const ir::OperationIndex &index) const
+TensorBuilder::getRegisteredLayerScopeTensorIndices(const ir::OperationIndex &index) const
 {
   const auto pair = _operation_to_layerscope.find(index);
   assert(pair != _operation_to_layerscope.end());
