@@ -7,9 +7,10 @@ var searchData=
   ['y_5fbatch_5fsize_4',['y_batch_size',['../classnnfw_1_1cker_1_1_mat_mul_b_cast.html#a8089dd9282098691e79c3a6061de11fb',1,'nnfw::cker::MatMulBCast']]],
   ['y_5fbcast_5',['y_bcast',['../classnnfw_1_1cker_1_1_b_cast.html#aa71914eec39d44b301a87af5ce59951d',1,'nnfw::cker::BCast']]],
   ['y_5fpred_6',['Y_PRED',['../classonert_1_1ir_1_1operation_1_1_loss.html#ad927e2968959fbf3cb6a7ff9eb00b6f1a1a5f0179a2db510b5217e2fe4f678587',1,'onert::ir::operation::Loss']]],
-  ['y_5freshape_7',['y_reshape',['../classnnfw_1_1cker_1_1_b_cast.html#ab3be336e1a6080d490b91ca4a9fbe1ea',1,'nnfw::cker::BCast']]],
-  ['y_5fscale_8',['y_scale',['../structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html#a45d946ac0777f1130759800d38faf2e1',1,'onert::ir::operation::DetectionPostProcess::Scale']]],
-  ['y_5ftrue_9',['Y_TRUE',['../classonert_1_1ir_1_1operation_1_1_loss.html#ad927e2968959fbf3cb6a7ff9eb00b6f1a12ad3fef944fef5fb78e59282fcb6a9a',1,'onert::ir::operation::Loss']]],
-  ['yellow_10',['YELLOW',['../namespaceonert_1_1dumper_1_1dot.html#a90d59b21adf6277edec4301d4617f1bead0bf32523778aa09d696e43f7638357a',1,'onert::dumper::dot']]],
-  ['ylorrd9palette_11',['YLORRD9Palette',['../class_palette_1_1_y_l_o_r_r_d9_palette.html',1,'Palette']]]
+  ['y_5fpred_5fop_5fcode_7',['y_pred_op_code',['../classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a9509f99b7c346c18b9f2773a9d407064',1,'onert::ir::train::operation::Loss']]],
+  ['y_5freshape_8',['y_reshape',['../classnnfw_1_1cker_1_1_b_cast.html#ab3be336e1a6080d490b91ca4a9fbe1ea',1,'nnfw::cker::BCast']]],
+  ['y_5fscale_9',['y_scale',['../structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html#a45d946ac0777f1130759800d38faf2e1',1,'onert::ir::operation::DetectionPostProcess::Scale']]],
+  ['y_5ftrue_10',['Y_TRUE',['../classonert_1_1ir_1_1operation_1_1_loss.html#ad927e2968959fbf3cb6a7ff9eb00b6f1a12ad3fef944fef5fb78e59282fcb6a9a',1,'onert::ir::operation::Loss']]],
+  ['yellow_11',['YELLOW',['../namespaceonert_1_1dumper_1_1dot.html#a90d59b21adf6277edec4301d4617f1bead0bf32523778aa09d696e43f7638357a',1,'onert::dumper::dot']]],
+  ['ylorrd9palette_12',['YLORRD9Palette',['../class_palette_1_1_y_l_o_r_r_d9_palette.html',1,'Palette']]]
 ];

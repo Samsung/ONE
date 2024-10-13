@@ -172,6 +172,10 @@ var namespacennfw_1_1cker =
       [ "kIntegerWithUniformMultiplier", "namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083ac11557b4d4fc196c43b4fa7eab201144", null ],
       [ "kIntegerWithPerRowMultiplier", "namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083a227d5cf4d9445848d0940bb4dd05ee37", null ]
     ] ],
+    [ "RoPEMode", "namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2", [
+      [ "kGptNeox", "namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc", null ],
+      [ "kGptJ", "namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2acc3921bfbf0022892a17a7eff091a389", null ]
+    ] ],
     [ "Abs", "namespacennfw_1_1cker.html#abbb0c5b031d49b9e91f2c2a65bfb3c45", null ],
     [ "ActivationFunctionWithMinMax", "namespacennfw_1_1cker.html#a86b83772dd83256abffc3a8f1426819b", null ],
     [ "AddN", "namespacennfw_1_1cker.html#a73d075a8d75ae6478e8433fc6f2dea2b", null ],
@@ -353,6 +357,7 @@ var namespacennfw_1_1cker =
     [ "ResolveAxis", "namespacennfw_1_1cker.html#a8fad551fcd78b2f8c9c53704029f0cc3", null ],
     [ "Reverse", "namespacennfw_1_1cker.html#a7bf38050ca52ca18a71dc4916e4f8873", null ],
     [ "RmsNorm", "namespacennfw_1_1cker.html#a7877114ac2b874f9231e7a9d42961cdb", null ],
+    [ "RoPE", "namespacennfw_1_1cker.html#aac42baf72536c9fe9b567c91c018b05b", null ],
     [ "Round", "namespacennfw_1_1cker.html#a13401fa92ad3f1fee4d41ad6e9de9a37", null ],
     [ "round_nearest", "namespacennfw_1_1cker.html#acfca57448781000651d5798f2aa38a8f", null ],
     [ "RoundToNearest", "namespacennfw_1_1cker.html#a49838cb8ff6402e51924b7e6fe9919a8", null ],

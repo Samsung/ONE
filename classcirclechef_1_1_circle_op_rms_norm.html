@@ -167,21 +167,21 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classcirclechef_1_1_circle_op_chef.html#a5ee47b9d1b740d488adc56a896a61462">circlechef::CircleOpChef</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="circlechef_2circle_2src_2_op_2_rms_norm_8cpp_source.html#l00035">35</a> of file <a class="el" href="circlechef_2circle_2src_2_op_2_rms_norm_8cpp_source.html">RmsNorm.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keyword">auto</span> operation = model_recipe-&gt;add_operation();</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  operation-&gt;set_type(<span class="stringliteral">&quot;RmsNorm&quot;</span>);</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> op_options = operation-&gt;mutable_rms_norm_options();</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> op_params = op-&gt;builtin_options_as_RmsNormOptions();</div>
-<div class="line"><span class="lineno">   45</span>  assert(op_params != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  op_options-&gt;set_epsilon(op_params-&gt;epsilon());</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">return</span> operation;</div>
-<div class="line"><span class="lineno">   50</span>}</div>
+<p class="definition">Definition at line <a class="el" href="circlechef_2circle_2src_2_op_2_rms_norm_8cpp_source.html#l00034">34</a> of file <a class="el" href="circlechef_2circle_2src_2_op_2_rms_norm_8cpp_source.html">RmsNorm.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">auto</span> operation = model_recipe-&gt;add_operation();</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  operation-&gt;set_type(<span class="stringliteral">&quot;RmsNorm&quot;</span>);</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> op_options = operation-&gt;mutable_rms_norm_options();</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">auto</span> op_params = op-&gt;builtin_options_as_RmsNormOptions();</div>
+<div class="line"><span class="lineno">   44</span>  assert(op_params != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>  op_options-&gt;set_epsilon(op_params-&gt;epsilon());</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> operation;</div>
+<div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -229,13 +229,12 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="circlechef_2circle_2src_2_op_2_rms_norm_8cpp_source.html#l00024">24</a> of file <a class="el" href="circlechef_2circle_2src_2_op_2_rms_norm_8cpp_source.html">RmsNorm.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
-<div class="line"><span class="lineno">   27</span>  <span class="comment">// index 1 and 2 maybe constant</span></div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// index 1 maybe constant</span></div>
 <div class="line"><span class="lineno">   28</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a> = <a class="code hl_function" href="namespacecirclechef.html#a1461c4aa026105e71c7476a6ed094ae7">as_index_vector</a>(op-&gt;inputs());</div>
-<div class="line"><span class="lineno">   29</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 3);</div>
+<div class="line"><span class="lineno">   29</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
 <div class="line"><span class="lineno">   30</span> </div>
 <div class="line"><span class="lineno">   31</span>  <span class="keyword">import</span>-&gt;set_tensor_filler(inputs[1]); <span class="comment">// set gaussian filler</span></div>
-<div class="line"><span class="lineno">   32</span>  <span class="keyword">import</span>-&gt;set_tensor_filler(inputs[2]);</div>
-<div class="line"><span class="lineno">   33</span>}</div>
+<div class="line"><span class="lineno">   32</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespacecirclechef_html_a1461c4aa026105e71c7476a6ed094ae7"><div class="ttname"><a href="namespacecirclechef.html#a1461c4aa026105e71c7476a6ed094ae7">circlechef::as_index_vector</a></div><div class="ttdeci">std::vector&lt; T &gt; as_index_vector(const flatbuffers::Vector&lt; T &gt; *flat_array)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circlechef_2circle_2src_2_convert_8h_source.html#l00043">Convert.h:43</a></div></div>
 </div><!-- fragment -->

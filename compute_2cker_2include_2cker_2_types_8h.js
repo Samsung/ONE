@@ -83,5 +83,9 @@ var compute_2cker_2include_2cker_2_types_8h =
       [ "kIntegerWithUniformMultiplier", "compute_2cker_2include_2cker_2_types_8h.html#a170594ea56727c9ec1c37d082b0ad083ac11557b4d4fc196c43b4fa7eab201144", null ],
       [ "kIntegerWithPerRowMultiplier", "compute_2cker_2include_2cker_2_types_8h.html#a170594ea56727c9ec1c37d082b0ad083a227d5cf4d9445848d0940bb4dd05ee37", null ]
     ] ],
+    [ "RoPEMode", "compute_2cker_2include_2cker_2_types_8h.html#a6623890820032bcd77b068b87d0787a2", [
+      [ "kGptNeox", "compute_2cker_2include_2cker_2_types_8h.html#a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc", null ],
+      [ "kGptJ", "compute_2cker_2include_2cker_2_types_8h.html#a6623890820032bcd77b068b87d0787a2acc3921bfbf0022892a17a7eff091a389", null ]
+    ] ],
     [ "ValidateGemmParams", "compute_2cker_2include_2cker_2_types_8h.html#a3e06152ec55a338d17b4023e6563717e", null ]
 ];

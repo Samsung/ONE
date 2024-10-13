@@ -6,6 +6,6 @@ var searchData=
   ['reshapetype_3',['ReshapeType',['../namespaceloco.html#ac8f11af7ae71ac5f71c6627ad66a2efb',1,'loco']]],
   ['resizemethod_4',['ResizeMethod',['../classmir_1_1ops_1_1_resize_op.html#ae33f312834b76bcd09dc38f0c3deddbe',1,'mir::ops::ResizeOp']]],
   ['resultcode_5',['ResultCode',['../group___neural_networks.html#gad8097859ab1bdd06be52a8421df152d4',1,'NeuralNetworks.h']]],
-  ['ropemode_6',['RoPEMode',['../namespaceluci.html#ae74fb4623d3434a4397915a354d68359',1,'luci']]],
+  ['ropemode_6',['ropemode',['../classonert_1_1ir_1_1operation_1_1_ro_p_e.html#a04883ee860c6a286e8387444b704f25b',1,'onert::ir::operation::RoPE::RoPEMode'],['../namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2',1,'nnfw::cker::RoPEMode'],['../namespaceluci.html#ae74fb4623d3434a4397915a354d68359',1,'luci::RoPEMode']]],
   ['runtimetype_7',['RuntimeType',['../namespacecircle__planner.html#a564e76d27b50b73a788d5809e3475581',1,'circle_planner']]]
 ];

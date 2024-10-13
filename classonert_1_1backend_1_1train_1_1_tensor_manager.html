@@ -114,6 +114,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adb195bfcf4187b366c4dd33f6a7cdaf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afac696c2842071bae170003fc002460f" id="r_afac696c2842071bae170003fc002460f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#afac696c2842071bae170003fc002460f">allocateDisposableBackPropTensors</a> ()</td></tr>
 <tr class="separator:afac696c2842071bae170003fc002460f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abacb60a775c3ea53e2cd5cbacff3951f" id="r_abacb60a775c3ea53e2cd5cbacff3951f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#abacb60a775c3ea53e2cd5cbacff3951f">allocateLayerScopeTensors</a> ()</td></tr>
+<tr class="separator:abacb60a775c3ea53e2cd5cbacff3951f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb85f90b14731086870ad95c88d6052" id="r_a2cb85f90b14731086870ad95c88d6052"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a2cb85f90b14731086870ad95c88d6052">claimNonConstPlan</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind)</td></tr>
 <tr class="separator:a2cb85f90b14731086870ad95c88d6052"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2386b9ded0759a1d432a374b9ca896a4" id="r_a2386b9ded0759a1d432a374b9ca896a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a2386b9ded0759a1d432a374b9ca896a4">releaseNonConstPlan</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind)</td></tr>
@@ -134,6 +136,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aceb1479356f0fd080bc4bed1c8ab04f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaba41543fd542ea3c2d183078b918b1" id="r_aeaba41543fd542ea3c2d183078b918b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#aeaba41543fd542ea3c2d183078b918b1">releaseDisposableBackPropPlan</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a> &amp;ind)</td></tr>
 <tr class="separator:aeaba41543fd542ea3c2d183078b918b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa52d40241a3918981f780a3d10d8b70a" id="r_aa52d40241a3918981f780a3d10d8b70a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#aa52d40241a3918981f780a3d10d8b70a">claimLayerScopePlan</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;ind)</td></tr>
+<tr class="separator:aa52d40241a3918981f780a3d10d8b70a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86c8bd11e221033a9dd0203f710cba4a" id="r_a86c8bd11e221033a9dd0203f710cba4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a86c8bd11e221033a9dd0203f710cba4a">releaseLayerScopePlan</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;ind)</td></tr>
+<tr class="separator:a86c8bd11e221033a9dd0203f710cba4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -175,10 +181,11 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   58</span>    _trainable_mgr{<span class="keyword">new</span> TrainableMemoryManager(optim_vars_count)},</div>
 <div class="line"><span class="lineno">   59</span>    _back_prop_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a>()}, _gradient_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">MemoryManager</a>()},</div>
 <div class="line"><span class="lineno">   60</span>    <span class="comment">// TODO Find a suitable planner of disposable tensors to reduce peak memory usage</span></div>
-<div class="line"><span class="lineno">   61</span>    _disposable_back_prop_mgr{<span class="keyword">new</span> DisposableMemoryManager()}, _tensors{reg}</div>
-<div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   64</span>}</div>
+<div class="line"><span class="lineno">   61</span>    _disposable_back_prop_mgr{<span class="keyword">new</span> DisposableMemoryManager()},</div>
+<div class="line"><span class="lineno">   62</span>    _layer_scope_mgr{<span class="keyword">new</span> LayerScopeMemoryManager()}, _tensors{reg}</div>
+<div class="line"><span class="lineno">   63</span>{</div>
+<div class="line"><span class="lineno">   64</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a75c58052c0a9c6d3340d8240ed9b52c0"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0">onert::backend::train::MemoryManager</a></div><div class="ttdeci">backend::basic::MemoryManager MemoryManager</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00032">MemoryManager.h:32</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -224,11 +231,11 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00091">91</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
-<div class="line"><span class="lineno">   93</span>  allocateMemory(_back_prop_mgr.get(), _tensors-&gt;back_prop_tensors(),</div>
-<div class="line"><span class="lineno">   94</span>                 std::string{<span class="stringliteral">&quot;     BACK_PROP TENSOR &quot;</span>});</div>
-<div class="line"><span class="lineno">   95</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00092">92</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>{</div>
+<div class="line"><span class="lineno">   94</span>  allocateMemory(_back_prop_mgr.get(), _tensors-&gt;back_prop_tensors(),</div>
+<div class="line"><span class="lineno">   95</span>                 std::string{<span class="stringliteral">&quot;     BACK_PROP TENSOR &quot;</span>});</div>
+<div class="line"><span class="lineno">   96</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -247,11 +254,11 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00103">103</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
-<div class="line"><span class="lineno">  105</span>  allocateMemory(_disposable_back_prop_mgr.get(), _tensors-&gt;disposable_back_prop_tensors(),</div>
-<div class="line"><span class="lineno">  106</span>                 std::string{<span class="stringliteral">&quot;DISPOSABLE BACK_PROP TENSOR &quot;</span>});</div>
-<div class="line"><span class="lineno">  107</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00104">104</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{</div>
+<div class="line"><span class="lineno">  106</span>  allocateMemory(_disposable_back_prop_mgr.get(), _tensors-&gt;disposable_back_prop_tensors(),</div>
+<div class="line"><span class="lineno">  107</span>                 std::string{<span class="stringliteral">&quot;DISPOSABLE BACK_PROP TENSOR &quot;</span>});</div>
+<div class="line"><span class="lineno">  108</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,11 +277,34 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00097">97</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
-<div class="line"><span class="lineno">   99</span>  allocateMemory(_gradient_mgr.get(), _tensors-&gt;gradient_tensors(),</div>
-<div class="line"><span class="lineno">  100</span>                 std::string{<span class="stringliteral">&quot;     GRADIENT TENSOR &quot;</span>});</div>
-<div class="line"><span class="lineno">  101</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00098">98</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>{</div>
+<div class="line"><span class="lineno">  100</span>  allocateMemory(_gradient_mgr.get(), _tensors-&gt;gradient_tensors(),</div>
+<div class="line"><span class="lineno">  101</span>                 std::string{<span class="stringliteral">&quot;     GRADIENT TENSOR &quot;</span>});</div>
+<div class="line"><span class="lineno">  102</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="abacb60a775c3ea53e2cd5cbacff3951f" name="abacb60a775c3ea53e2cd5cbacff3951f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abacb60a775c3ea53e2cd5cbacff3951f">&#9670;&#160;</a></span>allocateLayerScopeTensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorManager::allocateLayerScopeTensors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00110">110</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
+<div class="line"><span class="lineno">  112</span>  allocateMemory(_layer_scope_mgr.get(), _tensors-&gt;layerscope_tensors(),</div>
+<div class="line"><span class="lineno">  113</span>                 std::string{<span class="stringliteral">&quot;   LAYERSCOPE TENSOR &quot;</span>});</div>
+<div class="line"><span class="lineno">  114</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -293,11 +323,11 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00066">66</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
-<div class="line"><span class="lineno">   68</span>  allocateMemory(_nonconst_mgr.get(), _tensors-&gt;nonconst_tensors(),</div>
-<div class="line"><span class="lineno">   69</span>                 std::string{<span class="stringliteral">&quot;               TENSOR &quot;</span>});</div>
-<div class="line"><span class="lineno">   70</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00067">67</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
+<div class="line"><span class="lineno">   69</span>  allocateMemory(_nonconst_mgr.get(), _tensors-&gt;nonconst_tensors(),</div>
+<div class="line"><span class="lineno">   70</span>                 std::string{<span class="stringliteral">&quot;               TENSOR &quot;</span>});</div>
+<div class="line"><span class="lineno">   71</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,24 +346,24 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00072">72</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{</div>
-<div class="line"><span class="lineno">   74</span>  allocateMemory(_trainable_mgr.get(), _tensors-&gt;trainable_tensors(),</div>
-<div class="line"><span class="lineno">   75</span>                 std::string{<span class="stringliteral">&quot;     TRAINABLE TENSOR &quot;</span>});</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <span class="comment">// Set buffers of optimizer variables</span></div>
-<div class="line"><span class="lineno">   78</span>  <span class="comment">// Allocating optimizer variables has been done when calling allocate() of TrainableMemoryManager</span></div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, trainable_tensor] : _tensors-&gt;trainable_tensors())</div>
-<div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">for</span> (uint32_t var_pos = 0; var_pos &lt; trainable_tensor-&gt;optVars().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(); ++var_pos)</div>
-<div class="line"><span class="lineno">   82</span>    {</div>
-<div class="line"><span class="lineno">   83</span>      <span class="keyword">auto</span> *buffer = _trainable_mgr.get()-&gt;getOptVarBuffer(index, var_pos);</div>
-<div class="line"><span class="lineno">   84</span>      trainable_tensor-&gt;setOptVarBuffer(buffer, var_pos);</div>
-<div class="line"><span class="lineno">   85</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(TensorManager) &lt;&lt; std::string{<span class="stringliteral">&quot;     OPTIM_VAR TENSOR &quot;</span>} &lt;&lt; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><span class="lineno">   86</span>                             &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(buffer) &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   87</span>    }</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
-<div class="line"><span class="lineno">   89</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00073">73</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
+<div class="line"><span class="lineno">   75</span>  allocateMemory(_trainable_mgr.get(), _tensors-&gt;trainable_tensors(),</div>
+<div class="line"><span class="lineno">   76</span>                 std::string{<span class="stringliteral">&quot;     TRAINABLE TENSOR &quot;</span>});</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>  <span class="comment">// Set buffers of optimizer variables</span></div>
+<div class="line"><span class="lineno">   79</span>  <span class="comment">// Allocating optimizer variables has been done when calling allocate() of TrainableMemoryManager</span></div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[index, trainable_tensor] : _tensors-&gt;trainable_tensors())</div>
+<div class="line"><span class="lineno">   81</span>  {</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">for</span> (uint32_t var_pos = 0; var_pos &lt; trainable_tensor-&gt;optVars().<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>(); ++var_pos)</div>
+<div class="line"><span class="lineno">   83</span>    {</div>
+<div class="line"><span class="lineno">   84</span>      <span class="keyword">auto</span> *buffer = _trainable_mgr.get()-&gt;getOptVarBuffer(index, var_pos);</div>
+<div class="line"><span class="lineno">   85</span>      trainable_tensor-&gt;setOptVarBuffer(buffer, var_pos);</div>
+<div class="line"><span class="lineno">   86</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(TensorManager) &lt;&lt; std::string{<span class="stringliteral">&quot;     OPTIM_VAR TENSOR &quot;</span>} &lt;&lt; <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><span class="lineno">   87</span>                             &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span> *<span class="keyword">&gt;</span>(buffer) &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   88</span>    }</div>
+<div class="line"><span class="lineno">   89</span>  }</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
@@ -358,14 +388,14 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00141">141</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
-<div class="line"><span class="lineno">  143</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getBackPropTensor(index);</div>
-<div class="line"><span class="lineno">  144</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  145</span> </div>
-<div class="line"><span class="lineno">  146</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
-<div class="line"><span class="lineno">  147</span>  _back_prop_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  148</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00148">148</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  149</span>{</div>
+<div class="line"><span class="lineno">  150</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getBackPropTensor(index);</div>
+<div class="line"><span class="lineno">  151</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  152</span> </div>
+<div class="line"><span class="lineno">  153</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
+<div class="line"><span class="lineno">  154</span>  _back_prop_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  155</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_tensor_manager_html_a80d28fd0a17fbe8f37391a14c5f451de"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">onert::backend::train::TensorManager::_align</a></div><div class="ttdeci">static constexpr uint64_t _align</div><div class="ttdef"><b>Definition</b> <a href="train_2_tensor_manager_8h_source.html#l00041">TensorManager.h:41</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
@@ -389,14 +419,14 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00173">173</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getDisposableBackPropTensor(index);</div>
-<div class="line"><span class="lineno">  176</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
-<div class="line"><span class="lineno">  179</span>  _disposable_back_prop_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  180</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00180">180</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
+<div class="line"><span class="lineno">  182</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getDisposableBackPropTensor(index);</div>
+<div class="line"><span class="lineno">  183</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
+<div class="line"><span class="lineno">  186</span>  _disposable_back_prop_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  187</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">_align</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -418,14 +448,42 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00157">157</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  158</span>{</div>
-<div class="line"><span class="lineno">  159</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getGradientTensor(index);</div>
-<div class="line"><span class="lineno">  160</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
-<div class="line"><span class="lineno">  163</span>  _gradient_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  164</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00164">164</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  165</span>{</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getGradientTensor(index);</div>
+<div class="line"><span class="lineno">  167</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
+<div class="line"><span class="lineno">  170</span>  _gradient_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  171</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">_align</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+
+</div>
+</div>
+<a id="aa52d40241a3918981f780a3d10d8b70a" name="aa52d40241a3918981f780a3d10d8b70a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa52d40241a3918981f780a3d10d8b70a">&#9670;&#160;</a></span>claimLayerScopePlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorManager::claimLayerScopePlan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00197">197</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  198</span>{</div>
+<div class="line"><span class="lineno">  199</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getLayerScopeTensor(index);</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
+<div class="line"><span class="lineno">  202</span>  _layer_scope_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  203</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">_align</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -447,14 +505,14 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00109">109</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getNonConstTensor(index);</div>
-<div class="line"><span class="lineno">  112</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
-<div class="line"><span class="lineno">  115</span>  _nonconst_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  116</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00116">116</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>{</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getNonConstTensor(index);</div>
+<div class="line"><span class="lineno">  119</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
+<div class="line"><span class="lineno">  122</span>  _nonconst_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  123</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">_align</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -476,14 +534,14 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00125">125</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span>{</div>
-<div class="line"><span class="lineno">  127</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getTrainableTensor(index);</div>
-<div class="line"><span class="lineno">  128</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
-<div class="line"><span class="lineno">  131</span>  _trainable_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  132</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00132">132</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  133</span>{</div>
+<div class="line"><span class="lineno">  134</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensors-&gt;getTrainableTensor(index);</div>
+<div class="line"><span class="lineno">  135</span>  assert(tensor &amp;&amp; !<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = alignedSize(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;total_size(), <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_tensor_manager.html#a80d28fd0a17fbe8f37391a14c5f451de">_align</a>);</div>
+<div class="line"><span class="lineno">  138</span>  _trainable_mgr-&gt;claimPlan(index, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  139</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">_align</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -505,12 +563,12 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00150">150</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  151</span>{</div>
-<div class="line"><span class="lineno">  152</span>  assert(_tensors-&gt;getBackPropTensor(index) &amp;&amp; !_tensors-&gt;getBackPropTensor(index)-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>  _back_prop_mgr-&gt;releasePlan(index);</div>
-<div class="line"><span class="lineno">  155</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00157">157</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>{</div>
+<div class="line"><span class="lineno">  159</span>  assert(_tensors-&gt;getBackPropTensor(index) &amp;&amp; !_tensors-&gt;getBackPropTensor(index)-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>  _back_prop_mgr-&gt;releasePlan(index);</div>
+<div class="line"><span class="lineno">  162</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -530,13 +588,13 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00182">182</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  assert(_tensors-&gt;getDisposableBackPropTensor(index) &amp;&amp;</div>
-<div class="line"><span class="lineno">  185</span>         !_tensors-&gt;getDisposableBackPropTensor(index)-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>  _disposable_back_prop_mgr-&gt;releasePlan(index);</div>
-<div class="line"><span class="lineno">  188</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00189">189</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  190</span>{</div>
+<div class="line"><span class="lineno">  191</span>  assert(_tensors-&gt;getDisposableBackPropTensor(index) &amp;&amp;</div>
+<div class="line"><span class="lineno">  192</span>         !_tensors-&gt;getDisposableBackPropTensor(index)-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  _disposable_back_prop_mgr-&gt;releasePlan(index);</div>
+<div class="line"><span class="lineno">  195</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -556,12 +614,36 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00166">166</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
-<div class="line"><span class="lineno">  168</span>  assert(_tensors-&gt;getGradientTensor(index) &amp;&amp; !_tensors-&gt;getGradientTensor(index)-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  _gradient_mgr-&gt;releasePlan(index);</div>
-<div class="line"><span class="lineno">  171</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00173">173</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
+<div class="line"><span class="lineno">  175</span>  assert(_tensors-&gt;getGradientTensor(index) &amp;&amp; !_tensors-&gt;getGradientTensor(index)-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>  _gradient_mgr-&gt;releasePlan(index);</div>
+<div class="line"><span class="lineno">  178</span>}</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a86c8bd11e221033a9dd0203f710cba4a" name="a86c8bd11e221033a9dd0203f710cba4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86c8bd11e221033a9dd0203f710cba4a">&#9670;&#160;</a></span>releaseLayerScopePlan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorManager::releaseLayerScopePlan </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00205">205</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  206</span>{</div>
+<div class="line"><span class="lineno">  207</span>  assert(_tensors-&gt;getLayerScopeTensor(index));</div>
+<div class="line"><span class="lineno">  208</span>  _layer_scope_mgr-&gt;releasePlan(index);</div>
+<div class="line"><span class="lineno">  209</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -581,12 +663,12 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00118">118</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span>{</div>
-<div class="line"><span class="lineno">  120</span>  assert(_tensors-&gt;getNonConstTensor(index) &amp;&amp; !_tensors-&gt;getNonConstTensor(index)-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>  _nonconst_mgr-&gt;releasePlan(index);</div>
-<div class="line"><span class="lineno">  123</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00125">125</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span>{</div>
+<div class="line"><span class="lineno">  127</span>  assert(_tensors-&gt;getNonConstTensor(index) &amp;&amp; !_tensors-&gt;getNonConstTensor(index)-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>  _nonconst_mgr-&gt;releasePlan(index);</div>
+<div class="line"><span class="lineno">  130</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -606,12 +688,12 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00134">134</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>{</div>
-<div class="line"><span class="lineno">  136</span>  assert(_tensors-&gt;getTrainableTensor(index) &amp;&amp; !_tensors-&gt;getTrainableTensor(index)-&gt;is_dynamic());</div>
-<div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>  _trainable_mgr-&gt;releasePlan(index);</div>
-<div class="line"><span class="lineno">  139</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_tensor_manager_8cc_source.html#l00141">141</a> of file <a class="el" href="_tensor_manager_8cc_source.html">TensorManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
+<div class="line"><span class="lineno">  143</span>  assert(_tensors-&gt;getTrainableTensor(index) &amp;&amp; !_tensors-&gt;getTrainableTensor(index)-&gt;is_dynamic());</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>  _trainable_mgr-&gt;releasePlan(index);</div>
+<div class="line"><span class="lineno">  146</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -638,7 +720,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="train_2_tensor_manager_8h_source.html#l00041">41</a> of file <a class="el" href="train_2_tensor_manager_8h_source.html">TensorManager.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_tensor_manager_8cc_source.html#l00141">claimBackPropPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00173">claimDisposableBackPropPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00157">claimGradientPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00109">claimNonConstPlan()</a>, and <a class="el" href="_tensor_manager_8cc_source.html#l00125">claimTrainablePlan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_tensor_manager_8cc_source.html#l00148">claimBackPropPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00180">claimDisposableBackPropPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00164">claimGradientPlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00197">claimLayerScopePlan()</a>, <a class="el" href="_tensor_manager_8cc_source.html#l00116">claimNonConstPlan()</a>, and <a class="el" href="_tensor_manager_8cc_source.html#l00132">claimTrainablePlan()</a>.</p>
 
 </div>
 </div>

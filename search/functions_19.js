@@ -4,5 +4,6 @@ var searchData=
   ['y_5fbatch_5findices_1',['y_batch_indices',['../classnnfw_1_1cker_1_1_b_cast.html#a8a63b1ff08c8edcc2b26e6ffc317dd86',1,'nnfw::cker::BCast']]],
   ['y_5fbatch_5fsize_2',['y_batch_size',['../classnnfw_1_1cker_1_1_mat_mul_b_cast.html#a8089dd9282098691e79c3a6061de11fb',1,'nnfw::cker::MatMulBCast']]],
   ['y_5fbcast_3',['y_bcast',['../classnnfw_1_1cker_1_1_b_cast.html#aa71914eec39d44b301a87af5ce59951d',1,'nnfw::cker::BCast']]],
-  ['y_5freshape_4',['y_reshape',['../classnnfw_1_1cker_1_1_b_cast.html#ab3be336e1a6080d490b91ca4a9fbe1ea',1,'nnfw::cker::BCast']]]
+  ['y_5fpred_5fop_5fcode_4',['y_pred_op_code',['../classonert_1_1ir_1_1train_1_1operation_1_1_loss.html#a9509f99b7c346c18b9f2773a9d407064',1,'onert::ir::train::operation::Loss']]],
+  ['y_5freshape_5',['y_reshape',['../classnnfw_1_1cker_1_1_b_cast.html#ab3be336e1a6080d490b91ca4a9fbe1ea',1,'nnfw::cker::BCast']]]
 ];

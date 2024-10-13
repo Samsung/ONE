@@ -53,6 +53,7 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "ReplaceNonConstFCWithBatchMatMul", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea30ef0b19a7d5c85ad3310982f0d1498c", null ],
       [ "ReplaceSubWithAdd", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea87fde88c36a98299372fa6e7ed109d01", null ],
       [ "ReplaceWithFCGeluFC", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeaeb4b3001b26381f13c8b195fabe40df1", null ],
+      [ "SubstituteExpandDimsToReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea08007e59936bcfbf2ec023d81732d04b", null ],
       [ "SubstitutePackToReshape", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeadac1b591a8021101dd37781010e70722", null ],
       [ "SubstitutePadV2ToPad", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea263856e5318405b19750c64964ba7247", null ],
       [ "SubstituteSplitVToSplit", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea043ca275e42255177a501087fc7ed8c0", null ],

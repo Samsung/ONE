@@ -5,6 +5,7 @@ var classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer =
     [ "configure", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aee0f4ff5a4e1d31c65f4346494499e82", null ],
     [ "fullyConnected16x1Float32", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#a2006db79e45053eb357f55af95471524", null ],
     [ "fullyConnectedFloat32", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#a648618c630985a3d90aeae23ec2cdc4e", null ],
+    [ "fullyConnectedGGMLWeight", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aeddfd94f0ab0af65b56df79129fdd771", null ],
     [ "fullyConnectedHybrid", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aea2f03e86f6d110ff8a1eaae0caa8d82", null ],
     [ "fullyConnectedQuant8", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#af90252c9fc392b5b8bb7f8c0fa203741", null ],
     [ "fullyConnectedSparseWeight", "classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#a27ebc09cfe60bf438b6ac2b831d0a8b5", null ],

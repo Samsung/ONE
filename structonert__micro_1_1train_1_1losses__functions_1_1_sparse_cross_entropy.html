@@ -158,9 +158,16 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    output_grad[i] = (calculated_data[i] + float(10.0e-32)) - (i == label);</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (i == label)</div>
+<div class="line"><span class="lineno">   42</span>    {</div>
+<div class="line"><span class="lineno">   43</span>      output_grad[i] = -1.0 / (calculated_data[i] + float(10.0e-20));</div>
+<div class="line"><span class="lineno">   44</span>    }</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   46</span>    {</div>
+<div class="line"><span class="lineno">   47</span>      output_grad[i] = 0.0;</div>
+<div class="line"><span class="lineno">   48</span>    }</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_o_m_training_handler_8cpp_source.html#l00037">onert_micro::core::train::OMTrainingHandler::handleError()</a>.</p>
 

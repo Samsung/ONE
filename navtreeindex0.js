@@ -1,6 +1,7 @@
 var NAVTREEINDEX0 =
 {
-"_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html":[41,1],
+"_2github_2workspace_2compiler_2luci_2pass_2src_2_remove_unnecessary_transpose_net_pass_8cpp-example.html":[41,2],
+"_2github_2workspace_2compiler_2luci_2pass_2src_2_substitute_expand_dims_to_reshape_pass_8cpp-example.html":[41,3],
 "_abs_op_8h.html":[40,0,0,77,0,0,0,0],
 "_abs_op_8h_source.html":[40,0,0,77,0,0,0,0],
 "_abs_options_8cpp.html":[40,0,0,130,2,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "_attr_mirror_pad_mode_8h.html":[40,0,0,56,3,0,0,0,4],
 "_attr_mirror_pad_mode_8h.html#a29e69e1d36ff270ef86f341d85d0a22e":[40,0,0,56,3,0,0,0,4,0],
 "_attr_mirror_pad_mode_8h.html#a29e69e1d36ff270ef86f341d85d0a22ea0db45d2a4141101bdfe48e3314cfbca3":[40,0,0,56,3,0,0,0,4,0,0],
-"_attr_mirror_pad_mode_8h.html#a29e69e1d36ff270ef86f341d85d0a22ea161b3d9016563aba9ac190fc02ada9bb":[40,0,0,56,3,0,0,0,4,0,2],
-"_attr_mirror_pad_mode_8h.html#a29e69e1d36ff270ef86f341d85d0a22eae4f6a05f82ed398f984f4bc1a55838df":[40,0,0,56,3,0,0,0,4,0,1]
+"_attr_mirror_pad_mode_8h.html#a29e69e1d36ff270ef86f341d85d0a22ea161b3d9016563aba9ac190fc02ada9bb":[40,0,0,56,3,0,0,0,4,0,2]
 };

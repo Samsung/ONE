@@ -80,6 +80,8 @@ var dir_41fcf59703ad3e4317a6c52e7bbdc719 =
     [ "ResizeBilinearLayer.h", "_resize_bilinear_layer_8h.html", "_resize_bilinear_layer_8h" ],
     [ "ReverseLayer.cc", "_reverse_layer_8cc.html", null ],
     [ "ReverseLayer.h", "_reverse_layer_8h.html", "_reverse_layer_8h" ],
+    [ "RmsNormLayer.cc", "_rms_norm_layer_8cc.html", null ],
+    [ "RmsNormLayer.h", "_rms_norm_layer_8h.html", "_rms_norm_layer_8h" ],
     [ "SelectLayer.cc", "_select_layer_8cc.html", "_select_layer_8cc" ],
     [ "SelectLayer.h", "_select_layer_8h.html", "_select_layer_8h" ],
     [ "ShapeLayer.cc", "_shape_layer_8cc.html", "_shape_layer_8cc" ],

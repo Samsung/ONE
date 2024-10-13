@@ -720,37 +720,39 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00291">291</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  292</span>{</div>
-<div class="line"><span class="lineno">  293</span>  <span class="keywordflow">if</span> (node.param().op_type != <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">ir::operation::Pool2D::PoolType::MAX</a>)</div>
-<div class="line"><span class="lineno">  294</span>  {</div>
-<div class="line"><span class="lineno">  295</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;UseDefGenerator: Not yet supported pool type&quot;</span>};</div>
-<div class="line"><span class="lineno">  296</span>  }</div>
-<div class="line"><span class="lineno">  297</span> </div>
-<div class="line"><span class="lineno">  298</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
-<div class="line"><span class="lineno">  299</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
-<div class="line"><span class="lineno">  300</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>  <span class="comment">// Insert uses of forwarding output</span></div>
-<div class="line"><span class="lineno">  303</span>  <span class="keywordflow">if</span> (node.param().activation != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
-<div class="line"><span class="lineno">  304</span>  {</div>
-<div class="line"><span class="lineno">  305</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  306</span>    <span class="keyword">const</span> <span class="keyword">auto</span> out_forwarding_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">true</span>};</div>
-<div class="line"><span class="lineno">  307</span>    insertUse(out_forwarding_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  308</span>  }</div>
-<div class="line"><span class="lineno">  309</span> </div>
-<div class="line"><span class="lineno">  310</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
-<div class="line"><span class="lineno">  311</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  313</span>  insertUse(incoming_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  314</span> </div>
-<div class="line"><span class="lineno">  315</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
-<div class="line"><span class="lineno">  316</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#ad9f6d46579e1fd48b4d2fe63058be37faba6de1bfb657afde61ce0c96a25385e9">train::operation::Pool2D::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  317</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  318</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  319</span>}</div>
+<div class="line"><span class="lineno">  293</span>  <span class="keywordflow">if</span> (node.param().op_type != <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">ir::operation::Pool2D::PoolType::MAX</a> &amp;&amp;</div>
+<div class="line"><span class="lineno">  294</span>      node.param().op_type != <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">ir::operation::Pool2D::PoolType::AVG</a>)</div>
+<div class="line"><span class="lineno">  295</span>  {</div>
+<div class="line"><span class="lineno">  296</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;UseDefGenerator: Not yet supported pool type&quot;</span>};</div>
+<div class="line"><span class="lineno">  297</span>  }</div>
+<div class="line"><span class="lineno">  298</span> </div>
+<div class="line"><span class="lineno">  299</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
+<div class="line"><span class="lineno">  300</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
+<div class="line"><span class="lineno">  301</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  302</span> </div>
+<div class="line"><span class="lineno">  303</span>  <span class="comment">// Insert uses of forwarding output</span></div>
+<div class="line"><span class="lineno">  304</span>  <span class="keywordflow">if</span> (node.param().activation != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
+<div class="line"><span class="lineno">  305</span>  {</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
+<div class="line"><span class="lineno">  307</span>    <span class="keyword">const</span> <span class="keyword">auto</span> out_forwarding_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">true</span>};</div>
+<div class="line"><span class="lineno">  308</span>    insertUse(out_forwarding_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  309</span>  }</div>
+<div class="line"><span class="lineno">  310</span> </div>
+<div class="line"><span class="lineno">  311</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
+<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
+<div class="line"><span class="lineno">  313</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  314</span>  insertUse(incoming_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
+<div class="line"><span class="lineno">  317</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#ad9f6d46579e1fd48b4d2fe63058be37faba6de1bfb657afde61ce0c96a25385e9">train::operation::Pool2D::Input::INPUT</a>);</div>
+<div class="line"><span class="lineno">  318</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  319</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  320</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_pool2_d_html_a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Pool2D::PoolType::MAX</a></div><div class="ttdeci">@ MAX</div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_pool2_d_html_a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">onert::ir::operation::Pool2D::PoolType::AVG</a></div><div class="ttdeci">@ AVG</div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_pool2_d_html_ad9f6d46579e1fd48b4d2fe63058be37faba6de1bfb657afde61ce0c96a25385e9"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#ad9f6d46579e1fd48b4d2fe63058be37faba6de1bfb657afde61ce0c96a25385e9">onert::ir::operation::Pool2D::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="operation_2_pool2_d_8h_source.html#l00039">Pool2D.h:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="operation_2_pool2_d_8h_source.html#l00055">onert::ir::operation::Pool2D::Param::activation</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00038">onert::ir::operation::Pool2D::INPUT</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Pool2D::MAX</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00050">onert::ir::operation::Pool2D::Param::op_type</a>, and <a class="el" href="operation_2_pool2_d_8h_source.html#l00068">onert::ir::operation::Pool2D::param()</a>.</p>
+<p class="reference">References <a class="el" href="operation_2_pool2_d_8h_source.html#l00055">onert::ir::operation::Pool2D::Param::activation</a>, <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">onert::ir::operation::Pool2D::AVG</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00038">onert::ir::operation::Pool2D::INPUT</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Pool2D::MAX</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="operation_2_pool2_d_8h_source.html#l00050">onert::ir::operation::Pool2D::Param::op_type</a>, and <a class="el" href="operation_2_pool2_d_8h_source.html#l00068">onert::ir::operation::Pool2D::param()</a>.</p>
 
 </div>
 </div>
@@ -778,27 +780,27 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00321">321</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  322</span>{</div>
-<div class="line"><span class="lineno">  323</span>  <span class="keywordflow">if</span> (node.param().reduce_type != <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610">ir::operation::Reduce::ReduceType::MEAN</a>)</div>
-<div class="line"><span class="lineno">  324</span>  {</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;UseDefGenerator: Not yet supported reduce type&quot;</span>};</div>
-<div class="line"><span class="lineno">  326</span>  }</div>
-<div class="line"><span class="lineno">  327</span> </div>
-<div class="line"><span class="lineno">  328</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
-<div class="line"><span class="lineno">  329</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
-<div class="line"><span class="lineno">  330</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  331</span> </div>
-<div class="line"><span class="lineno">  332</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
-<div class="line"><span class="lineno">  333</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  334</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  335</span>  insertUse(incoming_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
-<div class="line"><span class="lineno">  338</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">train::operation::Reduce::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  339</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  340</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  341</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00322">322</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  323</span>{</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">if</span> (node.param().reduce_type != <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610">ir::operation::Reduce::ReduceType::MEAN</a>)</div>
+<div class="line"><span class="lineno">  325</span>  {</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;UseDefGenerator: Not yet supported reduce type&quot;</span>};</div>
+<div class="line"><span class="lineno">  327</span>  }</div>
+<div class="line"><span class="lineno">  328</span> </div>
+<div class="line"><span class="lineno">  329</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
+<div class="line"><span class="lineno">  330</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
+<div class="line"><span class="lineno">  331</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  332</span> </div>
+<div class="line"><span class="lineno">  333</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
+<div class="line"><span class="lineno">  334</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
+<div class="line"><span class="lineno">  335</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  336</span>  insertUse(incoming_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  337</span> </div>
+<div class="line"><span class="lineno">  338</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
+<div class="line"><span class="lineno">  339</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">train::operation::Reduce::Input::INPUT</a>);</div>
+<div class="line"><span class="lineno">  340</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  341</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  342</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a4ea6d1161ea24d7599365f574aff6610">onert::ir::operation::Reduce::ReduceType::MEAN</a></div><div class="ttdeci">@ MEAN</div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_reduce_html_afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">onert::ir::operation::Reduce::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h_source.html#l00036">Reduce.h:36</a></div></div>
 </div><!-- fragment -->
@@ -830,22 +832,22 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00343">343</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  344</span>{</div>
-<div class="line"><span class="lineno">  345</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
-<div class="line"><span class="lineno">  346</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
-<div class="line"><span class="lineno">  347</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  348</span> </div>
-<div class="line"><span class="lineno">  349</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
-<div class="line"><span class="lineno">  350</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  351</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  352</span>  insertUse(incoming_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
-<div class="line"><span class="lineno">  355</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">train::operation::Reduce::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  356</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  357</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  358</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00344">344</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  345</span>{</div>
+<div class="line"><span class="lineno">  346</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
+<div class="line"><span class="lineno">  347</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
+<div class="line"><span class="lineno">  348</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  349</span> </div>
+<div class="line"><span class="lineno">  350</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
+<div class="line"><span class="lineno">  351</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
+<div class="line"><span class="lineno">  352</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  353</span>  insertUse(incoming_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
+<div class="line"><span class="lineno">  356</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">train::operation::Reduce::Input::INPUT</a>);</div>
+<div class="line"><span class="lineno">  357</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  358</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  359</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h_source.html#l00036">onert::ir::operation::Reduce::INPUT</a>.</p>
 
@@ -875,26 +877,26 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00360">360</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  361</span>{</div>
-<div class="line"><span class="lineno">  362</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
-<div class="line"><span class="lineno">  363</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
-<div class="line"><span class="lineno">  364</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  365</span> </div>
-<div class="line"><span class="lineno">  366</span>  <span class="comment">// Insert uses of forwarding output</span></div>
-<div class="line"><span class="lineno">  367</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
-<div class="line"><span class="lineno">  368</span>  <span class="keyword">const</span> <span class="keyword">auto</span> out_forwarding_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">true</span>};</div>
-<div class="line"><span class="lineno">  369</span>  insertUse(out_forwarding_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  370</span> </div>
-<div class="line"><span class="lineno">  371</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
-<div class="line"><span class="lineno">  372</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  373</span>  insertUse(incoming_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  374</span> </div>
-<div class="line"><span class="lineno">  375</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
-<div class="line"><span class="lineno">  376</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">train::operation::Reduce::Input::INPUT</a>);</div>
-<div class="line"><span class="lineno">  377</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
-<div class="line"><span class="lineno">  378</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
-<div class="line"><span class="lineno">  379</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_generator_8cc_source.html#l00361">361</a> of file <a class="el" href="_use_def_generator_8cc_source.html">UseDefGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  362</span>{</div>
+<div class="line"><span class="lineno">  363</span>  assert(_node_to_idx.find(&amp;node) != _node_to_idx.end());</div>
+<div class="line"><span class="lineno">  364</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op_index = _node_to_idx.at(&amp;node);</div>
+<div class="line"><span class="lineno">  365</span>  <span class="keyword">const</span> <span class="keyword">auto</span> backwarding_op_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a8ed2e6419427588f8c889991a20bfc36">TrainingOperationIndex</a>{op_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  366</span> </div>
+<div class="line"><span class="lineno">  367</span>  <span class="comment">// Insert uses of forwarding output</span></div>
+<div class="line"><span class="lineno">  368</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;out_index = node.getOutputs().at(0);</div>
+<div class="line"><span class="lineno">  369</span>  <span class="keyword">const</span> <span class="keyword">auto</span> out_forwarding_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">true</span>};</div>
+<div class="line"><span class="lineno">  370</span>  insertUse(out_forwarding_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  371</span> </div>
+<div class="line"><span class="lineno">  372</span>  <span class="comment">// Insert use of backwarding(backprop) output</span></div>
+<div class="line"><span class="lineno">  373</span>  <span class="keyword">const</span> <span class="keyword">auto</span> incoming_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{out_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  374</span>  insertUse(incoming_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  375</span> </div>
+<div class="line"><span class="lineno">  376</span>  <span class="comment">// Set def of backwarding(backprop) input</span></div>
+<div class="line"><span class="lineno">  377</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;in_index = node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reduce.html#afe4136810f64caebdf3f12dea419cba9ac634aabbe52a6f11d513a2ababa04741">train::operation::Reduce::Input::INPUT</a>);</div>
+<div class="line"><span class="lineno">  378</span>  <span class="keyword">const</span> <span class="keyword">auto</span> outgoing_index = <a class="code hl_typedef" href="namespaceonert_1_1ir_1_1train.html#a01421faf4f0a8b648c3d044198288467">TrainingOperandIndex</a>{in_index, <span class="keyword">false</span>};</div>
+<div class="line"><span class="lineno">  379</span>  insertBackPropDef(outgoing_index, backwarding_op_index);</div>
+<div class="line"><span class="lineno">  380</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00050">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00053">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00055">onert::ir::Operation::getOutputs()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_reduce_8h_source.html#l00036">onert::ir::operation::Reduce::INPUT</a>.</p>
 

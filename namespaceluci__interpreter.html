@@ -2189,7 +2189,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_e_l_u_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_e_l_u_8cpp_source.html">Elu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_elu_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_elu_8cpp_source.html">Elu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleElu *&gt;(circle_node);</div>
 <div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 1);</div>
@@ -4233,7 +4233,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u_8cpp_source.html">Relu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_relu_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_relu_8cpp_source.html">Relu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleRelu *&gt;(circle_node);</div>
 <div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 1);</div>
@@ -4274,7 +4274,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_re_l_u0_to1_8cpp_source.html#l00024">24</a> of file <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_re_l_u0_to1_8cpp_source.html">Relu0To1.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_relu0_to1_8cpp_source.html#l00024">24</a> of file <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_relu0_to1_8cpp_source.html">Relu0To1.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleRelu0To1 *&gt;(circle_node);</div>
 <div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 1);</div>
@@ -4315,7 +4315,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u6_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u6_8cpp_source.html">Relu6.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_relu6_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_relu6_8cpp_source.html">Relu6.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleRelu6 *&gt;(circle_node);</div>
 <div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 1);</div>
@@ -4545,19 +4545,18 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
 <p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_rms_norm_8cpp_source.html#l00024">24</a> of file <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_rms_norm_8cpp_source.html">RmsNorm.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleRmsNorm *&gt;(circle_node);</div>
-<div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 3);</div>
+<div class="line"><span class="lineno">   28</span>  <span class="comment">// assert(node-&gt;arity() == 2);</span></div>
 <div class="line"><span class="lineno">   29</span> </div>
 <div class="line"><span class="lineno">   30</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *input = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#af56fb1d91e86cb79711563991f0ccbb3">getInputTensor</a>(node-&gt;input());</div>
 <div class="line"><span class="lineno">   31</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *gamma = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#af56fb1d91e86cb79711563991f0ccbb3">getInputTensor</a>(node-&gt;gamma());</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keyword">const</span> <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *beta = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#af56fb1d91e86cb79711563991f0ccbb3">getInputTensor</a>(node-&gt;beta());</div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *output = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#a2ea9a2ac873262a66e1afe27583941fb">getOutputTensor</a>(node);</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_struct" href="structluci__interpreter_1_1_rms_norm_params.html">RmsNormParams</a> params{};</div>
-<div class="line"><span class="lineno">   37</span>  params.<a class="code hl_variable" href="structluci__interpreter_1_1_rms_norm_params.html#a8fa68334cad0ea71b8165ed9eba5fbb8">epsilon</a> = node-&gt;epsilon();</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::RmsNorm&gt;(input, gamma, beta, output, params);</div>
-<div class="line"><span class="lineno">   40</span>}</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">Tensor</a> *output = helper.<a class="code hl_function" href="classluci__interpreter_1_1_kernel_builder_helper.html#a2ea9a2ac873262a66e1afe27583941fb">getOutputTensor</a>(node);</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <a class="code hl_struct" href="structluci__interpreter_1_1_rms_norm_params.html">RmsNormParams</a> params{};</div>
+<div class="line"><span class="lineno">   36</span>  params.<a class="code hl_variable" href="structluci__interpreter_1_1_rms_norm_params.html#a8fa68334cad0ea71b8165ed9eba5fbb8">epsilon</a> = node-&gt;epsilon();</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> std::make_unique&lt;kernels::RmsNorm&gt;(input, gamma, output, params);</div>
+<div class="line"><span class="lineno">   39</span>}</div>
 <div class="ttc" id="astructluci__interpreter_1_1_rms_norm_params_html"><div class="ttname"><a href="structluci__interpreter_1_1_rms_norm_params.html">luci_interpreter::RmsNormParams</a></div><div class="ttdef"><b>Definition</b> <a href="_kernel_params_8h_source.html#l00186">KernelParams.h:187</a></div></div>
 <div class="ttc" id="astructluci__interpreter_1_1_rms_norm_params_html_a8fa68334cad0ea71b8165ed9eba5fbb8"><div class="ttname"><a href="structluci__interpreter_1_1_rms_norm_params.html#a8fa68334cad0ea71b8165ed9eba5fbb8">luci_interpreter::RmsNormParams::epsilon</a></div><div class="ttdeci">float epsilon</div><div class="ttdef"><b>Definition</b> <a href="_kernel_params_8h_source.html#l00188">KernelParams.h:188</a></div></div>
 </div><!-- fragment -->
@@ -6958,7 +6957,7 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html">Elu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_elu_8cpp_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_elu_8cpp_source.html">Elu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
 <div class="line"><span class="lineno">   28</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html">kernels::SISOKernel</a> kernel(cur_op, runtime_graph);</div>
 <div class="line"><span class="lineno">   29</span> </div>
@@ -8890,7 +8889,7 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp_source.html">Relu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp_source.html">Relu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
 <div class="line"><span class="lineno">   28</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html">kernels::SISOKernel</a> kernel(cur_op, runtime_graph);</div>
 <div class="line"><span class="lineno">   29</span> </div>
@@ -8931,7 +8930,7 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html">Relu6.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu6_8cpp_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu6_8cpp_source.html">Relu6.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
 <div class="line"><span class="lineno">   28</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html">kernels::SISOKernel</a> kernel(cur_op, runtime_graph);</div>
 <div class="line"><span class="lineno">   29</span> </div>
@@ -12005,7 +12004,7 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_e_l_u_8cpp_source.html">Elu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_elu_8cpp_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_elu_8cpp_source.html">Elu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html">kernels::SISOKernel</a> kernel(cur_op, runtime_graph);</div>
 <div class="line"><span class="lineno">   40</span> </div>
@@ -14744,7 +14743,7 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u_8cpp_source.html">Relu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu_8cpp_source.html">Relu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html">kernels::SISOKernel</a> kernel(cur_op, runtime_graph);</div>
 <div class="line"><span class="lineno">   40</span> </div>
@@ -14813,7 +14812,7 @@ template&lt;typename CircleNodeOut &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_re_l_u6_8cpp_source.html">Relu6.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu6_8cpp_source.html#l00037">37</a> of file <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_relu6_8cpp_source.html">Relu6.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_class" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html">kernels::SISOKernel</a> kernel(cur_op, runtime_graph);</div>
 <div class="line"><span class="lineno">   40</span> </div>

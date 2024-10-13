@@ -123,6 +123,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "Sparsifier.cpp", "_sparsifier_8cpp.html", null ],
     [ "Sparsifier.h", "_sparsifier_8h.html", "_sparsifier_8h" ],
     [ "SparsifyTensorPass.cpp", "_sparsify_tensor_pass_8cpp.html", "_sparsify_tensor_pass_8cpp" ],
+    [ "SubstituteExpandDimsToReshapePass.cpp", "_substitute_expand_dims_to_reshape_pass_8cpp.html", null ],
     [ "SubstitutePackToReshapePass.cpp", "_substitute_pack_to_reshape_pass_8cpp.html", null ],
     [ "SubstitutePadV2ToPadPass.cpp", "_substitute_pad_v2_to_pad_pass_8cpp.html", null ],
     [ "SubstituteSplitVToSplitPass.cpp", "_substitute_split_v_to_split_pass_8cpp.html", null ],

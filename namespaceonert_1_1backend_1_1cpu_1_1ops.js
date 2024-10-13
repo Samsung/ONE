@@ -40,6 +40,7 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
     [ "ReshapeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reshape_layer" ],
     [ "ResizeBilinearLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer" ],
     [ "ReverseLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reverse_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reverse_layer" ],
+    [ "RmsNormLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_rms_norm_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_rms_norm_layer" ],
     [ "SelectLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_select_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_select_layer" ],
     [ "ShapeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_shape_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_shape_layer" ],
     [ "SliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_slice_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_slice_layer" ],

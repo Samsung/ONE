@@ -55,6 +55,7 @@ var dir_4d6511aec63f0104ba12c7c66d891cab =
     [ "ResizeBilinear.h", "compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h.html", "compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h" ],
     [ "Reverse.h", "compute_2cker_2include_2cker_2operation_2_reverse_8h.html", "compute_2cker_2include_2cker_2operation_2_reverse_8h" ],
     [ "RmsNorm.h", "compute_2cker_2include_2cker_2operation_2_rms_norm_8h.html", "compute_2cker_2include_2cker_2operation_2_rms_norm_8h" ],
+    [ "RoPE.h", "compute_2cker_2include_2cker_2operation_2_ro_p_e_8h.html", "compute_2cker_2include_2cker_2operation_2_ro_p_e_8h" ],
     [ "Round.h", "compute_2cker_2include_2cker_2operation_2_round_8h.html", "compute_2cker_2include_2cker_2operation_2_round_8h" ],
     [ "Select.h", "compute_2cker_2include_2cker_2operation_2_select_8h.html", "compute_2cker_2include_2cker_2operation_2_select_8h" ],
     [ "Slice.h", "compute_2cker_2include_2cker_2operation_2_slice_8h.html", "compute_2cker_2include_2cker_2operation_2_slice_8h" ],

@@ -138,9 +138,16 @@ $(document).ready(function(){initNavTree('_sparse_cross_entropy_8cpp_source.html
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; flat_size; ++i)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    output_grad[i] = (calculated_data[i] + float(10.0e-32)) - (i == label);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (i == label)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      output_grad[i] = -1.0 / (calculated_data[i] + float(10.0e-20));</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      output_grad[i] = 0.0;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
 </div>
 <div class="ttc" id="a_sparse_cross_entropy_8h_html"><div class="ttname"><a href="_sparse_cross_entropy_8h.html">SparseCrossEntropy.h</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1train_1_1losses__functions_html"><div class="ttname"><a href="namespaceonert__micro_1_1train_1_1losses__functions.html">onert_micro::train::losses_functions</a></div><div class="ttdef"><b>Definition</b> <a href="losses__functions_2_cross_entropy_8h_source.html#l00028">CrossEntropy.h:29</a></div></div>

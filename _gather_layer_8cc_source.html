@@ -214,53 +214,52 @@ $(document).ready(function(){initNavTree('_gather_layer_8cc_source.html',''); in
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="comment">// get cplan</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">auto</span> cplan = ggml_graph_plan(&amp;graph, _ctx-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1_external_context.html#a9459ce0fc001f8d279066d63659ed30e">ruy_context</a>()-&gt;max_num_threads());</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  cplan.work_data = (uint8_t *)(malloc(cplan.work_size));</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// compute</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  ggml_graph_compute(&amp;graph, &amp;cplan);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// free</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  free(cplan.work_data);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">  126</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">GatherLayer::run</a>()</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>{</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      runByInputType&lt;float&gt;();</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      runByInputType&lt;uint8_t&gt;();</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      runByInputType&lt;int32_t&gt;();</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">case</span> OperandType::QUANT_GGML_Q4_0:</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>      runByGGMLQuantInputType();</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Gather: unsupported input data type&quot;</span>);</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  }</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">auto</span> cplan = ggml_graph_plan(&amp;graph, _ctx-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1_external_context.html#a1e33489e5107176845019c9d1641fd03">maxNumThreads</a>());</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  std::vector&lt;uint8_t&gt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a6918ca3c813ee0073a44d377bc644c61">buf</a>(cplan.work_size);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  cplan.work_data = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a6918ca3c813ee0073a44d377bc644c61">buf</a>.data();</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="comment">// compute</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  ggml_graph_compute(&amp;graph, &amp;cplan);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">  124</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">GatherLayer::run</a>()</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>{</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      runByInputType&lt;float&gt;();</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">case</span> OperandType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      runByInputType&lt;uint8_t&gt;();</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      runByInputType&lt;int32_t&gt;();</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="keywordflow">case</span> OperandType::QUANT_GGML_Q4_0:</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      runByGGMLQuantInputType();</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Gather: unsupported input data type&quot;</span>);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>}</div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>} <span class="comment">// namespace ops</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>} <span class="comment">// namespace cpu</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>} <span class="comment">// namespace ops</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>} <span class="comment">// namespace cpu</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>} <span class="comment">// namespace backend</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_g_g_m_l_helper_8h_html"><div class="ttname"><a href="_g_g_m_l_helper_8h.html">GGMLHelper.h</a></div></div>
 <div class="ttc" id="a_gather_layer_8h_html"><div class="ttname"><a href="_gather_layer_8h.html">GatherLayer.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html">onert::backend::IPortableTensor</a></div><div class="ttdoc">A tensor class that is portable for other backends.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00038">IPortableTensor.h:39</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1_external_context_html"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1_external_context.html">onert::backend::cpu::ExternalContext</a></div><div class="ttdef"><b>Definition</b> <a href="backend_2cpu_2_external_context_8h_source.html#l00033">ExternalContext.h:34</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1_external_context_html_a9459ce0fc001f8d279066d63659ed30e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1_external_context.html#a9459ce0fc001f8d279066d63659ed30e">onert::backend::cpu::ExternalContext::ruy_context</a></div><div class="ttdeci">ruy::Context * ruy_context() const</div><div class="ttdef"><b>Definition</b> <a href="backend_2cpu_2_external_context_8h_source.html#l00058">ExternalContext.h:58</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1_external_context_html_aa9dae17746e17559ba1436ecf3f1d91f"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1_external_context.html#aa9dae17746e17559ba1436ecf3f1d91f">onert::backend::cpu::ExternalContext::initGgmlContext</a></div><div class="ttdeci">void initGgmlContext()</div><div class="ttdef"><b>Definition</b> <a href="backend_2cpu_2_external_context_8h_source.html#l00051">ExternalContext.h:51</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer_html_a75e28cefee408de707ed43295db1e6b0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">onert::backend::cpu::ops::GatherLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_gather_layer_8cc_source.html#l00126">GatherLayer.cc:126</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1_external_context_html_a1e33489e5107176845019c9d1641fd03"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1_external_context.html#a1e33489e5107176845019c9d1641fd03">onert::backend::cpu::ExternalContext::maxNumThreads</a></div><div class="ttdeci">int32_t maxNumThreads() const</div><div class="ttdef"><b>Definition</b> <a href="backend_2cpu_2_external_context_8h_source.html#l00041">ExternalContext.h:41</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1_external_context_html_aa9dae17746e17559ba1436ecf3f1d91f"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1_external_context.html#aa9dae17746e17559ba1436ecf3f1d91f">onert::backend::cpu::ExternalContext::initGgmlContext</a></div><div class="ttdeci">void initGgmlContext()</div><div class="ttdef"><b>Definition</b> <a href="cpu_2_external_context_8cc_source.html#l00077">ExternalContext.cc:77</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer_html_a75e28cefee408de707ed43295db1e6b0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#a75e28cefee408de707ed43295db1e6b0">onert::backend::cpu::ops::GatherLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_gather_layer_8cc_source.html#l00124">GatherLayer.cc:124</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer_html_adea425748402b607547395c4d1197e11"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_gather_layer.html#adea425748402b607547395c4d1197e11">onert::backend::cpu::ops::GatherLayer::configure</a></div><div class="ttdeci">void configure(const IPortableTensor *input, const IPortableTensor *indices, IPortableTensor *output, int32_t axis, ExternalContext *ctx)</div><div class="ttdef"><b>Definition</b> <a href="_gather_layer_8cc_source.html#l00033">GatherLayer.cc:33</a></div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2operation_2_gather_8h_html"><div class="ttname"><a href="compute_2cker_2include_2cker_2operation_2_gather_8h.html">Gather.h</a></div></div>
+<div class="ttc" id="anamespace_gen_h5_random_inputs_html_a6918ca3c813ee0073a44d377bc644c61"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a6918ca3c813ee0073a44d377bc644c61">GenH5RandomInputs.buf</a></div><div class="ttdeci">buf</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00043">GenH5RandomInputs.py:43</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir_1_1ops_html"><div class="ttname"><a href="namespacemir_1_1ops.html">mir::ops</a></div><div class="ttdef"><b>Definition</b> <a href="_abs_op_8h_source.html#l00024">AbsOp.h:25</a></div></div>
@@ -268,8 +267,8 @@ $(document).ready(function(){initNavTree('_gather_layer_8cc_source.html',''); in
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1f6dbde496876ba47f2b9299bb62ab91"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1f6dbde496876ba47f2b9299bb62ab91">onert::backend::cpu::ops::getGGMLTensor</a></div><div class="ttdeci">struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_g_g_m_l_helper_8cc_source.html#l00047">GGMLHelper.cc:47</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 <div class="ttc" id="astruct_dims_html"><div class="ttname"><a href="struct_dims.html">Dims</a></div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00025">Dims.h:26</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_gather_params_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_gather_params.html">nnfw::cker::GatherParams</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00299">Types.h:300</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_gather_params_html_a92d7b8ef3ea0d2c9706bf412ebb06be5"><div class="ttname"><a href="structnnfw_1_1cker_1_1_gather_params.html#a92d7b8ef3ea0d2c9706bf412ebb06be5">nnfw::cker::GatherParams::axis</a></div><div class="ttdeci">int32_t axis</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00301">Types.h:301</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_gather_params_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_gather_params.html">nnfw::cker::GatherParams</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00305">Types.h:306</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_gather_params_html_a92d7b8ef3ea0d2c9706bf412ebb06be5"><div class="ttname"><a href="structnnfw_1_1cker_1_1_gather_params.html#a92d7b8ef3ea0d2c9706bf412ebb06be5">nnfw::cker::GatherParams::axis</a></div><div class="ttdeci">int32_t axis</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00307">Types.h:307</a></div></div>
 <div class="ttc" id="axnnpack_2ops_2_operation_utils_8h_html"><div class="ttname"><a href="xnnpack_2ops_2_operation_utils_8h.html">OperationUtils.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

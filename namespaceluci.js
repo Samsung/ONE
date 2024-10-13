@@ -465,6 +465,7 @@ var namespaceluci =
     [ "SparsityParam", "structluci_1_1_sparsity_param.html", "structluci_1_1_sparsity_param" ],
     [ "Stride", "classluci_1_1_stride.html", "classluci_1_1_stride" ],
     [ "SubGraphContext", "structluci_1_1_sub_graph_context.html", "structluci_1_1_sub_graph_context" ],
+    [ "SubstituteExpandDimsToReshapePass", "structluci_1_1_substitute_expand_dims_to_reshape_pass.html", "structluci_1_1_substitute_expand_dims_to_reshape_pass" ],
     [ "SubstitutePackToReshapePass", "structluci_1_1_substitute_pack_to_reshape_pass.html", "structluci_1_1_substitute_pack_to_reshape_pass" ],
     [ "SubstitutePadV2ToPadPass", "structluci_1_1_substitute_pad_v2_to_pad_pass.html", "structluci_1_1_substitute_pad_v2_to_pad_pass" ],
     [ "SubstituteSplitVToSplitPass", "structluci_1_1_substitute_split_v_to_split_pass.html", "structluci_1_1_substitute_split_v_to_split_pass" ],

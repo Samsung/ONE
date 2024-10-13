@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"_attr_mirror_pad_mode_8h.html#a29e69e1d36ff270ef86f341d85d0a22eae4f6a05f82ed398f984f4bc1a55838df":[40,0,0,56,3,0,0,0,4,0,1],
 "_attr_mirror_pad_mode_8h_source.html":[40,0,0,56,3,0,0,0,4],
 "_attr_padding_8h.html":[40,0,0,56,3,0,0,0,5],
 "_attr_padding_8h.html#a50d4e9fca61e54bee349208fb919cdcb":[40,0,0,56,3,0,0,0,5,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "_bool_logical_not_kernel_8h.html#a2dd7b8b2c1c41b9b56fe8878bfee0cc3":[40,0,3,4,0,0,1,39,0,3],
 "_bool_logical_not_kernel_8h.html#a322d88462c365dc13597a61f311e8879":[40,0,3,4,0,0,1,39,0,1],
 "_bool_logical_not_kernel_8h_source.html":[40,0,3,4,0,0,1,39,0],
-"_bool_logical_or_kernel_8h.html":[40,0,3,4,0,0,1,40,0],
-"_bool_logical_or_kernel_8h.html#a0eb529efd245356419f07b7dfb707e18":[40,0,3,4,0,0,1,40,0,4]
+"_bool_logical_or_kernel_8h.html":[40,0,3,4,0,0,1,40,0]
 };

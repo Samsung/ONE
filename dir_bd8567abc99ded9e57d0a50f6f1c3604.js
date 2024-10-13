@@ -13,5 +13,5 @@ var dir_bd8567abc99ded9e57d0a50f6f1c3604 =
     [ "RmsNorm.cpp", "circlechef_2circle_2src_2_op_2_rms_norm_8cpp.html", null ],
     [ "RmsNorm.h", "compiler_2circlechef_2circle_2src_2_op_2_rms_norm_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_rms_norm_8h" ],
     [ "RoPE.cpp", "circlechef_2circle_2src_2_op_2_ro_p_e_8cpp.html", null ],
-    [ "RoPE.h", "circlechef_2circle_2src_2_op_2_ro_p_e_8h.html", "circlechef_2circle_2src_2_op_2_ro_p_e_8h" ]
+    [ "RoPE.h", "compiler_2circlechef_2circle_2src_2_op_2_ro_p_e_8h.html", "compiler_2circlechef_2circle_2src_2_op_2_ro_p_e_8h" ]
 ];

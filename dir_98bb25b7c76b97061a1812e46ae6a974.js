@@ -6,7 +6,7 @@ var dir_98bb25b7c76b97061a1812e46ae6a974 =
     [ "BackendContext.h", "backend_2xnnpack_2_backend_context_8h.html", "backend_2xnnpack_2_backend_context_8h" ],
     [ "Config.cc", "backend_2xnnpack_2_config_8cc.html", null ],
     [ "Config.h", "runtime_2onert_2backend_2xnnpack_2_config_8h.html", "runtime_2onert_2backend_2xnnpack_2_config_8h" ],
-    [ "ExternalContext.cc", "_external_context_8cc.html", null ],
+    [ "ExternalContext.cc", "xnnpack_2_external_context_8cc.html", null ],
     [ "ExternalContext.h", "backend_2xnnpack_2_external_context_8h.html", "backend_2xnnpack_2_external_context_8h" ],
     [ "KernelGenerator.cc", "backend_2xnnpack_2_kernel_generator_8cc.html", null ],
     [ "KernelGenerator.h", "backend_2xnnpack_2_kernel_generator_8h.html", "backend_2xnnpack_2_kernel_generator_8h" ],
