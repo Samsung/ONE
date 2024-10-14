@@ -28,7 +28,7 @@ namespace luci
 /**
  * @brief RMS_NORM in Circle
  */
-class CircleRmsNorm final : public FixedArityNode<3, CircleNodeImpl<CircleOpcode::RMS_NORM>>
+class CircleRmsNorm final : public FixedArityNode<2, CircleNodeImpl<CircleOpcode::RMS_NORM>>
 {
 public:
   loco::Node *input(void) const { return at(0)->node(); }
@@ -36,9 +36,6 @@ public:
 
   loco::Node *gamma(void) const { return at(1)->node(); }
   void gamma(loco::Node *node) { at(1)->node(node); }
-
-  loco::Node *beta(void) const { return at(2)->node(); }
-  void beta(loco::Node *node) { at(2)->node(node); }
 
 public:
   float epsilon() const { return _epsilon; }

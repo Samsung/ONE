@@ -905,7 +905,7 @@ std::vector<std::string> CircleReverseV2SummaryBuilder::get_input_names(const lu
 
 std::vector<std::string> CircleRmsNormSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
-  return {"input", "gamma", "beta"};
+  return {"input", "gamma"};
 }
 
 void CircleRmsNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
