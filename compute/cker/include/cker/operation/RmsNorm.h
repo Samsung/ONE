@@ -33,17 +33,44 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
                     const Shape &gamma_shape, const float *gamma_data, const Shape &output_shape,
                     float *output_data)
 {
-  const int32_t batches = MatchingDim(input_shape, 0, output_shape, 0);
-  const int32_t heights = MatchingDim(input_shape, 1, output_shape, 1);
-  const int32_t widths = MatchingDim(input_shape, 2, output_shape, 2);
-  const int32_t channels = MatchingDim(input_shape, 3, output_shape, 3);
+  bool single_gamma = gamma_shape.DimensionsCount() == 1 && gamma_shape.Dims(0) == 1;
 
-  if (gamma_shape.DimensionsCount() != 1 ||
-      gamma_shape.Dims(0) != input_shape.Dims(input_shape.DimensionsCount() - 1))
-    throw std::runtime_error("cker::RmsNorm: Unmatched gamma shape");
-
-  for (int32_t batch = 0; batch < batches; batch++)
+  if (input_shape.DimensionsCount() == 4)
   {
+    const int32_t batches = MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t heights = MatchingDim(input_shape, 1, output_shape, 1);
+    const int32_t widths = MatchingDim(input_shape, 2, output_shape, 2);
+    const int32_t channels = MatchingDim(input_shape, 3, output_shape, 3);
+
+    for (int32_t batch = 0; batch < batches; batch++)
+    {
+      for (int32_t height = 0; height < heights; height++)
+      {
+        for (int32_t width = 0; width < widths; width++)
+        {
+          double square_sum = 0.0f;
+          for (int32_t channel = 0; channel < channels; channel++)
+          {
+            double input_val = input_data[Offset(input_shape, batch, height, width, channel)];
+            square_sum += (input_val * input_val);
+          }
+          double rms = std::sqrt((square_sum / channels) + params.epsilon);
+          for (int32_t channel = 0; channel < channels; channel++)
+          {
+            double gamma = (single_gamma ? gamma_data[0] : gamma_data[channel]);
+            output_data[Offset(output_shape, batch, height, width, channel)] =
+              gamma * (input_data[Offset(input_shape, batch, height, width, channel)] / rms);
+          }
+        }
+      }
+    }
+  }
+  else if (input_shape.DimensionsCount() == 3)
+  {
+    const int32_t heights = MatchingDim(input_shape, 1, output_shape, 0);
+    const int32_t widths = MatchingDim(input_shape, 2, output_shape, 1);
+    const int32_t channels = MatchingDim(input_shape, 3, output_shape, 2);
+
     for (int32_t height = 0; height < heights; height++)
     {
       for (int32_t width = 0; width < widths; width++)
@@ -51,18 +78,22 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
         double square_sum = 0.0f;
         for (int32_t channel = 0; channel < channels; channel++)
         {
-          double input_val = input_data[Offset(input_shape, batch, height, width, channel)];
+          double input_val = input_data[(height * widths + width) * channels + channel];
           square_sum += (input_val * input_val);
         }
         double rms = std::sqrt((square_sum / channels) + params.epsilon);
         for (int32_t channel = 0; channel < channels; channel++)
         {
-          double gamma = (gamma_data ? gamma_data[channel] : 1.0);
-          output_data[Offset(output_shape, batch, height, width, channel)] =
-            gamma * (input_data[Offset(input_shape, batch, height, width, channel)] / rms);
+          double gamma = (single_gamma ? gamma_data[0] : gamma_data[channel]);
+          output_data[(height * widths + width) * channels + channel] =
+            gamma * (input_data[(height * widths + width) * channels + channel] / rms);
         }
       }
     }
+  }
+  else
+  {
+    throw std::runtime_error("cker::RmsNorm: Unsupported input shape");
   }
 }
 
