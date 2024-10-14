@@ -19,7 +19,7 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
-set(TEST_SOURCES, "src/MinMaxComputer.cpp")
+set(TEST_SOURCES, "src/HessianComputer.cpp")
 
 file(GLOB_RECURSE TESTS "tests/*.test.cpp")
 
