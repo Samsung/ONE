@@ -1133,9 +1133,9 @@ void ShapeValidator::visit(const ir::operation::RmsNorm &node)
   const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
   const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
 
-  auto ifm_shape = operands.at(ifm_index).shape();
-  auto ofm_shape = operands.at(ofm_index).shape();
-  auto gamma_shape = operands.at(gamma_index).shape();
+  const auto &ifm_shape = operands.at(ifm_index).shape();
+  const auto &ofm_shape = operands.at(ofm_index).shape();
+  const auto &gamma_shape = operands.at(gamma_index).shape();
 
   OP_REQUIRES(ifm_shape.rank() == 3 || ifm_shape.rank() == 4);
   OP_REQUIRES(ifm_shape == ofm_shape);
