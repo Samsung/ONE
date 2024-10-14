@@ -20,6 +20,7 @@
 
 #include "cker/Types.h"
 #include "cker/Shape.h"
+#include "cker/operation/optimized/Gemm.h"
 
 namespace nnfw
 {
@@ -28,14 +29,53 @@ namespace cker
 namespace reference
 {
 
-inline void BatchMatMul(const Shape &lhs_shape, const float *lhs_data, const Shape &rhs_shape,
-                        const float *rhs_data, const Shape &, float *output_data)
+namespace impl
 {
-  const Shape extended_lhs_shape = Shape::ExtendedShape(5, lhs_shape);
-  const Shape extended_rhs_shape = Shape::ExtendedShape(5, rhs_shape);
+struct BMMParams
+{
+  BMMParams(const Shape &lhs_shape, const Shape &rhs_shape)
+  {
+    const Shape extended_lhs_shape = Shape::ExtendedShape(5, lhs_shape);
+    const Shape extended_rhs_shape = Shape::ExtendedShape(5, rhs_shape);
 
-  // Determine which dimension is the broadcast dimension.
-  auto broadcast_dim = [](int lhs_dim, int rhs_dim) {
+    batch_dim0 = broadcast_dim(extended_lhs_shape.Dims(0), extended_rhs_shape.Dims(0));
+    batch_dim1 = broadcast_dim(extended_lhs_shape.Dims(1), extended_rhs_shape.Dims(1));
+    batch_dim2 = broadcast_dim(extended_lhs_shape.Dims(2), extended_rhs_shape.Dims(2));
+
+    lhs_ext0 = extent(extended_lhs_shape, 0);
+    lhs_ext1 = extent(extended_lhs_shape, 1);
+    lhs_ext2 = extent(extended_lhs_shape, 2);
+    rhs_ext0 = extent(extended_rhs_shape, 0);
+    rhs_ext1 = extent(extended_rhs_shape, 1);
+    rhs_ext2 = extent(extended_rhs_shape, 2);
+
+    // Set params for each matrix multiply.
+    lhs_rows = extended_lhs_shape.Dims(3);
+    lhs_cols = extended_lhs_shape.Dims(4);
+    rhs_rows = extended_rhs_shape.Dims(3);
+    rhs_cols = extended_rhs_shape.Dims(4);
+    accum_depth = extended_lhs_shape.Dims(4);
+  }
+
+  int batch_dim0;
+  int batch_dim1;
+  int batch_dim2;
+  int lhs_ext0;
+  int lhs_ext1;
+  int lhs_ext2;
+  int rhs_ext0;
+  int rhs_ext1;
+  int rhs_ext2;
+  int lhs_rows;
+  int lhs_cols;
+  int rhs_rows;
+  int rhs_cols;
+  int accum_depth;
+
+private:
+  // Determines which dimension is the broadcast dimension.
+  int32_t broadcast_dim(int32_t lhs_dim, int32_t rhs_dim)
+  {
     if (lhs_dim == rhs_dim)
       return lhs_dim;
     if (lhs_dim == 1)
@@ -44,9 +84,10 @@ inline void BatchMatMul(const Shape &lhs_shape, const float *lhs_data, const Sha
     return lhs_dim;
   };
 
-  // Compute the "extent" for iterating on this dimension.
+  // Computes the "extent" for iterating on this dimension.
   // If we are broadcasting, then don't advance (i.e return 0).
-  auto extent = [](const Shape &shape, int x) {
+  int extent(const Shape &shape, int x)
+  {
     if (shape.Dims(x) == 1)
     {
       return 0;
@@ -58,53 +99,82 @@ inline void BatchMatMul(const Shape &lhs_shape, const float *lhs_data, const Sha
     }
     return prod;
   };
+};
 
-  const int batch_dim0 = broadcast_dim(extended_lhs_shape.Dims(0), extended_rhs_shape.Dims(0));
-  const int batch_dim1 = broadcast_dim(extended_lhs_shape.Dims(1), extended_rhs_shape.Dims(1));
-  const int batch_dim2 = broadcast_dim(extended_lhs_shape.Dims(2), extended_rhs_shape.Dims(2));
-
-  const int lhs_ext0 = extent(extended_lhs_shape, 0);
-  const int lhs_ext1 = extent(extended_lhs_shape, 1);
-  const int lhs_ext2 = extent(extended_lhs_shape, 2);
-  const int rhs_ext0 = extent(extended_rhs_shape, 0);
-  const int rhs_ext1 = extent(extended_rhs_shape, 1);
-  const int rhs_ext2 = extent(extended_rhs_shape, 2);
-
-  // Set params for each matrix multiply.
-  const int lhs_rows = extended_lhs_shape.Dims(3);
-  const int rhs_cols = extended_rhs_shape.Dims(4);
-  const int accum_depth = extended_lhs_shape.Dims(4);
-
-  for (int b0 = 0; b0 < batch_dim0; ++b0)
+inline void bmm_reference(const BMMParams &bmm_params, const float *lhs_data, const float *rhs_data,
+                          float *output_data)
+{
+  for (int b0 = 0; b0 < bmm_params.batch_dim0; ++b0)
   {
-    const float *lhs_ptr0 = lhs_data + (b0 * lhs_ext0);
-    const float *rhs_ptr0 = rhs_data + (b0 * rhs_ext0);
-    for (int b1 = 0; b1 < batch_dim1; ++b1)
+    const float *lhs_ptr0 = lhs_data + (b0 * bmm_params.lhs_ext0);
+    const float *rhs_ptr0 = rhs_data + (b0 * bmm_params.rhs_ext0);
+    for (int b1 = 0; b1 < bmm_params.batch_dim1; ++b1)
     {
-      const float *lhs_ptr1 = lhs_ptr0 + b1 * lhs_ext1;
-      const float *rhs_ptr1 = rhs_ptr0 + b1 * rhs_ext1;
-      for (int b2 = 0; b2 < batch_dim2; ++b2)
+      const float *lhs_ptr1 = lhs_ptr0 + b1 * bmm_params.lhs_ext1;
+      const float *rhs_ptr1 = rhs_ptr0 + b1 * bmm_params.rhs_ext1;
+      for (int b2 = 0; b2 < bmm_params.batch_dim2; ++b2)
       {
-        const float *lhs_ptr2 = lhs_ptr1 + b2 * lhs_ext2;
-        const float *rhs_ptr2 = rhs_ptr1 + b2 * rhs_ext2;
-        float *out_ptr = output_data + ((b0 * batch_dim1 * batch_dim2) + b1 * batch_dim2 + b2) *
-                                         lhs_rows * rhs_cols;
-        for (int j = 0; j < rhs_cols; ++j)
+        const float *lhs_ptr2 = lhs_ptr1 + b2 * bmm_params.lhs_ext2;
+        const float *rhs_ptr2 = rhs_ptr1 + b2 * bmm_params.rhs_ext2;
+        float *out_ptr = output_data + ((b0 * bmm_params.batch_dim1 * bmm_params.batch_dim2) +
+                                        b1 * bmm_params.batch_dim2 + b2) *
+                                         bmm_params.lhs_rows * bmm_params.rhs_cols;
+        for (int j = 0; j < bmm_params.rhs_cols; ++j)
         {
-          for (int i = 0; i < lhs_rows; ++i)
+          for (int i = 0; i < bmm_params.lhs_rows; ++i)
           {
             float total = 0.f;
-            for (int k = 0; k < accum_depth; ++k)
+            for (int k = 0; k < bmm_params.accum_depth; ++k)
             {
-              total += lhs_ptr2[accum_depth * i + k] * rhs_ptr2[j * accum_depth + k];
+              total +=
+                lhs_ptr2[bmm_params.accum_depth * i + k] * rhs_ptr2[j * bmm_params.accum_depth + k];
             }
-            int idx = lhs_rows * j + i;
+            int idx = bmm_params.lhs_rows * j + i;
             out_ptr[idx] = total;
           }
         }
       }
     }
   }
+}
+
+#if defined(CKER_X86_PLATFORM)
+inline void bmm_optimized(const BMMParams &bmm_params, const float *lhs_data, const float *rhs_data,
+                          float *output_data)
+{
+  MatrixParams<float> lhs_params; // should it be created from rhs?
+  lhs_params.order = Order::kRowMajor;
+  lhs_params.rows = bmm_params.lhs_rows;
+  lhs_params.cols = bmm_params.lhs_cols;
+  lhs_params.cache_policy = nnfw::cker::optimized::DefaultCachePolicy(false);
+
+  MatrixParams<float> rhs_params;
+  rhs_params.order = Order::kRowMajor;
+  rhs_params.rows = bmm_params.rhs_rows;
+  rhs_params.cols = bmm_params.rhs_cols;
+  rhs_params.cache_policy = nnfw::cker::optimized::DefaultCachePolicy(false);
+
+  MatrixParams<float> dst_params;
+  dst_params.order = Order::kColMajor;
+  dst_params.rows = bmm_params.lhs_rows;
+  dst_params.cols = bmm_params.rhs_cols;
+
+  GemmParams<float, float> gemm_params;
+  optimized::Gemm(lhs_params, lhs_data, rhs_params, rhs_data, dst_params, output_data, gemm_params);
+}
+#endif
+} // namespace impl
+
+inline void BatchMatMul(const Shape &lhs_shape, const float *lhs_data, const Shape &rhs_shape,
+                        const float *rhs_data, const Shape & /* output_shape */, float *output_data)
+{
+  const impl::BMMParams bmm_params{lhs_shape, rhs_shape};
+
+#if defined(CKER_X86_PLATFORM)
+  impl::bmm_optimized(bmm_params, lhs_data, rhs_data, output_data);
+#else
+  impl::bmm_reference(bmm_params, lhs_data, rhs_data, output_data);
+#endif
 }
 
 } // namespace reference
