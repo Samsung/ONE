@@ -25,7 +25,7 @@ std::unique_ptr<Kernel> build_kernel_CircleRmsNorm(const luci::CircleNode *circl
                                                    KernelBuilderHelper &helper)
 {
   const auto *node = loco::must_cast<const luci::CircleRmsNorm *>(circle_node);
-  // assert(node->arity() == 2);
+  assert(node->arity() == 2);
 
   const Tensor *input = helper.getInputTensor(node->input());
   const Tensor *gamma = helper.getInputTensor(node->gamma());
