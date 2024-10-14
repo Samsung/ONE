@@ -45,6 +45,9 @@ inline void RoPE(const RoPEMode mode, const Shape &input_shape, const T *input_d
   const int32_t i2_n = MatchingDim(input_shape, 2, output_shape, 2);
   const int32_t i3_n = MatchingDim(input_shape, 3, output_shape, 3);
 
+  if (i3_n % 2 != 0)
+    throw std::runtime_error("i3_n must be even number");
+
   if (mode == RoPEMode::kGptNeox)
   {
     for (int32_t i0 = 0; i0 < i0_n; ++i0)
