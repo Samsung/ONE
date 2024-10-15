@@ -71,6 +71,7 @@ protected:
   void loadBCQFullyConnected(const Operator *op, ir::Graph &subg);
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadRmsNorm(const Operator *op, ir::Graph &subg);
+  void loadRoPE(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -97,6 +98,20 @@ protected:
       return ir::DataType::QUANT_GGML_Q8_0;
 
     return BaseLoader::tensorTypeToDataType(type);
+  }
+
+  ir::operation::RoPE::RoPEMode convertRoPEMode(const circle::RoPEMode mode)
+  {
+    switch (mode)
+    {
+      case circle::RoPEMode::RoPEMode_GPT_NEOX:
+        return ir::operation::RoPE::RoPEMode::GPT_NEOX;
+      case circle::RoPEMode::RoPEMode_GPT_J:
+        return ir::operation::RoPE::RoPEMode::GPT_J;
+      default:
+        throw std::runtime_error(std::string("Unsupported RoPE mode: ") +
+                                 std::to_string(static_cast<int>(mode)));
+    }
   }
 
 private:
@@ -153,6 +168,9 @@ private:
         return;
       case circle::BuiltinOperator::BuiltinOperator_RMS_NORM:
         loadRmsNorm(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_ROPE:
+        loadRoPE(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -243,6 +261,22 @@ void CircleLoader::loadRmsNorm(const Operator *op, ir::Graph &subg)
   param.epsilon = options->epsilon() == 0.f ? 1e-6 : options->epsilon();
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::RmsNorm(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadRoPE(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::RoPE::Param param;
+  const auto *options = op->builtin_options_as_RoPEOptions();
+
+  param.mode = convertRoPEMode(options->mode());
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::RoPE(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
