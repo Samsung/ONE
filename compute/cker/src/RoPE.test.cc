@@ -149,4 +149,27 @@ TEST(CKer_Operation, neg_RoPE)
                                              sin_table.data(), cos_table_shape, cos_table.data(),
                                              ref_output_shape, output.data()));
   }
+
+  // unsupported odd number
+  {
+    RoPEMode mode = RoPEMode::kGptNeox;
+
+    Shape input_shape{1, 1, 1, 3};
+    std::vector<float> input{0, 1.0, 2.0};
+
+    Shape sin_table_shape{1, 1, 1, 3};
+    std::vector<float> sin_table{0.5, 1.0, 1.0};
+    Shape cos_table_shape{1, 1, 1, 3};
+    std::vector<float> cos_table{1.0, 0.5, 0.5};
+
+    Shape ref_output_shape{1, 1, 1, 3};
+    std::vector<float> ref_output_data{-1.0, -2.5, 1.0};
+
+    Shape output_shape{1, 1, 1, 3};
+    std::vector<float> output(ref_output_data.size());
+
+    EXPECT_ANY_THROW(nnfw::cker::RoPE<float>(mode, input_shape, input.data(), sin_table_shape,
+                                             sin_table.data(), cos_table_shape, cos_table.data(),
+                                             ref_output_shape, output.data()));
+  }
 }
