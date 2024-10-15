@@ -27,10 +27,10 @@ namespace backend
 namespace cpu
 {
 /*
-* Find indexed of operands assigned to tensors which can share memory (indicate the same buffer).
-* Note that it's applicable for operations that do NOT change data but only shape like Reshape.
-*/
-ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandsIndexes(const ir::IGraph& graph);
+ * Find indexed of operands assigned to tensors which can share memory (indicate the same buffer).
+ * Note that it's applicable for operations that do NOT change data but only shape like Reshape.
+ */
+ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandsIndexes(const ir::IGraph &graph);
 
 } // namespace cpu
 } // namespace backend

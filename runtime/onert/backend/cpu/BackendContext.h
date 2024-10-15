@@ -44,7 +44,10 @@ public:
   ITensorRegistry *genTensors() override;
   FunctionMap genKernels() override;
 
-  const ir::OperandIndexMap<ir::OperandIndex> sharedMemoryOperandsMap() override {return tensor_builder->getOperandsWithSharedMemory();}
+  const ir::OperandIndexMap<ir::OperandIndex> sharedMemoryOperandsMap() override
+  {
+    return tensor_builder->getOperandsWithSharedMemory();
+  }
 
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
