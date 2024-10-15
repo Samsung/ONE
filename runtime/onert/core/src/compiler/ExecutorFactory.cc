@@ -143,27 +143,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
   }
 }
 
-// To handle cases like Reshape->Reshape->Reshape... chain where the memory is shared.
-// In such a case we should re-assign indexes to the first Reshape input.
-void reassign_indexes_to_single_sources(
-  ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_map)
-{
-  for (auto [shared_ind, source_ind] : shared_memory_operand_map)
-  {
-    bool other_source_found = false;
-    auto it = std::end(shared_memory_operand_map);
-    while ((it = shared_memory_operand_map.find(source_ind)) != std::end(shared_memory_operand_map))
-    {
-      source_ind = shared_memory_operand_map[source_ind];
-      other_source_found = true;
-    }
-    if (other_source_found)
-    {
-      shared_memory_operand_map[shared_ind] = source_ind;
-    }
-  }
-}
-
 backend::BackendContexts
 createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
                       std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder)
@@ -238,33 +217,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 
   // Create contexts
   auto whole_op_order = lgraph.graph().topolSortOperations();
-  const std::unordered_set<std::string> memory_sharing_supported_backends = {"cpu", "builtin"};
-  const std::unordered_set<ir::OpCode> ops_with_possible_memory_sharing = {
-    ir::OpCode::Reshape, ir::OpCode::ExpandDims, ir::OpCode::Squeeze};
-  const auto memory_sharing_allowed = [&ops_with_possible_memory_sharing,
-                                       &lgraph](const ir::IOperation &op) {
-    if (ops_with_possible_memory_sharing.find(op.opcode()) ==
-        std::end(ops_with_possible_memory_sharing))
-    {
-      return false;
-    }
-    if (lgraph.graph().operands().at(op.getInputs().at(0)).info().isDynamic())
-    {
-      return false;
-    }
-    if (lgraph.graph().operands().at(op.getOutputs().at(0)).info().isDynamic())
-    {
-      return false;
-    }
-    const auto op_input_output = {op.getInputs().at(0), op.getOutputs().at(0)};
-    const bool is_model_input_output =
-      std::any_of(std::begin(op_input_output), std::end(op_input_output),
-                  [&lgraph](const ir::OperandIndex &ind) {
-                    return lgraph.graph().getInputs().contains(ind) ||
-                           lgraph.graph().getOutputs().contains(ind);
-                  });
-    return !is_model_input_output;
-  };
   for (auto &&[backend, data] : context_data_map)
   {
     auto graph = data.graph.get();
@@ -290,18 +242,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
                  [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
     data.custom_kernel_builder = custom_kernel_builder;
-    if (memory_sharing_supported_backends.count(backend->config()->id()) > 0)
-    {
-      for (const auto &op_ind : op_order)
-      {
-        const auto &op = graph->operations().at(op_ind);
-        if (memory_sharing_allowed(op))
-        {
-          data.shared_memory_operand_map[op.getOutputs().at(0)] = op.getInputs().at(0);
-        }
-      }
-      reassign_indexes_to_single_sources(data.shared_memory_operand_map);
-    }
     contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;

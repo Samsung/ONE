@@ -263,8 +263,7 @@ inline void initConsts(const ir::Operands &operands,
 
 inline void initConsts(BackendContext &ctx)
 {
-  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(),
-             ctx.data().shared_memory_operand_map);
+  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(), ctx.sharedMemoryOperandsMap());
 }
 
 } // namespace basic

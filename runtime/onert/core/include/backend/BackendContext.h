@@ -46,8 +46,6 @@ struct ContextData
   std::shared_ptr<custom::IKernelBuilder> custom_kernel_builder;
   /* Is linear executor or not */
   bool is_linear_executor;
-  /* Map of operands which share memory where the values are sources of memory */
-  ir::OperandIndexMap<ir::OperandIndex> shared_memory_operand_map;
 };
 
 class BackendContext
@@ -66,6 +64,7 @@ public:
   const util::Set<ir::OperandIndex> &external_operands() const { return _data.external_operands; }
   const ContextData &data() const { return _data; }
 
+  virtual const ir::OperandIndexMap<ir::OperandIndex> sharedMemoryOperandsMap() {return {};}
   virtual ITensorRegistry *genTensors() = 0;
   virtual FunctionMap genKernels() = 0;
 
