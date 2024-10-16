@@ -222,6 +222,8 @@ public:
   uint32_t addOperatorSplit(const OperatorParams &params, int32_t num_split);
   uint32_t addOperatorSqrt(const OperatorParams &params);
   uint32_t addOperatorSquare(const OperatorParams &params);
+  uint32_t addOperatorSqueeze(const OperatorParams &params,
+                              const std::vector<int32_t> &squeeze_dims);
   uint32_t addOperatorStridedSlice(const OperatorParams &params, int32_t begin_mask = 0,
                                    int32_t end_mask = 0, int32_t ellipsis_mask = 0,
                                    int32_t new_axis_mask = 0, int32_t shrink_axis_mask = 0);
