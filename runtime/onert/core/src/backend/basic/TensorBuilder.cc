@@ -31,8 +31,8 @@ TensorBuilder::TensorBuilder(
   const std::shared_ptr<TensorRegistry> &tensor_reg,
   const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
-    _static_tensor_mgr{
-      new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get(), shared_memory_operand_indexes)},
+    _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get(),
+                                               shared_memory_operand_indexes)},
     _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   /* empty */
