@@ -39,7 +39,7 @@ target_link_libraries(${TEST_ONERT_CPU_BACKEND} nnfw_coverage)
 target_link_libraries(${TEST_ONERT_CPU_BACKEND} onert_core)
 target_link_libraries(${TEST_ONERT_CPU_BACKEND} gtest gtest_main dl ${LIB_PTHREAD})
 
-# Set install rpath to find onert_core, onert_backend_train, etc
+# Set install rpath to find onert_core, onert_backend_cpu, etc
 set_target_properties(${TEST_ONERT_CPU_BACKEND} PROPERTIES
   INSTALL_RPATH "$ORIGIN/../lib/nnfw:$ORIGIN/../lib/nnfw/backend")
 

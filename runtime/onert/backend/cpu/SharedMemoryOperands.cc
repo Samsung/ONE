@@ -75,7 +75,7 @@ bool is_memory_sharing_allowed(const ir::IGraph &graph, const ir::IOperation &op
 
 } // namespace
 
-ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandsIndexes(const ir::IGraph &graph)
+ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandIndexes(const ir::IGraph &graph)
 {
   ir::OperandIndexMap<ir::OperandIndex> shared_memory_operand_map;
   graph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {

@@ -184,7 +184,7 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 
   // process source tensors for shared memory at first
   std::vector<ir::OperandIndex> registered_source_ind;
-  for (const auto &[_, source_ind] : tensor_builder->getOperandsWithSharedMemory())
+  for (const auto &[_, source_ind] : tensor_builder->getSharedMemoryOperandIndexes())
   {
     if (ctx.external_operands().contains(source_ind))
       continue;
@@ -264,7 +264,7 @@ inline void initConsts(const ir::Operands &operands,
 inline void initConsts(BackendContext &ctx)
 {
   initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(),
-             ctx.sharedMemoryOperandsMap());
+             ctx.sharedMemoryOperandIndexes());
 }
 
 } // namespace basic

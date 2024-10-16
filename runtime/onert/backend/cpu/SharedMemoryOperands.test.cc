@@ -39,7 +39,7 @@ TEST(SharedMemoryOperands, no_shared_memory_graph)
   graph->addOutput(perm_output);
   graph->verify();
 
-  const auto indexes_map = findSharedMemoryOperandsIndexes(*graph);
+  const auto indexes_map = findSharedMemoryOperandIndexes(*graph);
 
   ASSERT_EQ(indexes_map.size(), 0);
 }
@@ -65,7 +65,7 @@ TEST(SharedMemoryOperands, single_reshape_graph)
   graph->addOutput(perm2_output);
   graph->verify();
 
-  const auto indexes_map = findSharedMemoryOperandsIndexes(*graph);
+  const auto indexes_map = findSharedMemoryOperandIndexes(*graph);
 
   ASSERT_EQ(indexes_map.size(), 1);
   EXPECT_EQ(indexes_map.begin()->first, 2);
@@ -97,7 +97,7 @@ TEST(SharedMemoryOperands, double_reshape_graph)
   graph->addOutput(perm2_output);
   graph->verify();
 
-  const auto indexes_map = findSharedMemoryOperandsIndexes(*graph);
+  const auto indexes_map = findSharedMemoryOperandIndexes(*graph);
 
   ASSERT_EQ(indexes_map.size(), 2);
   auto map_it = indexes_map.begin();
@@ -129,7 +129,7 @@ TEST(SharedMemoryOperands, dyn_output_reshape_graph)
   graph->addOutput(perm2_output);
   graph->verify();
 
-  const auto indexes_map = findSharedMemoryOperandsIndexes(*graph);
+  const auto indexes_map = findSharedMemoryOperandIndexes(*graph);
 
   ASSERT_EQ(indexes_map.size(), 0);
 }
@@ -153,7 +153,7 @@ TEST(SharedMemoryOperands, model_input_reshape_graph)
   graph->addOutput(perm_output);
   graph->verify();
 
-  const auto indexes_map = findSharedMemoryOperandsIndexes(*graph);
+  const auto indexes_map = findSharedMemoryOperandIndexes(*graph);
 
   ASSERT_EQ(indexes_map.size(), 0);
 }
@@ -177,7 +177,7 @@ TEST(SharedMemoryOperands, single_squeeze_graph)
   graph->addOutput(perm2_output);
   graph->verify();
 
-  const auto indexes_map = findSharedMemoryOperandsIndexes(*graph);
+  const auto indexes_map = findSharedMemoryOperandIndexes(*graph);
 
   ASSERT_EQ(indexes_map.size(), 1);
   EXPECT_EQ(indexes_map.begin()->first, 2);

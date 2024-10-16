@@ -102,7 +102,7 @@ basic::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
   return _tensor_reg->getNativeOwnTensor(ind);
 }
 
-const ir::OperandIndexMap<ir::OperandIndex> &TensorBuilder::getOperandsWithSharedMemory() const
+const ir::OperandIndexMap<ir::OperandIndex> &TensorBuilder::getSharedMemoryOperandIndexes() const
 {
   return _operands_with_shared_memory;
 }

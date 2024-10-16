@@ -17,8 +17,8 @@
 #include <gtest/gtest.h>
 #include <nnfw_internal.h>
 
-#include "GenModelTest.h"
 #include "CircleGen.h"
+#include "GenModelTest.h"
 
 TEST_F(GenModelTest, reshape_inference)
 {
