@@ -48,6 +48,7 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
       {
         for (int32_t width = 0; width < widths; width++)
         {
+          // normalize over last-axis
           double square_sum = 0.0f;
           for (int32_t channel = 0; channel < channels; channel++)
           {
@@ -75,6 +76,7 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
     {
       for (int32_t width = 0; width < widths; width++)
       {
+        // normalize over last-axis
         double square_sum = 0.0f;
         for (int32_t channel = 0; channel < channels; channel++)
         {
