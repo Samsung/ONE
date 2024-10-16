@@ -76,12 +76,11 @@ OMStatus FullyConnected(const core::FullyConnectedParams &params, const InputTyp
   return Ok;
 }
 
-template <>
-OMStatus inline FullyConnected<float>(const core::FullyConnectedParams &params,
-                                      const float *input_data,
-                                      const core::OMRuntimeShape &filter_shape,
-                                      const float *filter_data, const float *bias_data,
-                                      const core::OMRuntimeShape &output_shape, float *output_data)
+template <typename WeightType>
+OMStatus inline FullyConnected(const core::FullyConnectedParams &params, const float *input_data,
+                               const core::OMRuntimeShape &filter_shape,
+                               const WeightType *filter_data, const float *bias_data,
+                               const core::OMRuntimeShape &output_shape, float *output_data)
 {
   const float output_activation_min = params.float_activation_min;
   const float output_activation_max = params.float_activation_max;
@@ -93,12 +92,24 @@ OMStatus inline FullyConnected<float>(const core::FullyConnectedParams &params,
 
   for (int b = 0; b < batches; ++b)
   {
+    const float *weight_scale_ptr = params.weights_scales;
     for (int out_c = 0; out_c < output_depth; ++out_c)
     {
       float total = 0.f;
       for (int d = 0; d < accum_depth; ++d)
       {
-        total += input_data[b * accum_depth + d] * filter_data[out_c * accum_depth + d];
+        auto input_value = input_data[b * accum_depth + d];
+        if (std::is_same<WeightType, float>::value)
+        {
+          total += input_value * filter_data[out_c * accum_depth + d];
+        }
+        else
+        {
+          const float filter_scale = *weight_scale_ptr;
+          const float filter_value =
+            static_cast<float>(filter_data[out_c * accum_depth + d]) * filter_scale;
+          total += input_value * filter_value;
+        }
       }
       float bias_value = 0.0f;
       if (bias_data)
@@ -107,6 +118,12 @@ OMStatus inline FullyConnected<float>(const core::FullyConnectedParams &params,
       }
       output_data[out_c + output_depth * b] =
         std::min(std::max(total + bias_value, output_activation_min), output_activation_max);
+
+      if (std::is_same<WeightType, int8_t>::value)
+      {
+        if (params.is_channel_wise_quant)
+          weight_scale_ptr++;
+      }
     }
   }
   return Ok;
