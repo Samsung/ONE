@@ -1144,5 +1144,22 @@ void ShapeValidator::visit(const ir::operation::RmsNorm &node)
               (gamma_shape.dim(0) == ifm_shape.dim(ifm_shape.rank() - 1)));
 }
 
+void ShapeValidator::visit(const ir::operation::RoPE &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::RoPE::Input::INPUT)};
+  const auto sin_table_index{node.getInputs().at(ir::operation::RoPE::Input::SIN_TABLE)};
+  const auto cos_table_index{node.getInputs().at(ir::operation::RoPE::Input::COS_TABLE)};
+
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ifm_index).shape() == operands.at(ofm_index).shape());
+  OP_REQUIRES(operands.at(sin_table_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(cos_table_index).shape().rank() == 4);
+}
+
 } // namespace compiler
 } // namespace onert
