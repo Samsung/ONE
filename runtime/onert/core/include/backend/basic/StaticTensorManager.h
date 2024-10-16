@@ -38,10 +38,10 @@ class StaticTensorManager
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
                       DynamicTensorManager *dynamic_tensor_manager,
-                      const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory);
+                      const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes);
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
                       DynamicTensorManager *dynamic_tensor_manager,
-                      const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory);
+                      const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes);
   virtual ~StaticTensorManager() = default;
 
   void allocateNonconsts(void);
@@ -59,8 +59,8 @@ private:
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
   DynamicTensorManager *_dynamic_tensor_manager;
-  ir::OperandIndexMap<ir::OperandIndex> _operands_with_shared_memory;
-  ir::OperandIndexMap<uint32_t> _source_operands_ref_counter;
+  ir::OperandIndexMap<ir::OperandIndex> _shared_memory_operand_indexes;
+  ir::OperandIndexMap<uint32_t> _source_operand_inds_ref_counter;
 };
 
 } // namespace basic

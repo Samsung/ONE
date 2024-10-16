@@ -31,10 +31,10 @@ namespace basic
 
 StaticTensorManager::StaticTensorManager(
   const std::shared_ptr<TensorRegistry> &reg, DynamicTensorManager *dynamic_tensor_manager,
-  const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory)
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _nonconst_mgr{new MemoryManager()}, _tensors{reg},
     _dynamic_tensor_manager{dynamic_tensor_manager},
-    _operands_with_shared_memory{operands_with_shared_memory}
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   // DO NOTHING
 }
@@ -42,10 +42,10 @@ StaticTensorManager::StaticTensorManager(
 StaticTensorManager::StaticTensorManager(
   const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
   DynamicTensorManager *dynamic_tensor_manager,
-  const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory)
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _nonconst_mgr{new MemoryManager(planner_id)}, _tensors{reg},
     _dynamic_tensor_manager{dynamic_tensor_manager},
-    _operands_with_shared_memory{operands_with_shared_memory}
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   // DO NOTHING
 }
@@ -59,9 +59,9 @@ void StaticTensorManager::allocateNonconsts(void)
     bool buffer_set = false;
     if (!tensor->is_dynamic())
     {
-      if (_operands_with_shared_memory.find(ind) != std::end(_operands_with_shared_memory))
+      if (_shared_memory_operand_indexes.find(ind) != std::end(_shared_memory_operand_indexes))
       {
-        const auto &shared_memory_ind = _operands_with_shared_memory[ind];
+        const auto &shared_memory_ind = _shared_memory_operand_indexes[ind];
         if (!_as_constants[shared_memory_ind])
         {
           tensor->setBuffer(_nonconst_mgr->getBuffer(shared_memory_ind));
@@ -95,11 +95,11 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
   }
   else
   {
-    const auto source_operand = _operands_with_shared_memory.find(ind);
-    if (source_operand != std::end(_operands_with_shared_memory) &&
-        _as_constants[source_operand->second])
+    const auto source_operand_ind = _shared_memory_operand_indexes.find(ind);
+    if (source_operand_ind != std::end(_shared_memory_operand_indexes) &&
+        _as_constants[source_operand_ind->second])
     {
-      as_const = _as_constants[source_operand->second];
+      as_const = _as_constants[source_operand_ind->second];
       auto new_tensor_info = tensor_info;
       new_tensor_info.setAsConstant();
       tensor = std::make_unique<ExternalTensor>(new_tensor_info);
@@ -123,8 +123,8 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
   ir::OperandIndex claim_ind;
-  const auto source_ind = _operands_with_shared_memory.find(ind);
-  if (source_ind == std::end(_operands_with_shared_memory))
+  const auto source_ind = _shared_memory_operand_indexes.find(ind);
+  if (source_ind == std::end(_shared_memory_operand_indexes))
   {
     claim_ind = ind;
   }
@@ -136,9 +136,9 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   {
     return;
   }
-  ++_source_operands_ref_counter[claim_ind];
+  ++_source_operand_inds_ref_counter[claim_ind];
   // notify only first usage
-  if (1 == _source_operands_ref_counter[claim_ind])
+  if (1 == _source_operand_inds_ref_counter[claim_ind])
   {
     _nonconst_mgr->claimPlan(claim_ind, size);
   }
@@ -152,25 +152,25 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
   ir::OperandIndex release_ind;
-  const auto source_operand_ind = _operands_with_shared_memory.find(ind);
-  if (source_operand_ind == std::end(_operands_with_shared_memory))
+  const auto source_operand_ind_ind = _shared_memory_operand_indexes.find(ind);
+  if (source_operand_ind_ind == std::end(_shared_memory_operand_indexes))
   {
     release_ind = ind;
   }
   else
   {
-    release_ind = source_operand_ind->second;
+    release_ind = source_operand_ind_ind->second;
   }
   if (_as_constants[release_ind])
   {
     return;
   }
-  if (_source_operands_ref_counter[release_ind] > 0)
+  if (_source_operand_inds_ref_counter[release_ind] > 0)
   {
-    --_source_operands_ref_counter[release_ind];
+    --_source_operand_inds_ref_counter[release_ind];
   }
   // notify only last usage
-  if (0 == _source_operands_ref_counter[release_ind])
+  if (0 == _source_operand_inds_ref_counter[release_ind])
   {
     _nonconst_mgr->releasePlan(release_ind);
   }

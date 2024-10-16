@@ -247,8 +247,8 @@ inline void initConsts(const ir::Operands &operands,
 
     if (has_const_shared_memory)
     {
-      const auto &memory_source_operand = operands.at(shared_memory_operands_map.at(ind));
-      auto memory_source_data = memory_source_operand.shareData();
+      const auto &source_operand_ind = operands.at(shared_memory_operands_map.at(ind));
+      auto memory_source_data = source_operand_ind.shareData();
       assert(memory_source_data && memory_source_data->base());
       ext_tensor->setData(memory_source_data);
     }

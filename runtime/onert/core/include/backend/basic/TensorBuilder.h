@@ -38,9 +38,9 @@ class TensorBuilder
 {
 public:
   TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
-                const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory = {});
+                const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes = {});
   TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id,
-                const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory = {});
+                const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes = {});
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -65,7 +65,7 @@ private:
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
-  ir::OperandIndexMap<ir::OperandIndex> _operands_with_shared_memory;
+  ir::OperandIndexMap<ir::OperandIndex> _shared_memory_operand_indexes;
 };
 
 } // namespace basic

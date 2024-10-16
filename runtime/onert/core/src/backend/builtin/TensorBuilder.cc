@@ -29,11 +29,11 @@ namespace builtin
 
 TensorBuilder::TensorBuilder(
   const std::shared_ptr<TensorRegistry> &tensor_reg,
-  const ir::OperandIndexMap<ir::OperandIndex> &operands_with_shared_memory)
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg->base_reg())},
     _static_tensor_mgr{new basic::StaticTensorManager(
-      _tensor_reg->base_reg(), _dynamic_tensor_mgr.get(), operands_with_shared_memory)},
-    _operands_with_shared_memory{operands_with_shared_memory}
+      _tensor_reg->base_reg(), _dynamic_tensor_mgr.get(), shared_memory_operand_indexes)},
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   /* empty */
 }
@@ -104,7 +104,7 @@ basic::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
 
 const ir::OperandIndexMap<ir::OperandIndex> &TensorBuilder::getSharedMemoryOperandIndexes() const
 {
-  return _operands_with_shared_memory;
+  return _shared_memory_operand_indexes;
 }
 
 } // namespace builtin
