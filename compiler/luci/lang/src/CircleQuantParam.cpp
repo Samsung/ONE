@@ -37,6 +37,7 @@ void copy_quantparam(const luci::CircleNode *src, luci::CircleNode *dst)
     qparam->zerop = q->zerop;
     qparam->min = q->min;
     qparam->max = q->max;
+    qparam->hessian = q->hessian;
     qparam->quantized_dimension = q->quantized_dimension;
 
     dst->quantparam(std::move(qparam));
