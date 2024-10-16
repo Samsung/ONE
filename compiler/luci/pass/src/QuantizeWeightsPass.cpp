@@ -35,7 +35,7 @@ bool QuantizeWeightsPass::run(loco::Graph *g)
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
     auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-    QuantizeWeightsOnly qw(_ctx->input_model_dtype, _ctx->output_model_dtype, _ctx->granularity);
+    QuantizeWeightsOnly qw(_ctx->input_model_dtype, _ctx->output_model_dtype, _ctx->granularity,luci::QuantizationAlgorithm::MinimumMSE);
     circle_node->accept(&qw);
   }
 
