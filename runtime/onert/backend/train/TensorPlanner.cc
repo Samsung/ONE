@@ -519,6 +519,49 @@ ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::Operati
   return ret;
 }
 
+void TensorPlanner::planLayerScopeTensors(TensorBuilder *tensor_builder)
+{
+  // forwading order
+  const auto f_order = _tgraph.topolSortOperations();
+  for (const auto &op_index : f_order)
+  {
+    if (not tensor_builder->isRegisteredLayerScopeTensor(op_index))
+      continue;
+
+    const auto &indices = tensor_builder->getRegisteredLayerScopeTensorIndices(op_index);
+    for (const auto &idx : indices)
+    {
+      const auto lt = tensor_builder->getLayerScopeTensorLifeTime(idx);
+      if (lt == LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD)
+        tensor_builder->notifyLayerScopeFirstUse(idx);
+    }
+  }
+
+  // backwarding order
+  const auto b_order = _tgraph.essentialBackwardOrder();
+  for (const auto &op_index : b_order)
+  {
+    if (not tensor_builder->isRegisteredLayerScopeTensor(op_index))
+      continue;
+
+    const auto &indices = tensor_builder->getRegisteredLayerScopeTensorIndices(op_index);
+
+    for (const auto &idx : indices)
+    {
+      const auto lt = tensor_builder->getLayerScopeTensorLifeTime(idx);
+      if (lt == LayerScopeTensorLifeTime::BACKWARD)
+        tensor_builder->notifyLayerScopeFirstUse(idx);
+    }
+    for (const auto &idx : indices)
+    {
+      const auto lt = tensor_builder->getLayerScopeTensorLifeTime(idx);
+      if (lt == LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD ||
+          lt == LayerScopeTensorLifeTime::BACKWARD)
+        tensor_builder->notifyLayerScopeLastUse(idx);
+    }
+  }
+}
+
 } // namespace train
 } // namespace backend
 } // namespace onert
