@@ -202,6 +202,7 @@ public:
   uint32_t addOperatorReduce(const OperatorParams &params, circle::BuiltinOperator reduce_op,
                              bool keep_dims);
   uint32_t addOperatorRmsNorm(const OperatorParams &params, float epsilon);
+  uint32_t addOperatorRoPE(const OperatorParams &params);
   /**
    * @brief Create circle Reshape op
    *        the second param new_shape can be optional just like circle::CreateReshapeOptionsDirect
