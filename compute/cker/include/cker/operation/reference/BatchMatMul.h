@@ -142,37 +142,36 @@ inline void bmm_reference(const BMMParams &bmm_params, const float *lhs_data, co
 inline void bmm_optimized(const BMMParams &bmm_params, const float *lhs_data, const float *rhs_data,
                           float *output_data)
 {
+  MatrixParams<float> lhs_params;
+  lhs_params.order = Order::kRowMajor;
+  lhs_params.rows = bmm_params.lhs_rows;
+  lhs_params.cols = bmm_params.lhs_cols;
+
+  MatrixParams<float> rhs_params;
+  rhs_params.order = Order::kRowMajor;
+  rhs_params.rows = bmm_params.rhs_rows;
+  rhs_params.cols = bmm_params.rhs_cols;
+
+  MatrixParams<float> dst_params;
+  dst_params.order = Order::kColMajor;
+  dst_params.rows = bmm_params.lhs_rows;
+  dst_params.cols = bmm_params.rhs_cols;
+  
   for (int b0 = 0; b0 < bmm_params.batch_dim0; ++b0)
   {
-    const float *lhs_ptr0 = lhs_data + (b0 * bmm_params.lhs_ext0);
-    const float *rhs_ptr0 = rhs_data + (b0 * bmm_params.rhs_ext0);
     for (int b1 = 0; b1 < bmm_params.batch_dim1; ++b1)
     {
-      const float *lhs_ptr1 = lhs_ptr0 + b1 * bmm_params.lhs_ext1;
-      const float *rhs_ptr1 = rhs_ptr0 + b1 * bmm_params.rhs_ext1;
       for (int b2 = 0; b2 < bmm_params.batch_dim2; ++b2)
       {
-        const float *lhs_ptr2 = lhs_ptr1 + b2 * bmm_params.lhs_ext2;
-        const float *rhs_ptr2 = rhs_ptr1 + b2 * bmm_params.rhs_ext2;
-        float *out_ptr = output_data + ((b0 * bmm_params.batch_dim1 * bmm_params.batch_dim2) +
-                                        b1 * bmm_params.batch_dim2 + b2) *
-                                         bmm_params.lhs_rows * bmm_params.rhs_cols;
-        MatrixParams<float> lhs_params;
-        lhs_params.order = Order::kRowMajor;
-        lhs_params.rows = bmm_params.lhs_rows;
-        lhs_params.cols = bmm_params.lhs_cols;
+        const float *lhs_data =
+          lhs_data + b0 * bmm_params.lhs_ext0 + b1 * bmm_params.lhs_ext1 + b2 * bmm_params.lhs_ext2;
+        const float *rhs_data =
+          rhs_data + b0 * bmm_params.rhs_ext0 + b1 * bmm_params.rhs_ext1 + b2 * bmm_params.rhs_ext2;
+        float *out_data = output_data + ((b0 * bmm_params.batch_dim1 * bmm_params.batch_dim2) +
+                                         b1 * bmm_params.batch_dim2 + b2) *
+                                          bmm_params.lhs_rows * bmm_params.rhs_cols;
 
-        MatrixParams<float> rhs_params;
-        rhs_params.order = Order::kRowMajor;
-        rhs_params.rows = bmm_params.rhs_rows;
-        rhs_params.cols = bmm_params.rhs_cols;
-
-        MatrixParams<float> dst_params;
-        dst_params.order = Order::kColMajor;
-        dst_params.rows = bmm_params.lhs_rows;
-        dst_params.cols = bmm_params.rhs_cols;
-
-        optimized::Gemm(lhs_params, lhs_ptr2, rhs_params, rhs_ptr2, dst_params, out_ptr,
+        optimized::Gemm(lhs_params, lhs_data, rhs_params, rhs_data, dst_params, out_data,
                         GemmParams<float, float>{});
       }
     }
