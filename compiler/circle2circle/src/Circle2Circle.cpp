@@ -181,6 +181,8 @@ int entry(int argc, char **argv)
              "it only converts weights whose row is a multiple of 16");
   add_switch(arser, "--replace_non_const_fc_with_batch_matmul",
              "Replace FullyConnected with BatchMatMul when its weight is non-constant");
+  add_switch(arser, "--substitute_expand_dims_to_reshape",
+             "This will convert ExpandDims with constant axis to Reshape");
   add_switch(arser, "--substitute_pack_to_reshape",
              "This will convert single input Pack to Reshape");
   add_switch(arser, "--substitute_padv2_to_pad",
@@ -333,6 +335,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["resolve_former_customop"] = Algorithms::ResolveFormerCustomOp;
   option_str_to_enum["shuffle_weight_to_16x1float32"] = Algorithms::ShuffleWeightTo16x1Float32;
   option_str_to_enum["replace_non_const_fc_with_batch_matmul"] = Algorithms::ReplaceNonConstFCWithBatchMatMul;
+  option_str_to_enum["substitute_expand_dims_to_reshape"] = Algorithms::SubstituteExpandDimsToReshape;
   option_str_to_enum["substitute_pack_to_reshape"] = Algorithms::SubstitutePackToReshape;
   option_str_to_enum["substitute_padv2_to_pad"] = Algorithms::SubstitutePadV2ToPad;
   option_str_to_enum["substitute_splitv_to_split"] = Algorithms::SubstituteSplitVToSplit;
