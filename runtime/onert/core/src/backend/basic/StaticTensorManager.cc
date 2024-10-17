@@ -27,19 +27,23 @@ namespace backend
 namespace basic
 {
 
-StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                                         DynamicTensorManager *dynamic_tensor_manager)
+StaticTensorManager::StaticTensorManager(
+  const std::shared_ptr<TensorRegistry> &reg, DynamicTensorManager *dynamic_tensor_manager,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _nonconst_mgr{new MemoryManager()}, _tensors{reg},
-    _dynamic_tensor_manager{dynamic_tensor_manager}
+    _dynamic_tensor_manager{dynamic_tensor_manager},
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   // DO NOTHING
 }
 
-StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                                         const std::string planner_id,
-                                         DynamicTensorManager *dynamic_tensor_manager)
+StaticTensorManager::StaticTensorManager(
+  const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
+  DynamicTensorManager *dynamic_tensor_manager,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _nonconst_mgr{new MemoryManager(planner_id)}, _tensors{reg},
-    _dynamic_tensor_manager{dynamic_tensor_manager}
+    _dynamic_tensor_manager{dynamic_tensor_manager},
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   // DO NOTHING
 }
