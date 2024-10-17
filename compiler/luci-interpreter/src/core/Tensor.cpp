@@ -45,14 +45,34 @@ void Tensor::writeData(const void *data_ptr, size_t data_size)
 {
   const size_t element_size = getDataTypeSize(element_type());
   const int32_t num_elements = shape().num_elements();
-  if (data_size != num_elements * element_size)
+  if (_raw_size > 0)
   {
-    throw std::invalid_argument("Invalid data size.");
+    if (data_size != _raw_size)
+    {
+      throw std::invalid_argument("Invalid data size.");
+    }
+  }
+  else
+  {
+    if (data_size != num_elements * element_size)
+    {
+      throw std::invalid_argument("Invalid data size.");
+    }
   }
   assert(data_ptr != nullptr);
   std::memcpy(data<void>(), data_ptr, data_size);
 }
 
-void Tensor::resize(const Shape &new_shape) { _shape = new_shape; }
+void Tensor::resize(const Shape &new_shape)
+{
+  _shape = new_shape;
+  _raw_size = 0;
+}
+
+void Tensor::resize(const Shape &new_shape, size_t raw_size)
+{
+  _shape = new_shape;
+  _raw_size = raw_size;
+}
 
 } // namespace luci_interpreter
