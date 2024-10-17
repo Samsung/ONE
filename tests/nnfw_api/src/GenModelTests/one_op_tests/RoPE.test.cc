@@ -28,7 +28,7 @@ TEST_F(GenModelTest, OneOp_RoPE)
   int in = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorRoPE({{in, sin_table, cos_table}, {out}});
+  cgen.addOperatorRoPE({{in, sin_table, cos_table}, {out}}, circle::RoPEMode_GPT_NEOX);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -50,7 +50,7 @@ TEST_F(GenModelTest, neg_OneOp_RoPE_InvalidShape)
   int in = cgen.addTensor({{1, 1, 1, 4}, circle::TensorType::TensorType_FLOAT32});
   int out = cgen.addTensor({{1, 1, 1, 3}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorRoPE({{in, sin_table, cos_table}, {out}});
+  cgen.addOperatorRoPE({{in, sin_table, cos_table}, {out}}, circle::RoPEMode_GPT_NEOX);
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
