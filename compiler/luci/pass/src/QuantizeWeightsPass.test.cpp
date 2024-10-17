@@ -78,7 +78,7 @@ struct QuantizeWeightsPassTest : public ::testing::Test
     output->dtype(loco::DataType::FLOAT32);
     output->name("output");
   }
-  virtual void SetUp() { MakeGraph(); }
+  virtual void SetUp() override { MakeGraph(); }
   loco::Graph _g;
 };
 
@@ -87,7 +87,8 @@ struct QuantizeWeightsPassTest : public ::testing::Test
 TEST_F(QuantizeWeightsPassTest, name)
 {
   luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::S8,
-                                 luci::QuantizationGranularity::ChannelWise);
+                                 luci::QuantizationGranularity::ChannelWise,
+                                 luci::QuantizationAlgorithm::Common);
   auto const name = pass.name();
   ASSERT_NE(nullptr, name);
 }
@@ -99,6 +100,7 @@ TEST_F(QuantizeWeightsPassTest, name_ctx)
     ctx->input_model_dtype = loco::DataType::FLOAT32;
     ctx->output_model_dtype = loco::DataType::S8;
     ctx->granularity = luci::QuantizationGranularity::ChannelWise;
+    ctx->algorithm = luci::QuantizationAlgorithm::Common;
   }
 
   luci::QuantizeWeightsPass pass(std::move(ctx));
@@ -106,11 +108,28 @@ TEST_F(QuantizeWeightsPassTest, name_ctx)
   ASSERT_NE(nullptr, name);
 }
 
+TEST_F(QuantizeWeightsPassTest, run_minimum_mse_s8)
+{
+  luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::S8,
+                                 luci::QuantizationGranularity::ChannelWise,
+                                 luci::QuantizationAlgorithm::MinimumMSE);
+  pass.run(&_g);
+}
+
+TEST_F(QuantizeWeightsPassTest, run_input_U8_mse_NEG)
+{
+  luci::QuantizeWeightsPass pass(loco::DataType::U8, loco::DataType::S8,
+                                 luci::QuantizationGranularity::ChannelWise,
+                                 luci::QuantizationAlgorithm::MinimumMSE);
+  EXPECT_THROW(pass.run(&_g), std::runtime_error);
+}
+
 TEST_F(QuantizeWeightsPassTest, run_input_U8_NEG)
 {
   loco::Graph g;
   luci::QuantizeWeightsPass pass(loco::DataType::U8, loco::DataType::S8,
-                                 luci::QuantizationGranularity::ChannelWise);
+                                 luci::QuantizationGranularity::ChannelWise,
+                                 luci::QuantizationAlgorithm::Common);
   EXPECT_THROW(pass.run(&_g), std::runtime_error);
 }
 
@@ -118,6 +137,7 @@ TEST_F(QuantizeWeightsPassTest, run_output_f32_NEG)
 {
   loco::Graph g;
   luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::FLOAT32,
-                                 luci::QuantizationGranularity::ChannelWise);
+                                 luci::QuantizationGranularity::ChannelWise,
+                                 luci::QuantizationAlgorithm::Common);
   EXPECT_THROW(pass.run(&_g), std::runtime_error);
 }
