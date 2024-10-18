@@ -596,6 +596,13 @@ uint32_t CircleGen::addOperatorRmsNorm(const OperatorParams &params, float epsil
                                 circle::BuiltinOptions_RmsNormOptions, options);
 }
 
+uint32_t CircleGen::addOperatorRoPE(const OperatorParams &params, circle::RoPEMode mode)
+{
+  auto options = circle::CreateRoPEOptions(_fbb, mode).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_ROPE,
+                                circle::BuiltinOptions_RoPEOptions, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction
