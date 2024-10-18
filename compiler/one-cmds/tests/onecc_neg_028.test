@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# use 'backend' and 'backends' option simultaneously
+# use 'backend' and 'backends' keys simultaneously
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  if grep -q "option cannot be used simultaneously" "${filename}.log"; then
+  if grep -q "keys cannot be used simultaneously" "${filename}.log"; then
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
