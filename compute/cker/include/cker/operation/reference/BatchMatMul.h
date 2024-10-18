@@ -153,25 +153,25 @@ inline void bmm_optimized(const BMMParams &bmm_params, const float *lhs_data, co
   rhs_params.cols = bmm_params.rhs_cols;
 
   MatrixParams<float> dst_params;
-  dst_params.order = Order::kColMajor;
+  dst_params.order = Order::kRowMajor;
   dst_params.rows = bmm_params.lhs_rows;
   dst_params.cols = bmm_params.rhs_cols;
-  
+
   for (int b0 = 0; b0 < bmm_params.batch_dim0; ++b0)
   {
     for (int b1 = 0; b1 < bmm_params.batch_dim1; ++b1)
     {
       for (int b2 = 0; b2 < bmm_params.batch_dim2; ++b2)
       {
-        const float *lhs_data =
+        const float *lhs_ptr =
           lhs_data + b0 * bmm_params.lhs_ext0 + b1 * bmm_params.lhs_ext1 + b2 * bmm_params.lhs_ext2;
-        const float *rhs_data =
+        const float *rhs_ptr =
           rhs_data + b0 * bmm_params.rhs_ext0 + b1 * bmm_params.rhs_ext1 + b2 * bmm_params.rhs_ext2;
-        float *out_data = output_data + ((b0 * bmm_params.batch_dim1 * bmm_params.batch_dim2) +
-                                         b1 * bmm_params.batch_dim2 + b2) *
-                                          bmm_params.lhs_rows * bmm_params.rhs_cols;
+        float *out_ptr = output_data + ((b0 * bmm_params.batch_dim1 * bmm_params.batch_dim2) +
+                                        b1 * bmm_params.batch_dim2 + b2) *
+                                         bmm_params.lhs_rows * bmm_params.rhs_cols;
 
-        optimized::Gemm(lhs_params, lhs_data, rhs_params, rhs_data, dst_params, out_data,
+        optimized::Gemm(lhs_params, lhs_ptr, rhs_params, rhs_ptr, dst_params, out_ptr,
                         GemmParams<float, float>{});
       }
     }
