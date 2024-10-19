@@ -57,7 +57,7 @@ void copy_data(const VectorWrapper<uint8_t> &raw_data, uint32_t num_elements,
   using T = typename loco::DataTypeImpl<DT>::Type;
 
   // TODO calculate the exact buffer size of sparse tensor
-  if (const_node->sparsityparam())
+  if (const_node->sparsityparam() or const_node->compression() != luci::CompressionType::NONE)
   {
     num_elements = raw_data.size() / sizeof(T);
   }

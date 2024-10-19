@@ -117,9 +117,10 @@ void Conv2D::configure()
   params.dilation_height_factor = _params.dilation_height_factor;
   params.dilation_width_factor = _params.dilation_width_factor;
   auto scratchpad = getOutputTensors()[1];
+  bool is_compressed = filter()->get_compression() != luci::CompressionType::NONE;
   luci_interpreter_pal::SetupScratchpadTensor(scratchpad, input()->element_type(), params,
                                               getTensorShape(input()), getTensorShape(filter()),
-                                              getTensorShape(output()));
+                                              getTensorShape(output()), is_compressed);
 
   switch (_params.activation)
   {
@@ -145,20 +146,34 @@ void Conv2D::execute() const
       }
       throw std::runtime_error("luci-intp Conv2D(2) Unsupported type.");
     case DataType::U8:
-      if (filter()->scales().size() == 1)
+      if (filter()->get_compression() == luci::CompressionType::HUFFMAN)
       {
-        evalQuantized();
+        evalQuantizedU8PerChannelHuffman();
       }
-      else if (filter()->scales().size() > 1)
+      else
       {
-        LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
-        LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
-                               static_cast<size_t>(filter()->shape().dim(0)));
-        evalQuantizedPerChannel();
+        if (filter()->scales().size() == 1)
+        {
+          evalQuantized();
+        }
+        else if (filter()->scales().size() > 1)
+        {
+          LUCI_INTERPRETER_CHECK(filter()->shape().num_dims() == 4);
+          LUCI_INTERPRETER_CHECK(filter()->scales().size() ==
+                                 static_cast<size_t>(filter()->shape().dim(0)));
+          evalQuantizedPerChannel();
+        }
       }
       break;
     case DataType::S8:
-      evalQuantizedS8PerChannel();
+      if (filter()->get_compression() == luci::CompressionType::HUFFMAN)
+      {
+        evalQuantizedS8PerChannelHuffman();
+      }
+      else
+      {
+        evalQuantizedS8PerChannel();
+      }
       break;
     case DataType::S16:
       evalQuantizedS16();
@@ -319,6 +334,120 @@ void Conv2D::evalQuantizedPerChannel() const
       }
     }
   }
+}
+
+// TODO: remove code duplication with S8
+void Conv2D::evalQuantizedU8PerChannelHuffman() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  tflite::ConvParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  // The kernel expects filter zero points to be negated.
+  params.input_offset = -input()->zero_point();    // Note the '-'.
+  params.weights_offset = -filter()->zero_point(); // Unused in tflite code
+  params.output_offset = output()->zero_point();
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const std::vector<double> effective_output_scales =
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  std::vector<ChannelQuantMultipliers> quant_multipliers =
+    quantizeMultipliers(effective_output_scales);
+
+  std::vector<int32_t> shifts;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
+                 [](ChannelQuantMultipliers cm) { return cm.shift; });
+  std::vector<int32_t> multipliers;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(),
+                 std::back_inserter(multipliers),
+                 [](ChannelQuantMultipliers cm) { return cm.multiplier; });
+
+  auto scratchpad = getOutputTensors()[1];
+  uint8_t *scratchpad_data = nullptr;
+
+  // Scratchpad used for decompression
+  const auto filter_shape = getTensorShape(filter());
+  const int filter_height = filter_shape.Dims(1);
+  const int filter_width = filter_shape.Dims(2);
+  const int filter_input_depth = filter_shape.Dims(3);
+  auto scratchpad_shape = Shape({filter_height, filter_width, filter_input_depth});
+
+  if (scratchpad->is_allocatable())
+  {
+    scratchpad->resize(scratchpad_shape);
+    scratchpad_data = scratchpad->data<uint8_t>();
+  }
+  luci_interpreter_pal::ConvPerChannelHuffman<uint8_t>(
+    params, multipliers.data(), shifts.data(), getTensorShape(input()),
+    getTensorData<uint8_t>(input()), getTensorShape(filter()), getTensorData<uint8_t>(filter()),
+    getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
+    getTensorData<uint8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
+}
+
+void Conv2D::evalQuantizedS8PerChannelHuffman() const
+{
+  int32_t activation_min{};
+  int32_t activation_max{};
+  calculateActivationRangeQuantized(_params.activation, output(), &activation_min, &activation_max);
+
+  tflite::ConvParams params{};
+  params.padding_values.height = _padding_height;
+  params.padding_values.width = _padding_width;
+  params.stride_height = _params.stride_height;
+  params.stride_width = _params.stride_width;
+  params.dilation_height_factor = _params.dilation_height_factor;
+  params.dilation_width_factor = _params.dilation_width_factor;
+  // The kernel expects filter zero points to be negated.
+  params.input_offset = -input()->zero_point(); // Note the '-'.
+  params.weights_offset = 0;                    // Unused in tflite code
+  params.output_offset = output()->zero_point();
+  params.quantized_activation_min = activation_min;
+  params.quantized_activation_max = activation_max;
+
+  const std::vector<double> effective_output_scales =
+    getQuantizedConvolutionMultiplers(input()->scale(), filter()->scales(), output()->scale());
+
+  std::vector<ChannelQuantMultipliers> quant_multipliers =
+    quantizeMultipliers(effective_output_scales);
+
+  std::vector<int32_t> shifts;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(), std::back_inserter(shifts),
+                 [](ChannelQuantMultipliers cm) { return cm.shift; });
+  std::vector<int32_t> multipliers;
+  std::transform(quant_multipliers.begin(), quant_multipliers.end(),
+                 std::back_inserter(multipliers),
+                 [](ChannelQuantMultipliers cm) { return cm.multiplier; });
+
+  auto scratchpad = getOutputTensors()[1];
+  int8_t *scratchpad_data = nullptr;
+
+  // Scratchpad used for decompression
+  const auto filter_shape = getTensorShape(filter());
+  const int filter_height = filter_shape.Dims(1);
+  const int filter_width = filter_shape.Dims(2);
+  const int filter_input_depth = filter_shape.Dims(3);
+  auto scratchpad_shape = Shape({filter_height, filter_width, filter_input_depth});
+
+  if (scratchpad->is_allocatable())
+  {
+    scratchpad->resize(scratchpad_shape);
+    scratchpad_data = scratchpad->data<int8_t>();
+  }
+
+  luci_interpreter_pal::ConvPerChannelHuffman<int8_t>(
+    params, multipliers.data(), shifts.data(), getTensorShape(input()),
+    getTensorData<int8_t>(input()), getTensorShape(filter()), getTensorData<int8_t>(filter()),
+    getTensorShape(bias()), getTensorData<int32_t>(bias()), getTensorShape(output()),
+    getTensorData<int8_t>(output()), getTensorShape(scratchpad), scratchpad_data);
 }
 
 void Conv2D::evalQuantizedS8PerChannel() const

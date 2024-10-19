@@ -17,6 +17,7 @@
 #ifndef __LUCI_IR_CIRCLECONST_H__
 #define __LUCI_IR_CIRCLECONST_H__
 
+#include "luci/IR/AttrWeightCompression.h"
 #include "luci/IR/CircleNodeDecl.h"
 #include "luci/IR/CircleOpcode.h"
 
@@ -42,10 +43,14 @@ public:
   template <loco::DataType DT> const typename loco::DataTypeImpl<DT>::Type &scalar(void) const;
   template <loco::DataType DT> typename loco::DataTypeImpl<DT>::Type &scalar(void);
 
+  CompressionType compression(void) const;
+  void compression(CompressionType c);
+
 private:
   std::vector<uint8_t> _data;
   // TODO use _data for STRING and remove _strings
   std::vector<std::string> _strings; // for STRING type
+  CompressionType _compression{CompressionType::NONE};
 };
 
 } // namespace luci
