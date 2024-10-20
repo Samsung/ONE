@@ -8,6 +8,7 @@ var cpu_2ops_2_operation_utils_8cc =
     [ "GetQuantizedConvolutionMultiplier", "cpu_2ops_2_operation_utils_8cc.html#ae4d438d3d3062bfd95a6e0caed125457", null ],
     [ "GetQuantizedConvolutionMultipliersAndShifts", "cpu_2ops_2_operation_utils_8cc.html#a27643fcea52ce22ee60ec37eea3f423f", null ],
     [ "getReducerAxes", "cpu_2ops_2_operation_utils_8cc.html#a7e7833cbf36fc30162efb338e65922e8", null ],
+    [ "getRoPEMode", "cpu_2ops_2_operation_utils_8cc.html#a15324d7bc25cea67c7c553a3bdb4d0a7", null ],
     [ "getSizeOfDimension", "cpu_2ops_2_operation_utils_8cc.html#a7f9662c4d904170b9a6a6ebc1f4ef2f0", null ],
     [ "HaveSameShapes", "cpu_2ops_2_operation_utils_8cc.html#afc22736e0da6f4516d09f994d0e9d07a", null ],
     [ "QuantizeMultiplier", "cpu_2ops_2_operation_utils_8cc.html#a3be5fe32ffdf0573dd36b64172dbaa3a", null ],

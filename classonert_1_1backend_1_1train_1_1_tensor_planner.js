@@ -9,6 +9,7 @@ var classonert_1_1backend_1_1train_1_1_tensor_planner =
     [ "planBackPropTensors", "classonert_1_1backend_1_1train_1_1_tensor_planner.html#ac3f2ae49dfd298a352ee243e1cc75ab2", null ],
     [ "planDisposableBackPropTensors", "classonert_1_1backend_1_1train_1_1_tensor_planner.html#ad18c350515cef3a09fe7bc1ca8305a1f", null ],
     [ "planGradientTensors", "classonert_1_1backend_1_1train_1_1_tensor_planner.html#a8ddd77844e14622f14445b22776b97a9", null ],
+    [ "planLayerScopeTensors", "classonert_1_1backend_1_1train_1_1_tensor_planner.html#afee3913c911739b3ad8713e38f5ee56a", null ],
     [ "planNonConstTensors", "classonert_1_1backend_1_1train_1_1_tensor_planner.html#a0f09cb2bfff3ec036f9d9eaf516a75c0", null ],
     [ "planTrainableTensors", "classonert_1_1backend_1_1train_1_1_tensor_planner.html#a2c058f8f9b16fe067de0eabb174426e3", null ]
 ];

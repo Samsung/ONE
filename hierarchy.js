@@ -811,7 +811,7 @@ var hierarchy =
             ] ]
           ] ],
           [ "luci::CircleNodeImpl< CircleOpcode::RMS_NORM >", "structluci_1_1_circle_node_impl.html", [
-            [ "luci::FixedArityNode< 3, CircleNodeImpl< CircleOpcode::RMS_NORM > >", "classluci_1_1_fixed_arity_node.html", [
+            [ "luci::FixedArityNode< 2, CircleNodeImpl< CircleOpcode::RMS_NORM > >", "classluci_1_1_fixed_arity_node.html", [
               [ "luci::CircleRmsNorm", "classluci_1_1_circle_rms_norm.html", null ]
             ] ]
           ] ],
@@ -2451,6 +2451,7 @@ var hierarchy =
       [ "onert::backend::cpu::ops::ResizeBilinearLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_resize_bilinear_layer.html", null ],
       [ "onert::backend::cpu::ops::ReverseLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reverse_layer.html", null ],
       [ "onert::backend::cpu::ops::RmsNormLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_rms_norm_layer.html", null ],
+      [ "onert::backend::cpu::ops::RoPELayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_ro_p_e_layer.html", null ],
       [ "onert::backend::cpu::ops::SelectLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_select_layer.html", null ],
       [ "onert::backend::cpu::ops::ShapeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_shape_layer.html", null ],
       [ "onert::backend::cpu::ops::SliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_slice_layer.html", null ],
@@ -3576,8 +3577,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],

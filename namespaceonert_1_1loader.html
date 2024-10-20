@@ -200,13 +200,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00251">251</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  252</span>{</div>
-<div class="line"><span class="lineno">  253</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno">  254</span>  CircleLoader loader(model);</div>
-<div class="line"><span class="lineno">  255</span>  loader.loadFromFile(filename);</div>
-<div class="line"><span class="lineno">  256</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><span class="lineno">  257</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00285">285</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  286</span>{</div>
+<div class="line"><span class="lineno">  287</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
+<div class="line"><span class="lineno">  288</span>  CircleLoader loader(model);</div>
+<div class="line"><span class="lineno">  289</span>  loader.loadFromFile(filename);</div>
+<div class="line"><span class="lineno">  290</span>  <span class="keywordflow">return</span> model;</div>
+<div class="line"><span class="lineno">  291</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__api__internal_8cc_source.html#l00282">nnfw_session::load_circle_from_buffer()</a>.</p>
 
@@ -238,13 +238,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00259">259</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  260</span>{</div>
-<div class="line"><span class="lineno">  261</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno">  262</span>  CircleLoader loader(model);</div>
-<div class="line"><span class="lineno">  263</span>  loader.loadFromBuffer(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><span class="lineno">  265</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00293">293</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span>{</div>
+<div class="line"><span class="lineno">  295</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
+<div class="line"><span class="lineno">  296</span>  CircleLoader loader(model);</div>
+<div class="line"><span class="lineno">  297</span>  loader.loadFromBuffer(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">return</span> model;</div>
+<div class="line"><span class="lineno">  299</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 

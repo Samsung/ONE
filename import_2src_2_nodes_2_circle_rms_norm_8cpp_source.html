@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_rms_norm_
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classluci_1_1_circle_rms_norm_graph_builder.html#a5da42ea900252e316e89c926cb01e416">   26</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classluci_1_1_circle_rms_norm_graph_builder.html#a5da42ea900252e316e89c926cb01e416">CircleRmsNormGraphBuilder::validate</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_graph_builder_base_1_1_validate_args.html">ValidateArgs</a> &amp;args)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// TODO check dtypes</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_graph_builder.html#ae66470951bad494169a90f4a528062e4">GraphBuilder::validate</a>(args, 3);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_graph_builder.html#ae66470951bad494169a90f4a528062e4">GraphBuilder::validate</a>(args, 2);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
@@ -137,15 +137,14 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_rms_norm_
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">auto</span> *node = graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_rms_norm.html">CircleRmsNorm</a>&gt;();</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  node-&gt;<a class="code hl_function" href="classluci_1_1_circle_rms_norm.html#aa39126d3feeab002eee099869adba418">input</a>(inputs.at(0));</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  node-&gt;gamma(inputs.at(1));</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  node-&gt;beta(inputs.at(2));</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *options = op.builtin_options.AsRmsNormOptions();</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  node-&gt;epsilon(options-&gt;epsilon);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> node;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *options = op.builtin_options.AsRmsNormOptions();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  node-&gt;epsilon(options-&gt;epsilon);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">return</span> node;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_rms_norm_graph_builder_html_a5da42ea900252e316e89c926cb01e416"><div class="ttname"><a href="classluci_1_1_circle_rms_norm_graph_builder.html#a5da42ea900252e316e89c926cb01e416">luci::CircleRmsNormGraphBuilder::validate</a></div><div class="ttdeci">bool validate(const ValidateArgs &amp;args) const final</div><div class="ttdef"><b>Definition</b> <a href="import_2src_2_nodes_2_circle_rms_norm_8cpp_source.html#l00026">CircleRmsNorm.cpp:26</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_rms_norm_html"><div class="ttname"><a href="classluci_1_1_circle_rms_norm.html">luci::CircleRmsNorm</a></div><div class="ttdoc">RMS_NORM in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_rms_norm_8h_source.html#l00031">CircleRmsNorm.h:32</a></div></div>

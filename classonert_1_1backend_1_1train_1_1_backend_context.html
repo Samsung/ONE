@@ -223,8 +223,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   61</span>      _tensor_builder{tensor_builder}, _optimizer{std::move(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_backend_context.html#ac640fd912daf6c126d9eec5b27ba0653">optimizer</a>)}</div>
 <div class="line"><span class="lineno">   62</span>  {</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_backend_context_html_a61e5f9a84675ea0d2a684dde6007eada"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_backend_context.html#a61e5f9a84675ea0d2a684dde6007eada">onert::backend::train::BackendContext::kernel_gen</a></div><div class="ttdeci">std::shared_ptr&lt; KernelGenerator &gt; kernel_gen</div><div class="ttdef"><b>Definition</b> <a href="backend_2train_2_backend_context_8h_source.html#l00087">BackendContext.h:87</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_backend_context_html_ac640fd912daf6c126d9eec5b27ba0653"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_backend_context.html#ac640fd912daf6c126d9eec5b27ba0653">onert::backend::train::BackendContext::optimizer</a></div><div class="ttdeci">const exec::train::optimizer::Optimizer * optimizer() const</div><div class="ttdef"><b>Definition</b> <a href="backend_2train_2_backend_context_8h_source.html#l00080">BackendContext.h:80</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_backend_context_html_a61e5f9a84675ea0d2a684dde6007eada"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_backend_context.html#a61e5f9a84675ea0d2a684dde6007eada">onert::backend::train::BackendContext::kernel_gen</a></div><div class="ttdeci">std::shared_ptr&lt; KernelGenerator &gt; kernel_gen</div><div class="ttdef"><b>Definition</b> <a href="backend_2train_2_backend_context_8h_source.html#l00088">BackendContext.h:88</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_backend_context_html_ac640fd912daf6c126d9eec5b27ba0653"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_backend_context.html#ac640fd912daf6c126d9eec5b27ba0653">onert::backend::train::BackendContext::optimizer</a></div><div class="ttdeci">const exec::train::optimizer::Optimizer * optimizer() const</div><div class="ttdef"><b>Definition</b> <a href="backend_2train_2_backend_context_8h_source.html#l00081">BackendContext.h:81</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html">onert::backend::train::TrainableBackendContext</a></div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00057">TrainableBackendContext.h:58</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a1a672125c2bc9cb3a2bba4d745d6aadb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">onert::backend::train::TrainableBackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry()</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00077">TrainableBackendContext.h:77</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a4a44dc60d9e2166587dc7805d168a690"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">onert::backend::train::TrainableBackendContext::backend</a></div><div class="ttdeci">const ITrainableBackend * backend() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00073">TrainableBackendContext.h:73</a></div></div>
@@ -307,8 +307,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_backend_context_8h_source.html#l00078">78</a> of file <a class="el" href="backend_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> _external_context; }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_backend_context_8h_source.html#l00079">79</a> of file <a class="el" href="backend_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>{ <span class="keywordflow">return</span> _external_context; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -380,8 +380,13 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  179</span>  <span class="comment">//   fn_seq-&gt;iterate([&amp;](exec::IFunction &amp;ifunc) { ifunc.prepare(); });</span></div>
 <div class="line"><span class="lineno">  180</span>  <span class="comment">// }</span></div>
 <div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">return</span> fn_map;</div>
-<div class="line"><span class="lineno">  183</span>}</div>
+<div class="line"><span class="lineno">  182</span>  <span class="comment">// NOTE: Since LayerScopeTensors is defined in each kernel(layer),</span></div>
+<div class="line"><span class="lineno">  183</span>  <span class="comment">//       It should be planned and allocated after the kernels generated.</span></div>
+<div class="line"><span class="lineno">  184</span>  planLayerScopeTensors(fn_map);</div>
+<div class="line"><span class="lineno">  185</span>  _tensor_builder-&gt;allocateLayerScope();</div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>  <span class="keywordflow">return</span> fn_map;</div>
+<div class="line"><span class="lineno">  188</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor_html_a44ef3400ba1df4653ac97efe47669ca7"><div class="ttname"><a href="classonert_1_1backend_1_1basic_1_1train_1_1_trainable_tensor.html#a44ef3400ba1df4653ac97efe47669ca7">onert::backend::basic::train::TrainableTensor::fillBuffer</a></div><div class="ttdeci">void fillBuffer(const std::shared_ptr&lt; ir::Data &gt; &amp;data)</div><div class="ttdef"><b>Definition</b> <a href="_trainable_tensor_8cc_source.html#l00038">TrainableTensor.cc:38</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a747ef4b231bb43c9c0aac77708fe4cac"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a747ef4b231bb43c9c0aac77708fe4cac">onert::backend::train::TrainableBackendContext::data</a></div><div class="ttdeci">const TrainableContextData * data() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00071">TrainableBackendContext.h:71</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a92232674fa94aeefb5d16ebeafb42245"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a92232674fa94aeefb5d16ebeafb42245">onert::backend::train::TrainableBackendContext::trainable_graph</a></div><div class="ttdeci">const ir::train::TrainableGraph * trainable_graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00069">TrainableBackendContext.h:69</a></div></div>
@@ -448,8 +453,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_backend_context_8h_source.html#l00080">80</a> of file <a class="el" href="backend_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{ <span class="keywordflow">return</span> _optimizer.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_backend_context_8h_source.html#l00081">81</a> of file <a class="el" href="backend_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{ <span class="keywordflow">return</span> _optimizer.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -466,7 +471,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_backend_context_8h_source.html#l00087">87</a> of file <a class="el" href="backend_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_backend_context_8h_source.html#l00088">88</a> of file <a class="el" href="backend_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
 
 </div>
 </div>

@@ -109,6 +109,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad1719d9cfc64d62650c321b712620386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a431c61d60e4810323d3d5266646d3f23" id="r_a431c61d60e4810323d3d5266646d3f23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a431c61d60e4810323d3d5266646d3f23">registerDisposableBackwardTensorInfo</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a> &amp;index, const <a class="el" href="classonert_1_1ir_1_1_operand_info.html">ir::OperandInfo</a> &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
 <tr class="separator:a431c61d60e4810323d3d5266646d3f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02c62759ad0bc75297a12ea208f004a4" id="r_a02c62759ad0bc75297a12ea208f004a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a02c62759ad0bc75297a12ea208f004a4">registerLayerScopeTensor</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;index, std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor.html">LayerScopeTensor</a> &gt; &amp;<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
+<tr class="separator:a02c62759ad0bc75297a12ea208f004a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca7c9cb599ad73e71b87dcf765621a97" id="r_aca7c9cb599ad73e71b87dcf765621a97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#aca7c9cb599ad73e71b87dcf765621a97">notifyFirstUse</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)</td></tr>
 <tr class="separator:aca7c9cb599ad73e71b87dcf765621a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4173c0654b9be693972d6eb06cfb0b9" id="r_aa4173c0654b9be693972d6eb06cfb0b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#aa4173c0654b9be693972d6eb06cfb0b9">notifyLastUse</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;)</td></tr>
@@ -121,20 +123,32 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a00c596f8c157b58a4741b1c98c7e7223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13a08fa8a9acf972aa87d2ab051f2705" id="r_a13a08fa8a9acf972aa87d2ab051f2705"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a13a08fa8a9acf972aa87d2ab051f2705">notifyDisposableBackPropLastUse</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a> &amp;)</td></tr>
 <tr class="separator:a13a08fa8a9acf972aa87d2ab051f2705"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a404b3c3e873bae90b155cbeb9d7a7aa4" id="r_a404b3c3e873bae90b155cbeb9d7a7aa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a404b3c3e873bae90b155cbeb9d7a7aa4">notifyLayerScopeFirstUse</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;)</td></tr>
+<tr class="separator:a404b3c3e873bae90b155cbeb9d7a7aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26bd19d42698f20711c4e833de3c97f6" id="r_a26bd19d42698f20711c4e833de3c97f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a26bd19d42698f20711c4e833de3c97f6">notifyLayerScopeLastUse</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;)</td></tr>
+<tr class="separator:a26bd19d42698f20711c4e833de3c97f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb23c24d24c00ae343c500efbb26792" id="r_a1fb23c24d24c00ae343c500efbb26792"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a1fb23c24d24c00ae343c500efbb26792">isRegistered</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;) const</td></tr>
 <tr class="separator:a1fb23c24d24c00ae343c500efbb26792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdfc99b64e293310bb81ffa7ef60d6e3" id="r_acdfc99b64e293310bb81ffa7ef60d6e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#acdfc99b64e293310bb81ffa7ef60d6e3">isRegisteredBackward</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;) const</td></tr>
 <tr class="separator:acdfc99b64e293310bb81ffa7ef60d6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a715fda23e4479c287e9c9f796dd85ad7" id="r_a715fda23e4479c287e9c9f796dd85ad7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a715fda23e4479c287e9c9f796dd85ad7">isRegisteredDisposableBackwardTensor</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_disposable_tensor_index.html">DisposableTensorIndex</a> &amp;index) const</td></tr>
 <tr class="separator:a715fda23e4479c287e9c9f796dd85ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabc41082396bc2b28be81d626e3db0b9" id="r_aabc41082396bc2b28be81d626e3db0b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#aabc41082396bc2b28be81d626e3db0b9">isRegisteredLayerScopeTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;) const</td></tr>
+<tr class="separator:aabc41082396bc2b28be81d626e3db0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e244a836ead4272a08834175ac011f3" id="r_a7e244a836ead4272a08834175ac011f3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a7e244a836ead4272a08834175ac011f3">getRegisteredLayerScopeTensorIndices</a> (const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;) const</td></tr>
+<tr class="separator:a7e244a836ead4272a08834175ac011f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf369f2758ce93f3f6bdb298d0c0ff16" id="r_acf369f2758ce93f3f6bdb298d0c0ff16"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceb">LayerScopeTensorLifeTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#acf369f2758ce93f3f6bdb298d0c0ff16">getLayerScopeTensorLifeTime</a> (const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;) const</td></tr>
+<tr class="separator:acf369f2758ce93f3f6bdb298d0c0ff16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6195159ca3560f24dc016389c929bcc" id="r_ac6195159ca3560f24dc016389c929bcc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#ac6195159ca3560f24dc016389c929bcc">allocate</a> (void)</td></tr>
 <tr class="separator:ac6195159ca3560f24dc016389c929bcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f4cf16bbf5297eaa53ee9f39b854d41" id="r_a9f4cf16bbf5297eaa53ee9f39b854d41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#a9f4cf16bbf5297eaa53ee9f39b854d41">allocateBackward</a> (void)</td></tr>
 <tr class="separator:a9f4cf16bbf5297eaa53ee9f39b854d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c236f5f6c4cf53b2a49ee3f4572acb" id="r_ab2c236f5f6c4cf53b2a49ee3f4572acb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_tensor_builder.html#ab2c236f5f6c4cf53b2a49ee3f4572acb">allocateLayerScope</a> (void)</td></tr>
+<tr class="separator:ab2c236f5f6c4cf53b2a49ee3f4572acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8h_source.html#l00035">35</a> of file <a class="el" href="backend_2train_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8h_source.html#l00037">37</a> of file <a class="el" href="backend_2train_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af5f3d88bce1135c4f7f8c256312f7878" name="af5f3d88bce1135c4f7f8c256312f7878"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5f3d88bce1135c4f7f8c256312f7878">&#9670;&#160;</a></span>TensorBuilder()</h2>
@@ -189,11 +203,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00173">173</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  _tensor_mgr-&gt;allocateNonConstTensors();</div>
-<div class="line"><span class="lineno">  176</span>  _tensor_mgr-&gt;allocateTrainableTensors();</div>
-<div class="line"><span class="lineno">  177</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00227">227</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  228</span>{</div>
+<div class="line"><span class="lineno">  229</span>  _tensor_mgr-&gt;allocateNonConstTensors();</div>
+<div class="line"><span class="lineno">  230</span>  _tensor_mgr-&gt;allocateTrainableTensors();</div>
+<div class="line"><span class="lineno">  231</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -213,13 +227,90 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00179">179</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
-<div class="line"><span class="lineno">  181</span>  _tensor_mgr-&gt;allocateBackPropTensors();</div>
-<div class="line"><span class="lineno">  182</span>  _tensor_mgr-&gt;allocateGradientTensors();</div>
-<div class="line"><span class="lineno">  183</span>  _tensor_mgr-&gt;allocateDisposableBackPropTensors();</div>
-<div class="line"><span class="lineno">  184</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00233">233</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  234</span>{</div>
+<div class="line"><span class="lineno">  235</span>  _tensor_mgr-&gt;allocateBackPropTensors();</div>
+<div class="line"><span class="lineno">  236</span>  _tensor_mgr-&gt;allocateGradientTensors();</div>
+<div class="line"><span class="lineno">  237</span>  _tensor_mgr-&gt;allocateDisposableBackPropTensors();</div>
+<div class="line"><span class="lineno">  238</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ab2c236f5f6c4cf53b2a49ee3f4572acb" name="ab2c236f5f6c4cf53b2a49ee3f4572acb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c236f5f6c4cf53b2a49ee3f4572acb">&#9670;&#160;</a></span>allocateLayerScope()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorBuilder::allocateLayerScope </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00240">240</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>{ _tensor_mgr-&gt;allocateLayerScopeTensors(); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="acf369f2758ce93f3f6bdb298d0c0ff16" name="acf369f2758ce93f3f6bdb298d0c0ff16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf369f2758ce93f3f6bdb298d0c0ff16">&#9670;&#160;</a></span>getLayerScopeTensorLifeTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert_1_1backend_1_1train.html#a4ffbd043f15ff6299f6fe7adbe181ceb">LayerScopeTensorLifeTime</a> onert::backend::train::TensorBuilder::getLayerScopeTensorLifeTime </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00220">220</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
+<div class="line"><span class="lineno">  222</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;ls_tensors = _tensor_reg-&gt;layerscope_tensors();</div>
+<div class="line"><span class="lineno">  223</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = ls_tensors.at(index);</div>
+<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;lifetime();</div>
+<div class="line"><span class="lineno">  225</span>}</div>
+<div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00522">onert::backend::train::TensorPlanner::planLayerScopeTensors()</a>.</p>
+
+</div>
+</div>
+<a id="a7e244a836ead4272a08834175ac011f3" name="a7e244a836ead4272a08834175ac011f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e244a836ead4272a08834175ac011f3">&#9670;&#160;</a></span>getRegisteredLayerScopeTensorIndices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &gt; &amp; onert::backend::train::TensorBuilder::getRegisteredLayerScopeTensorIndices </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00211">211</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  212</span>{</div>
+<div class="line"><span class="lineno">  213</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pair = _operation_to_layerscope.find(index);</div>
+<div class="line"><span class="lineno">  214</span>  assert(pair != _operation_to_layerscope.end());</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>  <span class="keywordflow">return</span> pair-&gt;second;</div>
+<div class="line"><span class="lineno">  217</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00522">onert::backend::train::TensorPlanner::planLayerScopeTensors()</a>.</p>
+
 </div>
 </div>
 <a id="a1fb23c24d24c00ae343c500efbb26792" name="a1fb23c24d24c00ae343c500efbb26792"></a>
@@ -238,10 +329,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00158">158</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  <span class="keywordflow">return</span> _tensor_info_map.find(index) != _tensor_info_map.end();</div>
-<div class="line"><span class="lineno">  161</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00189">189</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  190</span>{</div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">return</span> _tensor_info_map.find(index) != _tensor_info_map.end();</div>
+<div class="line"><span class="lineno">  192</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00038">onert::backend::train::TensorPlanner::planNonConstTensors()</a>, and <a class="el" href="_tensor_planner_8cc_source.html#l00213">onert::backend::train::TensorPlanner::planTrainableTensors()</a>.</p>
 
@@ -263,10 +354,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00163">163</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  164</span>{</div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordflow">return</span> _backward_tensor_info_map.find(index) != _backward_tensor_info_map.end();</div>
-<div class="line"><span class="lineno">  166</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00194">194</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">return</span> _backward_tensor_info_map.find(index) != _backward_tensor_info_map.end();</div>
+<div class="line"><span class="lineno">  197</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00278">onert::backend::train::TensorPlanner::planBackPropTensors()</a>, and <a class="el" href="_tensor_planner_8cc_source.html#l00415">onert::backend::train::TensorPlanner::planGradientTensors()</a>.</p>
 
@@ -288,12 +379,38 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00168">168</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  169</span>{</div>
-<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">return</span> _disposable_backprops.contains(index);</div>
-<div class="line"><span class="lineno">  171</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00199">199</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
+<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">return</span> _disposable_backprops.contains(index);</div>
+<div class="line"><span class="lineno">  202</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00459">onert::backend::train::TensorPlanner::planDisposableBackPropTensors()</a>.</p>
+
+</div>
+</div>
+<a id="aabc41082396bc2b28be81d626e3db0b9" name="aabc41082396bc2b28be81d626e3db0b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabc41082396bc2b28be81d626e3db0b9">&#9670;&#160;</a></span>isRegisteredLayerScopeTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::backend::train::TensorBuilder::isRegisteredLayerScopeTensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00204">204</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  205</span>{</div>
+<div class="line"><span class="lineno">  206</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pair = _operation_to_layerscope.find(index);</div>
+<div class="line"><span class="lineno">  207</span>  <span class="keywordflow">return</span> (pair != _operation_to_layerscope.end());</div>
+<div class="line"><span class="lineno">  208</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00522">onert::backend::train::TensorPlanner::planLayerScopeTensors()</a>.</p>
 
 </div>
 </div>
@@ -313,18 +430,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00123">123</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
-<div class="line"><span class="lineno">  125</span>  <span class="comment">// TODO Support momory plan</span></div>
-<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">  127</span>  {</div>
-<div class="line"><span class="lineno">  128</span>    _tensor_mgr-&gt;claimGradientPlan(index);</div>
-<div class="line"><span class="lineno">  129</span>  }</div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  131</span>  {</div>
-<div class="line"><span class="lineno">  132</span>    _tensor_mgr-&gt;claimBackPropPlan(index);</div>
-<div class="line"><span class="lineno">  133</span>  }</div>
-<div class="line"><span class="lineno">  134</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00144">144</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>{</div>
+<div class="line"><span class="lineno">  146</span>  <span class="comment">// TODO Support momory plan</span></div>
+<div class="line"><span class="lineno">  147</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">  148</span>  {</div>
+<div class="line"><span class="lineno">  149</span>    _tensor_mgr-&gt;claimGradientPlan(index);</div>
+<div class="line"><span class="lineno">  150</span>  }</div>
+<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  152</span>  {</div>
+<div class="line"><span class="lineno">  153</span>    _tensor_mgr-&gt;claimBackPropPlan(index);</div>
+<div class="line"><span class="lineno">  154</span>  }</div>
+<div class="line"><span class="lineno">  155</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00278">onert::backend::train::TensorPlanner::planBackPropTensors()</a>, and <a class="el" href="_tensor_planner_8cc_source.html#l00415">onert::backend::train::TensorPlanner::planGradientTensors()</a>.</p>
 
@@ -346,17 +463,17 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00136">136</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  137</span>{</div>
-<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">  139</span>  {</div>
-<div class="line"><span class="lineno">  140</span>    _tensor_mgr-&gt;releaseGradientPlan(index);</div>
-<div class="line"><span class="lineno">  141</span>  }</div>
-<div class="line"><span class="lineno">  142</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  143</span>  {</div>
-<div class="line"><span class="lineno">  144</span>    _tensor_mgr-&gt;releaseBackPropPlan(index);</div>
-<div class="line"><span class="lineno">  145</span>  }</div>
-<div class="line"><span class="lineno">  146</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00157">157</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>{</div>
+<div class="line"><span class="lineno">  159</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">  160</span>  {</div>
+<div class="line"><span class="lineno">  161</span>    _tensor_mgr-&gt;releaseGradientPlan(index);</div>
+<div class="line"><span class="lineno">  162</span>  }</div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  164</span>  {</div>
+<div class="line"><span class="lineno">  165</span>    _tensor_mgr-&gt;releaseBackPropPlan(index);</div>
+<div class="line"><span class="lineno">  166</span>  }</div>
+<div class="line"><span class="lineno">  167</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00278">onert::backend::train::TensorPlanner::planBackPropTensors()</a>, and <a class="el" href="_tensor_planner_8cc_source.html#l00415">onert::backend::train::TensorPlanner::planGradientTensors()</a>.</p>
 
@@ -378,10 +495,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00148">148</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  149</span>{</div>
-<div class="line"><span class="lineno">  150</span>  _tensor_mgr-&gt;claimDisposableBackPropPlan(index);</div>
-<div class="line"><span class="lineno">  151</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00169">169</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  170</span>{</div>
+<div class="line"><span class="lineno">  171</span>  _tensor_mgr-&gt;claimDisposableBackPropPlan(index);</div>
+<div class="line"><span class="lineno">  172</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00459">onert::backend::train::TensorPlanner::planDisposableBackPropTensors()</a>.</p>
 
@@ -403,10 +520,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00153">153</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  154</span>{</div>
-<div class="line"><span class="lineno">  155</span>  _tensor_mgr-&gt;releaseDisposableBackPropPlan(index);</div>
-<div class="line"><span class="lineno">  156</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00174">174</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  175</span>{</div>
+<div class="line"><span class="lineno">  176</span>  _tensor_mgr-&gt;releaseDisposableBackPropPlan(index);</div>
+<div class="line"><span class="lineno">  177</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00459">onert::backend::train::TensorPlanner::planDisposableBackPropTensors()</a>.</p>
 
@@ -428,18 +545,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00098">98</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>{</div>
-<div class="line"><span class="lineno">  100</span>  <span class="comment">// TODO Support momory plan</span></div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">  102</span>  {</div>
-<div class="line"><span class="lineno">  103</span>    _tensor_mgr-&gt;claimTrainablePlan(index);</div>
-<div class="line"><span class="lineno">  104</span>  }</div>
-<div class="line"><span class="lineno">  105</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  106</span>  {</div>
-<div class="line"><span class="lineno">  107</span>    _tensor_mgr-&gt;claimNonConstPlan(index);</div>
-<div class="line"><span class="lineno">  108</span>  }</div>
-<div class="line"><span class="lineno">  109</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00119">119</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>{</div>
+<div class="line"><span class="lineno">  121</span>  <span class="comment">// TODO Support momory plan</span></div>
+<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">  123</span>  {</div>
+<div class="line"><span class="lineno">  124</span>    _tensor_mgr-&gt;claimTrainablePlan(index);</div>
+<div class="line"><span class="lineno">  125</span>  }</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  127</span>  {</div>
+<div class="line"><span class="lineno">  128</span>    _tensor_mgr-&gt;claimNonConstPlan(index);</div>
+<div class="line"><span class="lineno">  129</span>  }</div>
+<div class="line"><span class="lineno">  130</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00038">onert::backend::train::TensorPlanner::planNonConstTensors()</a>, and <a class="el" href="_tensor_planner_8cc_source.html#l00213">onert::backend::train::TensorPlanner::planTrainableTensors()</a>.</p>
 
@@ -461,19 +578,69 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00111">111</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
-<div class="line"><span class="lineno">  114</span>  {</div>
-<div class="line"><span class="lineno">  115</span>    _tensor_mgr-&gt;releaseTrainablePlan(index);</div>
-<div class="line"><span class="lineno">  116</span>  }</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  118</span>  {</div>
-<div class="line"><span class="lineno">  119</span>    _tensor_mgr-&gt;releaseNonConstPlan(index);</div>
-<div class="line"><span class="lineno">  120</span>  }</div>
-<div class="line"><span class="lineno">  121</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00132">132</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  133</span>{</div>
+<div class="line"><span class="lineno">  134</span>  <span class="keywordflow">if</span> (_as_constants[index])</div>
+<div class="line"><span class="lineno">  135</span>  {</div>
+<div class="line"><span class="lineno">  136</span>    _tensor_mgr-&gt;releaseTrainablePlan(index);</div>
+<div class="line"><span class="lineno">  137</span>  }</div>
+<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  139</span>  {</div>
+<div class="line"><span class="lineno">  140</span>    _tensor_mgr-&gt;releaseNonConstPlan(index);</div>
+<div class="line"><span class="lineno">  141</span>  }</div>
+<div class="line"><span class="lineno">  142</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00038">onert::backend::train::TensorPlanner::planNonConstTensors()</a>, and <a class="el" href="_tensor_planner_8cc_source.html#l00213">onert::backend::train::TensorPlanner::planTrainableTensors()</a>.</p>
+
+</div>
+</div>
+<a id="a404b3c3e873bae90b155cbeb9d7a7aa4" name="a404b3c3e873bae90b155cbeb9d7a7aa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a404b3c3e873bae90b155cbeb9d7a7aa4">&#9670;&#160;</a></span>notifyLayerScopeFirstUse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorBuilder::notifyLayerScopeFirstUse </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00179">179</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
+<div class="line"><span class="lineno">  181</span>  _tensor_mgr-&gt;claimLayerScopePlan(index);</div>
+<div class="line"><span class="lineno">  182</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00522">onert::backend::train::TensorPlanner::planLayerScopeTensors()</a>.</p>
+
+</div>
+</div>
+<a id="a26bd19d42698f20711c4e833de3c97f6" name="a26bd19d42698f20711c4e833de3c97f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26bd19d42698f20711c4e833de3c97f6">&#9670;&#160;</a></span>notifyLayerScopeLastUse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorBuilder::notifyLayerScopeLastUse </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00184">184</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
+<div class="line"><span class="lineno">  186</span>  _tensor_mgr-&gt;releaseLayerScopePlan(index);</div>
+<div class="line"><span class="lineno">  187</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_tensor_planner_8cc_source.html#l00522">onert::backend::train::TensorPlanner::planLayerScopeTensors()</a>.</p>
 
 </div>
 </div>
@@ -541,7 +708,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   84</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer_html_a38b5645ba9ab8c3320ce7e9977d1d547"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">onert::exec::train::optimizer::Optimizer::getVarCount</a></div><div class="ttdeci">virtual uint32_t getVarCount() const =0</div><div class="ttdoc">Get the number of optimizer variables s.</div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#a38b5645ba9ab8c3320ce7e9977d1d547">onert::exec::train::optimizer::Optimizer::getVarCount()</a>, and <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
 
@@ -586,6 +752,56 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
+
+</div>
+</div>
+<a id="a02c62759ad0bc75297a12ea208f004a4" name="a02c62759ad0bc75297a12ea208f004a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02c62759ad0bc75297a12ea208f004a4">&#9670;&#160;</a></span>registerLayerScopeTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::backend::train::TensorBuilder::registerLayerScopeTensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor_index.html">LayerScopeTensorIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_layer_scope_tensor.html">LayerScopeTensor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00098">98</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>{</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keyword">const</span> <span class="keyword">auto</span> op_idx = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.op_index();</div>
+<div class="line"><span class="lineno">  102</span> </div>
+<div class="line"><span class="lineno">  103</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pair = _operation_to_layerscope.find(op_idx);</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> (pair == _operation_to_layerscope.end())</div>
+<div class="line"><span class="lineno">  105</span>  {</div>
+<div class="line"><span class="lineno">  106</span>    util::Set&lt;LayerScopeTensorIndex&gt; tensor_indices;</div>
+<div class="line"><span class="lineno">  107</span>    tensor_indices.add(index);</div>
+<div class="line"><span class="lineno">  108</span>    _operation_to_layerscope[op_idx] = tensor_indices;</div>
+<div class="line"><span class="lineno">  109</span>  }</div>
+<div class="line"><span class="lineno">  110</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  111</span>  {</div>
+<div class="line"><span class="lineno">  112</span>    assert(!pair-&gt;second.contains(index));</div>
+<div class="line"><span class="lineno">  113</span>    pair-&gt;second.add(index);</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
+<div class="line"><span class="lineno">  115</span> </div>
+<div class="line"><span class="lineno">  116</span>  _tensor_reg-&gt;setLayerScopeTensor(index, tensor);</div>
+<div class="line"><span class="lineno">  117</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_set_8h_source.html#l00070">onert::util::Set&lt; Element &gt;::add()</a>.</p>
 
 </div>
 </div>

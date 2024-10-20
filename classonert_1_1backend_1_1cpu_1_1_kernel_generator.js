@@ -40,6 +40,7 @@ var classonert_1_1backend_1_1cpu_1_1_kernel_generator =
     [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#a745d1fc1dd9c0fd5bc2b46f1c95d3013", null ],
     [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#a88f3953576f9d39a3466edf1cd42f098", null ],
     [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#a6cd88baf88e939ae60697e1f3b247ce3", null ],
+    [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#a80432831ec08b07ae19399bc5f0139b7", null ],
     [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#a768dc8a731cf9d82381ec7ae81582c53", null ],
     [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#a5a8258cf8dc454a67a9c7dc3f8e2a391", null ],
     [ "visit", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html#af94393574a68be9bba70dbfde48f8fb5", null ],

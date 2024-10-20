@@ -1,7 +1,5 @@
 var classluci_1_1_circle_rms_norm =
 [
-    [ "beta", "classluci_1_1_circle_rms_norm.html#a8c8c43c982b093b8d0561b33444fed2c", null ],
-    [ "beta", "classluci_1_1_circle_rms_norm.html#af668d2855e8595cec7b87b4f54f7a1af", null ],
     [ "epsilon", "classluci_1_1_circle_rms_norm.html#ad1a413c9fd14b968220ff9116525f14e", null ],
     [ "epsilon", "classluci_1_1_circle_rms_norm.html#a90834c1c2ea39c8b07a91b8c1a961370", null ],
     [ "gamma", "classluci_1_1_circle_rms_norm.html#a8b7696acfbdd52e198f34e5850f0531f", null ],

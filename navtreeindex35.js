@@ -1,5 +1,9 @@
 var NAVTREEINDEX35 =
 {
+"circle_2src_2_op_2_b_c_q_gather_8cpp_source.html":[40,0,0,24,0,1,0,4],
+"circle_2src_2_op_2_g_r_u_8h.html":[40,0,0,24,0,1,0,7],
+"circle_2src_2_op_2_g_r_u_8h_source.html":[40,0,0,24,0,1,0,7],
+"circlechef_2circle_2include_2circlechef_2_recipe_chef_8h.html":[40,0,0,24,0,0,0,0],
 "circlechef_2circle_2include_2circlechef_2_recipe_chef_8h.html#a248232d535b4887d59946e05e84ac253":[40,0,0,24,0,0,0,0,0],
 "circlechef_2circle_2include_2circlechef_2_recipe_chef_8h.html#a634de774edf3fd5763dba0d65eb5e181":[40,0,0,24,0,0,0,0,1],
 "circlechef_2circle_2include_2circlechef_2_recipe_chef_8h_source.html":[40,0,0,24,0,0,0,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX35 =
 "class_average_pool2_d_chef.html":[39,0,154],
 "class_average_pool2_d_chef.html#a07702a37a0d00d7dfd726fefbf3bf67b":[39,0,154,1],
 "class_average_pool2_d_chef.html#a922580789415d9f49d5b24c230ce665b":[39,0,154,2],
-"class_average_pool2_d_chef.html#ae8045080c474729c84888e8b5d5c4263":[39,0,154,0],
-"class_average_pool2_d_chef.html#af21f9cf345dacbe20d6946e97eb2b917":[39,0,154,3],
-"class_axis_specifier.html":[39,0,156],
-"class_axis_specifier.html#a13707c89bcf961c9d8136bb3f2b1310e":[39,0,156,1],
-"class_axis_specifier.html#a5ff19d9cbe9bfd7f1614f3e281e112aa":[39,0,156,0]
+"class_average_pool2_d_chef.html#ae8045080c474729c84888e8b5d5c4263":[39,0,154,0]
 };

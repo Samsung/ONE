@@ -17214,38 +17214,71 @@ template&lt;typename Scalar &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_rms_norm_8h_source.html#l00032">32</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_rms_norm_8h_source.html">RmsNorm.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keyword">const</span> int32_t batches = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 0, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keyword">const</span> int32_t heights = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 1, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 1);</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> int32_t widths = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 2, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 2);</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> int32_t channels = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 3, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (gamma_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() != 1 ||</div>
-<div class="line"><span class="lineno">   42</span>      gamma_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0) != input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() - 1))</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::RmsNorm: Unmatched gamma shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordtype">bool</span> single_gamma = gamma_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 1 &amp;&amp; gamma_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0) == 1;</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4)</div>
+<div class="line"><span class="lineno">   39</span>  {</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keyword">const</span> int32_t batches = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 0, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">const</span> int32_t heights = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 1, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 1);</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keyword">const</span> int32_t widths = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 2, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 2);</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keyword">const</span> int32_t channels = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 3, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
 <div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">for</span> (int32_t batch = 0; batch &lt; batches; batch++)</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> (int32_t height = 0; height &lt; heights; height++)</div>
-<div class="line"><span class="lineno">   48</span>    {</div>
-<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">for</span> (int32_t width = 0; width &lt; widths; width++)</div>
-<div class="line"><span class="lineno">   50</span>      {</div>
-<div class="line"><span class="lineno">   51</span>        <span class="keywordtype">double</span> square_sum = 0.0f;</div>
-<div class="line"><span class="lineno">   52</span>        <span class="keywordflow">for</span> (int32_t channel = 0; channel &lt; channels; channel++)</div>
-<div class="line"><span class="lineno">   53</span>        {</div>
-<div class="line"><span class="lineno">   54</span>          <span class="keywordtype">double</span> input_val = input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, height, width, channel)];</div>
-<div class="line"><span class="lineno">   55</span>          square_sum += (input_val * input_val);</div>
-<div class="line"><span class="lineno">   56</span>        }</div>
-<div class="line"><span class="lineno">   57</span>        <span class="keywordtype">double</span> rms = std::sqrt((square_sum / channels) + params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_rms_norm_params.html#ae11dc3da4a7d2d66a6627e9150499893">epsilon</a>);</div>
-<div class="line"><span class="lineno">   58</span>        <span class="keywordflow">for</span> (int32_t channel = 0; channel &lt; channels; channel++)</div>
-<div class="line"><span class="lineno">   59</span>        {</div>
-<div class="line"><span class="lineno">   60</span>          <span class="keywordtype">double</span> gamma = (gamma_data ? gamma_data[channel] : 1.0);</div>
-<div class="line"><span class="lineno">   61</span>          output_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, height, width, channel)] =</div>
-<div class="line"><span class="lineno">   62</span>            gamma * (input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, height, width, channel)] / rms);</div>
-<div class="line"><span class="lineno">   63</span>        }</div>
-<div class="line"><span class="lineno">   64</span>      }</div>
-<div class="line"><span class="lineno">   65</span>    }</div>
-<div class="line"><span class="lineno">   66</span>  }</div>
-<div class="line"><span class="lineno">   67</span>}</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> (int32_t batch = 0; batch &lt; batches; batch++)</div>
+<div class="line"><span class="lineno">   46</span>    {</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keywordflow">for</span> (int32_t height = 0; height &lt; heights; height++)</div>
+<div class="line"><span class="lineno">   48</span>      {</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">for</span> (int32_t width = 0; width &lt; widths; width++)</div>
+<div class="line"><span class="lineno">   50</span>        {</div>
+<div class="line"><span class="lineno">   51</span>          <span class="comment">// normalize over last-axis</span></div>
+<div class="line"><span class="lineno">   52</span>          <span class="keywordtype">double</span> square_sum = 0.0f;</div>
+<div class="line"><span class="lineno">   53</span>          <span class="keywordflow">for</span> (int32_t channel = 0; channel &lt; channels; channel++)</div>
+<div class="line"><span class="lineno">   54</span>          {</div>
+<div class="line"><span class="lineno">   55</span>            <span class="keywordtype">double</span> input_val = input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, height, width, channel)];</div>
+<div class="line"><span class="lineno">   56</span>            square_sum += (input_val * input_val);</div>
+<div class="line"><span class="lineno">   57</span>          }</div>
+<div class="line"><span class="lineno">   58</span>          <span class="keywordtype">double</span> rms = std::sqrt((square_sum / channels) + params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_rms_norm_params.html#ae11dc3da4a7d2d66a6627e9150499893">epsilon</a>);</div>
+<div class="line"><span class="lineno">   59</span>          <span class="keywordflow">for</span> (int32_t channel = 0; channel &lt; channels; channel++)</div>
+<div class="line"><span class="lineno">   60</span>          {</div>
+<div class="line"><span class="lineno">   61</span>            <span class="keywordtype">double</span> gamma = (single_gamma ? gamma_data[0] : gamma_data[channel]);</div>
+<div class="line"><span class="lineno">   62</span>            output_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, batch, height, width, channel)] =</div>
+<div class="line"><span class="lineno">   63</span>              gamma * (input_data[<a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, batch, height, width, channel)] / rms);</div>
+<div class="line"><span class="lineno">   64</span>          }</div>
+<div class="line"><span class="lineno">   65</span>        }</div>
+<div class="line"><span class="lineno">   66</span>      }</div>
+<div class="line"><span class="lineno">   67</span>    }</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 3)</div>
+<div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keyword">const</span> int32_t heights = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 1, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> int32_t widths = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 2, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 1);</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keyword">const</span> int32_t channels = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 3, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 2);</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">for</span> (int32_t height = 0; height &lt; heights; height++)</div>
+<div class="line"><span class="lineno">   76</span>    {</div>
+<div class="line"><span class="lineno">   77</span>      <span class="keywordflow">for</span> (int32_t width = 0; width &lt; widths; width++)</div>
+<div class="line"><span class="lineno">   78</span>      {</div>
+<div class="line"><span class="lineno">   79</span>        <span class="comment">// normalize over last-axis</span></div>
+<div class="line"><span class="lineno">   80</span>        <span class="keywordtype">double</span> square_sum = 0.0f;</div>
+<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">for</span> (int32_t channel = 0; channel &lt; channels; channel++)</div>
+<div class="line"><span class="lineno">   82</span>        {</div>
+<div class="line"><span class="lineno">   83</span>          <span class="keywordtype">double</span> input_val = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[(height * widths + width) * channels + channel];</div>
+<div class="line"><span class="lineno">   84</span>          square_sum += (input_val * input_val);</div>
+<div class="line"><span class="lineno">   85</span>        }</div>
+<div class="line"><span class="lineno">   86</span>        <span class="keywordtype">double</span> rms = std::sqrt((square_sum / channels) + params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_rms_norm_params.html#ae11dc3da4a7d2d66a6627e9150499893">epsilon</a>);</div>
+<div class="line"><span class="lineno">   87</span>        <span class="keywordflow">for</span> (int32_t channel = 0; channel &lt; channels; channel++)</div>
+<div class="line"><span class="lineno">   88</span>        {</div>
+<div class="line"><span class="lineno">   89</span>          <span class="keywordtype">double</span> gamma = (single_gamma ? gamma_data[0] : gamma_data[channel]);</div>
+<div class="line"><span class="lineno">   90</span>          <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[(height * widths + width) * channels + channel] =</div>
+<div class="line"><span class="lineno">   91</span>            gamma * (input_data[(height * widths + width) * channels + channel] / rms);</div>
+<div class="line"><span class="lineno">   92</span>        }</div>
+<div class="line"><span class="lineno">   93</span>      }</div>
+<div class="line"><span class="lineno">   94</span>    }</div>
+<div class="line"><span class="lineno">   95</span>  }</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   97</span>  {</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;cker::RmsNorm: Unsupported input shape&quot;</span>);</div>
+<div class="line"><span class="lineno">   99</span>  }</div>
+<div class="line"><span class="lineno">  100</span>}</div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_rms_norm_params_html_ae11dc3da4a7d2d66a6627e9150499893"><div class="ttname"><a href="structnnfw_1_1cker_1_1_rms_norm_params.html#ae11dc3da4a7d2d66a6627e9150499893">nnfw::cker::RmsNormParams::epsilon</a></div><div class="ttdeci">float epsilon</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00327">Types.h:327</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00327">nnfw::cker::RmsNormParams::epsilon</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00241">Offset()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
@@ -17345,33 +17378,36 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> int32_t i2_n = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 2, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 2);</div>
 <div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> int32_t i3_n = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(input_shape, 3, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
 <div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (mode == RoPEMode::kGptNeox)</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">for</span> (int32_t i0 = 0; i0 &lt; i0_n; ++i0)</div>
-<div class="line"><span class="lineno">   51</span>    {</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">for</span> (int32_t i1 = 0; i1 &lt; i1_n; ++i1)</div>
-<div class="line"><span class="lineno">   53</span>      {</div>
-<div class="line"><span class="lineno">   54</span>        <span class="keywordflow">for</span> (int32_t i2 = 0; i2 &lt; i2_n; ++i2)</div>
-<div class="line"><span class="lineno">   55</span>        {</div>
-<div class="line"><span class="lineno">   56</span>          <span class="keywordflow">for</span> (int32_t i3 = 0; i3 &lt; i3_n / 2; ++i3)</div>
-<div class="line"><span class="lineno">   57</span>          {</div>
-<div class="line"><span class="lineno">   58</span>            <span class="keyword">const</span> int32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, i0, i1, i2, i3);</div>
-<div class="line"><span class="lineno">   59</span>            <span class="keyword">const</span> T x0 = input_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>];</div>
-<div class="line"><span class="lineno">   60</span>            <span class="keyword">const</span> T x1 = input_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> + i3_n / 2];</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>            output_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>] = x0 * cos_table_data[i3] - x1 * sin_table_data[i3];</div>
-<div class="line"><span class="lineno">   63</span>            output_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> + i3_n / 2] =</div>
-<div class="line"><span class="lineno">   64</span>              x0 * sin_table_data[i3 + i3_n / 2] + x1 * cos_table_data[i3 + i3_n / 2];</div>
-<div class="line"><span class="lineno">   65</span>          }</div>
-<div class="line"><span class="lineno">   66</span>        }</div>
-<div class="line"><span class="lineno">   67</span>      }</div>
-<div class="line"><span class="lineno">   68</span>    }</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported RoPE mode&quot;</span>);</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
-<div class="line"><span class="lineno">   74</span>}</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (i3_n % 2 != 0)</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;i3_n must be even number&quot;</span>);</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (mode == RoPEMode::kGptNeox)</div>
+<div class="line"><span class="lineno">   52</span>  {</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">for</span> (int32_t i0 = 0; i0 &lt; i0_n; ++i0)</div>
+<div class="line"><span class="lineno">   54</span>    {</div>
+<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">for</span> (int32_t i1 = 0; i1 &lt; i1_n; ++i1)</div>
+<div class="line"><span class="lineno">   56</span>      {</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">for</span> (int32_t i2 = 0; i2 &lt; i2_n; ++i2)</div>
+<div class="line"><span class="lineno">   58</span>        {</div>
+<div class="line"><span class="lineno">   59</span>          <span class="keywordflow">for</span> (int32_t i3 = 0; i3 &lt; i3_n / 2; ++i3)</div>
+<div class="line"><span class="lineno">   60</span>          {</div>
+<div class="line"><span class="lineno">   61</span>            <span class="keyword">const</span> int32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(input_shape, i0, i1, i2, i3);</div>
+<div class="line"><span class="lineno">   62</span>            <span class="keyword">const</span> T x0 = input_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>];</div>
+<div class="line"><span class="lineno">   63</span>            <span class="keyword">const</span> T x1 = input_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> + i3_n / 2];</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>            output_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>] = x0 * cos_table_data[i3] - x1 * sin_table_data[i3];</div>
+<div class="line"><span class="lineno">   66</span>            output_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> + i3_n / 2] =</div>
+<div class="line"><span class="lineno">   67</span>              x0 * sin_table_data[i3 + i3_n / 2] + x1 * cos_table_data[i3 + i3_n / 2];</div>
+<div class="line"><span class="lineno">   68</span>          }</div>
+<div class="line"><span class="lineno">   69</span>        }</div>
+<div class="line"><span class="lineno">   70</span>      }</div>
+<div class="line"><span class="lineno">   71</span>    }</div>
+<div class="line"><span class="lineno">   72</span>  }</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   74</span>  {</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported RoPE mode&quot;</span>);</div>
+<div class="line"><span class="lineno">   76</span>  }</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="namespacennfw_1_1cker.html#a6623890820032bcd77b068b87d0787a2a9415e4147e7880a5659b025ef0c7cecc">kGptNeox</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">MatchingDim()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00241">Offset()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
