@@ -301,7 +301,7 @@ private:
     auto valid = ::calculate_smooth_quant_scale(node, _pattern);
     auto back_node = node;
     // Find front node.
-    const auto support_depth = 2;
+    const auto support_depth = 3;
     auto front_node = find_arg_with_name(node, _pattern->front, support_depth);
     if (not front_node)
     {

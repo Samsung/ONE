@@ -82,8 +82,8 @@ void FMEqualizer::equalize(loco::Graph *g, std::vector<EqualizePattern> &p)
   phase.emplace_back(std::make_unique<fme_apply::FusePreScalePass>());
   phase.emplace_back(std::make_unique<fme_apply::FusePostScalePass>());
 
-  ProgressReporter prog(g, logo::PhaseStrategy::Restart);
-  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
   phase_runner.attach(&prog);
   phase_runner.run(phase);
 
