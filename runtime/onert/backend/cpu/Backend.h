@@ -45,7 +45,8 @@ public:
     auto &graph = *data.graph;
     auto context = std::make_unique<BackendContext>(this, std::move(data));
     auto tr = std::make_shared<basic::TensorRegistry>();
-    auto tb = std::make_shared<TensorBuilder>(tr);
+    // TODO: Use findSharedMemoryOperandIndexes method here
+    auto tb = std::make_shared<TensorBuilder>(tr, ir::OperandIndexMap<ir::OperandIndex>{});
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, custom_kernel_builder,
