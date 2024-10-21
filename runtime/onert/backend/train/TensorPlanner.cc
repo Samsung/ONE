@@ -37,7 +37,7 @@ TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
 
 void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning non-constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning non-constant tensors" << std::endl;
 
   const auto &training_usedefs = _tgraph.trainingUseDefs();
 
@@ -207,12 +207,12 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
 
-  VERBOSE(BackendContext) << "Finish planning non-constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning non-constant tensors" << std::endl;
 }
 
 void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning constant tensors" << std::endl;
 
   const auto &training_usedefs = _tgraph.trainingUseDefs();
 
@@ -272,12 +272,12 @@ void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
 
-  VERBOSE(BackendContext) << "Finish planning constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning constant tensors" << std::endl;
 }
 
 void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning back-propagated tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning back-propagated tensors" << std::endl;
 
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
@@ -409,12 +409,12 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
 
-  VERBOSE(BackendContext) << "Finish planning back-propagated tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning back-propagated tensors" << std::endl;
 }
 
 void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning gradient tensors" << std::endl;
 
   // TODO Use DisposableTensor instead of GradientTensor to plan them together if possible
   //      Backward layers and the corresponding GradientApplier exist in the same back-propagated
@@ -453,12 +453,12 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
     }
   }
 
-  VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning gradient tensors" << std::endl;
 }
 
 void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning disposable back-prop tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning disposable back-prop tensors" << std::endl;
 
   for (const auto &op_index : _tgraph.essentialBackwardOrder())
   {
@@ -487,7 +487,7 @@ void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
     }
   }
 
-  VERBOSE(BackendContext) << "Finish planning disposable back-prop tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning disposable back-prop tensors" << std::endl;
 }
 
 ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::OperationIndex &op_index,
@@ -521,6 +521,8 @@ ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::Operati
 
 void TensorPlanner::planLayerScopeTensors(TensorBuilder *tensor_builder)
 {
+  VERBOSE(TensorPlanner) << "Start planning layer scope tensors" << std::endl;
+
   // forwading order
   const auto f_order = _tgraph.topolSortOperations();
   for (const auto &op_index : f_order)
@@ -560,6 +562,8 @@ void TensorPlanner::planLayerScopeTensors(TensorBuilder *tensor_builder)
         tensor_builder->notifyLayerScopeLastUse(idx);
     }
   }
+
+  VERBOSE(TensorPlanner) << "Finish planning layerscope tensors" << std::endl;
 }
 
 } // namespace train
