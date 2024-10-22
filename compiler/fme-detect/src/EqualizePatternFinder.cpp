@@ -173,7 +173,7 @@ Forwardable forwardable(luci::CircleNode *node)
     case luci::CircleOpcode::LEAKY_RELU:
       return {true, false};
     case luci::CircleOpcode::GELU:
-      return {true, false};
+      return {false, false};
     default:
       return {false, false};
   }
