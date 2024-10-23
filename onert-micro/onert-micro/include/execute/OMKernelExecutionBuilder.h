@@ -102,7 +102,9 @@ public:
       return UnknownError;
     }
     const auto builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);
-    builder_id_opcode -= builder_id_offset - 1;
+    builder_id_opcode -= (builder_id_offset + 1);
+    assert(builder_id_opcode <
+           size_t(core::OMBuilderID::Size) - size_t(core::OMBuilderID::BuiltinOperatorsSize) - 1);
 
     *execute_func = _operator_execute[builder_id_opcode];
     return Ok;
