@@ -43,7 +43,7 @@ TEST(CKer_Operation, RmsNorm)
       EXPECT_NEAR(output[i], expected_output[i], 1e-5f);
   }
 
-  // Default gamma
+  // rank 4
   {
     std::vector<float> input = {0, 1, 2, 3, 4, 5, 6, 7};
     nnfw::cker::Shape input_shape{1, 2, 2, 2};
@@ -52,6 +52,29 @@ TEST(CKer_Operation, RmsNorm)
                                           0.883431, 1.104288, 0.920347, 1.073738};
     std::vector<float> output(expected_output.size());
     nnfw::cker::Shape output_shape{1, 2, 2, 2};
+
+    std::vector<float> gamma = {1, 1};
+    nnfw::cker::Shape gamma_shape{2};
+
+    nnfw::cker::RmsNormParams param;
+    param.epsilon = 0.001f;
+
+    nnfw::cker::RmsNorm(param, input_shape, input.data(), gamma_shape, gamma.data(), output_shape,
+                        output.data());
+
+    for (size_t i = 0; i < expected_output.size(); ++i)
+      EXPECT_NEAR(output[i], expected_output[i], 1e-5f);
+  }
+
+  // rank 3
+  {
+    std::vector<float> input = {0, 1, 2, 3, 4, 5, 6, 7};
+    nnfw::cker::Shape input_shape{2, 2, 2};
+
+    std::vector<float> expected_output = {0,        1.412802, 0.784404, 1.176606,
+                                          0.883431, 1.104288, 0.920347, 1.073738};
+    std::vector<float> output(expected_output.size());
+    nnfw::cker::Shape output_shape{2, 2, 2};
 
     std::vector<float> gamma = {1, 1};
     nnfw::cker::Shape gamma_shape{2};
