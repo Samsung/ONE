@@ -186,6 +186,8 @@ struct FullyConnectedParams
   int32_t weights_offset;
   int32_t output_offset;
   int32_t output_multiplier;
+  const float *weights_scales;
+  bool is_channel_wise_quant;
   int output_shift;
   // uint8_t, etc, activation params.
   int32_t quantized_activation_min;
