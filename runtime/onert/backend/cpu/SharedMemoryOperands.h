@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-#include "ExpandDimsLayer.h"
+#ifndef __ONERT_BACKEND_CPU_SHARED_MEMORY_OPERANDS_H__
+#define __ONERT_BACKEND_CPU_SHARED_MEMORY_OPERANDS_H__
+
+#include "ir/IGraph.h"
+#include "ir/OperandIndexMap.h"
 
 namespace onert
 {
@@ -22,31 +26,14 @@ namespace backend
 {
 namespace cpu
 {
-namespace ops
-{
+/*
+ * Find indexed of operands assigned to tensors which can share memory (indicate the same buffer).
+ * Note that it's applicable for operations that do NOT change data but only shape like Reshape.
+ */
+ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandIndexes(const ir::IGraph &graph);
 
-ExpandDimsLayer::ExpandDimsLayer() : _input(nullptr), _output(nullptr)
-{
-  // DO NOTHING
-}
-
-void ExpandDimsLayer::configure(const IPortableTensor *input, IPortableTensor *output)
-{
-  _input = input;
-  _output = output;
-}
-
-void ExpandDimsLayer::run()
-{
-  // output buffer equals to input buffer means that copy is not needed
-  if (_output->buffer() != _input->buffer())
-  {
-    size_t count = _input->total_size();
-    memcpy(_output->buffer(), _input->buffer(), count);
-  }
-}
-
-} // namespace ops
 } // namespace cpu
 } // namespace backend
 } // namespace onert
+
+#endif // __ONERT_BACKEND_CPU_SHARED_MEMORY_OPERANDS_H__

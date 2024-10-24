@@ -32,8 +32,12 @@ ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr
 
 void ReshapeLayer::reshapeGeneric()
 {
-  size_t count = _input->total_size();
-  memcpy(_output->buffer(), _input->buffer(), count);
+  // output buffer equals to input buffer means that copy is not needed
+  if (_output->buffer() != _input->buffer())
+  {
+    size_t count = _input->total_size();
+    memcpy(_output->buffer(), _input->buffer(), count);
+  }
 }
 
 void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor *shape,
