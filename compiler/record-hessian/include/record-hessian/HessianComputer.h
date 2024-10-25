@@ -17,7 +17,7 @@
 #ifndef __RECORD_HESSIAN_HESSIANCOMPUTER_H__
 #define __RECORD_HESSIAN_HESSIANCOMPUTER_H__
 
-#include "HessianVector.h"
+#include "record-hessian/HessianVector.h"
 
 #include <luci/IR/CircleNode.h>
 #include <luci_interpreter/Interpreter.h>

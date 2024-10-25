@@ -21,7 +21,7 @@
 #include <luci_interpreter/core/Tensor.h>
 #include <luci/IR/CircleNodes.h>
 
-#include "HessianComputer.h"
+#include "record-hessian/HessianComputer.h"
 namespace record_hessian
 {
 

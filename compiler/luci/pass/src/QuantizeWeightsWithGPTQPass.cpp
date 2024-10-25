@@ -492,8 +492,11 @@ struct QuantizeWeightsWithGPTQ final : public luci::CircleNodeMutableVisitor<voi
 private:
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
-    assert(output_type == loco::DataType::U8); // FIX_CALLER_UNLESS
-
+    // assert(output_type == loco::DataType::U8); // FIX_CALLER_UNLESS
+    if (output_type != loco::DataType::U8)
+    {
+        throw std::runtime_error("GPTQ quantization supports u8");
+    }
     // Find min/max per channel
     std::vector<float> min;
     std::vector<float> max;
@@ -624,6 +627,12 @@ bool QuantizeWeightsWithGPTQPass::run(loco::Graph *g)
 {
   LOGGER(l);
   INFO(l) << "QuantizeWeightsWithGPTQPass Start" << std::endl;
+
+  if (_ctx->input_model_dtype != loco::DataType::FLOAT32)
+    throw std::runtime_error("Weights-only quantization supports float32 input only");
+
+  if (_ctx->output_model_dtype != loco::DataType::U8)
+    throw std::runtime_error("GPTQ quantization supports uint8 output only");
 
   auto info_by_name = layer_info_map(g, _ctx->layers_info);
 
