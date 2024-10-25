@@ -62,8 +62,7 @@ void calculateGRU(const float *input_data, const float *weight_input_data,
                   const tflite::RuntimeShape &input_shape, const tflite::RuntimeShape &output_shape,
                   const tflite::RuntimeShape &weight_input_shape,
                   const tflite::RuntimeShape &weight_hidden_shape, float *output_input_data,
-                  float *output_hidden_data, const tflite::RuntimeShape &output_shape_fc,
-                  float *intermediate_buffer)
+                  float *output_hidden_data, const tflite::RuntimeShape &output_shape_fc)
 {
   tflite::FullyConnectedParams op_params{};
   // As FC nodes doesn't have any activations inside GRU, let' use just numeric limits
@@ -150,8 +149,7 @@ void GRU(const float *input_data, const float *weight_input_data, const float *w
          const float *hidden_state_data, float *output_data, float *output_input_data,
          float *output_hidden_data, const tflite::RuntimeShape &input_shape,
          const tflite::RuntimeShape &output_shape, const tflite::RuntimeShape &weight_input_shape,
-         const tflite::RuntimeShape &weight_hidden_shape, const size_t intermediate_buffer_size,
-         float *intermediate_buffer)
+         const tflite::RuntimeShape &weight_hidden_shape)
 {
   const int32_t time = input_shape.Dims(0);
 
@@ -165,8 +163,7 @@ void GRU(const float *input_data, const float *weight_input_data, const float *w
   {
     calculateGRU(input_data, weight_input_data, weight_hidden_data, bias_input_data,
                  bias_hidden_data, output_data, input_shape, output_shape, weight_input_shape,
-                 weight_hidden_shape, output_input_data, output_hidden_data, output_shape_fc,
-                 intermediate_buffer);
+                 weight_hidden_shape, output_input_data, output_hidden_data, output_shape_fc);
     input_data += input_shape.Dims(2);
   }
 }

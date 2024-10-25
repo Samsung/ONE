@@ -40,8 +40,6 @@ void GRU::configure()
   auto hidden_input_shape = getTensorShape(hidden_input());
   LUCI_INTERPRETER_CHECK(hidden_hidden_shape.Dims(0) == hidden_input_shape.Dims(0));
 
-  const int32_t div_factor = 3;
-
   auto output_shape = getTensorShape(output());
   auto state_shape = getTensorShape(state());
 
@@ -77,8 +75,7 @@ void GRU::evalFloat() const
     getTensorData<float>(hidden_hidden_bias()), getTensorData<float>(state()),
     getTensorData<float>(output()), reinterpret_cast<float *>(output_input_data),
     reinterpret_cast<float *>(output_hidden_data), getTensorShape(input()),
-    getTensorShape(output()), getTensorShape(hidden_input()), getTensorShape(hidden_hidden()), 0,
-    nullptr);
+    getTensorShape(output()), getTensorShape(hidden_input()), getTensorShape(hidden_hidden()));
 
   delete output_hidden_data;
   delete output_input_data;
