@@ -1,0 +1,5 @@
+# To check whether dead graph is remove after EliminateDeadSubgraphPass
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "SINGLE_OP"               $(op_count RELU) '=' 1
