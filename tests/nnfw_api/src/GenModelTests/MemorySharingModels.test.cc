@@ -20,6 +20,16 @@
 #include "CircleGen.h"
 #include "GenModelTest.h"
 
+namespace
+{
+// Add node other than Reshape/ExpandDims/Squeeze.
+// It is used for cases where Reshape input/output is not input/output on the whole model.
+uint32_t addNotOptimizedNode(CircleGen &cgen, const CircleGen::OperatorParams &params)
+{
+  return cgen.addOperatorCos(params);
+}
+} // namespace
+
 TEST_F(GenModelTest, reshape_inference)
 {
   CircleGen cgen;
@@ -31,9 +41,9 @@ TEST_F(GenModelTest, reshape_inference)
   int reshape_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{reshape_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -55,9 +65,9 @@ TEST_F(GenModelTest, expand_dims_inference)
   int expand_dims_out = cgen.addTensor({{1, 1, 2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos2_out = cgen.addTensor({{1, 1, 2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorExpandDims({{cos1_out, axes}, {expand_dims_out}});
-  cgen.addOperatorCos({{expand_dims_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{expand_dims_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -77,9 +87,9 @@ TEST_F(GenModelTest, squeeze_inference)
   int squeeze_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorSqueeze({{cos1_out}, {squeeze_out}}, squeeze_dims);
-  cgen.addOperatorCos({{squeeze_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{squeeze_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -103,7 +113,7 @@ TEST_F(GenModelTest, reshape_const_input_inference)
   int cos_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
   cgen.addOperatorReshape({{reshape_input, new_shape}, {reshape_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape_out}, {cos_out}});
+  addNotOptimizedNode(cgen, {{reshape_out}, {cos_out}});
   cgen.setInputsAndOutputs({}, {cos_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -149,10 +159,10 @@ TEST_F(GenModelTest, reshape_input_used_in_many_places_inference)
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos3_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape_out}, {cos2_out}});
-  cgen.addOperatorCos({{cos1_out}, {cos3_out}});
+  addNotOptimizedNode(cgen, {{reshape_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{cos1_out}, {cos3_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out, cos3_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -176,10 +186,10 @@ TEST_F(GenModelTest, reshape_output_used_in_many_places_inference)
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos3_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape_out}, {cos2_out}});
-  cgen.addOperatorCos({{reshape_out}, {cos3_out}});
+  addNotOptimizedNode(cgen, {{reshape_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{reshape_out}, {cos3_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out, cos3_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -203,10 +213,10 @@ TEST_F(GenModelTest, reshape_reshape_chain_inference)
   int reshape2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape1_out}}, &new_shape_data);
   cgen.addOperatorReshape({{reshape1_out, new_shape}, {reshape2_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape2_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{reshape2_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -230,11 +240,11 @@ TEST_F(GenModelTest, reshape_reshape_reshape_chain_inference)
   int reshape3_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape1_out}}, &new_shape_data);
   cgen.addOperatorReshape({{reshape1_out, new_shape}, {reshape2_out}}, &new_shape_data);
   cgen.addOperatorReshape({{reshape2_out, new_shape}, {reshape3_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape3_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{reshape3_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -275,9 +285,9 @@ TEST_F(GenModelTest, reshape_input_model_output_inference)
   int reshape_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
   int cos2_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape_out}}, &new_shape_data);
-  cgen.addOperatorCos({{reshape_out}, {cos2_out}});
+  addNotOptimizedNode(cgen, {{reshape_out}, {cos2_out}});
   cgen.setInputsAndOutputs({input}, {cos1_out, cos2_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
@@ -299,7 +309,7 @@ TEST_F(GenModelTest, reshape_output_model_output_inference)
   int new_shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, new_shape_buf});
   int reshape_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
 
-  cgen.addOperatorCos({{input}, {cos1_out}});
+  addNotOptimizedNode(cgen, {{input}, {cos1_out}});
   cgen.addOperatorReshape({{cos1_out, new_shape}, {reshape_out}}, &new_shape_data);
   cgen.setInputsAndOutputs({input}, {reshape_out});
 
