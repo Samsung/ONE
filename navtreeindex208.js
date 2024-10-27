@@ -1,5 +1,11 @@
 var NAVTREEINDEX208 =
 {
+"luci-interpreter_2include_2luci__interpreter_2test__models_2logistic_2_test_data_logistic_base_8h.html":[40,0,3,4,0,0,1,41,2],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2logistic_2_test_data_logistic_base_8h_source.html":[40,0,3,4,0,0,1,41,2],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html":[40,0,3,4,0,0,1,42,0],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html#a0e71a8a936dd64ac003a1243575868f0":[40,0,3,4,0,0,1,42,0,2],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html#a26f3c979111c4ac6f41340d7c9ff1b8e":[40,0,3,4,0,0,1,42,0,8],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html#a510019a8567c9c45d71ca08ca28131c6":[40,0,3,4,0,0,1,42,0,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html#aa7023a8bc143db9e339b228ddb73c423":[40,0,3,4,0,0,1,42,0,6],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html#ab1944b8e49284f70b4fcda2630357c35":[40,0,3,4,0,0,1,42,0,3],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2maximum_2_float_maximum_kernel_8h.html#ad126726c8f393ed729940f54a82fc05b":[40,0,3,4,0,0,1,42,0,4],
@@ -243,11 +249,5 @@ var NAVTREEINDEX208 =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2square_2_test_data_square_base_8h_source.html":[40,0,3,4,0,0,1,73,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html":[40,0,3,4,0,0,1,74,0],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#a15db1d7328ac44e56d75692d6a468b7e":[40,0,3,4,0,0,1,74,0,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#aaf22703ea7f75f7b9d348db23c4e0b04":[40,0,3,4,0,0,1,74,0,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#ace9e3fb9c5360a390ecd8c51e7e81d69":[40,0,3,4,0,0,1,74,0,4],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#ad32d7c8d34dd320a8f6bdb58708207aa":[40,0,3,4,0,0,1,74,0,3],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h_source.html":[40,0,3,4,0,0,1,74,0],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_neg_squared_difference_kernel_8h.html":[40,0,3,4,0,0,1,74,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_neg_squared_difference_kernel_8h.html#ab89328d2c7ed1fc3f23e810297c1b3cf":[40,0,3,4,0,0,1,74,1,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_neg_squared_difference_kernel_8h_source.html":[40,0,3,4,0,0,1,74,1]
+"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#aaf22703ea7f75f7b9d348db23c4e0b04":[40,0,3,4,0,0,1,74,0,2]
 };

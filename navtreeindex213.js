@@ -1,5 +1,11 @@
 var NAVTREEINDEX213 =
 {
+"mbed__config_8h.html#a963326cc8ab0bb09a34d6107883f0ad2":[40,0,3,1,0,0,0,1,180],
+"mbed__config_8h.html#a964b2f2648544bb2cd626a90172f3b39":[40,0,3,1,0,0,0,1,307],
+"mbed__config_8h.html#a99233889f7996775fdb1203fcea0b414":[40,0,3,1,0,0,0,1,374],
+"mbed__config_8h.html#a99278fb16d03dc4a87f6d4d424125a6e":[40,0,3,1,0,0,0,1,191],
+"mbed__config_8h.html#a998870bd58eb93e44c49827cab462785":[40,0,3,1,0,0,0,1,229],
+"mbed__config_8h.html#a99e77fb5a5ec38211cb36877ceaccb0e":[40,0,3,1,0,0,0,1,298],
 "mbed__config_8h.html#a9ad843aa400efea8c319b6a8ae536371":[40,0,3,1,0,0,0,1,210],
 "mbed__config_8h.html#a9b3bca9dca3446b9c57889b225095386":[40,0,3,1,0,0,0,1,251],
 "mbed__config_8h.html#a9b94c5734a7575385f56d68d91378989":[40,0,3,1,0,0,0,1,339],
@@ -243,11 +249,5 @@ var NAVTREEINDEX213 =
 "md_docs_2runtime_2core.html":[29],
 "md_docs_2runtime_2executors.html":[30],
 "md_docs_2runtime_2heterogeneous-execution.html":[31],
-"md_docs_2runtime_2supported-operations-backend.html":[32],
-"md_docs_2runtime_2training.html":[33],
-"md_docs_2runtime_2training__cnn__on__mnist.html":[34],
-"md_docs_2runtime_2training__mobilenetv2__on__imagenet.html":[35],
-"md_docs_2runtime_2transfer__learning.html":[36],
-"metrics_2_cross_entropy_8cpp.html":[40,0,3,5,1,5,2,1],
-"metrics_2_cross_entropy_8cpp_source.html":[40,0,3,5,1,5,2,1]
+"md_docs_2runtime_2supported-operations-backend.html":[32]
 };

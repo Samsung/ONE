@@ -3577,8 +3577,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -5652,7 +5652,8 @@ var hierarchy =
         [ "onert_micro::test_model::TestDataFloatFloorMod", "classonert__micro_1_1test__model_1_1_test_data_float_floor_mod.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataFullyConnectedBase< T >", "classonert__micro_1_1test__model_1_1_test_data_fully_connected_base.html", [
-        [ "onert_micro::test_model::TestDataFloatFullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_fully_connected.html", null ]
+        [ "onert_micro::test_model::TestDataFloatFullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_fully_connected.html", null ],
+        [ "onert_micro::test_model::TestDataFloatWQInt8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataGRUBase< T >", "classonert__micro_1_1test__model_1_1_test_data_g_r_u_base.html", null ],
       [ "onert_micro::test_model::TestDataGatherBase< T >", "classonert__micro_1_1test__model_1_1_test_data_gather_base.html", [

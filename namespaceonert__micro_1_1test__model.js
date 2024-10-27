@@ -257,6 +257,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1fully__connected__float.html#a98754ec8f53faad631e7f58fd78201d6", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1fully__connected__float.html#a1e140fef71ea805f158243ef695d6173", null ]
     ] ],
+    [ "fully_connected_float_weights_quantized_int8", "namespaceonert__micro_1_1test__model_1_1fully__connected__float__weights__quantized__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1fully__connected__float__weights__quantized__int8.html#ae1fd25e48a0d009cc74c99ac609a6186", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1fully__connected__float__weights__quantized__int8.html#a9e0c950df1d304d9bb5e46a75047e619", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1fully__connected__float__weights__quantized__int8.html#aadbfdb930e928d922d9a345e8441426c", null ]
+    ] ],
     [ "gather_float", "namespaceonert__micro_1_1test__model_1_1gather__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1gather__float.html#a2598ee225128a55161788b1daabb3ac2", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1gather__float.html#a245ca1a87b027e1c7a92f1d9970043fd", null ],
@@ -1235,6 +1240,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatTanh", "classonert__micro_1_1test__model_1_1_test_data_float_tanh.html", "classonert__micro_1_1test__model_1_1_test_data_float_tanh" ],
     [ "TestDataFloatTransposeConv", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv.html", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv" ],
     [ "TestDataFloatUnpack", "classonert__micro_1_1test__model_1_1_test_data_float_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_float_unpack" ],
+    [ "TestDataFloatWQInt8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected" ],
     [ "TestDataFloorBase", "classonert__micro_1_1test__model_1_1_test_data_floor_base.html", "classonert__micro_1_1test__model_1_1_test_data_floor_base" ],
     [ "TestDataFloorDivBase", "classonert__micro_1_1test__model_1_1_test_data_floor_div_base.html", "classonert__micro_1_1test__model_1_1_test_data_floor_div_base" ],
     [ "TestDataFloorModBase", "classonert__micro_1_1test__model_1_1_test_data_floor_mod_base.html", "classonert__micro_1_1test__model_1_1_test_data_floor_mod_base" ],

@@ -161,32 +161,32 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_insert_scale_shift_8cpp_source.html#l00336">336</a> of file <a class="el" href="_insert_scale_shift_8cpp_source.html">InsertScaleShift.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  337</span>{</div>
-<div class="line"><span class="lineno">  338</span>  <span class="comment">// Create a map for pattern matching</span></div>
-<div class="line"><span class="lineno">  339</span>  <span class="comment">// { back(string) -&gt; EqualizationPattern*}</span></div>
-<div class="line"><span class="lineno">  340</span>  <span class="comment">// This assumes that each EqualizePattern has a unique &#39;back&#39;</span></div>
-<div class="line"><span class="lineno">  341</span>  std::map&lt;std::string, EqualizePattern *&gt; pattern_by_back;</div>
-<div class="line"><span class="lineno">  342</span>  {</div>
-<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pattern : _patterns)</div>
-<div class="line"><span class="lineno">  344</span>    {</div>
-<div class="line"><span class="lineno">  345</span>      <span class="keyword">auto</span> back = pattern.back;</div>
-<div class="line"><span class="lineno">  346</span>      pattern_by_back[back] = &amp;pattern;</div>
-<div class="line"><span class="lineno">  347</span>    }</div>
-<div class="line"><span class="lineno">  348</span>  }</div>
-<div class="line"><span class="lineno">  349</span> </div>
-<div class="line"><span class="lineno">  350</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">postorder_traversal</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  351</span>  {</div>
-<div class="line"><span class="lineno">  352</span>    <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">if</span> (pattern_by_back.find(cnode-&gt;name()) == pattern_by_back.end())</div>
-<div class="line"><span class="lineno">  355</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>    <span class="keyword">auto</span> pattern = pattern_by_back.at(cnode-&gt;name());</div>
-<div class="line"><span class="lineno">  358</span>    InsertScaleShiftVisitor issv(pattern);</div>
-<div class="line"><span class="lineno">  359</span>    cnode-&gt;accept(&amp;issv);</div>
-<div class="line"><span class="lineno">  360</span>  }</div>
-<div class="line"><span class="lineno">  361</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_insert_scale_shift_8cpp_source.html#l00338">338</a> of file <a class="el" href="_insert_scale_shift_8cpp_source.html">InsertScaleShift.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  339</span>{</div>
+<div class="line"><span class="lineno">  340</span>  <span class="comment">// Create a map for pattern matching</span></div>
+<div class="line"><span class="lineno">  341</span>  <span class="comment">// { back(string) -&gt; EqualizationPattern*}</span></div>
+<div class="line"><span class="lineno">  342</span>  <span class="comment">// This assumes that each EqualizePattern has a unique &#39;back&#39;</span></div>
+<div class="line"><span class="lineno">  343</span>  std::map&lt;std::string, EqualizePattern *&gt; pattern_by_back;</div>
+<div class="line"><span class="lineno">  344</span>  {</div>
+<div class="line"><span class="lineno">  345</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pattern : _patterns)</div>
+<div class="line"><span class="lineno">  346</span>    {</div>
+<div class="line"><span class="lineno">  347</span>      <span class="keyword">auto</span> back = pattern.back;</div>
+<div class="line"><span class="lineno">  348</span>      pattern_by_back[back] = &amp;pattern;</div>
+<div class="line"><span class="lineno">  349</span>    }</div>
+<div class="line"><span class="lineno">  350</span>  }</div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">postorder_traversal</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  353</span>  {</div>
+<div class="line"><span class="lineno">  354</span>    <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  355</span> </div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span> (pattern_by_back.find(cnode-&gt;name()) == pattern_by_back.end())</div>
+<div class="line"><span class="lineno">  357</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  358</span> </div>
+<div class="line"><span class="lineno">  359</span>    <span class="keyword">auto</span> pattern = pattern_by_back.at(cnode-&gt;name());</div>
+<div class="line"><span class="lineno">  360</span>    InsertScaleShiftVisitor issv(pattern);</div>
+<div class="line"><span class="lineno">  361</span>    cnode-&gt;accept(&amp;issv);</div>
+<div class="line"><span class="lineno">  362</span>  }</div>
+<div class="line"><span class="lineno">  363</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a117fa82db86ebda898ee54200c42928d"><div class="ttname"><a href="namespaceloco.html#a117fa82db86ebda898ee54200c42928d">loco::postorder_traversal</a></div><div class="ttdeci">std::vector&lt; loco::Node * &gt; postorder_traversal(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Generate postorder traversal sequence starting from &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00053">Algorithm.cpp:53</a></div></div>

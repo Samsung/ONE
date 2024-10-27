@@ -1,5 +1,11 @@
 var NAVTREEINDEX180 =
 {
+"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_batch_to_space_n_d_8h_source.html":[40,0,0,59,1,1,3],
+"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_broadcast_to_8h.html":[40,0,0,59,1,1,4],
+"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_broadcast_to_8h_source.html":[40,0,0,59,1,1,4],
+"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_conv2d_8h.html":[40,0,0,59,1,1,5],
+"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_conv2d_8h_source.html":[40,0,0,59,1,1,5],
+"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depth_to_space_8h.html":[40,0,0,59,1,1,6],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depth_to_space_8h_source.html":[40,0,0,59,1,1,6],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depthwise_conv2d_8h.html":[40,0,0,59,1,1,7],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depthwise_conv2d_8h.html#a6f98040ce5b2f996abbfdc80fb1d5cfd":[40,0,0,59,1,1,7,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX180 =
 "compiler_2luci-interpreter_2src_2kernels_2_logistic_8cpp.html":[40,0,0,59,2,2,85],
 "compiler_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html":[40,0,0,59,2,2,85],
 "compiler_2luci-interpreter_2src_2kernels_2_logistic_8h.html":[40,0,0,59,2,2,86],
-"compiler_2luci-interpreter_2src_2kernels_2_logistic_8h_source.html":[40,0,0,59,2,2,86],
-"compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp.html":[40,0,0,59,2,2,91],
-"compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html":[40,0,0,59,2,2,91],
-"compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp.html":[40,0,0,59,2,2,89],
-"compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp_source.html":[40,0,0,59,2,2,89],
-"compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp.html":[40,0,0,59,2,2,93],
-"compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp_source.html":[40,0,0,59,2,2,93]
+"compiler_2luci-interpreter_2src_2kernels_2_logistic_8h_source.html":[40,0,0,59,2,2,86]
 };

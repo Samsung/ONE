@@ -1,5 +1,11 @@
 var NAVTREEINDEX214 =
 {
+"md_docs_2runtime_2training.html":[33],
+"md_docs_2runtime_2training__cnn__on__mnist.html":[34],
+"md_docs_2runtime_2training__mobilenetv2__on__imagenet.html":[35],
+"md_docs_2runtime_2transfer__learning.html":[36],
+"metrics_2_cross_entropy_8cpp.html":[40,0,3,5,1,5,2,1],
+"metrics_2_cross_entropy_8cpp_source.html":[40,0,3,5,1,5,2,1],
 "metrics_2_cross_entropy_8h.html":[40,0,3,5,0,6,1,1],
 "metrics_2_cross_entropy_8h_source.html":[40,0,3,5,0,6,1,1],
 "metrics_2_m_s_e_8cpp.html":[40,0,3,5,1,5,2,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX214 =
 "mir-interpreter_2src_2ops_2_greater_8h.html#a1c670cc3cc10d4a4336551134317219b":[40,0,0,78,1,0,30,0],
 "mir-interpreter_2src_2ops_2_greater_8h_source.html":[40,0,0,78,1,0,30],
 "mir-interpreter_2src_2ops_2_hard_swish_8cpp.html":[40,0,0,78,1,0,31],
-"mir-interpreter_2src_2ops_2_hard_swish_8cpp.html#a5a763b0911ab542e9c9ef7dcd0e8a28f":[40,0,0,78,1,0,31,2],
-"mir-interpreter_2src_2ops_2_hard_swish_8cpp_source.html":[40,0,0,78,1,0,31],
-"mir-interpreter_2src_2ops_2_hard_swish_8h.html":[40,0,0,78,1,0,32],
-"mir-interpreter_2src_2ops_2_hard_swish_8h.html#a5a763b0911ab542e9c9ef7dcd0e8a28f":[40,0,0,78,1,0,32,0],
-"mir-interpreter_2src_2ops_2_hard_swish_8h_source.html":[40,0,0,78,1,0,32],
-"mir-interpreter_2src_2ops_2_less_8h.html":[40,0,0,78,1,0,36],
-"mir-interpreter_2src_2ops_2_less_8h.html#a63280d239e3b24bcdd557ce73f5d4ba5":[40,0,0,78,1,0,36,0]
+"mir-interpreter_2src_2ops_2_hard_swish_8cpp.html#a5a763b0911ab542e9c9ef7dcd0e8a28f":[40,0,0,78,1,0,31,2]
 };

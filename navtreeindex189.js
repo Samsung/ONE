@@ -1,5 +1,11 @@
 var NAVTREEINDEX189 =
 {
+"compute_2cker_2include_2cker_2operation_2_logical_not_8h.html":[40,0,1,1,0,0,3,34],
+"compute_2cker_2include_2cker_2operation_2_logical_not_8h.html#af594baea6944ba1cf69de1536f46c082":[40,0,1,1,0,0,3,34,0],
+"compute_2cker_2include_2cker_2operation_2_logical_not_8h_source.html":[40,0,1,1,0,0,3,34],
+"compute_2cker_2include_2cker_2operation_2_logical_or_8h.html":[40,0,1,1,0,0,3,35],
+"compute_2cker_2include_2cker_2operation_2_logical_or_8h.html#a38e3f76c66656b03443aeae2f8ac9f98":[40,0,1,1,0,0,3,35,0],
+"compute_2cker_2include_2cker_2operation_2_logical_or_8h.html#a90c2912753b040a8cefc8feb1e93f80d":[40,0,1,1,0,0,3,35,1],
 "compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html":[40,0,1,1,0,0,3,35],
 "compute_2cker_2include_2cker_2operation_2_logistic_8h.html":[40,0,1,1,0,0,3,36],
 "compute_2cker_2include_2cker_2operation_2_logistic_8h.html#a46e46c40367179c6002cae197f60245f":[40,0,1,1,0,0,3,36,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX189 =
 "compute_2ruy_2include_2ruy_2_tensor_utils_8h_source.html":[40,0,1,2,0,0,6],
 "compute_2ruy_2include_2ruy_2_types_8h.html":[40,0,1,2,0,0,7],
 "compute_2ruy_2include_2ruy_2_types_8h.html#a53e614d61e4a56cdc05773ce61d9179b":[40,0,1,2,0,0,7,7],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a53e614d61e4a56cdc05773ce61d9179ba1ebc644af759b214a70279505401a0b9":[40,0,1,2,0,0,7,7,1],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a53e614d61e4a56cdc05773ce61d9179baf093768651925b22c4d08e33641f38f1":[40,0,1,2,0,0,7,7,0],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a61f6822bae7b9115886e65067857cac4":[40,0,1,2,0,0,7,8],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a61f6822bae7b9115886e65067857cac4a35c3ace1970663a16e5c65baa5941b13":[40,0,1,2,0,0,7,8,0],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a61f6822bae7b9115886e65067857cac4a4d3576c37e6f03700bad4345238fffa0":[40,0,1,2,0,0,7,8,2],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a61f6822bae7b9115886e65067857cac4ad523906435f67e94367d4fab5b9380da":[40,0,1,2,0,0,7,8,1],
-"compute_2ruy_2include_2ruy_2_types_8h.html#a695d6cbce17540c90564d4c369083181":[40,0,1,2,0,0,7,11]
+"compute_2ruy_2include_2ruy_2_types_8h.html#a53e614d61e4a56cdc05773ce61d9179ba1ebc644af759b214a70279505401a0b9":[40,0,1,2,0,0,7,7,1]
 };

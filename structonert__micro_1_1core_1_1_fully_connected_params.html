@@ -121,6 +121,10 @@ Data Fields</h2></td></tr>
 <tr class="separator:a92356d8305efcd56d941b1ef22097201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8188c3d864f539e908dd336453a8f094" id="r_a8188c3d864f539e908dd336453a8f094"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_fully_connected_params.html#a8188c3d864f539e908dd336453a8f094">output_multiplier</a></td></tr>
 <tr class="separator:a8188c3d864f539e908dd336453a8f094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc8a83cd24cac22bc637697b862abe27" id="r_acc8a83cd24cac22bc637697b862abe27"><td class="memItemLeft" align="right" valign="top">const float *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_fully_connected_params.html#acc8a83cd24cac22bc637697b862abe27">weights_scales</a></td></tr>
+<tr class="separator:acc8a83cd24cac22bc637697b862abe27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a0ef9144802caf20e4b5e18b8c589df" id="r_a4a0ef9144802caf20e4b5e18b8c589df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_fully_connected_params.html#a4a0ef9144802caf20e4b5e18b8c589df">is_channel_wise_quant</a></td></tr>
+<tr class="separator:a4a0ef9144802caf20e4b5e18b8c589df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a905f6e1e49ea35e91adaff758857f488" id="r_a905f6e1e49ea35e91adaff758857f488"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_fully_connected_params.html#a905f6e1e49ea35e91adaff758857f488">output_shift</a></td></tr>
 <tr class="separator:a905f6e1e49ea35e91adaff758857f488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a907cfe2e7a585fe148acbeaa464d1017" id="r_a907cfe2e7a585fe148acbeaa464d1017"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1core_1_1_fully_connected_params.html#a907cfe2e7a585fe148acbeaa464d1017">quantized_activation_min</a></td></tr>
@@ -146,7 +150,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00183">183</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected&lt; float &gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected()</a>.</p>
 
 </div>
 </div>
@@ -164,7 +168,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00182">182</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected&lt; float &gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected()</a>.</p>
 
 </div>
 </div>
@@ -183,6 +187,24 @@ Data Fields</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">185</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>.</p>
+
+</div>
+</div>
+<a id="a4a0ef9144802caf20e4b5e18b8c589df" name="a4a0ef9144802caf20e4b5e18b8c589df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a0ef9144802caf20e4b5e18b8c589df">&#9670;&#160;</a></span>is_channel_wise_quant</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert_micro::core::FullyConnectedParams::is_channel_wise_quant</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00190">190</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected()</a>.</p>
 
 </div>
 </div>
@@ -234,7 +256,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00189">189</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">191</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>.</p>
 
@@ -252,7 +274,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00192">192</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">194</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>.</p>
 
@@ -270,7 +292,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">191</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">193</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>.</p>
 
@@ -291,6 +313,24 @@ Data Fields</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">186</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">onert_micro::execute::pal::FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">onert_micro::execute::pal::FullyConnected()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">onert_micro::execute::pal::FullyConnected&lt; int8_t &gt;()</a>.</p>
+
+</div>
+</div>
+<a id="acc8a83cd24cac22bc637697b862abe27" name="acc8a83cd24cac22bc637697b862abe27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc8a83cd24cac22bc637697b862abe27">&#9670;&#160;</a></span>weights_scales</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float* onert_micro::core::FullyConnectedParams::weights_scales</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_data_8h_source.html#l00189">189</a> of file <a class="el" href="_o_m_kernel_data_8h_source.html">OMKernelData.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">onert_micro::execute::pal::FullyConnected()</a>.</p>
 
 </div>
 </div>

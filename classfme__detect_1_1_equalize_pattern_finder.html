@@ -160,32 +160,32 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_equalize_pattern_finder_8cpp_source.html#l00255">255</a> of file <a class="el" href="_equalize_pattern_finder_8cpp_source.html">EqualizePatternFinder.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  256</span>{</div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> (g == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;g&quot;</span>);</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>  std::vector&lt;EqualizePattern&gt; res;</div>
-<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  262</span>  {</div>
-<div class="line"><span class="lineno">  263</span>    <span class="keyword">const</span> <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  264</span>    <span class="keywordflow">if</span> (not _ctx.<a class="code hl_variable" href="structfme__detect_1_1_equalize_pattern_finder_1_1_context.html#a8b914c9a83c35f92581d0b490829e9dd">_allow_dup_op</a>)</div>
-<div class="line"><span class="lineno">  265</span>    {</div>
-<div class="line"><span class="lineno">  266</span>      <span class="comment">// We create new Ops (front, back) for each matched pattern, so duplicate</span></div>
-<div class="line"><span class="lineno">  267</span>      <span class="comment">// Ops can be created. This condition prevents pattern matching for a node</span></div>
-<div class="line"><span class="lineno">  268</span>      <span class="comment">// (front) with multiple successors (backs) to avoid duplicate computation.</span></div>
-<div class="line"><span class="lineno">  269</span>      <span class="comment">// TODO Duplicate Ops can be removed if all (pred-succ) pairs are matched</span></div>
-<div class="line"><span class="lineno">  270</span>      <span class="comment">// as the same pattern. For example, if (pred-succ1) is ScaleOnly and</span></div>
-<div class="line"><span class="lineno">  271</span>      <span class="comment">// (pred-succ2) is ScaleOnly, pred does not need to be duplicated.</span></div>
-<div class="line"><span class="lineno">  272</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(cnode).<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() != 1)</div>
-<div class="line"><span class="lineno">  273</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  274</span>    }</div>
-<div class="line"><span class="lineno">  275</span> </div>
-<div class="line"><span class="lineno">  276</span>    ::match(cnode, res);</div>
-<div class="line"><span class="lineno">  277</span>  }</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  280</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_equalize_pattern_finder_8cpp_source.html#l00267">267</a> of file <a class="el" href="_equalize_pattern_finder_8cpp_source.html">EqualizePatternFinder.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  268</span>{</div>
+<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">if</span> (g == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;g&quot;</span>);</div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span>  std::vector&lt;EqualizePattern&gt; res;</div>
+<div class="line"><span class="lineno">  273</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  274</span>  {</div>
+<div class="line"><span class="lineno">  275</span>    <span class="keyword">const</span> <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">if</span> (not _ctx.<a class="code hl_variable" href="structfme__detect_1_1_equalize_pattern_finder_1_1_context.html#a8b914c9a83c35f92581d0b490829e9dd">_allow_dup_op</a>)</div>
+<div class="line"><span class="lineno">  277</span>    {</div>
+<div class="line"><span class="lineno">  278</span>      <span class="comment">// We create new Ops (front, back) for each matched pattern, so duplicate</span></div>
+<div class="line"><span class="lineno">  279</span>      <span class="comment">// Ops can be created. This condition prevents pattern matching for a node</span></div>
+<div class="line"><span class="lineno">  280</span>      <span class="comment">// (front) with multiple successors (backs) to avoid duplicate computation.</span></div>
+<div class="line"><span class="lineno">  281</span>      <span class="comment">// TODO Duplicate Ops can be removed if all (pred-succ) pairs are matched</span></div>
+<div class="line"><span class="lineno">  282</span>      <span class="comment">// as the same pattern. For example, if (pred-succ1) is ScaleOnly and</span></div>
+<div class="line"><span class="lineno">  283</span>      <span class="comment">// (pred-succ2) is ScaleOnly, pred does not need to be duplicated.</span></div>
+<div class="line"><span class="lineno">  284</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(cnode).<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() != 1)</div>
+<div class="line"><span class="lineno">  285</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  286</span>    }</div>
+<div class="line"><span class="lineno">  287</span> </div>
+<div class="line"><span class="lineno">  288</span>    ::match(cnode, res);</div>
+<div class="line"><span class="lineno">  289</span>  }</div>
+<div class="line"><span class="lineno">  290</span> </div>
+<div class="line"><span class="lineno">  291</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  292</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a43df4bfde8658322cb87ab5654ba4052"><div class="ttname"><a href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a></div><div class="ttdeci">std::set&lt; Node * &gt; succs(const Node *node)</div><div class="ttdoc">Enumerate all the successors of a given node.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">Node.cpp:46</a></div></div>

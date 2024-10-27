@@ -1,5 +1,11 @@
 var NAVTREEINDEX227 =
 {
+"namespaceluci__interpreter_1_1test__kernel_1_1slice__wrong__input__shape.html":[38,0,82,2,202],
+"namespaceluci__interpreter_1_1test__kernel_1_1slice__wrong__input__shape.html#a80c51c66135e92bb0867ef87d53c89b1":[38,0,82,2,202,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1slice__wrong__size__type.html":[38,0,82,2,203],
+"namespaceluci__interpreter_1_1test__kernel_1_1slice__wrong__size__type.html#a2ef4fa4fb952e4a1157e613fb8ec0442":[38,0,82,2,203,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1space__to__batch__nd__float.html":[38,0,82,2,204],
+"namespaceluci__interpreter_1_1test__kernel_1_1space__to__batch__nd__float.html#a634fd70b819e60e7839f496cc97f4634":[38,0,82,2,204,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1space__to__batch__nd__float.html#a94024ca97c9080c267ddaa262af342d7":[38,0,82,2,204,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1space__to__batch__nd__float.html#af3a284900ba9c966abc538de2bd7f1c4":[38,0,82,2,204,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1space__to__depth__float.html":[38,0,82,2,205],
@@ -148,9 +154,9 @@ var NAVTREEINDEX227 =
 "namespaceluci__interpreter__pal.html#a25b6130f7d70218ce9b4f4b9417e68d3":[38,0,83,176],
 "namespaceluci__interpreter__pal.html#a27be310fcbe0e7eec4d5780262289abd":[38,0,83,171],
 "namespaceluci__interpreter__pal.html#a28d81ce5010802af13cf99e0243f3baa":[38,0,83,31],
-"namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76":[38,0,83,42],
-"namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76":[38,0,83,43],
 "namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76":[38,0,83,44],
+"namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76":[38,0,83,43],
+"namespaceluci__interpreter__pal.html#a2b511b1d94072321b3ee9fc3319f5a76":[38,0,83,42],
 "namespaceluci__interpreter__pal.html#a2c95e88268cbe9233ed5a94609c1a90b":[38,0,83,46],
 "namespaceluci__interpreter__pal.html#a2caf99ee4e308fed9c7738a8430858ad":[38,0,83,168],
 "namespaceluci__interpreter__pal.html#a2ea33974cee305d22e4303c124bac6d6":[38,0,83,122],
@@ -224,9 +230,9 @@ var NAVTREEINDEX227 =
 "namespaceluci__interpreter__pal.html#a8e7d54368bc1a15b586719c02c58a3ee":[38,0,83,29],
 "namespaceluci__interpreter__pal.html#a8f5a39193599fb4d15317f8e2287a7fb":[38,0,83,101],
 "namespaceluci__interpreter__pal.html#a8f8cea038fd7eefa9fc11331a319ed2d":[38,0,83,118],
-"namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6":[38,0,83,94],
 "namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6":[38,0,83,96],
 "namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6":[38,0,83,95],
+"namespaceluci__interpreter__pal.html#a90a2d5d095d1e99b34df27491a89fdd6":[38,0,83,94],
 "namespaceluci__interpreter__pal.html#a90d55d6b5aa388b561de23c0cf63cf3a":[38,0,83,47],
 "namespaceluci__interpreter__pal.html#a91f25d9af509b61e4004261b9d4cbd33":[38,0,83,112],
 "namespaceluci__interpreter__pal.html#a9c049bc443aa307ab9e3c747fea4b971":[38,0,83,156],
@@ -243,11 +249,5 @@ var NAVTREEINDEX227 =
 "namespaceluci__interpreter__pal.html#ab8738ffaf077556034784c12228921b7":[38,0,83,129],
 "namespaceluci__interpreter__pal.html#ab9733aaa3dc6a24abc45d60998eb7316":[38,0,83,82],
 "namespaceluci__interpreter__pal.html#aba019d7b763f36f4c9f59fb833063ba4":[38,0,83,32],
-"namespaceluci__interpreter__pal.html#aba67a465ba773f20f65dd96485f94c86":[38,0,83,97],
-"namespaceluci__interpreter__pal.html#abc2eaee1d667edbdf17ee4930decfad7":[38,0,83,138],
-"namespaceluci__interpreter__pal.html#abe15d3b8ef6de610d7b033e89843227c":[38,0,83,92],
-"namespaceluci__interpreter__pal.html#abf6db3037bd59004d80a64f68c485d8f":[38,0,83,133],
-"namespaceluci__interpreter__pal.html#ac3ee0c8ca70c8d44a56e11122d5834fa":[38,0,83,130],
-"namespaceluci__interpreter__pal.html#ac506d864187c72f932c8978aad6cfc0b":[38,0,83,145],
-"namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7":[38,0,83,146]
+"namespaceluci__interpreter__pal.html#aba67a465ba773f20f65dd96485f94c86":[38,0,83,97]
 };

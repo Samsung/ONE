@@ -265,29 +265,29 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00107">107</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  assert(node != <span class="keyword">nullptr</span>);        <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  111</span>  assert(interpreter != <span class="keyword">nullptr</span>); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>  std::vector&lt;py::dict&gt; inputs;</div>
-<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>(); ++i)</div>
-<div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_tensor = interpreter-&gt;getTensor(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(i));</div>
-<div class="line"><span class="lineno">  117</span>    <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(i));</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    <span class="comment">// skip invalid inputs (e.g., non-existing bias in TCONV)</span></div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">if</span> (circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)</div>
-<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    <span class="keyword">auto</span> py_input =</div>
-<div class="line"><span class="lineno">  124</span>      py::dict(<span class="stringliteral">&quot;name&quot;</span>_a = circle_node-&gt;name(), <span class="stringliteral">&quot;data&quot;</span>_a = numpyArray(input_tensor),</div>
-<div class="line"><span class="lineno">  125</span>               <span class="stringliteral">&quot;quantparam&quot;</span>_a = quantparam(input_tensor),</div>
-<div class="line"><span class="lineno">  126</span>               <span class="stringliteral">&quot;is_const&quot;</span>_a = circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLECONST);</div>
-<div class="line"><span class="lineno">  127</span>    inputs.push_back(py_input);</div>
-<div class="line"><span class="lineno">  128</span>  }</div>
-<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">return</span> inputs;</div>
-<div class="line"><span class="lineno">  130</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00109">109</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
+<div class="line"><span class="lineno">  112</span>  assert(node != <span class="keyword">nullptr</span>);        <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  113</span>  assert(interpreter != <span class="keyword">nullptr</span>); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>  std::vector&lt;py::dict&gt; inputs;</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>(); ++i)</div>
+<div class="line"><span class="lineno">  117</span>  {</div>
+<div class="line"><span class="lineno">  118</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_tensor = interpreter-&gt;getTensor(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(i));</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(i));</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>    <span class="comment">// skip invalid inputs (e.g., non-existing bias in TCONV)</span></div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">if</span> (circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE)</div>
+<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>    <span class="keyword">auto</span> py_input =</div>
+<div class="line"><span class="lineno">  126</span>      py::dict(<span class="stringliteral">&quot;name&quot;</span>_a = circle_node-&gt;name(), <span class="stringliteral">&quot;data&quot;</span>_a = numpyArray(input_tensor),</div>
+<div class="line"><span class="lineno">  127</span>               <span class="stringliteral">&quot;quantparam&quot;</span>_a = quantparam(input_tensor),</div>
+<div class="line"><span class="lineno">  128</span>               <span class="stringliteral">&quot;is_const&quot;</span>_a = circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLECONST);</div>
+<div class="line"><span class="lineno">  129</span>    inputs.push_back(py_input);</div>
+<div class="line"><span class="lineno">  130</span>  }</div>
+<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">return</span> inputs;</div>
+<div class="line"><span class="lineno">  132</span>}</div>
 <div class="ttc" id="aclassloco_1_1_node_html_a0fbc9384bdfbbaf14fec1b9b712fc7c1"><div class="ttname"><a href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">loco::Node::arg</a></div><div class="ttdeci">virtual Node * arg(uint32_t N) const =0</div><div class="ttdoc">Access N-th argument node.</div></div>
 <div class="ttc" id="aclassloco_1_1_node_html_a5473adc0c367676e384bc06241e23d3b"><div class="ttname"><a href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">loco::Node::arity</a></div><div class="ttdeci">virtual uint32_t arity(void) const =0</div><div class="ttdoc">Return the number of arguments.</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
@@ -314,27 +314,27 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00173">173</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
-<div class="line"><span class="lineno">  176</span>  {</div>
-<div class="line"><span class="lineno">  177</span>    <span class="comment">// TODO Update this list when new Op is added</span></div>
-<div class="line"><span class="lineno">  178</span>    <span class="comment">// Tip: grep &quot;public GraphBuilderMultiOutput&quot; in luci/import</span></div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">case</span> luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:</div>
-<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CUSTOM:</div>
-<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">case</span> luci::CircleOpcode::IF:</div>
-<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">case</span> luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:</div>
-<div class="line"><span class="lineno">  183</span>    <span class="keywordflow">case</span> luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:</div>
-<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">case</span> luci::CircleOpcode::SPLIT:</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">case</span> luci::CircleOpcode::SPLIT_V:</div>
-<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TOPK_V2:</div>
-<div class="line"><span class="lineno">  187</span>    <span class="keywordflow">case</span> luci::CircleOpcode::UNIQUE:</div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">case</span> luci::CircleOpcode::UNPACK:</div>
-<div class="line"><span class="lineno">  189</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  191</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  192</span>  }</div>
-<div class="line"><span class="lineno">  193</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00175">175</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  176</span>{</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
+<div class="line"><span class="lineno">  178</span>  {</div>
+<div class="line"><span class="lineno">  179</span>    <span class="comment">// TODO Update this list when new Op is added</span></div>
+<div class="line"><span class="lineno">  180</span>    <span class="comment">// Tip: grep &quot;public GraphBuilderMultiOutput&quot; in luci/import</span></div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">case</span> luci::CircleOpcode::BIDIRECTIONAL_SEQUENCE_LSTM:</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CUSTOM:</div>
+<div class="line"><span class="lineno">  183</span>    <span class="keywordflow">case</span> luci::CircleOpcode::IF:</div>
+<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">case</span> luci::CircleOpcode::NON_MAX_SUPPRESSION_V4:</div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">case</span> luci::CircleOpcode::NON_MAX_SUPPRESSION_V5:</div>
+<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">case</span> luci::CircleOpcode::SPLIT:</div>
+<div class="line"><span class="lineno">  187</span>    <span class="keywordflow">case</span> luci::CircleOpcode::SPLIT_V:</div>
+<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TOPK_V2:</div>
+<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">case</span> luci::CircleOpcode::UNIQUE:</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">case</span> luci::CircleOpcode::UNPACK:</div>
+<div class="line"><span class="lineno">  191</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  193</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  194</span>  }</div>
+<div class="line"><span class="lineno">  195</span>}</div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
@@ -358,10 +358,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00105">105</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>{ <span class="keywordflow">return</span> py::none(); }</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00107">107</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <span class="keywordflow">return</span> py::none(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_post_operator_hook_8h_source.html#l00201">dalgona::PostOperatorHook::visit()</a>, and <a class="el" href="_pre_operator_hook_8h_source.html#l00166">dalgona::PreOperatorHook::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_post_operator_hook_8h_source.html#l00206">dalgona::PostOperatorHook::visit()</a>, and <a class="el" href="_pre_operator_hook_8h_source.html#l00166">dalgona::PreOperatorHook::visit()</a>.</p>
 
 </div>
 </div>
@@ -391,20 +391,20 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00158">158</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  assert(node != <span class="keyword">nullptr</span>);        <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  161</span>  assert(interpreter != <span class="keyword">nullptr</span>); <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor = interpreter-&gt;getTensor(node);</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00160">160</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  161</span>{</div>
+<div class="line"><span class="lineno">  162</span>  assert(node != <span class="keyword">nullptr</span>);        <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  163</span>  assert(interpreter != <span class="keyword">nullptr</span>); <span class="comment">// FIX_CALLER_UNLESS</span></div>
 <div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  <a class="code hl_define" href="compiler_2dalgona_2src_2_utils_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(tensor != <span class="keyword">nullptr</span>, <span class="stringliteral">&quot;Null tensor detected in &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">  165</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor = interpreter-&gt;getTensor(node);</div>
 <div class="line"><span class="lineno">  166</span> </div>
-<div class="line"><span class="lineno">  167</span>  <span class="keyword">auto</span> py_output = py::dict(<span class="stringliteral">&quot;name&quot;</span>_a = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(), <span class="stringliteral">&quot;data&quot;</span>_a = numpyArray(tensor),</div>
-<div class="line"><span class="lineno">  168</span>                            <span class="stringliteral">&quot;quantparam&quot;</span>_a = quantparam(tensor),</div>
-<div class="line"><span class="lineno">  169</span>                            <span class="stringliteral">&quot;is_const&quot;</span>_a = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>() == luci::CircleOpcode::CIRCLECONST);</div>
-<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">return</span> py_output;</div>
-<div class="line"><span class="lineno">  171</span>}</div>
+<div class="line"><span class="lineno">  167</span>  <a class="code hl_define" href="compiler_2dalgona_2src_2_utils_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(tensor != <span class="keyword">nullptr</span>, <span class="stringliteral">&quot;Null tensor detected in &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>  <span class="keyword">auto</span> py_output = py::dict(<span class="stringliteral">&quot;name&quot;</span>_a = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(), <span class="stringliteral">&quot;data&quot;</span>_a = numpyArray(tensor),</div>
+<div class="line"><span class="lineno">  170</span>                            <span class="stringliteral">&quot;quantparam&quot;</span>_a = quantparam(tensor),</div>
+<div class="line"><span class="lineno">  171</span>                            <span class="stringliteral">&quot;is_const&quot;</span>_a = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>() == luci::CircleOpcode::CIRCLECONST);</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keywordflow">return</span> py_output;</div>
+<div class="line"><span class="lineno">  173</span>}</div>
 <div class="ttc" id="acompiler_2dalgona_2src_2_utils_8cpp_html_ad1515c4010b62f2e17704bb149a64d6b"><div class="ttname"><a href="compiler_2dalgona_2src_2_utils_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a></div><div class="ttdeci">#define THROW_UNLESS(COND, MSG)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00033">Utils.cpp:33</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
 </div><!-- fragment -->
@@ -440,29 +440,29 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00132">132</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  134</span>{</div>
-<div class="line"><span class="lineno">  135</span>  std::vector&lt;py::dict&gt; outputs;</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> succ : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::succs(node))</div>
-<div class="line"><span class="lineno">  137</span>  {</div>
-<div class="line"><span class="lineno">  138</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_tensor = interpreter-&gt;getTensor(succ);</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(succ);</div>
-<div class="line"><span class="lineno">  140</span> </div>
-<div class="line"><span class="lineno">  141</span>    <span class="keyword">auto</span> opcode_str = <a class="code hl_function" href="namespacedalgona.html#a5aa88e1ccfc9007d5732982841a15248">toString</a>(circle_node-&gt;opcode());</div>
-<div class="line"><span class="lineno">  142</span>    <span class="comment">// Check if node is a multi-output node</span></div>
-<div class="line"><span class="lineno">  143</span>    <span class="comment">// Assumption: Multi-output virtual nodes have &#39;Out&#39; prefix</span></div>
-<div class="line"><span class="lineno">  144</span>    <span class="comment">// TODO Fix this if the assumption changes</span></div>
-<div class="line"><span class="lineno">  145</span>    <a class="code hl_define" href="compiler_2dalgona_2src_2_utils_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(opcode_str.substr(opcode_str.length() - 3) == <span class="stringliteral">&quot;Out&quot;</span>,</div>
-<div class="line"><span class="lineno">  146</span>                 <span class="stringliteral">&quot;Invalid output detected in &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>    <span class="keyword">auto</span> py_output =</div>
-<div class="line"><span class="lineno">  149</span>      py::dict(<span class="stringliteral">&quot;name&quot;</span>_a = circle_node-&gt;name(), <span class="stringliteral">&quot;data&quot;</span>_a = numpyArray(output_tensor),</div>
-<div class="line"><span class="lineno">  150</span>               <span class="stringliteral">&quot;quantparam&quot;</span>_a = quantparam(output_tensor),</div>
-<div class="line"><span class="lineno">  151</span>               <span class="stringliteral">&quot;is_const&quot;</span>_a = circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLECONST);</div>
-<div class="line"><span class="lineno">  152</span>    outputs.push_back(py_output);</div>
-<div class="line"><span class="lineno">  153</span>  }</div>
-<div class="line"><span class="lineno">  154</span>  <span class="keywordflow">return</span> outputs;</div>
-<div class="line"><span class="lineno">  155</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00134">134</a> of file <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
+<div class="line"><span class="lineno">  137</span>  std::vector&lt;py::dict&gt; outputs;</div>
+<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> succ : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::succs(node))</div>
+<div class="line"><span class="lineno">  139</span>  {</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_tensor = interpreter-&gt;getTensor(succ);</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keyword">auto</span> circle_node = <span class="keyword">static_cast&lt;</span><a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *<span class="keyword">&gt;</span>(succ);</div>
+<div class="line"><span class="lineno">  142</span> </div>
+<div class="line"><span class="lineno">  143</span>    <span class="keyword">auto</span> opcode_str = <a class="code hl_function" href="namespacedalgona.html#a5aa88e1ccfc9007d5732982841a15248">toString</a>(circle_node-&gt;opcode());</div>
+<div class="line"><span class="lineno">  144</span>    <span class="comment">// Check if node is a multi-output node</span></div>
+<div class="line"><span class="lineno">  145</span>    <span class="comment">// Assumption: Multi-output virtual nodes have &#39;Out&#39; prefix</span></div>
+<div class="line"><span class="lineno">  146</span>    <span class="comment">// TODO Fix this if the assumption changes</span></div>
+<div class="line"><span class="lineno">  147</span>    <a class="code hl_define" href="compiler_2dalgona_2src_2_utils_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(opcode_str.substr(opcode_str.length() - 3) == <span class="stringliteral">&quot;Out&quot;</span>,</div>
+<div class="line"><span class="lineno">  148</span>                 <span class="stringliteral">&quot;Invalid output detected in &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>    <span class="keyword">auto</span> py_output =</div>
+<div class="line"><span class="lineno">  151</span>      py::dict(<span class="stringliteral">&quot;name&quot;</span>_a = circle_node-&gt;name(), <span class="stringliteral">&quot;data&quot;</span>_a = numpyArray(output_tensor),</div>
+<div class="line"><span class="lineno">  152</span>               <span class="stringliteral">&quot;quantparam&quot;</span>_a = quantparam(output_tensor),</div>
+<div class="line"><span class="lineno">  153</span>               <span class="stringliteral">&quot;is_const&quot;</span>_a = circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLECONST);</div>
+<div class="line"><span class="lineno">  154</span>    outputs.push_back(py_output);</div>
+<div class="line"><span class="lineno">  155</span>  }</div>
+<div class="line"><span class="lineno">  156</span>  <span class="keywordflow">return</span> outputs;</div>
+<div class="line"><span class="lineno">  157</span>}</div>
 <div class="ttc" id="anamespacedalgona_html_a5aa88e1ccfc9007d5732982841a15248"><div class="ttname"><a href="namespacedalgona.html#a5aa88e1ccfc9007d5732982841a15248">dalgona::toString</a></div><div class="ttdeci">const std::string toString(luci::CircleOpcode opcode)</div><div class="ttdef"><b>Definition</b> <a href="_string_utils_8cpp_source.html#l00026">StringUtils.cpp:26</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 </div><!-- fragment -->
@@ -512,7 +512,7 @@ template&lt;typename... Args&gt; </div>
 <div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_python_hooks_8cpp_source.html#l00103">dalgona::PythonHooks::endAnalysis()</a>, <a class="el" href="_python_hooks_8cpp_source.html#l00084">dalgona::PythonHooks::endNetworkExecution()</a>, <a class="el" href="_python_hooks_8cpp_source.html#l00039">dalgona::PythonHooks::importAnalysis()</a>, <a class="el" href="_python_hooks_8cpp_source.html#l00066">dalgona::PythonHooks::startNetworkExecution()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00170">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00137">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00116">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00085">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00142">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00110">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00185">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00151">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00222">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00186">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00079">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00064">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00241">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00204">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00201">dalgona::PostOperatorHook::visit()</a>, and <a class="el" href="_pre_operator_hook_8h_source.html#l00166">dalgona::PreOperatorHook::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_python_hooks_8cpp_source.html#l00103">dalgona::PythonHooks::endAnalysis()</a>, <a class="el" href="_python_hooks_8cpp_source.html#l00084">dalgona::PythonHooks::endNetworkExecution()</a>, <a class="el" href="_python_hooks_8cpp_source.html#l00039">dalgona::PythonHooks::importAnalysis()</a>, <a class="el" href="_python_hooks_8cpp_source.html#l00066">dalgona::PythonHooks::startNetworkExecution()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00170">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00137">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00116">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00085">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00142">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00110">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00185">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00151">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00227">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00186">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00079">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00064">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00246">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00204">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00206">dalgona::PostOperatorHook::visit()</a>, and <a class="el" href="_pre_operator_hook_8h_source.html#l00166">dalgona::PreOperatorHook::visit()</a>.</p>
 
 </div>
 </div>
@@ -551,7 +551,7 @@ template&lt;typename... Args&gt; </div>
 <div class="line"><span class="lineno">   42</span>  <span class="keywordflow">return</span> std::string(node_name).substr(6);</div>
 <div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00132">outputsPyArray()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00170">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00137">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00116">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00085">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00142">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00110">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00185">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00151">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00222">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00186">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00079">dalgona::PostOperatorHook::visit()</a>, and <a class="el" href="_pre_operator_hook_8h_source.html#l00064">dalgona::PreOperatorHook::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2dalgona_2src_2_utils_8cpp_source.html#l00134">outputsPyArray()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00170">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00137">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00116">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00085">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00142">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00110">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00185">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00151">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00227">dalgona::PostOperatorHook::visit()</a>, <a class="el" href="_pre_operator_hook_8h_source.html#l00186">dalgona::PreOperatorHook::visit()</a>, <a class="el" href="_post_operator_hook_8h_source.html#l00079">dalgona::PostOperatorHook::visit()</a>, and <a class="el" href="_pre_operator_hook_8h_source.html#l00064">dalgona::PreOperatorHook::visit()</a>.</p>
 
 </div>
 </div>

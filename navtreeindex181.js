@@ -1,5 +1,11 @@
 var NAVTREEINDEX181 =
 {
+"compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp.html":[40,0,0,59,2,2,91],
+"compiler_2luci-interpreter_2src_2kernels_2_max_pool2_d_8cpp_source.html":[40,0,0,59,2,2,91],
+"compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp.html":[40,0,0,59,2,2,89],
+"compiler_2luci-interpreter_2src_2kernels_2_maximum_8cpp_source.html":[40,0,0,59,2,2,89],
+"compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp.html":[40,0,0,59,2,2,93],
+"compiler_2luci-interpreter_2src_2kernels_2_mean_8cpp_source.html":[40,0,0,59,2,2,93],
 "compiler_2luci-interpreter_2src_2kernels_2_minimum_8cpp.html":[40,0,0,59,2,2,95],
 "compiler_2luci-interpreter_2src_2kernels_2_minimum_8cpp_source.html":[40,0,0,59,2,2,95],
 "compiler_2luci-interpreter_2src_2kernels_2_mirror_pad_8cpp.html":[40,0,0,59,2,2,97],
@@ -243,11 +249,5 @@ var NAVTREEINDEX181 =
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp.html":[40,0,0,59,2,3,0,3],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp.html#a83b6d9ba619598e90eef9e3f09423f4c":[40,0,0,59,2,3,0,3,0],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_average_pool2_d_8cpp_source.html":[40,0,0,59,2,3,0,3],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp.html":[40,0,0,59,2,3,0,4],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp.html#ada43472e71e1b41d6d1092ac4f6a2a51":[40,0,0,59,2,3,0,4,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp_source.html":[40,0,0,59,2,3,0,4],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_to_space_n_d_8cpp.html":[40,0,0,59,2,3,0,5],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_to_space_n_d_8cpp.html#a8cce7b44f8a8c3221b6e81a2d970779f":[40,0,0,59,2,3,0,5,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_to_space_n_d_8cpp_source.html":[40,0,0,59,2,3,0,5],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_broadcast_to_8cpp.html":[40,0,0,59,2,3,0,6]
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_batch_mat_mul_8cpp.html":[40,0,0,59,2,3,0,4]
 };

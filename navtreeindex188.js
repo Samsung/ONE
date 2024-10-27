@@ -1,5 +1,11 @@
 var NAVTREEINDEX188 =
 {
+"compute_2cker_2include_2cker_2_shape_8h.html#a9e2cbeab933999cf4e6789be1aebe866":[40,0,1,1,0,0,9,7],
+"compute_2cker_2include_2cker_2_shape_8h.html#aa236fd956f6ea3551bee73cec57e0aeb":[40,0,1,1,0,0,9,5],
+"compute_2cker_2include_2cker_2_shape_8h.html#aabf0edca9e5984799338bb320bf6eb90":[40,0,1,1,0,0,9,10],
+"compute_2cker_2include_2cker_2_shape_8h.html#ab86126de4e835f9499051e43b841abca":[40,0,1,1,0,0,9,8],
+"compute_2cker_2include_2cker_2_shape_8h.html#ad99f65ff98fb571287a96424b0233fdb":[40,0,1,1,0,0,9,9],
+"compute_2cker_2include_2cker_2_shape_8h.html#ae31bf0cedceebd57f4bfd06c06118071":[40,0,1,1,0,0,9,3],
 "compute_2cker_2include_2cker_2_shape_8h_source.html":[40,0,1,1,0,0,9],
 "compute_2cker_2include_2cker_2_tensor_utils_8h.html":[40,0,1,1,0,0,10],
 "compute_2cker_2include_2cker_2_tensor_utils_8h.html#a0845eb565580267c360ba02286869cf7":[40,0,1,1,0,0,10,15],
@@ -243,11 +249,5 @@ var NAVTREEINDEX188 =
 "compute_2cker_2include_2cker_2operation_2_logical_and_8h.html":[40,0,1,1,0,0,3,33],
 "compute_2cker_2include_2cker_2operation_2_logical_and_8h.html#a19ac5e1b3c8b8ccac42e4cb89c967f25":[40,0,1,1,0,0,3,33,0],
 "compute_2cker_2include_2cker_2operation_2_logical_and_8h.html#a8a566cd2569a891050420a9f8195e4a6":[40,0,1,1,0,0,3,33,1],
-"compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html":[40,0,1,1,0,0,3,33],
-"compute_2cker_2include_2cker_2operation_2_logical_not_8h.html":[40,0,1,1,0,0,3,34],
-"compute_2cker_2include_2cker_2operation_2_logical_not_8h.html#af594baea6944ba1cf69de1536f46c082":[40,0,1,1,0,0,3,34,0],
-"compute_2cker_2include_2cker_2operation_2_logical_not_8h_source.html":[40,0,1,1,0,0,3,34],
-"compute_2cker_2include_2cker_2operation_2_logical_or_8h.html":[40,0,1,1,0,0,3,35],
-"compute_2cker_2include_2cker_2operation_2_logical_or_8h.html#a38e3f76c66656b03443aeae2f8ac9f98":[40,0,1,1,0,0,3,35,0],
-"compute_2cker_2include_2cker_2operation_2_logical_or_8h.html#a90c2912753b040a8cefc8feb1e93f80d":[40,0,1,1,0,0,3,35,1]
+"compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html":[40,0,1,1,0,0,3,33]
 };

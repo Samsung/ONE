@@ -1,5 +1,15 @@
 var NAVTREEINDEX244 =
 {
+"onert-micro_2include_2pal_2common_2_p_a_l_relu_common_8h_source.html":[40,0,3,5,0,4,1,44],
+"onert-micro_2include_2pal_2common_2_p_a_l_s_v_d_f_common_8h.html":[40,0,3,5,0,4,1,61],
+"onert-micro_2include_2pal_2common_2_p_a_l_s_v_d_f_common_8h.html#adb4849cf9582886e6fa0a9cb99891a79":[40,0,3,5,0,4,1,61,0],
+"onert-micro_2include_2pal_2common_2_p_a_l_s_v_d_f_common_8h_source.html":[40,0,3,5,0,4,1,61],
+"onert-micro_2include_2pal_2common_2_p_a_l_sin_common_8h.html":[40,0,3,5,0,4,1,48],
+"onert-micro_2include_2pal_2common_2_p_a_l_sin_common_8h.html#ad7761ff82c6cc33bad9c9b38b5d4a2c4":[40,0,3,5,0,4,1,48,0],
+"onert-micro_2include_2pal_2common_2_p_a_l_sin_common_8h_source.html":[40,0,3,5,0,4,1,48],
+"onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h.html":[40,0,3,5,0,4,1,51],
+"onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h.html#a1a493b393913e1bca93f7623a489c0f8":[40,0,3,5,0,4,1,51,1],
+"onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h.html#a2230eee1844cbc1545392967b2fcec42":[40,0,3,5,0,4,1,51,0],
 "onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html":[40,0,3,5,0,4,1,51],
 "onert-micro_2include_2pal_2common_2_p_a_l_square_common_8h.html":[40,0,3,5,0,4,1,57],
 "onert-micro_2include_2pal_2common_2_p_a_l_square_common_8h.html#ad69f6de23ace3af9871c67ffd89ead86":[40,0,3,5,0,4,1,57,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX244 =
 "onert-micro_2include_2test__models_2conv2d_2_neg_conv2_d_kernel_8h_source.html":[40,0,3,5,0,5,10,1],
 "onert-micro_2include_2test__models_2conv2d_2_test_data_conv2_d_base_8h.html":[40,0,3,5,0,5,10,3],
 "onert-micro_2include_2test__models_2conv2d_2_test_data_conv2_d_base_8h_source.html":[40,0,3,5,0,5,10,3],
-"onert-micro_2include_2test__models_2cos_2_float_cos_kernel_8h.html":[40,0,3,5,0,5,11,0],
-"onert-micro_2include_2test__models_2cos_2_float_cos_kernel_8h.html#a8e1d4e0a18835eec1b6dbcce26fd831a":[40,0,3,5,0,5,11,0,1],
-"onert-micro_2include_2test__models_2cos_2_float_cos_kernel_8h.html#aa59b4f87a7f005d41efa9fe902ec0458":[40,0,3,5,0,5,11,0,3],
-"onert-micro_2include_2test__models_2cos_2_float_cos_kernel_8h.html#ac95169f420b4120b7e759f8bb5e73a48":[40,0,3,5,0,5,11,0,2],
-"onert-micro_2include_2test__models_2cos_2_float_cos_kernel_8h_source.html":[40,0,3,5,0,5,11,0],
-"onert-micro_2include_2test__models_2cos_2_neg_cos_kernel_8h.html":[40,0,3,5,0,5,11,1],
-"onert-micro_2include_2test__models_2cos_2_neg_cos_kernel_8h.html#a4813fd758105c230c3695010d7086c06":[40,0,3,5,0,5,11,1,1],
-"onert-micro_2include_2test__models_2cos_2_neg_cos_kernel_8h_source.html":[40,0,3,5,0,5,11,1],
-"onert-micro_2include_2test__models_2cos_2_test_data_cos_base_8h.html":[40,0,3,5,0,5,11,2],
-"onert-micro_2include_2test__models_2cos_2_test_data_cos_base_8h_source.html":[40,0,3,5,0,5,11,2],
-"onert-micro_2include_2test__models_2depthwise__conv__2d_2_float_depthwise_conv2_d_kernel_8h.html":[40,0,3,5,0,5,12,0]
+"onert-micro_2include_2test__models_2cos_2_float_cos_kernel_8h.html":[40,0,3,5,0,5,11,0]
 };
