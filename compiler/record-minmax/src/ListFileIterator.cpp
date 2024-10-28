@@ -96,10 +96,10 @@ std::vector<DataBuffer> ListFileIterator::next()
 
   std::vector<DataBuffer> res;
 
-  // Have multiple files in one line
+  // Space-separated input files are written in a single line
+  // This is the recommended way to write the list file
   if (file_names.size() == _input_nodes.size())
   {
-    std::vector<std::vector<char>> input_data;
     for (uint32_t i = 0; i < file_names.size(); i++)
     {
       DataBuffer buf;
@@ -127,6 +127,7 @@ std::vector<DataBuffer> ListFileIterator::next()
     // Read data from file to buffer
     // Assumption: For a multi-input model, the binary file should have inputs concatenated in the
     // same order with the input index.
+    // NOTE This is a legacy way to support multiple inputs.
     DataBuffer buf;
     {
       // Get total input size
