@@ -50,7 +50,7 @@ public:
   // embedded-import-value-test uses constant data from file(actually ROM)
   // so unloading file will break the precondition
   // TODO remove this after embedded-import-value-test has moved to onert-micro
-  std::unique_ptr<Module> importModule(std::vector<char> &model_data) const;
+  std::unique_ptr<Module> importModule(const std::vector<char> &model_data) const;
 
 private:
   const GraphBuilderSource *_source = nullptr;
