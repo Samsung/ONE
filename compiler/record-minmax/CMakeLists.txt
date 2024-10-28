@@ -57,6 +57,7 @@ endif("${CMAKE_SIZEOF_VOID_P}" STREQUAL "8" AND FALSE)
 # record-minmax is executable, so we do not link it to the test.
 # Instead, we use TEST_SOURCES to specify sources uesd for tests.
 set(TEST_SOURCES
+    "src/Utils.cpp"
     "src/RecordFunction.cpp"
     "src/MinMaxComputer.cpp")
 
