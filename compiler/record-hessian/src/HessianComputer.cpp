@@ -204,7 +204,7 @@ void HessianComputer::recordHessian(const luci::CircleNode *node,
       recordHessianForConv2D(node, input_tensor);
       break;
     default:
-      throw std::runtime_error(node->name() + " is unsupported op for record hessian.");
+      throw std::runtime_error("RecordHessian: " + node->name() + " is unsupported op.");
   }
 }
 
