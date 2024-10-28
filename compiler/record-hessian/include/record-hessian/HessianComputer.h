@@ -44,7 +44,6 @@ public:
 
   std::unique_ptr<HessianMap> getMap() const
   {
-
     auto hessian_map = std::make_unique<HessianMap>();
 
     for (auto item : _hessian_map)

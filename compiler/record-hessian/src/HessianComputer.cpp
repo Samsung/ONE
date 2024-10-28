@@ -122,6 +122,9 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
     loco::must_cast<const luci::CircleConv2D *>(node)->filter());
   const auto node_bias =
     loco::must_cast<luci::CircleConst *>(loco::must_cast<const luci::CircleConv2D *>(node)->bias());
+
+  assert(node_filter.dtype() == loco::DataType::FLOAT32);
+  assert(node_bias.dtype() == loco::DataType::FLOAT32);
   uint32_t size_in_ch =
     node_filter->size<loco::DataType::FLOAT32>() / node_bias->size<loco::DataType::FLOAT32>();
 
@@ -131,16 +134,19 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
   uint32_t input_w = input_tensor->shape().dim(2);
   uint32_t input_c = input_tensor->shape().dim(3);
 
-  uint32_t stride_h = ((luci::CircleConv2D *)node)->stride()->h();
-  uint32_t stride_w = ((luci::CircleConv2D *)node)->stride()->w();
-  uint32_t dilation_h = ((luci::CircleConv2D *)node)->dilation()->h();
-  uint32_t dilation_w = ((luci::CircleConv2D *)node)->dilation()->w();
+  auto circle_conv2d = (luci::CircleConv2D *)node;
+
+  uint32_t stride_h = circle_conv2d->stride()->h();
+  uint32_t stride_w = circle_conv2d->stride()->w();
+  uint32_t dilation_h = circle_conv2d->dilation()->h();
+  uint32_t dilation_w = circle_conv2d->dilation()->w();
 
   uint32_t kernel_oc = node_filter->dim(0).value();
   uint32_t kernel_h = node_filter->dim(1).value();
   uint32_t kernel_w = node_filter->dim(2).value();
   uint32_t kernel_ic = node_filter->dim(3).value();
 
+  assert(input_tensor->element_type() == DataType::FLOAT32);
   const auto data = input_tensor->data<float>();
   const auto num_elements = input_tensor->shape().num_elements();
   std::vector<float> buf(data, data + num_elements);
@@ -176,17 +182,14 @@ void HessianComputer::recordHessian(const luci::CircleNode *node,
   if (input_tensor->element_type() != loco::DataType::FLOAT32)
     throw std::runtime_error("Unsupported dtype: only FLOAT32 is supported.");
 
-  if (node->opcode() == luci::CircleOpcode::FULLY_CONNECTED)
+  switch (node->opcode())
   {
-    recordHessianForFullyConnected(node, input_tensor);
-  }
-  else if (node->opcode() == luci::CircleOpcode::CONV_2D)
-  {
-    recordHessianForConv2D(node, input_tensor);
-  }
-  else
-  {
-    throw std::runtime_error(node->name() + " is unsupported op for record hessian.");
+    case luci::CircleOpcode::FULLY_CONNECTED:
+      recordHessianForFullyConnected(node, input_tensor);
+    case luci::CircleOpcode::CONV_2D:
+      recordHessianForConv2D(node, input_tensor);
+    default:
+      throw std::runtime_error(node->name() + " is unsupported op for record hessian.");
   }
 }
 
