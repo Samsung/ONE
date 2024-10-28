@@ -551,7 +551,7 @@ luci::CircleConst *clone_circleconst(luci::CircleConst *node, loco::Graph *graph
         break;
 
       default:
-        assert(false);
+        throw std::runtime_error("Unsupported data type");
     }
   }
 
