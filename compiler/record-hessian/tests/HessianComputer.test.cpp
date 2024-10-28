@@ -8,7 +8,6 @@ using namespace record_hessian;
 
 TEST(HessianComputerTest, recordHessianValidInput)
 {
-
   luci::CircleFullyConnected node;
 
   std::vector<float> input_data = {1.0, 2.0, 3.0, 4.0};

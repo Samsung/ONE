@@ -26,7 +26,6 @@ file(GLOB_RECURSE TESTS "tests/*.test.cpp")
 
 GTest_AddTest(record_hessian_tests ${TESTS})
 target_include_directories(record_hessian_tests PRIVATE include)
-# target_include_directories(record_hessian_tests PRIVATE compiler/luci/lang/include)
 target_include_directories(record_hessian_tests PRIVATE src)
 target_link_libraries(record_hessian_tests luci_lang)
 target_link_libraries(record_hessian_tests luci_pass)
