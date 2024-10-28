@@ -24,6 +24,7 @@
 
 namespace record_hessian
 {
+
 using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 struct HessianVector

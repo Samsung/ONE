@@ -125,6 +125,7 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
   uint32_t size_in_ch =
     node_filter->size<loco::DataType::FLOAT32>() / node_bias->size<loco::DataType::FLOAT32>();
 
+  assert(input_tensor->shape().rank() == 4);
   uint32_t input_n = input_tensor->shape().dim(0);
   uint32_t input_h = input_tensor->shape().dim(1);
   uint32_t input_w = input_tensor->shape().dim(2);
@@ -170,14 +171,10 @@ void HessianComputer::recordHessian(const luci::CircleNode *node,
                                     const luci_interpreter::Tensor *input_tensor)
 {
   if (node == nullptr || input_tensor == nullptr)
-  {
     throw std::invalid_argument("node or input_tensor is null.");
-  }
 
   if (input_tensor->element_type() != loco::DataType::FLOAT32)
-  {
     throw std::runtime_error("Unsupported dtype: only FLOAT32 is supported.");
-  }
 
   if (node->opcode() == luci::CircleOpcode::FULLY_CONNECTED)
   {
