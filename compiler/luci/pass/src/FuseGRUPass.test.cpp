@@ -148,64 +148,64 @@ public:
   void invalid_less_const_type() { _less_const_node->dtype(loco::DataType::S16); }
 
 protected:
-  luci::CircleWhile *_while_node;
-  luci::CircleWhileOut *_while_out_node;
-  luci::CircleConst *_time_node;
-  luci::CircleConst *_state_node;
-  luci::CircleConst *_hidden_node;
+  luci::CircleWhile *_while_node = nullptr;
+  luci::CircleWhileOut *_while_out_node = nullptr;
+  luci::CircleConst *_time_node = nullptr;
+  luci::CircleConst *_state_node = nullptr;
+  luci::CircleConst *_hidden_node = nullptr;
 
-  luci::CircleInput *_cond_input_node;
-  luci::CircleLess *_less_node;
-  luci::CircleConst *_less_const_node;
-  luci::CircleOutput *_cond_output_node;
+  luci::CircleInput *_cond_input_node = nullptr;
+  luci::CircleLess *_less_node = nullptr;
+  luci::CircleConst *_less_const_node = nullptr;
+  luci::CircleOutput *_cond_output_node = nullptr;
 
-  luci::CircleInput *_body_input_node_1;
-  luci::CircleInput *_body_input_node_2;
-  luci::CircleInput *_body_input_node_3;
-  luci::CircleInput *_body_input_node_4;
-  luci::CircleInput *_body_input_node_5;
+  luci::CircleInput *_body_input_node_1 = nullptr;
+  luci::CircleInput *_body_input_node_2 = nullptr;
+  luci::CircleInput *_body_input_node_3 = nullptr;
+  luci::CircleInput *_body_input_node_4 = nullptr;
+  luci::CircleInput *_body_input_node_5 = nullptr;
 
-  luci::CircleOutput *_body_output_node_1;
-  luci::CircleOutput *_body_output_node_2;
-  luci::CircleOutput *_body_output_node_3;
-  luci::CircleOutput *_body_output_node_4;
-  luci::CircleOutput *_body_output_node_5;
+  luci::CircleOutput *_body_output_node_1 = nullptr;
+  luci::CircleOutput *_body_output_node_2 = nullptr;
+  luci::CircleOutput *_body_output_node_3 = nullptr;
+  luci::CircleOutput *_body_output_node_4 = nullptr;
+  luci::CircleOutput *_body_output_node_5 = nullptr;
 
-  luci::CircleAdd *_add_node_1;
-  luci::CircleAdd *_add_node_2;
-  luci::CircleAdd *_add_node_3;
-  luci::CircleAdd *_add_node_4;
-  luci::CircleAdd *_add_node_5;
-  luci::CircleAdd *_add_node_6;
+  luci::CircleAdd *_add_node_1 = nullptr;
+  luci::CircleAdd *_add_node_2 = nullptr;
+  luci::CircleAdd *_add_node_3 = nullptr;
+  luci::CircleAdd *_add_node_4 = nullptr;
+  luci::CircleAdd *_add_node_5 = nullptr;
+  luci::CircleAdd *_add_node_6 = nullptr;
 
-  luci::CircleMul *_mul_node_1;
-  luci::CircleMul *_mul_node_2;
-  luci::CircleMul *_mul_node_3;
+  luci::CircleMul *_mul_node_1 = nullptr;
+  luci::CircleMul *_mul_node_2 = nullptr;
+  luci::CircleMul *_mul_node_3 = nullptr;
 
-  luci::CircleSub *_sub_node;
-  luci::CircleTanh *_tanh_node;
-  luci::CircleReshape *_reshape_node;
-  luci::CircleGather *_gather_node;
-  luci::CircleLogistic *_logistic_node_1;
-  luci::CircleLogistic *_logistic_node_2;
-  luci::CircleSplit *_split_node_1;
-  luci::CircleSplit *_split_node_2;
+  luci::CircleSub *_sub_node = nullptr;
+  luci::CircleTanh *_tanh_node = nullptr;
+  luci::CircleReshape *_reshape_node = nullptr;
+  luci::CircleGather *_gather_node = nullptr;
+  luci::CircleLogistic *_logistic_node_1 = nullptr;
+  luci::CircleLogistic *_logistic_node_2 = nullptr;
+  luci::CircleSplit *_split_node_1 = nullptr;
+  luci::CircleSplit *_split_node_2 = nullptr;
 
-  luci::CircleSplitOut *_split_out_node_1;
-  luci::CircleSplitOut *_split_out_node_2;
-  luci::CircleSplitOut *_split_out_node_3;
-  luci::CircleSplitOut *_split_out_node_4;
-  luci::CircleSplitOut *_split_out_node_5;
-  luci::CircleSplitOut *_split_out_node_6;
+  luci::CircleSplitOut *_split_out_node_1 = nullptr;
+  luci::CircleSplitOut *_split_out_node_2 = nullptr;
+  luci::CircleSplitOut *_split_out_node_3 = nullptr;
+  luci::CircleSplitOut *_split_out_node_4 = nullptr;
+  luci::CircleSplitOut *_split_out_node_5 = nullptr;
+  luci::CircleSplitOut *_split_out_node_6 = nullptr;
 
-  luci::CircleFullyConnected *_fc_node_1;
-  luci::CircleFullyConnected *_fc_node_2;
+  luci::CircleFullyConnected *_fc_node_1 = nullptr;
+  luci::CircleFullyConnected *_fc_node_2 = nullptr;
 
-  luci::CircleConst *_split_const;
-  luci::CircleConst *_fc_weight_1;
-  luci::CircleConst *_fc_bias_1;
-  luci::CircleConst *_fc_weight_2;
-  luci::CircleConst *_fc_bias_2;
+  luci::CircleConst *_split_const = nullptr;
+  luci::CircleConst *_fc_weight_1 = nullptr;
+  luci::CircleConst *_fc_bias_1 = nullptr;
+  luci::CircleConst *_fc_weight_2 = nullptr;
+  luci::CircleConst *_fc_bias_2 = nullptr;
 
   std::unique_ptr<loco::Graph> _cond_graph;
   std::unique_ptr<loco::Graph> _body_graph;
