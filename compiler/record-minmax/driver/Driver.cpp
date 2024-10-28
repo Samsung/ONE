@@ -43,6 +43,8 @@ int entry(const int argc, char **argv)
 {
   using namespace record_minmax;
 
+  using DataSetFormat = RecordMinMax::DataSetFormat;
+
   LOGGER(l);
 
   arser::Arser arser(
@@ -160,6 +162,8 @@ int entry(const int argc, char **argv)
   {
     auto input_data_path = arser.get<std::string>("--input_data");
 
+    rmm.setInputDataPath(input_data_path);
+
     // TODO: support parallel record from file and dir input data format
     if (num_threads > 1 and not(input_data_format == "h5") and not(input_data_format == "hdf5"))
     {
@@ -170,7 +174,9 @@ int entry(const int argc, char **argv)
     {
       // Profile min/max while executing the H5 data
       if (num_threads == 1)
-        rmm.profileData(input_data_path);
+      {
+        rmm.setDataSetFormat(DataSetFormat::H5);
+      }
       else
       {
         INFO(l) << "Using parallel recording" << std::endl;
@@ -187,14 +193,11 @@ int entry(const int argc, char **argv)
     // |start............end of file|
     else if (input_data_format == "list" || input_data_format == "filelist")
     {
-      // Profile min/max while executing the list of Raw data
-      rmm.profileRawData(input_data_path);
+      rmm.setDataSetFormat(DataSetFormat::LIST_FILE);
     }
     else if (input_data_format == "directory" || input_data_format == "dir")
     {
-      // Profile min/max while executing all files under the given directory
-      // The contents of each file is same as the raw data in the 'list' type
-      rmm.profileRawDataDirectory(input_data_path);
+      rmm.setDataSetFormat(DataSetFormat::DIRECTORY);
     }
     else
     {
@@ -205,8 +208,10 @@ int entry(const int argc, char **argv)
   else
   {
     // Profile min/max while executing random input data
-    rmm.profileDataWithRandomInputs();
+    rmm.setDataSetFormat(DataSetFormat::RANDOM);
   }
+
+  rmm.profileData();
 
   // Save profiled values to the model
   rmm.saveModel(output_model_path);
