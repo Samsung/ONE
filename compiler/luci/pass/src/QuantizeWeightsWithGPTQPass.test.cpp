@@ -94,8 +94,9 @@ TEST_F(QuantizeWeightsWithGPTQPassTest, name_ctx)
 TEST_F(QuantizeWeightsWithGPTQPassTest, run_granularity_invalid_NEG)
 {
   auto invalid_granularity = static_cast<luci::QuantizationGranularity>(999);
-  luci::QuantizeWeightsWithGPTQPass pass(loco::DataType::FLOAT32, loco::DataType::U8, invalid_granularity);
-  ASSERT_EXIT(pass.run(&_g),::testing::KilledBySignal(SIGSEGV),".*");
+  luci::QuantizeWeightsWithGPTQPass pass(loco::DataType::FLOAT32, loco::DataType::U8,
+                                         invalid_granularity);
+  ASSERT_EXIT(pass.run(&_g), ::testing::KilledBySignal(SIGSEGV), ".*");
 }
 
 // Negative test: Unsupported output data type - FLOAT32
@@ -166,7 +167,7 @@ TEST_F(QuantizeWeightsWithGPTQPassTest, run_with_valid_hessian)
   }
   ASSERT_NE(conv, nullptr);
   const auto node_filter = loco::must_cast<luci::CircleConst *>(
-        loco::must_cast<const luci::CircleConv2D *>(conv)->filter());
+    loco::must_cast<const luci::CircleConv2D *>(conv)->filter());
   // Create a dummy hessian vector
   size_t weight_size = node_filter->size<loco::DataType::FLOAT32>();
   std::vector<float> hessian(weight_size * weight_size, 0.0f);

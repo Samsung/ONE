@@ -495,7 +495,7 @@ private:
     // assert(output_type == loco::DataType::U8); // FIX_CALLER_UNLESS
     if (output_type != loco::DataType::U8)
     {
-        throw std::runtime_error("GPTQ quantization supports u8");
+      throw std::runtime_error("GPTQ quantization supports u8");
     }
     // Find min/max per channel
     std::vector<float> min;
