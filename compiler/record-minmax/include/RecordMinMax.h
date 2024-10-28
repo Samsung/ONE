@@ -71,15 +71,6 @@ public:
 
   void profileDataInParallel(const std::string &input_data_path);
 
-// TODO Remove unused code
-#if 0
-  void profileRawData(const std::string &input_data_path);
-
-  void profileRawDataDirectory(const std::string &input_data_path);
-
-  void profileDataWithRandomInputs(void);
-#endif
-
   void saveModel(const std::string &output_model_path);
 
 private:
