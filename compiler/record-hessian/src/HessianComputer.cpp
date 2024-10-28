@@ -31,7 +31,7 @@ void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_
             uint32_t kernel_ic)
 {
   if (input_c != kernel_ic)
-    throw std::runtime_error("Input channels do not match kernel channels.");
+    throw std::runtime_error("RecordHessian: Input channels do not match kernel channels.");
   assert(input_n != 0);
   assert(input_h != 0);
   assert(input_w != 0);
@@ -101,7 +101,7 @@ void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *nod
   }
   else
   {
-    throw std::runtime_error("Unsupported node rank");
+    throw std::runtime_error("RecordHessian: Unsupported node rank");
   }
   assert(size_in_ch != 0);
   length = num_elements / size_in_ch;
@@ -192,7 +192,7 @@ void HessianComputer::recordHessian(const luci::CircleNode *node,
   if (node == nullptr || input_tensor == nullptr)
     throw std::invalid_argument("RecordHessian: node or input_tensor is null.");
 
-  if (input_tensor->element_type() != loco::DataType::FLOAT32)
+  if (input_tensor->element_type() != luci_interpreter::DataType::FLOAT32)
     throw std::runtime_error("RecordHessian: Unsupported dtype: only FLOAT32 is supported.");
 
   switch (node->opcode())
