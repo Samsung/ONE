@@ -208,4 +208,17 @@ void HessianComputer::recordHessian(const luci::CircleNode *node,
   }
 }
 
+std::unique_ptr<HessianMap> HessianComputer::getMap()
+{
+  auto hessian_map = std::make_unique<HessianMap>();
+
+  for (auto item : _hessian_map)
+  {
+    auto &vec = (*hessian_map)[item.first];
+    vec = item.second.hessian;
+  }
+
+  return hessian_map;
+}
+
 } // namespace record_hessian
