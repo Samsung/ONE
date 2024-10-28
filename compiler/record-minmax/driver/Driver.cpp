@@ -181,6 +181,11 @@ int entry(const int argc, char **argv)
       {
         INFO(l) << "Using parallel recording" << std::endl;
         rmm.profileDataInParallel(input_data_path);
+
+        // Save profiled values to the model
+        rmm.saveModel(output_model_path);
+
+        return EXIT_SUCCESS;
       }
     }
     // input_data is a text file having a file path in each line.
