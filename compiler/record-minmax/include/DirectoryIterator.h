@@ -14,26 +14,40 @@
  * limitations under the License.
  */
 
-#ifndef __RECORD_MINMAX_UTILS_H__
-#define __RECORD_MINMAX_UTILS_H__
+#ifndef __RECORD_MINMAX_DIRECTORY_ITERATOR_H__
+#define __RECORD_MINMAX_DIRECTORY_ITERATOR_H__
 
+#include "DataBuffer.h"
+#include "DataSetIterator.h"
+
+#include <luci/IR/Module.h>
 #include <luci/IR/CircleNodes.h>
 
-#include <vector>
 #include <string>
+#include <vector>
+#include <dirent.h>
 
 namespace record_minmax
 {
 
-// Return total number of elements of the node's output tensor
-uint32_t numElements(const luci::CircleNode *node);
+class DirectoryIterator final : public DataSetIterator
+{
+public:
+  DirectoryIterator(const std::string &dir_path, luci::Module *module);
 
-// Return the node's output tensor size in bytes
-size_t getTensorSize(const luci::CircleNode *node);
+  bool hasNext() const override;
 
-// Read data from file into buffer with specified size in bytes
-void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size);
+  std::vector<DataBuffer> next() override;
+
+  bool check_type_shape() const override;
+
+private:
+  std::vector<dirent *> _entries;
+  uint32_t _curr_idx = 0;
+  std::string _dir_path;
+  std::vector<const luci::CircleInput *> _input_nodes;
+};
 
 } // namespace record_minmax
 
-#endif // __RECORD_MINMAX_UTILS_H__
+#endif // __RECORD_MINMAX_DIRECTORY_ITERATOR_H__
