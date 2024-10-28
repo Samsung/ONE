@@ -170,4 +170,4 @@ void GRU(const float *input_data, const float *weight_input_data, const float *w
 
 } // namespace luci_interpreter_pal
 
-#endif // ONERT_MICRO_EXECUTE_PAL_GRU_COMMON_H
+#endif // LUCI_INTERPRETER_PAL_GRU_H

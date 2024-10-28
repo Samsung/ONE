@@ -40,9 +40,6 @@ void GRU::configure()
   auto hidden_input_shape = getTensorShape(hidden_input());
   LUCI_INTERPRETER_CHECK(hidden_hidden_shape.Dims(0) == hidden_input_shape.Dims(0));
 
-  auto output_shape = getTensorShape(output());
-  auto state_shape = getTensorShape(state());
-
   output()->resize(state()->shape());
 
   LUCI_INTERPRETER_CHECK(input()->element_type() == output()->element_type());
