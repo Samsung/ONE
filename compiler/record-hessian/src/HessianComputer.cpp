@@ -118,17 +118,17 @@ void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *nod
 void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
                                              const luci_interpreter::Tensor *input_tensor)
 {
+  assert(input_tensor->shape().rank() == 4);
+  assert(input_tensor->element_type() == DataType::FLOAT32);
   const auto node_filter = loco::must_cast<luci::CircleConst *>(
     loco::must_cast<const luci::CircleConv2D *>(node)->filter());
   const auto node_bias =
     loco::must_cast<luci::CircleConst *>(loco::must_cast<const luci::CircleConv2D *>(node)->bias());
-
   assert(node_filter.dtype() == loco::DataType::FLOAT32);
   assert(node_bias.dtype() == loco::DataType::FLOAT32);
   uint32_t size_in_ch =
     node_filter->size<loco::DataType::FLOAT32>() / node_bias->size<loco::DataType::FLOAT32>();
 
-  assert(input_tensor->shape().rank() == 4);
   uint32_t input_n = input_tensor->shape().dim(0);
   uint32_t input_h = input_tensor->shape().dim(1);
   uint32_t input_w = input_tensor->shape().dim(2);
@@ -146,7 +146,6 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
   uint32_t kernel_w = node_filter->dim(2).value();
   uint32_t kernel_ic = node_filter->dim(3).value();
 
-  assert(input_tensor->element_type() == DataType::FLOAT32);
   const auto data = input_tensor->data<float>();
   const auto num_elements = input_tensor->shape().num_elements();
   std::vector<float> buf(data, data + num_elements);
