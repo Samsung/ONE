@@ -26,6 +26,18 @@
 namespace record_minmax
 {
 
+void checkInputDimension(const luci::CircleInput *input)
+{
+  assert(input); // FIX_CALLER_UNLESS
+
+  for (uint32_t i = 0; i < input->rank(); i++)
+    if (!input->dim(i).known())
+      throw std::runtime_error(input->name() + " has unknown dimension");
+
+  if (numElements(input) == 0)
+    throw std::runtime_error(input->name() + " is a zero-sized input");
+}
+
 uint32_t numElements(const luci::CircleNode *node)
 {
   assert(node); // FIX_CALLER_UNLESS

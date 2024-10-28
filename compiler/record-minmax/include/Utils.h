@@ -34,6 +34,11 @@ size_t getTensorSize(const luci::CircleNode *node);
 // Read data from file into buffer with specified size in bytes
 void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size);
 
+// Throw exception if input has one of the following conditions.
+// 1. Have unknown dimension
+// 2. Number of elements is 0
+void checkInputDimension(const luci::CircleInput *input);
+
 } // namespace record_minmax
 
 #endif // __RECORD_MINMAX_UTILS_H__
