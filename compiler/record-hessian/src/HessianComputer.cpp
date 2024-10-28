@@ -25,11 +25,10 @@ namespace record_hessian
  * @brief unfold the vector with NHWC shape, inherently acting in an in-place manner.
  * @note (N, H, W, C) -> (N, L, H*W*C)
  */
-void HessianComputer::unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h,
-                             uint32_t input_w, uint32_t input_c, uint32_t stride_h,
-                             uint32_t stride_w, uint32_t dilation_h, uint32_t dilation_w,
-                             uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
-                             uint32_t kernel_ic)
+void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
+            uint32_t input_c, uint32_t stride_h, uint32_t stride_w, uint32_t dilation_h,
+            uint32_t dilation_w, uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
+            uint32_t kernel_ic)
 {
   if (input_c != kernel_ic)
     throw std::runtime_error("Input channels do not match kernel channels.");
