@@ -73,3 +73,41 @@ TEST(UtilsTest, get_tensor_size_NEG)
 
   EXPECT_ANY_THROW(getTensorSize(&node));
 }
+
+TEST(UtilsTest, check_input_dimension)
+{
+  luci::CircleInput node;
+  node.rank(3);
+  node.dim(0).set(1);
+  node.dim(1).set(2);
+  node.dim(2).set(3);
+  node.dtype(loco::DataType::FLOAT32);
+
+  EXPECT_NO_THROW(checkInputDimension(&node));
+}
+
+TEST(UtilsTest, check_input_dimension_unknown_dim_NEG)
+{
+  luci::CircleInput node;
+  node.rank(3);
+  node.dim(0).set(1);
+  node.dim(1).set(2);
+  node.dim(2).set(3);
+  node.dtype(loco::DataType::FLOAT32);
+
+  node.dim(0).unset();
+
+  EXPECT_ANY_THROW(checkInputDimension(&node));
+}
+
+TEST(UtilsTest, check_input_dimension_zero_dim_NEG)
+{
+  luci::CircleInput node;
+  node.rank(3);
+  node.dim(0).set(1);
+  node.dim(1).set(2);
+  node.dim(2).set(0);
+  node.dtype(loco::DataType::FLOAT32);
+
+  EXPECT_ANY_THROW(checkInputDimension(&node));
+}

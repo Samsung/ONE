@@ -16,23 +16,19 @@
 
 #include "RecordMinMax.h"
 #include "MinMaxObserver.h"
+#include "DataSetIterator.h"
+#include "HDF5Iterator.h"
+#include "RandomIterator.h"
+#include "DirectoryIterator.h"
+#include "ListFileIterator.h"
+#include "Utils.h"
 
-#include <luci/IR/DataTypeHelper.h>
 #include <luci/ImporterEx.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
-#include <luci/IR/CircleQuantParam.h>
 #include <luci/Log.h>
-#include <dio_hdf5/HDF5Importer.h>
 
-#include <dirent.h>
-#include <algorithm>
-#include <cmath>
-#include <fstream>
-#include <numeric>
 #include <stdexcept>
-#include <iostream>
-#include <random>
 
 using Shape = std::vector<loco::Dimension>;
 using DataType = loco::DataType;
@@ -40,6 +36,8 @@ using DataType = loco::DataType;
 namespace
 {
 
+// TODO Remove unused code
+#if 0
 // Return a string with no whitespace from both ends
 std::string trim(std::string s)
 {
@@ -69,6 +67,7 @@ std::vector<std::string> parse_line(const std::string &line)
   }
   return res;
 }
+#endif
 
 // Max h5 file size for parallel recording in bytes = 1 GB
 const long h5_max_size_bytes = 1000000000;
@@ -81,6 +80,8 @@ long getH5FileSize(const std::string &input_data_path)
   return in_file.tellg();
 }
 
+// TODO Remove unused code
+#if 0
 uint32_t numElements(const luci::CircleNode *node)
 {
   uint32_t num_elements = 1;
@@ -153,6 +154,7 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
     tensor_size *= node->dim(i).value();
   return tensor_size;
 }
+#endif
 
 /**
  * @brief  verifyTypeShape checks the type and the shape of CircleInput
@@ -206,6 +208,9 @@ void RecordMinMax::initialize(const std::string &input_model_path)
     _interpreters[thread_idx] = std::move(interpreter);
   }
 }
+
+// TODO Remove unused code
+#if 0
 
 // input_data_path is a path to the directory
 // The directory should contain binary files each of which is a raw data,
@@ -368,6 +373,7 @@ void RecordMinMax::profileRawData(const std::string &input_data_path)
 
   _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
+#endif
 
 WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
 {
@@ -427,6 +433,95 @@ WholeOutput RecordMinMax::importH5Data(const std::string &input_data_path)
   }
 }
 
+std::unique_ptr<DataSetIterator> RecordMinMax::createIterator()
+{
+  assert(_data_set_format != DataSetFormat::UNKNOWN); // FIX_CALLER_UNLESS
+
+  std::unique_ptr<DataSetIterator> iterator;
+  switch (_data_set_format)
+  {
+    case DataSetFormat::H5:
+      assert(not _input_data_path.empty()); // FIX_CALLER_UNLESS
+      iterator = std::make_unique<HDF5Iterator>(_input_data_path, _module.get());
+      break;
+    case DataSetFormat::RANDOM:
+      iterator = std::make_unique<RandomIterator>(_module.get());
+      break;
+    case DataSetFormat::DIRECTORY:
+      iterator = std::make_unique<DirectoryIterator>(_input_data_path, _module.get());
+      break;
+    case DataSetFormat::LIST_FILE:
+      iterator = std::make_unique<ListFileIterator>(_input_data_path, _module.get());
+      break;
+    default:
+      throw std::runtime_error("Unsupported dataset format");
+  }
+
+  assert(iterator.get() != nullptr); // FIX_ME_UNLESS
+
+  return iterator;
+}
+
+void RecordMinMax::profileData()
+{
+  assert(getDataSetFormat() != DataSetFormat::UNKNOWN); // FIX_CALLER_UNLESS
+
+  const auto input_nodes = loco::input_nodes(_module->graph());
+  for (auto input_node : input_nodes)
+  {
+    const auto *input_cnode = loco::must_cast<const luci::CircleInput *>(input_node);
+    checkInputDimension(input_cnode);
+  }
+
+  const auto num_inputs = input_nodes.size();
+
+  auto iter = createIterator();
+
+  bool check_type_shape = iter->check_type_shape();
+
+  if (not iter->hasNext())
+    throw std::runtime_error("The input data file does not contain any record.");
+
+  uint32_t record_idx = 0;
+  while (iter->hasNext())
+  {
+    const auto &record = iter->next();
+
+    if (num_inputs != record.size())
+      throw std::runtime_error("Wrong number of inputs.");
+
+    std::cout << "Recording " << record_idx << "'th data" << std::endl;
+
+    // Write input data to interpreter
+    for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+    {
+      const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+      assert(input_node->index() == input_idx);
+
+      const auto input_data = record.at(input_idx);
+
+      if (check_type_shape)
+      {
+        // Check the type and the shape of the input data is valid
+        verifyTypeShape(input_node, input_data.dtype, input_data.shape);
+      }
+
+      getInterpreter()->writeInputTensor(input_node, input_data.data.data(),
+                                         input_data.data.size());
+    }
+
+    getInterpreter()->interpret();
+
+    record_idx++;
+  }
+
+  std::cout << "Recording finished. Number of recorded data: " << record_idx << std::endl;
+
+  _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
+}
+
+// TODO Remove unused code
+#if 0
 void RecordMinMax::profileData(const std::string &input_data_path)
 {
   try
@@ -491,6 +586,7 @@ void RecordMinMax::profileData(const std::string &input_data_path)
 
   _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
+#endif
 
 void RecordMinMax::profileDataInParallel(const std::string &input_data_path)
 {
@@ -578,6 +674,8 @@ void RecordMinMax::profileDataInParallel(const std::string &input_data_path)
   _minmax_computer->update_qparam(main_min_max_map.getMap());
 }
 
+// TODO Remove unused code
+#if 0
 void RecordMinMax::profileDataWithRandomInputs(void)
 {
   // We use three randomly-generated records
@@ -648,6 +746,7 @@ void RecordMinMax::profileDataWithRandomInputs(void)
 
   _minmax_computer->update_qparam(getObserver()->minMaxData()->getMap());
 }
+#endif
 
 void RecordMinMax::saveModel(const std::string &output_model_path)
 {
