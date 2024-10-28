@@ -19,6 +19,10 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/DataTypeHelper.h>
 
+#include <vector>
+#include <string>
+#include <fstream>
+
 namespace record_minmax
 {
 
@@ -44,6 +48,19 @@ size_t getTensorSize(const luci::CircleNode *node)
 
   uint32_t elem_size = luci::size(node->dtype());
   return numElements(node) * elem_size;
+}
+
+void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size)
+{
+  assert(data.size() == data_size); // FIX_CALLER_UNLESS
+
+  std::ifstream fs(filename, std::ifstream::binary);
+  if (fs.fail())
+    throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
+  if (fs.read(data.data(), data_size).fail())
+    throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
+  if (fs.peek() != EOF)
+    throw std::runtime_error("Input tensor size mismatches with \"" + filename + "\".\n");
 }
 
 } // namespace record_minmax
