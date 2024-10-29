@@ -551,7 +551,7 @@ luci::CircleConst *clone_circleconst(luci::CircleConst *node, loco::Graph *graph
         break;
 
       default:
-        throw std::runtime_error("Unsupported data type");
+        throw std::runtime_error("FuseGRU: Unsupported data type");
     }
   }
 
