@@ -64,7 +64,7 @@ set(TEST_SOURCES
 file(GLOB_RECURSE TESTS "tests/*.test.cpp")
 
 nnas_find_package(GTest REQUIRED)
-GTest_AddTest(record_minmax_function_test ${TESTS} ${TEST_SOURCES})
-target_include_directories(record_minmax_function_test PRIVATE include)
-target_link_libraries(record_minmax_function_test luci_lang)
-target_link_libraries(record_minmax_function_test nncc_coverage)
+GTest_AddTest(record_minmax_unittest ${TESTS} ${TEST_SOURCES})
+target_include_directories(record_minmax_unittest PRIVATE include)
+target_link_libraries(record_minmax_unittest luci_lang)
+target_link_libraries(record_minmax_unittest nncc_coverage)
