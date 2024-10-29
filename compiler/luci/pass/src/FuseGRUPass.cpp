@@ -223,7 +223,7 @@ bool GRUPattern1::matched()
 
     for (auto node : body_nodes)
     {
-      auto circle_node = dynamic_cast<luci::CircleNode *>(node);
+      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
       switch (circle_node->opcode())
       {
         case luci::CircleOpcode::CIRCLECONST:
@@ -232,34 +232,34 @@ bool GRUPattern1::matched()
         case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
           break;
         case luci::CircleOpcode::FULLY_CONNECTED:
-          fc_nodes.push_back(dynamic_cast<luci::CircleFullyConnected *>(circle_node));
+          fc_nodes.push_back(loco::must_cast<luci::CircleFullyConnected *>(circle_node));
           break;
         case luci::CircleOpcode::SPLIT:
-          split_nodes.push_back(dynamic_cast<luci::CircleSplit *>(circle_node));
+          split_nodes.push_back(loco::must_cast<luci::CircleSplit *>(circle_node));
           break;
         case luci::CircleOpcode::LOGISTIC:
-          logistic_nodes.push_back(dynamic_cast<luci::CircleLogistic *>(circle_node));
+          logistic_nodes.push_back(loco::must_cast<luci::CircleLogistic *>(circle_node));
           break;
         case luci::CircleOpcode::MUL:
-          mul_nodes.push_back(dynamic_cast<luci::CircleMul *>(circle_node));
+          mul_nodes.push_back(loco::must_cast<luci::CircleMul *>(circle_node));
           break;
         case luci::CircleOpcode::ADD:
-          add_nodes.push_back(dynamic_cast<luci::CircleAdd *>(circle_node));
+          add_nodes.push_back(loco::must_cast<luci::CircleAdd *>(circle_node));
           break;
         case luci::CircleOpcode::SUB:
-          sub_nodes.push_back(dynamic_cast<luci::CircleSub *>(circle_node));
+          sub_nodes.push_back(loco::must_cast<luci::CircleSub *>(circle_node));
           break;
         case luci::CircleOpcode::RESHAPE:
-          reshape_nodes.push_back(dynamic_cast<luci::CircleReshape *>(circle_node));
+          reshape_nodes.push_back(loco::must_cast<luci::CircleReshape *>(circle_node));
           break;
         case luci::CircleOpcode::GATHER:
-          gather_nodes.push_back(dynamic_cast<luci::CircleGather *>(circle_node));
+          gather_nodes.push_back(loco::must_cast<luci::CircleGather *>(circle_node));
           break;
         case luci::CircleOpcode::TANH:
-          tanh_nodes.push_back(dynamic_cast<luci::CircleTanh *>(circle_node));
+          tanh_nodes.push_back(loco::must_cast<luci::CircleTanh *>(circle_node));
           break;
         case luci::CircleOpcode::CIRCLESPLITOUT:
-          split_out_nodes.push_back(dynamic_cast<luci::CircleSplitOut *>(circle_node));
+          split_out_nodes.push_back(loco::must_cast<luci::CircleSplitOut *>(circle_node));
           break;
         default:
           return false;
