@@ -35,12 +35,11 @@ public:
 
 private:
   std::unordered_map<const luci::CircleNode *, HessianVector> _hessian_map;
+  const luci_interpreter::Tensor *_input_tensor;
 
-  void recordHessianForConv2D(const luci::CircleNode *node,
-                              const luci_interpreter::Tensor *input_tensor);
+  void recordHessianForConv2D(const luci::CircleNode *node);
 
-  void recordHessianForFullyConnected(const luci::CircleNode *node,
-                                      const luci_interpreter::Tensor *input_tensor);
+  void recordHessianForFullyConnected(const luci::CircleNode *node);
 };
 
 void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
