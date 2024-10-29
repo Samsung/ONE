@@ -1,4 +1,6 @@
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(record-hessian STATIC ${SOURCES})
 
@@ -21,8 +23,6 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 nnas_find_package(GTest REQUIRED)
-
-file(GLOB_RECURSE TESTS "tests/*.test.cpp")
 
 GTest_AddTest(record_hessian_tests ${TESTS})
 target_include_directories(record_hessian_tests PRIVATE include)

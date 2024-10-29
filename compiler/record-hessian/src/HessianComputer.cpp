@@ -75,8 +75,8 @@ void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_
 void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *node,
                                                      const luci_interpreter::Tensor *input_tensor)
 {
-  assert(input_tensor->shape().rank() < 4);
-  assert(input_tensor->element_type() == DataType::FLOAT32);
+  assert(input_tensor->shape().num_elements() < 4);
+  assert(input_tensor->element_type() == loco::DataType::FLOAT32);
 
   uint32_t size_in_ch;
   uint32_t length;
@@ -122,14 +122,14 @@ void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *nod
 void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
                                              const luci_interpreter::Tensor *input_tensor)
 {
-  assert(input_tensor->shape().rank() == 4);
-  assert(input_tensor->element_type() == DataType::FLOAT32);
+  assert(input_tensor->shape().num_elements() == 4);
+  assert(input_tensor->element_type() == loco::DataType::FLOAT32);
 
   const auto circle_conv2d = loco::must_cast<const luci::CircleConv2D *>(node);
   const auto node_filter = loco::must_cast<luci::CircleConst *>((circle_conv2d)->filter());
   const auto node_bias = loco::must_cast<luci::CircleConst *>((circle_conv2d)->bias());
-  assert(node_filter.dtype() == loco::DataType::FLOAT32);
-  assert(node_bias.dtype() == loco::DataType::FLOAT32);
+  assert(node_filter->dtype() == loco::DataType::FLOAT32);
+  assert(node_bias->dtype() == loco::DataType::FLOAT32);
 
   uint32_t size_filter = node_filter->size<loco::DataType::FLOAT32>();
   uint32_t size_bias = node_bias->size<loco::DataType::FLOAT32>();
