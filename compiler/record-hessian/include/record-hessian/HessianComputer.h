@@ -31,7 +31,7 @@ public:
   // Record min/max of node
   void recordHessian(const luci::CircleNode *node, const luci_interpreter::Tensor *input_tensor);
 
-  std::unique_ptr<HessianMap> getMap();
+  std::unique_ptr<HessianMap> getMap() const;
 
 private:
   std::unordered_map<const luci::CircleNode *, HessianVector> _hessian_map;
