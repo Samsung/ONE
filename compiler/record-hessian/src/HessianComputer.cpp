@@ -178,6 +178,9 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
 void HessianComputer::recordHessian(const luci::CircleNode *node,
                                     const luci_interpreter::Tensor *input_tensor)
 {
+
+  _input_tensor = input_tensor;
+
   if (node == nullptr || input_tensor == nullptr)
     throw std::invalid_argument("RecordHessian: node or input_tensor is null.");
 
