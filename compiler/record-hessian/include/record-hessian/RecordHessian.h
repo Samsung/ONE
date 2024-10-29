@@ -36,14 +36,6 @@ public:
   // TODO Refactor profile functions
   std::unique_ptr<HessianMap> profileData(const std::string &input_data_path);
 
-  std::unique_ptr<HessianMap> profileDataInParallel(const std::string &input_data_path);
-
-  std::unique_ptr<HessianMap> profileRawData(const std::string &input_data_path);
-
-  std::unique_ptr<HessianMap> profileRawDataDirectory(const std::string &input_data_path);
-
-  std::unique_ptr<HessianMap> profileDataWithRandomInputs(void);
-
 private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreter.get(); }
 
