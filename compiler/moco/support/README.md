@@ -1,3 +1,3 @@
 # support
 
-_support_ privides _moco_ support libraries
+_support_ provides _moco_ support libraries
