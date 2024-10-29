@@ -72,26 +72,25 @@ void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_
   buf.swap(unfolded_buf);
 }
 
-void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *node,
-                                                     const luci_interpreter::Tensor *input_tensor)
+void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *node)
 {
-  assert(input_tensor->shape().num_elements() < 4);
-  assert(input_tensor->element_type() == loco::DataType::FLOAT32);
+  assert(_input_tensor->shape().rank() < 4);
+  assert(_input_tensor->element_type() == DataType::FLOAT32);
 
   uint32_t size_in_ch;
   uint32_t length;
 
-  const auto data = input_tensor->data<float>();
-  const auto num_elements = input_tensor->shape().num_elements();
+  const auto data = _input_tensor->data<float>();
+  const auto num_elements = _input_tensor->shape().num_elements();
   std::vector<float> buf(data, data + num_elements);
 
-  if (input_tensor->shape().num_dims() == 3)
+  if (_input_tensor->shape().num_dims() == 3)
   {
-    size_in_ch = input_tensor->shape().dim(2); // input_tensor [batch, length, channel]
+    size_in_ch = _input_tensor->shape().dim(2); // input_tensor [batch, length, channel]
   }
-  else if (input_tensor->shape().num_dims() == 2)
+  else if (_input_tensor->shape().num_dims() == 2)
   {
-    size_in_ch = input_tensor->shape().dim(1); // input_tensor [length, channel]
+    size_in_ch = _input_tensor->shape().dim(1); // input_tensor [length, channel]
   }
   else
   {
@@ -119,27 +118,26 @@ void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *nod
   vector.update(hessian);
 }
 
-void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
-                                             const luci_interpreter::Tensor *input_tensor)
+void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
 {
-  assert(input_tensor->shape().num_elements() == 4);
-  assert(input_tensor->element_type() == loco::DataType::FLOAT32);
+  assert(_input_tensor->shape().rank() == 4);
+  assert(_input_tensor->element_type() == DataType::FLOAT32);
 
   const auto circle_conv2d = loco::must_cast<const luci::CircleConv2D *>(node);
   const auto node_filter = loco::must_cast<luci::CircleConst *>((circle_conv2d)->filter());
   const auto node_bias = loco::must_cast<luci::CircleConst *>((circle_conv2d)->bias());
-  assert(node_filter->dtype() == loco::DataType::FLOAT32);
-  assert(node_bias->dtype() == loco::DataType::FLOAT32);
+  assert(node_filter.dtype() == loco::DataType::FLOAT32);
+  assert(node_bias.dtype() == loco::DataType::FLOAT32);
 
   uint32_t size_filter = node_filter->size<loco::DataType::FLOAT32>();
   uint32_t size_bias = node_bias->size<loco::DataType::FLOAT32>();
   assert(size_bias > 0);
   uint32_t size_in_ch = size_filter / size_bias;
 
-  uint32_t input_n = input_tensor->shape().dim(0);
-  uint32_t input_h = input_tensor->shape().dim(1);
-  uint32_t input_w = input_tensor->shape().dim(2);
-  uint32_t input_c = input_tensor->shape().dim(3);
+  uint32_t input_n = _input_tensor->shape().dim(0);
+  uint32_t input_h = _input_tensor->shape().dim(1);
+  uint32_t input_w = _input_tensor->shape().dim(2);
+  uint32_t input_c = _input_tensor->shape().dim(3);
 
   uint32_t stride_h = circle_conv2d->stride()->h();
   uint32_t stride_w = circle_conv2d->stride()->w();
@@ -151,8 +149,8 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node,
   uint32_t kernel_w = node_filter->dim(2).value();
   uint32_t kernel_ic = node_filter->dim(3).value();
 
-  const auto data = input_tensor->data<float>();
-  const auto num_elements = input_tensor->shape().num_elements();
+  const auto data = _input_tensor->data<float>();
+  const auto num_elements = _input_tensor->shape().num_elements();
   assert(data != 0);
   assert(num_elements != 0);
   std::vector<float> buf(data, data + num_elements);
@@ -189,13 +187,15 @@ void HessianComputer::recordHessian(const luci::CircleNode *node,
   if (input_tensor->element_type() != luci_interpreter::DataType::FLOAT32)
     throw std::runtime_error("RecordHessian: Unsupported dtype: only FLOAT32 is supported.");
 
+  _input_tensor = input_tensor;
+
   switch (node->opcode())
   {
     case luci::CircleOpcode::FULLY_CONNECTED:
-      recordHessianForFullyConnected(node, input_tensor);
+      recordHessianForFullyConnected(node);
       break;
     case luci::CircleOpcode::CONV_2D:
-      recordHessianForConv2D(node, input_tensor);
+      recordHessianForConv2D(node);
       break;
     default:
       throw std::runtime_error("RecordHessian: " + node->name() + " is unsupported op.");
