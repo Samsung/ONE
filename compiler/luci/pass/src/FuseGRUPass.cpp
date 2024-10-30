@@ -607,7 +607,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
 
   // Note: Now support only returnSequences = false
   circle_gru->returnSequences(false);
-  circle_gru->name("FusedCircleGRU");
+  circle_gru->name(_while_node->name() + "_FusedCircleGRU");
 
   return circle_gru;
 }
