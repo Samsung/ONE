@@ -125,14 +125,10 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
 
   const auto circle_conv2d = loco::must_cast<const luci::CircleConv2D *>(node);
   const auto node_filter = loco::must_cast<luci::CircleConst *>((circle_conv2d)->filter());
-  const auto node_bias = loco::must_cast<luci::CircleConst *>((circle_conv2d)->bias());
   assert(node_filter.dtype() == loco::DataType::FLOAT32);
-  assert(node_bias.dtype() == loco::DataType::FLOAT32);
 
   uint32_t size_filter = node_filter->size<loco::DataType::FLOAT32>();
-  uint32_t size_bias = node_bias->size<loco::DataType::FLOAT32>();
-  assert(size_bias > 0);
-  uint32_t size_in_ch = size_filter / size_bias;
+  uint32_t size_in_ch = node_filter->size<loco::DataType::FLOAT32>() / node->dim(3).value();
 
   uint32_t input_n = _input_tensor->shape().dim(0);
   uint32_t input_h = _input_tensor->shape().dim(1);
