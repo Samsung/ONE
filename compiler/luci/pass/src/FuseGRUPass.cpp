@@ -30,15 +30,17 @@
 namespace
 {
 
-class GRUPatternBase
+class GRUPattern final
 {
 public:
-  GRUPatternBase(luci::CircleNode *candidate) { _pattern_last_node = candidate; }
+  GRUPattern(luci::CircleWhileOut *candidate)
+  {
+    assert(candidate);
+    _while_out_node = candidate;
+  }
+  ~GRUPattern() = default;
 
-  virtual ~GRUPatternBase() = default;
-
-public:
-  virtual bool matched() = 0;
+  bool matched();
 
 public:
   luci::CircleNode *_ifm = nullptr;
@@ -53,7 +55,6 @@ public:
 
   luci::CircleWhile *_while_node = nullptr;
   luci::CircleWhileOut *_while_out_node = nullptr;
-  luci::CircleNode *_pattern_last_node = nullptr;
 };
 
 /**
@@ -128,20 +129,8 @@ public:
  *                             |
  *                           [Out_1]
  */
-class GRUPattern1 final : public GRUPatternBase
-{
-public:
-  GRUPattern1(luci::CircleWhileOut *candidate) : GRUPatternBase(candidate)
-  {
-    assert(candidate);
-    _while_out_node = candidate;
-  }
 
-public:
-  bool matched() override;
-};
-
-bool GRUPattern1::matched()
+bool GRUPattern::matched()
 {
   // 0 - check while node
   _while_node = dynamic_cast<luci::CircleWhile *>(_while_out_node->input());
@@ -485,7 +474,7 @@ bool GRUPattern1::matched()
 class FuseGRU final
 {
 public:
-  FuseGRU(const GRUPatternBase *p) : _p(p) {}
+  FuseGRU(const GRUPattern *p) : _p(p) {}
 
 public:
   void apply(void);
@@ -494,7 +483,7 @@ private:
   luci::CircleGRU *create_circle_gru(loco::Graph *graph);
 
 private:
-  const GRUPatternBase *_p;
+  const GRUPattern *_p;
 };
 
 template <loco::DataType T>
@@ -576,7 +565,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   }
   else
   {
-    bias_ih_cloned = _p->_pattern_last_node->graph()->nodes()->create<luci::CircleOutputExclude>();
+    bias_ih_cloned = _p->_while_out_node->graph()->nodes()->create<luci::CircleOutputExclude>();
   }
 
   luci::CircleNode *bias_hh_cloned = nullptr;
@@ -587,7 +576,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   }
   else
   {
-    bias_hh_cloned = _p->_pattern_last_node->graph()->nodes()->create<luci::CircleOutputExclude>();
+    bias_hh_cloned = _p->_while_out_node->graph()->nodes()->create<luci::CircleOutputExclude>();
   }
 
   auto hidden_input_cloned = clone_circleconst(_p->_hidden_input, graph);
@@ -614,7 +603,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
 
 void FuseGRU::apply()
 {
-  auto graph = _p->_pattern_last_node->graph();
+  auto graph = _p->_while_out_node->graph();
 
   auto gru_out = create_circle_gru(graph);
 
@@ -625,7 +614,7 @@ void FuseGRU::apply()
 
   luci::add_origin(gru_out, luci::composite_origin(origin_vec));
 
-  replace(_p->_pattern_last_node).with(gru_out);
+  replace(_p->_while_out_node).with(gru_out);
 }
 
 } // namespace
@@ -638,7 +627,7 @@ bool fuse_gru(luci::CircleWhileOut *while_out_node)
   assert(while_out_node);
 
   // check first pattern
-  GRUPattern1 pattern(while_out_node);
+  GRUPattern pattern(while_out_node);
   if (pattern.matched())
   {
     FuseGRU fuse(&pattern);
