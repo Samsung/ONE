@@ -30,12 +30,12 @@ void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_
             uint32_t dilation_w, uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
             uint32_t kernel_ic)
 {
-  if (input_c != kernel_ic)
-    throw std::runtime_error("RecordHessian: Input channels do not match kernel channels.");
   assert(input_n > 0 && input_h > 0 && input_w > 0 && input_c > 0);
   assert(stride_h > 0 && stride_w > 0);
   assert(kernel_oc > 0 && kernel_h > 0 && kernel_w > 0 && kernel_ic > 0);
 
+  if (input_c != kernel_ic)
+    throw std::runtime_error("RecordHessian: Input channels do not match kernel channels.");
   int out_height = (input_h - dilation_h * (kernel_h - 1) - 1) / stride_h + 1;
   int out_width = (input_w - dilation_w * (kernel_w - 1) - 1) / stride_w + 1;
   int patch_size = kernel_h * kernel_w * kernel_ic;
@@ -74,8 +74,8 @@ void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_
 
 void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *node)
 {
-  assert(_input_tensor->shape().rank() < 4);
-  assert(_input_tensor->element_type() == DataType::FLOAT32);
+  assert(_input_tensor->shape().num_dims() < 4);
+  assert(_input_tensor->element_type() == luci_interpreter::DataType::FLOAT32);
 
   uint32_t size_in_ch;
   uint32_t length;
@@ -120,15 +120,18 @@ void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *nod
 
 void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
 {
-  assert(_input_tensor->shape().rank() == 4);
-  assert(_input_tensor->element_type() == DataType::FLOAT32);
+  assert(_input_tensor->shape().num_dims() == 4);
+  assert(_input_tensor->element_type() == luci_interpreter::DataType::FLOAT32);
 
   const auto circle_conv2d = loco::must_cast<const luci::CircleConv2D *>(node);
   const auto node_filter = loco::must_cast<luci::CircleConst *>((circle_conv2d)->filter());
-  assert(node_filter.dtype() == loco::DataType::FLOAT32);
+  assert(circle_conv2d->rank() >= 4);
+  assert(node_filter->dtype() == loco::DataType::FLOAT32);
+  assert(node_filter->rank() == 4);
 
   uint32_t size_filter = node_filter->size<loco::DataType::FLOAT32>();
-  uint32_t size_in_ch = node_filter->size<loco::DataType::FLOAT32>() / node->dim(3).value();
+  uint32_t size_in_ch =
+    node_filter->size<loco::DataType::FLOAT32>() / circle_conv2d->dim(3).value();
 
   uint32_t input_n = _input_tensor->shape().dim(0);
   uint32_t input_h = _input_tensor->shape().dim(1);
