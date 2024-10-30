@@ -565,7 +565,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   }
   else
   {
-    bias_ih_cloned = _p->_while_out_node->graph()->nodes()->create<luci::CircleOutputExclude>();
+    bias_ih_cloned = graph->nodes()->create<luci::CircleOutputExclude>();
   }
 
   luci::CircleNode *bias_hh_cloned = nullptr;
@@ -576,7 +576,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   }
   else
   {
-    bias_hh_cloned = _p->_while_out_node->graph()->nodes()->create<luci::CircleOutputExclude>();
+    bias_hh_cloned = graph->nodes()->create<luci::CircleOutputExclude>();
   }
 
   auto hidden_input_cloned = clone_circleconst(_p->_hidden_input, graph);
@@ -586,7 +586,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   luci::copy_common_attributes(_p->_less_const, less_const_cloned);
 
   // Create and configure new CircleGRU operation.
-  auto circle_gru = _p->_while_node->graph()->nodes()->create<luci::CircleGRU>();
+  auto circle_gru = graph->nodes()->create<luci::CircleGRU>();
   circle_gru->input(_p->_ifm);
   circle_gru->hidden_hidden(weight_hh_cloned);
   circle_gru->hidden_input(weight_ih_cloned);
