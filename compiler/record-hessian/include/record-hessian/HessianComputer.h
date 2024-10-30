@@ -35,7 +35,7 @@ public:
 
 private:
   std::unordered_map<const luci::CircleNode *, HessianVector> _hessian_map;
-  const luci_interpreter::Tensor *_input_tensor;
+  const luci_interpreter::Tensor *_input_tensor = nullptr;
 
   void recordHessianForConv2D(const luci::CircleNode *node);
 
