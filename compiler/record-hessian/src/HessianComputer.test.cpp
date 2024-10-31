@@ -15,10 +15,13 @@
  */
 
 #include "record-hessian/HessianComputer.h"
-#include <gtest/gtest.h>
-#include <vector>
+
 #include <luci/IR/CircleNode.h>
 #include <luci_interpreter/Interpreter.h>
+
+#include <gtest/gtest.h>
+
+#include <vector>
 
 using namespace record_hessian;
 
