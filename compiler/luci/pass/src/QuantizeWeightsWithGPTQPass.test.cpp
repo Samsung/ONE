@@ -5,6 +5,7 @@
 
 namespace
 {
+
 struct QuantizeWeightsWithGPTQPassTest : public ::testing::Test
 {
   /**

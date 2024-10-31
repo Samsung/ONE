@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,19 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
-#include <limits>
+
+namespace luci
+{
 
 namespace
 {
 
-using namespace luci;
 using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int32_t)>;
 
 void iterate_per_channel_with_order(CircleConst *node, IterFunc func, bool reverse)
 {
+  assert(node != nullptr);
+
   loco::TensorShape dimension;
   dimension.rank(4);
   uint32_t indices[4] = {0};
@@ -44,7 +47,7 @@ void iterate_per_channel_with_order(CircleConst *node, IterFunc func, bool rever
   uint32_t num_dims[4];
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
   {
-    throw std::runtime_error("Failed to get channel dim index.");
+    throw std::runtime_error("GPTQPass: Failed to get channel dim index.");
   }
 
   auto order = reverse ? std::vector<size_t>{3, 1, 2, 0} : std::vector<size_t>{0, 1, 2, 3};
@@ -73,19 +76,15 @@ void iterate_per_channel_with_order(CircleConst *node, IterFunc func, bool rever
   }
 }
 
-} // namespace
-
-namespace luci
-{
-
-namespace
-{
-
 size_t calculate_qauntized_value(CircleConst *node, uint32_t *indices, loco::TensorShape &dimension,
                                  int channel_dim_index, std::vector<float> &scaling_factor,
                                  std::vector<float> &max, std::vector<float> &min)
 {
+  assert(node != nullptr);
+
   int channel_idx = indices[channel_dim_index];
+
+  assert(scaling_factor[channel_idx] > 0);
   const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
   auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
   auto data_clipped = data < min[channel_idx] ? min[channel_idx] : data;
@@ -109,7 +108,7 @@ void cholesky_decomposition(std::vector<float> &src, uint32_t num_size)
       {
         if (src[i * num_size + i] - sum <= 0)
         {
-          std::cout << "Error: Matrix is not positive definite.\n" << std::endl;
+          std::cout << "Error: Matrix is not positive definite." << std::endl;
           return;
         }
         src[i * num_size + i] = sqrt(src[i * num_size + i] - sum);
@@ -143,6 +142,7 @@ void forward_substitution(const std::vector<float> &L, const std::vector<float> 
     {
       y[i] -= L[i * num_size + j] * y[j];
     }
+    assert(L[i * num_size + i] != 0);
     y[i] /= L[i * num_size + i];
   }
 }
@@ -157,6 +157,7 @@ void backward_substitution(const std::vector<float> &U, const std::vector<float>
     {
       x[i] -= U[i * num_size + j] * x[j];
     }
+    assert(U[i * num_size + i] != 0);
     x[i] /= U[i * num_size + i];
   }
 }
@@ -222,8 +223,7 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
 
   if (!get_channel_dim_index(node, dimension, channel_dim_index))
   {
-    assert(false);
-    return;
+    throw std::runtime_error("GPTQPass: Failed to get channel dim index.");
   }
   auto size = dimension.dim(channel_dim_index).value();
 
@@ -262,10 +262,13 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   const double qmax_double = kMaxScale;
   const double rmin = std::fmin(0, min);
   const double rmax = std::fmax(0, max);
+  const double qrange = qmax_double - qmin_double;
+  assert(qrange > 0);
 
-  double scale = (rmax - rmin) / (qmax_double - qmin_double);
+  double scale = (rmax - rmin) / qrange;
   double zero_point_double = 0;
   uint8_t nudged_zero_point = 0;
+
   if (scale == 0)
   {
     WARN(l) << "The minimum and maximum values are the same." << std::endl;
@@ -280,7 +283,7 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   {
     assert(min >= 0 && max >= 0);
     nudged_zero_point = kMinScale;
-    scale = max / (qmax_double - qmin_double);
+    scale = max / qrange;
     if (min > 0 && max > 0)
       WARN(l) << "The minimum and maximum values are all positive." << std::endl;
   }
@@ -288,7 +291,7 @@ void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t 
   {
     assert(min < 0 && max < 0);
     nudged_zero_point = kMaxScale;
-    scale = -min / (qmax_double - qmin_double);
+    scale = -min / qrange;
     WARN(l) << "The minimum and maximum values are all negative." << std::endl;
   }
   else
@@ -318,6 +321,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                                    std::vector<float> &hessian)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
+  assert(output_type == loco::DataType::U8 || output_type != loco::DataType::U4);
 
   IterFunc quantize;
 
@@ -333,7 +337,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                           kMaxScale);
   }
 
-  if (hessian.empty()) // Cases where gptq is not applied
+  if (hessian.empty()) // Case where GPTQ is not applied
   {
     quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
       quantized_values[cal_offset(dimension, indices)] = calculate_qauntized_value(
@@ -341,7 +345,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     };
     iterate_per_channel_with_order(node, quantize, false);
   }
-  else // Cases where gptq is applied
+  else // Case where GPTQ is applied
   {
     uint32_t size_hessian = static_cast<uint32_t>(sqrt(hessian.size()));
     float percdamp = .01;
@@ -364,7 +368,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     cholesky_inverse(hessian, size_hessian);
     cholesky_decomposition(hessian, size_hessian);
 
-    // transpose hessian to make upper trangular
+    // transpose hessian to make upper triangular
     for (uint32_t i = 0; i < size_hessian; i++)
     {
       for (uint32_t j = 0; j < i; j++)
@@ -405,10 +409,11 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
       uint32_t channel_idx = indices[channel_dim_index];
       auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
 
+      auto h_offset = cal_offset_2d(dimension_hessian, indices_diag_hessian);
       error[cal_offset(dimension, indices)] =
         (data - (quantized_values[cal_offset(dimension, indices)] - zp[channel_idx]) *
                   scaling_factor[channel_idx]) /
-        hessian[cal_offset_2d(dimension_hessian, indices_diag_hessian)];
+        hessian[h_offset];
 
       if (channel_idx == (dimension.dim(channel_dim_index).value() - 1))
       {
@@ -426,10 +431,10 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                 uint32_t idx_ihw = dimension_channel_last[2] * dimension_channel_last[3] * i +
                                    dimension_channel_last[3] * h + w;
                 uint32_t indices_hessain[2] = {idx_quant_column, idx_ihw};
+                auto _h_offset = cal_offset_2d(dimension_hessian, indices_hessain);
 
                 node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices_channel_first)) -=
-                  error[cal_offset(dimension, indices_error)] *
-                  hessian[cal_offset_2d(dimension_hessian, indices_hessain)];
+                  error[cal_offset(dimension, indices_error)] * hessian[_h_offset];
               }
             }
           }
@@ -439,8 +444,8 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     iterate_per_channel_with_order(node, quantize, true);
   }
 
-  node->dtype(loco::DataType::U8);      // change the type of tensor
-  node->size<loco::DataType::U8>(size); // resize tensor
+  node->dtype(loco::DataType::U8);      // Change the type of tensor
+  node->size<loco::DataType::U8>(size); // Resize tensor
   for (uint32_t i = 0; i < size; ++i)
   {
     node->at<loco::DataType::U8>(i) = std::min(kMaxScale, std::max(kMinScale, quantized_values[i]));
@@ -472,27 +477,28 @@ void asymmetric_wdequant_per_channel(CircleConst *node, std::vector<float> &scal
 }
 
 /**
- * @brief QuantizeDequantizeWeights quantizes and dequantizes tensors for weights
- * @details Find min/max values on the fly, quantize the model, and dequantize the model
+ * @brief QuantizeWeightsWithGPTQ quantizes and dequantizes tensors for weights uisng GPTQ algorithm
+ * @details Compensate for the quantization error and update weights using Hessian matrix
+ *
  */
-struct QuantizeWeightsWithGPTQ final : public luci::CircleNodeMutableVisitor<void>
+class QuantizeWeightsWithGPTQ final : public luci::CircleNodeMutableVisitor<void>
 {
+public:
   QuantizeWeightsWithGPTQ(
     loco::DataType input, loco::DataType output, QuantizationGranularity granularity,
     std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
-    : input_type(input), output_type(output), granularity(granularity), hessian_map(hessian_map)
+    : input_type(input), output_type(output), granularity(granularity), _hessian_map(hessian_map)
   {
   }
 
+private:
   loco::DataType input_type;
   loco::DataType output_type;
   QuantizationGranularity granularity;
-  std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map;
+  std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
 
-private:
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
-    // assert(output_type == loco::DataType::U8); // FIX_CALLER_UNLESS
     if (output_type != loco::DataType::U8)
     {
       throw std::runtime_error("GPTQ quantization supports u8");
@@ -565,7 +571,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
 
-    auto hessian = (*hessian_map)[node];
+    auto hessian = (*_hessian_map)[node];
 
     fake_quantize(new_weights, hessian);
   }
@@ -615,7 +621,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
 
-    auto hessian = (*hessian_map)[node];
+    auto hessian = (*_hessian_map)[node];
 
     fake_quantize(new_weights, hessian);
   }

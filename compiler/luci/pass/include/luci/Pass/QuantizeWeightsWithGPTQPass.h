@@ -17,16 +17,18 @@
 #ifndef __LUCI_QUANTIZE_WEIGHTS_WITH_GPTQ_PASS_H__
 #define __LUCI_QUANTIZE_WEIGHTS_WITH_GPTQ_PASS_H__
 
-#include <loco.h>
-
-#include <logo/Pass.h>
-
 #include <luci/Pass/QuantizationParameters.h>
 #include <luci/IR/CircleNode.h>
+
+#include <logo/Pass.h>
+#include <loco.h>
+
 #include <unordered_map>
 
 namespace luci
 {
+
+using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 /**
  * @brief Pass to quantize weights
@@ -48,9 +50,7 @@ public:
     // DO NOTHING
   }
 
-  QuantizeWeightsWithGPTQPass(
-    std::unique_ptr<Context> &&ctx,
-    std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
+  QuantizeWeightsWithGPTQPass(std::unique_ptr<Context> &&ctx, HessianMap *hessian_map)
     : _ctx{std::move(ctx)}, _hessian_map{hessian_map}
   {
     // DO NOTHING
@@ -74,7 +74,7 @@ public:
 
 private:
   std::unique_ptr<Context> _ctx;
-  std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
+  HessianMap *_hessian_map;
 };
 
 } // namespace luci
