@@ -83,7 +83,7 @@ void GatherLayer::runByGGMLQuantInputType()
   if (getShape(_input).DimensionsCount() != 2)
     throw std::runtime_error("Gather: block quantized input tensor must be rank 2");
 
-  if (getShape(_indices).DimensionsCount() > 4 &&
+  if (getShape(_indices).DimensionsCount() >= 4 &&
       (getShape(_indices).DimensionsCount() != 4 || getShape(_indices).Dims(0) != 1))
     throw std::runtime_error("Gather: invalid indices tensor shape");
 
