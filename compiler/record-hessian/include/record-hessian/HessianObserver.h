@@ -17,11 +17,12 @@
 #ifndef __RECORD_HESSIAN_HESSIANOBSERVER_H__
 #define __RECORD_HESSIAN_HESSIANOBSERVER_H__
 
+#include "record-hessian/HessianComputer.h"
+
 #include <luci_interpreter/Interpreter.h>
 #include <luci_interpreter/core/Tensor.h>
 #include <luci/IR/CircleNodes.h>
 
-#include "record-hessian/HessianComputer.h"
 namespace record_hessian
 {
 
