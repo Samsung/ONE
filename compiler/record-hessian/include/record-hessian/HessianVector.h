@@ -21,7 +21,6 @@
 
 #include <cstddef>
 #include <vector>
-#include <unordered_map>
 
 namespace record_hessian
 {

@@ -22,6 +22,10 @@
 #include <luci/IR/CircleNode.h>
 #include <luci_interpreter/Interpreter.h>
 
+#include <memory>
+#include <vector>
+#include <unordered_map>
+
 namespace record_hessian
 {
 /**

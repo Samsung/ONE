@@ -23,7 +23,7 @@ namespace record_hessian
 
 /**
  * @brief unfold the vector with NHWC shape, inherently acting in an in-place manner.
- * @note (N, H, W, C) -> (N, L, H*W*C).
+ * @note (N, H, W, C) -> (N, L, K_h * K_w * C).
  * See details(https://pytorch.org/docs/stable/generated/torch.nn.Unfold.html).
  */
 void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
