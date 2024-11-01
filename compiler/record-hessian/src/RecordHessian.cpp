@@ -53,21 +53,6 @@ std::string trim(std::string s)
   return s;
 }
 
-std::vector<std::string> parse_line(const std::string &line)
-{
-  auto trimmed = trim(line);
-  std::stringstream ss(trimmed);
-
-  std::vector<std::string> res;
-
-  std::string filename;
-  while (getline(ss, filename, ' '))
-  {
-    res.emplace_back(filename);
-  }
-  return res;
-}
-
 uint32_t numElements(const luci::CircleNode *node)
 {
   uint32_t num_elements = 1;
@@ -81,23 +66,10 @@ void checkInputDimension(const luci::CircleInput *input)
 {
   for (uint32_t i = 0; i < input->rank(); i++)
     if (!input->dim(i).known())
-      throw std::runtime_error(input->name() + " has unknown dimension");
+      throw std::runtime_error("RecordHessian: " + input->name() + " has unknown dimension");
 
   if (numElements(input) == 0)
-    throw std::runtime_error(input->name() + " is a zero-sized input");
-}
-
-void readDataFromFile(const std::string &filename, std::vector<char> &data, size_t data_size)
-{
-  assert(data.size() == data_size); // FIX_CALLER_UNLESS
-
-  std::ifstream fs(filename, std::ifstream::binary);
-  if (fs.fail())
-    throw std::runtime_error("Cannot open file \"" + filename + "\".\n");
-  if (fs.read(data.data(), data_size).fail())
-    throw std::runtime_error("Failed to read data from file \"" + filename + "\".\n");
-  if (fs.peek() != EOF)
-    throw std::runtime_error("Input tensor size mismatches with \"" + filename + "\".\n");
+    throw std::runtime_error("RecordHessian: " + input->name() + " is a zero-sized input");
 }
 
 /**
@@ -119,15 +91,15 @@ void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype,
 {
   // Type check
   if (dtype != input_node->dtype())
-    throw std::runtime_error("Wrong input type.");
+    throw std::runtime_error("RecordHessian: Wrong input type.");
 
   if (shape.size() != input_node->rank())
-    throw std::runtime_error("Input rank mismatch.");
+    throw std::runtime_error("RecordHessian: Input rank mismatch.");
 
   for (uint32_t i = 0; i < shape.size(); i++)
   {
     if (not(shape.at(i) == input_node->dim(i)))
-      throw std::runtime_error("Input shape mismatch.");
+      throw std::runtime_error("RecordHessian: Input shape mismatch.");
   }
 }
 
@@ -162,7 +134,7 @@ std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_
 
     const auto num_records = importer.numData();
     if (num_records == 0)
-      throw std::runtime_error("The input data file does not contain any record.");
+      throw std::runtime_error("RecordHessian: The input data file does not contain any record.");
 
     const auto input_nodes = loco::input_nodes(_module->graph());
     const auto num_inputs = input_nodes.size();
@@ -170,9 +142,9 @@ std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_
     for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
     {
       if (num_inputs != static_cast<uint32_t>(importer.numInputs(record_idx)))
-        throw std::runtime_error("Wrong number of inputs.");
+        throw std::runtime_error("RecordHessian: Wrong number of inputs.");
 
-      std::cout << "Recording " << record_idx << "'th data for hessian" << std::endl;
+      std::cout << "Recording " << record_idx << "'th data for hessian." << std::endl;
 
       for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
       {
@@ -210,7 +182,7 @@ std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_
   catch (const H5::Exception &e)
   {
     H5::Exception::printErrorStack();
-    throw std::runtime_error("HDF5 error occurred.");
+    throw std::runtime_error("RecordHessian: HDF5 error occurred.");
   }
 
   return getObserver()->hessianData();
