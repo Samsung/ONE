@@ -1,6 +1,8 @@
 #include "luci/Pass/QuantizeWeightsWithGPTQPass.h"
 #include <luci/IR/CircleNodes.h>
+
 #include <gtest/gtest.h>
+
 #include <unordered_map>
 
 namespace

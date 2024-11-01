@@ -31,7 +31,7 @@ namespace luci
 using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 /**
- * @brief Pass to quantize weights
+ * @brief Pass to quantize weights with GPTQ algorithm
  */
 class QuantizeWeightsWithGPTQPass : public logo::Pass
 {
@@ -74,7 +74,7 @@ public:
 
 private:
   std::unique_ptr<Context> _ctx;
-  HessianMap *_hessian_map;
+  HessianMap *_hessian_map = nullptr;
 };
 
 } // namespace luci

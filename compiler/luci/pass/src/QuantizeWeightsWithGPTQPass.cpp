@@ -129,6 +129,7 @@ void cholesky_decomposition(std::vector<float> &src, uint32_t num_size)
       }
     }
   }
+
   return;
 }
 
@@ -250,8 +251,18 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   iterate_per_channel_with_order(node, cal_minmax, false);
 }
 
-void compute_asym_scale_zp(float min, float max, float &scaling_factor, int64_t &zp,
-                           float &nudged_min, float &nudged_max, int32_t k_max_scale)
+/**
+ * @brief Compute the scale and zero point for the given range of values
+ * @param min: The minimum value in the range of values to be quantized.
+ * @param max: The maximum value in the range of values to be quantized.
+ * @param k_max_scale: The maximum value of the quantization scale.
+ * @param scaling_factor: The computed scaling factor for the quantization.
+ * @param zp: The computed zero point for the quantization.
+ * @param nudged_min: The nudged minimum value after applying the scaling factor and zero point.
+ * @param nudged_max: The nudged maximum value after applying the scaling factor and zero point.
+ */
+void compute_asym_scale_zp(float min, float max, int32_t k_max_scale, float &scaling_factor,
+                           int64_t &zp, float &nudged_min, float &nudged_max)
 {
   LOGGER(l);
 
@@ -333,8 +344,8 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
 
   for (size_t i = 0; i < min.size(); ++i)
   {
-    compute_asym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i],
-                          kMaxScale);
+    compute_asym_scale_zp(min[i], max[i], kMaxScale, scaling_factor[i], zp[i], nudged_min[i],
+                          nudged_max[i]);
   }
 
   if (hessian.empty()) // Case where GPTQ is not applied
@@ -355,6 +366,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     {
       damp += hessian[i * size_hessian + i];
     }
+    assert(size_hessian != 0);
     damp /= size_hessian;
     damp *= percdamp;
 
@@ -407,13 +419,15 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
       uint32_t indices_diag_hessian[2] = {idx_quant_column, idx_quant_column};
 
       uint32_t channel_idx = indices[channel_dim_index];
-      auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
 
-      auto h_offset = cal_offset_2d(dimension_hessian, indices_diag_hessian);
-      error[cal_offset(dimension, indices)] =
-        (data - (quantized_values[cal_offset(dimension, indices)] - zp[channel_idx]) *
-                  scaling_factor[channel_idx]) /
-        hessian[h_offset];
+      auto data_indices = cal_offset(dimension, indices);
+      auto hessian_indices = cal_offset_2d(dimension_hessian, indices_diag_hessian);
+
+      auto data = node->at<loco::DataType::FLOAT32>(data_indices);
+      auto quantized_rvalue =
+        (quantized_values[data_indices] - zp[channel_idx]) * scaling_factor[channel_idx];
+
+      error[data_indices] = (data - quantized_rvalue) / hessian[hessian_indices];
 
       if (channel_idx == (dimension.dim(channel_dim_index).value() - 1))
       {
@@ -431,10 +445,13 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                 uint32_t idx_ihw = dimension_channel_last[2] * dimension_channel_last[3] * i +
                                    dimension_channel_last[3] * h + w;
                 uint32_t indices_hessain[2] = {idx_quant_column, idx_ihw};
-                auto _h_offset = cal_offset_2d(dimension_hessian, indices_hessain);
 
-                node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices_channel_first)) -=
-                  error[cal_offset(dimension, indices_error)] * hessian[_h_offset];
+                auto _h_indices = cal_offset_2d(dimension_hessian, indices_hessain);
+                auto _data_indices = cal_offset(dimension, indices_channel_first);
+                auto _error_indices = cal_offset(dimension, indices_error);
+
+                node->at<loco::DataType::FLOAT32>(_data_indices) -=
+                  error[_error_indices] * hessian[_h_indices];
               }
             }
           }
@@ -487,19 +504,19 @@ public:
   QuantizeWeightsWithGPTQ(
     loco::DataType input, loco::DataType output, QuantizationGranularity granularity,
     std::unordered_map<const luci::CircleNode *, std::vector<float>> *hessian_map)
-    : input_type(input), output_type(output), granularity(granularity), _hessian_map(hessian_map)
+    : _input_type(input), _output_type(output), _granularity(granularity), _hessian_map(hessian_map)
   {
   }
 
 private:
-  loco::DataType input_type;
-  loco::DataType output_type;
-  QuantizationGranularity granularity;
+  loco::DataType _input_type;
+  loco::DataType _output_type;
+  QuantizationGranularity _granularity;
   std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
 
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
-    if (output_type != loco::DataType::U8)
+    if (_output_type != loco::DataType::U8)
     {
       throw std::runtime_error("GPTQ quantization supports u8");
     }
@@ -515,7 +532,7 @@ private:
     std::vector<int64_t> zp(min.size());
 
     asymmetric_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
-                                  output_type, hessian);
+                                  _output_type, hessian);
     asymmetric_wdequant_per_channel(weights, scaling_factor, nudged_min);
 
     auto quantparam = std::make_unique<CircleQuantParam>();
@@ -529,7 +546,7 @@ private:
 
   void fake_quantize(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
-    switch (granularity)
+    switch (_granularity)
     {
       case luci::QuantizationGranularity::ChannelWise:
         fake_quantize_cwq(weights, hessian);
