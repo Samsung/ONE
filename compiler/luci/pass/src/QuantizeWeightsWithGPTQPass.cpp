@@ -516,9 +516,9 @@ private:
 
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
-    if (_output_type != loco::DataType::U8)
+    if (_output_type != loco::DataType::U4 || _output_type != loco::DataType::U8)
     {
-      throw std::runtime_error("GPTQ quantization supports u8");
+      throw std::runtime_error("GPTQ quantization supports U4/U8");
     }
     // Find min/max per channel
     std::vector<float> min;

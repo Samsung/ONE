@@ -17,6 +17,7 @@
 #ifndef __LUCI_CIRCLE_QUANTIZER_H__
 #define __LUCI_CIRCLE_QUANTIZER_H__
 
+#include <luci/IR/CircleNode.h>
 #include <loco.h>
 #include <luci/IR/CircleNode.h>
 
@@ -27,6 +28,8 @@
 
 namespace luci
 {
+
+using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 class CircleQuantizer final
 {
@@ -114,8 +117,7 @@ public:
 
 public:
   void quantize(loco::Graph *) const;
-  void setHessianMap(
-    std::unique_ptr<std::unordered_map<const luci::CircleNode *, std::vector<float>>> &hessian_map)
+  void setHessianMap(std::unique_ptr<HessianMap> &hessian_map)
   {
     _hessian_map = std::move(hessian_map);
   }
@@ -132,7 +134,7 @@ private:
 
 private:
   std::unique_ptr<Options> _options;
-  std::unique_ptr<std::unordered_map<const luci::CircleNode *, std::vector<float>>> _hessian_map;
+  std::unique_ptr<HessianMap> _hessian_map;
 };
 
 } // namespace luci
