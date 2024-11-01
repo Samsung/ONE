@@ -25,9 +25,11 @@
 namespace record_hessian
 {
 /**
- * @brief Record approximated hessian matrix from GPTQ paper(https://arxiv.org/abs/2210.17323).
+ * @brief Record approximated hessian matrix from
+ * GPTQ paper(https://arxiv.org/abs/2210.17323).
  */
 using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
+using HessianVectorMap = std::unordered_map<const luci::CircleNode *, HessianVector>;
 
 class HessianComputer
 {
@@ -38,7 +40,7 @@ public:
   std::unique_ptr<HessianMap> getMap();
 
 private:
-  std::unordered_map<const luci::CircleNode *, HessianVector> _hessian_map;
+  HessianVectorMap _hessian_map;
   const luci_interpreter::Tensor *_input_tensor = nullptr;
 
   void recordHessianForConv2D(const luci::CircleNode *node);
