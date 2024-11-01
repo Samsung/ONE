@@ -294,6 +294,9 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
 
 uint32_t cal_offset_2d(loco::TensorShape &dimension, uint32_t *indices)
 {
+  assert(dimension.rank() == 2);
+  assert(sizeof(indices) / sizeof(*indices) == dimension.rank());
+
   return indices[0] * dimension.dim(1).value() + indices[1];
 }
 
