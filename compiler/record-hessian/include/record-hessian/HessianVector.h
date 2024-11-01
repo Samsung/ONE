@@ -17,15 +17,14 @@
 #ifndef __RECORD_HESSIAN_HESSIANVECTOR_H__
 #define __RECORD_HESSIAN_HESSIANVECTOR_H__
 
-#include <vector>
-#include <cstddef>
-#include <unordered_map>
 #include <luci/IR/CircleNodes.h>
+
+#include <cstddef>
+#include <vector>
+#include <unordered_map>
 
 namespace record_hessian
 {
-
-using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 struct HessianVector
 {

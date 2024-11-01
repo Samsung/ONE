@@ -34,8 +34,6 @@ TEST(HessianComputerTest, recordHessianValidInput)
   luci_interpreter::DataType data_type = luci_interpreter::DataType::FLOAT32;
   luci_interpreter::Shape shape({1, 4});
   luci_interpreter::AffineQuantization quantization;
-  quantization.scale = {1.0};
-  quantization.zero_point = {0};
 
   std::string tensor_name = "input_tensor";
 
@@ -52,7 +50,7 @@ TEST(HessianComputerTest, recordHessianValidInput)
   EXPECT_NO_THROW(computer.recordHessian(&node, &input_tensor));
 }
 
-TEST(HessianComputerTest, recordHessianValidInput_NEG)
+TEST(HessianComputerTest, recordHessian_wrong_op_NEG)
 {
   luci::CircleAdd node;
 
@@ -61,8 +59,6 @@ TEST(HessianComputerTest, recordHessianValidInput_NEG)
   luci_interpreter::DataType data_type = luci_interpreter::DataType::FLOAT32;
   luci_interpreter::Shape shape({1, 2, 2, 1});
   luci_interpreter::AffineQuantization quantization;
-  quantization.scale = {1.0};
-  quantization.zero_point = {0};
 
   std::string tensor_name = "input_tensor";
 

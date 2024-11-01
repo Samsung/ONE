@@ -24,6 +24,10 @@
 
 namespace record_hessian
 {
+/**
+ * @brief Record approximated hessian matrix from GPTQ paper(https://arxiv.org/abs/2210.17323).
+ */
+using HessianMap = std::unordered_map<const luci::CircleNode *, std::vector<float>>;
 
 class HessianComputer
 {
