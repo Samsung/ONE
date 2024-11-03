@@ -1461,6 +1461,7 @@ var annotated_dup =
         [ "Gelu", "classluci__interpreter_1_1kernels_1_1_gelu.html", "classluci__interpreter_1_1kernels_1_1_gelu" ],
         [ "Greater", "classluci__interpreter_1_1kernels_1_1_greater.html", "classluci__interpreter_1_1kernels_1_1_greater" ],
         [ "GreaterEqual", "classluci__interpreter_1_1kernels_1_1_greater_equal.html", "classluci__interpreter_1_1kernels_1_1_greater_equal" ],
+        [ "GRU", "classluci__interpreter_1_1kernels_1_1_g_r_u.html", "classluci__interpreter_1_1kernels_1_1_g_r_u" ],
         [ "HardSwish", "classluci__interpreter_1_1kernels_1_1_hard_swish.html", "classluci__interpreter_1_1kernels_1_1_hard_swish" ],
         [ "If", "classluci__interpreter_1_1kernels_1_1_if.html", "classluci__interpreter_1_1kernels_1_1_if" ],
         [ "InstanceNorm", "classluci__interpreter_1_1kernels_1_1_instance_norm.html", "classluci__interpreter_1_1kernels_1_1_instance_norm" ],
@@ -1877,6 +1878,7 @@ var annotated_dup =
       [ "GatherParams", "structluci__interpreter_1_1_gather_params.html", "structluci__interpreter_1_1_gather_params" ],
       [ "GeluParams", "structluci__interpreter_1_1_gelu_params.html", "structluci__interpreter_1_1_gelu_params" ],
       [ "GraphLoader", "classluci__interpreter_1_1_graph_loader.html", "classluci__interpreter_1_1_graph_loader" ],
+      [ "GRUParams", "structluci__interpreter_1_1_g_r_u_params.html", "structluci__interpreter_1_1_g_r_u_params" ],
       [ "IMemoryManager", "classluci__interpreter_1_1_i_memory_manager.html", "classluci__interpreter_1_1_i_memory_manager" ],
       [ "InstanceNormParams", "structluci__interpreter_1_1_instance_norm_params.html", "structluci__interpreter_1_1_instance_norm_params" ],
       [ "Interpreter", "classluci__interpreter_1_1_interpreter.html", "classluci__interpreter_1_1_interpreter" ],
@@ -3823,13 +3825,23 @@ var annotated_dup =
     [ "RandomDataGenerator", "namespace_random_data_generator.html", [
       [ "RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", "class_random_data_generator_1_1_random_data_generator" ]
     ] ],
+    [ "record_hessian", "namespacerecord__hessian.html", [
+      [ "HessianComputer", "classrecord__hessian_1_1_hessian_computer.html", "classrecord__hessian_1_1_hessian_computer" ],
+      [ "HessianVector", "structrecord__hessian_1_1_hessian_vector.html", "structrecord__hessian_1_1_hessian_vector" ]
+    ] ],
     [ "record_minmax", "namespacerecord__minmax.html", [
+      [ "DataBuffer", "structrecord__minmax_1_1_data_buffer.html", "structrecord__minmax_1_1_data_buffer" ],
+      [ "DataSetIterator", "classrecord__minmax_1_1_data_set_iterator.html", "classrecord__minmax_1_1_data_set_iterator" ],
+      [ "DirectoryIterator", "classrecord__minmax_1_1_directory_iterator.html", "classrecord__minmax_1_1_directory_iterator" ],
+      [ "HDF5Iterator", "classrecord__minmax_1_1_h_d_f5_iterator.html", "classrecord__minmax_1_1_h_d_f5_iterator" ],
+      [ "ListFileIterator", "classrecord__minmax_1_1_list_file_iterator.html", "classrecord__minmax_1_1_list_file_iterator" ],
       [ "MinMaxComputer", "classrecord__minmax_1_1_min_max_computer.html", "classrecord__minmax_1_1_min_max_computer" ],
       [ "MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", "classrecord__minmax_1_1_min_max_map" ],
       [ "MinMaxObserver", "classrecord__minmax_1_1_min_max_observer.html", "classrecord__minmax_1_1_min_max_observer" ],
       [ "MinMaxVectors", "structrecord__minmax_1_1_min_max_vectors.html", "structrecord__minmax_1_1_min_max_vectors" ],
       [ "MovingAvgComputer", "classrecord__minmax_1_1_moving_avg_computer.html", "classrecord__minmax_1_1_moving_avg_computer" ],
       [ "PercentileComputer", "classrecord__minmax_1_1_percentile_computer.html", "classrecord__minmax_1_1_percentile_computer" ],
+      [ "RandomIterator", "classrecord__minmax_1_1_random_iterator.html", "classrecord__minmax_1_1_random_iterator" ],
       [ "RecordMinMax", "classrecord__minmax_1_1_record_min_max.html", "classrecord__minmax_1_1_record_min_max" ]
     ] ],
     [ "Reshape_000", "namespace_reshape__000.html", [

@@ -1644,6 +1644,7 @@ var hierarchy =
         [ "onert::ir::MMapedData", "classonert_1_1ir_1_1_m_maped_data.html", null ]
       ] ]
     ] ],
+    [ "record_minmax::DataBuffer", "structrecord__minmax_1_1_data_buffer.html", null ],
     [ "souschef::DataChef", "structsouschef_1_1_data_chef.html", [
       [ "souschef::ConstantDataChef< T >", "classsouschef_1_1_constant_data_chef.html", null ],
       [ "souschef::ConstantInt4DataChef", "classsouschef_1_1_constant_int4_data_chef.html", null ],
@@ -1683,6 +1684,12 @@ var hierarchy =
     [ "onert::backend::cpu::ops::DataPtr", "uniononert_1_1backend_1_1cpu_1_1ops_1_1_data_ptr.html", null ],
     [ "souschef::Dataset< T >", "classsouschef_1_1_dataset.html", null ],
     [ "mpqsolver::core::DatasetEvaluator", "classmpqsolver_1_1core_1_1_dataset_evaluator.html", null ],
+    [ "record_minmax::DataSetIterator", "classrecord__minmax_1_1_data_set_iterator.html", [
+      [ "record_minmax::DirectoryIterator", "classrecord__minmax_1_1_directory_iterator.html", null ],
+      [ "record_minmax::HDF5Iterator", "classrecord__minmax_1_1_h_d_f5_iterator.html", null ],
+      [ "record_minmax::ListFileIterator", "classrecord__minmax_1_1_list_file_iterator.html", null ],
+      [ "record_minmax::RandomIterator", "classrecord__minmax_1_1_random_iterator.html", null ]
+    ] ],
     [ "loco::DataTypeImpl< DT >", "structloco_1_1_data_type_impl.html", null ],
     [ "luci_interpreter::DataTypeImpl< DT >", "structluci__interpreter_1_1_data_type_impl.html", null ],
     [ "loco::DataTypeImpl< DataType::BOOL >", "structloco_1_1_data_type_impl_3_01_data_type_1_1_b_o_o_l_01_4.html", null ],
@@ -2275,6 +2282,7 @@ var hierarchy =
     [ "GraphTestcase< GraphCode::TransposedConv2D >", "class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html", null ],
     [ "moco::GraphUpdate", "classmoco_1_1_graph_update.html", null ],
     [ "mir_interpreter::GreaterImpl< T >", "structmir__interpreter_1_1_greater_impl.html", null ],
+    [ "luci_interpreter::GRUParams", "structluci__interpreter_1_1_g_r_u_params.html", null ],
     [ "minmax_embedder_test::H5Writer", "classminmax__embedder__test_1_1_h5_writer.html", null ],
     [ "mir_interpreter::HardSwishImpl< T >", "structmir__interpreter_1_1_hard_swish_impl.html", null ],
     [ "mir_interpreter::HardSwishImpl< uint8_t >", "structmir__interpreter_1_1_hard_swish_impl_3_01uint8__t_01_4.html", null ],
@@ -2288,6 +2296,8 @@ var hierarchy =
     [ "dio::hdf5::HDF5Importer", "classdio_1_1hdf5_1_1_h_d_f5_importer.html", null ],
     [ "coco::DLinkedList< Child, Parent >::Head", "classcoco_1_1_d_linked_list_1_1_head.html", null ],
     [ "arser::Helper", "classarser_1_1_helper.html", null ],
+    [ "record_hessian::HessianComputer", "classrecord__hessian_1_1_hessian_computer.html", null ],
+    [ "record_hessian::HessianVector", "structrecord__hessian_1_1_hessian_vector.html", null ],
     [ "enco::HostBlockCompiler", "classenco_1_1_host_block_compiler.html", null ],
     [ "nnc::IArtifactGenerator", "classnnc_1_1_i_artifact_generator.html", [
       [ "nnc::ArtifactGeneratorCppCode", "classnnc_1_1_artifact_generator_cpp_code.html", null ],
@@ -2922,6 +2932,9 @@ var hierarchy =
       ] ],
       [ "luci_interpreter::KernelWithParams< FullyConnectedParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::FullyConnected", "classluci__interpreter_1_1kernels_1_1_fully_connected.html", null ]
+      ] ],
+      [ "luci_interpreter::KernelWithParams< GRUParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
+        [ "luci_interpreter::kernels::GRU", "classluci__interpreter_1_1kernels_1_1_g_r_u.html", null ]
       ] ],
       [ "luci_interpreter::KernelWithParams< GatherParams >", "classluci__interpreter_1_1_kernel_with_params.html", [
         [ "luci_interpreter::kernels::Gather", "classluci__interpreter_1_1kernels_1_1_gather.html", null ]

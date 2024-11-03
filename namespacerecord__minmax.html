@@ -99,6 +99,16 @@ $(document).ready(function(){initNavTree('namespacerecord__minmax.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrecord__minmax_1_1_data_buffer.html">DataBuffer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_data_set_iterator.html">DataSetIterator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_directory_iterator.html">DirectoryIterator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_h_d_f5_iterator.html">HDF5Iterator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_list_file_iterator.html">ListFileIterator</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_min_max_map.html">MinMaxMap</a></td></tr>
@@ -110,6 +120,8 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_moving_avg_computer.html">MovingAvgComputer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_percentile_computer.html">PercentileComputer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_random_iterator.html">RandomIterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html">RecordMinMax</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,6 +147,14 @@ Functions</h2></td></tr>
 <tr class="memitem:ac1ff27c7623aa9327c028614971932c6" id="r_ac1ff27c7623aa9327c028614971932c6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#ac1ff27c7623aa9327c028614971932c6">getMovingAverage</a> (const std::vector&lt; float &gt; &amp;vector, const float alpha, const uint8_t batch_size, bool is_min)</td></tr>
 <tr class="memdesc:ac1ff27c7623aa9327c028614971932c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">getMovingAverage calculates the weighted moving average of input vector The initial value is the minimum (or maximum) value of the first batch of the vector  <br /></td></tr>
 <tr class="separator:ac1ff27c7623aa9327c028614971932c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa54275b5094401159ea5d8665de067" id="r_a8aa54275b5094401159ea5d8665de067"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">numElements</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</td></tr>
+<tr class="separator:a8aa54275b5094401159ea5d8665de067"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80ad66caa0ce59480f3b8d23b5bf6168" id="r_a80ad66caa0ce59480f3b8d23b5bf6168"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168">getTensorSize</a> (const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</td></tr>
+<tr class="separator:a80ad66caa0ce59480f3b8d23b5bf6168"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a841b3db57c40ab8574c6d014d36dcdfb" id="r_a841b3db57c40ab8574c6d014d36dcdfb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#a841b3db57c40ab8574c6d014d36dcdfb">readDataFromFile</a> (const std::string &amp;filename, std::vector&lt; char &gt; &amp;data, size_t data_size)</td></tr>
+<tr class="separator:a841b3db57c40ab8574c6d014d36dcdfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a90e0bc1d222a6dd1f76ce05be4a4f8" id="r_a2a90e0bc1d222a6dd1f76ce05be4a4f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerecord__minmax.html#a2a90e0bc1d222a6dd1f76ce05be4a4f8">checkInputDimension</a> (const <a class="el" href="classluci_1_1_circle_input.html">luci::CircleInput</a> *input)</td></tr>
+<tr class="separator:a2a90e0bc1d222a6dd1f76ce05be4a4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a436fa9e67582bd0c9c1d18b500d3c1be" name="a436fa9e67582bd0c9c1d18b500d3c1be"></a>
@@ -149,7 +169,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00032">32</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00033">33</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
 
 </div>
 </div>
@@ -165,7 +185,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00033">33</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00034">34</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
 
 </div>
 </div>
@@ -181,11 +201,46 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00034">34</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00035">35</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2a90e0bc1d222a6dd1f76ce05be4a4f8" name="a2a90e0bc1d222a6dd1f76ce05be4a4f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a90e0bc1d222a6dd1f76ce05be4a4f8">&#9670;&#160;</a></span>checkInputDimension()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void record_minmax::checkInputDimension </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classluci_1_1_circle_input.html">luci::CircleInput</a> *&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00029">29</a> of file <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  assert(input); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; input-&gt;rank(); i++)</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">if</span> (!input-&gt;dim(i).known())</div>
+<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">throw</span> std::runtime_error(input-&gt;name() + <span class="stringliteral">&quot; has unknown dimension&quot;</span>);</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">numElements</a>(input) == 0)</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">throw</span> std::runtime_error(input-&gt;name() + <span class="stringliteral">&quot; is a zero-sized input&quot;</span>);</div>
+<div class="line"><span class="lineno">   39</span>}</div>
+<div class="ttc" id="anamespacerecord__minmax_html_a8aa54275b5094401159ea5d8665de067"><div class="ttname"><a href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">record_minmax::numElements</a></div><div class="ttdeci">uint32_t numElements(const luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00041">Utils.cpp:41</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00041">numElements()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00190">record_minmax::RecordMinMax::profileData()</a>.</p>
+
+</div>
+</div>
 <a id="ac1ff27c7623aa9327c028614971932c6" name="ac1ff27c7623aa9327c028614971932c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac1ff27c7623aa9327c028614971932c6">&#9670;&#160;</a></span>getMovingAverage()</h2>
 
@@ -332,6 +387,37 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a80ad66caa0ce59480f3b8d23b5bf6168" name="a80ad66caa0ce59480f3b8d23b5bf6168"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80ad66caa0ce59480f3b8d23b5bf6168">&#9670;&#160;</a></span>getTensorSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t record_minmax::getTensorSize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00057">57</a> of file <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>  uint32_t elem_size = <a class="code hl_function" href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a>(node-&gt;dtype());</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">numElements</a>(node) * elem_size;</div>
+<div class="line"><span class="lineno">   63</span>}</div>
+<div class="ttc" id="anamespaceluci_html_af979a00d2e6c772309aaf5f6ef03a148"><div class="ttname"><a href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a></div><div class="ttdeci">uint32_t size(loco::DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition</b> <a href="_data_type_helper_8h_source.html#l00031">DataTypeHelper.h:31</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00041">numElements()</a>, and <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_directory_iterator_8cpp_source.html#l00059">record_minmax::DirectoryIterator::next()</a>, <a class="el" href="_h_d_f5_iterator_8cpp_source.html#l00056">record_minmax::HDF5Iterator::next()</a>, <a class="el" href="_list_file_iterator_8cpp_source.html#l00091">record_minmax::ListFileIterator::next()</a>, and <a class="el" href="_random_iterator_8cpp_source.html#l00084">record_minmax::RandomIterator::next()</a>.</p>
+
+</div>
+</div>
 <a id="adaf28fc57dcc835c5d3955e9817ef0e9" name="adaf28fc57dcc835c5d3955e9817ef0e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adaf28fc57dcc835c5d3955e9817ef0e9">&#9670;&#160;</a></span>make_moving_avg_computer()</h2>
 
@@ -396,6 +482,94 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> std::make_unique&lt;PercentileComputer&gt;(min_percentile, max_percentile);</div>
 <div class="line"><span class="lineno">   78</span>}</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a8aa54275b5094401159ea5d8665de067" name="a8aa54275b5094401159ea5d8665de067"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aa54275b5094401159ea5d8665de067">&#9670;&#160;</a></span>numElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t record_minmax::numElements </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00041">41</a> of file <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
+<div class="line"><span class="lineno">   43</span>  assert(node); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  uint32_t num_elements = 1;</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;rank(); i++)</div>
+<div class="line"><span class="lineno">   47</span>  {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (not node-&gt;dim(i).known())</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unknown dimension found in &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>    num_elements *= node-&gt;dim(i).value();</div>
+<div class="line"><span class="lineno">   52</span>  }</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> num_elements;</div>
+<div class="line"><span class="lineno">   55</span>}</div>
+<div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00029">checkInputDimension()</a>, <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00057">getTensorSize()</a>, and <a class="el" href="_random_iterator_8cpp_source.html#l00084">record_minmax::RandomIterator::next()</a>.</p>
+
+</div>
+</div>
+<a id="a841b3db57c40ab8574c6d014d36dcdfb" name="a841b3db57c40ab8574c6d014d36dcdfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a841b3db57c40ab8574c6d014d36dcdfb">&#9670;&#160;</a></span>readDataFromFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void record_minmax::readDataFromFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; char &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>data_size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00065">65</a> of file <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html">Utils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
+<div class="line"><span class="lineno">   67</span>  assert(data.size() == data_size); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  std::ifstream fs(filename, std::ifstream::binary);</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (fs.fail())</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file \&quot;&quot;</span> + filename + <span class="stringliteral">&quot;\&quot;.\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">if</span> (fs.read(data.data(), data_size).fail())</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to read data from file \&quot;&quot;</span> + filename + <span class="stringliteral">&quot;\&quot;.\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (fs.peek() != EOF)</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Input tensor size mismatches with \&quot;&quot;</span> + filename + <span class="stringliteral">&quot;\&quot;.\n&quot;</span>);</div>
+<div class="line"><span class="lineno">   76</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_directory_iterator_8cpp_source.html#l00059">record_minmax::DirectoryIterator::next()</a>, and <a class="el" href="_list_file_iterator_8cpp_source.html#l00091">record_minmax::ListFileIterator::next()</a>.</p>
+
 </div>
 </div>
 </div><!-- contents -->

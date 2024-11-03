@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('classrecord__minmax_1_1_record_min_max
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">record_minmax::RecordMinMax Class Reference</div></div>
 </div><!--header-->
@@ -97,6 +98,19 @@ $(document).ready(function(){initNavTree('classrecord__minmax_1_1_record_min_max
 
 <p><code>#include &lt;<a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aabb3c38df5ddf2f38e0f4b7cd87c8b9d" id="r_aabb3c38df5ddf2f38e0f4b7cd87c8b9d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">DataSetFormat</a> { <br />
+&#160;&#160;<a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266">UNKNOWN</a>
+, <a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9dad5c2ed68b83d130c2874bf17e98fc5c5">RANDOM</a>
+, <a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da828bd470b5ad4b38431ab30110e8a4b2">H5</a>
+, <a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da526ac903c95e3e2bbdea08f4163229e6">DIRECTORY</a>
+, <br />
+&#160;&#160;<a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a">LIST_FILE</a>
+<br />
+ }</td></tr>
+<tr class="separator:aabb3c38df5ddf2f38e0f4b7cd87c8b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acd686b919a912cd2b57da5d56f936a76" id="r_acd686b919a912cd2b57da5d56f936a76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#acd686b919a912cd2b57da5d56f936a76">RecordMinMax</a> (uint32_t num_threads, std::unique_ptr&lt; <a class="el" href="classrecord__minmax_1_1_min_max_computer.html">MinMaxComputer</a> &gt; &amp;&amp;minmax_computer)</td></tr>
@@ -105,23 +119,59 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa23dc8eb73f6e3e6fa47612ebd2cf4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3874392199ae33af85e5e4e911355954" id="r_a3874392199ae33af85e5e4e911355954"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a3874392199ae33af85e5e4e911355954">initialize</a> (const std::string &amp;input_model_path)</td></tr>
 <tr class="separator:a3874392199ae33af85e5e4e911355954"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a859040413901b40420fa2d36d196bea7" id="r_a859040413901b40420fa2d36d196bea7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a859040413901b40420fa2d36d196bea7">profileData</a> (const std::string &amp;input_data_path)</td></tr>
-<tr class="separator:a859040413901b40420fa2d36d196bea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba16ccd6248e7c0caef187fc0d73a083" id="r_aba16ccd6248e7c0caef187fc0d73a083"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#aba16ccd6248e7c0caef187fc0d73a083">setDataSetFormat</a> (<a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">DataSetFormat</a> format)</td></tr>
+<tr class="separator:aba16ccd6248e7c0caef187fc0d73a083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a803b429cd3909cf5272a1a79391b85cf" id="r_a803b429cd3909cf5272a1a79391b85cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">DataSetFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a803b429cd3909cf5272a1a79391b85cf">getDataSetFormat</a> () const</td></tr>
+<tr class="separator:a803b429cd3909cf5272a1a79391b85cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3afd8ea30c4248d0fd0212b8a84e5e5" id="r_ac3afd8ea30c4248d0fd0212b8a84e5e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#ac3afd8ea30c4248d0fd0212b8a84e5e5">setInputDataPath</a> (const std::string &amp;input_data_path)</td></tr>
+<tr class="separator:ac3afd8ea30c4248d0fd0212b8a84e5e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a290f3480f777b3d2616f352ce99b4363" id="r_a290f3480f777b3d2616f352ce99b4363"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a290f3480f777b3d2616f352ce99b4363">profileData</a> ()</td></tr>
+<tr class="separator:a290f3480f777b3d2616f352ce99b4363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27c284729e38d183e05db70c0bafa286" id="r_a27c284729e38d183e05db70c0bafa286"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a27c284729e38d183e05db70c0bafa286">profileDataInParallel</a> (const std::string &amp;input_data_path)</td></tr>
 <tr class="separator:a27c284729e38d183e05db70c0bafa286"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a289a6263aaeea67433dfb9dcda1fa834" id="r_a289a6263aaeea67433dfb9dcda1fa834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a289a6263aaeea67433dfb9dcda1fa834">profileRawData</a> (const std::string &amp;input_data_path)</td></tr>
-<tr class="separator:a289a6263aaeea67433dfb9dcda1fa834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac11d75b982c9a9621df298d637693537" id="r_ac11d75b982c9a9621df298d637693537"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#ac11d75b982c9a9621df298d637693537">profileRawDataDirectory</a> (const std::string &amp;input_data_path)</td></tr>
-<tr class="separator:ac11d75b982c9a9621df298d637693537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96495467eee372c35f348e6fd81f5745" id="r_a96495467eee372c35f348e6fd81f5745"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a96495467eee372c35f348e6fd81f5745">profileDataWithRandomInputs</a> (void)</td></tr>
-<tr class="separator:a96495467eee372c35f348e6fd81f5745"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f6016ba6a235ef88770e8cdef1a8ea2" id="r_a3f6016ba6a235ef88770e8cdef1a8ea2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#a3f6016ba6a235ef88770e8cdef1a8ea2">saveModel</a> (const std::string &amp;output_model_path)</td></tr>
 <tr class="separator:a3f6016ba6a235ef88770e8cdef1a8ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00036">36</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00037">37</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="aabb3c38df5ddf2f38e0f4b7cd87c8b9d" name="aabb3c38df5ddf2f38e0f4b7cd87c8b9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">&#9670;&#160;</a></span>DataSetFormat</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">record_minmax::RecordMinMax::DataSetFormat</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266" name="aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266"></a>UNKNOWN&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aabb3c38df5ddf2f38e0f4b7cd87c8b9dad5c2ed68b83d130c2874bf17e98fc5c5" name="aabb3c38df5ddf2f38e0f4b7cd87c8b9dad5c2ed68b83d130c2874bf17e98fc5c5"></a>RANDOM&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aabb3c38df5ddf2f38e0f4b7cd87c8b9da828bd470b5ad4b38431ab30110e8a4b2" name="aabb3c38df5ddf2f38e0f4b7cd87c8b9da828bd470b5ad4b38431ab30110e8a4b2"></a>H5&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aabb3c38df5ddf2f38e0f4b7cd87c8b9da526ac903c95e3e2bbdea08f4163229e6" name="aabb3c38df5ddf2f38e0f4b7cd87c8b9da526ac903c95e3e2bbdea08f4163229e6"></a>DIRECTORY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a" name="aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a"></a>LIST_FILE&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00040">40</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266">UNKNOWN</a>, <span class="comment">// To check if format is set properly</span></div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9dad5c2ed68b83d130c2874bf17e98fc5c5">RANDOM</a>,</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da828bd470b5ad4b38431ab30110e8a4b2">H5</a>,</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da526ac903c95e3e2bbdea08f4163229e6">DIRECTORY</a>,</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a">LIST_FILE</a>,</div>
+<div class="line"><span class="lineno">   47</span>  };</div>
+<div class="ttc" id="aclassrecord__minmax_1_1_record_min_max_html_aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266"><div class="ttname"><a href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266">record_minmax::RecordMinMax::UNKNOWN</a></div><div class="ttdeci">@ UNKNOWN</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00042">RecordMinMax.h:42</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_record_min_max_html_aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a"><div class="ttname"><a href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a">record_minmax::RecordMinMax::LIST_FILE</a></div><div class="ttdeci">@ LIST_FILE</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00046">RecordMinMax.h:46</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_record_min_max_html_aabb3c38df5ddf2f38e0f4b7cd87c8b9da526ac903c95e3e2bbdea08f4163229e6"><div class="ttname"><a href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da526ac903c95e3e2bbdea08f4163229e6">record_minmax::RecordMinMax::DIRECTORY</a></div><div class="ttdeci">@ DIRECTORY</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00045">RecordMinMax.h:45</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_record_min_max_html_aabb3c38df5ddf2f38e0f4b7cd87c8b9da828bd470b5ad4b38431ab30110e8a4b2"><div class="ttname"><a href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da828bd470b5ad4b38431ab30110e8a4b2">record_minmax::RecordMinMax::H5</a></div><div class="ttdeci">@ H5</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00044">RecordMinMax.h:44</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_record_min_max_html_aabb3c38df5ddf2f38e0f4b7cd87c8b9dad5c2ed68b83d130c2874bf17e98fc5c5"><div class="ttname"><a href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9dad5c2ed68b83d130c2874bf17e98fc5c5">record_minmax::RecordMinMax::RANDOM</a></div><div class="ttdeci">@ RANDOM</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00043">RecordMinMax.h:43</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acd686b919a912cd2b57da5d56f936a76" name="acd686b919a912cd2b57da5d56f936a76"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd686b919a912cd2b57da5d56f936a76">&#9670;&#160;</a></span>RecordMinMax()</h2>
 
@@ -156,12 +206,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00039">39</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>    : _threads_size(num_threads), _minmax_computer(std::move(minmax_computer))</div>
-<div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    assert(_threads_size &gt; 0);</div>
-<div class="line"><span class="lineno">   43</span>    assert(_minmax_computer != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   44</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00049">49</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>    : _threads_size(num_threads), _minmax_computer(std::move(minmax_computer))</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    assert(_threads_size &gt; 0);</div>
+<div class="line"><span class="lineno">   53</span>    assert(_minmax_computer != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -191,6 +241,36 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a803b429cd3909cf5272a1a79391b85cf" name="a803b429cd3909cf5272a1a79391b85cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a803b429cd3909cf5272a1a79391b85cf">&#9670;&#160;</a></span>getDataSetFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">DataSetFormat</a> record_minmax::RecordMinMax::getDataSetFormat </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00066">66</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{ <span class="keywordflow">return</span> _data_set_format; }</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_record_min_max_8cpp_source.html#l00190">profileData()</a>.</p>
+
+</div>
+</div>
 <a id="a3874392199ae33af85e5e4e911355954" name="a3874392199ae33af85e5e4e911355954"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3874392199ae33af85e5e4e911355954">&#9670;&#160;</a></span>initialize()</h2>
 
@@ -207,33 +287,33 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00182">182</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  assert(_threads_size &gt; 0);</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>  <a class="code hl_class" href="classluci_1_1_importer_ex.html">luci::ImporterEx</a> importer;</div>
-<div class="line"><span class="lineno">  187</span>  _module = importer.<a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(input_model_path);</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (_module == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  190</span>  {</div>
-<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load &#39;&quot;</span> + input_model_path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><span class="lineno">  192</span>  }</div>
-<div class="line"><span class="lineno">  193</span> </div>
-<div class="line"><span class="lineno">  194</span>  <span class="comment">// Create and initialize interpreters and observers</span></div>
-<div class="line"><span class="lineno">  195</span>  _interpreters.resize(_threads_size);</div>
-<div class="line"><span class="lineno">  196</span>  _observers.resize(_threads_size);</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">for</span> (uint32_t thread_idx = 0; thread_idx &lt; _threads_size; ++thread_idx)</div>
-<div class="line"><span class="lineno">  199</span>  {</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a> = std::make_unique&lt;luci_interpreter::Interpreter&gt;(_module.get());</div>
-<div class="line"><span class="lineno">  201</span>    <span class="keyword">auto</span> observer = std::make_unique&lt;MinMaxObserver&gt;();</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>-&gt;attachObserver(observer.get());</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>    _observers[thread_idx] = std::move(observer);</div>
-<div class="line"><span class="lineno">  206</span>    _interpreters[thread_idx] = std::move(interpreter);</div>
-<div class="line"><span class="lineno">  207</span>  }</div>
-<div class="line"><span class="lineno">  208</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00075">75</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
+<div class="line"><span class="lineno">   77</span>  assert(_threads_size &gt; 0);</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_class" href="classluci_1_1_importer_ex.html">luci::ImporterEx</a> importer;</div>
+<div class="line"><span class="lineno">   80</span>  _module = importer.<a class="code hl_function" href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">importVerifyModule</a>(input_model_path);</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">if</span> (_module == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   83</span>  {</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to load &#39;&quot;</span> + input_model_path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>  <span class="comment">// Create and initialize interpreters and observers</span></div>
+<div class="line"><span class="lineno">   88</span>  _interpreters.resize(_threads_size);</div>
+<div class="line"><span class="lineno">   89</span>  _observers.resize(_threads_size);</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">for</span> (uint32_t thread_idx = 0; thread_idx &lt; _threads_size; ++thread_idx)</div>
+<div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a> = std::make_unique&lt;luci_interpreter::Interpreter&gt;(_module.get());</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keyword">auto</span> observer = std::make_unique&lt;MinMaxObserver&gt;();</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>-&gt;attachObserver(observer.get());</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>    _observers[thread_idx] = std::move(observer);</div>
+<div class="line"><span class="lineno">   99</span>    _interpreters[thread_idx] = std::move(interpreter);</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
+<div class="line"><span class="lineno">  101</span>}</div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html"><div class="ttname"><a href="classluci_1_1_importer_ex.html">luci::ImporterEx</a></div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8h_source.html#l00034">ImporterEx.h:35</a></div></div>
 <div class="ttc" id="aclassluci_1_1_importer_ex_html_adc96edd9e31ad56e6844829427b4403e"><div class="ttname"><a href="classluci_1_1_importer_ex.html#adc96edd9e31ad56e6844829427b4403e">luci::ImporterEx::importVerifyModule</a></div><div class="ttdeci">std::unique_ptr&lt; Module &gt; importVerifyModule(const std::string &amp;input_path) const</div><div class="ttdef"><b>Definition</b> <a href="_importer_ex_8cpp_source.html#l00036">ImporterEx.cpp:36</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a0a84c6ac9b6bfc7cd2d996c82f0a7462"><div class="ttname"><a href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">part_eval_one.interpreter</a></div><div class="ttdeci">interpreter</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00053">part_eval_one.py:53</a></div></div>
@@ -244,8 +324,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a859040413901b40420fa2d36d196bea7" name="a859040413901b40420fa2d36d196bea7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a859040413901b40420fa2d36d196bea7">&#9670;&#160;</a></span>profileData()</h2>
+<a id="a290f3480f777b3d2616f352ce99b4363" name="a290f3480f777b3d2616f352ce99b4363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a290f3480f777b3d2616f352ce99b4363">&#9670;&#160;</a></span>profileData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -253,91 +333,81 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void record_minmax::RecordMinMax::profileData </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>input_data_path</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00430">430</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  431</span>{</div>
-<div class="line"><span class="lineno">  432</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">  433</span>  {</div>
-<div class="line"><span class="lineno">  434</span>    <a class="code hl_class" href="classdio_1_1hdf5_1_1_h_d_f5_importer.html">dio::hdf5::HDF5Importer</a> importer(input_data_path);</div>
-<div class="line"><span class="lineno">  435</span>    importer.importGroup(<span class="stringliteral">&quot;value&quot;</span>);</div>
-<div class="line"><span class="lineno">  436</span> </div>
-<div class="line"><span class="lineno">  437</span>    <span class="keywordtype">bool</span> is_raw_data = importer.isRawData();</div>
-<div class="line"><span class="lineno">  438</span> </div>
-<div class="line"><span class="lineno">  439</span>    <span class="keyword">const</span> <span class="keyword">auto</span> num_records = importer.numData();</div>
-<div class="line"><span class="lineno">  440</span>    <span class="keywordflow">if</span> (num_records == 0)</div>
-<div class="line"><span class="lineno">  441</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;The input data file does not contain any record.&quot;</span>);</div>
-<div class="line"><span class="lineno">  442</span> </div>
-<div class="line"><span class="lineno">  443</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
-<div class="line"><span class="lineno">  444</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size();</div>
-<div class="line"><span class="lineno">  445</span> </div>
-<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">for</span> (int32_t record_idx = 0; record_idx &lt; num_records; record_idx++)</div>
-<div class="line"><span class="lineno">  447</span>    {</div>
-<div class="line"><span class="lineno">  448</span>      <span class="keywordflow">if</span> (num_inputs != <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(importer.numInputs(record_idx)))</div>
-<div class="line"><span class="lineno">  449</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong number of inputs.&quot;</span>);</div>
-<div class="line"><span class="lineno">  450</span> </div>
-<div class="line"><span class="lineno">  451</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;Recording &quot;</span> &lt;&lt; record_idx &lt;&lt; <span class="stringliteral">&quot;&#39;th data&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>      <span class="keywordflow">for</span> (uint32_t input_idx = 0; input_idx &lt; <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a>; input_idx++)</div>
-<div class="line"><span class="lineno">  454</span>      {</div>
-<div class="line"><span class="lineno">  455</span>        <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[input_idx]);</div>
-<div class="line"><span class="lineno">  456</span>        assert(<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;<a class="code hl_function" href="classluci_1_1_circle_input.html#af33538d35d43dfdb4324487daf61eada">index</a>() == input_idx);</div>
-<div class="line"><span class="lineno">  457</span>        checkInputDimension(input_node);</div>
-<div class="line"><span class="lineno">  458</span>        std::vector&lt;char&gt; <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>(getTensorSize(input_node));</div>
-<div class="line"><span class="lineno">  459</span> </div>
-<div class="line"><span class="lineno">  460</span>        <span class="keywordflow">if</span> (!is_raw_data)</div>
-<div class="line"><span class="lineno">  461</span>        {</div>
-<div class="line"><span class="lineno">  462</span>          <a class="code hl_enumeration" href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">DataType</a> <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>;</div>
-<div class="line"><span class="lineno">  463</span>          <a class="code hl_struct" href="struct_shape.html">Shape</a> shape;</div>
-<div class="line"><span class="lineno">  464</span>          importer.readTensor(record_idx, input_idx, &amp;dtype, &amp;shape, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(),</div>
-<div class="line"><span class="lineno">  465</span>                              <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size());</div>
-<div class="line"><span class="lineno">  466</span> </div>
-<div class="line"><span class="lineno">  467</span>          <span class="comment">// Check the type and the shape of the input data is valid</span></div>
-<div class="line"><span class="lineno">  468</span>          <a class="code hl_function" href="namespacecircle__eval__diff.html#a982830e4aaa7986a470c26c9d8017332">verifyTypeShape</a>(input_node, dtype, shape);</div>
-<div class="line"><span class="lineno">  469</span>        }</div>
-<div class="line"><span class="lineno">  470</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  471</span>        {</div>
-<div class="line"><span class="lineno">  472</span>          <span class="comment">// Skip type/shape check for raw data</span></div>
-<div class="line"><span class="lineno">  473</span>          importer.readTensor(record_idx, input_idx, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(), <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size());</div>
-<div class="line"><span class="lineno">  474</span>        }</div>
-<div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span>        <span class="comment">// TODO: Input data is copied twice (file -&gt; buffer (input_data) -&gt; interpreter inputs)</span></div>
-<div class="line"><span class="lineno">  477</span>        <span class="comment">//       We can redcue the copy by directly writing data from file to interpreter inputs</span></div>
-<div class="line"><span class="lineno">  478</span>        getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(), <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size());</div>
-<div class="line"><span class="lineno">  479</span>      }</div>
-<div class="line"><span class="lineno">  480</span> </div>
-<div class="line"><span class="lineno">  481</span>      getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">interpret</a>();</div>
-<div class="line"><span class="lineno">  482</span>    }</div>
-<div class="line"><span class="lineno">  483</span> </div>
-<div class="line"><span class="lineno">  484</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; num_records &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  485</span>  }</div>
-<div class="line"><span class="lineno">  486</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> H5::Exception &amp;e)</div>
-<div class="line"><span class="lineno">  487</span>  {</div>
-<div class="line"><span class="lineno">  488</span>    H5::Exception::printErrorStack();</div>
-<div class="line"><span class="lineno">  489</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;HDF5 error occurred.&quot;</span>);</div>
-<div class="line"><span class="lineno">  490</span>  }</div>
-<div class="line"><span class="lineno">  491</span> </div>
-<div class="line"><span class="lineno">  492</span>  _minmax_computer-&gt;update_qparam(getObserver()-&gt;minMaxData()-&gt;getMap());</div>
-<div class="line"><span class="lineno">  493</span>}</div>
-<div class="ttc" id="aclassdio_1_1hdf5_1_1_h_d_f5_importer_html"><div class="ttname"><a href="classdio_1_1hdf5_1_1_h_d_f5_importer.html">dio::hdf5::HDF5Importer</a></div><div class="ttdef"><b>Definition</b> <a href="_h_d_f5_importer_8h_source.html#l00041">HDF5Importer.h:42</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00190">190</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
+<div class="line"><span class="lineno">  192</span>  assert(<a class="code hl_function" href="classrecord__minmax_1_1_record_min_max.html#a803b429cd3909cf5272a1a79391b85cf">getDataSetFormat</a>() != <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266">DataSetFormat::UNKNOWN</a>); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><span class="lineno">  193</span> </div>
+<div class="line"><span class="lineno">  194</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
+<div class="line"><span class="lineno">  195</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_node : <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>)</div>
+<div class="line"><span class="lineno">  196</span>  {</div>
+<div class="line"><span class="lineno">  197</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *input_cnode = loco::must_cast&lt;const luci::CircleInput *&gt;(input_node);</div>
+<div class="line"><span class="lineno">  198</span>    <a class="code hl_function" href="namespacerecord__minmax.html#a2a90e0bc1d222a6dd1f76ce05be4a4f8">checkInputDimension</a>(input_cnode);</div>
+<div class="line"><span class="lineno">  199</span>  }</div>
+<div class="line"><span class="lineno">  200</span> </div>
+<div class="line"><span class="lineno">  201</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size();</div>
+<div class="line"><span class="lineno">  202</span> </div>
+<div class="line"><span class="lineno">  203</span>  <span class="keyword">auto</span> iter = createIterator();</div>
+<div class="line"><span class="lineno">  204</span> </div>
+<div class="line"><span class="lineno">  205</span>  <span class="keywordtype">bool</span> check_type_shape = iter-&gt;check_type_shape();</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>  <span class="keywordflow">if</span> (not iter-&gt;hasNext())</div>
+<div class="line"><span class="lineno">  208</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;The input data file does not contain any record.&quot;</span>);</div>
+<div class="line"><span class="lineno">  209</span> </div>
+<div class="line"><span class="lineno">  210</span>  uint32_t record_idx = 0;</div>
+<div class="line"><span class="lineno">  211</span>  <span class="keywordflow">while</span> (iter-&gt;hasNext())</div>
+<div class="line"><span class="lineno">  212</span>  {</div>
+<div class="line"><span class="lineno">  213</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;record = iter-&gt;next();</div>
+<div class="line"><span class="lineno">  214</span> </div>
+<div class="line"><span class="lineno">  215</span>    <span class="keywordflow">if</span> (num_inputs != record.size())</div>
+<div class="line"><span class="lineno">  216</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong number of inputs.&quot;</span>);</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Recording &quot;</span> &lt;&lt; record_idx &lt;&lt; <span class="stringliteral">&quot;&#39;th data&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  219</span> </div>
+<div class="line"><span class="lineno">  220</span>    <span class="comment">// Write input data to interpreter</span></div>
+<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">for</span> (uint32_t input_idx = 0; input_idx &lt; <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a>; input_idx++)</div>
+<div class="line"><span class="lineno">  222</span>    {</div>
+<div class="line"><span class="lineno">  223</span>      <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[input_idx]);</div>
+<div class="line"><span class="lineno">  224</span>      assert(<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;<a class="code hl_function" href="classluci_1_1_circle_input.html#af33538d35d43dfdb4324487daf61eada">index</a>() == input_idx);</div>
+<div class="line"><span class="lineno">  225</span> </div>
+<div class="line"><span class="lineno">  226</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> = record.at(input_idx);</div>
+<div class="line"><span class="lineno">  227</span> </div>
+<div class="line"><span class="lineno">  228</span>      <span class="keywordflow">if</span> (check_type_shape)</div>
+<div class="line"><span class="lineno">  229</span>      {</div>
+<div class="line"><span class="lineno">  230</span>        <span class="comment">// Check the type and the shape of the input data is valid</span></div>
+<div class="line"><span class="lineno">  231</span>        <a class="code hl_function" href="namespacecircle__eval__diff.html#a982830e4aaa7986a470c26c9d8017332">verifyTypeShape</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.dtype, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.shape);</div>
+<div class="line"><span class="lineno">  232</span>      }</div>
+<div class="line"><span class="lineno">  233</span> </div>
+<div class="line"><span class="lineno">  234</span>      getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data.data(),</div>
+<div class="line"><span class="lineno">  235</span>                                         <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data.size());</div>
+<div class="line"><span class="lineno">  236</span>    }</div>
+<div class="line"><span class="lineno">  237</span> </div>
+<div class="line"><span class="lineno">  238</span>    getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">interpret</a>();</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>    record_idx++;</div>
+<div class="line"><span class="lineno">  241</span>  }</div>
+<div class="line"><span class="lineno">  242</span> </div>
+<div class="line"><span class="lineno">  243</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; record_idx &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  244</span> </div>
+<div class="line"><span class="lineno">  245</span>  _minmax_computer-&gt;update_qparam(getObserver()-&gt;minMaxData()-&gt;getMap());</div>
+<div class="line"><span class="lineno">  246</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_input_html_af33538d35d43dfdb4324487daf61eada"><div class="ttname"><a href="classluci_1_1_circle_input.html#af33538d35d43dfdb4324487daf61eada">luci::CircleInput::index</a></div><div class="ttdeci">void index(const loco::GraphInputIndex &amp;index)</div><div class="ttdef"><b>Definition</b> <a href="_circle_input_8cpp_source.html#l00025">CircleInput.cpp:25</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_interpreter_html_a038a2e04c9e813a16c23151f3d9eca1d"><div class="ttname"><a href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">luci_interpreter::Interpreter::interpret</a></div><div class="ttdeci">void interpret()</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00142">Interpreter.cpp:142</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_interpreter_html_a8981c1dfbafffc991902102f281f535a"><div class="ttname"><a href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">luci_interpreter::Interpreter::writeInputTensor</a></div><div class="ttdeci">void writeInputTensor(const luci::CircleInput *input_node, const void *data, size_t data_size)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">Interpreter.cpp:102</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_record_min_max_html_a803b429cd3909cf5272a1a79391b85cf"><div class="ttname"><a href="classrecord__minmax_1_1_record_min_max.html#a803b429cd3909cf5272a1a79391b85cf">record_minmax::RecordMinMax::getDataSetFormat</a></div><div class="ttdeci">DataSetFormat getDataSetFormat() const</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00066">RecordMinMax.h:66</a></div></div>
 <div class="ttc" id="anamespacecircle__eval__diff_html_a982830e4aaa7986a470c26c9d8017332"><div class="ttname"><a href="namespacecircle__eval__diff.html#a982830e4aaa7986a470c26c9d8017332">circle_eval_diff::verifyTypeShape</a></div><div class="ttdeci">void verifyTypeShape(const luci::CircleInput *input_node, const DataType &amp;dtype, const Shape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="_input_data_loader_8cpp_source.html#l00036">InputDataLoader.cpp:36</a></div></div>
-<div class="ttc" id="anamespacecompare__tensors__all_html_aadd46f23b07171c5172769fa43fdae50"><div class="ttname"><a href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">compare_tensors_all.dtype</a></div><div class="ttdeci">dtype</div><div class="ttdef"><b>Definition</b> <a href="compare__tensors__all_8py_source.html#l00162">compare_tensors_all.py:162</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a8cce79e9630e01c2bc5d128df05b5372"><div class="ttname"><a href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; input_nodes(const Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">Graph.cpp:71</a></div></div>
-<div class="ttc" id="anamespaceloco_html_ad30d86ce5bd365deae8ef4398fb16d3c"><div class="ttname"><a href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_data_type_8h_source.html#l00026">DataType.h:27</a></div></div>
 <div class="ttc" id="anamespaceluci_html_acdc0d1304581e414efebea14d789750e"><div class="ttname"><a href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">luci::input_node</a></div><div class="ttdeci">CircleInput * input_node(loco::Graph *g, const loco::GraphInputIndex &amp;index)</div><div class="ttdoc">Find a Pull node with a given input index.</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00045">CircleNodes.cpp:45</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
 <div class="ttc" id="anamespacepart__eval__one_html_a96c48226d20da59d2df2f69a93c770cb"><div class="ttname"><a href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">part_eval_one.num_inputs</a></div><div class="ttdeci">num_inputs</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00069">part_eval_one.py:69</a></div></div>
-<div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
+<div class="ttc" id="anamespacerecord__minmax_html_a2a90e0bc1d222a6dd1f76ce05be4a4f8"><div class="ttname"><a href="namespacerecord__minmax.html#a2a90e0bc1d222a6dd1f76ce05be4a4f8">record_minmax::checkInputDimension</a></div><div class="ttdeci">void checkInputDimension(const luci::CircleInput *input)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00029">Utils.cpp:29</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_h_d_f5_importer_8h_source.html#l00051">dio::hdf5::HDF5Importer::importGroup()</a>, <a class="el" href="_circle_input_8cpp_source.html#l00025">luci::CircleInput::index()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00142">luci_interpreter::Interpreter::interpret()</a>, <a class="el" href="_h_d_f5_importer_8h_source.html#l00069">dio::hdf5::HDF5Importer::isRawData()</a>, <a class="el" href="_h_d_f5_importer_8h_source.html#l00071">dio::hdf5::HDF5Importer::numData()</a>, <a class="el" href="_h_d_f5_importer_8cpp_source.html#l00125">dio::hdf5::HDF5Importer::numInputs()</a>, <a class="el" href="classdio_1_1hdf5_1_1_h_d_f5_importer.html#a51f77bd41dbac8ee4eb280d6c71c00f5">dio::hdf5::HDF5Importer::readTensor()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00029">record_minmax::checkInputDimension()</a>, <a class="el" href="_record_min_max_8h_source.html#l00066">getDataSetFormat()</a>, <a class="el" href="_circle_input_8cpp_source.html#l00025">luci::CircleInput::index()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00142">luci_interpreter::Interpreter::interpret()</a>, <a class="el" href="_record_min_max_8h_source.html#l00042">UNKNOWN</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
 
@@ -359,394 +429,98 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00495">495</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  496</span>{</div>
-<div class="line"><span class="lineno">  497</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  498</span> </div>
-<div class="line"><span class="lineno">  499</span>  assert(_interpreters.size() == _threads_size);</div>
-<div class="line"><span class="lineno">  500</span>  assert(_observers.size() == _threads_size);</div>
-<div class="line"><span class="lineno">  501</span> </div>
-<div class="line"><span class="lineno">  502</span>  <span class="keyword">const</span> <span class="keywordtype">long</span> h5_file_size = getH5FileSize(input_data_path);</div>
-<div class="line"><span class="lineno">  503</span> </div>
-<div class="line"><span class="lineno">  504</span>  <span class="keywordflow">if</span> (h5_file_size &gt; h5_max_size_bytes)</div>
-<div class="line"><span class="lineno">  505</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;H5 file size is too large for parallel recording&quot;</span>);</div>
-<div class="line"><span class="lineno">  506</span> </div>
-<div class="line"><span class="lineno">  507</span>  <a class="code hl_typedef" href="namespacerecord__minmax.html#aa3e8d73eea6edc6f570d5102da1d2fa0">WholeOutput</a> whole_output;</div>
-<div class="line"><span class="lineno">  508</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">  509</span>  {</div>
-<div class="line"><span class="lineno">  510</span>    whole_output = importH5Data(input_data_path);</div>
-<div class="line"><span class="lineno">  511</span>  }</div>
-<div class="line"><span class="lineno">  512</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::bad_alloc &amp;e)</div>
-<div class="line"><span class="lineno">  513</span>  {</div>
-<div class="line"><span class="lineno">  514</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Out of memory during h5 data load.&quot;</span>);</div>
-<div class="line"><span class="lineno">  515</span>  }</div>
-<div class="line"><span class="lineno">  516</span> </div>
-<div class="line"><span class="lineno">  517</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_records = whole_output.size();</div>
-<div class="line"><span class="lineno">  518</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
-<div class="line"><span class="lineno">  519</span> </div>
-<div class="line"><span class="lineno">  520</span>  <span class="comment">// Start parallel part</span></div>
-<div class="line"><span class="lineno">  521</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; _threads_size &lt;&lt; <span class="stringliteral">&quot; concurrent threads are supported.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  522</span> </div>
-<div class="line"><span class="lineno">  523</span>  <span class="keyword">const</span> <span class="keyword">auto</span> run_threads = num_records &lt; _threads_size ? num_records : _threads_size;</div>
-<div class="line"><span class="lineno">  524</span> </div>
-<div class="line"><span class="lineno">  525</span>  <span class="keyword">const</span> <span class="keyword">auto</span> records_batch = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(num_records / run_threads);</div>
-<div class="line"><span class="lineno">  526</span> </div>
-<div class="line"><span class="lineno">  527</span>  <span class="keyword">auto</span> interpret_batch = [&amp;whole_output, &amp;<a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>](<span class="keywordtype">int</span> first_record, <span class="keywordtype">int</span> last_record,</div>
-<div class="line"><span class="lineno">  528</span>                                                       <a class="code hl_class" href="classluci__interpreter_1_1_interpreter.html">luci_interpreter::Interpreter</a> *<a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>) {</div>
-<div class="line"><span class="lineno">  529</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> record_index = first_record; record_index &lt; last_record; ++record_index)</div>
-<div class="line"><span class="lineno">  530</span>    {</div>
-<div class="line"><span class="lineno">  531</span>      <span class="keywordflow">for</span> (uint32_t input_idx = 0; input_idx &lt; <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size(); input_idx++)</div>
-<div class="line"><span class="lineno">  532</span>      {</div>
-<div class="line"><span class="lineno">  533</span>        <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[input_idx]);</div>
-<div class="line"><span class="lineno">  534</span> </div>
-<div class="line"><span class="lineno">  535</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;cur_input_data = whole_output[record_index][input_idx];</div>
-<div class="line"><span class="lineno">  536</span>        <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>-&gt;writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());</div>
-<div class="line"><span class="lineno">  537</span>      }</div>
-<div class="line"><span class="lineno">  538</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>-&gt;interpret();</div>
-<div class="line"><span class="lineno">  539</span>    }</div>
-<div class="line"><span class="lineno">  540</span>  };</div>
-<div class="line"><span class="lineno">  541</span> </div>
-<div class="line"><span class="lineno">  542</span>  std::vector&lt;std::thread&gt; threads;</div>
-<div class="line"><span class="lineno">  543</span>  <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; run_threads; ++t)</div>
-<div class="line"><span class="lineno">  544</span>  {</div>
-<div class="line"><span class="lineno">  545</span>    <span class="keywordflow">if</span> (t &lt; run_threads - 1)</div>
-<div class="line"><span class="lineno">  546</span>    {</div>
-<div class="line"><span class="lineno">  547</span>      threads.emplace_back(interpret_batch, records_batch * t, records_batch * (t + 1),</div>
-<div class="line"><span class="lineno">  548</span>                           _interpreters[t].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>());</div>
-<div class="line"><span class="lineno">  549</span>    }</div>
-<div class="line"><span class="lineno">  550</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  551</span>    {</div>
-<div class="line"><span class="lineno">  552</span>      threads.emplace_back(interpret_batch, records_batch * t, num_records, _interpreters[t].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>());</div>
-<div class="line"><span class="lineno">  553</span>    }</div>
-<div class="line"><span class="lineno">  554</span>  }</div>
-<div class="line"><span class="lineno">  555</span> </div>
-<div class="line"><span class="lineno">  556</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; run_threads; ++i)</div>
-<div class="line"><span class="lineno">  557</span>    threads.at(i).join();</div>
-<div class="line"><span class="lineno">  558</span> </div>
-<div class="line"><span class="lineno">  559</span>  <span class="comment">// End parallel part</span></div>
-<div class="line"><span class="lineno">  560</span> </div>
-<div class="line"><span class="lineno">  561</span>  <span class="comment">// Copy all min, max values to one min/max map</span></div>
-<div class="line"><span class="lineno">  562</span>  MinMaxMap main_min_max_map;</div>
-<div class="line"><span class="lineno">  563</span> </div>
-<div class="line"><span class="lineno">  564</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;obs : _observers)</div>
-<div class="line"><span class="lineno">  565</span>  {</div>
-<div class="line"><span class="lineno">  566</span>    <span class="keyword">const</span> <span class="keyword">auto</span> cur_minmax_map = obs-&gt;minMaxData()-&gt;getMap();</div>
-<div class="line"><span class="lineno">  567</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;iter : *cur_minmax_map)</div>
-<div class="line"><span class="lineno">  568</span>    {</div>
-<div class="line"><span class="lineno">  569</span>      <span class="keyword">const</span> <span class="keyword">auto</span> node = iter.first;</div>
-<div class="line"><span class="lineno">  570</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;minmax = iter.second;</div>
-<div class="line"><span class="lineno">  571</span> </div>
-<div class="line"><span class="lineno">  572</span>      main_min_max_map.appendMinMaxVector(node, minmax);</div>
-<div class="line"><span class="lineno">  573</span>    }</div>
-<div class="line"><span class="lineno">  574</span>  }</div>
-<div class="line"><span class="lineno">  575</span> </div>
-<div class="line"><span class="lineno">  576</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; num_records &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  577</span> </div>
-<div class="line"><span class="lineno">  578</span>  _minmax_computer-&gt;update_qparam(main_min_max_map.getMap());</div>
-<div class="line"><span class="lineno">  579</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00248">248</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  249</span>{</div>
+<div class="line"><span class="lineno">  250</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  252</span>  assert(_interpreters.size() == _threads_size);</div>
+<div class="line"><span class="lineno">  253</span>  assert(_observers.size() == _threads_size);</div>
+<div class="line"><span class="lineno">  254</span> </div>
+<div class="line"><span class="lineno">  255</span>  <span class="keyword">const</span> <span class="keywordtype">long</span> h5_file_size = getH5FileSize(input_data_path);</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> (h5_file_size &gt; h5_max_size_bytes)</div>
+<div class="line"><span class="lineno">  258</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;H5 file size is too large for parallel recording&quot;</span>);</div>
+<div class="line"><span class="lineno">  259</span> </div>
+<div class="line"><span class="lineno">  260</span>  <a class="code hl_typedef" href="namespacerecord__minmax.html#aa3e8d73eea6edc6f570d5102da1d2fa0">WholeOutput</a> whole_output;</div>
+<div class="line"><span class="lineno">  261</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  262</span>  {</div>
+<div class="line"><span class="lineno">  263</span>    whole_output = importH5Data(input_data_path);</div>
+<div class="line"><span class="lineno">  264</span>  }</div>
+<div class="line"><span class="lineno">  265</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::bad_alloc &amp;e)</div>
+<div class="line"><span class="lineno">  266</span>  {</div>
+<div class="line"><span class="lineno">  267</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Out of memory during h5 data load.&quot;</span>);</div>
+<div class="line"><span class="lineno">  268</span>  }</div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num_records = whole_output.size();</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
+<div class="line"><span class="lineno">  272</span> </div>
+<div class="line"><span class="lineno">  273</span>  <span class="comment">// Start parallel part</span></div>
+<div class="line"><span class="lineno">  274</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; _threads_size &lt;&lt; <span class="stringliteral">&quot; concurrent threads are supported.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  275</span> </div>
+<div class="line"><span class="lineno">  276</span>  <span class="keyword">const</span> <span class="keyword">auto</span> run_threads = num_records &lt; _threads_size ? num_records : _threads_size;</div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>  <span class="keyword">const</span> <span class="keyword">auto</span> records_batch = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(num_records / run_threads);</div>
+<div class="line"><span class="lineno">  279</span> </div>
+<div class="line"><span class="lineno">  280</span>  <span class="keyword">auto</span> interpret_batch = [&amp;whole_output, &amp;<a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>](<span class="keywordtype">int</span> first_record, <span class="keywordtype">int</span> last_record,</div>
+<div class="line"><span class="lineno">  281</span>                                                       <a class="code hl_class" href="classluci__interpreter_1_1_interpreter.html">luci_interpreter::Interpreter</a> *<a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>) {</div>
+<div class="line"><span class="lineno">  282</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> record_index = first_record; record_index &lt; last_record; ++record_index)</div>
+<div class="line"><span class="lineno">  283</span>    {</div>
+<div class="line"><span class="lineno">  284</span>      <span class="keywordflow">for</span> (uint32_t input_idx = 0; input_idx &lt; <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size(); input_idx++)</div>
+<div class="line"><span class="lineno">  285</span>      {</div>
+<div class="line"><span class="lineno">  286</span>        <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[input_idx]);</div>
+<div class="line"><span class="lineno">  287</span> </div>
+<div class="line"><span class="lineno">  288</span>        <span class="keyword">const</span> <span class="keyword">auto</span> &amp;cur_input_data = whole_output[record_index][input_idx];</div>
+<div class="line"><span class="lineno">  289</span>        <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>-&gt;writeInputTensor(input_node, cur_input_data.data(), cur_input_data.size());</div>
+<div class="line"><span class="lineno">  290</span>      }</div>
+<div class="line"><span class="lineno">  291</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#a0a84c6ac9b6bfc7cd2d996c82f0a7462">interpreter</a>-&gt;interpret();</div>
+<div class="line"><span class="lineno">  292</span>    }</div>
+<div class="line"><span class="lineno">  293</span>  };</div>
+<div class="line"><span class="lineno">  294</span> </div>
+<div class="line"><span class="lineno">  295</span>  std::vector&lt;std::thread&gt; threads;</div>
+<div class="line"><span class="lineno">  296</span>  <span class="keywordflow">for</span> (uint32_t t = 0; t &lt; run_threads; ++t)</div>
+<div class="line"><span class="lineno">  297</span>  {</div>
+<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">if</span> (t &lt; run_threads - 1)</div>
+<div class="line"><span class="lineno">  299</span>    {</div>
+<div class="line"><span class="lineno">  300</span>      threads.emplace_back(interpret_batch, records_batch * t, records_batch * (t + 1),</div>
+<div class="line"><span class="lineno">  301</span>                           _interpreters[t].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>());</div>
+<div class="line"><span class="lineno">  302</span>    }</div>
+<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  304</span>    {</div>
+<div class="line"><span class="lineno">  305</span>      threads.emplace_back(interpret_batch, records_batch * t, num_records, _interpreters[t].<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>());</div>
+<div class="line"><span class="lineno">  306</span>    }</div>
+<div class="line"><span class="lineno">  307</span>  }</div>
+<div class="line"><span class="lineno">  308</span> </div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; run_threads; ++i)</div>
+<div class="line"><span class="lineno">  310</span>    threads.at(i).join();</div>
+<div class="line"><span class="lineno">  311</span> </div>
+<div class="line"><span class="lineno">  312</span>  <span class="comment">// End parallel part</span></div>
+<div class="line"><span class="lineno">  313</span> </div>
+<div class="line"><span class="lineno">  314</span>  <span class="comment">// Copy all min, max values to one min/max map</span></div>
+<div class="line"><span class="lineno">  315</span>  MinMaxMap main_min_max_map;</div>
+<div class="line"><span class="lineno">  316</span> </div>
+<div class="line"><span class="lineno">  317</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;obs : _observers)</div>
+<div class="line"><span class="lineno">  318</span>  {</div>
+<div class="line"><span class="lineno">  319</span>    <span class="keyword">const</span> <span class="keyword">auto</span> cur_minmax_map = obs-&gt;minMaxData()-&gt;getMap();</div>
+<div class="line"><span class="lineno">  320</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;iter : *cur_minmax_map)</div>
+<div class="line"><span class="lineno">  321</span>    {</div>
+<div class="line"><span class="lineno">  322</span>      <span class="keyword">const</span> <span class="keyword">auto</span> node = iter.first;</div>
+<div class="line"><span class="lineno">  323</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;minmax = iter.second;</div>
+<div class="line"><span class="lineno">  324</span> </div>
+<div class="line"><span class="lineno">  325</span>      main_min_max_map.appendMinMaxVector(node, minmax);</div>
+<div class="line"><span class="lineno">  326</span>    }</div>
+<div class="line"><span class="lineno">  327</span>  }</div>
+<div class="line"><span class="lineno">  328</span> </div>
+<div class="line"><span class="lineno">  329</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; num_records &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span>  _minmax_computer-&gt;update_qparam(main_min_max_map.getMap());</div>
+<div class="line"><span class="lineno">  332</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_interpreter_html"><div class="ttname"><a href="classluci__interpreter_1_1_interpreter.html">luci_interpreter::Interpreter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_interpreter_8h_source.html#l00050">Interpreter.h:51</a></div></div>
 <div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
-<div class="ttc" id="anamespacerecord__minmax_html_aa3e8d73eea6edc6f570d5102da1d2fa0"><div class="ttname"><a href="namespacerecord__minmax.html#aa3e8d73eea6edc6f570d5102da1d2fa0">record_minmax::WholeOutput</a></div><div class="ttdeci">std::vector&lt; Output &gt; WholeOutput</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00034">RecordMinMax.h:34</a></div></div>
+<div class="ttc" id="anamespacerecord__minmax_html_aa3e8d73eea6edc6f570d5102da1d2fa0"><div class="ttname"><a href="namespacerecord__minmax.html#aa3e8d73eea6edc6f570d5102da1d2fa0">record_minmax::WholeOutput</a></div><div class="ttdeci">std::vector&lt; Output &gt; WholeOutput</div><div class="ttdef"><b>Definition</b> <a href="_record_min_max_8h_source.html#l00035">RecordMinMax.h:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_min_max_observer_8h_source.html#l00042">record_minmax::MinMaxMap::appendMinMaxVector()</a>, <a class="el" href="_min_max_observer_8h_source.html#l00051">record_minmax::MinMaxMap::getMap()</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, and <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
-
-</div>
-</div>
-<a id="a96495467eee372c35f348e6fd81f5745" name="a96495467eee372c35f348e6fd81f5745"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96495467eee372c35f348e6fd81f5745">&#9670;&#160;</a></span>profileDataWithRandomInputs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void record_minmax::RecordMinMax::profileDataWithRandomInputs </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00581">581</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  582</span>{</div>
-<div class="line"><span class="lineno">  583</span>  <span class="comment">// We use three randomly-generated records</span></div>
-<div class="line"><span class="lineno">  584</span>  <span class="keyword">const</span> uint32_t num_records = 3;</div>
-<div class="line"><span class="lineno">  585</span> </div>
-<div class="line"><span class="lineno">  586</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
-<div class="line"><span class="lineno">  587</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size();</div>
-<div class="line"><span class="lineno">  588</span> </div>
-<div class="line"><span class="lineno">  589</span>  std::random_device rd;</div>
-<div class="line"><span class="lineno">  590</span>  std::mt19937 gen(rd());</div>
-<div class="line"><span class="lineno">  591</span>  std::uniform_real_distribution&lt;&gt; dist(-5, 5);</div>
-<div class="line"><span class="lineno">  592</span> </div>
-<div class="line"><span class="lineno">  593</span>  <span class="keywordflow">for</span> (uint32_t record_idx = 0; record_idx &lt; num_records; record_idx++)</div>
-<div class="line"><span class="lineno">  594</span>  {</div>
-<div class="line"><span class="lineno">  595</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Recording &quot;</span> &lt;&lt; record_idx &lt;&lt; <span class="stringliteral">&quot;&#39;th data&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  596</span> </div>
-<div class="line"><span class="lineno">  597</span>    <span class="keywordflow">for</span> (uint32_t input_idx = 0; input_idx &lt; <a class="code hl_variable" href="namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb">num_inputs</a>; input_idx++)</div>
-<div class="line"><span class="lineno">  598</span>    {</div>
-<div class="line"><span class="lineno">  599</span>      <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[input_idx]);</div>
-<div class="line"><span class="lineno">  600</span>      assert(<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;<a class="code hl_function" href="classluci_1_1_circle_input.html#af33538d35d43dfdb4324487daf61eada">index</a>() == input_idx);</div>
-<div class="line"><span class="lineno">  601</span>      checkInputDimension(input_node);</div>
-<div class="line"><span class="lineno">  602</span> </div>
-<div class="line"><span class="lineno">  603</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> = numElements(input_node);</div>
-<div class="line"><span class="lineno">  604</span> </div>
-<div class="line"><span class="lineno">  605</span>      <span class="comment">// TODO Support more input data types</span></div>
-<div class="line"><span class="lineno">  606</span>      assert(<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == loco::DataType::FLOAT32 ||</div>
-<div class="line"><span class="lineno">  607</span>             <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == loco::DataType::BOOL ||</div>
-<div class="line"><span class="lineno">  608</span>             <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == loco::DataType::S32 ||</div>
-<div class="line"><span class="lineno">  609</span>             <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == loco::DataType::S64);</div>
-<div class="line"><span class="lineno">  610</span> </div>
-<div class="line"><span class="lineno">  611</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == DataType::FLOAT32)</div>
-<div class="line"><span class="lineno">  612</span>      {</div>
-<div class="line"><span class="lineno">  613</span>        std::vector&lt;float&gt; <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>(num_elements);</div>
-<div class="line"><span class="lineno">  614</span> </div>
-<div class="line"><span class="lineno">  615</span>        <span class="comment">// Write random data</span></div>
-<div class="line"><span class="lineno">  616</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;iter : <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>)</div>
-<div class="line"><span class="lineno">  617</span>          iter = static_cast&lt;float&gt;(dist(gen));</div>
-<div class="line"><span class="lineno">  618</span> </div>
-<div class="line"><span class="lineno">  619</span>        <span class="comment">// TODO: Input data is copied twice (file -&gt; buffer (input_data) -&gt; interpreter inputs)</span></div>
-<div class="line"><span class="lineno">  620</span>        <span class="comment">//       We can redcue the copy by directly writing data from file to interpreter inputs</span></div>
-<div class="line"><span class="lineno">  621</span>        getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(),</div>
-<div class="line"><span class="lineno">  622</span>                                           <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size() * <span class="keyword">sizeof</span>(<span class="keywordtype">float</span>));</div>
-<div class="line"><span class="lineno">  623</span>      }</div>
-<div class="line"><span class="lineno">  624</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == DataType::BOOL)</div>
-<div class="line"><span class="lineno">  625</span>      {</div>
-<div class="line"><span class="lineno">  626</span>        <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> = genRandomBoolData(gen, num_elements);</div>
-<div class="line"><span class="lineno">  627</span>        getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(),</div>
-<div class="line"><span class="lineno">  628</span>                                           <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size() * <span class="keyword">sizeof</span>(uint8_t));</div>
-<div class="line"><span class="lineno">  629</span>      }</div>
-<div class="line"><span class="lineno">  630</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == DataType::S32)</div>
-<div class="line"><span class="lineno">  631</span>      {</div>
-<div class="line"><span class="lineno">  632</span>        <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> = genRandomIntData&lt;int32_t&gt;(gen, num_elements, 0, 100);</div>
-<div class="line"><span class="lineno">  633</span>        getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(),</div>
-<div class="line"><span class="lineno">  634</span>                                           <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size() * <span class="keyword">sizeof</span>(int32_t));</div>
-<div class="line"><span class="lineno">  635</span>      }</div>
-<div class="line"><span class="lineno">  636</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>-&gt;dtype() == DataType::S64)</div>
-<div class="line"><span class="lineno">  637</span>      {</div>
-<div class="line"><span class="lineno">  638</span>        <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> = genRandomIntData&lt;int64_t&gt;(gen, num_elements, 0, 100);</div>
-<div class="line"><span class="lineno">  639</span>        getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data(),</div>
-<div class="line"><span class="lineno">  640</span>                                           <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.size() * <span class="keyword">sizeof</span>(int64_t));</div>
-<div class="line"><span class="lineno">  641</span>      }</div>
-<div class="line"><span class="lineno">  642</span>    }</div>
-<div class="line"><span class="lineno">  643</span> </div>
-<div class="line"><span class="lineno">  644</span>    getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">interpret</a>();</div>
-<div class="line"><span class="lineno">  645</span>  }</div>
-<div class="line"><span class="lineno">  646</span> </div>
-<div class="line"><span class="lineno">  647</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; num_records &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  648</span> </div>
-<div class="line"><span class="lineno">  649</span>  _minmax_computer-&gt;update_qparam(getObserver()-&gt;minMaxData()-&gt;getMap());</div>
-<div class="line"><span class="lineno">  650</span>}</div>
-<div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_input_8cpp_source.html#l00025">luci::CircleInput::index()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00142">luci_interpreter::Interpreter::interpret()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
-
-</div>
-</div>
-<a id="a289a6263aaeea67433dfb9dcda1fa834" name="a289a6263aaeea67433dfb9dcda1fa834"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a289a6263aaeea67433dfb9dcda1fa834">&#9670;&#160;</a></span>profileRawData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void record_minmax::RecordMinMax::profileRawData </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>input_data_path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00283">283</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  284</span>{</div>
-<div class="line"><span class="lineno">  285</span>  std::ifstream input_file(input_data_path);</div>
-<div class="line"><span class="lineno">  286</span>  <span class="keywordflow">if</span> (input_file.fail())</div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file \&quot;&quot;</span> + input_data_path + <span class="stringliteral">&quot;\&quot;.\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>  std::string record;</div>
-<div class="line"><span class="lineno">  290</span>  uint32_t num_records = 0;</div>
-<div class="line"><span class="lineno">  291</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
-<div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>  <span class="comment">// Get total input size</span></div>
-<div class="line"><span class="lineno">  294</span>  uint32_t total_input_size = 0;</div>
-<div class="line"><span class="lineno">  295</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>)</div>
-<div class="line"><span class="lineno">  296</span>  {</div>
-<div class="line"><span class="lineno">  297</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input);</div>
-<div class="line"><span class="lineno">  298</span>    checkInputDimension(input_node);</div>
-<div class="line"><span class="lineno">  299</span>    total_input_size += getTensorSize(input_node);</div>
-<div class="line"><span class="lineno">  300</span>  }</div>
-<div class="line"><span class="lineno">  301</span> </div>
-<div class="line"><span class="lineno">  302</span>  <span class="keywordflow">while</span> (getline(input_file, record))</div>
-<div class="line"><span class="lineno">  303</span>  {</div>
-<div class="line"><span class="lineno">  304</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Recording &quot;</span> &lt;&lt; num_records &lt;&lt; <span class="stringliteral">&quot;&#39;th data&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>    <span class="keyword">auto</span> file_names = <a class="code hl_function" href="namespacennkit_1_1support_1_1tftestinfo.html#a8bbf3a9858df3571f03ed5e2ac342c2b">parse_line</a>(record);</div>
-<div class="line"><span class="lineno">  307</span> </div>
-<div class="line"><span class="lineno">  308</span>    <span class="comment">// Have multiple files in one line</span></div>
-<div class="line"><span class="lineno">  309</span>    <span class="keywordflow">if</span> (file_names.size() == <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size())</div>
-<div class="line"><span class="lineno">  310</span>    {</div>
-<div class="line"><span class="lineno">  311</span>      std::vector&lt;std::vector&lt;char&gt;&gt; <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>;</div>
-<div class="line"><span class="lineno">  312</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; file_names.size(); i++)</div>
-<div class="line"><span class="lineno">  313</span>      {</div>
-<div class="line"><span class="lineno">  314</span>        <span class="keyword">const</span> <span class="keyword">auto</span> file_name = file_names[i];</div>
-<div class="line"><span class="lineno">  315</span>        <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[i]);</div>
-<div class="line"><span class="lineno">  316</span>        <span class="keyword">const</span> <span class="keyword">auto</span> input_size = getTensorSize(input_node);</div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>        <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.emplace_back(input_size);</div>
-<div class="line"><span class="lineno">  319</span> </div>
-<div class="line"><span class="lineno">  320</span>        <span class="comment">// Read data from file</span></div>
-<div class="line"><span class="lineno">  321</span>        <a class="code hl_function" href="namespacetraining__configure__tool.html#a91dfb3166a08c54305deec799fe342bf">readDataFromFile</a>(file_name, input_data[i], input_size);</div>
-<div class="line"><span class="lineno">  322</span> </div>
-<div class="line"><span class="lineno">  323</span>        <span class="comment">// Write data from buffer to interpreter</span></div>
-<div class="line"><span class="lineno">  324</span>        getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, input_data[i].<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>(), input_size);</div>
-<div class="line"><span class="lineno">  325</span>      }</div>
-<div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>      getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">interpret</a>();</div>
-<div class="line"><span class="lineno">  328</span> </div>
-<div class="line"><span class="lineno">  329</span>      num_records++;</div>
-<div class="line"><span class="lineno">  330</span>    }</div>
-<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  332</span>    {</div>
-<div class="line"><span class="lineno">  333</span>      <span class="comment">// Must have a single file in one line (inputs are concatenated)</span></div>
-<div class="line"><span class="lineno">  334</span>      <span class="keywordflow">if</span> (file_names.size() != 1)</div>
-<div class="line"><span class="lineno">  335</span>        <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno">  336</span>          <span class="stringliteral">&quot;Wrong number of inputs are given. Model has &quot;</span> + std::to_string(<a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>.size()) +</div>
-<div class="line"><span class="lineno">  337</span>          <span class="stringliteral">&quot; inputs, but list file gives &quot;</span> + std::to_string(file_names.size()) + <span class="stringliteral">&quot; inputs.&quot;</span>);</div>
-<div class="line"><span class="lineno">  338</span> </div>
-<div class="line"><span class="lineno">  339</span>      <span class="comment">// clang-format off</span></div>
-<div class="line"><span class="lineno">  340</span>    <span class="comment">// Read data from file to buffer</span></div>
-<div class="line"><span class="lineno">  341</span>    <span class="comment">// Assumption: For a multi-input model, the binary file should have inputs concatenated in the</span></div>
-<div class="line"><span class="lineno">  342</span>    <span class="comment">// same order with the input index.</span></div>
-<div class="line"><span class="lineno">  343</span>    std::vector&lt;char&gt; <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>(total_input_size);</div>
-<div class="line"><span class="lineno">  344</span>    <a class="code hl_function" href="namespacetraining__configure__tool.html#a91dfb3166a08c54305deec799fe342bf">readDataFromFile</a>(record, input_data, total_input_size);</div>
-<div class="line"><span class="lineno">  345</span> </div>
-<div class="line"><span class="lineno">  346</span>    <span class="comment">// Write data from buffer to interpreter</span></div>
-<div class="line"><span class="lineno">  347</span>    uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
-<div class="line"><span class="lineno">  348</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>)</div>
-<div class="line"><span class="lineno">  349</span>    {</div>
-<div class="line"><span class="lineno">  350</span>      <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input);</div>
-<div class="line"><span class="lineno">  351</span>      <span class="keyword">const</span> <span class="keyword">auto</span> input_size = getTensorSize(input_node);</div>
-<div class="line"><span class="lineno">  352</span>      getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data() + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, input_size);</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>      <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> += input_size;</div>
-<div class="line"><span class="lineno">  355</span>    }</div>
-<div class="line"><span class="lineno">  356</span> </div>
-<div class="line"><span class="lineno">  357</span>    getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">interpret</a>();</div>
-<div class="line"><span class="lineno">  358</span> </div>
-<div class="line"><span class="lineno">  359</span>    num_records++;</div>
-<div class="line"><span class="lineno">  360</span>      <span class="comment">// clang-format on</span></div>
-<div class="line"><span class="lineno">  361</span>    }</div>
-<div class="line"><span class="lineno">  362</span>  }</div>
-<div class="line"><span class="lineno">  363</span> </div>
-<div class="line"><span class="lineno">  364</span>  <span class="keywordflow">if</span> (num_records == 0)</div>
-<div class="line"><span class="lineno">  365</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;The input data file does not contain any record.&quot;</span>);</div>
-<div class="line"><span class="lineno">  366</span> </div>
-<div class="line"><span class="lineno">  367</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; num_records &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span>  _minmax_computer-&gt;update_qparam(getObserver()-&gt;minMaxData()-&gt;getMap());</div>
-<div class="line"><span class="lineno">  370</span>}</div>
-<div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
-<div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
-<div class="ttc" id="anamespacennkit_1_1support_1_1tftestinfo_html_a8bbf3a9858df3571f03ed5e2ac342c2b"><div class="ttname"><a href="namespacennkit_1_1support_1_1tftestinfo.html#a8bbf3a9858df3571f03ed5e2ac342c2b">nnkit::support::tftestinfo::parse_line</a></div><div class="ttdeci">std::unique_ptr&lt; ParsedTensor &gt; parse_line(std::string &amp;line)</div><div class="ttdoc">Function to parse a line of test.info file Examples:</div><div class="ttdef"><b>Definition</b> <a href="_tensor_info_parser_8cpp_source.html#l00143">TensorInfoParser.cpp:143</a></div></div>
-<div class="ttc" id="anamespacetraining__configure__tool_html_a91dfb3166a08c54305deec799fe342bf"><div class="ttname"><a href="namespacetraining__configure__tool.html#a91dfb3166a08c54305deec799fe342bf">training_configure_tool::readDataFromFile</a></div><div class="ttdeci">void readDataFromFile(const std::string &amp;filename, char *data, size_t data_size, size_t start_position=0)</div><div class="ttdef"><b>Definition</b> <a href="_training_configure_file_handler_8cpp_source.html#l00075">TrainingConfigureFileHandler.cpp:75</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00142">luci_interpreter::Interpreter::interpret()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
-
-</div>
-</div>
-<a id="ac11d75b982c9a9621df298d637693537" name="ac11d75b982c9a9621df298d637693537"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac11d75b982c9a9621df298d637693537">&#9670;&#160;</a></span>profileRawDataDirectory()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void record_minmax::RecordMinMax::profileRawDataDirectory </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>input_data_path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00214">214</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  215</span>{</div>
-<div class="line"><span class="lineno">  216</span>  <span class="keyword">struct </span>dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  217</span>  <a class="code hl_enumvalue" href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">DIR</a> *dp = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  218</span> </div>
-<div class="line"><span class="lineno">  219</span>  dp = opendir(input_data_path.c_str());</div>
-<div class="line"><span class="lineno">  220</span>  <span class="keywordflow">if</span> (not dp)</div>
-<div class="line"><span class="lineno">  221</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open directory. Please check \&quot;&quot;</span> + input_data_path +</div>
-<div class="line"><span class="lineno">  222</span>                             <span class="stringliteral">&quot;\&quot; is a directory.\n&quot;</span>);</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>  uint32_t num_records = 0;</div>
-<div class="line"><span class="lineno">  225</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a> = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(_module-&gt;graph());</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>  <span class="comment">// Get total input size</span></div>
-<div class="line"><span class="lineno">  228</span>  uint32_t total_input_size = 0;</div>
-<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>)</div>
-<div class="line"><span class="lineno">  230</span>  {</div>
-<div class="line"><span class="lineno">  231</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input);</div>
-<div class="line"><span class="lineno">  232</span>    checkInputDimension(input_node);</div>
-<div class="line"><span class="lineno">  233</span>    total_input_size += getTensorSize(input_node);</div>
-<div class="line"><span class="lineno">  234</span>  }</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(dp)))</div>
-<div class="line"><span class="lineno">  237</span>  {</div>
-<div class="line"><span class="lineno">  238</span>    <span class="comment">// Skip if the entry is not a regular file</span></div>
-<div class="line"><span class="lineno">  239</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_type != DT_REG)</div>
-<div class="line"><span class="lineno">  240</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  241</span> </div>
-<div class="line"><span class="lineno">  242</span>    <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
-<div class="line"><span class="lineno">  243</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Recording &quot;</span> &lt;&lt; num_records &lt;&lt; <span class="stringliteral">&quot;&#39;th data&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  244</span> </div>
-<div class="line"><span class="lineno">  245</span>    <span class="comment">// Read data from file to buffer</span></div>
-<div class="line"><span class="lineno">  246</span>    <span class="comment">// Assumption: For a multi-input model, the binary file should have inputs concatenated in the</span></div>
-<div class="line"><span class="lineno">  247</span>    <span class="comment">// same order with the input index.</span></div>
-<div class="line"><span class="lineno">  248</span>    std::vector&lt;char&gt; <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>(total_input_size);</div>
-<div class="line"><span class="lineno">  249</span>    <a class="code hl_function" href="namespacetraining__configure__tool.html#a91dfb3166a08c54305deec799fe342bf">readDataFromFile</a>(input_data_path + <span class="stringliteral">&quot;/&quot;</span> + filename, input_data, total_input_size);</div>
-<div class="line"><span class="lineno">  250</span> </div>
-<div class="line"><span class="lineno">  251</span>    <span class="comment">// Write data from buffer to interpreter</span></div>
-<div class="line"><span class="lineno">  252</span>    uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
-<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>)</div>
-<div class="line"><span class="lineno">  254</span>    {</div>
-<div class="line"><span class="lineno">  255</span>      <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a> = loco::must_cast&lt;const luci::CircleInput *&gt;(input);</div>
-<div class="line"><span class="lineno">  256</span>      <span class="keyword">const</span> <span class="keyword">auto</span> input_size = getTensorSize(input_node);</div>
-<div class="line"><span class="lineno">  257</span>      getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a8981c1dfbafffc991902102f281f535a">writeInputTensor</a>(input_node, <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>.data() + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, input_size);</div>
-<div class="line"><span class="lineno">  258</span> </div>
-<div class="line"><span class="lineno">  259</span>      <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> += input_size;</div>
-<div class="line"><span class="lineno">  260</span>    }</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    getInterpreter()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_interpreter.html#a038a2e04c9e813a16c23151f3d9eca1d">interpret</a>();</div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>    num_records++;</div>
-<div class="line"><span class="lineno">  265</span>  }</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>  closedir(dp);</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">if</span> (num_records == 0)</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;The input data file does not contain any record.&quot;</span>);</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;Recording finished. Number of recorded data: &quot;</span> &lt;&lt; num_records &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span>  _minmax_computer-&gt;update_qparam(getObserver()-&gt;minMaxData()-&gt;getMap());</div>
-<div class="line"><span class="lineno">  275</span>}</div>
-<div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
-<div class="ttc" id="anamespacecircle__eval__diff_html_ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590"><div class="ttname"><a href="namespacecircle__eval__diff.html#ac17f7feb24f5042958832418d4508273ac1561b120842fabe1310417083827590">circle_eval_diff::InputFormat::DIR</a></div><div class="ttdeci">@ DIR</div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">entry()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00142">luci_interpreter::Interpreter::interpret()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2_interpreter_8cpp_source.html#l00102">luci_interpreter::Interpreter::writeInputTensor()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
 
@@ -768,24 +542,91 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00652">652</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  653</span>{</div>
-<div class="line"><span class="lineno">  654</span>  <span class="comment">// Export to output Circle file</span></div>
-<div class="line"><span class="lineno">  655</span>  <a class="code hl_class" href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a> exporter;</div>
-<div class="line"><span class="lineno">  656</span> </div>
-<div class="line"><span class="lineno">  657</span>  <a class="code hl_struct" href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a> contract(_module.get(), output_model_path);</div>
-<div class="line"><span class="lineno">  658</span> </div>
-<div class="line"><span class="lineno">  659</span>  <span class="keywordflow">if</span> (!exporter.<a class="code hl_function" href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">invoke</a>(&amp;contract))</div>
-<div class="line"><span class="lineno">  660</span>  {</div>
-<div class="line"><span class="lineno">  661</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to export &#39;&quot;</span> + output_model_path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
-<div class="line"><span class="lineno">  662</span>  }</div>
-<div class="line"><span class="lineno">  663</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8cpp_source.html#l00334">334</a> of file <a class="el" href="_record_min_max_8cpp_source.html">RecordMinMax.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  335</span>{</div>
+<div class="line"><span class="lineno">  336</span>  <span class="comment">// Export to output Circle file</span></div>
+<div class="line"><span class="lineno">  337</span>  <a class="code hl_class" href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a> exporter;</div>
+<div class="line"><span class="lineno">  338</span> </div>
+<div class="line"><span class="lineno">  339</span>  <a class="code hl_struct" href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a> contract(_module.get(), output_model_path);</div>
+<div class="line"><span class="lineno">  340</span> </div>
+<div class="line"><span class="lineno">  341</span>  <span class="keywordflow">if</span> (!exporter.<a class="code hl_function" href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">invoke</a>(&amp;contract))</div>
+<div class="line"><span class="lineno">  342</span>  {</div>
+<div class="line"><span class="lineno">  343</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Failed to export &#39;&quot;</span> + output_model_path + <span class="stringliteral">&quot;&#39;&quot;</span>);</div>
+<div class="line"><span class="lineno">  344</span>  }</div>
+<div class="line"><span class="lineno">  345</span>}</div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html"><div class="ttname"><a href="classluci_1_1_circle_exporter.html">luci::CircleExporter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci_2export_2include_2luci_2_circle_exporter_8h_source.html#l00029">CircleExporter.h:30</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_exporter_html_a6fcbba96153e5d1582664e6e7f6dcb54"><div class="ttname"><a href="classluci_1_1_circle_exporter.html#a6fcbba96153e5d1582664e6e7f6dcb54">luci::CircleExporter::invoke</a></div><div class="ttdeci">bool invoke(Contract *) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2export_2src_2_circle_exporter_8cpp_source.html#l00034">CircleExporter.cpp:34</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_file_exp_contract_html"><div class="ttname"><a href="structluci_1_1_circle_file_exp_contract.html">luci::CircleFileExpContract</a></div><div class="ttdef"><b>Definition</b> <a href="_circle_file_exp_contract_8h_source.html#l00032">CircleFileExpContract.h:33</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2export_2src_2_circle_exporter_8cpp_source.html#l00034">luci::CircleExporter::invoke()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
+
+</div>
+</div>
+<a id="aba16ccd6248e7c0caef187fc0d73a083" name="aba16ccd6248e7c0caef187fc0d73a083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba16ccd6248e7c0caef187fc0d73a083">&#9670;&#160;</a></span>setDataSetFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void record_minmax::RecordMinMax::setDataSetFormat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9d">DataSetFormat</a>&#160;</td>
+          <td class="paramname"><em>format</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00060">60</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   61</span>  {</div>
+<div class="line"><span class="lineno">   62</span>    assert(format != <a class="code hl_enumvalue" href="classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da3426c89f5fcd20e43ade5cb049cbd266">DataSetFormat::UNKNOWN</a>); <span class="comment">// FIX_CALLER UNLESS</span></div>
+<div class="line"><span class="lineno">   63</span>    _data_set_format = format;</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_record_min_max_8h_source.html#l00042">UNKNOWN</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
+
+</div>
+</div>
+<a id="ac3afd8ea30c4248d0fd0212b8a84e5e5" name="ac3afd8ea30c4248d0fd0212b8a84e5e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3afd8ea30c4248d0fd0212b8a84e5e5">&#9670;&#160;</a></span>setInputDataPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void record_minmax::RecordMinMax::setInputDataPath </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>input_data_path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_record_min_max_8h_source.html#l00068">68</a> of file <a class="el" href="_record_min_max_8h_source.html">RecordMinMax.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{ _input_data_path = input_data_path; }</div>
+</div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="compiler_2record-minmax_2driver_2_driver_8cpp_source.html#l00042">entry()</a>.</p>
 
 </div>

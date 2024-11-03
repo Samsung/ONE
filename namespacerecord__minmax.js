@@ -1,17 +1,27 @@
 var namespacerecord__minmax =
 [
+    [ "DataBuffer", "structrecord__minmax_1_1_data_buffer.html", "structrecord__minmax_1_1_data_buffer" ],
+    [ "DataSetIterator", "classrecord__minmax_1_1_data_set_iterator.html", "classrecord__minmax_1_1_data_set_iterator" ],
+    [ "DirectoryIterator", "classrecord__minmax_1_1_directory_iterator.html", "classrecord__minmax_1_1_directory_iterator" ],
+    [ "HDF5Iterator", "classrecord__minmax_1_1_h_d_f5_iterator.html", "classrecord__minmax_1_1_h_d_f5_iterator" ],
+    [ "ListFileIterator", "classrecord__minmax_1_1_list_file_iterator.html", "classrecord__minmax_1_1_list_file_iterator" ],
     [ "MinMaxComputer", "classrecord__minmax_1_1_min_max_computer.html", "classrecord__minmax_1_1_min_max_computer" ],
     [ "MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", "classrecord__minmax_1_1_min_max_map" ],
     [ "MinMaxObserver", "classrecord__minmax_1_1_min_max_observer.html", "classrecord__minmax_1_1_min_max_observer" ],
     [ "MinMaxVectors", "structrecord__minmax_1_1_min_max_vectors.html", "structrecord__minmax_1_1_min_max_vectors" ],
     [ "MovingAvgComputer", "classrecord__minmax_1_1_moving_avg_computer.html", "classrecord__minmax_1_1_moving_avg_computer" ],
     [ "PercentileComputer", "classrecord__minmax_1_1_percentile_computer.html", "classrecord__minmax_1_1_percentile_computer" ],
+    [ "RandomIterator", "classrecord__minmax_1_1_random_iterator.html", "classrecord__minmax_1_1_random_iterator" ],
     [ "RecordMinMax", "classrecord__minmax_1_1_record_min_max.html", "classrecord__minmax_1_1_record_min_max" ],
     [ "Buffer", "namespacerecord__minmax.html#a436fa9e67582bd0c9c1d18b500d3c1be", null ],
     [ "Output", "namespacerecord__minmax.html#a3d03f63a604eb9c053ce1c9578a7d30f", null ],
     [ "WholeOutput", "namespacerecord__minmax.html#aa3e8d73eea6edc6f570d5102da1d2fa0", null ],
+    [ "checkInputDimension", "namespacerecord__minmax.html#a2a90e0bc1d222a6dd1f76ce05be4a4f8", null ],
     [ "getMovingAverage", "namespacerecord__minmax.html#ac1ff27c7623aa9327c028614971932c6", null ],
     [ "getNthPercentile", "namespacerecord__minmax.html#ac07dfb7a634d5e87bcc30608530637f2", null ],
+    [ "getTensorSize", "namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168", null ],
     [ "make_moving_avg_computer", "namespacerecord__minmax.html#adaf28fc57dcc835c5d3955e9817ef0e9", null ],
-    [ "make_percentile_computer", "namespacerecord__minmax.html#a169a07dd0cb7d6294389f53a1586937f", null ]
+    [ "make_percentile_computer", "namespacerecord__minmax.html#a169a07dd0cb7d6294389f53a1586937f", null ],
+    [ "numElements", "namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067", null ],
+    [ "readDataFromFile", "namespacerecord__minmax.html#a841b3db57c40ab8574c6d014d36dcdfb", null ]
 ];

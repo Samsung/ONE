@@ -432,10 +432,11 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_tensor_variant_8h_source.html#l00051">51</a> of file <a class="el" href="_tensor_variant_8h_source.html">TensorVariant.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    assert(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &gt;= 0 &amp;&amp; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt; <a class="code hl_function" href="classmir_1_1_tensor_variant.html#a93a800170ede187a7afaf9e5e1c84736">getShape</a>().numElements());</div>
+<div class="line"><span class="lineno">   53</span>    assert(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &gt;= 0 &amp;&amp; <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt; <a class="code hl_function" href="classmir_1_1_tensor_variant.html#a93a800170ede187a7afaf9e5e1c84736">getShape</a>().<a class="code hl_function" href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">numElements</a>());</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> _data.get() + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * _element_size;</div>
 <div class="line"><span class="lineno">   55</span>  }</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
+<div class="ttc" id="anamespacerecord__minmax_html_a8aa54275b5094401159ea5d8665de067"><div class="ttname"><a href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">record_minmax::numElements</a></div><div class="ttdeci">uint32_t numElements(const luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00041">Utils.cpp:41</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_tensor_variant_8h_source.html#l00069">getShape()</a>, and <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
 

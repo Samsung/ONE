@@ -59,6 +59,8 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "Greater.h", "luci-interpreter_2src_2kernels_2_greater_8h.html", "luci-interpreter_2src_2kernels_2_greater_8h" ],
     [ "GreaterEqual.cpp", "compiler_2luci-interpreter_2src_2kernels_2_greater_equal_8cpp.html", null ],
     [ "GreaterEqual.h", "luci-interpreter_2src_2kernels_2_greater_equal_8h.html", "luci-interpreter_2src_2kernels_2_greater_equal_8h" ],
+    [ "GRU.cpp", "compiler_2luci-interpreter_2src_2kernels_2_g_r_u_8cpp.html", null ],
+    [ "GRU.h", "luci-interpreter_2src_2kernels_2_g_r_u_8h.html", "luci-interpreter_2src_2kernels_2_g_r_u_8h" ],
     [ "HardSwish.cpp", "luci-interpreter_2src_2kernels_2_hard_swish_8cpp.html", null ],
     [ "HardSwish.h", "luci-interpreter_2src_2kernels_2_hard_swish_8h.html", "luci-interpreter_2src_2kernels_2_hard_swish_8h" ],
     [ "If.cpp", "compiler_2luci-interpreter_2src_2kernels_2_if_8cpp.html", null ],

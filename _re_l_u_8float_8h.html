@@ -144,14 +144,15 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_re_l_u_8float_8cpp_source.html#l00022">22</a> of file <a class="el" href="_re_l_u_8float_8cpp_source.html">ReLU.float.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
-<div class="line"><span class="lineno">   25</span>  <span class="keywordtype">int</span> numElements = <a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a022f4a8a3c7f673a1589527a422d1437">getNumberOfElements</a>(inputShape);</div>
-<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; numElements; i++, inputData++, outputData++)</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordtype">int</span> <a class="code hl_function" href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">numElements</a> = <a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a022f4a8a3c7f673a1589527a422d1437">getNumberOfElements</a>(inputShape);</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_function" href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">numElements</a>; i++, inputData++, outputData++)</div>
 <div class="line"><span class="lineno">   27</span>  {</div>
 <div class="line"><span class="lineno">   28</span>    *outputData = std::max(0.f, *inputData);</div>
 <div class="line"><span class="lineno">   29</span>  }</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   31</span>}</div>
 <div class="ttc" id="acompiler_2ann-ref_2src_2_shape_8cpp_html_a022f4a8a3c7f673a1589527a422d1437"><div class="ttname"><a href="compiler_2ann-ref_2src_2_shape_8cpp.html#a022f4a8a3c7f673a1589527a422d1437">getNumberOfElements</a></div><div class="ttdeci">uint32_t getNumberOfElements(const Shape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8cpp_source.html#l00048">Shape.cpp:48</a></div></div>
+<div class="ttc" id="anamespacerecord__minmax_html_a8aa54275b5094401159ea5d8665de067"><div class="ttname"><a href="namespacerecord__minmax.html#a8aa54275b5094401159ea5d8665de067">record_minmax::numElements</a></div><div class="ttdeci">uint32_t numElements(const luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2record-minmax_2src_2_utils_8cpp_source.html#l00041">Utils.cpp:41</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2ann-ref_2src_2_shape_8cpp_source.html#l00048">getNumberOfElements()</a>.</p>
 

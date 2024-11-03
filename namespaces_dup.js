@@ -603,6 +603,7 @@ var namespaces_dup =
     ] ],
     [ "QErrorComputer", "namespace_q_error_computer.html", "namespace_q_error_computer" ],
     [ "RandomDataGenerator", "namespace_random_data_generator.html", "namespace_random_data_generator" ],
+    [ "record_hessian", "namespacerecord__hessian.html", "namespacerecord__hessian" ],
     [ "record_minmax", "namespacerecord__minmax.html", "namespacerecord__minmax" ],
     [ "res2bin", "namespaceres2bin.html", [
       [ "res2bin", "namespaceres2bin.html#a97aeaceb22726ae54f21e5b6080abad6", null ],
