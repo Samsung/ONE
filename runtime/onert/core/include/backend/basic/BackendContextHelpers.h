@@ -177,12 +177,12 @@ void planTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const i
 }
 
 template <typename T_TensorBuilder>
-ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder,
-                            const ir::Graph &graph,
-                            const util::Set<ir::OperandIndex> &external_operands,
-                            const std::shared_ptr<ITensorRegistry> &tensor_registry,
-                            const std::vector<onert::ir::OperationIndex> &op_order,
-                            const ir::OperandIndexMap<ir::OperandIndex> &/*shared_memory_operand_idx*/)
+ITensorRegistry *
+genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const ir::Graph &graph,
+           const util::Set<ir::OperandIndex> &external_operands,
+           const std::shared_ptr<ITensorRegistry> &tensor_registry,
+           const std::vector<onert::ir::OperationIndex> &op_order,
+           const ir::OperandIndexMap<ir::OperandIndex> & /*shared_memory_operand_idx*/)
 {
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands.contains(ind))
@@ -219,7 +219,7 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 inline void initConsts(const ir::Operands &operands,
                        const util::Set<ir::OperandIndex> &external_operands,
                        ITensorRegistry *tensor_registry,
-                       const ir::OperandIndexMap<ir::OperandIndex> &/*shared_memory_operands_map*/)
+                       const ir::OperandIndexMap<ir::OperandIndex> & /*shared_memory_operands_map*/)
 {
   operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
     if (external_operands.contains(ind) || !operand.isConstant())
