@@ -16,9 +16,6 @@
 
 #include "record-hessian/HessianObserver.h"
 
-#include <luci/IR/CircleOpcode.h>
-#include <luci/IR/CircleNodes.h>
-
 using DataType = luci_interpreter::DataType;
 
 namespace record_hessian
@@ -29,14 +26,15 @@ void HessianObserver::postTensorWrite(const luci::CircleNode *node,
 {
 
   auto node_outputs = loco::succs(node);
-  for (auto node : node_outputs)
+  for (auto node_output : node_outputs)
   {
-    auto _node = dynamic_cast<luci::CircleNode *>(node);
+    auto cur_node = dynamic_cast<luci::CircleNode *>(node_output);
+    assert(cur_node != nullptr);
     // TODO : ADD TCONV/DepthCONV cases
-    if (_node->opcode() == luci::CircleOpcode::FULLY_CONNECTED ||
-        _node->opcode() == luci::CircleOpcode::CONV_2D)
+    if (cur_node->opcode() == luci::CircleOpcode::FULLY_CONNECTED ||
+        cur_node->opcode() == luci::CircleOpcode::CONV_2D)
     {
-      _hessian_computer.recordHessian(_node, tensor);
+      _hessian_computer.recordHessian(cur_node, tensor);
     }
   }
 }
