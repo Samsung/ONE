@@ -162,3 +162,38 @@ TEST(ShapeRuleTest, reshape_by_input_node)
   ASSERT_FALSE(output_shape.dim(0).known());
   ASSERT_FALSE(output_shape.dim(1).known());
 }
+
+TEST(ShapeRuleTest, reshape_by_newShape)
+{
+  auto g = loco::make_graph();
+  auto node_reshape = g->nodes()->create<luci::CircleReshape>();
+  auto tensor_input = g->nodes()->create<luci::CircleInput>();
+  auto shape_dummy = g->nodes()->create<luci::CircleOutputDummy>();
+
+  tensor_input->dtype(loco::DataType::S32);
+  tensor_input->shape({2, 3, 4});
+  tensor_input->shape_status(luci::ShapeStatus::VALID);
+
+  shape_dummy->dtype(loco::DataType::S32);
+  shape_dummy->shape({});
+  shape_dummy->shape_status(luci::ShapeStatus::VALID);
+
+  node_reshape->tensor(tensor_input);
+  node_reshape->shape(shape_dummy);
+
+  // reshape to {2, 12}
+  node_reshape->newShape()->rank(2);
+  node_reshape->newShape()->dim(0) = 2;
+  node_reshape->newShape()->dim(1) = 12;
+
+  loco::TensorShape output_shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(node_reshape, output_shape));
+
+  ASSERT_EQ(2, output_shape.rank());
+  ASSERT_TRUE(output_shape.dim(0).known());
+  ASSERT_TRUE(output_shape.dim(1).known());
+  ASSERT_EQ(2, output_shape.dim(0).value());
+  ASSERT_EQ(12, output_shape.dim(1).value());
+}

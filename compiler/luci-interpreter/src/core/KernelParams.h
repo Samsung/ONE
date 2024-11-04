@@ -111,6 +111,13 @@ struct GeluParams
   bool approximate;
 };
 
+struct GRUParams
+{
+  Activation fused_act_function = Activation::NONE;
+  bool return_sequences = false;
+  bool time_major = false;
+};
+
 struct InstanceNormParams
 {
   float epsilon;

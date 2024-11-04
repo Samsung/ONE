@@ -125,7 +125,8 @@ bool calculate_smooth_quant_scale(luci::CircleNode *node, EqualizePattern *p)
         cur = i;
         for (uint32_t j = 0; j < norm_dim; j++)
         {
-          weight_max.at(i) = std::max(weight_max.at(i), weight->at<loco::DataType::FLOAT32>(cur));
+          weight_max.at(i) =
+            std::max(weight_max.at(i), std::abs(weight->at<loco::DataType::FLOAT32>(cur)));
           cur += weight_I;
         }
       }
@@ -166,7 +167,8 @@ bool calculate_smooth_quant_scale(luci::CircleNode *node, EqualizePattern *p)
         cur = i;
         for (uint32_t j = 0; j < weight_O; j++)
         {
-          weight_max.at(i) = std::max(weight_max.at(i), weight->at<loco::DataType::FLOAT32>(cur));
+          weight_max.at(i) =
+            std::max(weight_max.at(i), std::abs(weight->at<loco::DataType::FLOAT32>(cur)));
           cur += weight_I;
         }
       }
@@ -301,7 +303,7 @@ private:
     auto valid = ::calculate_smooth_quant_scale(node, _pattern);
     auto back_node = node;
     // Find front node.
-    const auto support_depth = 2;
+    const auto support_depth = 3;
     auto front_node = find_arg_with_name(node, _pattern->front, support_depth);
     if (not front_node)
     {

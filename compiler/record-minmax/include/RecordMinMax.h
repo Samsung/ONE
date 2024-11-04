@@ -20,6 +20,7 @@
 #include <luci/IR/Module.h>
 #include <luci_interpreter/Interpreter.h>
 
+#include "DataSetIterator.h"
 #include "MinMaxObserver.h"
 #include "MinMaxComputer.h"
 
@@ -36,6 +37,15 @@ using WholeOutput = std::vector<Output>;
 class RecordMinMax
 {
 public:
+  enum DataSetFormat
+  {
+    UNKNOWN, // To check if format is set properly
+    RANDOM,
+    H5,
+    DIRECTORY,
+    LIST_FILE,
+  };
+
   explicit RecordMinMax(uint32_t num_threads, std::unique_ptr<MinMaxComputer> &&minmax_computer)
     : _threads_size(num_threads), _minmax_computer(std::move(minmax_computer))
   {
@@ -47,16 +57,19 @@ public:
 
   void initialize(const std::string &input_model_path);
 
-  // TODO Refactor profile functions
-  void profileData(const std::string &input_data_path);
+  void setDataSetFormat(DataSetFormat format)
+  {
+    assert(format != DataSetFormat::UNKNOWN); // FIX_CALLER UNLESS
+    _data_set_format = format;
+  }
+
+  DataSetFormat getDataSetFormat() const { return _data_set_format; }
+
+  void setInputDataPath(const std::string &input_data_path) { _input_data_path = input_data_path; }
+
+  void profileData();
 
   void profileDataInParallel(const std::string &input_data_path);
-
-  void profileRawData(const std::string &input_data_path);
-
-  void profileRawDataDirectory(const std::string &input_data_path);
-
-  void profileDataWithRandomInputs(void);
 
   void saveModel(const std::string &output_model_path);
 
@@ -71,6 +84,8 @@ private:
     return _observers[0].get();
   }
 
+  std::unique_ptr<DataSetIterator> createIterator();
+
   WholeOutput importH5Data(const std::string &input_data_path);
 
   std::unique_ptr<luci::Module> _module;
@@ -81,6 +96,9 @@ private:
 
   uint32_t _threads_size = 0;
   std::unique_ptr<MinMaxComputer> _minmax_computer;
+
+  DataSetFormat _data_set_format = UNKNOWN;
+  std::string _input_data_path;
 };
 
 } // namespace record_minmax

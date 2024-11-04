@@ -187,12 +187,17 @@ public:
     POST_OPERATOR_HOOK_PROLOGUE(FullyConnected)
 
     auto fused_act = node->fusedActivationFunction();
-
+    py::dict bias;
+    // bias is optional
+    if (inputs.size() == 3)
+    {
+      bias = inputs[2];
+    }
     pySafeCall(hook,
                node->name(),       // name
                inputs[0],          // input
                inputs[1],          // weights
-               inputs[2],          // bias
+               bias,               // bias
                output,             // output
                toString(fused_act) // fused activation
     );
