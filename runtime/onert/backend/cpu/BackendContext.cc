@@ -31,7 +31,11 @@ namespace backend
 namespace cpu
 {
 
-ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
+ITensorRegistry *BackendContext::genTensors()
+{
+  return basic::genTensors(tensor_builder, *graph(), external_operands(), tensor_registry,
+                           data().op_order, tensor_builder->getSharedMemoryOperandIndexes());
+}
 
 FunctionMap BackendContext::genKernels()
 {
@@ -43,7 +47,8 @@ FunctionMap BackendContext::genKernels()
     ret.emplace(op_ind, std::move(fn_seq));
   }
 
-  basic::initConsts(*this);
+  basic::initConsts(graph()->operands(), external_operands(), tensor_registry.get(),
+                    tensor_builder->getSharedMemoryOperandIndexes());
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::Graph &>(*_data.graph)
