@@ -77,6 +77,11 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
     case loco::DataType::STRING:
       return circle::TensorType_STRING;
 
+    case loco::DataType::MXFP4:
+      return circle::TensorType_MXFP4;
+    case loco::DataType::MXINT8:
+      return circle::TensorType_MXINT8;
+
     default:
       INTERNAL_EXN_V("failed to convert unsupported loco::DataType", oops::to_uint32(type));
   }
