@@ -29,7 +29,10 @@ void HessianObserver::postTensorWrite(const luci::CircleNode *node,
   for (auto node_output : node_outputs)
   {
     auto cur_node = dynamic_cast<luci::CircleNode *>(node_output);
-    assert(cur_node != nullptr);
+    if (cur_node == nullptr)
+    {
+      throw std::runtime_error("Record Hessian: Node shouldn't be null.");
+    }
     // TODO : ADD TCONV/DepthCONV cases
     if (cur_node->opcode() == luci::CircleOpcode::FULLY_CONNECTED ||
         cur_node->opcode() == luci::CircleOpcode::CONV_2D)

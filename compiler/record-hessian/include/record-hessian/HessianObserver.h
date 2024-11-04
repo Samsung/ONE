@@ -19,6 +19,8 @@
 
 #include "record-hessian/HessianComputer.h"
 
+#include <memory>
+
 namespace record_hessian
 {
 
