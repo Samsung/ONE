@@ -16,8 +16,6 @@
 
 #include "record-hessian/HessianObserver.h"
 
-using DataType = luci_interpreter::DataType;
-
 namespace record_hessian
 {
 
@@ -31,7 +29,7 @@ void HessianObserver::postTensorWrite(const luci::CircleNode *node,
     auto cur_node = dynamic_cast<luci::CircleNode *>(node_output);
     if (cur_node == nullptr)
     {
-      throw std::runtime_error("Record Hessian: Node shouldn't be null.");
+      throw std::runtime_error("Record Hessian: node output shouldn't be null.");
     }
     // TODO : ADD TCONV/DepthCONV cases
     if (cur_node->opcode() == luci::CircleOpcode::FULLY_CONNECTED ||

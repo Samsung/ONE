@@ -19,6 +19,9 @@
 
 #include "record-hessian/HessianComputer.h"
 
+#include <luci/IR/CircleNode.h>
+#include <luci_interpreter/Interpreter.h>
+
 #include <memory>
 
 namespace record_hessian
