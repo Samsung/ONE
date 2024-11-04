@@ -22,6 +22,8 @@ namespace record_hessian
 void HessianObserver::postTensorWrite(const luci::CircleNode *node,
                                       const luci_interpreter::Tensor *tensor)
 {
+  assert(node != nullptr);
+  assert(tensor != nullptr);
 
   auto node_outputs = loco::succs(node);
   for (auto node_output : node_outputs)
