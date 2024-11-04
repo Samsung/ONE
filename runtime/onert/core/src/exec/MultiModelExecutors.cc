@@ -174,8 +174,8 @@ void MultiModelExecutors::createEdgeQuantLayers()
     const auto &from_io_index = std::get<ir::IOIndex>(from_iodesc);
 
     const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
-    const auto &from_info = from_executor->inputInfo(from_io_index.value());
-    const auto from_layout = from_executor->inputLayout(from_io_index.value());
+    const auto &from_info = from_executor->outputInfo(from_io_index.value());
+    const auto from_layout = from_executor->outputLayout(from_io_index.value());
     _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info, from_layout);
   }
 
