@@ -37,24 +37,24 @@ void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_
 
   if (input_c != kernel_ic)
     throw std::runtime_error("RecordHessian: Input channels do not match kernel channels.");
-  int out_height = (input_h - dilation_h * (kernel_h - 1) - 1) / stride_h + 1;
-  int out_width = (input_w - dilation_w * (kernel_w - 1) - 1) / stride_w + 1;
-  int patch_size = kernel_h * kernel_w * kernel_ic;
+  uint32_t out_height = (input_h - dilation_h * (kernel_h - 1) - 1) / stride_h + 1;
+  uint32_t out_width = (input_w - dilation_w * (kernel_w - 1) - 1) / stride_w + 1;
+  uint32_t patch_size = kernel_h * kernel_w * kernel_ic;
   std::vector<float> unfolded_buf(input_n * out_height * out_width * patch_size, 0.0f);
 
-  int index = 0;
-  int in_y, in_x;
-  for (int n = 0; n < input_n; ++n)
+  uint32_t index = 0;
+  uint32_t in_y, in_x;
+  for (uint32_t n = 0; n < input_n; ++n)
   {
-    for (int y = 0; y < out_height; ++y)
+    for (uint32_t y = 0; y < out_height; ++y)
     {
-      for (int x = 0; x < out_width; ++x)
+      for (uint32_t x = 0; x < out_width; ++x)
       {
-        for (int in_c = 0; in_c < input_c; ++in_c)
+        for (uint32_t in_c = 0; in_c < input_c; ++in_c)
         {
-          for (int ky = 0; ky < kernel_h; ++ky)
+          for (uint32_t ky = 0; ky < kernel_h; ++ky)
           {
-            for (int kx = 0; kx < kernel_w; ++kx)
+            for (uint32_t kx = 0; kx < kernel_w; ++kx)
             {
               in_y = y * stride_h + ky * dilation_h;
               in_x = x * stride_w + kx * dilation_w;
@@ -102,12 +102,12 @@ void HessianComputer::recordHessianForFullyConnected(const luci::CircleNode *nod
 
   std::vector<float> hessian(size_in_ch * size_in_ch, 0);
 
-  for (int i = 0; i < size_in_ch; ++i)
+  for (uint32_t i = 0; i < size_in_ch; ++i)
   {
-    for (int j = 0; j < size_in_ch; ++j)
+    for (uint32_t j = 0; j < size_in_ch; ++j)
     {
       float sum = 0;
-      for (int k = 0; k < length; ++k)
+      for (uint32_t k = 0; k < length; ++k)
       {
         sum += buf[i + k * size_in_ch] * buf[j + k * size_in_ch];
       }
@@ -130,7 +130,6 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
   assert(node_filter->dtype() == loco::DataType::FLOAT32);
   assert(node_filter->rank() == 4);
 
-  uint32_t size_filter = node_filter->size<loco::DataType::FLOAT32>();
   uint32_t size_in_ch =
     node_filter->size<loco::DataType::FLOAT32>() / circle_conv2d->dim(3).value();
 
@@ -161,12 +160,12 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
   uint32_t length = buf.size() / size_in_ch;
 
   std::vector<float> hessian(size_in_ch * size_in_ch, 0);
-  for (int i = 0; i < size_in_ch; ++i)
+  for (uint32_t i = 0; i < size_in_ch; ++i)
   {
-    for (int j = 0; j < size_in_ch; ++j)
+    for (uint32_t j = 0; j < size_in_ch; ++j)
     {
       float sum = 0;
-      for (int k = 0; k < length; ++k)
+      for (uint32_t k = 0; k < length; ++k)
       {
         sum += buf[i + k * size_in_ch] * buf[j + k * size_in_ch];
       }
