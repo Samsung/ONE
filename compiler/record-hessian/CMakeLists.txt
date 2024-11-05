@@ -13,6 +13,7 @@ target_link_libraries(record-hessian luci_export)
 target_link_libraries(record-hessian luci_interpreter)
 target_link_libraries(record-hessian luci_log)
 target_link_libraries(record-hessian dio_hdf5)
+target_link_libraries(record-hessian nncc_common)
 
 install(TARGETS record-hessian DESTINATION lib)
 install(DIRECTORY include/ DESTINATION include
