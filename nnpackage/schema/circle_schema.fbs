@@ -79,7 +79,6 @@ enum TensorType : byte {
   GGML_Q8_0 = -4,
   GGML_Q8_1 = -5,
 
-
   // MX dtypes
   MXFP4 = -6,
   MXINT8 = -7,
