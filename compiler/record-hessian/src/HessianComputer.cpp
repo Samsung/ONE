@@ -28,12 +28,11 @@ namespace record_hessian
  */
 void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
             uint32_t input_c, uint32_t stride_h, uint32_t stride_w, uint32_t dilation_h,
-            uint32_t dilation_w, uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
-            uint32_t kernel_ic)
+            uint32_t dilation_w, uint32_t kernel_h, uint32_t kernel_w, uint32_t kernel_ic)
 {
   assert(input_n > 0 && input_h > 0 && input_w > 0 && input_c > 0);
   assert(stride_h > 0 && stride_w > 0);
-  assert(kernel_oc > 0 && kernel_h > 0 && kernel_w > 0 && kernel_ic > 0);
+  assert(kernel_h > 0 && kernel_w > 0 && kernel_ic > 0);
 
   if (input_c != kernel_ic)
     throw std::runtime_error("RecordHessian: Input channels do not match kernel channels.");
@@ -143,7 +142,6 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
   uint32_t dilation_h = circle_conv2d->dilation()->h();
   uint32_t dilation_w = circle_conv2d->dilation()->w();
 
-  uint32_t kernel_oc = node_filter->dim(0).value();
   uint32_t kernel_h = node_filter->dim(1).value();
   uint32_t kernel_w = node_filter->dim(2).value();
   uint32_t kernel_ic = node_filter->dim(3).value();
@@ -155,7 +153,7 @@ void HessianComputer::recordHessianForConv2D(const luci::CircleNode *node)
   std::vector<float> buf(data, data + num_elements);
 
   unfold(buf, input_n, input_h, input_w, input_c, stride_h, stride_w, dilation_h, dilation_w,
-         kernel_oc, kernel_h, kernel_w, kernel_ic);
+         kernel_h, kernel_w, kernel_ic);
   assert(size_in_ch != 0);
   uint32_t length = buf.size() / size_in_ch;
 

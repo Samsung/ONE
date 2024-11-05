@@ -87,10 +87,10 @@ TEST(HessianComputerTest, unfoldValidInput)
   std::vector<float> buf = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0};
   uint32_t input_n = 1, input_h = 2, input_w = 2, input_c = 2;
   uint32_t stride_h = 1, stride_w = 1, dilation_h = 1, dilation_w = 1;
-  uint32_t kernel_oc = 1, kernel_h = 2, kernel_w = 2, kernel_ic = 2;
+  uint32_t kernel_h = 2, kernel_w = 2, kernel_ic = 2;
 
   unfold(buf, input_n, input_h, input_w, input_c, stride_h, stride_w, dilation_h, dilation_w,
-         kernel_oc, kernel_h, kernel_w, kernel_ic);
+         kernel_h, kernel_w, kernel_ic);
   std::vector<float> expected_output = {1.0, 3.0, 5.0, 7.0, 2.0, 4.0, 6.0, 8.0};
 
   EXPECT_EQ(buf, expected_output);
@@ -101,8 +101,8 @@ TEST(HessianComputerTest, unfoldInvalidInput_NEG)
   std::vector<float> buf = {1.0, 2.0, 3.0, 4.0};
   uint32_t input_n = 1, input_h = 2, input_w = 2, input_c = 1;
   uint32_t stride_h = 1, stride_w = 1, dilation_h = 1, dilation_w = 1;
-  uint32_t kernel_oc = 1, kernel_h = 2, kernel_w = 2, kernel_ic = 2;
+  uint32_t kernel_h = 2, kernel_w = 2, kernel_ic = 2;
 
   EXPECT_ANY_THROW(unfold(buf, input_n, input_h, input_w, input_c, stride_h, stride_w, dilation_h,
-                          dilation_w, kernel_oc, kernel_h, kernel_w, kernel_ic));
+                          dilation_w, kernel_h, kernel_w, kernel_ic));
 }
