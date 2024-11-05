@@ -81,8 +81,13 @@ def _dump_operators(onnx_model):
             opcodes_dict[node.op_type] = 1
 
     print("[Operators] ---------------------------")
+    total_nodes = 0
     for opcode_key in opcodes_dict:
         print("{:>5} {}".format(opcodes_dict[opcode_key], opcode_key))
+        total_nodes = total_nodes + opcodes_dict[opcode_key]
+
+    print("----- -----")
+    print("{:>5} {}".format(total_nodes, 'Total'))
 
     print("")
 
