@@ -519,9 +519,9 @@ private:
 
   void fake_quantize_cwq(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
-    if (_output_type != loco::DataType::U4 || _output_type != loco::DataType::U8)
+    if (_output_type != loco::DataType::U4 && _output_type != loco::DataType::U8)
     {
-      throw std::runtime_error("GPTQ quantization supports U4/U8");
+      throw std::runtime_error("GPTQ quantization supports uint4/uint8");
     }
     // Find min/max per channel
     std::vector<float> min;
@@ -657,8 +657,11 @@ bool QuantizeWeightsWithGPTQPass::run(loco::Graph *g)
   if (_ctx->input_model_dtype != loco::DataType::FLOAT32)
     throw std::runtime_error("Weights-only quantization supports float32 input only");
 
-  if (_ctx->output_model_dtype != loco::DataType::U8)
-    throw std::runtime_error("GPTQ quantization supports uint8 output only");
+  if (_ctx->output_model_dtype != loco::DataType::U8 &&
+      _ctx->output_model_dtype != loco::DataType::U4)
+  {
+    throw std::runtime_error("GPTQ quantization supports uint4/uint8");
+  }
 
   auto info_by_name = layer_info_map(g, _ctx->layers_info);
 
