@@ -59,8 +59,8 @@ inline void BatchMatMul(const BatchMatMulParams &params, const float *lhs_data,
                                         b1 * params.batch_dim2 + b2) *
                                          params.lhs_rows * params.rhs_cols;
 
-        Gemm(lhs_params, lhs_ptr, rhs_params, rhs_ptr, dst_params, out_ptr,
-             GemmParams<float, float>{});
+        optimized::Gemm(lhs_params, lhs_ptr, rhs_params, rhs_ptr, dst_params, out_ptr,
+                        GemmParams<float, float>{});
       }
     }
   }

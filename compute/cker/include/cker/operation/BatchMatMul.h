@@ -105,11 +105,11 @@ public:
            Shape::ExtendedShape(5, new_lhs_shape).Dims(3));
 
     const BatchMatMulParams params{new_rhs_shape, new_lhs_shape};
-    #if defined(CKER_X86_PLATFORM)
+#if defined(CKER_X86_PLATFORM)
     optimized::BatchMatMul(params, new_rhs_data, new_lhs_data, output_data);
-    #else
+#else
     reference::BatchMatMul(params, new_rhs_data, new_lhs_data, output_data);
-    #endif
+#endif
   }
 
 private:
