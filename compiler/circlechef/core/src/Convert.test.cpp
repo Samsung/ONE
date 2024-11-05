@@ -51,6 +51,8 @@ TEST(ConvertTest, as_circle_tensortype)
   ASSERT_EQ(circle::TensorType_UINT8, as_circle_tensortype(circlechef::UINT8));
   ASSERT_EQ(circle::TensorType_UINT4, as_circle_tensortype(circlechef::UINT4));
   ASSERT_EQ(circle::TensorType_BOOL, as_circle_tensortype(circlechef::BOOL));
+  ASSERT_EQ(circle::TensorType_MXFP4, as_circle_tensortype(circlechef::MXFP4));
+  ASSERT_EQ(circle::TensorType_MXINT8, as_circle_tensortype(circlechef::MXINT8));
 }
 
 TEST(ConvertTest, as_circle_tensortype_NEG)

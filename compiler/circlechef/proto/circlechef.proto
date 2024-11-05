@@ -14,6 +14,8 @@ package circlechef;
 
 // This enum value corresponds to TensorType in TensorFlow Lite schema
 enum TensorType {
+  MXINT8 = -7;
+  MXFP4 = -6;
   UINT4 = -1;
   FLOAT32 = 0;
   INT32 = 2;
