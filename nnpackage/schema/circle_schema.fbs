@@ -34,7 +34,7 @@
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
 // Version 0.8: GRU op is added. UINT4 is added.
 // Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
-//              ROPE op is added.
+//              ROPE op is added. MXFP4, MXINT8 types are added.
 
 namespace circle;
 
@@ -78,6 +78,10 @@ enum TensorType : byte {
   GGML_Q4_1 = -3,
   GGML_Q8_0 = -4,
   GGML_Q8_1 = -5,
+
+  // MX dtypes
+  MXFP4 = -6,
+  MXINT8 = -7,
 }
 
 // Custom quantization parameters for experimenting with new quantization
