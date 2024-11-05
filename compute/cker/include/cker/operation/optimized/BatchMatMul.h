@@ -19,7 +19,7 @@
 
 #include "cker/Shape.h"
 #include "cker/operation/Helper/BatchMatMulParams.h"
-#include "Gemm.h"
+#include "cker/operation/optimized/Gemm.h"
 
 namespace nnfw
 {
@@ -27,6 +27,8 @@ namespace cker
 {
 namespace optimized
 {
+#if defined(CKER_X86_PLATFORM)
+
 inline void BatchMatMul(const BatchMatMulParams &params, const float *lhs_data,
                         const float *rhs_data, float *output_data)
 {
@@ -65,6 +67,7 @@ inline void BatchMatMul(const BatchMatMulParams &params, const float *lhs_data,
     }
   }
 }
+#endif
 } // namespace optimized
 } // namespace cker
 } // namespace nnfw
