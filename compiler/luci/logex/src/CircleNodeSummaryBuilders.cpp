@@ -62,6 +62,11 @@ std::string to_str(loco::DataType type)
     case loco::DataType::BOOL:
       return "BOOL";
 
+    case loco::DataType::MXFP4:
+      return "MXFP4";
+    case loco::DataType::MXINT8:
+      return "MXINT8";
+
     default:
       return "Error";
   }
