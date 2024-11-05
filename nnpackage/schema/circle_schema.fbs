@@ -78,6 +78,11 @@ enum TensorType : byte {
   GGML_Q4_1 = -3,
   GGML_Q8_0 = -4,
   GGML_Q8_1 = -5,
+
+
+  // MX dtypes
+  MXFP4 = -6,
+  MXINT8 = -7,
 }
 
 // Custom quantization parameters for experimenting with new quantization
