@@ -35,6 +35,7 @@
 // Version 0.8: GRU op is added. UINT4 is added.
 // Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
 //              ROPE op is added.
+// Version 0.10: MXFP4, MXINT8 types are added.
 
 namespace circle;
 
