@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef __OP_CHEFS_H__
-#define __OP_CHEFS_H__
+#include "Dequantize.h"
 
-#include "Op/BatchMatMul.h"
-#include "Op/BCQFullyConnected.h"
-#include "Op/BCQGather.h"
-#include "Op/Dequantize.h"
-#include "Op/FullyConnected.h"
-#include "Op/GRU.h"
-#include "Op/InstanceNorm.h"
-#include "Op/RmsNorm.h"
-#include "Op/RoPE.h"
-#include "Op/Quantize.h"
+#include "Convert.h"
 
-#endif // __OP_CHEFS_H__
+flatbuffers::Offset<void> DequantizeChef::value(flatbuffers::FlatBufferBuilder &fbb) const
+{
+  return flatbuffers::Offset<void>();
+}
+
+std::unique_ptr<OpChef> DequantizeChefFactory::create(const circlechef::Operation *operation) const
+{
+  return std::unique_ptr<OpChef>{new DequantizeChef{operation}};
+}
