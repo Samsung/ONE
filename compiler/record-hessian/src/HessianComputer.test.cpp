@@ -33,11 +33,11 @@ TEST(HessianComputerTest, recordHessianValidInput)
 
   luci_interpreter::DataType data_type = luci_interpreter::DataType::FLOAT32;
   luci_interpreter::Shape shape({1, 4});
-  luci_interpreter::AffineQuantization quantization;
 
   std::string tensor_name = "input_tensor";
 
-  luci_interpreter::Tensor input_tensor(data_type, shape, quantization, tensor_name);
+  luci_interpreter::Tensor input_tensor(data_type, shape, luci_interpreter::AffineQuantization{},
+                                        tensor_name);
 
   size_t data_size = input_data.size() * sizeof(float);
   std::vector<uint8_t> buffer(data_size);
@@ -58,11 +58,11 @@ TEST(HessianComputerTest, recordHessian_wrong_op_NEG)
 
   luci_interpreter::DataType data_type = luci_interpreter::DataType::FLOAT32;
   luci_interpreter::Shape shape({1, 2, 2, 1});
-  luci_interpreter::AffineQuantization quantization;
 
   std::string tensor_name = "input_tensor";
 
-  luci_interpreter::Tensor input_tensor(data_type, shape, quantization, tensor_name);
+  luci_interpreter::Tensor input_tensor(data_type, shape, luci_interpreter::AffineQuantization{},
+                                        tensor_name);
 
   size_t data_size = input_data.size() * sizeof(float);
   std::vector<uint8_t> buffer(data_size);
