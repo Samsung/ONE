@@ -54,8 +54,7 @@ private:
 
 void unfold(std::vector<float> &buf, uint32_t input_n, uint32_t input_h, uint32_t input_w,
             uint32_t input_c, uint32_t stride_h, uint32_t stride_w, uint32_t dilation_h,
-            uint32_t dilation_w, uint32_t kernel_oc, uint32_t kernel_h, uint32_t kernel_w,
-            uint32_t kernel_ic);
+            uint32_t dilation_w, uint32_t kernel_h, uint32_t kernel_w, uint32_t kernel_ic);
 
 } // namespace record_hessian
 
