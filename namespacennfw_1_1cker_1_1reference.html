@@ -97,8 +97,8 @@ $(document).ready(function(){initNavTree('namespacennfw_1_1cker_1_1reference.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aca7021574af27880fcaa5f0bb62981e7" id="r_aca7021574af27880fcaa5f0bb62981e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1reference.html#aca7021574af27880fcaa5f0bb62981e7">BatchMatMul</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;lhs_shape, const float *lhs_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;rhs_shape, const float *rhs_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;, float *output_data)</td></tr>
-<tr class="separator:aca7021574af27880fcaa5f0bb62981e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1b4f37d1062446b42371291005652f1" id="r_ad1b4f37d1062446b42371291005652f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1reference.html#ad1b4f37d1062446b42371291005652f1">BatchMatMul</a> (const <a class="el" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html">BatchMatMulParams</a> &amp;params, const float *lhs_data, const float *rhs_data, float *output_data)</td></tr>
+<tr class="separator:ad1b4f37d1062446b42371291005652f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7dd56ac62e8a99481b4874aae08836b" id="r_ae7dd56ac62e8a99481b4874aae08836b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ae7dd56ac62e8a99481b4874aae08836b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker_1_1reference.html#ae7dd56ac62e8a99481b4874aae08836b">BinaryArithmeticOp</a> (const <a class="el" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html">BinaryArithmeticOpParam</a> &amp;params, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input1_shape, const T *input1_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input2_shape, const T *input2_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data, const std::function&lt; T(const T &amp;, const T &amp;)&gt; &amp;fn)</td></tr>
 <tr class="separator:ae7dd56ac62e8a99481b4874aae08836b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,8 +145,8 @@ Functions</h2></td></tr>
 <tr class="separator:a295888086391d908f57fa904c9d4544d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aca7021574af27880fcaa5f0bb62981e7" name="aca7021574af27880fcaa5f0bb62981e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca7021574af27880fcaa5f0bb62981e7">&#9670;&#160;</a></span>BatchMatMul()</h2>
+<a id="ad1b4f37d1062446b42371291005652f1" name="ad1b4f37d1062446b42371291005652f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b4f37d1062446b42371291005652f1">&#9670;&#160;</a></span>BatchMatMul()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,8 +157,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void nnfw::cker::reference::BatchMatMul </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>lhs_shape</em>, </td>
+          <td class="paramtype">const <a class="el" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html">BatchMatMulParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -169,20 +169,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const float *&#160;</td>
           <td class="paramname"><em>rhs_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -203,91 +191,56 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_batch_mat_mul_8h_source.html#l00031">31</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_batch_mat_mul_8h_source.html">BatchMatMul.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> extended_lhs_shape = Shape::ExtendedShape(5, lhs_shape);</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keyword">const</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> extended_rhs_shape = Shape::ExtendedShape(5, rhs_shape);</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="comment">// Determine which dimension is the broadcast dimension.</span></div>
-<div class="line"><span class="lineno">   38</span>  <span class="keyword">auto</span> broadcast_dim = [](<span class="keywordtype">int</span> lhs_dim, <span class="keywordtype">int</span> rhs_dim) {</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> (lhs_dim == rhs_dim)</div>
-<div class="line"><span class="lineno">   40</span>      <span class="keywordflow">return</span> lhs_dim;</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (lhs_dim == 1)</div>
-<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">return</span> rhs_dim;</div>
-<div class="line"><span class="lineno">   43</span>    assert(rhs_dim == 1);</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> lhs_dim;</div>
-<div class="line"><span class="lineno">   45</span>  };</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="comment">// Compute the &quot;extent&quot; for iterating on this dimension.</span></div>
-<div class="line"><span class="lineno">   48</span>  <span class="comment">// If we are broadcasting, then don&#39;t advance (i.e return 0).</span></div>
-<div class="line"><span class="lineno">   49</span>  <span class="keyword">auto</span> extent = [](<span class="keyword">const</span> <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;shape, <span class="keywordtype">int</span> x) {</div>
-<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(x) == 1)</div>
-<div class="line"><span class="lineno">   51</span>    {</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   53</span>    }</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordtype">int</span> prod = 1;</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = x + 1; i &lt; shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>(); ++i)</div>
-<div class="line"><span class="lineno">   56</span>    {</div>
-<div class="line"><span class="lineno">   57</span>      prod *= shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
-<div class="line"><span class="lineno">   58</span>    }</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> prod;</div>
-<div class="line"><span class="lineno">   60</span>  };</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batch_dim0 = broadcast_dim(extended_lhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0), extended_rhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(0));</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batch_dim1 = broadcast_dim(extended_lhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1), extended_rhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1));</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> batch_dim2 = broadcast_dim(extended_lhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2), extended_rhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2));</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> lhs_ext0 = extent(extended_lhs_shape, 0);</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> lhs_ext1 = extent(extended_lhs_shape, 1);</div>
-<div class="line"><span class="lineno">   68</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> lhs_ext2 = extent(extended_lhs_shape, 2);</div>
-<div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rhs_ext0 = extent(extended_rhs_shape, 0);</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rhs_ext1 = extent(extended_rhs_shape, 1);</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rhs_ext2 = extent(extended_rhs_shape, 2);</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// Set params for each matrix multiply.</span></div>
-<div class="line"><span class="lineno">   74</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> lhs_rows = extended_lhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3);</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rhs_cols = extended_rhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(4);</div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> accum_depth = extended_lhs_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(4);</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b0 = 0; b0 &lt; batch_dim0; ++b0)</div>
-<div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *lhs_ptr0 = lhs_data + (b0 * lhs_ext0);</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *rhs_ptr0 = rhs_data + (b0 * rhs_ext0);</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b1 = 0; b1 &lt; batch_dim1; ++b1)</div>
-<div class="line"><span class="lineno">   83</span>    {</div>
-<div class="line"><span class="lineno">   84</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *lhs_ptr1 = lhs_ptr0 + b1 * lhs_ext1;</div>
-<div class="line"><span class="lineno">   85</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *rhs_ptr1 = rhs_ptr0 + b1 * rhs_ext1;</div>
-<div class="line"><span class="lineno">   86</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b2 = 0; b2 &lt; batch_dim2; ++b2)</div>
-<div class="line"><span class="lineno">   87</span>      {</div>
-<div class="line"><span class="lineno">   88</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> *lhs_ptr2 = lhs_ptr1 + b2 * lhs_ext2;</div>
-<div class="line"><span class="lineno">   89</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> *rhs_ptr2 = rhs_ptr1 + b2 * rhs_ext2;</div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordtype">float</span> *out_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a> + ((b0 * batch_dim1 * batch_dim2) + b1 * batch_dim2 + b2) *</div>
-<div class="line"><span class="lineno">   91</span>                                         lhs_rows * rhs_cols;</div>
-<div class="line"><span class="lineno">   92</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; rhs_cols; ++j)</div>
-<div class="line"><span class="lineno">   93</span>        {</div>
-<div class="line"><span class="lineno">   94</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; lhs_rows; ++i)</div>
-<div class="line"><span class="lineno">   95</span>          {</div>
-<div class="line"><span class="lineno">   96</span>            <span class="keywordtype">float</span> total = 0.f;</div>
-<div class="line"><span class="lineno">   97</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; accum_depth; ++k)</div>
-<div class="line"><span class="lineno">   98</span>            {</div>
-<div class="line"><span class="lineno">   99</span>              total += lhs_ptr2[accum_depth * i + k] * rhs_ptr2[j * accum_depth + k];</div>
-<div class="line"><span class="lineno">  100</span>            }</div>
-<div class="line"><span class="lineno">  101</span>            <span class="keywordtype">int</span> idx = lhs_rows * j + i;</div>
-<div class="line"><span class="lineno">  102</span>            out_ptr[idx] = total;</div>
-<div class="line"><span class="lineno">  103</span>          }</div>
-<div class="line"><span class="lineno">  104</span>        }</div>
-<div class="line"><span class="lineno">  105</span>      }</div>
-<div class="line"><span class="lineno">  106</span>    }</div>
-<div class="line"><span class="lineno">  107</span>  }</div>
-<div class="line"><span class="lineno">  108</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00112">part_eval_one.py:112</a></div></div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_batch_mat_mul_8h_source.html#l00032">32</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_batch_mat_mul_8h_source.html">BatchMatMul.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b0 = 0; b0 &lt; params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a5115fbcaeaf5af5cf992a7f30c97b9cd">batch_dim0</a>; ++b0)</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *lhs_ptr0 = lhs_data + (b0 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#afe67bbb9d1fb9556ea27c3b3fee6cc83">lhs_ext0</a>);</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *rhs_ptr0 = rhs_data + (b0 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#af23c7c0671919e5c2c56ea6ecbe1e2e2">rhs_ext0</a>);</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b1 = 0; b1 &lt; params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#af43046f35fc074a4decd3929b5b468fd">batch_dim1</a>; ++b1)</div>
+<div class="line"><span class="lineno">   40</span>    {</div>
+<div class="line"><span class="lineno">   41</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *lhs_ptr1 = lhs_ptr0 + b1 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#acf3c9760cd13e5dce39ce4ce498d42ce">lhs_ext1</a>;</div>
+<div class="line"><span class="lineno">   42</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *rhs_ptr1 = rhs_ptr0 + b1 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a4b9ccc937f4e11fe72147d024919bc9b">rhs_ext1</a>;</div>
+<div class="line"><span class="lineno">   43</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b2 = 0; b2 &lt; params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a769f0b06e5dec2ffda8e5036e3c6c050">batch_dim2</a>; ++b2)</div>
+<div class="line"><span class="lineno">   44</span>      {</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> *lhs_ptr2 = lhs_ptr1 + b2 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ae5cdb597e1d5ab789f7af439fa2a099c">lhs_ext2</a>;</div>
+<div class="line"><span class="lineno">   46</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> *rhs_ptr2 = rhs_ptr1 + b2 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a37407b51bb6021206184ea5bb969b419">rhs_ext2</a>;</div>
+<div class="line"><span class="lineno">   47</span>        <span class="keywordtype">float</span> *out_ptr = output_data + ((b0 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#af43046f35fc074a4decd3929b5b468fd">batch_dim1</a> * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a769f0b06e5dec2ffda8e5036e3c6c050">batch_dim2</a>) +</div>
+<div class="line"><span class="lineno">   48</span>                                        b1 * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a769f0b06e5dec2ffda8e5036e3c6c050">batch_dim2</a> + b2) *</div>
+<div class="line"><span class="lineno">   49</span>                                         params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a07d4334895a0d58a459d06a1191b3682">lhs_rows</a> * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ab22b0235ded7bdc37412315479a6d49a">rhs_cols</a>;</div>
+<div class="line"><span class="lineno">   50</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ab22b0235ded7bdc37412315479a6d49a">rhs_cols</a>; ++j)</div>
+<div class="line"><span class="lineno">   51</span>        {</div>
+<div class="line"><span class="lineno">   52</span>          <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a07d4334895a0d58a459d06a1191b3682">lhs_rows</a>; ++i)</div>
+<div class="line"><span class="lineno">   53</span>          {</div>
+<div class="line"><span class="lineno">   54</span>            <span class="keywordtype">float</span> total = 0.f;</div>
+<div class="line"><span class="lineno">   55</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k = 0; k &lt; params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ae01cbedd419a4ea76b8cc82dbfef8bf8">accum_depth</a>; ++k)</div>
+<div class="line"><span class="lineno">   56</span>            {</div>
+<div class="line"><span class="lineno">   57</span>              total += lhs_ptr2[params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ae01cbedd419a4ea76b8cc82dbfef8bf8">accum_depth</a> * i + k] * rhs_ptr2[j * params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ae01cbedd419a4ea76b8cc82dbfef8bf8">accum_depth</a> + k];</div>
+<div class="line"><span class="lineno">   58</span>            }</div>
+<div class="line"><span class="lineno">   59</span>            <span class="keywordtype">int</span> idx = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a07d4334895a0d58a459d06a1191b3682">lhs_rows</a> * j + i;</div>
+<div class="line"><span class="lineno">   60</span>            out_ptr[idx] = total;</div>
+<div class="line"><span class="lineno">   61</span>          }</div>
+<div class="line"><span class="lineno">   62</span>        }</div>
+<div class="line"><span class="lineno">   63</span>      }</div>
+<div class="line"><span class="lineno">   64</span>    }</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span>}</div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_a07d4334895a0d58a459d06a1191b3682"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a07d4334895a0d58a459d06a1191b3682">nnfw::cker::BatchMatMulParams::lhs_rows</a></div><div class="ttdeci">int lhs_rows</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00061">BatchMatMulParams.h:61</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_a37407b51bb6021206184ea5bb969b419"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a37407b51bb6021206184ea5bb969b419">nnfw::cker::BatchMatMulParams::rhs_ext2</a></div><div class="ttdeci">int rhs_ext2</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00060">BatchMatMulParams.h:60</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_a4b9ccc937f4e11fe72147d024919bc9b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a4b9ccc937f4e11fe72147d024919bc9b">nnfw::cker::BatchMatMulParams::rhs_ext1</a></div><div class="ttdeci">int rhs_ext1</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00059">BatchMatMulParams.h:59</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_a5115fbcaeaf5af5cf992a7f30c97b9cd"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a5115fbcaeaf5af5cf992a7f30c97b9cd">nnfw::cker::BatchMatMulParams::batch_dim0</a></div><div class="ttdeci">int batch_dim0</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00052">BatchMatMulParams.h:52</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_a769f0b06e5dec2ffda8e5036e3c6c050"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#a769f0b06e5dec2ffda8e5036e3c6c050">nnfw::cker::BatchMatMulParams::batch_dim2</a></div><div class="ttdeci">int batch_dim2</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00054">BatchMatMulParams.h:54</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_ab22b0235ded7bdc37412315479a6d49a"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ab22b0235ded7bdc37412315479a6d49a">nnfw::cker::BatchMatMulParams::rhs_cols</a></div><div class="ttdeci">int rhs_cols</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00064">BatchMatMulParams.h:64</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_acf3c9760cd13e5dce39ce4ce498d42ce"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#acf3c9760cd13e5dce39ce4ce498d42ce">nnfw::cker::BatchMatMulParams::lhs_ext1</a></div><div class="ttdeci">int lhs_ext1</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00056">BatchMatMulParams.h:56</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_ae01cbedd419a4ea76b8cc82dbfef8bf8"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ae01cbedd419a4ea76b8cc82dbfef8bf8">nnfw::cker::BatchMatMulParams::accum_depth</a></div><div class="ttdeci">int accum_depth</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00065">BatchMatMulParams.h:65</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_ae5cdb597e1d5ab789f7af439fa2a099c"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#ae5cdb597e1d5ab789f7af439fa2a099c">nnfw::cker::BatchMatMulParams::lhs_ext2</a></div><div class="ttdeci">int lhs_ext2</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00057">BatchMatMulParams.h:57</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_af23c7c0671919e5c2c56ea6ecbe1e2e2"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#af23c7c0671919e5c2c56ea6ecbe1e2e2">nnfw::cker::BatchMatMulParams::rhs_ext0</a></div><div class="ttdeci">int rhs_ext0</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00058">BatchMatMulParams.h:58</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_af43046f35fc074a4decd3929b5b468fd"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#af43046f35fc074a4decd3929b5b468fd">nnfw::cker::BatchMatMulParams::batch_dim1</a></div><div class="ttdeci">int batch_dim1</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00053">BatchMatMulParams.h:53</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_batch_mat_mul_params_html_afe67bbb9d1fb9556ea27c3b3fee6cc83"><div class="ttname"><a href="structnnfw_1_1cker_1_1_batch_mat_mul_params.html#afe67bbb9d1fb9556ea27c3b3fee6cc83">nnfw::cker::BatchMatMulParams::lhs_ext0</a></div><div class="ttdeci">int lhs_ext0</div><div class="ttdef"><b>Definition</b> <a href="_batch_mat_mul_params_8h_source.html#l00055">BatchMatMulParams.h:55</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>.</p>
+<p class="reference">References <a class="el" href="_batch_mat_mul_params_8h_source.html#l00065">nnfw::cker::BatchMatMulParams::accum_depth</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00052">nnfw::cker::BatchMatMulParams::batch_dim0</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00053">nnfw::cker::BatchMatMulParams::batch_dim1</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00054">nnfw::cker::BatchMatMulParams::batch_dim2</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00055">nnfw::cker::BatchMatMulParams::lhs_ext0</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00056">nnfw::cker::BatchMatMulParams::lhs_ext1</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00057">nnfw::cker::BatchMatMulParams::lhs_ext2</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00061">nnfw::cker::BatchMatMulParams::lhs_rows</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00064">nnfw::cker::BatchMatMulParams::rhs_cols</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00058">nnfw::cker::BatchMatMulParams::rhs_ext0</a>, <a class="el" href="_batch_mat_mul_params_8h_source.html#l00059">nnfw::cker::BatchMatMulParams::rhs_ext1</a>, and <a class="el" href="_batch_mat_mul_params_8h_source.html#l00060">nnfw::cker::BatchMatMulParams::rhs_ext2</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_batch_mat_mul_8h_source.html#l00079">nnfw::cker::BatchMatMul::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_batch_mat_mul_8h_source.html#l00080">nnfw::cker::BatchMatMul::operator()()</a>.</p>
 
 </div>
 </div>
@@ -745,6 +698,8 @@ template&lt;&gt; </div>
 <div class="ttc" id="a_n_d_array_8h_html_a256945a34650c9e1803de88c828ef724"><div class="ttname"><a href="_n_d_array_8h.html#a256945a34650c9e1803de88c828ef724">NdArrayDescsForElementwiseBroadcast</a></div><div class="ttdeci">void NdArrayDescsForElementwiseBroadcast(const Dims&lt; N &gt; &amp;input0_dims, const Dims&lt; N &gt; &amp;input1_dims, NdArrayDesc&lt; N &gt; *desc0_out, NdArrayDesc&lt; N &gt; *desc1_out)</div><div class="ttdef"><b>Definition</b> <a href="_n_d_array_8h_source.html#l00089">NDArray.h:89</a></div></div>
 <div class="ttc" id="a_n_d_array_8h_html_a635d76912989ba020d1eeada22742b0d"><div class="ttname"><a href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a></div><div class="ttdeci">int SubscriptToIndex(const NdArrayDesc&lt; 4 &gt; &amp;desc, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="_n_d_array_8h_source.html#l00054">NDArray.h:54</a></div></div>
 <div class="ttc" id="aann-ref_2src_2ops_2internal_2_dims_8h_html_a1c037ff89c0da8b5cd52088b914b9c1d"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a></div><div class="ttdeci">int Offset(const Dims&lt; 4 &gt; &amp;dims, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">Dims.h:64</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a2ed85231fb21100351c9f68895eaba4b"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc1</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">PALComparisons.h:33</a></div></div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_ab5b08ef1201803398018fac4598b8b27"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc2</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">PALComparisons.h:34</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_nd_array_desc_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_nd_array_desc.html">nnfw::cker::NdArrayDesc</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00235">Utils.h:236</a></div></div>
@@ -1395,10 +1350,12 @@ template&lt;typename T , bool is_asymmetric&gt; </div>
 <div class="line"><span class="lineno">  310</span>    }</div>
 <div class="line"><span class="lineno">  311</span>  }</div>
 <div class="line"><span class="lineno">  312</span>}</div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_af6b33a8f0c1d60e578337bdb8dcb3673"><div class="ttname"><a href="namespacennfw_1_1cker.html#af6b33a8f0c1d60e578337bdb8dcb3673">nnfw::cker::MultiplyByQuantizedMultiplier</a></div><div class="ttdeci">int32_t MultiplyByQuantizedMultiplier(int32_t x, int32_t quantized_multiplier, int shift)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_utils_8h_source.html#l00093">Utils.h:93</a></div></div>
+<div class="ttc" id="anamespacepart__eval__one_html_aa659ec13c0dc14d487081c1a59b9ae70"><div class="ttname"><a href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">part_eval_one.output_data</a></div><div class="ttdeci">output_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00112">part_eval_one.py:112</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_conv_params_html_a0878ee74c474c8a82a574727a2a3048e"><div class="ttname"><a href="structnnfw_1_1cker_1_1_conv_params.html#a0878ee74c474c8a82a574727a2a3048e">nnfw::cker::ConvParams::stride_height</a></div><div class="ttdeci">int16_t stride_height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00146">Types.h:146</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_conv_params_html_a0a3450e62d20d27c2638d197f1fd2bb2"><div class="ttname"><a href="structnnfw_1_1cker_1_1_conv_params.html#a0a3450e62d20d27c2638d197f1fd2bb2">nnfw::cker::ConvParams::padding_values</a></div><div class="ttdeci">PaddingValues padding_values</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00143">Types.h:143</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_conv_params_html_a273ecef205d663377502d9dcaa77f1b4"><div class="ttname"><a href="structnnfw_1_1cker_1_1_conv_params.html#a273ecef205d663377502d9dcaa77f1b4">nnfw::cker::ConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00145">Types.h:145</a></div></div>

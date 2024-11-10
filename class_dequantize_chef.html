@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('class_dequantize_chef.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for DequantizeChef:</div>
 <div class="dyncontent">
@@ -103,12 +103,21 @@ Collaboration diagram for DequantizeChef:</div>
 <map name="a_dequantize_chef_coll__map" id="a_dequantize_chef_coll__map">
 <area shape="rect" title=" " alt="" coords="5,79,118,105"/>
 <area shape="rect" href="struct_op_chef.html" title=" " alt="" coords="29,5,94,31"/>
-<area shape="poly" title=" " alt="" coords="64,46,64,79,59,79,59,46"/>
+<area shape="poly" title=" " alt="" coords="55,46,57,78,52,79,50,46"/>
+<area shape="poly" title=" " alt="" coords="73,46,71,79,66,78,68,46"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a33a36f10e71ec717b8e1310b8598d418" id="r_a33a36f10e71ec717b8e1310b8598d418"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dequantize_chef.html#a33a36f10e71ec717b8e1310b8598d418">DequantizeChef</a> (const circlechef::Operation *operation)</td></tr>
+<tr class="separator:a33a36f10e71ec717b8e1310b8598d418"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1e0fa969c0e6bddf3543733f9a7ca0a" id="r_aa1e0fa969c0e6bddf3543733f9a7ca0a"><td class="memItemLeft" align="right" valign="top">circle::BuiltinOperator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dequantize_chef.html#aa1e0fa969c0e6bddf3543733f9a7ca0a">code</a> (void) const override</td></tr>
+<tr class="separator:aa1e0fa969c0e6bddf3543733f9a7ca0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b3d7bf69a2ad1c79fa62130c032d57d" id="r_a0b3d7bf69a2ad1c79fa62130c032d57d"><td class="memItemLeft" align="right" valign="top">circle::BuiltinOptions&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dequantize_chef.html#a0b3d7bf69a2ad1c79fa62130c032d57d">type</a> (void) const override</td></tr>
+<tr class="separator:a0b3d7bf69a2ad1c79fa62130c032d57d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a596107fd951dcc7ba133ff64eab23126" id="r_a596107fd951dcc7ba133ff64eab23126"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dequantize_chef.html#a596107fd951dcc7ba133ff64eab23126">value</a> (<a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;fbb) const override</td></tr>
+<tr class="separator:a596107fd951dcc7ba133ff64eab23126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a223c3a86ee44898e4995edefa513b3d5" id="r_a223c3a86ee44898e4995edefa513b3d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dequantize_chef.html#a223c3a86ee44898e4995edefa513b3d5">DequantizeChef</a> (const tflchef::Operation *operation)</td></tr>
 <tr class="separator:a223c3a86ee44898e4995edefa513b3d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a814110fa5506d6578f886e296983f901" id="r_a814110fa5506d6578f886e296983f901"><td class="memItemLeft" align="right" valign="top">tflite::BuiltinOperator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_dequantize_chef.html#a814110fa5506d6578f886e296983f901">code</a> (void) const override</td></tr>
@@ -129,10 +138,42 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8h_source.html#l00022">22</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html#l00022">22</a> of file <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a33a36f10e71ec717b8e1310b8598d418" name="a33a36f10e71ec717b8e1310b8598d418"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33a36f10e71ec717b8e1310b8598d418">&#9670;&#160;</a></span>DequantizeChef() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DequantizeChef::DequantizeChef </td>
+          <td>(</td>
+          <td class="paramtype">const circlechef::Operation *&#160;</td>
+          <td class="paramname"><em>operation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html#l00025">25</a> of file <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>                                                                : _operation{operation}</div>
+<div class="line"><span class="lineno">   26</span>  {</div>
+<div class="line"><span class="lineno">   27</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   28</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a223c3a86ee44898e4995edefa513b3d5" name="a223c3a86ee44898e4995edefa513b3d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a223c3a86ee44898e4995edefa513b3d5">&#9670;&#160;</a></span>DequantizeChef()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a223c3a86ee44898e4995edefa513b3d5">&#9670;&#160;</a></span>DequantizeChef() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -164,8 +205,39 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa1e0fa969c0e6bddf3543733f9a7ca0a" name="aa1e0fa969c0e6bddf3543733f9a7ca0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1e0fa969c0e6bddf3543733f9a7ca0a">&#9670;&#160;</a></span>code() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">circle::BuiltinOperator DequantizeChef::code </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="struct_op_chef.html#a826d49bed868605eded3b8474a1d2e16">OpChef</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html#l00031">31</a> of file <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{ <span class="keywordflow">return</span> circle::BuiltinOperator_DEQUANTIZE; }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a814110fa5506d6578f886e296983f901" name="a814110fa5506d6578f886e296983f901"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a814110fa5506d6578f886e296983f901">&#9670;&#160;</a></span>code()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a814110fa5506d6578f886e296983f901">&#9670;&#160;</a></span>code() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,8 +267,41 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a0b3d7bf69a2ad1c79fa62130c032d57d" name="a0b3d7bf69a2ad1c79fa62130c032d57d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b3d7bf69a2ad1c79fa62130c032d57d">&#9670;&#160;</a></span>type() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">circle::BuiltinOptions DequantizeChef::type </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="struct_op_chef.html#aa60293dfb6304252fe3723700739b7e1">OpChef</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html#l00033">33</a> of file <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>  {</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> circle::BuiltinOptions_DequantizeOptions;</div>
+<div class="line"><span class="lineno">   36</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aa0db075e1c6db3d6d2d3ad1224d1e5af" name="aa0db075e1c6db3d6d2d3ad1224d1e5af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0db075e1c6db3d6d2d3ad1224d1e5af">&#9670;&#160;</a></span>type()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0db075e1c6db3d6d2d3ad1224d1e5af">&#9670;&#160;</a></span>type() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -227,7 +332,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a596107fd951dcc7ba133ff64eab23126" name="a596107fd951dcc7ba133ff64eab23126"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a596107fd951dcc7ba133ff64eab23126">&#9670;&#160;</a></span>value()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a596107fd951dcc7ba133ff64eab23126">&#9670;&#160;</a></span>value() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,16 +357,46 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc">OpChef</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8cpp_source.html#l00019">19</a> of file <a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8cpp_source.html">Dequantize.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   20</span>{</div>
-<div class="line"><span class="lineno">   21</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;void&gt;</a>();</div>
-<div class="line"><span class="lineno">   22</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8cpp_source.html#l00021">21</a> of file <a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8cpp_source.html">Dequantize.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>{</div>
+<div class="line"><span class="lineno">   23</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;void&gt;</a>();</div>
+<div class="line"><span class="lineno">   24</span>}</div>
 <div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a596107fd951dcc7ba133ff64eab23126" name="a596107fd951dcc7ba133ff64eab23126"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a596107fd951dcc7ba133ff64eab23126">&#9670;&#160;</a></span>value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; void &gt; DequantizeChef::value </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a> &amp;&#160;</td>
+          <td class="paramname"><em>fbb</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc">OpChef</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
+<li>compiler/circlechef/core/src/Op/<a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a></li>
 <li>compiler/tflchef/core/src/Op/<a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8h_source.html">Dequantize.h</a></li>
+<li>compiler/circlechef/core/src/Op/<a class="el" href="compiler_2circlechef_2core_2src_2_op_2_dequantize_8cpp_source.html">Dequantize.cpp</a></li>
 <li>compiler/tflchef/core/src/Op/<a class="el" href="compiler_2tflchef_2core_2src_2_op_2_dequantize_8cpp_source.html">Dequantize.cpp</a></li>
 </ul>
 </div><!-- contents -->

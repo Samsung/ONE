@@ -171,7 +171,9 @@ var namespaceloco =
       [ "FLOAT32", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3ca967d280b5c16d95f2947647dd2ca6cc2", null ],
       [ "FLOAT64", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3ca139882c654db8a57f7c3092de1dd0b02", null ],
       [ "BOOL", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3caa97b2c144243b2b9d2c593ec268b62f5", null ],
-      [ "STRING", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3ca63b588d5559f64f89a416e656880b949", null ]
+      [ "STRING", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3ca63b588d5559f64f89a416e656880b949", null ],
+      [ "MXFP4", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3ca25a6f403a0d3bf903029ff1cb36263a0", null ],
+      [ "MXINT8", "namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3ca59857de52941e35130b7887199e72122", null ]
     ] ],
     [ "DepthwiseFilterAxis", "namespaceloco.html#a1e51c7b6399c983e010e448c36d7ee8d", [
       [ "Depth", "namespaceloco.html#a1e51c7b6399c983e010e448c36d7ee8da675056ad1441b6375b2c5abd48c27ef1", null ],

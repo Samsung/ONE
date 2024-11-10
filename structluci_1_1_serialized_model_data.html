@@ -324,19 +324,19 @@ Data Fields</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>idx of opcode in table of opcodes (see schema) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00228">228</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html">CircleExporterUtils.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  231</span>{</div>
-<div class="line"><span class="lineno">  232</span>  assert(op_version &gt; 0);</div>
-<div class="line"><span class="lineno">  233</span> </div>
-<div class="line"><span class="lineno">  234</span>  <span class="keyword">auto</span> it = <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.find(OpCode{builtin_code, custom_code, op_version});</div>
-<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">if</span> (it != <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.end())</div>
-<div class="line"><span class="lineno">  236</span>  {</div>
-<div class="line"><span class="lineno">  237</span>    <span class="keywordflow">return</span> it-&gt;second;</div>
-<div class="line"><span class="lineno">  238</span>  }</div>
-<div class="line"><span class="lineno">  239</span>  <span class="keyword">auto</span> idx = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.size());</div>
-<div class="line"><span class="lineno">  240</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.emplace(OpCode{builtin_code, custom_code, op_version}, idx);</div>
-<div class="line"><span class="lineno">  241</span>  <span class="keywordflow">return</span> idx;</div>
-<div class="line"><span class="lineno">  242</span>}</div>
+<p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00233">233</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html">CircleExporterUtils.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
+<div class="line"><span class="lineno">  237</span>  assert(op_version &gt; 0);</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>  <span class="keyword">auto</span> it = <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.find(OpCode{builtin_code, custom_code, op_version});</div>
+<div class="line"><span class="lineno">  240</span>  <span class="keywordflow">if</span> (it != <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.end())</div>
+<div class="line"><span class="lineno">  241</span>  {</div>
+<div class="line"><span class="lineno">  242</span>    <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><span class="lineno">  243</span>  }</div>
+<div class="line"><span class="lineno">  244</span>  <span class="keyword">auto</span> idx = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.size());</div>
+<div class="line"><span class="lineno">  245</span>  <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.emplace(OpCode{builtin_code, custom_code, op_version}, idx);</div>
+<div class="line"><span class="lineno">  246</span>  <span class="keywordflow">return</span> idx;</div>
+<div class="line"><span class="lineno">  247</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_serialized_data_8h_source.html#l00124">_operator_codes</a>.</p>
 
@@ -467,7 +467,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_serialized_data_8h_source.html#l00124">124</a> of file <a class="el" href="_serialized_data_8h_source.html">SerializedData.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>, and <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00228">registerBuiltinOpcode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_serialized_data_8cpp_source.html#l00029">clear()</a>, and <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00233">registerBuiltinOpcode()</a>.</p>
 
 </div>
 </div>

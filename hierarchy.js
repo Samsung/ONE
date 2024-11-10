@@ -1321,6 +1321,7 @@ var hierarchy =
     [ "onert::loader::BaseLoader< LoaderDomain >", "classonert_1_1loader_1_1_base_loader.html", null ],
     [ "nnfw::cker::BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", null ],
     [ "luci_interpreter::BatchMatMulParams", "structluci__interpreter_1_1_batch_mat_mul_params.html", null ],
+    [ "nnfw::cker::BatchMatMulParams", "structnnfw_1_1cker_1_1_batch_mat_mul_params.html", null ],
     [ "onert::backend::trix::BatchThreadPool", "classonert_1_1backend_1_1trix_1_1_batch_thread_pool.html", null ],
     [ "nnfw::cker::BCastList< N >", "classnnfw_1_1cker_1_1_b_cast_list.html", null ],
     [ "nnfw::cker::BCastList< 2 >", "classnnfw_1_1cker_1_1_b_cast_list.html", [
@@ -1929,6 +1930,7 @@ var hierarchy =
     [ "onert::exec::ExecutionObservee", "classonert_1_1exec_1_1_execution_observee.html", null ],
     [ "luci_interpreter::ExecutionObserver", "classluci__interpreter_1_1_execution_observer.html", [
       [ "dalgona::PythonHooks", "classdalgona_1_1_python_hooks.html", null ],
+      [ "record_hessian::HessianObserver", "classrecord__hessian_1_1_hessian_observer.html", null ],
       [ "record_minmax::MinMaxObserver", "classrecord__minmax_1_1_min_max_observer.html", null ]
     ] ],
     [ "onert::exec::ExecutionOptions", "structonert_1_1exec_1_1_execution_options.html", null ],
@@ -3590,8 +3592,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -3793,6 +3795,7 @@ var hierarchy =
       [ "DepthToSpaceChef", "class_depth_to_space_chef.html", null ],
       [ "DepthwiseConv2DChef", "class_depthwise_conv2_d_chef.html", null ],
       [ "DequantizeChef", "class_dequantize_chef.html", null ],
+      [ "DequantizeChef", "class_dequantize_chef.html", null ],
       [ "DivChef", "class_div_chef.html", null ],
       [ "ELUChef", "class_e_l_u_chef.html", null ],
       [ "EqualChef", "class_equal_chef.html", null ],
@@ -3848,6 +3851,7 @@ var hierarchy =
       [ "PadChef", "class_pad_chef.html", null ],
       [ "PadV2Chef", "class_pad_v2_chef.html", null ],
       [ "PowChef", "class_pow_chef.html", null ],
+      [ "QuantizeChef", "class_quantize_chef.html", null ],
       [ "QuantizeChef", "class_quantize_chef.html", null ],
       [ "RangeChef", "class_range_chef.html", null ],
       [ "RankChef", "class_rank_chef.html", null ],
@@ -3929,6 +3933,7 @@ var hierarchy =
       [ "DepthToSpaceChefFactory", "struct_depth_to_space_chef_factory.html", null ],
       [ "DepthwiseConv2DChefFactory", "struct_depthwise_conv2_d_chef_factory.html", null ],
       [ "DequantizeChefFactory", "struct_dequantize_chef_factory.html", null ],
+      [ "DequantizeChefFactory", "struct_dequantize_chef_factory.html", null ],
       [ "DivChefFactory", "struct_div_chef_factory.html", null ],
       [ "ELUChefFactory", "struct_e_l_u_chef_factory.html", null ],
       [ "EqualChefFactory", "struct_equal_chef_factory.html", null ],
@@ -3984,6 +3989,7 @@ var hierarchy =
       [ "PadChefFactory", "struct_pad_chef_factory.html", null ],
       [ "PadV2ChefFactory", "struct_pad_v2_chef_factory.html", null ],
       [ "PowChefFactory", "struct_pow_chef_factory.html", null ],
+      [ "QuantizeChefFactory", "struct_quantize_chef_factory.html", null ],
       [ "QuantizeChefFactory", "struct_quantize_chef_factory.html", null ],
       [ "RangeChefFactory", "struct_range_chef_factory.html", null ],
       [ "RankChefFactory", "struct_rank_chef_factory.html", null ],

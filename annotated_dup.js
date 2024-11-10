@@ -2616,6 +2616,7 @@ var annotated_dup =
         ] ],
         [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
         [ "BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", "classnnfw_1_1cker_1_1_batch_mat_mul" ],
+        [ "BatchMatMulParams", "structnnfw_1_1cker_1_1_batch_mat_mul_params.html", "structnnfw_1_1cker_1_1_batch_mat_mul_params" ],
         [ "BCast", "classnnfw_1_1cker_1_1_b_cast.html", "classnnfw_1_1cker_1_1_b_cast" ],
         [ "BCastList", "classnnfw_1_1cker_1_1_b_cast_list.html", "classnnfw_1_1cker_1_1_b_cast_list" ],
         [ "BinaryArithmeticOpParam", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param" ],
@@ -3827,6 +3828,7 @@ var annotated_dup =
     ] ],
     [ "record_hessian", "namespacerecord__hessian.html", [
       [ "HessianComputer", "classrecord__hessian_1_1_hessian_computer.html", "classrecord__hessian_1_1_hessian_computer" ],
+      [ "HessianObserver", "classrecord__hessian_1_1_hessian_observer.html", "classrecord__hessian_1_1_hessian_observer" ],
       [ "HessianVector", "structrecord__hessian_1_1_hessian_vector.html", "structrecord__hessian_1_1_hessian_vector" ]
     ] ],
     [ "record_minmax", "namespacerecord__minmax.html", [
@@ -4384,8 +4386,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

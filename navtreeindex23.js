@@ -1,5 +1,11 @@
 var NAVTREEINDEX23 =
 {
+"_placeholder_canonicalizer_8cpp_source.html":[40,0,0,82,1,0,28],
+"_placeholder_canonicalizer_8h.html":[40,0,0,82,1,0,29],
+"_placeholder_canonicalizer_8h_source.html":[40,0,0,82,1,0,29],
+"_plain_weight_context_8h.html":[40,0,0,27,1,0,0,1,1],
+"_plain_weight_context_8h_source.html":[40,0,0,27,1,0,0,1,1],
+"_pool2_d_common_8h.html":[40,0,3,4,2,1,72],
 "_pool2_d_common_8h.html#a11b68c99f126157d474bfad6138033a7":[40,0,3,4,2,1,72,1],
 "_pool2_d_common_8h.html#a2ab9012c52ce2de244f6f672d837ada6":[40,0,3,4,2,1,72,0],
 "_pool2_d_common_8h_source.html":[40,0,3,4,2,1,72],
@@ -243,11 +249,5 @@ var NAVTREEINDEX23 =
 "_quantize_layer_8cc.html":[40,0,4,1,1,4,0,66],
 "_quantize_layer_8cc.html#aa7584aef07be0382d601c7661d7871f5":[40,0,4,1,1,4,0,66,0],
 "_quantize_layer_8cc_source.html":[40,0,4,1,1,4,0,66],
-"_quantize_layer_8h.html":[40,0,4,1,1,4,0,67],
-"_quantize_layer_8h_source.html":[40,0,4,1,1,4,0,67],
-"_quantize_manager_8cc.html":[40,0,4,1,2,1,7,3],
-"_quantize_manager_8cc_source.html":[40,0,4,1,2,1,7,3],
-"_quantize_manager_8h.html":[40,0,4,1,2,0,6,3],
-"_quantize_manager_8h_source.html":[40,0,4,1,2,0,6,3],
-"_quantize_onnx_dequantize_linear_pass_8cpp.html":[40,0,0,56,7,1,77]
+"_quantize_layer_8h.html":[40,0,4,1,1,4,0,67]
 };

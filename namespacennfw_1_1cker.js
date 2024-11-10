@@ -17,7 +17,7 @@ var namespacennfw_1_1cker =
     [ "optimized_integer_ops", "namespacennfw_1_1cker_1_1optimized__integer__ops.html", "namespacennfw_1_1cker_1_1optimized__integer__ops" ],
     [ "random", "namespacennfw_1_1cker_1_1random.html", "namespacennfw_1_1cker_1_1random" ],
     [ "reference", "namespacennfw_1_1cker_1_1reference.html", [
-      [ "BatchMatMul", "namespacennfw_1_1cker_1_1reference.html#aca7021574af27880fcaa5f0bb62981e7", null ],
+      [ "BatchMatMul", "namespacennfw_1_1cker_1_1reference.html#ad1b4f37d1062446b42371291005652f1", null ],
       [ "BinaryArithmeticOp", "namespacennfw_1_1cker_1_1reference.html#acecabc3c2855caad5f25bfdc96da4420", null ],
       [ "BinaryArithmeticOp", "namespacennfw_1_1cker_1_1reference.html#a0ab57f1de7a3d7c735f732c550280f5b", null ],
       [ "BinaryArithmeticOp", "namespacennfw_1_1cker_1_1reference.html#a185fc5df95df8890e786712c641ad757", null ],
@@ -50,6 +50,7 @@ var namespacennfw_1_1cker =
     [ "xent_ops", "namespacennfw_1_1cker_1_1xent__ops.html", "namespacennfw_1_1cker_1_1xent__ops" ],
     [ "ActivationFunctor", "classnnfw_1_1cker_1_1_activation_functor.html", "classnnfw_1_1cker_1_1_activation_functor" ],
     [ "BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", "classnnfw_1_1cker_1_1_batch_mat_mul" ],
+    [ "BatchMatMulParams", "structnnfw_1_1cker_1_1_batch_mat_mul_params.html", "structnnfw_1_1cker_1_1_batch_mat_mul_params" ],
     [ "BCast", "classnnfw_1_1cker_1_1_b_cast.html", "classnnfw_1_1cker_1_1_b_cast" ],
     [ "BCastList", "classnnfw_1_1cker_1_1_b_cast_list.html", "classnnfw_1_1cker_1_1_b_cast_list" ],
     [ "BinaryArithmeticOpParam", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html", "structnnfw_1_1cker_1_1_binary_arithmetic_op_param" ],

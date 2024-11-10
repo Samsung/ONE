@@ -198,11 +198,11 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00390">390</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  390</span>                                                               : _vector(ptr)</div>
-<div class="line"><span class="lineno">  391</span>{</div>
-<div class="line"><span class="lineno">  392</span>  <span class="comment">// Do nothing</span></div>
-<div class="line"><span class="lineno">  393</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00394">394</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  394</span>                                                               : _vector(ptr)</div>
+<div class="line"><span class="lineno">  395</span>{</div>
+<div class="line"><span class="lineno">  396</span>  <span class="comment">// Do nothing</span></div>
+<div class="line"><span class="lineno">  397</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -225,17 +225,17 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00415">415</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  416</span>{</div>
-<div class="line"><span class="lineno">  417</span>  <span class="keywordflow">if</span> (i &gt;= <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a2114c302023a734ac669226d783f1d04">size</a>())</div>
-<div class="line"><span class="lineno">  418</span>  {</div>
-<div class="line"><span class="lineno">  419</span>    <span class="comment">// TODO find better error message</span></div>
-<div class="line"><span class="lineno">  420</span>    <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;Access to prohibited vector element&quot;</span>);</div>
-<div class="line"><span class="lineno">  421</span>  }</div>
-<div class="line"><span class="lineno">  422</span> </div>
-<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">return</span> _vector-&gt;Get(i);</div>
-<div class="line"><span class="lineno">  424</span>}</div>
-<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_a2114c302023a734ac669226d783f1d04"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#a2114c302023a734ac669226d783f1d04">luci::VectorWrapper::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00395">CircleReader.cpp:395</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00419">419</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  420</span>{</div>
+<div class="line"><span class="lineno">  421</span>  <span class="keywordflow">if</span> (i &gt;= <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a2114c302023a734ac669226d783f1d04">size</a>())</div>
+<div class="line"><span class="lineno">  422</span>  {</div>
+<div class="line"><span class="lineno">  423</span>    <span class="comment">// TODO find better error message</span></div>
+<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">throw</span> std::range_error(<span class="stringliteral">&quot;Access to prohibited vector element&quot;</span>);</div>
+<div class="line"><span class="lineno">  425</span>  }</div>
+<div class="line"><span class="lineno">  426</span> </div>
+<div class="line"><span class="lineno">  427</span>  <span class="keywordflow">return</span> _vector-&gt;Get(i);</div>
+<div class="line"><span class="lineno">  428</span>}</div>
+<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_a2114c302023a734ac669226d783f1d04"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#a2114c302023a734ac669226d783f1d04">luci::VectorWrapper::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00399">CircleReader.cpp:399</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -260,13 +260,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00405">405</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  406</span>{</div>
-<div class="line"><span class="lineno">  407</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? <a class="code hl_typedef" href="classluci_1_1_vector_wrapper.html#aa0f5bda19b252779565e93c37e70c8cf">iterator</a>(<span class="keyword">nullptr</span>, 0) : _vector-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#ade8cf99826f8288ba9a23dce2139a2ad">begin</a>();</div>
-<div class="line"><span class="lineno">  408</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00409">409</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  410</span>{</div>
+<div class="line"><span class="lineno">  411</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? <a class="code hl_typedef" href="classluci_1_1_vector_wrapper.html#aa0f5bda19b252779565e93c37e70c8cf">iterator</a>(<span class="keyword">nullptr</span>, 0) : _vector-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#ade8cf99826f8288ba9a23dce2139a2ad">begin</a>();</div>
+<div class="line"><span class="lineno">  412</span>}</div>
 <div class="ttc" id="aclassluci_1_1_vector_wrapper_html_aa0f5bda19b252779565e93c37e70c8cf"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#aa0f5bda19b252779565e93c37e70c8cf">luci::VectorWrapper::iterator</a></div><div class="ttdeci">typename flatbuffers::Vector&lt; T &gt;::const_iterator iterator</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8h_source.html#l00067">CircleReader.h:67</a></div></div>
-<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_abdc98ee3dcf10c1914d30a081a4917d2"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">luci::VectorWrapper::null</a></div><div class="ttdeci">bool null() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00432">CircleReader.cpp:432</a></div></div>
-<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_ade8cf99826f8288ba9a23dce2139a2ad"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#ade8cf99826f8288ba9a23dce2139a2ad">luci::VectorWrapper::begin</a></div><div class="ttdeci">iterator begin() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00405">CircleReader.cpp:405</a></div></div>
+<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_abdc98ee3dcf10c1914d30a081a4917d2"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">luci::VectorWrapper::null</a></div><div class="ttdeci">bool null() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00436">CircleReader.cpp:436</a></div></div>
+<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_ade8cf99826f8288ba9a23dce2139a2ad"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#ade8cf99826f8288ba9a23dce2139a2ad">luci::VectorWrapper::begin</a></div><div class="ttdeci">iterator begin() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00409">CircleReader.cpp:409</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -287,10 +287,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00400">400</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  401</span>{</div>
-<div class="line"><span class="lineno">  402</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? nullptr : _vector-&gt;data();</div>
-<div class="line"><span class="lineno">  403</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00404">404</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  405</span>{</div>
+<div class="line"><span class="lineno">  406</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? nullptr : _vector-&gt;data();</div>
+<div class="line"><span class="lineno">  407</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_circle_import_metadata_8cpp_source.html#l00203">luci::CircleImportMetadata::CircleImportMetadata()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00398">luci_interpreter::RuntimeGraph::getConstDataByTensor()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00202">luci_interpreter::Tensor::is_constant_tensor()</a>.</p>
 
@@ -313,8 +313,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00433">433</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  433</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a2114c302023a734ac669226d783f1d04">size</a>() == 0; }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00437">437</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  437</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#a2114c302023a734ac669226d783f1d04">size</a>() == 0; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -339,11 +339,11 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00410">410</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  411</span>{</div>
-<div class="line"><span class="lineno">  412</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#ade8cf99826f8288ba9a23dce2139a2ad">begin</a>() : _vector-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#ac6a053a476d545bf3cfc39906b135041">end</a>();</div>
-<div class="line"><span class="lineno">  413</span>}</div>
-<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_ac6a053a476d545bf3cfc39906b135041"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#ac6a053a476d545bf3cfc39906b135041">luci::VectorWrapper::end</a></div><div class="ttdeci">iterator end() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00410">CircleReader.cpp:410</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00414">414</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  415</span>{</div>
+<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#ade8cf99826f8288ba9a23dce2139a2ad">begin</a>() : _vector-&gt;<a class="code hl_function" href="classluci_1_1_vector_wrapper.html#ac6a053a476d545bf3cfc39906b135041">end</a>();</div>
+<div class="line"><span class="lineno">  417</span>}</div>
+<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_ac6a053a476d545bf3cfc39906b135041"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#ac6a053a476d545bf3cfc39906b135041">luci::VectorWrapper::end</a></div><div class="ttdeci">iterator end() const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00414">CircleReader.cpp:414</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>.</p>
 
@@ -366,8 +366,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00432">432</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  432</span>{ <span class="keywordflow">return</span> _vector == <span class="keyword">nullptr</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00436">436</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  436</span>{ <span class="keywordflow">return</span> _vector == <span class="keyword">nullptr</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -389,11 +389,11 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00427">427</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  428</span>{</div>
-<div class="line"><span class="lineno">  429</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">at</a>(i);</div>
-<div class="line"><span class="lineno">  430</span>}</div>
-<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_acb4fcd319072289ca0797ad27a12a62c"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">luci::VectorWrapper::at</a></div><div class="ttdeci">value_type at(uint32_t i) const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00415">CircleReader.cpp:415</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00431">431</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  432</span>{</div>
+<div class="line"><span class="lineno">  433</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">at</a>(i);</div>
+<div class="line"><span class="lineno">  434</span>}</div>
+<div class="ttc" id="aclassluci_1_1_vector_wrapper_html_acb4fcd319072289ca0797ad27a12a62c"><div class="ttname"><a href="classluci_1_1_vector_wrapper.html#acb4fcd319072289ca0797ad27a12a62c">luci::VectorWrapper::at</a></div><div class="ttdeci">value_type at(uint32_t i) const</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00419">CircleReader.cpp:419</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -414,10 +414,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00395">395</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  396</span>{</div>
-<div class="line"><span class="lineno">  397</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? 0 : _vector-&gt;size();</div>
-<div class="line"><span class="lineno">  398</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00399">399</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  400</span>{</div>
+<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classluci_1_1_vector_wrapper.html#abdc98ee3dcf10c1914d30a081a4917d2">null</a>() ? 0 : _vector-&gt;size();</div>
+<div class="line"><span class="lineno">  402</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_circle_import_metadata_8cpp_source.html#l00203">luci::CircleImportMetadata::CircleImportMetadata()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00460">luci_interpreter::RuntimeGraph::execute()</a>.</p>
 

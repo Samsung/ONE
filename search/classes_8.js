@@ -25,8 +25,9 @@ var searchData=
   ['helper_22',['Helper',['../classarser_1_1_helper.html',1,'arser']]],
   ['hescheduler_23',['HEScheduler',['../classonert_1_1compiler_1_1_h_e_scheduler.html',1,'onert::compiler']]],
   ['hessiancomputer_24',['HessianComputer',['../classrecord__hessian_1_1_hessian_computer.html',1,'record_hessian']]],
-  ['hessianvector_25',['HessianVector',['../structrecord__hessian_1_1_hessian_vector.html',1,'record_hessian']]],
-  ['hookfunction_26',['HookFunction',['../classonert_1_1exec_1_1_hook_function.html',1,'onert::exec']]],
-  ['hostblockcompiler_27',['HostBlockCompiler',['../classenco_1_1_host_block_compiler.html',1,'enco']]],
-  ['hwclayout_28',['HWCLayout',['../structnncc_1_1core_1_1_a_d_t_1_1feature_1_1_h_w_c_layout.html',1,'nncc::core::ADT::feature']]]
+  ['hessianobserver_25',['HessianObserver',['../classrecord__hessian_1_1_hessian_observer.html',1,'record_hessian']]],
+  ['hessianvector_26',['HessianVector',['../structrecord__hessian_1_1_hessian_vector.html',1,'record_hessian']]],
+  ['hookfunction_27',['HookFunction',['../classonert_1_1exec_1_1_hook_function.html',1,'onert::exec']]],
+  ['hostblockcompiler_28',['HostBlockCompiler',['../classenco_1_1_host_block_compiler.html',1,'enco']]],
+  ['hwclayout_29',['HWCLayout',['../structnncc_1_1core_1_1_a_d_t_1_1feature_1_1_h_w_c_layout.html',1,'nncc::core::ADT::feature']]]
 ];

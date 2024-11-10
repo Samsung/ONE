@@ -16,6 +16,8 @@ var compiler_2loco_2include_2loco_2_i_r_2_data_type_8h =
       [ "FLOAT32", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca967d280b5c16d95f2947647dd2ca6cc2", null ],
       [ "FLOAT64", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca139882c654db8a57f7c3092de1dd0b02", null ],
       [ "BOOL", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3caa97b2c144243b2b9d2c593ec268b62f5", null ],
-      [ "STRING", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca63b588d5559f64f89a416e656880b949", null ]
+      [ "STRING", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca63b588d5559f64f89a416e656880b949", null ],
+      [ "MXFP4", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca25a6f403a0d3bf903029ff1cb36263a0", null ],
+      [ "MXINT8", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca59857de52941e35130b7887199e72122", null ]
     ] ]
 ];

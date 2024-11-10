@@ -281,8 +281,8 @@ $(document).ready(function(){initNavTree('_multi_model_executors_8cc_source.html
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_io_index = std::get&lt;ir::IOIndex&gt;(from_iodesc);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keyword">const</span> <span class="keyword">auto</span> from_executor = _executors.at({from_model_index, from_subg_index}).<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_info = from_executor-&gt;inputInfo(from_io_index.value());</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keyword">const</span> <span class="keyword">auto</span> from_layout = from_executor-&gt;inputLayout(from_io_index.value());</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;from_info = from_executor-&gt;outputInfo(from_io_index.value());</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keyword">const</span> <span class="keyword">auto</span> from_layout = from_executor-&gt;outputLayout(from_io_index.value());</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    _edge_tensors[from_iodesc] = std::make_unique&lt;EdgeTensor&gt;(from_info, from_layout);</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  }</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>

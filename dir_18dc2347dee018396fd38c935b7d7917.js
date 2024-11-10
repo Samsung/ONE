@@ -1,5 +1,6 @@
 var dir_18dc2347dee018396fd38c935b7d7917 =
 [
+    [ "BatchMatMulParams.h", "_batch_mat_mul_params_8h.html", "_batch_mat_mul_params_8h" ],
     [ "BCast.h", "_b_cast_8h.html", "_b_cast_8h" ],
     [ "MatmulBCast.h", "_matmul_b_cast_8h.html", "_matmul_b_cast_8h" ],
     [ "PhiloxRandom.h", "_philox_random_8h.html", "_philox_random_8h" ],

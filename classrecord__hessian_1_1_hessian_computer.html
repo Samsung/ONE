@@ -123,19 +123,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hessian_computer_8cpp_source.html#l00205">205</a> of file <a class="el" href="_hessian_computer_8cpp_source.html">HessianComputer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  206</span>{</div>
-<div class="line"><span class="lineno">  207</span>  <span class="keyword">auto</span> hessian_map = std::make_unique&lt;HessianMap&gt;();</div>
-<div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> item : _hessian_map)</div>
-<div class="line"><span class="lineno">  210</span>  {</div>
-<div class="line"><span class="lineno">  211</span>    <span class="keyword">auto</span> &amp;vec = (*hessian_map)[item.first];</div>
-<div class="line"><span class="lineno">  212</span>    vec = item.second.hessian;</div>
-<div class="line"><span class="lineno">  213</span>  }</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>  <span class="keywordflow">return</span> hessian_map;</div>
-<div class="line"><span class="lineno">  216</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_hessian_computer_8cpp_source.html#l00202">202</a> of file <a class="el" href="_hessian_computer_8cpp_source.html">HessianComputer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  203</span>{</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keyword">auto</span> hessian_map = std::make_unique&lt;HessianMap&gt;();</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> item : _hessian_map)</div>
+<div class="line"><span class="lineno">  207</span>  {</div>
+<div class="line"><span class="lineno">  208</span>    <span class="keyword">auto</span> &amp;vec = (*hessian_map)[item.first];</div>
+<div class="line"><span class="lineno">  209</span>    vec = item.second.hessian;</div>
+<div class="line"><span class="lineno">  210</span>  }</div>
+<div class="line"><span class="lineno">  211</span> </div>
+<div class="line"><span class="lineno">  212</span>  <span class="keywordflow">return</span> hessian_map;</div>
+<div class="line"><span class="lineno">  213</span>}</div>
 </div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_hessian_observer_8h_source.html#l00038">record_hessian::HessianObserver::hessianData()</a>.</p>
+
 </div>
 </div>
 <a id="af4cdb18559ae9ce9b817f77a4dbb03b3" name="af4cdb18559ae9ce9b817f77a4dbb03b3"></a>
@@ -164,33 +166,35 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_hessian_computer_8cpp_source.html#l00181">181</a> of file <a class="el" href="_hessian_computer_8cpp_source.html">HessianComputer.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">if</span> (node == <span class="keyword">nullptr</span> || input_tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;RecordHessian: node or input_tensor is null.&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="_hessian_computer_8cpp_source.html#l00178">178</a> of file <a class="el" href="_hessian_computer_8cpp_source.html">HessianComputer.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
+<div class="line"><span class="lineno">  181</span>  <span class="keywordflow">if</span> (node == <span class="keyword">nullptr</span> || input_tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;RecordHessian: node or input_tensor is null.&quot;</span>);</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">if</span> (input_tensor-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>() != luci_interpreter::DataType::FLOAT32)</div>
+<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RecordHessian: Unsupported dtype: only FLOAT32 is supported.&quot;</span>);</div>
 <div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>  <span class="keywordflow">if</span> (input_tensor-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">element_type</a>() != luci_interpreter::DataType::FLOAT32)</div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RecordHessian: Unsupported dtype: only FLOAT32 is supported.&quot;</span>);</div>
-<div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>  _input_tensor = input_tensor;</div>
-<div class="line"><span class="lineno">  191</span> </div>
-<div class="line"><span class="lineno">  192</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
-<div class="line"><span class="lineno">  193</span>  {</div>
-<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">case</span> luci::CircleOpcode::FULLY_CONNECTED:</div>
-<div class="line"><span class="lineno">  195</span>      recordHessianForFullyConnected(node);</div>
+<div class="line"><span class="lineno">  187</span>  _input_tensor = input_tensor;</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
+<div class="line"><span class="lineno">  190</span>  {</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">case</span> luci::CircleOpcode::FULLY_CONNECTED:</div>
+<div class="line"><span class="lineno">  192</span>      recordHessianForFullyConnected(node);</div>
+<div class="line"><span class="lineno">  193</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
+<div class="line"><span class="lineno">  195</span>      recordHessianForConv2D(node);</div>
 <div class="line"><span class="lineno">  196</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
-<div class="line"><span class="lineno">  198</span>      recordHessianForConv2D(node);</div>
-<div class="line"><span class="lineno">  199</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  201</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RecordHessian: &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot; is unsupported op.&quot;</span>);</div>
-<div class="line"><span class="lineno">  202</span>  }</div>
-<div class="line"><span class="lineno">  203</span>}</div>
+<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  198</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;RecordHessian: &quot;</span> + node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot; is unsupported op.&quot;</span>);</div>
+<div class="line"><span class="lineno">  199</span>  }</div>
+<div class="line"><span class="lineno">  200</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_aac75c6e4ff38ac71545c4e6d112c1d57"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#aac75c6e4ff38ac71545c4e6d112c1d57">luci_interpreter::Tensor::element_type</a></div><div class="ttdeci">DataType element_type() const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00105">Tensor.h:105</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00105">luci_interpreter::Tensor::element_type()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_hessian_observer_8cpp_source.html#l00022">record_hessian::HessianObserver::postTensorWrite()</a>.</p>
 
 </div>
 </div>

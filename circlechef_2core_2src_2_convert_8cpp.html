@@ -217,12 +217,16 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   72</span>      <span class="keywordflow">return</span> circle::TensorType_STRING;</div>
 <div class="line"><span class="lineno">   73</span>    <span class="keywordflow">case</span> circlechef::BOOL:</div>
 <div class="line"><span class="lineno">   74</span>      <span class="keywordflow">return</span> circle::TensorType_BOOL;</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown tensor type&quot;</span>};</div>
-<div class="line"><span class="lineno">   80</span>}</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">case</span> circlechef::MXFP4:</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">return</span> circle::TensorType_MXFP4;</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">case</span> circlechef::MXINT8:</div>
+<div class="line"><span class="lineno">   78</span>      <span class="keywordflow">return</span> circle::TensorType_MXINT8;</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   81</span>  }</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unknown tensor type&quot;</span>};</div>
+<div class="line"><span class="lineno">   84</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

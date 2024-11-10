@@ -1,5 +1,11 @@
 var NAVTREEINDEX32 =
 {
+"_unidirectional_sequence_l_s_t_m_options_8h_source.html":[40,0,0,131,2,0,175],
+"_unique_options_8cpp.html":[40,0,0,131,2,0,176],
+"_unique_options_8cpp.html#a6c987ae0596e90a1ca099cf8094aec26":[40,0,0,131,2,0,176,0],
+"_unique_options_8cpp_source.html":[40,0,0,131,2,0,176],
+"_unique_options_8h.html":[40,0,0,131,2,0,177],
+"_unique_options_8h.html#a6c987ae0596e90a1ca099cf8094aec26":[40,0,0,131,2,0,177,0],
 "_unique_options_8h_source.html":[40,0,0,131,2,0,177],
 "_unpack_8cc.html":[40,0,4,1,2,1,5,0,70],
 "_unpack_8cc_source.html":[40,0,4,1,2,1,5,0,70],
@@ -243,11 +249,5 @@ var NAVTREEINDEX32 =
 "_zipper_8h.html#a1a14c5627fd37433f742d28a854b6ced":[40,0,4,0,0,0,0,3,10,1],
 "_zipper_8h.html#ae816323a1119de39d502d07f8c12bf86":[40,0,4,0,0,0,0,3,10,2],
 "_zipper_8h_source.html":[40,0,4,0,0,0,0,3,10],
-"acl__cl_2_constant_initializer_8cc.html":[40,0,4,1,1,0,7],
-"acl__cl_2_constant_initializer_8cc_source.html":[40,0,4,1,1,0,7],
-"acl__cl_2_constant_initializer_8h.html":[40,0,4,1,1,0,8],
-"acl__cl_2_constant_initializer_8h_source.html":[40,0,4,1,1,0,8],
-"acl__cl_2_optimizer_8cc.html":[40,0,4,1,1,0,11],
-"acl__cl_2_optimizer_8cc_source.html":[40,0,4,1,1,0,11],
-"acl__cl_2_tensor_manager_8h.html":[40,0,4,1,1,0,14]
+"acl__cl_2_constant_initializer_8cc.html":[40,0,4,1,1,0,7]
 };

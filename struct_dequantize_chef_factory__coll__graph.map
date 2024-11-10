@@ -1,5 +1,6 @@
 <map id="DequantizeChefFactory" name="DequantizeChefFactory">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,79,161,105"/>
 <area shape="rect" id="Node000002" href="$struct_op_chef_factory.html" title=" " alt="" coords="29,5,137,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,46,86,79,80,79,80,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,46,79,78,73,79,72,46"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="94,46,93,79,87,78,89,46"/>
 </map>

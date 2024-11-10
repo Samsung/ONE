@@ -1,5 +1,11 @@
 var NAVTREEINDEX33 =
 {
+"acl__cl_2_constant_initializer_8cc_source.html":[40,0,4,1,1,0,7],
+"acl__cl_2_constant_initializer_8h.html":[40,0,4,1,1,0,8],
+"acl__cl_2_constant_initializer_8h_source.html":[40,0,4,1,1,0,8],
+"acl__cl_2_optimizer_8cc.html":[40,0,4,1,1,0,11],
+"acl__cl_2_optimizer_8cc_source.html":[40,0,4,1,1,0,11],
+"acl__cl_2_tensor_manager_8h.html":[40,0,4,1,1,0,14],
 "acl__cl_2_tensor_manager_8h.html#a38f4246ec6bdaee3b5bcc440f2c89dbb":[40,0,4,1,1,0,14,0],
 "acl__cl_2_tensor_manager_8h.html#a7fa14cb8cd7dc2738a942198b5e5b963":[40,0,4,1,1,0,14,3],
 "acl__cl_2_tensor_manager_8h.html#aec9f8d43988a9d43b9dcbfaa13891484":[40,0,4,1,1,0,14,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX33 =
 "backend_2train_2_kernel_generator_8cc_source.html":[40,0,4,1,1,6,9],
 "backend_2train_2_kernel_generator_8h.html":[40,0,4,1,1,6,10],
 "backend_2train_2_kernel_generator_8h_source.html":[40,0,4,1,1,6,10],
-"backend_2train_2_memory_manager_8cc.html":[40,0,4,1,1,6,12],
-"backend_2train_2_memory_manager_8cc_source.html":[40,0,4,1,1,6,12],
-"backend_2train_2_memory_planner_8cc.html":[40,0,4,1,1,6,14],
-"backend_2train_2_memory_planner_8cc_source.html":[40,0,4,1,1,6,14],
-"backend_2train_2_memory_planner_8h.html":[40,0,4,1,1,6,15],
-"backend_2train_2_memory_planner_8h_source.html":[40,0,4,1,1,6,15],
-"backend_2train_2_memory_planner_factory_8cc.html":[40,0,4,1,1,6,16]
+"backend_2train_2_memory_manager_8cc.html":[40,0,4,1,1,6,12]
 };
