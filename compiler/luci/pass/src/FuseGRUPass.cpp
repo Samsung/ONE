@@ -30,15 +30,17 @@
 namespace
 {
 
-class GRUPatternBase
+class GRUPattern final
 {
 public:
-  GRUPatternBase(luci::CircleNode *candidate) { _pattern_last_node = candidate; }
+  GRUPattern(luci::CircleWhileOut *candidate)
+  {
+    assert(candidate);
+    _while_out_node = candidate;
+  }
+  ~GRUPattern() = default;
 
-  virtual ~GRUPatternBase() = default;
-
-public:
-  virtual bool matched() = 0;
+  bool matched();
 
 public:
   luci::CircleNode *_ifm = nullptr;
@@ -53,7 +55,27 @@ public:
 
   luci::CircleWhile *_while_node = nullptr;
   luci::CircleWhileOut *_while_out_node = nullptr;
-  luci::CircleNode *_pattern_last_node = nullptr;
+
+  luci::CircleReshape *reshape = nullptr;
+  luci::CircleConst *reshape_shape = nullptr;
+
+  luci::CircleAdd *add_6 = nullptr;
+  luci::CircleMul *mul_1 = nullptr;
+  luci::CircleMul *mul_3 = nullptr;
+  luci::CircleSub *sub_with_const = nullptr;
+  luci::CircleTanh *tanh = nullptr;
+  luci::CircleLogistic *logistic_2 = nullptr;
+  luci::CircleAdd *add_5 = nullptr;
+  luci::CircleMul *mul_2 = nullptr;
+  luci::CircleAdd *add_1 = nullptr;
+  luci::CircleSplitOut *split_1_out = nullptr;
+  luci::CircleSplitOut *split_2_out = nullptr;
+  luci::CircleSplit *split_1 = nullptr;
+  luci::CircleSplit *split_2 = nullptr;
+  luci::CircleLogistic *logistic_1 = nullptr;
+  luci::CircleAdd *add_4 = nullptr;
+  luci::CircleFullyConnected *fc_1 = nullptr;
+  luci::CircleFullyConnected *fc_2 = nullptr;
 };
 
 /**
@@ -128,34 +150,24 @@ public:
  *                             |
  *                           [Out_1]
  */
-class GRUPattern1 final : public GRUPatternBase
-{
-public:
-  GRUPattern1(luci::CircleWhileOut *candidate) : GRUPatternBase(candidate)
-  {
-    assert(candidate);
-    _while_out_node = candidate;
-  }
 
-public:
-  bool matched() override;
-};
-
-bool GRUPattern1::matched()
-{
-  // 0 - check while node
-  _while_node = dynamic_cast<luci::CircleWhile *>(_while_out_node->input());
-  if (_while_node == nullptr)
+#define CHECK_OR_FALSE(condition) \
+  if (not(condition))             \
     return false;
 
-  // 1 - check condition graph: only one Less operation
-  // with scalar int const value
+bool GRUPattern::matched()
+{
+  // 0 - check while node
+  _while_node = loco::must_cast<luci::CircleWhile *>(_while_out_node->input());
+  CHECK_OR_FALSE(_while_node != nullptr);
+
+  // 1 - check condition graph
   {
     const auto cond_graph = _while_node->cond_graph();
 
     const auto cond_nodes = loco::active_nodes(loco::output_nodes(cond_graph));
-    if (cond_nodes.size() != 4)
-      return false;
+    CHECK_OR_FALSE(cond_nodes.size() == 4);
+
     luci::CircleLess *less_node = nullptr;
     for (auto node : cond_nodes)
     {
@@ -163,321 +175,117 @@ bool GRUPattern1::matched()
       if (less_node != nullptr)
         break;
     }
+    CHECK_OR_FALSE(less_node != nullptr);
 
-    // doesn't find Less node
-    if (less_node == nullptr)
-      return false;
-
-    luci::CircleNode *less_input;
-    if (not luci::fill(&less_input, &_less_const).with_commutative_args_of(less_node))
-      return false;
-
-    if (_less_const->dtype() != loco::DataType::S32)
-      return false;
-
-    if (_less_const->size<loco::DataType::S32>() != 1)
-      return false;
-
-    assert(_less_const->at<loco::DataType::S32>(0) > 0);
+    luci::CircleNode *less_input = nullptr;
+    CHECK_OR_FALSE(luci::fill(&less_input, &_less_const).with_commutative_args_of(less_node));
+    CHECK_OR_FALSE(_less_const->dtype() == loco::DataType::S32);
+    CHECK_OR_FALSE(_less_const->size<loco::DataType::S32>() == 1);
+    CHECK_OR_FALSE(_less_const->at<loco::DataType::S32>(0) > 0);
   }
 
   // 2 - Check while's input nodes
   // Save hidden state input node
   {
-    if (_while_node->input_count() != 5)
-      return false;
+    CHECK_OR_FALSE(_while_node->input_count() == 5);
 
     // Save input node
-    _ifm = dynamic_cast<luci::CircleNode *>(_while_node->input(4));
-    if (_ifm == nullptr)
-      return false;
-
-    _hidden_input = dynamic_cast<luci::CircleConst *>(_while_node->input(3));
-    if (_hidden_input == nullptr)
-      return false;
+    _ifm = loco::must_cast<luci::CircleNode *>(_while_node->input(4));
+    _hidden_input = loco::must_cast<luci::CircleConst *>(_while_node->input(3));
   }
 
   // 3 - check body graph
   {
     const auto body_graph = _while_node->body_graph();
 
-    if (loco::input_nodes(body_graph).size() != 5)
-      return false;
+    CHECK_OR_FALSE(loco::input_nodes(body_graph).size() == 5);
+    CHECK_OR_FALSE(loco::output_nodes(body_graph).size() == 5);
 
-    if (loco::output_nodes(body_graph).size() != 5)
-      return false;
+    /*  Let's check the bottom part of the body graph
+     *           --------------------[Add_6]------------------------------
+     *                              /     \
+     *                             /       \
+     *                         [Reshape]   [Out_5]
+     *                             |
+     *                           [Out_1]
+     */
 
     const auto body_nodes = loco::active_nodes(loco::output_nodes(body_graph));
 
-    // Save all nodes according its types
-    std::vector<luci::CircleFullyConnected *> fc_nodes;
-    std::vector<luci::CircleSplit *> split_nodes;
-    std::vector<luci::CircleLogistic *> logistic_nodes;
-    std::vector<luci::CircleMul *> mul_nodes;
-    std::vector<luci::CircleAdd *> add_nodes;
-    std::vector<luci::CircleSub *> sub_nodes;
-    std::vector<luci::CircleReshape *> reshape_nodes;
-    std::vector<luci::CircleGather *> gather_nodes;
-    std::vector<luci::CircleTanh *> tanh_nodes;
-    std::vector<luci::CircleSplitOut *> split_out_nodes;
-
-    for (auto node : body_nodes)
+    for (auto node : loco::active_nodes(loco::output_nodes(body_graph)))
     {
-      auto circle_node = loco::must_cast<luci::CircleNode *>(node);
-      switch (circle_node->opcode())
-      {
-        case luci::CircleOpcode::CIRCLECONST:
-        case luci::CircleOpcode::CIRCLEINPUT:
-        case luci::CircleOpcode::CIRCLEOUTPUT:
-        case luci::CircleOpcode::CIRCLEOUTPUTEXCLUDE:
-          break;
-        case luci::CircleOpcode::FULLY_CONNECTED:
-          fc_nodes.push_back(loco::must_cast<luci::CircleFullyConnected *>(circle_node));
-          break;
-        case luci::CircleOpcode::SPLIT:
-          split_nodes.push_back(loco::must_cast<luci::CircleSplit *>(circle_node));
-          break;
-        case luci::CircleOpcode::LOGISTIC:
-          logistic_nodes.push_back(loco::must_cast<luci::CircleLogistic *>(circle_node));
-          break;
-        case luci::CircleOpcode::MUL:
-          mul_nodes.push_back(loco::must_cast<luci::CircleMul *>(circle_node));
-          break;
-        case luci::CircleOpcode::ADD:
-          add_nodes.push_back(loco::must_cast<luci::CircleAdd *>(circle_node));
-          break;
-        case luci::CircleOpcode::SUB:
-          sub_nodes.push_back(loco::must_cast<luci::CircleSub *>(circle_node));
-          break;
-        case luci::CircleOpcode::RESHAPE:
-          reshape_nodes.push_back(loco::must_cast<luci::CircleReshape *>(circle_node));
-          break;
-        case luci::CircleOpcode::GATHER:
-          gather_nodes.push_back(loco::must_cast<luci::CircleGather *>(circle_node));
-          break;
-        case luci::CircleOpcode::TANH:
-          tanh_nodes.push_back(loco::must_cast<luci::CircleTanh *>(circle_node));
-          break;
-        case luci::CircleOpcode::CIRCLESPLITOUT:
-          split_out_nodes.push_back(loco::must_cast<luci::CircleSplitOut *>(circle_node));
-          break;
-        default:
-          return false;
-      }
+      reshape = dynamic_cast<luci::CircleReshape *>(node);
+      if (reshape)
+        break;
     }
+    CHECK_OR_FALSE(reshape != nullptr);
 
-    // Check number of nodes
-    if (fc_nodes.size() != 2 or mul_nodes.size() != 3 or logistic_nodes.size() != 2 or
-        split_nodes.size() != 2 or add_nodes.size() != 6 or gather_nodes.size() != 1 or
-        reshape_nodes.size() != 1 or sub_nodes.size() != 1 or tanh_nodes.size() != 1 or
-        split_out_nodes.size() != 6)
-      return false;
+    add_6 = loco::must_cast<luci::CircleAdd *>(reshape->tensor());
 
-    // Check structure
-    // TODO: add more checks
+    /*  Let's check the next bottom part above add_6
+     *    |      [Logistic_2]                                              [Tanh]
+     *     \     /           \                                               |
+     *      [Mul_1]          [Sub (with const)]                              |
+     *       \                                 \                             |
+     *        \                                 ---------------------------[Mul_3]
+     *         \                                                           /
+     *          \                                                         /
+     *           --------------------[Add_6]------------------------------
+     */
+
+    CHECK_OR_FALSE(luci::fill(&mul_1, &mul_3).with_args_of(add_6));
+    CHECK_OR_FALSE(luci::fill(&sub_with_const, &tanh).with_args_of(mul_3));
+
+    logistic_2 = loco::must_cast<luci::CircleLogistic *>(sub_with_const->y());
+
+    /*  Let's check the next bottom part above logistic_2
+     *    |        |          |    \                                   [Split_2]
+     *    |    [Add_1] ----------------------------------------------/    |     |
+     *    |         |         |    |                                      |     |
+     *    |         |         |    ------------------------------------[Add_4]  |
+     *    |         |         |                                           |     |
+     *    |         |         |                                   [Logistic_1]  |
+     *    |         |         |                                          |      |
+     *    |         |         ----------------------------------------[Mul_2]   |
+     *    |         |                                                    \      /
+     *    |         |                                                     [Add_5]
+     *    |         |                                                        |
+     *    |      [Logistic_2]                                              [Tanh]
+     *     \     /           \                                               |
+     */
+    add_5 = loco::must_cast<luci::CircleAdd *>(tanh->x());
+    add_1 = loco::must_cast<luci::CircleAdd *>(logistic_2->x());
+    CHECK_OR_FALSE(luci::fill(&split_1_out, &split_2_out).with_commutative_args_of(add_1));
+    CHECK_OR_FALSE(luci::fill(&split_2_out, &mul_2).with_commutative_args_of(add_5));
+    split_2 = loco::must_cast<luci::CircleSplit *>(split_2_out->input());
+    CHECK_OR_FALSE(luci::fill(&split_1_out, &logistic_1).with_commutative_args_of(mul_2));
+    split_1 = loco::must_cast<luci::CircleSplit *>(split_1_out->input());
+    add_4 = loco::must_cast<luci::CircleAdd *>(logistic_1->x());
+    CHECK_OR_FALSE(luci::fill(&split_1_out, &split_2_out).with_args_of(add_4));
+
+   /*  Let's check the remainig top part
+    *  [In_1]                     [In_2]--->[Add_2 (with Const)]--->[Out_2]            [In_3]
+    *    |    \                                                      |                   |
+    *    |     \                                         [In_4]---[Gather]      [Add_3 (with Const)]
+    *    |     [FullyConnected_1]                          |         |                   |
+    *    |               |                              [Out_4]      |                [Out_3]
+    *    |           [Split_1]                                 [FullyConnected_2]
+    *    |         /         |   \                                       |
+    *    |        |          |    \                                   [Split_2]
+    *    |    [Add_1] ----------------------------------------------/    |     |
+    */
+    fc_1 = loco::must_cast<luci::CircleFullyConnected *>(split_1->input());
+    fc_2 = loco::must_cast<luci::CircleFullyConnected *>(split_2->input());
+   
     {
-      // 1 - Check Split ops
-      // Both has FC nodes as input
-      // Axis is const
-      for (auto node : split_nodes)
-      {
-        if (dynamic_cast<luci::CircleConst *>(node->split_dim()) == nullptr or
-            dynamic_cast<luci::CircleFullyConnected *>(node->input()) == nullptr)
-          return false;
-      }
-
-      // 2 - Check Logistic ops
-      // Add is input node for both nodes
-      for (auto node : logistic_nodes)
-      {
-        if (dynamic_cast<luci::CircleAdd *>(node->x()) == nullptr)
-          return false;
-      }
-
-      // 3 - Check Sub
-      // Const - is first input node
-      // Logistic - is second input node
-      for (auto node : sub_nodes)
-      {
-        if (dynamic_cast<luci::CircleLogistic *>(node->y()) == nullptr or
-            dynamic_cast<luci::CircleConst *>(node->x()) == nullptr)
-          return false;
-      }
-
-      // 4 - Check Add
-      // Mul or Const or Input or Split ops can be input nodes
-      // Mul - 3 times as input
-      // Const - 2 times as input
-      // Input - 2 times as input
-      // Split - 5 times as input
-      {
-        int num_mul = 0;
-        int num_const = 0;
-        int num_input = 0;
-        int num_split = 0;
-        for (auto node : add_nodes)
-        {
-          auto x_node = dynamic_cast<luci::CircleNode *>(node->x());
-          auto y_node = dynamic_cast<luci::CircleNode *>(node->y());
-          switch (x_node->opcode())
-          {
-            case luci::CircleOpcode::CIRCLECONST:
-              num_const++;
-              break;
-            case luci::CircleOpcode::CIRCLEINPUT:
-              num_input++;
-              break;
-            case luci::CircleOpcode::CIRCLESPLITOUT:
-              num_split++;
-              break;
-            case luci::CircleOpcode::MUL:
-              num_mul++;
-              break;
-            default:
-              return false;
-          }
-
-          switch (y_node->opcode())
-          {
-            case luci::CircleOpcode::CIRCLECONST:
-              num_const++;
-              break;
-            case luci::CircleOpcode::CIRCLEINPUT:
-              num_input++;
-              break;
-            case luci::CircleOpcode::CIRCLESPLITOUT:
-              num_split++;
-              break;
-            case luci::CircleOpcode::MUL:
-              num_mul++;
-              break;
-            default:
-              return false;
-          }
-        }
-        if (num_mul != 3 or num_split != 5 or num_const != 2 or num_input != 2)
-          return false;
-      }
-    }
-
-    // 5 - Check Mul
-    // Logistic or Tanh or Sub or Input or Split ops can be input nodes
-    // Logistic - 2 times as input
-    // Tanh - 1 times as input
-    // Sub - 1 times as input
-    // Split - 1 times as input
-    // Input - 1 times as input
-    {
-      int num_logistic = 0;
-      int num_tanh = 0;
-      int num_sub = 0;
-      int num_split = 0;
-      int num_input = 0;
-      for (auto node : mul_nodes)
-      {
-        auto x_node = dynamic_cast<luci::CircleNode *>(node->x());
-        auto y_node = dynamic_cast<luci::CircleNode *>(node->y());
-        switch (x_node->opcode())
-        {
-          case luci::CircleOpcode::LOGISTIC:
-            num_logistic++;
-            break;
-          case luci::CircleOpcode::CIRCLEINPUT:
-            num_input++;
-            break;
-          case luci::CircleOpcode::CIRCLESPLITOUT:
-            num_split++;
-            break;
-          case luci::CircleOpcode::TANH:
-            num_tanh++;
-            break;
-          case luci::CircleOpcode::SUB:
-            num_sub++;
-            break;
-          default:
-            return false;
-        }
-
-        switch (y_node->opcode())
-        {
-          case luci::CircleOpcode::LOGISTIC:
-            num_logistic++;
-            break;
-          case luci::CircleOpcode::CIRCLEINPUT:
-            num_input++;
-            break;
-          case luci::CircleOpcode::CIRCLESPLITOUT:
-            num_split++;
-            break;
-          case luci::CircleOpcode::TANH:
-            num_tanh++;
-            break;
-          case luci::CircleOpcode::SUB:
-            num_sub++;
-            break;
-          default:
-            return false;
-        }
-      }
-      if (num_logistic != 2 or num_tanh != 1 or num_sub != 1 or num_split != 1 or num_input != 1)
+      _weight_ih = loco::must_cast<luci::CircleConst *>(fc_1->weights());
+      _bias_ih = dynamic_cast<luci::CircleConst *>(fc_1->bias());
+      _weight_hh = loco::must_cast<luci::CircleConst *>(fc_2->weights());
+      _bias_hh = dynamic_cast<luci::CircleConst *>(fc_2->bias());
+      if (_weight_ih == nullptr or _weight_hh == nullptr)
         return false;
     }
-
-    // 6 - Check Gather
-    // Gather has two CircleInput as input
-    {
-      for (auto node : gather_nodes)
-      {
-        if (dynamic_cast<luci::CircleInput *>(node->indices()) == nullptr)
-          return false;
-
-        if (dynamic_cast<luci::CircleInput *>(node->params()) == nullptr)
-          return false;
-      }
-    }
-
-    // 7 - Check Tanh
-    // Input is CircleAdd
-    {
-      for (auto node : tanh_nodes)
-      {
-        if (dynamic_cast<luci::CircleAdd *>(node->x()) == nullptr)
-          return false;
-      }
-    }
-
-    // Find input and hidden FC weights and biases
-    for (auto node : body_nodes)
-    {
-      auto *fc_node = dynamic_cast<luci::CircleFullyConnected *>(node);
-      if (fc_node == nullptr)
-        continue;
-
-      const auto input_node = dynamic_cast<luci::CircleNode *>(fc_node->input());
-      if (input_node == nullptr)
-        return false;
-
-      // For input hidden FullyConnected - input node is CircleInput node
-      if (dynamic_cast<luci::CircleInput *>(input_node) != nullptr)
-      {
-        _weight_ih = dynamic_cast<luci::CircleConst *>(fc_node->weights());
-        _bias_ih = dynamic_cast<luci::CircleConst *>(fc_node->bias());
-      }
-      // For hidden hidden FullyConnected - input node is CircleGather node
-      else if (dynamic_cast<luci::CircleGather *>(input_node) != nullptr)
-      {
-        _weight_hh = dynamic_cast<luci::CircleConst *>(fc_node->weights());
-        _bias_hh = dynamic_cast<luci::CircleConst *>(fc_node->bias());
-      }
-      else
-      {
-        return false;
-      }
-    }
-
-    if (_weight_ih == nullptr or _weight_hh == nullptr)
-      return false;
-  }
+ }
 
   return true;
 }
@@ -485,7 +293,7 @@ bool GRUPattern1::matched()
 class FuseGRU final
 {
 public:
-  FuseGRU(const GRUPatternBase *p) : _p(p) {}
+  FuseGRU(const GRUPattern *p) : _p(p) {}
 
 public:
   void apply(void);
@@ -494,7 +302,7 @@ private:
   luci::CircleGRU *create_circle_gru(loco::Graph *graph);
 
 private:
-  const GRUPatternBase *_p;
+  const GRUPattern *_p;
 };
 
 template <loco::DataType T>
@@ -576,7 +384,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   }
   else
   {
-    bias_ih_cloned = _p->_pattern_last_node->graph()->nodes()->create<luci::CircleOutputExclude>();
+    bias_ih_cloned = graph->nodes()->create<luci::CircleOutputExclude>();
   }
 
   luci::CircleNode *bias_hh_cloned = nullptr;
@@ -587,7 +395,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   }
   else
   {
-    bias_hh_cloned = _p->_pattern_last_node->graph()->nodes()->create<luci::CircleOutputExclude>();
+    bias_hh_cloned = graph->nodes()->create<luci::CircleOutputExclude>();
   }
 
   auto hidden_input_cloned = clone_circleconst(_p->_hidden_input, graph);
@@ -597,7 +405,7 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
   luci::copy_common_attributes(_p->_less_const, less_const_cloned);
 
   // Create and configure new CircleGRU operation.
-  auto circle_gru = _p->_while_node->graph()->nodes()->create<luci::CircleGRU>();
+  auto circle_gru = graph->nodes()->create<luci::CircleGRU>();
   circle_gru->input(_p->_ifm);
   circle_gru->hidden_hidden(weight_hh_cloned);
   circle_gru->hidden_input(weight_ih_cloned);
@@ -607,14 +415,14 @@ luci::CircleGRU *FuseGRU::create_circle_gru(loco::Graph *graph)
 
   // Note: Now support only returnSequences = false
   circle_gru->returnSequences(false);
-  circle_gru->name(_while_node->name() + "_FusedCircleGRU");
+  circle_gru->name(_p->_while_node->name() + "_FusedCircleGRU");
 
   return circle_gru;
 }
 
 void FuseGRU::apply()
 {
-  auto graph = _p->_pattern_last_node->graph();
+  auto graph = _p->_while_out_node->graph();
 
   auto gru_out = create_circle_gru(graph);
 
@@ -625,7 +433,7 @@ void FuseGRU::apply()
 
   luci::add_origin(gru_out, luci::composite_origin(origin_vec));
 
-  replace(_p->_pattern_last_node).with(gru_out);
+  replace(_p->_while_out_node).with(gru_out);
 }
 
 } // namespace
@@ -638,7 +446,7 @@ bool fuse_gru(luci::CircleWhileOut *while_out_node)
   assert(while_out_node);
 
   // check first pattern
-  GRUPattern1 pattern(while_out_node);
+  GRUPattern pattern(while_out_node);
   if (pattern.matched())
   {
     FuseGRU fuse(&pattern);
