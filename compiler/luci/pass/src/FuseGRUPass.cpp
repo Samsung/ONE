@@ -263,20 +263,18 @@ bool GRUPattern::matched()
     add_4 = loco::must_cast<luci::CircleAdd *>(logistic_1->x());
     CHECK_OR_FALSE(luci::fill(&split_1_out, &split_2_out).with_args_of(add_4));
 
-   /*  Let's check the remainig top part
-    *  [In_1]                     [In_2]--->[Add_2 (with Const)]--->[Out_2]            [In_3]
-    *    |    \                                                      |                   |
-    *    |     \                                         [In_4]---[Gather]      [Add_3 (with Const)]
-    *    |     [FullyConnected_1]                          |         |                   |
-    *    |               |                              [Out_4]      |                [Out_3]
-    *    |           [Split_1]                                 [FullyConnected_2]
-    *    |         /         |   \                                       |
-    *    |        |          |    \                                   [Split_2]
-    *    |    [Add_1] ----------------------------------------------/    |     |
-    */
+    /*  Let's check the remainig top part
+     *  [In_1]                     [In_2]--->[Add_2 (with Const)]--->[Out_2]            [In_3]
+     *    |    \                                                      |                   |
+     *    |     \                                         [In_4]---[Gather]      [Add_3 (with
+     * Const)] |     [FullyConnected_1]                          |         |                   | |
+     * |                              [Out_4]      |                [Out_3] |           [Split_1]
+     * [FullyConnected_2] |         /         |   \                                       | | | | \
+     * [Split_2] |    [Add_1] ----------------------------------------------/    |     |
+     */
     fc_1 = loco::must_cast<luci::CircleFullyConnected *>(split_1->input());
     fc_2 = loco::must_cast<luci::CircleFullyConnected *>(split_2->input());
-   
+
     {
       _weight_ih = loco::must_cast<luci::CircleConst *>(fc_1->weights());
       _bias_ih = dynamic_cast<luci::CircleConst *>(fc_1->bias());
@@ -285,7 +283,7 @@ bool GRUPattern::matched()
       if (_weight_ih == nullptr or _weight_hh == nullptr)
         return false;
     }
- }
+  }
 
   return true;
 }
