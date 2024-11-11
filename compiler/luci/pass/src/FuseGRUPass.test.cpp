@@ -300,6 +300,7 @@ public:
     _add_node_6->y(_mul_node_3);
 
     _reshape_node->shape(_add_node_6);
+    _reshape_node->tensor(_add_node_6);
 
     _body_output_node_3->from(_reshape_node);
   }
