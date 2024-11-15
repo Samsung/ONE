@@ -78,7 +78,8 @@ TEST(CKer_Utils, ShapeIterator_basic)
     // test and demostrate the usage of iterators with STL algos
     const auto first = begin(test_shape);
     const auto last = end(test_shape);
-    const auto shape_elems = std::accumulate(first, last, 1, std::multiplies<ShapeIterator::value_type>{});
+    const auto shape_elems =
+      std::accumulate(first, last, 1, std::multiplies<ShapeIterator::value_type>{});
     EXPECT_EQ(shape_elems, test_shape.FlatSize());
   }
 
@@ -105,4 +106,3 @@ TEST(CKer_Utils, neg_ShapeIterator_empty_shape)
     EXPECT_EQ(ss.str(), "[]");
   }
 }
-

@@ -494,9 +494,12 @@ inline std::ostream &operator<<(std::ostream &os, const Shape &shape)
                       return std::move(joined).append(std::to_string(dim)).append(",");
                     });
 
-  if (formatted.back() == '[') {
+  if (formatted.back() == '[')
+  {
     formatted.push_back(']');
-  } else {
+  }
+  else
+  {
     formatted.back() = ']';
   }
 
