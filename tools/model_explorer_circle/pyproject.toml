@@ -1,0 +1,7 @@
+[project]
+name = "model-explore-circle"
+version = "0.0.1"
+
+dependencies = [
+    "ai-edge-model-explorer",
+]
