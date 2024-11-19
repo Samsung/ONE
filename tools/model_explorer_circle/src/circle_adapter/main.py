@@ -79,7 +79,16 @@ class CicleAdapter(Adapter):
         for idx, op in enumerate(sub_graph.operators):
             name = self.opcode_to_name(
                 self.model.operatorCodes[op.opcodeIndex].builtinCode)
-            me_node = graph_builder.GraphNode(id=f'{idx}', label=name)
+
+            output_tensor_id = op.outputs[0]
+            output_tensor = sub_graph.tensors[output_tensor_id]
+            # Construct namespace following output tensor's name
+            ns = output_tensor.name.decode("utf-8")
+            if '/' in ns:
+                ns = '/'.join(ns.strip('/').split('/')[:2])
+
+            me_node = graph_builder.GraphNode(
+                id=f'{idx}', label=name, namespace=ns)
             # Connect edges from inputs to this operator node
             for i, tensor_id in enumerate(op.inputs):
                 if tensor_id < 0:
