@@ -129,6 +129,13 @@ class CicleAdapter(Adapter):
             me_node = graph_builder.GraphNode(
                 id=f'{idx}', label=name, namespace=ns)
 
+            # Add operator attributes
+            if '__dict__' in dir(op.builtinOptions):
+                for k, v in op.builtinOptions.__dict__.items():
+                    me_node.attrs.append(
+                        graph_builder.KeyValue(key=k, value=f'{v}')
+                    )
+
             # Add ouput tensor metadata
             output_tensor_type = self.tensor_type_to_string(output_tensor.type)
             output_tensor_shape = f'{output_tensor.shape.tolist()}'
