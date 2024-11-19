@@ -19,6 +19,8 @@ class CicleAdapter(Adapter):
             v: k for k, v in circle_schema.BuiltinOperator.__dict__.items()}
         # tensor_id -> node_id/output_id
         self.tensor_id_to_src = {}
+        self.dict_tensor_type_to_string = {
+            v: k for k, v in circle_schema.TensorType.__dict__.items()}
 
     def load_model(self, model_path: str) -> None:
         """Load the model from the given path."""
@@ -30,6 +32,10 @@ class CicleAdapter(Adapter):
     def opcode_to_name(self, opcode: int) -> str:
         """Convert the opcode to its name."""
         return self.dict_opcode_to_name[opcode]
+
+    def tensor_type_to_string(self, tensor_type: int) -> str:
+        """Convert a builtin opcode integer to its string representation."""
+        return self.dict_tensor_type_to_string[tensor_type].lower()
 
     def add_map_tensor_to_src(self, tensor_id: int, source_id: int, output_id: int) -> None:
         """Add mapping between tensor id and its source."""
@@ -57,6 +63,23 @@ class CicleAdapter(Adapter):
         for idx, tensor_id in enumerate(sub_graph.inputs):
             self.add_map_tensor_to_src(tensor_id=tensor_id,
                                        source_id=input_id, output_id=tensor_id)
+            # Add metadata to the input node
+            tensor = sub_graph.tensors[tensor_id]
+            tensor_type = self.tensor_type_to_string(tensor.type)
+            tensor_shape = f'{tensor.shape.tolist()}'
+            me_node.outputsMetadata.append(
+                graph_builder.MetadataItem(
+                    id=f'{idx}',
+                    attrs=[
+                        graph_builder.KeyValue(
+                            key='shape', value=tensor_type + tensor_shape),
+                        graph_builder.KeyValue(
+                            key='tensor_index', value=f'{tensor_id}'),
+                        graph_builder.KeyValue(
+                            key='tensor_name', value=tensor.name.decode('utf-8')),
+                    ],
+                )
+            )
         me_graph.nodes.append(me_node)
 
         # Create tensor_id to source map
@@ -73,6 +96,22 @@ class CicleAdapter(Adapter):
                 me_node = graph_builder.GraphNode(
                     id=f'{input_id + tensor_id}', label='pseudo_const',
                     namespace=tensor.name.decode('utf-8'))
+                # Add metadata to the pseudo const node
+                tensor_type = self.tensor_type_to_string(tensor.type)
+                tensor_shape = f'{tensor.shape.tolist()}'
+                me_node.outputsMetadata.append(
+                    graph_builder.MetadataItem(
+                        id='0',
+                        attrs=[
+                            graph_builder.KeyValue(
+                                key='shape', value=tensor_type + tensor_shape),
+                            graph_builder.KeyValue(
+                                key='tensor_index', value=f'{tensor_id}'),
+                            graph_builder.KeyValue(
+                                key='tensor_name', value=tensor.name.decode('utf-8')),
+                        ]
+                    )
+                )
                 me_graph.nodes.append(me_node)
 
         # Create operator nodes
@@ -89,6 +128,24 @@ class CicleAdapter(Adapter):
 
             me_node = graph_builder.GraphNode(
                 id=f'{idx}', label=name, namespace=ns)
+
+            # Add ouput tensor metadata
+            output_tensor_type = self.tensor_type_to_string(output_tensor.type)
+            output_tensor_shape = f'{output_tensor.shape.tolist()}'
+            me_node.outputsMetadata.append(
+                graph_builder.MetadataItem(
+                    id='0',
+                    attrs=[
+                        graph_builder.KeyValue(
+                            key='shape', value=output_tensor_type + output_tensor_shape),
+                        graph_builder.KeyValue(
+                            key='tensor_index', value=f'{output_tensor_id}'),
+                        graph_builder.KeyValue(
+                            key='tensor_name', value=output_tensor.name.decode('utf-8')),
+                    ]
+                )
+            )
+
             # Connect edges from inputs to this operator node
             for i, tensor_id in enumerate(op.inputs):
                 if tensor_id < 0:
