@@ -164,7 +164,10 @@ bool has_single_element(const luci::CircleConst *node)
   }
 
   if (has_single_elem)
-    assert(node->rank() == 0 or node->rank() == 1); // FIX_ME_UNLESS
+  {
+    for (uint32_t i = 0; i < node->rank(); i++)
+      assert(node->dim(i).value() == 1); // FIX_ME_UNLESS
+  }
 
   return has_single_elem;
 }
