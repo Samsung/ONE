@@ -79,18 +79,31 @@ try:
                 "lib/" if product_dir != DEFAULT_PRODUCT_DIR else target_arch +
                 '-linux.release/out/lib')
 
-        product_dir, so_core_dir = get_directories()
+        product_dir, so_base_dir = get_directories()
 
-        for so in os.listdir(so_core_dir):
+        for so in os.listdir(so_base_dir):
             if so.endswith(".so"):
                 so_list.append('native/' + so)
-                src_path = os.path.join(so_core_dir, so)
+                src_path = os.path.join(so_base_dir, so)
                 tgt_path = os.path.join(arch_path, so)
                 shutil.copy(src_path, tgt_path)
                 print(f"Copied {src_path} to {tgt_path}")
 
+        # onert core library
+        so_core_dir = os.path.join(so_base_dir, 'nnfw')
+        if os.path.exists(so_core_dir):
+            so_core_tgt_dir = os.path.join(arch_path, 'nnfw')
+            os.makedirs(so_core_tgt_dir)
+            for so in os.listdir(so_core_dir):
+                if so.endswith(".so"):
+                    so_list.append('native/nnfw/' + so)
+                    src_path = os.path.join(so_core_dir, so)
+                    tgt_path = os.path.join(so_core_tgt_dir, so)
+                    shutil.copy(src_path, tgt_path)
+                    print(f"Copied {src_path} to {tgt_path}")
+
         # onert backend library
-        so_backend_dir = os.path.join(so_core_dir, 'nnfw/backend')
+        so_backend_dir = os.path.join(so_base_dir, 'nnfw/backend')
         if os.path.exists(so_backend_dir):
             so_backend_tgt_dir = os.path.join(arch_path, 'nnfw/backend')
             os.makedirs(so_backend_tgt_dir)
@@ -103,7 +116,7 @@ try:
                     print(f"Copied {src_path} to {tgt_path}")
 
         # onert odc library
-        so_odc_dir = os.path.join(so_core_dir, 'nnfw/odc')
+        so_odc_dir = os.path.join(so_base_dir, 'nnfw/odc')
         if os.path.exists(so_odc_dir):
             so_odc_tgt_dir = os.path.join(arch_path, 'nnfw/odc')
             os.makedirs(so_odc_tgt_dir)
