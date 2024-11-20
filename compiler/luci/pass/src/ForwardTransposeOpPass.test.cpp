@@ -30,6 +30,88 @@ namespace
 
 using namespace luci::test;
 
+template <typename T> class BothTransposeBinaryOpGraphlet
+{
+public:
+  BothTransposeBinaryOpGraphlet() = default;
+
+public:
+  virtual ~BothTransposeBinaryOpGraphlet() = default;
+
+public:
+  // TODO Rename shape_in to shape_const
+  void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeI32 perm)
+  {
+    std::vector<uint32_t> shape_in_v = shape_in;
+    std::vector<int32_t> perm_v = perm;
+
+    _perm = g->nodes()->create<luci::CircleConst>();
+    _transpose = g->nodes()->create<luci::CircleTranspose>();
+    _binary = g->nodes()->create<T>();
+
+    _perm->dtype(loco::DataType::S32);
+    _perm->rank(1);
+    _perm->dim(0).set(perm_v.size());
+    _perm->shape_status(luci::ShapeStatus::VALID);
+
+    // values
+    const auto size = perm_v.size();
+    _perm->size<loco::DataType::S32>(size);
+    for (uint32_t i = 0; i < size; i++)
+      _perm->at<loco::DataType::S32>(i) = perm_v[i];
+
+    _perm->name("transpose_perm");
+    _transpose->name("transpose");
+    _binary->name("binary");
+  }
+
+  luci::CircleTranspose *transpose(void) { return _transpose; }
+
+protected:
+  luci::CircleTranspose *_transpose = nullptr;
+  T *_binary = nullptr;
+  luci::CircleConst *_perm = nullptr;
+};
+
+using BothTransposeAddGraphlet = BothTransposeBinaryOpGraphlet<luci::CircleAdd>;
+using BothTransposeMulGraphlet = BothTransposeBinaryOpGraphlet<luci::CircleMul>;
+
+class ForwardBothTransposeToAddGraph : public TestIOGraph, public BothTransposeAddGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out, const ShapeI32 shape_perm)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    BothTransposeAddGraphlet::init(g(), shape_in, shape_perm);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _binary->x(_transpose);
+    _binary->y(_transpose);
+
+    output()->from(_binary);
+  }
+};
+
+class ForwardBothTransposeToMulGraph : public TestIOGraph, public BothTransposeMulGraphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out, const ShapeI32 shape_perm)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    BothTransposeMulGraphlet::init(g(), shape_in, shape_perm);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _binary->x(_transpose);
+    _binary->y(_transpose);
+
+    output()->from(_binary);
+  }
+};
+
 template <typename T> class TransposeBinaryOpGraphlet
 {
 public:
@@ -130,7 +212,7 @@ public:
     _transpose->a(input());
     _transpose->perm(_perm);
     _binary->x(_transpose);
-    _binary->y(_transpose);
+    _binary->y(input());
 
     output()->from(_binary);
   }
@@ -203,6 +285,24 @@ void run_phase(loco::Graph *g)
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
   phase_runner.run(phase);
 }
+
+class ForwardBothTransposeToAddGraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardBothTransposeToAddGraph _graph;
+};
+
+class ForwardBothTransposeToMulGraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardBothTransposeToMulGraph _graph;
+};
 
 class ForwardTransposeToAddGraphTest : public ::testing::Test
 {
@@ -312,6 +412,72 @@ TEST_F(ForwardTransposeToAddGraphTest, forward_add_yx)
   EXPECT_EQ(64, mul_const->dim(1).value());
   EXPECT_EQ(51, mul_const->dim(2).value());
   EXPECT_EQ(1, mul_const->dim(3).value());
+}
+
+TEST_F(ForwardBothTransposeToAddGraphTest, forward_add)
+{
+  _graph.init({1, 64, 51, 1}, {1, 1, 51, 64}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto add = dynamic_cast<luci::CircleAdd *>(transpose->a());
+  EXPECT_NE(nullptr, add);
+  EXPECT_EQ(4, add->rank());
+  EXPECT_EQ(1, add->dim(0).value());
+  EXPECT_EQ(64, add->dim(1).value());
+  EXPECT_EQ(51, add->dim(2).value());
+  EXPECT_EQ(1, add->dim(3).value());
+}
+
+TEST_F(ForwardBothTransposeToAddGraphTest, forward_add_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {1, 1, 51, 64}, {0, 3, 2, 1});
+
+  _graph.transpose()->perm(_graph.input());
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
+}
+
+TEST_F(ForwardBothTransposeToMulGraphTest, forward_mul)
+{
+  _graph.init({1, 64, 51, 1}, {1, 1, 51, 64}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto mul = dynamic_cast<luci::CircleMul *>(transpose->a());
+  EXPECT_NE(nullptr, mul);
+  EXPECT_EQ(4, mul->rank());
+  EXPECT_EQ(1, mul->dim(0).value());
+  EXPECT_EQ(64, mul->dim(1).value());
+  EXPECT_EQ(51, mul->dim(2).value());
+  EXPECT_EQ(1, mul->dim(3).value());
+}
+
+TEST_F(ForwardBothTransposeToMulGraphTest, forward_mul_NEG)
+{
+  _graph.init({1, 64, 51, 1}, {1, 1, 51, 64}, {0, 3, 2, 1});
+
+  _graph.transpose()->perm(_graph.input());
+
+  luci::ForwardTransposeOpPass pass;
+  EXPECT_FALSE(pass.run(_graph.g()));
 }
 
 TEST_F(ForwardTransposeToMulGraphTest, forward_mul_xy)
