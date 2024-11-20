@@ -265,11 +265,19 @@ ir::Shape inferBatchMatMulShape(const ir::Shape &lhs_shape, const ir::Shape &rhs
   }
 
   // Fill in the matmul dimensions.
-  int lhs_rows_index = adj_x ? output_rank - 1 : output_rank - 2;
-  int rhs_cols_index = adj_y ? output_rank - 2 : output_rank - 1;
 
-  output_shape.append(extended_lhs_shape.dim(lhs_rows_index));
-  output_shape.append(extended_rhs_shape.dim(rhs_cols_index));
+  int lhs_rightmost = extended_lhs_shape.dim(output_rank - 1);
+  bool transposed = lhs_rightmost != 1 && lhs_rightmost == extended_rhs_shape.dim(output_rank - 1);
+
+  if (transposed) {
+    output_shape.append(extended_rhs_shape.dim(output_rank - 2));
+    output_shape.append(extended_lhs_shape.dim(output_rank - 2));
+  } else {
+    int lhs_rows_index = adj_x ? output_rank - 1 : output_rank - 2;
+    int rhs_cols_index = adj_y ? output_rank - 2 : output_rank - 1;
+    output_shape.append(extended_lhs_shape.dim(lhs_rows_index));
+    output_shape.append(extended_rhs_shape.dim(rhs_cols_index));
+  }
 
   return output_shape;
 }

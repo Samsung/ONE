@@ -20,6 +20,9 @@
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
+#include "../ExternalContext.h"
+#include "GGMLHelper.h"
+
 #include <exec/IFunction.h>
 
 namespace nnfw
@@ -49,11 +52,13 @@ public:
   void batchMatMulFloat32();
 
   void configure(const IPortableTensor *lhs, const IPortableTensor *rhs, bool adj_x, bool adj_y,
-                 IPortableTensor *output);
+                 IPortableTensor *output, ExternalContext *ctx);
 
   void run() override;
 
 private:
+  void runGGML();
+
   const IPortableTensor *_lhs;
   const IPortableTensor *_rhs;
   IPortableTensor *_output;
@@ -62,6 +67,8 @@ private:
   bool _adj_y;
 
   std::unique_ptr<nnfw::cker::BatchMatMul> _kernel;
+  ExternalContext *_ctx;
+  bool _transposed;
 };
 
 } // namespace ops

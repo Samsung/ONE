@@ -134,9 +134,13 @@ void GatherLayer::run()
     case OperandType::INT32:
       runByInputType<int32_t>();
       break;
-    case OperandType::QUANT_GGML_Q4_0:
+    case OperandType::QUANT_GGML_Q4_0: {
       runByGGMLQuantInputType();
+      auto newShape = _output->getShape();
+      newShape.extendRank(4);
+      _output->setShape(newShape);
       break;
+    }
     default:
       throw std::runtime_error("Gather: unsupported input data type");
   }

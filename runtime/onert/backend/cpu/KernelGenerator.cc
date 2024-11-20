@@ -1231,7 +1231,7 @@ void KernelGenerator::visit(const ir::operation::BatchMatMul &node)
 
   auto fn = std::make_unique<ops::BatchMatMulLayer>();
 
-  fn->configure(lhs_tensor, rhs_tensor, adj_x, adj_y, output_tensor);
+  fn->configure(lhs_tensor, rhs_tensor, adj_x, adj_y, output_tensor, _external_context.get());
   _return_fn = std::move(fn);
 }
 

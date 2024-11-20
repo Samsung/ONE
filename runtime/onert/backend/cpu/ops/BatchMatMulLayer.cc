@@ -29,7 +29,7 @@ namespace ops
 
 BatchMatMulLayer::BatchMatMulLayer()
   : _lhs(nullptr), _rhs(nullptr), _output(nullptr), _adj_x(false), _adj_y(false),
-    _kernel(new nnfw::cker::BatchMatMul())
+    _kernel(new nnfw::cker::BatchMatMul()), _ctx{nullptr}, _transposed(false)
 {
   // DO NOTHING
 }
@@ -51,7 +51,7 @@ void BatchMatMulLayer::batchMatMulFloat32()
 }
 
 void BatchMatMulLayer::configure(const IPortableTensor *lhs, const IPortableTensor *rhs, bool adj_x,
-                                 bool adj_y, IPortableTensor *output)
+                                 bool adj_y, IPortableTensor *output, ExternalContext *ctx)
 {
   assert(lhs != nullptr);
   assert(rhs != nullptr);
@@ -62,13 +62,56 @@ void BatchMatMulLayer::configure(const IPortableTensor *lhs, const IPortableTens
   _adj_x = adj_x;
   _adj_y = adj_y;
   _output = output;
+  _ctx = ctx;
+
+  nnfw::cker::Shape lhs_shape = getShape(_lhs);
+  nnfw::cker::Shape rhs_shape = getShape(_rhs);
+  auto lhs_ndims = lhs_shape.DimensionsCount();
+  auto rhs_ndims = rhs_shape.DimensionsCount();
+  _transposed = lhs_ndims == rhs_ndims && lhs_shape.Dims(lhs_ndims - 1) == rhs_shape.Dims(rhs_ndims - 1);
+
+  if (_transposed)
+    ctx->initGgmlContext();
+}
+
+void BatchMatMulLayer::runGGML()
+{
+  // convert tensor
+  auto lhs = getGGMLTensor(_lhs);
+  auto rhs = getGGMLTensor(_rhs);
+  auto out = getGGMLTensor(_output);
+  {
+    out.op = GGML_OP_MUL_MAT;
+    out.src[0] = &lhs;
+    out.src[1] = &rhs;
+  }
+  auto *nodes = &out;
+
+  // create graph
+  struct ggml_cgraph graph;
+  {
+    memset(&graph, 0, sizeof(graph));
+    graph.n_nodes = 1;
+    graph.nodes = &nodes;
+  }
+
+  // get cplan
+  auto cplan = ggml_graph_plan(&graph, _ctx->maxNumThreads());
+  std::vector<uint8_t> buf(cplan.work_size);
+  cplan.work_data = buf.data();
+
+  // compute
+  ggml_graph_compute(&graph, &cplan);
 }
 
 void BatchMatMulLayer::run()
 {
   if ((_lhs->data_type() == OperandType::FLOAT32) && (_rhs->data_type() == OperandType::FLOAT32))
   {
-    batchMatMulFloat32();
+    if (_transposed)
+        runGGML();
+    else
+        batchMatMulFloat32();
   }
   else
   {
