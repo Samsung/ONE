@@ -19,7 +19,7 @@ from typing import Dict
 from model_explorer import Adapter, AdapterMetadata, ModelExplorerGraphs, graph_builder
 
 
-class CicleAdapter(Adapter):
+class CircleAdapter(Adapter):
     """Adapter class for Circle models."""
     metadata = AdapterMetadata(id='circle-adapter',
                                name='Circle adapter',
