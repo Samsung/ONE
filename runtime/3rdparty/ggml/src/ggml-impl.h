@@ -1,39 +1,3 @@
-/*
- * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/*
- * MIT License
- * Copyright (c) 2023-2024 The ggml authors
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 #pragma once
 
 #include "ggml.h"
@@ -46,98 +10,6 @@
 #include <stdbool.h>
 #include <string.h> // memcpy
 #include <math.h>   // fabsf
-
-#undef MIN
-#undef MAX
-
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-
-#if defined(_MSC_VER)
-
-#define m512bh(p) p
-#define m512i(p) p
-
-#else
-
-#define m512bh(p) (__m512bh)(p)
-#define m512i(p) (__m512i)(p)
-
-#endif
-
-/**
- * Converts brain16 to float32.
- *
- * The bfloat16 floating point format has the following structure:
- *
- *       ┌sign
- *       │
- *       │   ┌exponent
- *       │   │
- *       │   │      ┌mantissa
- *       │   │      │
- *       │┌──┴───┐┌─┴───┐
- *     0b0000000000000000 brain16
- *
- * Since bf16 has the same number of exponent bits as a 32bit float,
- * encoding and decoding numbers becomes relatively straightforward.
- *
- *       ┌sign
- *       │
- *       │   ┌exponent
- *       │   │
- *       │   │      ┌mantissa
- *       │   │      │
- *       │┌──┴───┐┌─┴───────────────────┐
- *     0b00000000000000000000000000000000 IEEE binary32
- *
- * For comparison, the standard fp16 format has fewer exponent bits.
- *
- *       ┌sign
- *       │
- *       │  ┌exponent
- *       │  │
- *       │  │    ┌mantissa
- *       │  │    │
- *       │┌─┴─┐┌─┴──────┐
- *     0b0000000000000000 IEEE binary16
- *
- * @see IEEE 754-2008
- */
-static inline float ggml_compute_bf16_to_fp32(ggml_bf16_t h) {
-    union {
-        float f;
-        uint32_t i;
-    } u;
-    u.i = (uint32_t)h.bits << 16;
-    return u.f;
-}
-
-/**
- * Converts float32 to brain16.
- *
- * This is binary identical with Google Brain float conversion.
- * Floats shall round to nearest even, and NANs shall be quiet.
- * Subnormals aren't flushed to zero, except perhaps when used.
- * This code should vectorize nicely if using modern compilers.
- */
-static inline ggml_bf16_t ggml_compute_fp32_to_bf16(float s) {
-    ggml_bf16_t h;
-    union {
-        float f;
-        uint32_t i;
-    } u;
-    u.f = s;
-    if ((u.i & 0x7fffffff) > 0x7f800000) { /* nan */
-        h.bits = (u.i >> 16) | 64; /* force to quiet */
-        return h;
-    }
-    h.bits = (u.i + (0x7fff + ((u.i >> 16) & 1))) >> 16;
-    return h;
-}
-
-#define GGML_FP32_TO_BF16(x) ggml_compute_fp32_to_bf16(x)
-#define GGML_BF16_TO_FP32(x) ggml_compute_bf16_to_fp32(x)
 
 #ifdef __cplusplus
 extern "C" {
@@ -165,27 +37,15 @@ extern "C" {
 #ifndef __F16C__
 #define __F16C__
 #endif
-#endif
-
-// __SSE3__ and __SSSE3__ are not defined in MSVC, but SSE3/SSSE3 are present when AVX/AVX2/AVX512 are available
-#if defined(_MSC_VER) && (defined(__AVX__) || defined(__AVX2__) || defined(__AVX512F__))
 #ifndef __SSE3__
 #define __SSE3__
 #endif
-#ifndef __SSSE3__
-#define __SSSE3__
-#endif
-#endif
-
-#if defined(__ARM_FEATURE_SVE)
-#include <arm_sve.h>
-#include <sys/prctl.h>
 #endif
 
 // 16-bit float
 // on Arm, we use __fp16
 // on x86, we use uint16_t
-#if defined(__ARM_NEON)
+#if defined(__ARM_NEON) && !defined(_MSC_VER)
 
 // if YCM cannot find <arm_neon.h>, make a symbolic link to it, for example:
 //
@@ -193,261 +53,7 @@ extern "C" {
 //
 #include <arm_neon.h>
 
-#ifdef _MSC_VER
-
-typedef uint16_t ggml_fp16_internal_t;
-
-#define ggml_vld1q_u32(w,x,y,z) { ((w) + ((uint64_t)(x) << 32)), ((y) + ((uint64_t)(z) << 32)) }
-
-#else
-
 typedef __fp16 ggml_fp16_internal_t;
-
-#define ggml_vld1q_u32(w,x,y,z) { (w), (x), (y), (z) }
-
-#endif // _MSC_VER
-
-#if !defined(__aarch64__)
-
-// 32-bit ARM compatibility
-
-// vaddvq_s16
-// vpaddq_s16
-// vpaddq_s32
-// vaddvq_s32
-// vaddvq_f32
-// vmaxvq_f32
-// vcvtnq_s32_f32
-// vzip1_u8
-// vzip2_u8
-
-inline static int32_t vaddvq_s16(int16x8_t v) {
-    return
-        (int32_t)vgetq_lane_s16(v, 0) + (int32_t)vgetq_lane_s16(v, 1) +
-        (int32_t)vgetq_lane_s16(v, 2) + (int32_t)vgetq_lane_s16(v, 3) +
-        (int32_t)vgetq_lane_s16(v, 4) + (int32_t)vgetq_lane_s16(v, 5) +
-        (int32_t)vgetq_lane_s16(v, 6) + (int32_t)vgetq_lane_s16(v, 7);
-}
-
-inline static int16x8_t vpaddq_s16(int16x8_t a, int16x8_t b) {
-    int16x4_t a0 = vpadd_s16(vget_low_s16(a), vget_high_s16(a));
-    int16x4_t b0 = vpadd_s16(vget_low_s16(b), vget_high_s16(b));
-    return vcombine_s16(a0, b0);
-}
-
-inline static int32x4_t vpaddq_s32(int32x4_t a, int32x4_t b) {
-    int32x2_t a0 = vpadd_s32(vget_low_s32(a), vget_high_s32(a));
-    int32x2_t b0 = vpadd_s32(vget_low_s32(b), vget_high_s32(b));
-    return vcombine_s32(a0, b0);
-}
-
-inline static int32_t vaddvq_s32(int32x4_t v) {
-    return vgetq_lane_s32(v, 0) + vgetq_lane_s32(v, 1) + vgetq_lane_s32(v, 2) + vgetq_lane_s32(v, 3);
-}
-
-inline static float vaddvq_f32(float32x4_t v) {
-    return vgetq_lane_f32(v, 0) + vgetq_lane_f32(v, 1) + vgetq_lane_f32(v, 2) + vgetq_lane_f32(v, 3);
-}
-
-inline static float vmaxvq_f32(float32x4_t v) {
-    return
-        MAX(MAX(vgetq_lane_f32(v, 0), vgetq_lane_f32(v, 1)),
-            MAX(vgetq_lane_f32(v, 2), vgetq_lane_f32(v, 3)));
-}
-
-inline static int32x4_t vcvtnq_s32_f32(float32x4_t v) {
-    int32x4_t res;
-
-    res[0] = roundf(vgetq_lane_f32(v, 0));
-    res[1] = roundf(vgetq_lane_f32(v, 1));
-    res[2] = roundf(vgetq_lane_f32(v, 2));
-    res[3] = roundf(vgetq_lane_f32(v, 3));
-
-    return res;
-}
-
-inline static uint8x8_t vzip1_u8(uint8x8_t a, uint8x8_t b) {
-    uint8x8_t res;
-
-    res[0] = a[0]; res[1] = b[0];
-    res[2] = a[1]; res[3] = b[1];
-    res[4] = a[2]; res[5] = b[2];
-    res[6] = a[3]; res[7] = b[3];
-
-    return res;
-}
-
-inline static uint8x8_t vzip2_u8(uint8x8_t a, uint8x8_t b) {
-    uint8x8_t res;
-
-    res[0] = a[4]; res[1] = b[4];
-    res[2] = a[5]; res[3] = b[5];
-    res[4] = a[6]; res[5] = b[6];
-    res[6] = a[7]; res[7] = b[7];
-
-    return res;
-}
-
-// vld1q_s16_x2
-// vld1q_u8_x2
-// vld1q_u8_x4
-// vld1q_s8_x2
-// vld1q_s8_x4
-// TODO: double-check these work correctly
-
-typedef struct ggml_int16x8x2_t {
-    int16x8_t val[2];
-} ggml_int16x8x2_t;
-
-inline static ggml_int16x8x2_t ggml_vld1q_s16_x2(const int16_t * ptr) {
-    ggml_int16x8x2_t res;
-
-    res.val[0] = vld1q_s16(ptr + 0);
-    res.val[1] = vld1q_s16(ptr + 8);
-
-    return res;
-}
-
-typedef struct ggml_uint8x16x2_t {
-    uint8x16_t val[2];
-} ggml_uint8x16x2_t;
-
-inline static ggml_uint8x16x2_t ggml_vld1q_u8_x2(const uint8_t * ptr) {
-    ggml_uint8x16x2_t res;
-
-    res.val[0] = vld1q_u8(ptr + 0);
-    res.val[1] = vld1q_u8(ptr + 16);
-
-    return res;
-}
-
-typedef struct ggml_uint8x16x4_t {
-    uint8x16_t val[4];
-} ggml_uint8x16x4_t;
-
-inline static ggml_uint8x16x4_t ggml_vld1q_u8_x4(const uint8_t * ptr) {
-    ggml_uint8x16x4_t res;
-
-    res.val[0] = vld1q_u8(ptr + 0);
-    res.val[1] = vld1q_u8(ptr + 16);
-    res.val[2] = vld1q_u8(ptr + 32);
-    res.val[3] = vld1q_u8(ptr + 48);
-
-    return res;
-}
-
-typedef struct ggml_int8x16x2_t {
-    int8x16_t val[2];
-} ggml_int8x16x2_t;
-
-inline static ggml_int8x16x2_t ggml_vld1q_s8_x2(const int8_t * ptr) {
-    ggml_int8x16x2_t res;
-
-    res.val[0] = vld1q_s8(ptr + 0);
-    res.val[1] = vld1q_s8(ptr + 16);
-
-    return res;
-}
-
-typedef struct ggml_int8x16x4_t {
-    int8x16_t val[4];
-} ggml_int8x16x4_t;
-
-inline static ggml_int8x16x4_t ggml_vld1q_s8_x4(const int8_t * ptr) {
-    ggml_int8x16x4_t res;
-
-    res.val[0] = vld1q_s8(ptr + 0);
-    res.val[1] = vld1q_s8(ptr + 16);
-    res.val[2] = vld1q_s8(ptr + 32);
-    res.val[3] = vld1q_s8(ptr + 48);
-
-    return res;
-}
-
-// NOTE: not tested
-inline static int8x16_t ggml_vqtbl1q_s8(int8x16_t a, uint8x16_t b) {
-    int8x16_t res;
-
-    res[ 0] = a[b[ 0]];
-    res[ 1] = a[b[ 1]];
-    res[ 2] = a[b[ 2]];
-    res[ 3] = a[b[ 3]];
-    res[ 4] = a[b[ 4]];
-    res[ 5] = a[b[ 5]];
-    res[ 6] = a[b[ 6]];
-    res[ 7] = a[b[ 7]];
-    res[ 8] = a[b[ 8]];
-    res[ 9] = a[b[ 9]];
-    res[10] = a[b[10]];
-    res[11] = a[b[11]];
-    res[12] = a[b[12]];
-    res[13] = a[b[13]];
-    res[14] = a[b[14]];
-    res[15] = a[b[15]];
-
-    return res;
-}
-
-// NOTE: not tested
-inline static uint8x16_t ggml_vqtbl1q_u8(uint8x16_t a, uint8x16_t b) {
-    uint8x16_t res;
-
-    res[ 0] = a[b[ 0]];
-    res[ 1] = a[b[ 1]];
-    res[ 2] = a[b[ 2]];
-    res[ 3] = a[b[ 3]];
-    res[ 4] = a[b[ 4]];
-    res[ 5] = a[b[ 5]];
-    res[ 6] = a[b[ 6]];
-    res[ 7] = a[b[ 7]];
-    res[ 8] = a[b[ 8]];
-    res[ 9] = a[b[ 9]];
-    res[10] = a[b[10]];
-    res[11] = a[b[11]];
-    res[12] = a[b[12]];
-    res[13] = a[b[13]];
-    res[14] = a[b[14]];
-    res[15] = a[b[15]];
-
-    return res;
-}
-
-#else
-
-#define ggml_int16x8x2_t  int16x8x2_t
-#define ggml_uint8x16x2_t uint8x16x2_t
-#define ggml_uint8x16x4_t uint8x16x4_t
-#define ggml_int8x16x2_t  int8x16x2_t
-#define ggml_int8x16x4_t  int8x16x4_t
-
-#define ggml_vld1q_s16_x2 vld1q_s16_x2
-#define ggml_vld1q_u8_x2  vld1q_u8_x2
-#define ggml_vld1q_u8_x4  vld1q_u8_x4
-#define ggml_vld1q_s8_x2  vld1q_s8_x2
-#define ggml_vld1q_s8_x4  vld1q_s8_x4
-#define ggml_vqtbl1q_s8   vqtbl1q_s8
-#define ggml_vqtbl1q_u8   vqtbl1q_u8
-
-#endif // !defined(__aarch64__)
-
-#if !defined(__ARM_FEATURE_DOTPROD)
-
-inline static int32x4_t ggml_vdotq_s32(int32x4_t acc, int8x16_t a, int8x16_t b) {
-    const int16x8_t p0 = vmull_s8(vget_low_s8 (a), vget_low_s8 (b));
-    const int16x8_t p1 = vmull_s8(vget_high_s8(a), vget_high_s8(b));
-
-    return vaddq_s32(acc, vaddq_s32(vpaddlq_s16(p0), vpaddlq_s16(p1)));
-}
-
-#else
-
-#define ggml_vdotq_s32(a, b, c) vdotq_s32(a, b, c)
-
-#endif // !defined(__ARM_FEATURE_DOTPROD)
-
-#endif // defined(__ARM_NEON)
-
-#if defined(__ARM_NEON) && !defined(_MSC_VER)
 
 #define GGML_COMPUTE_FP16_TO_FP32(x) ggml_compute_fp16_to_fp32(x)
 #define GGML_COMPUTE_FP32_TO_FP16(x) ggml_compute_fp32_to_fp16(x)
@@ -469,6 +75,8 @@ static inline ggml_fp16_t ggml_compute_fp32_to_fp16(float f) {
 
 #else
 
+typedef uint16_t ggml_fp16_internal_t;
+
 #ifdef __wasm_simd128__
 #include <wasm_simd128.h>
 #else
@@ -480,7 +88,7 @@ static inline ggml_fp16_t ggml_compute_fp32_to_fp16(float f) {
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #include <intrin.h>
 #else
-#if defined(__AVX__) || defined(__AVX2__) || defined(__AVX512F__) || defined(__SSSE3__) || defined(__SSE3__) || defined(__SSE__)
+#if defined(__AVX__) || defined(__AVX2__) || defined(__AVX512F__) || defined(__SSSE3__) || defined(__SSE3__)
 #if !defined(__riscv)
 #include <immintrin.h>
 #endif
@@ -491,34 +99,6 @@ static inline ggml_fp16_t ggml_compute_fp32_to_fp16(float f) {
 
 #ifdef __riscv_v_intrinsic
 #include <riscv_vector.h>
-#endif
-
-#if defined(__loongarch64)
-#if defined(__loongarch_asx)
-#include <lasxintrin.h>
-#endif
-#if defined(__loongarch_sx)
-#include <lsxintrin.h>
-#endif
-#endif
-
-#if defined(__loongarch_asx)
-
-typedef union {
-    int32_t i;
-    float f;
-} ft_union;
-
-/* float type data load instructions */
-static __m128 __lsx_vreplfr2vr_s(float val) {
-    ft_union fi_tmpval = {.f = val};
-    return (__m128)__lsx_vreplgr2vr_w(fi_tmpval.i);
-}
-
-static __m256 __lasx_xvreplfr2vr_s(float val) {
-    ft_union fi_tmpval = {.f = val};
-    return (__m256)__lasx_xvreplgr2vr_w(fi_tmpval.i);
-}
 #endif
 
 #ifdef __F16C__
@@ -641,11 +221,7 @@ static inline ggml_fp16_t ggml_compute_fp32_to_fp16(float f) {
 
 #endif // __F16C__
 
-#endif // defined(__ARM_NEON) && (!defined(__MSC_VER)
-
-#ifdef __ARM_FEATURE_SVE
-#include <arm_sve.h>
-#endif // __ARM_FEATURE_SVE
+#endif // __ARM_NEON
 
 // precomputed f32 table for f16 (256 KB)
 // defined in ggml.c, initialized in ggml_init()
@@ -668,122 +244,22 @@ inline static float ggml_lookup_fp16_to_fp32(ggml_fp16_t f) {
 #define GGML_FP32_TO_FP16(x) GGML_COMPUTE_FP32_TO_FP16(x)
 #endif
 
-// bitset
-#if 0 // [FIX] disable
-static_assert(sizeof(ggml_bitset_t) == 4, "bitset_t constants must be updated");
-#define BITSET_SHR 5 // log2(sizeof(ggml_bitset_t)*8)
-#define BITSET_MASK (sizeof(ggml_bitset_t)*8 - 1)
-
-static size_t ggml_bitset_size(size_t n) {
-    return (n + BITSET_MASK) >> BITSET_SHR;
-}
-
-static inline bool ggml_bitset_get(const ggml_bitset_t * bitset, size_t i) {
-    return !!(bitset[i >> BITSET_SHR] & (1u << (i & BITSET_MASK)));
-}
-
-static inline void ggml_bitset_set(ggml_bitset_t * bitset, size_t i) {
-    bitset[i >> BITSET_SHR] |= (1u << (i & BITSET_MASK));
-}
-
-static inline void ggml_bitset_clear(ggml_bitset_t * bitset, size_t i) {
-    bitset[i >> BITSET_SHR] &= ~(1u << (i & BITSET_MASK));
-}
-
-// hash set
-
-#define GGML_HASHSET_FULL ((size_t)-1)
-#define GGML_HASHSET_ALREADY_EXISTS ((size_t)-2)
+#define GGML_HASHTABLE_FULL ((size_t)-1)
+#define GGML_HASHTABLE_ALREADY_EXISTS ((size_t)-2)
 
 struct ggml_hash_set ggml_hash_set_new(size_t size);
-void                 ggml_hash_set_free(struct ggml_hash_set * hash_set);
 
-// returns the minimum size for a hash set that can hold min_sz elements
-size_t ggml_hash_size(size_t min_sz);
+bool   ggml_hash_contains      (const struct ggml_hash_set hash_set, struct ggml_tensor * key);
 
-// remove all elements from the hash set
-void ggml_hash_set_reset(struct ggml_hash_set * hash_set);
+// returns GGML_HASHTABLE_FULL if table is full, otherwise the current index of the key or where it should be inserted
+size_t ggml_hash_find          (const struct ggml_hash_set hash_set, struct ggml_tensor * key);
 
-// returns true if key is in the hash set
-static bool ggml_hash_contains(const struct ggml_hash_set * hash_set, struct ggml_tensor * key);
-
-// returns GGML_HASHSET_FULL if table is full, otherwise the current index of the key or where it should be inserted
-static size_t ggml_hash_find(const struct ggml_hash_set * hash_set, struct ggml_tensor * key);
-
-// returns GGML_HASHSET_ALREADY_EXISTS if key already exists, index otherwise, asserts if table is full
-static size_t ggml_hash_insert(struct ggml_hash_set * hash_set, struct ggml_tensor * key);
+// returns GGML_HASHTABLE_ALREADY_EXISTS if key already exists, index otherwise, asserts if table is full
+size_t ggml_hash_insert        (      struct ggml_hash_set hash_set, struct ggml_tensor * key);
 
 // return index, asserts if table is full
-static size_t ggml_hash_find_or_insert(struct ggml_hash_set * hash_set, struct ggml_tensor * key);
+size_t ggml_hash_find_or_insert(      struct ggml_hash_set hash_set, struct ggml_tensor * key);
 
-// hash function for ggml_tensor
-static inline size_t ggml_hash(const struct ggml_tensor * p) {
-    // the last 4 bits are always zero due to alignment
-    return (size_t)(uintptr_t)p >> 4;
-}
-
-static size_t ggml_hash_find(const struct ggml_hash_set * hash_set, struct ggml_tensor * key) {
-    size_t h = ggml_hash(key) % hash_set->size;
-
-    // linear probing
-    size_t i = h;
-    while (ggml_bitset_get(hash_set->used, i) && hash_set->keys[i] != key) {
-        i = (i + 1) % hash_set->size;
-        if (i == h) {
-            // visited all hash table entries -> not found
-            return GGML_HASHSET_FULL;
-        }
-    }
-    return i;
-}
-
-static bool ggml_hash_contains(const struct ggml_hash_set * hash_set, struct ggml_tensor * key) {
-    size_t i = ggml_hash_find(hash_set, key);
-    return i != GGML_HASHSET_FULL && ggml_bitset_get(hash_set->used, i);
-}
-
-static size_t ggml_hash_insert(struct ggml_hash_set * hash_set, struct ggml_tensor * key) {
-    size_t h = ggml_hash(key) % hash_set->size;
-
-    // linear probing
-    size_t i = h;
-    do {
-        if (!ggml_bitset_get(hash_set->used, i)) {
-            ggml_bitset_set(hash_set->used, i);
-            hash_set->keys[i] = key;
-            return i;
-        }
-        if (hash_set->keys[i] == key) {
-            return GGML_HASHSET_ALREADY_EXISTS;
-        }
-        i = (i + 1) % hash_set->size;
-    } while (i != h);
-
-    // visited all hash table entries -> not found
-    GGML_ABORT("fatal error");
-}
-
-static size_t ggml_hash_find_or_insert(struct ggml_hash_set * hash_set, struct ggml_tensor * key) {
-    size_t h = ggml_hash(key) % hash_set->size;
-
-    // linear probing
-    size_t i = h;
-    do {
-        if (!ggml_bitset_get(hash_set->used, i)) {
-            ggml_bitset_set(hash_set->used, i);
-            hash_set->keys[i] = key;
-            return i;
-        }
-        if (hash_set->keys[i] == key) {
-            return i;
-        }
-        i = (i + 1) % hash_set->size;
-    } while (i != h);
-
-    // visited all hash table entries -> not found
-    GGML_ABORT("fatal error");
-}
-#endif // [FIX] end
 #ifdef __cplusplus
 }
 #endif
