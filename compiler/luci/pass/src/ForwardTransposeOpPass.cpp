@@ -57,6 +57,61 @@ bool check_perm(const CircleTranspose *t)
   return true;
 }
 
+// Return vector of int32_t from CircleConst node
+// Return empty vector if not supported
+std::vector<int32_t> get_perm_data(const CircleConst *node)
+{
+  assert(node); // FIX_CALLER_UNLESS
+  std::vector<int32_t> perm_data;
+  switch (node->dtype())
+  {
+    case loco::DataType::S32:
+      for (uint32_t i = 0; i < node->size<loco::DataType::S32>(); i++)
+      {
+        auto data = node->at<loco::DataType::S32>(i);
+
+        // Unsupported
+        if (data < 0 or data >= static_cast<int32_t>(node->size<loco::DataType::S32>()))
+          return {};
+
+        perm_data.emplace_back(data);
+      }
+      break;
+    // TODO Support S64 data type
+    default:
+      break;
+  }
+
+  return perm_data;
+}
+
+// Return true if below conditions are met
+// 1. lhs->perm() and rhs->perm() are CircleConst
+// 2. Both perm's values are the same
+bool check_same_perm(const CircleTranspose *lhs, const CircleTranspose *rhs)
+{
+  auto lhs_perm = dynamic_cast<CircleConst *>(lhs->perm());
+  if (not lhs_perm)
+    return false;
+
+  auto rhs_perm = dynamic_cast<CircleConst *>(rhs->perm());
+  if (not rhs_perm)
+    return false;
+
+  std::vector<int32_t> lhs_perm_data = get_perm_data(lhs_perm);
+  if (lhs_perm_data.empty())
+    return false;
+
+  std::vector<int32_t> rhs_perm_data = get_perm_data(rhs_perm);
+  if (rhs_perm_data.empty())
+    return false;
+
+  if (lhs_perm_data != rhs_perm_data)
+    return false;
+
+  return true;
+}
+
 // Create new Transpose Op including perm
 // Never return nullptr
 CircleTranspose *create_cloned_transpose(CircleTranspose *transpose)
@@ -289,6 +344,46 @@ private:
   }
 };
 
+// Elementwise Binary Operator (no const input)
+class EBOPattern final : public CircleNodeMutableVisitor<bool>
+{
+private:
+  template <typename CIRCLE_OP_PTR> bool has_transpose_xy(CIRCLE_OP_PTR node)
+  {
+    luci::CircleTranspose *lhs = nullptr;
+    luci::CircleTranspose *rhs = nullptr;
+
+    RETURN_FALSE_UNLESS(luci::fill(&lhs, &rhs).with_args_of(node));
+
+    // Check lhs's perm == rhs's perm
+    RETURN_FALSE_UNLESS(check_same_perm(lhs, rhs));
+
+    // Create cloned transpose
+    auto new_transpose = create_cloned_transpose(lhs);
+    assert(new_transpose); // FIX_ME_UNLESS
+
+    // Reconnect network
+    node->x(lhs->a());
+    node->y(rhs->a());
+
+    loco::replace(node).with(new_transpose);
+    new_transpose->a(node);
+
+    // Do shape inference for this node again.
+    node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+    return true;
+  }
+
+public:
+  // Default
+  bool visit(luci::CircleNode *) { return false; }
+
+  bool visit(luci::CircleAdd *node) { return has_transpose_xy(node); }
+
+  bool visit(luci::CircleMul *node) { return has_transpose_xy(node); }
+};
+
 // Elementwise Unary Operator
 class EwUnaryPattern final : public CircleNodeMutableVisitor<bool>
 {
@@ -333,6 +428,16 @@ namespace luci
 
 /**
  * BEFORE
+ *
+ *                 [CircleNode]     [CircleNode]
+ *                       |              |
+ *              [CircleTranspose] [CircleTranspose]
+ *                       |       /
+ *                    [(BinaryOp)]
+ *                         |
+ *
+ *   BinaryOp: CircleAdd, CircleMul, ...
+ *
  *                       |
  *                  [CircleNode]  [CircleConst]
  *                       |       /
@@ -358,6 +463,16 @@ namespace luci
  *   UnaryOp: CircleAbs, ...
  *
  * AFTER
+ *
+ *              [CircleNode] [CircleNode]
+ *                       |       /
+ *                    [(BinaryOp)]
+ *                         |
+ *                 [CircleTranspose]
+ *                         |
+ *
+ *   BinaryOp: CircleAdd, CircleMul, ...
+ *
  *                       |
  *   [CircleConst]  [CircleNode]  [CircleConst(updated)]
  *         |       /     |       /
@@ -383,6 +498,9 @@ namespace luci
 bool ForwardTransposeOpPass::run(loco::Graph *g)
 {
   bool changed = false;
+
+  // TODO Revisit pattern interface
+  EBOPattern ebo;
   EBOWithConstPattern eboc;
   EwUnaryPattern ewu;
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
@@ -391,6 +509,8 @@ bool ForwardTransposeOpPass::run(loco::Graph *g)
     if (circle_node->accept(&eboc))
       changed = true;
     else if (circle_node->accept(&ewu))
+      changed = true;
+    else if (circle_node->accept(&ebo))
       changed = true;
   }
   return changed;
