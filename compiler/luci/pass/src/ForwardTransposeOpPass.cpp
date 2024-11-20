@@ -26,6 +26,10 @@
 
 using namespace luci;
 
+#define RETURN_FALSE_UNLESS(COND) \
+  if (not(COND))                  \
+    return false;
+
 namespace
 {
 
@@ -35,8 +39,7 @@ namespace
 bool check_perm(const CircleTranspose *t)
 {
   auto perm = dynamic_cast<CircleConst *>(t->perm());
-  if (not perm)
-    return false;
+  RETURN_FALSE_UNLESS(perm);
 
   switch (perm->dtype())
   {
@@ -45,8 +48,7 @@ bool check_perm(const CircleTranspose *t)
       {
         auto data = perm->at<loco::DataType::S32>(i);
         // TODO Support not normalized index
-        if (data < 0 or data >= static_cast<int32_t>(t->rank()))
-          return false;
+        RETURN_FALSE_UNLESS(data >= 0 and data < static_cast<int32_t>(t->rank()));
       }
       break;
     // TODO Support S64 data type
@@ -91,23 +93,18 @@ std::vector<int32_t> get_perm_data(const CircleConst *node)
 bool check_same_perm(const CircleTranspose *lhs, const CircleTranspose *rhs)
 {
   auto lhs_perm = dynamic_cast<CircleConst *>(lhs->perm());
-  if (not lhs_perm)
-    return false;
+  RETURN_FALSE_UNLESS(lhs_perm);
 
   auto rhs_perm = dynamic_cast<CircleConst *>(rhs->perm());
-  if (not rhs_perm)
-    return false;
+  RETURN_FALSE_UNLESS(rhs_perm);
 
   std::vector<int32_t> lhs_perm_data = get_perm_data(lhs_perm);
-  if (lhs_perm_data.empty())
-    return false;
+  RETURN_FALSE_UNLESS(not lhs_perm_data.empty());
 
   std::vector<int32_t> rhs_perm_data = get_perm_data(rhs_perm);
-  if (rhs_perm_data.empty())
-    return false;
+  RETURN_FALSE_UNLESS(not rhs_perm_data.empty());
 
-  if (lhs_perm_data != rhs_perm_data)
-    return false;
+  RETURN_FALSE_UNLESS(lhs_perm_data == rhs_perm_data);
 
   return true;
 }
@@ -226,10 +223,6 @@ bool has_single_element(const luci::CircleConst *node)
 
   return has_single_elem;
 }
-
-#define RETURN_FALSE_UNLESS(COND) \
-  if (not(COND))                  \
-    return false;
 
 // Elementwise Binary Operator with const
 class EBOWithConstPattern final : public CircleNodeMutableVisitor<bool>
