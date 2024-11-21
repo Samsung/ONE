@@ -17,7 +17,6 @@
 #include "TrainableOperationConverter.h"
 
 #include "ir/train/Operations.Include.h"
-#include "util/Utils.h"
 
 namespace onert
 {
@@ -30,8 +29,7 @@ TrainableOperationConverter::TrainableOperationConverter(
   ir::train::TrainableGraph &tgraph, const ir::train::TrainingInfo *training_info)
   : UntrainableOperationConverter{tgraph}, _training_info{training_info}
 {
-  // Avoid unused-private-field error
-  UNUSED_RELEASE(_training_info);
+  // DO NOTHING
 }
 
 void TrainableOperationConverter::visit(const ir::operation::BinaryArithmetic &node)

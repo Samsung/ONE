@@ -120,8 +120,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
               min_trainable_op_idx = op_index;
             }
           }
-          auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
-          UNUSED_RELEASE(gen_index);
+          [[maybe_unused]] auto gen_index =
+            trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           assert(gen_index == op_index);
         });
 
@@ -226,9 +226,9 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       if (!obj.isConstant())
       {
         auto bwd_operand = std::make_unique<ir::Operand>(obj);
-        const auto gen_index = tgraph.addBackwardOperand(index, std::move(bwd_operand));
+        [[maybe_unused]] const auto gen_index =
+          tgraph.addBackwardOperand(index, std::move(bwd_operand));
         assert(gen_index == index);
-        UNUSED_RELEASE(gen_index);
       }
     });
   }

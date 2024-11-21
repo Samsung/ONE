@@ -289,10 +289,10 @@ void HEScheduler::makeRank()
     [&](const ir::OperationIndex &index, const ir::IOperation &) { DFSMaxRank(index); });
 
   // Check that ranks are calculated for all operations(nodes)
-  _graph->operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
-    UNUSED_RELEASE(index);
-    assert(_op_to_rank->find(index) != _op_to_rank->end());
-  });
+  _graph->operations().iterate(
+    [&]([[maybe_unused]] const ir::OperationIndex &index, const ir::IOperation &) {
+      assert(_op_to_rank->find(index) != _op_to_rank->end());
+    });
   VERBOSE(HEScheduler::makeRank) << "task prioritizing finished" << std::endl;
 }
 

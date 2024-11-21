@@ -36,9 +36,7 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *d
     _tensor_reg{tensor_reg}, _tensor_registries{}, _executors{nullptr}, _model_index{},
     _external_context{external_context}
 {
-  UNUSED_RELEASE(_graph);
-  UNUSED_RELEASE(_tensor_registries);
-  UNUSED_RELEASE(_executors);
+  // DO NOTHING
 }
 
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
@@ -52,8 +50,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
     dyn_ctx->op = &_graph.operations().at(ind);
-    dyn_ctx->dynamic_shape_inferer =
-      std::make_unique<exec::DynamicShapeInferer>(_graph.operands(), _tensor_reg);
+    dyn_ctx->dynamic_shape_inferer = std::make_unique<exec::DynamicShapeInferer>(_tensor_reg);
   }
   ret->dynamic_tensor_ctx(dyn_ctx);
 

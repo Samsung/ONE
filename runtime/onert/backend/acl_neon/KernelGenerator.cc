@@ -29,7 +29,6 @@
 #include "ir/InternalType.h"
 #include "exec/NopFunction.h"
 #include "util/logging.h"
-#include "util/Utils.h"
 #include "AclKernelGen.h"
 
 namespace onert
@@ -751,8 +750,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
     padding_list[axis] = ::arm_compute::PaddingInfo{from[0], from[1]};
   }
 
-  const auto input_type = _ctx.at(input_index).typeInfo();
-  UNUSED_RELEASE(input_type);
+  [[maybe_unused]] const auto input_type = _ctx.at(input_index).typeInfo();
   assert(input->info()->data_type() == acl_common::asDataType(input_type.type()));
   assert(input->info()->quantization_info() ==
          ::arm_compute::QuantizationInfo(input_type.scale(), input_type.zero_point()));
@@ -1041,13 +1039,10 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   {
     auto beginData_base = _ctx.at(begins_index).data()->base();
     auto sizeData_base = _ctx.at(sizes_index).data()->base();
-    const int beginData_size = _ctx.at(begins_index).shape().num_elements();
-    const int sizeData_size = _ctx.at(sizes_index).shape().num_elements();
+    [[maybe_unused]] const int beginData_size = _ctx.at(begins_index).shape().num_elements();
+    [[maybe_unused]] const int sizeData_size = _ctx.at(sizes_index).shape().num_elements();
 
     using ir::DataType;
-
-    UNUSED_RELEASE(beginData_size);
-    UNUSED_RELEASE(sizeData_size);
 
     assert(_ctx.at(begins_index).typeInfo().type() == DataType::INT32);
     assert(_ctx.at(sizes_index).typeInfo().type() == DataType::INT32);
@@ -1105,15 +1100,11 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     auto startData_base = _ctx.at(starts_index).data()->base();
     auto endData_base = _ctx.at(ends_index).data()->base();
     auto stridesData_base = _ctx.at(strides_index).data()->base();
-    const int startData_size = _ctx.at(starts_index).shape().num_elements();
-    const int endData_size = _ctx.at(ends_index).shape().num_elements();
-    const int stridesData_size = _ctx.at(strides_index).shape().num_elements();
+    [[maybe_unused]] const int startData_size = _ctx.at(starts_index).shape().num_elements();
+    [[maybe_unused]] const int endData_size = _ctx.at(ends_index).shape().num_elements();
+    [[maybe_unused]] const int stridesData_size = _ctx.at(strides_index).shape().num_elements();
 
     using ir::DataType;
-
-    UNUSED_RELEASE(startData_size);
-    UNUSED_RELEASE(endData_size);
-    UNUSED_RELEASE(stridesData_size);
 
     assert(_ctx.at(starts_index).typeInfo().type() == DataType::INT32);
     assert(_ctx.at(ends_index).typeInfo().type() == DataType::INT32);
