@@ -23,8 +23,6 @@
 #include <cassert>
 #include <vector>
 
-#define UNUSED_RELEASE(a) (void)(a)
-
 namespace nnfw
 {
 namespace cker
@@ -219,20 +217,18 @@ private:
   };
 };
 
-inline int MatchingDim(const Shape &shape1, int index1, const Shape &shape2, int index2)
+inline int MatchingDim(const Shape &shape1, int index1, [[maybe_unused]] const Shape &shape2,
+                       [[maybe_unused]] int index2)
 {
-  UNUSED_RELEASE(shape2);
-  UNUSED_RELEASE(index2);
   assert(shape1.Dims(index1) == shape2.Dims(index2));
   return shape1.Dims(index1);
 }
 
 template <typename... Args>
-int MatchingDim(const Shape &shape1, int index1, const Shape &shape2, int index2, Args... args)
+int MatchingDim(const Shape &shape1, int index1, [[maybe_unused]] const Shape &shape2,
+                [[maybe_unused]] int index2, Args... args)
 {
   assert(shape1.Dims(index1) == shape2.Dims(index2));
-  UNUSED_RELEASE(shape2);
-  UNUSED_RELEASE(index2);
   return MatchingDim(shape1, index1, args...);
 }
 
@@ -305,9 +301,9 @@ template <typename... Ts> inline int MatchingFlatSize(const Shape &shape, Ts... 
   return shape.FlatSize();
 }
 
-inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim, const Shape &check_shape_0)
+inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim,
+                                   [[maybe_unused]] const Shape &check_shape_0)
 {
-  UNUSED_RELEASE(check_shape_0);
   const int dims_count = shape.DimensionsCount();
   for (int i = 0; i < dims_count; ++i)
   {
@@ -319,10 +315,10 @@ inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim, const Shape
   return FlatSizeSkipDim(shape, skip_dim);
 }
 
-inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim, const Shape &check_shape_0,
+inline int MatchingFlatSizeSkipDim(const Shape &shape, int skip_dim,
+                                   [[maybe_unused]] const Shape &check_shape_0,
                                    const Shape &check_shape_1)
 {
-  UNUSED_RELEASE(check_shape_0);
   const int dims_count = shape.DimensionsCount();
   for (int i = 0; i < dims_count; ++i)
   {
@@ -338,12 +334,10 @@ inline int MatchingElementsSize(const Shape &shape, const Shape &check_shape_0,
                                 const Shape &check_shape_1)
 {
   const int size_1 = shape.FlatSize();
-  const int size_2 = check_shape_0.FlatSize();
-  const int size_3 = check_shape_1.FlatSize();
+  [[maybe_unused]] const int size_2 = check_shape_0.FlatSize();
+  [[maybe_unused]] const int size_3 = check_shape_1.FlatSize();
   assert(size_1 == size_2);
   assert(size_2 == size_3);
-  UNUSED_RELEASE(size_2);
-  UNUSED_RELEASE(size_3);
   return size_1;
 }
 

@@ -294,12 +294,11 @@ size_t Flatten(const Shape &input_shape, const Shape &output_shape, const Transp
 // Perform transpose by transposing 4x4 blocks of the input, proceeding from
 // left to right (down the rows) of the input, and then from top to bottom.
 template <typename T>
-inline void Transpose2D(const Shape &input_shape, const T *input_data, const Shape &output_shape,
-                        T *output_data)
+inline void Transpose2D(const Shape &input_shape, const T *input_data,
+                        [[maybe_unused]] const Shape &output_shape, T *output_data)
 {
   assert(input_shape.DimensionsCount() == 2);
   assert(output_shape.DimensionsCount() == 2);
-  UNUSED_RELEASE(output_shape);
 
   const int d0 = input_shape.DimsData()[0];
   const int d1 = input_shape.DimsData()[1];

@@ -211,7 +211,6 @@ template <typename In, typename Out>
 void Mean(const Shape &input_shape, const In *input_data, const Shape &output_shape,
           Out *output_data, const std::vector<int> &axes)
 {
-  UNUSED_RELEASE(output_shape);
   assert(input_shape.DimensionsCount() > 0);
   ReduceMean m_obj;
   m_obj.ReduceOp<In, Out>(input_shape, input_data, output_shape, output_data, axes, true, (Out)0,
@@ -223,7 +222,6 @@ void MeanQ8Asymm(const Shape &input_shape, const In *input_data, float input_sca
                  int32_t input_offset, const Shape &output_shape, Out *output_data,
                  float output_scale, int32_t output_offset, const std::vector<int> &axes)
 {
-  UNUSED_RELEASE(output_shape);
   assert(input_shape.DimensionsCount() > 0);
   ReduceMean m_obj;
   m_obj.ReduceOp<In, Out>(input_shape, input_data, input_scale, input_offset, output_shape,
@@ -235,7 +233,6 @@ template <typename In, typename Out>
 void MeanAxis1And2(const Shape &input_shape, const In *input_data, const Shape &output_shape,
                    Out *output_data)
 {
-  UNUSED_RELEASE(output_shape);
   assert(input_shape.DimensionsCount() == 4);
   assert(output_shape.DimensionsCount() == 4);
 
