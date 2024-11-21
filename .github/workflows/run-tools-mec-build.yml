@@ -26,10 +26,8 @@ jobs:
   test:
     strategy:
       matrix:
-        # TODO add more versions
-        python: ['3.10']
-        # TODO add more platforms
-        platform: [ubuntu-latest]
+        python: ['3.10'] # ['3.10', '3.11', '3.12']
+        platform: [ubuntu-latest] # [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.platform }}
 

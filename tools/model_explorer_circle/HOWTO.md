@@ -31,3 +31,27 @@ pytest
 flatc -p --gen-onefile --gen-object-api circle_schema.fbs
 ```
 * Note: For `--gen-onefile` option, you need to use the latest version of `flatc`. (tested version = v24.3.25)
+
+## How to local build with nox
+
+Use separate virtual-env:
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install tools:
+```
+python3 -m pip install --upgrade nox build
+```
+
+To run unit tests:
+```
+python3 -m nox -s tests-3.xx
+```
+- where `xx` is your python version, for example `10`
+
+To build package:
+```
+python3 -m build .
+```

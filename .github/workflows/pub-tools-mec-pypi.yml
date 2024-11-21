@@ -29,4 +29,6 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: tools/model_explorer_circle/dist/
-          skip-existing: true
+          skip-existing: false
+          user: __token__
+          password: ${{ secrets.MEC_PYPI_API }}

@@ -15,8 +15,19 @@
 import os
 import nox
 
+nox.options.sessions = ["lint"]
+
 # Define the minimal nox version required to run
 nox.options.needs_version = ">= 2024.3.2"
+
+
+@nox.session
+def lint(session):
+    # NOTE no need to run lint, as format checker runs with yapf including this project
+    session.install("yapf==0.40.2")
+    session.run("yapf", "--verbose", "--in-place", "--recursive", "--exclude",
+                "src/circle_adapter/circle_schema_generated.py", "noxfile.py", "./src",
+                "./tests")
 
 
 @nox.session
