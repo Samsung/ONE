@@ -61,7 +61,7 @@ inline void DepthwiseConvHybridPerChannel(const DepthwiseConvParams &params,
   const int filter_width = filter_shape.Dims(2);
   const int output_height = output_shape.Dims(1);
   const int output_width = output_shape.Dims(2);
-  [[maybe_unused]] const int bias_depth = bias_shape.FlatSize();
+  const int bias_depth = bias_shape.FlatSize();
   assert(output_depth == input_depth * depth_multiplier);
   assert(bias_depth == output_depth);
 
