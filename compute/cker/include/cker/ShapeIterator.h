@@ -18,7 +18,6 @@
 #define __NNFW_CKER_SHAPE_ITERATOR_H__
 
 #include <utility>
-#include <iostream>
 #include "cker/Shape.h"
 
 namespace nnfw
