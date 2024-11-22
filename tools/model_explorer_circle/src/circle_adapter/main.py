@@ -77,6 +77,18 @@ class CircleAdapter(Adapter):
             for i, tensor_id in enumerate(op.outputs):
                 self.set_source_of(tensor_id=tensor_id, source_id=op_id, output_id=i)
 
+        # Create pseudo const node for orphan tensors (= const tensors)
+        for tensor_id, tensor in enumerate(sub_graph.tensors):
+            if (self.get_source_of(tensor_id)) is None:
+                me_node = graph_builder.GraphNode(id=f'{input_id + tensor_id}',
+                                                  label='pseudo_const',
+                                                  namespace=tensor.name.decode('utf-8'))
+                me_graph.nodes.append(me_node)
+                # Map source and output tensors of const tensor
+                self.set_source_of(tensor_id=tensor_id,
+                                   source_id=input_id + tensor_id,
+                                   output_id=0)
+
         # Create operator nodes
         for idx, op in enumerate(sub_graph.operators):
             name = self.opcode_to_name(
