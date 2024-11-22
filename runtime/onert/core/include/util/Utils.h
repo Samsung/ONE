@@ -25,8 +25,6 @@
 #include "ir/Coordinates.h"
 #include "ir/Shape.h"
 
-#define UNUSED_RELEASE(a) (void)(a)
-
 template <size_t rest> struct ForEachDimension
 {
   template <typename L>
@@ -53,10 +51,8 @@ template <size_t rest> struct ForEachDimension
 template <> struct ForEachDimension<0>
 {
   template <typename L>
-  static void unroll(const onert::ir::Shape &shape, onert::ir::Coordinates &coords,
-                     L lambda_function)
+  static void unroll(const onert::ir::Shape &, onert::ir::Coordinates &coords, L lambda_function)
   {
-    UNUSED_RELEASE(shape);
     lambda_function(coords);
   }
 };

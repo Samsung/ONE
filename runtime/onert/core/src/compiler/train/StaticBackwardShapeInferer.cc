@@ -96,10 +96,9 @@ void StaticBackwardShapeInferer::setShape(const ir::OperandIndex &index, const i
   {
     // NOTE This code assumes the types are always the same, but I'm not sure.
     const auto &type = tgraph.operands().at(index).typeInfo();
-    const auto new_index =
+    [[maybe_unused]] const auto new_index =
       tgraph.addBackwardOperand(index, std::make_unique<ir::Operand>(shape, type));
     assert(new_index == index);
-    UNUSED_RELEASE(new_index);
   }
 }
 

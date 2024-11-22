@@ -85,10 +85,10 @@ void GetQuantizedConvolutionMultiplier(const IPortableTensor *input, const IPort
                                        double *multiplier)
 {
   const double input_product_scale = input->data_scale() * filter->data_scale();
-  const double bias_scale = (bias != nullptr) ? bias->data_scale() : input_product_scale;
+  [[maybe_unused]] const double bias_scale =
+    (bias != nullptr) ? bias->data_scale() : input_product_scale;
   const double output_scale = output->data_scale();
   // The following conditions must be guaranteed by the training pipeline.
-  UNUSED_RELEASE(bias_scale);
   assert(std::abs(input_product_scale - bias_scale) <=
          1e-6 * std::min(input_product_scale, bias_scale));
   assert(input_product_scale >= 0);

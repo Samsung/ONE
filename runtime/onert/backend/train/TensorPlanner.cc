@@ -30,9 +30,6 @@ TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
   : _tgraph{tgraph}, _external_operands{external_operands}
 {
   // DO NOTHING
-  // TODO Remove the following lines
-  UNUSED_RELEASE(_tgraph);
-  UNUSED_RELEASE(_external_operands);
 }
 
 void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)

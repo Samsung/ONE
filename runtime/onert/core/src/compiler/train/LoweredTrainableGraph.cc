@@ -112,8 +112,8 @@ void LoweredTrainableGraph::lowerGraph(const CompilerOptions &options)
       {
         auto trainable_op = op_converter(op);
         trainable_op->enableBackward();
-        auto gen_index = _trainable_graph.replaceOperation(index, std::move(trainable_op));
-        UNUSED_RELEASE(gen_index);
+        [[maybe_unused]] auto gen_index =
+          _trainable_graph.replaceOperation(index, std::move(trainable_op));
         assert(gen_index == index);
       }
     });

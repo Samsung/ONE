@@ -18,7 +18,6 @@
 
 #include "ir/OperandIndexMap.h"
 #include "UseDefGenerator.h"
-#include "util/Utils.h"
 #include "util/Set.h"
 #include "../verifier/Verifier.h"
 
@@ -159,7 +158,8 @@ void TrainableGraph::verify(void) const
   operations().iterate([](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
     try
     {
-      UNUSED_RELEASE(dynamic_cast<const onert::ir::train::ITrainableOperation &>(op));
+      [[maybe_unused]] const auto &casted_op =
+        dynamic_cast<const onert::ir::train::ITrainableOperation &>(op);
     }
     catch (const std::bad_cast &)
     {

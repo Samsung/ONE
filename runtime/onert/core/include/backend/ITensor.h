@@ -26,7 +26,6 @@
 #include "ir/Layout.h"
 #include "ir/Shape.h"
 #include "ir/Coordinates.h"
-#include "util/Utils.h"
 
 namespace onert
 {
@@ -96,9 +95,8 @@ public:
    * @brief Set the shape of tenser to new_shape
    * @note  Higer dimension will be placed on front.
    */
-  virtual void setShape(const ir::Shape &new_shape)
+  virtual void setShape(const ir::Shape &)
   {
-    UNUSED_RELEASE(new_shape);
     throw std::runtime_error("This backend does not support dynamic setShape");
   }
 

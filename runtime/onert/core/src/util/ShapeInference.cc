@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-#include "util/Utils.h"
 #include "ir/InternalType.h"
 #include "ir/Shape.h"
 #include "util/ShapeInference.h"
@@ -751,9 +750,10 @@ template ir::Shape inferSliceShape(const ir::Shape &input_shape, const int32_t *
 template ir::Shape inferSliceShape(const ir::Shape &input_shape, const int64_t *begins_buf,
                                    const int64_t *sizes_buf);
 
-ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape &block_shape_shape,
-                                   const ir::Shape &padding_shape, const int32_t *block_shape_buf,
-                                   const int32_t *padding_buf)
+ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape,
+                                   [[maybe_unused]] const ir::Shape &block_shape_shape,
+                                   [[maybe_unused]] const ir::Shape &padding_shape,
+                                   const int32_t *block_shape_buf, const int32_t *padding_buf)
 {
   const uint32_t rank = input_shape.rank();
   ir::Shape out_shape(rank);
@@ -761,14 +761,9 @@ ir::Shape inferSpaceToBatchNDShape(const ir::Shape &input_shape, const ir::Shape
   // Currently, only 4D NHWC input/output op_context are supported.
   // The 4D array need to have exactly 2 spatial dimensions.
   // TODO(nupurgarg): Support arbitrary dimension in SpaceToBatchND.
-  const int32_t kInputDimensionNum = 4;
-  const int32_t kBlockSizeDimensionNum = 1;
+  [[maybe_unused]] const int32_t kInputDimensionNum = 4;
+  [[maybe_unused]] const int32_t kBlockSizeDimensionNum = 1;
   const int32_t kSpatialDimensionNum = 2;
-
-  UNUSED_RELEASE(kInputDimensionNum);
-  UNUSED_RELEASE(kBlockSizeDimensionNum);
-  UNUSED_RELEASE(block_shape_shape);
-  UNUSED_RELEASE(padding_shape);
 
   assert(block_shape_shape.rank() == kBlockSizeDimensionNum);
   assert(block_shape_shape.dim(0) == kSpatialDimensionNum);
