@@ -1,5 +1,5 @@
 [project]
-name = "model-explore-circle"
+name = "model-explorer-circle"
 version = "0.0.1"
 
 dependencies = [
