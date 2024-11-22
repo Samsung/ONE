@@ -56,6 +56,17 @@ class CircleAdapter(Adapter):
         """Get the source of the tensor."""
         return self.map_tensor_to_source.get(tensor_id)
 
+    def add_incoming_edge(self, me_node: graph_builder.GraphNode, tensor_id: int,
+                          input_id: int) -> None:
+        """Add incoming edge to the given node."""
+        source = self.get_source_of(tensor_id)
+        if source is not None:
+            sid, soid = source.split('/')
+            me_node.incomingEdges.append(
+                graph_builder.IncomingEdge(sourceNodeId=sid,
+                                           sourceNodeOutputId=soid,
+                                           targetNodeInputId=f'{input_id}'))
+
     def build_graph(self, me_graph: graph_builder.Graph) -> None:
         """Build the graph using the model."""
 
@@ -95,12 +106,20 @@ class CircleAdapter(Adapter):
                 self.model.operatorCodes[op.opcodeIndex].builtinCode)
             me_node = graph_builder.GraphNode(id=f'{idx}', label=name)
             me_graph.nodes.append(me_node)
+            # Connect edges from inputs to this operator node
+            for i, tensor_id in enumerate(op.inputs):
+                if tensor_id < 0:
+                    continue
+                self.add_incoming_edge(me_node=me_node, tensor_id=tensor_id, input_id=i)
 
         # Create Output nodes
         me_node = graph_builder.GraphNode(id=f'{len(me_graph.nodes)}',
                                           label="GraphOutputs",
                                           namespace="GraphOutputs")
         me_graph.nodes.append(me_node)
+        # Connect edges from inputs to output node
+        for i in sub_graph.outputs:
+            self.add_incoming_edge(me_node=me_node, tensor_id=i, input_id=i)
 
     def convert(self, model_path: str, settings: Dict) -> ModelExplorerGraphs:
         """Convert the model to a set of graphs."""
