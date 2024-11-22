@@ -15,7 +15,7 @@
 # limitations under the License.
 """Model Explorer adapter for Circle models."""
 
-from typing import Dict
+from typing import Dict, Optional
 from model_explorer import Adapter, AdapterMetadata, ModelExplorerGraphs, graph_builder
 from circle_adapter import circle_schema_generated as circle_schema
 
@@ -34,6 +34,8 @@ class CircleAdapter(Adapter):
             v: k
             for k, v in circle_schema.BuiltinOperator.__dict__.items()
         }
+        # tensor_id -> node_id/output_id
+        self.map_tensor_to_source = {}
 
     def load_model(self, model_path: str) -> None:
         """Load the model from the given path."""
@@ -46,6 +48,14 @@ class CircleAdapter(Adapter):
         """Convert the opcode to its name."""
         return self.dict_opcode_to_name[opcode]
 
+    def set_source_of(self, tensor_id: int, source_id: int, output_id: int) -> None:
+        """Set the source of the tensor."""
+        self.map_tensor_to_source[tensor_id] = f'{source_id}/{output_id}'
+
+    def get_source_of(self, tensor_id: int) -> Optional[str]:
+        """Get the source of the tensor."""
+        return self.map_tensor_to_source.get(tensor_id)
+
     def build_graph(self, me_graph: graph_builder.Graph) -> None:
         """Build the graph using the model."""
 
@@ -57,6 +67,15 @@ class CircleAdapter(Adapter):
                                           label="GraphInputs",
                                           namespace="GraphInputs")
         me_graph.nodes.append(me_node)
+
+        # Map source and output tensors of GraphInputs
+        for i, tensor_id in enumerate(sub_graph.inputs):
+            self.set_source_of(tensor_id=tensor_id, source_id=input_id, output_id=i)
+
+        # Map source and output tensors of operators
+        for op_id, op in enumerate(sub_graph.operators):
+            for i, tensor_id in enumerate(op.outputs):
+                self.set_source_of(tensor_id=tensor_id, source_id=op_id, output_id=i)
 
         # Create operator nodes
         for idx, op in enumerate(sub_graph.operators):
