@@ -1,3 +1,4 @@
 graft src
+graft tests
 
-global-exclude *~ *.py[cod]
+global-exclude *~ *.py[cod] HOWTO.md
