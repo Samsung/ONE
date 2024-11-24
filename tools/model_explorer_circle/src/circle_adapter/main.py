@@ -36,6 +36,10 @@ class CircleAdapter(Adapter):
         }
         # tensor_id -> node_id/output_id
         self.map_tensor_to_source = {}
+        self.dict_tensor_type_to_string = {
+            v: k
+            for k, v in circle_schema.TensorType.__dict__.items()
+        }
 
     def load_model(self, model_path: str) -> None:
         """Load the model from the given path."""
@@ -67,6 +71,26 @@ class CircleAdapter(Adapter):
                                            sourceNodeOutputId=soid,
                                            targetNodeInputId=f'{input_id}'))
 
+    def add_output_tensor_info(self,
+                               me_node: graph_builder.GraphNode,
+                               tensor_id: int,
+                               output_id: int = 0) -> None:
+        """Add the output metadata of the node."""
+        tensor = self.model.subgraphs[0].tensors[tensor_id]
+        # tensor_shape = 'type[shape]' (e.g. 'float32[1,2,3,4]')
+        tensor_shape = self.dict_tensor_type_to_string[tensor.type].lower()
+        tensor_shape += f'{tensor.shape.tolist()}'
+        tensor_name = tensor.name.decode('utf-8')
+        me_node.outputsMetadata.append(
+            graph_builder.MetadataItem(
+                id=f'{output_id}',
+                attrs=[
+                    graph_builder.KeyValue(key='shape', value=tensor_shape),
+                    graph_builder.KeyValue(key='tensor_index', value=f'{tensor_id}'),
+                    graph_builder.KeyValue(key='tensor_name', value=tensor_name)
+                ],
+            ))
+
     def build_graph(self, me_graph: graph_builder.Graph) -> None:
         """Build the graph using the model."""
 
@@ -79,9 +103,11 @@ class CircleAdapter(Adapter):
                                           namespace="GraphInputs")
         me_graph.nodes.append(me_node)
 
-        # Map source and output tensors of GraphInputs
         for i, tensor_id in enumerate(sub_graph.inputs):
+            # Map source and output tensors of GraphInputs
             self.set_source_of(tensor_id=tensor_id, source_id=input_id, output_id=i)
+            # Add output metadata to the input node
+            self.add_output_tensor_info(me_node=me_node, tensor_id=tensor_id, output_id=i)
 
         # Map source and output tensors of operators
         for op_id, op in enumerate(sub_graph.operators):
@@ -99,6 +125,8 @@ class CircleAdapter(Adapter):
                 self.set_source_of(tensor_id=tensor_id,
                                    source_id=input_id + tensor_id,
                                    output_id=0)
+                # Add output metadata to the pseudo const node
+                self.add_output_tensor_info(me_node=me_node, tensor_id=tensor_id)
 
         # Create operator nodes
         for idx, op in enumerate(sub_graph.operators):
@@ -114,6 +142,8 @@ class CircleAdapter(Adapter):
                 ns = '/'.join(ns.strip('/').split('/')[:2])
             me_node = graph_builder.GraphNode(id=f'{idx}', label=name, namespace=ns)
             me_graph.nodes.append(me_node)
+            # Add output metadata to the operator node
+            self.add_output_tensor_info(me_node=me_node, tensor_id=output_tensor_id)
             # Connect edges from inputs to this operator node
             for i, tensor_id in enumerate(op.inputs):
                 if tensor_id < 0:
