@@ -213,8 +213,8 @@ $(document).ready(function(){initNavTree('_lowered_trainable_graph_8cc_source.ht
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      {</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        auto trainable_op = op_converter(op);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        trainable_op-&gt;enableBackward();</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        auto gen_index = _trainable_graph.replaceOperation(index, std::move(trainable_op));</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        UNUSED_RELEASE(gen_index);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        [[maybe_unused]] auto gen_index =</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>          _trainable_graph.replaceOperation(index, std::move(trainable_op));</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        assert(gen_index == index);</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>      }</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    });</div>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX205 =
 {
-"kernel_2_permute_layer_8h.html":[40,0,4,1,2,1,0,1,0,3],
 "kernel_2_permute_layer_8h_source.html":[40,0,4,1,2,1,0,1,0,3],
 "kuma_8cpp.html":[40,0,0,48,1,2],
 "kuma_8cpp.html#a5856c2632ffabd723ea2328efa5e8a2e":[40,0,0,48,1,2,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX205 =
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_sum_8h_source.html":[40,0,0,56,3,0,0,0,0,122],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_tanh_8h.html":[40,0,0,56,3,0,0,0,0,124],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_tanh_8h_source.html":[40,0,0,56,3,0,0,0,0,124],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_tile_8h.html":[40,0,0,56,3,0,0,0,0,125]
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_tile_8h.html":[40,0,0,56,3,0,0,0,0,125],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_tile_8h_source.html":[40,0,0,56,3,0,0,0,0,125]
 };

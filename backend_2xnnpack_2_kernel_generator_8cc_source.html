@@ -159,7 +159,7 @@ $(document).ready(function(){initNavTree('backend_2xnnpack_2_kernel_generator_8c
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">auto</span> dyn_ctx = std::make_shared&lt;exec::FunctionSequence::DynamicTensorCtx&gt;();</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    dyn_ctx-&gt;op = &amp;_operations_ctx.at(ind);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    dyn_ctx-&gt;dynamic_shape_inferer = std::make_shared&lt;exec::DynamicShapeInferer&gt;(_ctx, _tensor_reg);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    dyn_ctx-&gt;dynamic_shape_inferer = std::make_shared&lt;exec::DynamicShapeInferer&gt;(_tensor_reg);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  }</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  ret-&gt;dynamic_tensor_ctx(dyn_ctx);</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>

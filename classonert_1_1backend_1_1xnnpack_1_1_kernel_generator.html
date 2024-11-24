@@ -227,7 +227,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   59</span>  <span class="keyword">auto</span> dyn_ctx = std::make_shared&lt;exec::FunctionSequence::DynamicTensorCtx&gt;();</div>
 <div class="line"><span class="lineno">   60</span>  {</div>
 <div class="line"><span class="lineno">   61</span>    dyn_ctx-&gt;op = &amp;_operations_ctx.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind);</div>
-<div class="line"><span class="lineno">   62</span>    dyn_ctx-&gt;dynamic_shape_inferer = std::make_shared&lt;exec::DynamicShapeInferer&gt;(_ctx, _tensor_reg);</div>
+<div class="line"><span class="lineno">   62</span>    dyn_ctx-&gt;dynamic_shape_inferer = std::make_shared&lt;exec::DynamicShapeInferer&gt;(_tensor_reg);</div>
 <div class="line"><span class="lineno">   63</span>  }</div>
 <div class="line"><span class="lineno">   64</span>  ret-&gt;dynamic_tensor_ctx(dyn_ctx);</div>
 <div class="line"><span class="lineno">   65</span> </div>

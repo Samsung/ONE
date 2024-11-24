@@ -1,6 +1,5 @@
 var NAVTREEINDEX226 =
 {
-"namespaceluci__interpreter_1_1test__kernel_1_1less__uint8__with__no__broadcasting.html#a889890091e065541ccc8d10bd42cae0a":[38,0,82,2,60,3],
 "namespaceluci__interpreter_1_1test__kernel_1_1less__uint8__with__no__broadcasting.html#ab3ffed0d54350b89ed8cdbeebf926c32":[38,0,82,2,60,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1less__uint8__with__no__broadcasting.html#ac47895052b2192375561e00fe09a9d95":[38,0,82,2,60,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1log__float.html":[38,0,82,2,61],
@@ -249,5 +248,6 @@ var NAVTREEINDEX226 =
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__float__with__no__broadcasting.html#ab2a6af5bbe1de03a6c9105f2d356f37a":[38,0,82,2,146,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__float__with__no__broadcasting.html#aea4a4a02c0e1e0499483dfa3eb8f58ae":[38,0,82,2,146,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__int__with__broadcasting.html":[38,0,82,2,147],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__int__with__broadcasting.html#a34da858727bb3443b96e12a7fdb3c986":[38,0,82,2,147,0]
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__int__with__broadcasting.html#a34da858727bb3443b96e12a7fdb3c986":[38,0,82,2,147,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__int__with__broadcasting.html#aa7ccfaa06522e9381b1d4ae527c9ddfa":[38,0,82,2,147,1]
 };

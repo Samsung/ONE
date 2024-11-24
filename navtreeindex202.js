@@ -1,6 +1,5 @@
 var NAVTREEINDEX202 =
 {
-"helpers_8h.html#ad23601e04842171804953c777eb98e09":[40,0,1,0,1,0,0,0,2,139],
 "helpers_8h.html#ad2d5cc68aaf0a75d20269e88fb463ba2":[40,0,1,0,1,0,0,0,2,12],
 "helpers_8h.html#ad57d553c3b0caf95ffbfc408c28be75f":[40,0,1,0,1,0,0,0,2,96],
 "helpers_8h.html#ad7b90c34e7f0b02d66ef27d4acc3598f":[40,0,1,0,1,0,0,0,2,71],
@@ -249,5 +248,6 @@ var NAVTREEINDEX202 =
 "import_2include_2luci_2_import_2_nodes_2_circle_less_equal_8h.html":[40,0,0,56,2,0,0,0,0,48],
 "import_2include_2luci_2_import_2_nodes_2_circle_less_equal_8h_source.html":[40,0,0,56,2,0,0,0,0,48],
 "import_2include_2luci_2_import_2_nodes_2_circle_local_response_normalization_8h.html":[40,0,0,56,2,0,0,0,0,49],
-"import_2include_2luci_2_import_2_nodes_2_circle_local_response_normalization_8h_source.html":[40,0,0,56,2,0,0,0,0,49]
+"import_2include_2luci_2_import_2_nodes_2_circle_local_response_normalization_8h_source.html":[40,0,0,56,2,0,0,0,0,49],
+"import_2include_2luci_2_import_2_nodes_2_circle_log_8h.html":[40,0,0,56,2,0,0,0,0,50]
 };

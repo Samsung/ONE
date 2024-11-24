@@ -1,6 +1,5 @@
 var NAVTREEINDEX223 =
 {
-"namespaceluci_1_1sinf.html#ae751dcf8758b6d6ff28a156ff79950ba":[38,0,79,2,6],
 "namespaceluci_1_1sinf.html#af72f361067bef9d075656b04affaf238":[38,0,79,2,12],
 "namespaceluci_1_1test.html":[38,0,79,3],
 "namespaceluci_1_1test.html#a25e8f7d66b50b327c2d6b54883adc8ed":[38,0,79,3,7],
@@ -249,5 +248,6 @@ var NAVTREEINDEX223 =
 "namespaceluci__interpreter.html#a728322c58c17f06a72a104300b6d6adb":[38,0,82,104],
 "namespaceluci__interpreter.html#a72b4746b8f2ec6e684f5a8441cddfc9b":[38,0,82,330],
 "namespaceluci__interpreter.html#a734f35587c6ce4564b09db00411746c4":[38,0,82,307],
-"namespaceluci__interpreter.html#a74a3c4cdd92c0ae04221ab40fe9c8ac2":[38,0,82,324]
+"namespaceluci__interpreter.html#a74a3c4cdd92c0ae04221ab40fe9c8ac2":[38,0,82,324],
+"namespaceluci__interpreter.html#a7562b0ff36ccec0b499fa72f226175ed":[38,0,82,250]
 };

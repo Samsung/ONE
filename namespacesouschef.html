@@ -454,8 +454,8 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00026">26</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>{ <span class="keywordflow">return</span> std::stof(s); }</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00027">27</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{ <span class="keywordflow">return</span> std::stof(s); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -477,8 +477,8 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00027">27</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{ <span class="keywordflow">return</span> std::stoi(s); }</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00028">28</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{ <span class="keywordflow">return</span> std::stoi(s); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -500,18 +500,18 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00028">28</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>  <span class="comment">// There are no standard function to parse int16_t or short int</span></div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// This function simulates behavior similar stoi, stol and stoll</span></div>
-<div class="line"><span class="lineno">   32</span>  <span class="keywordtype">int</span> res = std::stol(s);</div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// standard does not specify string in error message, this is arbitrary</span></div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (res &lt; std::numeric_limits&lt;int16_t&gt;::min() || res &gt; std::numeric_limits&lt;int16_t&gt;::max())</div>
-<div class="line"><span class="lineno">   35</span>  {</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;to_number&lt;int16_t&gt;&quot;</span>);</div>
-<div class="line"><span class="lineno">   37</span>  }</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00029">29</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <span class="comment">// There are no standard function to parse int16_t or short int</span></div>
+<div class="line"><span class="lineno">   32</span>  <span class="comment">// This function simulates behavior similar stoi, stol and stoll</span></div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordtype">int</span> res = std::stol(s);</div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">// standard does not specify string in error message, this is arbitrary</span></div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (res &lt; std::numeric_limits&lt;int16_t&gt;::min() || res &gt; std::numeric_limits&lt;int16_t&gt;::max())</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::out_of_range(<span class="stringliteral">&quot;to_number&lt;int16_t&gt;&quot;</span>);</div>
+<div class="line"><span class="lineno">   38</span>  }</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -533,8 +533,8 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00040">40</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> std::stoll(s); }</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00041">41</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> std::stoll(s); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -556,13 +556,13 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00041">41</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordtype">int</span> temp = std::stoi(s);</div>
-<div class="line"><span class="lineno">   44</span>  assert(temp &gt;= 0);</div>
-<div class="line"><span class="lineno">   45</span>  assert(temp &lt;= std::numeric_limits&lt;uint8_t&gt;::max());</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(temp);</div>
-<div class="line"><span class="lineno">   47</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00042">42</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordtype">int</span> temp = std::stoi(s);</div>
+<div class="line"><span class="lineno">   45</span>  assert(temp &gt;= 0);</div>
+<div class="line"><span class="lineno">   46</span>  assert(temp &lt;= std::numeric_limits&lt;uint8_t&gt;::max());</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(temp);</div>
+<div class="line"><span class="lineno">   48</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -584,13 +584,13 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00048">48</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordtype">int</span> temp = std::stoi(s);</div>
-<div class="line"><span class="lineno">   51</span>  assert(temp &gt;= std::numeric_limits&lt;int8_t&gt;::min());</div>
-<div class="line"><span class="lineno">   52</span>  assert(temp &lt;= std::numeric_limits&lt;int8_t&gt;::max());</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(temp);</div>
-<div class="line"><span class="lineno">   54</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00049">49</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordtype">int</span> temp = std::stoi(s);</div>
+<div class="line"><span class="lineno">   52</span>  assert(temp &gt;= std::numeric_limits&lt;int8_t&gt;::min());</div>
+<div class="line"><span class="lineno">   53</span>  assert(temp &lt;= std::numeric_limits&lt;int8_t&gt;::max());</div>
+<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(temp);</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -612,14 +612,14 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00055">55</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (s == <span class="stringliteral">&quot;T&quot;</span> || s == <span class="stringliteral">&quot;t&quot;</span> || s == <span class="stringliteral">&quot;TRUE&quot;</span> || s == <span class="stringliteral">&quot;true&quot;</span> || s == <span class="stringliteral">&quot;1&quot;</span>)</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">if</span> (s == <span class="stringliteral">&quot;F&quot;</span> || s == <span class="stringliteral">&quot;f&quot;</span> || s == <span class="stringliteral">&quot;FALSE&quot;</span> || s == <span class="stringliteral">&quot;false&quot;</span> || s == <span class="stringliteral">&quot;0&quot;</span>)</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Unsupported boolean argument&quot;</span>);</div>
-<div class="line"><span class="lineno">   62</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00056">56</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (s == <span class="stringliteral">&quot;T&quot;</span> || s == <span class="stringliteral">&quot;t&quot;</span> || s == <span class="stringliteral">&quot;TRUE&quot;</span> || s == <span class="stringliteral">&quot;true&quot;</span> || s == <span class="stringliteral">&quot;1&quot;</span>)</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">if</span> (s == <span class="stringliteral">&quot;F&quot;</span> || s == <span class="stringliteral">&quot;f&quot;</span> || s == <span class="stringliteral">&quot;FALSE&quot;</span> || s == <span class="stringliteral">&quot;false&quot;</span> || s == <span class="stringliteral">&quot;0&quot;</span>)</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Unsupported boolean argument&quot;</span>);</div>
+<div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -641,8 +641,8 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00063">63</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> s; }</div>
+<p class="definition">Definition at line <a class="el" href="_lexical_cast_8cpp_source.html#l00064">64</a> of file <a class="el" href="_lexical_cast_8cpp_source.html">LexicalCast.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> s; }</div>
 </div><!-- fragment -->
 </div>
 </div>

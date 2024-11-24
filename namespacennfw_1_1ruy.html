@@ -431,38 +431,38 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00273">273</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  274</span>{</div>
-<div class="line"><span class="lineno">  275</span>  <span class="keyword">const</span> <a class="code hl_class" href="classnnfw_1_1ruy_1_1_shape.html">Shape</a> check_shapes_array[<span class="keyword">sizeof</span>...(Ts)] = {std::forward&lt;Ts&gt;(check_shapes)...};</div>
-<div class="line"><span class="lineno">  276</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;check_shape : check_shapes_array)</div>
-<div class="line"><span class="lineno">  277</span>  {</div>
-<div class="line"><span class="lineno">  278</span>    <span class="comment">// Check matching of shapes except the case of that two shapes can be scalar</span></div>
-<div class="line"><span class="lineno">  279</span>    <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>() &gt; 1 || check_shape.DimensionsCount() &gt; 1 || shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>() != 1 ||</div>
-<div class="line"><span class="lineno">  280</span>        check_shape.FlatSize() != 1)</div>
-<div class="line"><span class="lineno">  281</span>    {</div>
-<div class="line"><span class="lineno">  282</span>      <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>() != check_shape.DimensionsCount())</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00269">269</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  270</span>{</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keyword">const</span> <a class="code hl_class" href="classnnfw_1_1ruy_1_1_shape.html">Shape</a> check_shapes_array[<span class="keyword">sizeof</span>...(Ts)] = {std::forward&lt;Ts&gt;(check_shapes)...};</div>
+<div class="line"><span class="lineno">  272</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;check_shape : check_shapes_array)</div>
+<div class="line"><span class="lineno">  273</span>  {</div>
+<div class="line"><span class="lineno">  274</span>    <span class="comment">// Check matching of shapes except the case of that two shapes can be scalar</span></div>
+<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>() &gt; 1 || check_shape.DimensionsCount() &gt; 1 || shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>() != 1 ||</div>
+<div class="line"><span class="lineno">  276</span>        check_shape.FlatSize() != 1)</div>
+<div class="line"><span class="lineno">  277</span>    {</div>
+<div class="line"><span class="lineno">  278</span>      <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>() != check_shape.DimensionsCount())</div>
+<div class="line"><span class="lineno">  279</span>      {</div>
+<div class="line"><span class="lineno">  280</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  281</span>      }</div>
+<div class="line"><span class="lineno">  282</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>(); ++i)</div>
 <div class="line"><span class="lineno">  283</span>      {</div>
-<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  285</span>      }</div>
-<div class="line"><span class="lineno">  286</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>(); ++i)</div>
-<div class="line"><span class="lineno">  287</span>      {</div>
-<div class="line"><span class="lineno">  288</span>        <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i) != check_shape.Dims(i))</div>
-<div class="line"><span class="lineno">  289</span>        {</div>
-<div class="line"><span class="lineno">  290</span>          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  291</span>        }</div>
-<div class="line"><span class="lineno">  292</span>      }</div>
-<div class="line"><span class="lineno">  293</span>    }</div>
-<div class="line"><span class="lineno">  294</span>  }</div>
-<div class="line"><span class="lineno">  295</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  296</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html">nnfw::ruy::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00033">Shape.h:34</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a0adf7074ff445fe6604bc94663fb8de1"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">nnfw::ruy::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a8e89f0cf6e54db02feec9e0b9f1aaf53"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">nnfw::ruy::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a9b1f58d358a03860559970e1899ac7d2"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">nnfw::ruy::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
+<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i) != check_shape.Dims(i))</div>
+<div class="line"><span class="lineno">  285</span>        {</div>
+<div class="line"><span class="lineno">  286</span>          <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  287</span>        }</div>
+<div class="line"><span class="lineno">  288</span>      }</div>
+<div class="line"><span class="lineno">  289</span>    }</div>
+<div class="line"><span class="lineno">  290</span>  }</div>
+<div class="line"><span class="lineno">  291</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  292</span>}</div>
+<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html">nnfw::ruy::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00031">Shape.h:32</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a0adf7074ff445fe6604bc94663fb8de1"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">nnfw::ruy::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00181">Shape.h:181</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a8e89f0cf6e54db02feec9e0b9f1aaf53"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">nnfw::ruy::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">Shape.h:91</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a9b1f58d358a03860559970e1899ac7d2"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">nnfw::ruy::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">Shape.h:92</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00183">nnfw::ruy::Shape::FlatSize()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00181">nnfw::ruy::Shape::FlatSize()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00302">MatchingFlatSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00298">MatchingFlatSize()</a>.</p>
 
 </div>
 </div>
@@ -664,7 +664,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_padding_values_html_a85fb24d87c88e4a2efa173307eb1e798"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_padding_values.html#a85fb24d87c88e4a2efa173307eb1e798">nnfw::ruy::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">Types.h:53</a></div></div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_padding_values_html_ac4b3817526f08ce587b1880fe42c3937"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_padding_values.html#ac4b3817526f08ce587b1880fe42c3937">nnfw::ruy::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">Types.h:52</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00064">nnfw::ruy::ConvParams::dilation_height_factor</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00063">nnfw::ruy::ConvParams::dilation_width_factor</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">nnfw::ruy::PaddingValues::height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00223">MatchingDim()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00242">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">nnfw::ruy::ConvParams::padding_values</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00062">nnfw::ruy::ConvParams::stride_height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00061">nnfw::ruy::ConvParams::stride_width</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">nnfw::ruy::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00064">nnfw::ruy::ConvParams::dilation_height_factor</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00063">nnfw::ruy::ConvParams::dilation_width_factor</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">nnfw::ruy::PaddingValues::height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00221">MatchingDim()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00238">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">nnfw::ruy::ConvParams::padding_values</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00062">nnfw::ruy::ConvParams::stride_height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00061">nnfw::ruy::ConvParams::stride_width</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">nnfw::ruy::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -950,7 +950,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00242">Offset()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00238">Offset()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00219">Im2col()</a>.</p>
 
@@ -990,23 +990,23 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00258">258</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  259</span>{</div>
-<div class="line"><span class="lineno">  260</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>();</div>
-<div class="line"><span class="lineno">  261</span>  assert(skip_dim &gt;= 0 &amp;&amp; skip_dim &lt; dims_count);</div>
-<div class="line"><span class="lineno">  262</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *dims_data = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0104fd9f7c8b46950567fe5ec7b6132b">DimsData</a>();</div>
-<div class="line"><span class="lineno">  263</span>  <span class="keywordtype">int</span> flat_size = 1;</div>
-<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dims_count; ++i)</div>
-<div class="line"><span class="lineno">  265</span>  {</div>
-<div class="line"><span class="lineno">  266</span>    flat_size *= (i == skip_dim) ? 1 : dims_data[i];</div>
-<div class="line"><span class="lineno">  267</span>  }</div>
-<div class="line"><span class="lineno">  268</span>  <span class="keywordflow">return</span> flat_size;</div>
-<div class="line"><span class="lineno">  269</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a0104fd9f7c8b46950567fe5ec7b6132b"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a0104fd9f7c8b46950567fe5ec7b6132b">nnfw::ruy::Shape::DimsData</a></div><div class="ttdeci">int32_t * DimsData()</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00114">Shape.h:114</a></div></div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00254">254</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  255</span>{</div>
+<div class="line"><span class="lineno">  256</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>();</div>
+<div class="line"><span class="lineno">  257</span>  assert(skip_dim &gt;= 0 &amp;&amp; skip_dim &lt; dims_count);</div>
+<div class="line"><span class="lineno">  258</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *dims_data = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0104fd9f7c8b46950567fe5ec7b6132b">DimsData</a>();</div>
+<div class="line"><span class="lineno">  259</span>  <span class="keywordtype">int</span> flat_size = 1;</div>
+<div class="line"><span class="lineno">  260</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dims_count; ++i)</div>
+<div class="line"><span class="lineno">  261</span>  {</div>
+<div class="line"><span class="lineno">  262</span>    flat_size *= (i == skip_dim) ? 1 : dims_data[i];</div>
+<div class="line"><span class="lineno">  263</span>  }</div>
+<div class="line"><span class="lineno">  264</span>  <span class="keywordflow">return</span> flat_size;</div>
+<div class="line"><span class="lineno">  265</span>}</div>
+<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a0104fd9f7c8b46950567fe5ec7b6132b"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a0104fd9f7c8b46950567fe5ec7b6132b">nnfw::ruy::Shape::DimsData</a></div><div class="ttdeci">int32_t * DimsData()</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00112">Shape.h:112</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00114">nnfw::ruy::Shape::DimsData()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00112">nnfw::ruy::Shape::DimsData()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2operation_2_fully_connected_8h_source.html#l00034">FullyConnected()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00309">MatchingFlatSizeSkipDim()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2operation_2_fully_connected_8h_source.html#l00034">FullyConnected()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00305">MatchingFlatSizeSkipDim()</a>.</p>
 
 </div>
 </div>
@@ -1145,7 +1145,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_matrix_params_html_aa7936ece99b29c1dee95eb22a8696142"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_matrix_params.html#aa7936ece99b29c1dee95eb22a8696142">nnfw::ruy::MatrixParams::cache_policy</a></div><div class="ttdeci">CachePolicy cache_policy</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00141">Types.h:141</a></div></div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_matrix_params_html_ada2c29bf549297f111f9d954d5477802"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_matrix_params.html#ada2c29bf549297f111f9d954d5477802">nnfw::ruy::MatrixParams::order</a></div><div class="ttdeci">Order order</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00127">Types.h:127</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00216">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::bias</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00141">nnfw::ruy::MatrixParams&lt; Scalar &gt;::cache_policy</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00222">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::clamp_max</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00218">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::clamp_min</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00131">nnfw::ruy::MatrixParams&lt; Scalar &gt;::cols</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00267">DefaultCachePolicy()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00183">nnfw::ruy::Shape::FlatSize()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00258">FlatSizeSkipDim()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00097">nnfw::ruy::FullyConnectedParams::float_activation_max</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00096">nnfw::ruy::FullyConnectedParams::float_activation_min</a>, <a class="el" href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179baf093768651925b22c4d08e33641f38f1">kColMajor</a>, <a class="el" href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179ba1ebc644af759b214a70279505401a0b9">kRowMajor</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00099">nnfw::ruy::FullyConnectedParams::lhs_cacheable</a>, <a class="el" href="ruy_2include_2ruy_2_ruy_support_8h_source.html#l00051">nnfw::ruy::ruy_support::MakeRuyMatrix()</a>, <a class="el" href="ruy_2include_2ruy_2_ruy_support_8h_source.html#l00069">nnfw::ruy::ruy_support::MakeRuyMulParams()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00127">nnfw::ruy::MatrixParams&lt; Scalar &gt;::order</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00100">nnfw::ruy::FullyConnectedParams::rhs_cacheable</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00129">nnfw::ruy::MatrixParams&lt; Scalar &gt;::rows</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00216">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::bias</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00141">nnfw::ruy::MatrixParams&lt; Scalar &gt;::cache_policy</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00222">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::clamp_max</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00218">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::clamp_min</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00131">nnfw::ruy::MatrixParams&lt; Scalar &gt;::cols</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00267">DefaultCachePolicy()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00181">nnfw::ruy::Shape::FlatSize()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00254">FlatSizeSkipDim()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00097">nnfw::ruy::FullyConnectedParams::float_activation_max</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00096">nnfw::ruy::FullyConnectedParams::float_activation_min</a>, <a class="el" href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179baf093768651925b22c4d08e33641f38f1">kColMajor</a>, <a class="el" href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179ba1ebc644af759b214a70279505401a0b9">kRowMajor</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00099">nnfw::ruy::FullyConnectedParams::lhs_cacheable</a>, <a class="el" href="ruy_2include_2ruy_2_ruy_support_8h_source.html#l00051">nnfw::ruy::ruy_support::MakeRuyMatrix()</a>, <a class="el" href="ruy_2include_2ruy_2_ruy_support_8h_source.html#l00069">nnfw::ruy::ruy_support::MakeRuyMulParams()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00127">nnfw::ruy::MatrixParams&lt; Scalar &gt;::order</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00100">nnfw::ruy::FullyConnectedParams::rhs_cacheable</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00129">nnfw::ruy::MatrixParams&lt; Scalar &gt;::rows</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00041">onert::backend::ruy::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>.</p>
 
@@ -1175,8 +1175,8 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00240">240</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  240</span>{ <span class="keywordflow">return</span> <a class="code hl_class" href="classnnfw_1_1ruy_1_1_shape.html">Shape</a>(data.size(), data.data()); }</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00236">236</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  236</span>{ <span class="keywordflow">return</span> <a class="code hl_class" href="classnnfw_1_1ruy_1_1_shape.html">Shape</a>(data.size(), data.data()); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1280,7 +1280,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  254</span>}</div>
 <div class="ttc" id="a_conv2_d_8float_8cpp_html_ae4aac893b639643d7687d01f8c4b28a9"><div class="ttname"><a href="_conv2_d_8float_8cpp.html#ae4aac893b639643d7687d01f8c4b28a9">ExtractPatchIntoBufferColumn</a></div><div class="ttdeci">void ExtractPatchIntoBufferColumn(const Dims&lt; 4 &gt; &amp;input_dims, int w, int h, int b, int kheight, int kwidth, int stride_width, int stride_height, int pad_width, int pad_height, int in_width, int in_height, int in_depth, int single_buffer_length, int buffer_id, const T *in_data, T *conv_buffer_data, uint8 byte_zero)</div><div class="ttdef"><b>Definition</b> <a href="_conv2_d_8float_8cpp_source.html#l00030">Conv2D.float.cpp:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00031">ExtractPatchIntoBufferColumn()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">nnfw::ruy::PaddingValues::height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00223">MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">nnfw::ruy::ConvParams::padding_values</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00062">nnfw::ruy::ConvParams::stride_height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00061">nnfw::ruy::ConvParams::stride_width</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">nnfw::ruy::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00031">ExtractPatchIntoBufferColumn()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">nnfw::ruy::PaddingValues::height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00221">MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">nnfw::ruy::ConvParams::padding_values</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00062">nnfw::ruy::ConvParams::stride_height</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00061">nnfw::ruy::ConvParams::stride_width</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">nnfw::ruy::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -1326,7 +1326,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_tensor_utils_8h_source.html#l00029">IsZeroVector()</a>, and <a class="el" href="cker_2include_2cker_2neon_2neon__check_8h_source.html#l00047">NEON_OR_PORTABLE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_tensor_utils_8h_source.html#l00029">IsZeroVector()</a>, and <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::ruy::ops::FullyConnectedLayer::prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_tensor_utils_8h_source.html#l00029">IsZeroVector()</a>, and <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00086">onert::backend::ruy::ops::FullyConnectedLayer::prepare()</a>.</p>
 
 </div>
 </div>
@@ -1376,18 +1376,15 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00223">223</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
-<div class="line"><span class="lineno">  225</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(shape2);</div>
-<div class="line"><span class="lineno">  226</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(index2);</div>
-<div class="line"><span class="lineno">  227</span>  assert(shape1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index1) == shape2.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index2));</div>
-<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">return</span> shape1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index1);</div>
-<div class="line"><span class="lineno">  229</span>}</div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00221">221</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
+<div class="line"><span class="lineno">  224</span>  assert(shape1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index1) == shape2.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index2));</div>
+<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">return</span> shape1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index1);</div>
+<div class="line"><span class="lineno">  226</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00118">DilatedIm2col()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00219">Im2col()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00232">MatchingDim()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00118">DilatedIm2col()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00219">Im2col()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00229">MatchingDim()</a>.</p>
 
 </div>
 </div>
@@ -1437,15 +1434,13 @@ template&lt;typename... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00232">232</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  233</span>{</div>
-<div class="line"><span class="lineno">  234</span>  assert(shape1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index1) == shape2.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index2));</div>
-<div class="line"><span class="lineno">  235</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(shape2);</div>
-<div class="line"><span class="lineno">  236</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(index2);</div>
-<div class="line"><span class="lineno">  237</span>  <span class="keywordflow">return</span> MatchingDim(shape1, index1, args...);</div>
-<div class="line"><span class="lineno">  238</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00229">229</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  231</span>{</div>
+<div class="line"><span class="lineno">  232</span>  assert(shape1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index1) == shape2.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(index2));</div>
+<div class="line"><span class="lineno">  233</span>  <span class="keywordflow">return</span> MatchingDim(shape1, index1, args...);</div>
+<div class="line"><span class="lineno">  234</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00223">MatchingDim()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00221">MatchingDim()</a>.</p>
 
 </div>
 </div>
@@ -1489,19 +1484,17 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00338">338</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  340</span>{</div>
-<div class="line"><span class="lineno">  341</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> size_1 = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
-<div class="line"><span class="lineno">  342</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> size_2 = check_shape_0.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
-<div class="line"><span class="lineno">  343</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> size_3 = check_shape_1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
-<div class="line"><span class="lineno">  344</span>  assert(size_1 == size_2);</div>
-<div class="line"><span class="lineno">  345</span>  assert(size_2 == size_3);</div>
-<div class="line"><span class="lineno">  346</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(size_2);</div>
-<div class="line"><span class="lineno">  347</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(size_3);</div>
-<div class="line"><span class="lineno">  348</span>  <span class="keywordflow">return</span> size_1;</div>
-<div class="line"><span class="lineno">  349</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00334">334</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  336</span>{</div>
+<div class="line"><span class="lineno">  337</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> size_1 = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
+<div class="line"><span class="lineno">  338</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> size_2 = check_shape_0.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
+<div class="line"><span class="lineno">  339</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> size_3 = check_shape_1.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
+<div class="line"><span class="lineno">  340</span>  assert(size_1 == size_2);</div>
+<div class="line"><span class="lineno">  341</span>  assert(size_2 == size_3);</div>
+<div class="line"><span class="lineno">  342</span>  <span class="keywordflow">return</span> size_1;</div>
+<div class="line"><span class="lineno">  343</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00183">nnfw::ruy::Shape::FlatSize()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00181">nnfw::ruy::Shape::FlatSize()</a>.</p>
 
 </div>
 </div>
@@ -1541,15 +1534,15 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00302">302</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  303</span>{</div>
-<div class="line"><span class="lineno">  304</span>  <a class="code hl_struct" href="structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html">UNUSED_ALL</a>{check_shapes...};</div>
-<div class="line"><span class="lineno">  305</span>  assert(checkMatching(shape, std::forward&lt;Ts&gt;(check_shapes)...));</div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordflow">return</span> shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
-<div class="line"><span class="lineno">  307</span>}</div>
-<div class="ttc" id="astructnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l_html"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html">nnfw::ruy::UNUSED_ALL</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00298">Shape.h:299</a></div></div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00298">298</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  299</span>{</div>
+<div class="line"><span class="lineno">  300</span>  <a class="code hl_struct" href="structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html">UNUSED_ALL</a>{check_shapes...};</div>
+<div class="line"><span class="lineno">  301</span>  assert(checkMatching(shape, std::forward&lt;Ts&gt;(check_shapes)...));</div>
+<div class="line"><span class="lineno">  302</span>  <span class="keywordflow">return</span> shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>();</div>
+<div class="line"><span class="lineno">  303</span>}</div>
+<div class="ttc" id="astructnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l_html"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html">nnfw::ruy::UNUSED_ALL</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00294">Shape.h:295</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00273">checkMatching()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00183">nnfw::ruy::Shape::FlatSize()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00269">checkMatching()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00181">nnfw::ruy::Shape::FlatSize()</a>.</p>
 
 </div>
 </div>
@@ -1593,23 +1586,22 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00309">309</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  310</span>{</div>
-<div class="line"><span class="lineno">  311</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(check_shape_0);</div>
-<div class="line"><span class="lineno">  312</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>();</div>
-<div class="line"><span class="lineno">  313</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dims_count; ++i)</div>
-<div class="line"><span class="lineno">  314</span>  {</div>
-<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">if</span> (i != skip_dim)</div>
-<div class="line"><span class="lineno">  316</span>    {</div>
-<div class="line"><span class="lineno">  317</span>      assert(shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i) == check_shape_0.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i));</div>
-<div class="line"><span class="lineno">  318</span>    }</div>
-<div class="line"><span class="lineno">  319</span>  }</div>
-<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">return</span> FlatSizeSkipDim(shape, skip_dim);</div>
-<div class="line"><span class="lineno">  321</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00305">305</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  307</span>{</div>
+<div class="line"><span class="lineno">  308</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>();</div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dims_count; ++i)</div>
+<div class="line"><span class="lineno">  310</span>  {</div>
+<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">if</span> (i != skip_dim)</div>
+<div class="line"><span class="lineno">  312</span>    {</div>
+<div class="line"><span class="lineno">  313</span>      assert(shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i) == check_shape_0.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i));</div>
+<div class="line"><span class="lineno">  314</span>    }</div>
+<div class="line"><span class="lineno">  315</span>  }</div>
+<div class="line"><span class="lineno">  316</span>  <span class="keywordflow">return</span> FlatSizeSkipDim(shape, skip_dim);</div>
+<div class="line"><span class="lineno">  317</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00258">FlatSizeSkipDim()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00254">FlatSizeSkipDim()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00323">MatchingFlatSizeSkipDim()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00319">MatchingFlatSizeSkipDim()</a>.</p>
 
 </div>
 </div>
@@ -1659,21 +1651,20 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00323">323</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  325</span>{</div>
-<div class="line"><span class="lineno">  326</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(check_shape_0);</div>
-<div class="line"><span class="lineno">  327</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>();</div>
-<div class="line"><span class="lineno">  328</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dims_count; ++i)</div>
-<div class="line"><span class="lineno">  329</span>  {</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">if</span> (i != skip_dim)</div>
-<div class="line"><span class="lineno">  331</span>    {</div>
-<div class="line"><span class="lineno">  332</span>      assert(shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i) == check_shape_0.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i));</div>
-<div class="line"><span class="lineno">  333</span>    }</div>
-<div class="line"><span class="lineno">  334</span>  }</div>
-<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">return</span> MatchingFlatSizeSkipDim(shape, skip_dim, check_shape_1);</div>
-<div class="line"><span class="lineno">  336</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00319">319</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  322</span>{</div>
+<div class="line"><span class="lineno">  323</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>();</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; dims_count; ++i)</div>
+<div class="line"><span class="lineno">  325</span>  {</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">if</span> (i != skip_dim)</div>
+<div class="line"><span class="lineno">  327</span>    {</div>
+<div class="line"><span class="lineno">  328</span>      assert(shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i) == check_shape_0.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a9b1f58d358a03860559970e1899ac7d2">Dims</a>(i));</div>
+<div class="line"><span class="lineno">  329</span>    }</div>
+<div class="line"><span class="lineno">  330</span>  }</div>
+<div class="line"><span class="lineno">  331</span>  <span class="keywordflow">return</span> MatchingFlatSizeSkipDim(shape, skip_dim, check_shape_1);</div>
+<div class="line"><span class="lineno">  332</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00094">nnfw::ruy::Shape::Dims()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00309">MatchingFlatSizeSkipDim()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00092">nnfw::ruy::Shape::Dims()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00305">MatchingFlatSizeSkipDim()</a>.</p>
 
 </div>
 </div>
@@ -1711,12 +1702,12 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00253">253</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  254</span>{</div>
-<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(shape, index[0], index[1], index[2], index[3]);</div>
-<div class="line"><span class="lineno">  256</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00249">249</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  250</span>{</div>
+<div class="line"><span class="lineno">  251</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(shape, index[0], index[1], index[2], index[3]);</div>
+<div class="line"><span class="lineno">  252</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00242">Offset()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00238">Offset()</a>.</p>
 
 </div>
 </div>
@@ -1772,21 +1763,21 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00242">242</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  243</span>{</div>
-<div class="line"><span class="lineno">  244</span>  assert(shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>() == 4);</div>
-<div class="line"><span class="lineno">  245</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> *dims_data = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8d6676c73976cc62d9653909185f98ed">DimsDataUpTo4D</a>();</div>
-<div class="line"><span class="lineno">  246</span>  assert(i0 &gt;= 0 &amp;&amp; i0 &lt; dims_data[0]);</div>
-<div class="line"><span class="lineno">  247</span>  assert(i1 &gt;= 0 &amp;&amp; i1 &lt; dims_data[1]);</div>
-<div class="line"><span class="lineno">  248</span>  assert(i2 &gt;= 0 &amp;&amp; i2 &lt; dims_data[2]);</div>
-<div class="line"><span class="lineno">  249</span>  assert(i3 &gt;= 0 &amp;&amp; i3 &lt; dims_data[3]);</div>
-<div class="line"><span class="lineno">  250</span>  <span class="keywordflow">return</span> ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;</div>
-<div class="line"><span class="lineno">  251</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a8d6676c73976cc62d9653909185f98ed"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a8d6676c73976cc62d9653909185f98ed">nnfw::ruy::Shape::DimsDataUpTo4D</a></div><div class="ttdeci">const int32_t * DimsDataUpTo4D() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00117">Shape.h:117</a></div></div>
+<p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00238">238</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  239</span>{</div>
+<div class="line"><span class="lineno">  240</span>  assert(shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8e89f0cf6e54db02feec9e0b9f1aaf53">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> *dims_data = shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a8d6676c73976cc62d9653909185f98ed">DimsDataUpTo4D</a>();</div>
+<div class="line"><span class="lineno">  242</span>  assert(i0 &gt;= 0 &amp;&amp; i0 &lt; dims_data[0]);</div>
+<div class="line"><span class="lineno">  243</span>  assert(i1 &gt;= 0 &amp;&amp; i1 &lt; dims_data[1]);</div>
+<div class="line"><span class="lineno">  244</span>  assert(i2 &gt;= 0 &amp;&amp; i2 &lt; dims_data[2]);</div>
+<div class="line"><span class="lineno">  245</span>  assert(i3 &gt;= 0 &amp;&amp; i3 &lt; dims_data[3]);</div>
+<div class="line"><span class="lineno">  246</span>  <span class="keywordflow">return</span> ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;</div>
+<div class="line"><span class="lineno">  247</span>}</div>
+<div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a8d6676c73976cc62d9653909185f98ed"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a8d6676c73976cc62d9653909185f98ed">nnfw::ruy::Shape::DimsDataUpTo4D</a></div><div class="ttdeci">const int32_t * DimsDataUpTo4D() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00115">Shape.h:115</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00093">nnfw::ruy::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00117">nnfw::ruy::Shape::DimsDataUpTo4D()</a>.</p>
+<p class="reference">References <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00091">nnfw::ruy::Shape::DimensionsCount()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00115">nnfw::ruy::Shape::DimsDataUpTo4D()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00118">DilatedIm2col()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00031">ExtractPatchIntoBufferColumn()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00253">Offset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00118">DilatedIm2col()</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_utils_8h_source.html#l00031">ExtractPatchIntoBufferColumn()</a>, and <a class="el" href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00249">Offset()</a>.</p>
 
 </div>
 </div>
@@ -1855,48 +1846,47 @@ template&lt;typename AccumScalar , typename DstScalar , <a class="el" href="name
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00229">229</a> of file <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html">Types.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  230</span>{</div>
-<div class="line"><span class="lineno">  231</span>  <span class="comment">// Guard consistency of the quantized multiplier fields.</span></div>
-<div class="line"><span class="lineno">  232</span>  <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kFloatingPoint)</div>
-<div class="line"><span class="lineno">  233</span>  {</div>
-<div class="line"><span class="lineno">  234</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><span class="lineno">  235</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
-<div class="line"><span class="lineno">  236</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><span class="lineno">  237</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><span class="lineno">  238</span>  }</div>
-<div class="line"><span class="lineno">  239</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &amp;&amp;</div>
-<div class="line"><span class="lineno">  240</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
-<div class="line"><span class="lineno">  241</span>  {</div>
-<div class="line"><span class="lineno">  242</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><span class="lineno">  243</span>    <span class="comment">// Nothing to check about multiplier_exponent</span></div>
-<div class="line"><span class="lineno">  244</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><span class="lineno">  245</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><span class="lineno">  246</span>  }</div>
-<div class="line"><span class="lineno">  247</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &amp;&amp;</div>
-<div class="line"><span class="lineno">  248</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
-<div class="line"><span class="lineno">  249</span>  {</div>
-<div class="line"><span class="lineno">  250</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><span class="lineno">  251</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
-<div class="line"><span class="lineno">  252</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><span class="lineno">  253</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><span class="lineno">  254</span>  }</div>
-<div class="line"><span class="lineno">  255</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  256</span>  {</div>
-<div class="line"><span class="lineno">  257</span>    <span class="comment">// For the get raw accumulator case, we should make sure none of the</span></div>
-<div class="line"><span class="lineno">  258</span>    <span class="comment">// quantization params are set.</span></div>
-<div class="line"><span class="lineno">  259</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><span class="lineno">  260</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
-<div class="line"><span class="lineno">  261</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><span class="lineno">  262</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><span class="lineno">  263</span>  }</div>
-<div class="line"><span class="lineno">  264</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(params);</div>
+<div class="fragment"><div class="line"><span class="lineno">  231</span>{</div>
+<div class="line"><span class="lineno">  232</span>  <span class="comment">// Guard consistency of the quantized multiplier fields.</span></div>
+<div class="line"><span class="lineno">  233</span>  <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kFloatingPoint)</div>
+<div class="line"><span class="lineno">  234</span>  {</div>
+<div class="line"><span class="lineno">  235</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
+<div class="line"><span class="lineno">  236</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
+<div class="line"><span class="lineno">  237</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
+<div class="line"><span class="lineno">  238</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
+<div class="line"><span class="lineno">  239</span>  }</div>
+<div class="line"><span class="lineno">  240</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &amp;&amp;</div>
+<div class="line"><span class="lineno">  241</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><span class="lineno">  242</span>  {</div>
+<div class="line"><span class="lineno">  243</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
+<div class="line"><span class="lineno">  244</span>    <span class="comment">// Nothing to check about multiplier_exponent</span></div>
+<div class="line"><span class="lineno">  245</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
+<div class="line"><span class="lineno">  246</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
+<div class="line"><span class="lineno">  247</span>  }</div>
+<div class="line"><span class="lineno">  248</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &amp;&amp;</div>
+<div class="line"><span class="lineno">  249</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><span class="lineno">  250</span>  {</div>
+<div class="line"><span class="lineno">  251</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
+<div class="line"><span class="lineno">  252</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
+<div class="line"><span class="lineno">  253</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
+<div class="line"><span class="lineno">  254</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
+<div class="line"><span class="lineno">  255</span>  }</div>
+<div class="line"><span class="lineno">  256</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  257</span>  {</div>
+<div class="line"><span class="lineno">  258</span>    <span class="comment">// For the get raw accumulator case, we should make sure none of the</span></div>
+<div class="line"><span class="lineno">  259</span>    <span class="comment">// quantization params are set.</span></div>
+<div class="line"><span class="lineno">  260</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
+<div class="line"><span class="lineno">  261</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
+<div class="line"><span class="lineno">  262</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
+<div class="line"><span class="lineno">  263</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
+<div class="line"><span class="lineno">  264</span>  }</div>
 <div class="line"><span class="lineno">  265</span>}</div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_gemm_params_html_a0d6ee937e371683348fa601b646b6c2c"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">nnfw::ruy::GemmParams::multiplier_fixedpoint</a></div><div class="ttdeci">AccumScalar multiplier_fixedpoint</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00198">Types.h:198</a></div></div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_gemm_params_html_a9a289aa96f8c4b91e147c13382d3d394"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">nnfw::ruy::GemmParams::multiplier_exponent_perchannel</a></div><div class="ttdeci">const int * multiplier_exponent_perchannel</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00214">Types.h:214</a></div></div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_gemm_params_html_abdd21867a9ec19093b992c64d1059415"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">nnfw::ruy::GemmParams::multiplier_fixedpoint_perchannel</a></div><div class="ttdeci">const AccumScalar * multiplier_fixedpoint_perchannel</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00206">Types.h:206</a></div></div>
 <div class="ttc" id="astructnnfw_1_1ruy_1_1_gemm_params_html_acb43d47832a0ba9b6e96c7cd86e9e50c"><div class="ttname"><a href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">nnfw::ruy::GemmParams::multiplier_exponent</a></div><div class="ttdeci">int multiplier_exponent</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00201">Types.h:201</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da6b5725464f6e8ab0a2cdf49a29a0f4a9">kFloatingPoint</a>, <a class="el" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da227d5cf4d9445848d0940bb4dd05ee37">kIntegerWithPerRowMultiplier</a>, <a class="el" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395dac11557b4d4fc196c43b4fa7eab201144">kIntegerWithUniformMultiplier</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00201">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::multiplier_exponent</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00214">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::multiplier_exponent_perchannel</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00198">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::multiplier_fixedpoint</a>, <a class="el" href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00206">nnfw::ruy::GemmParams&lt; AccumScalar, DstScalar, quantization_flavor &gt;::multiplier_fixedpoint_perchannel</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da6b5725464f6e8ab0a2cdf49a29a0f4a9">kFloatingPoint</a>, <a class="el" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da227d5cf4d9445848d0940bb4dd05ee37">kIntegerWithPerRowMultiplier</a>, and <a class="el" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395dac11557b4d4fc196c43b4fa7eab201144">kIntegerWithUniformMultiplier</a>.</p>
 
 </div>
 </div>

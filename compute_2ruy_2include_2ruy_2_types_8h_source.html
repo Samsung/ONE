@@ -346,42 +346,42 @@ $(document).ready(function(){initNavTree('compute_2ruy_2include_2ruy_2_types_8h_
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">// Validates self-consistency of GemmParams.</span></div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> AccumScalar, <span class="keyword">typename</span> DstScalar, QuantizationFlavor quantization_flavor&gt;</div>
 <div class="foldopen" id="foldopen00229" data-start="{" data-end="}">
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="namespacennfw_1_1ruy.html#a695d6cbce17540c90564d4c369083181">  229</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1ruy.html#a695d6cbce17540c90564d4c369083181">ValidateGemmParams</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structnnfw_1_1ruy_1_1_gemm_params.html">GemmParams&lt;AccumScalar, DstScalar, quantization_flavor&gt;</a> &amp;params)</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>{</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="comment">// Guard consistency of the quantized multiplier fields.</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da6b5725464f6e8ab0a2cdf49a29a0f4a9">QuantizationFlavor::kFloatingPoint</a>)</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  {</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  }</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395dac11557b4d4fc196c43b4fa7eab201144">QuantizationFlavor::kIntegerWithUniformMultiplier</a> &amp;&amp;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  {</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="comment">// Nothing to check about multiplier_exponent</span></div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  }</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da227d5cf4d9445848d0940bb4dd05ee37">QuantizationFlavor::kIntegerWithPerRowMultiplier</a> &amp;&amp;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  {</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  }</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  {</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="comment">// For the get raw accumulator case, we should make sure none of the</span></div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="comment">// quantization params are set.</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a0d6ee937e371683348fa601b646b6c2c">multiplier_fixedpoint</a>);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#acb43d47832a0ba9b6e96c7cd86e9e50c">multiplier_exponent</a>);</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#abdd21867a9ec19093b992c64d1059415">multiplier_fixedpoint_perchannel</a>);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1ruy_1_1_gemm_params.html#a9a289aa96f8c4b91e147c13382d3d394">multiplier_exponent_perchannel</a>);</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  }</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(params);</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="namespacennfw_1_1ruy.html#a695d6cbce17540c90564d4c369083181">  229</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1ruy.html#a695d6cbce17540c90564d4c369083181">ValidateGemmParams</a>(</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  [[maybe_unused]] <span class="keyword">const</span> <a class="code hl_struct" href="structnnfw_1_1ruy_1_1_gemm_params.html">GemmParams&lt;AccumScalar, DstScalar, quantization_flavor&gt;</a> &amp;params)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>{</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="comment">// Guard consistency of the quantized multiplier fields.</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da6b5725464f6e8ab0a2cdf49a29a0f4a9">QuantizationFlavor::kFloatingPoint</a>)</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    assert(!params.multiplier_fixedpoint);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    assert(!params.multiplier_exponent);</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    assert(!params.multiplier_fixedpoint_perchannel);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    assert(!params.multiplier_exponent_perchannel);</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395dac11557b4d4fc196c43b4fa7eab201144">QuantizationFlavor::kIntegerWithUniformMultiplier</a> &amp;&amp;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>  {</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    assert(params.multiplier_fixedpoint);</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="comment">// Nothing to check about multiplier_exponent</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    assert(!params.multiplier_fixedpoint_perchannel);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    assert(!params.multiplier_exponent_perchannel);</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  }</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1ruy.html#a719af35c91a72f276105e09b0a40395da227d5cf4d9445848d0940bb4dd05ee37">QuantizationFlavor::kIntegerWithPerRowMultiplier</a> &amp;&amp;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    assert(!params.multiplier_fixedpoint);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    assert(!params.multiplier_exponent);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    assert(params.multiplier_fixedpoint_perchannel);</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    assert(params.multiplier_exponent_perchannel);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  }</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="comment">// For the get raw accumulator case, we should make sure none of the</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="comment">// quantization params are set.</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    assert(!params.multiplier_fixedpoint);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    assert(!params.multiplier_exponent);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    assert(!params.multiplier_fixedpoint_perchannel);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    assert(!params.multiplier_exponent_perchannel);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  }</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
 </div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
@@ -396,7 +396,6 @@ $(document).ready(function(){initNavTree('compute_2ruy_2include_2ruy_2_types_8h_
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>} <span class="comment">// namespace nnfw</span></div>
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_RUY_TYPES_H__</span></div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1ruy_html_a53e614d61e4a56cdc05773ce61d9179b"><div class="ttname"><a href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179b">nnfw::ruy::Order</a></div><div class="ttdeci">Order</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_types_8h_source.html#l00104">Types.h:105</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1ruy_html_a53e614d61e4a56cdc05773ce61d9179ba1ebc644af759b214a70279505401a0b9"><div class="ttname"><a href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179ba1ebc644af759b214a70279505401a0b9">nnfw::ruy::Order::kRowMajor</a></div><div class="ttdeci">@ kRowMajor</div></div>
 <div class="ttc" id="anamespacennfw_1_1ruy_html_a53e614d61e4a56cdc05773ce61d9179baf093768651925b22c4d08e33641f38f1"><div class="ttname"><a href="namespacennfw_1_1ruy.html#a53e614d61e4a56cdc05773ce61d9179baf093768651925b22c4d08e33641f38f1">nnfw::ruy::Order::kColMajor</a></div><div class="ttdeci">@ kColMajor</div></div>

@@ -99,16 +99,16 @@ $(document).ready(function(){initNavTree('struct_for_each_dimension_3_010_01_4.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a994b394fc59db18f634d6267e8d46ae1" id="r_a994b394fc59db18f634d6267e8d46ae1"><td class="memTemplParams" colspan="2">template&lt;typename L &gt; </td></tr>
-<tr class="memitem:a994b394fc59db18f634d6267e8d46ae1"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_for_each_dimension_3_010_01_4.html#a994b394fc59db18f634d6267e8d46ae1">unroll</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">onert::ir::Shape</a> &amp;shape, <a class="el" href="classonert_1_1ir_1_1_coordinates.html">onert::ir::Coordinates</a> &amp;<a class="el" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, L lambda_function)</td></tr>
-<tr class="separator:a994b394fc59db18f634d6267e8d46ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2653403b91bb1f740762b92cc4ea551a" id="r_a2653403b91bb1f740762b92cc4ea551a"><td class="memTemplParams" colspan="2">template&lt;typename L &gt; </td></tr>
+<tr class="memitem:a2653403b91bb1f740762b92cc4ea551a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="struct_for_each_dimension_3_010_01_4.html#a2653403b91bb1f740762b92cc4ea551a">unroll</a> (const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">onert::ir::Shape</a> &amp;, <a class="el" href="classonert_1_1ir_1_1_coordinates.html">onert::ir::Coordinates</a> &amp;<a class="el" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, L lambda_function)</td></tr>
+<tr class="separator:a2653403b91bb1f740762b92cc4ea551a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00051">51</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a994b394fc59db18f634d6267e8d46ae1" name="a994b394fc59db18f634d6267e8d46ae1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a994b394fc59db18f634d6267e8d46ae1">&#9670;&#160;</a></span>unroll()</h2>
+<a id="a2653403b91bb1f740762b92cc4ea551a" name="a2653403b91bb1f740762b92cc4ea551a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2653403b91bb1f740762b92cc4ea551a">&#9670;&#160;</a></span>unroll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -122,7 +122,7 @@ template&lt;typename L &gt; </div>
           <td class="memname">static void <a class="el" href="struct_for_each_dimension.html">ForEachDimension</a>&lt; 0 &gt;::unroll </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">onert::ir::Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>shape</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -149,15 +149,13 @@ template&lt;typename L &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00056">56</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    <a class="code hl_define" href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(shape);</div>
-<div class="line"><span class="lineno">   60</span>    lambda_function(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>);</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00054">54</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    lambda_function(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>);</div>
+<div class="line"><span class="lineno">   57</span>  }</div>
 <div class="ttc" id="a_detection_post_process_layer_8cc_html_a56ac4a0f8f593e61e643fc044dd3a61a"><div class="ttname"><a href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a></div><div class="ttdeci">Array&lt; CornerBox &gt; coords</div><div class="ttdef"><b>Definition</b> <a href="_detection_post_process_layer_8cc_source.html#l00054">DetectionPostProcessLayer.cc:54</a></div></div>
-<div class="ttc" id="aruntime_2onert_2core_2include_2util_2_utils_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_utils_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00028">Utils.h:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_detection_post_process_layer_8cc_source.html#l00054">coords</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00028">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="_detection_post_process_layer_8cc_source.html#l00054">coords</a>.</p>
 
 </div>
 </div>

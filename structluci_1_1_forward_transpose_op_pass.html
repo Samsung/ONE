@@ -179,7 +179,18 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>BEFORE | [CircleNode] [CircleConst] | / [CircleTranspose] [CircleConst] / | / [CircleNode] [(BinaryOp)] | | \ | | [CircleNode] | | |</p>
+<p>BEFORE </p><pre class="fragment">            [CircleNode]     [CircleNode]
+                  |              |
+         [CircleTranspose] [CircleTranspose]
+                  |       /
+               [(BinaryOp)]
+                    |
+</pre><p> BinaryOp: CircleAdd, CircleMul, ... </p><pre class="fragment">                |
+           [CircleNode]  [CircleConst]
+                |       /
+       [CircleTranspose] [CircleConst]
+         /      |       /
+</pre><p> [CircleNode] [(BinaryOp)] | | \ | | [CircleNode] | | |</p>
 <p>BinaryOp: CircleAdd, CircleMul, ... </p><pre class="fragment">                |
            [CircleNode]  [CircleConst]
                 |       /
@@ -187,27 +198,39 @@ Public Member Functions</h2></td></tr>
          /      |
 </pre><p> [CircleNode] [(UnaryOp)] | | \ | | [CircleNode] | | |</p>
 <p>UnaryOp: CircleAbs, ...</p>
-<p>AFTER | [CircleConst] [CircleNode] [CircleConst(updated)] | / | / [CircleTranspose] [(BinaryOp)] [CircleConst] | | / [CircleNode] [CircleTranspose] | | \ | | [CircleNode] | | | </p><pre class="fragment">          |
+<p>AFTER </p><pre class="fragment">         [CircleNode] [CircleNode]
+                  |       /
+               [(BinaryOp)]
+                    |
+            [CircleTranspose]
+                    |
+</pre><p> BinaryOp: CircleAdd, CircleMul, ... </p><pre class="fragment">                |
+</pre><p> [CircleConst] [CircleNode] [CircleConst(updated)] | / | / [CircleTranspose] [(BinaryOp)] [CircleConst] | | / [CircleNode] [CircleTranspose] | | \ | | [CircleNode] | | | </p><pre class="fragment">          |
 </pre><p> [CircleConst] [CircleNode] | / | [CircleTranspose] [(UnaryOp)] [CircleConst] | | / [CircleNode] [CircleTranspose] | | \ | | [CircleNode] | | |</p>
 <p>Note: new [CircleTranspose] is added after [(BinaryOp)] </p>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_forward_transpose_op_pass_8cpp_source.html#l00380">380</a> of file <a class="el" href="_forward_transpose_op_pass_8cpp_source.html">ForwardTransposeOpPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  381</span>{</div>
-<div class="line"><span class="lineno">  382</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  383</span>  EBOWithConstPattern eboc;</div>
-<div class="line"><span class="lineno">  384</span>  EwUnaryPattern ewu;</div>
-<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  386</span>  {</div>
-<div class="line"><span class="lineno">  387</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  388</span>    <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;eboc))</div>
-<div class="line"><span class="lineno">  389</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ewu))</div>
-<div class="line"><span class="lineno">  391</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  392</span>  }</div>
-<div class="line"><span class="lineno">  393</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><span class="lineno">  394</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_forward_transpose_op_pass_8cpp_source.html#l00491">491</a> of file <a class="el" href="_forward_transpose_op_pass_8cpp_source.html">ForwardTransposeOpPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  492</span>{</div>
+<div class="line"><span class="lineno">  493</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  494</span> </div>
+<div class="line"><span class="lineno">  495</span>  <span class="comment">// TODO Revisit pattern interface</span></div>
+<div class="line"><span class="lineno">  496</span>  EBOPattern ebo;</div>
+<div class="line"><span class="lineno">  497</span>  EBOWithConstPattern eboc;</div>
+<div class="line"><span class="lineno">  498</span>  EwUnaryPattern ewu;</div>
+<div class="line"><span class="lineno">  499</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  500</span>  {</div>
+<div class="line"><span class="lineno">  501</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  502</span>    <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;eboc))</div>
+<div class="line"><span class="lineno">  503</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  504</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ewu))</div>
+<div class="line"><span class="lineno">  505</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  506</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ebo))</div>
+<div class="line"><span class="lineno">  507</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  508</span>  }</div>
+<div class="line"><span class="lineno">  509</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><span class="lineno">  510</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>

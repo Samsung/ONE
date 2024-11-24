@@ -1,7 +1,5 @@
 var NAVTREEINDEX294 =
 {
-"train_2operation_2_permute_8h.html":[40,0,4,1,2,0,4,1,0,7],
-"train_2operation_2_permute_8h_source.html":[40,0,4,1,2,0,4,1,0,7],
 "train_2operation_2_pool2_d_8cc.html":[40,0,4,1,2,1,5,1,0,8],
 "train_2operation_2_pool2_d_8cc_source.html":[40,0,4,1,2,1,5,1,0,8],
 "train_2operation_2_pool2_d_8h.html":[40,0,4,1,2,0,4,1,0,8],

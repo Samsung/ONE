@@ -981,31 +981,31 @@ template&lt;typename IndexType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_padding_8cc_source.html#l00137">137</a> of file <a class="el" href="_padding_8cc_source.html">Padding.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
-<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">if</span> (padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">type</a> == PaddingType::EXPLICIT)</div>
+<p class="definition">Definition at line <a class="el" href="_padding_8cc_source.html#l00133">133</a> of file <a class="el" href="_padding_8cc_source.html">Padding.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
+<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">if</span> (padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">type</a> == PaddingType::EXPLICIT)</div>
+<div class="line"><span class="lineno">  138</span>  {</div>
+<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">return</span> padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a686f552cd08281b30f4855da7fd05fd6">param</a>;</div>
+<div class="line"><span class="lineno">  140</span>  }</div>
+<div class="line"><span class="lineno">  141</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">type</a> == PaddingType::SAME)</div>
 <div class="line"><span class="lineno">  142</span>  {</div>
-<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">return</span> padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a686f552cd08281b30f4855da7fd05fd6">param</a>;</div>
+<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">return</span> samePadding(ifm_shape, ofm_shape, stride, kw, kh, dwf, dhf);</div>
 <div class="line"><span class="lineno">  144</span>  }</div>
-<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">type</a> == PaddingType::SAME)</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">type</a> == PaddingType::VALID)</div>
 <div class="line"><span class="lineno">  146</span>  {</div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">return</span> samePadding(ifm_shape, ofm_shape, stride, kw, kh, dwf, dhf);</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">return</span> validPadding();</div>
 <div class="line"><span class="lineno">  148</span>  }</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (padding.<a class="code hl_variable" href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">type</a> == PaddingType::VALID)</div>
+<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  150</span>  {</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">return</span> validPadding();</div>
+<div class="line"><span class="lineno">  151</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Cannot handle padding type&quot;</span>};</div>
 <div class="line"><span class="lineno">  152</span>  }</div>
-<div class="line"><span class="lineno">  153</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  154</span>  {</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Cannot handle padding type&quot;</span>};</div>
-<div class="line"><span class="lineno">  156</span>  }</div>
-<div class="line"><span class="lineno">  157</span>}</div>
+<div class="line"><span class="lineno">  153</span>}</div>
 <div class="ttc" id="astructonert_1_1ir_1_1_padding_html_a0951f9e3edf766fb79b9a1bff5bb326f"><div class="ttname"><a href="structonert_1_1ir_1_1_padding.html#a0951f9e3edf766fb79b9a1bff5bb326f">onert::ir::Padding::type</a></div><div class="ttdeci">PaddingType type</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00061">Padding.h:61</a></div></div>
 <div class="ttc" id="astructonert_1_1ir_1_1_padding_html_a686f552cd08281b30f4855da7fd05fd6"><div class="ttname"><a href="structonert_1_1ir_1_1_padding.html#a686f552cd08281b30f4855da7fd05fd6">onert::ir::Padding::param</a></div><div class="ttdeci">ExplicitPadding param</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00062">Padding.h:62</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">EXPLICIT</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00062">onert::ir::Padding::param</a>, <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b">SAME</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00061">onert::ir::Padding::type</a>, and <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea">VALID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_acl_kernel_gen_8h_source.html#l00294">onert::backend::acl_common::kernelGenPool2D()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00226">onert::backend::cpu::ops::ConvolutionLayer::run()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00093">onert::backend::ruy::ops::ConvolutionLayer::run()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00192">onert::backend::train::KernelGenerator::visit()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00253">onert::backend::train::KernelGenerator::visit()</a>, and <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00468">onert::backend::train::KernelGenerator::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_acl_kernel_gen_8h_source.html#l00292">onert::backend::acl_common::kernelGenPool2D()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00226">onert::backend::cpu::ops::ConvolutionLayer::run()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00093">onert::backend::ruy::ops::ConvolutionLayer::run()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00191">onert::backend::train::KernelGenerator::visit()</a>, <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00252">onert::backend::train::KernelGenerator::visit()</a>, and <a class="el" href="backend_2train_2_kernel_generator_8cc_source.html#l00467">onert::backend::train::KernelGenerator::visit()</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1035,7 @@ template&lt;typename IndexType &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation::accept()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_operations_8cc_source.html#l00026">onert::ir::Operations::Operations()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00085">onert::ir::train::TrainableGraph::TrainableGraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operations_8cc_source.html#l00026">onert::ir::Operations::Operations()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00084">onert::ir::train::TrainableGraph::TrainableGraph()</a>.</p>
 
 </div>
 </div>
@@ -1788,20 +1788,20 @@ template&lt;typename IndexType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A string holding the converted value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_padding_8cc_source.html#l00106">106</a> of file <a class="el" href="_padding_8cc_source.html">Padding.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  107</span>{</div>
-<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">  109</span>  {</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> PaddingType::EXPLICIT:</div>
-<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;Padding::EXPLICIT&quot;</span>;</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">case</span> PaddingType::SAME:</div>
-<div class="line"><span class="lineno">  113</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;Padding::SAME&quot;</span>;</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">case</span> PaddingType::VALID:</div>
-<div class="line"><span class="lineno">  115</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;Padding::VALID&quot;</span>;</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Fail to convert string: wrong padding type&quot;</span>};</div>
-<div class="line"><span class="lineno">  118</span>  }</div>
-<div class="line"><span class="lineno">  119</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_padding_8cc_source.html#l00102">102</a> of file <a class="el" href="_padding_8cc_source.html">Padding.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>{</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">  105</span>  {</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> PaddingType::EXPLICIT:</div>
+<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;Padding::EXPLICIT&quot;</span>;</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> PaddingType::SAME:</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;Padding::SAME&quot;</span>;</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> PaddingType::VALID:</div>
+<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;Padding::VALID&quot;</span>;</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  113</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Fail to convert string: wrong padding type&quot;</span>};</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
+<div class="line"><span class="lineno">  115</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">EXPLICIT</a>, <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b">SAME</a>, and <a class="el" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea">VALID</a>.</p>
 

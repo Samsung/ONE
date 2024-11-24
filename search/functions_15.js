@@ -28,7 +28,7 @@ var searchData=
   ['unpacklayer_25',['UnpackLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_unpack_layer.html#aeeb9d8ddb93c4b29cd6ba74c6859b9a6',1,'onert::backend::cpu::ops::UnpackLayer']]],
   ['unqualifiedname_26',['UnqualifiedName',['../classflatbuffers_1_1_parser.html#aa742446cd8a80465f6c2d92188caae03',1,'flatbuffers::Parser']]],
   ['unregistermodel_27',['unRegisterModel',['../classonert_1_1backend_1_1trix_1_1_dev_context.html#af6317f3a1f04cbd89412886134810a15',1,'onert::backend::trix::DevContext']]],
-  ['unroll_28',['unroll',['../struct_for_each_dimension_3_010_01_4.html#a994b394fc59db18f634d6267e8d46ae1',1,'ForEachDimension&lt; 0 &gt;::unroll()'],['../struct_for_each_dimension.html#a41fbd47f2de691e30876f7f347d5d0b9',1,'ForEachDimension::unroll()']]],
+  ['unroll_28',['unroll',['../struct_for_each_dimension_3_010_01_4.html#a2653403b91bb1f740762b92cc4ea551a',1,'ForEachDimension&lt; 0 &gt;::unroll()'],['../struct_for_each_dimension.html#a41fbd47f2de691e30876f7f347d5d0b9',1,'ForEachDimension::unroll()']]],
   ['unset_29',['unset',['../classloco_1_1_dimension.html#a23104bb3737a6f03b0d3105a512ab251',1,'loco::Dimension']]],
   ['unsetdef_30',['unsetDef',['../classonert_1_1ir_1_1_operand.html#a33d6efda31a34f0e23fd0f5c67cae5f6',1,'onert::ir::Operand']]],
   ['untrainableoperation_31',['UntrainableOperation',['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#abc0583cc6eff3f99c9869101e1f9a8cd',1,'onert::ir::train::operation::UntrainableOperation']]],

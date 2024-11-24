@@ -1,6 +1,5 @@
 var NAVTREEINDEX255 =
 {
-"reflection_8h.html#a4d1cc92cb468e515b6c7e4e6990798b9":[40,0,3,2,0,10,41],
 "reflection_8h.html#a4ed1fd1d6cc52b7687a542f734a63439":[40,0,3,2,0,10,11],
 "reflection_8h.html#a4ef3e887c57753881c4042767bc9c35f":[40,0,3,2,0,10,57],
 "reflection_8h.html#a575ef4ffbaa1574a4d0285d37c76f51a":[40,0,3,2,0,10,29],
@@ -249,5 +248,6 @@ var NAVTREEINDEX255 =
 "runtime_2onert_2core_2include_2backend_2_backend_8h.html":[40,0,4,1,2,0,0,2],
 "runtime_2onert_2core_2include_2backend_2_backend_8h_source.html":[40,0,4,1,2,0,0,2],
 "runtime_2onert_2core_2include_2backend_2basic_2_allocator_8h.html":[40,0,4,1,2,0,0,0,1],
-"runtime_2onert_2core_2include_2backend_2basic_2_allocator_8h_source.html":[40,0,4,1,2,0,0,0,1]
+"runtime_2onert_2core_2include_2backend_2basic_2_allocator_8h_source.html":[40,0,4,1,2,0,0,0,1],
+"runtime_2onert_2core_2include_2backend_2basic_2_memory_manager_8h.html":[40,0,4,1,2,0,0,0,6]
 };

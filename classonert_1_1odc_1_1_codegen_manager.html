@@ -213,36 +213,33 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_manager_8cc_source.html#l00028">28</a> of file <a class="el" href="_codegen_manager_8cc_source.html">CodegenManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (target == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Target string is not set&quot;</span>);</div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (_export_model_path.empty())</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Export model path is not set&quot;</span>);</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">model_path</a>.empty())</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model path does not exist&quot;</span>);</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="comment">// codegen function is thread-unsafe</span></div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">static</span> std::mutex lock;</div>
-<div class="line"><span class="lineno">   42</span>  std::lock_guard&lt;std::mutex&gt; guard(lock);</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> &amp;codegen_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a8ef9790da8f6958590ad20bd2f5acd73">CodegenLoader::instance</a>();</div>
-<div class="line"><span class="lineno">   45</span>  codegen_loader.loadLibrary(target);</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> code_generator = codegen_loader.get();</div>
-<div class="line"><span class="lineno">   47</span>  <span class="comment">// TODO Use compile preference</span></div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(pref);</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keyword">const</span> <span class="keyword">auto</span> result = code_generator-&gt;codegen(<a class="code hl_variable" href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">model_path</a>.c_str(), _export_model_path.c_str());</div>
-<div class="line"><span class="lineno">   50</span>  codegen_loader.unloadLibrary();</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> (result == 0);</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_codegen_manager_8cc_source.html#l00029">29</a> of file <a class="el" href="_codegen_manager_8cc_source.html">CodegenManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (target == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Target string is not set&quot;</span>);</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">if</span> (_export_model_path.empty())</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Export model path is not set&quot;</span>);</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">model_path</a>.empty())</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Model path does not exist&quot;</span>);</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="comment">// codegen function is thread-unsafe</span></div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">static</span> std::mutex lock;</div>
+<div class="line"><span class="lineno">   43</span>  std::lock_guard&lt;std::mutex&gt; guard(lock);</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span> &amp;codegen_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a8ef9790da8f6958590ad20bd2f5acd73">CodegenLoader::instance</a>();</div>
+<div class="line"><span class="lineno">   46</span>  codegen_loader.loadLibrary(target);</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keyword">auto</span> code_generator = codegen_loader.get();</div>
+<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> <span class="keyword">auto</span> result = code_generator-&gt;codegen(<a class="code hl_variable" href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">model_path</a>.c_str(), _export_model_path.c_str());</div>
+<div class="line"><span class="lineno">   49</span>  codegen_loader.unloadLibrary();</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> (result == 0);</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 <div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a8ef9790da8f6958590ad20bd2f5acd73"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a8ef9790da8f6958590ad20bd2f5acd73">onert::odc::CodegenLoader::instance</a></div><div class="ttdeci">static CodegenLoader &amp; instance()</div><div class="ttdoc">Get singleton instance of CodegenLoader.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8cc_source.html#l00035">CodegenLoader.cc:35</a></div></div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
 <div class="ttc" id="anamespacegen__h5__random__inputs__all_html_aa54a8a49abf66d8d85b45f514141cca2"><div class="ttname"><a href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">gen_h5_random_inputs_all.model_path</a></div><div class="ttdeci">model_path</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__random__inputs__all_8py_source.html#l00024">gen_h5_random_inputs_all.py:24</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_codegen_loader_8cc_source.html#l00035">onert::odc::CodegenLoader::instance()</a>, and <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>.</p>
+<p class="reference">References <a class="el" href="_codegen_loader_8cc_source.html#l00035">onert::odc::CodegenLoader::instance()</a>.</p>
 
 </div>
 </div>

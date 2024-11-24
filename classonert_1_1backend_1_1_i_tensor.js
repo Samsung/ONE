@@ -20,6 +20,6 @@ var classonert_1_1backend_1_1_i_tensor =
     [ "is_subtensor", "classonert_1_1backend_1_1_i_tensor.html#a628b99f37143b61adfbcb70d637788c3", null ],
     [ "needMemoryMap", "classonert_1_1backend_1_1_i_tensor.html#a25d45dee8318a268826bc6ae1e882c83", null ],
     [ "set_dynamic", "classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4", null ],
-    [ "setShape", "classonert_1_1backend_1_1_i_tensor.html#abd048b570efab98e99d690b6d542c6a2", null ],
+    [ "setShape", "classonert_1_1backend_1_1_i_tensor.html#aef9058984013de799aa8e181009f89bf", null ],
     [ "total_size", "classonert_1_1backend_1_1_i_tensor.html#ae4d0d8bbbe8f7263f820914888ef3141", null ]
 ];

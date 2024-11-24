@@ -2,7 +2,6 @@ var compute_2ruy_2include_2ruy_2_shape_8h =
 [
     [ "nnfw::ruy::Shape", "classnnfw_1_1ruy_1_1_shape.html", "classnnfw_1_1ruy_1_1_shape" ],
     [ "nnfw::ruy::UNUSED_ALL", "structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html", "structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l" ],
-    [ "UNUSED_RELEASE", "compute_2ruy_2include_2ruy_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd", null ],
     [ "checkMatching", "compute_2ruy_2include_2ruy_2_shape_8h.html#a781fc9653158e5eb284b64426ec1f2aa", null ],
     [ "FlatSizeSkipDim", "compute_2ruy_2include_2ruy_2_shape_8h.html#a729af90aae0893b06632064327843408", null ],
     [ "GetShape", "compute_2ruy_2include_2ruy_2_shape_8h.html#a2ff84d5a7c5d687bd28ed7e2f7977806", null ],
