@@ -48,4 +48,4 @@ private:
 
 } // namespace record_hessian
 
-#endif // __RECORD_HESSIAN_H__
+#endif // __RECORD_HESSIAN_RECORD_HESSIAN_H__
