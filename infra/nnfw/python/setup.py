@@ -135,11 +135,13 @@ except Exception as e:
 
 # copy .so files to architecture directories
 
-setup(
-    name=package_name,
-    version='0.1.0',
-    description='nnfw_api binding',
-    long_description='It provides nnfw Python api',
-    packages=[package_directory],
-    package_data={package_directory: so_list},
-)
+setup(name=package_name,
+      version='0.1.0',
+      description='onert API binding',
+      long_description='It provides onert Python api',
+      url='https://github.com/Samsung/ONE',
+      license='Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, Mozilla Public License 2.0',
+      has_ext_modules=lambda: True,
+      packages=[package_directory],
+      package_data={package_directory: so_list},
+      install_requires=['numpy >= 1.19'])
