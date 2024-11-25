@@ -78,13 +78,8 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
 
 } // namespace
 
-namespace record_hessian
-{
-
-// void RecordHessian::initialize(luci::Module *module); // To Be Implemented
-
-
-// std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path); // To Be Implemented
-
-
-} // namespace record_hessian
+// namespace record_hessian
+// {
+// // void RecordHessian::initialize(luci::Module *module); // To Be Implemented
+// // std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path); // To Be Implemented
+// } // namespace record_hessian
