@@ -60,8 +60,8 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
  * @brief  verifyTypeShape checks the type and the shape of CircleInput
  *         This throws an exception if type or shape does not match
  */
-[[maybe_unused]] void verifyTypeShape(const luci::CircleInput *input_node, const loco::DataType &dtype,
-                     const Shape &shape)
+[[maybe_unused]] void verifyTypeShape(const luci::CircleInput *input_node,
+                                      const loco::DataType &dtype, const Shape &shape)
 {
   if (dtype != input_node->dtype())
     throw std::runtime_error("RecordHessian: Wrong input type.");
@@ -80,6 +80,6 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
 
 // namespace record_hessian
 // {
-// // void RecordHessian::initialize(luci::Module *module); // To Be Implemented
-// // std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path); // To Be Implemented
-// } // namespace record_hessian
+// void RecordHessian::initialize(luci::Module *module); // To Be Implemented
+// std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path); To Be
+// Implemented } // namespace record_hessian
