@@ -19,11 +19,14 @@
 #define __NNFW_CKER_UTILS_H__
 
 #include "Shape.h"
+#include "ShapeIterator.h"
 
 #include "neon/neon_check.h"
 
 #include <algorithm>
 #include <cstdint>
+#include <numeric>
+#include <string>
 #include <fixedpoint/fixedpoint.h>
 
 namespace nnfw
@@ -479,6 +482,30 @@ private:
   const T *input_data_;
   T *output_ptr_;
 };
+
+inline std::ostream &operator<<(std::ostream &os, const Shape &shape)
+{
+  using std::begin;
+  using std::end;
+
+  std::string formatted =
+    std::accumulate(begin(shape), end(shape), std::string{"["},
+                    [](std::string joined, ShapeIterator::value_type dim) {
+                      return std::move(joined).append(std::to_string(dim)).append(",");
+                    });
+
+  if (formatted.back() == '[')
+  {
+    formatted.push_back(']');
+  }
+  else
+  {
+    formatted.back() = ']';
+  }
+
+  os << formatted;
+  return os;
+}
 
 } // namespace cker
 } // namespace nnfw
