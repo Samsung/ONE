@@ -144,6 +144,10 @@ class CircleAdapter(Adapter):
             me_graph.nodes.append(me_node)
             # Add output metadata to the operator node
             self.add_output_tensor_info(me_node=me_node, tensor_id=output_tensor_id)
+            # Add operator attributes
+            if '__dict__' in dir(op.builtinOptions):
+                for k, v in op.builtinOptions.__dict__.items():
+                    me_node.attrs.append(graph_builder.KeyValue(key=k, value=f'{v}'))
             # Connect edges from inputs to this operator node
             for i, tensor_id in enumerate(op.inputs):
                 if tensor_id < 0:
