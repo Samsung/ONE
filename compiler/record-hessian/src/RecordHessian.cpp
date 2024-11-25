@@ -22,25 +22,9 @@
 #include <iostream>
 
 using Shape = std::vector<loco::Dimension>;
-using DataType = loco::DataType;
 
 namespace
 {
-
-// Return a string with no whitespace from both ends
-std::string trim(std::string s)
-{
-  // Trim left side
-  s.erase(s.begin(),
-          std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
-
-  // Trim right side
-  s.erase(
-    std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(),
-    s.end());
-
-  return s;
-}
 
 uint32_t numElements(const luci::CircleNode *node)
 {
@@ -76,9 +60,9 @@ template <typename NodeT> size_t getTensorSize(const NodeT *node)
  * @brief  verifyTypeShape checks the type and the shape of CircleInput
  *         This throws an exception if type or shape does not match
  */
-void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype, const Shape &shape)
+void verifyTypeShape(const luci::CircleInput *input_node, const loco::DataType &dtype,
+                     const Shape &shape)
 {
-  // Type check
   if (dtype != input_node->dtype())
     throw std::runtime_error("RecordHessian: Wrong input type.");
 
@@ -99,12 +83,82 @@ namespace record_hessian
 
 void RecordHessian::initialize(luci::Module *module)
 {
-  // To Be Implemented
+  // Create and initialize interpreters and observers
+
+  _module = module;
+
+  auto interpreter = std::make_unique<luci_interpreter::Interpreter>(module);
+  auto observer = std::make_unique<HessianObserver>();
+
+  interpreter->attachObserver(observer.get());
+
+  _observer = std::move(observer);
+  _interpreter = std::move(interpreter);
 }
 
 std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path)
 {
-  // To Be Implemented
+  try
+  {
+    dio::hdf5::HDF5Importer importer(input_data_path);
+    importer.importGroup("value");
+
+    bool is_raw_data = importer.isRawData();
+
+    const auto num_records = importer.numData();
+    if (num_records == 0)
+      throw std::runtime_error("RecordHessian: The input data file does not contain any record.");
+
+    const auto input_nodes = loco::input_nodes(_module->graph());
+    const auto num_inputs = input_nodes.size();
+
+    for (int32_t record_idx = 0; record_idx < num_records; record_idx++)
+    {
+      if (num_inputs != static_cast<uint32_t>(importer.numInputs(record_idx)))
+        throw std::runtime_error("RecordHessian: Wrong number of inputs.");
+
+      std::cout << "Recording " << record_idx << "'th data for hessian." << std::endl;
+
+      for (uint32_t input_idx = 0; input_idx < num_inputs; input_idx++)
+      {
+        const auto *input_node = loco::must_cast<const luci::CircleInput *>(input_nodes[input_idx]);
+        assert(input_node->index() == input_idx);
+        checkInputDimension(input_node);
+        std::vector<char> input_data(getTensorSize(input_node));
+
+        if (!is_raw_data)
+        {
+          loco::DataType dtype;
+          Shape shape;
+          importer.readTensor(record_idx, input_idx, &dtype, &shape, input_data.data(),
+                              input_data.size());
+
+          // Check the type and the shape of the input data is valid
+          verifyTypeShape(input_node, dtype, shape);
+        }
+        else
+        {
+          // Skip type/shape check for raw data
+          importer.readTensor(record_idx, input_idx, input_data.data(), input_data.size());
+        }
+
+        // TODO: Input data is copied twice (file -> buffer (input_data) -> interpreter inputs)
+        //       We can redcue the copy by directly writing data from file to interpreter inputs
+        getInterpreter()->writeInputTensor(input_node, input_data.data(), input_data.size());
+      }
+
+      getInterpreter()->interpret();
+    }
+
+    std::cout << "Recording finished. Number of recorded data: " << num_records << std::endl;
+  }
+  catch (const H5::Exception &e)
+  {
+    H5::Exception::printErrorStack();
+    throw std::runtime_error("RecordHessian: HDF5 error occurred.");
+  }
+
+  return getObserver()->hessianData();
 }
 
 } // namespace record_hessian

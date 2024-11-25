@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __RECORD_HESSIAN_H__
-#define __RECORD_HESSIAN_H__
+#ifndef __RECORD_HESSIAN_RECORD_HESSIAN_H__
+#define __RECORD_HESSIAN_RECORD_HESSIAN_H__
 
 #include "record-hessian/HessianObserver.h"
 
@@ -28,9 +28,7 @@ namespace record_hessian
 class RecordHessian
 {
 public:
-  explicit RecordHessian() {}
-
-  ~RecordHessian() = default;
+  RecordHessian() {}
 
   void initialize(luci::Module *module);
   // TODO Refactor profile functions
@@ -42,7 +40,7 @@ private:
   // Never return nullptr
   HessianObserver *getObserver() const { return _observer.get(); }
 
-  luci::Module *_module;
+  luci::Module *_module = nullptr;
 
   std::unique_ptr<luci_interpreter::Interpreter> _interpreter;
   std::unique_ptr<HessianObserver> _observer;
