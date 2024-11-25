@@ -222,11 +222,9 @@ buildStridedSliceParams(const T *begin, const T *end, const T *strides, const ui
 }
 
 void checkOutputSize(const StridedSliceParams &op_params, const Shape &input_shape,
-                     const Shape &output_shape, uint32_t rank)
+                     [[maybe_unused]] const Shape &output_shape, uint32_t rank)
 {
-  UNUSED_RELEASE(output_shape);
-
-  int32_t shape_size = 0;
+  [[maybe_unused]] int32_t shape_size = 0;
 
   for (uint32_t idx = 0; idx < rank; ++idx)
   {
@@ -254,7 +252,6 @@ void checkOutputSize(const StridedSliceParams &op_params, const Shape &input_sha
   }
 
   assert(output_shape.DimensionsCount() == shape_size);
-  UNUSED_RELEASE(shape_size);
 }
 
 template <typename T>

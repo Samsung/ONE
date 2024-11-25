@@ -1851,13 +1851,11 @@ inline void DepthwiseConvGeneral(const DepthwiseConvParams &params, const Shape 
   int32_t acc_buffer[kAccBufferMaxSize];
   assert(kAccBufferMaxSize >= output_depth);
   const int kOutputPixelsInAccBuffer = kAccBufferMaxSize / output_depth;
-  const int kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;
+  [[maybe_unused]] const int kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;
   assert(kOutputPixelsInAccBuffer * output_depth <= kAccBufferActualSize);
   assert(kAccBufferActualSize <= kAccBufferMaxSize);
   assert(kOutputPixelsInAccBuffer >= 1);
   assert(thread_dim == 0 || thread_dim == 1);
-
-  UNUSED_RELEASE(kAccBufferActualSize);
 
   // row_accum_func will point to the core accumulation function to be used
   // for this DepthwiseConv op.
@@ -2159,29 +2157,21 @@ inline void DepthwiseConvWithRounding(const DepthwiseConvParams &params, const S
                                       uint8_t *output_data, int thread_start, int thread_end,
                                       int thread_dim)
 {
-  const int depth_multiplier = params.depth_multiplier;
-  const int32_t output_activation_min = params.quantized_activation_min;
-  const int32_t output_activation_max = params.quantized_activation_max;
-  const int dilation_width_factor = params.dilation_width_factor;
-  const int dilation_height_factor = params.dilation_height_factor;
+  [[maybe_unused]] const int depth_multiplier = params.depth_multiplier;
+  [[maybe_unused]] const int32_t output_activation_min = params.quantized_activation_min;
+  [[maybe_unused]] const int32_t output_activation_max = params.quantized_activation_max;
+  [[maybe_unused]] const int dilation_width_factor = params.dilation_width_factor;
+  [[maybe_unused]] const int dilation_height_factor = params.dilation_height_factor;
   assert(dilation_width_factor >= 1);
   assert(dilation_height_factor >= 1);
   assert(input_shape.DimensionsCount() == 4);
   assert(filter_shape.DimensionsCount() == 4);
   assert(output_shape.DimensionsCount() == 4);
   assert(output_activation_min <= output_activation_max);
-  const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
-  const int input_depth = input_shape.Dims(3);
+  [[maybe_unused]] const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
+  [[maybe_unused]] const int input_depth = input_shape.Dims(3);
   assert(output_depth == input_depth * depth_multiplier);
   assert(bias_shape.FlatSize() == output_depth);
-
-  UNUSED_RELEASE(depth_multiplier);
-  UNUSED_RELEASE(output_activation_min);
-  UNUSED_RELEASE(output_activation_max);
-  UNUSED_RELEASE(dilation_width_factor);
-  UNUSED_RELEASE(dilation_height_factor);
-  UNUSED_RELEASE(output_depth);
-  UNUSED_RELEASE(input_depth);
 
 // Enable for arm64 except for the Nvidia Linux 4 Tegra (L4T) running on
 // Jetson TX-2. This compiler does not support the offsetof() macro.

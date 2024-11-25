@@ -26,10 +26,10 @@ namespace cker
 {
 
 template <typename T1, typename T2, typename Cmp>
-void ArgMinMax(const Shape &input1_shape, const T1 *input1_data, const Shape &output_shape,
-               T2 *output_data, int32_t axis, const Cmp &cmp)
+void ArgMinMax(const Shape &input1_shape, const T1 *input1_data,
+               [[maybe_unused]] const Shape &output_shape, T2 *output_data, int32_t axis,
+               const Cmp &cmp)
 {
-  UNUSED_RELEASE(output_shape);
   assert(input1_shape.DimensionsCount() > 0);
   assert(input1_shape.DimensionsCount() - 1 == output_shape.DimensionsCount());
   if (axis < 0)

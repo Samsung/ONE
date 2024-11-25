@@ -29,9 +29,9 @@ namespace cker
 {
 
 inline void InstanceNorm(const InstanceNormParams &params, const Shape &input_shape,
-                         const float *input_data, const Shape &gamma_shape, const float *gamma_data,
-                         const Shape &beta_shape, const float *beta_data, const Shape &output_shape,
-                         float *output_data)
+                         const float *input_data, [[maybe_unused]] const Shape &gamma_shape,
+                         const float *gamma_data, [[maybe_unused]] const Shape &beta_shape,
+                         const float *beta_data, const Shape &output_shape, float *output_data)
 {
   const int32_t batches = MatchingDim(input_shape, 0, output_shape, 0);
   const int32_t heights = MatchingDim(input_shape, 1, output_shape, 1);
@@ -40,8 +40,6 @@ inline void InstanceNorm(const InstanceNormParams &params, const Shape &input_sh
   const float output_activation_min = params.float_activation_min;
   const float output_activation_max = params.float_activation_max;
 
-  UNUSED_RELEASE(gamma_shape);
-  UNUSED_RELEASE(beta_shape);
   assert(output_activation_min <= output_activation_max);
 
   for (int32_t batch = 0; batch < batches; batch++)

@@ -39,7 +39,7 @@ inline void Concatenation(const ConcatenationParams &params, const Shape *const 
   const int concat_dimensions = output_shape.DimensionsCount();
   assert(axis < concat_dimensions);
 
-  int64_t concat_size = 0;
+  [[maybe_unused]] int64_t concat_size = 0;
   for (int i = 0; i < inputs_count; i++)
   {
     assert(input_shapes[i]->DimensionsCount() == concat_dimensions);
@@ -47,14 +47,12 @@ inline void Concatenation(const ConcatenationParams &params, const Shape *const 
     {
       if (j != axis)
       {
-        auto dim_checked = MatchingDim(*input_shapes[i], j, output_shape, j);
-        UNUSED_RELEASE(dim_checked);
+        [[maybe_unused]] auto dim_checked = MatchingDim(*input_shapes[i], j, output_shape, j);
       }
     }
     concat_size += input_shapes[i]->Dims(axis);
   }
   assert(concat_size == output_shape.Dims(axis));
-  UNUSED_RELEASE(concat_size);
   int64_t outer_size = 1;
   for (int i = 0; i < axis; ++i)
   {
@@ -97,7 +95,7 @@ inline void ConcatenationWithScaling(const ConcatenationParams &params,
   const int concat_dimensions = output_shape.DimensionsCount();
   assert(axis <= concat_dimensions);
 
-  int64_t concat_size = 0;
+  [[maybe_unused]] int64_t concat_size = 0;
   for (int i = 0; i < inputs_count; i++)
   {
     assert(input_shapes[i]->DimensionsCount() == concat_dimensions);
@@ -111,7 +109,6 @@ inline void ConcatenationWithScaling(const ConcatenationParams &params,
     concat_size += input_shapes[i]->Dims(axis);
   }
   assert(concat_size == output_shape.Dims(axis));
-  UNUSED_RELEASE(concat_size);
   int64_t outer_size = 1;
   for (int i = 0; i < axis; ++i)
   {

@@ -81,9 +81,10 @@ inline void AddBiasAndEvalActivationFunction(float output_activation_min,
 }
 
 inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8_t *input_data,
-                 const Shape &filter_shape, const uint8_t *filter_data, const Shape &bias_shape,
-                 const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data,
-                 const Shape &im2col_shape, uint8_t *im2col_data)
+                 const Shape &filter_shape, const uint8_t *filter_data,
+                 [[maybe_unused]] const Shape &bias_shape, const int32_t *bias_data,
+                 const Shape &output_shape, uint8_t *output_data, const Shape &im2col_shape,
+                 uint8_t *im2col_data)
 {
   gemmlowp::GemmContext *gemm_context = gemm_support::GetGemmLowpContext();
 
@@ -156,7 +157,6 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   assert(output_cols == gemm_input_cols);
   assert(filter_cols == gemm_input_rows);
   assert(bias_shape.FlatSize() == output_rows);
-  UNUSED_RELEASE(bias_shape);
   gemmlowp::MatrixMap<const uint8_t, gemmlowp::MapOrder::RowMajor> filter_matrix(
     filter_data, filter_rows, filter_cols);
   gemmlowp::MatrixMap<const uint8_t, gemmlowp::MapOrder::ColMajor> input_matrix(

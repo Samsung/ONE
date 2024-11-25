@@ -1032,11 +1032,10 @@ inline void DepthwiseConvInitAccBuffer(int num_output_pixels, int output_depth,
 // means that it will calculate DepthwiseConv for output_data[:, 2:5, :, :].
 inline void DepthwiseConvImpl(const DepthwiseConvParams &params, const Shape &input_shape,
                               const float *input_data, const Shape &filter_shape,
-                              const float *filter_data, const Shape &bias_shape,
+                              const float *filter_data, [[maybe_unused]] const Shape &bias_shape,
                               const float *bias_data, const Shape &output_shape, float *output_data,
                               int thread_start, int thread_end, int thread_dim)
 {
-  UNUSED_RELEASE(bias_shape);
   const int stride_width = params.stride_width;
   const int stride_height = params.stride_height;
   const int pad_width = params.padding_values.width;
@@ -1067,12 +1066,10 @@ inline void DepthwiseConvImpl(const DepthwiseConvParams &params, const Shape &in
   float acc_buffer[kAccBufferMaxSize];
   assert(kAccBufferMaxSize >= output_depth);
   const int kOutputPixelsInAccBuffer = kAccBufferMaxSize / output_depth;
-  const int kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;
+  [[maybe_unused]] const int kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;
   assert(kOutputPixelsInAccBuffer * output_depth <= kAccBufferActualSize);
   assert(kAccBufferActualSize <= kAccBufferMaxSize);
   assert(kOutputPixelsInAccBuffer >= 1);
-
-  UNUSED_RELEASE(kAccBufferActualSize);
 
   // row_accum_func will point to the core accumulation function to be used
   // for this DepthwiseConv op.

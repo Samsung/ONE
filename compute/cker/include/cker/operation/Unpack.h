@@ -28,7 +28,7 @@ namespace cker
 
 template <typename Scalar>
 void Unpack(const UnpackParams &params, const Shape &input_shape, const Scalar *input_data,
-            const Shape &output_shape, Scalar *const *output_datas)
+            [[maybe_unused]] const Shape &output_shape, Scalar *const *output_datas)
 {
   const int dimensions = input_shape.DimensionsCount();
   const int outputs_count = params.num_split;
@@ -44,7 +44,6 @@ void Unpack(const UnpackParams &params, const Shape &input_shape, const Scalar *
     copy_size *= input_shape.Dims(i);
   }
   assert(output_shape.FlatSize() == copy_size * outer_size);
-  UNUSED_RELEASE(output_shape);
 
   for (int i = 0; i < outputs_count; ++i)
   {

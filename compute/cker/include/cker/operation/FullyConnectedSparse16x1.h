@@ -54,15 +54,12 @@ namespace nnfw
 {
 namespace cker
 {
-inline void FullyConnectedSparseWeight16x1(const FullyConnectedParams &params,
-                                           const Shape &input_shape, const float *input_data,
-                                           const Shape &weights_shape, const float *weights_data,
-                                           const Shape &bias_shape, const float *bias_data,
-                                           const Shape &output_shape, float *output_data,
-                                           const uint16_t *w1_segments, const uint16_t *w1_indices)
+inline void FullyConnectedSparseWeight16x1(
+  const FullyConnectedParams &params, [[maybe_unused]] const Shape &input_shape,
+  const float *input_data, const Shape &weights_shape, const float *weights_data,
+  [[maybe_unused]] const Shape &bias_shape, const float *bias_data, const Shape &output_shape,
+  float *output_data, const uint16_t *w1_segments, const uint16_t *w1_indices)
 {
-  UNUSED_RELEASE(input_shape);
-
   assert(weights_shape.DimensionsCount() == 2);
   assert(output_shape.DimensionsCount() == 2);
 
@@ -73,7 +70,6 @@ inline void FullyConnectedSparseWeight16x1(const FullyConnectedParams &params,
     MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
   const int accum_depth = weights_shape.Dims(weights_dims_count - 1);
 
-  UNUSED_RELEASE(bias_shape);
   if (bias_data)
   {
     VectorBatchVectorAssign(bias_data, output_depth, batches, output_data);
