@@ -14,7 +14,7 @@
 
 import unittest
 
-from circle_adapter.main import CircleAdapter
+from model_explorer_circle.main import CircleAdapter
 
 
 class SimpleTestPackage(unittest.TestCase):
