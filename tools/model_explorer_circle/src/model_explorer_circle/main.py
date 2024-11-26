@@ -17,7 +17,7 @@
 
 from typing import Dict, Optional
 from model_explorer import Adapter, AdapterMetadata, ModelExplorerGraphs, graph_builder
-from circle_adapter import circle_schema_generated as circle_schema
+from model_explorer_circle import circle_schema_generated as circle_schema
 
 
 class CircleAdapter(Adapter):
