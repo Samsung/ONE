@@ -53,3 +53,41 @@ TEST_F(GenModelTest, OneOp_neg_Squeeze_out_of_rank_dims)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_neg_Squeeze_neg_invalid_dims)
+{
+  CircleGen cgen;
+  const std::vector<int32_t> squeeze_dims{0, -3}; // -3 dim here is incorrect
+  int input = cgen.addTensor({{1, 2, 1, 2}, circle::TensorType::TensorType_FLOAT32});
+  int squeeze_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorSqueeze({{input}, {squeeze_out}}, squeeze_dims);
+  cgen.setInputsAndOutputs({input}, {squeeze_out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{1, 2, 3, 4}}));
+  _context->setBackends({"cpu", "gpu_cl"});
+
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_neg_Squeeze_neg_out_of_rank_dims)
+{
+  CircleGen cgen;
+  const std::vector<int32_t> squeeze_dims{0, -5}; // -5 dim here is incorrect
+  int input = cgen.addTensor({{1, 2, 1, 2}, circle::TensorType::TensorType_FLOAT32});
+  int squeeze_out = cgen.addTensor({{2, 2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorSqueeze({{input}, {squeeze_out}}, squeeze_dims);
+  cgen.setInputsAndOutputs({input}, {squeeze_out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4}}, {{1, 2, 3, 4}}));
+  _context->setBackends({"cpu", "gpu_cl"});
+
+  _context->expectFailCompile();
+
+  SUCCEED();
+}

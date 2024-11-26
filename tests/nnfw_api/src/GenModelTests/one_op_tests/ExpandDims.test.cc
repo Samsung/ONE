@@ -75,6 +75,25 @@ TEST_F(GenModelTest, OneOp_neg_ExpandDims_Axis)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_neg_ExpandDims_NegAxis)
+{
+  CircleGen cgen;
+
+  std::vector<int32_t> axis_data{-5};
+  uint32_t axis_buf = cgen.addBuffer(axis_data);
+  int in = cgen.addTensor({{1, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
+  int out = cgen.addTensor({{1, 1, 4, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorExpandDims({{in, axis}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_neg_ExpandDims_AxisNegInput)
 {
   CircleGen cgen;
