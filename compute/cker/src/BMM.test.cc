@@ -46,10 +46,11 @@ static void cker_bmm(benchmark::State &state)
 
 static void eigen_cm(benchmark::State &state)
 {
+  const auto common_dim = (rand() % 10000) + 2000;
   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor> lhs =
-    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>::Random(1000, 2000);
+    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>::Random(5000, common_dim);
   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor> rhs =
-    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>::Random(2000, 1500);
+    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>::Random(common_dim, 6000);
 
   for (auto _ : state) 
     [[maybe_unused]] volatile const auto result = lhs * rhs;
@@ -57,25 +58,26 @@ static void eigen_cm(benchmark::State &state)
 
 static void eigen_rm(benchmark::State &state)
 {
+  const auto common_dim = (rand() % 10000) + 2000;
   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> lhs =
-    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>::Random(1000, 2000);
+    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>::Random(5000, common_dim);
   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> rhs =
-    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>::Random(2000, 1500);
+    Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>::Random(common_dim, 6000);
 
   for (auto _ : state)
-     [[maybe_unused]] const auto result = lhs * rhs;
+     [[maybe_unused]] volatile const auto result = lhs * rhs;
 }
 
 static void eigen_mix(benchmark::State &state)
 {
-  const auto common_dim = (rand() % 5000) + 2000;
+  const auto common_dim = (rand() % 10000) + 2000;
   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> lhs =
     Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>::Random(5000, common_dim);
   Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor> rhs =
     Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>::Random(common_dim, 6000);
 
   for (auto _ : state)
-    [[maybe_unused]] const auto result = lhs * rhs;
+    [[maybe_unused]] volatile const auto result = lhs * rhs;
 }
 
 BENCHMARK(cker_bmm)->Arg(0)->Name("cker RowMajor")->Unit(benchmark::kMillisecond);
