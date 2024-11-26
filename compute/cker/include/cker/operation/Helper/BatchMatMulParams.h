@@ -23,6 +23,11 @@ namespace nnfw
 {
 namespace cker
 {
+enum StorageOrder
+{
+  RowMajor = 0,
+  ColumnMajor = 1
+};
 struct BatchMatMulParams
 {
   BatchMatMulParams(const Shape &lhs_shape, const Shape &rhs_shape)
@@ -63,6 +68,7 @@ struct BatchMatMulParams
   int rhs_rows;
   int rhs_cols;
   int accum_depth;
+  StorageOrder storage_order;
 
 private:
   // Determines which dimension is the broadcast dimension.

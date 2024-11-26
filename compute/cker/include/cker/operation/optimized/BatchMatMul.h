@@ -38,12 +38,12 @@ inline void BatchMatMul(const BatchMatMulParams &params, const float *lhs_data,
   lhs_params.cols = params.lhs_cols;
 
   MatrixParams<float> rhs_params;
-  rhs_params.order = Order::kRowMajor;
+  rhs_params.order = params.storage_order == StorageOrder::RowMajor ? Order::kRowMajor : Order::kColMajor;
   rhs_params.rows = params.rhs_rows;
   rhs_params.cols = params.rhs_cols;
 
   MatrixParams<float> dst_params;
-  dst_params.order = Order::kRowMajor;
+  rhs_params.order = params.storage_order == StorageOrder::RowMajor ? Order::kRowMajor : Order::kColMajor;
   dst_params.rows = params.lhs_rows;
   dst_params.cols = params.rhs_cols;
 
