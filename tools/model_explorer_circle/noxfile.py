@@ -36,7 +36,11 @@ def tests(session):
     build_and_check_dists(session)
 
     generated_files = os.listdir("dist/")
-    generated_sdist = os.path.join("dist/", generated_files[1])
+    # Sort files in descending order according to the version
+    generated_files.sort(
+        key=lambda x: [int(i, 10) for i in x.split('-')[1].split('.')[:3]], reverse=True)
+    # The sdist file 'model_explorer_circle.x.x.x.tar.gz' would be used
+    generated_sdist = os.path.join("dist/", generated_files[0])
 
     session.install(generated_sdist)
 
