@@ -56,7 +56,7 @@ TEST_F(GenModelTest, OneOp_ExpandDims_Int64AxisNeg)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_ExpandDims_Axis)
+TEST_F(GenModelTest, neg_OneOp_ExpandDims_Axis)
 {
   CircleGen cgen;
 
@@ -75,7 +75,7 @@ TEST_F(GenModelTest, OneOp_neg_ExpandDims_Axis)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_ExpandDims_NegAxis)
+TEST_F(GenModelTest, neg_OneOp_ExpandDims_NegAxis)
 {
   CircleGen cgen;
 
@@ -94,7 +94,7 @@ TEST_F(GenModelTest, OneOp_neg_ExpandDims_NegAxis)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_ExpandDims_AxisNegInput)
+TEST_F(GenModelTest, neg_OneOp_ExpandDims_AxisNegInput)
 {
   CircleGen cgen;
 

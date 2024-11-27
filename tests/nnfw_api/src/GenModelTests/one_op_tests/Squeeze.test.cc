@@ -16,7 +16,7 @@
 
 #include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_neg_Squeeze_invalid_dims)
+TEST_F(GenModelTest, neg_OneOp_Squeeze_invalid_dims)
 {
   CircleGen cgen;
   const std::vector<int32_t> squeeze_dims{0, 1}; // 1 dim here is incorrect
@@ -35,7 +35,7 @@ TEST_F(GenModelTest, OneOp_neg_Squeeze_invalid_dims)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Squeeze_out_of_rank_dims)
+TEST_F(GenModelTest, neg_OneOp_Squeeze_out_of_rank_dims)
 {
   CircleGen cgen;
   const std::vector<int32_t> squeeze_dims{0, 4}; // 4 dim here is incorrect
@@ -54,7 +54,7 @@ TEST_F(GenModelTest, OneOp_neg_Squeeze_out_of_rank_dims)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Squeeze_neg_invalid_dims)
+TEST_F(GenModelTest, neg_OneOp_Squeeze_neg_invalid_dims)
 {
   CircleGen cgen;
   const std::vector<int32_t> squeeze_dims{0, -3}; // -3 dim here is incorrect
@@ -73,7 +73,7 @@ TEST_F(GenModelTest, OneOp_neg_Squeeze_neg_invalid_dims)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Squeeze_neg_out_of_rank_dims)
+TEST_F(GenModelTest, neg_OneOp_Squeeze_neg_out_of_rank_dims)
 {
   CircleGen cgen;
   const std::vector<int32_t> squeeze_dims{0, -5}; // -5 dim here is incorrect

@@ -16,7 +16,7 @@
 
 #include "GenModelTest.h"
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_shape)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_shape)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
@@ -39,7 +39,7 @@ TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_shape)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_shape)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_dyn_shape)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
@@ -64,7 +64,7 @@ TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_shape)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_type)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_dyn_type)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
@@ -88,7 +88,7 @@ TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_type)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_shape_with_neg_dim)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_shape_with_neg_dim)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
@@ -111,7 +111,7 @@ TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_shape_with_neg_dim)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_shape_with_neg_dim)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_dyn_shape_with_neg_dim)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
@@ -136,7 +136,7 @@ TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_shape_with_neg_dim)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_shape_with_zero_dim)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_shape_with_zero_dim)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
@@ -159,7 +159,7 @@ TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_shape_with_zero_dim)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_neg_Reshape_invalid_target_dyn_shape_with_zero_dim)
+TEST_F(GenModelTest, neg_OneOp_Reshape_invalid_target_dyn_shape_with_zero_dim)
 {
   CircleGen cgen;
   const auto f32 = circle::TensorType::TensorType_FLOAT32;
