@@ -81,15 +81,27 @@ class CircleAdapter(Adapter):
         tensor_shape = self.dict_tensor_type_to_string[tensor.type].lower()
         tensor_shape += f'{tensor.shape.tolist()}'
         tensor_name = tensor.name.decode('utf-8')
-        me_node.outputsMetadata.append(
-            graph_builder.MetadataItem(
-                id=f'{output_id}',
-                attrs=[
-                    graph_builder.KeyValue(key='shape', value=tensor_shape),
-                    graph_builder.KeyValue(key='tensor_index', value=f'{tensor_id}'),
-                    graph_builder.KeyValue(key='tensor_name', value=tensor_name)
-                ],
-            ))
+
+        metadata = graph_builder.MetadataItem(
+            id=f'{output_id}',
+            attrs=[
+                graph_builder.KeyValue(key='shape', value=tensor_shape),
+                graph_builder.KeyValue(key='tensor_index', value=f'{tensor_id}'),
+                graph_builder.KeyValue(key='tensor_name', value=tensor_name)
+            ],
+        )
+
+        # Quantization parameter (if exists)
+        if tensor.quantization:
+            # Show the most significant 6 digits of the scale
+            scale = format(tensor.quantization.scale[0], '.6g')
+            zp = tensor.quantization.zeroPoint[0]
+            # If the type is larger than INT8, exponential notation will be used
+            quantparam = f'{scale} * (q + {zp})'
+            metadata.attrs.append(
+                graph_builder.KeyValue(key='quantization', value=quantparam))
+
+        me_node.outputsMetadata.append(metadata)
 
     def build_graph(self, me_graph: graph_builder.Graph) -> None:
         """Build the graph using the model."""
