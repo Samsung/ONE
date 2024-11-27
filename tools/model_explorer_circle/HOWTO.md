@@ -12,7 +12,7 @@ pip install -e .
 
 * Execute Model Explorer with Circle adapter extension
 ```
-model-explorer --extensions circle_adapter --no_open_in_browser
+model-explorer --extensions model_explorer_circle --no_open_in_browser
 ```
 
 * Execute Unittest
