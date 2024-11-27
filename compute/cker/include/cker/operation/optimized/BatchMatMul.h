@@ -33,14 +33,17 @@ inline void BatchMatMul(const BatchMatMulParams &params, const float *lhs_data,
                         const float *rhs_data, float *output_data)
 {
   MatrixParams<float> lhs_params;
+  lhs_params.order = Order::kRowMajor; // ignored by GemmImplUsingEigen
   lhs_params.rows = params.lhs_rows;
   lhs_params.cols = params.lhs_cols;
 
   MatrixParams<float> rhs_params;
+  lhs_params.order = Order::kRowMajor; // ignored by GemmImplUsingEigen
   rhs_params.rows = params.rhs_rows;
   rhs_params.cols = params.rhs_cols;
 
   MatrixParams<float> dst_params;
+  lhs_params.order = Order::kRowMajor; // ignored by GemmImplUsingEigen
   dst_params.rows = params.lhs_rows;
   dst_params.cols = params.rhs_cols;
 
