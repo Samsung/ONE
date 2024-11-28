@@ -24,17 +24,13 @@ with open(args.test_list) as f:
     contents = [line.rstrip() for line in f]
 comment_removed = [line for line in contents if not line.startswith('#')]
 newline_removed = [line for line in comment_removed if line.startswith('eval(')]
-test_models = [
-    Path(args.artifact_dir) / f'{extract_test_args(line)}.circle'
-    for line in newline_removed
-]
+test_args = [extract_test_args(line) for line in newline_removed]
+test_models = [Path(args.artifact_dir) / f'{arg}.circle' for arg in test_args]
 input_data = [
-    Path(args.artifact_dir) / f'{extract_test_args(line)}.opt/metadata/tc/input.h5'
-    for line in newline_removed
+    Path(args.artifact_dir) / f'{arg}.opt/metadata/tc/input.h5' for arg in test_args
 ]
 expected_output_data = [
-    Path(args.artifact_dir) / f'{extract_test_args(line)}.opt/metadata/tc/expected.h5'
-    for line in newline_removed
+    Path(args.artifact_dir) / f'{arg}.opt/metadata/tc/expected.h5' for arg in test_args
 ]
 
 ############ CFFI test
