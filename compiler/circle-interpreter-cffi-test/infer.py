@@ -22,9 +22,9 @@ args = parser.parse_args()
 
 with open(args.test_list) as f:
     contents = [line.rstrip() for line in f]
-comment_removed = [line for line in contents if not line.startswith('#')]
-newline_removed = [line for line in comment_removed if line.startswith('eval(')]
-test_args = [extract_test_args(line) for line in newline_removed]
+# remove newline and comments.
+eval_lines = [line for line in contents if line.startswith('eval(')]
+test_args = [extract_test_args(line) for line in eval_lines]
 test_models = [Path(args.artifact_dir) / f'{arg}.circle' for arg in test_args]
 input_data = [
     Path(args.artifact_dir) / f'{arg}.opt/metadata/tc/input.h5' for arg in test_args
