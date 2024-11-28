@@ -61,8 +61,8 @@ def check_for_errors():
 
 def error_checked(func):
     """
-  Decorator to wrap functions with error checking.
-  """
+    Decorator to wrap functions with error checking.
+    """
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         check_for_errors()
