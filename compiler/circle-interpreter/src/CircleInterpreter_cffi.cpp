@@ -89,11 +89,6 @@ auto exception_wrapper(Func func, Args... args) -> typename std::result_of<Func(
       return ReturnType{};
     }
   }
-  // For void return type
-  if constexpr (std::is_void<ReturnType>::value)
-  {
-    return;
-  }
 }
 
 } // namespace
