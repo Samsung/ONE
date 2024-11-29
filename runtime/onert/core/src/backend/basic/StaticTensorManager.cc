@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+
 #include "backend/basic/StaticTensorManager.h"
 
 #include "backend/basic/DynamicTensorManager.h"
@@ -54,13 +56,28 @@ void StaticTensorManager::allocateNonconsts(void)
 
   for (auto &&[ind, tensor] : _tensors->native_tensors())
   {
-    if (!_as_constants[ind] && !tensor->is_dynamic())
+    bool buffer_set = false;
+    if (!tensor->is_dynamic())
     {
-      auto *buffer = _nonconst_mgr->getBuffer(ind);
-      tensor->setBuffer(buffer);
-
-      VERBOSE(CPU_StaticTensorManager)
-        << "TENSOR " << ind << " : " << static_cast<void *>(buffer) << std::endl;
+      if (_shared_memory_operand_indexes.find(ind) != std::end(_shared_memory_operand_indexes))
+      {
+        const auto &shared_memory_ind = _shared_memory_operand_indexes[ind];
+        if (!_as_constants[shared_memory_ind])
+        {
+          tensor->setBuffer(_nonconst_mgr->getBuffer(shared_memory_ind));
+          buffer_set = true;
+        }
+      }
+      else if (!_as_constants[ind])
+      {
+        tensor->setBuffer(_nonconst_mgr->getBuffer(ind));
+        buffer_set = true;
+      }
+      if (buffer_set)
+      {
+        VERBOSE(CPU_StaticTensorManager)
+          << "TENSOR " << ind << " : " << static_cast<void *>(tensor->buffer()) << std::endl;
+      }
     }
   }
 }
@@ -71,17 +88,30 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, bool as_const)
 {
   assert(!_tensors->getNativeTensor(ind));
+  std::unique_ptr<Tensor> tensor = nullptr;
   if (as_const)
   {
-    auto tensor = std::make_unique<ExternalTensor>(tensor_info);
-    _tensors->setNativeTensor(ind, std::move(tensor));
+    tensor = std::make_unique<ExternalTensor>(tensor_info);
   }
   else
   {
-    auto tensor =
-      std::make_unique<Tensor>(tensor_info, _dynamic_tensor_manager->dynamic_mem_mgr().get());
-    _tensors->setNativeTensor(ind, std::move(tensor));
+    const auto source_operand_ind = _shared_memory_operand_indexes.find(ind);
+    if (source_operand_ind != std::end(_shared_memory_operand_indexes) &&
+        _as_constants[source_operand_ind->second])
+    {
+      as_const = _as_constants[source_operand_ind->second];
+      auto new_tensor_info = tensor_info;
+      new_tensor_info.setAsConstant();
+      tensor = std::make_unique<ExternalTensor>(new_tensor_info);
+    }
+    else
+    {
+      tensor =
+        std::make_unique<Tensor>(tensor_info, _dynamic_tensor_manager->dynamic_mem_mgr().get());
+    }
   }
+  assert(tensor);
+  _tensors->setNativeTensor(ind, std::move(tensor));
   _as_constants[ind] = as_const;
 }
 
@@ -92,8 +122,26 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  if (!_as_constants[ind])
-    _nonconst_mgr->claimPlan(ind, size);
+  ir::OperandIndex claim_ind;
+  const auto source_ind = _shared_memory_operand_indexes.find(ind);
+  if (source_ind == std::end(_shared_memory_operand_indexes))
+  {
+    claim_ind = ind;
+  }
+  else
+  {
+    claim_ind = source_ind->second;
+  }
+  if (_as_constants[claim_ind])
+  {
+    return;
+  }
+  ++_source_operand_inds_ref_counter[claim_ind];
+  // notify only first usage
+  if (1 == _source_operand_inds_ref_counter[claim_ind])
+  {
+    _nonconst_mgr->claimPlan(claim_ind, size);
+  }
 }
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
@@ -103,8 +151,29 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  if (!_as_constants[ind])
-    _nonconst_mgr->releasePlan(ind);
+  ir::OperandIndex release_ind;
+  const auto source_operand_ind_ind = _shared_memory_operand_indexes.find(ind);
+  if (source_operand_ind_ind == std::end(_shared_memory_operand_indexes))
+  {
+    release_ind = ind;
+  }
+  else
+  {
+    release_ind = source_operand_ind_ind->second;
+  }
+  if (_as_constants[release_ind])
+  {
+    return;
+  }
+  if (_source_operand_inds_ref_counter[release_ind] > 0)
+  {
+    --_source_operand_inds_ref_counter[release_ind];
+  }
+  // notify only last usage
+  if (0 == _source_operand_inds_ref_counter[release_ind])
+  {
+    _nonconst_mgr->releasePlan(release_ind);
+  }
 }
 
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)

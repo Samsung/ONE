@@ -177,15 +177,30 @@ void planTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const i
 }
 
 template <typename T_TensorBuilder>
-ITensorRegistry *
-genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const ir::Graph &graph,
-           const util::Set<ir::OperandIndex> &external_operands,
-           const std::shared_ptr<ITensorRegistry> &tensor_registry,
-           const std::vector<onert::ir::OperationIndex> &op_order,
-           const ir::OperandIndexMap<ir::OperandIndex> & /*shared_memory_operand_idx*/)
+ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder,
+                            const ir::Graph &graph,
+                            const util::Set<ir::OperandIndex> &external_operands,
+                            const std::shared_ptr<ITensorRegistry> &tensor_registry,
+                            const std::vector<onert::ir::OperationIndex> &op_order,
+                            const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
 {
+  // process source tensors for shared memory at first
+  std::vector<ir::OperandIndex> registered_source_ind;
+  for (const auto &[_, source_ind] : shared_memory_operand_idx)
+  {
+    if (external_operands.contains(source_ind))
+      continue;
+    if (tensor_builder->isRegistered(source_ind)) // some tensors can have the same source
+      continue;
+    tensor_builder->registerTensorInfo(source_ind, graph.operands().at(source_ind).info());
+    registered_source_ind.emplace_back(source_ind);
+  }
+
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands.contains(ind))
+      return;
+    if (std::find(std::begin(registered_source_ind), std::end(registered_source_ind), ind) !=
+        std::end(registered_source_ind)) // skip tensors already registered
       return;
     tensor_builder->registerTensorInfo(ind, obj.info());
   });
@@ -219,10 +234,14 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 inline void initConsts(const ir::Operands &operands,
                        const util::Set<ir::OperandIndex> &external_operands,
                        ITensorRegistry *tensor_registry,
-                       const ir::OperandIndexMap<ir::OperandIndex> & /*shared_memory_operands_map*/)
+                       const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operands_map)
 {
   operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-    if (external_operands.contains(ind) || !operand.isConstant())
+    const bool has_const_shared_memory =
+      shared_memory_operands_map.find(ind) != std::end(shared_memory_operands_map) &&
+      operands.at(shared_memory_operands_map.at(ind)).isConstant();
+    const bool can_be_initialized_as_const = operand.isConstant() || has_const_shared_memory;
+    if (external_operands.contains(ind) || !can_be_initialized_as_const)
       return;
 
     auto tensor = tensor_registry->getNativeITensor(ind);
@@ -230,14 +249,23 @@ inline void initConsts(const ir::Operands &operands,
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
 
-    auto data = operand.shareData();
-    assert(data && data->base());
     ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
-
     if (ext_tensor == nullptr)
       throw std::runtime_error{"This tensor is not external tensor"};
 
-    ext_tensor->setData(data);
+    if (has_const_shared_memory)
+    {
+      const auto &source_operand_ind = operands.at(shared_memory_operands_map.at(ind));
+      auto memory_source_data = source_operand_ind.shareData();
+      assert(memory_source_data && memory_source_data->base());
+      ext_tensor->setData(memory_source_data);
+    }
+    else
+    {
+      auto data = operand.shareData();
+      assert(data && data->base());
+      ext_tensor->setData(data);
+    }
   });
 }
 

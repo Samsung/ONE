@@ -60,6 +60,7 @@ private:
   ir::OperandIndexMap<bool> _as_constants;
   DynamicTensorManager *_dynamic_tensor_manager;
   ir::OperandIndexMap<ir::OperandIndex> _shared_memory_operand_indexes;
+  ir::OperandIndexMap<uint32_t> _source_operand_inds_ref_counter;
 };
 
 } // namespace basic
