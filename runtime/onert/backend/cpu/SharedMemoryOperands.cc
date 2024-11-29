@@ -80,6 +80,8 @@ ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandIndexes(const ir::I
   graph.operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
     if (is_memory_sharing_allowed(graph, op))
     {
+      assert(op.getInputs().size() == 1 || op.getInputs().size() == 2);
+      assert(op.getOutputs().size() == 1);
       shared_memory_operand_map[op.getOutputs().at(0)] = op.getInputs().at(0);
     }
   });
