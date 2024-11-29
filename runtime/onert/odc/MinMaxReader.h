@@ -72,6 +72,13 @@ public:
    */
   MinMaxVectors readInput(uint32_t model_idx, uint32_t subg_idx, uint32_t input_idx) const;
 
+  /**
+   * @brief Returns minmax recording count
+   *
+   * @return minmax recording count
+   */
+  uint32_t readNumRuns() const;
+
 private:
   std::string _filepath;
 };
