@@ -32,7 +32,8 @@ inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
                                     const int32_t *output_multiplier, const int32_t *output_shift,
                                     const Shape &input_shape, const uint8_t *input_data,
                                     const Shape &filter_shape, const uint8_t *filter_data,
-                                    const int32_t *filter_zeropoint, const Shape &bias_shape,
+                                    const int32_t *filter_zeropoint,
+                                    [[maybe_unused]] const Shape &bias_shape,
                                     const int32_t *bias_data, const Shape &output_shape,
                                     uint8_t *output_data)
 {
@@ -57,7 +58,7 @@ inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
 
   assert(output_activation_min <= output_activation_max);
   const int batches = MatchingDim(input_shape, 0, output_shape, 0);
-  const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
+  [[maybe_unused]] const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);
   const int input_depth = input_shape.Dims(3);
@@ -65,8 +66,6 @@ inline void DepthwiseConvPerChannel(const DepthwiseConvParams &params,
   const int filter_width = filter_shape.Dims(2);
   const int output_height = output_shape.Dims(1);
   const int output_width = output_shape.Dims(2);
-  UNUSED_RELEASE(output_depth);
-  UNUSED_RELEASE(bias_shape);
   assert(output_depth == input_depth * depth_multiplier);
   assert(bias_shape.FlatSize() == output_depth);
 

@@ -128,14 +128,12 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
 
 #endif // CKER_X86_PLATFORM
 
-inline void FullyConnected(const FullyConnectedParams &params, const Shape &input_shape,
-                           const uint8_t *input_data, const Shape &filter_shape,
-                           const uint8_t *filter_data, const Shape &bias_shape,
-                           const int32_t *bias_data, const Shape &output_shape,
-                           uint8_t *output_data)
+inline void FullyConnected(const FullyConnectedParams &params,
+                           [[maybe_unused]] const Shape &input_shape, const uint8_t *input_data,
+                           const Shape &filter_shape, const uint8_t *filter_data,
+                           [[maybe_unused]] const Shape &bias_shape, const int32_t *bias_data,
+                           const Shape &output_shape, uint8_t *output_data)
 {
-  UNUSED_RELEASE(input_shape);
-  UNUSED_RELEASE(bias_shape);
   const int32_t input_offset = params.input_offset;
   const int32_t filter_offset = params.weights_offset;
   const int32_t output_offset = params.output_offset;
@@ -185,8 +183,9 @@ inline void FullyConnected(const FullyConnectedParams &params, const Shape &inpu
 inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape &input_shape,
                                  const float *input_data, const Shape &filter_shape,
                                  const int8_t *filter_data, const Shape &, const float *bias_data,
-                                 const Shape &output_shape, float *output_data,
-                                 FCTempArena &temp_arena, ruy::Context *ruy_context)
+                                 [[maybe_unused]] const Shape &output_shape, float *output_data,
+                                 FCTempArena &temp_arena,
+                                 [[maybe_unused]] ruy::Context *ruy_context)
 {
   int total_input_size = input_shape.FlatSize();
   const int input_size = filter_shape.Dims(1);
@@ -237,8 +236,6 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   MatrixBatchVectorMultiplyAccumulate(filter_data, num_units, input_size, quant_data,
                                       scaling_factors_ptr, batch_size, output_data,
                                       /*result_stride=*/1);
-  UNUSED_RELEASE(ruy_context);
-  UNUSED_RELEASE(output_shape);
 #endif
 
   // Apply activation function to floats.
@@ -250,16 +247,12 @@ inline void FullyConnectedHybrid(const FullyConnectedParams &params, const Shape
   return;
 }
 
-inline void FullyConnectedSparseWeightRandom(const FullyConnectedParams &params,
-                                             const Shape &input_shape, const float *input_data,
-                                             const Shape &weights_shape, const float *weights_data,
-                                             const Shape &bias_shape, const float *bias_data,
-                                             const Shape &output_shape, float *output_data,
-                                             const uint16_t *w1_segments,
-                                             const uint16_t *w1_indices)
+inline void FullyConnectedSparseWeightRandom(
+  const FullyConnectedParams &params, [[maybe_unused]] const Shape &input_shape,
+  const float *input_data, const Shape &weights_shape, const float *weights_data,
+  [[maybe_unused]] const Shape &bias_shape, const float *bias_data, const Shape &output_shape,
+  float *output_data, const uint16_t *w1_segments, const uint16_t *w1_indices)
 {
-  UNUSED_RELEASE(params);
-  UNUSED_RELEASE(input_shape);
 
   assert(weights_shape.DimensionsCount() == 2);
   assert(output_shape.DimensionsCount() == 2);
@@ -271,7 +264,6 @@ inline void FullyConnectedSparseWeightRandom(const FullyConnectedParams &params,
     MatchingDim(weights_shape, weights_dims_count - 2, output_shape, output_dims_count - 1);
   const int accum_depth = weights_shape.Dims(weights_dims_count - 1);
 
-  UNUSED_RELEASE(bias_shape);
   if (bias_data)
   {
     VectorBatchVectorAssign(bias_data, output_depth, batches, output_data);

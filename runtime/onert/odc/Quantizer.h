@@ -31,6 +31,29 @@ public:
   ~Quantizer() = default;
 
   int quantize(const char *in, const char *out, QuantizeType qtype) override;
+
+  /**
+   * @brief Set the number of minmax records enough for quantization
+   */
+  void setMinMaxRecordsThreshold(uint32_t value) { _minmax_threshold = value; };
+
+  /**
+   * @brief Checking the number of minmax records enough for quantization (comparison with
+   * threshold)
+   *
+   * @return True if ready, False otherwise
+   */
+  bool readyForQuantize() override;
+
+  /**
+   * @brief Delete minmax file
+   *
+   * @return True if there were no errors, False otherwise
+   */
+  bool deleteMinMaxFile() override;
+
+private:
+  uint32_t _minmax_threshold = 0;
 };
 
 } // namespace odc

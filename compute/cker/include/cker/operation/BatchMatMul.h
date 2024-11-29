@@ -23,6 +23,7 @@
 #include "cker/Types.h"
 #include "cker/Shape.h"
 #include "cker/Utils.h"
+#include "cker/operation/optimized/BatchMatMul.h"
 #include "cker/operation/reference/BatchMatMul.h"
 
 #include <vector>
@@ -77,7 +78,7 @@ public:
   }
 
   void operator()(const Shape &lhs_shape, const float *lhs_data, const Shape &rhs_shape,
-                  const float *rhs_data, bool adj_x, bool adj_y, const Shape &output_shape,
+                  const float *rhs_data, bool adj_x, bool adj_y, const Shape & /*output_shape*/,
                   float *output_data)
   {
     // Assume lhs and rhs is not constant
@@ -102,8 +103,13 @@ public:
     // Check accumulative dimensions of lhs and rhs of are equal
     assert(Shape::ExtendedShape(5, new_rhs_shape).Dims(4) ==
            Shape::ExtendedShape(5, new_lhs_shape).Dims(3));
-    reference::BatchMatMul(new_rhs_shape, new_rhs_data, new_lhs_shape, new_lhs_data, output_shape,
-                           output_data);
+
+    const BatchMatMulParams params{new_rhs_shape, new_lhs_shape};
+#if defined(CKER_X86_PLATFORM)
+    optimized::BatchMatMul(params, new_rhs_data, new_lhs_data, output_data);
+#else
+    reference::BatchMatMul(params, new_rhs_data, new_lhs_data, output_data);
+#endif
   }
 
 private:

@@ -251,7 +251,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
     dyn_ctx->op = &_operations_ctx.at(ind);
-    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
+    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_tensor_reg);
   }
   ret->dynamic_tensor_ctx(dyn_ctx);
 

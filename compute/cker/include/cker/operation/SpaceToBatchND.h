@@ -27,15 +27,13 @@ namespace cker
 {
 
 template <typename T>
-inline void SpaceToBatchND(const SpaceToBatchParams &params, const Shape &unextended_input_shape,
-                           const T *input_data, const Shape &unextended_block_shape_shape,
-                           const int32_t *block_shape_data, const Shape &unextended_padding_shape,
-                           const int32_t *paddings_data, const Shape &unextended_output_shape,
-                           T *output_data)
+inline void
+SpaceToBatchND(const SpaceToBatchParams &params, const Shape &unextended_input_shape,
+               const T *input_data, [[maybe_unused]] const Shape &unextended_block_shape_shape,
+               const int32_t *block_shape_data,
+               [[maybe_unused]] const Shape &unextended_padding_shape, const int32_t *paddings_data,
+               const Shape &unextended_output_shape, T *output_data)
 {
-  UNUSED_RELEASE(unextended_block_shape_shape);
-  UNUSED_RELEASE(unextended_padding_shape);
-
   assert(unextended_input_shape.DimensionsCount() <= 4);
   assert(unextended_output_shape.DimensionsCount() <= 4);
   const Shape input_shape = Shape::ExtendedShape(4, unextended_input_shape);

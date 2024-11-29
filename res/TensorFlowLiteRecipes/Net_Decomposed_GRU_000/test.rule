@@ -1,0 +1,11 @@
+# To check whether tfl model is converted to circle GRU op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "GRU_EXIST"               $(op_count GRU) '=' 1
+RULE    "NO_WHILE"                $(op_count WHILE) '=' 0
+RULE    "NO_SPLIT"                $(op_count SPLIT) '=' 0
+RULE    "NO_LOGISTIC"             $(op_count LOGISTIC) '=' 0
+RULE    "NO_TANH"                 $(op_count TANH) '=' 0
+RULE    "NO_GATHER"               $(op_count GATHER) '=' 0
+RULE    "NO_LESS"                 $(op_count LESS) '=' 0

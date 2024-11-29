@@ -88,11 +88,11 @@ public:
 
 private:
   void ConvFloat(const ConvParams &params, const Shape &input_shape, const float *input_data,
-                 const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
-                 const float *bias_data, const Shape &output_shape, float *output_data,
-                 const Shape &im2col_shape, float *im2col_data, ::ruy::Context *ruy_context)
+                 const Shape &filter_shape, const float *filter_data,
+                 [[maybe_unused]] const Shape &bias_shape, const float *bias_data,
+                 const Shape &output_shape, float *output_data, const Shape &im2col_shape,
+                 float *im2col_data, ::ruy::Context *ruy_context)
   {
-    UNUSED_RELEASE(bias_shape);
     const int stride_width = params.stride_width;
     const int stride_height = params.stride_height;
     const int dilation_width_factor = params.dilation_width_factor;

@@ -541,7 +541,8 @@ struct GemmParams
 
 // Validates self-consistency of GemmParams.
 template <typename AccumScalar, typename DstScalar, QuantizationFlavor quantization_flavor>
-void ValidateGemmParams(const GemmParams<AccumScalar, DstScalar, quantization_flavor> &params)
+void ValidateGemmParams(
+  [[maybe_unused]] const GemmParams<AccumScalar, DstScalar, quantization_flavor> &params)
 {
   // Guard consistency of the quantized multiplier fields.
   if (quantization_flavor == QuantizationFlavor::kFloatingPoint)
@@ -576,7 +577,6 @@ void ValidateGemmParams(const GemmParams<AccumScalar, DstScalar, quantization_fl
     assert(!params.multiplier_fixedpoint_perchannel);
     assert(!params.multiplier_exponent_perchannel);
   }
-  UNUSED_RELEASE(params);
 }
 
 } // namespace cker

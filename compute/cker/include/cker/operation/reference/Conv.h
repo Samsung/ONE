@@ -31,8 +31,9 @@ namespace reference
 {
 
 inline void Conv(const ConvParams &params, const Shape &input_shape, const float *input_data,
-                 const Shape &filter_shape, const float *filter_data, const Shape &bias_shape,
-                 const float *bias_data, const Shape &output_shape, float *output_data)
+                 const Shape &filter_shape, const float *filter_data,
+                 [[maybe_unused]] const Shape &bias_shape, const float *bias_data,
+                 const Shape &output_shape, float *output_data)
 {
   const int stride_width = params.stride_width;
   const int stride_height = params.stride_height;
@@ -45,7 +46,6 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
   assert(input_shape.DimensionsCount() == 4);
   assert(filter_shape.DimensionsCount() == 4);
   assert(output_shape.DimensionsCount() == 4);
-  UNUSED_RELEASE(bias_shape);
 
   const int batches = MatchingDim(input_shape, 0, output_shape, 0);
   const int input_depth = MatchingDim(input_shape, 3, filter_shape, 3);
@@ -107,8 +107,9 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const float
 }
 
 inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8_t *input_data,
-                 const Shape &filter_shape, const uint8_t *filter_data, const Shape &bias_shape,
-                 const int32_t *bias_data, const Shape &output_shape, uint8_t *output_data)
+                 const Shape &filter_shape, const uint8_t *filter_data,
+                 [[maybe_unused]] const Shape &bias_shape, const int32_t *bias_data,
+                 const Shape &output_shape, uint8_t *output_data)
 {
   const int stride_width = params.stride_width;
   const int stride_height = params.stride_height;
@@ -128,7 +129,6 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
   assert(input_shape.DimensionsCount() == 4);
   assert(filter_shape.DimensionsCount() == 4);
   assert(output_shape.DimensionsCount() == 4);
-  UNUSED_RELEASE(bias_shape);
   const int batches = MatchingDim(input_shape, 0, output_shape, 0);
   const int input_depth = MatchingDim(input_shape, 3, filter_shape, 3);
   const int output_depth = MatchingDim(filter_shape, 0, output_shape, 3);
@@ -191,14 +191,13 @@ inline void Conv(const ConvParams &params, const Shape &input_shape, const uint8
 }
 
 template <typename T, bool is_asymmetric>
-inline void Conv(const ConvParams &params, const int32_t *output_multiplier,
-                 const int32_t *output_shift, const Shape &input_shape, const T *input_data,
-                 const Shape &filter_shape, const T *filter_data, const int32_t *filter_zeropoint,
-                 const Shape &bias_shape, const int32_t *bias_data, const Shape &output_shape,
-                 T *output_data)
+inline void
+Conv(const ConvParams &params, const int32_t *output_multiplier, const int32_t *output_shift,
+     const Shape &input_shape, const T *input_data, const Shape &filter_shape, const T *filter_data,
+     [[maybe_unused]] const int32_t *filter_zeropoint, [[maybe_unused]] const Shape &bias_shape,
+     const int32_t *bias_data, const Shape &output_shape, T *output_data)
 
 {
-  UNUSED_RELEASE(bias_shape);
   // Get parameters.
   const int32_t input_offset = params.input_offset; // r = s(q - Z)
   const int stride_width = params.stride_width;
@@ -289,7 +288,6 @@ inline void Conv(const ConvParams &params, const int32_t *output_multiplier,
                   // TODO(jianlijianli): Add a check to make sure the
                   // accumulator depth is smaller than 2^16.
                   acc += filter_val * (input_val + input_offset);
-                  UNUSED_RELEASE(filter_zeropoint);
                 }
               }
             }
@@ -316,7 +314,7 @@ inline void Conv(const ConvParams &params, const int32_t *output_multiplier,
 inline void HybridConvPerChannel(const ConvParams &params, float *scaling_factors_ptr,
                                  const Shape &input_shape, const int8_t *input_data,
                                  const Shape &filter_shape, const int8_t *filter_data,
-                                 const Shape &bias_shape, const float *bias_data,
+                                 [[maybe_unused]] const Shape &bias_shape, const float *bias_data,
                                  const Shape &output_shape, float *output_data,
                                  const float *per_channel_scale, const int32_t *input_offset)
 
@@ -338,7 +336,6 @@ inline void HybridConvPerChannel(const ConvParams &params, float *scaling_factor
   if (bias_data)
   {
     assert(bias_shape.FlatSize() == output_depth);
-    UNUSED_RELEASE(bias_shape);
   }
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);

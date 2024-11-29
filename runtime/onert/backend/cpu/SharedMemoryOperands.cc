@@ -48,7 +48,6 @@ void reassign_indexes_to_single_sources(
 
 bool is_memory_sharing_allowed(const ir::IGraph &graph, const ir::IOperation &op)
 {
-
   const std::unordered_set<ir::OpCode> ops_with_possible_memory_sharing = {
     ir::OpCode::Reshape, ir::OpCode::ExpandDims, ir::OpCode::Squeeze};
 

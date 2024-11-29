@@ -41,7 +41,6 @@ public:
   Reader(const ir::FeatureShape &shape, const Strides &strides, const T *ptr, size_t len)
     : _shape{shape}, _strides{strides}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
   {
-    UNUSED_RELEASE(len); // Workaround for unused variable in release mode
     assert(len == static_cast<size_t>(strides.N != 0   ? shape.N * strides.N
                                       : strides.C != 0 ? shape.C * strides.C
                                       : strides.H != 0 ? shape.H * strides.H

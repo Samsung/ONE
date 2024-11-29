@@ -173,7 +173,7 @@ Forwardable forwardable(luci::CircleNode *node)
     case luci::CircleOpcode::LEAKY_RELU:
       return {true, false};
     case luci::CircleOpcode::GELU:
-      return {true, false};
+      return {false, false};
     default:
       return {false, false};
   }
@@ -186,8 +186,11 @@ void match(luci::CircleNode *front, std::vector<EqualizePattern> &res)
     throw std::invalid_argument("front");
 
   auto front_fusability = fusability(front);
-
-  for (auto succ : loco::succs(front))
+  auto succs = loco::succs(front);
+  // TODO Support multiple successors.
+  if (succs.size() != 1)
+    return;
+  for (auto succ : succs)
   {
     // Check succ fusability
     auto back = loco::must_cast<luci::CircleNode *>(succ);
@@ -201,15 +204,24 @@ void match(luci::CircleNode *front, std::vector<EqualizePattern> &res)
       auto f = forwardable(back);
       if (f.scale_forwardable)
       {
-        auto succ_succs = loco::succs(back);
+        auto back_succs = loco::succs(back);
         // Only support single successor for simplicity
-        if (succ_succs.size() != 1)
+        if (back_succs.size() != 1)
           continue;
-        auto next_succ = *succ_succs.begin();
-        auto next_back = loco::must_cast<luci::CircleNode *>(next_succ);
-        back_fusability = fusability(next_back);
-        back_fusability.pre_scale &= f.scale_forwardable;
-        back = next_back;
+        back = loco::must_cast<luci::CircleNode *>(*back_succs.begin());
+        back_fusability = fusability(back);
+        if (not back_fusability.pre_scale)
+        {
+          f = forwardable(back);
+          if (f.scale_forwardable)
+          {
+            back_succs = loco::succs(back);
+            if (back_succs.size() != 1)
+              continue;
+            back = loco::must_cast<luci::CircleNode *>(*back_succs.begin());
+            back_fusability = fusability(back);
+          }
+        }
       }
     }
 

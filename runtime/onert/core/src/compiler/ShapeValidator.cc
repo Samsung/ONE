@@ -20,7 +20,6 @@
 
 #include "ir/Graph.h"
 #include "util/logging.h"
-#include "util/Utils.h"
 
 #define OP_REQUIRES(EXP)                                                                     \
   do                                                                                         \
@@ -975,8 +974,7 @@ void ShapeValidator::visit(const ir::operation::Shape &node)
   if (operands.at(output_index).info().isDynamic())
     return;
 
-  const auto input_index{node.getInputs().at(0)};
-  UNUSED_RELEASE(input_index);
+  [[maybe_unused]] const auto input_index{node.getInputs().at(0)};
   OP_REQUIRES(operands.at(output_index).shape().rank() == 1);
 }
 

@@ -117,12 +117,35 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     }
     else
     {
-      auto shape_node = loco::must_cast<luci::CircleNode *>(node->shape());
-      assert(shape_node->rank() == 1);
-      // shape_node tensor values will provide new shape, like [2, 3, 4]
-      auto num_elements = shape_node->dim(0).value(); // above example will give 3
-      shape_by_input.rank(num_elements);
-      is_static_shape = false;
+      // NOTE assumption is that `shape` and `newShape` having same value.
+      // for non-existing `shape`, we can use `newShape` if it's valid
+      auto new_shape = node->newShape();
+      auto rank = new_shape->rank();
+      auto shape_dummy = dynamic_cast<luci::CircleOutputDummy *>(node->shape());
+      if (shape_dummy && rank > 0)
+      {
+        is_static_shape = true;
+        shape_by_input.rank(rank);
+        for (uint32_t i = 0; i < rank; ++i)
+        {
+          if (new_shape->dim(i) > 0)
+            shape_by_input.dim(i) = static_cast<uint32_t>(new_shape->dim(i));
+          else
+          {
+            is_static_shape = false;
+            shape_by_input.dim(i).unset();
+          }
+        }
+      }
+      else
+      {
+        auto shape_node = loco::must_cast<luci::CircleNode *>(node->shape());
+        assert(shape_node->rank() == 1);
+        // shape_node tensor values will provide new shape, like [2, 3, 4]
+        auto num_elements = shape_node->dim(0).value(); // above example will give 3
+        shape_by_input.rank(num_elements);
+        is_static_shape = false;
+      }
     }
   }
 

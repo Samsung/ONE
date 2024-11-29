@@ -53,7 +53,7 @@ inline void DepthwiseConvHybridPerChannel(const DepthwiseConvParams &params,
   assert(output_shape.DimensionsCount() == 4);
 
   const int batches = MatchingDim(input_shape, 0, output_shape, 0);
-  const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
+  [[maybe_unused]] const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);
   const int input_depth = input_shape.Dims(3);
@@ -62,8 +62,6 @@ inline void DepthwiseConvHybridPerChannel(const DepthwiseConvParams &params,
   const int output_height = output_shape.Dims(1);
   const int output_width = output_shape.Dims(2);
   const int bias_depth = bias_shape.FlatSize();
-  UNUSED_RELEASE(output_depth);
-  UNUSED_RELEASE(bias_shape);
   assert(output_depth == input_depth * depth_multiplier);
   assert(bias_depth == output_depth);
 

@@ -51,7 +51,7 @@ private:
   void visit(const ir::operation::Softmax &) override;
 
 private:
-  const ir::train::TrainingInfo *_training_info;
+  [[maybe_unused]] const ir::train::TrainingInfo *_training_info;
 };
 
 } // namespace train

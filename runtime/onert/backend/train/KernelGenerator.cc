@@ -34,7 +34,6 @@
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
 #include <memory>
-#include <util/Utils.h>
 #include <util/logging.h>
 #include <exec/DynamicShapeInferer.h>
 
@@ -622,8 +621,8 @@ IPortableTensor *KernelGenerator::getBackPropIn(const ir::IOperation &node,
     _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index});
   if (disposable_tensor != nullptr)
   {
-    const auto &training_usedefs = _tgraph.trainingUseDefs().at(backwarding_operand_index);
-    UNUSED_RELEASE(training_usedefs);
+    [[maybe_unused]] const auto &training_usedefs =
+      _tgraph.trainingUseDefs().at(backwarding_operand_index);
     assert(std::count_if(training_usedefs.getTrainingDefs().begin(),
                          training_usedefs.getTrainingDefs().end(),
                          [&](const ir::train::TrainingOperationIndex &op_index) {

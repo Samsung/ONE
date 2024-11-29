@@ -1,0 +1,857 @@
+operand {
+  name: "TensorArrayV2_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "time"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+
+operand {
+  name: "sequential/gru/zeros"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "0"
+    arg: "0"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "transpose1"
+  type: FLOAT32
+  shape {
+    dim: 2
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "while"
+  type: INT32
+  shape {
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "while1"
+  type: INT32
+  shape {
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "while2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "while3"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "while4"
+  type: FLOAT32
+  shape {
+    dim: 2
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "StatefulPartitionedCall:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 2
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "While"
+  input: "time"
+  input: "time"
+  input: "TensorArrayV2_1"
+  input: "sequential/gru/zeros"
+  input: "transpose1"
+  output: "while"
+  output: "while1"
+  output: "while2"
+  output: "while3"
+  output: "while4"
+  while_options {
+    cond_subgraph_index: 1
+    body_subgraph_index: 2
+  }
+}
+input: "transpose1"
+output: "while2"
+# This is cond subgraph
+graph {
+  operand {
+    name: "arg0"
+    type: INT32
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg1"
+    type: INT32
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg2"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg3"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg4"
+    type: FLOAT32
+    shape {
+      dim: 2
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "strided_slice1"
+    type: INT32
+    shape {
+    }
+    filler {
+      tag: "explicit"
+      arg: "2"
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/Less"
+    type: BOOL
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operation {
+    type: "Less"
+    input: "arg1"
+    input: "strided_slice1"
+    output: "while/Less"
+  }
+  input: "arg0"
+  input: "arg1"
+  input: "arg2"
+  input: "arg3"
+  input: "arg4"
+  output: "while/Less"
+}
+
+# This is body subgraph
+graph {
+  operand {
+    name: "arg0"
+    type: INT32
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg1"
+    type: INT32
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg2"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg3"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "arg4"
+    type: FLOAT32
+    shape {
+      dim: 2
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/TensorArrayV2Write/TensorListSetItem"
+    type: INT32
+    shape {
+      dim: 3
+    }
+    filler {
+      tag: "explicit"
+      arg: "1"
+      arg: "1"
+      arg: "2"
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/MatMul_11"
+    type: FLOAT32
+    shape {
+      dim: 6
+      dim: 2
+    }
+    filler {
+      tag: "explicit"
+      arg: "-0.192813"
+      arg: "-0.458227"
+      arg: "-0.178845"
+      arg: "-0.275436"
+      arg: "0.704787"
+      arg: "0.187431"
+      arg: "-0.280711"
+      arg: "-0.406058"
+      arg: "-0.415622"
+      arg: "0.675278"
+      arg: "0.427286"
+      arg: "-0.241141"
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/MatMul"
+    type: FLOAT32
+    shape {
+      dim: 6
+      dim: 2
+    }
+    filler {
+      tag: "explicit"
+      arg: "0.807328"
+      arg: "-0.521874"
+      arg: "0.116675"
+      arg: "0.331105"
+      arg: "0.277033"
+      arg: "0.237678"
+      arg: "0.129396"
+      arg: "0.171752"
+      arg: "-0.15585"
+      arg: "0.813781"
+      arg: "-0.26672"
+      arg: "-0.230285"
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add_4/y"
+    type: INT32
+    shape {
+    }
+    filler {
+      tag: "explicit"
+      arg: "1"
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/sub/x"
+    type: FLOAT32
+    shape {
+    }
+    filler {
+      tag: "explicit"
+      arg: "1"
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add_4"
+    type: INT32
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/MatMul_12"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 6
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/split_1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/split_11"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/split_12"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/TensorArrayV2Read/TensorListGetItem;time"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/MatMul1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 6
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/split"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/split1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/split2"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/Sigmoid"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/mul_1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/sub"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add_1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/Sigmoid_1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/mul"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add_2"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/Tanh"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/mul_2"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add_3"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/TensorArrayV2Write/TensorListSetItem1"
+    type: FLOAT32
+    shape {
+      dim: 1
+      dim: 1
+      dim: 2
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operand {
+    name: "while/add_5"
+    type: INT32
+    shape {
+    }
+    quant {
+      quantized_dimension: 0
+    }
+    is_variable: false
+  }
+  operation {
+    type: "Add"
+    input: "arg1"
+    input: "while/add_4/y"
+    output: "while/add_4"
+    add_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "FullyConnected"
+    input: "arg3"
+    input: "while/MatMul_11"
+    input: ""
+    output: "while/MatMul_12"
+    fullyconnected_options {
+      activation: NONE
+      keep_num_dims: false
+    }
+  }
+  operation {
+    type: "Split"
+    input: "while/add_4/y"
+    input: "while/MatMul_12"
+    output: "while/split_1"
+    output: "while/split_11"
+    output: "while/split_12"
+    split_options {
+      num_splits: 3
+    }
+  }
+  operation {
+    type: "Gather"
+    input: "arg4"
+    input: "arg1"
+    output: "while/TensorArrayV2Read/TensorListGetItem;time"
+    gather_options {
+      axis: 0
+    }
+  }
+  operation {
+    type: "FullyConnected"
+    input: "while/TensorArrayV2Read/TensorListGetItem;time"
+    input: "while/MatMul"
+    input: ""
+    output: "while/MatMul1"
+    fullyconnected_options {
+      activation: NONE
+      keep_num_dims: false
+    }
+  }
+  operation {
+    type: "Split"
+    input: "while/add_4/y"
+    input: "while/MatMul1"
+    output: "while/split"
+    output: "while/split1"
+    output: "while/split2"
+    split_options {
+      num_splits: 3
+    }
+  }
+  operation {
+    type: "Add"
+    input: "while/split"
+    input: "while/split_1"
+    output: "while/add"
+    add_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Logistic"
+    input: "while/add"
+    output: "while/Sigmoid"
+  }
+  operation {
+    type: "Mul"
+    input: "while/Sigmoid"
+    input: "arg3"
+    output: "while/mul_1"
+    mul_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Sub"
+    input: "while/sub/x"
+    input: "while/Sigmoid"
+    output: "while/sub"
+    sub_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Add"
+    input: "while/split1"
+    input: "while/split_11"
+    output: "while/add_1"
+    add_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Logistic"
+    input: "while/add_1"
+    output: "while/Sigmoid_1"
+  }
+  operation {
+    type: "Mul"
+    input: "while/Sigmoid_1"
+    input: "while/split_12"
+    output: "while/mul"
+    mul_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Add"
+    input: "while/split2"
+    input: "while/mul"
+    output: "while/add_2"
+    add_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Tanh"
+    input: "while/add_2"
+    output: "while/Tanh"
+  }
+  operation {
+    type: "Mul"
+    input: "while/sub"
+    input: "while/Tanh"
+    output: "while/mul_2"
+    mul_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Add"
+    input: "while/mul_1"
+    input: "while/mul_2"
+    output: "while/add_3"
+    add_options {
+      activation: NONE
+    }
+  }
+  operation {
+    type: "Reshape"
+    input: "while/add_3"
+    input: "while/TensorArrayV2Write/TensorListSetItem"
+    output: "while/TensorArrayV2Write/TensorListSetItem1"
+  }
+  operation {
+    type: "Add"
+    input: "arg0"
+    input: "while/add_4/y"
+    output: "while/add_5"
+    add_options {
+      activation: NONE
+    }
+  }
+  input: "arg0"
+  input: "arg1"
+  input: "arg2"
+  input: "arg3"
+  input: "arg4"
+  output: "while/add_5"
+  output: "while/add_4"
+  output: "while/TensorArrayV2Write/TensorListSetItem1"
+  output: "while/add_3"
+  output: "arg4"
+}

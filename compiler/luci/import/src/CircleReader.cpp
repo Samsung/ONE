@@ -70,6 +70,10 @@ loco::DataType luci_datatype(const circle::TensorType type)
       return loco::DataType::S8;
     case circle::TensorType_INT4:
       return loco::DataType::S4;
+    case circle::TensorType_MXFP4:
+      return loco::DataType::MXFP4;
+    case circle::TensorType_MXINT8:
+      return loco::DataType::MXINT8;
     default:
       break;
   }

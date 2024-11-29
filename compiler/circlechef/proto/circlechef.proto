@@ -12,8 +12,10 @@ package circlechef;
 //  - Added name, version(default as 1), graph in ModelRecipe
 //
 
-// This enum value corresponds to TensorType in TensorFlow Lite schema
+// This enum value corresponds to TensorType in Circle schema
 enum TensorType {
+  MXINT8 = -7;
+  MXFP4 = -6;
   UINT4 = -1;
   FLOAT32 = 0;
   INT32 = 2;

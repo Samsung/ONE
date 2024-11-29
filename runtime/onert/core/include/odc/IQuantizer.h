@@ -18,6 +18,7 @@
 #define __ONERT_ODC_IQUANTIZER_H__
 
 #include "odc/QuantizeType.h"
+#include <cstdint>
 
 namespace onert
 {
@@ -30,6 +31,25 @@ public:
   virtual ~IQuantizer() = default;
 
   virtual int quantize(const char *in, const char *out, QuantizeType qtype) = 0;
+
+  /**
+   * @brief Set the number of minmax records enough for quantization
+   */
+  virtual void setMinMaxRecordsThreshold(uint32_t value) = 0;
+
+  /**
+   * @brief Checking the number of minmax records enough for quantization
+   *
+   * @return True if ready, False otherwise
+   */
+  virtual bool readyForQuantize() = 0;
+
+  /**
+   * @brief Delete minmax file
+   *
+   * @return True if there were no errors, False otherwise
+   */
+  virtual bool deleteMinMaxFile() = 0;
 };
 
 } // namespace odc

@@ -1769,8 +1769,7 @@ inline void DepthwiseConvGeneral(const DepthwiseConvParams &params,
   int32_t acc_buffer[kAccBufferMaxSize];
   assert(kAccBufferMaxSize >= output_depth);
   const int kOutputPixelsInAccBuffer = kAccBufferMaxSize / output_depth;
-  const int kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;
-  UNUSED_RELEASE(kAccBufferActualSize);
+  [[maybe_unused]] const int kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;
   assert(kOutputPixelsInAccBuffer * output_depth <= kAccBufferActualSize);
   assert(kAccBufferActualSize <= kAccBufferMaxSize);
   assert(kOutputPixelsInAccBuffer >= 1);
@@ -1924,21 +1923,16 @@ inline void DepthwiseConvWithRounding(const DepthwiseConvParams &params,
                                       const Shape &output_shape, int8_t *output_data,
                                       int thread_start, int thread_end, int thread_dim)
 {
-  const int depth_multiplier = params.depth_multiplier;
-  const int dilation_width_factor = params.dilation_width_factor;
-  const int dilation_height_factor = params.dilation_height_factor;
-  UNUSED_RELEASE(depth_multiplier);
-  UNUSED_RELEASE(dilation_width_factor);
-  UNUSED_RELEASE(dilation_height_factor);
+  [[maybe_unused]] const int depth_multiplier = params.depth_multiplier;
+  [[maybe_unused]] const int dilation_width_factor = params.dilation_width_factor;
+  [[maybe_unused]] const int dilation_height_factor = params.dilation_height_factor;
   assert(dilation_width_factor >= 1);
   assert(dilation_height_factor >= 1);
   assert(input_shape.DimensionsCount() == 4);
   assert(filter_shape.DimensionsCount() == 4);
   assert(output_shape.DimensionsCount() == 4);
-  const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
-  const int input_depth = input_shape.Dims(3);
-  UNUSED_RELEASE(output_depth);
-  UNUSED_RELEASE(input_depth);
+  [[maybe_unused]] const int output_depth = MatchingDim(filter_shape, 3, output_shape, 3);
+  [[maybe_unused]] const int input_depth = input_shape.Dims(3);
   assert(output_depth == input_depth * depth_multiplier);
   assert(bias_shape.FlatSize() == output_depth);
 

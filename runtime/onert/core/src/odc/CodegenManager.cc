@@ -16,17 +16,18 @@
 
 #include "CodegenLoader.h"
 #include "odc/CodegenManager.h"
-#include "util/Utils.h"
 
 #include <mutex>
+#include <stdexcept>
 
 namespace onert
 {
 namespace odc
 {
 
+// TODO Use compile preference
 bool CodegenManager::codegen(const std::string &model_path, const char *target,
-                             CodegenPreference pref)
+                             [[maybe_unused]] CodegenPreference pref)
 {
   if (target == nullptr)
     throw std::runtime_error("Target string is not set");
@@ -44,8 +45,6 @@ bool CodegenManager::codegen(const std::string &model_path, const char *target,
   auto &codegen_loader = CodegenLoader::instance();
   codegen_loader.loadLibrary(target);
   const auto code_generator = codegen_loader.get();
-  // TODO Use compile preference
-  UNUSED_RELEASE(pref);
   const auto result = code_generator->codegen(model_path.c_str(), _export_model_path.c_str());
   codegen_loader.unloadLibrary();
 

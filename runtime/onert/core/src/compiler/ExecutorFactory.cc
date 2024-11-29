@@ -174,8 +174,8 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     auto new_operand = std::make_unique<ir::Operand>(operand);
     new_operand->clearDefUse();
     operand.releaseData(); // Deref data of LoweredGraph
-    auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-    UNUSED_RELEASE(new_operand_ind);
+    [[maybe_unused]] auto new_operand_ind =
+      partial_graph.addOperand(operand_ind, std::move(new_operand));
     assert(new_operand_ind == operand_ind);
   });
   // Separate operations into partial graphs
@@ -202,15 +202,14 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           const auto &operand = whole_graph.operands().at(operand_ind);
           auto new_operand = std::make_unique<ir::Operand>(operand);
           new_operand->clearDefUse();
-          auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-          UNUSED_RELEASE(new_operand_ind);
+          [[maybe_unused]] auto new_operand_ind =
+            partial_graph.addOperand(operand_ind, std::move(new_operand));
           assert(new_operand_ind == operand_ind);
 
           external_operands.add(operand_ind);
         }
 
-        auto new_op_ind = partial_graph.addOperation(op_ind, clone(operation));
-        UNUSED_RELEASE(new_op_ind);
+        [[maybe_unused]] auto new_op_ind = partial_graph.addOperation(op_ind, clone(operation));
         assert(new_op_ind == op_ind);
       }
     });
@@ -649,7 +648,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                            const onert::ir::IOperation &op) {
     try
     {
-      UNUSED_RELEASE(dynamic_cast<const ir::train::ITrainableOperation &>(op));
+      [[maybe_unused]] const auto &casted_op =
+        dynamic_cast<const ir::train::ITrainableOperation &>(op);
     }
     catch (std::bad_cast &)
     {
@@ -674,8 +674,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         const auto &orig_tgraph = lowered_graph->trainable_graph();
         const auto &trainable_op = orig_tgraph.operation(op_index);
-        auto gen_index = tgraph->replaceOperation(op_index, trainable_op.clone());
-        UNUSED_RELEASE(gen_index);
+        [[maybe_unused]] auto gen_index = tgraph->replaceOperation(op_index, trainable_op.clone());
         assert(gen_index == op_index);
       });
     data.graph->operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
@@ -684,8 +683,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       {
         const auto &bwd_operand = orig_tgraph.backward_operands().at(index);
         auto new_bwd_operand = std::make_unique<ir::Operand>(bwd_operand);
-        auto gen_index = tgraph->addBackwardOperand(index, std::move(new_bwd_operand));
-        UNUSED_RELEASE(gen_index);
+        [[maybe_unused]] auto gen_index =
+          tgraph->addBackwardOperand(index, std::move(new_bwd_operand));
         assert(gen_index == index);
       }
     });

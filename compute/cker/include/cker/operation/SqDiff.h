@@ -63,7 +63,6 @@ template <typename T>
 void SqDiff(const Shape &input1_shape, const T *input1_data, const Shape &input2_shape,
             const T *input2_data, const Shape &output_shape, T *output_data)
 {
-  UNUSED_RELEASE(output_shape);
   assert(input1_shape.DimensionsCount() > 0 && input2_shape.DimensionsCount() > 0 &&
          output_shape.DimensionsCount() > 0);
   int outRank = output_shape.DimensionsCount();

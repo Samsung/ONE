@@ -68,9 +68,9 @@ inline void RmsNorm(const RmsNormParams &params, const Shape &input_shape, const
   }
   else if (input_shape.DimensionsCount() == 3)
   {
-    const int32_t heights = MatchingDim(input_shape, 1, output_shape, 0);
-    const int32_t widths = MatchingDim(input_shape, 2, output_shape, 1);
-    const int32_t channels = MatchingDim(input_shape, 3, output_shape, 2);
+    const int32_t heights = MatchingDim(input_shape, 0, output_shape, 0);
+    const int32_t widths = MatchingDim(input_shape, 1, output_shape, 1);
+    const int32_t channels = MatchingDim(input_shape, 2, output_shape, 2);
 
     for (int32_t height = 0; height < heights; height++)
     {

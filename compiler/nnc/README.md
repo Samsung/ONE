@@ -4,7 +4,7 @@ Neural Network Compiler
 ### DESCRIPTION
 
 nnc is a neural network compiler that transforms neural networks of various formats into source or machine code.
-> At this moment only two NN are supported (MobileNet and InceptionV3) in Tensorflow Lite or Caffe format.
+> At this moment, only two NN are supported (MobileNet and InceptionV3) in Tensorflow Lite or Caffe format.
 
 ### SYNOPSIS
 
