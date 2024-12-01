@@ -247,155 +247,153 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno"> 1769</span>  int32_t acc_buffer[kAccBufferMaxSize];</div>
 <div class="line"><span class="lineno"> 1770</span>  assert(kAccBufferMaxSize &gt;= output_depth);</div>
 <div class="line"><span class="lineno"> 1771</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> kOutputPixelsInAccBuffer = kAccBufferMaxSize / output_depth;</div>
-<div class="line"><span class="lineno"> 1772</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;</div>
-<div class="line"><span class="lineno"> 1773</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(kAccBufferActualSize);</div>
-<div class="line"><span class="lineno"> 1774</span>  assert(kOutputPixelsInAccBuffer * output_depth &lt;= kAccBufferActualSize);</div>
-<div class="line"><span class="lineno"> 1775</span>  assert(kAccBufferActualSize &lt;= kAccBufferMaxSize);</div>
-<div class="line"><span class="lineno"> 1776</span>  assert(kOutputPixelsInAccBuffer &gt;= 1);</div>
-<div class="line"><span class="lineno"> 1777</span>  assert(thread_dim == 0 || thread_dim == 1);</div>
-<div class="line"><span class="lineno"> 1778</span> </div>
-<div class="line"><span class="lineno"> 1779</span>  <span class="comment">// row_accum_func will point to the core accumulation function to be used</span></div>
-<div class="line"><span class="lineno"> 1780</span>  <span class="comment">// for this DepthwiseConv op.</span></div>
-<div class="line"><span class="lineno"> 1781</span>  <span class="keyword">using </span>row_accum_func_t = <span class="keyword">decltype</span>(&amp;QuantizedDepthwiseConvAccumRowGeneric);</div>
-<div class="line"><span class="lineno"> 1782</span>  row_accum_func_t row_accum_func = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno"> 1783</span> </div>
-<div class="line"><span class="lineno"> 1784</span><span class="preprocessor">#define TFMINI_USE_DEPTHWISECONV_KERNEL(ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER) \</span></div>
-<div class="line"><span class="lineno"> 1785</span><span class="preprocessor">  if (!row_accum_func &amp;&amp; (stride_width == 1 || ALLOW_STRIDED) &amp;&amp;                                  \</span></div>
-<div class="line"><span class="lineno"> 1786</span><span class="preprocessor">      (input_depth == FIXED_INPUT_DEPTH || FIXED_INPUT_DEPTH == 0) &amp;&amp;                             \</span></div>
-<div class="line"><span class="lineno"> 1787</span><span class="preprocessor">      depth_multiplier == FIXED_DEPTH_MULTIPLIER)                                                 \</span></div>
-<div class="line"><span class="lineno"> 1788</span><span class="preprocessor">  {                                                                                               \</span></div>
-<div class="line"><span class="lineno"> 1789</span><span class="preprocessor">    row_accum_func =                                                                              \</span></div>
-<div class="line"><span class="lineno"> 1790</span><span class="preprocessor">      QuantizedDepthwiseConvAccumRow&lt;ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER&gt;;   \</span></div>
-<div class="line"><span class="lineno"> 1791</span><span class="preprocessor">  }</span></div>
-<div class="line"><span class="lineno"> 1792</span> </div>
-<div class="line"><span class="lineno"> 1793</span><span class="preprocessor">#ifdef USE_NEON</span></div>
-<div class="line"><span class="lineno"> 1794</span>  <span class="comment">// We go over our list of kernels by decreasing order of preference</span></div>
-<div class="line"><span class="lineno"> 1795</span>  <span class="comment">// for the cases where multiple kernels could apply.</span></div>
-<div class="line"><span class="lineno"> 1796</span> </div>
-<div class="line"><span class="lineno"> 1797</span>  <span class="comment">// Start with the fastest kernels: AllowStrided=false, fixed input depth.</span></div>
-<div class="line"><span class="lineno"> 1798</span> </div>
-<div class="line"><span class="lineno"> 1799</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(<span class="keyword">false</span>, 1, 2)</div>
-<div class="line"><span class="lineno"> 1800</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 2, 2)</div>
-<div class="line"><span class="lineno"> 1801</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 4, 2)</div>
-<div class="line"><span class="lineno"> 1802</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 1, 4)</div>
-<div class="line"><span class="lineno"> 1803</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 4, 1)</div>
-<div class="line"><span class="lineno"> 1804</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 4, 4)</div>
-<div class="line"><span class="lineno"> 1805</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 8, 1)</div>
-<div class="line"><span class="lineno"> 1806</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 2, 8)</div>
-<div class="line"><span class="lineno"> 1807</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 2, 1)</div>
-<div class="line"><span class="lineno"> 1808</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 12, 1)</div>
-<div class="line"><span class="lineno"> 1809</span> </div>
-<div class="line"><span class="lineno"> 1810</span>  <span class="comment">// Next come the strided kernels: AllowStrided=true, fixed input depth.</span></div>
-<div class="line"><span class="lineno"> 1811</span>  <span class="comment">// They are a bit less efficient, but allow stride!=1.</span></div>
-<div class="line"><span class="lineno"> 1812</span> </div>
-<div class="line"><span class="lineno"> 1813</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 8, 2)</div>
-<div class="line"><span class="lineno"> 1814</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 16, 1)</div>
-<div class="line"><span class="lineno"> 1815</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 16)</div>
-<div class="line"><span class="lineno"> 1816</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 20)</div>
-<div class="line"><span class="lineno"> 1817</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 32)</div>
-<div class="line"><span class="lineno"> 1818</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 8)</div>
-<div class="line"><span class="lineno"> 1819</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 8, 1)</div>
-<div class="line"><span class="lineno"> 1820</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 2, 1)</div>
-<div class="line"><span class="lineno"> 1821</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 4, 1)</div>
-<div class="line"><span class="lineno"> 1822</span> </div>
-<div class="line"><span class="lineno"> 1823</span>  <span class="comment">// Finally, the kernels allowing a variable input depth,</span></div>
-<div class="line"><span class="lineno"> 1824</span>  <span class="comment">// these are the least efficient but most general kernels.</span></div>
-<div class="line"><span class="lineno"> 1825</span> </div>
-<div class="line"><span class="lineno"> 1826</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 0, 1)</div>
-<div class="line"><span class="lineno"> 1827</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 0, 2)</div>
-<div class="line"><span class="lineno"> 1828</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 0, 3)</div>
-<div class="line"><span class="lineno"> 1829</span><span class="preprocessor">#endif </span><span class="comment">// USE_NEON</span></div>
-<div class="line"><span class="lineno"> 1830</span> </div>
-<div class="line"><span class="lineno"> 1831</span>  <span class="comment">// No matching fast kernel found, use slow fallback.</span></div>
-<div class="line"><span class="lineno"> 1832</span>  <span class="keywordflow">if</span> (!row_accum_func)</div>
-<div class="line"><span class="lineno"> 1833</span>  {</div>
-<div class="line"><span class="lineno"> 1834</span>    row_accum_func = QuantizedDepthwiseConvAccumRowGeneric;</div>
-<div class="line"><span class="lineno"> 1835</span>  }</div>
-<div class="line"><span class="lineno"> 1836</span> </div>
-<div class="line"><span class="lineno"> 1837</span><span class="preprocessor">#undef TFMINI_USE_DEPTHWISECONV_KERNEL</span></div>
-<div class="line"><span class="lineno"> 1838</span> </div>
-<div class="line"><span class="lineno"> 1839</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height_stride = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3) * input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
-<div class="line"><span class="lineno"> 1840</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_batch_stride = input_height_stride * input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
-<div class="line"><span class="lineno"> 1841</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_height_stride = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3) * filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
-<div class="line"><span class="lineno"> 1842</span> </div>
-<div class="line"><span class="lineno"> 1843</span>  <span class="comment">// Now that we have determined row_accum_func, we can start work.</span></div>
-<div class="line"><span class="lineno"> 1844</span>  <span class="keywordtype">int</span> batch_start = 0;</div>
-<div class="line"><span class="lineno"> 1845</span>  <span class="keywordtype">int</span> batch_end = batches;</div>
-<div class="line"><span class="lineno"> 1846</span>  <span class="keywordtype">int</span> row_start = 0;</div>
-<div class="line"><span class="lineno"> 1847</span>  <span class="keywordtype">int</span> row_end = output_rows;</div>
-<div class="line"><span class="lineno"> 1848</span>  <span class="keywordtype">int</span> output_ptr_offset = 0;</div>
-<div class="line"><span class="lineno"> 1849</span> </div>
-<div class="line"><span class="lineno"> 1850</span>  <span class="keywordflow">switch</span> (thread_dim)</div>
-<div class="line"><span class="lineno"> 1851</span>  {</div>
-<div class="line"><span class="lineno"> 1852</span>    <span class="keywordflow">case</span> 0:</div>
-<div class="line"><span class="lineno"> 1853</span>      assert(thread_start &gt;= 0);</div>
-<div class="line"><span class="lineno"> 1854</span>      assert(thread_end &lt;= batches);</div>
-<div class="line"><span class="lineno"> 1855</span>      batch_start = thread_start;</div>
-<div class="line"><span class="lineno"> 1856</span>      batch_end = thread_end;</div>
-<div class="line"><span class="lineno"> 1857</span>      output_ptr_offset = batch_start * <a class="code hl_function" href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">FlatSizeSkipDim</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
-<div class="line"><span class="lineno"> 1858</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1859</span>    <span class="keywordflow">case</span> 1:</div>
-<div class="line"><span class="lineno"> 1860</span>      assert(thread_start &gt;= 0);</div>
-<div class="line"><span class="lineno"> 1861</span>      assert(thread_end &lt;= output_rows);</div>
-<div class="line"><span class="lineno"> 1862</span>      row_start = thread_start;</div>
-<div class="line"><span class="lineno"> 1863</span>      row_end = thread_end;</div>
-<div class="line"><span class="lineno"> 1864</span>      output_ptr_offset = row_start * output_width * output_depth;</div>
-<div class="line"><span class="lineno"> 1865</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno"> 1866</span>  }</div>
-<div class="line"><span class="lineno"> 1867</span> </div>
-<div class="line"><span class="lineno"> 1868</span>  int8_t *output_ptr = output_data + output_ptr_offset;</div>
-<div class="line"><span class="lineno"> 1869</span>  <span class="keywordtype">int</span> batch_step = (output_rows + row_start - row_end) * output_width * output_depth;</div>
-<div class="line"><span class="lineno"> 1870</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = batch_start; b &lt; batch_end; ++b)</div>
-<div class="line"><span class="lineno"> 1871</span>  {</div>
-<div class="line"><span class="lineno"> 1872</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_y = row_start; out_y &lt; row_end; ++out_y)</div>
-<div class="line"><span class="lineno"> 1873</span>    {</div>
-<div class="line"><span class="lineno"> 1874</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> in_y_origin = (out_y * stride_height) - pad_height;</div>
-<div class="line"><span class="lineno"> 1875</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_start =</div>
-<div class="line"><span class="lineno"> 1876</span>        std::max(0, (-in_y_origin + dilation_height_factor - 1) / dilation_height_factor);</div>
-<div class="line"><span class="lineno"> 1877</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_end =</div>
-<div class="line"><span class="lineno"> 1878</span>        std::min(filter_height, (input_height - in_y_origin + dilation_height_factor - 1) /</div>
-<div class="line"><span class="lineno"> 1879</span>                                  dilation_height_factor);</div>
-<div class="line"><span class="lineno"> 1880</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_x_buffer_start = 0; out_x_buffer_start &lt; output_width;</div>
-<div class="line"><span class="lineno"> 1881</span>           out_x_buffer_start += kOutputPixelsInAccBuffer)</div>
-<div class="line"><span class="lineno"> 1882</span>      {</div>
-<div class="line"><span class="lineno"> 1883</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> out_x_buffer_end =</div>
-<div class="line"><span class="lineno"> 1884</span>          std::min(output_width, out_x_buffer_start + kOutputPixelsInAccBuffer);</div>
-<div class="line"><span class="lineno"> 1885</span>        <span class="comment">// We call a &#39;pixel&#39; a group of activation that share all but the</span></div>
-<div class="line"><span class="lineno"> 1886</span>        <span class="comment">// &#39;depth&#39;/&#39;channel&#39; coordinate. num_output_pixels is the number of</span></div>
-<div class="line"><span class="lineno"> 1887</span>        <span class="comment">// output pixels that we will accumulate in this loop iteration.</span></div>
-<div class="line"><span class="lineno"> 1888</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> num_output_pixels = out_x_buffer_end - out_x_buffer_start;</div>
-<div class="line"><span class="lineno"> 1889</span>        <span class="comment">// Initialize our local accumulator with the bias values, so we don&#39;t</span></div>
-<div class="line"><span class="lineno"> 1890</span>        <span class="comment">// have to add them later.</span></div>
-<div class="line"><span class="lineno"> 1891</span>        DepthwiseConvInitAccBuffer(num_output_pixels, output_depth, bias_data, acc_buffer);</div>
-<div class="line"><span class="lineno"> 1892</span>        <span class="comment">// Accumulation loop. Most of the time should be spent in here.</span></div>
-<div class="line"><span class="lineno"> 1893</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_y = filter_y_start; filter_y &lt; filter_y_end; ++filter_y)</div>
-<div class="line"><span class="lineno"> 1894</span>        {</div>
-<div class="line"><span class="lineno"> 1895</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_y = in_y_origin + dilation_height_factor * filter_y;</div>
-<div class="line"><span class="lineno"> 1896</span>          row_accum_func(stride_width, dilation_width_factor, input_depth, input_width,</div>
-<div class="line"><span class="lineno"> 1897</span>                         input_data + in_y * input_height_stride + b * input_batch_stride,</div>
-<div class="line"><span class="lineno"> 1898</span>                         input_offset, pad_width, depth_multiplier, filter_width,</div>
-<div class="line"><span class="lineno"> 1899</span>                         filter_data + filter_y * filter_height_stride, out_x_buffer_start,</div>
-<div class="line"><span class="lineno"> 1900</span>                         out_x_buffer_end, output_depth, acc_buffer);</div>
-<div class="line"><span class="lineno"> 1901</span>        }</div>
-<div class="line"><span class="lineno"> 1902</span>        <span class="comment">// Finished accumulating int32_t values. Now need to convert them to</span></div>
-<div class="line"><span class="lineno"> 1903</span>        <span class="comment">// the final 8bit form and store them.</span></div>
-<div class="line"><span class="lineno"> 1904</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> num_output_values = output_depth * num_output_pixels;</div>
-<div class="line"><span class="lineno"> 1905</span> </div>
-<div class="line"><span class="lineno"> 1906</span>        Quantize(output_multiplier, output_shift, output_depth, num_output_values, output_offset,</div>
-<div class="line"><span class="lineno"> 1907</span>                 output_activation_min, output_activation_max, acc_buffer, output_ptr);</div>
-<div class="line"><span class="lineno"> 1908</span> </div>
-<div class="line"><span class="lineno"> 1909</span>        output_ptr += num_output_values;</div>
-<div class="line"><span class="lineno"> 1910</span>      }</div>
-<div class="line"><span class="lineno"> 1911</span>    }</div>
-<div class="line"><span class="lineno"> 1912</span>    output_ptr += batch_step;</div>
-<div class="line"><span class="lineno"> 1913</span>  }</div>
-<div class="line"><span class="lineno"> 1914</span>}</div>
+<div class="line"><span class="lineno"> 1772</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> kAccBufferActualSize = kOutputPixelsInAccBuffer * output_depth;</div>
+<div class="line"><span class="lineno"> 1773</span>  assert(kOutputPixelsInAccBuffer * output_depth &lt;= kAccBufferActualSize);</div>
+<div class="line"><span class="lineno"> 1774</span>  assert(kAccBufferActualSize &lt;= kAccBufferMaxSize);</div>
+<div class="line"><span class="lineno"> 1775</span>  assert(kOutputPixelsInAccBuffer &gt;= 1);</div>
+<div class="line"><span class="lineno"> 1776</span>  assert(thread_dim == 0 || thread_dim == 1);</div>
+<div class="line"><span class="lineno"> 1777</span> </div>
+<div class="line"><span class="lineno"> 1778</span>  <span class="comment">// row_accum_func will point to the core accumulation function to be used</span></div>
+<div class="line"><span class="lineno"> 1779</span>  <span class="comment">// for this DepthwiseConv op.</span></div>
+<div class="line"><span class="lineno"> 1780</span>  <span class="keyword">using </span>row_accum_func_t = <span class="keyword">decltype</span>(&amp;QuantizedDepthwiseConvAccumRowGeneric);</div>
+<div class="line"><span class="lineno"> 1781</span>  row_accum_func_t row_accum_func = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno"> 1782</span> </div>
+<div class="line"><span class="lineno"> 1783</span><span class="preprocessor">#define TFMINI_USE_DEPTHWISECONV_KERNEL(ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER) \</span></div>
+<div class="line"><span class="lineno"> 1784</span><span class="preprocessor">  if (!row_accum_func &amp;&amp; (stride_width == 1 || ALLOW_STRIDED) &amp;&amp;                                  \</span></div>
+<div class="line"><span class="lineno"> 1785</span><span class="preprocessor">      (input_depth == FIXED_INPUT_DEPTH || FIXED_INPUT_DEPTH == 0) &amp;&amp;                             \</span></div>
+<div class="line"><span class="lineno"> 1786</span><span class="preprocessor">      depth_multiplier == FIXED_DEPTH_MULTIPLIER)                                                 \</span></div>
+<div class="line"><span class="lineno"> 1787</span><span class="preprocessor">  {                                                                                               \</span></div>
+<div class="line"><span class="lineno"> 1788</span><span class="preprocessor">    row_accum_func =                                                                              \</span></div>
+<div class="line"><span class="lineno"> 1789</span><span class="preprocessor">      QuantizedDepthwiseConvAccumRow&lt;ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER&gt;;   \</span></div>
+<div class="line"><span class="lineno"> 1790</span><span class="preprocessor">  }</span></div>
+<div class="line"><span class="lineno"> 1791</span> </div>
+<div class="line"><span class="lineno"> 1792</span><span class="preprocessor">#ifdef USE_NEON</span></div>
+<div class="line"><span class="lineno"> 1793</span>  <span class="comment">// We go over our list of kernels by decreasing order of preference</span></div>
+<div class="line"><span class="lineno"> 1794</span>  <span class="comment">// for the cases where multiple kernels could apply.</span></div>
+<div class="line"><span class="lineno"> 1795</span> </div>
+<div class="line"><span class="lineno"> 1796</span>  <span class="comment">// Start with the fastest kernels: AllowStrided=false, fixed input depth.</span></div>
+<div class="line"><span class="lineno"> 1797</span> </div>
+<div class="line"><span class="lineno"> 1798</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(<span class="keyword">false</span>, 1, 2)</div>
+<div class="line"><span class="lineno"> 1799</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 2, 2)</div>
+<div class="line"><span class="lineno"> 1800</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 4, 2)</div>
+<div class="line"><span class="lineno"> 1801</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 1, 4)</div>
+<div class="line"><span class="lineno"> 1802</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 4, 1)</div>
+<div class="line"><span class="lineno"> 1803</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 4, 4)</div>
+<div class="line"><span class="lineno"> 1804</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 8, 1)</div>
+<div class="line"><span class="lineno"> 1805</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 2, 8)</div>
+<div class="line"><span class="lineno"> 1806</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 2, 1)</div>
+<div class="line"><span class="lineno"> 1807</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(false, 12, 1)</div>
+<div class="line"><span class="lineno"> 1808</span> </div>
+<div class="line"><span class="lineno"> 1809</span>  <span class="comment">// Next come the strided kernels: AllowStrided=true, fixed input depth.</span></div>
+<div class="line"><span class="lineno"> 1810</span>  <span class="comment">// They are a bit less efficient, but allow stride!=1.</span></div>
+<div class="line"><span class="lineno"> 1811</span> </div>
+<div class="line"><span class="lineno"> 1812</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 8, 2)</div>
+<div class="line"><span class="lineno"> 1813</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 16, 1)</div>
+<div class="line"><span class="lineno"> 1814</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 16)</div>
+<div class="line"><span class="lineno"> 1815</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 20)</div>
+<div class="line"><span class="lineno"> 1816</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 32)</div>
+<div class="line"><span class="lineno"> 1817</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 1, 8)</div>
+<div class="line"><span class="lineno"> 1818</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 8, 1)</div>
+<div class="line"><span class="lineno"> 1819</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 2, 1)</div>
+<div class="line"><span class="lineno"> 1820</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 4, 1)</div>
+<div class="line"><span class="lineno"> 1821</span> </div>
+<div class="line"><span class="lineno"> 1822</span>  <span class="comment">// Finally, the kernels allowing a variable input depth,</span></div>
+<div class="line"><span class="lineno"> 1823</span>  <span class="comment">// these are the least efficient but most general kernels.</span></div>
+<div class="line"><span class="lineno"> 1824</span> </div>
+<div class="line"><span class="lineno"> 1825</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 0, 1)</div>
+<div class="line"><span class="lineno"> 1826</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 0, 2)</div>
+<div class="line"><span class="lineno"> 1827</span>  <a class="code hl_define" href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>(true, 0, 3)</div>
+<div class="line"><span class="lineno"> 1828</span><span class="preprocessor">#endif </span><span class="comment">// USE_NEON</span></div>
+<div class="line"><span class="lineno"> 1829</span> </div>
+<div class="line"><span class="lineno"> 1830</span>  <span class="comment">// No matching fast kernel found, use slow fallback.</span></div>
+<div class="line"><span class="lineno"> 1831</span>  <span class="keywordflow">if</span> (!row_accum_func)</div>
+<div class="line"><span class="lineno"> 1832</span>  {</div>
+<div class="line"><span class="lineno"> 1833</span>    row_accum_func = QuantizedDepthwiseConvAccumRowGeneric;</div>
+<div class="line"><span class="lineno"> 1834</span>  }</div>
+<div class="line"><span class="lineno"> 1835</span> </div>
+<div class="line"><span class="lineno"> 1836</span><span class="preprocessor">#undef TFMINI_USE_DEPTHWISECONV_KERNEL</span></div>
+<div class="line"><span class="lineno"> 1837</span> </div>
+<div class="line"><span class="lineno"> 1838</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height_stride = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3) * input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno"> 1839</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_batch_stride = input_height_stride * input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
+<div class="line"><span class="lineno"> 1840</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_height_stride = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3) * filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno"> 1841</span> </div>
+<div class="line"><span class="lineno"> 1842</span>  <span class="comment">// Now that we have determined row_accum_func, we can start work.</span></div>
+<div class="line"><span class="lineno"> 1843</span>  <span class="keywordtype">int</span> batch_start = 0;</div>
+<div class="line"><span class="lineno"> 1844</span>  <span class="keywordtype">int</span> batch_end = batches;</div>
+<div class="line"><span class="lineno"> 1845</span>  <span class="keywordtype">int</span> row_start = 0;</div>
+<div class="line"><span class="lineno"> 1846</span>  <span class="keywordtype">int</span> row_end = output_rows;</div>
+<div class="line"><span class="lineno"> 1847</span>  <span class="keywordtype">int</span> output_ptr_offset = 0;</div>
+<div class="line"><span class="lineno"> 1848</span> </div>
+<div class="line"><span class="lineno"> 1849</span>  <span class="keywordflow">switch</span> (thread_dim)</div>
+<div class="line"><span class="lineno"> 1850</span>  {</div>
+<div class="line"><span class="lineno"> 1851</span>    <span class="keywordflow">case</span> 0:</div>
+<div class="line"><span class="lineno"> 1852</span>      assert(thread_start &gt;= 0);</div>
+<div class="line"><span class="lineno"> 1853</span>      assert(thread_end &lt;= batches);</div>
+<div class="line"><span class="lineno"> 1854</span>      batch_start = thread_start;</div>
+<div class="line"><span class="lineno"> 1855</span>      batch_end = thread_end;</div>
+<div class="line"><span class="lineno"> 1856</span>      output_ptr_offset = batch_start * <a class="code hl_function" href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">FlatSizeSkipDim</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0);</div>
+<div class="line"><span class="lineno"> 1857</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1858</span>    <span class="keywordflow">case</span> 1:</div>
+<div class="line"><span class="lineno"> 1859</span>      assert(thread_start &gt;= 0);</div>
+<div class="line"><span class="lineno"> 1860</span>      assert(thread_end &lt;= output_rows);</div>
+<div class="line"><span class="lineno"> 1861</span>      row_start = thread_start;</div>
+<div class="line"><span class="lineno"> 1862</span>      row_end = thread_end;</div>
+<div class="line"><span class="lineno"> 1863</span>      output_ptr_offset = row_start * output_width * output_depth;</div>
+<div class="line"><span class="lineno"> 1864</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno"> 1865</span>  }</div>
+<div class="line"><span class="lineno"> 1866</span> </div>
+<div class="line"><span class="lineno"> 1867</span>  int8_t *output_ptr = output_data + output_ptr_offset;</div>
+<div class="line"><span class="lineno"> 1868</span>  <span class="keywordtype">int</span> batch_step = (output_rows + row_start - row_end) * output_width * output_depth;</div>
+<div class="line"><span class="lineno"> 1869</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = batch_start; b &lt; batch_end; ++b)</div>
+<div class="line"><span class="lineno"> 1870</span>  {</div>
+<div class="line"><span class="lineno"> 1871</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_y = row_start; out_y &lt; row_end; ++out_y)</div>
+<div class="line"><span class="lineno"> 1872</span>    {</div>
+<div class="line"><span class="lineno"> 1873</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> in_y_origin = (out_y * stride_height) - pad_height;</div>
+<div class="line"><span class="lineno"> 1874</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_start =</div>
+<div class="line"><span class="lineno"> 1875</span>        std::max(0, (-in_y_origin + dilation_height_factor - 1) / dilation_height_factor);</div>
+<div class="line"><span class="lineno"> 1876</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> filter_y_end =</div>
+<div class="line"><span class="lineno"> 1877</span>        std::min(filter_height, (input_height - in_y_origin + dilation_height_factor - 1) /</div>
+<div class="line"><span class="lineno"> 1878</span>                                  dilation_height_factor);</div>
+<div class="line"><span class="lineno"> 1879</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_x_buffer_start = 0; out_x_buffer_start &lt; output_width;</div>
+<div class="line"><span class="lineno"> 1880</span>           out_x_buffer_start += kOutputPixelsInAccBuffer)</div>
+<div class="line"><span class="lineno"> 1881</span>      {</div>
+<div class="line"><span class="lineno"> 1882</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> out_x_buffer_end =</div>
+<div class="line"><span class="lineno"> 1883</span>          std::min(output_width, out_x_buffer_start + kOutputPixelsInAccBuffer);</div>
+<div class="line"><span class="lineno"> 1884</span>        <span class="comment">// We call a &#39;pixel&#39; a group of activation that share all but the</span></div>
+<div class="line"><span class="lineno"> 1885</span>        <span class="comment">// &#39;depth&#39;/&#39;channel&#39; coordinate. num_output_pixels is the number of</span></div>
+<div class="line"><span class="lineno"> 1886</span>        <span class="comment">// output pixels that we will accumulate in this loop iteration.</span></div>
+<div class="line"><span class="lineno"> 1887</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> num_output_pixels = out_x_buffer_end - out_x_buffer_start;</div>
+<div class="line"><span class="lineno"> 1888</span>        <span class="comment">// Initialize our local accumulator with the bias values, so we don&#39;t</span></div>
+<div class="line"><span class="lineno"> 1889</span>        <span class="comment">// have to add them later.</span></div>
+<div class="line"><span class="lineno"> 1890</span>        DepthwiseConvInitAccBuffer(num_output_pixels, output_depth, bias_data, acc_buffer);</div>
+<div class="line"><span class="lineno"> 1891</span>        <span class="comment">// Accumulation loop. Most of the time should be spent in here.</span></div>
+<div class="line"><span class="lineno"> 1892</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> filter_y = filter_y_start; filter_y &lt; filter_y_end; ++filter_y)</div>
+<div class="line"><span class="lineno"> 1893</span>        {</div>
+<div class="line"><span class="lineno"> 1894</span>          <span class="keyword">const</span> <span class="keywordtype">int</span> in_y = in_y_origin + dilation_height_factor * filter_y;</div>
+<div class="line"><span class="lineno"> 1895</span>          row_accum_func(stride_width, dilation_width_factor, input_depth, input_width,</div>
+<div class="line"><span class="lineno"> 1896</span>                         input_data + in_y * input_height_stride + b * input_batch_stride,</div>
+<div class="line"><span class="lineno"> 1897</span>                         input_offset, pad_width, depth_multiplier, filter_width,</div>
+<div class="line"><span class="lineno"> 1898</span>                         filter_data + filter_y * filter_height_stride, out_x_buffer_start,</div>
+<div class="line"><span class="lineno"> 1899</span>                         out_x_buffer_end, output_depth, acc_buffer);</div>
+<div class="line"><span class="lineno"> 1900</span>        }</div>
+<div class="line"><span class="lineno"> 1901</span>        <span class="comment">// Finished accumulating int32_t values. Now need to convert them to</span></div>
+<div class="line"><span class="lineno"> 1902</span>        <span class="comment">// the final 8bit form and store them.</span></div>
+<div class="line"><span class="lineno"> 1903</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> num_output_values = output_depth * num_output_pixels;</div>
+<div class="line"><span class="lineno"> 1904</span> </div>
+<div class="line"><span class="lineno"> 1905</span>        Quantize(output_multiplier, output_shift, output_depth, num_output_values, output_offset,</div>
+<div class="line"><span class="lineno"> 1906</span>                 output_activation_min, output_activation_max, acc_buffer, output_ptr);</div>
+<div class="line"><span class="lineno"> 1907</span> </div>
+<div class="line"><span class="lineno"> 1908</span>        output_ptr += num_output_values;</div>
+<div class="line"><span class="lineno"> 1909</span>      }</div>
+<div class="line"><span class="lineno"> 1910</span>    }</div>
+<div class="line"><span class="lineno"> 1911</span>    output_ptr += batch_step;</div>
+<div class="line"><span class="lineno"> 1912</span>  }</div>
+<div class="line"><span class="lineno"> 1913</span>}</div>
 <div class="ttc" id="a_depthwise_conv_int8_8h_html_a5d6cdde4feb9761abaa001f402b79f27"><div class="ttname"><a href="_depthwise_conv_int8_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a></div><div class="ttdeci">#define TFMINI_USE_DEPTHWISECONV_KERNEL(ALLOW_STRIDED, FIXED_INPUT_DEPTH, FIXED_DEPTH_MULTIPLIER)</div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">Shape.h:92</a></div></div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a59fdb0b28360a8fcf55b1080b63eefb3"><div class="ttname"><a href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">nnfw::cker::FlatSizeSkipDim</a></div><div class="ttdeci">int FlatSizeSkipDim(const Shape &amp;shape, int skip_dim)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00257">Shape.h:257</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">Shape.h:220</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a59fdb0b28360a8fcf55b1080b63eefb3"><div class="ttname"><a href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">nnfw::cker::FlatSizeSkipDim</a></div><div class="ttdeci">int FlatSizeSkipDim(const Shape &amp;shape, int skip_dim)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00253">Shape.h:253</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a01a008eb3a82ad7cd76020c35c944b25"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a01a008eb3a82ad7cd76020c35c944b25">nnfw::cker::DepthwiseConvParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00244">Types.h:244</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2660e5e3746138d3f3d31c6a17012fc1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2660e5e3746138d3f3d31c6a17012fc1">nnfw::cker::DepthwiseConvParams::input_offset</a></div><div class="ttdeci">int32_t input_offset</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00242">Types.h:242</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2a11fa7f567b0faa4551dfe628d6de2b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a></div><div class="ttdeci">int16_t dilation_height_factor</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00238">Types.h:238</a></div></div>
@@ -409,9 +407,9 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a1dc41a9ebbd61a7c34ed2b5dd2ec10eb"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a1dc41a9ebbd61a7c34ed2b5dd2ec10eb">nnfw::cker::PaddingValues::height</a></div><div class="ttdeci">int16_t height</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00075">Types.h:75</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_padding_values_html_a2a3dd79d28c30c5da865290160601fd1"><div class="ttname"><a href="structnnfw_1_1cker_1_1_padding_values.html#a2a3dd79d28c30c5da865290160601fd1">nnfw::cker::PaddingValues::width</a></div><div class="ttdeci">int16_t width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00074">Types.h:74</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00239">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l01649">DepthwiseConvInitAccBuffer()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00238">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00237">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00257">nnfw::cker::FlatSizeSkipDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00075">nnfw::cker::PaddingValues::height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00242">nnfw::cker::DepthwiseConvParams::input_offset</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00244">nnfw::cker::DepthwiseConvParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00234">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">nnfw::cker::Quantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00249">nnfw::cker::DepthwiseConvParams::quantized_activation_max</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00248">nnfw::cker::DepthwiseConvParams::quantized_activation_min</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l01609">QuantizedDepthwiseConvAccumRowGeneric()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00236">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00235">nnfw::cker::DepthwiseConvParams::stride_width</a>, <a class="el" href="_depthwise_conv_float_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00074">nnfw::cker::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00239">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l01649">DepthwiseConvInitAccBuffer()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00238">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00237">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00253">nnfw::cker::FlatSizeSkipDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00075">nnfw::cker::PaddingValues::height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00242">nnfw::cker::DepthwiseConvParams::input_offset</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">nnfw::cker::MatchingDim()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00244">nnfw::cker::DepthwiseConvParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00234">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">nnfw::cker::Quantize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00249">nnfw::cker::DepthwiseConvParams::quantized_activation_max</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00248">nnfw::cker::DepthwiseConvParams::quantized_activation_min</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l01609">QuantizedDepthwiseConvAccumRowGeneric()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00236">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00235">nnfw::cker::DepthwiseConvParams::stride_width</a>, <a class="el" href="_depthwise_conv_float_8h.html#a5d6cdde4feb9761abaa001f402b79f27">TFMINI_USE_DEPTHWISECONV_KERNEL</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00074">nnfw::cker::PaddingValues::width</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_depthwise_conv_int8_8h_source.html#l01919">nnfw::cker::optimized_integer_ops::DepthwiseConvWithRounding()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_depthwise_conv_int8_8h_source.html#l01918">nnfw::cker::optimized_integer_ops::DepthwiseConvWithRounding()</a>.</p>
 
 </div>
 </div>

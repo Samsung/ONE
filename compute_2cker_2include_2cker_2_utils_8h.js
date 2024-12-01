@@ -14,6 +14,7 @@ var compute_2cker_2include_2cker_2_utils_8h =
     [ "NdArrayDescsForElementwiseBroadcast", "compute_2cker_2include_2cker_2_utils_8h.html#a69c77727235e6c54d878e97b1e1b08a7", null ],
     [ "NextIndex", "compute_2cker_2include_2cker_2_utils_8h.html#a6d8c0220b027bc83d5d7d0e19c38f42f", null ],
     [ "NodeOffset", "compute_2cker_2include_2cker_2_utils_8h.html#a48b0da8751770bca2d1ed7c5086884bd", null ],
+    [ "operator<<", "compute_2cker_2include_2cker_2_utils_8h.html#a6eb57a8d6426f6be75b1e8fa7381fc19", null ],
     [ "optimized_ops_preload_l1_keep", "compute_2cker_2include_2cker_2_utils_8h.html#af55ce51eecaba18a0369fb20bf2458a0", null ],
     [ "QuantizeMultiplier", "compute_2cker_2include_2cker_2_utils_8h.html#ac3eca060f6576cf61526caa7d3746f9f", null ],
     [ "QuantizeMultiplierSmallerThanOneExp", "compute_2cker_2include_2cker_2_utils_8h.html#a75309f19ef4f7067a8523debd1af1434", null ],

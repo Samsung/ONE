@@ -107,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62a0b2b5ef77b7044f8813af2c4eb0ce" id="r_a62a0b2b5ef77b7044f8813af2c4eb0ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1odc_1_1_min_max_vectors.html">MinMaxVectors</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_min_max_reader.html#a62a0b2b5ef77b7044f8813af2c4eb0ce">readInput</a> (uint32_t model_idx, uint32_t subg_idx, uint32_t input_idx) const</td></tr>
 <tr class="memdesc:a62a0b2b5ef77b7044f8813af2c4eb0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns minmax recording for input {model_idx, subg_idx, input_idx}.  <br /></td></tr>
 <tr class="separator:a62a0b2b5ef77b7044f8813af2c4eb0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a657366cacc9ef22beae9d76e21d85f26" id="r_a657366cacc9ef22beae9d76e21d85f26"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_min_max_reader.html#a657366cacc9ef22beae9d76e21d85f26">readNumRuns</a> () const</td></tr>
+<tr class="memdesc:a657366cacc9ef22beae9d76e21d85f26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns minmax recording count.  <br /></td></tr>
+<tr class="separator:a657366cacc9ef22beae9d76e21d85f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -251,6 +254,46 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacetf2tflite_v2_html_abe660e9c50ccb26ca3f53160f59fabb7"><div class="ttname"><a href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">tf2tfliteV2.file</a></div><div class="ttdeci">file</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00293">tf2tfliteV2.py:293</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_min_max_reader_8h_source.html#l00055">onert::odc::MinMaxVectors::max_vector</a>, and <a class="el" href="_min_max_reader_8h_source.html#l00054">onert::odc::MinMaxVectors::min_vector</a>.</p>
+
+</div>
+</div>
+<a id="a657366cacc9ef22beae9d76e21d85f26" name="a657366cacc9ef22beae9d76e21d85f26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a657366cacc9ef22beae9d76e21d85f26">&#9670;&#160;</a></span>readNumRuns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t onert::odc::MinMaxReader::readNumRuns </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns minmax recording count. </p>
+<dl class="section return"><dt>Returns</dt><dd>minmax recording count </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_min_max_reader_8cc_source.html#l00239">239</a> of file <a class="el" href="_min_max_reader_8cc_source.html">MinMaxReader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  240</span>{</div>
+<div class="line"><span class="lineno">  241</span>  <span class="comment">// Find file to read</span></div>
+<div class="line"><span class="lineno">  242</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a> = std::fopen(_filepath.c_str(), <span class="stringliteral">&quot;rb&quot;</span>);</div>
+<div class="line"><span class="lineno">  243</span>  <span class="keywordflow">if</span> (!file)</div>
+<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open file: &quot;</span> + _filepath);</div>
+<div class="line"><span class="lineno">  245</span> </div>
+<div class="line"><span class="lineno">  246</span>  checkHeader(file);</div>
+<div class="line"><span class="lineno">  247</span> </div>
+<div class="line"><span class="lineno">  248</span>  <span class="comment">// Read num_run</span></div>
+<div class="line"><span class="lineno">  249</span>  uint32_t num_run = 0;</div>
+<div class="line"><span class="lineno">  250</span>  readMMFile(&amp;num_run, <span class="keyword">sizeof</span>(uint32_t), 1, file, <span class="stringliteral">&quot;Cannot read num_run from file&quot;</span>);</div>
+<div class="line"><span class="lineno">  251</span> </div>
+<div class="line"><span class="lineno">  252</span>  std::fclose(file);</div>
+<div class="line"><span class="lineno">  253</span> </div>
+<div class="line"><span class="lineno">  254</span>  <span class="keywordflow">return</span> num_run;</div>
+<div class="line"><span class="lineno">  255</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_quantizer_8cc_source.html#l00161">onert::odc::Quantizer::readyForQuantize()</a>.</p>
 
 </div>
 </div>

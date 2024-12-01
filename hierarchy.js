@@ -2614,6 +2614,7 @@ var hierarchy =
     [ "luci_interpreter::lstm::InterGateParameters", "structluci__interpreter_1_1lstm_1_1_inter_gate_parameters.html", null ],
     [ "luci_interpreter::Interpreter", "classluci__interpreter_1_1_interpreter.html", null ],
     [ "nnc::InterpreterBackend", "classnnc_1_1_interpreter_backend.html", null ],
+    [ "InterpreterWrapper", "class_interpreter_wrapper.html", null ],
     [ "kuma::details::IntervalMask", "structkuma_1_1details_1_1_interval_mask.html", null ],
     [ "kuma::details::IntervalSet", "classkuma_1_1details_1_1_interval_set.html", null ],
     [ "tfkit::IOConfiguration", "classtfkit_1_1_i_o_configuration.html", null ],
@@ -3592,8 +3593,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "nnfw_session", "structnnfw__session.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -4916,6 +4917,7 @@ var hierarchy =
       [ "moco::TFShapeInferenceRule", "structmoco_1_1_t_f_shape_inference_rule.html", null ]
     ] ],
     [ "loco::ShapeInferenceSession", "classloco_1_1_shape_inference_session.html", null ],
+    [ "nnfw::cker::ShapeIterator", "structnnfw_1_1cker_1_1_shape_iterator.html", null ],
     [ "luci_interpreter::ShapeParams", "structluci__interpreter_1_1_shape_params.html", null ],
     [ "ShapeQuery", "class_shape_query.html", null ],
     [ "mir::ShapeRange", "classmir_1_1_shape_range.html", null ],

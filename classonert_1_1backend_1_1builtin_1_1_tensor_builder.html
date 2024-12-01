@@ -140,8 +140,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00030">30</a> of file <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>  : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1builtin.html#af1fe1e637c2978de29ade945417c7e20">DynamicTensorManager</a>(_tensor_reg-&gt;base_reg())},</div>
-<div class="line"><span class="lineno">   32</span>    _static_tensor_mgr{</div>
-<div class="line"><span class="lineno">   33</span>      <span class="keyword">new</span> basic::StaticTensorManager(_tensor_reg-&gt;base_reg(), _dynamic_tensor_mgr.get())}</div>
+<div class="line"><span class="lineno">   32</span>    _static_tensor_mgr{<span class="keyword">new</span> basic::StaticTensorManager(</div>
+<div class="line"><span class="lineno">   33</span>      _tensor_reg-&gt;base_reg(), _dynamic_tensor_mgr.get(), ir::OperandIndexMap&lt;ir::OperandIndex&gt;{})}</div>
 <div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  <span class="comment">/* empty */</span></div>
 <div class="line"><span class="lineno">   36</span>}</div>
@@ -252,8 +252,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   99</span>  <span class="keywordflow">return</span> _tensor_reg-&gt;getNativeOwnTensor(ind);</div>
 <div class="line"><span class="lineno">  100</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00053">notifyFirstUse()</a>, and <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00068">notifyLastUse()</a>.</p>
-
 </div>
 </div>
 <a id="abc24e8db4a0bc473c47ce93222ab18aa" name="abc24e8db4a0bc473c47ce93222ab18aa"></a>
@@ -289,7 +287,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_tensor_builder_html_ae50f3838fd20568bffa0d27236386284"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_tensor_builder.html#ae50f3838fd20568bffa0d27236386284">onert::backend::builtin::TensorBuilder::nativeOwnTensorAt</a></div><div class="ttdeci">basic::Tensor * nativeOwnTensorAt(const ir::OperandIndex &amp;ind)</div><div class="ttdoc">Get tensor with a specific OperandIndex.</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00097">TensorBuilder.cc:97</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00097">nativeOwnTensorAt()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -321,8 +319,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   77</span>  }</div>
 <div class="line"><span class="lineno">   78</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="core_2src_2backend_2builtin_2_tensor_builder_8cc_source.html#l00097">nativeOwnTensorAt()</a>.</p>
-
 </div>
 </div>
 <a id="a943ffde47da3f8ab45c658415adb2ca3" name="a943ffde47da3f8ab45c658415adb2ca3"></a>

@@ -117,6 +117,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad253784c97639383ce5be49cb3835e59" id="r_ad253784c97639383ce5be49cb3835e59"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_quantize_manager.html#ad253784c97639383ce5be49cb3835e59">quantize</a> (const std::string &amp;model_path)</td></tr>
 <tr class="memdesc:ad253784c97639383ce5be49cb3835e59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quantize model.  <br /></td></tr>
 <tr class="separator:ad253784c97639383ce5be49cb3835e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34fdb3cfc0b133179da9e400843e4cd7" id="r_a34fdb3cfc0b133179da9e400843e4cd7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_quantize_manager.html#a34fdb3cfc0b133179da9e400843e4cd7">setMinMaxRecordsThreshold</a> (uint32_t value)</td></tr>
+<tr class="memdesc:a34fdb3cfc0b133179da9e400843e4cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of minmax records enough for quantization.  <br /></td></tr>
+<tr class="separator:a34fdb3cfc0b133179da9e400843e4cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae14c95a677da2721689011610710847f" id="r_ae14c95a677da2721689011610710847f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_quantize_manager.html#ae14c95a677da2721689011610710847f">readyForQuantize</a> ()</td></tr>
+<tr class="memdesc:ae14c95a677da2721689011610710847f"><td class="mdescLeft">&#160;</td><td class="mdescRight">checking minmax recording count and threshold for quantization  <br /></td></tr>
+<tr class="separator:ae14c95a677da2721689011610710847f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae25d29d0fab3a594f56e4695b1da291" id="r_aae25d29d0fab3a594f56e4695b1da291"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_quantize_manager.html#aae25d29d0fab3a594f56e4695b1da291">deleteMinMaxFile</a> ()</td></tr>
+<tr class="memdesc:aae25d29d0fab3a594f56e4695b1da291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete MinMax File of on-device compiler.  <br /></td></tr>
+<tr class="separator:aae25d29d0fab3a594f56e4695b1da291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -174,6 +183,41 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aae25d29d0fab3a594f56e4695b1da291" name="aae25d29d0fab3a594f56e4695b1da291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae25d29d0fab3a594f56e4695b1da291">&#9670;&#160;</a></span>deleteMinMaxFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::odc::QuantizeManager::deleteMinMaxFile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Delete MinMax File of on-device compiler. </p>
+<dl class="section return"><dt>Returns</dt><dd>Return true if file removed successfully </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_quantize_manager_8cc_source.html#l00073">73</a> of file <a class="el" href="_quantize_manager_8cc_source.html">QuantizeManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keyword">auto</span> &amp;quantize_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">QuantizerLoader::instance</a>();</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">if</span> (quantize_loader.loadLibrary() != 0)</div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordtype">bool</span> result = quantizer-&gt;deleteMinMaxFile();</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   83</span>}</div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_afa8f1f38c1c6aa471cb910e26353d335"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">onert::odc::QuantizerLoader::instance</a></div><div class="ttdeci">static QuantizerLoader &amp; instance()</div><div class="ttdoc">Get singleton instance of QuantizerLoader.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8cc_source.html#l00035">QuantizerLoader.cc:35</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_quantizer_loader_8cc_source.html#l00035">onert::odc::QuantizerLoader::instance()</a>.</p>
+
+</div>
+</div>
 <a id="aad2df7896dd8c6fc5706fa41bc919f21" name="aad2df7896dd8c6fc5706fa41bc919f21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad2df7896dd8c6fc5706fa41bc919f21">&#9670;&#160;</a></span>exportModelPath() <span class="overload">[1/2]</span></h2>
 
@@ -314,7 +358,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span> </div>
 <div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> (result == 0);</div>
 <div class="line"><span class="lineno">   47</span>}</div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_afa8f1f38c1c6aa471cb910e26353d335"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">onert::odc::QuantizerLoader::instance</a></div><div class="ttdeci">static QuantizerLoader &amp; instance()</div><div class="ttdoc">Get singleton instance of QuantizerLoader.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8cc_source.html#l00035">QuantizerLoader.cc:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantizer_loader_8cc_source.html#l00035">onert::odc::QuantizerLoader::instance()</a>.</p>
 
@@ -355,6 +398,75 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_quantize_manager_8h_source.html#l00063">63</a> of file <a class="el" href="_quantize_manager_8h_source.html">QuantizeManager.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>{ _qtype = qtype; }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ae14c95a677da2721689011610710847f" name="ae14c95a677da2721689011610710847f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae14c95a677da2721689011610710847f">&#9670;&#160;</a></span>readyForQuantize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::odc::QuantizeManager::readyForQuantize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>checking minmax recording count and threshold for quantization </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if ready, otherwise <code>false</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_quantize_manager_8cc_source.html#l00061">61</a> of file <a class="el" href="_quantize_manager_8cc_source.html">QuantizeManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">auto</span> &amp;quantize_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">QuantizerLoader::instance</a>();</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">if</span> (quantize_loader.loadLibrary() != 0)</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
+<div class="line"><span class="lineno">   68</span>  <span class="keywordtype">bool</span> result = quantizer-&gt;readyForQuantize();</div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   71</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_quantizer_loader_8cc_source.html#l00035">onert::odc::QuantizerLoader::instance()</a>.</p>
+
+</div>
+</div>
+<a id="a34fdb3cfc0b133179da9e400843e4cd7" name="a34fdb3cfc0b133179da9e400843e4cd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34fdb3cfc0b133179da9e400843e4cd7">&#9670;&#160;</a></span>setMinMaxRecordsThreshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool onert::odc::QuantizeManager::setMinMaxRecordsThreshold </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the number of minmax records enough for quantization. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if success, otherwise <code>false</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_quantize_manager_8cc_source.html#l00049">49</a> of file <a class="el" href="_quantize_manager_8cc_source.html">QuantizeManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keyword">auto</span> &amp;quantize_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">QuantizerLoader::instance</a>();</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (quantize_loader.loadLibrary() != 0)</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
+<div class="line"><span class="lineno">   56</span>  quantizer-&gt;setMinMaxRecordsThreshold(value);</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   59</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_quantizer_loader_8cc_source.html#l00035">onert::odc::QuantizerLoader::instance()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

@@ -147,11 +147,56 @@ $(document).ready(function(){initNavTree('_quantize_manager_8cc_source.html','')
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
 </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace odc</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace onert</span></div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classonert_1_1odc_1_1_quantize_manager.html#a34fdb3cfc0b133179da9e400843e4cd7">   49</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1odc_1_1_quantize_manager.html#a34fdb3cfc0b133179da9e400843e4cd7">QuantizeManager::setMinMaxRecordsThreshold</a>(uint32_t value)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">auto</span> &amp;quantize_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">QuantizerLoader::instance</a>();</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">if</span> (quantize_loader.loadLibrary() != 0)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  quantizer-&gt;setMinMaxRecordsThreshold(value);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>}</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classonert_1_1odc_1_1_quantize_manager.html#ae14c95a677da2721689011610710847f">   61</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1odc_1_1_quantize_manager.html#ae14c95a677da2721689011610710847f">QuantizeManager::readyForQuantize</a>()</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">auto</span> &amp;quantize_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">QuantizerLoader::instance</a>();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">if</span> (quantize_loader.loadLibrary() != 0)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">bool</span> result = quantizer-&gt;readyForQuantize();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
+</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classonert_1_1odc_1_1_quantize_manager.html#aae25d29d0fab3a594f56e4695b1da291">   73</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1odc_1_1_quantize_manager.html#aae25d29d0fab3a594f56e4695b1da291">QuantizeManager::deleteMinMaxFile</a>()</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>{</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">auto</span> &amp;quantize_loader = <a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">QuantizerLoader::instance</a>();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">if</span> (quantize_loader.loadLibrary() != 0)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordtype">bool</span> result = quantizer-&gt;deleteMinMaxFile();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} <span class="comment">// namespace odc</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_quantize_manager_8h_html"><div class="ttname"><a href="_quantize_manager_8h.html">QuantizeManager.h</a></div></div>
 <div class="ttc" id="a_quantizer_loader_8h_html"><div class="ttname"><a href="_quantizer_loader_8h.html">QuantizerLoader.h</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantize_manager_html_a34fdb3cfc0b133179da9e400843e4cd7"><div class="ttname"><a href="classonert_1_1odc_1_1_quantize_manager.html#a34fdb3cfc0b133179da9e400843e4cd7">onert::odc::QuantizeManager::setMinMaxRecordsThreshold</a></div><div class="ttdeci">bool setMinMaxRecordsThreshold(uint32_t value)</div><div class="ttdoc">Set the number of minmax records enough for quantization.</div><div class="ttdef"><b>Definition</b> <a href="_quantize_manager_8cc_source.html#l00049">QuantizeManager.cc:49</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantize_manager_html_aae25d29d0fab3a594f56e4695b1da291"><div class="ttname"><a href="classonert_1_1odc_1_1_quantize_manager.html#aae25d29d0fab3a594f56e4695b1da291">onert::odc::QuantizeManager::deleteMinMaxFile</a></div><div class="ttdeci">bool deleteMinMaxFile()</div><div class="ttdoc">Delete MinMax File of on-device compiler.</div><div class="ttdef"><b>Definition</b> <a href="_quantize_manager_8cc_source.html#l00073">QuantizeManager.cc:73</a></div></div>
 <div class="ttc" id="aclassonert_1_1odc_1_1_quantize_manager_html_ad253784c97639383ce5be49cb3835e59"><div class="ttname"><a href="classonert_1_1odc_1_1_quantize_manager.html#ad253784c97639383ce5be49cb3835e59">onert::odc::QuantizeManager::quantize</a></div><div class="ttdeci">bool quantize(const std::string &amp;model_path)</div><div class="ttdoc">Quantize model.</div><div class="ttdef"><b>Definition</b> <a href="_quantize_manager_8cc_source.html#l00028">QuantizeManager.cc:28</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantize_manager_html_ae14c95a677da2721689011610710847f"><div class="ttname"><a href="classonert_1_1odc_1_1_quantize_manager.html#ae14c95a677da2721689011610710847f">onert::odc::QuantizeManager::readyForQuantize</a></div><div class="ttdeci">bool readyForQuantize()</div><div class="ttdoc">checking minmax recording count and threshold for quantization</div><div class="ttdef"><b>Definition</b> <a href="_quantize_manager_8cc_source.html#l00061">QuantizeManager.cc:61</a></div></div>
 <div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_afa8f1f38c1c6aa471cb910e26353d335"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">onert::odc::QuantizerLoader::instance</a></div><div class="ttdeci">static QuantizerLoader &amp; instance()</div><div class="ttdoc">Get singleton instance of QuantizerLoader.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8cc_source.html#l00035">QuantizerLoader.cc:35</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

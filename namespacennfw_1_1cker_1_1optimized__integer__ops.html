@@ -312,17 +312,17 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02006">2006</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 2012</span>{</div>
-<div class="line"><span class="lineno"> 2013</span>  <span class="keywordflow">return</span> DepthwiseConvWithRounding&lt;DepthwiseConvOutputRounding::kAwayFromZero&gt;(</div>
-<div class="line"><span class="lineno"> 2014</span>    params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
-<div class="line"><span class="lineno"> 2015</span>    bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
-<div class="line"><span class="lineno"> 2016</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02000">2000</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 2006</span>{</div>
+<div class="line"><span class="lineno"> 2007</span>  <span class="keywordflow">return</span> DepthwiseConvWithRounding&lt;DepthwiseConvOutputRounding::kAwayFromZero&gt;(</div>
+<div class="line"><span class="lineno"> 2008</span>    params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
+<div class="line"><span class="lineno"> 2009</span>    bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
+<div class="line"><span class="lineno"> 2010</span>}</div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_depthwise_conv_int8_8h_source.html#l02070">DepthwiseConvPerChannel()</a>, and <a class="el" href="_depthwise_conv_int8_8h_source.html#l02033">nnfw::cker::optimized_integer_ops::DepthwiseConvWorkerTask&lt; T, TS &gt;::Run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_depthwise_conv_int8_8h_source.html#l02064">DepthwiseConvPerChannel()</a>, and <a class="el" href="_depthwise_conv_int8_8h_source.html#l02027">nnfw::cker::optimized_integer_ops::DepthwiseConvWorkerTask&lt; T, TS &gt;::Run()</a>.</p>
 
 </div>
 </div>
@@ -420,68 +420,68 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02070">2070</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 2077</span>{</div>
-<div class="line"><span class="lineno"> 2078</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html">UNUSED_ALL</a>(params, output_multiplier, output_shift, input_shape, input_data, filter_shape,</div>
-<div class="line"><span class="lineno"> 2079</span>             filter_data, bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, ruy_context);</div>
-<div class="line"><span class="lineno"> 2080</span> </div>
-<div class="line"><span class="lineno"> 2081</span>  assert(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
-<div class="line"><span class="lineno"> 2082</span>  assert(filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
-<div class="line"><span class="lineno"> 2083</span>  assert(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() == 4);</div>
-<div class="line"><span class="lineno"> 2084</span> </div>
-<div class="line"><span class="lineno"> 2085</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batches = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(0);</div>
-<div class="line"><span class="lineno"> 2086</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_rows = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1);</div>
-<div class="line"><span class="lineno"> 2087</span>  <span class="keywordtype">int</span> thread_count_batch = <a class="code hl_function" href="namespacennfw_1_1cker.html#a558f0c28f91bb3259117be0a9a3e1e52">HowManyConvThreads</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, filter_shape, 0);</div>
-<div class="line"><span class="lineno"> 2088</span>  <span class="keywordtype">int</span> thread_count_row = <a class="code hl_function" href="namespacennfw_1_1cker.html#a558f0c28f91bb3259117be0a9a3e1e52">HowManyConvThreads</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, filter_shape, 1);</div>
-<div class="line"><span class="lineno"> 2089</span>  <span class="keywordtype">int</span> thread_dim, thread_count, thread_dim_size;</div>
-<div class="line"><span class="lineno"> 2090</span>  <span class="keywordflow">if</span> (thread_count_batch &gt; thread_count_row)</div>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02064">2064</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 2071</span>{</div>
+<div class="line"><span class="lineno"> 2072</span>  <a class="code hl_struct" href="structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html">UNUSED_ALL</a>(params, output_multiplier, output_shift, input_shape, input_data, filter_shape,</div>
+<div class="line"><span class="lineno"> 2073</span>             filter_data, bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, ruy_context);</div>
+<div class="line"><span class="lineno"> 2074</span> </div>
+<div class="line"><span class="lineno"> 2075</span>  assert(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno"> 2076</span>  assert(filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno"> 2077</span>  assert(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() == 4);</div>
+<div class="line"><span class="lineno"> 2078</span> </div>
+<div class="line"><span class="lineno"> 2079</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batches = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(0);</div>
+<div class="line"><span class="lineno"> 2080</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_rows = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1);</div>
+<div class="line"><span class="lineno"> 2081</span>  <span class="keywordtype">int</span> thread_count_batch = <a class="code hl_function" href="namespacennfw_1_1cker.html#a558f0c28f91bb3259117be0a9a3e1e52">HowManyConvThreads</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, filter_shape, 0);</div>
+<div class="line"><span class="lineno"> 2082</span>  <span class="keywordtype">int</span> thread_count_row = <a class="code hl_function" href="namespacennfw_1_1cker.html#a558f0c28f91bb3259117be0a9a3e1e52">HowManyConvThreads</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, filter_shape, 1);</div>
+<div class="line"><span class="lineno"> 2083</span>  <span class="keywordtype">int</span> thread_dim, thread_count, thread_dim_size;</div>
+<div class="line"><span class="lineno"> 2084</span>  <span class="keywordflow">if</span> (thread_count_batch &gt; thread_count_row)</div>
+<div class="line"><span class="lineno"> 2085</span>  {</div>
+<div class="line"><span class="lineno"> 2086</span>    thread_dim = 0;</div>
+<div class="line"><span class="lineno"> 2087</span>    thread_dim_size = output_batches;</div>
+<div class="line"><span class="lineno"> 2088</span>    thread_count = thread_count_batch;</div>
+<div class="line"><span class="lineno"> 2089</span>  }</div>
+<div class="line"><span class="lineno"> 2090</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno"> 2091</span>  {</div>
-<div class="line"><span class="lineno"> 2092</span>    thread_dim = 0;</div>
-<div class="line"><span class="lineno"> 2093</span>    thread_dim_size = output_batches;</div>
-<div class="line"><span class="lineno"> 2094</span>    thread_count = thread_count_batch;</div>
+<div class="line"><span class="lineno"> 2092</span>    thread_dim = 1;</div>
+<div class="line"><span class="lineno"> 2093</span>    thread_dim_size = output_rows;</div>
+<div class="line"><span class="lineno"> 2094</span>    thread_count = thread_count_row;</div>
 <div class="line"><span class="lineno"> 2095</span>  }</div>
-<div class="line"><span class="lineno"> 2096</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 2097</span>  {</div>
-<div class="line"><span class="lineno"> 2098</span>    thread_dim = 1;</div>
-<div class="line"><span class="lineno"> 2099</span>    thread_dim_size = output_rows;</div>
-<div class="line"><span class="lineno"> 2100</span>    thread_count = thread_count_row;</div>
-<div class="line"><span class="lineno"> 2101</span>  }</div>
-<div class="line"><span class="lineno"> 2102</span> </div>
-<div class="line"><span class="lineno"> 2103</span>  <span class="comment">// NOTE Borrow RuyContext to get max_num_threads setting</span></div>
-<div class="line"><span class="lineno"> 2104</span>  <span class="comment">// TODO Define and use max_num_threads for CPU backend</span></div>
-<div class="line"><span class="lineno"> 2105</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> max_threads = ruy_context-&gt;max_num_threads();</div>
-<div class="line"><span class="lineno"> 2106</span>  thread_count = std::max(1, std::min(thread_count, max_threads));</div>
-<div class="line"><span class="lineno"> 2107</span> </div>
-<div class="line"><span class="lineno"> 2108</span>  <span class="keywordflow">if</span> (thread_count == 1)</div>
-<div class="line"><span class="lineno"> 2109</span>  {</div>
-<div class="line"><span class="lineno"> 2110</span>    DepthwiseConvImpl(params, output_multiplier, output_shift, input_shape, input_data,</div>
-<div class="line"><span class="lineno"> 2111</span>                      filter_shape, filter_data, bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data,</div>
-<div class="line"><span class="lineno"> 2112</span>                      <span class="comment">/*thread_start=*/</span>0,</div>
-<div class="line"><span class="lineno"> 2113</span>                      <span class="comment">/*thread_end=*/</span>output_rows, <span class="comment">/*thread_dim=*/</span>1);</div>
-<div class="line"><span class="lineno"> 2114</span>  }</div>
-<div class="line"><span class="lineno"> 2115</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 2116</span>  {</div>
-<div class="line"><span class="lineno"> 2117</span>    std::vector&lt;DepthwiseConvWorkerTask&lt;int8_t, int32_t&gt;&gt; tasks;</div>
-<div class="line"><span class="lineno"> 2118</span>    <span class="comment">// TODO(b/131746020) don&#39;t create new heap allocations every time.</span></div>
-<div class="line"><span class="lineno"> 2119</span>    <span class="comment">// At least we make it a single heap allocation by using reserve().</span></div>
-<div class="line"><span class="lineno"> 2120</span>    tasks.reserve(thread_count);</div>
-<div class="line"><span class="lineno"> 2121</span>    <span class="keywordtype">int</span> thread_start = 0;</div>
-<div class="line"><span class="lineno"> 2122</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; thread_count; ++i)</div>
-<div class="line"><span class="lineno"> 2123</span>    {</div>
-<div class="line"><span class="lineno"> 2124</span>      <span class="keywordtype">int</span> thread_end = thread_start + (thread_dim_size - thread_start) / (thread_count - i);</div>
-<div class="line"><span class="lineno"> 2125</span>      tasks.emplace_back(params, output_multiplier, output_shift, input_shape, input_data,</div>
-<div class="line"><span class="lineno"> 2126</span>                         filter_shape, filter_data, bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
-<div class="line"><span class="lineno"> 2127</span>                         output_data, thread_start, thread_end, thread_dim);</div>
-<div class="line"><span class="lineno"> 2128</span>      thread_start = thread_end;</div>
-<div class="line"><span class="lineno"> 2129</span>    }</div>
-<div class="line"><span class="lineno"> 2130</span>    cpu_backend_threadpool::Execute(tasks.size(), tasks.data(), ruy_context);</div>
-<div class="line"><span class="lineno"> 2131</span>  }</div>
-<div class="line"><span class="lineno"> 2132</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">Shape.h:93</a></div></div>
+<div class="line"><span class="lineno"> 2096</span> </div>
+<div class="line"><span class="lineno"> 2097</span>  <span class="comment">// NOTE Borrow RuyContext to get max_num_threads setting</span></div>
+<div class="line"><span class="lineno"> 2098</span>  <span class="comment">// TODO Define and use max_num_threads for CPU backend</span></div>
+<div class="line"><span class="lineno"> 2099</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> max_threads = ruy_context-&gt;max_num_threads();</div>
+<div class="line"><span class="lineno"> 2100</span>  thread_count = std::max(1, std::min(thread_count, max_threads));</div>
+<div class="line"><span class="lineno"> 2101</span> </div>
+<div class="line"><span class="lineno"> 2102</span>  <span class="keywordflow">if</span> (thread_count == 1)</div>
+<div class="line"><span class="lineno"> 2103</span>  {</div>
+<div class="line"><span class="lineno"> 2104</span>    DepthwiseConvImpl(params, output_multiplier, output_shift, input_shape, input_data,</div>
+<div class="line"><span class="lineno"> 2105</span>                      filter_shape, filter_data, bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data,</div>
+<div class="line"><span class="lineno"> 2106</span>                      <span class="comment">/*thread_start=*/</span>0,</div>
+<div class="line"><span class="lineno"> 2107</span>                      <span class="comment">/*thread_end=*/</span>output_rows, <span class="comment">/*thread_dim=*/</span>1);</div>
+<div class="line"><span class="lineno"> 2108</span>  }</div>
+<div class="line"><span class="lineno"> 2109</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 2110</span>  {</div>
+<div class="line"><span class="lineno"> 2111</span>    std::vector&lt;DepthwiseConvWorkerTask&lt;int8_t, int32_t&gt;&gt; tasks;</div>
+<div class="line"><span class="lineno"> 2112</span>    <span class="comment">// TODO(b/131746020) don&#39;t create new heap allocations every time.</span></div>
+<div class="line"><span class="lineno"> 2113</span>    <span class="comment">// At least we make it a single heap allocation by using reserve().</span></div>
+<div class="line"><span class="lineno"> 2114</span>    tasks.reserve(thread_count);</div>
+<div class="line"><span class="lineno"> 2115</span>    <span class="keywordtype">int</span> thread_start = 0;</div>
+<div class="line"><span class="lineno"> 2116</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; thread_count; ++i)</div>
+<div class="line"><span class="lineno"> 2117</span>    {</div>
+<div class="line"><span class="lineno"> 2118</span>      <span class="keywordtype">int</span> thread_end = thread_start + (thread_dim_size - thread_start) / (thread_count - i);</div>
+<div class="line"><span class="lineno"> 2119</span>      tasks.emplace_back(params, output_multiplier, output_shift, input_shape, input_data,</div>
+<div class="line"><span class="lineno"> 2120</span>                         filter_shape, filter_data, bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno"> 2121</span>                         output_data, thread_start, thread_end, thread_dim);</div>
+<div class="line"><span class="lineno"> 2122</span>      thread_start = thread_end;</div>
+<div class="line"><span class="lineno"> 2123</span>    }</div>
+<div class="line"><span class="lineno"> 2124</span>    cpu_backend_threadpool::Execute(tasks.size(), tasks.data(), ruy_context);</div>
+<div class="line"><span class="lineno"> 2125</span>  }</div>
+<div class="line"><span class="lineno"> 2126</span>}</div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">Shape.h:91</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a558f0c28f91bb3259117be0a9a3e1e52"><div class="ttname"><a href="namespacennfw_1_1cker.html#a558f0c28f91bb3259117be0a9a3e1e52">nnfw::cker::HowManyConvThreads</a></div><div class="ttdeci">int HowManyConvThreads(const Shape &amp;output_shape, const Shape &amp;filter_shape)</div><div class="ttdef"><b>Definition</b> <a href="operation_2_depthwise_conv_8h_source.html#l00081">DepthwiseConv.h:81</a></div></div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html">nnfw::cker::UNUSED_ALL</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00297">Shape.h:298</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html">nnfw::cker::UNUSED_ALL</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00293">Shape.h:294</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_depthwise_conv_int8_8h_source.html#l02006">DepthwiseConvImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="_cpu_backend_threadpool_8h_source.html#l00036">nnfw::cker::cpu_backend_threadpool::Execute()</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l02057">HowManyConvThreads()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="_depthwise_conv_int8_8h_source.html#l02000">DepthwiseConvImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="_cpu_backend_threadpool_8h_source.html#l00036">nnfw::cker::cpu_backend_threadpool::Execute()</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l02051">HowManyConvThreads()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00166">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8i()</a>.</p>
 
@@ -595,97 +595,91 @@ template&lt;<a class="el" href="namespacennfw_1_1cker_1_1optimized__integer__ops
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l01919">1919</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1926</span>{</div>
-<div class="line"><span class="lineno"> 1927</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> depth_multiplier = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">depth_multiplier</a>;</div>
-<div class="line"><span class="lineno"> 1928</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dilation_width_factor = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">dilation_width_factor</a>;</div>
-<div class="line"><span class="lineno"> 1929</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dilation_height_factor = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">dilation_height_factor</a>;</div>
-<div class="line"><span class="lineno"> 1930</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(depth_multiplier);</div>
-<div class="line"><span class="lineno"> 1931</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(dilation_width_factor);</div>
-<div class="line"><span class="lineno"> 1932</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(dilation_height_factor);</div>
-<div class="line"><span class="lineno"> 1933</span>  assert(dilation_width_factor &gt;= 1);</div>
-<div class="line"><span class="lineno"> 1934</span>  assert(dilation_height_factor &gt;= 1);</div>
-<div class="line"><span class="lineno"> 1935</span>  assert(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
-<div class="line"><span class="lineno"> 1936</span>  assert(filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
-<div class="line"><span class="lineno"> 1937</span>  assert(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() == 4);</div>
-<div class="line"><span class="lineno"> 1938</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(filter_shape, 3, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
-<div class="line"><span class="lineno"> 1939</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_depth = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3);</div>
-<div class="line"><span class="lineno"> 1940</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(output_depth);</div>
-<div class="line"><span class="lineno"> 1941</span>  <a class="code hl_define" href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a>(input_depth);</div>
-<div class="line"><span class="lineno"> 1942</span>  assert(output_depth == input_depth * depth_multiplier);</div>
-<div class="line"><span class="lineno"> 1943</span>  assert(bias_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>() == output_depth);</div>
-<div class="line"><span class="lineno"> 1944</span> </div>
-<div class="line"><span class="lineno"> 1945</span><span class="comment">//  TODO Use below codes</span></div>
-<div class="line"><span class="lineno"> 1946</span><span class="preprocessor">#if 0</span></div>
-<div class="line"><span class="lineno"> 1947</span><span class="comment">// Enable for arm64 except for the Nvidia Linux 4 Tegra (L4T) running on</span></div>
-<div class="line"><span class="lineno"> 1948</span><span class="comment">// Jetson TX-2. This compiler does not support the offsetof() macro.</span></div>
-<div class="line"><span class="lineno"> 1949</span><span class="preprocessor">#if defined(__aarch64__) &amp;&amp; !defined(GOOGLE_L4T)</span></div>
-<div class="line"><span class="lineno"> 1950</span><span class="preprocessor">#if defined(__ANDROID__) &amp;&amp; defined(__clang__)</span></div>
-<div class="line"><span class="lineno"> 1951</span>  CpuFlags cpu_flags;</div>
-<div class="line"><span class="lineno"> 1952</span>  GetCpuFlags(&amp;cpu_flags);</div>
-<div class="line"><span class="lineno"> 1953</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> has_dot_product_instructions = cpu_flags.neon_dotprod;</div>
-<div class="line"><span class="lineno"> 1954</span> </div>
-<div class="line"><span class="lineno"> 1955</span>  <span class="comment">// Dispatch to dot-product 3x3 kernels when supported.</span></div>
-<div class="line"><span class="lineno"> 1956</span>  <span class="keywordflow">if</span> (has_dot_product_instructions)</div>
-<div class="line"><span class="lineno"> 1957</span>  {</div>
-<div class="line"><span class="lineno"> 1958</span>    <span class="keyword">using </span>optimized_ops::depthwise_conv::DotProduct3x3KernelType;</div>
-<div class="line"><span class="lineno"> 1959</span>    DotProduct3x3KernelType kernel_type = optimized_ops::depthwise_conv::CategorizeDotProductKernel&lt;</div>
-<div class="line"><span class="lineno"> 1960</span>      optimized_ops::depthwise_conv::QuantizationType::kPerChannelInt8&gt;(</div>
-<div class="line"><span class="lineno"> 1961</span>      input_shape, filter_shape, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, params, output_shift);</div>
-<div class="line"><span class="lineno"> 1962</span>    <span class="keywordflow">if</span> (kernel_type != DotProduct3x3KernelType::kNone)</div>
-<div class="line"><span class="lineno"> 1963</span>    {</div>
-<div class="line"><span class="lineno"> 1964</span>      <a class="code hl_struct" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> params_copy = params;</div>
-<div class="line"><span class="lineno"> 1965</span>      params_copy.output_shift_per_channel = output_shift;</div>
-<div class="line"><span class="lineno"> 1966</span>      params_copy.output_multiplier_per_channel = output_multiplier;</div>
-<div class="line"><span class="lineno"> 1967</span>      optimized_ops::depthwise_conv::DepthwiseConvDotProduct3x3PerChannel&lt;</div>
-<div class="line"><span class="lineno"> 1968</span>        DepthwiseConvImplementation::kUseNeon3x3DotProduct&gt;(</div>
-<div class="line"><span class="lineno"> 1969</span>        params_copy, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
-<div class="line"><span class="lineno"> 1970</span>        <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
-<div class="line"><span class="lineno"> 1971</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1972</span>    }</div>
-<div class="line"><span class="lineno"> 1973</span>  }</div>
-<div class="line"><span class="lineno"> 1974</span> </div>
-<div class="line"><span class="lineno"> 1975</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno"> 1976</span>  <span class="comment">// Dispatch to non-dot-product 3x3 kernels when supported.</span></div>
-<div class="line"><span class="lineno"> 1977</span> </div>
-<div class="line"><span class="lineno"> 1978</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_width = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">stride_width</a>;</div>
-<div class="line"><span class="lineno"> 1979</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_height = params.stride_height;</div>
-<div class="line"><span class="lineno"> 1980</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_width = params.padding_values.width;</div>
-<div class="line"><span class="lineno"> 1981</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_height = params.padding_values.height;</div>
-<div class="line"><span class="lineno"> 1982</span> </div>
-<div class="line"><span class="lineno"> 1983</span>  <span class="comment">// Call kernel optimized for depthwise convolutions using 3x3 filters if</span></div>
-<div class="line"><span class="lineno"> 1984</span>  <span class="comment">// parameters are supported.</span></div>
-<div class="line"><span class="lineno"> 1985</span>  <span class="keywordflow">if</span> (optimized_ops::depthwise_conv::Fast3x3FilterKernelSupported&lt;</div>
-<div class="line"><span class="lineno"> 1986</span>        optimized_ops::depthwise_conv::QuantizationType::kPerChannelInt8&gt;(</div>
-<div class="line"><span class="lineno"> 1987</span>        input_shape, filter_shape, stride_width, stride_height, dilation_width_factor,</div>
-<div class="line"><span class="lineno"> 1988</span>        dilation_height_factor, pad_width, pad_height, depth_multiplier, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0,</div>
-<div class="line"><span class="lineno"> 1989</span>        output_shift))</div>
-<div class="line"><span class="lineno"> 1990</span>  {</div>
-<div class="line"><span class="lineno"> 1991</span>    optimized_ops::depthwise_conv::DepthwiseConv3x3FilterPerChannel&lt;</div>
-<div class="line"><span class="lineno"> 1992</span>      DepthwiseConvOutputRounding::kUpward&gt;(</div>
-<div class="line"><span class="lineno"> 1993</span>      params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
-<div class="line"><span class="lineno"> 1994</span>      bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
-<div class="line"><span class="lineno"> 1995</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno"> 1996</span>  }</div>
-<div class="line"><span class="lineno"> 1997</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno"> 1998</span> </div>
-<div class="line"><span class="lineno"> 1999</span><span class="preprocessor">#endif </span><span class="comment">/* end of if 0 */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 2000</span> </div>
-<div class="line"><span class="lineno"> 2001</span>  depthwise_conv::DepthwiseConvGeneral(</div>
-<div class="line"><span class="lineno"> 2002</span>    params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
-<div class="line"><span class="lineno"> 2003</span>    bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
-<div class="line"><span class="lineno"> 2004</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">Shape.h:94</a></div></div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">Shape.h:183</a></div></div>
-<div class="ttc" id="acompute_2cker_2include_2cker_2_shape_8h_html_a044d7f999713173dd3360b0aa40370fd"><div class="ttname"><a href="compute_2cker_2include_2cker_2_shape_8h.html#a044d7f999713173dd3360b0aa40370fd">UNUSED_RELEASE</a></div><div class="ttdeci">#define UNUSED_RELEASE(a)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">Shape.h:26</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">Shape.h:222</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l01918">1918</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1925</span>{</div>
+<div class="line"><span class="lineno"> 1926</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> depth_multiplier = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">depth_multiplier</a>;</div>
+<div class="line"><span class="lineno"> 1927</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> dilation_width_factor = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">dilation_width_factor</a>;</div>
+<div class="line"><span class="lineno"> 1928</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> dilation_height_factor = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">dilation_height_factor</a>;</div>
+<div class="line"><span class="lineno"> 1929</span>  assert(dilation_width_factor &gt;= 1);</div>
+<div class="line"><span class="lineno"> 1930</span>  assert(dilation_height_factor &gt;= 1);</div>
+<div class="line"><span class="lineno"> 1931</span>  assert(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno"> 1932</span>  assert(filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() == 4);</div>
+<div class="line"><span class="lineno"> 1933</span>  assert(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() == 4);</div>
+<div class="line"><span class="lineno"> 1934</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = <a class="code hl_function" href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">MatchingDim</a>(filter_shape, 3, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 3);</div>
+<div class="line"><span class="lineno"> 1935</span>  [[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">int</span> input_depth = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(3);</div>
+<div class="line"><span class="lineno"> 1936</span>  assert(output_depth == input_depth * depth_multiplier);</div>
+<div class="line"><span class="lineno"> 1937</span>  assert(bias_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>() == output_depth);</div>
+<div class="line"><span class="lineno"> 1938</span> </div>
+<div class="line"><span class="lineno"> 1939</span><span class="comment">//  TODO Use below codes</span></div>
+<div class="line"><span class="lineno"> 1940</span><span class="preprocessor">#if 0</span></div>
+<div class="line"><span class="lineno"> 1941</span><span class="comment">// Enable for arm64 except for the Nvidia Linux 4 Tegra (L4T) running on</span></div>
+<div class="line"><span class="lineno"> 1942</span><span class="comment">// Jetson TX-2. This compiler does not support the offsetof() macro.</span></div>
+<div class="line"><span class="lineno"> 1943</span><span class="preprocessor">#if defined(__aarch64__) &amp;&amp; !defined(GOOGLE_L4T)</span></div>
+<div class="line"><span class="lineno"> 1944</span><span class="preprocessor">#if defined(__ANDROID__) &amp;&amp; defined(__clang__)</span></div>
+<div class="line"><span class="lineno"> 1945</span>  CpuFlags cpu_flags;</div>
+<div class="line"><span class="lineno"> 1946</span>  GetCpuFlags(&amp;cpu_flags);</div>
+<div class="line"><span class="lineno"> 1947</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> has_dot_product_instructions = cpu_flags.neon_dotprod;</div>
+<div class="line"><span class="lineno"> 1948</span> </div>
+<div class="line"><span class="lineno"> 1949</span>  <span class="comment">// Dispatch to dot-product 3x3 kernels when supported.</span></div>
+<div class="line"><span class="lineno"> 1950</span>  <span class="keywordflow">if</span> (has_dot_product_instructions)</div>
+<div class="line"><span class="lineno"> 1951</span>  {</div>
+<div class="line"><span class="lineno"> 1952</span>    <span class="keyword">using </span>optimized_ops::depthwise_conv::DotProduct3x3KernelType;</div>
+<div class="line"><span class="lineno"> 1953</span>    DotProduct3x3KernelType kernel_type = optimized_ops::depthwise_conv::CategorizeDotProductKernel&lt;</div>
+<div class="line"><span class="lineno"> 1954</span>      optimized_ops::depthwise_conv::QuantizationType::kPerChannelInt8&gt;(</div>
+<div class="line"><span class="lineno"> 1955</span>      input_shape, filter_shape, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, params, output_shift);</div>
+<div class="line"><span class="lineno"> 1956</span>    <span class="keywordflow">if</span> (kernel_type != DotProduct3x3KernelType::kNone)</div>
+<div class="line"><span class="lineno"> 1957</span>    {</div>
+<div class="line"><span class="lineno"> 1958</span>      <a class="code hl_struct" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">DepthwiseConvParams</a> params_copy = params;</div>
+<div class="line"><span class="lineno"> 1959</span>      params_copy.output_shift_per_channel = output_shift;</div>
+<div class="line"><span class="lineno"> 1960</span>      params_copy.output_multiplier_per_channel = output_multiplier;</div>
+<div class="line"><span class="lineno"> 1961</span>      optimized_ops::depthwise_conv::DepthwiseConvDotProduct3x3PerChannel&lt;</div>
+<div class="line"><span class="lineno"> 1962</span>        DepthwiseConvImplementation::kUseNeon3x3DotProduct&gt;(</div>
+<div class="line"><span class="lineno"> 1963</span>        params_copy, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
+<div class="line"><span class="lineno"> 1964</span>        <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
+<div class="line"><span class="lineno"> 1965</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1966</span>    }</div>
+<div class="line"><span class="lineno"> 1967</span>  }</div>
+<div class="line"><span class="lineno"> 1968</span> </div>
+<div class="line"><span class="lineno"> 1969</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno"> 1970</span>  <span class="comment">// Dispatch to non-dot-product 3x3 kernels when supported.</span></div>
+<div class="line"><span class="lineno"> 1971</span> </div>
+<div class="line"><span class="lineno"> 1972</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_width = params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">stride_width</a>;</div>
+<div class="line"><span class="lineno"> 1973</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> stride_height = params.stride_height;</div>
+<div class="line"><span class="lineno"> 1974</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_width = params.padding_values.width;</div>
+<div class="line"><span class="lineno"> 1975</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> pad_height = params.padding_values.height;</div>
+<div class="line"><span class="lineno"> 1976</span> </div>
+<div class="line"><span class="lineno"> 1977</span>  <span class="comment">// Call kernel optimized for depthwise convolutions using 3x3 filters if</span></div>
+<div class="line"><span class="lineno"> 1978</span>  <span class="comment">// parameters are supported.</span></div>
+<div class="line"><span class="lineno"> 1979</span>  <span class="keywordflow">if</span> (optimized_ops::depthwise_conv::Fast3x3FilterKernelSupported&lt;</div>
+<div class="line"><span class="lineno"> 1980</span>        optimized_ops::depthwise_conv::QuantizationType::kPerChannelInt8&gt;(</div>
+<div class="line"><span class="lineno"> 1981</span>        input_shape, filter_shape, stride_width, stride_height, dilation_width_factor,</div>
+<div class="line"><span class="lineno"> 1982</span>        dilation_height_factor, pad_width, pad_height, depth_multiplier, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, 0,</div>
+<div class="line"><span class="lineno"> 1983</span>        output_shift))</div>
+<div class="line"><span class="lineno"> 1984</span>  {</div>
+<div class="line"><span class="lineno"> 1985</span>    optimized_ops::depthwise_conv::DepthwiseConv3x3FilterPerChannel&lt;</div>
+<div class="line"><span class="lineno"> 1986</span>      DepthwiseConvOutputRounding::kUpward&gt;(</div>
+<div class="line"><span class="lineno"> 1987</span>      params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
+<div class="line"><span class="lineno"> 1988</span>      bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
+<div class="line"><span class="lineno"> 1989</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno"> 1990</span>  }</div>
+<div class="line"><span class="lineno"> 1991</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno"> 1992</span> </div>
+<div class="line"><span class="lineno"> 1993</span><span class="preprocessor">#endif </span><span class="comment">/* end of if 0 */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno"> 1994</span> </div>
+<div class="line"><span class="lineno"> 1995</span>  depthwise_conv::DepthwiseConvGeneral(</div>
+<div class="line"><span class="lineno"> 1996</span>    params, output_multiplier, output_shift, input_shape, input_data, filter_shape, filter_data,</div>
+<div class="line"><span class="lineno"> 1997</span>    bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, thread_start, thread_end, thread_dim);</div>
+<div class="line"><span class="lineno"> 1998</span>}</div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a497180ee7844bbef51b36bd58e61fa31"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">nnfw::cker::Shape::Dims</a></div><div class="ttdeci">int32_t Dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">Shape.h:92</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">Shape.h:181</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a0a74e72b1bffcb6519de7fc224416ff9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a0a74e72b1bffcb6519de7fc224416ff9">nnfw::cker::MatchingDim</a></div><div class="ttdeci">int MatchingDim(const Shape &amp;shape1, int index1, const Shape &amp;shape2, int index2)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">Shape.h:220</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html">nnfw::cker::DepthwiseConvParams</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00231">Types.h:232</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a2a11fa7f567b0faa4551dfe628d6de2b"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a2a11fa7f567b0faa4551dfe628d6de2b">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a></div><div class="ttdeci">int16_t dilation_height_factor</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00238">Types.h:238</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a50d46dad3a5d5bec206a3f10f1168768"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a50d46dad3a5d5bec206a3f10f1168768">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a></div><div class="ttdeci">int16_t dilation_width_factor</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00237">Types.h:237</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_a65cb7bfeb2b801d8a574a85da10598ff"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#a65cb7bfeb2b801d8a574a85da10598ff">nnfw::cker::DepthwiseConvParams::stride_width</a></div><div class="ttdeci">int16_t stride_width</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00235">Types.h:235</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_depthwise_conv_params_html_aaa0e9f0f50f1ed3c8e25886d51a45f75"><div class="ttname"><a href="structnnfw_1_1cker_1_1_depthwise_conv_params.html#aaa0e9f0f50f1ed3c8e25886d51a45f75">nnfw::cker::DepthwiseConvParams::depth_multiplier</a></div><div class="ttdeci">int16_t depth_multiplier</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_types_8h_source.html#l00239">Types.h:239</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00239">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l01739">nnfw::cker::optimized_integer_ops::depthwise_conv::DepthwiseConvGeneral()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00238">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00237">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00093">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00183">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00075">nnfw::cker::PaddingValues::height</a>, <a class="el" href="namespacennfw_1_1cker_1_1optimized__integer__ops.html#af69aaad83122d70918d5361141587c9aa531e290e05957a502ebfc503a6b96b60">kUpward</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00222">nnfw::cker::MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00234">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00236">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00235">nnfw::cker::DepthwiseConvParams::stride_width</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00026">UNUSED_RELEASE</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00074">nnfw::cker::PaddingValues::width</a>.</p>
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00239">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="_depthwise_conv_int8_8h_source.html#l01739">nnfw::cker::optimized_integer_ops::depthwise_conv::DepthwiseConvGeneral()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00238">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00237">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00075">nnfw::cker::PaddingValues::height</a>, <a class="el" href="namespacennfw_1_1cker_1_1optimized__integer__ops.html#af69aaad83122d70918d5361141587c9aa531e290e05957a502ebfc503a6b96b60">kUpward</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">nnfw::cker::MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00234">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00236">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00235">nnfw::cker::DepthwiseConvParams::stride_width</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00074">nnfw::cker::PaddingValues::width</a>.</p>
 
 </div>
 </div>
@@ -729,23 +723,23 @@ template&lt;<a class="el" href="namespacennfw_1_1cker_1_1optimized__integer__ops
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02057">2057</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 2058</span>{</div>
-<div class="line"><span class="lineno"> 2059</span>  <span class="keyword">constexpr</span> <span class="keywordtype">int</span> kMinMulPerThread = 8;</div>
-<div class="line"><span class="lineno"> 2060</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_units = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(thread_dim);</div>
-<div class="line"><span class="lineno"> 2061</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_height = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
-<div class="line"><span class="lineno"> 2062</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_width = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
-<div class="line"><span class="lineno"> 2063</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_mul_per_unit =</div>
-<div class="line"><span class="lineno"> 2064</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">FlatSizeSkipDim</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, thread_dim) * filter_height * filter_width;</div>
-<div class="line"><span class="lineno"> 2065</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> min_units_per_thread = kMinMulPerThread / num_mul_per_unit + 1;</div>
-<div class="line"><span class="lineno"> 2066</span>  <span class="keywordtype">int</span> thread_count = output_units / min_units_per_thread;</div>
-<div class="line"><span class="lineno"> 2067</span>  <span class="keywordflow">return</span> thread_count;</div>
-<div class="line"><span class="lineno"> 2068</span>}</div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a59fdb0b28360a8fcf55b1080b63eefb3"><div class="ttname"><a href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">nnfw::cker::FlatSizeSkipDim</a></div><div class="ttdeci">int FlatSizeSkipDim(const Shape &amp;shape, int skip_dim)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00257">Shape.h:257</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02051">2051</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 2052</span>{</div>
+<div class="line"><span class="lineno"> 2053</span>  <span class="keyword">constexpr</span> <span class="keywordtype">int</span> kMinMulPerThread = 8;</div>
+<div class="line"><span class="lineno"> 2054</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_units = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(thread_dim);</div>
+<div class="line"><span class="lineno"> 2055</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_height = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(1);</div>
+<div class="line"><span class="lineno"> 2056</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> filter_width = filter_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(2);</div>
+<div class="line"><span class="lineno"> 2057</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_mul_per_unit =</div>
+<div class="line"><span class="lineno"> 2058</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">FlatSizeSkipDim</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, thread_dim) * filter_height * filter_width;</div>
+<div class="line"><span class="lineno"> 2059</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> min_units_per_thread = kMinMulPerThread / num_mul_per_unit + 1;</div>
+<div class="line"><span class="lineno"> 2060</span>  <span class="keywordtype">int</span> thread_count = output_units / min_units_per_thread;</div>
+<div class="line"><span class="lineno"> 2061</span>  <span class="keywordflow">return</span> thread_count;</div>
+<div class="line"><span class="lineno"> 2062</span>}</div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a59fdb0b28360a8fcf55b1080b63eefb3"><div class="ttname"><a href="namespacennfw_1_1cker.html#a59fdb0b28360a8fcf55b1080b63eefb3">nnfw::cker::FlatSizeSkipDim</a></div><div class="ttdeci">int FlatSizeSkipDim(const Shape &amp;shape, int skip_dim)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00253">Shape.h:253</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00094">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00257">nnfw::cker::FlatSizeSkipDim()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00253">nnfw::cker::FlatSizeSkipDim()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_depthwise_conv_int8_8h_source.html#l02070">DepthwiseConvPerChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_depthwise_conv_int8_8h_source.html#l02064">DepthwiseConvPerChannel()</a>.</p>
 
 </div>
 </div>

@@ -17,8 +17,9 @@ var namespaceonert_1_1backend_1_1basic =
     [ "TensorBuilder", "classonert_1_1backend_1_1basic_1_1_tensor_builder.html", "classonert_1_1backend_1_1basic_1_1_tensor_builder" ],
     [ "WICPlanner", "classonert_1_1backend_1_1basic_1_1_w_i_c_planner.html", "classonert_1_1backend_1_1basic_1_1_w_i_c_planner" ],
     [ "TensorRegistry", "namespaceonert_1_1backend_1_1basic.html#a50c36d28c81cb8c597b3b3b694ed28b4", null ],
+    [ "genTensors", "namespaceonert_1_1backend_1_1basic.html#a437de065d2668c740e6d7c513a3b8e60", null ],
     [ "genTensors", "namespaceonert_1_1backend_1_1basic.html#a523700f739c342f8cd74c44b0bb0e1ec", null ],
     [ "initConsts", "namespaceonert_1_1backend_1_1basic.html#ac166a61e29e65ea974fdff255b1097ef", null ],
-    [ "initConsts", "namespaceonert_1_1backend_1_1basic.html#a2da096d255567ddded647c0d7bae2b23", null ],
-    [ "planTensors", "namespaceonert_1_1backend_1_1basic.html#a54eb5e4a346b96f0671cf5a22a503047", null ]
+    [ "initConsts", "namespaceonert_1_1backend_1_1basic.html#af8454d2a4bbb3bd7c832b5fa646ce3c3", null ],
+    [ "planTensors", "namespaceonert_1_1backend_1_1basic.html#a613c0acaf8a24c0eb5c55a6a9f39fa52", null ]
 ];

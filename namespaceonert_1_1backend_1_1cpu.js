@@ -9,5 +9,6 @@ var namespaceonert_1_1backend_1_1cpu =
     [ "ExternalTensor", "namespaceonert_1_1backend_1_1cpu.html#ab124247f139b3e0c80b34e0e7b617a57", null ],
     [ "StaticTensorManager", "namespaceonert_1_1backend_1_1cpu.html#a546606f57268782618ab9f1da9b6e950", null ],
     [ "Tensor", "namespaceonert_1_1backend_1_1cpu.html#a6a4274e703d080840ec463354ad19634", null ],
-    [ "TensorBuilder", "namespaceonert_1_1backend_1_1cpu.html#adaadd1380c8494d1847f6ddef9666ef0", null ]
+    [ "TensorBuilder", "namespaceonert_1_1backend_1_1cpu.html#adaadd1380c8494d1847f6ddef9666ef0", null ],
+    [ "findSharedMemoryOperandIndexes", "namespaceonert_1_1backend_1_1cpu.html#ab1e4fdaddf812c27be8b729fd87ccdf7", null ]
 ];

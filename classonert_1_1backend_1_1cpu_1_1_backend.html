@@ -214,13 +214,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>    <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.graph;</div>
 <div class="line"><span class="lineno">   46</span>    <span class="keyword">auto</span> context = std::make_unique&lt;BackendContext&gt;(<span class="keyword">this</span>, std::move(data));</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;basic::TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr);</div>
-<div class="line"><span class="lineno">   49</span>    context-&gt;tensor_registry = tr;</div>
-<div class="line"><span class="lineno">   50</span>    context-&gt;tensor_builder = tb;</div>
-<div class="line"><span class="lineno">   51</span>    context-&gt;kernel_gen = std::make_shared&lt;KernelGenerator&gt;(graph, tb, tr, custom_kernel_builder,</div>
-<div class="line"><span class="lineno">   52</span>                                                            context-&gt;external_context());</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">return</span> context;</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   48</span>    <span class="comment">// TODO: Use findSharedMemoryOperandIndexes method here</span></div>
+<div class="line"><span class="lineno">   49</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, ir::OperandIndexMap&lt;ir::OperandIndex&gt;{});</div>
+<div class="line"><span class="lineno">   50</span>    context-&gt;tensor_registry = tr;</div>
+<div class="line"><span class="lineno">   51</span>    context-&gt;tensor_builder = tb;</div>
+<div class="line"><span class="lineno">   52</span>    context-&gt;kernel_gen = std::make_shared&lt;KernelGenerator&gt;(graph, tb, tr, custom_kernel_builder,</div>
+<div class="line"><span class="lineno">   53</span>                                                            context-&gt;external_context());</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> context;</div>
+<div class="line"><span class="lineno">   55</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 </div><!-- fragment -->

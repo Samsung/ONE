@@ -204,8 +204,8 @@ template&lt;typename Device , typename T &gt; </div>
 <div class="line"><span class="lineno">   93</span>    {</div>
 <div class="line"><span class="lineno">   94</span>      backprop.device(d) = logits.broadcast(logits_bcast);</div>
 <div class="line"><span class="lineno">   95</span>      scratch.device(d) = labels.broadcast(labels_bcast);</div>
-<div class="line"><span class="lineno">   96</span>      <span class="keyword">auto</span> reductionWorker = [&amp;](int64_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, int64_t end) -&gt; <span class="keywordtype">void</span> {</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>; i &lt; end; i++)</div>
+<div class="line"><span class="lineno">   96</span>      <span class="keyword">auto</span> reductionWorker = [&amp;](int64_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>, int64_t <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a>) -&gt; <span class="keywordtype">void</span> {</div>
+<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>; i &lt; <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a>; i++)</div>
 <div class="line"><span class="lineno">   98</span>        {</div>
 <div class="line"><span class="lineno">   99</span>          T *this_backprop = backprop_ptr + (i * row_size);</div>
 <div class="line"><span class="lineno">  100</span>          T *this_logits = backprop_ptr + (i * row_size);</div>
@@ -251,9 +251,10 @@ template&lt;typename Device , typename T &gt; </div>
 <div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">mir_caffe2::SupportedCaffe2OpType::sum</a></div><div class="ttdeci">@ sum</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8ab0ab0254bd58eb87eaee3172ba49fefb"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab0ab0254bd58eb87eaee3172ba49fefb">mir_caffe::CaffeOpType::exp</a></div><div class="ttdeci">@ exp</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8adc1d71bbb5c4d2a5e936db79ef10c19f"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8adc1d71bbb5c4d2a5e936db79ef10c19f">mir_caffe::CaffeOpType::log</a></div><div class="ttdeci">@ log</div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a5a23adf0690140cdfe1dc79640a31047"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">nnfw::cker::end</a></div><div class="ttdeci">ShapeIterator end(const Shape &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="_shape_iterator_8h_source.html#l00089">ShapeIterator.h:89</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_adaf1f5da3e0e0e62ea2ea6e1e4e5f49e"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a></div><div class="ttdeci">int32_t begin[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">Slice.cpp:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, and <a class="el" href="_shape_iterator_8h_source.html#l00089">nnfw::cker::end()</a>.</p>
 
 </div>
 </div>

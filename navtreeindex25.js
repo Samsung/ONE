@@ -1,5 +1,14 @@
 var NAVTREEINDEX25 =
 {
+"_reduce_layer_8h_source.html":[40,0,4,1,1,4,0,73],
+"_reduce_mean_op_8h.html":[40,0,0,77,0,0,0,29],
+"_reduce_mean_op_8h_source.html":[40,0,0,77,0,0,0,29],
+"_reduce_op_8cpp.html":[40,0,0,77,1,4,11],
+"_reduce_op_8cpp_source.html":[40,0,0,77,1,4,11],
+"_reduce_op_8h.html":[40,0,0,77,0,0,0,30],
+"_reduce_op_8h_source.html":[40,0,0,77,0,0,0,30],
+"_reduce_prod_kernel_8h.html":[40,0,3,4,0,0,1,55,1],
+"_reduce_prod_kernel_8h.html#a1359b17e95bca6e569a6cc8b5a8e93d7":[40,0,3,4,0,0,1,55,1,6],
 "_reduce_prod_kernel_8h.html#a19b9acb4671ba852f567c27fa260f1e8":[40,0,3,4,0,0,1,55,1,2],
 "_reduce_prod_kernel_8h.html#a6bc335a5fca5636343af8497459f9f6e":[40,0,3,4,0,0,1,55,1,5],
 "_reduce_prod_kernel_8h.html#a8e3f2872e59ad22f959d461cffdc6a54":[40,0,3,4,0,0,1,55,1,4],
@@ -240,14 +249,5 @@ var NAVTREEINDEX25 =
 "_resolve_redundant_reshape_pass_8h.html":[40,0,0,53,0,0,7],
 "_resolve_redundant_reshape_pass_8h_source.html":[40,0,0,53,0,0,7],
 "_resolve_reshape_wildcard_dim_8cpp.html":[40,0,0,80,2,1,0,8],
-"_resolve_reshape_wildcard_dim_8cpp_source.html":[40,0,0,80,2,1,0,8],
-"_resolve_reshape_wildcard_dim_8h.html":[40,0,0,80,2,0,0,0,0,8],
-"_resolve_reshape_wildcard_dim_8h_source.html":[40,0,0,80,2,0,0,0,0,8],
-"_resolve_squared_difference_8cpp.html":[40,0,0,80,2,1,0,9],
-"_resolve_squared_difference_8cpp_source.html":[40,0,0,80,2,1,0,9],
-"_resolve_squared_difference_8h.html":[40,0,0,80,2,0,0,0,0,9],
-"_resolve_squared_difference_8h_source.html":[40,0,0,80,2,0,0,0,0,9],
-"_ret_8h.html":[40,0,0,84,0,1,0,13],
-"_ret_8h_source.html":[40,0,0,84,0,1,0,13],
-"_reverse_8cc.html":[40,0,4,1,2,1,5,0,50]
+"_resolve_reshape_wildcard_dim_8cpp_source.html":[40,0,0,80,2,1,0,8]
 };

@@ -1,5 +1,13 @@
 var NAVTREEINDEX8 =
 {
+"_dequantize_options_8cpp_source.html":[40,0,0,131,2,0,34],
+"_dequantize_options_8h.html":[40,0,0,131,2,0,35],
+"_dequantize_options_8h.html#ac6d2d576b4eca5402317ce989f9cbb18":[40,0,0,131,2,0,35,0],
+"_dequantize_options_8h_source.html":[40,0,0,131,2,0,35],
+"_deref_node_8h.html":[40,0,0,84,0,1,0,0,1],
+"_deref_node_8h_source.html":[40,0,0,84,0,1,0,0,1],
+"_detection_post_process_8cc.html":[40,0,4,1,2,1,5,0,17],
+"_detection_post_process_8cc_source.html":[40,0,4,1,2,1,5,0,17],
 "_detection_post_process_8h.html":[40,0,4,1,2,0,4,0,17],
 "_detection_post_process_8h_source.html":[40,0,4,1,2,0,4,0,17],
 "_detection_post_process_layer_8cc.html":[40,0,4,1,1,4,0,22],
@@ -241,13 +249,5 @@ var NAVTREEINDEX8 =
 "_elementwise_unary_layer_8h_source.html":[40,0,4,1,1,4,0,31],
 "_eltwise_8cpp.html":[40,0,0,35,2,0,0,0,6],
 "_eltwise_8cpp_source.html":[40,0,0,35,2,0,0,0,6],
-"_eltwise_8h.html":[40,0,0,35,2,0,0,0,7],
-"_eltwise_8h_source.html":[40,0,0,35,2,0,0,0,7],
-"_eltwise_add_8cpp.html":[40,0,0,51,1,0,7],
-"_eltwise_add_8cpp_source.html":[40,0,0,51,1,0,7],
-"_eltwise_add_converter_8cpp.html":[40,0,0,38,1,1,10],
-"_eltwise_add_converter_8cpp_source.html":[40,0,0,38,1,1,10],
-"_eltwise_add_converter_8h.html":[40,0,0,38,1,1,11],
-"_eltwise_add_converter_8h_source.html":[40,0,0,38,1,1,11],
-"_eltwise_binary_converter_8h.html":[40,0,0,38,1,1,12]
+"_eltwise_8h.html":[40,0,0,35,2,0,0,0,7]
 };

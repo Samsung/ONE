@@ -103,10 +103,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1411217322d5e66a53f9732987497291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2ba0ffa15fda5b080346c36a1f0ec4b" id="r_ad2ba0ffa15fda5b080346c36a1f0ec4b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#ad2ba0ffa15fda5b080346c36a1f0ec4b">quantize</a> (const char *in, const char *out, <a class="el" href="namespaceonert_1_1odc.html#a10a7ed2455615b22aa27f8186bae1c55">QuantizeType</a> qtype)=0</td></tr>
 <tr class="separator:ad2ba0ffa15fda5b080346c36a1f0ec4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a5b8d32b146ba2e91ab251141386d43" id="r_a5a5b8d32b146ba2e91ab251141386d43"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#a5a5b8d32b146ba2e91ab251141386d43">setMinMaxRecordsThreshold</a> (uint32_t value)=0</td></tr>
+<tr class="memdesc:a5a5b8d32b146ba2e91ab251141386d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of minmax records enough for quantization.  <br /></td></tr>
+<tr class="separator:a5a5b8d32b146ba2e91ab251141386d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae632587a01079d974d515e1c3c973fa7" id="r_ae632587a01079d974d515e1c3c973fa7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#ae632587a01079d974d515e1c3c973fa7">readyForQuantize</a> ()=0</td></tr>
+<tr class="memdesc:ae632587a01079d974d515e1c3c973fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checking the number of minmax records enough for quantization.  <br /></td></tr>
+<tr class="separator:ae632587a01079d974d515e1c3c973fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21c7a767458b7406ff8f2cb97df2ca1e" id="r_a21c7a767458b7406ff8f2cb97df2ca1e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1odc_1_1_i_quantizer.html#a21c7a767458b7406ff8f2cb97df2ca1e">deleteMinMaxFile</a> ()=0</td></tr>
+<tr class="memdesc:a21c7a767458b7406ff8f2cb97df2ca1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete minmax file.  <br /></td></tr>
+<tr class="separator:a21c7a767458b7406ff8f2cb97df2ca1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i_quantizer_8h_source.html#l00027">27</a> of file <a class="el" href="_i_quantizer_8h_source.html">IQuantizer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_quantizer_8h_source.html#l00028">28</a> of file <a class="el" href="_i_quantizer_8h_source.html">IQuantizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1411217322d5e66a53f9732987497291" name="a1411217322d5e66a53f9732987497291"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1411217322d5e66a53f9732987497291">&#9670;&#160;</a></span>~IQuantizer()</h2>
@@ -134,6 +143,36 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a21c7a767458b7406ff8f2cb97df2ca1e" name="a21c7a767458b7406ff8f2cb97df2ca1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21c7a767458b7406ff8f2cb97df2ca1e">&#9670;&#160;</a></span>deleteMinMaxFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool onert::odc::IQuantizer::deleteMinMaxFile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Delete minmax file. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if there were no errors, False otherwise </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1odc_1_1_quantizer.html#ab3174e2d0386db9de97eaec747cbe72d">onert::odc::Quantizer</a>.</p>
+
+</div>
+</div>
 <a id="ad2ba0ffa15fda5b080346c36a1f0ec4b" name="ad2ba0ffa15fda5b080346c36a1f0ec4b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2ba0ffa15fda5b080346c36a1f0ec4b">&#9670;&#160;</a></span>quantize()</h2>
 
@@ -175,6 +214,66 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classonert_1_1odc_1_1_quantizer.html#a68acd767b22a286a63a173cb7ab3938c">onert::odc::Quantizer</a>.</p>
+
+</div>
+</div>
+<a id="ae632587a01079d974d515e1c3c973fa7" name="ae632587a01079d974d515e1c3c973fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae632587a01079d974d515e1c3c973fa7">&#9670;&#160;</a></span>readyForQuantize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool onert::odc::IQuantizer::readyForQuantize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checking the number of minmax records enough for quantization. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if ready, False otherwise </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1odc_1_1_quantizer.html#afd589c143c3d3726d4c736c1913243e5">onert::odc::Quantizer</a>.</p>
+
+</div>
+</div>
+<a id="a5a5b8d32b146ba2e91ab251141386d43" name="a5a5b8d32b146ba2e91ab251141386d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a5b8d32b146ba2e91ab251141386d43">&#9670;&#160;</a></span>setMinMaxRecordsThreshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void onert::odc::IQuantizer::setMinMaxRecordsThreshold </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the number of minmax records enough for quantization. </p>
+
+<p>Implemented in <a class="el" href="classonert_1_1odc_1_1_quantizer.html#a0f9ccd77ede2a309d643e487c2006668">onert::odc::Quantizer</a>.</p>
 
 </div>
 </div>

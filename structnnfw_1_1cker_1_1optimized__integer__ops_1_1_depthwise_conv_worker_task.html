@@ -117,7 +117,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename TS&gt;<br />
 struct nnfw::cker::optimized_integer_ops::DepthwiseConvWorkerTask&lt; T, TS &gt;</div>
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02018">2018</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02012">2012</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a096634b6401a961d30c048fffd0af578" name="a096634b6401a961d30c048fffd0af578"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a096634b6401a961d30c048fffd0af578">&#9670;&#160;</a></span>DepthwiseConvWorkerTask()</h2>
@@ -227,14 +227,14 @@ template&lt;typename T , typename TS &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02020">2020</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 2025</span>    : params_(params), output_multiplier_(output_multiplier), output_shift_(output_shift),</div>
-<div class="line"><span class="lineno"> 2026</span>      input_shape_(input_shape), input_data_(input_data), filter_shape_(filter_shape),</div>
-<div class="line"><span class="lineno"> 2027</span>      filter_data_(filter_data), bias_shape_(bias_shape), bias_data_(bias_data),</div>
-<div class="line"><span class="lineno"> 2028</span>      output_shape_(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>), output_data_(output_data), thread_start_(thread_start),</div>
-<div class="line"><span class="lineno"> 2029</span>      thread_end_(thread_end), thread_dim_(thread_dim)</div>
-<div class="line"><span class="lineno"> 2030</span>  {</div>
-<div class="line"><span class="lineno"> 2031</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02014">2014</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 2019</span>    : params_(params), output_multiplier_(output_multiplier), output_shift_(output_shift),</div>
+<div class="line"><span class="lineno"> 2020</span>      input_shape_(input_shape), input_data_(input_data), filter_shape_(filter_shape),</div>
+<div class="line"><span class="lineno"> 2021</span>      filter_data_(filter_data), bias_shape_(bias_shape), bias_data_(bias_data),</div>
+<div class="line"><span class="lineno"> 2022</span>      output_shape_(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>), output_data_(output_data), thread_start_(thread_start),</div>
+<div class="line"><span class="lineno"> 2023</span>      thread_end_(thread_end), thread_dim_(thread_dim)</div>
+<div class="line"><span class="lineno"> 2024</span>  {</div>
+<div class="line"><span class="lineno"> 2025</span>  }</div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -265,15 +265,15 @@ template&lt;typename T , typename TS &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02033">2033</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 2034</span>  {</div>
-<div class="line"><span class="lineno"> 2035</span>    <a class="code hl_function" href="namespacennfw_1_1cker_1_1optimized__integer__ops.html#ad2d1581d52b8ea61dd9231a488c70247">DepthwiseConvImpl</a>(params_, output_multiplier_, output_shift_, input_shape_, input_data_,</div>
-<div class="line"><span class="lineno"> 2036</span>                      filter_shape_, filter_data_, bias_shape_, bias_data_, output_shape_,</div>
-<div class="line"><span class="lineno"> 2037</span>                      output_data_, thread_start_, thread_end_, thread_dim_);</div>
-<div class="line"><span class="lineno"> 2038</span>  }</div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1optimized__integer__ops_html_ad2d1581d52b8ea61dd9231a488c70247"><div class="ttname"><a href="namespacennfw_1_1cker_1_1optimized__integer__ops.html#ad2d1581d52b8ea61dd9231a488c70247">nnfw::cker::optimized_integer_ops::DepthwiseConvImpl</a></div><div class="ttdeci">void DepthwiseConvImpl(const DepthwiseConvParams &amp;params, const int32_t *output_multiplier, const int32_t *output_shift, const Shape &amp;input_shape, const int8_t *input_data, const Shape &amp;filter_shape, const int8_t *filter_data, const Shape &amp;bias_shape, const int32_t *bias_data, const Shape &amp;output_shape, int8_t *output_data, int thread_start, int thread_end, int thread_dim)</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv_int8_8h_source.html#l02006">DepthwiseConvInt8.h:2006</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_depthwise_conv_int8_8h_source.html#l02027">2027</a> of file <a class="el" href="_depthwise_conv_int8_8h_source.html">DepthwiseConvInt8.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 2028</span>  {</div>
+<div class="line"><span class="lineno"> 2029</span>    <a class="code hl_function" href="namespacennfw_1_1cker_1_1optimized__integer__ops.html#ad2d1581d52b8ea61dd9231a488c70247">DepthwiseConvImpl</a>(params_, output_multiplier_, output_shift_, input_shape_, input_data_,</div>
+<div class="line"><span class="lineno"> 2030</span>                      filter_shape_, filter_data_, bias_shape_, bias_data_, output_shape_,</div>
+<div class="line"><span class="lineno"> 2031</span>                      output_data_, thread_start_, thread_end_, thread_dim_);</div>
+<div class="line"><span class="lineno"> 2032</span>  }</div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1optimized__integer__ops_html_ad2d1581d52b8ea61dd9231a488c70247"><div class="ttname"><a href="namespacennfw_1_1cker_1_1optimized__integer__ops.html#ad2d1581d52b8ea61dd9231a488c70247">nnfw::cker::optimized_integer_ops::DepthwiseConvImpl</a></div><div class="ttdeci">void DepthwiseConvImpl(const DepthwiseConvParams &amp;params, const int32_t *output_multiplier, const int32_t *output_shift, const Shape &amp;input_shape, const int8_t *input_data, const Shape &amp;filter_shape, const int8_t *filter_data, const Shape &amp;bias_shape, const int32_t *bias_data, const Shape &amp;output_shape, int8_t *output_data, int thread_start, int thread_end, int thread_dim)</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv_int8_8h_source.html#l02000">DepthwiseConvInt8.h:2000</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_depthwise_conv_int8_8h_source.html#l02006">nnfw::cker::optimized_integer_ops::DepthwiseConvImpl()</a>.</p>
+<p class="reference">References <a class="el" href="_depthwise_conv_int8_8h_source.html#l02000">nnfw::cker::optimized_integer_ops::DepthwiseConvImpl()</a>.</p>
 
 </div>
 </div>

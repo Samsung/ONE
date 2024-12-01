@@ -10,6 +10,7 @@ var dir_639d7c65694fbfe036e3bb78b042dc9c =
     [ "NeonTensorUtils.h", "cker_2include_2cker_2_neon_tensor_utils_8h.html", null ],
     [ "PortableTensorUtils.h", "cker_2include_2cker_2_portable_tensor_utils_8h.html", "cker_2include_2cker_2_portable_tensor_utils_8h" ],
     [ "Shape.h", "compute_2cker_2include_2cker_2_shape_8h.html", "compute_2cker_2include_2cker_2_shape_8h" ],
+    [ "ShapeIterator.h", "_shape_iterator_8h.html", "_shape_iterator_8h" ],
     [ "TensorUtils.h", "compute_2cker_2include_2cker_2_tensor_utils_8h.html", "compute_2cker_2include_2cker_2_tensor_utils_8h" ],
     [ "Types.h", "compute_2cker_2include_2cker_2_types_8h.html", "compute_2cker_2include_2cker_2_types_8h" ],
     [ "Utils.h", "compute_2cker_2include_2cker_2_utils_8h.html", "compute_2cker_2include_2cker_2_utils_8h" ]

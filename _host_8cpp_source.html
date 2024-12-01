@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('_host_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  assert(p_src_step != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  assert(p_dst_step != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">const</span> uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = end - beg;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">const</span> uint32_t <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> - beg;</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordflow">for</span> (uint32_t window = 1; window &lt;= <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; ++window)</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  {</div>
@@ -250,9 +250,9 @@ $(document).ready(function(){initNavTree('_host_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  TransferNest <a class="code hl_namespace" href="namespacenest.html">nest</a>;</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>  <span class="keyword">auto</span> beg = seq.begin();</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keyword">auto</span> end = seq.end();</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> = seq.end();</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  uint32_t window = end - beg;</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  uint32_t window = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> - beg;</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  uint32_t count = 0;</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  uint32_t src_step = 0;</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>  uint32_t dst_step = 0;</div>
@@ -262,7 +262,7 @@ $(document).ready(function(){initNavTree('_host_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    assert(window % count == 0);</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    window /= count;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    end = beg + window;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> = beg + window;</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <a class="code hl_namespace" href="namespacenest.html">nest</a>.emplace_back(count, src_step, dst_step);</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  }</div>
@@ -391,6 +391,7 @@ $(document).ready(function(){initNavTree('_host_8cpp_source.html',''); initResiz
 <div class="ttc" id="aclasspp_1_1_linear_document_html_a6706d86543359485cb8d0ba6134817e4"><div class="ttname"><a href="classpp_1_1_linear_document.html#a6706d86543359485cb8d0ba6134817e4">pp::LinearDocument::append</a></div><div class="ttdeci">void append(void)</div><div class="ttdef"><b>Definition</b> <a href="_linear_document_8cpp_source.html#l00027">LinearDocument.cpp:27</a></div></div>
 <div class="ttc" id="anamespaceenco_html"><div class="ttname"><a href="namespaceenco.html">enco</a></div><div class="ttdef"><b>Definition</b> <a href="_bundle_8h_source.html#l00025">Bundle.h:26</a></div></div>
 <div class="ttc" id="anamespacenest_html"><div class="ttname"><a href="namespacenest.html">nest</a></div><div class="ttdef"><b>Definition</b> <a href="nest_2core_2include_2nest_2_block_8h_source.html#l00026">Block.h:27</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a5a23adf0690140cdfe1dc79640a31047"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">nnfw::cker::end</a></div><div class="ttdeci">ShapeIterator end(const Shape &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="_shape_iterator_8h_source.html#l00089">ShapeIterator.h:89</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="astruct_instr_printer_html_a01da7752098c3a221f6a73e7a6a7f4fc"><div class="ttname"><a href="struct_instr_printer.html#a01da7752098c3a221f6a73e7a6a7f4fc">InstrPrinter::visit</a></div><div class="ttdeci">void visit(const coco::Eval *ins) override</div><div class="ttdef"><b>Definition</b> <a href="encodump_2src_2_dump_8cpp_source.html#l00144">Dump.cpp:144</a></div></div>
 <div class="ttc" id="astruct_instr_printer_html_a45566f045ddde9f36cab7df7c3cf58be"><div class="ttname"><a href="struct_instr_printer.html#a45566f045ddde9f36cab7df7c3cf58be">InstrPrinter::InstrPrinter</a></div><div class="ttdeci">InstrPrinter()=delete</div></div>

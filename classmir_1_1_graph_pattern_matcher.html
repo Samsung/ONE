@@ -212,7 +212,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>      {</div>
 <div class="line"><span class="lineno">   36</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> use : out.getUses())</div>
 <div class="line"><span class="lineno">   37</span>        {</div>
-<div class="line"><span class="lineno">   38</span>          <a class="code hl_struct" href="struct_operation.html">Operation</a> *end = use.getNode();</div>
+<div class="line"><span class="lineno">   38</span>          <a class="code hl_struct" href="struct_operation.html">Operation</a> *<a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> = use.getNode();</div>
 <div class="line"><span class="lineno">   39</span>          <span class="keywordflow">if</span> (p2(end))</div>
 <div class="line"><span class="lineno">   40</span>          {</div>
 <div class="line"><span class="lineno">   41</span>            matches.emplace_back(std::make_pair(start, end));</div>
@@ -224,6 +224,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   47</span>  }</div>
 <div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> matches;</div>
 <div class="line"><span class="lineno">   49</span>}</div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a5a23adf0690140cdfe1dc79640a31047"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">nnfw::cker::end</a></div><div class="ttdeci">ShapeIterator end(const Shape &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="_shape_iterator_8h_source.html#l00089">ShapeIterator.h:89</a></div></div>
 <div class="ttc" id="astruct_operation_html"><div class="ttname"><a href="struct_operation.html">Operation</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_operation_8h_source.html#l00026">Operation.h:26</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_graph_8h_source.html#l00067">mir::Graph::getNodes()</a>.</p>
