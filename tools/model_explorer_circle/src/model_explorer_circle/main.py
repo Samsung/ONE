@@ -41,7 +41,7 @@ class CircleAdapter(Adapter):
             for k, v in circle_schema.TensorType.__dict__.items()
         }
         # Number of elements to show in tensor values (default: 16)
-        self.config_element_size = 16
+        self.const_element_count_limit = 16
 
     def load_model(self, model_path: str) -> None:
         """Load the model from the given path."""
