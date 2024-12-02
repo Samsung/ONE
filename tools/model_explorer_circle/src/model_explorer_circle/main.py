@@ -73,6 +73,47 @@ class CircleAdapter(Adapter):
                                            sourceNodeOutputId=soid,
                                            targetNodeInputId=f'{input_id}'))
 
+    def add_tensor_value_attribute(self, me_node: graph_builder.GraphNode,
+                                   tensor_id: int) -> None:
+        """Prints a tensor with the specified number of elements"""
+        tensor = self.model.subgraphs[0].tensors[tensor_id]
+        buffer = self.model.buffers[tensor.buffer].data
+        # Convert buffer into numpy array with the correct datatype
+        tensor_data = buffer.view(self.dict_tensor_type_to_string[tensor.type].lower())
+        shape = list(tensor.shape)
+        rank = len(shape)
+
+        # Used to represent the number of elements in each dimension
+        counter = [0] * rank
+        # How many elements are we going to print?
+        n_elements = min(self.const_element_count_limit, len(tensor_data))
+        # How many brackets are currently opened?
+        open_brackets = 0
+        # Ouput string
+        tensor_data_str = ''
+
+        # Form a string representation of the tensor data
+        for i in range(n_elements):
+            if i != 0:
+                tensor_data_str += ', '
+            tensor_data_str += '[' * (rank - open_brackets)
+            open_brackets = rank
+            tensor_data_str += f'{tensor_data[i]}'
+            counter[rank - 1] += 1
+            for i in range(rank - 1, 0, -1):
+                if counter[i] >= shape[i]:
+                    counter[i] = 0
+                    counter[i - 1] += 1
+                    open_brackets -= 1
+                    tensor_data_str += ']'
+
+        # Close all brackets that were opened but not closed yet
+        while open_brackets > 0:
+            tensor_data_str += ']'
+            open_brackets -= 1
+
+        me_node.attrs.append(graph_builder.KeyValue(key='__value', value=tensor_data_str))
+
     def add_output_tensor_info(self,
                                me_node: graph_builder.GraphNode,
                                tensor_id: int,
@@ -141,6 +182,7 @@ class CircleAdapter(Adapter):
                                    output_id=0)
                 # Add output metadata to the pseudo const node
                 self.add_output_tensor_info(me_node=me_node, tensor_id=tensor_id)
+                self.add_tensor_value_attribute(me_node=me_node, tensor_id=tensor_id)
 
         # Create operator nodes
         for idx, op in enumerate(sub_graph.operators):
