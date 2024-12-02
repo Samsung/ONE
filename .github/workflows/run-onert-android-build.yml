@@ -55,10 +55,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-ndk26-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-ndk-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
-            external-onert-ndk26-
-            external-onert-ndk
+            external-onert-ndk-
             external-onert-
             external-
 
@@ -69,8 +68,8 @@ jobs:
           pip3 install numpy
           sudo apt-get update && sudo apt-get -qqy install scons
 
-      # Use NDK 26.3.11579264
+      # Use NDK Default
       - name: Build onert
         run: |
-          export NDK_DIR=/usr/local/lib/android/sdk/ndk/26.3.11579264
+          export NDK_DIR=${ANDROID_NDK}
           make -f Makefile.template
