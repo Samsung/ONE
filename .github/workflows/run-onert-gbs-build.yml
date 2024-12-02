@@ -63,7 +63,7 @@ jobs:
       - name: Caching GBS repository
         uses: actions/cache@v4
         with:
-          path: .gbs/local/repos/${{ matrix.profile }}/${{ matrix.arch }}
+          path: .gbs/local/cache
           key: gbs-repo-${{ matrix.profile }}-${{ matrix.arch }}-${{ hashFiles('packaging/*.spec') }}
           restore-keys: |
             gbs-repo-${{ matrix.profile }}-${{ matrix.arch }}-
