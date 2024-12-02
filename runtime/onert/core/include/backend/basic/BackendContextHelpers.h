@@ -177,15 +177,13 @@ void planTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const i
 }
 
 template <typename T_TensorBuilder>
-ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder,
-                            const ir::Graph &graph,
-                            const util::Set<ir::OperandIndex> &external_operands,
-                            const std::shared_ptr<ITensorRegistry> &tensor_registry,
-                            const std::vector<onert::ir::OperationIndex> &op_order,
-                            const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
+ir::OperandIndexSequence register_source_memory_tensors(
+  const std::shared_ptr<T_TensorBuilder> &tensor_builder, const ir::Graph &graph,
+  const util::Set<ir::OperandIndex> &external_operands,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
 {
-  // process source tensors for shared memory at first
-  std::vector<ir::OperandIndex> registered_source_ind;
+  // process source tensors that share memory at first
+  ir::OperandIndexSequence registered_source_ind;
   for (const auto &[_, source_ind] : shared_memory_operand_idx)
   {
     if (external_operands.contains(source_ind))
@@ -193,14 +191,25 @@ ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_build
     if (tensor_builder->isRegistered(source_ind)) // some tensors can have the same source
       continue;
     tensor_builder->registerTensorInfo(source_ind, graph.operands().at(source_ind).info());
-    registered_source_ind.emplace_back(source_ind);
+    registered_source_ind.append(source_ind);
   }
+  return registered_source_ind;
+}
 
+template <typename T_TensorBuilder>
+ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder,
+                            const ir::Graph &graph,
+                            const util::Set<ir::OperandIndex> &external_operands,
+                            const std::shared_ptr<ITensorRegistry> &tensor_registry,
+                            const std::vector<onert::ir::OperationIndex> &op_order,
+                            const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
+{
+  const auto registered_source_ind = register_source_memory_tensors(
+    tensor_builder, graph, external_operands, shared_memory_operand_idx);
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
     if (external_operands.contains(ind))
       return;
-    if (std::find(std::begin(registered_source_ind), std::end(registered_source_ind), ind) !=
-        std::end(registered_source_ind)) // skip tensors already registered
+    if (registered_source_ind.contains(ind)) // skip tensors already registered
       return;
     tensor_builder->registerTensorInfo(ind, obj.info());
   });

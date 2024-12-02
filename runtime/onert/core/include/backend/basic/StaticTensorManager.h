@@ -55,6 +55,11 @@ public:
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
 private:
+  // Update source operand index if source memory operand exist.
+  // Otherwise, return unchanged.
+  ir::OperandIndex adjust_with_memory_source_operand(const ir::OperandIndex &ind);
+
+private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;

@@ -56,28 +56,14 @@ void StaticTensorManager::allocateNonconsts(void)
 
   for (auto &&[ind, tensor] : _tensors->native_tensors())
   {
-    bool buffer_set = false;
-    if (!tensor->is_dynamic())
+    const auto adjusted_ind = adjust_with_memory_source_operand(ind);
+    if (!_as_constants[adjusted_ind] && !tensor->is_dynamic())
     {
-      if (_shared_memory_operand_indexes.find(ind) != std::end(_shared_memory_operand_indexes))
-      {
-        const auto &shared_memory_ind = _shared_memory_operand_indexes[ind];
-        if (!_as_constants[shared_memory_ind])
-        {
-          tensor->setBuffer(_nonconst_mgr->getBuffer(shared_memory_ind));
-          buffer_set = true;
-        }
-      }
-      else if (!_as_constants[ind])
-      {
-        tensor->setBuffer(_nonconst_mgr->getBuffer(ind));
-        buffer_set = true;
-      }
-      if (buffer_set)
-      {
-        VERBOSE(CPU_StaticTensorManager)
-          << "TENSOR " << ind << " : " << static_cast<void *>(tensor->buffer()) << std::endl;
-      }
+      auto *buffer = _nonconst_mgr->getBuffer(adjusted_ind);
+      tensor->setBuffer(buffer);
+
+      VERBOSE(CPU_StaticTensorManager)
+        << "TENSOR " << ind << " : " << static_cast<void *>(buffer) << std::endl;
     }
   }
 }
@@ -95,14 +81,14 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
   }
   else
   {
-    const auto source_operand_ind = _shared_memory_operand_indexes.find(ind);
-    if (source_operand_ind != std::end(_shared_memory_operand_indexes) &&
-        _as_constants[source_operand_ind->second])
+    const auto source_operand_ind = adjust_with_memory_source_operand(ind);
+    if (_as_constants[source_operand_ind])
     {
-      as_const = _as_constants[source_operand_ind->second];
       auto new_tensor_info = tensor_info;
       new_tensor_info.setAsConstant();
+      // source memory tensor is a constant
       tensor = std::make_unique<ExternalTensor>(new_tensor_info);
+      as_const = true;
     }
     else
     {
@@ -122,16 +108,7 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  ir::OperandIndex claim_ind;
-  const auto source_ind = _shared_memory_operand_indexes.find(ind);
-  if (source_ind == std::end(_shared_memory_operand_indexes))
-  {
-    claim_ind = ind;
-  }
-  else
-  {
-    claim_ind = source_ind->second;
-  }
+  const auto claim_ind = adjust_with_memory_source_operand(ind);
   if (_as_constants[claim_ind])
   {
     return;
@@ -151,16 +128,7 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  ir::OperandIndex release_ind;
-  const auto source_operand_ind_ind = _shared_memory_operand_indexes.find(ind);
-  if (source_operand_ind_ind == std::end(_shared_memory_operand_indexes))
-  {
-    release_ind = ind;
-  }
-  else
-  {
-    release_ind = source_operand_ind_ind->second;
-  }
+  const auto release_ind = adjust_with_memory_source_operand(ind);
   if (_as_constants[release_ind])
   {
     return;
@@ -180,6 +148,17 @@ void StaticTensorManager::iterate(const std::function<void(const ir::OperandInde
 {
   for (const auto &it : _tensors->native_tensors())
     fn(it.first);
+}
+
+ir::OperandIndex StaticTensorManager::adjust_with_memory_source_operand(const ir::OperandIndex &ind)
+{
+  const auto source_operand_ind = _shared_memory_operand_indexes.find(ind);
+  if (source_operand_ind != std::end(_shared_memory_operand_indexes))
+  {
+    return source_operand_ind->second;
+  }
+  // source memory operand not found
+  return ind;
 }
 
 } // namespace basic
