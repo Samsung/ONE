@@ -22,6 +22,7 @@
 
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Service/CircleNodeClone.h>
+#include <luci/Service/Nodes/CircleConst.h>
 
 #include <cassert>
 #include <set>
@@ -741,6 +742,12 @@ template <> bool InstanceNormPattern::match<InstanceNormPattern::PatternVersion:
   CHECK_OR_FALSE(rsqrt == rsqrt_should_be);
   CHECK_OR_FALSE(mean_of_ifm == mean_of_ifm_should_be);
 
+  // make clone for shared beta node that gets reshaped in reshape_gamma_beta()
+  auto beta_origin = luci::get_origin(const_as_beta);
+  const_as_beta = luci::clone(const_as_beta);
+  luci::add_origin(const_as_beta, beta_origin);
+  // NOTE no need to set different name as numbered suffix will be added at export
+
   // mul_gamma is absent
   // const_as_gamma assume to be 1.0
   auto graph = add_as_terminal->graph();
@@ -1075,6 +1082,11 @@ uint32_t PostFusion::input_channel(void)
   if (input_rank < 1)
     return 0;
 
+  if (input_rank == 3)
+  {
+    // use dim 1
+    return input->dim(1).value();
+  }
   // assume channel-last
   return input->dim(input_rank - 1).value();
 }
