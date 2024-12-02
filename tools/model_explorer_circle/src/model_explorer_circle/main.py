@@ -129,7 +129,7 @@ class CircleAdapter(Adapter):
                 self.set_source_of(tensor_id=tensor_id, source_id=op_id, output_id=i)
 
         # Create pseudo const node for orphan tensors (= const tensors)
-        for tensor_id, tensor in enumerate(sub_graph.tensors):
+        for tensor_id, tensor in enumerate(sub_graph.tensors, start=1):
             if (self.get_source_of(tensor_id)) is None:
                 me_node = graph_builder.GraphNode(id=f'{input_id + tensor_id}',
                                                   label='pseudo_const',
