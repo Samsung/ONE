@@ -65,19 +65,11 @@ public:
     }
 
     int im2col_size = _need_im2col ? _im2col_shape.FlatSize() : 0;
-
-    // Use heap if size is larger than 8MB
-    if (im2col_size > 2 * 1024 * 1024)
+    std::vector<float> im2col_data(im2col_size);
+    if (im2col_size > 0)
     {
-      std::unique_ptr<float[]> im2col_data = std::make_unique<float[]>(im2col_size);
       ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,
-                output_shape, output_data, _im2col_shape, im2col_data.get(), ruy_context);
-    }
-    else if (im2col_size > 0)
-    {
-      float im2col_data[im2col_size];
-      ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,
-                output_shape, output_data, _im2col_shape, im2col_data, ruy_context);
+                output_shape, output_data, _im2col_shape, im2col_data.data(), ruy_context);
     }
     else
     {
