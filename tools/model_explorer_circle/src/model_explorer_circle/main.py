@@ -40,6 +40,8 @@ class CircleAdapter(Adapter):
             v: k
             for k, v in circle_schema.TensorType.__dict__.items()
         }
+        # Number of elements to show in tensor values (default: 16)
+        self.const_element_count_limit = 16
 
     def load_model(self, model_path: str) -> None:
         """Load the model from the given path."""
@@ -178,6 +180,9 @@ class CircleAdapter(Adapter):
     def convert(self, model_path: str, settings: Dict) -> ModelExplorerGraphs:
         """Convert the model to a set of graphs."""
         graph = graph_builder.Graph(id='main')
+
+        if settings.get('const_element_count_limit'):
+            self.const_element_count_limit = settings['const_element_count_limit']
 
         self.load_model(model_path)
         self.build_graph(graph)
