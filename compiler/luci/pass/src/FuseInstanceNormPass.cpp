@@ -1075,6 +1075,11 @@ uint32_t PostFusion::input_channel(void)
   if (input_rank < 1)
     return 0;
 
+  if (input_rank == 3)
+  {
+    // use dim 1
+    return input->dim(1).value();
+  }
   // assume channel-last
   return input->dim(input_rank - 1).value();
 }
