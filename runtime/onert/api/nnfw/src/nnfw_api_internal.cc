@@ -34,7 +34,7 @@
 #include "util/TracingCtx.h"
 #include "odc/QuantizeManager.h"
 #include "odc/CodegenManager.h"
-#include "odc/OdcInfo.h"
+
 
 #include <fstream>
 #include <iostream>
@@ -248,7 +248,7 @@ nnfw_session::nnfw_session()
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{std::make_unique<onert::odc::QuantizeManager>()},
     _codegen_manager{std::make_unique<onert::odc::CodegenManager>()},
-    _odc_info{std::make_unique<onert::odc::OdcInfo>()}, _model_path{""}
+    _model_path{""}
 {
   // DO NOTHING
 }
@@ -2128,9 +2128,9 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
 
     // turn off minmax recording
     _execution->executionOptions().dump_minmax = false;
-
+    
     // save initial buffers if quantized model or compiled model is not loaded
-    if (!_odc_info->isQuantizedModelLoaded() && !_odc_info->isCompiledModelLoaded())
+    if (_autoCompilationState == nnfw_session::AutoCompilationState::INITIAL_STATE)    
     {
       auto dotidx = _codegen_manager->exportModelPath().rfind('.');
       if (dotidx == std::string::npos)
@@ -2195,7 +2195,7 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         status = loadModelFile(_codegen_manager->exportModelPath(), compiled_model_type);
         if (status == NNFW_STATUS_NO_ERROR)
         {
-          _odc_info->setCompiledModelLoaded(true);
+          _autoCompilationState = nnfw_session::AutoCompilationState::COMPILED_MODEL_LOADED;
         }
       }
       else // there is no compiled model - try to compile and load it
@@ -2210,20 +2210,21 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         status = codegen(target, pref);
         if (status == NNFW_STATUS_NO_ERROR)
         {
-          _odc_info->setCompiledModelLoaded(true);
+          _autoCompilationState = nnfw_session::AutoCompilationState::COMPILED_MODEL_LOADED;          
           // TODO delete quantized model
         }
       }
 
-      // loading compiled model is fail - try to load quantized model
-      if (!_odc_info->isCompiledModelLoaded())
+      // loading compiled model is fail - try to load quantized model      
+      if (_autoCompilationState != nnfw_session::AutoCompilationState::COMPILED_MODEL_LOADED)
       {
         // load quantized model
         status = loadModelFile(_quant_manager->exportModelPath(), quantized_model_type);
         if (status != NNFW_STATUS_NO_ERROR)
           return status;
         else
-          _odc_info->setQuantizedModelLoaded(true);
+          _autoCompilationState = nnfw_session::AutoCompilationState::QUANTIZED_MODEL_LOADED;
+          
       }
 
       status = prepare();

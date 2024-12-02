@@ -57,7 +57,6 @@ namespace odc
 {
 class QuantizeManager;
 class CodegenManager;
-class OdcInfo;
 } // namespace odc
 } // namespace onert
 
@@ -108,6 +107,13 @@ private:
     FINISHED_RUN,      //< Executed at least once
     PREPARED_TRAINING, //< Prepared for training
     FINISHED_TRAINING  //< Trained at least once
+  };
+
+  enum class AutoCompilationState
+  {
+    INITIAL_STATE,          //< Initial state 
+    QUANTIZED_MODEL_LOADED, //< Qunatized model is loaded 
+    COMPILED_MODEL_LOADED   //< Compiled model is loaded
   };
 
 public:
@@ -193,6 +199,8 @@ public:
   NNFW_STATUS train_get_loss(uint32_t index, float *loss);
   NNFW_STATUS train_export_circle(const char *path);
   NNFW_STATUS train_export_circleplus(const char *path);
+  NNFW_STATUS train_import_checkpoint(const char *path);
+  NNFW_STATUS train_export_checkpoint(const char *path);
 
   NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
   NNFW_STATUS set_quantized_model_path(const char *path);
@@ -233,8 +241,7 @@ private:
   std::unique_ptr<onert::ir::train::TrainingInfo> _train_info;
   std::unique_ptr<onert::odc::QuantizeManager> _quant_manager;
   std::unique_ptr<onert::odc::CodegenManager> _codegen_manager;
-  std::unique_ptr<onert::odc::OdcInfo> _odc_info;
-
+  AutoCompilationState _autoCompilationState = AutoCompilationState::INITIAL_STATE;
   // Remember path to loaded original model
   // It may be used for on-device compiler / on-device training.
   //
