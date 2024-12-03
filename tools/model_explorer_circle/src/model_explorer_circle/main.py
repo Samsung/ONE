@@ -172,13 +172,13 @@ class CircleAdapter(Adapter):
         # Create pseudo const node for orphan tensors (= const tensors)
         for tensor_id, tensor in enumerate(sub_graph.tensors):
             if (self.get_source_of(tensor_id)) is None:
-                me_node = graph_builder.GraphNode(id=f'{input_id + tensor_id}',
+                me_node = graph_builder.GraphNode(id=f'{input_id + tensor_id + 1}',
                                                   label='pseudo_const',
                                                   namespace=tensor.name.decode('utf-8'))
                 me_graph.nodes.append(me_node)
                 # Map source and output tensors of const tensor
                 self.set_source_of(tensor_id=tensor_id,
-                                   source_id=input_id + tensor_id,
+                                   source_id=input_id + tensor_id + 1,
                                    output_id=0)
                 # Add output metadata to the pseudo const node
                 self.add_output_tensor_info(me_node=me_node, tensor_id=tensor_id)
