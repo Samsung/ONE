@@ -36,6 +36,7 @@
 #include "odc/QuantizeManager.h"
 #include "odc/CodegenManager.h"
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -317,17 +318,16 @@ NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
     return NNFW_STATUS_UNEXPECTED_NULL;
   }
 
-  std::string filename{model_file_path};
-  // TODO: Use std::filesystem::path when we can use c++17.
-  auto dotidx = filename.find_last_of('.');
-  if (dotidx == std::string::npos)
-  {
-    std::cerr << "Invalid model file path. Please use file with extension." << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-  std::string model_type = filename.substr(dotidx + 1); // + 1 to exclude dot
   try
   {
+    std::filesystem::path filename{model_file_path};
+    if (!filename.has_extension())
+    {
+      std::cerr << "Invalid model file path. Please use file with extension." << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    std::string model_type = filename.extension().string().substr(1); // + 1 to exclude dot
     return loadModelFile(filename, model_type);
   }
   catch (const std::exception &e)
