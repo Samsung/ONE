@@ -153,8 +153,9 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
 
       // 2. Calculate weight gradient
       // Init weight grads with zeros
-      std::memset(dloss_dweight_data, 0,
-                  output_shape.dims(1) * input_shape.dims(1) * sizeof(float));
+      for (int i = 0; i < output_shape.dims(1) * input_shape.dims(1); i += sizeof(float))
+        *static_cast<float *>(static_cast<void *>(dloss_dweight_data + i)) = 0;
+
       pal::FullyConnectedWeightGrad(
         core::utils::castInputData<float>(dloss_doutput_data), output_shape,
         core::utils::castInputData<float>(input_data), input_shape,
