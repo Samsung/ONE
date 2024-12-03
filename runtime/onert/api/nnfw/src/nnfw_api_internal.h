@@ -20,45 +20,21 @@
 #include "nnfw.h"
 #include "nnfw_experimental.h"
 
+#include "CustomKernelRegistry.h"
+#include "compiler/CompilerOptions.h"
+#include "compiler/ICompiler.h"
+#include "exec/Execution.h"
+#include "ir/NNPkg.h"
+#include "ir/train/TrainingInfo.h"
+#include "odc/CodegenManager.h"
+#include "odc/QuantizeManager.h"
+
 #include <util/TracingCtx.h>
 
-#include <string>
 #include <memory>
+#include <string>
 #include <thread>
 #include <vector>
-
-namespace onert
-{
-namespace api
-{
-class CustomKernelRegistry;
-} // namespace api
-namespace exec
-{
-class Execution;
-struct ExecutionOptions;
-} // namespace exec
-namespace ir
-{
-struct IGraph;
-class Model;
-class NNPkg;
-namespace train
-{
-class TrainingInfo;
-}
-} // namespace ir
-namespace compiler
-{
-struct CompilerArtifact;
-struct CompilerOptions;
-} // namespace compiler
-namespace odc
-{
-class QuantizeManager;
-class CodegenManager;
-} // namespace odc
-} // namespace onert
 
 struct nnfw_session
 {
