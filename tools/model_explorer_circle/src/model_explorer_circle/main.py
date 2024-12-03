@@ -178,9 +178,7 @@ class CircleAdapter(Adapter):
                                                   namespace=tensor.name.decode('utf-8'))
                 me_graph.nodes.append(me_node)
                 # Map source and output tensors of const tensor
-                self.set_source_of(tensor_id=tensor_id,
-                                   source_id=node_id,
-                                   output_id=0)
+                self.set_source_of(tensor_id=tensor_id, source_id=node_id, output_id=0)
                 # Add output metadata to the pseudo const node
                 self.add_output_tensor_info(me_node=me_node, tensor_id=tensor_id)
                 self.add_tensor_value_attribute(me_node=me_node, tensor_id=tensor_id)
