@@ -32,7 +32,8 @@ void writeTrainConfigFileDataIntoBuffer(
   const auto &train_op_indexes_with_ranks = train_data.trainable_op_indexes_with_ranks;
 
   // Resize to calculated size
-  auto buffer_size = 8 + train_op_indexes_with_ranks.size() * 2;
+  // 8 Bytes - handler + U16 indexes + U8 ranks
+  auto buffer_size = 8 + train_op_indexes_with_ranks.size() * (sizeof(uint16_t) + sizeof(uint8_t));
   buffer.resize(buffer_size);
 
   // Point to start of the buffer
