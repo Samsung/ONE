@@ -176,6 +176,20 @@ public:
   size_t getInputTotalSize(ir::IOIndex ind) const;
   size_t getOutputTotalSize(ir::IOIndex ind) const;
 
+  /**
+   * @brief     Get pointer of Input Buffer
+   * @param[in] index     Input index
+   * @return    Pointer of Input Buffer
+   */
+  const void *getInputBuffer(ir::IOIndex ind) const;
+
+  /**
+   * @brief     Get pointer of Output Buffer
+   * @param[in] index     Output index
+   * @return    Pointer of Output Buffer
+   */
+  void *getOutputBuffer(ir::IOIndex ind);
+
   ExecutionOptions &executionOptions() { return _ctx.options; }
 
 private:
