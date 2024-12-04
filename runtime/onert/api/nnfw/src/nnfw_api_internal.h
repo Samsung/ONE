@@ -31,6 +31,7 @@
 
 #include <util/TracingCtx.h>
 
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <thread>
@@ -211,7 +212,7 @@ private:
   //     const char *path;
   //     const uint8 *buf;
   //   }
-  std::string _model_path;
+  std::filesystem::path _model_path;
 };
 
 #endif // __API_NNFW_API_INTERNAL_H__
