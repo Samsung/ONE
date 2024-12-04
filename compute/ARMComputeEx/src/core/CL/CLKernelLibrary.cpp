@@ -94,10 +94,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map 
 #include "./cl_kernels/activation_float_helpers.hembed"
   },
   {
-    "arg_min_max_ex.cl",
-#include "./cl_kernels/arg_min_max_ex.clembed"
-  },
-  {
     "binary_logical_op.cl",
 #include "./cl_kernels/binary_logical_op.clembed"
   },
