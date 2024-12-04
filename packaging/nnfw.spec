@@ -8,8 +8,8 @@ License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
 Source1001: nnapi_test_generated.tar.gz
-Source2001: nnfw.pc.in
-Source2002: nnfw-plugin.pc.in
+Source2001: onert.pc.in
+Source2002: onert-plugin.pc.in
 Source3001: ABSEIL.tar.gz
 Source3002: CPUINFO.tar.gz
 Source3003: FARMHASH.tar.gz
@@ -243,13 +243,17 @@ cp %{SOURCE2001} .
 cp %{SOURCE2002} .
 sed -i 's:@libdir@:%{_libdir}:g
         s:@includedir@:%{_includedir}:g
-        s:@version@:%{version}:g' ./nnfw.pc.in
+        s:@version@:%{version}:g' ./onert.pc.in
 sed -i 's:@libdir@:%{_libdir}:g
         s:@includedir@:%{_includedir}:g
-        s:@version@:%{version}:g' ./nnfw-plugin.pc.in
+        s:@version@:%{version}:g' ./onert-plugin.pc.in
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
-install -m 0644 ./nnfw.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw.pc
-install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin.pc
+install -m 0644 ./onert.pc.in %{buildroot}%{_libdir}/pkgconfig/onert.pc
+install -m 0644 ./onert-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/onert-plugin.pc
+pushd %{buildroot}%{_libdir}/pkgconfig
+ln -sf onert.pc nnfw.pc
+ln -sf onert-plugin.pc nnfw-plugin.pc
+popd
 
 %if %{test_build} == 1
 mkdir -p %{test_install_path}/bin
@@ -308,6 +312,7 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
 %{_libdir}/pkgconfig/nnfw.pc
+%{_libdir}/pkgconfig/onert.pc
 %endif
 
 %files plugin-devel
@@ -317,6 +322,7 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
+%{_libdir}/pkgconfig/onert-plugin.pc
 %endif
 
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64

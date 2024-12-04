@@ -1,4 +1,4 @@
-Name: nnfw
+Name: onert
 Description: onert API
 Version: @version@
 Libs: -L@libdir@ -lonert
