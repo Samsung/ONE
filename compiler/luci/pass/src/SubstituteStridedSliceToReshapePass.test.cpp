@@ -208,6 +208,33 @@ TEST_F(SubstituteStridedSliceToReshapeTest, with_large_end_mask)
   ASSERT_EQ(new_shape->at<loco::DataType::S32>(1), 9);
 }
 
+TEST_F(SubstituteStridedSliceToReshapeTest, with_wrong_begin_end_mask_with_shrink_axis_mask)
+{
+  buildGraph({1, 1, 20}, // input shape
+             {1, 0, 0},  // begin with 1 at 0th dim, which break previous pattern
+             {0, 1, 20}, // end with 0 at 0th dim, which break previous pattern
+             {1, 1, 1},  // strides
+             0b110,      // begin mask
+             0b110,      // end mask
+             0,          // ellipsis axis mask
+             0,          // new axis mask
+             0b001       // shrink axis mask, 0th dim will be shrunk
+  );
+
+  luci::SubstituteStridedSliceToReshapePass pass;
+  while (pass.run(&g))
+    ;
+
+  auto reshape_node = dynamic_cast<luci::CircleReshape *>(output->from());
+  ASSERT_TRUE(reshape_node != nullptr);
+
+  auto new_shape = loco::must_cast<luci::CircleConst *>(reshape_node->shape());
+  ASSERT_EQ(new_shape->rank(), 1);
+  ASSERT_EQ(new_shape->dim(0).value(), 2);
+  ASSERT_EQ(new_shape->at<loco::DataType::S32>(0), 1);
+  ASSERT_EQ(new_shape->at<loco::DataType::S32>(1), 20);
+}
+
 TEST_F(SubstituteStridedSliceToReshapeTest, not_matching_begin_index_NEG)
 {
   buildGraph({1, 3, 5, 7}, // input shape
