@@ -508,6 +508,25 @@ NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN
   return session->codegen(target, pref);
 }
 
+NNFW_STATUS nnfw_set_odc_param_minmax_records_count(nnfw_session *session, int minmax_records_count)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_odc_param_minmax_records_count(minmax_records_count);
+}
+
+NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->delete_odc_minmax_file();
+}
+
+NNFW_STATUS nnfw_run_with_auto_compilation(nnfw_session *session, const char *target,
+                                           NNFW_CODEGEN_PREF pref)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->run_with_auto_compilation(target, pref);
+}
+
 // Configuration
 
 NNFW_STATUS nnfw_set_prepare_config(nnfw_session *session, const NNFW_PREPARE_CONFIG key,
