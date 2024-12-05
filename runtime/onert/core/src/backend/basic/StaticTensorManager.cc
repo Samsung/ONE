@@ -74,30 +74,17 @@ void StaticTensorManager::buildTensor(const ir::OperandIndex &ind,
                                       const ir::OperandInfo &tensor_info, bool as_const)
 {
   assert(!_tensors->getNativeTensor(ind));
-  std::unique_ptr<Tensor> tensor = nullptr;
   if (as_const)
   {
-    tensor = std::make_unique<ExternalTensor>(tensor_info);
+    auto tensor = std::make_unique<ExternalTensor>(tensor_info);
+    _tensors->setNativeTensor(ind, std::move(tensor));
   }
   else
   {
-    const auto source_operand_ind = adjust_with_memory_source_operand(ind);
-    if (_as_constants[source_operand_ind])
-    {
-      auto new_tensor_info = tensor_info;
-      new_tensor_info.setAsConstant();
-      // source memory tensor is a constant
-      tensor = std::make_unique<ExternalTensor>(new_tensor_info);
-      as_const = true;
-    }
-    else
-    {
-      tensor =
-        std::make_unique<Tensor>(tensor_info, _dynamic_tensor_manager->dynamic_mem_mgr().get());
-    }
+    auto tensor =
+      std::make_unique<Tensor>(tensor_info, _dynamic_tensor_manager->dynamic_mem_mgr().get());
+    _tensors->setNativeTensor(ind, std::move(tensor));
   }
-  assert(tensor);
-  _tensors->setNativeTensor(ind, std::move(tensor));
   _as_constants[ind] = as_const;
 }
 

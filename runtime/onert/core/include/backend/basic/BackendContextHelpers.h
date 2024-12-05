@@ -258,21 +258,27 @@ inline void initConsts(const ir::Operands &operands,
 
     VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
 
-    ExternalTensor *ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
-    if (ext_tensor == nullptr)
-      throw std::runtime_error{"This tensor is not external tensor"};
-
     if (has_const_shared_memory)
     {
       const auto &source_operand_ind = operands.at(shared_memory_operands_map.at(ind));
       auto memory_source_data = source_operand_ind.shareData();
       assert(memory_source_data && memory_source_data->base());
-      ext_tensor->setData(memory_source_data);
+      auto shared_mem_tensor = dynamic_cast<Tensor *>(tensor);
+      if (nullptr == shared_mem_tensor)
+      {
+        throw std::runtime_error{"Incorrect type of tensor to support sharing memory"};
+      }
+      shared_mem_tensor->setBuffer(const_cast<uint8_t *>(memory_source_data->base()));
     }
     else
     {
       auto data = operand.shareData();
       assert(data && data->base());
+      auto ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
+      if (ext_tensor == nullptr)
+      {
+        throw std::runtime_error{"This tensor is not external tensor"};
+      }
       ext_tensor->setData(data);
     }
   });

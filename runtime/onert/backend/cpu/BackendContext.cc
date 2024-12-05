@@ -41,14 +41,14 @@ FunctionMap BackendContext::genKernels()
 {
   FunctionMap ret;
 
+  basic::initConsts(graph()->operands(), external_operands(), tensor_registry.get(),
+                    tensor_builder->getSharedMemoryOperandIndexes());
+
   for (auto &&op_ind : _data.op_order)
   {
     auto fn_seq = kernel_gen->generate(op_ind);
     ret.emplace(op_ind, std::move(fn_seq));
   }
-
-  basic::initConsts(graph()->operands(), external_operands(), tensor_registry.get(),
-                    tensor_builder->getSharedMemoryOperandIndexes());
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::Graph &>(*_data.graph)
