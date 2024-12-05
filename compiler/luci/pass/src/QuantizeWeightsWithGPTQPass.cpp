@@ -400,9 +400,11 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     dimension_channel_last.rank(4);
 
     loco::TensorShape dimension_hessian;
-    dimension_hessian.rank(2);
-    dimension_hessian.dim(0).set(size_hessian);
-    dimension_hessian.dim(1).set(size_hessian);
+    dimension_hessian.rank(4);
+    dimension_hessian.dim(0).set(1);
+    dimension_hessian.dim(1).set(1);
+    dimension_hessian.dim(2).set(size_hessian);
+    dimension_hessian.dim(3).set(size_hessian);
 
     quantize = [&](uint32_t *indices, loco::TensorShape &dimension_input, int index_channel_dim) {
       quantized_values[cal_offset(dimension_input, indices)] = calculate_qauntized_value(
@@ -420,10 +422,10 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
         dimension_channel_last[3] * indices_channel_last[2] + indices_channel_last[3];
 
       uint32_t idx_channel = indices[index_channel_dim];
-      uint32_t indices_diag_hessian[2] = {idx_quant_column, idx_quant_column};
+      uint32_t indices_diag_hessian[4] = {0, 0, idx_quant_column, idx_quant_column};
 
       auto idx_input_data = cal_offset(dimension_input, indices);
-      auto idx_hessian = cal_offset_2d(dimension_hessian, indices_diag_hessian);
+      auto idx_hessian = cal_offset(dimension_hessian, indices_diag_hessian);
 
       auto input_data = node->at<loco::DataType::FLOAT32>(idx_input_data);
       auto quantized_rvalue =
@@ -446,9 +448,9 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                 uint32_t indices_error[4] = {o, indices[1], indices[2], indices[3]};
                 uint32_t idx_ihw = dimension_channel_last[2] * dimension_channel_last[3] * i +
                                    dimension_channel_last[3] * h + w;
-                uint32_t indices_hessain[2] = {idx_quant_column, idx_ihw};
+                uint32_t indices_hessain[4] = {0, 0, idx_quant_column, idx_ihw};
 
-                auto _idx_h = cal_offset_2d(dimension_hessian, indices_hessain);
+                auto _idx_h = cal_offset(dimension_hessian, indices_hessain);
                 auto _idx_input_data = cal_offset(dimension_input, indices_channel_first);
                 auto _idx_error = cal_offset(dimension_input, indices_error);
 
