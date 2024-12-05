@@ -28,4 +28,3 @@ def test_create_graph(circle_adapter):
     """Test if graph is created"""
     me_graph = circle_adapter.graph
     assert me_graph is not None
-
