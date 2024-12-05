@@ -1,0 +1,4 @@
+# Default path for RootFS, Android SDK/NDK
+rootfs
+ndk
+android_sdk
