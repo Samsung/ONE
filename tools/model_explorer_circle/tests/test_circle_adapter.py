@@ -89,3 +89,42 @@ def test_const_tensor_count(circle_adapter):
             assert int(node.id) == (len(circle_graph.operators) + nr_pseudo_const)
 
     assert nr_const_tensors == nr_pseudo_const
+
+
+def test_unused_tensor(circle_adapter):
+    """Test if unused tensors exists"""
+    circle_model = circle_adapter.model
+    circle_graph = circle_model.subgraphs[0]
+    me_graph = circle_adapter.graph
+
+    # Check if all tensors are connected with source nodes
+    for tensor_id, _ in enumerate(circle_graph.tensors):
+        # Find its source node with tensor id
+        src = circle_adapter.get_source_of(tensor_id)
+        assert src is not None
+        # Source = 'node_id/output_id' (e.g. '11/0')
+        src_id, src_out_id = src.split('/')
+        src_node = next((n for n in me_graph.nodes if n.id == src_id), None)
+        assert src_node is not None
+
+        # Check if the source node has the tensor as one of its outputs metadata
+        output_meta = next((o for o in src_node.outputsMetadata if o.id == src_out_id),
+                           None)
+        assert output_meta is not None
+        # Tensor id is in outputsMetatdata.attrs[1]
+        attr_tid = output_meta.attrs[1]
+        assert attr_tid.key == 'tensor_index'
+        # Is it same as tensor id?
+        assert int(attr_tid.value) == tensor_id
+
+
+def test_orphan_node(circle_adapter):
+    """Test if orphan nodes exists"""
+    me_graph = circle_adapter.graph
+
+    # Check if all nodes are connected with edges
+    for node in me_graph.nodes:
+        if node.label not in ['GraphInputs', 'pseudo_const']:
+            assert len(node.incomingEdges) > 0
+        if node.label != 'GraphOutputs':
+            assert len(node.outputsMetadata) > 0
