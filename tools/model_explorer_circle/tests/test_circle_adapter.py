@@ -28,3 +28,23 @@ def test_create_graph(circle_adapter):
     """Test if graph is created"""
     me_graph = circle_adapter.graph
     assert me_graph is not None
+
+
+def test_input_count(circle_adapter):
+    """Test if number of inputs matches"""
+    circle_model = circle_adapter.model
+    circle_graph = circle_model.subgraphs[0]
+    me_graph = circle_adapter.graph
+    input_node = me_graph.nodes[0]
+    assert input_node.label == 'GraphInputs'
+    assert len(input_node.outputsMetadata) == len(circle_graph.inputs)
+
+
+def test_output_count(circle_adapter):
+    """Test if number of outputs matches"""
+    circle_model = circle_adapter.model
+    circle_graph = circle_model.subgraphs[0]
+    me_graph = circle_adapter.graph
+    output_node = me_graph.nodes[-1]
+    assert output_node.label == 'GraphOutputs'
+    assert len(output_node.incomingEdges) == len(circle_graph.outputs)
