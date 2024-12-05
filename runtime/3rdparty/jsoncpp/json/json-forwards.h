@@ -1,4 +1,4 @@
-/// Json-cpp amalgamated forward header (http://jsoncpp.sourceforge.net/).
+/// Json-cpp amalgamated forward header (https://github.com/open-source-parsers/jsoncpp/).
 /// It is intended to be used with #include "json/json-forwards.h"
 /// This header provides forward declaration for all JsonCpp types.
 
@@ -90,18 +90,17 @@ license you like.
 // 3. /CMakeLists.txt
 // IMPORTANT: also update the SOVERSION!!
 
-#define JSONCPP_VERSION_STRING "1.9.5"
+#define JSONCPP_VERSION_STRING "1.9.6"
 #define JSONCPP_VERSION_MAJOR 1
 #define JSONCPP_VERSION_MINOR 9
-#define JSONCPP_VERSION_PATCH 5
+#define JSONCPP_VERSION_PATCH 6
 #define JSONCPP_VERSION_QUALIFIER
 #define JSONCPP_VERSION_HEXA \
   ((JSONCPP_VERSION_MAJOR << 24) | (JSONCPP_VERSION_MINOR << 16) | (JSONCPP_VERSION_PATCH << 8))
 
-#ifdef JSONCPP_USING_SECURE_MEMORY
-#undef JSONCPP_USING_SECURE_MEMORY
-#endif
+#if !defined(JSONCPP_USE_SECURE_MEMORY)
 #define JSONCPP_USING_SECURE_MEMORY 0
+#endif
 // If non-zero, the library zeroes any memory that it has allocated before
 // it frees its memory.
 
@@ -126,7 +125,8 @@ license you like.
 #include <cstring>
 #include <memory>
 
-#pragma pack(push, 8)
+#pragma pack(push)
+#pragma pack()
 
 namespace Json
 {
