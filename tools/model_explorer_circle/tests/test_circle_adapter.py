@@ -48,3 +48,44 @@ def test_output_count(circle_adapter):
     output_node = me_graph.nodes[-1]
     assert output_node.label == 'GraphOutputs'
     assert len(output_node.incomingEdges) == len(circle_graph.outputs)
+
+
+def test_operator_count(circle_adapter):
+    """Test if number of operators matches"""
+    circle_model = circle_adapter.model
+    circle_graph = circle_model.subgraphs[0]
+    me_graph = circle_adapter.graph
+
+    # Count operators in circle model
+    nr_operators = len(circle_graph.operators)
+
+    # Count operator nodes in model explorer graph
+    nr_opnodes = 0
+    for node in me_graph.nodes:
+        if node.label in ['GraphInputs', 'GraphOutputs', 'pseudo_const']:
+            continue
+        assert int(node.id) == nr_opnodes
+        nr_opnodes += 1
+
+    assert nr_operators == nr_opnodes
+
+
+def test_const_tensor_count(circle_adapter):
+    """Test if number of constant tensors matches"""
+    circle_model = circle_adapter.model
+    circle_graph = circle_model.subgraphs[0]
+    me_graph = circle_adapter.graph
+
+    # Count constant tensors in circle model
+    nr_const_tensors = len(circle_graph.tensors)
+    nr_const_tensors -= len(circle_graph.inputs)
+    nr_const_tensors -= sum([len(op.outputs) for op in circle_graph.operators])
+
+    # Count constant tensor nodes in model explorer graph
+    nr_pseudo_const = 0
+    for node in me_graph.nodes:
+        if node.label == 'pseudo_const':
+            nr_pseudo_const += 1
+            assert int(node.id) == (len(circle_graph.operators) + nr_pseudo_const)
+
+    assert nr_const_tensors == nr_pseudo_const
