@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-#include "nnfw_api_internal.h"
+#include "nnfw.h"
+#include "nnfw_experimental.h"
 #include "nnfw_version.h"
+
+#include "nnfw_session.h"
 
 // Double-check enum value changes
 
@@ -334,18 +337,6 @@ NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t
   return NNFW_STATUS_ERROR;
 }
 
-NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer, size_t size)
-{
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_circle_from_buffer(buffer, size);
-}
-
-NNFW_STATUS nnfw_load_model_from_modelfile(nnfw_session *session, const char *file_path)
-{
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_modelfile(file_path);
-}
-
 NNFW_STATUS nnfw_input_tensorindex(nnfw_session *session, const char *tensorname, uint32_t *index)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
@@ -456,12 +447,6 @@ NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train_export_circle(path);
-}
-
-NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *path)
-{
-  NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->train_export_circleplus(path);
 }
 
 NNFW_STATUS nnfw_train_import_checkpoint(nnfw_session *session, const char *path)
