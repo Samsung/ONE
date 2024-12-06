@@ -82,7 +82,7 @@ class CircleAdapter(Adapter):
         # Convert buffer into numpy array with the correct datatype
         tensor_data = buffer.view(self.dict_tensor_type_to_string[tensor.type].lower())
         shape = list(tensor.shape)
-        rank = len(shape)
+        rank = len(shape) if shape else 1
 
         # Used to represent the number of elements in each dimension
         counter = [0] * rank
