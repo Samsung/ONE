@@ -51,8 +51,12 @@ class CircleAdapter(Adapter):
 
         self.model = circle_schema.ModelT.InitFromObj(model_)
 
-    def opcode_to_name(self, opcode: int) -> str:
+    def get_opcode_name(self, opcode_index: int) -> str:
         """Convert the opcode to its name."""
+        opcode = self.model.operatorCodes[opcode_index].deprecatedBuiltinCode
+        if opcode == circle_schema.BuiltinOperator.PLACEHOLDER_FOR_GREATER_OP_CODES:
+            opcode = self.model.operatorCodes[opcode_index].builtinCode
+            assert (opcode >= 127)
         return self.dict_opcode_to_name[opcode]
 
     def set_source_of(self, tensor_id: int, source_id: int, output_id: int) -> None:
@@ -203,8 +207,7 @@ class CircleAdapter(Adapter):
 
         # Create operator nodes
         for idx, op in enumerate(sub_graph.operators):
-            name = self.opcode_to_name(
-                self.model.operatorCodes[op.opcodeIndex].builtinCode)
+            name = self.get_opcode_name(op.opcodeIndex)
             # Construct namespace following output tensor's name
             output_tensor_id = op.outputs[0]
             output_tensor = sub_graph.tensors[output_tensor_id]
