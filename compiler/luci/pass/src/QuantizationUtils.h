@@ -53,7 +53,6 @@ bool get_channel_dim_index(CircleConst *node, loco::TensorShape &dimension,
 
 // Calculate offset of the given indices in dimension
 uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices);
-uint32_t cal_offset_2d(loco::TensorShape &dimension, uint32_t indices[2]);
 
 // Backward propagation of concatenation qparam
 void propagate_concat_quantparam(luci::CircleConcatenation *concat);

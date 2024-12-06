@@ -292,12 +292,6 @@ uint32_t cal_offset(loco::TensorShape &dimension, uint32_t *indices)
          indices[2] * dimension.dim(3).value() + indices[3];
 }
 
-uint32_t cal_offset_2d(loco::TensorShape &dimension, uint32_t indices[2])
-{
-  assert(dimension.rank() == 2);
-  return indices[0] * dimension.dim(1).value() + indices[1];
-}
-
 // Activation (ofm) qtype is determined in different ways.
 // 1. Pre-defined values: Some Ops have pre-defined qparams (ex: LOGISTIC, TANH)
 // 2. Integer scale: Output of some Ops should be integers (ex: FLOOR, CEIL)
