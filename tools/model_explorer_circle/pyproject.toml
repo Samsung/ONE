@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "model-explorer-circle"
-version = "0.1.1"
+version = "0.1.2"
 maintainers = [
   { name="NNFW", email="nnfw@samsung.com" },
 ]
