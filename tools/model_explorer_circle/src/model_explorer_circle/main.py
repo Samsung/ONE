@@ -149,11 +149,16 @@ class CircleAdapter(Adapter):
 
         # Quantization parameter (if exists)
         if tensor.quantization:
-            # Show the most significant 6 digits of the scale
-            scale = format(tensor.quantization.scale[0], '.6g')
-            zp = tensor.quantization.zeroPoint[0]
-            # If the type is larger than INT8, exponential notation will be used
-            quantparam = f'{scale} * (q + {zp})'
+            quantparam = '['
+            for i, scale in enumerate(tensor.quantization.scale):
+                if i != 0:
+                    quantparam += ', '
+                # Show the most significant 6 digits of the scale
+                scale = format(scale, '.6g')
+                zp = tensor.quantization.zeroPoint[i]
+                # If the type is larger than INT8, exponential notation will be used
+                quantparam += f'{scale} * (q + {zp})'
+            quantparam += ']'
             metadata.attrs.append(
                 graph_builder.KeyValue(key='quantization', value=quantparam))
 
