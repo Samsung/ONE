@@ -148,7 +148,7 @@ class CircleAdapter(Adapter):
         )
 
         # Quantization parameter (if exists)
-        if tensor.quantization:
+        if tensor.quantization and tensor.quantization.scale is not None:
             quantparam = '['
             for i, scale in enumerate(tensor.quantization.scale):
                 if i != 0:
