@@ -20,4 +20,5 @@ set(FLAGS_COMMON ${FLAGS_COMMON}
     "-mfpu=neon-vfpv4"
     "-funsafe-math-optimizations"
     "-ftree-vectorize"
+    "-mfp16-format=ieee"
     )
