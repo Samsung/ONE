@@ -141,7 +141,7 @@ class CircleAdapter(Adapter):
         metadata = graph_builder.MetadataItem(
             id=f'{output_id}',
             attrs=[
-                graph_builder.KeyValue(key='shape', value=tensor_shape),
+                graph_builder.KeyValue(key='tensor_shape', value=tensor_shape),
                 graph_builder.KeyValue(key='tensor_index', value=f'{tensor_id}'),
                 graph_builder.KeyValue(key='tensor_name', value=tensor_name)
             ],
