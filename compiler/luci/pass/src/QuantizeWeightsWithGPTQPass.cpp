@@ -24,7 +24,6 @@
 #include <luci/Log.h>
 #include <loco/IR/TensorShape.h>
 
-#include <iostream>
 #include <cmath>
 #include <functional>
 
@@ -128,8 +127,7 @@ void cholesky_decomposition(std::vector<float> &src, uint32_t num_size)
       {
         if (src[i * num_size + i] - sum <= 0)
         {
-          std::cout << "Error: Matrix is not positive definite." << std::endl;
-          return;
+          throw std::runtime_error("Error: Matrix is not positive definite.");
         }
         src[i * num_size + i] = sqrt(src[i * num_size + i] - sum);
       }
