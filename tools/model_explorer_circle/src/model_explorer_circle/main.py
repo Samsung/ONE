@@ -170,15 +170,15 @@ class CircleAdapter(Adapter):
         sub_graph = self.model.subgraphs[0]
 
         # Create Input nodes
-        input_id = len(sub_graph.operators)
-        me_node = graph_builder.GraphNode(id=f'{input_id}',
+        node_id = len(sub_graph.operators)
+        me_node = graph_builder.GraphNode(id=f'{node_id}',
                                           label="GraphInputs",
                                           namespace="GraphInputs")
         me_graph.nodes.append(me_node)
 
         for i, tensor_id in enumerate(sub_graph.inputs):
             # Map source and output tensors of GraphInputs
-            self.set_source_of(tensor_id=tensor_id, source_id=input_id, output_id=i)
+            self.set_source_of(tensor_id=tensor_id, source_id=node_id, output_id=i)
             # Add output metadata to the input node
             self.add_output_tensor_info(me_node=me_node, tensor_id=tensor_id, output_id=i)
 
@@ -190,7 +190,7 @@ class CircleAdapter(Adapter):
         # Create pseudo const node for orphan tensors (= const tensors)
         for tensor_id, tensor in enumerate(sub_graph.tensors):
             if (self.get_source_of(tensor_id)) is None:
-                node_id = input_id + tensor_id + 1
+                node_id += 1
                 me_node = graph_builder.GraphNode(id=f'{node_id}',
                                                   label='pseudo_const',
                                                   namespace=tensor.name.decode('utf-8'))
@@ -228,7 +228,8 @@ class CircleAdapter(Adapter):
                 self.add_incoming_edge(me_node=me_node, tensor_id=tensor_id, input_id=i)
 
         # Create Output nodes
-        me_node = graph_builder.GraphNode(id=f'{len(me_graph.nodes)}',
+        node_id += 1
+        me_node = graph_builder.GraphNode(id=f'{node_id}',
                                           label="GraphOutputs",
                                           namespace="GraphOutputs")
         me_graph.nodes.append(me_node)
