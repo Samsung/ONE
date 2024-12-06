@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
- * Copyright 2019 The TensorFlow Authors. All Rights Reserved.
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd.  All Rights Reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -93,7 +93,7 @@ size_t calculate_qauntized_value(CircleConst *node, uint32_t *indices, loco::Ten
   return static_cast<int32_t>(std::round((data_clipped - min[idx_channel]) * scaling_factor_inv));
 }
 
-void apply_damping_to_hessian(std::vector<float> &hessian, uint32_t num_size)
+void apply_dampening_to_hessian(std::vector<float> &hessian, uint32_t num_size)
 {
   float damp = 0;
   float percdamp = .01;
@@ -352,10 +352,10 @@ void transpose_to_upper_triangular(std::vector<float> &matrix, uint32_t num_size
   }
 }
 
-void asymmetric_wquant_per_channel_basic(CircleConst *node, std::vector<float> &min,
-                                           std::vector<float> &max, std::vector<float> &scaling_factor,
-                                           std::vector<int64_t> &zp, std::vector<float> &nudged_min,
-                                           std::vector<float> &nudged_max, loco::DataType output_type) const
+void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
+                                   std::vector<float> &max, std::vector<float> &scaling_factor,
+                                   std::vector<int64_t> &zp, std::vector<float> &nudged_min,
+                                   std::vector<float> &nudged_max, loco::DataType output_type)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
   assert(output_type == loco::DataType::U8 || output_type == loco::DataType::U4);
@@ -388,11 +388,10 @@ void asymmetric_wquant_per_channel_basic(CircleConst *node, std::vector<float> &
   }
 }
 
-void asymmetric_wquant_per_channel_with_gptq(CircleConst *node, std::vector<float> &min,
-                                               std::vector<float> &max, std::vector<float> &scaling_factor,
-                                               std::vector<int64_t> &zp, std::vector<float> &nudged_min,
-                                               std::vector<float> &nudged_max, std::vector<float> &hessian,
-                                               loco::DataType output_type) const
+void asymmetric_wquant_per_channel_with_gptq(
+  CircleConst *node, std::vector<float> &min, std::vector<float> &max,
+  std::vector<float> &scaling_factor, std::vector<int64_t> &zp, std::vector<float> &nudged_min,
+  std::vector<float> &nudged_max, std::vector<float> &hessian, loco::DataType output_type)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
   assert(output_type == loco::DataType::U8 || output_type == loco::DataType::U4);
@@ -414,7 +413,7 @@ void asymmetric_wquant_per_channel_with_gptq(CircleConst *node, std::vector<floa
   uint32_t size_hessian = static_cast<uint32_t>(sqrt(hessian.size()));
 
   // Calculate hessian inverse
-  apply_damping_to_hessian(hessian, size_hessian);
+  apply_dampening_to_hessian(hessian, size_hessian);
   cholesky_decomposition(hessian, size_hessian);
   cholesky_inverse(hessian, size_hessian);
   cholesky_decomposition(hessian, size_hessian);
@@ -544,7 +543,7 @@ private:
   QuantizationGranularity _granularity;
   std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
 
-  void fake_quantize_weights_basic(luci::CircleConst *weights) const
+  void fake_quantize(luci::CircleConst *weights) const
   {
     if (_granularity != luci::QuantizationGranularity::ChannelWise)
     {
@@ -567,8 +566,8 @@ private:
     std::vector<float> scaling_factor(min.size());
     std::vector<int64_t> zp(min.size());
 
-    asymmetric_wquant_per_channel_basic(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
-                                        _output_type);
+    asymmetric_wquant_per_channel(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
+                                  _output_type);
     asymmetric_wdequant_per_channel(weights, scaling_factor, nudged_min);
 
     auto quantparam = std::make_unique<CircleQuantParam>();
@@ -580,7 +579,7 @@ private:
     weights->quantparam(std::move(quantparam));
   }
 
-  void fake_quantize_weights_with_gptq(luci::CircleConst *weights, std::vector<float> &hessian) const
+  void fake_quantize_with_gptq(luci::CircleConst *weights, std::vector<float> &hessian) const
   {
     if (_granularity != luci::QuantizationGranularity::ChannelWise)
     {
@@ -603,8 +602,8 @@ private:
     std::vector<float> scaling_factor(min.size());
     std::vector<int64_t> zp(min.size());
 
-    asymmetric_wquant_per_channel_with_gptq(weights, min, max, scaling_factor, zp, nudged_min, nudged_max,
-                                          hessian, _output_type);
+    asymmetric_wquant_per_channel_with_gptq(weights, min, max, scaling_factor, zp, nudged_min,
+                                            nudged_max, hessian, _output_type);
     asymmetric_wdequant_per_channel(weights, scaling_factor, nudged_min);
 
     auto quantparam = std::make_unique<CircleQuantParam>();
@@ -650,7 +649,7 @@ private:
 
     auto hessian = (*_hessian_map)[node];
 
-    fake_quantize_weights_with_gptq(new_weights, hessian);
+    fake_quantize_with_gptq(new_weights, hessian);
   }
 
   void visit(luci::CircleDepthwiseConv2D *node)
@@ -665,7 +664,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
 
-    fake_quantize_weights_basic(new_weights);
+    fake_quantize(new_weights);
   }
 
   void visit(luci::CircleTransposeConv *node)
@@ -680,7 +679,7 @@ private:
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
 
-    fake_quantize_weights_basic(new_weights);
+    fake_quantize(new_weights);
   }
 
   void visit(luci::CircleFullyConnected *node)
@@ -696,7 +695,7 @@ private:
 
     auto hessian = (*_hessian_map)[node];
 
-    fake_quantize_weights_with_gptq(new_weights, hessian);
+    fake_quantize_with_gptq(new_weights, hessian);
   }
 };
 
