@@ -79,15 +79,21 @@ class CircleAdapter(Adapter):
         """Prints a tensor with the specified number of elements"""
         tensor = self.model.subgraphs[0].tensors[tensor_id]
         buffer = self.model.buffers[tensor.buffer].data
+        dtype = self.dict_tensor_type_to_string[tensor.type].lower()
         # Convert buffer into numpy array with the correct datatype
-        tensor_data = buffer.view(self.dict_tensor_type_to_string[tensor.type].lower())
+        if dtype in ['int4', 'uint4']:
+            tensor_data = buffer.view(dtype[:-1] + '8')
+            n_elements = buffer.size * 2
+        else:
+            tensor_data = buffer.view(dtype)
+            n_elements = len(tensor_data)
         shape = list(tensor.shape)
         rank = len(shape) if shape else 1
 
         # Used to represent the number of elements in each dimension
         counter = [0] * rank
         # How many elements are we going to print?
-        n_elements = min(self.const_element_count_limit, len(tensor_data))
+        n_elements = min(self.const_element_count_limit, n_elements)
         # How many brackets are currently opened?
         open_brackets = 0
         # Ouput string
@@ -99,7 +105,13 @@ class CircleAdapter(Adapter):
                 tensor_data_str += ', '
             tensor_data_str += '[' * (rank - open_brackets)
             open_brackets = rank
-            tensor_data_str += f'{tensor_data[i]}'
+            if dtype in ['int4', 'uint4']:
+                val_4b = (tensor_data[i // 2] >> 4 * (i % 2)) & 0xF
+                if dtype[0] == 'i' and val_4b > 7:
+                    val_4b = val_4b - 16
+                tensor_data_str += f'{val_4b}'
+            else:
+                tensor_data_str += f'{tensor_data[i]}'
             counter[rank - 1] += 1
             for i in range(rank - 1, 0, -1):
                 if counter[i] >= shape[i]:
