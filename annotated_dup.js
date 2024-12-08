@@ -40,8 +40,6 @@ var annotated_dup =
       [ "weights_transformations", "namespacearm__compute_1_1weights__transformations.html", [
         [ "CLFullyConnectedLayerReshapeWeightsExManaged", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed" ]
       ] ],
-      [ "CLArgMinMaxLayerEx", "classarm__compute_1_1_c_l_arg_min_max_layer_ex.html", "classarm__compute_1_1_c_l_arg_min_max_layer_ex" ],
-      [ "CLArgMinMaxLayerKernelEx", "classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex.html", "classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex" ],
       [ "CLBinaryLogicalOp", "classarm__compute_1_1_c_l_binary_logical_op.html", "classarm__compute_1_1_c_l_binary_logical_op" ],
       [ "CLBinaryLogicalOpKernel", "classarm__compute_1_1_c_l_binary_logical_op_kernel.html", "classarm__compute_1_1_c_l_binary_logical_op_kernel" ],
       [ "CLCastBool", "classarm__compute_1_1_c_l_cast_bool.html", "classarm__compute_1_1_c_l_cast_bool" ],
@@ -4388,8 +4386,8 @@ var annotated_dup =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", "structnnfw__custom__kernel__params" ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],

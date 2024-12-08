@@ -242,18 +242,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  470</span>  align16(result_size);</div>
 <div class="line"><span class="lineno">  471</span>  result_size += 16; <span class="comment">// for safety</span></div>
 <div class="line"><span class="lineno">  472</span> </div>
-<div class="line"><span class="lineno">  473</span>  std::string result;</div>
+<div class="line"><span class="lineno">  473</span>  std::string <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  474</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *buff_ptr = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(_fb-&gt;GetBufferPointer());</div>
 <div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span>  <span class="keyword">auto</span> padalign16 = [](std::string &amp;<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>) {</div>
-<div class="line"><span class="lineno">  477</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.size() % 16 != 0)</div>
+<div class="line"><span class="lineno">  476</span>  <span class="keyword">auto</span> padalign16 = [](std::string &amp;<a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>) {</div>
+<div class="line"><span class="lineno">  477</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.size() % 16 != 0)</div>
 <div class="line"><span class="lineno">  478</span>      str += <span class="charliteral">&#39;\0&#39;</span>;</div>
 <div class="line"><span class="lineno">  479</span>  };</div>
 <div class="line"><span class="lineno">  480</span> </div>
-<div class="line"><span class="lineno">  481</span>  result.reserve(result_size);</div>
-<div class="line"><span class="lineno">  482</span>  result.append(buff_ptr, _fb-&gt;GetSize());</div>
+<div class="line"><span class="lineno">  481</span>  <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.reserve(result_size);</div>
+<div class="line"><span class="lineno">  482</span>  <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.append(buff_ptr, _fb-&gt;GetSize());</div>
 <div class="line"><span class="lineno">  483</span> </div>
-<div class="line"><span class="lineno">  484</span>  <span class="keyword">auto</span> mutable_model = circle::GetMutableModel(result.data());</div>
+<div class="line"><span class="lineno">  484</span>  <span class="keyword">auto</span> mutable_model = circle::GetMutableModel(<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.data());</div>
 <div class="line"><span class="lineno">  485</span>  <span class="keyword">auto</span> mutable_buffers = mutable_model-&gt;mutable_buffers();</div>
 <div class="line"><span class="lineno">  486</span> </div>
 <div class="line"><span class="lineno">  487</span>  <span class="comment">// pad to be 16 bytes aligned</span></div>
@@ -262,24 +262,25 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  490</span>  {</div>
 <div class="line"><span class="lineno">  491</span>    int32_t buffer_index = it.first;</div>
 <div class="line"><span class="lineno">  492</span>    <a class="code hl_typedef" href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">BufferData</a> &amp;buffer_data = it.second;</div>
-<div class="line"><span class="lineno">  493</span>    uint64_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = result.size();</div>
+<div class="line"><span class="lineno">  493</span>    uint64_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.size();</div>
 <div class="line"><span class="lineno">  494</span>    uint64_t <a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">size</a> = buffer_data.size();</div>
 <div class="line"><span class="lineno">  495</span> </div>
 <div class="line"><span class="lineno">  496</span>    circle::Buffer *mutable_buffer = mutable_buffers-&gt;GetMutableObject(buffer_index);</div>
 <div class="line"><span class="lineno">  497</span>    mutable_buffer-&gt;mutate_offset(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
 <div class="line"><span class="lineno">  498</span>    mutable_buffer-&gt;mutate_size(<a class="code hl_function" href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">size</a>);</div>
 <div class="line"><span class="lineno">  499</span> </div>
-<div class="line"><span class="lineno">  500</span>    result.append(buffer_data.begin(), buffer_data.end());</div>
+<div class="line"><span class="lineno">  500</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.append(buffer_data.begin(), buffer_data.end());</div>
 <div class="line"><span class="lineno">  501</span>    padalign16(result);</div>
 <div class="line"><span class="lineno">  502</span>  }</div>
 <div class="line"><span class="lineno">  503</span>  padalign16(result);</div>
 <div class="line"><span class="lineno">  504</span> </div>
 <div class="line"><span class="lineno">  505</span>  <span class="comment">// use final result</span></div>
-<div class="line"><span class="lineno">  506</span>  _fb_data_with_ext = result;</div>
+<div class="line"><span class="lineno">  506</span>  _fb_data_with_ext = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  507</span>}</div>
 <div class="ttc" id="aclasstflite2circle_1_1_circle_model_html_a3e087f116e34d7544480a786f998ac25"><div class="ttname"><a href="classtflite2circle_1_1_circle_model.html#a3e087f116e34d7544480a786f998ac25">tflite2circle::CircleModel::size</a></div><div class="ttdeci">size_t size(void) const</div><div class="ttdef"><b>Definition</b> <a href="_circle_model_8cpp_source.html#l00516">CircleModel.cpp:516</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_afc9dd8b2ac5b9f8a2a04466cf313732a"><div class="ttname"><a href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">part_eval_one.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00019">part_eval_one.py:19</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_af1f8e46f28b60855bfec7d517f4d3ef7"><div class="ttname"><a href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">infer.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00018">infer.py:18</a></div></div>
 <div class="ttc" id="anamespacetflite2circle_html_ac3d592e40f47aac3b9e56cca542a1622"><div class="ttname"><a href="namespacetflite2circle.html#ac3d592e40f47aac3b9e56cca542a1622">tflite2circle::BufferData</a></div><div class="ttdeci">std::vector&lt; uint8_t &gt; BufferData</div><div class="ttdef"><b>Definition</b> <a href="_circle_model_8h_source.html#l00058">CircleModel.h:58</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="_circle_model_8cpp_source.html#l00516">size()</a>.</p>

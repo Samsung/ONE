@@ -227,10 +227,11 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00340">340</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  342</span>{</div>
 <div class="line"><span class="lineno">  343</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
-<div class="line"><span class="lineno">  344</span>  <span class="keyword">auto</span> result = createOp&lt;ops::AddOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  344</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::AddOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  345</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  346</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -278,8 +279,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  249</span>  <span class="keyword">auto</span> &amp;pad_after = attributes.<a class="code hl_variable" href="structmir_1_1_avg_pool2_d_op_attributes.html#abc475693e506015b6709a1c9bfa49bf2">padding_after</a>;</div>
 <div class="line"><span class="lineno">  250</span>  calculatePadding(padding_type, input_shape, window_size, strides, pad_before, pad_after);</div>
 <div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>  <span class="keyword">auto</span> result = createOp&lt;ops::AvgPool2DOp&gt;(input, attributes);</div>
-<div class="line"><span class="lineno">  253</span>  <span class="keywordflow">return</span> {addFusedActivation(result-&gt;getOutput(0), opts-&gt;fused_activation_function)};</div>
+<div class="line"><span class="lineno">  252</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::AvgPool2DOp&gt;(input, attributes);</div>
+<div class="line"><span class="lineno">  253</span>  <span class="keywordflow">return</span> {addFusedActivation(<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0), opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  254</span>}</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="astructmir_1_1_avg_pool2_d_op_attributes_html"><div class="ttname"><a href="structmir_1_1_avg_pool2_d_op_attributes.html">mir::AvgPool2DOpAttributes</a></div><div class="ttdef"><b>Definition</b> <a href="_attributes_8h_source.html#l00038">Attributes.h:39</a></div></div>
@@ -321,8 +322,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00202">202</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  204</span>{</div>
-<div class="line"><span class="lineno">  205</span>  <span class="keyword">auto</span> result = createOp&lt;ops::ConcatOp&gt;(inputs, opts-&gt;axis);</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> {addFusedActivation(result-&gt;getOutput(0), opts-&gt;fused_activation_function)};</div>
+<div class="line"><span class="lineno">  205</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::ConcatOp&gt;(inputs, opts-&gt;axis);</div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> {addFusedActivation(<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0), opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  207</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -371,15 +372,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  148</span>  std::vector&lt;std::int32_t&gt; kernel_size{kernel_shape.dim(1), kernel_shape.dim(2)};</div>
 <div class="line"><span class="lineno">  149</span>  calculatePadding(padding_type, input_shape, kernel_size, strides, pad_before, pad_after);</div>
 <div class="line"><span class="lineno">  150</span> </div>
-<div class="line"><span class="lineno">  151</span>  <a class="code hl_class" href="classmir_1_1_operation_1_1_output.html">mir::Operation::Output</a> *result;</div>
+<div class="line"><span class="lineno">  151</span>  <a class="code hl_class" href="classmir_1_1_operation_1_1_output.html">mir::Operation::Output</a> *<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  152</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getType().isQuantized())</div>
 <div class="line"><span class="lineno">  153</span>  {</div>
-<div class="line"><span class="lineno">  154</span>    result = createOp&lt;ops::Conv2DOp&gt;(input, kernel, bias, attributes)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  154</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::Conv2DOp&gt;(input, kernel, bias, attributes)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>  <span class="keywordflow">else</span> <span class="comment">// TODO Fuse bias to other backends</span></div>
 <div class="line"><span class="lineno">  157</span>  {</div>
-<div class="line"><span class="lineno">  158</span>    result = createOp&lt;ops::Conv2DOp&gt;(input, kernel, attributes)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  159</span>    result = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  158</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::Conv2DOp&gt;(input, kernel, attributes)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  159</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  160</span>  }</div>
 <div class="line"><span class="lineno">  161</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  162</span>}</div>
@@ -442,15 +443,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  185</span>  <span class="keyword">auto</span> &amp;pad_after = attributes.<a class="code hl_variable" href="structmir_1_1_conv2_d_op_attributes.html#a168c94a4b79a7cc42bc869038da3ee93">padding_after</a>;</div>
 <div class="line"><span class="lineno">  186</span>  calculatePadding(padding_type, input_shape, kernel_size, strides, pad_before, pad_after);</div>
 <div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>  <a class="code hl_class" href="classmir_1_1_operation_1_1_output.html">mir::Operation::Output</a> *result;</div>
+<div class="line"><span class="lineno">  188</span>  <a class="code hl_class" href="classmir_1_1_operation_1_1_output.html">mir::Operation::Output</a> *<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getType().isQuantized())</div>
 <div class="line"><span class="lineno">  190</span>  {</div>
-<div class="line"><span class="lineno">  191</span>    result = createOp&lt;ops::DepthwiseConv2DOp&gt;(input, kernel, bias, attributes)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  191</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::DepthwiseConv2DOp&gt;(input, kernel, bias, attributes)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  192</span>  }</div>
 <div class="line"><span class="lineno">  193</span>  <span class="keywordflow">else</span> <span class="comment">// TODO Fuse bias to other backends</span></div>
 <div class="line"><span class="lineno">  194</span>  {</div>
-<div class="line"><span class="lineno">  195</span>    result = createOp&lt;ops::DepthwiseConv2DOp&gt;(input, kernel, attributes)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  196</span>    result = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  195</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::DepthwiseConv2DOp&gt;(input, kernel, attributes)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  196</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  197</span>  }</div>
 <div class="line"><span class="lineno">  198</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  199</span>}</div>
@@ -488,7 +489,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00367">367</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  369</span>{</div>
 <div class="line"><span class="lineno">  370</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
-<div class="line"><span class="lineno">  371</span>  <span class="keyword">auto</span> result = createOp&lt;ops::DivOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  371</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::DivOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  372</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  373</span>}</div>
 </div><!-- fragment -->
@@ -536,15 +537,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  419</span>  <span class="keyword">const</span> std::vector&lt;std::size_t&gt; axis_order{1, 0};</div>
 <div class="line"><span class="lineno">  420</span>  weights = createOp&lt;ops::TransposeOp&gt;(weights, axis_order)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  421</span> </div>
-<div class="line"><span class="lineno">  422</span>  <a class="code hl_class" href="classmir_1_1_operation_1_1_output.html">mir::Operation::Output</a> *result;</div>
+<div class="line"><span class="lineno">  422</span>  <a class="code hl_class" href="classmir_1_1_operation_1_1_output.html">mir::Operation::Output</a> *<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  423</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getType().isQuantized())</div>
 <div class="line"><span class="lineno">  424</span>  {</div>
-<div class="line"><span class="lineno">  425</span>    result = createOp&lt;ops::FullyConnectedOp&gt;(flatten, weights, bias)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  425</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::FullyConnectedOp&gt;(flatten, weights, bias)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  426</span>  }</div>
 <div class="line"><span class="lineno">  427</span>  <span class="keywordflow">else</span> <span class="comment">// TODO Fuse bias to other backends</span></div>
 <div class="line"><span class="lineno">  428</span>  {</div>
-<div class="line"><span class="lineno">  429</span>    result = createOp&lt;ops::FullyConnectedOp&gt;(flatten, weights)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  430</span>    result = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  429</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::FullyConnectedOp&gt;(flatten, weights)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  430</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  431</span>  }</div>
 <div class="line"><span class="lineno">  432</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  433</span>}</div>
@@ -583,8 +584,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00645">645</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  647</span>{</div>
-<div class="line"><span class="lineno">  648</span>  <span class="keyword">auto</span> result = createOp&lt;ops::HardSwishOp&gt;(inputs[0])-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  649</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  648</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::HardSwishOp&gt;(inputs[0])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  649</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  650</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -619,8 +620,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  616</span>{</div>
 <div class="line"><span class="lineno">  617</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  618</span> </div>
-<div class="line"><span class="lineno">  619</span>  <span class="keyword">auto</span> result = createOp&lt;ops::LeakyReluOp&gt;(input, opts-&gt;alpha);</div>
-<div class="line"><span class="lineno">  620</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  619</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::LeakyReluOp&gt;(input, opts-&gt;alpha);</div>
+<div class="line"><span class="lineno">  620</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  621</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -645,8 +646,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  538</span>{</div>
 <div class="line"><span class="lineno">  539</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  540</span> </div>
-<div class="line"><span class="lineno">  541</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SigmoidOp&gt;(input);</div>
-<div class="line"><span class="lineno">  542</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  541</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SigmoidOp&gt;(input);</div>
+<div class="line"><span class="lineno">  542</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  543</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -670,8 +671,8 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00376">376</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  377</span>{</div>
 <div class="line"><span class="lineno">  378</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
-<div class="line"><span class="lineno">  379</span>  <span class="keyword">auto</span> result = createOp&lt;ops::MaxOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  380</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  379</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::MaxOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  380</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  381</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -719,8 +720,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  225</span>  <span class="keyword">auto</span> &amp;pad_after = attributes.<a class="code hl_variable" href="structmir_1_1_max_pool2_d_op_attributes.html#a2b73b1c8b044b2b018ac0c9afdc1b994">padding_after</a>;</div>
 <div class="line"><span class="lineno">  226</span>  calculatePadding(padding_type, input_shape, window_size, strides, pad_before, pad_after);</div>
 <div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>  <span class="keyword">auto</span> result = createOp&lt;ops::MaxPool2DOp&gt;(input, attributes);</div>
-<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">return</span> {addFusedActivation(result-&gt;getOutput(0), opts-&gt;fused_activation_function)};</div>
+<div class="line"><span class="lineno">  228</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::MaxPool2DOp&gt;(input, attributes);</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">return</span> {addFusedActivation(<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0), opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  230</span>}</div>
 <div class="ttc" id="astructmir_1_1_max_pool2_d_op_attributes_html"><div class="ttname"><a href="structmir_1_1_max_pool2_d_op_attributes.html">mir::MaxPool2DOpAttributes</a></div><div class="ttdef"><b>Definition</b> <a href="_attributes_8h_source.html#l00050">Attributes.h:51</a></div></div>
 <div class="ttc" id="astructmir_1_1_max_pool2_d_op_attributes_html_a1292bef949d6bfd38001e62c35aaee20"><div class="ttname"><a href="structmir_1_1_max_pool2_d_op_attributes.html#a1292bef949d6bfd38001e62c35aaee20">mir::MaxPool2DOpAttributes::window</a></div><div class="ttdeci">std::vector&lt; std::int32_t &gt; window</div><div class="ttdef"><b>Definition</b> <a href="_attributes_8h_source.html#l00054">Attributes.h:54</a></div></div>
@@ -764,8 +765,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  397</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;int32_t&gt;</a> axes_tensor(extractTensor(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(1)));</div>
 <div class="line"><span class="lineno">  398</span> </div>
 <div class="line"><span class="lineno">  399</span>  std::vector&lt;int32_t&gt; axes = convertIntTensorToVector&lt;int32_t&gt;(axes_tensor);</div>
-<div class="line"><span class="lineno">  400</span>  <span class="keyword">auto</span> result = createOp&lt;ops::ReduceMeanOp&gt;(input, axes, opts-&gt;keep_dims);</div>
-<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  400</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::ReduceMeanOp&gt;(input, axes, opts-&gt;keep_dims);</div>
+<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  402</span>}</div>
 <div class="ttc" id="aclassmir_1_1_tensor_html"><div class="ttname"><a href="classmir_1_1_tensor.html">mir::Tensor</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00026">Tensor.h:27</a></div></div>
 </div><!-- fragment -->
@@ -800,7 +801,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00358">358</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  360</span>{</div>
 <div class="line"><span class="lineno">  361</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
-<div class="line"><span class="lineno">  362</span>  <span class="keyword">auto</span> result = createOp&lt;ops::MulOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  362</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::MulOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  363</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  364</span>}</div>
 </div><!-- fragment -->
@@ -847,8 +848,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  480</span>    attributes.padding_after[i] = paddings_tensor.at(<a class="code hl_class" href="classmir_1_1_index.html">mir::Index</a>({i, 1}));</div>
 <div class="line"><span class="lineno">  481</span>  }</div>
 <div class="line"><span class="lineno">  482</span> </div>
-<div class="line"><span class="lineno">  483</span>  <span class="keyword">auto</span> result = createOp&lt;ops::PadOp&gt;(input, attributes)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  484</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  483</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::PadOp&gt;(input, attributes)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  484</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  485</span>}</div>
 <div class="ttc" id="aclassmir_1_1_index_html"><div class="ttname"><a href="classmir_1_1_index.html">mir::Index</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_index_8h_source.html#l00031">Index.h:32</a></div></div>
 <div class="ttc" id="astructmir_1_1_pad_op_attributes_html"><div class="ttname"><a href="structmir_1_1_pad_op_attributes.html">mir::PadOpAttributes</a></div><div class="ttdef"><b>Definition</b> <a href="_attributes_8h_source.html#l00072">Attributes.h:73</a></div></div>
@@ -877,8 +878,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  498</span>{</div>
 <div class="line"><span class="lineno">  499</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  500</span> </div>
-<div class="line"><span class="lineno">  501</span>  <span class="keyword">auto</span> result = createOp&lt;ops::ReluOp&gt;(input);</div>
-<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  501</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::ReluOp&gt;(input);</div>
+<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  503</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -903,8 +904,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  507</span>{</div>
 <div class="line"><span class="lineno">  508</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  509</span> </div>
-<div class="line"><span class="lineno">  510</span>  <span class="keyword">auto</span> result = createOp&lt;ops::CappedReluOp&gt;(input, 6);</div>
-<div class="line"><span class="lineno">  511</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  510</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::CappedReluOp&gt;(input, 6);</div>
+<div class="line"><span class="lineno">  511</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  512</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -946,8 +947,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  293</span>  {</div>
 <div class="line"><span class="lineno">  294</span>    new_shape.dim(i) = opts-&gt;new_shape[i];</div>
 <div class="line"><span class="lineno">  295</span>  }</div>
-<div class="line"><span class="lineno">  296</span>  <span class="keyword">auto</span> result = createOp&lt;ops::ReshapeOp&gt;(input, new_shape);</div>
-<div class="line"><span class="lineno">  297</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  296</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::ReshapeOp&gt;(input, new_shape);</div>
+<div class="line"><span class="lineno">  297</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  298</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00047">mir::Shape::dim()</a>.</p>
@@ -991,9 +992,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  331</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape();</div>
 <div class="line"><span class="lineno">  332</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> res_shape{input_shape.dim(0), size_tensor.at(<a class="code hl_class" href="classmir_1_1_index.html">mir::Index</a>{0}), size_tensor.at(<a class="code hl_class" href="classmir_1_1_index.html">mir::Index</a>{1}),</div>
 <div class="line"><span class="lineno">  333</span>                  input_shape.dim(3)};</div>
-<div class="line"><span class="lineno">  334</span>  <span class="keyword">auto</span> result =</div>
+<div class="line"><span class="lineno">  334</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> =</div>
 <div class="line"><span class="lineno">  335</span>    createOp&lt;ops::ResizeOp&gt;(input, ops::ResizeOp::ResizeMethod::nearestNeighbor, res_shape);</div>
-<div class="line"><span class="lineno">  336</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  336</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  337</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00031">mir::Tensor&lt; T &gt;::at()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_shape_8h_source.html#l00047">mir::Shape::dim()</a>.</p>
@@ -1024,8 +1025,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  520</span>  <a class="code hl_class" href="classmir_1_1_tensor_variant.html">mir::TensorVariant</a> one_tensor({mir::DataType::FLOAT32, {}}, &amp;one_value);</div>
 <div class="line"><span class="lineno">  521</span>  <span class="keyword">auto</span> one = createOp&lt;ops::ConstantOp&gt;(one_tensor)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  522</span>  <span class="keyword">auto</span> sqrt = createOp&lt;ops::SqrtOp&gt;(input)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  523</span>  <span class="keyword">auto</span> result = createOp&lt;ops::DivOp&gt;(one, sqrt)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  524</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  523</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::DivOp&gt;(one, sqrt)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  524</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  525</span>}</div>
 <div class="ttc" id="aclassmir_1_1_tensor_variant_html"><div class="ttname"><a href="classmir_1_1_tensor_variant.html">mir::TensorVariant</a></div><div class="ttdef"><b>Definition</b> <a href="_tensor_variant_8h_source.html#l00032">TensorVariant.h:33</a></div></div>
 </div><!-- fragment -->
@@ -1072,8 +1073,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  637</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; rank; i++)</div>
 <div class="line"><span class="lineno">  638</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.emplace_back(input_shape.dim(i));</div>
 <div class="line"><span class="lineno">  639</span>  <a class="code hl_class" href="classmir_1_1_tensor_variant.html">mir::TensorVariant</a> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>({mir::DataType::INT32, {rank}}, <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">data</a>.data());</div>
-<div class="line"><span class="lineno">  640</span>  <span class="keyword">auto</span> result = createOp&lt;ops::ConstantOp&gt;(tensor);</div>
-<div class="line"><span class="lineno">  641</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  640</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::ConstantOp&gt;(tensor);</div>
+<div class="line"><span class="lineno">  641</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  642</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
@@ -1116,8 +1117,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  276</span> </div>
 <div class="line"><span class="lineno">  277</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> starts(convertIntTensorToVector&lt;int32_t&gt;(begin_tensor));</div>
 <div class="line"><span class="lineno">  278</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> sizes(convertIntTensorToVector&lt;int32_t&gt;(size_tensor));</div>
-<div class="line"><span class="lineno">  279</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SliceOp&gt;(input, starts, sizes);</div>
-<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  279</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SliceOp&gt;(input, starts, sizes);</div>
+<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  281</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1155,8 +1156,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  262</span>  <span class="comment">// Softmax in TFLite is always 2-D.</span></div>
 <div class="line"><span class="lineno">  263</span>  assert(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;getShape().rank() == 2);</div>
 <div class="line"><span class="lineno">  264</span>  <span class="keyword">const</span> int32_t axis = 1;</div>
-<div class="line"><span class="lineno">  265</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SoftmaxOp&gt;(input, axis);</div>
-<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  265</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SoftmaxOp&gt;(input, axis);</div>
+<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  267</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1181,8 +1182,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  529</span>{</div>
 <div class="line"><span class="lineno">  530</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  531</span> </div>
-<div class="line"><span class="lineno">  532</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SqrtOp&gt;(input)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  533</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  532</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SqrtOp&gt;(input)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  533</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  534</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1206,9 +1207,9 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00384">384</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  385</span>{</div>
 <div class="line"><span class="lineno">  386</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
-<div class="line"><span class="lineno">  387</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SubOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  388</span>  result = createOp&lt;ops::MulOp&gt;(result, result)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  387</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SubOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  388</span>  <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::MulOp&gt;(result, result)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  390</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1244,8 +1245,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  459</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  460</span> </div>
 <div class="line"><span class="lineno">  461</span>  std::vector&lt;int32_t&gt; squeeze_dims(opts-&gt;squeeze_dims.begin(), opts-&gt;squeeze_dims.end());</div>
-<div class="line"><span class="lineno">  462</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SqueezeOp&gt;(input, squeeze_dims);</div>
-<div class="line"><span class="lineno">  463</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  462</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SqueezeOp&gt;(input, squeeze_dims);</div>
+<div class="line"><span class="lineno">  463</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  464</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1325,9 +1326,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  605</span>      squeeze_dims.push_back(axis);</div>
 <div class="line"><span class="lineno">  606</span>  }</div>
 <div class="line"><span class="lineno">  607</span> </div>
-<div class="line"><span class="lineno">  608</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SliceOp&gt;(input, start, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  609</span>  result = createOp&lt;ops::SqueezeOp&gt;(result-&gt;getOutput(0), squeeze_dims);</div>
-<div class="line"><span class="lineno">  610</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  608</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SliceOp&gt;(input, start, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  609</span>  <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SqueezeOp&gt;(<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0), squeeze_dims);</div>
+<div class="line"><span class="lineno">  610</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  611</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a5a23adf0690140cdfe1dc79640a31047"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">nnfw::cker::end</a></div><div class="ttdeci">ShapeIterator end(const Shape &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="_shape_iterator_8h_source.html#l00089">ShapeIterator.h:89</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
@@ -1366,7 +1367,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="tflite__op__creator_8cpp_source.html#l00349">349</a> of file <a class="el" href="tflite__op__creator_8cpp_source.html">tflite_op_creator.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  351</span>{</div>
 <div class="line"><span class="lineno">  352</span>  assert(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size() == 2);</div>
-<div class="line"><span class="lineno">  353</span>  <span class="keyword">auto</span> result = createOp&lt;ops::SubOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  353</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::SubOp&gt;(inputs[0], inputs[1])-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  354</span>  <span class="keywordflow">return</span> {addFusedActivation(result, opts-&gt;fused_activation_function)};</div>
 <div class="line"><span class="lineno">  355</span>}</div>
 </div><!-- fragment -->
@@ -1392,8 +1393,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  489</span>{</div>
 <div class="line"><span class="lineno">  490</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(0);</div>
 <div class="line"><span class="lineno">  491</span> </div>
-<div class="line"><span class="lineno">  492</span>  <span class="keyword">auto</span> result = createOp&lt;ops::TanhOp&gt;(input);</div>
-<div class="line"><span class="lineno">  493</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  492</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::TanhOp&gt;(input);</div>
+<div class="line"><span class="lineno">  493</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  494</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1430,8 +1431,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  550</span>  <a class="code hl_class" href="classmir_1_1_tensor.html">mir::Tensor&lt;int32_t&gt;</a> perm_tensor(extractTensor(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.at(1)));</div>
 <div class="line"><span class="lineno">  551</span> </div>
 <div class="line"><span class="lineno">  552</span>  std::vector&lt;std::size_t&gt; axis_order = convertIntTensorToVector&lt;std::size_t&gt;(perm_tensor);</div>
-<div class="line"><span class="lineno">  553</span>  <span class="keyword">auto</span> result = createOp&lt;ops::TransposeOp&gt;(input, axis_order);</div>
-<div class="line"><span class="lineno">  554</span>  <span class="keywordflow">return</span> {result-&gt;getOutput(0)};</div>
+<div class="line"><span class="lineno">  553</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::TransposeOp&gt;(input, axis_order);</div>
+<div class="line"><span class="lineno">  554</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>-&gt;getOutput(0)};</div>
 <div class="line"><span class="lineno">  555</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -1477,8 +1478,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  314</span>  kernel = createOp&lt;ops::TransposeOp&gt;(kernel, axis_order)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  315</span> </div>
 <div class="line"><span class="lineno">  316</span>  attributes.<a class="code hl_variable" href="structmir_1_1_deconv2_d_op_attributes.html#a4094980ab2602db6d1993e1c18968d58">padding_type</a> = convertPadding(opts-&gt;padding);</div>
-<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> result = createOp&lt;ops::DeConv2DOp&gt;(input, kernel, attributes, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>)-&gt;getOutput(0);</div>
-<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">return</span> {result};</div>
+<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::DeConv2DOp&gt;(input, kernel, attributes, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  318</span>  <span class="keywordflow">return</span> {<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>};</div>
 <div class="line"><span class="lineno">  319</span>}</div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 <div class="ttc" id="astructmir_1_1_deconv2_d_op_attributes_html"><div class="ttname"><a href="structmir_1_1_deconv2_d_op_attributes.html">mir::Deconv2DOpAttributes</a></div><div class="ttdef"><b>Definition</b> <a href="_attributes_8h_source.html#l00061">Attributes.h:62</a></div></div>

@@ -292,7 +292,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  {</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> batch = 0; batch &lt; n_batch; batch += 4)</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keywordtype">float</span> *result_ptr = result + (batch * m_rows) + row;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <span class="keywordtype">float</span> *result_ptr = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> + (batch * m_rows) + row;</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <span class="keyword">const</span> int8 *mat_ptr0 = matrix + (row * m_cols);</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      <span class="keyword">const</span> int8 *mat_ptr1 = matrix + ((row + 1) * m_cols);</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      <span class="keyword">const</span> int8 *mat_ptr0_end = mat_ptr1;</div>
@@ -421,7 +421,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    int32_t *row_sums_ptr = row_sums ? row_sums + row : <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> batch = 0; batch &lt; n_batch; batch += 4)</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    {</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      <span class="keywordtype">float</span> *result_ptr = result + (batch * m_rows) + row;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      <span class="keywordtype">float</span> *result_ptr = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> + (batch * m_rows) + row;</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>      <span class="keyword">const</span> int8 *mat_ptr0 = matrix + (row * m_cols);</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>      <span class="keyword">const</span> int8 *mat_ptr1 = matrix + ((row + 1) * m_cols);</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>      <span class="keyword">const</span> int8 *mat_ptr0_end = mat_ptr1;</div>
@@ -757,7 +757,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>  }</div>
 <div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>  <span class="keywordflow">for</span> (; v &lt; v_size; v++)</div>
 <div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>  {</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>    result[v] = 1.0f - vector[v];</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>[v] = 1.0f - vector[v];</div>
 <div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>  }</div>
 <div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>}</div>
 <div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span> </div>
@@ -905,7 +905,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    <span class="comment">// Copy the vector data to an aligned vector.</span></div>
 <div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    memcpy(aligned_vec, vectors + batch * m_cols, <span class="keyword">sizeof</span>(int8_t) * m_cols);</div>
 <div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>    <span class="comment">// Compute dot-product for every column.</span></div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> row = 0; row &lt; m_rows; ++row, result += result_stride)</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> row = 0; row &lt; m_rows; ++row, <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> += result_stride)</div>
 <div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>    {</div>
 <div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>      <span class="comment">// Get the address of the first element of the row.</span></div>
 <div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>      int8_t *row_ptr = (int8_t *)matrix + row * m_cols; <span class="comment">// NOLINT</span></div>
@@ -971,7 +971,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>        dotprod += row_ptr[col] * aligned_vec[col];</div>
 <div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>      } <span class="comment">// for col</span></div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span> </div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>      *result += dotprod * batch_scaling_factor;</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>      *<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> += dotprod * batch_scaling_factor;</div>
 <div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>    } <span class="comment">// for row</span></div>
 <div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>  }   <span class="comment">// for batch</span></div>
 <div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span> </div>
@@ -993,7 +993,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span> </div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; n_batch; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>++)</div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>  {</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    <span class="keywordtype">float</span> *result_in_batch = result + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * m_rows * result_stride;</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    <span class="keywordtype">float</span> *result_in_batch = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * m_rows * result_stride;</div>
 <div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *vector_in_batch = vector + <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> * m_cols;</div>
 <div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix_row = matrix;</div>
 <div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span> </div>
@@ -1039,7 +1039,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>    <span class="comment">// Multiply by float scaling factors and write to result</span></div>
 <div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> total_size = n_batch * m_rows;</div>
 <div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>    <span class="keywordtype">int</span> i = 0;</div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    <span class="keywordflow">for</span> (; i &lt;= total_size - 8; i += 8, result += 8 * result_stride)</div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    <span class="keywordflow">for</span> (; i &lt;= total_size - 8; i += 8, <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> += 8 * result_stride)</div>
 <div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    {</div>
 <div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> batch_scaling_factor0 = scaling_factors[i / m_rows];</div>
 <div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> batch_scaling_factor1 = scaling_factors[(i + 4) / m_rows];</div>
@@ -1056,11 +1056,11 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>      vst1q_f32(result + 4 * result_stride, result1);</div>
 <div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>    }</div>
 <div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    scratch += i;</div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    <span class="keywordflow">for</span> (; i &lt; total_size; i++, result += result_stride)</div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>    <span class="keywordflow">for</span> (; i &lt; total_size; i++, <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> += result_stride)</div>
 <div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>    {</div>
 <div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> batch_scaling_factor = scaling_factors[i / m_rows];</div>
 <div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>      int32_t x = *(scratch++);</div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>      *result += x * batch_scaling_factor;</div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>      *<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> += x * batch_scaling_factor;</div>
 <div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    }</div>
 <div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>  }</div>
@@ -1082,6 +1082,7 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="ttc" id="acker_2include_2cker_2ruy_2_ruy_support_8h_html"><div class="ttname"><a href="cker_2include_2cker_2ruy_2_ruy_support_8h.html">RuySupport.h</a></div></div>
 <div class="ttc" id="acompute_2cker_2include_2cker_2_types_8h_html"><div class="ttname"><a href="compute_2cker_2include_2cker_2_types_8h.html">Types.h</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a58a5106a4f3aa3bddd71f4ace1245a0c"><div class="ttname"><a href="namespacejpeg2hdf5.html#a58a5106a4f3aa3bddd71f4ace1245a0c">jpeg2hdf5.r</a></div><div class="ttdeci">r</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>

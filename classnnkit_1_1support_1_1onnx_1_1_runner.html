@@ -239,7 +239,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_runner_8h_source.html#l00043">43</a> of file <a class="el" href="nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_runner_8h_source.html">Runner.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> *_inputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="validate__onnx2circle_8py_source.html#l00077">validate_onnx2circle.OnnxRunner::feed_random_inputs()</a>, <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00027">nnkit::support::onnx::Backend::prepare()</a>, and <a class="el" href="infer_8py_source.html#l00024">package.infer.session::set_inputs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="validate__onnx2circle_8py_source.html#l00077">validate_onnx2circle.OnnxRunner::feed_random_inputs()</a>, <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00027">nnkit::support::onnx::Backend::prepare()</a>, and <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00024">package.infer.session::set_inputs()</a>.</p>
 
 </div>
 </div>
@@ -296,7 +296,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_runner_8h_source.html#l00044">44</a> of file <a class="el" href="nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_runner_8h_source.html">Runner.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> *_outputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="validate__onnx2circle_8py_source.html#l00102">validate_onnx2circle.OnnxRunner::get_outputs()</a>, <a class="el" href="infer_8py_source.html#l00050">package.infer.session::inference()</a>, <a class="el" href="infer_8py_source.html#l00041">package.infer.session::set_outputs()</a>, and <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00039">nnkit::support::onnx::Backend::teardown()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="validate__onnx2circle_8py_source.html#l00102">validate_onnx2circle.OnnxRunner::get_outputs()</a>, <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00050">package.infer.session::inference()</a>, <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00041">package.infer.session::set_outputs()</a>, and <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00039">nnkit::support::onnx::Backend::teardown()</a>.</p>
 
 </div>
 </div>
@@ -344,7 +344,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   79</span>    status.throwOnError();</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>    <span class="keyword">const</span> OrtTensorTypeAndShapeInfo *tensor_info = OrtCastTypeInfoToTensorInfo(typeinfo);</div>
-<div class="line"><span class="lineno">   82</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a> = OrtGetTensorElementType(tensor_info);</div>
+<div class="line"><span class="lineno">   82</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
 <div class="line"><span class="lineno">   85</span>    std::vector&lt;size_t&gt; dims(num_dims);</div>
@@ -367,7 +367,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  102</span>    _inputs-&gt;set(i, name, type, dims);</div>
 <div class="line"><span class="lineno">  103</span>  }</div>
 <div class="line"><span class="lineno">  104</span>}</div>
-<div class="ttc" id="anamespacepart__eval__one_html_ad0c97b5af82ed124c20ffc3312c37274"><div class="ttname"><a href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">part_eval_one.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00019">part_eval_one.py:19</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00018">infer.py:18</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
 
@@ -419,7 +419,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  131</span>    status.throwOnError();</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span>    <span class="keyword">const</span> OrtTensorTypeAndShapeInfo *tensor_info = OrtCastTypeInfoToTensorInfo(typeinfo);</div>
-<div class="line"><span class="lineno">  134</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespacepart__eval__one.html#ad0c97b5af82ed124c20ffc3312c37274">type</a> = OrtGetTensorElementType(tensor_info);</div>
+<div class="line"><span class="lineno">  134</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><span class="lineno">  135</span> </div>
 <div class="line"><span class="lineno">  136</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
 <div class="line"><span class="lineno">  137</span>    std::vector&lt;size_t&gt; dims(num_dims);</div>
@@ -490,7 +490,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="infer_8py_source.html#l00050">package.infer.session::inference()</a>, and <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00037">nnkit::support::onnx::Backend::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00050">package.infer.session::inference()</a>, and <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00037">nnkit::support::onnx::Backend::run()</a>.</p>
 
 </div>
 </div>

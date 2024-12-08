@@ -1,6 +1,5 @@
 var dir_6148785a802e9a53ae13d479915adba1 =
 [
-    [ "CLArgMinMaxLayerKernelEx.cpp", "_c_l_arg_min_max_layer_kernel_ex_8cpp.html", null ],
     [ "CLBinaryLogicalOpKernel.cpp", "_c_l_binary_logical_op_kernel_8cpp.html", null ],
     [ "CLCastBoolKernel.cpp", "_c_l_cast_bool_kernel_8cpp.html", null ],
     [ "CLEmbeddingLookupKernel.cpp", "_c_l_embedding_lookup_kernel_8cpp.html", null ],

@@ -1,6 +1,5 @@
 var dir_8216ec22dfa607c6d191bd26da652e15 =
 [
-    [ "CLArgMinMaxLayerEx.h", "_c_l_arg_min_max_layer_ex_8h.html", "_c_l_arg_min_max_layer_ex_8h" ],
     [ "CLBinaryLogicalOp.h", "_c_l_binary_logical_op_8h.html", "_c_l_binary_logical_op_8h" ],
     [ "CLCastBool.h", "_c_l_cast_bool_8h.html", "_c_l_cast_bool_8h" ],
     [ "CLDirectTransposeConvLayer.h", "_c_l_direct_transpose_conv_layer_8h.html", "_c_l_direct_transpose_conv_layer_8h" ],

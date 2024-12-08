@@ -2,8 +2,6 @@ var namespacearm__compute =
 [
     [ "misc", "namespacearm__compute_1_1misc.html", "namespacearm__compute_1_1misc" ],
     [ "weights_transformations", "namespacearm__compute_1_1weights__transformations.html", "namespacearm__compute_1_1weights__transformations" ],
-    [ "CLArgMinMaxLayerEx", "classarm__compute_1_1_c_l_arg_min_max_layer_ex.html", "classarm__compute_1_1_c_l_arg_min_max_layer_ex" ],
-    [ "CLArgMinMaxLayerKernelEx", "classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex.html", "classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex" ],
     [ "CLBinaryLogicalOp", "classarm__compute_1_1_c_l_binary_logical_op.html", "classarm__compute_1_1_c_l_binary_logical_op" ],
     [ "CLBinaryLogicalOpKernel", "classarm__compute_1_1_c_l_binary_logical_op_kernel.html", "classarm__compute_1_1_c_l_binary_logical_op_kernel" ],
     [ "CLCastBool", "classarm__compute_1_1_c_l_cast_bool.html", "classarm__compute_1_1_c_l_cast_bool" ],

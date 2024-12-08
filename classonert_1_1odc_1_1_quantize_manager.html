@@ -208,11 +208,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   78</span> </div>
 <div class="line"><span class="lineno">   79</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
-<div class="line"><span class="lineno">   80</span>  <span class="keywordtype">bool</span> result = quantizer-&gt;deleteMinMaxFile();</div>
+<div class="line"><span class="lineno">   80</span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = quantizer-&gt;deleteMinMaxFile();</div>
 <div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   83</span>}</div>
 <div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_afa8f1f38c1c6aa471cb910e26353d335"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#afa8f1f38c1c6aa471cb910e26353d335">onert::odc::QuantizerLoader::instance</a></div><div class="ttdeci">static QuantizerLoader &amp; instance()</div><div class="ttdoc">Get singleton instance of QuantizerLoader.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8cc_source.html#l00035">QuantizerLoader.cc:35</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantizer_loader_8cc_source.html#l00035">onert::odc::QuantizerLoader::instance()</a>.</p>
 
@@ -352,7 +353,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   40</span> </div>
 <div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> result = quantizer-&gt;quantize(<a class="code hl_variable" href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">model_path</a>.c_str(), _export_model_path.c_str(), _qtype);</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = quantizer-&gt;quantize(<a class="code hl_variable" href="namespacegen__h5__random__inputs__all.html#aa54a8a49abf66d8d85b45f514141cca2">model_path</a>.c_str(), _export_model_path.c_str(), _qtype);</div>
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>  <span class="comment">// TODO Unload quantize library to reduce memory usage</span></div>
 <div class="line"><span class="lineno">   45</span> </div>
@@ -425,9 +426,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>  <span class="keyword">auto</span> quantizer = quantize_loader.get();</div>
-<div class="line"><span class="lineno">   68</span>  <span class="keywordtype">bool</span> result = quantizer-&gt;readyForQuantize();</div>
+<div class="line"><span class="lineno">   68</span>  <span class="keywordtype">bool</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = quantizer-&gt;readyForQuantize();</div>
 <div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   71</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantizer_loader_8cc_source.html#l00035">onert::odc::QuantizerLoader::instance()</a>.</p>

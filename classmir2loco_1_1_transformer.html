@@ -286,13 +286,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  268</span>  <span class="comment">// Get Input</span></div>
 <div class="line"><span class="lineno">  269</span>  <span class="keyword">auto</span> lhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(0));</div>
 <div class="line"><span class="lineno">  270</span>  <span class="keyword">auto</span> rhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(1));</div>
-<div class="line"><span class="lineno">  271</span>  <span class="keyword">auto</span> result = createEltwiseBinary&lt;loco::EltwiseAdd&gt;(op, lhs, rhs);</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createEltwiseBinary&lt;loco::EltwiseAdd&gt;(op, lhs, rhs);</div>
 <div class="line"><span class="lineno">  272</span>  <span class="comment">// Not set Shape</span></div>
 <div class="line"><span class="lineno">  273</span>  <span class="comment">// Add to map</span></div>
 <div class="line"><span class="lineno">  274</span>  _mir2loco_map.emplace(op.<a class="code hl_function" href="classmir_1_1_operation.html#a4892778a849665110b1c0ab9b79aa4d2">getOutput</a>(0), result);</div>
 <div class="line"><span class="lineno">  275</span>}</div>
 <div class="ttc" id="aclassmir_1_1_operation_html_a0d3910d1a916efd520d6d9316240657e"><div class="ttname"><a href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">mir::Operation::getInput</a></div><div class="ttdeci">Output * getInput(std::size_t index)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00137">Operation.h:137</a></div></div>
 <div class="ttc" id="aclassmir_1_1_operation_html_a4892778a849665110b1c0ab9b79aa4d2"><div class="ttname"><a href="classmir_1_1_operation.html#a4892778a849665110b1c0ab9b79aa4d2">mir::Operation::getOutput</a></div><div class="ttdeci">Output * getOutput(std::size_t index)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00149">Operation.h:149</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00137">mir::Operation::getInput()</a>, and <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00149">mir::Operation::getOutput()</a>.</p>
 
@@ -814,7 +815,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  542</span>  <span class="comment">// Get Input</span></div>
 <div class="line"><span class="lineno">  543</span>  <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *lhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(0));</div>
 <div class="line"><span class="lineno">  544</span>  <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *rhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(1));</div>
-<div class="line"><span class="lineno">  545</span>  <span class="keyword">auto</span> result = createEltwiseBinary&lt;loco::EltwiseDiv&gt;(op, lhs, rhs);</div>
+<div class="line"><span class="lineno">  545</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createEltwiseBinary&lt;loco::EltwiseDiv&gt;(op, lhs, rhs);</div>
 <div class="line"><span class="lineno">  546</span>  <span class="comment">// Not set Shape</span></div>
 <div class="line"><span class="lineno">  547</span>  <span class="comment">// Add to map</span></div>
 <div class="line"><span class="lineno">  548</span>  _mir2loco_map.emplace(op.<a class="code hl_function" href="classmir_1_1_operation.html#a4892778a849665110b1c0ab9b79aa4d2">getOutput</a>(0), result);</div>
@@ -1024,7 +1025,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  620</span>  <span class="comment">// Get Input</span></div>
 <div class="line"><span class="lineno">  621</span>  <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *lhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(0));</div>
 <div class="line"><span class="lineno">  622</span>  <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *rhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(1));</div>
-<div class="line"><span class="lineno">  623</span>  <span class="keyword">auto</span> result = createEltwiseBinary&lt;loco::EltwiseMul&gt;(op, lhs, rhs);</div>
+<div class="line"><span class="lineno">  623</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createEltwiseBinary&lt;loco::EltwiseMul&gt;(op, lhs, rhs);</div>
 <div class="line"><span class="lineno">  624</span>  <span class="comment">// Not set Shape</span></div>
 <div class="line"><span class="lineno">  625</span>  <span class="comment">// Add to map</span></div>
 <div class="line"><span class="lineno">  626</span>  _mir2loco_map.emplace(op.<a class="code hl_function" href="classmir_1_1_operation.html#a4892778a849665110b1c0ab9b79aa4d2">getOutput</a>(0), result);</div>
@@ -1238,7 +1239,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  683</span>  <span class="comment">// Get Input</span></div>
 <div class="line"><span class="lineno">  684</span>  <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *lhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(0));</div>
 <div class="line"><span class="lineno">  685</span>  <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *rhs = _mir2loco_map.at(op.<a class="code hl_function" href="classmir_1_1_operation.html#a0d3910d1a916efd520d6d9316240657e">getInput</a>(1));</div>
-<div class="line"><span class="lineno">  686</span>  <span class="keyword">auto</span> result = createEltwiseBinary&lt;loco::EltwiseSub&gt;(op, lhs, rhs);</div>
+<div class="line"><span class="lineno">  686</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createEltwiseBinary&lt;loco::EltwiseSub&gt;(op, lhs, rhs);</div>
 <div class="line"><span class="lineno">  687</span>  <span class="comment">// Not set Shape</span></div>
 <div class="line"><span class="lineno">  688</span>  <span class="comment">// Add to map</span></div>
 <div class="line"><span class="lineno">  689</span>  _mir2loco_map.emplace(op.<a class="code hl_function" href="classmir_1_1_operation.html#a4892778a849665110b1c0ab9b79aa4d2">getOutput</a>(0), result);</div>

@@ -1411,13 +1411,13 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">   69</span>    shuffle-&gt;into(ofm-&gt;bag());</div>
 <div class="line"><span class="lineno">   70</span> </div>
 <div class="line"><span class="lineno">   71</span>    <span class="keyword">const</span> uint32_t B = ifm-&gt;layout()-&gt;batch();</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> uint32_t C = ifm-&gt;layout()-&gt;shape().depth();</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> uint32_t <a class="code hl_variable" href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">C</a> = ifm-&gt;layout()-&gt;shape().depth();</div>
 <div class="line"><span class="lineno">   73</span>    <span class="keyword">const</span> uint32_t H = ifm-&gt;layout()-&gt;shape().height();</div>
 <div class="line"><span class="lineno">   74</span>    <span class="keyword">const</span> uint32_t W = ifm-&gt;layout()-&gt;shape().width();</div>
 <div class="line"><span class="lineno">   75</span> </div>
 <div class="line"><span class="lineno">   76</span>    <span class="keywordflow">for</span> (uint32_t b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; B; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
 <div class="line"><span class="lineno">   77</span>    {</div>
-<div class="line"><span class="lineno">   78</span>      <span class="keywordflow">for</span> (uint32_t ch = 0; ch &lt; C; ++ch)</div>
+<div class="line"><span class="lineno">   78</span>      <span class="keywordflow">for</span> (uint32_t ch = 0; ch &lt; <a class="code hl_variable" href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">C</a>; ++ch)</div>
 <div class="line"><span class="lineno">   79</span>      {</div>
 <div class="line"><span class="lineno">   80</span>        <span class="keywordflow">for</span> (uint32_t row = 0; row &lt; H; ++row)</div>
 <div class="line"><span class="lineno">   81</span>        {</div>
@@ -1443,6 +1443,7 @@ template&lt;typename It &gt; </div>
 <div class="line"><span class="lineno">  101</span>    <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>-&gt;entity()-&gt;instr()-&gt;destroy(copy);</div>
 <div class="line"><span class="lineno">  102</span>  }</div>
 <div class="line"><span class="lineno">  103</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_a52e2332276fabbe47fc9864378cdca57"><div class="ttname"><a href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">infer.C</a></div><div class="ttdeci">C</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00052">infer.py:52</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="astructcoco_1_1_entity_manager_html_ad7eda0c47fe4043e7dd16fd7a3a4868c"><div class="ttname"><a href="structcoco_1_1_entity_manager.html#ad7eda0c47fe4043e7dd16fd7a3a4868c">coco::EntityManager::instr</a></div><div class="ttdeci">virtual InstrManager * instr(void)=0</div></div>
 </div><!-- fragment -->

@@ -248,11 +248,11 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_o_m_training_config_file_reader_8cpp_source.html#l00062">62</a> of file <a class="el" href="_o_m_training_config_file_reader_8cpp_source.html">OMTrainingConfigFileReader.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>{</div>
-<div class="line"><span class="lineno">   64</span>  std::unordered_map&lt;uint16_t, uint8_t&gt; result;</div>
+<div class="line"><span class="lineno">   64</span>  std::unordered_map&lt;uint16_t, uint8_t&gt; <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span>  <span class="comment">// If reader is not parsed then return empty vector</span></div>
 <div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (_train_config_ptr == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   69</span> </div>
 <div class="line"><span class="lineno">   70</span>  <span class="comment">// Read number of ops</span></div>
 <div class="line"><span class="lineno">   71</span>  uint32_t num_ops_in_file = 0;</div>
@@ -277,11 +277,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   90</span>    cur_op_train_rank_ptr += <span class="keyword">sizeof</span>(cur_op_train_rank);</div>
 <div class="line"><span class="lineno">   91</span> </div>
 <div class="line"><span class="lineno">   92</span>    <span class="comment">// Insert op index and op rank</span></div>
-<div class="line"><span class="lineno">   93</span>    result[cur_op_index] = cur_op_train_rank;</div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>[cur_op_index] = cur_op_train_rank;</div>
 <div class="line"><span class="lineno">   94</span>  }</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   97</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_o_m_runtime_context_8h_source.html#l00085">onert_micro::core::OMRuntimeContext::getTrainableOpsIndexes()</a>.</p>
 

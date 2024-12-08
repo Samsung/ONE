@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['infer_5ftestcases_0',['infer_testcases',['../namespaceinfer__testcases.html',1,'']]]
+  ['infer_0',['infer',['../namespaceinfer.html',1,'']]],
+  ['infer_5ftestcases_1',['infer_testcases',['../namespaceinfer__testcases.html',1,'']]]
 ];

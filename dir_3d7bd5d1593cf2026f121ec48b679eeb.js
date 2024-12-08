@@ -1,6 +1,5 @@
 var dir_3d7bd5d1593cf2026f121ec48b679eeb =
 [
-    [ "CLArgMinMaxLayerEx.cpp", "_c_l_arg_min_max_layer_ex_8cpp.html", null ],
     [ "CLBinaryLogicalOp.cpp", "_c_l_binary_logical_op_8cpp.html", null ],
     [ "CLCastBool.cpp", "_c_l_cast_bool_8cpp.html", null ],
     [ "CLDirectTransposeConvLayer.cpp", "_c_l_direct_transpose_conv_layer_8cpp.html", null ],

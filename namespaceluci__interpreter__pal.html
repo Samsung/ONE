@@ -4213,13 +4213,13 @@ template&lt;typename Scalar &gt; </div>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; inputs_count; ++i)</div>
 <div class="line"><span class="lineno">   59</span>    {</div>
 <div class="line"><span class="lineno">   60</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> copy_size = input_shapes[i]-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(axis) * base_inner_size;</div>
-<div class="line"><span class="lineno">   61</span>      <span class="keyword">const</span> Scalar *input_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[i] + k * copy_size;</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keyword">const</span> Scalar *input_ptr = <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>[i] + k * copy_size;</div>
 <div class="line"><span class="lineno">   62</span>      memcpy(output_ptr, input_ptr, copy_size * <span class="keyword">sizeof</span>(Scalar));</div>
 <div class="line"><span class="lineno">   63</span>      output_ptr += copy_size;</div>
 <div class="line"><span class="lineno">   64</span>    }</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 <div class="line"><span class="lineno">   66</span>}</div>
-<div class="ttc" id="anamespacepart__eval__one_html_a818987310f1a181c06a880dab57fcf39"><div class="ttname"><a href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">part_eval_one.input_data</a></div><div class="ttdeci">input_data</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00075">part_eval_one.py:75</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a48a40d2cc016f1f0d2fd9a8e04098678"><div class="ttname"><a href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">infer.input_data</a></div><div class="ttdeci">list input_data</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00029">infer.py:29</a></div></div>
 <div class="ttc" id="astructluci__interpreter__pal_1_1_concatenation_params_html_a7ab7142cf9b0b6242c21b0d1f14bacde"><div class="ttname"><a href="structluci__interpreter__pal_1_1_concatenation_params.html#a7ab7142cf9b0b6242c21b0d1f14bacde">luci_interpreter_pal::ConcatenationParams::inputs_count</a></div><div class="ttdeci">uint16_t inputs_count</div><div class="ttdef"><b>Definition</b> <a href="_params_8h_source.html#l00124">Params.h:124</a></div></div>
 <div class="ttc" id="astructluci__interpreter__pal_1_1_concatenation_params_html_aecdaf0e0b1b2fe1c49c068e7f628b20a"><div class="ttname"><a href="structluci__interpreter__pal_1_1_concatenation_params.html#aecdaf0e0b1b2fe1c49c068e7f628b20a">luci_interpreter_pal::ConcatenationParams::axis</a></div><div class="ttdeci">int8_t axis</div><div class="ttdef"><b>Definition</b> <a href="_params_8h_source.html#l00121">Params.h:121</a></div></div>
 </div><!-- fragment -->
@@ -8141,11 +8141,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   50</span>    }</div>
 <div class="line"><span class="lineno">   51</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   52</span>    {</div>
-<div class="line"><span class="lineno">   53</span>      result = 1.f / (1.f + std::exp(-val));</div>
+<div class="line"><span class="lineno">   53</span>      <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = 1.f / (1.f + std::exp(-val));</div>
 <div class="line"><span class="lineno">   54</span>    }</div>
-<div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i] = result;</div>
+<div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i] = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   56</span>  }</div>
 <div class="line"><span class="lineno">   57</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2pal_2linux_2_p_a_l_g_r_u_8h_source.html#l00059">calculateGRU()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp_source.html#l00041">luci_interpreter::execute_kernel_CircleLogistic()</a>, <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00162">luci_interpreter_pal::lstm_internal::sigmoid()</a>, and <a class="el" href="_p_a_l_unidirectional_sequence_l_s_t_m_common_8h_source.html#l00117">luci_interpreter_pal::lstm_internal::sigmoid()</a>.</p>
 
@@ -8243,10 +8244,10 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   87</span>    }</div>
 <div class="line"><span class="lineno">   88</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   89</span>    {</div>
-<div class="line"><span class="lineno">   90</span>      result = 1.f / (1.f + std::exp(-val));</div>
+<div class="line"><span class="lineno">   90</span>      <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = 1.f / (1.f + std::exp(-val));</div>
 <div class="line"><span class="lineno">   91</span>    }</div>
 <div class="line"><span class="lineno">   92</span>    <span class="comment">// Requantize</span></div>
-<div class="line"><span class="lineno">   93</span>    int8_t <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(result / output_scale + output_zero_point);</div>
+<div class="line"><span class="lineno">   93</span>    int8_t <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = <span class="keyword">static_cast&lt;</span>int8_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> / output_scale + output_zero_point);</div>
 <div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i] = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
 <div class="line"><span class="lineno">   95</span>  }</div>
 <div class="line"><span class="lineno">   96</span>}</div>
@@ -8349,15 +8350,15 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  139</span>      uint32_t ub = sigmoid_table_uint16[uh + 1];</div>
 <div class="line"><span class="lineno">  140</span>      uint32_t ut = abs_input_data &amp; 0x1ff;</div>
 <div class="line"><span class="lineno">  141</span>      <span class="comment">// Interpolation is done using the fractional bit.</span></div>
-<div class="line"><span class="lineno">  142</span>      result = (ua &lt;&lt; 9) + ut * (ub - ua);</div>
+<div class="line"><span class="lineno">  142</span>      <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = (ua &lt;&lt; 9) + ut * (ub - ua);</div>
 <div class="line"><span class="lineno">  143</span>    }</div>
 <div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>    result = (<a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> &gt;= 0) ? (result + (1 &lt;&lt; 9)) : ((1 &lt;&lt; (16 + 9)) - result + (1 &lt;&lt; 9) - 1);</div>
+<div class="line"><span class="lineno">  145</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = (<a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a> &gt;= 0) ? (result + (1 &lt;&lt; 9)) : ((1 &lt;&lt; (16 + 9)) - <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> + (1 &lt;&lt; 9) - 1);</div>
 <div class="line"><span class="lineno">  146</span> </div>
 <div class="line"><span class="lineno">  147</span>    <span class="comment">// Back to 16-bit.</span></div>
-<div class="line"><span class="lineno">  148</span>    result &gt;&gt;= 10;</div>
+<div class="line"><span class="lineno">  148</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> &gt;&gt;= 10;</div>
 <div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>    *ptr_output_data = result;</div>
+<div class="line"><span class="lineno">  150</span>    *ptr_output_data = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  151</span>  }</div>
 <div class="line"><span class="lineno">  152</span>}</div>
 </div><!-- fragment -->
@@ -8438,7 +8439,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   55</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> log_sum = std::log(sum);</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; depth; ++c)</div>
 <div class="line"><span class="lineno">   57</span>    {</div>
-<div class="line"><span class="lineno">   58</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i * depth + c] = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[i * depth + c] - max - log_sum;</div>
+<div class="line"><span class="lineno">   58</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[i * depth + c] = <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>[i * depth + c] - max - log_sum;</div>
 <div class="line"><span class="lineno">   59</span>    }</div>
 <div class="line"><span class="lineno">   60</span>  }</div>
 <div class="line"><span class="lineno">   61</span>}</div>
@@ -10431,7 +10432,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> pad_value = *pad_value_ptr;</div>
 <div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *in_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>;</div>
+<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> *in_ptr = <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>;</div>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordtype">float</span> *out_ptr = <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>;</div>
 <div class="line"><span class="lineno">   78</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_b = 0; out_b &lt; output_batch; ++out_b)</div>
 <div class="line"><span class="lineno">   79</span>  {</div>
@@ -12518,9 +12519,9 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  157</span>  <span class="comment">// Perform batched matrix vector multiply operation:</span></div>
 <div class="line"><span class="lineno">  158</span>  {</div>
 <div class="line"><span class="lineno">  159</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix = weights_feature_data;</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *vector = <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>;</div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordtype">float</span> *result = &amp;state_data[memory_size - 1];</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keywordtype">float</span> *result_in_batch = result;</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> *vector = <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>;</div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordtype">float</span> *<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = &amp;state_data[memory_size - 1];</div>
+<div class="line"><span class="lineno">  162</span>    <span class="keywordtype">float</span> *result_in_batch = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">  163</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; batch_size; ++i)</div>
 <div class="line"><span class="lineno">  164</span>    {</div>
 <div class="line"><span class="lineno">  165</span>      <span class="keyword">const</span> <span class="keywordtype">float</span> *matrix_ptr = matrix;</div>
@@ -12691,16 +12692,16 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>      uint8_t ut = abs_input_data &amp; 0xFF;</div>
 <div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>      result = (ua &lt;&lt; 8) + ut * (ub - ua);</div>
+<div class="line"><span class="lineno">   75</span>      <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = (ua &lt;&lt; 8) + ut * (ub - ua);</div>
 <div class="line"><span class="lineno">   76</span>    }</div>
 <div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    result = (<a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a> &gt;= 0) ? (result - (1 &lt;&lt; (14 + 9)) + (1 &lt;&lt; (9 - 2)))</div>
-<div class="line"><span class="lineno">   79</span>                               : (-result + (1 &lt;&lt; (14 + 9)) + (1 &lt;&lt; (9 - 2)) - 1);</div>
+<div class="line"><span class="lineno">   78</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = (<a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a> &gt;= 0) ? (result - (1 &lt;&lt; (14 + 9)) + (1 &lt;&lt; (9 - 2)))</div>
+<div class="line"><span class="lineno">   79</span>                               : (-<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> + (1 &lt;&lt; (14 + 9)) + (1 &lt;&lt; (9 - 2)) - 1);</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>    <span class="comment">// Convert back to 16-bit.</span></div>
-<div class="line"><span class="lineno">   82</span>    result &gt;&gt;= (9 - 1);</div>
+<div class="line"><span class="lineno">   82</span>    <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> &gt;&gt;= (9 - 1);</div>
 <div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    *ptr_output_data = result;</div>
+<div class="line"><span class="lineno">   84</span>    *ptr_output_data = <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
 <div class="line"><span class="lineno">   85</span>  }</div>
 <div class="line"><span class="lineno">   86</span>}</div>
 </div><!-- fragment -->
@@ -13045,7 +13046,7 @@ template&lt;typename T , int N&gt; </div>
 <div class="line"><span class="lineno">   61</span>  <span class="comment">// Naive transpose loop (iterate on output index and compute input index).</span></div>
 <div class="line"><span class="lineno">   62</span>  <span class="keyword">auto</span> tranpose_func = [&amp;](<span class="keywordtype">int</span> indexes[N]) {</div>
 <div class="line"><span class="lineno">   63</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a2caf99ee4e308fed9c7738a8430858ad">subscriptToIndex</a>(output_desc, indexes)] =</div>
-<div class="line"><span class="lineno">   64</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#a818987310f1a181c06a880dab57fcf39">input_data</a>[<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a2caf99ee4e308fed9c7738a8430858ad">subscriptToIndex</a>(perm_input_desc, indexes)];</div>
+<div class="line"><span class="lineno">   64</span>      <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>[<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a2caf99ee4e308fed9c7738a8430858ad">subscriptToIndex</a>(perm_input_desc, indexes)];</div>
 <div class="line"><span class="lineno">   65</span>  };</div>
 <div class="line"><span class="lineno">   66</span>  NDOpsHelper&lt;N&gt;(output_desc, tranpose_func);</div>
 <div class="line"><span class="lineno">   67</span>}</div>

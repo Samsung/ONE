@@ -188,12 +188,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_importer_ex_8cpp_source.html#l00068">68</a> of file <a class="el" href="_importer_ex_8cpp_source.html">ImporterEx.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keyword">auto</span> data_size = model_data.size();</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">model_data</a>.data());</div>
+<div class="line"><span class="lineno">   71</span>  <span class="keyword">auto</span> data_size = <a class="code hl_variable" href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">model_data</a>.size();</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>  Importer importer(_source);</div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">return</span> importer.importModule(data_data, data_size);</div>
 <div class="line"><span class="lineno">   75</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_a6b217c44aa45736f3e3ba96eff6ac4f4"><div class="ttname"><a href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">infer.model_data</a></div><div class="ttdeci">model_data</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00082">infer.py:82</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_test_driver_8cpp_source.html#l00120">entry()</a>.</p>
 
@@ -218,11 +219,11 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_importer_ex_8cpp_source.html#l00036">36</a> of file <a class="el" href="_importer_ex_8cpp_source.html">ImporterEx.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
 <div class="line"><span class="lineno">   38</span>  <a class="code hl_class" href="classfoder_1_1_file_loader.html">foder::FileLoader</a> file_loader{input_path};</div>
-<div class="line"><span class="lineno">   39</span>  std::vector&lt;char&gt; model_data;</div>
+<div class="line"><span class="lineno">   39</span>  std::vector&lt;char&gt; <a class="code hl_variable" href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">model_data</a>;</div>
 <div class="line"><span class="lineno">   40</span> </div>
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">try</span></div>
 <div class="line"><span class="lineno">   42</span>  {</div>
-<div class="line"><span class="lineno">   43</span>    model_data = file_loader.<a class="code hl_function" href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">load</a>();</div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_variable" href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">model_data</a> = file_loader.load();</div>
 <div class="line"><span class="lineno">   44</span>  }</div>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;err)</div>
 <div class="line"><span class="lineno">   46</span>  {</div>
@@ -230,8 +231,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   49</span>  }</div>
 <div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> data_size = model_data.size();</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keyword">auto</span> data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">model_data</a>.data());</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keyword">auto</span> data_size = <a class="code hl_variable" href="namespaceinfer.html#a6b217c44aa45736f3e3ba96eff6ac4f4">model_data</a>.size();</div>
 <div class="line"><span class="lineno">   53</span> </div>
 <div class="line"><span class="lineno">   54</span>  <span class="keywordflow">if</span> (data_size &lt; <a class="code hl_variable" href="luci_2export_2src_2_circle_exporter_utils_8h.html#af3e4ff0083e8b78c66b7e8f849993d0f">FLATBUFFERS_SIZE_MAX</a>)</div>
 <div class="line"><span class="lineno">   55</span>  {</div>
@@ -247,10 +248,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>  <span class="keywordflow">return</span> importer.importModule(data_data, data_size);</div>
 <div class="line"><span class="lineno">   66</span>}</div>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html"><div class="ttname"><a href="classfoder_1_1_file_loader.html">foder::FileLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00026">FileLoader.h:27</a></div></div>
-<div class="ttc" id="aclassfoder_1_1_file_loader_html_adc903eb7f252ed7fac779a6869139ec4"><div class="ttname"><a href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">foder::FileLoader::load</a></div><div class="ttdeci">DataBuffer load(void) const</div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00039">FileLoader.h:39</a></div></div>
 <div class="ttc" id="aluci_2export_2src_2_circle_exporter_utils_8h_html_af3e4ff0083e8b78c66b7e8f849993d0f"><div class="ttname"><a href="luci_2export_2src_2_circle_exporter_utils_8h.html#af3e4ff0083e8b78c66b7e8f849993d0f">FLATBUFFERS_SIZE_MAX</a></div><div class="ttdeci">constexpr uint64_t FLATBUFFERS_SIZE_MAX</div><div class="ttdef"><b>Definition</b> <a href="luci_2export_2src_2_circle_exporter_utils_8h_source.html#l00030">CircleExporterUtils.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8h_source.html#l00030">FLATBUFFERS_SIZE_MAX</a>, and <a class="el" href="_file_loader_8h_source.html#l00039">foder::FileLoader::load()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8h_source.html#l00030">FLATBUFFERS_SIZE_MAX</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_data_provider_8cpp_source.html#l00052">mpqsolver::core::H5FileDataProvider::H5FileDataProvider()</a>, <a class="el" href="_dalgona_8cpp_source.html#l00099">dalgona::Dalgona::initialize()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00075">record_minmax::RecordMinMax::initialize()</a>.</p>
 

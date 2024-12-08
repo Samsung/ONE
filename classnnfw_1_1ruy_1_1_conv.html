@@ -233,26 +233,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>    }</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>    <span class="keywordtype">int</span> im2col_size = _need_im2col ? _im2col_shape.<a class="code hl_function" href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">FlatSize</a>() : 0;</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>    <span class="comment">// Use heap if size is larger than 8MB</span></div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (im2col_size &gt; 2 * 1024 * 1024)</div>
-<div class="line"><span class="lineno">   71</span>    {</div>
-<div class="line"><span class="lineno">   72</span>      std::unique_ptr&lt;float[]&gt; im2col_data = std::make_unique&lt;float[]&gt;(im2col_size);</div>
-<div class="line"><span class="lineno">   73</span>      ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
-<div class="line"><span class="lineno">   74</span>                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data.get(), ruy_context);</div>
-<div class="line"><span class="lineno">   75</span>    }</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (im2col_size &gt; 0)</div>
-<div class="line"><span class="lineno">   77</span>    {</div>
-<div class="line"><span class="lineno">   78</span>      <span class="keywordtype">float</span> im2col_data[im2col_size];</div>
-<div class="line"><span class="lineno">   79</span>      ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
-<div class="line"><span class="lineno">   80</span>                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data, ruy_context);</div>
-<div class="line"><span class="lineno">   81</span>    }</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   83</span>    {</div>
-<div class="line"><span class="lineno">   84</span>      ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
-<div class="line"><span class="lineno">   85</span>                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, <span class="keyword">nullptr</span>, ruy_context);</div>
-<div class="line"><span class="lineno">   86</span>    }</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
+<div class="line"><span class="lineno">   68</span>    std::vector&lt;float&gt; im2col_data(im2col_size);</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> (im2col_size &gt; 0)</div>
+<div class="line"><span class="lineno">   70</span>    {</div>
+<div class="line"><span class="lineno">   71</span>      ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
+<div class="line"><span class="lineno">   72</span>                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data.data(), ruy_context);</div>
+<div class="line"><span class="lineno">   73</span>    }</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>      ConvFloat(params, input_shape, input_data, filter_shape, filter_data, bias_shape, bias_data,</div>
+<div class="line"><span class="lineno">   77</span>                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, <span class="keyword">nullptr</span>, ruy_context);</div>
+<div class="line"><span class="lineno">   78</span>    }</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
 <div class="ttc" id="aclassnnfw_1_1ruy_1_1_shape_html_a0adf7074ff445fe6604bc94663fb8de1"><div class="ttname"><a href="classnnfw_1_1ruy_1_1_shape.html#a0adf7074ff445fe6604bc94663fb8de1">nnfw::ruy::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2ruy_2include_2ruy_2_shape_8h_source.html#l00181">Shape.h:181</a></div></div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
 </div><!-- fragment -->

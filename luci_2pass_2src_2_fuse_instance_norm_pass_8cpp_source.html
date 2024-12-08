@@ -939,228 +939,233 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_fuse_instance_norm_p
 <div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>  <span class="keywordflow">if</span> (input_rank &lt; 1)</div>
 <div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span> </div>
-<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>  <span class="comment">// assume channel-last</span></div>
-<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dim(input_rank - 1).value();</div>
-<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>}</div>
-<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span> </div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *PostFusion::match_const_channel(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *input_const, uint32_t C)</div>
-<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>{</div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *new_input_const = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span> </div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>  <span class="keyword">auto</span> input_chn = input_const-&gt;dim(0).value();</div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>  <span class="keywordflow">if</span> (input_chn == 1 &amp;&amp; input_chn != C)</div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>  {</div>
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>    <span class="keywordtype">float</span> value = input_const-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(0);</div>
-<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">clone</a> = <a class="code hl_function" href="namespaceluci.html#a8727d0fa490008c6078181d4a27f3ca2">luci::clone_node</a>(input_const, input_const-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>());</div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span> </div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>    new_input_const = loco::must_cast&lt;luci::CircleConst *&gt;(clone);</div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>    new_input_const-&gt;rank(1);</div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>    new_input_const-&gt;dim(0).set(C);</div>
-<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>    new_input_const-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;(C);</div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>    <span class="keywordflow">for</span> (uint32_t c = 0; c &lt; C; ++c)</div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>      new_input_const-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(c) = value;</div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>  }</div>
-<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span> </div>
-<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>  <span class="keywordflow">return</span> new_input_const;</div>
-<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span>}</div>
-<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span> </div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span><span class="keywordtype">bool</span> PostFusion::match_const_gamma_channel(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>{</div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>  <span class="keyword">auto</span> const_as_gamma = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(_inst_norm-&gt;gamma());</div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>  <span class="keywordflow">if</span> (const_as_gamma == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span> </div>
-<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>  <span class="keyword">auto</span> C = input_channel();</div>
-<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>  <span class="keywordflow">if</span> (C == 0)</div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span> </div>
-<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>  <span class="keyword">auto</span> new_const_as_gamma = match_const_channel(const_as_gamma, C);</div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>  <span class="keywordflow">if</span> (new_const_as_gamma == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span> </div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>  _inst_norm-&gt;gamma(new_const_as_gamma);</div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span> </div>
-<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>}</div>
+<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>  <span class="keywordflow">if</span> (input_rank == 3)</div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>  {</div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>    <span class="comment">// use dim 1</span></div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dim(1).value();</div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>  }</div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>  <span class="comment">// assume channel-last</span></div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;dim(input_rank - 1).value();</div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>}</div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span> </div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *PostFusion::match_const_channel(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *input_const, uint32_t C)</div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>{</div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *new_input_const = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span> </div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>  <span class="keyword">auto</span> input_chn = input_const-&gt;dim(0).value();</div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>  <span class="keywordflow">if</span> (input_chn == 1 &amp;&amp; input_chn != C)</div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>  {</div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>    <span class="keywordtype">float</span> value = input_const-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(0);</div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">clone</a> = <a class="code hl_function" href="namespaceluci.html#a8727d0fa490008c6078181d4a27f3ca2">luci::clone_node</a>(input_const, input_const-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>());</div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span> </div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>    new_input_const = loco::must_cast&lt;luci::CircleConst *&gt;(clone);</div>
+<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>    new_input_const-&gt;rank(1);</div>
+<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>    new_input_const-&gt;dim(0).set(C);</div>
+<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span>    new_input_const-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::FLOAT32&gt;(<a class="code hl_variable" href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">C</a>);</div>
+<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span>    <span class="keywordflow">for</span> (uint32_t c = 0; c &lt; <a class="code hl_variable" href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">C</a>; ++c)</div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span>      new_input_const-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(c) = value;</div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span>  }</div>
+<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span> </div>
+<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span>  <span class="keywordflow">return</span> new_input_const;</div>
+<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>}</div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span> </div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span><span class="keywordtype">bool</span> PostFusion::match_const_gamma_channel(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>{</div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>  <span class="keyword">auto</span> const_as_gamma = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(_inst_norm-&gt;gamma());</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>  <span class="keywordflow">if</span> (const_as_gamma == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span> </div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">C</a> = input_channel();</div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>  <span class="keywordflow">if</span> (C == 0)</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span> </div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>  <span class="keyword">auto</span> new_const_as_gamma = match_const_channel(const_as_gamma, C);</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>  <span class="keywordflow">if</span> (new_const_as_gamma == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span> </div>
-<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span><span class="keywordtype">bool</span> PostFusion::match_const_beta_channel(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>{</div>
-<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>  <span class="keyword">auto</span> const_as_beta = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(_inst_norm-&gt;beta());</div>
-<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>  <span class="keywordflow">if</span> (const_as_beta == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span> </div>
-<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>  <span class="keyword">auto</span> C = input_channel();</div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>  <span class="keywordflow">if</span> (C == 0)</div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span> </div>
-<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span>  <span class="keyword">auto</span> new_const_as_beta = match_const_channel(const_as_beta, C);</div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>  <span class="keywordflow">if</span> (new_const_as_beta == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span> </div>
-<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>  _inst_norm-&gt;beta(new_const_as_beta);</div>
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span> </div>
-<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>}</div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>  _inst_norm-&gt;gamma(new_const_as_gamma);</div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span> </div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>}</div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span> </div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span><span class="keywordtype">bool</span> PostFusion::match_const_beta_channel(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>{</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>  <span class="keyword">auto</span> const_as_beta = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(_inst_norm-&gt;beta());</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>  <span class="keywordflow">if</span> (const_as_beta == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span> </div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">C</a> = input_channel();</div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>  <span class="keywordflow">if</span> (C == 0)</div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span> </div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>  <span class="keyword">auto</span> new_const_as_beta = match_const_channel(const_as_beta, C);</div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>  <span class="keywordflow">if</span> (new_const_as_beta == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span> </div>
-<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span><span class="keywordtype">bool</span> PostFusion::process(<span class="keywordtype">void</span>)</div>
-<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>{</div>
-<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span> </div>
-<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>  <span class="keywordflow">if</span> (match_const_gamma_channel())</div>
-<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>    changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>  <span class="keywordflow">if</span> (match_const_beta_channel())</div>
-<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>    changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>  _inst_norm-&gt;beta(new_const_as_beta);</div>
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span> </div>
+<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>}</div>
+<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span> </div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span><span class="keywordtype">bool</span> PostFusion::process(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>{</div>
+<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span> </div>
-<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>}</div>
-<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span> </div>
-<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>  <span class="keywordflow">if</span> (match_const_gamma_channel())</div>
+<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>    changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>  <span class="keywordflow">if</span> (match_const_beta_channel())</div>
+<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>    changed = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span> </div>
-<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span><span class="keyword">namespace</span></div>
-<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>{</div>
+<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>}</div>
 <div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span> </div>
-<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span><span class="keywordtype">bool</span> is_add_input_mul_const(<a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *add)</div>
-<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>{</div>
-<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>  <a class="code hl_class" href="classluci_1_1_circle_mul.html">luci::CircleMul</a> *p_mul = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *p_const = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span> </div>
+<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span><span class="keyword">namespace</span></div>
+<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>{</div>
 <div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span> </div>
-<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a42d14615f9017302a47525c8b603965a">luci::fill</a>(&amp;p_mul, &amp;p_const).with_commutative_args_of(add);</div>
-<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>}</div>
-<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span> </div>
-<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span><span class="keywordtype">bool</span> is_add_input_mul_sub3d(<a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *add)</div>
-<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>{</div>
-<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>  <a class="code hl_class" href="classluci_1_1_circle_mul.html">luci::CircleMul</a> *p_mul = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>  <a class="code hl_class" href="classluci_1_1_circle_sub.html">luci::CircleSub</a> *p_sub = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span><span class="keywordtype">bool</span> is_add_input_mul_const(<a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *add)</div>
+<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>{</div>
+<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>  <a class="code hl_class" href="classluci_1_1_circle_mul.html">luci::CircleMul</a> *p_mul = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *p_const = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span> </div>
+<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a42d14615f9017302a47525c8b603965a">luci::fill</a>(&amp;p_mul, &amp;p_const).with_commutative_args_of(add);</div>
+<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>}</div>
 <div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span> </div>
-<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a42d14615f9017302a47525c8b603965a">luci::fill</a>(&amp;p_mul, &amp;p_sub).with_commutative_args_of(add))</div>
-<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span> </div>
-<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>  <span class="keyword">auto</span> sub = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_sub.html">luci::CircleSub</a> *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;y());</div>
-<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>  <span class="keywordflow">if</span> (sub == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span> </div>
-<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>  <span class="keyword">auto</span> const_as_beta = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(sub-&gt;x());</div>
-<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>  <span class="keywordflow">if</span> (const_as_beta == <span class="keyword">nullptr</span> || const_as_beta-&gt;rank() != 3)</div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span> </div>
-<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>}</div>
-<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span> </div>
-<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span><span class="keywordtype">bool</span> fuse_instance_norm(<a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *add)</div>
-<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>{</div>
-<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_1;</div>
-<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span> </div>
-<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span>  <span class="keywordflow">if</span> (is_add_input_mul_const(add))</div>
-<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span>    pv = InstanceNormPattern::PatternVersion::Version_2;</div>
-<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_add_input_mul_sub3d(add))</div>
-<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span>    pv = InstanceNormPattern::PatternVersion::Version_6;</div>
+<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span><span class="keywordtype">bool</span> is_add_input_mul_sub3d(<a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *add)</div>
+<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>{</div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>  <a class="code hl_class" href="classluci_1_1_circle_mul.html">luci::CircleMul</a> *p_mul = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>  <a class="code hl_class" href="classluci_1_1_circle_sub.html">luci::CircleSub</a> *p_sub = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span> </div>
+<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a42d14615f9017302a47525c8b603965a">luci::fill</a>(&amp;p_mul, &amp;p_sub).with_commutative_args_of(add))</div>
+<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span> </div>
+<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>  <span class="keyword">auto</span> sub = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_sub.html">luci::CircleSub</a> *<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a34ec78fcc91ffb1e54cd85e4a0924332">add</a>-&gt;y());</div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>  <span class="keywordflow">if</span> (sub == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span> </div>
+<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>  <span class="keyword">auto</span> const_as_beta = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(sub-&gt;x());</div>
+<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>  <span class="keywordflow">if</span> (const_as_beta == <span class="keyword">nullptr</span> || const_as_beta-&gt;rank() != 3)</div>
+<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span> </div>
+<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span>}</div>
+<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span> </div>
+<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span><span class="keywordtype">bool</span> fuse_instance_norm(<a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *add)</div>
+<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span>{</div>
+<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span>  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_1;</div>
 <div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span> </div>
-<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>  InstanceNormPattern pattern(add, pv);</div>
-<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>  <span class="keywordflow">if</span> (pattern.matched())</div>
-<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>  {</div>
-<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>    FuseInstanceNorm fuse(pattern);</div>
-<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>    fuse.apply();</div>
-<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>  }</div>
-<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span> </div>
-<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>  <span class="keywordflow">if</span> (pv == InstanceNormPattern::PatternVersion::Version_1)</div>
-<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>  {</div>
-<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>    <span class="comment">// if Version_1 failed, try with Version_5</span></div>
-<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>    pv = InstanceNormPattern::PatternVersion::Version_5;</div>
-<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span>    InstanceNormPattern pattern(add, pv);</div>
-<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>    <span class="keywordflow">if</span> (pattern.matched())</div>
-<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>    {</div>
-<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>      FuseInstanceNorm fuse(pattern);</div>
-<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span>      fuse.apply();</div>
-<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span>    }</div>
-<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span>  }</div>
-<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pv == InstanceNormPattern::PatternVersion::Version_2)</div>
-<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span>  {</div>
-<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span>    <span class="comment">// if Version_2 failed, try with Version_3</span></div>
-<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span>    pv = InstanceNormPattern::PatternVersion::Version_3;</div>
-<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span>    InstanceNormPattern pattern(add, pv);</div>
-<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span>    <span class="keywordflow">if</span> (pattern.matched())</div>
-<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span>    {</div>
-<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>      FuseInstanceNorm fuse(pattern);</div>
-<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>      fuse.apply();</div>
-<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span>    }</div>
-<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>  }</div>
-<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span> </div>
-<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span>}</div>
-<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span> </div>
-<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span><span class="keywordtype">bool</span> fuse_instance_norm(<a class="code hl_class" href="classluci_1_1_circle_div.html">luci::CircleDiv</a> *div)</div>
-<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span>{</div>
-<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_4;</div>
-<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span> </div>
-<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span>  InstanceNormPattern pattern(div, pv);</div>
-<div class="line"><a id="l01244" name="l01244"></a><span class="lineno"> 1244</span>  <span class="keywordflow">if</span> (pattern.matched())</div>
-<div class="line"><a id="l01245" name="l01245"></a><span class="lineno"> 1245</span>  {</div>
-<div class="line"><a id="l01246" name="l01246"></a><span class="lineno"> 1246</span>    FuseInstanceNorm fuse(pattern);</div>
-<div class="line"><a id="l01247" name="l01247"></a><span class="lineno"> 1247</span>    fuse.apply();</div>
-<div class="line"><a id="l01248" name="l01248"></a><span class="lineno"> 1248</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01249" name="l01249"></a><span class="lineno"> 1249</span>  }</div>
-<div class="line"><a id="l01250" name="l01250"></a><span class="lineno"> 1250</span> </div>
-<div class="line"><a id="l01251" name="l01251"></a><span class="lineno"> 1251</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01252" name="l01252"></a><span class="lineno"> 1252</span>}</div>
-<div class="line"><a id="l01253" name="l01253"></a><span class="lineno"> 1253</span> </div>
-<div class="line"><a id="l01254" name="l01254"></a><span class="lineno"> 1254</span><span class="keywordtype">bool</span> post_fusion(<a class="code hl_class" href="classluci_1_1_circle_instance_norm.html">luci::CircleInstanceNorm</a> *inst_norm)</div>
-<div class="line"><a id="l01255" name="l01255"></a><span class="lineno"> 1255</span>{</div>
-<div class="line"><a id="l01256" name="l01256"></a><span class="lineno"> 1256</span>  PostFusion postfusion(inst_norm);</div>
-<div class="line"><a id="l01257" name="l01257"></a><span class="lineno"> 1257</span> </div>
-<div class="line"><a id="l01258" name="l01258"></a><span class="lineno"> 1258</span>  <span class="keywordflow">return</span> postfusion.process();</div>
-<div class="line"><a id="l01259" name="l01259"></a><span class="lineno"> 1259</span>}</div>
-<div class="line"><a id="l01260" name="l01260"></a><span class="lineno"> 1260</span> </div>
-<div class="line"><a id="l01261" name="l01261"></a><span class="lineno"> 1261</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>  <span class="keywordflow">if</span> (is_add_input_mul_const(add))</div>
+<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>    pv = InstanceNormPattern::PatternVersion::Version_2;</div>
+<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (is_add_input_mul_sub3d(add))</div>
+<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>    pv = InstanceNormPattern::PatternVersion::Version_6;</div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span> </div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>  InstanceNormPattern pattern(add, pv);</div>
+<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>  <span class="keywordflow">if</span> (pattern.matched())</div>
+<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>  {</div>
+<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>    FuseInstanceNorm fuse(pattern);</div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>    fuse.apply();</div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>  }</div>
+<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span> </div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>  <span class="keywordflow">if</span> (pv == InstanceNormPattern::PatternVersion::Version_1)</div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>  {</div>
+<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>    <span class="comment">// if Version_1 failed, try with Version_5</span></div>
+<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span>    pv = InstanceNormPattern::PatternVersion::Version_5;</div>
+<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>    InstanceNormPattern pattern(add, pv);</div>
+<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span>    <span class="keywordflow">if</span> (pattern.matched())</div>
+<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span>    {</div>
+<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span>      FuseInstanceNorm fuse(pattern);</div>
+<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span>      fuse.apply();</div>
+<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span>    }</div>
+<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span>  }</div>
+<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pv == InstanceNormPattern::PatternVersion::Version_2)</div>
+<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span>  {</div>
+<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>    <span class="comment">// if Version_2 failed, try with Version_3</span></div>
+<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>    pv = InstanceNormPattern::PatternVersion::Version_3;</div>
+<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>    InstanceNormPattern pattern(add, pv);</div>
+<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span>    <span class="keywordflow">if</span> (pattern.matched())</div>
+<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>    {</div>
+<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span>      FuseInstanceNorm fuse(pattern);</div>
+<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span>      fuse.apply();</div>
+<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span>    }</div>
+<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span>  }</div>
+<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span> </div>
+<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span>}</div>
+<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span> </div>
+<div class="line"><a id="l01244" name="l01244"></a><span class="lineno"> 1244</span><span class="keywordtype">bool</span> fuse_instance_norm(<a class="code hl_class" href="classluci_1_1_circle_div.html">luci::CircleDiv</a> *div)</div>
+<div class="line"><a id="l01245" name="l01245"></a><span class="lineno"> 1245</span>{</div>
+<div class="line"><a id="l01246" name="l01246"></a><span class="lineno"> 1246</span>  InstanceNormPattern::PatternVersion pv = InstanceNormPattern::PatternVersion::Version_4;</div>
+<div class="line"><a id="l01247" name="l01247"></a><span class="lineno"> 1247</span> </div>
+<div class="line"><a id="l01248" name="l01248"></a><span class="lineno"> 1248</span>  InstanceNormPattern pattern(div, pv);</div>
+<div class="line"><a id="l01249" name="l01249"></a><span class="lineno"> 1249</span>  <span class="keywordflow">if</span> (pattern.matched())</div>
+<div class="line"><a id="l01250" name="l01250"></a><span class="lineno"> 1250</span>  {</div>
+<div class="line"><a id="l01251" name="l01251"></a><span class="lineno"> 1251</span>    FuseInstanceNorm fuse(pattern);</div>
+<div class="line"><a id="l01252" name="l01252"></a><span class="lineno"> 1252</span>    fuse.apply();</div>
+<div class="line"><a id="l01253" name="l01253"></a><span class="lineno"> 1253</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01254" name="l01254"></a><span class="lineno"> 1254</span>  }</div>
+<div class="line"><a id="l01255" name="l01255"></a><span class="lineno"> 1255</span> </div>
+<div class="line"><a id="l01256" name="l01256"></a><span class="lineno"> 1256</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01257" name="l01257"></a><span class="lineno"> 1257</span>}</div>
+<div class="line"><a id="l01258" name="l01258"></a><span class="lineno"> 1258</span> </div>
+<div class="line"><a id="l01259" name="l01259"></a><span class="lineno"> 1259</span><span class="keywordtype">bool</span> post_fusion(<a class="code hl_class" href="classluci_1_1_circle_instance_norm.html">luci::CircleInstanceNorm</a> *inst_norm)</div>
+<div class="line"><a id="l01260" name="l01260"></a><span class="lineno"> 1260</span>{</div>
+<div class="line"><a id="l01261" name="l01261"></a><span class="lineno"> 1261</span>  PostFusion postfusion(inst_norm);</div>
 <div class="line"><a id="l01262" name="l01262"></a><span class="lineno"> 1262</span> </div>
-<div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
-<div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span>{</div>
+<div class="line"><a id="l01263" name="l01263"></a><span class="lineno"> 1263</span>  <span class="keywordflow">return</span> postfusion.process();</div>
+<div class="line"><a id="l01264" name="l01264"></a><span class="lineno"> 1264</span>}</div>
 <div class="line"><a id="l01265" name="l01265"></a><span class="lineno"> 1265</span> </div>
-<div class="foldopen" id="foldopen01266" data-start="{" data-end="}">
-<div class="line"><a id="l01266" name="l01266"></a><span class="lineno"><a class="line" href="structluci_1_1_fuse_instance_norm_pass.html#a86529e8117ad4d2e853f1720e649bb10"> 1266</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_fuse_instance_norm_pass.html#a86529e8117ad4d2e853f1720e649bb10">FuseInstanceNormPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
-<div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span>{</div>
-<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span> </div>
-<div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span>  <span class="comment">// Check Version_1, Version_2, Version_3, Version_5, Version_6</span></div>
-<div class="line"><a id="l01271" name="l01271"></a><span class="lineno"> 1271</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><a id="l01272" name="l01272"></a><span class="lineno"> 1272</span>  {</div>
-<div class="line"><a id="l01273" name="l01273"></a><span class="lineno"> 1273</span>    <span class="keyword">auto</span> add = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><a id="l01274" name="l01274"></a><span class="lineno"> 1274</span>    <span class="keywordflow">if</span> (not add)</div>
-<div class="line"><a id="l01275" name="l01275"></a><span class="lineno"> 1275</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l01276" name="l01276"></a><span class="lineno"> 1276</span> </div>
-<div class="line"><a id="l01277" name="l01277"></a><span class="lineno"> 1277</span>    <span class="keywordflow">if</span> (fuse_instance_norm(add))</div>
-<div class="line"><a id="l01278" name="l01278"></a><span class="lineno"> 1278</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01279" name="l01279"></a><span class="lineno"> 1279</span>  }</div>
-<div class="line"><a id="l01280" name="l01280"></a><span class="lineno"> 1280</span> </div>
-<div class="line"><a id="l01281" name="l01281"></a><span class="lineno"> 1281</span>  <span class="comment">// Check Version_4(from DIV) if MUL-ADD pattern is not found</span></div>
-<div class="line"><a id="l01282" name="l01282"></a><span class="lineno"> 1282</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><a id="l01283" name="l01283"></a><span class="lineno"> 1283</span>  {</div>
-<div class="line"><a id="l01284" name="l01284"></a><span class="lineno"> 1284</span>    <span class="keyword">auto</span> div = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_div.html">luci::CircleDiv</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><a id="l01285" name="l01285"></a><span class="lineno"> 1285</span>    <span class="keywordflow">if</span> (not div)</div>
-<div class="line"><a id="l01286" name="l01286"></a><span class="lineno"> 1286</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l01287" name="l01287"></a><span class="lineno"> 1287</span> </div>
-<div class="line"><a id="l01288" name="l01288"></a><span class="lineno"> 1288</span>    <span class="keywordflow">if</span> (fuse_instance_norm(div))</div>
-<div class="line"><a id="l01289" name="l01289"></a><span class="lineno"> 1289</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01290" name="l01290"></a><span class="lineno"> 1290</span>  }</div>
-<div class="line"><a id="l01291" name="l01291"></a><span class="lineno"> 1291</span> </div>
-<div class="line"><a id="l01292" name="l01292"></a><span class="lineno"> 1292</span>  <span class="comment">// Post processing of FuseInstanceNorm</span></div>
-<div class="line"><a id="l01293" name="l01293"></a><span class="lineno"> 1293</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><a id="l01294" name="l01294"></a><span class="lineno"> 1294</span>  {</div>
-<div class="line"><a id="l01295" name="l01295"></a><span class="lineno"> 1295</span>    <span class="keyword">auto</span> inst_norm = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_instance_norm.html">luci::CircleInstanceNorm</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><a id="l01296" name="l01296"></a><span class="lineno"> 1296</span>    <span class="keywordflow">if</span> (not inst_norm)</div>
-<div class="line"><a id="l01297" name="l01297"></a><span class="lineno"> 1297</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l01298" name="l01298"></a><span class="lineno"> 1298</span> </div>
-<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"> 1299</span>    <span class="keywordflow">if</span> (post_fusion(inst_norm))</div>
-<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"> 1300</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>  }</div>
-<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span> </div>
-<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><a id="l01304" name="l01304"></a><span class="lineno"> 1304</span>}</div>
+<div class="line"><a id="l01266" name="l01266"></a><span class="lineno"> 1266</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l01267" name="l01267"></a><span class="lineno"> 1267</span> </div>
+<div class="line"><a id="l01268" name="l01268"></a><span class="lineno"> 1268</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
+<div class="line"><a id="l01269" name="l01269"></a><span class="lineno"> 1269</span>{</div>
+<div class="line"><a id="l01270" name="l01270"></a><span class="lineno"> 1270</span> </div>
+<div class="foldopen" id="foldopen01271" data-start="{" data-end="}">
+<div class="line"><a id="l01271" name="l01271"></a><span class="lineno"><a class="line" href="structluci_1_1_fuse_instance_norm_pass.html#a86529e8117ad4d2e853f1720e649bb10"> 1271</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_fuse_instance_norm_pass.html#a86529e8117ad4d2e853f1720e649bb10">FuseInstanceNormPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><a id="l01272" name="l01272"></a><span class="lineno"> 1272</span>{</div>
+<div class="line"><a id="l01273" name="l01273"></a><span class="lineno"> 1273</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l01274" name="l01274"></a><span class="lineno"> 1274</span> </div>
+<div class="line"><a id="l01275" name="l01275"></a><span class="lineno"> 1275</span>  <span class="comment">// Check Version_1, Version_2, Version_3, Version_5, Version_6</span></div>
+<div class="line"><a id="l01276" name="l01276"></a><span class="lineno"> 1276</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l01277" name="l01277"></a><span class="lineno"> 1277</span>  {</div>
+<div class="line"><a id="l01278" name="l01278"></a><span class="lineno"> 1278</span>    <span class="keyword">auto</span> add = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_add.html">luci::CircleAdd</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><a id="l01279" name="l01279"></a><span class="lineno"> 1279</span>    <span class="keywordflow">if</span> (not add)</div>
+<div class="line"><a id="l01280" name="l01280"></a><span class="lineno"> 1280</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l01281" name="l01281"></a><span class="lineno"> 1281</span> </div>
+<div class="line"><a id="l01282" name="l01282"></a><span class="lineno"> 1282</span>    <span class="keywordflow">if</span> (fuse_instance_norm(add))</div>
+<div class="line"><a id="l01283" name="l01283"></a><span class="lineno"> 1283</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01284" name="l01284"></a><span class="lineno"> 1284</span>  }</div>
+<div class="line"><a id="l01285" name="l01285"></a><span class="lineno"> 1285</span> </div>
+<div class="line"><a id="l01286" name="l01286"></a><span class="lineno"> 1286</span>  <span class="comment">// Check Version_4(from DIV) if MUL-ADD pattern is not found</span></div>
+<div class="line"><a id="l01287" name="l01287"></a><span class="lineno"> 1287</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l01288" name="l01288"></a><span class="lineno"> 1288</span>  {</div>
+<div class="line"><a id="l01289" name="l01289"></a><span class="lineno"> 1289</span>    <span class="keyword">auto</span> div = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_div.html">luci::CircleDiv</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><a id="l01290" name="l01290"></a><span class="lineno"> 1290</span>    <span class="keywordflow">if</span> (not div)</div>
+<div class="line"><a id="l01291" name="l01291"></a><span class="lineno"> 1291</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l01292" name="l01292"></a><span class="lineno"> 1292</span> </div>
+<div class="line"><a id="l01293" name="l01293"></a><span class="lineno"> 1293</span>    <span class="keywordflow">if</span> (fuse_instance_norm(div))</div>
+<div class="line"><a id="l01294" name="l01294"></a><span class="lineno"> 1294</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01295" name="l01295"></a><span class="lineno"> 1295</span>  }</div>
+<div class="line"><a id="l01296" name="l01296"></a><span class="lineno"> 1296</span> </div>
+<div class="line"><a id="l01297" name="l01297"></a><span class="lineno"> 1297</span>  <span class="comment">// Post processing of FuseInstanceNorm</span></div>
+<div class="line"><a id="l01298" name="l01298"></a><span class="lineno"> 1298</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"> 1299</span>  {</div>
+<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"> 1300</span>    <span class="keyword">auto</span> inst_norm = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_instance_norm.html">luci::CircleInstanceNorm</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>    <span class="keywordflow">if</span> (not inst_norm)</div>
+<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span> </div>
+<div class="line"><a id="l01304" name="l01304"></a><span class="lineno"> 1304</span>    <span class="keywordflow">if</span> (post_fusion(inst_norm))</div>
+<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>  }</div>
+<div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span> </div>
+<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span>}</div>
 </div>
-<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span> </div>
-<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span> </div>
+<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_circle_node_clone_8h_html"><div class="ttname"><a href="_circle_node_clone_8h.html">CircleNodeClone.h</a></div></div>
 <div class="ttc" id="a_circle_node_origin_8h_html"><div class="ttname"><a href="_circle_node_origin_8h.html">CircleNodeOrigin.h</a></div></div>
 <div class="ttc" id="a_fuse_instance_norm_pass_internal_8h_html"><div class="ttname"><a href="_fuse_instance_norm_pass_internal_8h.html">FuseInstanceNormPassInternal.h</a></div></div>
@@ -1196,6 +1201,7 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_fuse_instance_norm_p
 <div class="ttc" id="aluci_2pass_2src_2_fuse_instance_norm_pass_8cpp_html_adca306f6af65d34476df1eea459ebec4"><div class="ttname"><a href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp.html#adca306f6af65d34476df1eea459ebec4">is_instance_mean_v2</a></div><div class="ttdeci">bool is_instance_mean_v2(luci::CircleMean *mean)</div><div class="ttdef"><b>Definition</b> <a href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp_source.html#l00088">FuseInstanceNormPass.cpp:88</a></div></div>
 <div class="ttc" id="aluci_2pass_2src_2_fuse_instance_norm_pass_8cpp_html_af7d4f96ffef64ecadd824a9c8a5d0811"><div class="ttname"><a href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp.html#af7d4f96ffef64ecadd824a9c8a5d0811">is_1D_float32_const</a></div><div class="ttdeci">bool is_1D_float32_const(const luci::CircleConst *node, uint32_t channel_size)</div><div class="ttdef"><b>Definition</b> <a href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp_source.html#l00129">FuseInstanceNormPass.cpp:129</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a52e2332276fabbe47fc9864378cdca57"><div class="ttname"><a href="namespaceinfer.html#a52e2332276fabbe47fc9864378cdca57">infer.C</a></div><div class="ttdeci">C</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00052">infer.py:52</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a2bd813283047d29d83e570f7eef9e42c"><div class="ttname"><a href="namespaceloco.html#a2bd813283047d29d83e570f7eef9e42c">loco::apply</a></div><div class="ttdeci">ShapeInferenceSession apply(ShapeInferenceRule *r)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_service_2_shape_inference_8h_source.html#l00051">ShapeInference.h:51</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
@@ -1213,7 +1219,7 @@ $(document).ready(function(){initNavTree('luci_2pass_2src_2_fuse_instance_norm_p
 <div class="ttc" id="anamespacennfw_1_1cker_1_1train_html_ab73263e409724ca45f5cf2dba525d4b0"><div class="ttname"><a href="namespacennfw_1_1cker_1_1train.html#ab73263e409724ca45f5cf2dba525d4b0">nnfw::cker::train::square</a></div><div class="ttdeci">T square(T value)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00037">Loss.h:37</a></div></div>
 <div class="ttc" id="anamespacevalidate__onnx2circle_html_aab02d6caf7220d2aaea2dd17c148f89d"><div class="ttname"><a href="namespacevalidate__onnx2circle.html#aab02d6caf7220d2aaea2dd17c148f89d">validate_onnx2circle.process</a></div><div class="ttdeci">process</div><div class="ttdef"><b>Definition</b> <a href="validate__onnx2circle_8py_source.html#l00117">validate_onnx2circle.py:117</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
-<div class="ttc" id="astructluci_1_1_fuse_instance_norm_pass_html_a86529e8117ad4d2e853f1720e649bb10"><div class="ttname"><a href="structluci_1_1_fuse_instance_norm_pass.html#a86529e8117ad4d2e853f1720e649bb10">luci::FuseInstanceNormPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdoc">Run the pass.</div><div class="ttdef"><b>Definition</b> <a href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp_source.html#l01266">FuseInstanceNormPass.cpp:1266</a></div></div>
+<div class="ttc" id="astructluci_1_1_fuse_instance_norm_pass_html_a86529e8117ad4d2e853f1720e649bb10"><div class="ttname"><a href="structluci_1_1_fuse_instance_norm_pass.html#a86529e8117ad4d2e853f1720e649bb10">luci::FuseInstanceNormPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdoc">Run the pass.</div><div class="ttdef"><b>Definition</b> <a href="luci_2pass_2src_2_fuse_instance_norm_pass_8cpp_source.html#l01271">FuseInstanceNormPass.cpp:1271</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -90,16 +90,24 @@ $(document).ready(function(){initNavTree('nnfw__api__internal_8h.html',''); init
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle"><div class="title">nnfw_api_internal.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="nnfw_8h_source.html">nnfw.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_custom_kernel_registry_8h_source.html">CustomKernelRegistry.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_compiler_options_8h_source.html">compiler/CompilerOptions.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_i_compiler_8h_source.html">compiler/ICompiler.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_execution_8h_source.html">exec/Execution.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_n_n_pkg_8h_source.html">ir/NNPkg.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_training_info_8h_source.html">ir/train/TrainingInfo.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_codegen_manager_8h_source.html">odc/CodegenManager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_quantize_manager_8h_source.html">odc/QuantizeManager.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="_tracing_ctx_8h_source.html">util/TracingCtx.h</a>&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;thread&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 </div>
@@ -108,23 +116,6 @@ $(document).ready(function(){initNavTree('nnfw__api__internal_8h.html',''); init
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw__session.html">nnfw_session</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespaceonert" id="r_namespaceonert"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert.html">onert</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1api" id="r_namespaceonert_1_1api"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api.html">onert::api</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1exec" id="r_namespaceonert_1_1exec"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1exec.html">onert::exec</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1ir" id="r_namespaceonert_1_1ir"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html">onert::ir</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1ir_1_1train" id="r_namespaceonert_1_1ir_1_1train"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir_1_1train.html">onert::ir::train</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1compiler" id="r_namespaceonert_1_1compiler"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1compiler.html">onert::compiler</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceonert_1_1odc" id="r_namespaceonert_1_1odc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1odc.html">onert::odc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

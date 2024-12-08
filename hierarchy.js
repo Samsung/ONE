@@ -2306,7 +2306,6 @@ var hierarchy =
       [ "nnc::ArtifactGeneratorCppDecl", "classnnc_1_1_artifact_generator_cpp_decl.html", null ]
     ] ],
     [ "ICLKernel", null, [
-      [ "arm_compute::CLArgMinMaxLayerKernelEx", "classarm__compute_1_1_c_l_arg_min_max_layer_kernel_ex.html", null ],
       [ "arm_compute::CLBinaryLogicalOpKernel", "classarm__compute_1_1_c_l_binary_logical_op_kernel.html", null ],
       [ "arm_compute::CLEmbeddingLookupKernel", "classarm__compute_1_1_c_l_embedding_lookup_kernel.html", null ],
       [ "arm_compute::CLGEMMMatrixAccumulateBiasesKernel", "classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel.html", null ],
@@ -2398,7 +2397,6 @@ var hierarchy =
       [ "arm_compute::NETransposeConvLayer", "classarm__compute_1_1_n_e_transpose_conv_layer.html", null ]
     ] ],
     [ "IFunction", null, [
-      [ "arm_compute::CLArgMinMaxLayerEx", "classarm__compute_1_1_c_l_arg_min_max_layer_ex.html", null ],
       [ "arm_compute::CLDirectTransposeConvLayer", "classarm__compute_1_1_c_l_direct_transpose_conv_layer.html", null ],
       [ "arm_compute::CLFullyConnectedHybridLayer", "classarm__compute_1_1_c_l_fully_connected_hybrid_layer.html", null ],
       [ "arm_compute::CLFullyConnectedLayerEx", "classarm__compute_1_1_c_l_fully_connected_layer_ex.html", null ]
@@ -3593,8 +3591,8 @@ var hierarchy =
     [ "libnnfw_api_pybind.nnfw_session", null, [
       [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
     ] ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_session", "structnnfw__session.html", null ],
+    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],

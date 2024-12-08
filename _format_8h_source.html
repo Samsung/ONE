@@ -127,13 +127,13 @@ $(document).ready(function(){initNavTree('_format_8h_source.html',''); initResiz
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> _fmt(std::ostream &amp;os, <span class="keyword">const</span> Arg &amp;arg, <span class="keyword">const</span> Args &amp;...args)</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  _fmt(os, arg);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  _fmt(os, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>...);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  _fmt(os, <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>...);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt; <span class="keyword">static</span> <span class="keyword">inline</span> std::string <a class="code hl_function" href="namespaceexo.html#a40f91cf9b3bde09072d8297dd583425d">fmt</a>(<span class="keyword">const</span> Args &amp;...args)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  std::stringstream ss;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  _fmt(ss, <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a>...);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  _fmt(ss, <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>...);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> ss.str();</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('_format_8h_source.html',''); initResiz
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif </span><span class="comment">// __PP_FORMAT_H__</span></div>
 <div class="ttc" id="anamespaceexo_html_a40f91cf9b3bde09072d8297dd583425d"><div class="ttname"><a href="namespaceexo.html#a40f91cf9b3bde09072d8297dd583425d">exo::fmt</a></div><div class="ttdeci">FormattedGraph fmt(loco::Graph *g)</div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00073">LogHelper.cpp:73</a></div></div>
 <div class="ttc" id="anamespaceinfer__testcases_html_a126aca5a441bec47fc7118a662076bbd"><div class="ttname"><a href="namespaceinfer__testcases.html#a126aca5a441bec47fc7118a662076bbd">infer_testcases.arg</a></div><div class="ttdeci">arg</div><div class="ttdef"><b>Definition</b> <a href="infer__testcases_8py_source.html#l00046">infer_testcases.py:46</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aeda17029cb7df116efcf0eaca140d394"><div class="ttname"><a href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">part_eval_one.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00021">part_eval_one.py:21</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a30b5ffd23ed16bed88d525da72f2e73f"><div class="ttname"><a href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">infer.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00021">infer.py:21</a></div></div>
 <div class="ttc" id="anamespacepp_html"><div class="ttname"><a href="namespacepp.html">pp</a></div><div class="ttdef"><b>Definition</b> <a href="_enclosed_document_8h_source.html#l00023">EnclosedDocument.h:24</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

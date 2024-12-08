@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('_read_module_8cpp_source.html',''); in
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="comment">// Load model from the file</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_class" href="classfoder_1_1_file_loader.html">foder::FileLoader</a> file_loader{input_path};</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::vector&lt;char&gt; model_data = file_loader.<a class="code hl_function" href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">load</a>();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::vector&lt;char&gt; model_data = file_loader.load();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keyword">auto</span> *data_data = <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(model_data.data());</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_class" href="classluci_1_1_importer.html">luci::Importer</a> importer;</div>
@@ -173,7 +173,6 @@ $(document).ready(function(){initNavTree('_read_module_8cpp_source.html',''); in
 <div class="ttc" id="a_read_module_8h_html"><div class="ttname"><a href="_read_module_8h.html">ReadModule.h</a></div></div>
 <div class="ttc" id="a_validate_8h_html"><div class="ttname"><a href="_validate_8h.html">Validate.h</a></div></div>
 <div class="ttc" id="aclassfoder_1_1_file_loader_html"><div class="ttname"><a href="classfoder_1_1_file_loader.html">foder::FileLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00026">FileLoader.h:27</a></div></div>
-<div class="ttc" id="aclassfoder_1_1_file_loader_html_adc903eb7f252ed7fac779a6869139ec4"><div class="ttname"><a href="classfoder_1_1_file_loader.html#adc903eb7f252ed7fac779a6869139ec4">foder::FileLoader::load</a></div><div class="ttdeci">DataBuffer load(void) const</div><div class="ttdef"><b>Definition</b> <a href="_file_loader_8h_source.html#l00039">FileLoader.h:39</a></div></div>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_html"><div class="ttname"><a href="classlogo_1_1_phase_runner.html">logo::PhaseRunner</a></div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00158">Phase.h:158</a></div></div>
 <div class="ttc" id="aclassluci_1_1_importer_html"><div class="ttname"><a href="classluci_1_1_importer.html">luci::Importer</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2import_2include_2luci_2_importer_8h_source.html#l00033">Importer.h:34</a></div></div>
 <div class="ttc" id="aluci_2import_2include_2luci_2_importer_8h_html"><div class="ttname"><a href="luci_2import_2include_2luci_2_importer_8h.html">Importer.h</a></div></div>

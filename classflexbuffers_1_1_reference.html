@@ -2585,8 +2585,8 @@ template&lt;&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00866">866</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  866</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classflexbuffers_1_1_reference.html#a0a254a75f210b0a0b4e7050115ed9f82">MutateString</a>(<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.data(), <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.length()); }</div>
-<div class="ttc" id="anamespacepart__eval__one_html_afc9dd8b2ac5b9f8a2a04466cf313732a"><div class="ttname"><a href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">part_eval_one.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00019">part_eval_one.py:19</a></div></div>
+<div class="fragment"><div class="line"><span class="lineno">  866</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classflexbuffers_1_1_reference.html#a0a254a75f210b0a0b4e7050115ed9f82">MutateString</a>(<a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.data(), <a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.length()); }</div>
+<div class="ttc" id="anamespaceinfer_html_af1f8e46f28b60855bfec7d517f4d3ef7"><div class="ttname"><a href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">infer.str</a></div><div class="ttdeci">str</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00018">infer.py:18</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00866">MutateString()</a>.</p>
 
@@ -2729,26 +2729,26 @@ template&lt;&gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">  594</span>  {</div>
 <div class="line"><span class="lineno">  595</span>    <span class="keywordflow">if</span> (type_ == <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e">FBT_STRING</a>)</div>
 <div class="line"><span class="lineno">  596</span>    {</div>
-<div class="line"><span class="lineno">  597</span>      String <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>(Indirect(), byte_width_);</div>
+<div class="line"><span class="lineno">  597</span>      String <a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>(Indirect(), byte_width_);</div>
 <div class="line"><span class="lineno">  598</span>      <span class="keywordflow">if</span> (strings_quoted)</div>
 <div class="line"><span class="lineno">  599</span>      {</div>
-<div class="line"><span class="lineno">  600</span>        <a class="code hl_function" href="namespaceflatbuffers.html#a734ade019a5359f53f396856ea4ff4b5">flatbuffers::EscapeString</a>(<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.c_str(), <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.length(), &amp;s, <span class="keyword">true</span>, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  600</span>        <a class="code hl_function" href="namespaceflatbuffers.html#a734ade019a5359f53f396856ea4ff4b5">flatbuffers::EscapeString</a>(<a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.c_str(), <a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.length(), &amp;s, <span class="keyword">true</span>, <span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  601</span>      }</div>
 <div class="line"><span class="lineno">  602</span>      <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  603</span>      {</div>
-<div class="line"><span class="lineno">  604</span>        <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.append(<a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.c_str(), <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>.length());</div>
+<div class="line"><span class="lineno">  604</span>        <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.append(<a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.c_str(), <a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>.length());</div>
 <div class="line"><span class="lineno">  605</span>      }</div>
 <div class="line"><span class="lineno">  606</span>    }</div>
 <div class="line"><span class="lineno">  607</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="classflexbuffers_1_1_reference.html#a2152b9fed22ef72184bec99dcac938cb">IsKey</a>())</div>
 <div class="line"><span class="lineno">  608</span>    {</div>
-<div class="line"><span class="lineno">  609</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a> = <a class="code hl_function" href="classflexbuffers_1_1_reference.html#a88f2242c5af5e6b4c054cb7e1306260e">AsKey</a>();</div>
+<div class="line"><span class="lineno">  609</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a> = <a class="code hl_function" href="classflexbuffers_1_1_reference.html#a88f2242c5af5e6b4c054cb7e1306260e">AsKey</a>();</div>
 <div class="line"><span class="lineno">  610</span>      <span class="keywordflow">if</span> (keys_quoted)</div>
 <div class="line"><span class="lineno">  611</span>      {</div>
 <div class="line"><span class="lineno">  612</span>        <a class="code hl_function" href="namespaceflatbuffers.html#a734ade019a5359f53f396856ea4ff4b5">flatbuffers::EscapeString</a>(str, strlen(str), &amp;s, <span class="keyword">true</span>, <span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  613</span>      }</div>
 <div class="line"><span class="lineno">  614</span>      <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  615</span>      {</div>
-<div class="line"><span class="lineno">  616</span>        <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a> += <a class="code hl_variable" href="namespacepart__eval__one.html#afc9dd8b2ac5b9f8a2a04466cf313732a">str</a>;</div>
+<div class="line"><span class="lineno">  616</span>        <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a> += <a class="code hl_variable" href="namespaceinfer.html#af1f8e46f28b60855bfec7d517f4d3ef7">str</a>;</div>
 <div class="line"><span class="lineno">  617</span>      }</div>
 <div class="line"><span class="lineno">  618</span>    }</div>
 <div class="line"><span class="lineno">  619</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="classflexbuffers_1_1_reference.html#a13cb6131e618a8360e15b17bce0de565">IsInt</a>())</div>

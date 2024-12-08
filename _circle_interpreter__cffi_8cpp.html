@@ -139,8 +139,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00183">183</a> of file <a class="el" href="_circle_interpreter__cffi_8cpp_source.html">CircleInterpreter_cffi.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  184</span>{</div>
-<div class="line"><span class="lineno">  185</span>  ::exception_wrapper([&amp;]() { <span class="keyword">delete</span> intp; });</div>
+<div class="line"><span class="lineno">  185</span>  ::exception_wrapper([&amp;]() { <span class="keyword">delete</span> <a class="code hl_variable" href="namespaceinfer.html#a090f02d8ca09d6735c854c261ce4861e">intp</a>; });</div>
 <div class="line"><span class="lineno">  186</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_a090f02d8ca09d6735c854c261ce4861e"><div class="ttname"><a href="namespaceinfer.html#a090f02d8ca09d6735c854c261ce4861e">infer.intp</a></div><div class="ttdeci">intp</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00085">infer.py:85</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -162,12 +163,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00188">188</a> of file <a class="el" href="_circle_interpreter__cffi_8cpp_source.html">CircleInterpreter_cffi.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  189</span>{</div>
-<div class="line"><span class="lineno">  190</span>  ::exception_wrapper([&amp;]() { intp-&gt;<a class="code hl_function" href="class_interpreter_wrapper.html#a689af2a774c75fed21cb90909ee53ef4">interpret</a>(); });</div>
+<div class="line"><span class="lineno">  190</span>  ::exception_wrapper([&amp;]() { <a class="code hl_variable" href="namespaceinfer.html#a090f02d8ca09d6735c854c261ce4861e">intp</a>-&gt;interpret(); });</div>
 <div class="line"><span class="lineno">  191</span>}</div>
-<div class="ttc" id="aclass_interpreter_wrapper_html_a689af2a774c75fed21cb90909ee53ef4"><div class="ttname"><a href="class_interpreter_wrapper.html#a689af2a774c75fed21cb90909ee53ef4">InterpreterWrapper::interpret</a></div><div class="ttdeci">void interpret(void)</div><div class="ttdef"><b>Definition</b> <a href="_circle_interpreter__cffi_8cpp_source.html#l00132">CircleInterpreter_cffi.cpp:132</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00132">InterpreterWrapper::interpret()</a>.</p>
-
 </div>
 </div>
 <a id="ab43a1f58ad5f1d9403dcc4ba829b816d" name="ab43a1f58ad5f1d9403dcc4ba829b816d"></a>
@@ -244,12 +242,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00199">199</a> of file <a class="el" href="_circle_interpreter__cffi_8cpp_source.html">CircleInterpreter_cffi.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  201</span>{</div>
-<div class="line"><span class="lineno">  202</span>  ::exception_wrapper([&amp;]() { intp-&gt;<a class="code hl_function" href="class_interpreter_wrapper.html#aa9de832a3aa5911b2446ac70917084d2">readOutputTensor</a>(output_idx, output, output_size); });</div>
+<div class="line"><span class="lineno">  202</span>  ::exception_wrapper([&amp;]() { <a class="code hl_variable" href="namespaceinfer.html#a090f02d8ca09d6735c854c261ce4861e">intp</a>-&gt;readOutputTensor(output_idx, output, output_size); });</div>
 <div class="line"><span class="lineno">  203</span>}</div>
-<div class="ttc" id="aclass_interpreter_wrapper_html_aa9de832a3aa5911b2446ac70917084d2"><div class="ttname"><a href="class_interpreter_wrapper.html#aa9de832a3aa5911b2446ac70917084d2">InterpreterWrapper::readOutputTensor</a></div><div class="ttdeci">void readOutputTensor(const int output_idx, void *output, size_t output_size)</div><div class="ttdef"><b>Definition</b> <a href="_circle_interpreter__cffi_8cpp_source.html#l00149">CircleInterpreter_cffi.cpp:149</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00149">InterpreterWrapper::readOutputTensor()</a>.</p>
-
 </div>
 </div>
 <a id="a9ad2fbc20cc818de53b657a0d84f973c" name="a9ad2fbc20cc818de53b657a0d84f973c"></a>
@@ -292,12 +287,9 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00193">193</a> of file <a class="el" href="_circle_interpreter__cffi_8cpp_source.html">CircleInterpreter_cffi.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
-<div class="line"><span class="lineno">  196</span>  ::exception_wrapper([&amp;]() { intp-&gt;<a class="code hl_function" href="class_interpreter_wrapper.html#a1cfcbed2edd62dedd7dfa27dd5add877">writeInputTensor</a>(input_idx, data, input_size); });</div>
+<div class="line"><span class="lineno">  196</span>  ::exception_wrapper([&amp;]() { <a class="code hl_variable" href="namespaceinfer.html#a090f02d8ca09d6735c854c261ce4861e">intp</a>-&gt;writeInputTensor(input_idx, data, input_size); });</div>
 <div class="line"><span class="lineno">  197</span>}</div>
-<div class="ttc" id="aclass_interpreter_wrapper_html_a1cfcbed2edd62dedd7dfa27dd5add877"><div class="ttname"><a href="class_interpreter_wrapper.html#a1cfcbed2edd62dedd7dfa27dd5add877">InterpreterWrapper::writeInputTensor</a></div><div class="ttdeci">void writeInputTensor(const int input_idx, const void *data, size_t input_size)</div><div class="ttdef"><b>Definition</b> <a href="_circle_interpreter__cffi_8cpp_source.html#l00134">CircleInterpreter_cffi.cpp:134</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_circle_interpreter__cffi_8cpp_source.html#l00134">InterpreterWrapper::writeInputTensor()</a>.</p>
-
 </div>
 </div>
 </div><!-- contents -->

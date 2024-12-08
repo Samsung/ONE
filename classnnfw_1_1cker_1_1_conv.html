@@ -334,13 +334,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00152">152</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  155</span>  {</div>
-<div class="line"><span class="lineno">  156</span>    reference::Conv&lt;int8_t, false&gt;(params, _per_channel_output_multiplier.data(),</div>
-<div class="line"><span class="lineno">  157</span>                                   _per_channel_output_shift.data(), input_shape, input_data,</div>
-<div class="line"><span class="lineno">  158</span>                                   filter_shape, filter_data, <span class="keyword">nullptr</span> <span class="comment">/* filter_zero_point */</span>,</div>
-<div class="line"><span class="lineno">  159</span>                                   bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  160</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00141">141</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>  {</div>
+<div class="line"><span class="lineno">  145</span>    reference::Conv&lt;int8_t, false&gt;(params, _per_channel_output_multiplier.data(),</div>
+<div class="line"><span class="lineno">  146</span>                                   _per_channel_output_shift.data(), input_shape, input_data,</div>
+<div class="line"><span class="lineno">  147</span>                                   filter_shape, filter_data, <span class="keyword">nullptr</span> <span class="comment">/* filter_zero_point */</span>,</div>
+<div class="line"><span class="lineno">  148</span>                                   bias_shape, bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  149</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
@@ -428,13 +428,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00141">141</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  145</span>  {</div>
-<div class="line"><span class="lineno">  146</span>    reference::Conv&lt;uint8_t, true&gt;(params, _per_channel_output_multiplier.data(),</div>
-<div class="line"><span class="lineno">  147</span>                                   _per_channel_output_shift.data(), input_shape, input_data,</div>
-<div class="line"><span class="lineno">  148</span>                                   filter_shape, filter_data, filter_zero_point, bias_shape,</div>
-<div class="line"><span class="lineno">  149</span>                                   bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  150</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00130">130</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  134</span>  {</div>
+<div class="line"><span class="lineno">  135</span>    reference::Conv&lt;uint8_t, true&gt;(params, _per_channel_output_multiplier.data(),</div>
+<div class="line"><span class="lineno">  136</span>                                   _per_channel_output_shift.data(), input_shape, input_data,</div>
+<div class="line"><span class="lineno">  137</span>                                   filter_shape, filter_data, filter_zero_point, bias_shape,</div>
+<div class="line"><span class="lineno">  138</span>                                   bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  139</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
@@ -527,21 +527,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  122</span>    }</div>
 <div class="line"><span class="lineno">  123</span> </div>
 <div class="line"><span class="lineno">  124</span>    <span class="keywordtype">int</span> im2col_size = _need_im2col ? _im2col_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>() : 1;</div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    <span class="comment">// Use heap if size is larger than 8MB</span></div>
-<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">if</span> (im2col_size &gt; 8 * 1024 * 1024)</div>
-<div class="line"><span class="lineno">  128</span>    {</div>
-<div class="line"><span class="lineno">  129</span>      std::unique_ptr&lt;uint8_t[]&gt; im2col_data = std::make_unique&lt;uint8_t[]&gt;(im2col_size);</div>
-<div class="line"><span class="lineno">  130</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">optimized::Conv</a>(params, input_shape, input_data, filter_shape, filter_data, bias_shape,</div>
-<div class="line"><span class="lineno">  131</span>                      bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data.get());</div>
-<div class="line"><span class="lineno">  132</span>    }</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  134</span>    {</div>
-<div class="line"><span class="lineno">  135</span>      uint8_t im2col_data[im2col_size];</div>
-<div class="line"><span class="lineno">  136</span>      <a class="code hl_function" href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">optimized::Conv</a>(params, input_shape, input_data, filter_shape, filter_data, bias_shape,</div>
-<div class="line"><span class="lineno">  137</span>                      bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data);</div>
-<div class="line"><span class="lineno">  138</span>    }</div>
-<div class="line"><span class="lineno">  139</span>  }</div>
+<div class="line"><span class="lineno">  125</span>    std::vector&lt;uint8_t&gt; im2col_data(im2col_size);</div>
+<div class="line"><span class="lineno">  126</span>    <a class="code hl_function" href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">optimized::Conv</a>(params, input_shape, input_data, filter_shape, filter_data, bias_shape,</div>
+<div class="line"><span class="lineno">  127</span>                    bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data.data());</div>
+<div class="line"><span class="lineno">  128</span>  }</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">Shape.h:181</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1optimized_html_a201402ddf5f904cc04577124681cf526"><div class="ttname"><a href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">nnfw::cker::optimized::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const uint8_t *input_data, const Shape &amp;filter_shape, const uint8_t *filter_data, const Shape &amp;bias_shape, const int32_t *bias_data, const Shape &amp;output_shape, uint8_t *output_data, const Shape &amp;im2col_shape, uint8_t *im2col_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">Conv.h:83</a></div></div>
 </div><!-- fragment -->
@@ -572,8 +561,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00161">161</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  161</span>{ <span class="keywordflow">return</span> _per_channel_output_multiplier; }</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00150">150</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>{ <span class="keywordflow">return</span> _per_channel_output_multiplier; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00284">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
 
@@ -602,8 +591,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00162">162</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  162</span>{ <span class="keywordflow">return</span> _per_channel_output_shift; }</div>
+<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">151</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  151</span>{ <span class="keywordflow">return</span> _per_channel_output_shift; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00284">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
 

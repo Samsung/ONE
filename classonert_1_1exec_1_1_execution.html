@@ -164,6 +164,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa41e5549fee5cbf8d25868c6342a68c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca14a1b34666395e567c795514ea7823" id="r_aca14a1b34666395e567c795514ea7823"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#aca14a1b34666395e567c795514ea7823">getOutputTotalSize</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind) const</td></tr>
 <tr class="separator:aca14a1b34666395e567c795514ea7823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a875263ec13c01b2ae3b558cfd8b907e7" id="r_a875263ec13c01b2ae3b558cfd8b907e7"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#a875263ec13c01b2ae3b558cfd8b907e7">getInputBuffer</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind) const</td></tr>
+<tr class="memdesc:a875263ec13c01b2ae3b558cfd8b907e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get pointer of Input Buffer.  <br /></td></tr>
+<tr class="separator:a875263ec13c01b2ae3b558cfd8b907e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9161013b6a5946426eb9f2bca78c70e6" id="r_a9161013b6a5946426eb9f2bca78c70e6"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#a9161013b6a5946426eb9f2bca78c70e6">getOutputBuffer</a> (<a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> ind)</td></tr>
+<tr class="memdesc:a9161013b6a5946426eb9f2bca78c70e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get pointer of Output Buffer.  <br /></td></tr>
+<tr class="separator:a9161013b6a5946426eb9f2bca78c70e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf366de1fbf1d8d57b633492d548ad65" id="r_abf366de1fbf1d8d57b633492d548ad65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1exec_1_1_execution_options.html">ExecutionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#abf366de1fbf1d8d57b633492d548ad65">executionOptions</a> ()</td></tr>
 <tr class="separator:abf366de1fbf1d8d57b633492d548ad65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -364,10 +370,44 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_8h_source.html#l00179">179</a> of file <a class="el" href="_execution_8h_source.html">Execution.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  179</span>{ <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#afa68498cd4989d3c0a7f91d7b3824254">options</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8h_source.html#l00193">193</a> of file <a class="el" href="_execution_8h_source.html">Execution.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  193</span>{ <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#afa68498cd4989d3c0a7f91d7b3824254">options</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00079">onert::exec::ExecutionContext::options</a>.</p>
+
+</div>
+</div>
+<a id="a875263ec13c01b2ae3b558cfd8b907e7" name="a875263ec13c01b2ae3b558cfd8b907e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a875263ec13c01b2ae3b558cfd8b907e7">&#9670;&#160;</a></span>getInputBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const void * onert::exec::Execution::getInputBuffer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get pointer of Input Buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Input index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer of Input Buffer </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00226">226</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  227</span>{</div>
+<div class="line"><span class="lineno">  228</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;buffer;</div>
+<div class="line"><span class="lineno">  229</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00077">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00062">onert::exec::IODescription::inputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
 </div>
 </div>
@@ -460,6 +500,40 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  185</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executors_8cc_source.html#l00126">onert::exec::train::TrainableExecutors::getLoss()</a>.</p>
+
+</div>
+</div>
+<a id="a9161013b6a5946426eb9f2bca78c70e6" name="a9161013b6a5946426eb9f2bca78c70e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9161013b6a5946426eb9f2bca78c70e6">&#9670;&#160;</a></span>getOutputBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * onert::exec::Execution::getOutputBuffer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get pointer of Output Buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Output index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer of Output Buffer </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00231">231</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
+<div class="line"><span class="lineno">  233</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;buffer;</div>
+<div class="line"><span class="lineno">  234</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00077">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00063">onert::exec::IODescription::outputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00139">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
 </div>
 </div>

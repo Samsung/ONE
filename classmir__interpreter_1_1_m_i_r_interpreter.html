@@ -326,13 +326,14 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00067">67</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
-<div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span> result = _tensors.emplace(output, std::move(tensor));</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (!result.second)</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = _tensors.emplace(output, std::move(tensor));</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.second)</div>
 <div class="line"><span class="lineno">   71</span>  {</div>
 <div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> std::string &amp;name = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getName();</div>
 <div class="line"><span class="lineno">   73</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Attempt to overwrite data for tensor \&quot;&quot;</span> + name + <span class="stringliteral">&quot;\&quot;.&quot;</span>);</div>
 <div class="line"><span class="lineno">   74</span>  }</div>
 <div class="line"><span class="lineno">   75</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_mir_interpreter_8cpp_source.html#l00133">visit()</a>.</p>
 
@@ -509,13 +510,13 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00202">202</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  203</span>{</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  205</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  206</span>  <a class="code hl_function" href="namespacemir__interpreter.html#a13059c9c9d834dac45d8a2a74c33257b">CappedReLU</a>(args[0], op.<a class="code hl_function" href="classmir_1_1ops_1_1_capped_relu_op.html#ae5c1ca95aec7e788bb388e55ab625635">getCap</a>(), results[0]);</div>
 <div class="line"><span class="lineno">  207</span>}</div>
 <div class="ttc" id="aclassmir_1_1ops_1_1_capped_relu_op_html_ae5c1ca95aec7e788bb388e55ab625635"><div class="ttname"><a href="classmir_1_1ops_1_1_capped_relu_op.html#ae5c1ca95aec7e788bb388e55ab625635">mir::ops::CappedReluOp::getCap</a></div><div class="ttdeci">float getCap() const</div><div class="ttdef"><b>Definition</b> <a href="_capped_relu_op_8h_source.html#l00041">CappedReluOp.h:41</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a30b5ffd23ed16bed88d525da72f2e73f"><div class="ttname"><a href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">infer.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-interpreter-cffi-test_2infer_8py_source.html#l00021">infer.py:21</a></div></div>
 <div class="ttc" id="anamespacemir__interpreter_html_a13059c9c9d834dac45d8a2a74c33257b"><div class="ttname"><a href="namespacemir__interpreter.html#a13059c9c9d834dac45d8a2a74c33257b">mir_interpreter::CappedReLU</a></div><div class="ttdeci">void CappedReLU(const mir::TensorVariant &amp;arg, float cap, mir::TensorVariant &amp;result)</div><div class="ttdef"><b>Definition</b> <a href="_capped_re_l_u_8cpp_source.html#l00077">CappedReLU.cpp:77</a></div></div>
-<div class="ttc" id="anamespacepart__eval__one_html_aeda17029cb7df116efcf0eaca140d394"><div class="ttname"><a href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">part_eval_one.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="part__eval__one_8py_source.html#l00021">part_eval_one.py:21</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_capped_re_l_u_8cpp_source.html#l00077">mir_interpreter::CappedReLU()</a>, and <a class="el" href="_capped_relu_op_8h_source.html#l00041">mir::ops::CappedReluOp::getCap()</a>.</p>
 
@@ -812,7 +813,7 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00243">243</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  244</span>{</div>
-<div class="line"><span class="lineno">  245</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  245</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  246</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  247</span>  <a class="code hl_function" href="namespacemir__interpreter.html#abfc0a12039df388f4ef7f38f563ccdd5">ELU</a>(args[0], op.<a class="code hl_function" href="classmir_1_1ops_1_1_elu_op.html#afd1623c8170d4f26e663b00988f2f67c">getAlpha</a>(), results[0]);</div>
 <div class="line"><span class="lineno">  248</span>}</div>
@@ -1067,7 +1068,7 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00315">315</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  316</span>{</div>
-<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  317</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  318</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  319</span>  <a class="code hl_function" href="namespacemir__interpreter.html#a48dd1547b9010131974c17cba6e516b2">LeakyReLU</a>(args[0], op.<a class="code hl_function" href="classmir_1_1ops_1_1_leaky_relu_op.html#af52e26a65acb7164b94ce528457b2914">getAlpha</a>(), results[0]);</div>
 <div class="line"><span class="lineno">  320</span>}</div>
@@ -1390,7 +1391,7 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00168">168</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  169</span>{</div>
-<div class="line"><span class="lineno">  170</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  170</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  171</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  172</span>  <a class="code hl_function" href="namespacemir__interpreter.html#a5e07b393d2e97bbffdeb8e4f32078f9d">ReLU</a>(args[0], results[0]);</div>
 <div class="line"><span class="lineno">  173</span>}</div>
@@ -1520,7 +1521,7 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00175">175</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  176</span>{</div>
-<div class="line"><span class="lineno">  177</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  177</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  178</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  179</span>  <a class="code hl_function" href="namespacemir__interpreter.html#a2a2aab0eefb7fbafe836ad95d45f047a">Sigmoid</a>(args[0], results[0]);</div>
 <div class="line"><span class="lineno">  180</span>}</div>
@@ -1632,7 +1633,7 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00265">265</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  266</span>{</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  267</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  268</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  269</span>  <a class="code hl_function" href="namespacemir__interpreter.html#aaf15050e41a84ed6d821db747eacd76f">Sqrt</a>(args[0], results[0]);</div>
 <div class="line"><span class="lineno">  270</span>}</div>
@@ -1740,7 +1741,7 @@ Protected Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_mir_interpreter_8cpp_source.html#l00229">229</a> of file <a class="el" href="_mir_interpreter_8cpp_source.html">MirInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  230</span>{</div>
-<div class="line"><span class="lineno">  231</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#aeda17029cb7df116efcf0eaca140d394">args</a> = getInputTensors(op);</div>
+<div class="line"><span class="lineno">  231</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a> = getInputTensors(op);</div>
 <div class="line"><span class="lineno">  232</span>  <span class="keyword">auto</span> results = allocateOutputTensors(op);</div>
 <div class="line"><span class="lineno">  233</span>  <a class="code hl_function" href="namespacemir__interpreter.html#a7c1f7bed27a5572a3a1dcd313a91bdca">Tanh</a>(args[0], results[0]);</div>
 <div class="line"><span class="lineno">  234</span>}</div>

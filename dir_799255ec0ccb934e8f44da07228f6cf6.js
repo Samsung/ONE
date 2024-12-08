@@ -1,6 +1,5 @@
 var dir_799255ec0ccb934e8f44da07228f6cf6 =
 [
-    [ "CLArgMinMaxLayerKernelEx.h", "_c_l_arg_min_max_layer_kernel_ex_8h.html", "_c_l_arg_min_max_layer_kernel_ex_8h" ],
     [ "CLBinaryLogicalOpKernel.h", "_c_l_binary_logical_op_kernel_8h.html", "_c_l_binary_logical_op_kernel_8h" ],
     [ "CLCastBoolKernel.h", "_c_l_cast_bool_kernel_8h.html", "_c_l_cast_bool_kernel_8h" ],
     [ "CLEmbeddingLookupKernel.h", "_c_l_embedding_lookup_kernel_8h.html", "_c_l_embedding_lookup_kernel_8h" ],
