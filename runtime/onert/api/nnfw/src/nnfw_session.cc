@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "nnfw_api_internal.h"
+#include "nnfw_session.h"
 
 #include "compiler/CompilerFactory.h"
 #include "exporter/CircleExporter.h"
