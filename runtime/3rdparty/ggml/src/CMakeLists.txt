@@ -1098,7 +1098,7 @@ if (CMAKE_OSX_ARCHITECTURES      STREQUAL "arm64" OR
                 list(APPEND ARCH_FLAGS -mfpu=neon-vfpv4 -mno-unaligned-access -funsafe-math-optimizations)
             else()
                 # Raspberry Pi 2
-                list(APPEND ARCH_FLAGS -mfpu=neon-fp-armv8 -mno-unaligned-access -funsafe-math-optimizations)
+                list(APPEND ARCH_FLAGS -mno-unaligned-access -funsafe-math-optimizations)
             endif()
         endif()
         if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "armv8")
