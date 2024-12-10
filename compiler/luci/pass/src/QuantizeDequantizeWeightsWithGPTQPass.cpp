@@ -541,7 +541,7 @@ private:
   QuantizationGranularity _granularity;
   std::unordered_map<const luci::CircleNode *, std::vector<float>> *_hessian_map;
 
-  void fake_quantize(luci::CircleConst *weights) const
+  void fake_quantize(luci::CircleConst *weights)
   {
     if (_granularity != luci::QuantizationGranularity::ChannelWise)
     {
@@ -577,7 +577,7 @@ private:
     weights->quantparam(std::move(quantparam));
   }
 
-  void fake_quantize_with_gptq(luci::CircleConst *weights, std::vector<float> &hessian) const
+  void fake_quantize_with_gptq(luci::CircleConst *weights, std::vector<float> &hessian)
   {
     if (_granularity != luci::QuantizationGranularity::ChannelWise)
     {
