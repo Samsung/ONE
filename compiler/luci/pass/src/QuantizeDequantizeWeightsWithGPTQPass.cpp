@@ -127,7 +127,7 @@ void cholesky_decomposition(std::vector<float> &src, uint32_t num_size)
       {
         if (src[i * num_size + i] - sum <= 0)
         {
-          throw std::runtime_error("Error: Matrix is not positive definite.");
+          throw std::runtime_error("GPTQPass: Matrix is not positive definite.");
         }
         src[i * num_size + i] = sqrt(src[i * num_size + i] - sum);
       }
@@ -545,12 +545,12 @@ private:
   {
     if (_granularity != luci::QuantizationGranularity::ChannelWise)
     {
-      throw std::invalid_argument("Unsupported granularity");
+      throw std::invalid_argument("GPTQPass: Unsupported granularity");
     }
 
     if (_output_type != loco::DataType::U4 && _output_type != loco::DataType::U8)
     {
-      throw std::runtime_error("GPTQ quantization supports uint4/uint8");
+      throw std::runtime_error("GPTQPass: GPTQ quantization supports uint4/uint8");
     }
 
     // Find min/max per channel
@@ -581,12 +581,12 @@ private:
   {
     if (_granularity != luci::QuantizationGranularity::ChannelWise)
     {
-      throw std::invalid_argument("Unsupported granularity");
+      throw std::invalid_argument("GPTQPass: Unsupported granularity");
     }
 
     if (_output_type != loco::DataType::U4 && _output_type != loco::DataType::U8)
     {
-      throw std::runtime_error("GPTQ quantization supports uint4/uint8");
+      throw std::runtime_error("GPTQPass: GPTQ quantization supports uint4/uint8");
     }
 
     // Find min/max per channel
