@@ -26,7 +26,7 @@
 #include "luci/Pass/QuantizePreCheckerPass.h"
 #include "luci/Pass/QuantizeWithMinMaxPass.h"
 #include "luci/Pass/QuantizeDequantizeWeightsPass.h"
-#include "luci/Pass/QuantizeWeightsWithGPTQPass.h"
+#include "luci/Pass/QuantizeDequantizeWeightsWithGPTQPass.h"
 #include "luci/Pass/QuantizeWeightsPass.h"
 #include "luci/Pass/QuantizeOnnxFakeQuantModelPass.h"
 
@@ -423,7 +423,7 @@ void CircleQuantizer::quantize_dequantize_weight(loco::Graph *g) const
       layer_params = find_valid_params(g, layer_params_set);
     }
 
-    auto ctx = std::make_unique<luci::QuantizeWeightsWithGPTQPass::Context>();
+    auto ctx = std::make_unique<luci::QuantizeDequantizeWeightsWithGPTQPass::Context>();
     {
       ctx->input_model_dtype = str_to_dtype(input_model_dtype);
       ctx->output_model_dtype = str_to_dtype(output_model_dtype);
@@ -441,7 +441,7 @@ void CircleQuantizer::quantize_dequantize_weight(loco::Graph *g) const
       }
     }
 
-    luci::QuantizeWeightsWithGPTQPass gptq_quantizer(std::move(ctx), _hessian_map.get());
+    luci::QuantizeDequantizeWeightsWithGPTQPass gptq_quantizer(std::move(ctx), _hessian_map.get());
 
     gptq_quantizer.run(g);
   }
