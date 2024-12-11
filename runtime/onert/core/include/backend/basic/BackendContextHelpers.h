@@ -253,7 +253,7 @@ inline void initConsts(const ir::Operands &operands,
       return;
     const bool can_be_initialized_as_const = operand.isConstant() || has_const_shared_memory;
     if (!can_be_initialized_as_const)
-      // tensor currently processed not a const and source memory tensor (if exists) also not a const
+      // tensor currently processed not a const and source memory tensor (if exists) not a const too
       return;
 
     auto tensor = tensor_registry->getNativeITensor(ind);
