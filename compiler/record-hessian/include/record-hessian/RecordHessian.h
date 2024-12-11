@@ -30,9 +30,8 @@ class RecordHessian
 public:
   RecordHessian() {}
 
-  // void initialize(luci::Module *module); // To be implemented
-  // std::unique_ptr<HessianMap> profileData(const std::string &input_data_path); // To be
-  // implemented
+  void initialize(luci::Module *module);
+  std::unique_ptr<HessianMap> profileData(const std::string &input_data_path);
 
 private:
   luci_interpreter::Interpreter *getInterpreter() const { return _interpreter.get(); }
