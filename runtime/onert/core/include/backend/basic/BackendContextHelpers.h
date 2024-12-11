@@ -249,8 +249,11 @@ inline void initConsts(const ir::Operands &operands,
     const bool has_const_shared_memory =
       shared_memory_operands_map.find(ind) != std::end(shared_memory_operands_map) &&
       operands.at(shared_memory_operands_map.at(ind)).isConstant();
+    if (external_operands.contains(ind))
+      return;
     const bool can_be_initialized_as_const = operand.isConstant() || has_const_shared_memory;
-    if (external_operands.contains(ind) || !can_be_initialized_as_const)
+    if (!can_be_initialized_as_const)
+      // tensor currently processed not a const and source memory tensor (if exists) also not a const
       return;
 
     auto tensor = tensor_registry->getNativeITensor(ind);
@@ -264,23 +267,19 @@ inline void initConsts(const ir::Operands &operands,
       auto memory_source_data = source_operand_ind.shareData();
       assert(memory_source_data && memory_source_data->base());
       auto shared_mem_tensor = dynamic_cast<Tensor *>(tensor);
-      if (nullptr == shared_mem_tensor)
-      {
-        throw std::runtime_error{"Incorrect type of tensor to support sharing memory"};
-      }
+      assert(shared_mem_tensor != nullptr);
       shared_mem_tensor->setBuffer(const_cast<uint8_t *>(memory_source_data->base()));
+      return;
     }
-    else
+    // the default flow for constant initialization
+    auto data = operand.shareData();
+    assert(data && data->base());
+    auto ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
+    if (ext_tensor == nullptr)
     {
-      auto data = operand.shareData();
-      assert(data && data->base());
-      auto ext_tensor = dynamic_cast<ExternalTensor *>(tensor);
-      if (ext_tensor == nullptr)
-      {
-        throw std::runtime_error{"This tensor is not external tensor"};
-      }
-      ext_tensor->setData(data);
+      throw std::runtime_error{"This tensor is not external tensor"};
     }
+    ext_tensor->setData(data);
   });
 }
 

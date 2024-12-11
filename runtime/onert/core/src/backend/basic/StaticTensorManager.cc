@@ -56,7 +56,7 @@ void StaticTensorManager::allocateNonconsts(void)
 
   for (auto &&[ind, tensor] : _tensors->native_tensors())
   {
-    const auto adjusted_ind = adjust_with_memory_source_operand(ind);
+    const auto adjusted_ind = adjustWithMemorySourceOperand(ind);
     if (!_as_constants[adjusted_ind] && !tensor->is_dynamic())
     {
       auto *buffer = _nonconst_mgr->getBuffer(adjusted_ind);
@@ -95,17 +95,20 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  const auto claim_ind = adjust_with_memory_source_operand(ind);
+  const auto claim_ind = adjustWithMemorySourceOperand(ind);
   if (_as_constants[claim_ind])
   {
     return;
   }
-  ++_source_operand_inds_ref_counter[claim_ind];
-  // notify only first usage
-  if (1 == _source_operand_inds_ref_counter[claim_ind])
+  if (isSharedMemoryOperand(claim_ind))
   {
-    _nonconst_mgr->claimPlan(claim_ind, size);
+    ++_source_operand_inds_ref_counter[claim_ind];
+    if (_source_operand_inds_ref_counter[claim_ind] > 1)
+    {
+      return; // claimPlan should be called only for the first usage
+    }
   }
+  _nonconst_mgr->claimPlan(claim_ind, size);
 }
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
@@ -115,20 +118,23 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  const auto release_ind = adjust_with_memory_source_operand(ind);
+  const auto release_ind = adjustWithMemorySourceOperand(ind);
   if (_as_constants[release_ind])
   {
     return;
   }
-  if (_source_operand_inds_ref_counter[release_ind] > 0)
+  if (isSharedMemoryOperand(release_ind))
   {
-    --_source_operand_inds_ref_counter[release_ind];
+    if (_source_operand_inds_ref_counter[release_ind] > 0) // sanity check
+    {
+      --_source_operand_inds_ref_counter[release_ind];
+    }
+    if (_source_operand_inds_ref_counter[release_ind] > 0)
+    {
+      return; // releasePlan should be called only for the first usage
+    }
   }
-  // notify only last usage
-  if (0 == _source_operand_inds_ref_counter[release_ind])
-  {
-    _nonconst_mgr->releasePlan(release_ind);
-  }
+  _nonconst_mgr->releasePlan(release_ind);
 }
 
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
@@ -137,15 +143,28 @@ void StaticTensorManager::iterate(const std::function<void(const ir::OperandInde
     fn(it.first);
 }
 
-ir::OperandIndex StaticTensorManager::adjust_with_memory_source_operand(const ir::OperandIndex &ind)
+ir::OperandIndex
+StaticTensorManager::adjustWithMemorySourceOperand(const ir::OperandIndex &ind) const
 {
-  const auto source_operand_ind = _shared_memory_operand_indexes.find(ind);
-  if (source_operand_ind != std::end(_shared_memory_operand_indexes))
+  const auto shared_operand_ind = _shared_memory_operand_indexes.find(ind);
+  if (shared_operand_ind != std::end(_shared_memory_operand_indexes))
   {
-    return source_operand_ind->second;
+    return shared_operand_ind->second;
   }
   // source memory operand not found
   return ind;
+}
+
+bool StaticTensorManager::isSharedMemoryOperand(const ir::OperandIndex &ind) const
+{
+  for (const auto &[shared_ind, source_ind] : _shared_memory_operand_indexes)
+  {
+    if (shared_ind == ind || source_ind == ind)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 } // namespace basic

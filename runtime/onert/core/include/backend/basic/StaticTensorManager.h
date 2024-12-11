@@ -57,7 +57,10 @@ public:
 private:
   // Update source operand index if source memory operand exist.
   // Otherwise, return unchanged.
-  ir::OperandIndex adjust_with_memory_source_operand(const ir::OperandIndex &ind);
+  ir::OperandIndex adjustWithMemorySourceOperand(const ir::OperandIndex &ind) const;
+  // Return true if given ind is shared index or source index of shared memory operands map.
+  // Otherwise, return false.
+  bool isSharedMemoryOperand(const ir::OperandIndex &ind) const;
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
