@@ -12,22 +12,25 @@ include("cmake/options/options_${TARGET_PLATFORM}.cmake")
 #
 option(ENABLE_STRICT_BUILD "Treat warning as error" ON)
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
-option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
-option(BUILD_ONERT "Build onert" ON)
+
+#
+# Default build configuration for runtime
+#
+option(BUILD_TRIX_LOADER "Build trix loader" ON)
+option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
+
+#
+# Default build configuration for tests
+#
 option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" ON)
 option(BUILD_RUNTIME_NNFW_API_TEST "Build Runtime NNFW API Tests" ON)
-option(BUILD_TFLITE_RUN "Build tflite-run" ON)
-option(BUILD_TFLITE_VANILLA_RUN "Build tflite-vanilla-run" OFF)
-option(BUILD_ONERT_RUN "Build onert_run" ON)
-option(BUILD_ONERT_TRAIN "Build onert_train" ON)
-option(BUILD_TFLITE_LOADER "Build TensorFlow Lite loader" ON)
-option(BUILD_CIRCLE_LOADER "Build circle loader" ON)
-option(BUILD_TRIX_LOADER "Build trix loader" ON)
-option(BUILD_TFLITE_COMPARATOR_TEST_TOOL "Build tflite loader testing tool" ON)
+option(BUILD_TFLITE_RUN "Build tflite_run test driver" ON)
+option(BUILD_ONERT_RUN "Build onert_run test driver" ON)
+option(BUILD_ONERT_TRAIN "Build onert_train test driver" ON)
+option(BUILD_TFLITE_COMPARATOR_TEST_TOOL "Build testing tool to compare runtime result with TFLite" ON)
 option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
-option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
-option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
+
 #
 # Default build configuration for contrib
 #

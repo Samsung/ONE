@@ -134,7 +134,7 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
     ProcessorCount(N)
   endif(DEFINED EXTERNALS_BUILD_THREADS)
 
-  if((NOT N EQUAL 0) AND BUILD_EXT_MULTITHREAD)
+  if(NOT N EQUAL 0)
     list(APPEND SCONS_OPTIONS -j${N})
   endif()
   if(DEFINED BUILD_ARCH)
