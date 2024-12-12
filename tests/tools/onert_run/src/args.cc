@@ -336,7 +336,7 @@ void Args::Parse(const int argc, char **argv)
     _fixed_input = _arser.get<bool>("--fixed_input");
     _force_float = _arser.get<bool>("--force_float");
     _warmup_runs = _arser.get<int>("--warmup_runs");
-    _minmax_runs = _arser.get<int>("--minmax_runs");
+    _minmax_runs = _arser.get<uint32_t>("--minmax_runs");
     _run_delay = _arser.get<int>("--run_delay");
     _gpumem_poll = _arser.get<bool>("--gpumem_poll");
     _mem_poll = _arser.get<bool>("--mem_poll");

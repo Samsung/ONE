@@ -10,7 +10,8 @@ include("cmake/options/options_${TARGET_PLATFORM}.cmake")
 #
 # Default build configuration for project
 #
-option(ENABLE_STRICT_BUILD "Treat warning as error" ON)
+option(ENABLE_STRICT_BUILD "Treat warning as error" OFF)
+option(DISABLE_EXTERNAL_WARNING "Ignore warnings from external libraries" ON)
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
 option(BUILD_ONERT "Build onert" ON)

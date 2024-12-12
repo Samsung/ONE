@@ -20,7 +20,6 @@ execute_process (
 add_library(arm_compute_ex SHARED ${ACL_EX_SRCS})
 target_include_directories(arm_compute_ex PUBLIC ${ACL_EX_BASE})
 target_link_libraries(arm_compute_ex PRIVATE arm_compute)
-target_link_libraries(arm_compute_ex PRIVATE nnfw_common)
 target_link_libraries(arm_compute_ex PRIVATE nnfw_coverage)
 # Defines to enable validate check in debug build
 target_compile_definitions(arm_compute_ex PRIVATE EMBEDDED_KERNELS
@@ -29,7 +28,7 @@ target_compile_definitions(arm_compute_ex PRIVATE EMBEDDED_KERNELS
 # Validate check functions are not used on release build
 # Some parameter are used for validate check function call, and these parameter may not used on release build
 # Because clang requires to add "-Wno-unused-parameter -Wno-unused-function" after "-Wall",
-# this should be after linking nnfw_common and use interface lib linking
+# this should be after interface lib linking
 add_library(ignore_unused_warning INTERFACE)
 target_compile_options(ignore_unused_warning INTERFACE -Wno-unused-parameter -Wno-unused-function)
 target_link_libraries(arm_compute_ex PRIVATE $<$<NOT:$<CONFIG:Debug>>:ignore_unused_warning>)

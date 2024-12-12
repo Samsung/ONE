@@ -13,7 +13,6 @@ target_link_libraries(${LIB_ONERT_BACKEND_ACL_COMMON} PUBLIC onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_COMMON} PUBLIC arm_compute arm_compute_ex)
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_COMMON} PUBLIC nnfw_lib_misc)
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_COMMON} PUBLIC ${LIB_ONERT_BACKEND_CL_COMMON})
-target_link_libraries(${LIB_ONERT_BACKEND_ACL_COMMON} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_COMMON} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT_BACKEND_ACL_COMMON} PROPERTIES POSITION_INDEPENDENT_CODE ON)

@@ -634,7 +634,6 @@ private:
 // test for https://github.com/Samsung/ONE/issues/4625
 TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
 {
-  constexpr NNFW_TYPE NNFW_DTYPE = NNFW_TYPE_TENSOR_FLOAT32;
   std::vector<int32_t> cast_in_buf;
   std::vector<int32_t> reshape_shape_in_buf;
   std::vector<float> actual(4), expected(4);
@@ -798,8 +797,6 @@ protected:
     // #0 = input 0 of shape [1]
     // #1 = input 1 of shape [1]
     // #2 = add(#0, #1)
-
-    constexpr circle::TensorType CIRCLE_DTYPE = circle::TensorType::TensorType_FLOAT32;
 
     int in0 = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
     int in1 = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});

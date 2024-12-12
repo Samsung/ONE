@@ -56,6 +56,6 @@ TEST(MiscIndexIteratorTest, neg_zero_rank_shape)
   // It is expected not to throw any exception, do nothing
   const Shape shape{};
 
-  ASSERT_NO_THROW(iterate(shape) << ([](const Index &index) {}));
+  ASSERT_NO_THROW(iterate(shape) << ([](const Index &) {}));
   SUCCEED();
 }

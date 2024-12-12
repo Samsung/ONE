@@ -47,7 +47,7 @@ public:
 
   const std::string &getPackageFilename(void) const { return _package_filename; }
   const std::string &getModelFilename(void) const { return _model_filename; }
-  const bool useSingleModel(void) const { return _use_single_model; }
+  bool useSingleModel(void) const { return _use_single_model; }
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   const std::string &getDumpFilename(void) const { return _dump_filename; }
   const std::string &getLoadFilename(void) const { return _load_filename; }
@@ -56,23 +56,23 @@ public:
   const std::string &getDumpRawFilename(void) const { return _dump_raw_filename; }
   const std::string &getDumpRawInputFilename(void) const { return _dump_raw_input_filename; }
   const std::string &getLoadRawFilename(void) const { return _load_raw_filename; }
-  const int getNumRuns(void) const { return _num_runs; }
-  const bool getFixedInput(void) const { return _fixed_input; }
-  const bool getForceFloat(void) const { return _force_float; }
-  const int getWarmupRuns(void) const { return _warmup_runs; }
-  const int getMinmaxRuns(void) const { return _minmax_runs; }
-  const int getRunDelay(void) const { return _run_delay; }
+  int getNumRuns(void) const { return _num_runs; }
+  bool getFixedInput(void) const { return _fixed_input; }
+  bool getForceFloat(void) const { return _force_float; }
+  int getWarmupRuns(void) const { return _warmup_runs; }
+  uint32_t getMinmaxRuns(void) const { return _minmax_runs; }
+  int getRunDelay(void) const { return _run_delay; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
-  const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
-  const bool getMemoryPoll(void) const { return _mem_poll; }
-  const bool getWriteReport(void) const { return _write_report; }
-  const bool printVersion(void) const { return _print_version; }
+  bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
+  bool getMemoryPoll(void) const { return _mem_poll; }
+  bool getWriteReport(void) const { return _write_report; }
+  bool printVersion(void) const { return _print_version; }
   TensorShapeMap &getShapeMapForPrepare() { return _shape_prepare; }
   TensorShapeMap &getShapeMapForRun() { return _shape_run; }
   TensorShapeMap &getOutputShapeMap() { return _output_shape; }
   /// @brief Return true if "--shape_run" or "--shape_prepare" is provided
   bool shapeParamProvided();
-  const int getVerboseLevel(void) const { return _verbose_level; }
+  int getVerboseLevel(void) const { return _verbose_level; }
   const std::string &getQuantize(void) const { return _quantize; }
   const std::string &getQuantizedModelPath(void) const { return _quantized_model_path; }
   const std::string &getCodegen(void) const { return _codegen; }
@@ -102,7 +102,7 @@ private:
   bool _fixed_input = false;
   bool _force_float = false;
   int _warmup_runs;
-  int _minmax_runs;
+  uint32_t _minmax_runs;
   int _run_delay;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
   bool _gpumem_poll;

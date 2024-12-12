@@ -42,7 +42,7 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
       auto bufsz = inputs[i].size();
       std::ifstream file(filename + "." + std::to_string(i), std::ios::ate | std::ios::binary);
       auto filesz = file.tellg();
-      if (bufsz != filesz)
+      if (bufsz != static_cast<uint64_t>(filesz))
       {
         throw std::runtime_error("Input " + std::to_string(i) +
                                  " size does not match: " + std::to_string(bufsz) +

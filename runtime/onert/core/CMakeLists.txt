@@ -18,7 +18,6 @@ target_link_libraries(onert_core PRIVATE circle_schema)
 
 target_link_libraries(onert_core PRIVATE jsoncpp half)
 target_link_libraries(onert_core PRIVATE nnfw_lib_misc nnfw_lib_cker)
-target_link_libraries(onert_core PRIVATE nnfw_common)
 target_link_libraries(onert_core PRIVATE nnfw_coverage)
 target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
 

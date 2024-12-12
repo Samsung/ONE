@@ -67,7 +67,7 @@ void TensorLoader::loadRawInputTensors(const std::string &filename)
   file.read(reinterpret_cast<char *>(_raw_data.get()), file_size);
   file.close();
 
-  size_t read_bytes = loadInputTensorsFromRawData();
+  [[maybe_unused]] size_t read_bytes = loadInputTensorsFromRawData();
 
   // The file size and total output tensor size must match
   assert(file_size == read_bytes * sizeof(float));

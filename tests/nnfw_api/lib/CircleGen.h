@@ -98,7 +98,7 @@ public:
     std::vector<int32_t> shape;
     circle::TensorType tensor_type = circle::TensorType::TensorType_FLOAT32;
     uint32_t buffer = 0;
-    std::string name;
+    std::string name = "";
   };
 
   struct OperatorParams

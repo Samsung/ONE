@@ -39,8 +39,8 @@ public:
   void verifyForward(const std::vector<T> &input, const std::vector<T> &expected,
                      bool expect_eq = true)
   {
-    assert(input.size() == _in_shape.FlatSize());
-    assert(expected.size() == _out_shape.FlatSize());
+    assert(input.size() == static_cast<size_t>(_in_shape.FlatSize()));
+    assert(expected.size() == static_cast<size_t>(_out_shape.FlatSize()));
 
     std::vector<T> output(_out_shape.FlatSize());
 
@@ -69,7 +69,7 @@ public:
     if (expect_eq)
     {
       // consider the floating point error
-      for (int i = 0; i < grad.size(); ++i)
+      for (size_t i = 0; i < grad.size(); ++i)
       {
         EXPECT_NEAR(grad[i], expected[i], 1e-3f);
       }

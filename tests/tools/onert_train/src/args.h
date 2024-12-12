@@ -53,11 +53,11 @@ public:
   const std::string &getExportCircleFilename(void) const { return _export_circle_filename; }
   const std::string &getExportCirclePlusFilename(void) const { return _export_circleplus_filename; }
   const std::string &getExportCheckpointFilename(void) const { return _export_checkpoint_filename; }
-  const bool useSingleModel(void) const { return _use_single_model; }
+  bool useSingleModel(void) const { return _use_single_model; }
   const std::string &getLoadRawInputFilename(void) const { return _load_raw_input_filename; }
   const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
-  const bool getMemoryPoll(void) const { return _mem_poll; }
-  const int getEpoch(void) const { return _epoch; }
+  bool getMemoryPoll(void) const { return _mem_poll; }
+  int getEpoch(void) const { return _epoch; }
   const std::optional<int> getBatchSize(void) const { return _batch_size; }
   const std::optional<float> getLearningRate(void) const { return _learning_rate; }
   const std::optional<NNFW_TRAIN_LOSS> getLossType(void) const { return _loss_type; }
@@ -66,10 +66,10 @@ public:
     return _loss_reduction_type;
   }
   const std::optional<NNFW_TRAIN_OPTIMIZER> getOptimizerType(void) const { return _optimizer_type; }
-  const int getMetricType(void) const { return _metric_type; }
-  const float getValidationSplit(void) const { return _validation_split; }
-  const bool printVersion(void) const { return _print_version; }
-  const int getVerboseLevel(void) const { return _verbose_level; }
+  int getMetricType(void) const { return _metric_type; }
+  float getValidationSplit(void) const { return _validation_split; }
+  bool printVersion(void) const { return _print_version; }
+  int getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
   uint32_t num_of_trainable_ops(void) const { return _num_of_trainable_ops; }
 

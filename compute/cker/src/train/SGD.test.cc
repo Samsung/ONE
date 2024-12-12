@@ -55,7 +55,7 @@ private:
   {
     assert(_expected.size() == _gradient.size());
 
-    for (int i = 0; i < _expected.size(); ++i)
+    for (size_t i = 0; i < _expected.size(); ++i)
     {
       T g = _gradient.at(i);
       T &var = _expected.at(i);

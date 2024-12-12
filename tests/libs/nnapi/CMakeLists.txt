@@ -7,7 +7,6 @@ set(LIB_NNAPI onert_nnapi)
 add_library(${LIB_NNAPI} STATIC ${SOURCES_FRONTEND})
 target_include_directories(${LIB_NNAPI} PUBLIC include)
 target_link_libraries(${LIB_NNAPI} PUBLIC onert_core) # TODO Link PRIVATE onert_core
-target_link_libraries(${LIB_NNAPI} PRIVATE nnfw_common)
 target_link_libraries(${LIB_NNAPI} PRIVATE nnfw_coverage)
 
 if(NOT ENABLE_TEST)

@@ -11,7 +11,6 @@ file(GLOB_RECURSE SOURCES "*.cc")
 add_library(${LIB_ONERT_BACKEND_XNNPACK} SHARED ${SOURCES})
 
 target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE onert_core)
-target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE nnfw_coverage)
 target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE pthreadpool)
 target_link_libraries(${LIB_ONERT_BACKEND_XNNPACK} PRIVATE XNNPACK)

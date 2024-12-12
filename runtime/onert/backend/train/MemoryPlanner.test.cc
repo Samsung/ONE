@@ -181,7 +181,7 @@ TEST(FirstFitPlanner, neg_disposable_release_non_existing_index)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
 
-  auto on_only_debug_mode = [&p]() {
+  [[maybe_unused]] auto on_only_debug_mode = [&p]() {
     EXPECT_DEATH({ p.release(0, 1); },
                  "Cannot release for given index. It has been not claimed or released already.");
     return true;
@@ -206,7 +206,7 @@ TEST(FirstFitPlanner, neg_disposable_release_twice)
 {
   PlannerVerifier<FirstFitPlanner, DisposableTensorIndex> p;
 
-  auto on_only_debug_mode = [&p]() {
+  [[maybe_unused]] auto on_only_debug_mode = [&p]() {
     EXPECT_EXIT({ p.release(0, 0); }, ::testing::KilledBySignal(SIGABRT),
                 "Cannot release for given index. It has been not claimed or released already.");
     return true;
@@ -368,7 +368,7 @@ TEST(FirstFitPlanner, neg_layerscope_release_non_existing_index)
 {
   PlannerVerifier<FirstFitPlanner, LayerScopeTensorIndex> p;
 
-  auto on_only_debug_mode = [&p]() {
+  [[maybe_unused]] auto on_only_debug_mode = [&p]() {
     EXPECT_DEATH({ p.release(0, 1); },
                  "Cannot release for given index. It has been not claimed or released already.");
     return true;
@@ -393,7 +393,7 @@ TEST(FirstFitPlanner, neg_layerscope_release_twice)
 {
   PlannerVerifier<FirstFitPlanner, LayerScopeTensorIndex> p;
 
-  auto on_only_debug_mode = [&p]() {
+  [[maybe_unused]] auto on_only_debug_mode = [&p]() {
     EXPECT_EXIT({ p.release(0, 0); }, ::testing::KilledBySignal(SIGABRT),
                 "Cannot release for given index. It has been not claimed or released already.");
     return true;

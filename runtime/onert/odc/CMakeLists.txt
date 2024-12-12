@@ -10,7 +10,6 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(onert_odc SHARED ${SOURCES})
 target_link_libraries(onert_odc PRIVATE onert_core luci::import luci::export luci::pass luci::loco)
-target_link_libraries(onert_odc PRIVATE nnfw_common)
 target_link_libraries(onert_odc PRIVATE nnfw_coverage)
 
 install(TARGETS onert_odc LIBRARY DESTINATION lib/nnfw/odc)

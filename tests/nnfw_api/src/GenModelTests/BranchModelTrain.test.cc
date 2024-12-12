@@ -18,9 +18,11 @@
 
 TEST_F(GenModelTrain, BranchOps_FC_Add)
 {
-  // (( Input 0 )) -> [ FC ] ----\
-  //                              |=> [ Add ] -> (( Output 0 ))
-  // (( Input 1 )) --------------/
+  /*
+   (( Input 0 )) -> [ FC ] ----\
+                                |=> [ Add ] -> (( Output 0 ))
+   (( Input 1 )) --------------/
+  */
   {
     CirclePlusGen cgen;
 
@@ -57,9 +59,11 @@ TEST_F(GenModelTrain, BranchOps_FC_Add)
     SUCCEED();
   }
 
-  // (( Input 0 )) -> [ FC ] -> (fc_out) --------------------------╲
-  //                                    ╲                           |=> [ Add ] -> (( Output 0 ))
-  //                                     ╲-> [ Relu6 ]⎼> (ea_out) -╱
+  /*
+   (( Input 0 )) -> [ FC ] -> (fc_out) --------------------------╲
+                                      ╲                           |=> [ Add ] -> (( Output 0 ))
+                                       ╲-> [ Relu6 ]⎼> (ea_out) -╱
+  */
   {
     CirclePlusGen cgen;
 
@@ -101,9 +105,11 @@ TEST_F(GenModelTrain, BranchOps_FC_Add)
 
 TEST_F(GenModelTrain, BranchOps_FC_Sub)
 {
-  // (( Input 0 )) --------------\
-  //                              |=> [ Sub ] -> (( Output 0 ))
-  // (( Input 1 )) -> [ FC ] ----/
+  /*
+   (( Input 0 )) --------------\
+                                |=> [ Sub ] -> (( Output 0 ))
+   (( Input 1 )) -> [ FC ] ----/
+  */
   {
     CirclePlusGen cgen;
 
@@ -140,9 +146,11 @@ TEST_F(GenModelTrain, BranchOps_FC_Sub)
     SUCCEED();
   }
 
-  // (( Input 0 )) -> [ FC ] -> (fc1_out) ------------------------╲
-  //                                     ╲                         |=> [ Sub ] -> (( Output 0 ))
-  //                                      ╲-> [ FC ]⎼> (fc2_out) -╱
+  /*
+   (( Input 0 )) -> [ FC ] -> (fc1_out) ------------------------╲
+                                       ╲                         |=> [ Sub ] -> (( Output 0 ))
+                                        ╲-> [ FC ]⎼> (fc2_out) -╱
+                                        */
   {
     CirclePlusGen cgen;
 
@@ -188,9 +196,11 @@ TEST_F(GenModelTrain, BranchOps_FC_Sub)
 
 TEST_F(GenModelTrain, BranchOps_FC_Mul)
 {
-  // (( Input 0 )) -> [ FC ] ----\
-  //                              |=> [ Mul ] -> [ FC ] -> (( Output 0 ))
-  // (( Input 1 )) -> [ FC ] ----/
+  /*
+   (( Input 0 )) -> [ FC ] ----\
+                                |=> [ Mul ] -> [ FC ] -> (( Output 0 ))
+   (( Input 1 )) -> [ FC ] ----/
+  */
   {
     CirclePlusGen cgen;
 
@@ -239,9 +249,11 @@ TEST_F(GenModelTrain, BranchOps_FC_Mul)
     SUCCEED();
   }
 
-  // (( Input 0 )) -> [ FC ] -> (fc1_out) ------------------------╲
-  //                                     ╲                         |=> [ Mul ] -> (( Output 0 ))
-  //                                      ╲-> [ FC ]⎼> (fc2_out) -╱
+  /*
+   (( Input 0 )) -> [ FC ] -> (fc1_out) ------------------------╲
+                                       ╲                         |=> [ Mul ] -> (( Output 0 ))
+                                        ╲-> [ FC ]⎼> (fc2_out) -╱
+  */
   {
     CirclePlusGen cgen;
 

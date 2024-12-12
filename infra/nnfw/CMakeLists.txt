@@ -95,16 +95,16 @@ if(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
   message(FATAL_ERROR "Test should be enabled to measure test coverage")
 endif(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
 
-add_library(nnfw_common INTERFACE)
 if(ENABLE_STRICT_BUILD)
-  target_compile_options(nnfw_common INTERFACE -Werror -Wall -Wextra)
+  add_compile_options(-Werror -Wall -Wextra)
 endif(ENABLE_STRICT_BUILD)
 
-macro(nnfw_strict_build TARGET)
-  if(ENABLE_STRICT_BUILD)
-    target_compile_options(${TARGET} PRIVATE -Werror -Wall -Wextra)
-  endif(ENABLE_STRICT_BUILD)
-endmacro(nnfw_strict_build)
+# Ease build by disabling all warning messages for strict build mode for specific targets
+# (ex. 3rd-party libraries)
+add_library(nnfw_ease_warning INTERFACE)
+if(ENABLE_STRICT_BUILD)
+  target_compile_options(nnfw_ease_warning INTERFACE -w)
+endif(ENABLE_STRICT_BUILD)
 
 # TODO Replace using default build option setting in cmake/buildtool/config/config_linux.cmake
 #      to link nnfw_coverage on each module which want to check coverage

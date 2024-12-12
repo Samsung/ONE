@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <cstdint>
 
 void gather_no_array(const float *in_data, const std::array<size_t, 3> &dims, float *out_data,
                      const std::array<size_t, 3> &out_dims, //[nselections,
@@ -26,9 +27,9 @@ void gather_no_array(const float *in_data, const std::array<size_t, 3> &dims, fl
 {
   assert(indices_dims[1] == dims.size());
 
-  for (int i = 0; i < indices_dims[0]; ++i)
+  for (uint32_t i = 0; i < indices_dims[0]; ++i)
   {
-    for (int j = 0; j < indices_dims[1]; ++j)
+    for (uint32_t j = 0; j < indices_dims[1]; ++j)
     {
       const int *index_ptr = indices + i * indices_dims[2] * indices_dims[1] + j * indices_dims[2];
 
@@ -40,7 +41,7 @@ void gather_no_array(const float *in_data, const std::array<size_t, 3> &dims, fl
 
       float *out_ptr = out_data + out_offset;
 
-      for (int k = 0; k < dims[2]; ++k)
+      for (uint32_t k = 0; k < dims[2]; ++k)
       {
         out_ptr[k] = in_ptr[k];
       }

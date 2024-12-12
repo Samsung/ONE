@@ -37,8 +37,6 @@ public:
     assert(y_pred.size() == y_true.size());
 
     std::vector<T> output(_out_shape.FlatSize());
-    const int N = _in_shape.Dims(0);
-    const int D = _in_shape.FlatSize() / N;
 
     nnfw::cker::train::CategoricalCrossEntropy(_in_shape, y_pred.data(), _in_shape, y_true.data(),
                                                _out_shape, output.data());
@@ -46,20 +44,17 @@ public:
     // Don't be panic when it fails after kernel implementation or input is changed.
     // CrossEntropy formula can be calculated slightly differently depending on the environment
     // because it involes calculations such as log or exp.
-    for (int i = 0; i < output.size(); ++i)
+    for (size_t i = 0; i < output.size(); ++i)
     {
       EXPECT_NEAR(output[i], expected[i], 1e-4f);
     }
   }
 
-  void throwForward(const std::vector<T> &y_pred, const std::vector<T> &y_true,
-                    const std::vector<T> &expected)
+  void throwForward(const std::vector<T> &y_pred, const std::vector<T> &y_true)
   {
     assert(y_pred.size() == y_true.size());
 
     std::vector<T> output(_out_shape.FlatSize());
-    const int N = _in_shape.Dims(0);
-    const int D = _in_shape.FlatSize() / N;
 
     EXPECT_ANY_THROW(nnfw::cker::train::CategoricalCrossEntropy(
       _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data()));
@@ -72,8 +67,6 @@ public:
     assert(y_pred.size() == y_true.size());
 
     std::vector<T> output(_in_shape.FlatSize());
-    const int N = _in_shape.Dims(0);
-    const int D = _in_shape.FlatSize() / N;
 
     nnfw::cker::train::CategoricalCrossEntropyGrad(
       _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data(), reduction);
@@ -81,7 +74,7 @@ public:
     // Don't be panic when it fails after kernel implementation or input is changed.
     // CrossEntropy Gradient formula can be calculated slightly differently depending on the
     // environment because it involes calculations such as log or exp.
-    for (int i = 0; i < output.size(); ++i)
+    for (size_t i = 0; i < output.size(); ++i)
     {
       EXPECT_NEAR(output[i], expected[i], 1e-4f);
     }
@@ -102,33 +95,32 @@ public:
                                                          y_true.data(), _out_shape, loss_out.data(),
                                                          _in_shape, grad.data(), reduction);
 
-    for (int i = 0; i < loss_out.size(); ++i)
+    for (size_t i = 0; i < loss_out.size(); ++i)
     {
       EXPECT_NEAR(loss_out[i], expected_loss_out[i], 1e-4f);
     }
 
-    for (int i = 0; i < grad.size(); ++i)
+    for (size_t i = 0; i < grad.size(); ++i)
     {
       EXPECT_NEAR(grad[i], expected_grad[i], 1e-4f);
     }
   }
 
   void throwBackward(const std::vector<T> &y_pred, const std::vector<T> &y_true,
-                     const std::vector<T> &expected, nnfw::cker::train::LossReductionType reduction)
+                     [[maybe_unused]] const std::vector<T> &expected,
+                     nnfw::cker::train::LossReductionType reduction)
   {
     assert(y_pred.size() == y_true.size());
 
     std::vector<T> output(_out_shape.FlatSize());
-    const int N = _in_shape.Dims(0);
-    const int D = _in_shape.FlatSize() / N;
 
     EXPECT_ANY_THROW(nnfw::cker::train::CategoricalCrossEntropyGrad(
       _in_shape, y_pred.data(), _in_shape, y_true.data(), _out_shape, output.data(), reduction));
   }
 
   void throwBackwardWithLogits(const std::vector<T> &logits, const std::vector<T> &y_true,
-                               const std::vector<T> &expected_loss_out,
-                               const std::vector<T> &expected_grad,
+                               [[maybe_unused]] const std::vector<T> &expected_loss_out,
+                               [[maybe_unused]] const std::vector<T> &expected_grad,
                                nnfw::cker::train::LossReductionType reduction)
   {
     assert(logits.size() == y_true.size());
@@ -186,7 +178,7 @@ TEST(CKer_Operation, LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3}, y_pred.data(), nnfw::cker::Shape{2, 3},
                            y_true.data(), nnfw::cker::Shape{2}, output.data());
 
-    for (int i = 0; i < output.size(); ++i)
+    for (size_t i = 0; i < output.size(); ++i)
     {
       EXPECT_FLOAT_EQ(output[i], expected[i]);
     }
@@ -204,7 +196,7 @@ TEST(CKer_Operation, LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 3, 4}, y_pred.data(), nnfw::cker::Shape{2, 3, 4},
                            y_true.data(), nnfw::cker::Shape{2}, output.data());
 
-    for (int i = 0; i < output.size(); ++i)
+    for (size_t i = 0; i < output.size(); ++i)
     {
       EXPECT_FLOAT_EQ(output[i], expected[i]);
     }
@@ -223,7 +215,7 @@ TEST(CKer_Operation, neg_LossMSE)
     nnfw::cker::train::MSE(nnfw::cker::Shape{2, 5}, y_pred.data(), nnfw::cker::Shape{2, 5},
                            y_true.data(), nnfw::cker::Shape{2}, output.data());
 
-    for (int i = 0; i < output.size(); ++i)
+    for (size_t i = 0; i < output.size(); ++i)
     {
       EXPECT_NE(output[i], expected[i]);
     }
@@ -400,10 +392,12 @@ TEST(CKer_Operation, neg_LossCategoricalCrossEntropy)
     std::vector<float> y_pred = {-2.86E-12, 2.82E-13, 0.99999845, 2.36E-07, 2.91E-16,
                                  2.10E-07,  1.69E-14, 1.21E-17,   1.08E-06, 6.23E-18};
     std::vector<float> y_true = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-    std::vector<float> expected = {39.617155};
+
+    // Expected value, but not used for verification due to exception
+    // std::vector<float> expected = {39.617155};
 
     LossCCEVerifier<float> verifier(in_shape, out_shape);
-    verifier.throwForward(y_pred, y_true, expected);
+    verifier.throwForward(y_pred, y_true);
   }
 }
 

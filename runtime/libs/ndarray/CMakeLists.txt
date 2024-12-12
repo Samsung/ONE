@@ -10,7 +10,6 @@ if(${NDARRAY_INLINE_TEMPLATES})
     target_compile_definitions(ndarray PUBLIC -DNDARRAY_INLINE_TEMPLATES=1)
 endif()
 
-target_link_libraries(ndarray PRIVATE nnfw_common)
 target_link_libraries(ndarray PRIVATE nnfw_coverage)
 
 if(NOT ENABLE_TEST)

@@ -31,7 +31,7 @@ const std::string proc_status_path("/proc/self/status");
 const std::string gpu_memory_path("/sys/kernel/debug/mali0/gpu_memory");
 const std::string proc_smaps_path("/proc/self/smaps");
 
-bool isStrNumber(const std::string &s)
+[[maybe_unused]] bool isStrNumber(const std::string &s)
 {
   return !s.empty() &&
          std::find_if(s.begin(), s.end(), [](char c) { return !std::isdigit(c); }) == s.end();

@@ -34,7 +34,7 @@ public:
   Formatter(nnfw_session *sess) : session_(sess) {}
   virtual void loadInputs(const std::string &filename, std::vector<Allocation> &inputs) = 0;
   virtual void dumpOutputs(const std::string &filename, std::vector<Allocation> &outputs) = 0;
-  virtual std::vector<TensorShape> readTensorShapes(const std::string &filename)
+  virtual std::vector<TensorShape> readTensorShapes(const std::string &)
   {
     return std::vector<TensorShape>();
   };

@@ -28,7 +28,7 @@ TEST(CKer_Operation, Range)
     std::vector<int> actual(10);
     nnfw::cker::Range<int>(&start, &limit, &delta, actual.data());
 
-    for (int i = 0; i < actual.size(); i++)
+    for (size_t i = 0; i < actual.size(); i++)
       ASSERT_EQ(actual[i], i);
   }
 
@@ -40,7 +40,7 @@ TEST(CKer_Operation, Range)
     std::vector<int> actual(expected.size());
     nnfw::cker::Range<int>(&start, &limit, &delta, actual.data());
 
-    for (int i = 0; i < actual.size(); i++)
+    for (size_t i = 0; i < actual.size(); i++)
       ASSERT_EQ(actual[i], expected[i]);
   }
 
@@ -52,7 +52,7 @@ TEST(CKer_Operation, Range)
     std::vector<float> actual(expected.size());
     nnfw::cker::Range<float>(&start, &limit, &delta, actual.data());
 
-    for (int i = 0; i < actual.size(); i++)
+    for (size_t i = 0; i < actual.size(); i++)
       ASSERT_FLOAT_EQ(actual[i], expected[i]);
   }
 }

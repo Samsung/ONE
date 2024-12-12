@@ -100,7 +100,7 @@ int main(const int argc, char **argv)
   if (args.getInputShapes().size() != 0)
   {
     const auto dim_values = args.getInputShapes().size();
-    int32_t offset = 0;
+    uint32_t offset = 0;
 
     auto const input_count = TfLiteInterpreterGetInputTensorCount(interpreter);
     for (int32_t id = 0; id < input_count; id++)
