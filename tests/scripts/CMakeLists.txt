@@ -1,7 +1,3 @@
-if(NOT INSTALL_TEST_SCRIPTS)
-  return()
-endif(NOT INSTALL_TEST_SCRIPTS)
-
 # Install test driver
 file(GLOB TEST_DRIVER_SCRIPT onert-test)
 install(PROGRAMS ${TEST_DRIVER_SCRIPT} DESTINATION test)

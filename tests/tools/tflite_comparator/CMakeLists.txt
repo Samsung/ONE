@@ -3,11 +3,6 @@ if(NOT BUILD_TFLITE_COMPARATOR_TEST_TOOL)
   return()
 endif(NOT BUILD_TFLITE_COMPARATOR_TEST_TOOL)
 
-if(NOT BUILD_ONERT)
-  message("skipping tflite comparator tool build: onert is not built")
-  return()
-endif(NOT BUILD_ONERT)
-
 list(APPEND SOURCES "src/tflite_comparator.cc")
 list(APPEND SOURCES "src/args.cc")
 

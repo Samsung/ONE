@@ -2,11 +2,6 @@ if (NOT BUILD_RUNTIME_NNFW_API_TEST)
   return()
 endif(NOT BUILD_RUNTIME_NNFW_API_TEST)
 
-if (NOT BUILD_ONERT)
-  message(STATUS "Skip build NNFW API test: no runtime build")
-  return()
-endif(NOT BUILD_ONERT)
-
 nnfw_find_package(GTest)
 
 set(RUNTIME_NNFW_API_TEST nnfw_api_gtest)

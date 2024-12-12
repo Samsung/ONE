@@ -2,10 +2,6 @@ if(NOT BUILD_ONERT_RUN)
   return()
 endif(NOT BUILD_ONERT_RUN)
 
-if(NOT BUILD_ONERT)
-  return()
-endif(NOT BUILD_ONERT)
-
 list(APPEND ONERT_RUN_SRCS "src/onert_run.cc")
 list(APPEND ONERT_RUN_SRCS "src/args.cc")
 list(APPEND ONERT_RUN_SRCS "src/nnfw_util.cc")
