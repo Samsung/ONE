@@ -48,12 +48,13 @@ option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the do
 option(BUILD_NPUD "Build NPU daemon" OFF)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 option(BUILD_LOGGING "Build logging runtime" OFF)
+
 #
 # Default build configuration for tools
 #
 option(BUILD_KBENCHMARK "Build kernel benchmark tool" OFF)
 option(BUILD_OPENCL_TOOL "Build OpenCL tool" OFF)
-option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
+
 #
 # Default external libraries source download and build configuration
 #
