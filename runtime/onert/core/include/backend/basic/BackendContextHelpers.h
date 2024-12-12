@@ -178,13 +178,13 @@ void planTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const i
 }
 
 template <typename T_TensorBuilder>
-ir::OperandIndexSequence register_source_memory_tensors(
+util::Set<ir::OperandIndex> register_source_memory_tensors(
   const std::shared_ptr<T_TensorBuilder> &tensor_builder, const ir::Graph &graph,
   const util::Set<ir::OperandIndex> &external_operands,
   const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
 {
   // process source tensors that share memory at first
-  ir::OperandIndexSequence registered_source_ind;
+  util::Set<ir::OperandIndex> registered_source_ind;
   for (const auto &[_, source_ind] : shared_memory_operand_idx)
   {
     if (external_operands.contains(source_ind))
@@ -192,7 +192,7 @@ ir::OperandIndexSequence register_source_memory_tensors(
     if (tensor_builder->isRegistered(source_ind)) // some tensors can have the same source
       continue;
     tensor_builder->registerTensorInfo(source_ind, graph.operands().at(source_ind).info());
-    registered_source_ind.append(source_ind);
+    registered_source_ind.add(source_ind);
   }
   return registered_source_ind;
 }

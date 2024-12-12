@@ -25,6 +25,8 @@
 #include "backend/basic/BackendContextHelpers.h"
 #include "backend/basic/TensorRegistry.h"
 
+#include <misc/polymorphic_downcast.h>
+
 namespace onert
 {
 namespace backend
@@ -46,8 +48,8 @@ FunctionMap BackendContext::genKernels()
                     tensor_builder->getSharedMemoryOperandIndexes());
 
   // TODO: Change type of tensor_registry field to TensorRegistry
-  auto tensor_registry_concreted = dynamic_cast<basic::TensorRegistry *>(tensor_registry.get());
-  assert(tensor_registry_concreted);
+  auto tensor_registry_concreted =
+    nnfw::misc::polymorphic_downcast<basic::TensorRegistry *>(tensor_registry.get());
   basic::initSharedMemoryConsts(graph()->operands(), external_operands(), tensor_registry_concreted,
                                 tensor_builder->getSharedMemoryOperandIndexes());
 
