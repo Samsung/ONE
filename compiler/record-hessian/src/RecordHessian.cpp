@@ -25,6 +25,7 @@ using Shape = std::vector<loco::Dimension>;
 
 namespace record_hessian
 {
+
 void RecordHessian::initialize(luci::Module *module)
 {
   // Create and initialize interpreters and observers
@@ -35,10 +36,8 @@ void RecordHessian::initialize(luci::Module *module)
   auto observer = std::make_unique<HessianObserver>();
 
   interpreter->attachObserver(observer.get());
-
-  _observer = std::move(observer);
-  _interpreter = std::move(interpreter);
 }
+
 std::unique_ptr<HessianMap> RecordHessian::profileData(const std::string &input_data_path)
 {
   try
