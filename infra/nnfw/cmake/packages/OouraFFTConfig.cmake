@@ -12,6 +12,8 @@ function(_OouraFFT_build)
       ${OouraFFTSource_DIR}/fftsg2d.c
       ${OouraFFTSource_DIR}/fftsg.c
     )
+    # Ignore strict build warnings
+    target_link_libraries(fft2d_fftsg2d PRIVATE nnfw_ease_warning)
     add_library(oourafft::fftsg2d ALIAS fft2d_fftsg2d)
   endif(NOT TARGET oourafft::fftsg2d)
 

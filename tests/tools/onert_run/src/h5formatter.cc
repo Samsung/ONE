@@ -96,7 +96,6 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
       // TODO Add Assert(nnfw shape, h5 file shape size)
-      auto bufsz = inputs[i].size();
       H5::DataSet data_set = value_group.openDataSet(std::to_string(i));
       H5::DataType type = data_set.getDataType();
       switch (inputs[i].type())

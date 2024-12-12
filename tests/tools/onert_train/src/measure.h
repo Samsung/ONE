@@ -161,7 +161,7 @@ public:
     }
   }
 
-  void run(const int epoch, const int step, const std::function<void()> &func)
+  void run(const unsigned int epoch, const unsigned int step, const std::function<void()> &func)
   {
     if (_step_results.empty() || _step_results.size() <= epoch ||
         _step_results[epoch].size() <= step)
@@ -184,7 +184,7 @@ public:
     return sum;
   }
 
-  double timeMicros(const int epoch, const AggregateType aggType)
+  double timeMicros(const unsigned int epoch, const AggregateType aggType)
   {
     if (_step_results.empty() || _step_results.size() <= epoch)
     {
@@ -218,7 +218,7 @@ public:
                 << _phase_results[type].time / 1e3 << " ms" << std::endl;
       if (i == PhaseType::EXECUTE)
       {
-        for (int j = 0; j < _step_results.size(); ++j)
+        for (uint32_t j = 0; j < _step_results.size(); ++j)
         {
           std::cout << "- "
                     << "Epoch " << j + 1 << std::setw(12) << std::right << " takes "

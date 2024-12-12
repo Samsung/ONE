@@ -14,7 +14,6 @@ target_include_directories(nnfw_lib_tflite PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 target_link_libraries(nnfw_lib_tflite PUBLIC tensorflow-lite-2.16.1)
 target_link_libraries(nnfw_lib_tflite PUBLIC nnfw_lib_misc nnfw_lib_benchmark)
 target_link_libraries(nnfw_lib_tflite PRIVATE ${LIB_PTHREAD} dl)
-target_link_libraries(nnfw_lib_tflite PRIVATE nnfw_common)
 
 if(NOT ENABLE_TEST)
   return()

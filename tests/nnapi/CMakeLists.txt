@@ -55,6 +55,9 @@ target_link_libraries(${RUNTIME_NNAPI_TEST} ${LIB_PTHREAD} dl)
 # Set INSTALL_RPATH to find onert_core
 set_target_properties(${RUNTIME_NNAPI_TEST} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib/nnfw")
 
+# Ignore strict build warnings
+target_link_libraries(${RUNTIME_NNAPI_TEST} nnfw_ease_warning)
+
 install(TARGETS ${RUNTIME_NNAPI_TEST} DESTINATION nnapi-gtest)
 
 # Default test backend: cpu

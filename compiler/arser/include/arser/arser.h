@@ -170,12 +170,12 @@ class Argument
 public:
   explicit Argument(const std::string &arg_name) : _long_name{arg_name}, _names{arg_name} {}
   explicit Argument(const std::string &short_name, const std::string &long_name)
-    : _short_name{short_name}, _long_name{long_name}, _names{short_name, long_name}
+    : _long_name{long_name}, _short_name{short_name}, _names{short_name, long_name}
   {
   }
   explicit Argument(const std::string &short_name, const std::string &long_name,
                     const std::vector<std::string> &names)
-    : _short_name{short_name}, _long_name{long_name}, _names{names}
+    : _long_name{long_name}, _short_name{short_name}, _names{names}
   {
     // 'names' must have 'short_name' and 'long_name'.
     auto it = std::find(names.begin(), names.end(), short_name);

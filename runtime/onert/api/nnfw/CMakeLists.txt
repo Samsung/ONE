@@ -11,7 +11,6 @@ set(NNFW_API_HEADERS include/nnfw.h include/nnfw_experimental.h)
 target_link_libraries(${ONERT_DEV} PRIVATE onert_core)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_lib_misc)
 target_link_libraries(${ONERT_DEV} PRIVATE jsoncpp ${LIB_PTHREAD})
-target_link_libraries(${ONERT_DEV} PRIVATE nnfw_common)
 target_link_libraries(${ONERT_DEV} PRIVATE nnfw_coverage)
 target_link_libraries(${ONERT_DEV} PRIVATE circle_schema)
 # NOTE Below line is added to remove warning for android build

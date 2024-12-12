@@ -39,6 +39,9 @@ void ensure_status(NNFW_STATUS status)
     case NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE:
       std::cout << "[ERROR]\tNNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE\n";
       exit(1);
+    case NNFW_STATUS::NNFW_STATUS_DEPRECATED_API:
+      std::cout << "[ERROR]\tNNFW_STATUS_DEPRECATED_API\n";
+      exit(1);
   }
 }
 
@@ -129,7 +132,7 @@ const char *getStringType(NNFW_TYPE type)
 uint64_t num_elems(const nnfw_tensorinfo *tensor_info)
 {
   uint64_t n = 1;
-  for (uint32_t i = 0; i < tensor_info->rank; ++i)
+  for (int32_t i = 0; i < tensor_info->rank; ++i)
   {
     n *= tensor_info->dims[i];
   }

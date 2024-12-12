@@ -101,7 +101,7 @@ void checkPackage(const std::string &package_filename)
 
 // check the value is in the valid_args list and return the corresponded enum
 template <typename T>
-T checkValidation(const std::string &arg_name, const std::vector<T> &valid_args, int value)
+T checkValidation(const std::string &arg_name, const std::vector<T> &valid_args, uint32_t value)
 {
   for (const auto arg : valid_args)
   {
@@ -278,12 +278,13 @@ void Args::Parse(const int argc, char **argv)
     if (_arser["--learning_rate"])
       _learning_rate = _arser.get<float>("--learning_rate");
     if (_arser["--loss"])
-      _loss_type = checkValidation("loss", valid_loss, _arser.get<int>("--loss"));
+      _loss_type = checkValidation("loss", valid_loss, _arser.get<uint32_t>("--loss"));
     if (_arser["--loss_reduction_type"])
       _loss_reduction_type = checkValidation("loss_reduction_type", valid_loss_rdt,
-                                             _arser.get<int>("--loss_reduction_type"));
+                                             _arser.get<uint32_t>("--loss_reduction_type"));
     if (_arser["--optimizer"])
-      _optimizer_type = checkValidation("optimizer", valid_optim, _arser.get<int>("--optimizer"));
+      _optimizer_type =
+        checkValidation("optimizer", valid_optim, _arser.get<uint32_t>("--optimizer"));
     _metric_type = _arser.get<int>("--metric");
 
     _validation_split = _arser.get<float>("--validation_split");

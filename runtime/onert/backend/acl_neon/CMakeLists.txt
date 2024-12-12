@@ -11,7 +11,6 @@ file(GLOB_RECURSE SOURCES "*.cc")
 add_library(${LIB_ONERT_BACKEND_ACL_NEON} SHARED ${SOURCES})
 
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE ${LIB_ONERT_BACKEND_ACL_COMMON})
-target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_ACL_NEON} PRIVATE nnfw_coverage)
 
 # Set install rpath to find onert_core and acl library

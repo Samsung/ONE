@@ -56,7 +56,7 @@ int main(const int argc, char **argv)
     }
 
     // TODO Apply verbose level to phases
-    const int verbose = args.getVerboseLevel();
+    // const int verbose = args.getVerboseLevel();
 
     // prepare measure tool
     Measure measure(args.getMemoryPoll());
@@ -244,7 +244,7 @@ int main(const int argc, char **argv)
       const int num_step = tdata_length / tri.batch_size;
       const int num_epoch = args.getEpoch();
       measure.set(num_epoch, num_step);
-      for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
+      for (int32_t epoch = 0; epoch < num_epoch; ++epoch)
       {
         //
         // TRAINING
@@ -252,7 +252,7 @@ int main(const int argc, char **argv)
         {
           std::fill(losses.begin(), losses.end(), 0);
           std::fill(metrics.begin(), metrics.end(), 0);
-          for (uint32_t n = 0; n < num_step; ++n)
+          for (int32_t n = 0; n < num_step; ++n)
           {
             // get batchsize data
             if (!tdata_generator(n, input_data, expected_data))
@@ -277,7 +277,7 @@ int main(const int argc, char **argv)
 
             // store loss
             Metrics metric(output_data, expected_data, expected_infos);
-            for (int32_t i = 0; i < num_expecteds; ++i)
+            for (uint32_t i = 0; i < num_expecteds; ++i)
             {
               float temp = 0.f;
               NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
@@ -320,7 +320,7 @@ int main(const int argc, char **argv)
           std::fill(losses.begin(), losses.end(), 0);
           std::fill(metrics.begin(), metrics.end(), 0);
           const int num_valid_step = vdata_length / tri.batch_size;
-          for (uint32_t n = 0; n < num_valid_step; ++n)
+          for (int32_t n = 0; n < num_valid_step; ++n)
           {
             // get batchsize validation data
             if (!vdata_generator(n, input_data, expected_data))
@@ -345,7 +345,7 @@ int main(const int argc, char **argv)
 
             // get validation loss and accuracy
             Metrics metric(output_data, expected_data, expected_infos);
-            for (int32_t i = 0; i < num_expecteds; ++i)
+            for (uint32_t i = 0; i < num_expecteds; ++i)
             {
               float temp = 0.f;
               NNPR_ENSURE_STATUS(nnfw_train_get_loss(session, i, &temp));
