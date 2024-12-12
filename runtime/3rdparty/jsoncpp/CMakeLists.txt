@@ -4,3 +4,6 @@ add_library(jsoncpp STATIC ${SRCS})
 set_property(TARGET jsoncpp PROPERTY POSITION_INDEPENDENT_CODE ON)
 set_property(TARGET jsoncpp APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+
+# Ignore strict build warnings
+target_link_libraries(jsoncpp PRIVATE nnfw_ease_warning)

@@ -56,7 +56,9 @@ TEST(odc_QuantizerLoader, neg_unload)
 {
   QuantizerLoader &loader = QuantizerLoader::instance();
   if (loader.loadLibrary() == 0)
+  {
     ASSERT_NE(loader.get(), nullptr);
+  }
 
   ASSERT_EQ(loader.unloadLibrary(), 0);
   ASSERT_EQ(loader.get(), nullptr);

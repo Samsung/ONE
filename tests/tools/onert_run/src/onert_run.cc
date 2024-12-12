@@ -68,9 +68,9 @@ std::string genQuantizedModelPathFromModelPath(const std::string &model_path,
       return model_path.substr(0, extension_pos) + "_quantized_q8wo.circle";
     case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
       return model_path.substr(0, extension_pos) + "_quantized_q16wo.circle";
+    default:
+      throw std::runtime_error{"Invalid quantization type"};
   }
-
-  throw std::runtime_error{"Invalid quantization type"};
 }
 
 std::string genQuantizedModelPathFromPackagePath(const std::string &package_path,
@@ -95,9 +95,9 @@ std::string genQuantizedModelPathFromPackagePath(const std::string &package_path
       return package_path_without_slash + "/" + package_name + "_quantized_q8wo.circle";
     case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
       return package_path_without_slash + "/" + package_name + "_quantized_q16wo.circle";
+    default:
+      throw std::runtime_error{"Invalid quantization type"};
   }
-
-  throw std::runtime_error{"Invalid quantization type"};
 }
 
 int main(const int argc, char **argv)
@@ -267,7 +267,7 @@ int main(const int argc, char **argv)
         {
           auto &shape = found->second;
           bool set_input = false;
-          if (ti.rank != shape.size())
+          if (ti.rank != static_cast<int32_t>(shape.size()))
           {
             set_input = true;
           }
@@ -454,7 +454,7 @@ int main(const int argc, char **argv)
         else
         {
           TensorShape shape;
-          for (uint32_t j = 0; j < ti.rank; j++)
+          for (int32_t j = 0; j < ti.rank; j++)
             shape.emplace_back(ti.dims[j]);
 
           output_shapes.emplace_back(shape);

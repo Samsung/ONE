@@ -17,7 +17,7 @@ set_target_properties(tvn_loader PROPERTIES
   POSITION_INDEPENDENT_CODE ON
   INSTALL_RPATH "$ORIGIN:$ORIGIN/..")
 target_link_libraries(tvn_loader PRIVATE onert_core)
-target_link_libraries(tvn_loader PRIVATE nnfw_common nnfw_coverage)
+target_link_libraries(tvn_loader PRIVATE nnfw_coverage)
 target_link_libraries(tvn_loader PRIVATE trix_engine)
 
 install(TARGETS tvn_loader DESTINATION lib/nnfw/loader)

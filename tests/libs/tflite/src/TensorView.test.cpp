@@ -33,7 +33,7 @@ void int_test(void)
   assert(view.at(nnfw::misc::tensor::Index{1, 2}) == 6);
 }
 
-int main(int argc, char **argv)
+int main()
 {
   float value[6] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f};
 

@@ -180,7 +180,7 @@ void H5Formatter::dumpOutputs(const std::string &filename, std::vector<Allocatio
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session_, i, &ti));
       std::vector<hsize_t> dims(ti.rank);
-      for (uint32_t j = 0; j < ti.rank; ++j)
+      for (int32_t j = 0; j < ti.rank; ++j)
       {
         if (ti.dims[j] >= 0)
           dims[j] = static_cast<hsize_t>(ti.dims[j]);

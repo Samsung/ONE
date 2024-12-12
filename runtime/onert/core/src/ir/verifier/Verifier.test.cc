@@ -84,7 +84,7 @@ TEST(Verifier, neg_edge_consistency_checker_2)
 
   auto mock_op = std::make_unique<Mock>(IndexSet{operand1}, IndexSet{operand2});
   auto mock_op_ptr = mock_op.get();
-  auto op_ind = graph.addOperation(std::move(mock_op));
+  graph.addOperation(std::move(mock_op));
 
   mock_op_ptr->setInputs({operand2}); // Manipulate the operation alone
 

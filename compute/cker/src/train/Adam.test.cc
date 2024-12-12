@@ -72,7 +72,7 @@ private:
 
     const T alpha = _learning_rate * std::sqrt(static_cast<T>(1) - beta2_power) /
                     (static_cast<T>(1) - beta1_power);
-    for (int i = 0; i < _expected.size(); ++i)
+    for (size_t i = 0; i < _expected.size(); ++i)
     {
       T m = _m.at(i);
       T v = _v.at(i);

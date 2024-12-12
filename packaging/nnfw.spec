@@ -148,7 +148,7 @@ If you want to get coverage info, you should install runtime package which is bu
 %endif # test_build
 
 # Set option for configuration
-%define option_config %{nil}
+%define option_config -DENABLE_STRICT_BUILD=ON
 %if %{config_support} == 1
 %endif # config_support
 

@@ -75,7 +75,7 @@ public:
                       const nnfw::cker::Shape &input_shape, const T *input_data,
                       const nnfw::cker::Shape &filter_shape, const T *filter_data,
                       const nnfw::cker::Shape &bias_shape, const T *bias_data,
-                      const nnfw::cker::Shape &output_shape, const T *expected)
+                      const nnfw::cker::Shape &output_shape)
   {
     std::vector<T> output(output_shape.FlatSize());
     EXPECT_ANY_THROW(
@@ -293,11 +293,12 @@ TEST(CKer_Operation, neg_DepthwiseConv)
     nnfw::cker::Shape bias_shape{1};
     std::vector<float> bias = {0.0};
     nnfw::cker::Shape output_shape{1, 3, 3, 1}; // n, h, w, c
-    std::vector<float> expected = {4.0, 0.0, 3.0, 0.0, 0.0, 0.0, 2.0, 0.0, 1.0};
+    // Expected output but not used - not supported yet
+    // std::vector<float> expected = {4.0, 0.0, 3.0, 0.0, 0.0, 0.0, 2.0, 0.0, 1.0};
 
     DepthwiseConvVerifier<float> verifier;
     verifier.prepare(output_shape, filter_shape);
     verifier.checkException(params, input_shape, input.data(), filter_shape, filter.data(),
-                            bias_shape, bias.data(), output_shape, expected.data());
+                            bias_shape, bias.data(), output_shape);
   }
 }
