@@ -252,7 +252,10 @@ void CircleOptimizer::optimize(luci::Module *m) const
     phase.emplace_back(std::make_unique<FuseBCQPass>());
   }
 
-  phase.emplace_back(std::make_unique<luci::EliminateDeadSubgraphPass>());
+  if (_options->query(Options::Algorithm::EliminateDeadSubgraph))
+  {
+    phase.emplace_back(std::make_unique<luci::EliminateDeadSubgraphPass>());
+  }
 
   ModuleProgressReporter prog(m, logo::PhaseStrategy::Restart);
   PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{m};

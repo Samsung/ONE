@@ -78,6 +78,7 @@ public:
       FusePRelu,
       FuseGelu,
       FuseGRU,
+      EliminateDeadSubgraph,
       FuseRsqrt,
       FuseRmsNorm,
       FuseRoPE,
