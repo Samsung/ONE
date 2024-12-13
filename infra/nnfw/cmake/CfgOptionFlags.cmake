@@ -95,4 +95,4 @@ option(HDF5_USE_STATIC_LIBRARIES "Determine whether or not static linking for HD
 #
 ## Default sample build configuration
 #
-option(BUILD_MINIMAL_SAMPLE "Build minimal app" OFF)
+option(BUILD_MINIMAL_SAMPLE "Build minimal app" ON)
