@@ -309,7 +309,7 @@ public:
 
 private:
   // The '_names' vector contains all of the options specified by the user.
-  // And among them, '_long_name' and '_short_name' are selected.
+  // And among them, '_short_name' and '_long_name' are selected.
   std::string _short_name;
   std::string _long_name;
   std::vector<std::string> _names;
