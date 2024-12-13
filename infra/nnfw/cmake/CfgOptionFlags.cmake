@@ -5,7 +5,7 @@ include(CMakeDependentOption)
 # note: this should be placed before default setting for option setting priority
 #       (platform specific setting have higher priority)
 #
-include("cmake/options/options_${TARGET_PLATFORM}.cmake")
+include("cmake/options/options_${TARGET_PLATFORM}.cmake" OPTIONAL)
 
 #
 # Default build configuration for project
