@@ -54,8 +54,8 @@ public:
   void execute() const;
 
 private:
-  IMemoryManager *_memory_manager;
   RuntimeModule *_owning_module;
+  IMemoryManager *_memory_manager;
   std::vector<std::unique_ptr<Tensor>> _tensors;
   std::vector<Tensor *> _input_tensors;
   std::vector<Tensor *> _output_tensors;

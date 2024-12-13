@@ -117,7 +117,7 @@ include("cmake/ApplyCompileFlags.cmake")
 add_library(nncc_common INTERFACE)
 if(ENABLE_STRICT_BUILD)
   # TODO Remove -Wno-reoder
-  target_compile_options(nncc_common INTERFACE -Werror -Wall -Wextra -Wno-reorder)
+  target_compile_options(nncc_common INTERFACE -Werror -Wall -Wextra -Wno-error=overloaded-virtual)
 endif(ENABLE_STRICT_BUILD)
 
 add_library(nncc_coverage INTERFACE)

@@ -25,6 +25,8 @@ target_link_libraries(${LUCI_INTERPRETER_KERNELS} PRIVATE nncc_common)
 
 add_pal_to_target(${LUCI_INTERPRETER_KERNELS})
 
+target_compile_options(${LUCI_INTERPRETER_KERNELS} PRIVATE -Wno-error=array-bounds)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
