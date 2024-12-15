@@ -533,13 +533,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00271">271</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  272</span>{</div>
-<div class="line"><span class="lineno">  273</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_apply_tensorinfo: Deprecated&quot;</span>);</div>
-<div class="line"><span class="lineno">  274</span>}</div>
-<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__internal_8cc_source.html#l00892">nnfw_api_internal.cc:892</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00274">274</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  275</span>{</div>
+<div class="line"><span class="lineno">  276</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_apply_tensorinfo: Deprecated&quot;</span>);</div>
+<div class="line"><span class="lineno">  277</span>}</div>
+<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__session_8cc_source.html#l00892">nnfw_session.cc:892</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00892">nnfw_session::deprecated()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__session_8cc_source.html#l00892">nnfw_session::deprecated()</a>.</p>
 
 </div>
 </div>
@@ -571,15 +571,15 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00120">120</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
-<div class="line"><span class="lineno">  122</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;await();</div>
-<div class="line"><span class="lineno">  124</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00123">123</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
+<div class="line"><span class="lineno">  125</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  126</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;await();</div>
+<div class="line"><span class="lineno">  127</span>}</div>
 <div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
-<div class="ttc" id="annfw__api_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00048">nnfw_api.cc:48</a></div></div>
+<div class="ttc" id="annfw__api_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00051">nnfw_api.cc:51</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00192">NNFW_SESSION::wait()</a>.</p>
 
@@ -611,11 +611,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00069">69</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keyword">delete</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>;</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno">   73</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00072">72</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keyword">delete</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>;</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">   76</span>}</div>
 <div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00088">onert-micro.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -692,13 +692,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00173">173</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;input_size(number);</div>
-<div class="line"><span class="lineno">  177</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00176">176</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  177</span>{</div>
+<div class="line"><span class="lineno">  178</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;input_size(number);</div>
+<div class="line"><span class="lineno">  180</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00193">NNFW_SESSION::input_size()</a>.</p>
 
@@ -749,13 +749,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00234">234</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
-<div class="line"><span class="lineno">  237</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;input_tensorinfo(index, tensor_info);</div>
-<div class="line"><span class="lineno">  239</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00237">237</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  239</span>{</div>
+<div class="line"><span class="lineno">  240</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;input_tensorinfo(index, tensor_info);</div>
+<div class="line"><span class="lineno">  242</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00217">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00130">NNFW_SESSION::set_input()</a>.</p>
 
@@ -803,7 +803,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  394</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;load_model_from_file(package_file_path);</div>
 <div class="line"><span class="lineno">  395</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 </div>
 </div>
@@ -844,13 +844,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00187">187</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  188</span>{</div>
-<div class="line"><span class="lineno">  189</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  190</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;output_size(number);</div>
-<div class="line"><span class="lineno">  191</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00190">190</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
+<div class="line"><span class="lineno">  192</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  193</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;output_size(number);</div>
+<div class="line"><span class="lineno">  194</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00200">NNFW_SESSION::output_size()</a>.</p>
 
@@ -902,13 +902,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00250">250</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  252</span>{</div>
-<div class="line"><span class="lineno">  253</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  254</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;output_tensorinfo(index, tensor_info);</div>
-<div class="line"><span class="lineno">  255</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00253">253</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  255</span>{</div>
+<div class="line"><span class="lineno">  256</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;output_tensorinfo(index, tensor_info);</div>
+<div class="line"><span class="lineno">  258</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00230">NNFW_SESSION::output_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00144">NNFW_SESSION::set_output()</a>.</p>
 
@@ -940,13 +940,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00096">96</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;prepare();</div>
-<div class="line"><span class="lineno">  100</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00099">99</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>{</div>
+<div class="line"><span class="lineno">  101</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;prepare();</div>
+<div class="line"><span class="lineno">  103</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00158">NNFW_SESSION::NNFW_SESSION()</a>.</p>
 
@@ -997,24 +997,24 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00318">318</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  319</span>{</div>
-<div class="line"><span class="lineno">  320</span>  (void)session;</div>
-<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">switch</span> (<span class="keywordtype">id</span>)</div>
-<div class="line"><span class="lineno">  322</span>  {</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a56bd03a1c3b501262755dc16a3e96de1a56a9e5a2dadfb1d7e595d6dc4757f5a2">NNFW_INFO_ID_VERSION</a>:</div>
-<div class="line"><span class="lineno">  324</span>      <span class="keywordflow">if</span> (val)</div>
-<div class="line"><span class="lineno">  325</span>      {</div>
-<div class="line"><span class="lineno">  326</span>        *val = <a class="code hl_define" href="nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a">NNFW_VERSION</a>;</div>
-<div class="line"><span class="lineno">  327</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
-<div class="line"><span class="lineno">  328</span>      }</div>
-<div class="line"><span class="lineno">  329</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  331</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno">  332</span>  }</div>
-<div class="line"><span class="lineno">  333</span>  <span class="comment">// It should not be reached.</span></div>
-<div class="line"><span class="lineno">  334</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
-<div class="line"><span class="lineno">  335</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00321">321</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  322</span>{</div>
+<div class="line"><span class="lineno">  323</span>  (void)session;</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">switch</span> (<span class="keywordtype">id</span>)</div>
+<div class="line"><span class="lineno">  325</span>  {</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="nnfw_8h.html#a56bd03a1c3b501262755dc16a3e96de1a56a9e5a2dadfb1d7e595d6dc4757f5a2">NNFW_INFO_ID_VERSION</a>:</div>
+<div class="line"><span class="lineno">  327</span>      <span class="keywordflow">if</span> (val)</div>
+<div class="line"><span class="lineno">  328</span>      {</div>
+<div class="line"><span class="lineno">  329</span>        *val = <a class="code hl_define" href="nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a">NNFW_VERSION</a>;</div>
+<div class="line"><span class="lineno">  330</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
+<div class="line"><span class="lineno">  331</span>      }</div>
+<div class="line"><span class="lineno">  332</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  334</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno">  335</span>  }</div>
+<div class="line"><span class="lineno">  336</span>  <span class="comment">// It should not be reached.</span></div>
+<div class="line"><span class="lineno">  337</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
+<div class="line"><span class="lineno">  338</span>}</div>
 <div class="ttc" id="annfw__version_8h_html_aefc2e3e187d45d20ae9aaba452f7d97a"><div class="ttname"><a href="nnfw__version_8h.html#aefc2e3e187d45d20ae9aaba452f7d97a">NNFW_VERSION</a></div><div class="ttdeci">#define NNFW_VERSION</div><div class="ttdef"><b>Definition</b> <a href="nnfw__version_8h_source.html#l00024">nnfw_version.h:24</a></div></div>
 <div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_ERROR</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00093">onert-micro.h:93</a></div></div>
 </div><!-- fragment -->
@@ -1049,13 +1049,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00108">108</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;run();</div>
-<div class="line"><span class="lineno">  112</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00111">111</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  112</span>{</div>
+<div class="line"><span class="lineno">  113</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  114</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;run();</div>
+<div class="line"><span class="lineno">  115</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">NNFW_SESSION::run()</a>.</p>
 
@@ -1088,13 +1088,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00114">114</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>{</div>
-<div class="line"><span class="lineno">  116</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;run_async();</div>
-<div class="line"><span class="lineno">  118</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00117">117</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  118</span>{</div>
+<div class="line"><span class="lineno">  119</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;run_async();</div>
+<div class="line"><span class="lineno">  121</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00191">NNFW_SESSION::run_async()</a>.</p>
 
@@ -1138,14 +1138,14 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00289">289</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  290</span>{</div>
-<div class="line"><span class="lineno">  291</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  292</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_available_backends(<a class="code hl_namespace" href="namespacebackends.html">backends</a>);</div>
-<div class="line"><span class="lineno">  293</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00292">292</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  293</span>{</div>
+<div class="line"><span class="lineno">  294</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  295</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_available_backends(<a class="code hl_namespace" href="namespacebackends.html">backends</a>);</div>
+<div class="line"><span class="lineno">  296</span>}</div>
 <div class="ttc" id="anamespacebackends_html"><div class="ttname"><a href="namespacebackends.html">backends</a></div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00001">backends.py:1</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00158">NNFW_SESSION::NNFW_SESSION()</a>.</p>
 
@@ -1209,13 +1209,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00138">138</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  140</span>{</div>
-<div class="line"><span class="lineno">  141</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  142</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_input(index, type, buffer, length);</div>
-<div class="line"><span class="lineno">  143</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00141">141</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
+<div class="line"><span class="lineno">  144</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_input(index, type, buffer, length);</div>
+<div class="line"><span class="lineno">  146</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00130">NNFW_SESSION::set_input()</a>.</p>
 
@@ -1265,13 +1265,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>NNFW_STATUS_NO_ERROR if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00203">203</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  204</span>{</div>
-<div class="line"><span class="lineno">  205</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_input_layout(index, layout);</div>
-<div class="line"><span class="lineno">  207</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00206">206</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  207</span>{</div>
+<div class="line"><span class="lineno">  208</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_input_layout(index, layout);</div>
+<div class="line"><span class="lineno">  210</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00207">NNFW_SESSION::set_input_layout()</a>.</p>
 
@@ -1321,13 +1321,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful, otherwise return <code>NNFW_STATUS_ERROR</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00276">276</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  278</span>{</div>
-<div class="line"><span class="lineno">  279</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_input_tensorinfo(index, tensor_info);</div>
-<div class="line"><span class="lineno">  281</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00279">279</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  281</span>{</div>
+<div class="line"><span class="lineno">  282</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  283</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_input_tensorinfo(index, tensor_info);</div>
+<div class="line"><span class="lineno">  284</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00179">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
 
@@ -1388,12 +1388,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>NNFW_STATUS_NO_ERROR if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00304">304</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  305</span>{</div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_set_op_backend: Deprecated&quot;</span>);</div>
-<div class="line"><span class="lineno">  307</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00307">307</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  308</span>{</div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_set_op_backend: Deprecated&quot;</span>);</div>
+<div class="line"><span class="lineno">  310</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__internal_8cc_source.html#l00892">nnfw_session::deprecated()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__session_8cc_source.html#l00892">nnfw_session::deprecated()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>.</p>
 
@@ -1457,13 +1457,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00157">157</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  161</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_output(index, type, buffer, length);</div>
-<div class="line"><span class="lineno">  162</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00160">160</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
+<div class="line"><span class="lineno">  163</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_output(index, type, buffer, length);</div>
+<div class="line"><span class="lineno">  165</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00144">NNFW_SESSION::set_output()</a>.</p>
 
@@ -1513,13 +1513,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>NNFW_STATUS_NO_ERROR if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00219">219</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  220</span>{</div>
-<div class="line"><span class="lineno">  221</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_output_layout(index, layout);</div>
-<div class="line"><span class="lineno">  223</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00222">222</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
+<div class="line"><span class="lineno">  224</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_output_layout(index, layout);</div>
+<div class="line"><span class="lineno">  226</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00212">NNFW_SESSION::set_output_layout()</a>.</p>
 
@@ -1562,13 +1562,13 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00382">382</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  383</span>{</div>
-<div class="line"><span class="lineno">  384</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_workspace(dir);</div>
-<div class="line"><span class="lineno">  386</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00373">373</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  374</span>{</div>
+<div class="line"><span class="lineno">  375</span>  <a class="code hl_define" href="nnfw__api_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  376</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_workspace(dir);</div>
+<div class="line"><span class="lineno">  377</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00048">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api_8cc_source.html#l00051">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 
 </div>
 </div>
