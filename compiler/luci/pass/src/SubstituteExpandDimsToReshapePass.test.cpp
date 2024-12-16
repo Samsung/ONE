@@ -132,6 +132,12 @@ public:
     _output->from(_expand_dims);
   }
 
+  void scalar_axis(int32_t axis)
+  {
+    _axis = luci::create_const_node<int32_t>(g(), loco::DataType::S32, {}, axis);
+    _axis->name("axis");
+  }
+
 protected:
   luci::CircleConst *_axis = nullptr;
 
@@ -232,6 +238,26 @@ TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_M1)
 TEST_F(SubstituteExpandDimsToReshapeTest, simple_with_expand_dims_2)
 {
   _graph.init({16, 3, 1}, {16, 3, 1, 1}, 2);
+
+  run_pass();
+
+  auto reshape = dynamic_cast<luci::CircleReshape *>(_graph.output()->from());
+  auto expand_dims = dynamic_cast<luci::CircleExpandDims *>(_graph.output()->from());
+  ASSERT_NE(nullptr, reshape);
+  ASSERT_EQ(nullptr, expand_dims);
+  auto reshape_shape = loco::must_cast<luci::CircleConst *>(reshape->shape());
+  ASSERT_EQ(4, reshape_shape->size<loco::DataType::S32>());
+  ASSERT_EQ(16, reshape_shape->at<loco::DataType::S32>(0));
+  ASSERT_EQ(3, reshape_shape->at<loco::DataType::S32>(1));
+  ASSERT_EQ(1, reshape_shape->at<loco::DataType::S32>(2));
+  ASSERT_EQ(1, reshape_shape->at<loco::DataType::S32>(3));
+}
+
+TEST_F(SubstituteExpandDimsToReshapeTest, scalar_axis)
+{
+  _graph.init({16, 3, 1}, {16, 3, 1, 1}, 2);
+
+  _graph.scalar_axis(2);
 
   run_pass();
 

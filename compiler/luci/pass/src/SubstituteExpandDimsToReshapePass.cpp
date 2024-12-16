@@ -67,6 +67,25 @@ int32_t unknown_dim_count(luci::CircleNode *node)
  */
 int32_t value_from_circle_const(const luci::CircleConst *node, uint32_t idx)
 {
+  // Scalar case: rank 0, only one element in CircleConst
+  if (node->rank() == 0)
+  {
+    if (node->dtype() == loco::DataType::S64)
+    {
+      assert(node->size<loco::DataType::S64>() == 1); // FIX_ME_UNLESS
+      return static_cast<int32_t>(node->at<loco::DataType::S64>(0));
+    }
+    else if (node->dtype() == loco::DataType::S32)
+    {
+      assert(node->size<loco::DataType::S32>() == 1); // FIX_ME_UNLESS
+      return node->at<loco::DataType::S32>(0);
+    }
+    else
+    {
+      throw std::runtime_error("Unsupported dtype");
+    }
+  }
+
   assert(node->rank() == 1 && node->dim(0).value() > idx);
   assert(node->dtype() == loco::DataType::S64 || node->dtype() == loco::DataType::S32);
 
