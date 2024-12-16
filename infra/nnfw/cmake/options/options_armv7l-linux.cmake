@@ -2,7 +2,7 @@
 # armv7l linux cmake options
 #
 option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
-option(DOWNLOAD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
+option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" ON)
 
 option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" OFF)
 option(BUILD_OPENCL_TOOL "Build OpenCL tool" ON)
