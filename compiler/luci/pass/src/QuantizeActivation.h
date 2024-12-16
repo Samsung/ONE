@@ -98,6 +98,7 @@ private:
   void visit(luci::CircleAbs *node);
   void visit(luci::CircleArgMax *node);
   void visit(luci::CircleArgMin *node);
+  void visit(luci::CircleBroadcastTo *node);
   void visit(luci::CircleBatchToSpaceND *node);
   void visit(luci::CircleDepthToSpace *node);
   void visit(luci::CircleElu *node);
