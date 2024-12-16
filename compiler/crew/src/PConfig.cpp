@@ -16,7 +16,6 @@
 
 #include "crew/PConfig.h"
 #include "crew/PConfigIni.h"
-
 #include "crew/PConfigJson.h"
 
 #include <utility>
