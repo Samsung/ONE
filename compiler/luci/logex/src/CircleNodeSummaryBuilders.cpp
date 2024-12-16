@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "CircleNodeSummaryBuilders.h"
+#include "luci/CircleNodeSummaryBuilders.h"
 
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleNodes.h>
