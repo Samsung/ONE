@@ -39,12 +39,12 @@ public:
   void load();
 
 private:
-  IMemoryManager *_memory_manager;
   const luci::Module *_module;
   RuntimeModule *_runtime_module;
   RuntimeToIR &_runtime_to_ir;
   std::unordered_map<const loco::Node *, Tensor *> &_node_to_tensor;
   std::unordered_map<const loco::Graph *, RuntimeGraph *> _graph_to_runtime_graph;
+  IMemoryManager *_memory_manager;
 };
 
 } // namespace luci_interpreter
