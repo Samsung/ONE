@@ -27,7 +27,6 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE tflite-gpu-delegate)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)
-target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT_BACKEND_GPU_CL} PROPERTIES OUTPUT_NAME backend_gpu_cl)
 
