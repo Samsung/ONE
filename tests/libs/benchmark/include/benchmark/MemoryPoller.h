@@ -70,8 +70,8 @@ private:
   std::mutex _mutex_started;
   std::condition_variable _cond_var_started;
 
-  bool _term;
   bool _run;
+  bool _term;
   bool _gpu_poll;
   std::string _process_name;
 };
