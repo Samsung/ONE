@@ -5,29 +5,32 @@ include(CMakeDependentOption)
 # note: this should be placed before default setting for option setting priority
 #       (platform specific setting have higher priority)
 #
-include("cmake/options/options_${TARGET_PLATFORM}.cmake")
+include("cmake/options/options_${TARGET_PLATFORM}.cmake" OPTIONAL)
 
 #
 # Default build configuration for project
 #
 option(ENABLE_STRICT_BUILD "Treat warning as error" ON)
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
-option(BUILD_EXT_MULTITHREAD "Build external build using multi thread" ON)
-option(BUILD_ONERT "Build onert" ON)
+
+#
+# Default build configuration for runtime
+#
+option(BUILD_TRIX_LOADER "Build trix loader" ON)
+option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
+
+#
+# Default build configuration for tests
+#
 option(BUILD_RUNTIME_NNAPI_TEST "Build Runtime NN API Generated Test" ON)
 option(BUILD_RUNTIME_NNFW_API_TEST "Build Runtime NNFW API Tests" ON)
-option(BUILD_TFLITE_RUN "Build tflite-run" ON)
-option(BUILD_TFLITE_VANILLA_RUN "Build tflite-vanilla-run" OFF)
-option(BUILD_ONERT_RUN "Build onert_run" ON)
-option(BUILD_ONERT_TRAIN "Build onert_train" ON)
-option(BUILD_TFLITE_LOADER "Build TensorFlow Lite loader" ON)
-option(BUILD_CIRCLE_LOADER "Build circle loader" ON)
-option(BUILD_TRIX_LOADER "Build trix loader" ON)
-option(BUILD_TFLITE_COMPARATOR_TEST_TOOL "Build tflite loader testing tool" ON)
+option(BUILD_TFLITE_RUN "Build tflite_run test driver" ON)
+option(BUILD_ONERT_RUN "Build onert_run test driver" ON)
+option(BUILD_ONERT_TRAIN "Build onert_train test driver" ON)
+option(BUILD_TFLITE_COMPARATOR_TEST_TOOL "Build testing tool to compare runtime result with TFLite" ON)
 option(BUILD_WITH_HDF5 "Build test tool with HDF5 library" ON)
 option(GENERATE_RUNTIME_NNAPI_TESTS "Generate NNAPI operation gtest" ON)
-option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
-option(INSTALL_TEST_SCRIPTS "Install test scripts" ON)
+
 #
 # Default build configuration for contrib
 #
@@ -45,12 +48,13 @@ option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the do
 option(BUILD_NPUD "Build NPU daemon" OFF)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 option(BUILD_LOGGING "Build logging runtime" OFF)
+
 #
 # Default build configuration for tools
 #
 option(BUILD_KBENCHMARK "Build kernel benchmark tool" OFF)
 option(BUILD_OPENCL_TOOL "Build OpenCL tool" OFF)
-option(BUILD_TFLITE_ACCURACY "Build tflite accuracy tool" OFF)
+
 #
 # Default external libraries source download and build configuration
 #
@@ -61,7 +65,7 @@ option(DOWNLOAD_FARMHASH "Download farmhash source" ON)
 option(DOWNLOAD_GEMMLOWP "Download GEMM low precesion library source" ON)
 option(DOWNLOAD_NEON2SSE "Download NEON2SSE library source" ON)
 option(DOWNLOAD_FLATBUFFERS "Download FlatBuffers source" ON)
-option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" ON)
+option(DOWNLOAD_ARMCOMPUTE "Download ARM Compute source" OFF)
 option(DOWNLOAD_NONIUS "Download nonius source" ON)
 option(DOWNLOAD_RUY "Download ruy source" ON)
 option(DOWNLOAD_CPUINFO "Download cpuinfo source" ON)
@@ -69,7 +73,7 @@ option(DOWNLOAD_OOURAFFT "Download Ooura FFT source" ON)
 option(DOWNLOAD_MLDTYPES "Download ml_dtypes source" ON)
 option(DOWNLOAD_GTEST "Download Google Test source and build Google Test" ON)
 option(BUILD_TENSORFLOW_LITE "Build TensorFlow Lite from the downloaded source" ON)
-option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" ON)
+option(BUILD_ARMCOMPUTE "Build ARM Compute from the downloaded source" OFF)
 option(DEBUG_ARMCOMPUTE "Build ARM Compute as debug type" OFF)
 option(BUILD_RUY "Build ruy library from the downloaded source" ON)
 option(BUILD_CPUINFO "Build cpuinfo library from the downloaded source" ON)
@@ -91,4 +95,4 @@ option(HDF5_USE_STATIC_LIBRARIES "Determine whether or not static linking for HD
 #
 ## Default sample build configuration
 #
-option(BUILD_MINIMAL_SAMPLE "Build minimal app" OFF)
+option(BUILD_MINIMAL_SAMPLE "Build minimal app" ON)

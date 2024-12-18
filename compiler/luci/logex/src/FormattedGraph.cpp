@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "CircleNodeSummaryBuilder.h"
+#include "luci/CircleNodeSummaryBuilder.h"
 #include "luci/FormattedGraph.h"
 
 #include <luci/IR/CircleDialect.h>

@@ -77,7 +77,8 @@ static void resolveUnknownDimension(const Shape &input_shape, Shape *output_shap
     output_shape->dim(unknown_dim_index) = num_input_elements / num_output_elements;
     num_output_elements *= output_shape->dim(unknown_dim_index);
   }
-  assert(num_output_elements == num_input_elements);
+
+  LUCI_INTERPRETER_CHECK(num_output_elements == num_input_elements);
 }
 
 Reshape::Reshape(const Tensor *input, const Tensor *shape, Tensor *output)

@@ -2,11 +2,6 @@ if (NOT BUILD_RUNTIME_NNFW_API_TEST)
   return()
 endif(NOT BUILD_RUNTIME_NNFW_API_TEST)
 
-if (NOT BUILD_ONERT)
-  message(STATUS "Skip build NNFW API test: no runtime build")
-  return()
-endif(NOT BUILD_ONERT)
-
 nnfw_find_package(GTest)
 
 set(RUNTIME_NNFW_API_TEST nnfw_api_gtest)
@@ -65,3 +60,7 @@ install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}
 # Install nnpackage test model (mobilenet)
 set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/contrib/TFLiteSharp/TFLiteTestApp/res/)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/mobilenet_v1_1.0_224)
+
+# Install nnpackage test model (conv2d)
+set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/tests/nnfw_api/res/autocompilation/)
+install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/conv2d)

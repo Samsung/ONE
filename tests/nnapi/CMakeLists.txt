@@ -2,11 +2,6 @@ if (NOT BUILD_RUNTIME_NNAPI_TEST)
   return()
 endif(NOT BUILD_RUNTIME_NNAPI_TEST)
 
-if (NOT BUILD_ONERT)
-  message(STATUS "Skip build NNAPI test: no runtime build")
-  return()
-endif(NOT BUILD_ONERT)
-
 nnfw_find_package(GTest)
 
 set(GENERATED_CPPS "${CMAKE_CURRENT_SOURCE_DIR}/src/generated/all_generated_V1_2_cts_tests.cpp"

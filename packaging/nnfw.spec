@@ -87,12 +87,6 @@ Summary: NNFW On-Device Compilation Package
 NNFW package for on-device compilation
 %endif # odc_build
 
-%package minimal-app
-Summary: Minimal test binary for VD manual test
-
-%description minimal-app
-Minimal test binary for VD manual test
-
 %if %{test_build} == 1
 %package test
 Summary: NNFW Test
@@ -157,7 +151,7 @@ If you want to get coverage info, you should install runtime package which is bu
 %endif # coverage_build
 
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
-        -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
+        -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
         %{option_test} %{option_coverage} %{option_config} %{extra_option}
 
 %define strip_options %{nil}
@@ -235,7 +229,6 @@ install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
 install -m 644 build/out/lib/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
 install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
 install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
-install -m 755 build/out/bin/onert-minimal-app %{buildroot}%{_bindir}
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
 # For developer
@@ -323,13 +316,6 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %{_libdir}/pkgconfig/onert-plugin.pc
-%endif
-
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
-%files minimal-app
-%manifest %{name}.manifest
-%defattr(-,root,root,-)
-%{_bindir}/onert-minimal-app
 %endif
 
 %if %{test_build} == 1
