@@ -124,21 +124,35 @@ void add_mode_option(CircleNode *node)
   return;
 }
 
+// Fill dummy values to CircleNode for creating NodeSummary
+void fill_dummies_for_summary_creation(CircleNode *node)
+{
+  add_fused_actfn_option(node);
+  add_padding_option(node);
+  add_mode_option(node);
+}
+
 // Mock Symbol Table for CircleNodeSummaryBuilder
 class MockSymbolTable : public locop::SymbolTable
 {
   std::string lookup(const loco::Node *) const override { return ""; }
 };
 
-// Get input names of CircleNode and export as JSON format
-void get_input_names(CircleNode *node, crew::JsonExport &json_export)
+// Create NodeSummary using CircleNodeSummaryBuilder and MockSymbolTable
+locop::NodeSummary create_circle_node_summary(CircleNode *node)
 {
   locop::NodeSummary s;
   MockSymbolTable tbl;
   CircleNodeSummaryBuilder builder;
 
   builder.build(node, &tbl, s);
+  return s;
+}
 
+// Get input names of CircleNode and export as JSON format
+void get_input_names_from_summary(CircleNode *node, locop::NodeSummary &s,
+                                  crew::JsonExport &json_export)
+{
   std::vector<std::string> arg_names;
   for (int i = 0; i < node->arity(); i++)
   {
@@ -159,13 +173,12 @@ int main(void)
   crew::JsonExport json_export(ss);
   // "{"
   json_export.open_brace();
-#define CIRCLE_NODE(OP, CIRCLE_OP)              \
-  {                                             \
-    auto node = CircleNodeCreator<CIRCLE_OP>(); \
-    add_fused_actfn_option(&node);              \
-    add_padding_option(&node);                  \
-    add_mode_option(&node);                     \
-    get_input_names(&node, json_export);        \
+#define CIRCLE_NODE(OP, CIRCLE_OP)                             \
+  {                                                            \
+    auto node = CircleNodeCreator<CIRCLE_OP>();                \
+    fill_dummies_for_summary_creation(&node);                  \
+    auto summary = create_circle_node_summary(&node);          \
+    get_input_names_from_summary(&node, summary, json_export); \
   }
 #define CIRCLE_VNODE(_1, _2)
 #include <luci/IR/CircleNodes.lst>
