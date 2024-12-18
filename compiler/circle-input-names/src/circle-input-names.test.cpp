@@ -120,3 +120,24 @@ TEST_F(circle_input_names_test, valid_names_conv2d)
   ASSERT_EQ(names[1], "filter");
   ASSERT_EQ(names[2], "bias");
 }
+
+TEST_F(circle_input_names_test, not_exist_opname_NEG)
+{
+  // names of "NOT_EXIST_OP" should be empty
+  auto names = get_input_names_of("NOT_EXIST_OP");
+  ASSERT_EQ(names.size(), 0);
+}
+
+TEST_F(circle_input_names_test, lower_case_opname_NEG)
+{
+  // Upper case opname should be used
+  auto names = get_input_names_of("conv_2d");
+  ASSERT_EQ(names.size(), 0);
+}
+
+TEST_F(circle_input_names_test, out_of_bounds_NEG)
+{
+  auto names = get_input_names_of("CONV_2D");
+  // names[3] should throw exception since it's out of bounds
+  EXPECT_ANY_THROW(names.at(3));
+}
