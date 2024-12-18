@@ -321,7 +321,7 @@ NNFW_STATUS nnfw_session::load_model_from_path(const char *path)
   try
   {
     std::filesystem::path filename{path};
-    if (filename.has_extension())
+    if (!std::filesystem::is_directory(filename) && filename.has_extension())
     {
       std::string model_type = filename.extension().string().substr(1); // + 1 to exclude dot
       return loadModelFile(filename, model_type);
