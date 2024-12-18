@@ -18,6 +18,7 @@
 from typing import Dict, Optional
 from model_explorer import Adapter, AdapterMetadata, ModelExplorerGraphs, graph_builder
 from model_explorer_circle import circle_schema_generated as circle_schema
+from model_explorer_circle import circle_metadata
 
 
 class CircleAdapter(Adapter):
@@ -43,6 +44,7 @@ class CircleAdapter(Adapter):
         # Number of elements to show in tensor values (default: 16)
         self.const_element_count_limit = 16
         self.graph = None
+        self.input_args = circle_metadata.input_args_dict
 
     def load_model(self, model_path: str) -> None:
         """Load the model from the given path."""
@@ -77,6 +79,13 @@ class CircleAdapter(Adapter):
                 graph_builder.IncomingEdge(sourceNodeId=sid,
                                            sourceNodeOutputId=soid,
                                            targetNodeInputId=f'{input_id}'))
+        # Add input metadata of the node if it exists
+        if self.input_args.get(me_node.label) is not None:
+            arg_name = self.input_args[me_node.label][input_id]
+            me_node.inputsMetadata.append(
+                graph_builder.MetadataItem(
+                    id=f'{input_id}',
+                    attrs=[graph_builder.KeyValue(key='__tensor_tag', value=arg_name)]))
 
     def add_tensor_value_attribute(self, me_node: graph_builder.GraphNode,
                                    tensor_id: int) -> None:
