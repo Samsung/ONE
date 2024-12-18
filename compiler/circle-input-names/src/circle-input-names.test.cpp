@@ -25,10 +25,15 @@
 class circle_input_names_test : public ::testing::Test
 {
 protected:
+  // Override Test::SetUp method to run before each test starts
   void SetUp(void) override;
+
+protected:
+  // Helper functions for tests
   std::vector<std::string> get_input_names_of(std::string op);
 
 protected:
+  // Dictionary string containing all input names of each op in JSON format
   std::string _input_names_dict_str;
 };
 
