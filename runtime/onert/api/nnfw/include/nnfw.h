@@ -213,16 +213,16 @@ NNFW_STATUS nnfw_create_session(nnfw_session **session);
 NNFW_STATUS nnfw_close_session(nnfw_session *session);
 
 /**
- * @brief     Load model from nnpackage file or directory
+ * @brief     Load model from model file or nnpackage directory
  *
- * The length of \p package_file_path must not exceed 1024 bytes including zero at the end.
+ * The length of \p file_path must not exceed 1024 bytes including zero at the end.
  *
- * @param[in] session           nnfw_session loading the given nnpackage file/dir
- * @param[in] package_file_path Path to the nnpackage file or unzipped directory to be loaded
+ * @param[in] session   nnfw_session loading the given file/dir
+ * @param[in] file_path Path to the model file or nnpackage directory to be loaded
  *
  * @return    @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *package_file_path);
+NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *file_path);
 
 /**
  * @brief     Apply i-th input's tensor info to resize input tensor

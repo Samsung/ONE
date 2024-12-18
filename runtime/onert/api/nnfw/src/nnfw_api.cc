@@ -78,15 +78,15 @@ NNFW_STATUS nnfw_close_session(nnfw_session *session)
 /*
  * Load model from nnpackage file or directory
  *
- * @param session nnfw_session loading the given nnpackage file/dir
- * @param package_file_path path to the nnpackage file or unzipped directory to be loaded
+ * @param session nnfw_session loading the given file/dir
+ * @param file_path path to the model file or nnpackage directory to be loaded
  *
  * @return NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *pacakge_file_path)
+NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *file_path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_nnpackage(pacakge_file_path);
+  return session->load_model_from_path(file_path);
 }
 
 /*
