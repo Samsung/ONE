@@ -37,15 +37,13 @@ void circle_input_names_test::SetUp(void)
   std::string cmd = std::getenv("CIRCLE_INPUT_NAMES_PATH");
   if (cmd.empty())
   {
-    std::runtime_error("CIRCLE_INPUT_NAMES_PATH is not found");
-    return;
+    throw std::runtime_error("CIRCLE_INPUT_NAMES_PATH is not found");
   }
 
   FILE *fp = popen(cmd.c_str(), "r");
   if (!fp)
   {
-    std::runtime_error("popen() failed");
-    return;
+    throw std::runtime_error("popen() failed");
   }
 
   char buff[1024];
