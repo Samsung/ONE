@@ -301,64 +301,42 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::load_model_from_modelfile(const char *model_file_path)
+NNFW_STATUS nnfw_session::load_model_from_path(const char *path)
 {
   if (!isStateInitialized())
     return NNFW_STATUS_INVALID_STATE;
 
-  if (!model_file_path)
+  if (!path)
   {
-    std::cerr << "Model file path is null." << std::endl;
+    std::cerr << "Path is null." << std::endl;
     return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!null_terminating(path, MAX_PATH_LENGTH))
+  {
+    std::cerr << "Path is too long" << std::endl;
+    return NNFW_STATUS_ERROR;
   }
 
   try
   {
-    std::filesystem::path filename{model_file_path};
-    if (!filename.has_extension())
+    std::filesystem::path filename{path};
+    if (!std::filesystem::is_directory(filename) && filename.has_extension())
     {
-      std::cerr << "Invalid model file path. Please use file with extension." << std::endl;
-      return NNFW_STATUS_ERROR;
+      std::string model_type = filename.extension().string().substr(1); // + 1 to exclude dot
+      return loadModelFile(filename, model_type);
     }
 
-    std::string model_type = filename.extension().string().substr(1); // + 1 to exclude dot
-    return loadModelFile(filename, model_type);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error during model loading : " << e.what() << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-}
+    const auto &package_dir = filename;
 
-NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
-{
-  if (!isStateInitialized())
-    return NNFW_STATUS_INVALID_STATE;
-
-  if (!package_dir)
-  {
-    std::cerr << "package_dir is null." << std::endl;
-    return NNFW_STATUS_UNEXPECTED_NULL;
-  }
-
-  if (!null_terminating(package_dir, MAX_PATH_LENGTH))
-  {
-    std::cerr << "nnpackage path is too long" << std::endl;
-    return NNFW_STATUS_ERROR;
-  }
-
-  try
-  {
     // TODO : add support for zipped package file load
-    const std::filesystem::path package_path(package_dir);
-    if (!std::filesystem::is_directory(package_path))
+    if (!std::filesystem::is_directory(package_dir))
     {
-      std::cerr << "invalid nnpackage directory: " << package_path << std::endl;
+      std::cerr << "invalid path: " << package_dir << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
-    const auto manifest_file_name = package_path / "metadata/MANIFEST";
+    const auto manifest_file_name = package_dir / "metadata/MANIFEST";
     std::ifstream mfs(manifest_file_name);
 
     // extract the filename of the first(index 0) model
@@ -371,7 +349,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
     if (!configs.empty() && !configs[0].empty())
     {
-      const auto filepath = package_path / "metadata" / configs[0].asString();
+      const auto filepath = package_dir / "metadata" / configs[0].asString();
 
       onert::util::CfgKeyValues keyValues;
       if (loadConfigure(filepath.string(), keyValues))
@@ -397,7 +375,7 @@ NNFW_STATUS nnfw_session::load_model_from_nnpackage(const char *package_dir)
 
     for (uint16_t i = 0; i < num_models; ++i)
     {
-      const auto model_file_path = package_path / models[i].asString();
+      const auto model_file_path = package_dir / models[i].asString();
       const auto model_type = model_types[i].asString();
       auto model = loadModel(model_file_path.string(), model_type);
       if (model == nullptr)
