@@ -11,6 +11,8 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ### CMAKE_BUILD_TYPE_LC: Build type lower case
 string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_LC)
+# string(TOLOWER ${CMAKE_BUILD_TYPE} "debug")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." CACHE
   INTERNAL "Where to find nnas top-level source directory"
