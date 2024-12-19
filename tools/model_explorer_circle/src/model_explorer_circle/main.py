@@ -56,6 +56,8 @@ class CircleAdapter(Adapter):
     def get_opcode_name(self, opcode_index: int) -> str:
         """Convert the opcode to its name."""
         opcode = self.model.operatorCodes[opcode_index].deprecatedBuiltinCode
+        if opcode == circle_schema.BuiltinOperator.CUSTOM:
+            return self.model.operatorCodes[opcode_index].customCode.decode('utf-8')
         if opcode == circle_schema.BuiltinOperator.PLACEHOLDER_FOR_GREATER_OP_CODES:
             opcode = self.model.operatorCodes[opcode_index].builtinCode
             assert (opcode >= 127)
