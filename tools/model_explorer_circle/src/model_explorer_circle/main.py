@@ -79,6 +79,8 @@ class CircleAdapter(Adapter):
                 graph_builder.IncomingEdge(sourceNodeId=sid,
                                            sourceNodeOutputId=soid,
                                            targetNodeInputId=f'{input_id}'))
+
+        metadata = graph_builder.MetadataItem(id=f'{input_id}')
         # Add input metadata of the node if it exists
         if self.input_args.get(me_node.label) is not None:
             arity = len(self.input_args[me_node.label])
@@ -91,11 +93,27 @@ class CircleAdapter(Adapter):
                 if input_id == arity:
                     me_node.inputsMetadata[-1].attrs[0].value = arg_name + '[0]'
                 arg_name += f'[{input_id - arity + 1}]'
+            metadata.attrs.append(
+                graph_builder.KeyValue(key='__tensor_tag', value=arg_name))
 
-            me_node.inputsMetadata.append(
-                graph_builder.MetadataItem(
-                    id=f'{input_id}',
-                    attrs=[graph_builder.KeyValue(key='__tensor_tag', value=arg_name)]))
+        # Quantization parameter (if exists)
+        tensor = self.model.subgraphs[0].tensors[tensor_id]
+        if tensor.quantization and tensor.quantization.scale is not None:
+            quantparam = '['
+            for i, scale in enumerate(tensor.quantization.scale):
+                if i != 0:
+                    quantparam += ', '
+                # Show the most significant 6 digits of the scale
+                scale = format(scale, '.6g')
+                zp = tensor.quantization.zeroPoint[i]
+                # If the type is larger than INT8, exponential notation will be used
+                quantparam += f'{scale} * (q + {zp})'
+            quantparam += ']'
+            metadata.attrs.append(
+                graph_builder.KeyValue(key='quantization', value=quantparam))
+
+        if len(metadata.attrs) > 0:
+            me_node.inputsMetadata.append(metadata)
 
     def add_tensor_value_attribute(self, me_node: graph_builder.GraphNode,
                                    tensor_id: int) -> None:
@@ -169,21 +187,6 @@ class CircleAdapter(Adapter):
                 graph_builder.KeyValue(key='tensor_name', value=tensor_name)
             ],
         )
-
-        # Quantization parameter (if exists)
-        if tensor.quantization and tensor.quantization.scale is not None:
-            quantparam = '['
-            for i, scale in enumerate(tensor.quantization.scale):
-                if i != 0:
-                    quantparam += ', '
-                # Show the most significant 6 digits of the scale
-                scale = format(scale, '.6g')
-                zp = tensor.quantization.zeroPoint[i]
-                # If the type is larger than INT8, exponential notation will be used
-                quantparam += f'{scale} * (q + {zp})'
-            quantparam += ']'
-            metadata.attrs.append(
-                graph_builder.KeyValue(key='quantization', value=quantparam))
 
         me_node.outputsMetadata.append(metadata)
 
