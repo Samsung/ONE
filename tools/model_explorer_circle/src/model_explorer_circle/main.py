@@ -81,7 +81,17 @@ class CircleAdapter(Adapter):
                                            targetNodeInputId=f'{input_id}'))
         # Add input metadata of the node if it exists
         if self.input_args.get(me_node.label) is not None:
-            arg_name = self.input_args[me_node.label][input_id]
+            arity = len(self.input_args[me_node.label])
+            if input_id < arity:
+                arg_name = self.input_args[me_node.label][input_id]
+            else:
+                # For variadic inputs, append index to the last argument name
+                arg_name = self.input_args[me_node.label][arity - 1]
+                # Update 1st argument name of variadic inputs when 2nd argument name is added
+                if input_id == arity:
+                    me_node.inputsMetadata[-1].attrs[0].value = arg_name + '[0]'
+                arg_name += f'[{input_id - arity + 1}]'
+
             me_node.inputsMetadata.append(
                 graph_builder.MetadataItem(
                     id=f'{input_id}',
