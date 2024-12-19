@@ -74,10 +74,10 @@ size_t calculate_qauntized_value(CircleConst *node, uint32_t *indices, loco::Ten
   int idx_channel = indices[index_channel_dim];
 
   assert(scaling_factor[idx_channel] > 0);
+
   const float scaling_factor_inv = 1.0 / scaling_factor[idx_channel];
   auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
-  auto data_clipped = data < min[idx_channel] ? min[idx_channel] : data;
-  data_clipped = data_clipped > max[idx_channel] ? max[idx_channel] : data_clipped;
+  auto data_clipped = std::min(std::max(data, max[idx_channel]), min[idx_channel]);
 
   return static_cast<int32_t>(std::round((data_clipped - min[idx_channel]) * scaling_factor_inv));
 }
@@ -103,8 +103,8 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     if (has_min_max_value[idx_channel])
     {
-      min[idx_channel] = data < min[idx_channel] ? data : min[idx_channel];
-      max[idx_channel] = data > max[idx_channel] ? data : max[idx_channel];
+      min[idx_channel] = std::min(data, min[idx_channel]);
+      max[idx_channel] = std::max(data, max[idx_channel]);
     }
     else
     {
@@ -126,6 +126,7 @@ void compute_asym_scale_zp(float min, float max, loco::DataType data_type, float
   LOGGER(l);
 
   assert(min <= max);
+
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = data_type == loco::DataType::U4 ? 15 : 255;
 
@@ -193,8 +194,6 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   assert(node->dtype() == loco::DataType::FLOAT32);
   assert(output_type == loco::DataType::U8 || output_type == loco::DataType::U4);
 
-  IterFunc quantize;
-
   const int32_t kMinScale = 0;
   const int32_t kMaxScale = output_type == loco::DataType::U4 ? 15 : 255;
 
@@ -207,7 +206,7 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
                           nudged_max[i]);
   }
 
-  quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int index_channel_dim) {
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int index_channel_dim) {
     quantized_values[cal_offset(dimension, indices)] = calculate_qauntized_value(
       node, indices, dimension, index_channel_dim, scaling_factor, nudged_max, nudged_min);
   };
