@@ -60,7 +60,7 @@ TEST(TestOdcAutoCompilation, AutoCompilation_test)
   nnfw_session *session = nullptr;
   nnfw_create_session(&session);
 
-  nnfw_load_model_from_modelfile(session, (model_path + ".circle").c_str());
+  nnfw_load_model_from_file(session, (model_path + ".circle").c_str());
   nnfw_set_available_backends(session, "cpu");
   nnfw_prepare(session);
 
@@ -171,7 +171,7 @@ TEST(TestOdcAutoCompilation, neg_autoCompilation_no_export_path)
   nnfw_session *session = nullptr;
   nnfw_create_session(&session);
 
-  nnfw_load_model_from_modelfile(session, (model_path + ".circle").c_str());
+  nnfw_load_model_from_file(session, (model_path + ".circle").c_str());
   nnfw_set_available_backends(session, "cpu");
   nnfw_prepare(session);
 

@@ -67,8 +67,7 @@ int main(const int argc, char **argv)
     // ModelLoad
     measure.run(PhaseType::MODEL_LOAD, [&]() {
       if (args.useSingleModel())
-        NNPR_ENSURE_STATUS(
-          nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
+        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getModelFilename().c_str()));
       else
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });

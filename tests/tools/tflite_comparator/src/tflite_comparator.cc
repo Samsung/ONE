@@ -236,7 +236,7 @@ int main(const int argc, char **argv)
     exit(-1);
   }
 
-  NNFW_ASSERT_FAIL(nnfw_load_model_from_modelfile(onert_session, tflite_file.c_str()),
+  NNFW_ASSERT_FAIL(nnfw_load_model_from_file(onert_session, tflite_file.c_str()),
                    "[ ERROR ] Failure during model load");
 
   uint32_t num_inputs;
