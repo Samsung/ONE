@@ -14,6 +14,7 @@
  */
 
 #include "luci/Pass/QuantizeOnnxFakeQuantModelPass.h"
+#include "luci/Pass/PropagateQParamBackwardPass.h"
 #include "QuantizeOnnxQDQPass.h"
 #include "QuantizeOnnxDequantizeLinearPass.h"
 #include "QuantizeWithPredecessorPass.h"
@@ -90,6 +91,12 @@ bool QuantizeOnnxFakeQuantModelPass::run(loco::Graph *g)
   {
     QuantizeWithPredecessorPass pass;
     pass.run(g);
+  }
+
+  // Backward propagation of activation qparam
+  {
+    PropagateQParamBackwardPass pqbp(_ctx->default_activation_dtype);
+    pqbp.run(g);
   }
 
   // Update qparam of output of special Ops
