@@ -15,6 +15,7 @@
  */
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/IR/CircleQuantParam.h>
 #include <luci/Profile/CircleNodeOrigin.h>
 #include <luci/Pass/ReplaceNonConstFCWithBatchMatMulPass.h>
 
@@ -95,6 +96,8 @@ luci::CircleReshape *create_reshape(luci::CircleFullyConnected *node)
 
   reshape->shape(shape_const);
 
+  luci::copy_quantparam(node, reshape);
+
   return reshape;
 }
 
@@ -165,9 +168,6 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
     x = loco::must_cast<luci::CircleNode *>(fc->input());
   }
 
-  if (x->dtype() != loco::DataType::FLOAT32 || y->dtype() != loco::DataType::FLOAT32)
-    return false;
-
   auto bc = dynamic_cast<luci::CircleConst *>(fc->bias());
   // NOTE bias can be empty as CircleOutputExclude type
   // NOTE we can only handle bias as FLOAT32 type as of now
@@ -184,6 +184,8 @@ bool replace_fc_with_matmul(luci::CircleFullyConnected *fc)
   matmul->adj_y(adj_y);
   matmul->name(name);
   matmul->dtype(fc->dtype());
+
+  luci::copy_quantparam(fc, matmul);
 
   luci::add_origin(matmul, luci::get_origin(fc));
 
