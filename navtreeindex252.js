@@ -1,9 +1,5 @@
 var NAVTREEINDEX252 =
 {
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_max_pool2_d_8cpp.html":[41,0,3,5,1,2,0,41],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_max_pool2_d_8cpp_source.html":[41,0,3,5,1,2,0,41],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_maximum_8cpp.html":[41,0,3,5,1,2,0,40],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_maximum_8cpp_source.html":[41,0,3,5,1,2,0,40],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_minimum_8cpp.html":[41,0,3,5,1,2,0,42],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_minimum_8cpp_source.html":[41,0,3,5,1,2,0,42],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_mul_8cpp.html":[41,0,3,5,1,2,0,43],
@@ -96,8 +92,8 @@ var NAVTREEINDEX252 =
 "onert-micro_2onert-micro_2src_2import_2kernels_2_dequantize_8cpp_source.html":[41,0,3,5,1,3,1,13],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_div_8cpp.html":[41,0,3,5,1,3,1,14],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_div_8cpp_source.html":[41,0,3,5,1,3,1,14],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_elu_8cpp.html":[41,0,3,5,1,3,1,15],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_elu_8cpp_source.html":[41,0,3,5,1,3,1,15],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_e_l_u_8cpp.html":[41,0,3,5,1,3,1,15],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_e_l_u_8cpp_source.html":[41,0,3,5,1,3,1,15],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_equal_8cpp.html":[41,0,3,5,1,3,1,16],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_equal_8cpp_source.html":[41,0,3,5,1,3,1,16],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_exp_8cpp.html":[41,0,3,5,1,3,1,17],
@@ -249,5 +245,9 @@ var NAVTREEINDEX252 =
 "onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ad189c6cda8b7416368ac4c28cd714fc7":[41,0,3,5,0,12,11,6],
 "onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693":[41,0,3,5,0,12,11,5],
 "onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea":[41,0,3,5,0,12,11,1],
-"onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453":[41,0,3,5,0,12,11,4]
+"onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453":[41,0,3,5,0,12,11,4],
+"onert-micro_8h.html#a1918cc4210b397466f99bd7bfd5c4fce":[41,0,3,5,0,12,16],
+"onert-micro_8h.html#a1cb00110d13d3a316db8e01bc7974243":[41,0,3,5,0,12,22],
+"onert-micro_8h.html#a24e5273e85e46f0e1f3f15ed839451ad":[41,0,3,5,0,12,20],
+"onert-micro_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1":[41,0,3,5,0,12,13]
 };

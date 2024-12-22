@@ -1,9 +1,5 @@
 var NAVTREEINDEX247 =
 {
-"onert-micro_2include_2test__models_2greater__equal_2_float_greater_equal_kernel_8h.html#a4dbcc3b94afbcc72a0a80b3a4778c1a4":[41,0,3,5,0,5,27,0,2],
-"onert-micro_2include_2test__models_2greater__equal_2_float_greater_equal_kernel_8h.html#aa22a52eeddf1121c26f9615979940907":[41,0,3,5,0,5,27,0,1],
-"onert-micro_2include_2test__models_2greater__equal_2_float_greater_equal_kernel_8h.html#acf5de3ac6bccb8ca885cfdfab6fc24d2":[41,0,3,5,0,5,27,0,3],
-"onert-micro_2include_2test__models_2greater__equal_2_float_greater_equal_kernel_8h_source.html":[41,0,3,5,0,5,27,0],
 "onert-micro_2include_2test__models_2greater__equal_2_test_data_greater_equal_base_8h.html":[41,0,3,5,0,5,27,2],
 "onert-micro_2include_2test__models_2greater__equal_2_test_data_greater_equal_base_8h_source.html":[41,0,3,5,0,5,27,2],
 "onert-micro_2include_2test__models_2l2__normalization_2_float_l2_normalize_kernel_8h.html":[41,0,3,5,0,5,29,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX247 =
 "onert-micro_2include_2test__models_2pad_2_test_data_pad_base_8h_source.html":[41,0,3,5,0,5,44,2],
 "onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h.html":[41,0,3,5,0,5,45,0],
 "onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h.html#a2360d469beaa51bbf708e2f007739a9b":[41,0,3,5,0,5,45,0,1],
-"onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h.html#a72fa4a9bc3c5804e6ca4186b67f683af":[41,0,3,5,0,5,45,0,2]
+"onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h.html#a72fa4a9bc3c5804e6ca4186b67f683af":[41,0,3,5,0,5,45,0,2],
+"onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h.html#ab6cb4234822e2c7472c118bc53d26832":[41,0,3,5,0,5,45,0,3],
+"onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h_source.html":[41,0,3,5,0,5,45,0],
+"onert-micro_2include_2test__models_2quantize_2_neg_quantize_kernel_8h.html":[41,0,3,5,0,5,45,1],
+"onert-micro_2include_2test__models_2quantize_2_neg_quantize_kernel_8h.html#a6dead9e795faa1551f5dc7e34ef59a5e":[41,0,3,5,0,5,45,1,1]
 };

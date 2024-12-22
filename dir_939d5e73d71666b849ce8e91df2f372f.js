@@ -75,6 +75,7 @@ var dir_939d5e73d71666b849ce8e91df2f372f =
     [ "QuantizeBias.cpp", "_quantize_bias_8cpp.html", null ],
     [ "QuantizeBias.h", "_quantize_bias_8h.html", "_quantize_bias_8h" ],
     [ "QuantizeDequantizeWeightsPass.cpp", "_quantize_dequantize_weights_pass_8cpp.html", null ],
+    [ "QuantizeDequantizeWeightsWithGPTQPass.cpp", "_quantize_dequantize_weights_with_g_p_t_q_pass_8cpp.html", null ],
     [ "QuantizedModelVerifier.cpp", "_quantized_model_verifier_8cpp.html", null ],
     [ "QuantizedModelVerifier.h", "_quantized_model_verifier_8h.html", "_quantized_model_verifier_8h" ],
     [ "QuantizeOnnxDequantizeLinearPass.cpp", "_quantize_onnx_dequantize_linear_pass_8cpp.html", null ],

@@ -609,7 +609,6 @@ var namespaces_dup =
     [ "pepper", "namespacepepper.html", "namespacepepper" ],
     [ "plier", "namespaceplier.html", "namespaceplier" ],
     [ "pp", "namespacepp.html", "namespacepp" ],
-    [ "profiling", "namespaceprofiling.html", "namespaceprofiling" ],
     [ "prunner", "namespaceprunner.html", "namespaceprunner" ],
     [ "q_implant", "namespaceq__implant.html", "namespaceq__implant" ],
     [ "q_implant_qparam_test", "namespaceq__implant__qparam__test.html", [

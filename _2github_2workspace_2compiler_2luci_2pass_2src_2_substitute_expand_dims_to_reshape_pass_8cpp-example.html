@@ -136,6 +136,25 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="line"> </div>
 <div class="line">int32_t value_from_circle_const(<span class="keyword">const</span> <a id="_a1" name="_a1"></a><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node, uint32_t idx)</div>
 <div class="line">{</div>
+<div class="line">  <span class="comment">// Scalar case: rank 0, only one element in CircleConst</span></div>
+<div class="line">  <span class="keywordflow">if</span> (node-&gt;rank() == 0)</div>
+<div class="line">  {</div>
+<div class="line">    <span class="keywordflow">if</span> (node-&gt;dtype() == loco::DataType::S64)</div>
+<div class="line">    {</div>
+<div class="line">      assert(node-&gt;size&lt;loco::DataType::S64&gt;() == 1); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line">      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(node-&gt;at&lt;loco::DataType::S64&gt;(0));</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node-&gt;dtype() == loco::DataType::S32)</div>
+<div class="line">    {</div>
+<div class="line">      assert(node-&gt;size&lt;loco::DataType::S32&gt;() == 1); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line">      <span class="keywordflow">return</span> node-&gt;at&lt;loco::DataType::S32&gt;(0);</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">else</span></div>
+<div class="line">    {</div>
+<div class="line">      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported dtype&quot;</span>);</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line"> </div>
 <div class="line">  assert(node-&gt;rank() == 1 &amp;&amp; node-&gt;dim(0).value() &gt; idx);</div>
 <div class="line">  assert(node-&gt;dtype() == loco::DataType::S64 || node-&gt;dtype() == loco::DataType::S32);</div>
 <div class="line"> </div>
@@ -243,7 +262,7 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
-<div class="ttc" id="astructluci_1_1_substitute_expand_dims_to_reshape_pass_html_a8e1f4c2b069b30261f8f5ad5695c998f"><div class="ttname"><a href="structluci_1_1_substitute_expand_dims_to_reshape_pass.html#a8e1f4c2b069b30261f8f5ad5695c998f">luci::SubstituteExpandDimsToReshapePass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdoc">Run the pass.</div><div class="ttdef"><b>Definition</b> <a href="_substitute_expand_dims_to_reshape_pass_8cpp_source.html#l00146">SubstituteExpandDimsToReshapePass.cpp:146</a></div></div>
+<div class="ttc" id="astructluci_1_1_substitute_expand_dims_to_reshape_pass_html_a8e1f4c2b069b30261f8f5ad5695c998f"><div class="ttname"><a href="structluci_1_1_substitute_expand_dims_to_reshape_pass.html#a8e1f4c2b069b30261f8f5ad5695c998f">luci::SubstituteExpandDimsToReshapePass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdoc">Run the pass.</div><div class="ttdef"><b>Definition</b> <a href="_substitute_expand_dims_to_reshape_pass_8cpp_source.html#l00165">SubstituteExpandDimsToReshapePass.cpp:165</a></div></div>
 </div><!-- fragment --> </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

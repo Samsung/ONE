@@ -10,7 +10,7 @@ var nnfw__api_8cc =
     [ "nnfw_input_size", "nnfw__api_8cc.html#a65cb6f05dc5fed06b627badbf858ff90", null ],
     [ "nnfw_input_tensorindex", "nnfw__api_8cc.html#a84b063e69ff8e50612f08a902215c894", null ],
     [ "nnfw_input_tensorinfo", "nnfw__api_8cc.html#a47e2fc9e970a568c2cd147022e885119", null ],
-    [ "nnfw_load_model_from_file", "nnfw__api_8cc.html#ac2041442b9e36f58a04e522531a5ce87", null ],
+    [ "nnfw_load_model_from_file", "nnfw__api_8cc.html#a0f2c3dd23744a9c0355e5f50bf3ac66b", null ],
     [ "nnfw_odc_delete_minmax_file", "nnfw__api_8cc.html#ace880228bdaffc7f35f0e8ad589274da", null ],
     [ "nnfw_output_size", "nnfw__api_8cc.html#a4a6d17fbd6b5a2cf323754b7e1659f45", null ],
     [ "nnfw_output_tensorindex", "nnfw__api_8cc.html#a5f67df99da7ea81a11625ca7cbc981de", null ],

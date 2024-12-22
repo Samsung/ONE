@@ -1,16 +1,5 @@
 var NAVTREEINDEX256 =
 {
-"runtime_2libs_2ndarray_2include_2ndarray_2_common_8h.html":[41,0,4,0,1,1,0,1],
-"runtime_2libs_2ndarray_2include_2ndarray_2_common_8h.html#a88dba3746e9fe5251acfc72c9b5290a8":[41,0,4,0,1,1,0,1,0],
-"runtime_2libs_2ndarray_2include_2ndarray_2_common_8h_source.html":[41,0,4,0,1,1,0,1],
-"runtime_2libs_2ndarray_2include_2ndarray_2_shape_8h.html":[41,0,4,0,1,1,0,3],
-"runtime_2libs_2ndarray_2include_2ndarray_2_shape_8h_source.html":[41,0,4,0,1,1,0,3],
-"runtime_2onert_2api_2python_2package_2____init_____8py.html":[41,0,4,1,0,1,1,0],
-"runtime_2onert_2api_2python_2package_2____init_____8py_source.html":[41,0,4,1,0,1,1,0],
-"runtime_2onert_2api_2python_2package_2infer_8py.html":[41,0,4,1,0,1,1,1],
-"runtime_2onert_2api_2python_2package_2infer_8py.html#a35070abb920860281fec8d77a41919ff":[41,0,4,1,0,1,1,1,2],
-"runtime_2onert_2api_2python_2package_2infer_8py.html#abc6bc9cf0864f5ead1bb5f0b424d1388":[41,0,4,1,0,1,1,1,1],
-"runtime_2onert_2api_2python_2package_2infer_8py_source.html":[41,0,4,1,0,1,1,1],
 "runtime_2onert_2backend_2acl__cl_2_backend_8h.html":[41,0,4,1,1,0,2],
 "runtime_2onert_2backend_2acl__cl_2_backend_8h_source.html":[41,0,4,1,1,0,2],
 "runtime_2onert_2backend_2acl__cl_2_config_8h.html":[41,0,4,1,1,0,6],
@@ -249,5 +238,16 @@ var NAVTREEINDEX256 =
 "runtime_2onert_2core_2include_2ir_2operation_2_reshape_8h.html":[41,0,4,1,2,0,4,0,47],
 "runtime_2onert_2core_2include_2ir_2operation_2_reshape_8h_source.html":[41,0,4,1,2,0,4,0,47],
 "runtime_2onert_2core_2include_2ir_2operation_2_resize_bilinear_8h.html":[41,0,4,1,2,0,4,0,48],
-"runtime_2onert_2core_2include_2ir_2operation_2_resize_bilinear_8h_source.html":[41,0,4,1,2,0,4,0,48]
+"runtime_2onert_2core_2include_2ir_2operation_2_resize_bilinear_8h_source.html":[41,0,4,1,2,0,4,0,48],
+"runtime_2onert_2core_2include_2ir_2operation_2_resize_nearest_neighbor_8h.html":[41,0,4,1,2,0,4,0,49],
+"runtime_2onert_2core_2include_2ir_2operation_2_resize_nearest_neighbor_8h_source.html":[41,0,4,1,2,0,4,0,49],
+"runtime_2onert_2core_2include_2ir_2operation_2_reverse_8h.html":[41,0,4,1,2,0,4,0,50],
+"runtime_2onert_2core_2include_2ir_2operation_2_reverse_8h_source.html":[41,0,4,1,2,0,4,0,50],
+"runtime_2onert_2core_2include_2ir_2operation_2_rms_norm_8h.html":[41,0,4,1,2,0,4,0,51],
+"runtime_2onert_2core_2include_2ir_2operation_2_rms_norm_8h_source.html":[41,0,4,1,2,0,4,0,51],
+"runtime_2onert_2core_2include_2ir_2operation_2_ro_p_e_8h.html":[41,0,4,1,2,0,4,0,53],
+"runtime_2onert_2core_2include_2ir_2operation_2_ro_p_e_8h_source.html":[41,0,4,1,2,0,4,0,53],
+"runtime_2onert_2core_2include_2ir_2operation_2_select_8h.html":[41,0,4,1,2,0,4,0,54],
+"runtime_2onert_2core_2include_2ir_2operation_2_select_8h_source.html":[41,0,4,1,2,0,4,0,54],
+"runtime_2onert_2core_2include_2ir_2operation_2_shape_8h.html":[41,0,4,1,2,0,4,0,55]
 };

@@ -37,7 +37,7 @@ var nnfw_8h =
     [ "nnfw_create_session", "nnfw_8h.html#a0ce7408d2db97feea17de8a7a84e5032", null ],
     [ "nnfw_input_size", "nnfw_8h.html#a65cb6f05dc5fed06b627badbf858ff90", null ],
     [ "nnfw_input_tensorinfo", "nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119", null ],
-    [ "nnfw_load_model_from_file", "nnfw_8h.html#a6c5b342754b564e4dbec4023206fd8ea", null ],
+    [ "nnfw_load_model_from_file", "nnfw_8h.html#a0f2c3dd23744a9c0355e5f50bf3ac66b", null ],
     [ "nnfw_output_size", "nnfw_8h.html#a4a6d17fbd6b5a2cf323754b7e1659f45", null ],
     [ "nnfw_output_tensorinfo", "nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61", null ],
     [ "nnfw_prepare", "nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24", null ],

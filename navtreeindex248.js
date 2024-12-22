@@ -1,9 +1,5 @@
 var NAVTREEINDEX248 =
 {
-"onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h.html#ab6cb4234822e2c7472c118bc53d26832":[41,0,3,5,0,5,45,0,3],
-"onert-micro_2include_2test__models_2quantize_2_float_quantize_kernel_8h_source.html":[41,0,3,5,0,5,45,0],
-"onert-micro_2include_2test__models_2quantize_2_neg_quantize_kernel_8h.html":[41,0,3,5,0,5,45,1],
-"onert-micro_2include_2test__models_2quantize_2_neg_quantize_kernel_8h.html#a6dead9e795faa1551f5dc7e34ef59a5e":[41,0,3,5,0,5,45,1,1],
 "onert-micro_2include_2test__models_2quantize_2_neg_quantize_kernel_8h_source.html":[41,0,3,5,0,5,45,1],
 "onert-micro_2include_2test__models_2quantize_2_test_data_quantize_base_8h.html":[41,0,3,5,0,5,45,2],
 "onert-micro_2include_2test__models_2quantize_2_test_data_quantize_base_8h_source.html":[41,0,3,5,0,5,45,2],
@@ -249,5 +245,9 @@ var NAVTREEINDEX248 =
 "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h.html#ae1ed28847eae6c24ff4c31d64255a23a":[41,0,3,4,0,0,0,1,15],
 "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html":[41,0,3,4,0,0,0,1],
 "onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h.html":[41,0,3,4,0,0,0,3],
-"onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html":[41,0,3,4,0,0,0,3]
+"onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html":[41,0,3,4,0,0,0,3],
+"onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h.html":[41,0,3,4,1,0,1],
+"onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h.html#a36dd69ae948d62cb667c25b08c4306be":[41,0,3,4,1,0,1,0],
+"onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h_source.html":[41,0,3,4,1,0,1],
+"onert-micro_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_conv2d_8h.html":[41,0,3,4,1,0,2]
 };

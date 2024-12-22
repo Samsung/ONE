@@ -1339,6 +1339,7 @@ var annotated_dup =
       [ "QuantizeBias", "structluci_1_1_quantize_bias.html", "structluci_1_1_quantize_bias" ],
       [ "QuantizeConstInputActivation", "structluci_1_1_quantize_const_input_activation.html", "structluci_1_1_quantize_const_input_activation" ],
       [ "QuantizeDequantizeWeightsPass", "classluci_1_1_quantize_dequantize_weights_pass.html", "classluci_1_1_quantize_dequantize_weights_pass" ],
+      [ "QuantizeDequantizeWeightsWithGPTQPass", "classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass.html", "classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass" ],
       [ "QuantizedModelVerifier", "structluci_1_1_quantized_model_verifier.html", "structluci_1_1_quantized_model_verifier" ],
       [ "QuantizeOnnxDequantizeLinearPass", "structluci_1_1_quantize_onnx_dequantize_linear_pass.html", "structluci_1_1_quantize_onnx_dequantize_linear_pass" ],
       [ "QuantizeOnnxFakeQuantModelPass", "classluci_1_1_quantize_onnx_fake_quant_model_pass.html", "classluci_1_1_quantize_onnx_fake_quant_model_pass" ],
@@ -3806,9 +3807,6 @@ var annotated_dup =
       [ "LinearDocument", "classpp_1_1_linear_document.html", "classpp_1_1_linear_document" ],
       [ "MultiLineText", "structpp_1_1_multi_line_text.html", "structpp_1_1_multi_line_text" ]
     ] ],
-    [ "profiling", "namespaceprofiling.html", [
-      [ "Context", "classprofiling_1_1_context.html", "classprofiling_1_1_context" ]
-    ] ],
     [ "prunner", "namespaceprunner.html", [
       [ "PModelsRunner", "classprunner_1_1_p_models_runner.html", "classprunner_1_1_p_models_runner" ]
     ] ],
@@ -4126,10 +4124,6 @@ var annotated_dup =
       [ "Reader", "classtflinspect_1_1_reader.html", "classtflinspect_1_1_reader" ]
     ] ],
     [ "tflite", "namespacetflite.html", [
-      [ "profiling", "namespacetflite_1_1profiling.html", [
-        [ "ProfileEvent", "structtflite_1_1profiling_1_1_profile_event.html", "structtflite_1_1profiling_1_1_profile_event" ],
-        [ "Profiler", "classtflite_1_1profiling_1_1_profiler.html", "classtflite_1_1profiling_1_1_profiler" ]
-      ] ],
       [ "reference_ops", "namespacetflite_1_1reference__ops.html", [
         [ "GatherNdHelperResult", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result.html", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result" ]
       ] ]
@@ -4325,6 +4319,17 @@ var annotated_dup =
     [ "InstrBuilder", "class_instr_builder.html", "class_instr_builder" ],
     [ "InstrPrinter", "struct_instr_printer.html", "struct_instr_printer" ],
     [ "InterpreterWrapper", "class_interpreter_wrapper.html", "class_interpreter_wrapper" ],
+    [ "is_VariadicArity", "structis___variadic_arity.html", null ],
+    [ "is_VariadicArity< CircleAddN >", "structis___variadic_arity_3_01_circle_add_n_01_4.html", null ],
+    [ "is_VariadicArity< CircleConcatenation >", "structis___variadic_arity_3_01_circle_concatenation_01_4.html", null ],
+    [ "is_VariadicArity< CircleCustom >", "structis___variadic_arity_3_01_circle_custom_01_4.html", null ],
+    [ "is_VariadicArity< CircleIf >", "structis___variadic_arity_3_01_circle_if_01_4.html", null ],
+    [ "is_VariadicArity< CirclePack >", "structis___variadic_arity_3_01_circle_pack_01_4.html", null ],
+    [ "is_VariadicArity< CircleWhile >", "structis___variadic_arity_3_01_circle_while_01_4.html", null ],
+    [ "is_VariadicOut", "structis___variadic_out.html", null ],
+    [ "is_VariadicOut< CircleCustom >", "structis___variadic_out_3_01_circle_custom_01_4.html", null ],
+    [ "is_VariadicOut< CircleIf >", "structis___variadic_out_3_01_circle_if_01_4.html", null ],
+    [ "is_VariadicOut< CircleWhile >", "structis___variadic_out_3_01_circle_while_01_4.html", null ],
     [ "L2Normalize", "class_l2_normalize.html", "class_l2_normalize" ],
     [ "L2NormalizeChefFactory", "struct_l2_normalize_chef_factory.html", "struct_l2_normalize_chef_factory" ],
     [ "L2Pool2DChef", "class_l2_pool2_d_chef.html", "class_l2_pool2_d_chef" ],
@@ -4374,6 +4379,7 @@ var annotated_dup =
     [ "MinimumChefFactory", "struct_minimum_chef_factory.html", "struct_minimum_chef_factory" ],
     [ "MirrorPadChef", "class_mirror_pad_chef.html", "class_mirror_pad_chef" ],
     [ "MirrorPadChefFactory", "struct_mirror_pad_chef_factory.html", "struct_mirror_pad_chef_factory" ],
+    [ "MockSymbolTable", "class_mock_symbol_table.html", null ],
     [ "Model", "struct_model.html", "struct_model" ],
     [ "ModelArgumentInfo", "struct_model_argument_info.html", "struct_model_argument_info" ],
     [ "ModelBuilder", "class_model_builder.html", "class_model_builder" ],

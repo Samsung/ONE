@@ -7,6 +7,5 @@ var searchData=
   ['elementwiseunarytype_4',['ElementwiseUnaryType',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#af8c9bd4e9cf277a0b838202e05713ec4',1,'onert::backend::cpu::ops']]],
   ['envformat_5',['EnvFormat',['../namespacehermes.html#ae313b95ee3f303ed1cce6dd873d209e5',1,'hermes']]],
   ['errorcategory_6',['ErrorCategory',['../namespaceloco.html#a3fb7bff7a6fa3cc8f131d85333b1b631',1,'loco']]],
-  ['eventtype_7',['EventType',['../structtflite_1_1profiling_1_1_profile_event.html#acffb79beb5292ff740cf920966de103b',1,'tflite::profiling::ProfileEvent']]],
-  ['examplegraphtype_8',['examplegraphtype',['../namespaceexo_1_1test.html#a4f4701b7292e77b4729fe5a28bb092fd',1,'exo::test::ExampleGraphType'],['../namespaceluci_1_1test.html#af9a30c0ad5df3b8b6109ceebbedd90f3',1,'luci::test::ExampleGraphType']]]
+  ['examplegraphtype_7',['examplegraphtype',['../namespaceexo_1_1test.html#a4f4701b7292e77b4729fe5a28bb092fd',1,'exo::test::ExampleGraphType'],['../namespaceluci_1_1test.html#af9a30c0ad5df3b8b6109ceebbedd90f3',1,'luci::test::ExampleGraphType']]]
 ];

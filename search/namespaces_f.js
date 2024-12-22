@@ -11,6 +11,5 @@ var searchData=
   ['plier_8',['plier',['../namespaceplier.html',1,'']]],
   ['plier_3a_3atf_9',['tf',['../namespaceplier_1_1tf.html',1,'plier']]],
   ['pp_10',['pp',['../namespacepp.html',1,'']]],
-  ['profiling_11',['profiling',['../namespaceprofiling.html',1,'']]],
-  ['prunner_12',['prunner',['../namespaceprunner.html',1,'']]]
+  ['prunner_11',['prunner',['../namespaceprunner.html',1,'']]]
 ];

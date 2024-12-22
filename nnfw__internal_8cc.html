@@ -115,9 +115,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a848dd13551e8103b284b5139963fe206" id="r_a848dd13551e8103b284b5139963fe206"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__internal_8cc.html#a848dd13551e8103b284b5139963fe206">nnfw_load_circle_from_buffer</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint8_t *buffer, size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)</td></tr>
 <tr class="memdesc:a848dd13551e8103b284b5139963fe206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a circle model from buffer.  <br /></td></tr>
 <tr class="separator:a848dd13551e8103b284b5139963fe206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1775c4bb0558c1ec45244350e0823435" id="r_a1775c4bb0558c1ec45244350e0823435"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__internal_8cc.html#a1775c4bb0558c1ec45244350e0823435">nnfw_load_model_from_modelfile</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *file_path)</td></tr>
-<tr class="memdesc:a1775c4bb0558c1ec45244350e0823435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a tflite/circle model from file.  <br /></td></tr>
-<tr class="separator:a1775c4bb0558c1ec45244350e0823435"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50574477cc4100bfe99d17e313b99d55" id="r_a50574477cc4100bfe99d17e313b99d55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__internal_8cc.html#a50574477cc4100bfe99d17e313b99d55">nnfw_train_export_circleplus</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
 <tr class="memdesc:a50574477cc4100bfe99d17e313b99d55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export circle+ model.  <br /></td></tr>
 <tr class="separator:a50574477cc4100bfe99d17e313b99d55"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,52 +256,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1775c4bb0558c1ec45244350e0823435" name="a1775c4bb0558c1ec45244350e0823435"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1775c4bb0558c1ec45244350e0823435">&#9670;&#160;</a></span>nnfw_load_model_from_modelfile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_load_model_from_modelfile </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
-          <td class="paramname"><em>session</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>file_path</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Load a tflite/circle model from file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>session </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">file_path</td><td>Path to model file. Model type(tflite/circle) is decided by file extension </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>NFNFW_STATUS </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00048">48</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;load_model_from_modelfile(file_path);</div>
-<div class="line"><span class="lineno">   52</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
-
-</div>
-</div>
 <a id="a290d8f7124d4ccc539a035e06e3b24f0" name="a290d8f7124d4ccc539a035e06e3b24f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a290d8f7124d4ccc539a035e06e3b24f0">&#9670;&#160;</a></span>nnfw_set_config()</h2>
 
@@ -384,11 +335,11 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00054">54</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
-<div class="line"><span class="lineno">   56</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circleplus(path);</div>
-<div class="line"><span class="lineno">   58</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00048">48</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circleplus(path);</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
 

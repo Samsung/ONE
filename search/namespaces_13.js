@@ -19,10 +19,8 @@ var searchData=
   ['tflinspect_16',['tflinspect',['../namespacetflinspect.html',1,'']]],
   ['tflite_17',['tflite',['../namespacetflite.html',1,'']]],
   ['tflite2circle_18',['tflite2circle',['../namespacetflite2circle.html',1,'']]],
-  ['tflite_3a_3aprofiling_19',['profiling',['../namespacetflite_1_1profiling.html',1,'tflite']]],
-  ['tflite_3a_3aprofiling_3a_3atime_20',['time',['../namespacetflite_1_1profiling_1_1time.html',1,'tflite::profiling']]],
-  ['tflite_3a_3areference_5fops_21',['reference_ops',['../namespacetflite_1_1reference__ops.html',1,'tflite']]],
-  ['tflread_22',['tflread',['../namespacetflread.html',1,'']]],
-  ['topologicalsorthelper_23',['TopologicalSortHelper',['../namespace_topological_sort_helper.html',1,'']]],
-  ['training_5fconfigure_5ftool_24',['training_configure_tool',['../namespacetraining__configure__tool.html',1,'']]]
+  ['tflite_3a_3areference_5fops_19',['reference_ops',['../namespacetflite_1_1reference__ops.html',1,'tflite']]],
+  ['tflread_20',['tflread',['../namespacetflread.html',1,'']]],
+  ['topologicalsorthelper_21',['TopologicalSortHelper',['../namespace_topological_sort_helper.html',1,'']]],
+  ['training_5fconfigure_5ftool_22',['training_configure_tool',['../namespacetraining__configure__tool.html',1,'']]]
 ];
