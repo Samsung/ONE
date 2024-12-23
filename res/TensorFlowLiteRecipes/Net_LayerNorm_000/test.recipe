@@ -1,0 +1,157 @@
+#
+# Generated with tflchef-reverse
+# refer https://github.com/Samsung/ONE/issues/14467
+#
+operand {
+  name: "serving_default_input:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 4
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/Constant_1"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1e-05"
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/ReduceMean/reduction_indices"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/ReduceMean"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 1
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/Sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 4
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/Pow;onnx_tf_prefix_/ln/Constant"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 4
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/ReduceMean_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 1
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/Add"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 1
+  }
+}
+operand {
+  name: "onnx_tf_prefix_/ln/Div;onnx_tf_prefix_/ln/Sqrt"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 1
+  }
+}
+operand {
+  name: "PartitionedCall:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+    dim: 4
+  }
+}
+operation {
+  type: "Mean"
+  input: "serving_default_input:0"
+  input: "onnx_tf_prefix_/ln/ReduceMean/reduction_indices"
+  output: "onnx_tf_prefix_/ln/ReduceMean"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Sub"
+  input: "serving_default_input:0"
+  input: "onnx_tf_prefix_/ln/ReduceMean"
+  output: "onnx_tf_prefix_/ln/Sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "onnx_tf_prefix_/ln/Sub"
+  input: "onnx_tf_prefix_/ln/Sub"
+  output: "onnx_tf_prefix_/ln/Pow;onnx_tf_prefix_/ln/Constant"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mean"
+  input: "onnx_tf_prefix_/ln/Pow;onnx_tf_prefix_/ln/Constant"
+  input: "onnx_tf_prefix_/ln/ReduceMean/reduction_indices"
+  output: "onnx_tf_prefix_/ln/ReduceMean_1"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Add"
+  input: "onnx_tf_prefix_/ln/ReduceMean_1"
+  input: "onnx_tf_prefix_/ln/Constant_1"
+  output: "onnx_tf_prefix_/ln/Add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Rsqrt"
+  input: "onnx_tf_prefix_/ln/Add"
+  output: "onnx_tf_prefix_/ln/Div;onnx_tf_prefix_/ln/Sqrt"
+}
+operation {
+  type: "Mul"
+  input: "onnx_tf_prefix_/ln/Sub"
+  input: "onnx_tf_prefix_/ln/Div;onnx_tf_prefix_/ln/Sqrt"
+  output: "PartitionedCall:0"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "serving_default_input:0"
+output: "PartitionedCall:0"

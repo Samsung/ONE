@@ -45,6 +45,7 @@
 #include "luci/Pass/FuseBCQPass.h"
 #include "luci/Pass/FuseMulToFullyConnectedWeightsPass.h"
 #include "luci/Pass/FuseInstanceNormPass.h"
+#include "luci/Pass/FuseLayerNormToInstNormPass.h"
 #include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FuseMulWithConvPass.h"
 #include "luci/Pass/FuseMulWithDivPass.h"
@@ -336,6 +337,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax] = &createPassInstance<luci::ResolveCustomOpMaxPoolWithArgmaxPass>;
   option_to_pass[Options::Algorithm::ResolveCustomOpSplitV] = &createPassInstance<luci::ResolveCustomOpSplitVPass>;
   option_to_pass[Options::Algorithm::FuseInstanceNorm] = &createPassInstance<luci::FuseInstanceNormPass>;
+  option_to_pass[Options::Algorithm::FuseLayerNormToInstNorm] = &createPassInstance<luci::FuseLayerNormToInstNormPass>;
   option_to_pass[Options::Algorithm::FuseBatchNormWithConv] = &createPassInstance<luci::FuseBatchNormWithConvPass>;
   option_to_pass[Options::Algorithm::FuseBatchNormWithDwConv] = &createPassInstance<luci::FuseBatchNormWithDwConvPass>;
   option_to_pass[Options::Algorithm::FuseBatchNormWithTConv] = &createPassInstance<luci::FuseBatchNormWithTConvPass>;

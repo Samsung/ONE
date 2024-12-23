@@ -146,6 +146,7 @@
 // Virtual nodes
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleInput.h"
+#include "Nodes/CircleLayerNorm.h"
 #include "Nodes/CircleOutput.h"
 #include "Nodes/CircleVariable.h"
 // Multi-output virtual nodes

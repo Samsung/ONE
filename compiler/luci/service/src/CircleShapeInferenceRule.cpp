@@ -1522,6 +1522,12 @@ loco::NodeShape infer_input(const luci::CircleInput *node)
   return loco::NodeShape{shape};
 }
 
+loco::NodeShape infer_layernorm(const luci::CircleLayerNorm *node)
+{
+  auto input_shape = luci::shape_get(node->input()).as<loco::TensorShape>();
+  return loco::NodeShape{input_shape};
+}
+
 loco::NodeShape infer_output(const luci::CircleOutput *node)
 {
   auto graph_outputs = node->graph()->outputs();
@@ -2215,6 +2221,8 @@ public:
 
   // Virtual
   loco::NodeShape visit(const luci::CircleInput *node) final { return infer_input(node); }
+
+  loco::NodeShape visit(const luci::CircleLayerNorm *node) final { return infer_layernorm(node); }
 
   loco::NodeShape visit(const luci::CircleOutput *node) final { return infer_output(node); }
 

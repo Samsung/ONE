@@ -109,6 +109,8 @@ int entry(int argc, char **argv)
              "This will fuse BatchNorm operators to Transposed Convolution operator");
   add_switch(arser, "--fuse_bcq", "This will fuse operators and apply Binary Coded Quantization");
   add_switch(arser, "--fuse_instnorm", "This will fuse operators to InstanceNorm operator");
+  add_switch(arser, "--fuse_layernorm_to_instnorm",
+             "This will fuse decomposed LayerNorm operators to InstanceNorm operator");
   add_switch(arser, "--fuse_mean_with_mean",
              "This will fuse two Mean operations when they follow one by one. This will fold them "
              "into one operation and merge reduction indices.");
@@ -297,6 +299,7 @@ int entry(int argc, char **argv)
   option_str_to_enum["fuse_slice_with_tconv"] = Algorithms::FuseSliceWithTConv;
   option_str_to_enum["fuse_bcq"] = Algorithms::FuseBCQ;
   option_str_to_enum["fuse_instnorm"] = Algorithms::FuseInstanceNorm;
+  option_str_to_enum["fuse_layernorm_to_instnorm"] = Algorithms::FuseLayerNormToInstNorm;
   option_str_to_enum["fuse_mean_with_mean"] = Algorithms::FuseMeanWithMean;
   option_str_to_enum["fuse_mul_with_conv"] = Algorithms::FuseMulWithConv;
   option_str_to_enum["fuse_mul_with_div"] = Algorithms::FuseMulWithDiv;

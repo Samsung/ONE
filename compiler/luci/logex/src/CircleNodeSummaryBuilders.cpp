@@ -1220,6 +1220,18 @@ void CircleWhileSummaryBuilder::build_attributes(const luci::CircleNode *node,
     s.args().append("else_branch", std::to_string(circle_while->body_branch()));
 }
 
+std::vector<std::string> CircleLayerNormSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "gamma", "beta"};
+}
+
+void CircleLayerNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                     locop::NodeSummary &s)
+{
+  auto layernorm = loco::must_cast<const luci::CircleLayerNorm *>(node);
+  s.args().append("epsilon", std::to_string(layernorm->epsilon()));
+}
+
 std::vector<std::string> CircleOutputSummaryBuilder::get_input_names(const luci::CircleNode *)
 {
   return {"from"};

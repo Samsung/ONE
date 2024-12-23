@@ -46,6 +46,7 @@ public:
       FuseBCQ,
       FuseHorizontalFullyConnected,
       FuseInstanceNorm,
+      FuseLayerNormToInstNorm,
       FuseMeanWithMean,
       FuseMulWithConv,
       FuseMulWithDiv,
