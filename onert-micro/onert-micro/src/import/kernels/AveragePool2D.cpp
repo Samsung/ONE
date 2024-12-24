@@ -19,8 +19,15 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus
-onert_micro::import::configure_kernel_CircleAveragePool2D(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleAveragePool2D(const OMConfigureArgs &config_args)
 {
   return import::helpers::configure_pooling_kernel_common(config_args);
 }
+
+} // namespace import
+} // namespace onert_micro

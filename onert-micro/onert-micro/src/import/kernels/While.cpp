@@ -22,8 +22,12 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus onert_micro::import::configure_kernel_CircleWhile(
-  const onert_micro::import::OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleWhile(const onert_micro::import::OMConfigureArgs &config_args)
 {
   OMRuntimeModule &runtime_module = config_args.runtime_module;
   OMRuntimeContext &runtime_context = config_args.runtime_context;
@@ -78,3 +82,6 @@ OMStatus onert_micro::import::configure_kernel_CircleWhile(
                           body_runtime_graph->getNumberOfOutputs() == runtime_kernel.outputs_num);
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

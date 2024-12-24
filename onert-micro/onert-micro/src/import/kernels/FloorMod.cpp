@@ -28,7 +28,15 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleFloorMod(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleFloorMod(const OMConfigureArgs &config_args)
 {
   return onert_micro::import::helpers::configure_floor_kernel_common(config_args);
 }
+
+} // namespace import
+} // namespace onert_micro

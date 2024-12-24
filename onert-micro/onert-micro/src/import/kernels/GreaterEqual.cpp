@@ -33,8 +33,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus
-onert_micro::import::configure_kernel_CircleGreaterEqual(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleGreaterEqual(const OMConfigureArgs &config_args)
 {
   const circle::Tensor *input1;
   const circle::Tensor *input2;
@@ -54,3 +58,6 @@ onert_micro::import::configure_kernel_CircleGreaterEqual(const OMConfigureArgs &
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro
