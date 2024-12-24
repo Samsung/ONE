@@ -25,7 +25,12 @@ using namespace onert_micro;
 using namespace onert_micro::core;
 using namespace onert_micro::execute;
 
-OMStatus onert_micro::execute::execute_kernel_CircleMaximum(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleMaximum(const OMExecuteArgs &execute_args)
 {
 
   uint8_t *input_data1;
@@ -71,3 +76,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleMaximum(const OMExecuteArgs 
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

@@ -25,7 +25,12 @@ using namespace onert_micro;
 using namespace onert_micro::execute;
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleWhile(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleWhile(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeModule &runtime_module = execute_args.runtime_module;
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
@@ -144,3 +149,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleWhile(const OMExecuteArgs &e
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

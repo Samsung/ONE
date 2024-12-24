@@ -29,7 +29,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::execute::execute_arg_common(
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_arg_common(
   const OMExecuteArgs &execute_args,
   const std::function<OMStatus(const core::OMRuntimeShape &input1_shape, const float *input1_data,
                                const int *input2_data, const core::OMRuntimeShape &output_shape,
@@ -92,3 +97,6 @@ OMStatus onert_micro::execute::execute_arg_common(
   }
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro
