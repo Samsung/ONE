@@ -107,6 +107,8 @@ void overwrite_quantparam(const luci::CircleNode *source, luci::CircleNode *targ
   target_qparam->scale = source_qparam->scale;
   target_qparam->zerop = source_qparam->zerop;
   target_qparam->quantized_dimension = source_qparam->quantized_dimension;
+
+  target->dtype(source->dtype());
 }
 
 /**
@@ -188,8 +190,6 @@ void propagate_pack_quantparam(luci::CirclePack *pack)
       if (succs.size() > 1)
         continue;
 
-      // Non-const input must have been quantized
-      assert(node->quantparam() != nullptr);
       overwrite_quantparam(pack, node);
     }
   }
@@ -260,8 +260,6 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot)
       if (succs.size() > 1)
         return;
 
-      // Non-const input must have been quantized
-      assert(node->quantparam() != nullptr);
       overwrite_quantparam(one_hot, node);
     }
   };
@@ -340,8 +338,6 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
       if (succs.size() > 1)
         continue;
 
-      // Non-const input must have been quantized
-      assert(node->quantparam() != nullptr);
       overwrite_quantparam(concat, node);
     }
   }
@@ -440,8 +436,6 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2)
       if (succs.size() > 1)
         return;
 
-      // Non-const input must have been quantized
-      assert(node->quantparam() != nullptr);
       overwrite_quantparam(pad_v2, node);
     }
   };
