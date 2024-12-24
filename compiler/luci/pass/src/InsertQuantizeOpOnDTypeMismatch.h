@@ -32,6 +32,7 @@ private:
   void visit(luci::CircleFullyConnected *node);
   void visit(luci::CircleMul *node);
   void visit(luci::CircleBatchMatMul *node);
+  void visit(luci::CircleTranspose *node);
 
   // TODO Support more operators
 };
