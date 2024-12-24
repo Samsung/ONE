@@ -14,9 +14,6 @@ include("cmake/buildtool/config/config_linux.cmake")
 
 # addition for arm-linux
 set(FLAGS_COMMON ${FLAGS_COMMON}
-    "-march=armv7-a"
-    "-mtune=cortex-a15.cortex-a7"
-    "-mfloat-abi=hard"
     "-mfpu=neon-vfpv4"
     "-funsafe-math-optimizations"
     "-ftree-vectorize"
