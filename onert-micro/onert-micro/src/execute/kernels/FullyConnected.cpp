@@ -89,9 +89,13 @@ void calculateOpDataFullyConnected(const circle::Tensor *input, const circle::Te
 
 } // namespace
 
+namespace onert_micro
+{
+namespace execute
+{
+
 // NOTE: doesnt currently support dynamic shapes
-OMStatus
-onert_micro::execute::execute_kernel_CircleFullyConnected(const OMExecuteArgs &execute_args)
+OMStatus execute_kernel_CircleFullyConnected(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -218,3 +222,6 @@ onert_micro::execute::execute_kernel_CircleFullyConnected(const OMExecuteArgs &e
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

@@ -20,8 +20,13 @@
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
-OMStatus onert_micro::execute::execute_kernel_CircleSpaceToBatchND(
-  const onert_micro::execute::OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus
+execute_kernel_CircleSpaceToBatchND(const onert_micro::execute::OMExecuteArgs &execute_args)
 {
   auto batch_to_space_float_lambda =
     [](const core::OMRuntimeShape &input1_shape, const float *input1_data,
@@ -34,3 +39,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleSpaceToBatchND(
 
   return execute_spaces_batches_nd_common(execute_args, batch_to_space_float_lambda);
 }
+
+} // namespace execute
+} // namespace onert_micro
