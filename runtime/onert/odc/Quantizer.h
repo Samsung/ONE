@@ -35,7 +35,7 @@ public:
   /**
    * @brief Set the number of minmax records enough for quantization
    */
-  void setMinMaxRecordsThreshold(uint32_t value) { _minmax_threshold = value; };
+  void setMinMaxRecordsThreshold(uint32_t value) override { _minmax_threshold = value; };
 
   /**
    * @brief Checking the number of minmax records enough for quantization (comparison with
