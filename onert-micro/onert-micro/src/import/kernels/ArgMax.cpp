@@ -19,7 +19,15 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus onert_micro::import::configure_kernel_CircleArgMax(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleArgMax(const OMConfigureArgs &config_args)
 {
   return helpers::configure_arg_kernel_common(config_args);
 }
+
+} // namespace import
+} // namespace onert_micro

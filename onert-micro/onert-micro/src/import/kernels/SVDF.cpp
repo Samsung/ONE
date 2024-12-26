@@ -40,7 +40,12 @@ constexpr int outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleSVDF(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleSVDF(const OMConfigureArgs &config_args)
 {
   // Validate Tensor Inputs (dtype depends on quantization):
   // [0] = Input, {2, batch_size, input_size}
@@ -152,3 +157,6 @@ OMStatus onert_micro::import::configure_kernel_CircleSVDF(const OMConfigureArgs 
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

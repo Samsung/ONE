@@ -19,7 +19,15 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus onert_micro::import::configure_kernel_CircleAdd(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleAdd(const OMConfigureArgs &config_args)
 {
   return import::helpers::configure_TISO_kernel(config_args);
 }
+
+} // namespace import
+} // namespace onert_micro

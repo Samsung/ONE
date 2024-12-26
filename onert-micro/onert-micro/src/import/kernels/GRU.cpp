@@ -40,7 +40,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleGRU(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleGRU(const OMConfigureArgs &config_args)
 {
   core::OMRuntimeContext &runtime_context = config_args.runtime_context;
   uint16_t op_index = config_args.kernel_index;
@@ -102,3 +107,6 @@ OMStatus onert_micro::import::configure_kernel_CircleGRU(const OMConfigureArgs &
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro
