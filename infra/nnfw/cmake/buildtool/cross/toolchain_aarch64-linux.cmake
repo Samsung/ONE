@@ -1,20 +1,27 @@
 #
 # config for aarch64-linux
 #
-include(CMakeForceCompiler)
 
+# Set CMAKE_SYSTEM_NAME to notify to cmake that we are cross compiling
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
 
-set(CMAKE_C_COMPILER   aarch64-linux-gnu-gcc)
-set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
+if(DEFINED ENV{USE_CLANG} AND "$ENV{USE_CLANG}" STREQUAL "1")
+  set(CMAKE_C_COMPILER   clang)
+  set(CMAKE_CXX_COMPILER clang++)
+  set(CMAKE_C_COMPILER_TARGET   arm-linux-gnueabihf)
+  set(CMAKE_CXX_COMPILER_TARGET arm-linux-gnueabihf)
+else()
+  set(CMAKE_C_COMPILER   aarch64-linux-gnu-gcc)
+  set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
+endif()
 
-# where is the target environment
-set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../../..")
-set(ROOTFS_AARCH64 "${NNAS_PROJECT_SOURCE_DIR}/tools/cross/rootfs/aarch64")
-include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/OptionTools.cmake")
-
-envoption(ROOTFS_DIR ${ROOTFS_AARCH64})
+# where is the target RootFS
+if(DEFINED ENV{ROOTFS_DIR})
+  set(ROOTFS_DIR $ENV{ROOTFS_DIR})
+else()
+  set(ROOTFS_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../../../tools/cross/rootfs/aarch64")
+endif()
 if(NOT EXISTS "${ROOTFS_DIR}/lib/aarch64-linux-gnu")
   message(FATAL_ERROR "Please prepare RootFS for AARCH64")
 endif()

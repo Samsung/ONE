@@ -1,20 +1,27 @@
 #
 # config for arm-linux
 #
-include(CMakeForceCompiler)
 
+# Set CMAKE_SYSTEM_NAME to notify to cmake that we are cross compiling
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR armv7l)
 
-set(CMAKE_C_COMPILER   arm-linux-gnueabihf-gcc)
-set(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
+if(DEFINED ENV{USE_CLANG} AND "$ENV{USE_CLANG}" STREQUAL "1")
+  set(CMAKE_C_COMPILER  clang)
+  set(CMAKE_CXX_COMPILER clang++)
+  set(CMAKE_C_COMPILER_TARGET   arm-linux-gnueabihf)
+  set(CMAKE_CXX_COMPILER_TARGET arm-linux-gnueabihf)
+else()
+  set(CMAKE_C_COMPILER   arm-linux-gnueabihf-gcc)
+  set(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
+endif()
 
 # where is the target environment
-set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../../..")
-set(ROOTFS_ARM "${NNAS_PROJECT_SOURCE_DIR}/tools/cross/rootfs/arm")
-include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/OptionTools.cmake")
-
-envoption(ROOTFS_DIR ${ROOTFS_ARM})
+if(DEFINED ENV{ROOTFS_DIR})
+  set(ROOTFS_DIR $ENV{ROOTFS_DIR})
+else()
+  set(ROOTFS_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../../../tools/cross/rootfs/arm")
+endif()
 if(NOT EXISTS "${ROOTFS_DIR}/lib/arm-linux-gnueabihf")
   message(FATAL_ERROR "Please prepare RootFS for ARM")
 endif()
