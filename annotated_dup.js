@@ -3474,6 +3474,7 @@ var annotated_dup =
         [ "NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel" ],
         [ "NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel" ],
         [ "NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel" ],
+        [ "NegTestDataInputMismatchZerosLikeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_zeros_like_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_zeros_like_kernel" ],
         [ "NegTestDataInputOutputScaleMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel" ],
         [ "NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel" ],
         [ "NegTestDataInputOutputShapeMismatchCastKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel" ],
@@ -3639,6 +3640,7 @@ var annotated_dup =
         [ "TestDataFloatTransposeConv", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv.html", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv" ],
         [ "TestDataFloatUnpack", "classonert__micro_1_1test__model_1_1_test_data_float_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_float_unpack" ],
         [ "TestDataFloatWQInt8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected" ],
+        [ "TestDataFloatZerosLike", "classonert__micro_1_1test__model_1_1_test_data_float_zeros_like.html", "classonert__micro_1_1test__model_1_1_test_data_float_zeros_like" ],
         [ "TestDataFloorBase", "classonert__micro_1_1test__model_1_1_test_data_floor_base.html", "classonert__micro_1_1test__model_1_1_test_data_floor_base" ],
         [ "TestDataFloorDivBase", "classonert__micro_1_1test__model_1_1_test_data_floor_div_base.html", "classonert__micro_1_1test__model_1_1_test_data_floor_div_base" ],
         [ "TestDataFloorModBase", "classonert__micro_1_1test__model_1_1_test_data_floor_mod_base.html", "classonert__micro_1_1test__model_1_1_test_data_floor_mod_base" ],
@@ -3732,7 +3734,8 @@ var annotated_dup =
         [ "TestDataWrongAxisConcatenation", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_axis_concatenation" ],
         [ "TestDataWrongBeginTypeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_begin_type_slice.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_begin_type_slice" ],
         [ "TestDataWrongInputShapeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_input_shape_slice.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_input_shape_slice" ],
-        [ "TestDataWrongSizeTypeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_size_type_slice.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_size_type_slice" ]
+        [ "TestDataWrongSizeTypeSlice", "classonert__micro_1_1test__model_1_1_test_data_wrong_size_type_slice.html", "classonert__micro_1_1test__model_1_1_test_data_wrong_size_type_slice" ],
+        [ "TestDataZerosLikeBase", "classonert__micro_1_1test__model_1_1_test_data_zeros_like_base.html", "classonert__micro_1_1test__model_1_1_test_data_zeros_like_base" ]
       ] ],
       [ "train", "namespaceonert__micro_1_1train.html", [
         [ "losses_functions", "namespaceonert__micro_1_1train_1_1losses__functions.html", [

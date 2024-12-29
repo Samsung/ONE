@@ -3501,6 +3501,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputMismatchZerosLikeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_zeros_like_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputScaleMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchAbsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_abs_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputShapeMismatchCastKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_shape_mismatch_cast_kernel.html", null ],
@@ -5806,7 +5807,10 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataUnpackBase< T >", "classonert__micro_1_1test__model_1_1_test_data_unpack_base.html", [
         [ "onert_micro::test_model::TestDataFloatUnpack", "classonert__micro_1_1test__model_1_1_test_data_float_unpack.html", null ]
       ] ],
-      [ "onert_micro::test_model::TestDataWhileKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_while_kernel.html", null ]
+      [ "onert_micro::test_model::TestDataWhileKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_while_kernel.html", null ],
+      [ "onert_micro::test_model::TestDataZerosLikeBase< T >", "classonert__micro_1_1test__model_1_1_test_data_zeros_like_base.html", [
+        [ "onert_micro::test_model::TestDataFloatZerosLike", "classonert__micro_1_1test__model_1_1_test_data_float_zeros_like.html", null ]
+      ] ]
     ] ],
     [ "luci_interpreter::test_kernel::TestDataBase< bool >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],
     [ "luci_interpreter::test_kernel::TestDataBase< float >", "classluci__interpreter_1_1test__kernel_1_1_test_data_base.html", null ],

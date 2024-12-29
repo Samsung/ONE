@@ -1,8 +1,5 @@
 var NAVTREEINDEX34 =
 {
-"backend_2ruy_2_static_tensor_manager_8h_source.html":[41,0,4,1,1,5,10],
-"backend_2ruy_2_tensor_builder_8h.html":[41,0,4,1,1,5,12],
-"backend_2ruy_2_tensor_builder_8h.html#a8295289e59d31ff8afb39a139a60bc67":[41,0,4,1,1,5,12,0],
 "backend_2ruy_2_tensor_builder_8h_source.html":[41,0,4,1,1,5,12],
 "backend_2train_2_backend_context_8cc.html":[41,0,4,1,1,6,3],
 "backend_2train_2_backend_context_8cc_source.html":[41,0,4,1,1,6,3],
@@ -249,5 +246,8 @@ var NAVTREEINDEX34 =
 "circle-eval-diff_2src_2_tensor_8cpp.html#a37b8f7cb7c3ba44d9834fe0383462107":[41,0,0,9,2,5,5],
 "circle-eval-diff_2src_2_tensor_8cpp.html#a3be1b684ee4b41e386b1eb11ec89215b":[41,0,0,9,2,5,7],
 "circle-eval-diff_2src_2_tensor_8cpp.html#a4346ae0dcbcab826a38fde3387af5c4a":[41,0,0,9,2,5,6],
-"circle-eval-diff_2src_2_tensor_8cpp.html#a4844019bdcc8c3ac531732a734b8d835":[41,0,0,9,2,5,0]
+"circle-eval-diff_2src_2_tensor_8cpp.html#a4844019bdcc8c3ac531732a734b8d835":[41,0,0,9,2,5,0],
+"circle-eval-diff_2src_2_tensor_8cpp.html#a55e8efd44642a7253c03bfbb6cef2f2d":[41,0,0,9,2,5,3],
+"circle-eval-diff_2src_2_tensor_8cpp.html#a85c6f84d8458cfc1054f36f7c0af0772":[41,0,0,9,2,5,2],
+"circle-eval-diff_2src_2_tensor_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b":[41,0,0,9,2,5,1]
 };

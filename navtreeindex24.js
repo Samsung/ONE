@@ -1,10 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"_quantize_dequantize_weights_with_g_p_t_q_pass_8cpp_source.html":[41,0,0,58,7,1,75],
-"_quantize_dequantize_weights_with_g_p_t_q_pass_8h.html":[41,0,0,58,7,0,0,0,55],
-"_quantize_dequantize_weights_with_g_p_t_q_pass_8h.html#a2b7beb4185d58ccb475fcbdcea048274":[41,0,0,58,7,0,0,0,55,2],
-"_quantize_dequantize_weights_with_g_p_t_q_pass_8h_source.html":[41,0,0,58,7,0,0,0,55],
-"_quantize_layer_8cc.html":[41,0,4,1,1,4,0,66],
 "_quantize_layer_8cc.html#aa7584aef07be0382d601c7661d7871f5":[41,0,4,1,1,4,0,66,0],
 "_quantize_layer_8cc_source.html":[41,0,4,1,1,4,0,66],
 "_quantize_layer_8h.html":[41,0,4,1,1,4,0,67],
@@ -180,9 +175,10 @@ var NAVTREEINDEX24 =
 "_read_8forward_8h.html":[41,0,0,29,0,0,0,1,52],
 "_read_8forward_8h_source.html":[41,0,0,29,0,0,0,1,52],
 "_read_kernel_data_common_8cpp.html":[41,0,3,5,1,2,0,50],
-"_read_kernel_data_common_8cpp.html#a999f55140d3a16df07774d1649048f1b":[41,0,3,5,1,2,0,50,0],
-"_read_kernel_data_common_8cpp.html#aab3f03771cfc223b000c637cff9fdd39":[41,0,3,5,1,2,0,50,2],
-"_read_kernel_data_common_8cpp.html#af1820f85e6bd73854c0c31cbfc3abeb0":[41,0,3,5,1,2,0,50,1],
+"_read_kernel_data_common_8cpp.html#a999f55140d3a16df07774d1649048f1b":[41,0,3,5,1,2,0,50,1],
+"_read_kernel_data_common_8cpp.html#aab3f03771cfc223b000c637cff9fdd39":[41,0,3,5,1,2,0,50,3],
+"_read_kernel_data_common_8cpp.html#aae8042c5195cffff37e348a20caca812":[41,0,3,5,1,2,0,50,0],
+"_read_kernel_data_common_8cpp.html#af1820f85e6bd73854c0c31cbfc3abeb0":[41,0,3,5,1,2,0,50,2],
 "_read_kernel_data_common_8cpp_source.html":[41,0,3,5,1,2,0,50],
 "_read_kernel_data_common_8h.html":[41,0,3,5,0,1,0,5],
 "_read_kernel_data_common_8h.html#aae8042c5195cffff37e348a20caca812":[41,0,3,5,0,1,0,5,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX24 =
 "_reduce_layer_8h.html#a5f443fc989245643bdd21c1c2289085aaa0b1ac8aae6b1cfbbe89085c642b3b4b":[41,0,4,1,1,4,0,73,1,2],
 "_reduce_layer_8h.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617":[41,0,4,1,1,4,0,73,1,0],
 "_reduce_layer_8h.html#a5f443fc989245643bdd21c1c2289085aab10913c938482a8aa4ba85b7a1116cb4":[41,0,4,1,1,4,0,73,1,6],
-"_reduce_layer_8h_source.html":[41,0,4,1,1,4,0,73]
+"_reduce_layer_8h_source.html":[41,0,4,1,1,4,0,73],
+"_reduce_mean_op_8h.html":[41,0,0,79,0,0,0,29],
+"_reduce_mean_op_8h_source.html":[41,0,0,79,0,0,0,29],
+"_reduce_op_8cpp.html":[41,0,0,79,1,4,11],
+"_reduce_op_8cpp_source.html":[41,0,0,79,1,4,11]
 };

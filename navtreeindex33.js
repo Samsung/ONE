@@ -1,8 +1,5 @@
 var NAVTREEINDEX33 =
 {
-"_write_tester_8cpp.html":[41,0,0,58,11,0,3],
-"_write_tester_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[41,0,0,58,11,0,3,0],
-"_write_tester_8cpp_source.html":[41,0,0,58,11,0,3],
 "_xp_sep_act_from_transpose_conv_pass_8cpp.html":[41,0,0,58,7,1,141],
 "_xp_sep_act_from_transpose_conv_pass_8cpp_source.html":[41,0,0,58,7,1,141],
 "_xp_sep_act_from_transpose_conv_pass_8h.html":[41,0,0,58,7,0,0,0,101],
@@ -249,5 +246,8 @@ var NAVTREEINDEX33 =
 "backend_2ruy_2_kernel_generator_8h.html":[41,0,4,1,1,5,8],
 "backend_2ruy_2_kernel_generator_8h_source.html":[41,0,4,1,1,5,8],
 "backend_2ruy_2_static_tensor_manager_8h.html":[41,0,4,1,1,5,10],
-"backend_2ruy_2_static_tensor_manager_8h.html#af7ef5b7decc45586dee42c9cd19c8444":[41,0,4,1,1,5,10,0]
+"backend_2ruy_2_static_tensor_manager_8h.html#af7ef5b7decc45586dee42c9cd19c8444":[41,0,4,1,1,5,10,0],
+"backend_2ruy_2_static_tensor_manager_8h_source.html":[41,0,4,1,1,5,10],
+"backend_2ruy_2_tensor_builder_8h.html":[41,0,4,1,1,5,12],
+"backend_2ruy_2_tensor_builder_8h.html#a8295289e59d31ff8afb39a139a60bc67":[41,0,4,1,1,5,12,0]
 };

@@ -70,5 +70,6 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "transpose_conv", "dir_f7c8901035ae57be72487bc3445a0b0e.html", "dir_f7c8901035ae57be72487bc3445a0b0e" ],
     [ "unpack", "dir_f150309fcf65750eba464f468057d9fd.html", "dir_f150309fcf65750eba464f468057d9fd" ],
     [ "while", "dir_c17deb86b0d798cfe7c641ce105704a1.html", "dir_c17deb86b0d798cfe7c641ce105704a1" ],
+    [ "zeroslike", "dir_99263330990d86ddee84cfc9f16e61f0.html", "dir_99263330990d86ddee84cfc9f16e61f0" ],
     [ "TestDataBase.h", "onert-micro_2include_2test__models_2_test_data_base_8h.html", "onert-micro_2include_2test__models_2_test_data_base_8h" ]
 ];
