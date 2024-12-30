@@ -98,9 +98,6 @@ void overwrite_quantparam(const luci::CircleNode *source, luci::CircleNode *targ
     auto quantparam = std::make_unique<luci::CircleQuantParam>();
     target->quantparam(std::move(quantparam));
     target_qparam = target->quantparam();
-
-    if (target_qparam == nullptr)
-      throw std::runtime_error("Creating new quant param failed");
   }
   target_qparam->min = source_qparam->min;
   target_qparam->max = source_qparam->max;
