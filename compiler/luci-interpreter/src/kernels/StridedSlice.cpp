@@ -44,7 +44,7 @@ void StridedSlice::configure()
   assert(begin()->element_type() == DataType::S32);
   assert(end()->element_type() == DataType::S32);
   assert(strides()->element_type() == DataType::S32);
-  assert(input()->shape().num_dims() <= 4);
+  assert(input()->shape().num_dims() <= 5);
   if (params().ellipsis_mask != 0)
   {
     throw std::runtime_error("ellipsis_mask is not implemented yet.");
