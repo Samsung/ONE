@@ -31,9 +31,9 @@ class RawFormatter
 {
 public:
   RawFormatter() = default;
-  void loadInputs(const std::string &filename, std::vector<Allocation> &inputs);
-  void dumpOutputs(const std::string &filename, const std::vector<Allocation> &outputs);
-  void dumpInputs(const std::string &filename, const std::vector<Allocation> &inputs);
+  void loadInputs(const std::string &prefix, std::vector<Allocation> &inputs);
+  void dumpOutputs(const std::string &prefix, const std::vector<Allocation> &outputs);
+  void dumpInputs(const std::string &prefix, const std::vector<Allocation> &inputs);
 };
 } // namespace onert_run
 
