@@ -57,4 +57,4 @@ void Select(const core::OMRuntimeShape &input_condition_shape, const D *input_co
 } // namespace execute
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_PAL_SELECT_V2_COMMON_H
+#endif // ONERT_MICRO_EXECUTE_PAL_SELECT_V2_H
