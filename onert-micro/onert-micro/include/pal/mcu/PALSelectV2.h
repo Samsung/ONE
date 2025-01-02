@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_PAL_SELECT_V2_COMMON_H
-#define ONERT_MICRO_PAL_SELECT_V2_COMMON_H
+#ifndef ONERT_MICRO_EXECUTE_PAL_SELECT_V2_H
+#define ONERT_MICRO_EXECUTE_PAL_SELECT_V2_H
 
 #include "PALUtils.h"
 #include "ProcessBroadcastShapes.h"
