@@ -14,6 +14,8 @@ endif()
 
 if(${ONE_UBUNTU_CODENAME} STREQUAL "bionic")
   set(ONE_UBUNTU_CODENAME_BIONIC TRUE)
+elseif(${ONE_UBUNTU_CODENAME} STREQUAL "noble")
+  set(ONE_UBUNTU_CODENAME_NOBLE TRUE)
 endif()
 
 # TODO Validate the argument of "requires"
