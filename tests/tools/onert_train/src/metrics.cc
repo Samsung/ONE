@@ -35,7 +35,7 @@ float Metrics::categoricalAccuracy(const T *output, const T *expected, uint32_t 
                                    uint64_t size)
 {
   int correct = 0;
-  for (int b = 0; b < batch; ++b)
+  for (uint32_t b = 0; b < batch; ++b)
   {
     int begin_offset = b * size;
     int end_offset = begin_offset + size;
