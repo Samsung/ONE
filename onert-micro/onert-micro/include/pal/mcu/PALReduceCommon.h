@@ -61,6 +61,9 @@ inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_a
     }
     if (!is_dup)
     {
+      if (*out_num_axis > 1) {
+        return false;
+      }
       out_axis[*out_num_axis] = current;
       *out_num_axis += 1;
     }
