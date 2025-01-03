@@ -22,6 +22,7 @@
 #include "QuantizeActivation.h"
 #include "QuantizationUtils.h"
 
+#include <logo/Phase.h>
 #include <luci/IR/CircleNodes.h>
 #include <luci/Service/Nodes/CircleConst.h>
 #include <luci/Log.h>
@@ -89,8 +90,11 @@ bool QuantizeOnnxFakeQuantModelPass::run(loco::Graph *g)
 
   // Quantize nodes using their predecessors' qparams
   {
-    QuantizeWithPredecessorPass pass;
-    pass.run(g);
+    logo::Phase phase;
+    phase.emplace_back(std::make_unique<QuantizeWithPredecessorPass>());
+
+    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+    phase_runner.run(phase);
   }
 
   // Backward propagation of activation qparam
