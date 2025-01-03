@@ -19,12 +19,13 @@
 #include "nnfw_util.h"
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <stdexcept>
 
 namespace onert_run
 {
-void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
+void RawFormatter::loadInputs(const std::string &prefix, std::vector<Allocation> &inputs)
 {
   uint32_t num_inputs = inputs.size();
 
@@ -39,16 +40,16 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
   {
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
-      auto bufsz = inputs[i].size();
-      std::ifstream file(filename + "." + std::to_string(i), std::ios::ate | std::ios::binary);
-      auto filesz = file.tellg();
+      const auto bufsz = inputs[i].size();
+      const auto filename = prefix + "." + std::to_string(i);
+      auto filesz = std::filesystem::file_size(filename);
       if (bufsz != filesz)
       {
         throw std::runtime_error("Input " + std::to_string(i) +
                                  " size does not match: " + std::to_string(bufsz) +
                                  " expected, but " + std::to_string(filesz) + " provided.");
       }
-      file.seekg(0, std::ios::beg);
+      std::ifstream file(filename, std::ios::in | std::ios::binary);
       file.read(reinterpret_cast<char *>(inputs[i].data()), filesz);
       file.close();
     }
@@ -60,19 +61,20 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
   }
 };
 
-void RawFormatter::dumpOutputs(const std::string &filename, const std::vector<Allocation> &outputs)
+void RawFormatter::dumpOutputs(const std::string &prefix, const std::vector<Allocation> &outputs)
 {
   uint32_t num_outputs = outputs.size();
   try
   {
     for (uint32_t i = 0; i < num_outputs; i++)
     {
-      auto bufsz = outputs[i].size();
+      const auto bufsz = outputs[i].size();
+      const auto filename = prefix + "." + std::to_string(i);
 
-      std::ofstream file(filename + "." + std::to_string(i), std::ios::out | std::ios::binary);
+      std::ofstream file(filename, std::ios::out | std::ios::binary);
       file.write(reinterpret_cast<const char *>(outputs[i].data()), bufsz);
       file.close();
-      std::cerr << filename + "." + std::to_string(i) + " is generated.\n";
+      std::cout << filename + " is generated.\n";
     }
   }
   catch (const std::runtime_error &e)
@@ -82,19 +84,20 @@ void RawFormatter::dumpOutputs(const std::string &filename, const std::vector<Al
   }
 }
 
-void RawFormatter::dumpInputs(const std::string &filename, const std::vector<Allocation> &inputs)
+void RawFormatter::dumpInputs(const std::string &prefix, const std::vector<Allocation> &inputs)
 {
   uint32_t num_inputs = inputs.size();
   try
   {
     for (uint32_t i = 0; i < num_inputs; i++)
     {
-      auto bufsz = inputs[i].size();
+      const auto bufsz = inputs[i].size();
+      const auto filename = prefix + "." + std::to_string(i);
 
-      std::ofstream file(filename + "." + std::to_string(i), std::ios::out | std::ios::binary);
+      std::ofstream file(filename, std::ios::out | std::ios::binary);
       file.write(reinterpret_cast<const char *>(inputs[i].data()), bufsz);
       file.close();
-      std::cerr << filename + "." + std::to_string(i) + " is generated.\n";
+      std::cout << filename + " is generated.\n";
     }
   }
   catch (const std::runtime_error &e)
