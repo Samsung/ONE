@@ -52,7 +52,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleReshape *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleReshape>();
-  if (cloned != nullptr)
   {
     uint32_t rank = node->newShape()->rank();
     cloned->newShape()->rank(rank);

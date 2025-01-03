@@ -31,7 +31,6 @@ luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleFullyConnected 
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleFullyConnected>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->weights_format(node->weights_format());

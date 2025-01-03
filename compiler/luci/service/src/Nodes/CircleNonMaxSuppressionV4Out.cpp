@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNode::visit(const luci::CircleNonMaxSuppressionV4Out *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleNonMaxSuppressionV4Out>();
-  if (cloned != nullptr)
-    cloned->index(node->index());
+  cloned->index(node->index());
   return cloned;
 }
 

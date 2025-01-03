@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleCast *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleCast>();
-  if (cloned != nullptr)
   {
     cloned->in_data_type(node->in_data_type());
     cloned->out_data_type(node->out_data_type());

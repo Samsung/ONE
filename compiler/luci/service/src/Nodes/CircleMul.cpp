@@ -28,8 +28,7 @@ luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMul *node)
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleMul>();
-  if (cloned != nullptr)
-    cloned->fusedActivationFunction(node->fusedActivationFunction());
+  cloned->fusedActivationFunction(node->fusedActivationFunction());
   return cloned;
 }
 

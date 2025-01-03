@@ -25,8 +25,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSoftmax *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSoftmax>();
-  if (cloned != nullptr)
-    cloned->beta(node->beta());
+  cloned->beta(node->beta());
   return cloned;
 }
 
