@@ -37,9 +37,10 @@ if (GENERATE_RUNTIME_NNAPI_TESTS)
   add_dependencies(${RUNTIME_NNAPI_TEST} generate-runtime-nnapi-tests)
 endif(GENERATE_RUNTIME_NNAPI_TESTS)
 
-set(RUNTIME_NNAPI_TEST_SRC_INC ${CMAKE_CURRENT_SOURCE_DIR}/include
-                               ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_include_directories(${RUNTIME_NNAPI_TEST} PRIVATE ${RUNTIME_NNAPI_TEST_SRC_INC})
+# Bridge between onert API and NNAPI
+add_subdirectory(bridge)
+
+target_include_directories(${RUNTIME_NNAPI_TEST} PRIVATE src)
 
 # Define NNTEST_ONLY_PUBLIC_API to avoid android dependency
 target_compile_definitions(${RUNTIME_NNAPI_TEST} PRIVATE NNTEST_ONLY_PUBLIC_API)
