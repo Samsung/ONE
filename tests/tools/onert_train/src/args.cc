@@ -101,7 +101,7 @@ void checkPackage(const std::string &package_filename)
 
 // check the value is in the valid_args list and return the corresponded enum
 template <typename T>
-T checkValidation(const std::string &arg_name, const std::vector<T> &valid_args, int value)
+T checkValidation(const std::string &arg_name, const std::vector<T> &valid_args, uint32_t value)
 {
   for (const auto arg : valid_args)
   {
@@ -271,20 +271,20 @@ void Args::Parse(const int argc, char **argv)
     }
 
     _mem_poll = _arser.get<bool>("--mem_poll");
-    _epoch = _arser.get<int>("--epoch");
+    _epoch = _arser.get<int32_t>("--epoch");
 
     if (_arser["--batch_size"])
-      _batch_size = _arser.get<int>("--batch_size");
+      _batch_size = _arser.get<int32_t>("--batch_size");
     if (_arser["--learning_rate"])
       _learning_rate = _arser.get<float>("--learning_rate");
     if (_arser["--loss"])
-      _loss_type = checkValidation("loss", valid_loss, _arser.get<int>("--loss"));
+      _loss_type = checkValidation("loss", valid_loss, _arser.get<int32_t>("--loss"));
     if (_arser["--loss_reduction_type"])
       _loss_reduction_type = checkValidation("loss_reduction_type", valid_loss_rdt,
                                              _arser.get<int>("--loss_reduction_type"));
     if (_arser["--optimizer"])
       _optimizer_type = checkValidation("optimizer", valid_optim, _arser.get<int>("--optimizer"));
-    _metric_type = _arser.get<int>("--metric");
+    _metric_type = _arser.get<int32_t>("--metric");
 
     _validation_split = _arser.get<float>("--validation_split");
     if (_validation_split < 0.f || _validation_split > 1.f)
@@ -293,7 +293,7 @@ void Args::Parse(const int argc, char **argv)
       exit(1);
     }
 
-    _verbose_level = _arser.get<int>("--verbose_level");
+    _verbose_level = _arser.get<int32_t>("--verbose_level");
 
     if (_arser["--output_sizes"])
     {
@@ -322,7 +322,7 @@ void Args::Parse(const int argc, char **argv)
     }
 
     if (_arser["--num_of_trainable_ops"])
-      _num_of_trainable_ops = _arser.get<int>("--num_of_trainable_ops");
+      _num_of_trainable_ops = _arser.get<int32_t>("--num_of_trainable_ops");
   }
   catch (const std::bad_cast &e)
   {
