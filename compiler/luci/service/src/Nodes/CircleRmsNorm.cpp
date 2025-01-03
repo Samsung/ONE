@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNode::visit(const luci::CircleRmsNorm *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleRmsNorm>();
-  if (cloned != nullptr)
   {
     cloned->epsilon(node->epsilon());
   }

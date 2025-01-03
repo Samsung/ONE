@@ -27,7 +27,6 @@ luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMaxPool2D *nod
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleMaxPool2D>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->padding(node->padding());

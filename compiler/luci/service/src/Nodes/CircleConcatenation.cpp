@@ -29,7 +29,6 @@ luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleConcatenation *
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleConcatenation>(node->numValues());
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->axis(node->axis());

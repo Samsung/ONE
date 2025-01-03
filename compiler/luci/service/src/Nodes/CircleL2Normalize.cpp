@@ -25,8 +25,7 @@ luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleL2Normalize *n
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleL2Normalize>();
-  if (cloned != nullptr)
-    cloned->fusedActivationFunction(node->fusedActivationFunction());
+  cloned->fusedActivationFunction(node->fusedActivationFunction());
   return cloned;
 }
 

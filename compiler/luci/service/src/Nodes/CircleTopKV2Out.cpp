@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNode::visit(const luci::CircleTopKV2Out *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleTopKV2Out>();
-  if (cloned != nullptr)
-    cloned->index(node->index());
+  cloned->index(node->index());
   return cloned;
 }
 

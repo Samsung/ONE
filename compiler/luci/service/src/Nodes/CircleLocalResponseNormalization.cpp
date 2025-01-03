@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleLocalResponseNormalization *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleLocalResponseNormalization>();
-  if (cloned != nullptr)
   {
     cloned->radius(node->radius());
     cloned->bias(node->bias());

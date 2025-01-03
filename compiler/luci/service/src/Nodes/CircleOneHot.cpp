@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleOneHot *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleOneHot>();
-  if (cloned != nullptr)
-    cloned->axis(node->axis());
+  cloned->axis(node->axis());
   return cloned;
 }
 

@@ -29,8 +29,7 @@ luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleDiv *node)
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleDiv>();
-  if (cloned != nullptr)
-    cloned->fusedActivationFunction(node->fusedActivationFunction());
+  cloned->fusedActivationFunction(node->fusedActivationFunction());
   return cloned;
 }
 

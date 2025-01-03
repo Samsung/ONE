@@ -25,7 +25,6 @@ luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleUnidirectional
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleUnidirectionalSequenceLSTM>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->cell_clip(node->cell_clip());

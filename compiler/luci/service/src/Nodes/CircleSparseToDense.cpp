@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSparseToDense *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSparseToDense>();
-  if (cloned != nullptr)
-    cloned->validate_indices(node->validate_indices());
+  cloned->validate_indices(node->validate_indices());
   return cloned;
 }
 

@@ -25,7 +25,6 @@ luci::CircleNode *CloneNode::visit(const luci::CircleBCQFullyConnected *node)
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleBCQFullyConnected>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->weights_hidden_size(node->weights_hidden_size());
