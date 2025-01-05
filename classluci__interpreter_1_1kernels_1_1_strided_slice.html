@@ -299,7 +299,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   44</span>  assert(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_strided_slice.html#a2b192307d577b7e4ed66285b02e77b1c">begin</a>()-&gt;element_type() == DataType::S32);</div>
 <div class="line"><span class="lineno">   45</span>  assert(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_strided_slice.html#aecad3672e66024c52cfa6b4e7a25a79b">end</a>()-&gt;element_type() == DataType::S32);</div>
 <div class="line"><span class="lineno">   46</span>  assert(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_strided_slice.html#aaa86c997b4ddd03f2682f5c6ae96f857">strides</a>()-&gt;element_type() == DataType::S32);</div>
-<div class="line"><span class="lineno">   47</span>  assert(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_strided_slice.html#ae18ee9367d64879e36fc3b02ee239838">input</a>()-&gt;shape().num_dims() &lt;= 4);</div>
+<div class="line"><span class="lineno">   47</span>  assert(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_strided_slice.html#ae18ee9367d64879e36fc3b02ee239838">input</a>()-&gt;shape().num_dims() &lt;= 5);</div>
 <div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci__interpreter_1_1_kernel_with_params.html#aa20ab0316772ae7b0a607e2d43ce5eb6">params</a>().ellipsis_mask != 0)</div>
 <div class="line"><span class="lineno">   49</span>  {</div>
 <div class="line"><span class="lineno">   50</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;ellipsis_mask is not implemented yet.&quot;</span>);</div>

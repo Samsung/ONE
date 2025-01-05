@@ -394,8 +394,8 @@ $(document).ready(function(){initNavTree('_artifact_model_8h_source.html',''); i
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno"><a class="line" href="classnnc_1_1_artifact_variable.html#a4bc05097d9bf52b906b5d5e72fea4ed8">  328</a></span>  <a class="code hl_function" href="classnnc_1_1_artifact_variable.html#a4bc05097d9bf52b906b5d5e72fea4ed8">ArtifactVariable</a>(std::string type_name, std::string var_name,</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>                   std::list&lt;std::shared_ptr&lt;ArtifactExpr&gt;&gt; dimensions = {},</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                   std::list&lt;std::shared_ptr&lt;ArtifactExpr&gt;&gt; initializers = {})</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    : _typeName(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(type_name)), _dimensions(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(dimensions)),</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>      _initializers(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(initializers)), ArtifactNamed(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(var_name))</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    : ArtifactNamed(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(var_name)), _typeName(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(type_name)),</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>      _dimensions(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(dimensions)), _initializers(<a class="code hl_namespace" href="namespacestd.html">std</a>::move(initializers))</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  {</div>
 <div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  }</div>
 </div>

@@ -92,55 +92,48 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
   <div class="headertitle"><div class="title">How to Build Compiler</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This document is based on the system where Ubuntu Desktop Linux 18.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment. As of now, to build in 16.04, please use gcc 7.x or above.</p>
+<div class="textblock"><p>This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For example, Ubuntu Desktop Linux 18.04 LTS environment is also supported but some additional steps may be required.</p>
 <h1>Build Requires</h1>
 <p>If you are going to build this project, the following modules must be installed on your system:</p>
 <ul>
 <li>CMake</li>
-<li>Boost C++ libraries</li>
+<li>GNU C/C++ compiler (gcc, g++)</li>
 </ul>
 <p>In the Ubuntu, you can easily install it with the following command.</p>
-<div class="fragment"><div class="line">$ sudo apt-get install cmake libboost-all-dev</div>
-</div><!-- fragment --><p>If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in the <a href="https://github.com/Samsung/ONE/blob/master/infra/docker/Dockerfile.1804">https://github.com/Samsung/ONE/blob/master/infra/docker/Dockerfile.1804</a> file.</p>
+<div class="fragment"><div class="line">$ sudo apt-get install cmake gcc g++</div>
+</div><!-- fragment --><p>If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in the <a href="https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile">https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile</a> file.</p>
 <p>Here is a summary of it</p>
 <div class="fragment"><div class="line">$ sudo apt-get install \</div>
 <div class="line">build-essential \</div>
-<div class="line">clang-format-8 \</div>
 <div class="line">cmake \</div>
-<div class="line">doxygen \</div>
 <div class="line">git \</div>
-<div class="line">hdf5-tools \</div>
-<div class="line">lcov \</div>
-<div class="line">libatlas-base-dev \</div>
 <div class="line">libboost-all-dev \</div>
 <div class="line">libgflags-dev \</div>
 <div class="line">libgoogle-glog-dev \</div>
-<div class="line">libgtest-dev \</div>
+<div class="line">libatlas-base-dev \</div>
 <div class="line">libhdf5-dev \</div>
 <div class="line">libprotobuf-dev \</div>
 <div class="line">protobuf-compiler \</div>
-<div class="line">pylint \</div>
+<div class="line">wget \</div>
+<div class="line">zip \</div>
+<div class="line">unzip \</div>
 <div class="line">python3 \</div>
 <div class="line">python3-pip \</div>
 <div class="line">python3-venv \</div>
-<div class="line">scons \</div>
-<div class="line">software-properties-common \</div>
-<div class="line">unzip \</div>
-<div class="line">wget</div>
-<div class="line"> </div>
-<div class="line">$ mkdir /tmp/gtest</div>
-<div class="line">$ cd /tmp/gtest</div>
-<div class="line">$ cmake /usr/src/gtest</div>
-<div class="line">$ make</div>
-<div class="line">$ sudo mv *.a /usr/lib</div>
-<div class="line"> </div>
-<div class="line">$ pip install yapf==0.40.2 numpy</div>
-</div><!-- fragment --><p>Additional install python3.8 if you are using Ubuntu 18.04. </p><div class="fragment"><div class="line">$ sudo apt-get install \</div>
-<div class="line">python3.8 \</div>
-<div class="line">python3.8-dev \</div>
-<div class="line">python3.8-venv</div>
-</div><!-- fragment --><p>If you get <code>Unable to locate package clang-format-8</code> then just use <code>clang-format</code>.</p>
-<h1>Build for Ubuntu</h1>
+<div class="line">python3-dev \</div>
+<div class="line">hdf5-tools \</div>
+<div class="line">curl</div>
+<div class="line">$ pip install numpy flatbuffers</div>
+</div><!-- fragment --><p>If you are using python3.12 or upper (ex. Ubuntu 24.04), or python 3.6 or under (ex. Ubuntu 18.04), as there is no TensorFlow2.12.1 package for python version, build may fail. Please install python3.8-venv additionally.</p>
+<p>Additional install python3.8 if you are using Ubuntu 18.04 </p><div class="fragment"><div class="line">$ sudo apt-get install python3.8 python3.8-dev python3.8-venv</div>
+</div><!-- fragment --><p>Additional install python 3.8 if you are using Ubuntu 24.04 </p><div class="fragment"><div class="line">$ sudo apt-get install software-properties-common</div>
+<div class="line">$ sudo add-apt-repository ppa:deadsnakes/ppa</div>
+<div class="line">$ sudo apt-get update &amp;&amp; sudo apt-get install python3.8 python3.8-dev python3.8-venv</div>
+</div><!-- fragment --><p>Additional install libtsan_preinit.o manually if you are using Ubuntu 20.04 and gcc-9 (refer <a href="https://github.com/Samsung/ONE/issues/11202">https://github.com/Samsung/ONE/issues/11202</a>) </p><div class="fragment"><div class="line">$ apt-get download libgcc-10-dev</div>
+<div class="line">$ dpkg -x libgcc-10-dev_*_amd64.deb libgcc/</div>
+<div class="line">$ sudo cp -f libgcc/usr/lib/gcc/x86_64-linux-gnu/10/libtsan_preinit.o /usr/lib/gcc/x86_64-linux-gnu/9/</div>
+<div class="line">$ rm -rf libgcc-10-dev_*_amd64.deb libgcc/</div>
+</div><!-- fragment --><h1>Build for Ubuntu</h1>
 <p>In a typical linux development environment, including Ubuntu, you can build the compiler with a simple command like this:</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
 <div class="line">$ cd one</div>
@@ -153,13 +146,11 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
 <h2>Build for debug and release separately</h2>
 <p>Build target folder can be customized by <code>NNCC_WORKSPACE</code> environment, as we may want to separate debug and release builds.</p>
 <div class="fragment"><div class="line">$ NNCC_WORKSPACE=build/debug ./nncc configure</div>
-<div class="line">$ ./nncc build</div>
+<div class="line">$ NNCC_WORKSPACE=build/debug ./nncc build</div>
 </div><!-- fragment --><p> will build debug version in <code>build/debug</code> folder, and</p>
 <div class="fragment"><div class="line">$ NNCC_WORKSPACE=build/release ./nncc configure -DCMAKE_BUILD_TYPE=Release</div>
-<div class="line">$ ./nncc build</div>
+<div class="line">$ NNCC_WORKSPACE=build/release ./nncc build</div>
 </div><!-- fragment --><p> will build release version in <code>build/release</code> folder.</p>
-<h2>Trouble shooting</h2>
-<p>If you are using python3.8, as there is no TensorFlow1.13.2 package for python3.8, build may fail. Please install python3.7 or lower versions as default python3.</p>
 <h1>Build for Windows</h1>
 <p>To build for Windows, we use MinGW(Minimalist GNU for Windows). <a href="https://github.com/git-for-windows/build-extra/releases">Here</a> you can download a tool that includes it.</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
