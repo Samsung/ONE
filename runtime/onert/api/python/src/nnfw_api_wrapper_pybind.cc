@@ -18,6 +18,8 @@
 
 namespace py = pybind11;
 
+using namespace onert::api::python;
+
 PYBIND11_MODULE(libnnfw_api_pybind, m)
 {
   m.doc() = "nnfw python plugin";
