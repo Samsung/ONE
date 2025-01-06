@@ -52,12 +52,23 @@ try:
 
     # copy *py files to package_directory
     PY_DIR = os.path.join(THIS_FILE_DIR, '../../../runtime/onert/api/python/package')
-    for py_file in os.listdir(PY_DIR):
-        if py_file.endswith(".py"):
-            src_path = os.path.join(PY_DIR, py_file)
-            dest_path = os.path.join(THIS_FILE_DIR, package_directory)
-            shutil.copy(src_path, dest_path)
-            print(f"Copied '{src_path}' to '{dest_path}'")
+    for root, dirs, files in os.walk(PY_DIR):
+        # Calculate the relative path from the source directory
+        rel_path = os.path.relpath(root, PY_DIR)
+        dest_dir = os.path.join(THIS_FILE_DIR, package_directory)
+        dest_sub_dir = os.path.join(dest_dir, rel_path)
+        print(f"dest_sub_dir '{dest_sub_dir}'")
+
+        # Ensure the corresponding destination subdirectory exists
+        os.makedirs(dest_sub_dir, exist_ok=True)
+
+        # Copy only .py files
+        for py_file in files:
+            if py_file.endswith(".py"):
+                src_path = os.path.join(root, py_file)
+                # dest_path = os.path.join(THIS_FILE_DIR, package_directory)
+                shutil.copy(src_path, dest_sub_dir)
+                print(f"Copied '{src_path}' to '{dest_sub_dir}'")
 
     # remove architecture directory
     if os.path.exists(package_directory):
@@ -136,12 +147,12 @@ except Exception as e:
 # copy .so files to architecture directories
 
 setup(name=package_name,
-      version='0.1.0',
+      version='0.2.0',
       description='onert API binding',
       long_description='It provides onert Python api',
       url='https://github.com/Samsung/ONE',
       license='Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, Mozilla Public License 2.0',
       has_ext_modules=lambda: True,
-      packages=[package_directory],
+      packages=find_packages(),
       package_data={package_directory: so_list},
       install_requires=['numpy >= 1.19'])

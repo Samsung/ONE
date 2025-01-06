@@ -1,6 +1,9 @@
 from onert import infer
 import sys
 
+# from onert.native import libnnfw_api_pybind
+# print(dir(libnnfw_api_pybind))
+
 
 def main(nnpackage_path, backends="cpu"):
     # Create session and load nnpackage
