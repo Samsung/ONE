@@ -22,6 +22,7 @@
 #include <iomanip>
 #include <ostream>
 #include <sstream>
+#include <tuple>
 
 namespace onert
 {
@@ -45,6 +46,9 @@ using ModelIndex = ::onert::util::Index<uint16_t, ModelIndexTag>;
 
 struct OriginIndexTag;
 using OriginIndex = ::onert::util::Index<uint32_t, OriginIndexTag>;
+
+using IODesc = std::tuple<ModelIndex, SubgraphIndex, IOIndex>;
+using OperationDesc = std::tuple<ir::ModelIndex, ir::SubgraphIndex, ir::OperationIndex>;
 
 template <typename IndexType>
 std::ostream &_index_print_impl(std::ostream &o, const std::string &prefix, IndexType index)
@@ -86,7 +90,43 @@ inline std::ostream &operator<<(std::ostream &o, const OriginIndex &i)
 {
   return _index_print_impl(o, "", i);
 }
+
+inline std::ostream &operator<<(std::ostream &o, const IODesc &od)
+{
+  o << std::get<0>(od).value() << ":" << std::get<1>(od).value() << ":" << std::get<2>(od).value();
+  return o;
+}
+
+inline std::ostream &operator<<(std::ostream &o, const OperationDesc &od)
+{
+  o << std::get<0>(od).value() << ":" << std::get<1>(od).value() << ":" << std::get<2>(od).value();
+  return o;
+}
+
 } // namespace ir
 } // namespace onert
+
+namespace std
+{
+
+template <> struct hash<onert::ir::IODesc>
+{
+  size_t operator()(const ::onert::ir::IODesc &iodesc) const noexcept
+  {
+    return (std::get<0>(iodesc).value() << 24) | (std::get<1>(iodesc).value() << 16) |
+           std::get<2>(iodesc).value();
+  }
+};
+
+template <> struct hash<onert::ir::OperationDesc>
+{
+  size_t operator()(const ::onert::ir::OperationDesc &opdesc) const noexcept
+  {
+    return (std::get<0>(opdesc).value() << 24) | (std::get<1>(opdesc).value() << 16) |
+           std::get<2>(opdesc).value();
+  }
+};
+
+} // namespace std
 
 #endif // __ONERT_IR_INDEX_H__

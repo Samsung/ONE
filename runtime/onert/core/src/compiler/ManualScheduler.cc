@@ -30,8 +30,9 @@ namespace compiler
 {
 
 ManualScheduler::ManualScheduler(const std::vector<const backend::Backend *> &backends,
-                                 const compiler::CompilerOptions &options)
-  : _backends{backends}, _options{options}
+                                 const compiler::CompilerOptions &options,
+                                 const ir::ModelIndex &modelIdx, const ir::SubgraphIndex &subgIdx)
+  : _backends{backends}, _options{options}, _model_index{modelIdx}, _subg_index{subgIdx}
 {
 }
 
@@ -55,6 +56,8 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
 
   // 1. Backend for All operations
   const backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all, fallback);
+  if (manual_options.model_to_backend.count(_model_index) > 0)
+    backend_all = resolveBackend(manual_options.model_to_backend.at(_model_index), fallback);
   VERBOSE(ManualScheduler) << "Default backend for all ops: " << backend_all->config()->id()
                            << std::endl;
 
@@ -84,8 +87,9 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   {
     try
     {
-      graph.operations().at(key); // Check if exist, or this will throw
-      backend_resolver->setBackend(key, BackendManager::get().get(val));
+      auto op_index = std::get<ir::OperationIndex>(key);
+      graph.operations().at(op_index); // Check if exist, or this will throw
+      backend_resolver->setBackend(op_index, BackendManager::get().get(val));
     }
     catch (...)
     {

@@ -127,7 +127,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, *_options);
+        std::make_unique<compiler::LoweredGraph>(subg, *_options, model_index, subg_index);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
