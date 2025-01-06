@@ -1,4 +1,4 @@
-from ...native.libnnfw_api_pybind import loss_reduction
+from onert.native.libnnfw_api_pybind import loss_reduction
 
 
 class LossFunction:

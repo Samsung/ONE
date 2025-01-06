@@ -1,7 +1,7 @@
 # import sys
 import argparse
 import numpy as np
-from onert.train import session, DataLoader, optimizer, losses, metrics
+from onert.experimental.train import session, DataLoader, optimizer, losses, metrics
 
 
 def initParse():

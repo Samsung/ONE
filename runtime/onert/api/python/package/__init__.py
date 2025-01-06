@@ -10,6 +10,5 @@ from . import infer as infer
 # Import and expose tensorinfo
 from .infer import tensorinfo as tensorinfo
 
-# Import and expose the train module's functionalities
-# from . import train
-from . import train
+# Import and expose the experimental module's functionalities
+from . import experimental

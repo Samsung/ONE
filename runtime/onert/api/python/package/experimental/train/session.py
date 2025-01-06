@@ -1,9 +1,9 @@
 import numpy as np
 
-from ..native import libnnfw_api_pybind
-from ..native.libnnfw_api_pybind import optimizer as optimizer_type
-from ..native.libnnfw_api_pybind import loss as loss_type
-from ..common.basesession import BaseSession
+from onert.native import libnnfw_api_pybind
+from onert.native.libnnfw_api_pybind import optimizer as optimizer_type
+from onert.native.libnnfw_api_pybind import loss as loss_type
+from onert.common.basesession import BaseSession
 from .metrics.registry import MetricsRegistry
 from .losses import CategoricalCrossentropy, MeanSquaredError
 from .optimizer import Adam, SGD

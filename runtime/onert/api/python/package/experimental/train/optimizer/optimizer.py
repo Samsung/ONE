@@ -1,4 +1,4 @@
-from ...native.libnnfw_api_pybind import trainable_ops
+from onert.native.libnnfw_api_pybind import trainable_ops
 
 
 class Optimizer:
