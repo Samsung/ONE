@@ -131,6 +131,7 @@ public:
 
   void close_session();
   void set_input_tensorinfo(uint32_t index, const tensorinfo *tensor_info);
+  void prepare();
   void run();
   void run_async();
   void wait();
