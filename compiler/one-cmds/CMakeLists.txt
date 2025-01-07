@@ -2,18 +2,43 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
+#   Ubuntu24.04; explicitly installed python3.8 (default is python3.12)
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+if(CMAKE_VERSION VERSION_LESS 3.12)
+  find_package(PythonInterp 3.8 QUIET)
+  find_package(PythonLibs 3.8 QUIET)
 
-if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
-  return()
-endif()
+  if(NOT ${PYTHONINTERP_FOUND})
+    message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
+    return()
+  endif()
 
-if(${PYTHON_VERSION_MINOR} LESS 8)
-  message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
-  return()
+  if(${PYTHON_VERSION_MINOR} LESS 8)
+    message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
+    return()
+  endif()
+else()
+  find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+  if(NOT Python_FOUND)
+    find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+  endif()
+
+  # tensorflow 2.12.1 supports Python 3.8 ~ 3.11
+  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
+    message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
+    return()
+  endif()
+  if(Python_VERSION VERSION_LESS 3.8)
+    message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
+    return()
+  endif()
+
+  if(NOT Python_Interpreter_FOUND)
+    message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
+    return()
+  endif()
+
+  set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
 
 # NOTE these files should not have extensions.
@@ -46,9 +71,13 @@ else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
     # NOTE copy one-prepare-venv.u1804 as build/../one-prepare-venv
     #      and install build/../one-prepare-venv file
     list(APPEND ONE_COMMAND_FILES one-prepare-venv.u1804)
-  else(ONE_UBUNTU_CODENAME_BIONIC)
+  elseif(ONE_UBUNTU_CODENAME_NOBLE)
+    # NOTE copy one-prepare-venv.u2404 as build/../one-prepare-venv
+    #      and install build/../one-prepare-venv file
+    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2404)
+  else()
     list(APPEND ONE_COMMAND_FILES one-prepare-venv)
-  endif(ONE_UBUNTU_CODENAME_BIONIC)
+  endif()
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 # pytorch importer is an experimental feature, it is not used in default configuration
@@ -78,7 +107,7 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
+
 endforeach(ONE_COMMAND)
 
 set(ONE_UTILITY_FILES
