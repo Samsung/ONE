@@ -15,7 +15,7 @@ class BaseSession:
     """
     Base class providing common functionality for inference and training sessions.
     """
-    def __init__(self, backend_session):
+    def __init__(self, backend_session=None):
         """
         Initialize the BaseSession with a backend session.
         Args:
@@ -33,7 +33,24 @@ class BaseSession:
         Returns:
             The attribute or method from the bound NNFW_SESSION instance.
         """
-        return getattr(self.session, name)
+        if name in self.__dict__:
+            # First, try to get the attribute from the instance's own dictionary
+            return self.__dict__[name]
+        elif hasattr(self.session, name):
+            # If not found, delegate to the session object
+            return getattr(self.session, name)
+        else:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{name}'")
+
+    def _recreate_session(self, backend_session):
+        """
+        Protected method to recreate the session.
+        Subclasses can override this method to provide custom session recreation logic.
+        """
+        if self.session is not None:
+            del self.session  # Clean up the existing session
+        self.session = backend_session
 
     def set_inputs(self, size, inputs_array=[]):
         """
