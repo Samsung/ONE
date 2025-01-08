@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,23 @@
  * limitations under the License.
  */
 
+#include "nnfw_session_bindings.h"
+
 #include "nnfw_api_wrapper.h"
+
+namespace onert
+{
+namespace api
+{
+namespace python
+{
 
 namespace py = pybind11;
 
-using namespace onert::api::python;
-
-PYBIND11_MODULE(libnnfw_api_pybind, m)
+// Bind the `NNFW_SESSION` class with common inference APIs
+void bind_nnfw_session(py::module_ &m)
 {
-  m.doc() = "nnfw python plugin";
-
-  py::class_<tensorinfo>(m, "tensorinfo", "tensorinfo describes the type and shape of tensors")
-    .def(py::init<>(), "The constructor of tensorinfo")
-    .def_readwrite("dtype", &tensorinfo::dtype, "The data type")
-    .def_readwrite("rank", &tensorinfo::rank, "The number of dimensions (rank)")
-    .def_property(
-      "dims", [](const tensorinfo &ti) { return get_dims(ti); },
-      [](tensorinfo &ti, const py::list &dims_list) { set_dims(ti, dims_list); },
-      "The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK).");
-
-  py::class_<NNFW_SESSION>(m, "nnfw_session")
+  py::class_<NNFW_SESSION>(m, "nnfw_session", py::module_local())
     .def(
       py::init<const char *, const char *>(), py::arg("package_file_path"), py::arg("backends"),
       "Create a new session instance, load model from nnpackage file or directory, "
@@ -50,6 +47,7 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
          "Parameters:\n"
          "\tindex (int): Index of input to be set (0-indexed)\n"
          "\ttensor_info (tensorinfo): Tensor info to be set")
+    .def("prepare", &NNFW_SESSION::prepare, "Prepare for inference")
     .def("run", &NNFW_SESSION::run, "Run inference")
     .def("run_async", &NNFW_SESSION::run_async, "Run inference asynchronously")
     .def("wait", &NNFW_SESSION::wait, "Wait for asynchronous run to finish")
@@ -226,3 +224,7 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
          "Returns:\n"
          "\ttensorinfo: Tensor info (shape, type, etc)");
 }
+
+} // namespace python
+} // namespace api
+} // namespace onert
