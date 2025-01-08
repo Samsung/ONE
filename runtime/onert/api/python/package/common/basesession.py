@@ -59,6 +59,10 @@ class BaseSession:
             size (int): Number of input tensors.
             inputs_array (list): List of numpy arrays for the input data.
         """
+        if self.session is None:
+            raise ValueError(
+                "Session is not initialized with a model. Please compile with a model before setting inputs."
+            )
         for i in range(size):
             input_tensorinfo = self.session.input_tensorinfo(i)
 
@@ -80,6 +84,10 @@ class BaseSession:
         Args:
             size (int): Number of output tensors.
         """
+        if self.session is None:
+            raise ValueError(
+                "Session is not initialized with a model. Please compile a model before setting outputs."
+            )
         for i in range(size):
             output_tensorinfo = self.session.output_tensorinfo(i)
             output_array = np.zeros((num_elems(output_tensorinfo)),
