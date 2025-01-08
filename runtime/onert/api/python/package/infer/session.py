@@ -6,34 +6,32 @@ class session(BaseSession):
     """
     Class for inference using nnfw_session.
     """
-    def __init__(self, nnpackage_path: str = None, backends: str = "cpu"):
+    def __init__(self, path: str = None, backends: str = "cpu"):
         """
         Initialize the inference session.
         Args:
-            nnpackage_path (str): Path to the nnpackage file or directory.
+            path (str): Path to the model file or nnpackage directory.
             backends (str): Backends to use, default is "cpu".
         """
-        if nnpackage_path is not None:
-            super().__init__(
-                libnnfw_api_pybind.infer.nnfw_session(nnpackage_path, backends))
+        if path is not None:
+            super().__init__(libnnfw_api_pybind.infer.nnfw_session(path, backends))
             self.session.prepare()
             self.set_outputs(self.session.output_size())
         else:
             super().__init__()
 
-    def compile(self, nnpackage_path: str, backends: str = "cpu"):
+    def compile(self, path: str, backends: str = "cpu"):
         """
         Prepare the session by recreating it with new parameters.
         Args:
-            nnpackage_path (str): Path to the nnpackage file or directory. Defaults to the existing path.
+            path (str): Path to the model file or nnpackage directory. Defaults to the existing path.
             backends (str): Backends to use. Defaults to the existing backends.
         """
         # Update parameters if provided
-        if nnpackage_path is None:
-            raise ValueError("nnpackage_path must not be None.")
+        if path is None:
+            raise ValueError("path must not be None.")
         # Recreate the session with updated parameters
-        self._recreate_session(
-            libnnfw_api_pybind.infer.nnfw_session(nnpackage_path, backends))
+        self._recreate_session(libnnfw_api_pybind.infer.nnfw_session(path, backends))
         # Prepare the new session
         self.session.prepare()
         self.set_outputs(self.session.output_size())
