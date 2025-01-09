@@ -68,9 +68,9 @@ std::string genQuantizedModelPathFromModelPath(const std::string &model_path,
       return model_path.substr(0, extension_pos) + "_quantized_q8wo.circle";
     case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
       return model_path.substr(0, extension_pos) + "_quantized_q16wo.circle";
+    default:
+      throw std::runtime_error{"Invalid quantization type"};
   }
-
-  throw std::runtime_error{"Invalid quantization type"};
 }
 
 std::string genQuantizedModelPathFromPackagePath(const std::string &package_path,
@@ -95,9 +95,9 @@ std::string genQuantizedModelPathFromPackagePath(const std::string &package_path
       return package_path_without_slash + "/" + package_name + "_quantized_q8wo.circle";
     case NNFW_QUANTIZE_TYPE_WO_I16_SYM:
       return package_path_without_slash + "/" + package_name + "_quantized_q16wo.circle";
+    default:
+      throw std::runtime_error{"Invalid quantization type"};
   }
-
-  throw std::runtime_error{"Invalid quantization type"};
 }
 
 int main(const int argc, char **argv)
@@ -121,7 +121,7 @@ int main(const int argc, char **argv)
 #endif
 
     // TODO Apply verbose level to phases
-    const int verbose = args.getVerboseLevel();
+    const auto verbose = args.getVerboseLevel();
     benchmark::Phases phases(
       benchmark::PhaseOption{args.getMemoryPoll(), args.getGpuMemoryPoll(), args.getRunDelay()});
 
@@ -131,8 +131,7 @@ int main(const int argc, char **argv)
     // ModelLoad
     phases.run("MODEL_LOAD", [&](const benchmark::Phase &, uint32_t) {
       if (args.useSingleModel())
-        NNPR_ENSURE_STATUS(
-          nnfw_load_model_from_modelfile(session, args.getModelFilename().c_str()));
+        NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getModelFilename().c_str()));
       else
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
@@ -189,7 +188,7 @@ int main(const int argc, char **argv)
 
         auto random_generator = RandomGenerator();
         nnfw_set_execute_config(session, NNFW_RUN_CONFIG_DUMP_MINMAX, nullptr);
-        for (uint32_t i = 0; i < args.getMinmaxRuns(); i++)
+        for (int32_t i = 0; i < args.getMinmaxRuns(); i++)
         {
           random_generator.generate(inputs);
           NNPR_ENSURE_STATUS(nnfw_run(session));
@@ -267,7 +266,7 @@ int main(const int argc, char **argv)
         {
           auto &shape = found->second;
           bool set_input = false;
-          if (ti.rank != shape.size())
+          if (ti.rank != static_cast<int32_t>(shape.size()))
           {
             set_input = true;
           }
@@ -286,7 +285,7 @@ int main(const int argc, char **argv)
           if (set_input)
           {
             ti.rank = shape.size();
-            for (int i = 0; i < ti.rank; i++)
+            for (int32_t i = 0; i < ti.rank; i++)
               ti.dims[i] = shape.at(i);
             NNPR_ENSURE_STATUS(nnfw_set_input_tensorinfo(session, i, &ti));
           }
@@ -454,7 +453,7 @@ int main(const int argc, char **argv)
         else
         {
           TensorShape shape;
-          for (uint32_t j = 0; j < ti.rank; j++)
+          for (int32_t j = 0; j < ti.rank; j++)
             shape.emplace_back(ti.dims[j]);
 
           output_shapes.emplace_back(shape);

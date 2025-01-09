@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleUnique *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleUnique>();
-  if (cloned != nullptr)
-    cloned->idx_out_type(node->idx_out_type());
+  cloned->idx_out_type(node->idx_out_type());
   return cloned;
 }
 

@@ -119,6 +119,51 @@ luci::CircleQuantize *create_quantize_op(luci::CircleNode *node)
 namespace luci
 {
 
+// Add Quantize Op before Transpose
+//
+// Before
+//
+//     [Node] s16
+//        |
+//  [Transpose] u8
+//
+// After
+//
+//     [Node] s16
+//        |
+//   [Quantize] s16->u8
+//        |
+//  [Transpose] u8
+void InsertQuantizeOpOnDTypeMismatch::visit(luci::CircleTranspose *node)
+{
+  auto input = loco::must_cast<luci::CircleNode *>(node->a());
+
+  // Input dtype == Output dtype. No problem
+  if (input->dtype() == node->dtype())
+    return;
+
+  // Only cares quantized case
+  if (not is_quantized(input))
+    return;
+
+  if (not is_quantized(node))
+    return;
+
+  // Let's support limited case
+  // TODO Extend this to another dtype
+  if (input->dtype() != loco::DataType::S16)
+    return;
+
+  if (node->dtype() != loco::DataType::U8)
+    return;
+
+  // Create Quantize Op
+  auto quant_op = create_quantize_op(node);
+  quant_op->input(input);
+
+  node->a(quant_op);
+}
+
 void InsertQuantizeOpOnDTypeMismatch::visit(luci::CircleFullyConnected *node)
 {
   auto input = loco::must_cast<luci::CircleNode *>(node->input());

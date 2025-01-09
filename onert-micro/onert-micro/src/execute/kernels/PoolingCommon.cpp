@@ -28,7 +28,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::execute::execute_pooling_common(
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_pooling_common(
   const OMExecuteArgs &execute_args,
   const std::function<OMStatus(const core::Pool2DParams &, const core::OMRuntimeShape &,
                                const float *, const core::OMRuntimeShape &, float *)> &f_float,
@@ -135,3 +140,6 @@ OMStatus onert_micro::execute::execute_pooling_common(
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

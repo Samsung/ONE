@@ -34,7 +34,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleSoftmax(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleSoftmax(const OMConfigureArgs &config_args)
 {
   const circle::Tensor *input;
   const circle::Tensor *output;
@@ -81,3 +86,6 @@ OMStatus onert_micro::import::configure_kernel_CircleSoftmax(const OMConfigureAr
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

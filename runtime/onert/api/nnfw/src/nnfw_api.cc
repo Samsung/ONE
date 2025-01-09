@@ -55,59 +55,26 @@ STATIC_ASSERT_ENUM_CHECK(NNFW_INFO_ID_VERSION, 0);
       return NNFW_STATUS_UNEXPECTED_NULL; \
   } while (0)
 
-/*
- * Create a new session instance
- *
- * @param session the session to be created
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_create_session(nnfw_session **session) { return nnfw_session::create(session); }
 
-/*
- * Close a session instance
- *
- * @param session the session to be closed
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_close_session(nnfw_session *session)
 {
   delete session;
   return NNFW_STATUS_NO_ERROR;
 }
 
-/*
- * Load model from nnpackage file or directory
- *
- * @param session nnfw_session loading the given nnpackage file/dir
- * @param package_file_path path to the nnpackage file or unzipped directory to be loaded
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
-NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *pacakge_file_path)
+NNFW_STATUS nnfw_load_model_from_file(nnfw_session *session, const char *path)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
-  return session->load_model_from_nnpackage(pacakge_file_path);
+  return session->load_model_from_path(path);
 }
 
-/*
- * Prepare session to be ready for inference
- * This phase may finalize model compilation, scheduling, and additional settings.
- *
- * @param session the session to be prepared
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_prepare(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->prepare();
 }
 
-/*
- * Run inference
- *
- * @param session the session to run inference
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_run(nnfw_session *session)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
@@ -126,36 +93,12 @@ NNFW_STATUS nnfw_await(nnfw_session *session)
   return session->await();
 }
 
-/*
- * Set input
- *
- * @param session session to the input is to be set
- * @param index index of input to be set (0-indexed)
- * @param type type of the input
- * @param buffer raw buffer for input
- * @param length size of bytes of input
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
-
 NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type,
                            const void *buffer, size_t length)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_input(index, type, buffer, length);
 }
-
-/*
- * Set output
- *
- * @param session session from inference output is to be extracted
- * @param index index of output to be set (0-indexed)
- * @param type type of the output
- * @param buffer raw buffer for output
- * @param length size of bytes of output
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 
 NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type, void *buffer,
                             size_t length)
@@ -164,76 +107,30 @@ NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE typ
   return session->set_output(index, type, buffer, length);
 }
 
-/*
- * Get the number of inputs
- *
- * @param[in] session session from input information is to be extracted
- * @param[out] number variable which the number of inputs is put into
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
-
 NNFW_STATUS nnfw_input_size(nnfw_session *session, uint32_t *number)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->input_size(number);
 }
 
-/*
- * Get the number of outputs
- *
- * @param[in] session session from output information is to be extracted
- * @param[out] number variable which the number of outputs is put into
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->output_size(number);
 }
 
-/*
- * Set the layout of an input
- * @note The input that does not call this has NNFW_LAYOUT_CHANNELS_LAST layout
- *
- * @param[in] session session from inference input is to be extracted
- * @param[in] index   index of input to be set (0-indexed)
- * @param[in] layout  layout to set to target input
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_input_layout(index, layout);
 }
 
-/*
- * Set the layout of an output
- * @note The output that does not call this has NNFW_LAYOUT_CHANNELS_LAST layout
- *
- * @param[in] session session from inference output is to be extracted
- * @param[in] index   index of output to be set (0-indexed)
- * @param[in] layout  layout to set to target output
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_output_layout(index, layout);
 }
 
-/*
- * Get i-th input tensor info
- *
- * @param[in] session session from input information is to be extracted
- * @param[in] index index of input
- * @param[out] tensor_info nnfw_tensor_info
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
                                   nnfw_tensorinfo *tensor_info)
 {
@@ -241,15 +138,6 @@ NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
   return session->input_tensorinfo(index, tensor_info);
 }
 
-/*
- * Get i-th output tensor info
- *
- * @param[in] session session from output information is to be extracted
- * @param[in] index index of output
- * @param[out] tensor_info nnfw_tensor_info
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_output_tensorinfo(nnfw_session *session, uint32_t index,
                                    nnfw_tensorinfo *tensor_info)
 {
@@ -257,13 +145,6 @@ NNFW_STATUS nnfw_output_tensorinfo(nnfw_session *session, uint32_t index,
   return session->output_tensorinfo(index, tensor_info);
 }
 
-/*
- * Register custom operation
- * @param session session to register this operation
- * @param id operation id
- * @param info registration info ( eval function, etc. )
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_register_custom_op_info(nnfw_session *session, const char *id,
                                          custom_kernel_registration_info *info)
 {
@@ -283,41 +164,17 @@ NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
   return session->set_input_tensorinfo(index, tensor_info);
 }
 
-/*
- * Set available backends
- *
- * @param[in] session session to which a avilable backends are set
- * @param[in] backends available backends on which nnfw uses
- */
 NNFW_STATUS nnfw_set_available_backends(nnfw_session *session, const char *backends)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_available_backends(backends);
 }
 
-/**
- * Set the operation's backend
- *
- * @param[in] session session to be modified
- * @param[in] op operation to be set
- * @param[in] backend bakcend on which operation run
- *
- * @return NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_set_op_backend(nnfw_session *, const char *, const char *)
 {
   return nnfw_session::deprecated("nnfw_set_op_backend: Deprecated");
 }
 
-/*
- * Retrieve uint32 type of nnfw information for given information ID.
- *
- * @param[in] session session to be queried on
- * @param[in] information ID to be queried
- * @param[out] val uint32 value to be returned
- *
- * @return @c NNFW_STATUS_NO_ERROR if successful
- */
 NNFW_STATUS nnfw_query_info_u32(nnfw_session *session, NNFW_INFO_ID id, uint32_t *val)
 {
   (void)session;

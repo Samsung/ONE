@@ -36,7 +36,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::execute::execute_kernel_CircleGreaterEqual(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleGreaterEqual(const OMExecuteArgs &execute_args)
 {
   OMStatus status = Ok;
 
@@ -70,3 +75,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleGreaterEqual(const OMExecute
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

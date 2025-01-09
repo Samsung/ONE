@@ -19,12 +19,13 @@
 #include "nnfw_util.h"
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <stdexcept>
 
 namespace onert_train
 {
-void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocation> &inputs)
+void RawFormatter::loadInputs(const std::string &prefix, std::vector<Allocation> &inputs)
 {
   uint32_t num_inputs;
   NNPR_ENSURE_STATUS(nnfw_input_size(session_, &num_inputs));
@@ -44,18 +45,18 @@ void RawFormatter::loadInputs(const std::string &filename, std::vector<Allocatio
       NNPR_ENSURE_STATUS(nnfw_input_tensorinfo(session_, i, &ti));
 
       // allocate memory for data
-      auto bufsz = bufsize_for(&ti);
-      inputs[i].alloc(bufsz);
+      const auto bufsz = bufsize_for(&ti);
+      const auto filename = prefix + "." + std::to_string(i);
+      auto filesz = std::filesystem::file_size(filename);
 
-      std::ifstream file(filename + "." + std::to_string(i), std::ios::ate | std::ios::binary);
-      auto filesz = file.tellg();
       if (bufsz != filesz)
       {
         throw std::runtime_error("Input " + std::to_string(i) +
                                  " size does not match: " + std::to_string(bufsz) +
                                  " expected, but " + std::to_string(filesz) + " provided.");
       }
-      file.seekg(0, std::ios::beg);
+      std::ifstream file(filename, std::ios::in | std::ios::binary);
+      inputs[i].alloc(bufsz);
       file.read(reinterpret_cast<char *>(inputs[i].data()), filesz);
       file.close();
 

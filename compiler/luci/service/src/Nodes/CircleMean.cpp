@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMean *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleMean>();
-  if (cloned != nullptr)
-    cloned->keep_dims(node->keep_dims());
+  cloned->keep_dims(node->keep_dims());
   return cloned;
 }
 

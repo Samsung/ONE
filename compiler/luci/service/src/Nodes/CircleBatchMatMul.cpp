@@ -68,7 +68,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleBatchMatMul *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleBatchMatMul>();
-  if (cloned != nullptr)
   {
     cloned->adj_x(node->adj_x());
     cloned->adj_y(node->adj_y());

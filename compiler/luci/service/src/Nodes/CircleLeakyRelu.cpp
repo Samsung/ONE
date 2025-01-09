@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleLeakyRelu *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleLeakyRelu>();
-  if (cloned != nullptr)
-    cloned->alpha(node->alpha());
+  cloned->alpha(node->alpha());
   return cloned;
 }
 

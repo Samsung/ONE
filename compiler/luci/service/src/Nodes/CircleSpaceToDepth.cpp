@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSpaceToDepth *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSpaceToDepth>();
-  if (cloned != nullptr)
-    cloned->block_size(node->block_size());
+  cloned->block_size(node->block_size());
   return cloned;
 }
 

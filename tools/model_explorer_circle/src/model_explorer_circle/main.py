@@ -56,6 +56,8 @@ class CircleAdapter(Adapter):
     def get_opcode_name(self, opcode_index: int) -> str:
         """Convert the opcode to its name."""
         opcode = self.model.operatorCodes[opcode_index].deprecatedBuiltinCode
+        if opcode == circle_schema.BuiltinOperator.CUSTOM:
+            return self.model.operatorCodes[opcode_index].customCode.decode('utf-8')
         if opcode == circle_schema.BuiltinOperator.PLACEHOLDER_FOR_GREATER_OP_CODES:
             opcode = self.model.operatorCodes[opcode_index].builtinCode
             assert (opcode >= 127)
@@ -79,13 +81,41 @@ class CircleAdapter(Adapter):
                 graph_builder.IncomingEdge(sourceNodeId=sid,
                                            sourceNodeOutputId=soid,
                                            targetNodeInputId=f'{input_id}'))
+
+        metadata = graph_builder.MetadataItem(id=f'{input_id}')
         # Add input metadata of the node if it exists
         if self.input_args.get(me_node.label) is not None:
-            arg_name = self.input_args[me_node.label][input_id]
-            me_node.inputsMetadata.append(
-                graph_builder.MetadataItem(
-                    id=f'{input_id}',
-                    attrs=[graph_builder.KeyValue(key='__tensor_tag', value=arg_name)]))
+            arity = len(self.input_args[me_node.label])
+            if input_id < arity:
+                arg_name = self.input_args[me_node.label][input_id]
+            else:
+                # For variadic inputs, append index to the last argument name
+                arg_name = self.input_args[me_node.label][arity - 1]
+                # Update 1st argument name of variadic inputs when 2nd argument name is added
+                if input_id == arity:
+                    me_node.inputsMetadata[-1].attrs[0].value = arg_name + '[0]'
+                arg_name += f'[{input_id - arity + 1}]'
+            metadata.attrs.append(
+                graph_builder.KeyValue(key='__tensor_tag', value=arg_name))
+
+        # Quantization parameter (if exists)
+        tensor = self.model.subgraphs[0].tensors[tensor_id]
+        if tensor.quantization and tensor.quantization.scale is not None:
+            quantparam = '['
+            for i, scale in enumerate(tensor.quantization.scale):
+                if i != 0:
+                    quantparam += ', '
+                # Show the most significant 6 digits of the scale
+                scale = format(scale, '.6g')
+                zp = tensor.quantization.zeroPoint[i]
+                # If the type is larger than INT8, exponential notation will be used
+                quantparam += f'{scale} * (q + {zp})'
+            quantparam += ']'
+            metadata.attrs.append(
+                graph_builder.KeyValue(key='quantization', value=quantparam))
+
+        if len(metadata.attrs) > 0:
+            me_node.inputsMetadata.append(metadata)
 
     def add_tensor_value_attribute(self, me_node: graph_builder.GraphNode,
                                    tensor_id: int) -> None:
@@ -159,21 +189,6 @@ class CircleAdapter(Adapter):
                 graph_builder.KeyValue(key='tensor_name', value=tensor_name)
             ],
         )
-
-        # Quantization parameter (if exists)
-        if tensor.quantization and tensor.quantization.scale is not None:
-            quantparam = '['
-            for i, scale in enumerate(tensor.quantization.scale):
-                if i != 0:
-                    quantparam += ', '
-                # Show the most significant 6 digits of the scale
-                scale = format(scale, '.6g')
-                zp = tensor.quantization.zeroPoint[i]
-                # If the type is larger than INT8, exponential notation will be used
-                quantparam += f'{scale} * (q + {zp})'
-            quantparam += ']'
-            metadata.attrs.append(
-                graph_builder.KeyValue(key='quantization', value=quantparam))
 
         me_node.outputsMetadata.append(metadata)
 

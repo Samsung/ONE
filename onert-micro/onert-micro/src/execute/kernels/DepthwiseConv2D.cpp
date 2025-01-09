@@ -41,9 +41,13 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
+namespace onert_micro
+{
+namespace execute
+{
+
 // NOTE: doesn't currently support dynamic shapes
-OMStatus
-onert_micro::execute::execute_kernel_CircleDepthwiseConv2D(const OMExecuteArgs &execute_args)
+OMStatus execute_kernel_CircleDepthwiseConv2D(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -180,3 +184,6 @@ onert_micro::execute::execute_kernel_CircleDepthwiseConv2D(const OMExecuteArgs &
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

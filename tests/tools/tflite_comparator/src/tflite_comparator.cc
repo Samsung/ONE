@@ -89,7 +89,7 @@ void randomBoolData(benchmark::RandomGenerator &randgen, std::vector<uint8_t> &d
 inline uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
   uint64_t n = 1;
-  for (uint32_t i = 0; i < ti->rank; ++i)
+  for (int32_t i = 0; i < ti->rank; ++i)
   {
     n *= ti->dims[i];
   }
@@ -172,7 +172,7 @@ template <>
 bool isClose(const uint8_t *ref_buf, const std::vector<uint8_t> &act_buf, uint32_t index)
 {
   // TODO better way for handling quant error?
-  auto tolerance = static_cast<uint64_t>(nnfw::misc::EnvVar("TOLERANCE").asInt(0));
+  auto tolerance = nnfw::misc::EnvVar("TOLERANCE").asInt(0);
   bool match = true;
 
   for (uint32_t e = 0; e < act_buf.size() / sizeof(uint8_t); e++)
@@ -236,7 +236,7 @@ int main(const int argc, char **argv)
     exit(-1);
   }
 
-  NNFW_ASSERT_FAIL(nnfw_load_model_from_modelfile(onert_session, tflite_file.c_str()),
+  NNFW_ASSERT_FAIL(nnfw_load_model_from_file(onert_session, tflite_file.c_str()),
                    "[ ERROR ] Failure during model load");
 
   uint32_t num_inputs;
@@ -294,6 +294,7 @@ int main(const int argc, char **argv)
           break;
         case NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
           randomData<int16_t>(randgen, inputs[i]);
+          break;
         case NNFW_TYPE_TENSOR_FLOAT32:
           randomData<float>(randgen, inputs[i]);
           break;

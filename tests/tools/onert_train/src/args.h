@@ -53,12 +53,12 @@ public:
   const std::string &getExportCircleFilename(void) const { return _export_circle_filename; }
   const std::string &getExportCirclePlusFilename(void) const { return _export_circleplus_filename; }
   const std::string &getExportCheckpointFilename(void) const { return _export_checkpoint_filename; }
-  const bool useSingleModel(void) const { return _use_single_model; }
+  bool useSingleModel(void) const { return _use_single_model; }
   const std::string &getLoadRawInputFilename(void) const { return _load_raw_input_filename; }
   const std::string &getLoadRawExpectedFilename(void) const { return _load_raw_expected_filename; }
-  const bool getMemoryPoll(void) const { return _mem_poll; }
-  const int getEpoch(void) const { return _epoch; }
-  const std::optional<int> getBatchSize(void) const { return _batch_size; }
+  bool getMemoryPoll(void) const { return _mem_poll; }
+  int32_t getEpoch(void) const { return _epoch; }
+  const std::optional<int32_t> getBatchSize(void) const { return _batch_size; }
   const std::optional<float> getLearningRate(void) const { return _learning_rate; }
   const std::optional<NNFW_TRAIN_LOSS> getLossType(void) const { return _loss_type; }
   const std::optional<NNFW_TRAIN_LOSS_REDUCTION> getLossReductionType(void) const
@@ -66,10 +66,10 @@ public:
     return _loss_reduction_type;
   }
   const std::optional<NNFW_TRAIN_OPTIMIZER> getOptimizerType(void) const { return _optimizer_type; }
-  const int getMetricType(void) const { return _metric_type; }
-  const float getValidationSplit(void) const { return _validation_split; }
-  const bool printVersion(void) const { return _print_version; }
-  const int getVerboseLevel(void) const { return _verbose_level; }
+  int32_t getMetricType(void) const { return _metric_type; }
+  float getValidationSplit(void) const { return _validation_split; }
+  bool printVersion(void) const { return _print_version; }
+  int32_t getVerboseLevel(void) const { return _verbose_level; }
   std::unordered_map<uint32_t, uint32_t> getOutputSizes(void) const { return _output_sizes; }
   uint32_t num_of_trainable_ops(void) const { return _num_of_trainable_ops; }
 
@@ -109,16 +109,16 @@ private:
   std::string _load_raw_input_filename;
   std::string _load_raw_expected_filename;
   bool _mem_poll;
-  int _epoch;
-  std::optional<int> _batch_size;
+  int32_t _epoch;
+  std::optional<int32_t> _batch_size;
   std::optional<float> _learning_rate;
   std::optional<NNFW_TRAIN_LOSS> _loss_type;
   std::optional<NNFW_TRAIN_LOSS_REDUCTION> _loss_reduction_type;
   std::optional<NNFW_TRAIN_OPTIMIZER> _optimizer_type;
-  int _metric_type;
+  int32_t _metric_type;
   float _validation_split;
   bool _print_version = false;
-  int _verbose_level;
+  int32_t _verbose_level;
   std::unordered_map<uint32_t, uint32_t> _output_sizes;
   int32_t _num_of_trainable_ops;
 };

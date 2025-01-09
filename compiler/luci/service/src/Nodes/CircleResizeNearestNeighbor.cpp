@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleResizeNearestNeighbor *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleResizeNearestNeighbor>();
-  if (cloned != nullptr)
-    cloned->align_corners(node->align_corners());
+  cloned->align_corners(node->align_corners());
   return cloned;
 }
 

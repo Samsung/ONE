@@ -28,6 +28,7 @@ endif(HDF5_FOUND)
 
 target_include_directories(onert_train PRIVATE src)
 
+target_link_libraries(onert_train nnfw_common)
 target_link_libraries(onert_train nnfw_lib_tflite jsoncpp)
 target_link_libraries(onert_train nnfw-dev)
 target_link_libraries(onert_train arser)

@@ -36,7 +36,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleStridedSlice *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleStridedSlice>();
-  if (cloned != nullptr)
   {
     cloned->begin_mask(node->begin_mask());
     cloned->end_mask(node->end_mask());

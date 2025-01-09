@@ -21,7 +21,12 @@ using namespace onert_micro;
 using namespace onert_micro::execute;
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleAveragePool2D(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleAveragePool2D(const OMExecuteArgs &execute_args)
 {
   auto avg_pool_float_lambda = [](const core::Pool2DParams &params,
                                   const core::OMRuntimeShape &input_shape, const float *input_data,
@@ -44,3 +49,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleAveragePool2D(const OMExecut
 
   return execute_pooling_common(execute_args, avg_pool_float_lambda, avg_pool_int8_lambda);
 }
+
+} // namespace execute
+} // namespace onert_micro

@@ -332,12 +332,12 @@ void Args::Parse(const int argc, char **argv)
       }
     }
 
-    _num_runs = _arser.get<int>("--num_runs");
+    _num_runs = _arser.get<int32_t>("--num_runs");
     _fixed_input = _arser.get<bool>("--fixed_input");
     _force_float = _arser.get<bool>("--force_float");
-    _warmup_runs = _arser.get<int>("--warmup_runs");
-    _minmax_runs = _arser.get<int>("--minmax_runs");
-    _run_delay = _arser.get<int>("--run_delay");
+    _warmup_runs = _arser.get<int32_t>("--warmup_runs");
+    _minmax_runs = _arser.get<int32_t>("--minmax_runs");
+    _run_delay = _arser.get<int32_t>("--run_delay");
     _gpumem_poll = _arser.get<bool>("--gpumem_poll");
     _mem_poll = _arser.get<bool>("--mem_poll");
     _write_report = _arser.get<bool>("--write_report");
@@ -398,7 +398,7 @@ void Args::Parse(const int argc, char **argv)
       }
     }
 
-    _verbose_level = _arser.get<int>("--verbose_level");
+    _verbose_level = _arser.get<int32_t>("--verbose_level");
 
     if (_arser["--quantize"])
       _quantize = _arser.get<std::string>("--quantize");

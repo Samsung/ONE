@@ -29,13 +29,16 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace TensorIndexTISO
 
-OMStatus onert_micro::execute::readKernelDataTISO(const OMExecuteArgs &execute_args,
-                                                  uint8_t *&input_data1, uint8_t *&input_data2,
-                                                  uint8_t *&output_data,
-                                                  core::OMRuntimeShape &input1_shape_ref,
-                                                  core::OMRuntimeShape &input2_shape_ref,
-                                                  core::OMRuntimeShape &output_shape_ref,
-                                                  circle::TensorType &tensor_type)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus readKernelDataTISO(const OMExecuteArgs &execute_args, uint8_t *&input_data1,
+                            uint8_t *&input_data2, uint8_t *&output_data,
+                            core::OMRuntimeShape &input1_shape_ref,
+                            core::OMRuntimeShape &input2_shape_ref,
+                            core::OMRuntimeShape &output_shape_ref, circle::TensorType &tensor_type)
 
 {
 
@@ -76,3 +79,6 @@ OMStatus onert_micro::execute::readKernelDataTISO(const OMExecuteArgs &execute_a
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

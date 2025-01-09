@@ -27,7 +27,6 @@ luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleDepthwiseConv2D
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleDepthwiseConv2D>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->padding(node->padding());

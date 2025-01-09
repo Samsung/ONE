@@ -14,5 +14,11 @@ set(FLAGS_COMMON ${FLAGS_COMMON}
     "-mfloat-abi=hard"
     "-mfpu=neon-vfpv4"
     "-ftree-vectorize"
-    "-mfp16-format=ieee"
     )
+
+# "fp16-format=ieee" is default and not supported flag on Clang
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag(-mfp16-format=ieee COMPILER_SUPPORTS_FP16_FORMAT_I3E)
+if(COMPILER_SUPPORTS_FP16_FORMAT_I3E)
+    set(FLAGS_COMMON ${FLAGS_COMMON} "-mfp16-format=ieee")
+endif()

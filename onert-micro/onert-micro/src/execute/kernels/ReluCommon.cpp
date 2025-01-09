@@ -29,8 +29,12 @@ constexpr uint32_t outputTensorIdx = 0;
 } // namespace
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_args,
-                                                   bool is_relu_6)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_relu_common(const OMExecuteArgs &execute_args, bool is_relu_6)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -113,3 +117,6 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

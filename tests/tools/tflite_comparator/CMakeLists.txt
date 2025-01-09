@@ -8,6 +8,7 @@ list(APPEND SOURCES "src/args.cc")
 
 add_executable(tflite_comparator ${SOURCES})
 
+target_link_libraries(tflite_comparator nnfw_common)
 target_link_libraries(tflite_comparator nnfw-dev)
 target_link_libraries(tflite_comparator nnfw_lib_tflite nnfw_lib_misc)
 target_link_libraries(tflite_comparator arser)
