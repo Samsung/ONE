@@ -32,7 +32,7 @@ RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoo
 # Additonal tools
 RUN apt-get update && \
     apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
-RUN python3 -m pip install yapf==0.40.2 pylint --break-system-packages
+RUN python3 -m pip install yapf==0.40.2 pylint numpy flatbuffers --break-system-packages
 
 # Install clang-format
 RUN apt-get update && apt-get -qqy install clang-format-16
