@@ -17,6 +17,9 @@ FROM ubuntu:jammy
 # Install 'add-apt-repository'
 RUN apt-get update && apt-get -qqy install software-properties-common
 
+# Install tzdata without user input
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -qqy install tzdata
+
 # Build tool
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
