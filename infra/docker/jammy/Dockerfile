@@ -32,9 +32,9 @@ RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
 # Additonal tools
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
+    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install yapf==0.40.2 numpy flatbuffers
+RUN python3 -m pip install yapf==0.40.2 pylint numpy flatbuffers
 
 # Install clang-format
 RUN apt-get install -qqy gnupg2
