@@ -15,7 +15,7 @@ class BaseSession:
     """
     Base class providing common functionality for inference and training sessions.
     """
-    def __init__(self, backend_session):
+    def __init__(self, backend_session=None):
         """
         Initialize the BaseSession with a backend session.
         Args:
@@ -33,7 +33,24 @@ class BaseSession:
         Returns:
             The attribute or method from the bound NNFW_SESSION instance.
         """
-        return getattr(self.session, name)
+        if name in self.__dict__:
+            # First, try to get the attribute from the instance's own dictionary
+            return self.__dict__[name]
+        elif hasattr(self.session, name):
+            # If not found, delegate to the session object
+            return getattr(self.session, name)
+        else:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{name}'")
+
+    def _recreate_session(self, backend_session):
+        """
+        Protected method to recreate the session.
+        Subclasses can override this method to provide custom session recreation logic.
+        """
+        if self.session is not None:
+            del self.session  # Clean up the existing session
+        self.session = backend_session
 
     def set_inputs(self, size, inputs_array=[]):
         """
@@ -42,6 +59,10 @@ class BaseSession:
             size (int): Number of input tensors.
             inputs_array (list): List of numpy arrays for the input data.
         """
+        if self.session is None:
+            raise ValueError(
+                "Session is not initialized with a model. Please compile with a model before setting inputs."
+            )
         for i in range(size):
             input_tensorinfo = self.session.input_tensorinfo(i)
 
@@ -63,6 +84,10 @@ class BaseSession:
         Args:
             size (int): Number of output tensors.
         """
+        if self.session is None:
+            raise ValueError(
+                "Session is not initialized with a model. Please compile a model before setting outputs."
+            )
         for i in range(size):
             output_tensorinfo = self.session.output_tensorinfo(i)
             output_array = np.zeros((num_elems(output_tensorinfo)),
