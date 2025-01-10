@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_API_PYTHON_NNFW_SESSION_BINDINGS_H__
-#define __ONERT_API_PYTHON_NNFW_SESSION_BINDINGS_H__
+#ifndef __ONERT_API_PYTHON_NNFW_TRAININFO_BINDINGS_H__
+#define __ONERT_API_PYTHON_NNFW_TRAININFO_BINDINGS_H__
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
-namespace onert
-{
-namespace api
-{
-namespace python
-{
+namespace py = pybind11;
 
-// Declare binding common functions
-void bind_nnfw_session(pybind11::module_ &m);
+// Declare binding train enums
+void bind_nnfw_train_enums(py::module_ &m);
 
-// Declare binding experimental functions
-void bind_experimental_nnfw_session(pybind11::module_ &m);
+// Declare binding loss info
+void bind_nnfw_loss_info(py::module_ &m);
 
-} // namespace python
-} // namespace api
-} // namespace onert
+// Declare binding train info
+void bind_nnfw_train_info(py::module_ &m);
 
-#endif // __ONERT_API_PYTHON_NNFW_SESSION_BINDINGS_H__
+#endif // __ONERT_API_PYTHON_NNFW_TRAININFO_BINDINGS_H__
