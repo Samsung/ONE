@@ -2787,6 +2787,10 @@ var annotated_dup =
     ] ],
     [ "onert", "namespaceonert.html", [
       [ "api", "namespaceonert_1_1api.html", [
+        [ "python", "namespaceonert_1_1api_1_1python.html", [
+          [ "NNFW_SESSION", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n" ],
+          [ "tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", "structonert_1_1api_1_1python_1_1tensorinfo" ]
+        ] ],
         [ "APIConverter", "classonert_1_1api_1_1_a_p_i_converter.html", null ],
         [ "CustomKernel", "classonert_1_1api_1_1_custom_kernel.html", "classonert_1_1api_1_1_custom_kernel" ],
         [ "CustomKernelRegistry", "classonert_1_1api_1_1_custom_kernel_registry.html", "classonert_1_1api_1_1_custom_kernel_registry" ],
@@ -3787,8 +3791,15 @@ var annotated_dup =
       [ "OptionBuilder", "class_option_builder_1_1_option_builder.html", "class_option_builder_1_1_option_builder" ]
     ] ],
     [ "package", "namespacepackage.html", [
+      [ "common", "namespacepackage_1_1common.html", [
+        [ "basesession", "namespacepackage_1_1common_1_1basesession.html", [
+          [ "BaseSession", "classpackage_1_1common_1_1basesession_1_1_base_session.html", "classpackage_1_1common_1_1basesession_1_1_base_session" ]
+        ] ]
+      ] ],
       [ "infer", "namespacepackage_1_1infer.html", [
-        [ "session", "classpackage_1_1infer_1_1session.html", "classpackage_1_1infer_1_1session" ]
+        [ "session", "namespacepackage_1_1infer_1_1session.html", [
+          [ "session", "classpackage_1_1infer_1_1session_1_1session.html", "classpackage_1_1infer_1_1session_1_1session" ]
+        ] ]
       ] ]
     ] ],
     [ "Pad_000", "namespace_pad__000.html", [
@@ -4396,7 +4407,6 @@ var annotated_dup =
     [ "nnfw_loss_info", "structnnfw__loss__info.html", "structnnfw__loss__info" ],
     [ "nnfw_operand", "structnnfw__operand.html", "structnnfw__operand" ],
     [ "nnfw_session", "structnnfw__session.html", "structnnfw__session" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", "structnnfw__tensorinfo" ],
     [ "nnfw_train_info", "structnnfw__train__info.html", "structnnfw__train__info" ],
     [ "NonMaxSuppressionV4Chef", "class_non_max_suppression_v4_chef.html", "class_non_max_suppression_v4_chef" ],
@@ -4534,7 +4544,6 @@ var annotated_dup =
     [ "Tensor3D", "struct_tensor3_d.html", "struct_tensor3_d" ],
     [ "Tensor4D", "struct_tensor4_d.html", "struct_tensor4_d" ],
     [ "TensorBroadcastLayer", "struct_tensor_broadcast_layer.html", "struct_tensor_broadcast_layer" ],
-    [ "tensorinfo", "structtensorinfo.html", "structtensorinfo" ],
     [ "TileChef", "class_tile_chef.html", "class_tile_chef" ],
     [ "TileChefFactory", "struct_tile_chef_factory.html", "struct_tile_chef_factory" ],
     [ "TopKV2Chef", "class_top_k_v2_chef.html", "class_top_k_v2_chef" ],

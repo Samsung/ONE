@@ -91,11 +91,13 @@ $(document).ready(function(){initNavTree('nnfw__api__wrapper_8h.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">nnfw_api_wrapper.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="nnfw_8h_source.html">nnfw.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>&quot;</code><br />
 <code>#include &lt;pybind11/stl.h&gt;</code><br />
 <code>#include &lt;pybind11/numpy.h&gt;</code><br />
 </div>
@@ -103,417 +105,42 @@ $(document).ready(function(){initNavTree('nnfw__api__wrapper_8h.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtensorinfo.html">tensorinfo</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">tensor info describes the type and shape of tensors  <a href="structtensorinfo.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html">onert::api::python::tensorinfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">tensor info describes the type and shape of tensors  <a href="structonert_1_1api_1_1python_1_1tensorinfo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_n_n_f_w___s_e_s_s_i_o_n.html">NNFW_SESSION</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html">onert::api::python::NNFW_SESSION</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespaceonert" id="r_namespaceonert"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert.html">onert</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceonert_1_1api" id="r_namespaceonert_1_1api"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api.html">onert::api</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceonert_1_1api_1_1python" id="r_namespaceonert_1_1api_1_1python"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html">onert::api::python</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3ddac96133f18b33a26ec30e380817a7" id="r_a3ddac96133f18b33a26ec30e380817a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#a3ddac96133f18b33a26ec30e380817a7">ensure_status</a> (<a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> status)</td></tr>
-<tr class="memdesc:a3ddac96133f18b33a26ec30e380817a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle errors with NNFW_STATUS in API functions.  <br /></td></tr>
-<tr class="separator:a3ddac96133f18b33a26ec30e380817a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4de730ec50a113bacd4577bca61bd0a0" id="r_a4de730ec50a113bacd4577bca61bd0a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060a">NNFW_LAYOUT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#a4de730ec50a113bacd4577bca61bd0a0">getLayout</a> (const char *layout=&quot;&quot;)</td></tr>
-<tr class="separator:a4de730ec50a113bacd4577bca61bd0a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10aeb460626a274b47c4cc9dea685423" id="r_a10aeb460626a274b47c4cc9dea685423"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#a10aeb460626a274b47c4cc9dea685423">getType</a> (const char *type=&quot;&quot;)</td></tr>
-<tr class="separator:a10aeb460626a274b47c4cc9dea685423"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af106c1ed363f8dc1c92aca4a24728331" id="r_af106c1ed363f8dc1c92aca4a24728331"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#af106c1ed363f8dc1c92aca4a24728331">getStringType</a> (<a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> type)</td></tr>
-<tr class="separator:af106c1ed363f8dc1c92aca4a24728331"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab58aba1368b0c5f5b8219480d1b4e558" id="r_ab58aba1368b0c5f5b8219480d1b4e558"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a> (const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *tensor_info)</td></tr>
-<tr class="memdesc:ab58aba1368b0c5f5b8219480d1b4e558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the total number of elements in nnfw_tensorinfo-&gt;dims.  <br /></td></tr>
-<tr class="separator:ab58aba1368b0c5f5b8219480d1b4e558"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4a89868a87832698ab44f69655be2da" id="r_ab4a89868a87832698ab44f69655be2da"><td class="memItemLeft" align="right" valign="top">py::list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#ab4a89868a87832698ab44f69655be2da">get_dims</a> (const <a class="el" href="structtensorinfo.html">tensorinfo</a> &amp;tensor_info)</td></tr>
-<tr class="memdesc:ab4a89868a87832698ab44f69655be2da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get nnfw_tensorinfo-&gt;dims.  <br /></td></tr>
-<tr class="separator:ab4a89868a87832698ab44f69655be2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8030683d5b08598cb307174343a0380" id="r_ac8030683d5b08598cb307174343a0380"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__api__wrapper_8h.html#ac8030683d5b08598cb307174343a0380">set_dims</a> (<a class="el" href="structtensorinfo.html">tensorinfo</a> &amp;tensor_info, const py::list &amp;array)</td></tr>
-<tr class="memdesc:ac8030683d5b08598cb307174343a0380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set nnfw_tensorinfo-&gt;dims.  <br /></td></tr>
-<tr class="separator:ac8030683d5b08598cb307174343a0380"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a504089b19ce87b6b825e9fad01ce28de" id="r_a504089b19ce87b6b825e9fad01ce28de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">onert::api::python::ensure_status</a> (<a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> status)</td></tr>
+<tr class="memdesc:a504089b19ce87b6b825e9fad01ce28de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle errors with NNFW_STATUS in API functions.  <br /></td></tr>
+<tr class="separator:a504089b19ce87b6b825e9fad01ce28de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77c4f2240bba9a94e4a0ad0e164dd297" id="r_a77c4f2240bba9a94e4a0ad0e164dd297"><td class="memItemLeft" align="right" valign="top"><a class="el" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060a">NNFW_LAYOUT</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a77c4f2240bba9a94e4a0ad0e164dd297">onert::api::python::getLayout</a> (const char *layout=&quot;&quot;)</td></tr>
+<tr class="separator:a77c4f2240bba9a94e4a0ad0e164dd297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aa65b5a8c62b4ca02ff79c91d26a4cb" id="r_a3aa65b5a8c62b4ca02ff79c91d26a4cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a3aa65b5a8c62b4ca02ff79c91d26a4cb">onert::api::python::getType</a> (const char *type=&quot;&quot;)</td></tr>
+<tr class="separator:a3aa65b5a8c62b4ca02ff79c91d26a4cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0975b728740c47252340213ce2c6b56c" id="r_a0975b728740c47252340213ce2c6b56c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c">onert::api::python::getStringType</a> (<a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> type)</td></tr>
+<tr class="separator:a0975b728740c47252340213ce2c6b56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e5f4e4ca00b56433a9dffe6a0a0757a" id="r_a7e5f4e4ca00b56433a9dffe6a0a0757a"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">onert::api::python::num_elems</a> (const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *tensor_info)</td></tr>
+<tr class="memdesc:a7e5f4e4ca00b56433a9dffe6a0a0757a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the total number of elements in nnfw_tensorinfo-&gt;dims.  <br /></td></tr>
+<tr class="separator:a7e5f4e4ca00b56433a9dffe6a0a0757a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa652dc981c526c117216b5174d4e8d9f" id="r_aa652dc981c526c117216b5174d4e8d9f"><td class="memItemLeft" align="right" valign="top">py::list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#aa652dc981c526c117216b5174d4e8d9f">onert::api::python::get_dims</a> (const <a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html">tensorinfo</a> &amp;tensor_info)</td></tr>
+<tr class="memdesc:aa652dc981c526c117216b5174d4e8d9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get nnfw_tensorinfo-&gt;dims.  <br /></td></tr>
+<tr class="separator:aa652dc981c526c117216b5174d4e8d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01a66040040cc45ae2166b25f381037c" id="r_a01a66040040cc45ae2166b25f381037c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a01a66040040cc45ae2166b25f381037c">onert::api::python::set_dims</a> (<a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html">tensorinfo</a> &amp;tensor_info, const py::list &amp;array)</td></tr>
+<tr class="memdesc:a01a66040040cc45ae2166b25f381037c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set nnfw_tensorinfo-&gt;dims.  <br /></td></tr>
+<tr class="separator:a01a66040040cc45ae2166b25f381037c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a3ddac96133f18b33a26ec30e380817a7" name="a3ddac96133f18b33a26ec30e380817a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ddac96133f18b33a26ec30e380817a7">&#9670;&#160;</a></span>ensure_status()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ensure_status </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td>
-          <td class="paramname"><em>status</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Handle errors with NNFW_STATUS in API functions. </p>
-<p>This only handles NNFW_STATUS errors.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">status</td><td>The status returned by API functions </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00021">21</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>{</div>
-<div class="line"><span class="lineno">   23</span>  <span class="keywordflow">switch</span> (status)</div>
-<div class="line"><span class="lineno">   24</span>  {</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS::NNFW_STATUS_NO_ERROR</a>:</div>
-<div class="line"><span class="lineno">   26</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS::NNFW_STATUS_ERROR</a>:</div>
-<div class="line"><span class="lineno">   28</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_ERROR\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   29</span>      exit(1);</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS::NNFW_STATUS_UNEXPECTED_NULL</a>:</div>
-<div class="line"><span class="lineno">   31</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_UNEXPECTED_NULL\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   32</span>      exit(1);</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS::NNFW_STATUS_INVALID_STATE</a>:</div>
-<div class="line"><span class="lineno">   34</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_INVALID_STATE\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   35</span>      exit(1);</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453">NNFW_STATUS::NNFW_STATUS_OUT_OF_MEMORY</a>:</div>
-<div class="line"><span class="lineno">   37</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_OUT_OF_MEMORY\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   38</span>      exit(1);</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693">NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a>:</div>
-<div class="line"><span class="lineno">   40</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   41</span>      exit(1);</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ad189c6cda8b7416368ac4c28cd714fc7">NNFW_STATUS::NNFW_STATUS_DEPRECATED_API</a>:</div>
-<div class="line"><span class="lineno">   43</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tNNFW_STATUS_DEPRECATED_API\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   44</span>      exit(1);</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
-<div class="line"><span class="lineno">   46</span>}</div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a688c0866717c64e2ab8af30777c16f53">NNFW_STATUS_INVALID_STATE</a></div><div class="ttdeci">@ NNFW_STATUS_INVALID_STATE</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00097">onert-micro.h:97</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a></div><div class="ttdeci">@ NNFW_STATUS_UNEXPECTED_NULL</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00095">onert-micro.h:95</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_NO_ERROR</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00088">onert-micro.h:88</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9ad189c6cda8b7416368ac4c28cd714fc7"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ad189c6cda8b7416368ac4c28cd714fc7">NNFW_STATUS_DEPRECATED_API</a></div><div class="ttdeci">@ NNFW_STATUS_DEPRECATED_API</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00103">onert-micro.h:103</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9adba530fc819ff3e35d3499c0bd215693">NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a></div><div class="ttdeci">@ NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00101">onert-micro.h:101</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a></div><div class="ttdeci">@ NNFW_STATUS_ERROR</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00093">onert-micro.h:93</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453"><div class="ttname"><a href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aef81485ae549cd65bf3efdabd54a4453">NNFW_STATUS_OUT_OF_MEMORY</a></div><div class="ttdeci">@ NNFW_STATUS_OUT_OF_MEMORY</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00099">onert-micro.h:99</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00103">NNFW_STATUS_DEPRECATED_API</a>, <a class="el" href="onert-micro_8h_source.html#l00093">NNFW_STATUS_ERROR</a>, <a class="el" href="onert-micro_8h_source.html#l00101">NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a>, <a class="el" href="onert-micro_8h_source.html#l00097">NNFW_STATUS_INVALID_STATE</a>, <a class="el" href="onert-micro_8h_source.html#l00088">NNFW_STATUS_NO_ERROR</a>, <a class="el" href="onert-micro_8h_source.html#l00099">NNFW_STATUS_OUT_OF_MEMORY</a>, and <a class="el" href="onert-micro_8h_source.html#l00095">NNFW_STATUS_UNEXPECTED_NULL</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00177">NNFW_SESSION::close_session()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00196">NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00220">NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00161">NNFW_SESSION::NNFW_SESSION()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00203">NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00233">NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00193">NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00194">NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00130">NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00210">NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00182">NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00144">NNFW_SESSION::set_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00215">NNFW_SESSION::set_output_layout()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">NNFW_SESSION::wait()</a>.</p>
-
-</div>
-</div>
-<a id="ab4a89868a87832698ab44f69655be2da" name="ab4a89868a87832698ab44f69655be2da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4a89868a87832698ab44f69655be2da">&#9670;&#160;</a></span>get_dims()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">py::list get_dims </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structtensorinfo.html">tensorinfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>tensor_info</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get nnfw_tensorinfo-&gt;dims. </p>
-<p>This function is called to get dimension array of tensorinfo.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tensor_info</td><td>Tensor info (shape, type, etc) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>python list of dims </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00142">142</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
-<div class="line"><span class="lineno">  144</span>  py::list dims_list;</div>
-<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a>; ++i)</div>
-<div class="line"><span class="lineno">  146</span>  {</div>
-<div class="line"><span class="lineno">  147</span>    dims_list.append(tensor_info.<a class="code hl_variable" href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">dims</a>[i]);</div>
-<div class="line"><span class="lineno">  148</span>  }</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">return</span> dims_list;</div>
-<div class="line"><span class="lineno">  150</span>}</div>
-<div class="ttc" id="astructtensorinfo_html_a25c6bf8c245bd6807f1f75eff2ac30c4"><div class="ttname"><a href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00041">nnfw_api_wrapper.h:41</a></div></div>
-<div class="ttc" id="astructtensorinfo_html_aedcd04b3829c5ab50d13c41efcea8cc8"><div class="ttname"><a href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00046">nnfw_api_wrapper.h:46</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00046">tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00041">tensorinfo::rank</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper__pybind_8cc_source.html#l00021">PYBIND11_MODULE()</a>.</p>
-
-</div>
-</div>
-<a id="a4de730ec50a113bacd4577bca61bd0a0" name="a4de730ec50a113bacd4577bca61bd0a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4de730ec50a113bacd4577bca61bd0a0">&#9670;&#160;</a></span>getLayout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060a">NNFW_LAYOUT</a> getLayout </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>layout</em> = <code>&quot;&quot;</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convert the layout with string to NNFW_LAYOUT</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">layout</td><td>layout to be converted </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>proper layout if exists </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00048">48</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NCHW&quot;</span>))</div>
-<div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353">NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_FIRST</a>;</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NHWC&quot;</span>))</div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a">NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_LAST</a>;</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(layout, <span class="stringliteral">&quot;NONE&quot;</span>))</div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6">NNFW_LAYOUT::NNFW_LAYOUT_NONE</a>;</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   63</span>  {</div>
-<div class="line"><span class="lineno">   64</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR]\tLAYOUT_TYPE\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   65</span>    exit(1);</div>
-<div class="line"><span class="lineno">   66</span>  }</div>
-<div class="line"><span class="lineno">   67</span>}</div>
-<div class="ttc" id="annfw_8h_html_af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a"><div class="ttname"><a href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa3cab341036daf17e1cb142ce1bd7186a">NNFW_LAYOUT_CHANNELS_LAST</a></div><div class="ttdeci">@ NNFW_LAYOUT_CHANNELS_LAST</div><div class="ttdef"><b>Definition</b> <a href="nnfw_8h_source.html#l00141">nnfw.h:141</a></div></div>
-<div class="ttc" id="annfw_8h_html_af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353"><div class="ttname"><a href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aa7253c908bdc503557d274f98e5ba0353">NNFW_LAYOUT_CHANNELS_FIRST</a></div><div class="ttdeci">@ NNFW_LAYOUT_CHANNELS_FIRST</div><div class="ttdef"><b>Definition</b> <a href="nnfw_8h_source.html#l00146">nnfw.h:146</a></div></div>
-<div class="ttc" id="annfw_8h_html_af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6"><div class="ttname"><a href="nnfw_8h.html#af8ceacdd69d43c43d690cd4f3a0f060aabc10db610ce541881e7345c6f42c46d6">NNFW_LAYOUT_NONE</a></div><div class="ttdeci">@ NNFW_LAYOUT_NONE</div><div class="ttdef"><b>Definition</b> <a href="nnfw_8h_source.html#l00136">nnfw.h:136</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw_8h_source.html#l00146">NNFW_LAYOUT_CHANNELS_FIRST</a>, <a class="el" href="nnfw_8h_source.html#l00141">NNFW_LAYOUT_CHANNELS_LAST</a>, and <a class="el" href="nnfw_8h_source.html#l00136">NNFW_LAYOUT_NONE</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00210">NNFW_SESSION::set_input_layout()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00215">NNFW_SESSION::set_output_layout()</a>.</p>
-
-</div>
-</div>
-<a id="af106c1ed363f8dc1c92aca4a24728331" name="af106c1ed363f8dc1c92aca4a24728331"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af106c1ed363f8dc1c92aca4a24728331">&#9670;&#160;</a></span>getStringType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const char * getStringType </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a>&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convert the type with NNFW_TYPE to string</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>type to be converted </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>proper type </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00107">107</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>{</div>
-<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">  110</span>  {</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32</a>:</div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;float32&quot;</span>;</div>
-<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE::NNFW_TYPE_TENSOR_INT32</a>:</div>
-<div class="line"><span class="lineno">  114</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int32&quot;</span>;</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">case</span> NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM:</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">case</span> NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8:</div>
-<div class="line"><span class="lineno">  117</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;uint8&quot;</span>;</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">case</span> NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL:</div>
-<div class="line"><span class="lineno">  119</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;bool&quot;</span>;</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">case</span> NNFW_TYPE::NNFW_TYPE_TENSOR_INT64:</div>
-<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int64&quot;</span>;</div>
-<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">case</span> NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:</div>
-<div class="line"><span class="lineno">  123</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int8&quot;</span>;</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">case</span> NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:</div>
-<div class="line"><span class="lineno">  125</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;int16&quot;</span>;</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  127</span>      std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR] NNFW_TYPE to String Failure\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  128</span>      exit(1);</div>
-<div class="line"><span class="lineno">  129</span>  }</div>
-<div class="line"><span class="lineno">  130</span>}</div>
-<div class="ttc" id="aonert-micro_8h_html_ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd"><div class="ttname"><a href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE_TENSOR_INT32</a></div><div class="ttdeci">@ NNFW_TYPE_TENSOR_INT32</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00079">onert-micro.h:79</a></div></div>
-<div class="ttc" id="aonert-micro_8h_html_ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78"><div class="ttname"><a href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE_TENSOR_FLOAT32</a></div><div class="ttdeci">@ NNFW_TYPE_TENSOR_FLOAT32</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00077">onert-micro.h:77</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00077">NNFW_TYPE_TENSOR_FLOAT32</a>, and <a class="el" href="onert-micro_8h_source.html#l00079">NNFW_TYPE_TENSOR_INT32</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00220">NNFW_SESSION::input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00233">NNFW_SESSION::output_tensorinfo()</a>.</p>
-
-</div>
-</div>
-<a id="a10aeb460626a274b47c4cc9dea685423" name="a10aeb460626a274b47c4cc9dea685423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10aeb460626a274b47c4cc9dea685423">&#9670;&#160;</a></span>getType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> getType </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>type</em> = <code>&quot;&quot;</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Convert the type with string to NNFW_TYPE</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>type to be converted </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>proper type if exists </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00069">69</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;float32&quot;</span>))</div>
-<div class="line"><span class="lineno">   72</span>  {</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ae0403212baebcc97f262a5b34149bb78">NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32</a>;</div>
-<div class="line"><span class="lineno">   74</span>  }</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int32&quot;</span>))</div>
-<div class="line"><span class="lineno">   76</span>  {</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757ab6e99aeb09642f036e47d50b254d41cd">NNFW_TYPE::NNFW_TYPE_TENSOR_INT32</a>;</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
-<div class="line"><span class="lineno">   79</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;uint8&quot;</span>))</div>
-<div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8;</div>
-<div class="line"><span class="lineno">   82</span>    <span class="comment">// return NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM;</span></div>
-<div class="line"><span class="lineno">   83</span>  }</div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;bool&quot;</span>))</div>
-<div class="line"><span class="lineno">   85</span>  {</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL;</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
-<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int64&quot;</span>))</div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">return</span> NNFW_TYPE::NNFW_TYPE_TENSOR_INT64;</div>
-<div class="line"><span class="lineno">   91</span>  }</div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int8&quot;</span>))</div>
-<div class="line"><span class="lineno">   93</span>  {</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">return</span> NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED;</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!strcmp(type, <span class="stringliteral">&quot;int16&quot;</span>))</div>
-<div class="line"><span class="lineno">   97</span>  {</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED;</div>
-<div class="line"><span class="lineno">   99</span>  }</div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  101</span>  {</div>
-<div class="line"><span class="lineno">  102</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;[ERROR] String to NNFW_TYPE Failure\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  103</span>    exit(1);</div>
-<div class="line"><span class="lineno">  104</span>  }</div>
-<div class="line"><span class="lineno">  105</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00077">NNFW_TYPE_TENSOR_FLOAT32</a>, and <a class="el" href="onert-micro_8h_source.html#l00079">NNFW_TYPE_TENSOR_INT32</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_expand_8cpp_source.html#l00026">mir_onnx::convertExpandV8()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00098">mir::Operation::Output::getElementType()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_operation_8h_source.html#l00099">mir::Operation::Output::getShape()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00182">NNFW_SESSION::set_input_tensorinfo()</a>.</p>
-
-</div>
-</div>
-<a id="ab58aba1368b0c5f5b8219480d1b4e558" name="ab58aba1368b0c5f5b8219480d1b4e558"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab58aba1368b0c5f5b8219480d1b4e558">&#9670;&#160;</a></span>num_elems()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t num_elems </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *&#160;</td>
-          <td class="paramname"><em>tensor_info</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the total number of elements in nnfw_tensorinfo-&gt;dims. </p>
-<p>This function is called to set the size of the input, output array.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tensor_info</td><td>Tensor info (shape, type, etc) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>total number of elements </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00132">132</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  133</span>{</div>
-<div class="line"><span class="lineno">  134</span>  uint64_t n = 1;</div>
-<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
-<div class="line"><span class="lineno">  136</span>  {</div>
-<div class="line"><span class="lineno">  137</span>    n *= tensor_info-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i];</div>
-<div class="line"><span class="lineno">  138</span>  }</div>
-<div class="line"><span class="lineno">  139</span>  <span class="keywordflow">return</span> n;</div>
-<div class="line"><span class="lineno">  140</span>}</div>
-<div class="ttc" id="astructnnfw__tensorinfo_html_a87b52cdfd8e93c94e21e7cba235fedab"><div class="ttname"><a href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">nnfw_tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00128">onert-micro.h:128</a></div></div>
-<div class="ttc" id="astructnnfw__tensorinfo_html_af5150bc6daf4934c2412fb1effad9b5a"><div class="ttname"><a href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">nnfw_tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00133">onert-micro.h:133</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, and <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_metric_printer_8cpp_source.html#l00099">circle_eval_diff::MAEPrinter::init()</a>, <a class="el" href="_metric_printer_8cpp_source.html#l00563">circle_eval_diff::MSEPrinter::init()</a>, <a class="el" href="_metric_printer_8cpp_source.html#l00196">circle_eval_diff::MAPEPrinter::init()</a>, <a class="el" href="_metric_printer_8cpp_source.html#l00404">circle_eval_diff::TopKMatchPrinter::init()</a>, <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, <a class="el" href="_dalgona_8cpp_source.html#l00184">dalgona::Dalgona::runAnalysisWithRandomInput()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00130">NNFW_SESSION::set_input()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00144">NNFW_SESSION::set_output()</a>.</p>
-
-</div>
-</div>
-<a id="ac8030683d5b08598cb307174343a0380" name="ac8030683d5b08598cb307174343a0380"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8030683d5b08598cb307174343a0380">&#9670;&#160;</a></span>set_dims()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void set_dims </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structtensorinfo.html">tensorinfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>tensor_info</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const py::list &amp;&#160;</td>
-          <td class="paramname"><em>array</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set nnfw_tensorinfo-&gt;dims. </p>
-<p>This function is called to set dimension array of tensorinfo.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">tensor_info</td><td>Tensor info (shape, type, etc) </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">array</td><td>array to set dimension </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00152">152</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
-<div class="line"><span class="lineno">  154</span>  tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a> = py::len(array);</div>
-<div class="line"><span class="lineno">  155</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; tensor_info.<a class="code hl_variable" href="structtensorinfo.html#a25c6bf8c245bd6807f1f75eff2ac30c4">rank</a>; ++i)</div>
-<div class="line"><span class="lineno">  156</span>  {</div>
-<div class="line"><span class="lineno">  157</span>    tensor_info.<a class="code hl_variable" href="structtensorinfo.html#aedcd04b3829c5ab50d13c41efcea8cc8">dims</a>[i] = py::cast&lt;int32_t&gt;(array[i]);</div>
-<div class="line"><span class="lineno">  158</span>  }</div>
-<div class="line"><span class="lineno">  159</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00046">tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00041">tensorinfo::rank</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper__pybind_8cc_source.html#l00021">PYBIND11_MODULE()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -90,78 +90,16 @@ $(document).ready(function(){initNavTree('namespacepackage_1_1infer.html',''); i
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">package.infer Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1infer_1_1session.html">session</a></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacepackage_1_1infer_1_1session" id="r_namespacepackage_1_1infer_1_1session"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1infer_1_1session.html">session</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:abc6bc9cf0864f5ead1bb5f0b424d1388" id="r_abc6bc9cf0864f5ead1bb5f0b424d1388"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1infer.html#abc6bc9cf0864f5ead1bb5f0b424d1388">num_elems</a> (tensor_info)</td></tr>
-<tr class="separator:abc6bc9cf0864f5ead1bb5f0b424d1388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35070abb920860281fec8d77a41919ff" id="r_a35070abb920860281fec8d77a41919ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1infer.html#a35070abb920860281fec8d77a41919ff">tensorinfo</a> ()</td></tr>
-<tr class="separator:a35070abb920860281fec8d77a41919ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="abc6bc9cf0864f5ead1bb5f0b424d1388" name="abc6bc9cf0864f5ead1bb5f0b424d1388"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc6bc9cf0864f5ead1bb5f0b424d1388">&#9670;&#160;</a></span>num_elems()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">package.infer.num_elems </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>tensor_info</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Get the total number of elements in nnfw_tensorinfo.dims.</pre> 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00008">8</a> of file <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html">infer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">    8</span><span class="keyword">def </span><a class="code hl_function" href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a>(tensor_info):</div>
-<div class="line"><span class="lineno">    9</span>    <span class="stringliteral">&quot;&quot;&quot;Get the total number of elements in nnfw_tensorinfo.dims.&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   10</span>    n = 1</div>
-<div class="line"><span class="lineno">   11</span>    <span class="keywordflow">for</span> x <span class="keywordflow">in</span> range(tensor_info.rank):</div>
-<div class="line"><span class="lineno">   12</span>        n *= tensor_info.dims[x]</div>
-<div class="line"><span class="lineno">   13</span>    <span class="keywordflow">return</span> n</div>
-<div class="line"><span class="lineno">   14</span> </div>
-<div class="line"><span class="lineno">   15</span> </div>
-<div class="ttc" id="annfw__api__wrapper_8h_html_ab58aba1368b0c5f5b8219480d1b4e558"><div class="ttname"><a href="nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558">num_elems</a></div><div class="ttdeci">uint64_t num_elems(const nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get the total number of elements in nnfw_tensorinfo-&gt;dims.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00132">nnfw_api_wrapper.cc:132</a></div></div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00024">package.infer.session.set_inputs()</a>, and <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00041">package.infer.session.set_outputs()</a>.</p>
-
-</div>
-</div>
-<a id="a35070abb920860281fec8d77a41919ff" name="a35070abb920860281fec8d77a41919ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35070abb920860281fec8d77a41919ff">&#9670;&#160;</a></span>tensorinfo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">package.infer.tensorinfo </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html#l00057">57</a> of file <a class="el" href="runtime_2onert_2api_2python_2package_2infer_8py_source.html">infer.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span><span class="keyword">def </span><a class="code hl_struct" href="structtensorinfo.html">tensorinfo</a>():</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> libnnfw_api_pybind.nnfw_tensorinfo()</div>
-<div class="ttc" id="astructtensorinfo_html"><div class="ttname"><a href="structtensorinfo.html">tensorinfo</a></div><div class="ttdoc">tensor info describes the type and shape of tensors</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00036">nnfw_api_wrapper.h:37</a></div></div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

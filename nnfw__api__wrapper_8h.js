@@ -1,12 +1,12 @@
 var nnfw__api__wrapper_8h =
 [
-    [ "tensorinfo", "structtensorinfo.html", "structtensorinfo" ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", "class_n_n_f_w___s_e_s_s_i_o_n" ],
-    [ "ensure_status", "nnfw__api__wrapper_8h.html#a3ddac96133f18b33a26ec30e380817a7", null ],
-    [ "get_dims", "nnfw__api__wrapper_8h.html#ab4a89868a87832698ab44f69655be2da", null ],
-    [ "getLayout", "nnfw__api__wrapper_8h.html#a4de730ec50a113bacd4577bca61bd0a0", null ],
-    [ "getStringType", "nnfw__api__wrapper_8h.html#af106c1ed363f8dc1c92aca4a24728331", null ],
-    [ "getType", "nnfw__api__wrapper_8h.html#a10aeb460626a274b47c4cc9dea685423", null ],
-    [ "num_elems", "nnfw__api__wrapper_8h.html#ab58aba1368b0c5f5b8219480d1b4e558", null ],
-    [ "set_dims", "nnfw__api__wrapper_8h.html#ac8030683d5b08598cb307174343a0380", null ]
+    [ "onert::api::python::tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", "structonert_1_1api_1_1python_1_1tensorinfo" ],
+    [ "onert::api::python::NNFW_SESSION", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "ensure_status", "nnfw__api__wrapper_8h.html#a504089b19ce87b6b825e9fad01ce28de", null ],
+    [ "get_dims", "nnfw__api__wrapper_8h.html#aa652dc981c526c117216b5174d4e8d9f", null ],
+    [ "getLayout", "nnfw__api__wrapper_8h.html#a77c4f2240bba9a94e4a0ad0e164dd297", null ],
+    [ "getStringType", "nnfw__api__wrapper_8h.html#a0975b728740c47252340213ce2c6b56c", null ],
+    [ "getType", "nnfw__api__wrapper_8h.html#a3aa65b5a8c62b4ca02ff79c91d26a4cb", null ],
+    [ "num_elems", "nnfw__api__wrapper_8h.html#a7e5f4e4ca00b56433a9dffe6a0a0757a", null ],
+    [ "set_dims", "nnfw__api__wrapper_8h.html#a01a66040040cc45ae2166b25f381037c", null ]
 ];

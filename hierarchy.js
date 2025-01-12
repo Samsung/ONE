@@ -1319,6 +1319,9 @@ var hierarchy =
     ] ],
     [ "flatbuffers::BaseGenerator", "classflatbuffers_1_1_base_generator.html", null ],
     [ "onert::loader::BaseLoader< LoaderDomain >", "classonert_1_1loader_1_1_base_loader.html", null ],
+    [ "package.common.basesession.BaseSession", "classpackage_1_1common_1_1basesession_1_1_base_session.html", [
+      [ "package.infer.session.session", "classpackage_1_1infer_1_1session_1_1session.html", null ]
+    ] ],
     [ "nnfw::cker::BatchMatMul", "classnnfw_1_1cker_1_1_batch_mat_mul.html", null ],
     [ "luci_interpreter::BatchMatMulParams", "structluci__interpreter_1_1_batch_mat_mul_params.html", null ],
     [ "nnfw::cker::BatchMatMulParams", "structnnfw_1_1cker_1_1_batch_mat_mul_params.html", null ],
@@ -3593,11 +3596,8 @@ var hierarchy =
     [ "nnfw_custom_kernel_params", "structnnfw__custom__kernel__params.html", null ],
     [ "nnfw_loss_info", "structnnfw__loss__info.html", null ],
     [ "nnfw_operand", "structnnfw__operand.html", null ],
-    [ "libnnfw_api_pybind.nnfw_session", null, [
-      [ "package.infer.session", "classpackage_1_1infer_1_1session.html", null ]
-    ] ],
     [ "nnfw_session", "structnnfw__session.html", null ],
-    [ "NNFW_SESSION", "class_n_n_f_w___s_e_s_s_i_o_n.html", null ],
+    [ "onert::api::python::NNFW_SESSION", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html", null ],
     [ "nnfw_tensorinfo", "structnnfw__tensorinfo.html", null ],
     [ "nnfw_train_info", "structnnfw__train__info.html", null ],
     [ "onert::ir::NNPkg", "classonert_1_1ir_1_1_n_n_pkg.html", null ],
@@ -5094,7 +5094,7 @@ var hierarchy =
       [ "circlechef::CircleImport", "classcirclechef_1_1_circle_import.html", null ],
       [ "tflchef::TFliteImport", "classtflchef_1_1_t_flite_import.html", null ]
     ] ],
-    [ "tensorinfo", "structtensorinfo.html", null ],
+    [ "onert::api::python::tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", null ],
     [ "onert::backend::train::TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html", null ],
     [ "moco::TensorName", "structmoco_1_1_tensor_name.html", null ],
     [ "moco::TensorNameCompare", "structmoco_1_1_tensor_name_compare.html", null ],

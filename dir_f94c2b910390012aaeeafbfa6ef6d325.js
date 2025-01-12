@@ -1,5 +1,5 @@
 var dir_f94c2b910390012aaeeafbfa6ef6d325 =
 [
-    [ "nnfw_api_wrapper.cc", "nnfw__api__wrapper_8cc.html", "nnfw__api__wrapper_8cc" ],
-    [ "nnfw_api_wrapper_pybind.cc", "nnfw__api__wrapper__pybind_8cc.html", "nnfw__api__wrapper__pybind_8cc" ]
+    [ "bindings", "dir_e8aedd0258ddc2aaf8137b9ddf36ff2e.html", "dir_e8aedd0258ddc2aaf8137b9ddf36ff2e" ],
+    [ "wrapper", "dir_deb39e44264a0c9a2f8b84974ff25083.html", "dir_deb39e44264a0c9a2f8b84974ff25083" ]
 ];

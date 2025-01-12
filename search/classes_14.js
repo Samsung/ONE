@@ -33,7 +33,7 @@ var searchData=
   ['tensordescriptor_30',['TensorDescriptor',['../structnnc_1_1sir_1_1_tensor_descriptor.html',1,'nnc::sir']]],
   ['tensorevaluatorhaspartialpacket_31',['TensorEvaluatorHasPartialPacket',['../class_eigen_1_1internal_1_1_tensor_evaluator_has_partial_packet.html',1,'Eigen::internal']]],
   ['tensorfiller_32',['TensorFiller',['../classsouschef_1_1_tensor_filler.html',1,'souschef']]],
-  ['tensorinfo_33',['tensorinfo',['../structtensorinfo.html',1,'']]],
+  ['tensorinfo_33',['tensorinfo',['../structonert_1_1api_1_1python_1_1tensorinfo.html',1,'onert::api::python']]],
   ['tensormanager_34',['TensorManager',['../classonert_1_1backend_1_1train_1_1_tensor_manager.html',1,'onert::backend::train']]],
   ['tensorname_35',['TensorName',['../structmoco_1_1_tensor_name.html',1,'moco']]],
   ['tensornamecompare_36',['TensorNameCompare',['../structmoco_1_1_tensor_name_compare.html',1,'moco']]],

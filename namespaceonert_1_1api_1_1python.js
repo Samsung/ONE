@@ -1,0 +1,18 @@
+var namespaceonert_1_1api_1_1python =
+[
+    [ "NNFW_SESSION", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", "structonert_1_1api_1_1python_1_1tensorinfo" ],
+    [ "bind_experimental_nnfw_session", "namespaceonert_1_1api_1_1python.html#a5762ea5b6b3da6a09cc3f05c77e18b09", null ],
+    [ "bind_experimental_nnfw_session", "namespaceonert_1_1api_1_1python.html#a81dce2c684428f6f55f0d49eb0ea7e96", null ],
+    [ "bind_nnfw_session", "namespaceonert_1_1api_1_1python.html#aa356c33bec37978327ba209b95345f96", null ],
+    [ "bind_nnfw_session", "namespaceonert_1_1api_1_1python.html#a2c5ebaad6c8ed31a90dac1aba9274449", null ],
+    [ "bind_tensorinfo", "namespaceonert_1_1api_1_1python.html#a9cc399e5d4e296ae959c09a1697104a2", null ],
+    [ "bind_tensorinfo", "namespaceonert_1_1api_1_1python.html#a74be3fcd518b32e2163b49ea40ceca8a", null ],
+    [ "ensure_status", "namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de", null ],
+    [ "get_dims", "namespaceonert_1_1api_1_1python.html#aa652dc981c526c117216b5174d4e8d9f", null ],
+    [ "getLayout", "namespaceonert_1_1api_1_1python.html#a77c4f2240bba9a94e4a0ad0e164dd297", null ],
+    [ "getStringType", "namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c", null ],
+    [ "getType", "namespaceonert_1_1api_1_1python.html#a3aa65b5a8c62b4ca02ff79c91d26a4cb", null ],
+    [ "num_elems", "namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a", null ],
+    [ "set_dims", "namespaceonert_1_1api_1_1python.html#a01a66040040cc45ae2166b25f381037c", null ]
+];

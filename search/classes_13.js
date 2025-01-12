@@ -23,7 +23,7 @@ var searchData=
   ['serializedmodeldata_20',['serializedmodeldata',['../structexo_1_1circle__detail_1_1_serialized_model_data.html',1,'exo::circle_detail::SerializedModelData'],['../structexo_1_1tflite__detail_1_1_serialized_model_data.html',1,'exo::tflite_detail::SerializedModelData'],['../structluci_1_1_serialized_model_data.html',1,'luci::SerializedModelData']]],
   ['serializer_21',['Serializer',['../classnnc_1_1_serializer.html',1,'nnc']]],
   ['servicedef_22',['ServiceDef',['../structflatbuffers_1_1_service_def.html',1,'flatbuffers']]],
-  ['session_23',['session',['../classlocomotiv_1_1_session.html',1,'locomotiv::Session'],['../classpackage_1_1infer_1_1session.html',1,'package.infer.session']]],
+  ['session_23',['session',['../classlocomotiv_1_1_session.html',1,'locomotiv::Session'],['../classpackage_1_1infer_1_1session_1_1session.html',1,'package.infer.session.session']]],
   ['set_24',['Set',['../classonert_1_1util_1_1_set.html',1,'onert::util']]],
   ['set_3c_20const_20backend_3a_3abackend_20_2a_20_3e_25',['Set&lt; const backend::Backend * &gt;',['../classonert_1_1util_1_1_set.html',1,'onert::util']]],
   ['set_3c_20onert_3a_3abackend_3a_3atrain_3a_3adisposabletensorindex_20_3e_26',['Set&lt; onert::backend::train::DisposableTensorIndex &gt;',['../classonert_1_1util_1_1_set.html',1,'onert::util']]],

@@ -1,0 +1,5 @@
+<map id="onert::api::python::tensorinfo" name="onert::api::python::tensorinfo">
+<area shape="rect" id="Node000001" title="tensor info describes the type and shape of tensors" alt="" coords="5,109,123,150"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="34,5,94,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,47,67,109,61,109,61,47"/>
+</map>
