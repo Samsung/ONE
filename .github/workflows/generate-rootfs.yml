@@ -17,7 +17,7 @@ on:
       - '.github/workflows/generate-rootfs.yml'
       - 'tools/cross/**'
   schedule:
-    # Every 1st day of the month at midnight (korean time zone, UTC+9:00)
+    # Every 1st day of the month at midnight (KST, UTC+9:00)
     - cron: '0 15 1 * *'
   workflow_dispatch:
 
