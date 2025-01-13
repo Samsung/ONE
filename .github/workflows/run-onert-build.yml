@@ -1,0 +1,77 @@
+name: Run ONERT Ubuntu Build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-build.yml'
+      - 'nn*'
+      - 'Makefile.template'
+      - 'compute/**'
+      - 'infra/buildtool/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'infra/nnfw/**'
+      - 'runtime/**'
+      - 'tests/**'
+      - '!**/*.md'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-build.yml'
+      - 'nn*'
+      - 'Makefile.template'
+      - 'compute/**'
+      - 'infra/buildtool/**'
+      - 'infra/cmake/**'
+      - 'infra/nncc/**'
+      - 'infra/nnfw/**'
+      - 'runtime/**'
+      - 'tests/**'
+      - '!**/*.md'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      matrix:
+        type: [ debug, release ]
+        ubuntu_code: [ focal, jammy ] # TODO: noble
+        arch: [ x86_64 ] # TODO: armv7l, aarch64
+    runs-on: ubuntu-22.04
+    container:
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      options: --user root
+    env:
+      TARGET_ARCH: ${{ matrix.arch }}
+      BUILD_TYPE: ${{ matrix.type }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-${{ matrix.ubuntu_code }}-
+            external-onert-
+            external-
+
+      - name: Build onert
+        run: |
+          make -f Makefile.template
+
+      - name: Run test
+        run: |
+          ./Product/out/test/onert-test unittest
+          ./Product/out/test/onert-test unittest --unittestdir=./Product/out/nnapi-gtest
