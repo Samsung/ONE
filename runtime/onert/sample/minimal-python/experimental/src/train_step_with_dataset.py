@@ -100,11 +100,9 @@ def train_steps(args):
     metric_aggregates = {metric.__class__.__name__: 0.0 for metric in mtrs}
     train_time = 0.0
 
-    for batch_idx, (inputs, expecteds) in enumerate(data_loader):
-        if batch_idx >= args.batch_size:
-            break
-
-        # Train on a single batch
+    nums_steps = (args.data_length + args.batch_size - 1) // args.batch_size
+    for idx, (inputs, expecteds) in enumerate(data_loader):
+        # Train on a single step
         results = sess.train_step(inputs, expecteds)
         total_loss += sum(results['loss'])
 
@@ -114,6 +112,10 @@ def train_steps(args):
 
         train_time += results['train_time']
 
+        print(
+            f"Step {idx + 1}/{nums_steps} - Train time: {results['train_time']:.3f} ms/step - Train Loss: {sum(results['loss']):.4f}"
+        )
+
     # Average metrics
     avg_metrics = {
         name: value / args.batch_size
@@ -121,11 +123,12 @@ def train_steps(args):
     }
 
     # Print results
-    nums_steps = (args.data_length + args.batch_size - 1) // args.batch_size
+    print("=" * 35)
     print(f"Average Loss: {total_loss / nums_steps:.4f}")
     for metric_name, metric_value in avg_metrics.items():
         print(f"{metric_name}: {metric_value:.4f}")
-    print(f"Average Loss: {train_time / nums_steps:.4f}")
+    print(f"Average Time: {train_time / nums_steps:.4f} ms/step")
+    print("=" * 35)
 
     print(f"nnpackage {args.nnpkg.split('/')[-1]} trains successfully.")
 

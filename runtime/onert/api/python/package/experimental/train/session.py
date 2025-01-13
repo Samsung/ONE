@@ -5,6 +5,7 @@ from onert.native.libnnfw_api_pybind import optimizer as optimizer_type
 from onert.native.libnnfw_api_pybind import loss as loss_type
 from onert.common.basesession import BaseSession
 from .metrics.registry import MetricsRegistry
+from .metrics.metric import Metric
 from .losses import CategoricalCrossentropy, MeanSquaredError
 from .optimizer import Adam, SGD
 import time
@@ -51,6 +52,14 @@ class TrainSession(BaseSession):
         self.metrics = [
             MetricsRegistry.create_metric(m) if isinstance(m, str) else m for m in metrics
         ]
+
+        # Validate that all elements in self.metrics are instances of Metric
+        for metric in self.metrics:
+            if not isinstance(metric, Metric):
+                raise TypeError(
+                    f"Invalid metric type: {type(metric).__name__}. "
+                    "All metrics must inherit from the Metric base class."
+                )
 
         # Check if the number of metrics matches the number of outputs
         num_model_outputs = self.session.output_size()
