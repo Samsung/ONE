@@ -13,12 +13,3 @@ class Optimizer:
         """
         self.learning_rate = learning_rate
         self.nums_trainable_ops = nums_trainable_ops
-
-    def step(self, gradients, parameters):
-        """
-        Update parameters based on gradients. Should be implemented by subclasses.
-        Args:
-            gradients (list): List of gradients for each parameter.
-            parameters (list): List of parameters to be updated.
-        """
-        raise NotImplementedError("Subclasses must implement the `step` method.")
