@@ -2,27 +2,22 @@
 
 INVALID_EXIT=0
 
+# Files to check copyright headers
+# TODO Check python files as well
+FILE_PATTERNS=(*.h *.hpp *.cpp *.cc *.c *.cl)
+
+# Manually ignore checking - 3rd party, generated files
+# Pattern should start with ':!' to exclude pattern
+FILE_EXCLUDE_PATTERN=(
+  :!compiler/ann-api
+  :!onert-micro/externals
+  :!runtime/3rdparty
+  :!tests/nnapi
+)
+
 check_copyright() {
-  DIRECTORIES_NOT_TO_BE_TESTED=$1
   CORRECT_COPYRIGHT="Copyright \(c\) [0-9\-]+ Samsung Electronics Co\., Ltd\. All Rights Reserved"
-
-  FILES_TO_CHECK=$(git ls-files -c --exclude-standard)
-  FILES_TO_CHECK_COPYRIGHTS=()
-  for f in ${FILES_TO_CHECK[@]}; do
-    # Manually ignore checking
-    if [[ ${f} == +(*/NeuralNetworks.h|*/NeuralNetworksExtensions.h) ]]; then
-      continue
-    fi
-
-    # File extension to check
-    if [[ ${f} == +(*.h|*.hpp|*.cpp|*.cc|*.c|*.cl) ]]; then
-      FILES_TO_CHECK_COPYRIGHTS+=("${f}")
-    fi
-  done
-
-  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
-    FILES_TO_CHECK_COPYRIGHTS=(${FILES_TO_CHECK_COPYRIGHTS[*]/$s*/})
-  done
+  FILES_TO_CHECK_COPYRIGHTS=$(git ls-files -c --exclude-standard -- ${FILE_PATTERNS[@]} ${FILE_EXCLUDE_PATTERN[@]})
 
   if [[ ${#FILES_TO_CHECK_COPYRIGHTS} -ne 0 ]]; then
     for f in ${FILES_TO_CHECK_COPYRIGHTS[@]}; do
@@ -36,14 +31,7 @@ check_copyright() {
   fi
 }
 
-DIRECTORIES_NOT_TO_BE_TESTED=()
-
-for DIR_NOT_TO_BE_TESTED in $(git ls-files -co --exclude-standard '*/.FORMATDENY'); do
-    DIRECTORIES_NOT_TO_BE_TESTED+=("$DIR_NOT_TO_BE_TESTED")
-  DIRECTORIES_NOT_TO_BE_TESTED+=($(dirname "${DIR_NOT_TO_BE_TESTED}"))
-done
-
-check_copyright $DIRECTORIES_NOT_TO_BE_TESTED
+check_copyright
 
 if [[ $INVALID_EXIT -ne 0 ]]; then
     echo "[FAILED] Invalid copyright check exit."
