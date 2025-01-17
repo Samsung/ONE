@@ -47,6 +47,12 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
     return nullptr;
   }
 
+  if (successor->rank() == 1 || successor->rank() > 4)
+  {
+    WARN(l) << "NYI: Only 2D/3D/4D tensor broadcast removal is supported";
+    return nullptr;
+  }
+
   auto constant = node->graph()->nodes()->create<luci::CircleConst>();
   constant->name(node->name());
   constant->dtype(node->dtype());
@@ -64,7 +70,6 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
   auto const node_data = &node->at<loco::DataType::FLOAT32>(0);
   auto const constant_data = &constant->at<loco::DataType::FLOAT32>(0);
 
-  assert(successor->rank() >= 2 && successor->rank() <= 4);
   if (successor->rank() == 2)
   {
     auto const N = successor->dim(successor->rank() - 2).value();
