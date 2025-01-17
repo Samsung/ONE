@@ -7,6 +7,10 @@
 
 # eval(Net_Preactivation_BN_000 fuse_preactivation_batchnorm) : value diff exist
 # --> https://github.com/Samsung/ONE/issues/5782
+eval(Add_003 expand_broadcast_const)
+eval(Add_004 expand_broadcast_const)
+eval(Add_005 expand_broadcast_const)
+eval(Add_006 expand_broadcast_const)
 eval(FullyConnected_007 replace_non_const_fc_with_batch_matmul)
 eval(HardSwish_001 decompose_hardswish)
 eval(Net_Add_FloorMod_Gather_000 remove_gather_guard)
