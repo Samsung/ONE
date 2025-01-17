@@ -166,11 +166,6 @@ function check_python_files() {
   # Exceptional case: fm-equalize doesn't have '.py' extension.
   FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/fm-equalize/fm-equalize$'`)
 
-  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
-    skip=${s#'.'/}/
-    FILES_TO_CHECK_PYTHON=(${FILES_TO_CHECK_PYTHON[*]/$skip*/})
-  done
-
   if [[ ${#FILES_TO_CHECK_PYTHON} -ne 0 ]]; then
     yapf -i ${FILES_TO_CHECK_PYTHON[@]}
     EXIT_CODE=$?
