@@ -47,13 +47,18 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
     return nullptr;
   }
 
+  if (successor->rank() == 1 || successor->rank() > 4)
+  {
+    WARN(l) << "NYI: Only 2D/3D/4D tensor broadcast removal is supported";
+    return nullptr;
+  }
+
   auto constant = node->graph()->nodes()->create<luci::CircleConst>();
   constant->name(node->name());
   constant->dtype(node->dtype());
   constant->rank(node->rank());
   constant->shape_status(luci::ShapeStatus::VALID);
 
-  uint32_t node_size = node->size<loco::DataType::FLOAT32>();
   uint32_t constant_size = 1;
   for (uint32_t i = 0; i < successor->rank(); ++i)
   {
@@ -65,10 +70,34 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
   auto const node_data = &node->at<loco::DataType::FLOAT32>(0);
   auto const constant_data = &constant->at<loco::DataType::FLOAT32>(0);
 
-  auto const successor_depth = successor->dim(successor->rank() - 1).value();
-  for (uint32_t d = 0; d < successor_depth; ++d)
-    std::copy(node_data, node_data + node_size, constant_data + d * node_size);
-
+  if (successor->rank() == 2)
+  {
+    auto const N = successor->dim(successor->rank() - 2).value();
+    auto const D = successor->dim(successor->rank() - 1).value();
+    for (uint32_t n = 0; n < N; ++n)
+      std::fill_n(constant_data + n * D, D, node_data[n]);
+  }
+  else if (successor->rank() == 3)
+  {
+    auto const H = successor->dim(successor->rank() - 3).value();
+    auto const W = successor->dim(successor->rank() - 2).value();
+    auto const D = successor->dim(successor->rank() - 1).value();
+    for (uint32_t h = 0; h < H; ++h)
+      for (uint32_t w = 0; w < W; ++w)
+        std::fill_n(constant_data + h * W * D + w * D, D, node_data[h * W + w]);
+  }
+  else if (successor->rank() == 4)
+  {
+    auto const N = successor->dim(successor->rank() - 4).value();
+    auto const H = successor->dim(successor->rank() - 3).value();
+    auto const W = successor->dim(successor->rank() - 2).value();
+    auto const D = successor->dim(successor->rank() - 1).value();
+    for (uint32_t n = 0; n < N; ++n)
+      for (uint32_t h = 0; h < H; ++h)
+        for (uint32_t w = 0; w < W; ++w)
+          std::fill_n(constant_data + n * H * W * D + h * W * D + w * D, D,
+                      node_data[n * H * W + h * W + w]);
+  }
   return constant;
 }
 
