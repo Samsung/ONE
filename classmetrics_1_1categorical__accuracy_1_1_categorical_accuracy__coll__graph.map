@@ -1,0 +1,5 @@
+<map id="metrics.categorical_accuracy.CategoricalAccuracy" name="metrics.categorical_accuracy.CategoricalAccuracy">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,208,120"/>
+<area shape="rect" id="Node000002" href="$classmetrics_1_1metric_1_1_metric.html" title=" " alt="" coords="35,5,178,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,46,109,79,104,79,104,46"/>
+</map>

@@ -900,6 +900,17 @@ var annotated_dup =
       [ "ResolveRedundantReshapePass", "classlogo_1_1_resolve_redundant_reshape_pass.html", "classlogo_1_1_resolve_redundant_reshape_pass" ],
       [ "SimplifyDomainConversionPass", "structlogo_1_1_simplify_domain_conversion_pass.html", "structlogo_1_1_simplify_domain_conversion_pass" ]
     ] ],
+    [ "losses", "namespacelosses.html", [
+      [ "cce", "namespacelosses_1_1cce.html", [
+        [ "CategoricalCrossentropy", "classlosses_1_1cce_1_1_categorical_crossentropy.html", "classlosses_1_1cce_1_1_categorical_crossentropy" ]
+      ] ],
+      [ "loss", "namespacelosses_1_1loss.html", [
+        [ "LossFunction", "classlosses_1_1loss_1_1_loss_function.html", "classlosses_1_1loss_1_1_loss_function" ]
+      ] ],
+      [ "mse", "namespacelosses_1_1mse.html", [
+        [ "MeanSquaredError", "classlosses_1_1mse_1_1_mean_squared_error.html", "classlosses_1_1mse_1_1_mean_squared_error" ]
+      ] ]
+    ] ],
     [ "luci", "namespaceluci.html", [
       [ "compute", "namespaceluci_1_1compute.html", [
         [ "DepthwiseConv2D", "classluci_1_1compute_1_1_depthwise_conv2_d.html", "classluci_1_1compute_1_1_depthwise_conv2_d" ],
@@ -1958,6 +1969,17 @@ var annotated_dup =
     ] ],
     [ "Mean_000", "namespace_mean__000.html", [
       [ "Mean_000_Q8", "class_mean__000_1_1_mean__000___q8.html", "class_mean__000_1_1_mean__000___q8" ]
+    ] ],
+    [ "metrics", "namespacemetrics.html", [
+      [ "categorical_accuracy", "namespacemetrics_1_1categorical__accuracy.html", [
+        [ "CategoricalAccuracy", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy" ]
+      ] ],
+      [ "metric", "namespacemetrics_1_1metric.html", [
+        [ "Metric", "classmetrics_1_1metric_1_1_metric.html", "classmetrics_1_1metric_1_1_metric" ]
+      ] ],
+      [ "registry", "namespacemetrics_1_1registry.html", [
+        [ "MetricsRegistry", "classmetrics_1_1registry_1_1_metrics_registry.html", null ]
+      ] ]
     ] ],
     [ "minmax_embedder", "namespaceminmax__embedder.html", [
       [ "h5", "namespaceminmax__embedder_1_1h5.html", [
@@ -3477,6 +3499,7 @@ var annotated_dup =
         [ "NegTestDataInputMismatchAddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel" ],
         [ "NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel" ],
         [ "NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel" ],
+        [ "NegTestDataInputMismatchSelectV2Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_select_v2_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_select_v2_kernel" ],
         [ "NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel" ],
         [ "NegTestDataInputMismatchZerosLikeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_zeros_like_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_zeros_like_kernel" ],
         [ "NegTestDataInputOutputScaleMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel" ],
@@ -3627,6 +3650,7 @@ var annotated_dup =
         [ "TestDataFloatReLU6", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6" ],
         [ "TestDataFloatRound", "classonert__micro_1_1test__model_1_1_test_data_float_round.html", "classonert__micro_1_1test__model_1_1_test_data_float_round" ],
         [ "TestDataFloatRsqrt", "classonert__micro_1_1test__model_1_1_test_data_float_rsqrt.html", "classonert__micro_1_1test__model_1_1_test_data_float_rsqrt" ],
+        [ "TestDataFloatSelectV2", "classonert__micro_1_1test__model_1_1_test_data_float_select_v2.html", "classonert__micro_1_1test__model_1_1_test_data_float_select_v2" ],
         [ "TestDataFloatSin", "classonert__micro_1_1test__model_1_1_test_data_float_sin.html", "classonert__micro_1_1test__model_1_1_test_data_float_sin" ],
         [ "TestDataFloatSlice", "classonert__micro_1_1test__model_1_1_test_data_float_slice.html", "classonert__micro_1_1test__model_1_1_test_data_float_slice" ],
         [ "TestDataFloatSoftmax", "classonert__micro_1_1test__model_1_1_test_data_float_softmax.html", "classonert__micro_1_1test__model_1_1_test_data_float_softmax" ],
@@ -3715,6 +3739,7 @@ var annotated_dup =
         [ "TestDataS8StridedSlice", "classonert__micro_1_1test__model_1_1_test_data_s8_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_s8_strided_slice" ],
         [ "TestDataS8Sub", "classonert__micro_1_1test__model_1_1_test_data_s8_sub.html", "classonert__micro_1_1test__model_1_1_test_data_s8_sub" ],
         [ "TestDataS8Unpack", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack" ],
+        [ "TestDataSelectV2Base", "classonert__micro_1_1test__model_1_1_test_data_select_v2_base.html", "classonert__micro_1_1test__model_1_1_test_data_select_v2_base" ],
         [ "TestDataShapeKernel", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel" ],
         [ "TestDataSinBase", "classonert__micro_1_1test__model_1_1_test_data_sin_base.html", "classonert__micro_1_1test__model_1_1_test_data_sin_base" ],
         [ "TestDataSliceBase", "classonert__micro_1_1test__model_1_1_test_data_slice_base.html", "classonert__micro_1_1test__model_1_1_test_data_slice_base" ],

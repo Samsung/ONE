@@ -401,6 +401,7 @@ var namespaces_dup =
     [ "locomotiv", "namespacelocomotiv.html", "namespacelocomotiv" ],
     [ "locop", "namespacelocop.html", "namespacelocop" ],
     [ "logo", "namespacelogo.html", "namespacelogo" ],
+    [ "losses", "namespacelosses.html", "namespacelosses" ],
     [ "luci", "namespaceluci.html", "namespaceluci" ],
     [ "luci_eval_verifier", "namespaceluci__eval__verifier.html", [
       [ "args", "namespaceluci__eval__verifier.html#a53d4efe172cb0587427c6c0fdeca74ab", null ],
@@ -479,6 +480,7 @@ var namespaces_dup =
     ] ],
     [ "MaxPool2D_000", "namespace_max_pool2_d__000.html", "namespace_max_pool2_d__000" ],
     [ "Mean_000", "namespace_mean__000.html", "namespace_mean__000" ],
+    [ "metrics", "namespacemetrics.html", "namespacemetrics" ],
     [ "minimal", "namespaceminimal.html", [
       [ "main", "namespaceminimal.html#a1b02f42a4f713242e41972ed5e4c28f2", null ],
       [ "argv", "namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a", null ]

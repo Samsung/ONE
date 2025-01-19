@@ -122,6 +122,7 @@ var namespaceonert__micro_1_1execute_1_1pal =
     [ "roundingDivideByPOT", "namespaceonert__micro_1_1execute_1_1pal.html#ae80281d044eff14f43bc3fc7d5641ff1", null ],
     [ "Rsqrt", "namespaceonert__micro_1_1execute_1_1pal.html#acd3a7e3971e991af5c291c125bde8cf4", null ],
     [ "saturatingRoundingDoublingHighMul", "namespaceonert__micro_1_1execute_1_1pal.html#a2ad5774e254ec60ce4ee72beda2089a7", null ],
+    [ "Select", "namespaceonert__micro_1_1execute_1_1pal.html#a64484c85cce292ff6d4cab042b28ea35", null ],
     [ "Sin", "namespaceonert__micro_1_1execute_1_1pal.html#ad7761ff82c6cc33bad9c9b38b5d4a2c4", null ],
     [ "SISOOperation", "namespaceonert__micro_1_1execute_1_1pal.html#a114b9544e4a27ed290d5db49a1dcc2cc", null ],
     [ "Slice", "namespaceonert__micro_1_1execute_1_1pal.html#af8d2e08cd9c28990b00e91c576b524c8", null ],

@@ -49,7 +49,7 @@ var dir_21922cce5cf568cd02691658c598ce24 =
     [ "PALResizeNearestNeighbor.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h" ],
     [ "PALRound.h", "luci-interpreter_2pal_2common_2_p_a_l_round_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_round_8h" ],
     [ "PALRsqrt.h", "luci-interpreter_2pal_2common_2_p_a_l_rsqrt_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_rsqrt_8h" ],
-    [ "PALSelectV2.h", "_p_a_l_select_v2_8h.html", "_p_a_l_select_v2_8h" ],
+    [ "PALSelectV2.h", "luci-interpreter_2pal_2common_2_p_a_l_select_v2_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_select_v2_8h" ],
     [ "PALSinCommon.h", "luci-interpreter_2pal_2common_2_p_a_l_sin_common_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_sin_common_8h" ],
     [ "PALSoftmaxCommon.h", "luci-interpreter_2pal_2common_2_p_a_l_softmax_common_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_softmax_common_8h" ],
     [ "PALSpaceToBatchND.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_space_to_batch_n_d_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_space_to_batch_n_d_8h" ],

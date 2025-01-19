@@ -74,6 +74,7 @@ var namespaceonert__micro_1_1execute =
     [ "execute_kernel_CircleReshape", "namespaceonert__micro_1_1execute.html#abf3adfdc0964167c45dc0c862ccc6202", null ],
     [ "execute_kernel_CircleRound", "namespaceonert__micro_1_1execute.html#ab906eca3a73e32a8d10079ba49483062", null ],
     [ "execute_kernel_CircleRsqrt", "namespaceonert__micro_1_1execute.html#a6b3bf52566e0b4a8cebdce0813c28ffa", null ],
+    [ "execute_kernel_CircleSelectV2", "namespaceonert__micro_1_1execute.html#a08d311dc547e0231a07d7114c28e785b", null ],
     [ "execute_kernel_CircleShape", "namespaceonert__micro_1_1execute.html#a565da6c7d5dc6a4c8ccdb1f44390bcd7", null ],
     [ "execute_kernel_CircleSin", "namespaceonert__micro_1_1execute.html#a8f4348677c97770b71787974e6d83243", null ],
     [ "execute_kernel_CircleSlice", "namespaceonert__micro_1_1execute.html#a69b4b28df93f1b70c625d281831a4ef1", null ],

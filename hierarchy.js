@@ -3175,6 +3175,10 @@ var hierarchy =
       [ "nnc::cli::BadOption", "classnnc_1_1cli_1_1_bad_option.html", null ]
     ] ],
     [ "onert_micro::core::LogSoftmaxParams", "structonert__micro_1_1core_1_1_log_softmax_params.html", null ],
+    [ "losses.loss.LossFunction", "classlosses_1_1loss_1_1_loss_function.html", [
+      [ "losses.cce.CategoricalCrossentropy", "classlosses_1_1cce_1_1_categorical_crossentropy.html", null ],
+      [ "losses.mse.MeanSquaredError", "classlosses_1_1mse_1_1_mean_squared_error.html", null ]
+    ] ],
     [ "onert::ir::train::LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", null ],
     [ "onert::ir::train::LossInfo::LossParam", "uniononert_1_1ir_1_1train_1_1_loss_info_1_1_loss_param.html", null ],
     [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
@@ -3236,6 +3240,9 @@ var hierarchy =
       [ "circledump::SourceTablePrinter", "classcircledump_1_1_source_table_printer.html", null ]
     ] ],
     [ "circledump::MetadataPrinterRegistry", "classcircledump_1_1_metadata_printer_registry.html", null ],
+    [ "metrics.metric.Metric", "classmetrics_1_1metric_1_1_metric.html", [
+      [ "metrics.categorical_accuracy.CategoricalAccuracy", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", null ]
+    ] ],
     [ "circle_eval_diff::MetricPrinter", "classcircle__eval__diff_1_1_metric_printer.html", [
       [ "circle_eval_diff::MAEPrinter", "classcircle__eval__diff_1_1_m_a_e_printer.html", null ],
       [ "circle_eval_diff::MAPEPrinter", "classcircle__eval__diff_1_1_m_a_p_e_printer.html", null ],
@@ -3243,6 +3250,7 @@ var hierarchy =
       [ "circle_eval_diff::MSEPrinter", "classcircle__eval__diff_1_1_m_s_e_printer.html", null ],
       [ "circle_eval_diff::TopKMatchPrinter", "classcircle__eval__diff_1_1_top_k_match_printer.html", null ]
     ] ],
+    [ "metrics.registry.MetricsRegistry", "classmetrics_1_1registry_1_1_metrics_registry.html", null ],
     [ "luci_interpreter_pal::MinimumFn< T >", "structluci__interpreter__pal_1_1_minimum_fn.html", null ],
     [ "onert_micro::execute::pal::MinimumFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_minimum_fn.html", null ],
     [ "nnfw::cker::MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
@@ -3503,6 +3511,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputMismatchAddKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_add_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_depthwise_conv2_d_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputMismatchSelectV2Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_select_v2_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_transpose_conv_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputMismatchZerosLikeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_mismatch_zeros_like_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputScaleMismatchGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_scale_mismatch_gather_kernel.html", null ],
@@ -5764,6 +5773,9 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataS8ReshapeKernel", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel.html", null ],
       [ "onert_micro::test_model::TestDataSVDFBase< T >", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base.html", [
         [ "onert_micro::test_model::TestDataFloatSVDF", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataSelectV2Base< T >", "classonert__micro_1_1test__model_1_1_test_data_select_v2_base.html", [
+        [ "onert_micro::test_model::TestDataFloatSelectV2", "classonert__micro_1_1test__model_1_1_test_data_float_select_v2.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataShapeKernel< T, U >", "classonert__micro_1_1test__model_1_1_test_data_shape_kernel.html", null ],
       [ "onert_micro::test_model::TestDataSinBase< T >", "classonert__micro_1_1test__model_1_1_test_data_sin_base.html", [

@@ -51,6 +51,7 @@ var dir_ff970b087a976e02e2a0b395feb12740 =
     [ "Reshape.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_reshape_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_reshape_8cpp" ],
     [ "Round.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_round_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_round_8cpp" ],
     [ "Rsqrt.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_rsqrt_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_rsqrt_8cpp" ],
+    [ "SelectV2.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_select_v2_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_select_v2_8cpp" ],
     [ "Shape.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_shape_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_shape_8cpp" ],
     [ "Sin.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_sin_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_sin_8cpp" ],
     [ "Slice.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_slice_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_slice_8cpp" ],

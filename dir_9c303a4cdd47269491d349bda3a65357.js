@@ -51,6 +51,7 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "reshape", "dir_06ce190702d45972e50649e275ec9989.html", "dir_06ce190702d45972e50649e275ec9989" ],
     [ "round", "dir_09c5759c920206d05f0e5d82bfd85b6e.html", "dir_09c5759c920206d05f0e5d82bfd85b6e" ],
     [ "rsqrt", "dir_14031ee1c368044b1b2a0f2a06b8e3e4.html", "dir_14031ee1c368044b1b2a0f2a06b8e3e4" ],
+    [ "select_v2", "dir_1a364232d88a91809f7d09b1e69b8528.html", "dir_1a364232d88a91809f7d09b1e69b8528" ],
     [ "shape", "dir_08873abb609651e6dd2ad6aaac41a5d3.html", "dir_08873abb609651e6dd2ad6aaac41a5d3" ],
     [ "sin", "dir_61265afa9a682719e2bc69cbac25417c.html", "dir_61265afa9a682719e2bc69cbac25417c" ],
     [ "slice", "dir_3befdd7b65c6db0d4b9b81565e365f4e.html", "dir_3befdd7b65c6db0d4b9b81565e365f4e" ],

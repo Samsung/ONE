@@ -1,0 +1,5 @@
+<map id="losses.mse.MeanSquaredError" name="losses.mse.MeanSquaredError">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,203,105"/>
+<area shape="rect" id="Node000002" href="$classlosses_1_1loss_1_1_loss_function.html" title=" " alt="" coords="20,5,188,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,46,107,79,101,79,101,46"/>
+</map>

@@ -119,22 +119,36 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-runtime.h
 <div class="line">software-properties-common \</div>
 <div class="line">unzip \</div>
 <div class="line">wget</div>
-<div class="line"> </div>
-<div class="line">$ pip3 install yapf==0.40.2 numpy</div>
-</div><!-- fragment --><h1>Build from source code, for Ubuntu</h1>
-<p>In a typical linux development environment, including Ubuntu, you can build the runtime with a simple command like this:</p>
+</div><!-- fragment --><h1>Get ONE source code</h1>
+<p>Getting code is as simple as</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
 <div class="line">$ cd one</div>
-<div class="line">$ ./nnfw configure</div>
-<div class="line">$ ./nnfw build</div>
-<div class="line">$ ./nnfw install</div>
+</div><!-- fragment --><h1>Install python packages</h1>
+<p>Python package <code>numpy</code> is needed for build. It's recommended to always install python packages in virtualenv. To do this, at first you need to install python venv package:</p>
+<div class="fragment"><div class="line">$ sudo apt-get install python3-venv</div>
+</div><!-- fragment --><p> Next, create virtualenv in <code>.venv</code> directory (make sure that you are in ONE directory):</p>
+<div class="fragment"><div class="line">$ python3 -m venv .venv</div>
+</div><!-- fragment --><p>and activate it (please keep in mind that you will have to activate it always before build)</p>
+<div class="fragment"><div class="line">$ source .venv/bin/activate</div>
+</div><!-- fragment --><p>Next, just in case upgrade pip package:</p>
+<div class="fragment"><div class="line">(.venv)$ pip install -U pip</div>
+</div><!-- fragment --><p>and finally install <code>numpy</code>:</p>
+<div class="fragment"><div class="line">(.venv)$ pip install numpy</div>
+</div><!-- fragment --><p>Additionally, package <code>yapf</code> is needed in specific version:</p>
+<div class="fragment"><div class="line">(.venv)$ pip install yapf==0.40.2</div>
+</div><!-- fragment --><h1>Build from source code, for Ubuntu</h1>
+<p>In a typical linux development environment, including Ubuntu, you can build the runtime with a simple command like this (make sure that you are in ONE directory):</p>
+<div class="fragment"><div class="line">$ source .venv/bin/activate</div>
+<div class="line">(.venv)$ ./nnfw configure</div>
+<div class="line">(.venv)$ ./nnfw build</div>
+<div class="line">(.venv)$ ./nnfw install</div>
 </div><!-- fragment --><p>For easy build process, we provides <code>Makefile.template</code> makefile.</p>
-<div class="fragment"><div class="line">$ make -f Makefile.template</div>
+<div class="fragment"><div class="line">(.venv)$ make -f Makefile.template</div>
 </div><!-- fragment --><p>To release build the runtime, add the environment variable <code>BUILD_TYPE=release</code> to the build command as follows.</p>
-<div class="fragment"><div class="line">$ export BUILD_TYPE=release</div>
-<div class="line">$ make -f Makefile.template</div>
+<div class="fragment"><div class="line">(.venv)$ export BUILD_TYPE=release</div>
+<div class="line">(.venv)$ make -f Makefile.template</div>
 </div><!-- fragment --><p>Or you can simply do something like this:</p>
-<div class="fragment"><div class="line">$ BUILD_TYPE=release make -f Makefile.template</div>
+<div class="fragment"><div class="line">(.venv)$ BUILD_TYPE=release make -f Makefile.template</div>
 </div><!-- fragment --><p>The build method described here is a <code>native build</code> in which the build environment and execution environment are same. So, this command creates a runtime binary targeting the current build architecture, probably x86_64, as the execution environment. You can find the build output in the ./Product folder as follows:</p>
 <div class="fragment"><div class="line">$ tree -L 2 ./Product</div>
 <div class="line">./Product</div>
