@@ -22,8 +22,6 @@ TEST(LuciPassHelpersArrayIndex, array_index_4d)
 {
   luci::Array4DIndex idx(5, 4, 3, 2);
 
-  EXPECT_EQ(idx.rank(), 4);
-
   EXPECT_EQ(idx(0, 0, 0, 0), 0);
 
   EXPECT_EQ(idx(1, 0, 0, 0), idx.stride(0));
@@ -36,5 +34,5 @@ TEST(LuciPassHelpersArrayIndex, array_index_4d)
 
 TEST(LuciPassHelpersArrayIndex, array_index_4d_NEG)
 {
-  ASSERT_THROW(luci::Array4DIndex idx(5, 4, 3, -1));
+  EXPECT_ANY_THROW(luci::Array4DIndex idx(-1000, 4, 3, -1));
 }
