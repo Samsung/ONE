@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_ARRAY_INDEX_H__
-#define __LUCI_ARRAY_INDEX_H__
+#ifndef __LUCI_PASS_HELPERS_ARRAY_INDEX_H__
+#define __LUCI_PASS_HELPERS_ARRAY_INDEX_H__
 
 #include <cstdint>
 
@@ -23,23 +23,20 @@ namespace luci
 {
 
 /**
- * @brief Index class for 4D tensor (NHWC) to calculate linear index from multi-dimensional indices.
+ * @brief Index class for 4D tensor to calculate linear index from multi-dimensional indices.
  */
 class Array4DIndex
 {
 public:
-  Array4DIndex(uint32_t N, uint32_t H, uint32_t W, uint32_t D);
-  /**
-   * @brief Calculate linear index from multi-dimensional indices.
-   */
-  uint32_t operator()(uint32_t n, uint32_t h, uint32_t w, uint32_t d) const;
-  /**
-   * @brief Get total number of elements in the tensor.
-   */
+  Array4DIndex(uint32_t d0, uint32_t d1, uint32_t d2, uint32_t d3);
+
+  /// @brief Calculate linear index from multi-dimensional indices.
+  uint32_t operator()(uint32_t i0, uint32_t i1, uint32_t i2, uint32_t i3) const;
+
+  /// @brief Get total number of elements in the tensor.
   uint32_t size(void) const;
-  /**
-   * @brief Get stride of the given axis.
-   */
+
+  /// @brief Get stride of the given axis.
   uint32_t stride(uint32_t axis) const;
 
 protected:
@@ -49,4 +46,4 @@ protected:
 
 } // namespace luci
 
-#endif // __LUCI_ARRAY_INDEX_H__
+#endif // __LUCI_PASS_HELPERS_ARRAY_INDEX_H__
