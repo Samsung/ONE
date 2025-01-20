@@ -1,1 +1,2 @@
-add_subdirectories()
+add_subdirectory(kbenchmark)
+add_subdirectory(opencl_tool)
