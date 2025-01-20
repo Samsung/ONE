@@ -21,6 +21,7 @@
 
 namespace luci
 {
+
 #define UNLESS_INVALID_ARGUMENT(COND) \
   if (not(COND))                      \
     throw std::invalid_argument("");

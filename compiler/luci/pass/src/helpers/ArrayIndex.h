@@ -22,9 +22,7 @@
 namespace luci
 {
 
-/**
- * @brief Index class for 4D tensor to calculate linear index from multi-dimensional indices.
- */
+/// @brief Index class for 4D tensor to calculate linear index from multi-dimensional indices.
 class Array4DIndex
 {
 public:
