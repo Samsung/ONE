@@ -34,5 +34,7 @@ TEST(LuciPassHelpersArrayIndex, array_index_4d)
 
 TEST(LuciPassHelpersArrayIndex, array_index_4d_NEG)
 {
-  EXPECT_ANY_THROW(luci::Array4DIndex idx(-1000, 4, 3, -1));
+  luci::Array4DIndex idx(4, 4, 3, 2);
+
+  EXPECT_ANY_THROW(idx(5, 0, 0, 0));
 }

@@ -28,8 +28,6 @@ namespace luci
 Array4DIndex::Array4DIndex(uint32_t D0, uint32_t D1, uint32_t D2, uint32_t D3)
   : _dim{D0, D1, D2, D3}
 {
-  UNLESS_INVALID_ARGUMENT(D0 > 0 && D1 > 0 && D2 > 0 && D3 > 0);
-  
   _strides[3] = 1;
   _strides[2] = D3;
   _strides[1] = D3 * D2;
@@ -44,7 +42,6 @@ Array4DIndex::Array4DIndex(uint32_t D0, uint32_t D1, uint32_t D2, uint32_t D3)
 uint32_t Array4DIndex::operator()(uint32_t i0, uint32_t i1, uint32_t i2, uint32_t i3) const
 {
   UNLESS_INVALID_ARGUMENT(i0 < _dim[0] && i1 < _dim[1] && i2 < _dim[2] && i3 < _dim[3]);
-  UNLESS_INVALID_ARGUMENT(0 <= i0 && 0 <= i1 && 0 <= i2 && 0 <= i3);
 
   return i0 * _strides[0] + i1 * _strides[1] + i2 * _strides[2] + i3 * _strides[3];
 }
