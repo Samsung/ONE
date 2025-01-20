@@ -3,7 +3,7 @@ from onert.native.libnnfw_api_pybind import trainable_ops
 
 class Optimizer:
     """
-    Base class for optimizers. Subclasses should implement the `step` method.
+    Base class for optimizers.
     """
     def __init__(self, learning_rate=0.001, nums_trainable_ops=trainable_ops.ALL):
         """
