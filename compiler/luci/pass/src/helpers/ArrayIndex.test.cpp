@@ -24,10 +24,14 @@ TEST(LuciPassHelpersArrayIndex, array_index_4d)
 
   EXPECT_EQ(idx(0, 0, 0, 0), 0);
 
+  // stride
   EXPECT_EQ(idx(1, 0, 0, 0), idx.stride(0));
   EXPECT_EQ(idx(0, 1, 0, 0), idx.stride(1));
   EXPECT_EQ(idx(0, 0, 1, 0), idx.stride(2));
   EXPECT_EQ(idx(0, 0, 0, 1), idx.stride(3));
+
+  // size
+  EXPECT_EQ(idx.size(), 5 * 4 * 3 * 2);
 
   EXPECT_EQ(idx(4, 3, 2, 1), 4 * 4 * 3 * 2 + 3 * 3 * 2 + 2 * 2 + 1);
 }

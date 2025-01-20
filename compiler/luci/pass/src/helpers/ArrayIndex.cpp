@@ -46,7 +46,7 @@ uint32_t Array4DIndex::operator()(uint32_t i0, uint32_t i1, uint32_t i2, uint32_
   return i0 * _strides[0] + i1 * _strides[1] + i2 * _strides[2] + i3 * _strides[3];
 }
 
-uint32_t Array4DIndex::size(void) const { return _strides[3]; }
+uint32_t Array4DIndex::size(void) const { return _dim[0] * _dim[1] * _dim[2] * _dim[3]; }
 
 uint32_t Array4DIndex::stride(uint32_t axis) const { return _strides[axis]; }
 
