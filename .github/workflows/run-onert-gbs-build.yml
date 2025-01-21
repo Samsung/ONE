@@ -44,6 +44,7 @@ defaults:
 
 jobs:
   build:
+    if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
         arch: ['armv7l'] # TODO: Add aarch64, x86_64, etc

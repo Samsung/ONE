@@ -18,7 +18,7 @@ on:
 jobs:
   # Build on docker CLI for PR test without login
   build-pr-test:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.repository_owner == 'Samsung'
     runs-on: ubuntu-latest
     strategy:
       matrix:
