@@ -30,10 +30,10 @@ jobs:
           python-version: '3.x'
 
       # C format: clang-format-16 (already installed)
-      # Python format: yapf==0.40.2
+      # Python format: yapf==0.43.0
       - name: Install packages
         run: |
-          pip install yapf==0.40.2
+          pip install yapf==0.43.0
 
       - name: Check
         run: ./nnas format

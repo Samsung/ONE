@@ -24,3 +24,6 @@
 
 # Makefile
 /Makefile
+
+# Python virtualenv
+/.venv

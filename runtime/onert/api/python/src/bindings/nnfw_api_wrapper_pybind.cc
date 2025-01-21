@@ -18,6 +18,7 @@
 
 #include "nnfw_session_bindings.h"
 #include "nnfw_tensorinfo_bindings.h"
+#include "nnfw_traininfo_bindings.h"
 
 using namespace onert::api::python;
 
@@ -33,6 +34,22 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
   auto infer = m.def_submodule("infer", "Inference submodule");
   infer.attr("nnfw_session") = m.attr("nnfw_session");
 
+  // Bind experimental `NNFW_SESSION` class
+  auto experimental = m.def_submodule("experimental", "Experimental submodule");
+  experimental.attr("nnfw_session") = m.attr("nnfw_session");
+  bind_experimental_nnfw_session(experimental);
+
   // Bind common `tensorinfo` class
   bind_tensorinfo(m);
+
+  m.doc() = "NNFW Python Bindings for Training";
+
+  // Bind training enums
+  bind_nnfw_train_enums(m);
+
+  // Bind training nnfw_loss_info
+  bind_nnfw_loss_info(m);
+
+  // Bind_train_info
+  bind_nnfw_train_info(m);
 }

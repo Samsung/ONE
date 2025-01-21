@@ -122,6 +122,8 @@ class CircleAdapter(Adapter):
         """Prints a tensor with the specified number of elements"""
         tensor = self.model.subgraphs[0].tensors[tensor_id]
         buffer = self.model.buffers[tensor.buffer].data
+        if buffer is None:
+            return
         dtype = self.dict_tensor_type_to_string[tensor.type].lower()
         # Convert buffer into numpy array with the correct datatype
         if dtype in ['int4', 'uint4']:

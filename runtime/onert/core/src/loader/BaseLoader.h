@@ -364,7 +364,8 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
 {
   ir::Shape shape;
   // Shape
-  const auto *tensor_shape = tensor->shape();
+  const auto *tensor_shape =
+    tensor->shape_signature() ? tensor->shape_signature() : tensor->shape();
   if (tensor_shape != nullptr)
   {
     for (const auto &dim : *tensor_shape)

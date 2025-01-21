@@ -24,6 +24,7 @@ defaults:
 
 jobs:
   test:
+    if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
         # TODO add more versions

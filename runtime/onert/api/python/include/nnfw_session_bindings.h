@@ -29,6 +29,9 @@ namespace python
 // Declare binding common functions
 void bind_nnfw_session(pybind11::module_ &m);
 
+// Declare binding experimental functions
+void bind_experimental_nnfw_session(pybind11::module_ &m);
+
 } // namespace python
 } // namespace api
 } // namespace onert
