@@ -9,7 +9,8 @@ For example, Ubuntu Desktop Linux 18.04 LTS environment is also supported but so
 If you are going to build this project, the following modules must be installed on your system:
 
 - CMake
-- GNU C/C++ compiler (gcc, g++)
+- GNU C/C++ compiler (gcc, g++) - the recommended version is GCC 11 or higher. Please check
+the [known issues](#known-issues) section for the explanation.
 
 In the Ubuntu, you can easily install it with the following command.
 
@@ -208,3 +209,36 @@ NOTE: this assumes
 - host and target have same directoy structure
 - should copy `build` folder to target or
 - mounting `ONE` folder with NFS on the target would be simple
+
+## Known issues
+There's a potential known build error when attempting to cross-compile for ARM32 using GCC 10.5.
+You might encounter an error:
+`comparison of unsigned expression in ‘< 0’ is always false [-Werror=type-limits]` reported from
+the `CircleNodeMixins.h` file. This is likely GCC's bug in this specific version.
+There's a workaround for it though - you can apply the following changes to both for loops
+in the `CircleNodeMixins.h`:
+
+```
+FixedArityNode()
+{
+  if constexpr (N > 0)
+  {
+    _args.resize(N);
+    for (uint32_t n = 0; n < N; ++n)
+    {
+    _args[n] = std::make_unique<loco::Use>(this);
+    }
+  }
+}
+
+void drop(void) final
+{
+  if constexpr (N > 0)
+  {
+    for (uint32_t n = 0; n < N; ++n)
+    {
+      _args.at(n)->node(nullptr);
+    }
+  }
+}
+```
