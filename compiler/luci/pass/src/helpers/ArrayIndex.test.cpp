@@ -42,3 +42,8 @@ TEST(LuciPassHelpersArrayIndex, array_invalid_index_4d_NEG)
 
   EXPECT_ANY_THROW(idx(5, 0, 0, 0));
 }
+
+TEST(LuciPassHelpersArrayIndex, array_invalid_dim_4d_NEG)
+{
+  EXPECT_ANY_THROW(luci::Array4DIndex idx(4, 0, 3, 2));
+}

@@ -22,8 +22,8 @@
 namespace luci
 {
 
-#define UNLESS_INVALID_ARGUMENT(COND) \
-  if (not(COND))                      \
+#define THROW_UNLESS(COND) \
+  if (not(COND))           \
     throw std::invalid_argument("");
 
 Array4DIndex::Array4DIndex(uint32_t D0, uint32_t D1, uint32_t D2, uint32_t D3)
@@ -36,18 +36,27 @@ Array4DIndex::Array4DIndex(uint32_t D0, uint32_t D1, uint32_t D2, uint32_t D3)
 
   for (int i = 0; i < 4; ++i)
   {
-    assert(_strides[i] > 0);
+    THROW_UNLESS(_strides[i] > 0);
   }
 }
 
 uint32_t Array4DIndex::operator()(uint32_t i0, uint32_t i1, uint32_t i2, uint32_t i3) const
 {
-  UNLESS_INVALID_ARGUMENT(i0 < _dim[0] && i1 < _dim[1] && i2 < _dim[2] && i3 < _dim[3]);
+  THROW_UNLESS(i0 < _dim[0] && i1 < _dim[1] && i2 < _dim[2] && i3 < _dim[3]);
 
   return i0 * _strides[0] + i1 * _strides[1] + i2 * _strides[2] + i3 * _strides[3];
 }
 
-uint32_t Array4DIndex::size(void) const { return _dim[0] * _dim[1] * _dim[2] * _dim[3]; }
+uint32_t Array4DIndex::size(void) const
+{
+
+  for (int i = 0; i < 4; ++i)
+  {
+    THROW_UNLESS(_dim[i] > 0);
+  }
+
+  return _dim[0] * _dim[1] * _dim[2] * _dim[3];
+}
 
 uint32_t Array4DIndex::stride(uint32_t axis) const { return _strides[axis]; }
 
