@@ -23,7 +23,7 @@ namespace luci
 {
 
 /// @brief Index class for 4D tensor to calculate linear index from multi-dimensional indices.
-class Array4DIndex
+class Array4DIndex final
 {
 public:
   Array4DIndex(uint32_t d0, uint32_t d1, uint32_t d2, uint32_t d3);
@@ -37,7 +37,7 @@ public:
   /// @brief Get stride of the given axis.
   uint32_t stride(uint32_t axis) const;
 
-protected:
+private:
   uint32_t _dim[4];
   uint32_t _strides[4];
 };

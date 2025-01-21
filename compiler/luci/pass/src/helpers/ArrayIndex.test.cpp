@@ -36,7 +36,7 @@ TEST(LuciPassHelpersArrayIndex, array_index_4d)
   EXPECT_EQ(idx(4, 3, 2, 1), 4 * 4 * 3 * 2 + 3 * 3 * 2 + 2 * 2 + 1);
 }
 
-TEST(LuciPassHelpersArrayIndex, array_index_4d_NEG)
+TEST(LuciPassHelpersArrayIndex, array_invalid_index_4d_NEG)
 {
   luci::Array4DIndex idx(4, 4, 3, 2);
 
