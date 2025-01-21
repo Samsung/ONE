@@ -124,7 +124,7 @@ static void loadModelFile(const std::string &filename, caffe2::NetDef *net)
   file_stream.SetCloseOnDelete(true);
 
   google::protobuf::io::CodedInputStream coded_stream(&file_stream);
-  coded_stream.SetTotalBytesLimit(INT_MAX, INT_MAX);
+  coded_stream.SetTotalBytesLimit(INT_MAX);
 
   if (!net->ParseFromCodedStream(&coded_stream))
     throw std::runtime_error("Couldn't parse file \"" + filename + "\".");
