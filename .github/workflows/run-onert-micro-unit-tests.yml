@@ -25,6 +25,11 @@ defaults:
   run:
     shell: bash
 
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   run-onert-micro-unit-tests:
     name: Run onert-micro Unit tests

@@ -15,6 +15,11 @@ on:
       - '.github/workflows/build-dev-docker.yml'
       - 'infra/docker/**'
 
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   # Build on docker CLI for PR test without login
   build-pr-test:
