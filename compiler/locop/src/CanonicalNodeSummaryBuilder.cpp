@@ -67,7 +67,7 @@ namespace
  */
 std::string opname(const loco::Node *node)
 {
-  if (node->dialect() == loco::CanonicalDialect::get())
+  if (node && node->dialect() == loco::CanonicalDialect::get())
   {
     auto canonical_node = loco::must_cast<const loco::CanonicalNode *>(node);
 
