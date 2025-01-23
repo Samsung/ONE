@@ -16,6 +16,7 @@
 
 #include "luci/Pass/ExpandBroadcastConstPass.h"
 #include "PassTestGraphs.h"
+#include "helpers/ArrayIndex.h"
 
 #include <luci/IR/CircleNodes.h>
 
@@ -181,7 +182,16 @@ public:
   }
 };
 
-// TODO: Add more tests for Rank4 with different broadcasting dimensions
+class ExpandBroadcastRank4ConstTest2 : public ExpandBroadcastConstRank4Graph, public ::testing::Test
+{
+public:
+  ExpandBroadcastRank4ConstTest2()
+  {
+    _y->dtype(loco::DataType::FLOAT32);
+    _y->shape({N, 1, W, D});
+    _y->size<loco::DataType::FLOAT32>(N * 1 * W * D);
+  }
+};
 } // namespace
 
 TEST_F(ExpandBroadcastRank4ConstTest1, name)
@@ -248,6 +258,68 @@ TEST_F(ExpandBroadcastRank4ConstTest1, broadcast_impossible_NEG)
 {
   _y->shape({N, H, W, D + 1});
   _y->size<loco::DataType::FLOAT32>(N * H * W * (D + 1));
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_FALSE(pass.run(&_g));
+}
+
+TEST_F(ExpandBroadcastRank4ConstTest2, remove_broadcast)
+{
+  for (uint32_t i = 0; i < N * W * D; ++i)
+    _y->at<loco::DataType::FLOAT32>(i) = static_cast<float>(i);
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_TRUE(pass.run(&_g));
+
+  auto broadcasted_const = dynamic_cast<luci::CircleConst *>(_add->y());
+  ASSERT_NE(broadcasted_const, nullptr);
+
+  EXPECT_EQ(broadcasted_const->dtype(), loco::DataType::FLOAT32);
+  EXPECT_EQ(broadcasted_const->dim(0).value(), N);
+  EXPECT_EQ(broadcasted_const->dim(1).value(), H);
+  EXPECT_EQ(broadcasted_const->dim(2).value(), W);
+  EXPECT_EQ(broadcasted_const->dim(3).value(), D);
+  EXPECT_EQ(broadcasted_const->size<loco::DataType::FLOAT32>(), N * H * W * D);
+
+  auto const idx = luci::Array4DIndex(N, H, W, D);
+
+  for (uint32_t n = 0; n < N; ++n)
+    for (uint32_t h = 0; h < H; ++h)
+      for (uint32_t w = 0; w < W; ++w)
+        for (uint32_t d = 0; d < D; ++d)
+          EXPECT_NEAR(broadcasted_const->at<loco::DataType::FLOAT32>(idx(n, h, w, d)),
+                      static_cast<float>(n * W * D + w * D + d), std::numeric_limits<float>::min());
+}
+
+TEST_F(ExpandBroadcastRank4ConstTest2, remove_broadcast_multiple_successors)
+{
+  auto const circle_sqrt = _g.nodes()->create<luci::CircleSqrt>();
+  circle_sqrt->dtype(loco::DataType::FLOAT32);
+  circle_sqrt->shape({N, 1, W, D});
+  circle_sqrt->x(_y);
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_TRUE(pass.run(&_g));
+
+  auto broadcasted_const = dynamic_cast<luci::CircleConst *>(_add->y());
+  auto original_const = dynamic_cast<luci::CircleConst *>(circle_sqrt->x());
+
+  ASSERT_NE(broadcasted_const, nullptr);
+  EXPECT_EQ(broadcasted_const->dtype(), loco::DataType::FLOAT32);
+  EXPECT_EQ(broadcasted_const->dim(1).value(), H);
+  EXPECT_EQ(broadcasted_const->size<loco::DataType::FLOAT32>(), N * H * W * D);
+
+  // Check if another successor's node was left intact
+  ASSERT_NE(original_const, nullptr);
+  EXPECT_EQ(original_const->dtype(), loco::DataType::FLOAT32);
+  EXPECT_EQ(original_const->dim(1).value(), 1);
+  EXPECT_EQ(original_const->size<loco::DataType::FLOAT32>(), N * 1 * W * D);
+}
+
+TEST_F(ExpandBroadcastRank4ConstTest2, broadcast_impossible_NEG)
+{
+  _y->shape({N, H, W + 1, D + 1});
+  _y->size<loco::DataType::FLOAT32>(N * H * (W + 1) * (D + 1));
 
   luci::ExpandBroadcastConstPass pass;
   ASSERT_FALSE(pass.run(&_g));
