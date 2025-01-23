@@ -115,6 +115,15 @@ TEST_F(ExpandBroadcastRank2ConstTest, remove_broadcast)
   }
 }
 
+TEST_F(ExpandBroadcastRank2ConstTest, broadcast_diff_rank_NEG)
+{
+  _y->shape({N});
+  _y->size<loco::DataType::FLOAT32>(N);
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_FALSE(pass.run(&_g));
+}
+
 /****************************************************************************
  * TESTS FOR RANK 4
  ****************************************************************************/
@@ -264,6 +273,15 @@ TEST_F(ExpandBroadcastRank4ConstTest1, broadcast_impossible_NEG)
   ASSERT_FALSE(pass.run(&_g));
 }
 
+TEST_F(ExpandBroadcastRank4ConstTest1, broadcast_diff_rank_NEG)
+{
+  _y->shape({N, H, W});
+  _y->size<loco::DataType::FLOAT32>(N * H * W);
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_FALSE(pass.run(&_g));
+}
+
 TEST_F(ExpandBroadcastRank4ConstTest2, remove_broadcast)
 {
   for (uint32_t i = 0; i < N * W * D; ++i)
@@ -321,6 +339,15 @@ TEST_F(ExpandBroadcastRank4ConstTest2, broadcast_impossible_NEG)
 {
   _y->shape({N, H, W + 1, D + 1});
   _y->size<loco::DataType::FLOAT32>(N * H * (W + 1) * (D + 1));
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_FALSE(pass.run(&_g));
+}
+
+TEST_F(ExpandBroadcastRank4ConstTest2, broadcast_diff_rank_NEG)
+{
+  _y->shape({N, H, W + 4});
+  _y->size<loco::DataType::FLOAT32>(N * H * (W + 4));
 
   luci::ExpandBroadcastConstPass pass;
   ASSERT_FALSE(pass.run(&_g));
