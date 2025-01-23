@@ -115,6 +115,15 @@ TEST_F(ExpandBroadcastRank2ConstTest, remove_broadcast)
   }
 }
 
+TEST_F(ExpandBroadcastRank2ConstTest, broadcast_impossible_NEG)
+{
+  _y->shape({N, D + 1});
+  _y->size<loco::DataType::FLOAT32>(N * (D + 1));
+
+  luci::ExpandBroadcastConstPass pass;
+  ASSERT_FALSE(pass.run(&_g));
+}
+
 TEST_F(ExpandBroadcastRank2ConstTest, broadcast_diff_rank_NEG)
 {
   _y->shape({N});
