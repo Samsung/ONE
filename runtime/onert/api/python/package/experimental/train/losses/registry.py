@@ -1,3 +1,4 @@
+from onert.native.libnnfw_api_pybind import loss as loss_type
 from .cce import CategoricalCrossentropy
 from .mse import MeanSquaredError
 
@@ -37,8 +38,8 @@ class LossRegistry:
         """
         # Loss to Enum mapping
         loss_to_enum = {
-            CategoricalCrossentropy: "CATEGORICAL_CROSSENTROPY",
-            MeanSquaredError: "MEAN_SQUARED_ERROR",
+            CategoricalCrossentropy: loss_type.CATEGORICAL_CROSSENTROPY,
+            MeanSquaredError: loss_type.MEAN_SQUARED_ERROR
         }
         for loss_class, enum_value in loss_to_enum.items():
             if isinstance(loss_instance, loss_class):
