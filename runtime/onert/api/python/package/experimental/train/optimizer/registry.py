@@ -1,3 +1,4 @@
+from onert.native.libnnfw_api_pybind import optimizer as optimizer_type
 from .adam import Adam
 from .sgd import SGD
 
@@ -34,7 +35,7 @@ class OptimizerRegistry:
             TypeError: If the optimizer_instance is not a recognized optimizer type.
         """
         # Optimizer to Enum mapping
-        optimizer_to_enum = {SGD: "SGD", Adam: "ADAM"}
+        optimizer_to_enum = {SGD: optimizer_type.SGD, Adam: optimizer_type.ADAM}
         for optimizer_class, enum_value in optimizer_to_enum.items():
             if isinstance(optimizer_instance, optimizer_class):
                 return enum_value
