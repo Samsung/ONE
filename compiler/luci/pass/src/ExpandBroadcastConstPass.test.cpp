@@ -192,6 +192,7 @@ public:
     _y->size<loco::DataType::FLOAT32>(N * 1 * W * D);
   }
 };
+
 } // namespace
 
 TEST_F(ExpandBroadcastRank4ConstTest1, name)
