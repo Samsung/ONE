@@ -4,6 +4,7 @@ This document is based on the system where Ubuntu Desktop Linux 18.04 LTS is ins
 settings, and can be applied in other environments without much difference. For reference, the
 development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
 As of now, to build in 16.04, please use gcc 7.x or above.
+Additionally please check the [known issues](#known-issues) section for the explanation.
 
 ## Build Requires
 
@@ -212,3 +213,35 @@ NOTE: this assumes
 - host and target have same directoy structure
 - should copy `build` folder to target or
 - mounting `ONE` folder with NFS on the target would be simple
+
+## Known issues
+There's a potential known build error when attempting to cross-compile for ARM32 using GCC 10.5.
+You might encounter an error:
+`comparison of unsigned expression in ‘< 0’ is always false [-Werror=type-limits]` reported from
+the `CircleNodeMixins.h` file. This is likely GCC's bug in this specific version.
+There's a workaround for it though - you can apply the following changes to both for loops
+in the `CircleNodeMixins.h`:
+
+```
+FixedArityNode()
+{
+  if constexpr (N > 0)
+  {
+    _args.resize(N);
+    for (uint32_t n = 0; n < N; ++n)
+    {
+    _args[n] = std::make_unique<loco::Use>(this);
+    }
+  }
+}
+
+void drop(void) final
+{
+  if constexpr (N > 0)
+  {
+    for (uint32_t n = 0; n < N; ++n)
+    {
+      _args.at(n)->node(nullptr);
+    }
+  }
+}
