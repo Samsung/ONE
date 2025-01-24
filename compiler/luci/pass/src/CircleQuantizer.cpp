@@ -697,8 +697,8 @@ void CircleQuantizer::requantize(loco::Graph *g) const
   // Requantize
   if (_options->query(Options::Algorithm::Requantize))
   {
-    static const std::vector<std::string> rq_supported_input_model_dtype{"int8"};
-    static const std::vector<std::string> rq_supported_output_model_dtype{"uint8"};
+    static const std::vector<std::string> rq_supported_input_model_dtype{"int8", "uint8"};
+    static const std::vector<std::string> rq_supported_output_model_dtype{"uint8", "int8"};
 
     auto input_model_dtype =
       _options->param(Options::AlgorithmParameters::Quantize_input_model_dtype);
