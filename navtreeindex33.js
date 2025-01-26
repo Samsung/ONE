@@ -1,5 +1,10 @@
 var NAVTREEINDEX33 =
 {
+"_zipper_8h.html":[41,0,4,0,0,0,0,3,10],
+"_zipper_8h.html#a1a14c5627fd37433f742d28a854b6ced":[41,0,4,0,0,0,0,3,10,1],
+"_zipper_8h.html#ae816323a1119de39d502d07f8c12bf86":[41,0,4,0,0,0,0,3,10,2],
+"_zipper_8h_source.html":[41,0,4,0,0,0,0,3,10],
+"acl__cl_2_constant_initializer_8cc.html":[41,0,4,1,1,0,7],
 "acl__cl_2_constant_initializer_8cc_source.html":[41,0,4,1,1,0,7],
 "acl__cl_2_constant_initializer_8h.html":[41,0,4,1,1,0,8],
 "acl__cl_2_constant_initializer_8h_source.html":[41,0,4,1,1,0,8],
@@ -70,6 +75,8 @@ var NAVTREEINDEX33 =
 "activation__float__helpers_8h.html#ad241c192445437657f18094735135acf":[41,0,1,0,1,0,0,0,0,0],
 "activation__float__helpers_8h.html#aeb0c28c03d603cec5c2cffb551bbf6a9":[41,0,1,0,1,0,0,0,0,3],
 "activation__float__helpers_8h_source.html":[41,0,1,0,1,0,0,0,0],
+"adam_8py.html":[41,0,4,1,0,1,1,1,0,2,1],
+"adam_8py_source.html":[41,0,4,1,0,1,1,1,0,2,1],
 "angkor_2include_2angkor_2_tensor_index_8h.html":[41,0,0,1,0,0,0],
 "angkor_2include_2angkor_2_tensor_index_8h.html#a845524c7f888c79282ed1019cbfb3635":[41,0,0,1,0,0,0,0],
 "angkor_2include_2angkor_2_tensor_index_8h_source.html":[41,0,0,1,0,0,0],
@@ -242,12 +249,5 @@ var NAVTREEINDEX33 =
 "backend_2train_2_backend_context_8h_source.html":[41,0,4,1,1,6,4],
 "backend_2train_2_config_8cc.html":[41,0,4,1,1,6,5],
 "backend_2train_2_config_8cc_source.html":[41,0,4,1,1,6,5],
-"backend_2train_2_external_context_8h.html":[41,0,4,1,1,6,8],
-"backend_2train_2_external_context_8h.html#a3c1e11c7f580abe1841baa9258e4ac66":[41,0,4,1,1,6,8,0],
-"backend_2train_2_external_context_8h_source.html":[41,0,4,1,1,6,8],
-"backend_2train_2_kernel_generator_8cc.html":[41,0,4,1,1,6,9],
-"backend_2train_2_kernel_generator_8cc_source.html":[41,0,4,1,1,6,9],
-"backend_2train_2_kernel_generator_8h.html":[41,0,4,1,1,6,10],
-"backend_2train_2_kernel_generator_8h_source.html":[41,0,4,1,1,6,10],
-"backend_2train_2_memory_manager_8cc.html":[41,0,4,1,1,6,12]
+"backend_2train_2_external_context_8h.html":[41,0,4,1,1,6,8]
 };

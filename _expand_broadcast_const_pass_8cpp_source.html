@@ -114,194 +114,199 @@ $(document).ready(function(){initNavTree('_expand_broadcast_const_pass_8cpp_sour
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_expand_broadcast_const_pass_8h.html">luci/Pass/ExpandBroadcastConstPass.h</a>&quot;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;<a class="code" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">luci/IR/CircleNodes.h</a>&gt;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="luci_2log_2include_2luci_2_log_8h.html">luci/Log.h</a>&gt;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *create_expanded_constant(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node, <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *successor)</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">if</span> (successor-&gt;rank() != node-&gt;rank())</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::vector&lt;uint32_t&gt; broadcast_dims;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">for</span> (uint32_t dim = 0; dim &lt; node-&gt;rank(); ++dim)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">if</span> (node-&gt;dim(dim) == successor-&gt;dim(dim))</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">if</span> (node-&gt;dim(dim) == 1)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      broadcast_dims.push_back(dim);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">if</span> (broadcast_dims.size() != 1 || broadcast_dims.back() != node-&gt;rank() - 1)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;NYI: Only depth broadcast removal is supported&quot;</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">if</span> (successor-&gt;rank() == 1 || successor-&gt;rank() &gt; 4)</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;NYI: Only 2D/3D/4D tensor broadcast removal is supported&quot;</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">auto</span> <a class="code hl_namespace" href="namespaceconstant.html">constant</a> = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>()-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;name(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;dtype(node-&gt;dtype());</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;rank(node-&gt;rank());</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  uint32_t constant_size = 1;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; successor-&gt;rank(); ++i)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;dim(i).set(successor-&gt;dim(i).value());</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    constant_size *= <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;dim(i).value();</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;size&lt;loco::DataType::FLOAT32&gt;(constant_size);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">auto</span> <span class="keyword">const</span> node_data = &amp;node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(0);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">auto</span> <span class="keyword">const</span> constant_data = &amp;<a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;at&lt;loco::DataType::FLOAT32&gt;(0);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordflow">if</span> (successor-&gt;rank() == 2)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">auto</span> <span class="keyword">const</span> N = successor-&gt;dim(successor-&gt;rank() - 2).value();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">auto</span> <span class="keyword">const</span> D = successor-&gt;dim(successor-&gt;rank() - 1).value();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; N; ++n)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      std::fill_n(constant_data + n * D, D, node_data[n]);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (successor-&gt;rank() == 3)</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">auto</span> <span class="keyword">const</span> H = successor-&gt;dim(successor-&gt;rank() - 3).value();</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">auto</span> <span class="keyword">const</span> W = successor-&gt;dim(successor-&gt;rank() - 2).value();</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">auto</span> <span class="keyword">const</span> D = successor-&gt;dim(successor-&gt;rank() - 1).value();</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">for</span> (uint32_t h = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a> &lt; H; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>)</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keywordflow">for</span> (uint32_t w = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453">w</a> &lt; W; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453">w</a>)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        std::fill_n(constant_data + h * W * D + w * D, D, node_data[h * W + w]);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (successor-&gt;rank() == 4)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">auto</span> <span class="keyword">const</span> N = successor-&gt;dim(successor-&gt;rank() - 4).value();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">auto</span> <span class="keyword">const</span> H = successor-&gt;dim(successor-&gt;rank() - 3).value();</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">auto</span> <span class="keyword">const</span> W = successor-&gt;dim(successor-&gt;rank() - 2).value();</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">auto</span> <span class="keyword">const</span> D = successor-&gt;dim(successor-&gt;rank() - 1).value();</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; N; ++n)</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keywordflow">for</span> (uint32_t h = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a> &lt; H; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>)</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordflow">for</span> (uint32_t w = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453">w</a> &lt; W; ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453">w</a>)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>          std::fill_n(constant_data + n * H * W * D + h * W * D + w * D, D,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                      node_data[n * H * W + h * W + w]);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  }</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespaceconstant.html">constant</a>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> N&gt; <span class="keywordtype">bool</span> expand_node_input(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node, <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *successor)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>{</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keyword">static_assert</span>(std::is_base_of&lt;luci::CircleNode, N&gt;::value,</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <span class="stringliteral">&quot;Successor node should have CircleNode base&quot;</span>);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="_array_index_8h.html">helpers/ArrayIndex.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">luci/IR/CircleNodes.h</a>&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;<a class="code" href="luci_2log_2include_2luci_2_log_8h.html">luci/Log.h</a>&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *create_expanded_constant(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node, <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *successor)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">if</span> (successor-&gt;rank() != node-&gt;rank())</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::vector&lt;uint32_t&gt; broadcast_dims;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">for</span> (uint32_t dim = 0; dim &lt; node-&gt;rank(); ++dim)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">if</span> (node-&gt;dim(dim) == successor-&gt;dim(dim))</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (node-&gt;dim(dim) == 1)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      broadcast_dims.push_back(dim);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">if</span> (broadcast_dims.size() != 1)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;NYI: Only single dimension broadcast is supported&quot;</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordflow">if</span> (successor-&gt;rank() &lt; 2 || successor-&gt;rank() &gt; 4)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a>(l) &lt;&lt; <span class="stringliteral">&quot;NYI: Only 2D/3D/4D tensor broadcast removal is supported&quot;</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">auto</span> <a class="code hl_namespace" href="namespaceconstant.html">constant</a> = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>()-&gt;<a class="code hl_function" href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">nodes</a>()-&gt;<a class="code hl_function" href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">create</a>&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;name(node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;dtype(node-&gt;dtype());</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;rank(node-&gt;rank());</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  uint32_t constant_size = 1;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; successor-&gt;rank(); ++i)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;dim(i).set(successor-&gt;dim(i).value());</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    constant_size *= <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;dim(i).value();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;size&lt;loco::DataType::FLOAT32&gt;(constant_size);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">auto</span> <span class="keyword">const</span> node_data = &amp;node-&gt;<a class="code hl_function" href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">at</a>&lt;loco::DataType::FLOAT32&gt;(0);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">auto</span> <span class="keyword">const</span> constant_data = &amp;<a class="code hl_namespace" href="namespaceconstant.html">constant</a>-&gt;at&lt;loco::DataType::FLOAT32&gt;(0);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  assert(successor-&gt;rank() &gt;= 2 &amp;&amp; successor-&gt;rank() &lt;= 4);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// Virtually extend the constant node to 4D to support all cases</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// (Only for index calculation)</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// Example. (2, 4) -&gt; (1, 1, 2, 4)</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D0 = (successor-&gt;rank() &lt; 4) ? 1 : successor-&gt;dim(successor-&gt;rank() - 4).value();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D1 = (successor-&gt;rank() &lt; 3) ? 1 : successor-&gt;dim(successor-&gt;rank() - 3).value();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D2 = (successor-&gt;rank() &lt; 2) ? 1 : successor-&gt;dim(successor-&gt;rank() - 2).value();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D3 = successor-&gt;dim(successor-&gt;rank() - 1).value();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">auto</span> idx = <a class="code hl_class" href="classluci_1_1_array4_d_index.html">luci::Array4DIndex</a>(D0, D1, D2, D3);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D0_orig = (node-&gt;rank() &lt; 4) ? 1 : node-&gt;dim(node-&gt;rank() - 4).value();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D1_orig = (node-&gt;rank() &lt; 3) ? 1 : node-&gt;dim(node-&gt;rank() - 3).value();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D2_orig = (node-&gt;rank() &lt; 2) ? 1 : node-&gt;dim(node-&gt;rank() - 2).value();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">auto</span> <span class="keyword">const</span> D3_orig = node-&gt;dim(node-&gt;rank() - 1).value();</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">auto</span> idx_orig = <a class="code hl_class" href="classluci_1_1_array4_d_index.html">luci::Array4DIndex</a>(D0_orig, D1_orig, D2_orig, D3_orig);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordflow">for</span> (uint32_t d0 = 0; d0 &lt; D0; ++d0)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">for</span> (uint32_t d1 = 0; d1 &lt; D1; ++d1)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      <span class="keywordflow">for</span> (uint32_t d2 = 0; d2 &lt; D2; ++d2)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">for</span> (uint32_t d3 = 0; d3 &lt; D3; ++d3)</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>          <span class="keyword">auto</span> <span class="keyword">const</span> d0_orig = (D0_orig == 1) ? 0 : d0;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>          <span class="keyword">auto</span> <span class="keyword">const</span> d1_orig = (D1_orig == 1) ? 0 : d1;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>          <span class="keyword">auto</span> <span class="keyword">const</span> d2_orig = (D2_orig == 1) ? 0 : d2;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>          <span class="keyword">auto</span> <span class="keyword">const</span> d3_orig = (D3_orig == 1) ? 0 : d3;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>          constant_data[idx(d0, d1, d2, d3)] =</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            node_data[idx_orig(d0_orig, d1_orig, d2_orig, d3_orig)];</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespaceconstant.html">constant</a>;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keyword">auto</span> <span class="keyword">const</span> successor_node = loco::must_cast&lt;N *&gt;(successor);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keyword">auto</span> <span class="keyword">const</span> successor_x = loco::must_cast&lt;luci::CircleNode *&gt;(successor_node-&gt;x());</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">auto</span> <span class="keyword">const</span> successor_y = loco::must_cast&lt;luci::CircleNode *&gt;(successor_node-&gt;y());</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *expanded_const;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">if</span> (node == successor_x)</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  {</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    expanded_const = create_expanded_constant(node, successor_y);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">if</span> (expanded_const == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    successor_node-&gt;x(expanded_const);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  }</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node == successor_y)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    expanded_const = create_expanded_constant(node, successor_x);</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">if</span> (expanded_const == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    successor_node-&gt;y(expanded_const);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="keywordtype">bool</span> expand_broadcast_const(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node)</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>{</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">if</span> (node-&gt;dtype() != loco::DataType::FLOAT32)</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Unsupported data type</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> successor : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">succs</a>(node))</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  {</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keyword">auto</span> <span class="keyword">const</span> circle_successor = loco::must_cast&lt;luci::CircleNode *&gt;(successor);</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keywordflow">switch</span> (circle_successor-&gt;opcode())</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>      <span class="keywordflow">case</span> luci::CircleOpcode::ADD:</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="keywordflow">if</span> (expand_node_input&lt;luci::CircleAdd&gt;(node, circle_successor))</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>          changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MUL:</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keywordflow">if</span> (expand_node_input&lt;luci::CircleMul&gt;(node, circle_successor))</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>          changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>      <span class="keywordflow">case</span> luci::CircleOpcode::DIV:</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">if</span> (expand_node_input&lt;luci::CircleDiv&gt;(node, circle_successor))</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>          changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">break</span>; <span class="comment">// Unsupported successor node</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    }</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  }</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>}</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> N&gt; <span class="keywordtype">bool</span> expand_node_input(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node, <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *successor)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>{</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">static_assert</span>(std::is_base_of&lt;luci::CircleNode, N&gt;::value,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                <span class="stringliteral">&quot;Successor node should have CircleNode base&quot;</span>);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">auto</span> <span class="keyword">const</span> successor_node = loco::must_cast&lt;N *&gt;(successor);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">auto</span> <span class="keyword">const</span> successor_x = loco::must_cast&lt;luci::CircleNode *&gt;(successor_node-&gt;x());</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">auto</span> <span class="keyword">const</span> successor_y = loco::must_cast&lt;luci::CircleNode *&gt;(successor_node-&gt;y());</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *expanded_const;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordflow">if</span> (node == successor_x)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    expanded_const = create_expanded_constant(node, successor_y);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">if</span> (expanded_const == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    successor_node-&gt;x(expanded_const);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (node == successor_y)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    expanded_const = create_expanded_constant(node, successor_x);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">if</span> (expanded_const == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    successor_node-&gt;y(expanded_const);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>}</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keywordtype">bool</span> expand_broadcast_const(<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>{</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  <span class="keywordflow">if</span> (node-&gt;dtype() != loco::DataType::FLOAT32)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Unsupported data type</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> successor : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">succs</a>(node))</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <span class="keyword">auto</span> <span class="keyword">const</span> circle_successor = loco::must_cast&lt;luci::CircleNode *&gt;(successor);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordflow">switch</span> (circle_successor-&gt;opcode())</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>      <span class="keywordflow">case</span> luci::CircleOpcode::ADD:</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <span class="keywordflow">if</span> (expand_node_input&lt;luci::CircleAdd&gt;(node, circle_successor))</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>          changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      <span class="keywordflow">case</span> luci::CircleOpcode::MUL:</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        <span class="keywordflow">if</span> (expand_node_input&lt;luci::CircleMul&gt;(node, circle_successor))</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>          changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>      <span class="keywordflow">case</span> luci::CircleOpcode::DIV:</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordflow">if</span> (expand_node_input&lt;luci::CircleDiv&gt;(node, circle_successor))</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>          changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>      <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">break</span>; <span class="comment">// Unsupported successor node</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>  }</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>{</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>}</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="structluci_1_1_expand_broadcast_const_pass.html#a72ba2ac8b8a36af28162dadfa9c0b047">  192</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_expand_broadcast_const_pass.html#a72ba2ac8b8a36af28162dadfa9c0b047">ExpandBroadcastConstPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>{</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  {</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keyword">auto</span> const_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(node);</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keywordflow">if</span> (const_node == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keywordflow">if</span> (expand_broadcast_const(const_node))</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>}</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>{</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="foldopen" id="foldopen00197" data-start="{" data-end="}">
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="structluci_1_1_expand_broadcast_const_pass.html#a72ba2ac8b8a36af28162dadfa9c0b047">  197</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_expand_broadcast_const_pass.html#a72ba2ac8b8a36af28162dadfa9c0b047">ExpandBroadcastConstPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>{</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keyword">auto</span> const_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(node);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keywordflow">if</span> (const_node == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordflow">if</span> (expand_broadcast_const(const_node))</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  }</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
 </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>} <span class="comment">// namespace luci</span></div>
+<div class="ttc" id="a_array_index_8h_html"><div class="ttname"><a href="_array_index_8h.html">ArrayIndex.h</a></div></div>
 <div class="ttc" id="a_expand_broadcast_const_pass_8h_html"><div class="ttname"><a href="_expand_broadcast_const_pass_8h.html">ExpandBroadcastConstPass.h</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html"><div class="ttname"><a href="classloco_1_1_graph.html">loco::Graph</a></div><div class="ttdoc">A neural network graph.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00160">Graph.h:161</a></div></div>
 <div class="ttc" id="aclassloco_1_1_graph_html_a5450552b152b5c3c5b25ca0f16770b07"><div class="ttname"><a href="classloco_1_1_graph.html#a5450552b152b5c3c5b25ca0f16770b07">loco::Graph::nodes</a></div><div class="ttdeci">NodeContext * nodes(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00218">Graph.h:218</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html_a117bfe99976cf71eb9d85f4b018f26ad"><div class="ttname"><a href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">loco::Node::graph</a></div><div class="ttdeci">Graph * graph(void)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h_source.html#l00070">Node.h:70</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_pool_html_a802022e739457e648436d44c30ad4537"><div class="ttname"><a href="classloco_1_1_node_pool.html#a802022e739457e648436d44c30ad4537">loco::NodePool::create</a></div><div class="ttdeci">Derived * create(Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition</b> <a href="_node_pool_8h_source.html#l00037">NodePool.h:37</a></div></div>
+<div class="ttc" id="aclassluci_1_1_array4_d_index_html"><div class="ttname"><a href="classluci_1_1_array4_d_index.html">luci::Array4DIndex</a></div><div class="ttdoc">Index class for 4D tensor to calculate linear index from multi-dimensional indices.</div><div class="ttdef"><b>Definition</b> <a href="_array_index_8h_source.html#l00026">ArrayIndex.h:27</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html"><div class="ttname"><a href="classluci_1_1_circle_const.html">luci::CircleConst</a></div><div class="ttdoc">Class to build tensor data.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_const_8h_source.html#l00034">CircleConst.h:35</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_const_html_a1cca76eccd57aa3074a28df5569ead30"><div class="ttname"><a href="classluci_1_1_circle_const.html#a1cca76eccd57aa3074a28df5569ead30">luci::CircleConst::at</a></div><div class="ttdeci">const loco::DataTypeImpl&lt; DT &gt;::Type &amp; at(uint32_t n) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00038">CircleConst.cpp:38</a></div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">CircleNodes.h</a></div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html">Log.h</a></div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a0d4245f79437cdeb338ce9939f891f41"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a0d4245f79437cdeb338ce9939f891f41">WARN</a></div><div class="ttdeci">#define WARN(name)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00070">Log.h:70</a></div></div>
 <div class="ttc" id="anamespaceconstant_html"><div class="ttname"><a href="namespaceconstant.html">constant</a></div><div class="ttdef"><b>Definition</b> <a href="constant_8py_source.html#l00001">constant.py:1</a></div></div>
-<div class="ttc" id="anamespacejpeg2hdf5_html_a01a00f16b6bc56ca12c4a42576612bd8"><div class="ttname"><a href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">jpeg2hdf5.h</a></div><div class="ttdeci">h</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00101">jpeg2hdf5.py:101</a></div></div>
-<div class="ttc" id="anamespacejpeg2hdf5_html_ac7eea56215106b0908497982f6eed453"><div class="ttname"><a href="namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453">jpeg2hdf5.w</a></div><div class="ttdeci">w</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00102">jpeg2hdf5.py:102</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a43df4bfde8658322cb87ab5654ba4052"><div class="ttname"><a href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a></div><div class="ttdeci">std::set&lt; Node * &gt; succs(const Node *node)</div><div class="ttdoc">Enumerate all the successors of a given node.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">Node.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
@@ -310,7 +315,7 @@ $(document).ready(function(){initNavTree('_expand_broadcast_const_pass_8cpp_sour
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
-<div class="ttc" id="astructluci_1_1_expand_broadcast_const_pass_html_a72ba2ac8b8a36af28162dadfa9c0b047"><div class="ttname"><a href="structluci_1_1_expand_broadcast_const_pass.html#a72ba2ac8b8a36af28162dadfa9c0b047">luci::ExpandBroadcastConstPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition</b> <a href="_expand_broadcast_const_pass_8cpp_source.html#l00192">ExpandBroadcastConstPass.cpp:192</a></div></div>
+<div class="ttc" id="astructluci_1_1_expand_broadcast_const_pass_html_a72ba2ac8b8a36af28162dadfa9c0b047"><div class="ttname"><a href="structluci_1_1_expand_broadcast_const_pass.html#a72ba2ac8b8a36af28162dadfa9c0b047">luci::ExpandBroadcastConstPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition</b> <a href="_expand_broadcast_const_pass_8cpp_source.html#l00197">ExpandBroadcastConstPass.cpp:197</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -38,7 +38,7 @@ var searchData=
   ['batchtospacendchef_35',['BatchToSpaceNDChef',['../class_batch_to_space_n_d_chef.html#aead0dc39b83cb40082dee861678c0b83',1,'BatchToSpaceNDChef']]],
   ['batchtospacendgeneric_36',['batchToSpaceNDGeneric',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#aefbf29e4dc0ebf17bf143f2faa0ef704',1,'onert::backend::cpu::ops::BatchToSpaceNDLayer']]],
   ['batchtospacendlayer_37',['BatchToSpaceNDLayer',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_batch_to_space_n_d_layer.html#a2aadefdaec6c1c3f894c4984fac9d466',1,'onert::backend::cpu::ops::BatchToSpaceNDLayer']]],
-  ['bcast_38',['bcast',['../classnnfw_1_1cker_1_1_b_cast.html#ad324675e342fea186a0882c5e1ae1ad0',1,'nnfw::cker::BCast::BCast()'],['../classnnfw_1_1cker_1_1_b_cast_list.html#a9a8e8d35314ef8898501e360abe5c027',1,'nnfw::cker::BCastList::bcast(int i) const']]],
+  ['bcast_38',['bcast',['../classnnfw_1_1cker_1_1_b_cast_list.html#a9a8e8d35314ef8898501e360abe5c027',1,'nnfw::cker::BCastList::bcast()'],['../classnnfw_1_1cker_1_1_b_cast.html#ad324675e342fea186a0882c5e1ae1ad0',1,'nnfw::cker::BCast::BCast()']]],
   ['bcastlist_39',['BCastList',['../classnnfw_1_1cker_1_1_b_cast_list.html#a06151b6d5fb918e67b3ad17a896fea49',1,'nnfw::cker::BCastList']]],
   ['bcqfullyconnected_40',['BCQFullyConnected',['../classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html#a1cfce1c379a81ab24a93049c3b7eac7f',1,'onert::ir::operation::BCQFullyConnected']]],
   ['bcqfullyconnectedchef_41',['BCQFullyConnectedChef',['../class_b_c_q_fully_connected_chef.html#a394f872e94d2fdf1f7f076b935924007',1,'BCQFullyConnectedChef']]],

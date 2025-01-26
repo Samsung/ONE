@@ -556,6 +556,7 @@ var namespaces_dup =
     [ "oops", "namespaceoops.html", "namespaceoops" ],
     [ "opselector", "namespaceopselector.html", "namespaceopselector" ],
     [ "optimized_ops", "namespaceoptimized__ops.html", "namespaceoptimized__ops" ],
+    [ "optimizer", "namespaceoptimizer.html", "namespaceoptimizer" ],
     [ "OptionBuilder", "namespace_option_builder.html", "namespace_option_builder" ],
     [ "package", "namespacepackage.html", "namespacepackage" ],
     [ "Pad_000", "namespace_pad__000.html", "namespace_pad__000" ],

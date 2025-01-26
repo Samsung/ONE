@@ -1,0 +1,23 @@
+var NAVTREEINDEX298 =
+{
+"xnnpack_2_external_context_8cc_source.html":[41,0,4,1,1,8,6],
+"xnnpack_2ops_2_convolution_layer_8cc.html":[41,0,4,1,1,8,0,0],
+"xnnpack_2ops_2_convolution_layer_8cc_source.html":[41,0,4,1,1,8,0,0],
+"xnnpack_2ops_2_convolution_layer_8h.html":[41,0,4,1,1,8,0,1],
+"xnnpack_2ops_2_convolution_layer_8h_source.html":[41,0,4,1,1,8,0,1],
+"xnnpack_2ops_2_depthwise_convolution_layer_8cc.html":[41,0,4,1,1,8,0,2],
+"xnnpack_2ops_2_depthwise_convolution_layer_8cc_source.html":[41,0,4,1,1,8,0,2],
+"xnnpack_2ops_2_depthwise_convolution_layer_8h.html":[41,0,4,1,1,8,0,3],
+"xnnpack_2ops_2_depthwise_convolution_layer_8h_source.html":[41,0,4,1,1,8,0,3],
+"xnnpack_2ops_2_fully_connected_layer_8cc.html":[41,0,4,1,1,8,0,4],
+"xnnpack_2ops_2_fully_connected_layer_8cc_source.html":[41,0,4,1,1,8,0,4],
+"xnnpack_2ops_2_fully_connected_layer_8h.html":[41,0,4,1,1,8,0,5],
+"xnnpack_2ops_2_fully_connected_layer_8h_source.html":[41,0,4,1,1,8,0,5],
+"xnnpack_2ops_2_operation_utils_8h.html":[41,0,4,1,1,8,0,7],
+"xnnpack_2ops_2_operation_utils_8h.html#aa17afb664268c7b0ee10145e41637f5a":[41,0,4,1,1,8,0,7,0],
+"xnnpack_2ops_2_operation_utils_8h_source.html":[41,0,4,1,1,8,0,7],
+"xnnpack_8cc.html":[41,0,4,1,1,8,13],
+"xnnpack_8cc.html#a1d7114a0448122974a3df458ef21f2f8":[41,0,4,1,1,8,13,1],
+"xnnpack_8cc.html#ac05b7edc89ea7fbb0fb60f42db522c49":[41,0,4,1,1,8,13,0],
+"xnnpack_8cc_source.html":[41,0,4,1,1,8,13]
+};

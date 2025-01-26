@@ -317,5 +317,10 @@ var searchData=
   ['oops_314',['oops',['../namespaceoops.html',1,'']]],
   ['opselector_315',['opselector',['../namespaceopselector.html',1,'']]],
   ['optimized_5fops_316',['optimized_ops',['../namespaceoptimized__ops.html',1,'']]],
-  ['optionbuilder_317',['OptionBuilder',['../namespace_option_builder.html',1,'']]]
+  ['optimizer_317',['optimizer',['../namespaceoptimizer.html',1,'']]],
+  ['optimizer_3a_3aadam_318',['adam',['../namespaceoptimizer_1_1adam.html',1,'optimizer']]],
+  ['optimizer_3a_3aoptimizer_319',['optimizer',['../namespaceoptimizer_1_1optimizer.html',1,'optimizer']]],
+  ['optimizer_3a_3aregistry_320',['registry',['../namespaceoptimizer_1_1registry.html',1,'optimizer']]],
+  ['optimizer_3a_3asgd_321',['sgd',['../namespaceoptimizer_1_1sgd.html',1,'optimizer']]],
+  ['optionbuilder_322',['OptionBuilder',['../namespace_option_builder.html',1,'']]]
 ];

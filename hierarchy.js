@@ -1225,6 +1225,7 @@ var hierarchy =
     [ "flatbuffers::Array< T, length >", "classflatbuffers_1_1_array.html", null ],
     [ "ndarray::Array< T >", "classndarray_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< T, ElementCount >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
+    [ "luci::Array4DIndex", "classluci_1_1_array4_d_index.html", null ],
     [ "flatbuffers::Array< Offset< T >, length >", "classflatbuffers_1_1_array_3_01_offset_3_01_t_01_4_00_01length_01_4.html", null ],
     [ "nnfw::cker::random::Array< uint32_t, 2 >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< uint32_t, 4 >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
@@ -3181,6 +3182,7 @@ var hierarchy =
     ] ],
     [ "onert::ir::train::LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", null ],
     [ "onert::ir::train::LossInfo::LossParam", "uniononert_1_1ir_1_1train_1_1_loss_info_1_1_loss_param.html", null ],
+    [ "losses.registry.LossRegistry", "classlosses_1_1registry_1_1_loss_registry.html", null ],
     [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", null ],
     [ "luci_interpreter_pal::lstm_internal::LstmSizeInfo", "structluci__interpreter__pal_1_1lstm__internal_1_1_lstm_size_info.html", null ],
@@ -4258,7 +4260,12 @@ var hierarchy =
       [ "onert::backend::train::optimizer::Adam", "classonert_1_1backend_1_1train_1_1optimizer_1_1_adam.html", null ],
       [ "onert::backend::train::optimizer::SGD", "classonert_1_1backend_1_1train_1_1optimizer_1_1_s_g_d.html", null ]
     ] ],
+    [ "optimizer.optimizer.Optimizer", "classoptimizer_1_1optimizer_1_1_optimizer.html", [
+      [ "optimizer.adam.Adam", "classoptimizer_1_1adam_1_1_adam.html", null ],
+      [ "optimizer.sgd.SGD", "classoptimizer_1_1sgd_1_1_s_g_d.html", null ]
+    ] ],
     [ "onert::ir::train::OptimizerInfo", "structonert_1_1ir_1_1train_1_1_optimizer_info.html", null ],
+    [ "optimizer.registry.OptimizerRegistry", "classoptimizer_1_1registry_1_1_optimizer_registry.html", null ],
     [ "argumentparse.Option", "classargumentparse_1_1_option.html", [
       [ "argumentparse.Optional", "classargumentparse_1_1_optional.html", null ],
       [ "argumentparse.Positional", "classargumentparse_1_1_positional.html", null ]

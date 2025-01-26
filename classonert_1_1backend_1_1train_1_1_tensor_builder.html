@@ -177,12 +177,13 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html#l00028">28</a> of file <a class="el" href="backend_2train_2_tensor_builder_8cc_source.html">TensorBuilder.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>  : _tensor_reg{tensor_reg}, _tensor_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1acl__cl.html#a7fa14cb8cd7dc2738a942198b5e5b963">TensorManager</a>(tensor_reg, optimizer-&gt;getVarCount())},</div>
-<div class="line"><span class="lineno">   31</span>    _optimizer{optimizer}</div>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>  : _tensor_reg{tensor_reg}, _tensor_mgr{<span class="keyword">new</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1acl__cl.html#a7fa14cb8cd7dc2738a942198b5e5b963">TensorManager</a>(tensor_reg, <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>-&gt;getVarCount())},</div>
+<div class="line"><span class="lineno">   31</span>    _optimizer{<a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>}</div>
 <div class="line"><span class="lineno">   32</span>{</div>
 <div class="line"><span class="lineno">   33</span>  <span class="comment">/* empty */</span></div>
 <div class="line"><span class="lineno">   34</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1acl__cl_html_a7fa14cb8cd7dc2738a942198b5e5b963"><div class="ttname"><a href="namespaceonert_1_1backend_1_1acl__cl.html#a7fa14cb8cd7dc2738a942198b5e5b963">onert::backend::acl_cl::TensorManager</a></div><div class="ttdeci">acl_common::AclTensorManager&lt; operand::ICLTensor, operand::CLTensor, operand::CLSubTensor &gt; TensorManager</div><div class="ttdef"><b>Definition</b> <a href="acl__cl_2_tensor_manager_8h_source.html#l00056">TensorManager.h:57</a></div></div>
+<div class="ttc" id="anamespaceoptimizer_html"><div class="ttname"><a href="namespaceoptimizer.html">optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2package_2experimental_2train_2optimizer_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

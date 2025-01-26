@@ -1,5 +1,10 @@
 var NAVTREEINDEX25 =
 {
+"_reduce_prod_kernel_8h.html#ab4fa2439566d295b10adde2f2ae69730":[41,0,3,4,0,0,1,55,1,7],
+"_reduce_prod_kernel_8h_source.html":[41,0,3,4,0,0,1,55,1],
+"_reducer_options_8cpp.html":[41,0,0,133,2,0,118],
+"_reducer_options_8cpp.html#a5beb1da5ed8b65ea4905adf1ae7a373c":[41,0,0,133,2,0,118,0],
+"_reducer_options_8cpp_source.html":[41,0,0,133,2,0,118],
 "_reducer_options_8h.html":[41,0,0,133,2,0,119],
 "_reducer_options_8h.html#a5beb1da5ed8b65ea4905adf1ae7a373c":[41,0,0,133,2,0,119,0],
 "_reducer_options_8h_source.html":[41,0,0,133,2,0,119],
@@ -244,10 +249,5 @@ var NAVTREEINDEX25 =
 "_ret_8h_source.html":[41,0,0,86,0,1,0,13],
 "_reverse_8cc.html":[41,0,4,1,2,1,5,0,50],
 "_reverse_8cc_source.html":[41,0,4,1,2,1,5,0,50],
-"_reverse_layer_8cc.html":[41,0,4,1,1,4,0,78],
-"_reverse_layer_8cc_source.html":[41,0,4,1,1,4,0,78],
-"_reverse_layer_8h.html":[41,0,4,1,1,4,0,79],
-"_reverse_layer_8h_source.html":[41,0,4,1,1,4,0,79],
-"_reverse_sequence_options_8cpp.html":[41,0,0,133,2,0,126],
-"_reverse_sequence_options_8cpp.html#a07fed98a4c6f6e870162bd92724709f4":[41,0,0,133,2,0,126,0]
+"_reverse_layer_8cc.html":[41,0,4,1,1,4,0,78]
 };

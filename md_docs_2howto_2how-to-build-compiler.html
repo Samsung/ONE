@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
 <p>If you are going to build this project, the following modules must be installed on your system:</p>
 <ul>
 <li>CMake</li>
-<li>GNU C/C++ compiler (gcc, g++)</li>
+<li>GNU C/C++ compiler (gcc, g++) - the recommended version is GCC 11 or higher. Please check the known issues section for the explanation.</li>
 </ul>
 <p>In the Ubuntu, you can easily install it with the following command.</p>
 <div class="fragment"><div class="line">$ sudo apt-get install cmake gcc g++</div>
@@ -192,9 +192,33 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
 </div><!-- fragment --><p>NOTE: this assumes</p><ul>
 <li>host and target have same directoy structure</li>
 <li>should copy <code>build</code> folder to target or</li>
-<li>mounting <code>ONE</code> folder with NFS on the target would be simple </li>
+<li>mounting <code>ONE</code> folder with NFS on the target would be simple</li>
 </ul>
-</div></div><!-- contents -->
+<h1>Known issues</h1>
+<p>There's a potential known build error when attempting to cross-compile for ARM32 using GCC 10.5. You might encounter an error: <code>comparison of unsigned expression in ‘&lt; 0’ is always false [-Werror=type-limits]</code> reported from the <code>CircleNodeMixins.h</code> file. This is likely GCC's bug in this specific version. There's a workaround for it though - you can apply the following changes to both for loops in the <code>CircleNodeMixins.h</code>:</p>
+<div class="fragment"><div class="line">FixedArityNode()</div>
+<div class="line">{</div>
+<div class="line">  if constexpr (N &gt; 0)</div>
+<div class="line">  {</div>
+<div class="line">    _args.resize(N);</div>
+<div class="line">    for (uint32_t n = 0; n &lt; N; ++n)</div>
+<div class="line">    {</div>
+<div class="line">    _args[n] = std::make_unique&lt;loco::Use&gt;(this);</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">void drop(void) final</div>
+<div class="line">{</div>
+<div class="line">  if constexpr (N &gt; 0)</div>
+<div class="line">  {</div>
+<div class="line">    for (uint32_t n = 0; n &lt; N; ++n)</div>
+<div class="line">    {</div>
+<div class="line">      _args.at(n)-&gt;node(nullptr);</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

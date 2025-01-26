@@ -38,7 +38,7 @@ var searchData=
   ['num_5ffield_5floc_35',['num_field_loc',['../classflatbuffers_1_1_flat_buffer_builder.html#adb473c5fd1305213b91eecaa779ecafa',1,'flatbuffers::FlatBufferBuilder']]],
   ['num_5fgenerators_36',['num_generators',['../structflatbuffers_1_1_flat_compiler_1_1_init_params.html#a51d6129e26cfcdfa92ce938096e0e2ca',1,'flatbuffers::FlatCompiler::InitParams']]],
   ['num_5fgroups_37',['num_groups',['../structmir_1_1_conv2_d_op_attributes.html#a63e54d65b5b88c1bee3b8e7465ff8999',1,'mir::Conv2DOpAttributes']]],
-  ['num_5finputs_38',['num_inputs',['../namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb',1,'part_eval_one.num_inputs'],['../namespaceluci__eval__verifier.html#a285932a3831b6f76a665f4063bb3bbed',1,'luci_eval_verifier.num_inputs'],['../namespaceluci__eval__verifier__ref.html#a314636e08417a372bd71f9686c2e81fe',1,'luci_eval_verifier_ref.num_inputs'],['../namespaceeval__result__verifier.html#a0f6d1624d0fd7ecb1911089c29ba79c2',1,'eval_result_verifier.num_inputs'],['../structonert__micro_1_1core_1_1_concatenation_params.html#a5d878112fc399ffc35209b06bcbed75e',1,'onert_micro::core::ConcatenationParams::num_inputs']]],
+  ['num_5finputs_38',['num_inputs',['../namespaceeval__result__verifier.html#a0f6d1624d0fd7ecb1911089c29ba79c2',1,'eval_result_verifier.num_inputs'],['../namespaceluci__eval__verifier.html#a285932a3831b6f76a665f4063bb3bbed',1,'luci_eval_verifier.num_inputs'],['../namespaceluci__eval__verifier__ref.html#a314636e08417a372bd71f9686c2e81fe',1,'luci_eval_verifier_ref.num_inputs'],['../namespacepart__eval__one.html#a96c48226d20da59d2df2f69a93c770cb',1,'part_eval_one.num_inputs'],['../structonert__micro_1_1core_1_1_concatenation_params.html#a5d878112fc399ffc35209b06bcbed75e',1,'onert_micro::core::ConcatenationParams::num_inputs']]],
   ['num_5fmax_5fdimensions_39',['num_max_dimensions',['../classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96',1,'onert::ir::Coordinates']]],
   ['num_5fof_5ftrain_5flayers_40',['num_of_train_layers',['../structonert__micro_1_1_o_m_training_context.html#aedc0007f16729d63a1c436944ac5cf69',1,'onert_micro::OMTrainingContext']]],
   ['num_5fof_5ftrainable_5fops_41',['num_of_trainable_ops',['../structnnfw__train__info.html#a7675fea5939fb07e681f66fab8794dc5',1,'nnfw_train_info']]],
@@ -55,5 +55,6 @@ var searchData=
   ['num_5ftrainble_5fops_52',['num_trainble_ops',['../structnnfw__train__info.html#a48ca47498468714ca54771bb57b8b8a6',1,'nnfw_train_info']]],
   ['number_53',['number',['../namespacejpeg2hdf5.html#add8fb8b0081ac3b113bee1b7ed9bc0d6',1,'jpeg2hdf5']]],
   ['numberofconsumers_54',['numberOfConsumers',['../struct_operand.html#aa7eb9eb3952504513d00b30524c7c4b6',1,'Operand']]],
-  ['numberofusesleft_55',['numberOfUsesLeft',['../struct_run_time_operand_info.html#a78499484b514b0d0f143db52bed94f2b',1,'RunTimeOperandInfo']]]
+  ['numberofusesleft_55',['numberOfUsesLeft',['../struct_run_time_operand_info.html#a78499484b514b0d0f143db52bed94f2b',1,'RunTimeOperandInfo']]],
+  ['nums_5ftrainable_5fops_56',['nums_trainable_ops',['../classoptimizer_1_1optimizer_1_1_optimizer.html#a6b47760ad063c206562a687146841cf9',1,'optimizer::optimizer::Optimizer']]]
 ];

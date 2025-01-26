@@ -209,7 +209,7 @@ $(document).ready(function(){initNavTree('caffe2__importer_8cpp_source.html','')
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  file_stream.SetCloseOnDelete(<span class="keyword">true</span>);</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  google::protobuf::io::CodedInputStream coded_stream(&amp;file_stream);</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  coded_stream.SetTotalBytesLimit(INT_MAX, INT_MAX);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  coded_stream.SetTotalBytesLimit(INT_MAX);</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">if</span> (!net-&gt;ParseFromCodedStream(&amp;coded_stream))</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Couldn&#39;t parse file \&quot;&quot;</span> + filename + <span class="stringliteral">&quot;\&quot;.&quot;</span>);</div>

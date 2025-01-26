@@ -909,6 +909,9 @@ var annotated_dup =
       ] ],
       [ "mse", "namespacelosses_1_1mse.html", [
         [ "MeanSquaredError", "classlosses_1_1mse_1_1_mean_squared_error.html", "classlosses_1_1mse_1_1_mean_squared_error" ]
+      ] ],
+      [ "registry", "namespacelosses_1_1registry.html", [
+        [ "LossRegistry", "classlosses_1_1registry_1_1_loss_registry.html", null ]
       ] ]
     ] ],
     [ "luci", "namespaceluci.html", [
@@ -939,6 +942,7 @@ var annotated_dup =
         [ "Algorithm", "classluci_1_1tinf_1_1_algorithm.html", "classluci_1_1tinf_1_1_algorithm" ],
         [ "Rule", "structluci_1_1tinf_1_1_rule.html", "structluci_1_1tinf_1_1_rule" ]
       ] ],
+      [ "Array4DIndex", "classluci_1_1_array4_d_index.html", "classluci_1_1_array4_d_index" ],
       [ "BuiltinOperatorMappingRule", "classluci_1_1_builtin_operator_mapping_rule.html", "classluci_1_1_builtin_operator_mapping_rule" ],
       [ "BuiltinOptionsExtractor", "classluci_1_1_builtin_options_extractor.html", "classluci_1_1_builtin_options_extractor" ],
       [ "BuiltinOptionsMappingRule", "classluci_1_1_builtin_options_mapping_rule.html", "classluci_1_1_builtin_options_mapping_rule" ],
@@ -3811,6 +3815,20 @@ var annotated_dup =
     ] ],
     [ "optimized_ops", "namespaceoptimized__ops.html", [
       [ "FloatDepthwiseConvKernel", "structoptimized__ops_1_1_float_depthwise_conv_kernel.html", null ]
+    ] ],
+    [ "optimizer", "namespaceoptimizer.html", [
+      [ "adam", "namespaceoptimizer_1_1adam.html", [
+        [ "Adam", "classoptimizer_1_1adam_1_1_adam.html", "classoptimizer_1_1adam_1_1_adam" ]
+      ] ],
+      [ "optimizer", "namespaceoptimizer_1_1optimizer.html", [
+        [ "Optimizer", "classoptimizer_1_1optimizer_1_1_optimizer.html", "classoptimizer_1_1optimizer_1_1_optimizer" ]
+      ] ],
+      [ "registry", "namespaceoptimizer_1_1registry.html", [
+        [ "OptimizerRegistry", "classoptimizer_1_1registry_1_1_optimizer_registry.html", null ]
+      ] ],
+      [ "sgd", "namespaceoptimizer_1_1sgd.html", [
+        [ "SGD", "classoptimizer_1_1sgd_1_1_s_g_d.html", "classoptimizer_1_1sgd_1_1_s_g_d" ]
+      ] ]
     ] ],
     [ "OptionBuilder", "namespace_option_builder.html", [
       [ "OptionBuilder", "class_option_builder_1_1_option_builder.html", "class_option_builder_1_1_option_builder" ]

@@ -135,18 +135,18 @@ $(document).ready(function(){initNavTree('_train_info_builder_8h_source.html',''
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;optimizerInfo = training_info-&gt;optimizerInfo();</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lossInfo = training_info-&gt;lossInfo();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    ::circle::Optimizer optimizer;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    ::circle::Optimizer <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    ::circle::OptimizerOptions optimizer_opt_type;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">::flatbuffers::Offset&lt;void&gt;</a> optimizer_opt;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">switch</span> (optimizerInfo.optim_code)</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">ir::train::OptimizerCode::SGD</a>:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        optimizer = ::circle::Optimizer_SGD;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a> = ::circle::Optimizer_SGD;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        optimizer_opt_type = ::circle::OptimizerOptions_SGDOptions;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        optimizer_opt = ::circle::CreateSGDOptions(_builder, optimizerInfo.learning_rate).<a class="code hl_function" href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">Union</a>();</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">ir::train::OptimizerCode::Adam</a>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        optimizer = ::circle::Optimizer_ADAM;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a> = ::circle::Optimizer_ADAM;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        optimizer_opt_type = ::circle::OptimizerOptions_AdamOptions;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        optimizer_opt = ::circle::CreateAdamOptions(_builder, optimizerInfo.learning_rate).<a class="code hl_function" href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">Union</a>();</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">break</span>;</div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('_train_info_builder_8h_source.html',''
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">const</span> <span class="keyword">auto</span> end = ::circle::CreateModelTrainingDirect(</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      _builder, training_info-&gt;version(), optimizer, optimizer_opt_type, optimizer_opt, lossfn,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      _builder, training_info-&gt;version(), <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>, optimizer_opt_type, optimizer_opt, lossfn,</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      lossfn_opt_type, lossfn_opt, 0, training_info-&gt;batchSize(), loss_reduction_type,</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      &amp;trainable_ops);</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a0c9e507b373d598b51052fab4fa34912">Finish</a>(end, ::circle::ModelTrainingIdentifier());</div>
@@ -233,6 +233,7 @@ $(document).ready(function(){initNavTree('_train_info_builder_8h_source.html',''
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::LossReductionType::SumOverBatchSize</a></div><div class="ttdeci">@ SumOverBatchSize</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5">onert::ir::train::LossReductionType::Sum</a></div><div class="ttdeci">@ Sum</div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="anamespaceoptimizer_html"><div class="ttname"><a href="namespaceoptimizer.html">optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2package_2experimental_2train_2optimizer_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 <div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 <div class="ttc" id="astructflatbuffers_1_1_offset_html_ac33c7bf2f65b532640b9000806aeb02e"><div class="ttname"><a href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">flatbuffers::Offset::Union</a></div><div class="ttdeci">Offset&lt; void &gt; Union() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00074">flatbuffers.h:74</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

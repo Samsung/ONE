@@ -5,6 +5,7 @@ var namespaceluci =
     [ "sinf", "namespaceluci_1_1sinf.html", "namespaceluci_1_1sinf" ],
     [ "test", "namespaceluci_1_1test.html", "namespaceluci_1_1test" ],
     [ "tinf", "namespaceluci_1_1tinf.html", "namespaceluci_1_1tinf" ],
+    [ "Array4DIndex", "classluci_1_1_array4_d_index.html", "classluci_1_1_array4_d_index" ],
     [ "BuiltinOperatorMappingRule", "classluci_1_1_builtin_operator_mapping_rule.html", "classluci_1_1_builtin_operator_mapping_rule" ],
     [ "BuiltinOptionsExtractor", "classluci_1_1_builtin_options_extractor.html", "classluci_1_1_builtin_options_extractor" ],
     [ "BuiltinOptionsMappingRule", "classluci_1_1_builtin_options_mapping_rule.html", "classluci_1_1_builtin_options_mapping_rule" ],
