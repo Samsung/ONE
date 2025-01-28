@@ -28,6 +28,8 @@ namespace luci
 class Pass : public logo::Pass
 {
 public:
+  // This directive prevents emitting a compiler erro triggered by -Werror=overloaded-virtual
+  using logo::Pass::run;
   // Run module pass and return false if there was nothing changed
   virtual bool run(luci::Module *) = 0;
 };
