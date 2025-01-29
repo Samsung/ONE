@@ -163,6 +163,12 @@ struct SplitParams
   uint32_t num_outputs;
 };
 
+struct MeanParams
+{
+  int32_t axis_count;
+  int16_t axis[6];
+};
+
 struct FloatConv2D
 {
   int32_t stride_w;
