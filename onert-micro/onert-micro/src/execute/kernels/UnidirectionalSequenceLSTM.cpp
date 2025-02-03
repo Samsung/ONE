@@ -285,14 +285,10 @@ void evalFloat(const OMExecuteArgs &execute_args)
 
   size_t scratch_buf_size = (long)batch_size * (long)state_dimension * (long)cell_state_type_size;
 
-  auto scratch_0_data =
-    std::make_unique<uint8_t[]>(scratch_buf_size);
-  auto scratch_1_data =
-    std::make_unique<uint8_t[]>(scratch_buf_size);
-  auto scratch_2_data =
-    std::make_unique<uint8_t[]>(scratch_buf_size);
-  auto scratch_3_data =
-    std::make_unique<uint8_t[]>(scratch_buf_size);
+  auto scratch_0_data = std::make_unique<uint8_t[]>(scratch_buf_size);
+  auto scratch_1_data = std::make_unique<uint8_t[]>(scratch_buf_size);
+  auto scratch_2_data = std::make_unique<uint8_t[]>(scratch_buf_size);
+  auto scratch_3_data = std::make_unique<uint8_t[]>(scratch_buf_size);
 
   // Create and fill with 0 output state tensor
   auto output_state_data = std::make_unique<float[]>(num_elements(lstm_struct.output_state()));
