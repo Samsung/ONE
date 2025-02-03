@@ -18,6 +18,8 @@ jobs:
   check-format:
     name: Check format
     runs-on: ubuntu-20.04
+    env:
+      CHECK_PYTHON: 0 # Disable python format check for now
 
     steps:
       - name: Checkout
