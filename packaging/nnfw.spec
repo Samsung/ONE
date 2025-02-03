@@ -227,8 +227,13 @@ mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
 install -m 644 build/out/lib/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
-install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
-install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
+%if "%{asan}" == "1"
+ install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}
+ install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}
+%else
+ install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
+ install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
+%endif
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
 # For developer
@@ -293,8 +298,10 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/*.so
 %{_libdir}/nnfw/*.so
+%if "%{asan}" != "1"
 %{_libdir}/nnfw/backend/*.so
 %{_libdir}/nnfw/loader/*.so
+%endif
 %exclude %{_includedir}/CL/*
 %endif
 
