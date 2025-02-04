@@ -108,7 +108,7 @@ namespace {spec_name} {{
 }} // namespace {spec_name}\n"""
     # This regex is to remove prefix and get relative path for #include
     # Fix for onert: update path
-    pathRegex = r".*(tests/nnapi/src/)"
+    pathRegex = r".*(runtime/tests/nnapi/src/)"
     specFileBase = os.path.basename(tg.FileNames.specFile)
     print(fileHeader.format(spec_file=specFileBase), file=model_fd)
     print(fileHeader.format(spec_file=specFileBase), file=example_fd)

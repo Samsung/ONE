@@ -23,7 +23,7 @@ To test *nnfw_api*, we almost always need some nnpackages. Those are stored in a
 ### How to add nnpackages for test
 
 If there is no nnpackage that is sufficient for your need, you may need to create one. However it is not allowed to store nnpackage files in the repo.
-If you want to add some, please leave an issue of asking for adding new nnpackages to the server. Then add `config.sh` for each nnpackage in `tests/scripts/nnfw_api_gtest_models`.
+If you want to add some, please leave an issue of asking for adding new nnpackages to the server. Then add `config.sh` for each nnpackage in `runtime/tests/scripts/nnfw_api_gtest_models`.
 
 Once you have done the above steps, please register it in the test source code to make use of it. You may take a look at `NNPackages` class for details.
 

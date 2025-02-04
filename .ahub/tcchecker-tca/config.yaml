@@ -8,7 +8,7 @@ test:
       - /runtime/libs/misc
       - /runtime/libs/ndarray
       - /runtime/onert
-      - /tests/nnfw_api
+      - /runtime/tests/nnfw_api
 
     testFile:
       - extension: cpp

@@ -46,7 +46,7 @@ Training process in ONERT consists of the following steps:
 
 ### Training tools
 
-- [onert_train](tests/tools/onert_train): A tool to train neural networks with ONERT.
+- [onert_train](runtime/tests/tools/onert_train): A tool to train neural networks with ONERT.
 - [generate_datafile](tools/generate_datafile): A tool to generate data files for ONERT training.
 - [circle_plus_gen](tools/circle_plus_gen): A tool to generate Circle+ model from circle model.
 

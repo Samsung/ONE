@@ -125,5 +125,4 @@ endif(ENABLE_TEST)
 
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/compute compute)
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/runtime runtime)
-add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/tests tests)
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/tools tools)
