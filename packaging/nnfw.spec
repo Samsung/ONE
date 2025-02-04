@@ -163,7 +163,7 @@ If you want to get coverage info, you should install runtime package which is bu
 %setup -q
 cp %{SOURCE1} .
 mkdir ./externals
-tar -xf %{SOURCE1001} -C ./tests/nnapi/src/
+tar -xf %{SOURCE1001} -C ./runtime/tests/nnapi/src/
 tar -xf %{SOURCE3001} -C ./externals
 tar -xf %{SOURCE3002} -C ./externals
 tar -xf %{SOURCE3003} -C ./externals
