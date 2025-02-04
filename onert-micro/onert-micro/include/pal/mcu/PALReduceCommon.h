@@ -118,4 +118,4 @@ inline void ReduceGeneric(const T *input_data, const int *input_dims, const int 
 } // namespace execute
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_PAL_TANH_H
+#endif // ONERT_MICRO_PAL_REDUCE_COMMON_H
