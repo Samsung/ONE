@@ -16,7 +16,7 @@
  */
 
 #ifndef ONERT_MICRO_PAL_REDUCE_COMMON_H
-#define ONERT_MICRO_PAL_TANH_H
+#define ONERT_MICRO_PAL_REDUCE_COMMON_H
 
 #include "PALUtils.h"
 
