@@ -123,6 +123,5 @@ if(ENABLE_TEST)
   target_include_directories(arser INTERFACE ${NNAS_PROJECT_SOURCE_DIR}/compiler/arser/include/)
 endif(ENABLE_TEST)
 
-add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/compute compute)
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/runtime runtime)
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/tools tools)
