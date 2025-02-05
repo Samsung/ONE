@@ -269,7 +269,7 @@ cp -r build/out/test/* %{test_install_path}/test
 cp -r build/out/unittest/nnfw_api_gtest_models %{test_install_path}/unittest
 
 # Share test script with ubuntu (ignore error if there is no list for target)
-cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
+cp runtime/tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
 cp %{test_install_path}/nnapi-gtest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/nnapi-gtest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
