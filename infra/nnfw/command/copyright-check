@@ -12,7 +12,7 @@ FILE_EXCLUDE_PATTERN=(
   :!compiler/ann-api
   :!onert-micro/externals
   :!runtime/3rdparty
-  :!tests/nnapi
+  :!runtime/tests/nnapi
 )
 
 check_copyright() {

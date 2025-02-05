@@ -144,7 +144,7 @@ clean:
 distclean:
 	rm -rf Product
 	rm -rf externals
-	rm -rf tests/nnapi/src/generated/
+	rm -rf runtime/tests/nnapi/src/generated/
 
 ###
 ### Command (internal)
@@ -221,7 +221,7 @@ test_suite_internal: install_all_internal
 	@echo "packaging test suite"
 	@rm -rf $(INSTALL_PATH)/test-suite.tar.gz
 # TODO Divide runtime package, external library package, and test suite
-	@tar -zcf test-suite.tar.gz tests/scripts infra Product/out --dereference
+	@tar -zcf test-suite.tar.gz infra Product/out --dereference
 	@mv test-suite.tar.gz $(INSTALL_PATH)/.
 
 coverage_suite_internal: install_all_internal
