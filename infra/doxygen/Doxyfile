@@ -794,7 +794,6 @@ INPUT                  = README.md \
                          docs/howto/ \
                          docs/overview/ \
                          docs/runtime/ \
-                         compute/ \
                          compiler/ \
                          onert-micro/ \
                          runtime/
@@ -904,7 +903,6 @@ EXCLUDE_PATTERNS       = *.test.* \
                          */3rdparty/* \
                          */contrib/* \
                          */compiler/*/*.md \
-                         */compute/*/*.md \
                          */runtime/*/*.md
 
 

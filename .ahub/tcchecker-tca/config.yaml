@@ -4,7 +4,7 @@ test:
     testCaseLanguage: CPP
     testFW: GTEST
     testCaseFolder:
-      - /compute/cker
+      - /runtime/compute/cker
       - /runtime/libs/misc
       - /runtime/libs/ndarray
       - /runtime/onert

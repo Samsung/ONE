@@ -33,7 +33,7 @@ runtime/libs/profiling/
 runtime/3rdparty/
 
 # External code: compute libraries
-compute/
+runtime/compute/
 
 # Experimental subprojects not for release
 runtime/contrib/
