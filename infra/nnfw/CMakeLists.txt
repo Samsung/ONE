@@ -124,4 +124,3 @@ if(ENABLE_TEST)
 endif(ENABLE_TEST)
 
 add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/runtime runtime)
-add_subdirectory(${NNAS_PROJECT_SOURCE_DIR}/tools tools)

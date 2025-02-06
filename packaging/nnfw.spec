@@ -212,7 +212,7 @@ cp -r %{nncc_workspace}/overlay/include/flatbuffers %{overlay_path}/include
 
 %if %{test_build} == 1
 %if %{coverage_build} == 1
-pwd > tests/scripts/build_path.txt
+pwd > runtime/tests/scripts/build_path.txt
 %endif # coverage_build
 tar -zcf test-suite.tar.gz infra/scripts
 %endif # test_build
@@ -276,7 +276,7 @@ tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 %if %{coverage_build} == 1
 mkdir -p %{buildroot}%{test_install_home}/gcov
 find %{nnfw_workspace} -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
-install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
+install -m 0644 ./runtime/tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
 %endif # coverage_build
 %endif # test_build
 
