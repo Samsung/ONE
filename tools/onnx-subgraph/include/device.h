@@ -45,15 +45,15 @@ public:
   }
 
   ~Device() {}
-  
+
   std::vector<std::string> NPUPreferOp;
   std::vector<std::string> CPUSupportOp;
   std::vector<std::string> NPUSupportOp;
-  
+
   float max_subgraph_size;
-  
+
   DeviceType getType() { return DeviceType::Target_NPU; }
-  
+
   std::vector<std::vector<std::string>> getCPUStructure()
   {
     return {{"Concat"},
@@ -61,7 +61,7 @@ public:
             {"Transpose", "Gather", "Gather", "Gather", "Transpose", "MatMul", "Mul", "Softmax",
              "MatMul"}};
   }
-  
+
   std::vector<std::vector<std::string>> getNPUStructure()
   {
     return {{"Reshape", "Transpose", "Reshape"},
@@ -71,11 +71,11 @@ public:
             {"Reshape", "Add", "Add", "Reshape", "Transpose", "Conv", "Add"},
             {"Conv"}};
   }
-  
+
   std::vector<std::string> getNPUSupportOp() { return NPUSupportOp; }
   std::vector<std::string> getCPUSupportOp() { return CPUSupportOp; }
   std::vector<std::string> getNPUPreferOp() { return NPUPreferOp; }
-  
+
   /**
    * @brief     Generate cut instructions for subgraphs based on the given device type.
    *
@@ -99,7 +99,7 @@ public:
   void GenerateCutInstruction(std::vector<onnx::GraphProto> &Subgraphs, std::string device,
                               std::vector<std::unordered_set<NodeTensor>> &subgraphs_inputs,
                               std::vector<std::unordered_set<NodeTensor>> &subgraphs_outputs);
-  
+
   /**
    * @brief Reads and parses a JSON file containing device information.
    *
@@ -121,15 +121,15 @@ public:
       std::cout << "Error opening file\n";
       return;
     }
-    
+
     if (reader.parse(in, root))
     {
       // Extract and set the maximum subgraph size from hardware limits
       float max_subgraph_size_json = root["hardware_limits"]["max_subgraph_size"].asFloat();
       max_subgraph_size = max_subgraph_size_json;
       // Iterate through performance data to identify operations where NPU outperforms CPU
-      
-	  for (unsigned int i = 0; i < root["performance_data"].size(); i++)
+
+      for (unsigned int i = 0; i < root["performance_data"].size(); i++)
       {
         if (root["performance_data"][i]["CPU_time"].asFloat() >
             root["performance_data"][i]["NPU_time"].asFloat())
@@ -137,8 +137,8 @@ public:
           NPUPreferOp.push_back(root["performance_data"][i]["name"].asString());
         }
       }
-      
-	  // Iterate through and store supported NPU operations
+
+      // Iterate through and store supported NPU operations
       for (int i = 0; i < int(root["NPU_supported_ops"].size()); i++)
       {
         if (std::find(NPUSupportOp.begin(), NPUSupportOp.end(),
@@ -147,8 +147,8 @@ public:
           NPUSupportOp.push_back(root["NPU_supported_ops"][i].asString());
         }
       }
-      
-	  // Iterate through and store supported CPU operations
+
+      // Iterate through and store supported CPU operations
       for (int i = 0; i < int(root["CPU_supported_ops"].size()); i++)
       {
         if (std::find(CPUSupportOp.begin(), CPUSupportOp.end(),
@@ -158,10 +158,10 @@ public:
         }
       }
     }
-    
-	in.close();
+
+    in.close();
   }
-  
+
   void updateOnnxFile(std::string &path) { onnxFile = path; }
 
   std::string getOnnxFile() { return onnxFile; }
