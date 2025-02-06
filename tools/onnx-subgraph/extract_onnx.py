@@ -16,6 +16,7 @@ import onnx
 import re
 import os
 
+
 def splitsubgraph_ios(iofile):
     iolist = re.split('--input-name |;--output-name ', iofile)
     in_ = iolist[1].split(';')
@@ -23,6 +24,7 @@ def splitsubgraph_ios(iofile):
     del out_[-1]
     type = iolist[0].split('subgraph')[0]
     return in_, out_, type
+
 
 def split_onnx_ios(instrfile,
                    input_path='net/generation_model_simplify.onnx',
@@ -60,6 +62,7 @@ def split_onnx_ios(instrfile,
             print("succeed", count)
             count = count + 1
     f1.close()
+
 
 if __name__ == "__main__":
     split_onnx_ios('./scripts/subgraphs_ios.txt', './resnet-test.onnx')
