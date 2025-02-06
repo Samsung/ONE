@@ -29,10 +29,9 @@ namespace pal
 
 // This method parses the input 'axis' to remove duplicates and handle negative
 // values, and returns a valid 'out_axis'
-inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis,
+inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis, int *out_axis,
                         int *out_num_axis)
 {
-  int out_axis[2];
   *out_num_axis = 0; // Just in case.
   // Short-circuit axis resolution for scalars; the axis will go unused.
   if (num_dims == 0)
@@ -75,7 +74,7 @@ inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_a
 // Computes the generic value (i.e., sum/max/min/prod) of elements across
 // dimensions given in axis. It needs to pass in init_value and reducer.
 template <typename T>
-inline void ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims,
+inline bool ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims,
                           T *output_data, const int *axis, const int64_t num_axis_dimensions,
                           T init_value, const int output_flat_size, T reducer(const T, const T))
 {
@@ -83,7 +82,7 @@ inline void ReduceGeneric(const T *input_data, const int *input_dims, const int 
   for (int i = 0; i < input_num_dims; ++i)
   {
     if (input_dims[i] == 0)
-      return;
+      return false;
   }
 
   for (size_t idx = 0; idx < output_flat_size; ++idx)
@@ -93,9 +92,11 @@ inline void ReduceGeneric(const T *input_data, const int *input_dims, const int 
 
   // Resolve axis.
   int num_resolved_axis = 0;
-  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, &num_resolved_axis))
+  int resolved_axis[2];
+
+  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &num_resolved_axis))
   {
-    return;
+    return false;
   }
 
   int temp_index[5];
@@ -112,6 +113,62 @@ inline void ReduceGeneric(const T *input_data, const int *input_dims, const int 
       reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);
     output_data[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);
   } while (nextIndex(input_num_dims, input_dims, temp_index));
+
+  return true;
+}
+
+// This method expects that output_data has been initialized.
+template <typename T>
+inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int input_num_dims,
+                          T *output_data, const int *axis, const int num_axis,
+                          const int num_outputs)
+{
+  return ReduceGeneric<T>(input_data, input_dims, input_num_dims, output_data, axis, num_axis,
+                          static_cast<T>(0), num_outputs,
+                          [](const T current, const T in) -> T { return in + current; });
+}
+
+template <typename T>
+inline bool Mean(const int *input_dims, const T *input_data, const int input_num_dims,
+                 T *output_data, const int num_outputs, const int *axis,
+                 const int num_axis_dimensions)
+{
+  if (!reduceSumImpl<T>(input_data, input_dims, input_num_dims, output_data, axis,
+                        num_axis_dimensions, num_outputs))
+  {
+    return false;
+  }
+
+  // Resolve axis again for computing mean
+  int num_resolved_axis = 0;
+  int resolved_axis[2];
+
+  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &num_resolved_axis))
+  {
+    return false;
+  }
+
+  // Calculate mean by dividing output_data by num of aggregated element.
+  size_t num_elements_in_axis = 1;
+  for (int idx = 0; idx < num_resolved_axis; ++idx)
+  {
+    size_t current = static_cast<size_t>(input_dims[resolved_axis[idx]]);
+    // Overflow prevention.
+    if (current > (std::numeric_limits<size_t>::max() / num_elements_in_axis))
+    {
+      return false;
+    }
+    num_elements_in_axis *= current;
+  }
+
+  if (num_elements_in_axis > 0)
+  {
+    for (size_t idx = 0; idx < num_outputs; ++idx)
+    {
+      output_data[idx] = static_cast<T>(output_data[idx] / static_cast<T>(num_elements_in_axis));
+    }
+  }
+  return true;
 }
 
 } // namespace pal
