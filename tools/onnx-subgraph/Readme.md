@@ -1,6 +1,7 @@
 # onnx_autosubgraph
-onnx-subgraph tool provides  model auto partitionioning of onnx model to several sub models by operator, performance and model size limitations, 
-with the order and input / output names of sub models
+onnx-subgraph tool provides  model auto partitionioning of onnx model to several sub models by 
+operator, performance and model size limitations,with the order and input / output names of 
+sub models
 
 # How to build the onnx-subgraph
 ## OS environment dependence
@@ -8,7 +9,7 @@ with the order and input / output names of sub models
      2. GCC >= 9.4.0
      3. cmake >= 3.10
      4. python >= 3.8
-     5. apt-get install libprotobuf-dev protobuf-compiler
+     5. apt-get install libprotobuf-dev protobuf-compiler libjsoncpp-dev
 
 ## Python packages dependence
     onnx                         1.16.0
@@ -43,7 +44,8 @@ with the order and input / output names of sub models
 ## Pre-steps
 ### Download the test AI models
     1. bash scripts/test_model_download.sh, then "resnet-test.onnx" will be got in ./build
-    2. you can change to any other onnx files as your needs, or edit the download link in "scripts/test_model_download.sh"
+    2. you can change to any other onnx files as your needs, or edit the download link in 
+	   "scripts/test_model_download.sh"
 ### Prepare the config.json
     1. edit the config.json
        . you can edit operators in "NPU_supported_ops" and "CPU_supported_ops";
@@ -59,7 +61,8 @@ with the order and input / output names of sub models
 ## Split the onnx model to subgraphs
     1. edit the config path and model file path at ./scripts/extract_onnx.py 
        e.g.: extract_onnx_lib.split_onnx_ios('./subgraphs_ios.txt','./resnet-test.onnx') 
-    2. python scripts/extract_onnx.py, after extraction done, the subgraphs will be saved at './subgraphs'
+    2. python scripts/extract_onnx.py, after extraction done, the subgraphs will be saved 
+	   at './subgraphs'
        subgraphs
        ├── CPU
        │   ├── CPUsubgraph0.onnx
@@ -68,7 +71,7 @@ with the order and input / output names of sub models
            ├── NPUsubgraph0.onnx
            └── NPUsubgraph1.onnx
     
-### Verify the subgraphs inference with original model file
+## Verify the subgraphs inference with original model file
     1. edit the model path, subgraph path and config path in ./scripts/single_vs_multiple_onnx.py
              single_onnx_model_path = './resnet-test.onnx'
              model_path = './subgraphs/'
