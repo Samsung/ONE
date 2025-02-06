@@ -38,7 +38,9 @@ namespace onert
 namespace compiler
 {
 
-LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
+LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options,
+                           const ir::ModelIndex &modelIdx, const ir::SubgraphIndex &subgIdx)
+  : _graph{graph}, _model_index{modelIdx}, _subg_index{subgIdx}
 {
   lowerGraph(options);
 }
@@ -77,7 +79,7 @@ void LoweredGraph::lowerGraph(const CompilerOptions &options)
   }
   else
   {
-    auto scheduler = ManualScheduler(all_backends, options);
+    auto scheduler = ManualScheduler(all_backends, options, _model_index, _subg_index);
     backend_resolver = scheduler.schedule(_graph);
   }
 
