@@ -19,8 +19,9 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install python3 python3-pip python3-venv python3-dev python3-all dh-python
 RUN python3 -m pip install --upgrade pip setuptools
-RUN python3 -m pip install yapf==0.32.0 numpy h5py==3.8.0 einops
+RUN python3 -m pip install yapf==0.40.2 numpy h5py==3.8.0 einops
 
+# TODO upgrade
 ARG VER_TORCH=2.1.0
 ARG VER_ONNX=1.16.0
 ARG VER_ONNXRUNTIME=1.18.0
