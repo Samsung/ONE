@@ -229,6 +229,6 @@ coverage_suite_internal: install_all_internal
 	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz
 	@find Product -name "*.gcno" > include_lists.txt
 	@pwd | grep -o '/' | wc -l > runtime/tests/scripts/build_path_depth.txt
-	@tar -zcf coverage-suite.tar.gz tests/scripts infra Product/out --dereference -T include_lists.txt
+	@tar -zcf coverage-suite.tar.gz runtime/tests/scripts infra Product/out --dereference -T include_lists.txt
 	@rm -rf include_lists.txt runtime/tests/scripts/build_path_depth.txt
 	@mv coverage-suite.tar.gz $(INSTALL_PATH)/.
