@@ -56,6 +56,13 @@ OMStatus execute_kernel_CircleDequantize(const OMExecuteArgs &execute_args)
   switch (input->type())
   {
 #ifndef DIS_FLOAT
+    case circle::TensorType_FLOAT16:
+    {
+      status = pal::DequantizeF16toF32(core::OMRuntimeShape(input).flatSize(),
+                                       core::utils::castInputData<uint16_t>(input_data),
+                                       core::utils::castOutputData<float>(output_data));
+    }
+    break;
     case circle::TensorType_INT8:
     {
       assert(input->quantization() != nullptr);
