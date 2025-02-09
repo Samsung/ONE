@@ -260,14 +260,15 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00047">47</a> of file <a class="el" href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html">Tensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span>    <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a600d4ba727dd9dc8a69c5dbd7906ebdc">rank</a>(dims.size());</div>
+<div class="line"><span class="lineno">   49</span>    <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a600d4ba727dd9dc8a69c5dbd7906ebdc">rank</a>(<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.size());</div>
 <div class="line"><span class="lineno">   50</span> </div>
 <div class="line"><span class="lineno">   51</span>    uint32_t axis = 0;</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : dims)</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>)</div>
 <div class="line"><span class="lineno">   53</span>    {</div>
 <div class="line"><span class="lineno">   54</span>      <a class="code hl_function" href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">dim</a>(axis++) = d;</div>
 <div class="line"><span class="lineno">   55</span>    }</div>
 <div class="line"><span class="lineno">   56</span>  }</div>
+<div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 <div class="ttc" id="astructcircle__eval__diff_1_1_tensor_shape_html_a510764c1277c26b857ec5517a7962e6f"><div class="ttname"><a href="structcircle__eval__diff_1_1_tensor_shape.html#a510764c1277c26b857ec5517a7962e6f">circle_eval_diff::TensorShape::dim</a></div><div class="ttdeci">const loco::Dimension &amp; dim(uint32_t axis) const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00044">Tensor.h:44</a></div></div>
 <div class="ttc" id="astructcircle__eval__diff_1_1_tensor_shape_html_a600d4ba727dd9dc8a69c5dbd7906ebdc"><div class="ttname"><a href="structcircle__eval__diff_1_1_tensor_shape.html#a600d4ba727dd9dc8a69c5dbd7906ebdc">circle_eval_diff::TensorShape::rank</a></div><div class="ttdeci">uint32_t rank(void) const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2src_2_tensor_8h_source.html#l00041">Tensor.h:41</a></div></div>
 </div><!-- fragment -->

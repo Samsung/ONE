@@ -108,7 +108,7 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af05256f82faaed8f706105194245aec5" id="r_af05256f82faaed8f706105194245aec5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html#a7f2c3b157027d28bcbfb620791029fe6">return_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html#af05256f82faaed8f706105194245aec5">Read</a> (const uint8_t *p, uoffset_t i)</td></tr>
+<tr class="memitem:af05256f82faaed8f706105194245aec5" id="r_af05256f82faaed8f706105194245aec5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html#a7f2c3b157027d28bcbfb620791029fe6">return_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html#af05256f82faaed8f706105194245aec5">Read</a> (const uint8_t *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>, uoffset_t i)</td></tr>
 <tr class="separator:af05256f82faaed8f706105194245aec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -196,9 +196,12 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00134">134</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  135</span>  {</div>
-<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(p + i * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> + i * <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><span class="lineno">  137</span>  }</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>

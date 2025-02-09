@@ -23,6 +23,7 @@ var dir_27df084425cdb74fdb1aaa75ef807535 =
     [ "PALMinimum.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_minimum_8h.html", null ],
     [ "PALMul.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_mul_8h.html", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_mul_8h" ],
     [ "PALNeg.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_neg_8h.html", null ],
+    [ "PALReduceCommon.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h.html", "onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h" ],
     [ "PALRelu.h", "onert-micro_2onert-micro_2include_2pal_2mcu_2_p_a_l_relu_8h.html", null ],
     [ "PALRound.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_round_8h.html", null ],
     [ "PALRsqrt.h", "onert-micro_2include_2pal_2mcu_2_p_a_l_rsqrt_8h.html", null ],

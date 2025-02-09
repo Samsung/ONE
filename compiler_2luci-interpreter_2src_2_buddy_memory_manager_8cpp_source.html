@@ -121,11 +121,11 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2_budd
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classluci__interpreter_1_1_buddy_memory_manager.html#af9422367e1665f0e6dceef767b323bd9">   22</a></span><a class="code hl_function" href="classluci__interpreter_1_1_buddy_memory_manager.html#af9422367e1665f0e6dceef767b323bd9">BuddyMemoryManager::BuddyMemoryManager</a>(uint8_t *memory_start, int32_t memSize)</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>{</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  int32_t p = lowerLog2(memSize);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  int32_t <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = lowerLog2(memSize);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// We assume that the requested size of memory does not exceed 4 GB</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  assert(p &lt; 32);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  memSize = 1 &lt;&lt; p;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> &lt; 32);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  memSize = 1 &lt;&lt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  _start_block = <span class="keyword">reinterpret_cast&lt;</span>Block *<span class="keyword">&gt;</span>(memory_start);</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  _start_block-&gt;size = memSize - <span class="keyword">sizeof</span>(Block);</div>
@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2_budd
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;_free_block : _free_blocks)</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    _free_block = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  addToBlocks(_start_block, p);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  addToBlocks(_start_block, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
 </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
@@ -211,6 +211,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2src_2_budd
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html_aa129d157edeab20d5916101a10cd9f32"><div class="ttname"><a href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">luci_interpreter::getDataTypeSize</a></div><div class="ttdeci">size_t getDataTypeSize(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00033">DataType.h:33</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

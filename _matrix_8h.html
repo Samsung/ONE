@@ -216,19 +216,17 @@ template&lt;typename Scalar , int N&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_matrix_8h_source.html#l00094">94</a> of file <a class="el" href="_matrix_8h_source.html">Matrix.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
-<div class="line"><span class="lineno">   96</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rows = dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[0];</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rows = <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[0];</div>
 <div class="line"><span class="lineno">   97</span>  <span class="keywordtype">int</span> cols = 1;</div>
 <div class="line"><span class="lineno">   98</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> d = 1; d &lt; N; d++)</div>
 <div class="line"><span class="lineno">   99</span>  {</div>
-<div class="line"><span class="lineno">  100</span>    cols *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[d];</div>
+<div class="line"><span class="lineno">  100</span>    cols *= <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[d];</div>
 <div class="line"><span class="lineno">  101</span>  }</div>
 <div class="line"><span class="lineno">  102</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="_matrix_8h.html#a1e1fb465431821b444b99b5c46286420">ArrayMap&lt;Scalar&gt;</a>(data, rows, cols);</div>
 <div class="line"><span class="lineno">  103</span>}</div>
 <div class="ttc" id="a_matrix_8h_html_a1e1fb465431821b444b99b5c46286420"><div class="ttname"><a href="_matrix_8h.html#a1e1fb465431821b444b99b5c46286420">ArrayMap</a></div><div class="ttdeci">typename std::conditional&lt; std::is_const&lt; Scalar &gt;::value, Eigen::Map&lt; const Eigen::Array&lt; typename std::remove_const&lt; Scalar &gt;::type, Eigen::Dynamic, Eigen::Dynamic &gt; &gt;, Eigen::Map&lt; Eigen::Array&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; &gt; &gt;::type ArrayMap</div><div class="ttdef"><b>Definition</b> <a href="_matrix_8h_source.html#l00086">Matrix.h:90</a></div></div>
-<div class="ttc" id="astruct_dims_html_a17625e8b44a2b7a8976e68cbd5527e6d"><div class="ttname"><a href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">Dims::sizes</a></div><div class="ttdeci">int sizes[N]</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims.h:27</a></div></div>
+<div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>.</p>
-
 </div>
 </div>
 <a id="a81bab765ccc60a9dd7f9de270c2de11c" name="a81bab765ccc60a9dd7f9de270c2de11c"></a>
@@ -261,18 +259,16 @@ template&lt;typename Scalar , int N&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_matrix_8h_source.html#l00060">60</a> of file <a class="el" href="_matrix_8h_source.html">Matrix.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rows = dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[0];</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rows = <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[0];</div>
 <div class="line"><span class="lineno">   63</span>  <span class="keywordtype">int</span> cols = 1;</div>
 <div class="line"><span class="lineno">   64</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> d = 1; d &lt; N; d++)</div>
 <div class="line"><span class="lineno">   65</span>  {</div>
-<div class="line"><span class="lineno">   66</span>    cols *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[d];</div>
+<div class="line"><span class="lineno">   66</span>    cols *= <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[d];</div>
 <div class="line"><span class="lineno">   67</span>  }</div>
 <div class="line"><span class="lineno">   68</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2">MatrixMap&lt;Scalar&gt;</a>(data, rows, cols);</div>
 <div class="line"><span class="lineno">   69</span>}</div>
 <div class="ttc" id="a_matrix_8h_html_adc3c90e1206207df34bc41c687e250f2"><div class="ttname"><a href="_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2">MatrixMap</a></div><div class="ttdeci">typename std::conditional&lt; std::is_const&lt; Scalar &gt;::value, Eigen::Map&lt; const Eigen::Matrix&lt; typename std::remove_const&lt; Scalar &gt;::type, Eigen::Dynamic, Eigen::Dynamic &gt; &gt;, Eigen::Map&lt; Eigen::Matrix&lt; Scalar, Eigen::Dynamic, Eigen::Dynamic &gt; &gt; &gt;::type MatrixMap</div><div class="ttdef"><b>Definition</b> <a href="_matrix_8h_source.html#l00052">Matrix.h:56</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="_avg_pool2_d_8float_8cpp_source.html#l00029">AveragePool()</a>, <a class="el" href="_conv2_d_8float_8cpp_source.html#l00150">Conv()</a>, <a class="el" href="_fully_connected_8float_8cpp_source.html#l00029">FullyConnected()</a>, <a class="el" href="_max_pool2_d_8float_8cpp_source.html#l00029">MaxPool()</a>, and <a class="el" href="_softmax_8float_8cpp_source.html#l00026">Softmax()</a>.</p>
 
 </div>
@@ -317,7 +313,7 @@ template&lt;typename Scalar , int N&gt; </div>
 <div class="line"><span class="lineno">  113</span>  <span class="keywordtype">bool</span> matched_rows = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  114</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> d = 0; d &lt; N; d++)</div>
 <div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    cols *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[d];</div>
+<div class="line"><span class="lineno">  116</span>    cols *= <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[d];</div>
 <div class="line"><span class="lineno">  117</span>    <span class="keywordflow">if</span> (cols == rows)</div>
 <div class="line"><span class="lineno">  118</span>    {</div>
 <div class="line"><span class="lineno">  119</span>      matched_rows = <span class="keyword">true</span>;</div>
@@ -329,7 +325,7 @@ template&lt;typename Scalar , int N&gt; </div>
 <div class="line"><span class="lineno">  125</span>}</div>
 <div class="ttc" id="aann-ref_2src_2ops_2internal_2_macro_8h_html_ae17f8119c108cf3070bad3449c7e0006"><div class="ttname"><a href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a></div><div class="ttdeci">#define DCHECK(condition)</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_macro_8h_source.html#l00025">Macro.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_macro_8h_source.html#l00025">DCHECK</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_macro_8h_source.html#l00025">DCHECK</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_fully_connected_8float_8cpp_source.html#l00029">FullyConnected()</a>.</p>
 
@@ -365,17 +361,15 @@ template&lt;typename Scalar , int N&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_matrix_8h_source.html#l00073">73</a> of file <a class="el" href="_matrix_8h_source.html">Matrix.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> cols = dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[N - 1];</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> cols = <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[N - 1];</div>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordtype">int</span> rows = 1;</div>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> d = 0; d &lt; N - 1; d++)</div>
 <div class="line"><span class="lineno">   78</span>  {</div>
-<div class="line"><span class="lineno">   79</span>    rows *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[d];</div>
+<div class="line"><span class="lineno">   79</span>    rows *= <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[d];</div>
 <div class="line"><span class="lineno">   80</span>  }</div>
 <div class="line"><span class="lineno">   81</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2">MatrixMap&lt;Scalar&gt;</a>(data, rows, cols);</div>
 <div class="line"><span class="lineno">   82</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="_conv2_d_8float_8cpp_source.html#l00150">Conv()</a>.</p>
 
 </div>

@@ -146,8 +146,8 @@ $(document).ready(function(){initNavTree('_backend_manager_8h_source.html',''); 
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_backend_manager.html#a64831745cacb080c255350e1662b0ec4">   44</a></span>  <span class="keyword">const</span> std::vector&lt;const backend::Backend *&gt; <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a64831745cacb080c255350e1662b0ec4">getAll</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    std::vector&lt;const backend::Backend *&gt; v;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;p : _gen_map)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      v.emplace_back(p.second.get());</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : _gen_map)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      v.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second.get());</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> v;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
 </div>
@@ -183,6 +183,7 @@ $(document).ready(function(){initNavTree('_backend_manager_8h_source.html',''); 
 <div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_ac5b492b17961b9b80317e117e1d39a21"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#ac5b492b17961b9b80317e117e1d39a21">onert::compiler::BackendManager::backend_create_t</a></div><div class="ttdeci">backend::Backend *(*)() backend_create_t</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00034">BackendManager.h:34</a></div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2backend_2_backend_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2backend_2_backend_8h.html">Backend.h</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

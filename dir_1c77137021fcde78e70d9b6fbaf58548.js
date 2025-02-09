@@ -62,7 +62,7 @@ var dir_1c77137021fcde78e70d9b6fbaf58548 =
     [ "PRelu.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_p_relu_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_p_relu_8cpp" ],
     [ "Quantize.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_quantize_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_quantize_8cpp" ],
     [ "ReduceMax.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_reduce_max_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_reduce_max_8cpp" ],
-    [ "ReduceProd.cpp", "luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp" ],
+    [ "ReduceProd.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp" ],
     [ "Relu.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u_8cpp" ],
     [ "Relu0To1.cpp", "luci-interpreter_2src_2loader_2nodes_2_relu0_to1_8cpp.html", "luci-interpreter_2src_2loader_2nodes_2_relu0_to1_8cpp" ],
     [ "Relu6.cpp", "compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u6_8cpp.html", "compiler_2luci-interpreter_2src_2loader_2nodes_2_re_l_u6_8cpp" ],

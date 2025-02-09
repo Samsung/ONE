@@ -137,7 +137,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Class for inference using nnfw_session.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="session_8py_source.html#l00005">5</a> of file <a class="el" href="session_8py_source.html">session.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00005">5</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a50e5e6c48d7c03b755a37988a097525a" name="a50e5e6c48d7c03b755a37988a097525a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50e5e6c48d7c03b755a37988a097525a">&#9670;&#160;</a></span>__init__()</h2>
@@ -177,7 +177,7 @@ Args:
 </pre> 
 <p>Reimplemented from <a class="el" href="classpackage_1_1common_1_1basesession_1_1_base_session.html#a3541cb913c4a3cadc558429033f65bfd">package.common.basesession.BaseSession</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="session_8py_source.html#l00009">9</a> of file <a class="el" href="session_8py_source.html">session.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00009">9</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">    9</span>    <span class="keyword">def </span>__init__(self, path: str = <span class="keywordtype">None</span>, backends: str = <span class="stringliteral">&quot;cpu&quot;</span>):</div>
 <div class="line"><span class="lineno">   10</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   11</span><span class="stringliteral">        Initialize the inference session.</span></div>
@@ -193,9 +193,9 @@ Args:
 <div class="line"><span class="lineno">   21</span>            super().__init__()</div>
 <div class="line"><span class="lineno">   22</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="session_8py_source.html#l00009">package.infer.session.session.__init__()</a>, <a class="el" href="validate__onnx2circle_8py_source.html#l00057">validate_onnx2circle.OnnxRunner.session</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00126">onert::api::python::NNFW_SESSION.session</a>, <a class="el" href="basesession_8py_source.html#l00024">package.common.basesession.BaseSession.session</a>, and <a class="el" href="basesession_8py_source.html#l00081">package.common.basesession.BaseSession.set_outputs()</a>.</p>
+<p class="reference">References <a class="el" href="infer_2session_8py_source.html#l00009">package.infer.session.session.__init__()</a>, <a class="el" href="validate__onnx2circle_8py_source.html#l00057">validate_onnx2circle.OnnxRunner.session</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00126">onert::api::python::NNFW_SESSION.session</a>, <a class="el" href="basesession_8py_source.html#l00024">package.common.basesession.BaseSession.session</a>, and <a class="el" href="basesession_8py_source.html#l00081">package.common.basesession.BaseSession.set_outputs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="session_8py_source.html#l00009">package.infer.session.session.__init__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00009">package.infer.session.session.__init__()</a>.</p>
 
 </div>
 </div>
@@ -236,7 +236,7 @@ Args:
     path (str): Path to the model file or nnpackage directory. Defaults to the existing path.
     backends (str): Backends to use. Defaults to the existing backends.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="session_8py_source.html#l00023">23</a> of file <a class="el" href="session_8py_source.html">session.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00023">23</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   23</span>    <span class="keyword">def </span>compile(self, path: str, backends: str = <span class="stringliteral">&quot;cpu&quot;</span>):</div>
 <div class="line"><span class="lineno">   24</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   25</span><span class="stringliteral">        Prepare the session by recreating it with new parameters.</span></div>
@@ -277,7 +277,7 @@ Args:
 Returns:
     list: Outputs from the model.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="session_8py_source.html#l00039">39</a> of file <a class="el" href="session_8py_source.html">session.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00039">39</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>    <span class="keyword">def </span>inference(self):</div>
 <div class="line"><span class="lineno">   40</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   41</span><span class="stringliteral">        Perform model and get outputs</span></div>
@@ -293,7 +293,7 @@ Returns:
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>runtime/onert/api/python/package/infer/<a class="el" href="session_8py_source.html">session.py</a></li>
+<li>runtime/onert/api/python/package/infer/<a class="el" href="infer_2session_8py_source.html">session.py</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

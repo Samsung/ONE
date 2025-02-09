@@ -289,8 +289,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  197</span>            <span class="comment">// Copy vectorized portion of inner dimension.</span></div>
 <div class="line"><span class="lineno">  198</span>            <span class="keywordflow">for</span> (int64_t d = 0; d &lt; limit; d++)</div>
 <div class="line"><span class="lineno">  199</span>            {</div>
-<div class="line"><span class="lineno">  200</span>              <span class="keyword">const</span> <span class="keyword">auto</span> p = Eigen::internal::pset1&lt;Packet&gt;(in[d]);</div>
-<div class="line"><span class="lineno">  201</span>              Eigen::internal::pstoreu&lt;T&gt;(in_buf, p);</div>
+<div class="line"><span class="lineno">  200</span>              <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = Eigen::internal::pset1&lt;Packet&gt;(in[d]);</div>
+<div class="line"><span class="lineno">  201</span>              Eigen::internal::pstoreu&lt;T&gt;(in_buf, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">  202</span>              in_buf += kDepth;</div>
 <div class="line"><span class="lineno">  203</span>            }</div>
 <div class="line"><span class="lineno">  204</span> </div>
@@ -342,13 +342,13 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  250</span>            <span class="comment">// Copy vectorized portion of inner dimension.</span></div>
 <div class="line"><span class="lineno">  251</span>            <span class="keywordflow">for</span> (int64_t d = 0; d &lt; in_depth; d++)</div>
 <div class="line"><span class="lineno">  252</span>            {</div>
-<div class="line"><span class="lineno">  253</span>              <span class="keyword">const</span> <span class="keyword">auto</span> p = Eigen::internal::pset1&lt;Packet&gt;(in[d]);</div>
+<div class="line"><span class="lineno">  253</span>              <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = Eigen::internal::pset1&lt;Packet&gt;(in[d]);</div>
 <div class="line"><span class="lineno">  254</span>              <span class="keywordflow">for</span> (int64_t dm = 0; dm &lt; dm_vectorized_size; dm += <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>)</div>
 <div class="line"><span class="lineno">  255</span>              {</div>
-<div class="line"><span class="lineno">  256</span>                Eigen::internal::pstoreu&lt;T&gt;(in_buf + dm, p);</div>
+<div class="line"><span class="lineno">  256</span>                Eigen::internal::pstoreu&lt;T&gt;(in_buf + dm, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">  257</span>              }</div>
 <div class="line"><span class="lineno">  258</span>              <span class="comment">// Overlapping store for the remainder.</span></div>
-<div class="line"><span class="lineno">  259</span>              Eigen::internal::pstoreu&lt;T&gt;(in_buf + kDepth - kPacketSize, p);</div>
+<div class="line"><span class="lineno">  259</span>              Eigen::internal::pstoreu&lt;T&gt;(in_buf + kDepth - kPacketSize, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">  260</span>              in_buf += kDepth;</div>
 <div class="line"><span class="lineno">  261</span>            }</div>
 <div class="line"><span class="lineno">  262</span>            <span class="comment">// Pad the remainder of the output to vector register boundary.</span></div>
@@ -382,8 +382,8 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  290</span>            <span class="keyword">const</span> <span class="keyword">auto</span> *in = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> + (in_r * in_cols + in_c) * in_depth;</div>
 <div class="line"><span class="lineno">  291</span>            <span class="keywordflow">for</span> (int64_t d = 0; d &lt; input_vectorized_size; d += <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>)</div>
 <div class="line"><span class="lineno">  292</span>            {</div>
-<div class="line"><span class="lineno">  293</span>              <span class="keyword">const</span> <span class="keyword">auto</span> p = Eigen::internal::ploadu&lt;Packet&gt;(in + d);</div>
-<div class="line"><span class="lineno">  294</span>              Eigen::internal::pstoreu&lt;T&gt;(in_buf, p);</div>
+<div class="line"><span class="lineno">  293</span>              <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = Eigen::internal::ploadu&lt;Packet&gt;(in + d);</div>
+<div class="line"><span class="lineno">  294</span>              Eigen::internal::pstoreu&lt;T&gt;(in_buf, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">  295</span>              in_buf += <a class="code hl_function" href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">kPacketSize</a>;</div>
 <div class="line"><span class="lineno">  296</span>            }</div>
 <div class="line"><span class="lineno">  297</span>            <span class="keywordflow">for</span> (int64_t d = 0; d &lt; input_scalar_size; ++d)</div>
@@ -412,11 +412,14 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  320</span>  }</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1eigen__support_html_a71ec3d24ac083e38041c7a0605748a3c"><div class="ttname"><a href="namespacennfw_1_1cker_1_1eigen__support.html#a71ec3d24ac083e38041c7a0605748a3c">nnfw::cker::eigen_support::kPacketSize</a></div><div class="ttdeci">int64_t kPacketSize()</div><div class="ttdef"><b>Definition</b> <a href="_eigen_support_8h_source.html#l00116">EigenSupport.h:116</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>compute/cker/include/cker/eigen/<a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a></li>
+<li>runtime/compute/cker/include/cker/eigen/<a class="el" href="depthwise__conv__op_8h_source.html">depthwise_conv_op.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

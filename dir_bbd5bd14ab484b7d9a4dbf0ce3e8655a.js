@@ -52,7 +52,7 @@ var dir_bbd5bd14ab484b7d9a4dbf0ce3e8655a =
     [ "Softmax.cpp", "compiler_2ann-ref_2src_2ops_2_softmax_8cpp.html", "compiler_2ann-ref_2src_2ops_2_softmax_8cpp" ],
     [ "Softmax.float.cpp", "_softmax_8float_8cpp.html", "_softmax_8float_8cpp" ],
     [ "Softmax.float.h", "_softmax_8float_8h.html", "_softmax_8float_8h" ],
-    [ "Softmax.h", "compiler_2ann-ref_2src_2ops_2_soft_max_8h.html", "compiler_2ann-ref_2src_2ops_2_soft_max_8h" ],
+    [ "Softmax.h", "compiler_2ann-ref_2src_2ops_2_softmax_8h.html", "compiler_2ann-ref_2src_2ops_2_softmax_8h" ],
     [ "Sub.cpp", "compiler_2ann-ref_2src_2ops_2_sub_8cpp.html", "compiler_2ann-ref_2src_2ops_2_sub_8cpp" ],
     [ "Sub.float.cpp", "_sub_8float_8cpp.html", "_sub_8float_8cpp" ],
     [ "Sub.float.h", "_sub_8float_8h.html", "_sub_8float_8h" ],

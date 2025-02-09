@@ -629,17 +629,17 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  166</span>  <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
 <div class="line"><span class="lineno">  167</span>  {</div>
 <div class="line"><span class="lineno">  168</span>    <span class="comment">// Forward iteration</span></div>
-<div class="line"><span class="lineno">  169</span>    start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(start, 0, axis_size);</div>
+<div class="line"><span class="lineno">  169</span>    start = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(start, 0, axis_size);</div>
 <div class="line"><span class="lineno">  170</span>  }</div>
 <div class="line"><span class="lineno">  171</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  172</span>  {</div>
 <div class="line"><span class="lineno">  173</span>    <span class="comment">// Backward iteration</span></div>
-<div class="line"><span class="lineno">  174</span>    start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(start, -1, axis_size - 1);</div>
+<div class="line"><span class="lineno">  174</span>    start = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(start, -1, axis_size - 1);</div>
 <div class="line"><span class="lineno">  175</span>  }</div>
 <div class="line"><span class="lineno">  176</span> </div>
 <div class="line"><span class="lineno">  177</span>  <span class="keywordflow">return</span> start;</div>
 <div class="line"><span class="lineno">  178</span>}</div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a1189dfd5fde5db4cd13ca50c4d7de48b"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">nnfw::cker::Clamp</a></div><div class="ttdeci">int Clamp(const int v, const int lo, const int hi)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00032">StridedSlice.h:32</a></div></div>
+<div class="ttc" id="anamespaceluci_1_1sinf_html_aca9ed8a1bc31893cbc00a6c795f7a22e"><div class="ttname"><a href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">luci::sinf::Clamp</a></div><div class="ttdeci">int Clamp(const int32_t v, const int32_t lo, const int32_t hi)</div><div class="ttdef"><b>Definition</b> <a href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html#l00115">CircleStridedSlice.cpp:115</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html#l00071">luci::sinf::StridedSliceParams::begin_mask</a>, <a class="el" href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html#l00115">Clamp()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html#l00038">loco::TensorShape::dim()</a>, <a class="el" href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html#l00065">luci::sinf::StridedSliceParams::start_indices</a>, <a class="el" href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html#l00069">luci::sinf::StridedSliceParams::strides</a>, and <a class="el" href="_dimension_8h_source.html#l00051">loco::Dimension::value()</a>.</p>
 
@@ -746,12 +746,12 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  236</span>  <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
 <div class="line"><span class="lineno">  237</span>  {</div>
 <div class="line"><span class="lineno">  238</span>    <span class="comment">// Forward iteration</span></div>
-<div class="line"><span class="lineno">  239</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, 0, axis_size);</div>
+<div class="line"><span class="lineno">  239</span>    stop = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(stop, 0, axis_size);</div>
 <div class="line"><span class="lineno">  240</span>  }</div>
 <div class="line"><span class="lineno">  241</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  242</span>  {</div>
 <div class="line"><span class="lineno">  243</span>    <span class="comment">// Backward iteration</span></div>
-<div class="line"><span class="lineno">  244</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, -1, axis_size - 1);</div>
+<div class="line"><span class="lineno">  244</span>    stop = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(stop, -1, axis_size - 1);</div>
 <div class="line"><span class="lineno">  245</span>  }</div>
 <div class="line"><span class="lineno">  246</span> </div>
 <div class="line"><span class="lineno">  247</span>  <span class="keywordflow">return</span> stop;</div>

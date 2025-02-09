@@ -1,0 +1,27 @@
+var runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp =
+[
+    [ "NONIUS_LOCAL_BENCHMARK", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#ace37b7fd07719a1c2db96b69ee3c87cb", null ],
+    [ "allocator", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a9386f74f4e2faf39f3baec3d994c66e6", null ],
+    [ "benchmark_functions", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a6e408bde02cccb4a5da98db2b64900d2", null ],
+    [ "catch", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a1204fa6444ae7174767e202a6d39b815", null ],
+    [ "measure", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#ac4475994603372be2bdd42731a2cf6f4", null ],
+    [ "NONIUS_LOCAL_BENCHMARK", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#aa817a32176123e16727130fb896b277f", null ],
+    [ "NONIUS_LOCAL_BENCHMARK", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#ad789dd2bc420ab0b5d16559b267fe88c", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a08edf63b2749e5d5a8bc8d31cde1fd35", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a3c76faceefa22c316716b7be356f2f37", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a982dfa8000a01412fc1ea7489d855202", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#aa6c43670d0a216212775376d8481bd1e", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a3252773ebfc7c65519d45ef1ca47a843", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a6e2a77e2a4841be781dd4b3eaacf0058", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#ad75861fcda34f534d9a11fe54621c9f0", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a20a4574528fa64b7252a9b1b293fc896", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#aebb929ab24cb77a0c77152b4a1ca8419", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a7bd6140d9be1110b2869857d007af198", null ],
+    [ "NONIUS_PARAM", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a37a1690291139b97d8da6a25855ad9e3", null ],
+    [ "dst_tensor", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a2bc59539aa271831dc6ab8e579c05b23", null ],
+    [ "ker_tensor", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a95a486d3431078af0debd8c08d3b0fa7", null ],
+    [ "meter", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#ab3d10c85fa104a858464f870c0389ac6", null ],
+    [ "p", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a8204e48658a0c33145b4ae178e645ae8", null ],
+    [ "src_tensor", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#a6a604f7e6fbdab3a567961f2488b1f8a", null ],
+    [ "try", "runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_transpose_conv_8cpp.html#abe4cc9788f52e49485473dc699537388", null ]
+];

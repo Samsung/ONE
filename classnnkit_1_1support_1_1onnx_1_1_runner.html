@@ -296,7 +296,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_runner_8h_source.html#l00044">44</a> of file <a class="el" href="nnkit-onnxrt_2support_2include_2nnkit_2support_2onnx_2_runner_8h_source.html">Runner.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> *_outputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="validate__onnx2circle_8py_source.html#l00102">validate_onnx2circle.OnnxRunner::get_outputs()</a>, <a class="el" href="session_8py_source.html#l00039">package.infer.session.session::inference()</a>, <a class="el" href="basesession_8py_source.html#l00081">package.common.basesession.BaseSession::set_outputs()</a>, and <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00039">nnkit::support::onnx::Backend::teardown()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="validate__onnx2circle_8py_source.html#l00102">validate_onnx2circle.OnnxRunner::get_outputs()</a>, <a class="el" href="infer_2session_8py_source.html#l00039">package.infer.session.session::inference()</a>, <a class="el" href="basesession_8py_source.html#l00081">package.common.basesession.BaseSession::set_outputs()</a>, and <a class="el" href="nnkit-onnxrt_2support_2src_2_backend_8cpp_source.html#l00039">nnkit::support::onnx::Backend::teardown()</a>.</p>
 
 </div>
 </div>
@@ -347,8 +347,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   82</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
-<div class="line"><span class="lineno">   85</span>    std::vector&lt;size_t&gt; dims(num_dims);</div>
-<div class="line"><span class="lineno">   86</span>    OrtGetDimensions(tensor_info, (int64_t *)dims.data(), num_dims);</div>
+<div class="line"><span class="lineno">   85</span>    std::vector&lt;size_t&gt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>(num_dims);</div>
+<div class="line"><span class="lineno">   86</span>    OrtGetDimensions(tensor_info, (int64_t *)<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.data(), num_dims);</div>
 <div class="line"><span class="lineno">   87</span> </div>
 <div class="line"><span class="lineno">   88</span>    <span class="comment">// NOTE To run OnnxRuntime, the total size of input tensor must be fixed.</span></div>
 <div class="line"><span class="lineno">   89</span>    <span class="comment">//      In the present code, the unknown shape that is -1 is arbitrarily changed to 1.</span></div>
@@ -359,7 +359,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>    {</div>
 <div class="line"><span class="lineno">   95</span>      <span class="keywordflow">if</span> (dims[j] == -1)</div>
 <div class="line"><span class="lineno">   96</span>      {</div>
-<div class="line"><span class="lineno">   97</span>        dims[j] = 1;</div>
+<div class="line"><span class="lineno">   97</span>        <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>[j] = 1;</div>
 <div class="line"><span class="lineno">   98</span>      }</div>
 <div class="line"><span class="lineno">   99</span>    }</div>
 <div class="line"><span class="lineno">  100</span>    OrtReleaseTypeInfo(typeinfo);</div>
@@ -368,6 +368,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  103</span>  }</div>
 <div class="line"><span class="lineno">  104</span>}</div>
 <div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
+<div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_status_8h_source.html#l00065">nnkit::support::onnx::Status::throwOnError()</a>.</p>
 
@@ -422,8 +423,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  134</span>    ONNXTensorElementDataType <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = OrtGetTensorElementType(tensor_info);</div>
 <div class="line"><span class="lineno">  135</span> </div>
 <div class="line"><span class="lineno">  136</span>    uint32_t num_dims = OrtGetNumOfDimensions(tensor_info);</div>
-<div class="line"><span class="lineno">  137</span>    std::vector&lt;size_t&gt; dims(num_dims);</div>
-<div class="line"><span class="lineno">  138</span>    OrtGetDimensions(tensor_info, (int64_t *)dims.data(), num_dims);</div>
+<div class="line"><span class="lineno">  137</span>    std::vector&lt;size_t&gt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>(num_dims);</div>
+<div class="line"><span class="lineno">  138</span>    OrtGetDimensions(tensor_info, (int64_t *)<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.data(), num_dims);</div>
 <div class="line"><span class="lineno">  139</span> </div>
 <div class="line"><span class="lineno">  140</span>    <span class="comment">// NOTE To run OnnxRuntime, the total size of output tensor must be fixed.</span></div>
 <div class="line"><span class="lineno">  141</span>    <span class="comment">//      In the present code, the unknown shape that is -1 is arbitrarily changed to 1.</span></div>
@@ -434,7 +435,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  146</span>    {</div>
 <div class="line"><span class="lineno">  147</span>      <span class="keywordflow">if</span> (dims[j] == -1)</div>
 <div class="line"><span class="lineno">  148</span>      {</div>
-<div class="line"><span class="lineno">  149</span>        dims[j] = 1;</div>
+<div class="line"><span class="lineno">  149</span>        <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>[j] = 1;</div>
 <div class="line"><span class="lineno">  150</span>      }</div>
 <div class="line"><span class="lineno">  151</span>    }</div>
 <div class="line"><span class="lineno">  152</span>    OrtReleaseTypeInfo(typeinfo);</div>

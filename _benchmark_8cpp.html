@@ -244,7 +244,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  179</span> </div>
 <div class="line"><span class="lineno">  180</span>    microseconds elapsed{0};</div>
 <div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>    ::measure(elapsed) &lt;&lt; [&amp;](void) { backend-&gt;run(); };</div>
+<div class="line"><span class="lineno">  182</span>    <a class="code hl_function" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#ab48cb2d6c39d36b02d0ccc78764ac98b">::measure</a>(elapsed) &lt;&lt; [&amp;](void) { backend-&gt;run(); };</div>
 <div class="line"><span class="lineno">  183</span> </div>
 <div class="line"><span class="lineno">  184</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>() &lt;&lt; <span class="stringliteral">&quot;#&quot;</span> &lt;&lt; n + 1 &lt;&lt; <span class="stringliteral">&quot; takes &quot;</span> &lt;&lt; duration_cast&lt;milliseconds_f&gt;(elapsed).count() &lt;&lt; <span class="stringliteral">&quot;ms&quot;</span>;</div>
 <div class="line"><span class="lineno">  185</span> </div>
@@ -277,9 +277,10 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespaceminimal_html_a5f2767e1a6e0198d72dfe1719abc3b2a"><div class="ttname"><a href="namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a">minimal.argv</a></div><div class="ttdeci">argv</div><div class="ttdef"><b>Definition</b> <a href="minimal_8py_source.html#l00021">minimal.py:21</a></div></div>
 <div class="ttc" id="anamespacennkit_html_a901c7e934e270a3b5b7c23dcdf036d13"><div class="ttname"><a href="namespacennkit.html#a901c7e934e270a3b5b7c23dcdf036d13">nnkit::make_backend_plugin</a></div><div class="ttdeci">std::unique_ptr&lt; BackendPlugin &gt; make_backend_plugin(const std::string &amp;path)</div><div class="ttdef"><b>Definition</b> <a href="_backend_plugin_8cpp_source.html#l00052">BackendPlugin.cpp:52</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_ab48cb2d6c39d36b02d0ccc78764ac98b"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#ab48cb2d6c39d36b02d0ccc78764ac98b">measure</a></div><div class="ttdeci">meter measure([&amp;](int) { conv.run();CLScheduler::get().sync();})</div></div>
 <div class="ttc" id="astructnnkit_1_1_tensor_context_html"><div class="ttname"><a href="structnnkit_1_1_tensor_context.html">nnkit::TensorContext</a></div><div class="ttdef"><b>Definition</b> <a href="nnkit-intf_2tensor_2include_2nnkit_2_tensor_context_8h_source.html#l00033">TensorContext.h:34</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_vector_arguments_8cpp_source.html#l00022">nnkit::VectorArguments::append()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="_backend_plugin_8cpp_source.html#l00052">nnkit::make_backend_plugin()</a>.</p>
+<p class="reference">References <a class="el" href="_vector_arguments_8cpp_source.html#l00022">nnkit::VectorArguments::append()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, <a class="el" href="_backend_plugin_8cpp_source.html#l00052">nnkit::make_backend_plugin()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#ab48cb2d6c39d36b02d0ccc78764ac98b">measure()</a>.</p>
 
 </div>
 </div>

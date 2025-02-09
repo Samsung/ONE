@@ -297,12 +297,15 @@ Static Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00044">44</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   45</span>  {</div>
 <div class="line"><span class="lineno">   46</span>    std::vector&lt;const backend::Backend *&gt; v;</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;p : _gen_map)</div>
-<div class="line"><span class="lineno">   48</span>      v.emplace_back(p.second.<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>());</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : _gen_map)</div>
+<div class="line"><span class="lineno">   48</span>      v.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second.<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>());</div>
 <div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> v;</div>
 <div class="line"><span class="lineno">   50</span>  }</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a0f5a2ae30e62f791d145fa80e7f6be36"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">onert::compiler::BackendManager::get</a></div><div class="ttdeci">static BackendManager &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8cc_source.html#l00037">BackendManager.cc:37</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <a id="a6aa4d98815f5061595cdd17eb2c38103" name="a6aa4d98815f5061595cdd17eb2c38103"></a>

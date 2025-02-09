@@ -5,7 +5,7 @@ var searchData=
   ['mapbufferdata_2',['mapbufferdata',['../structluci_1_1_serialized_model_data.html#a4f90bd6f1d80c4c4b46366dacf9927a2',1,'luci::SerializedModelData::MapBufferData'],['../namespacetflite2circle.html#a57678f7b6a8c85cade10564194b2973f',1,'tflite2circle::MapBufferData']]],
   ['mapnode2clone_3',['MapNode2Clone',['../namespaceluci.html#a8b99a8dc228b538c7ede8625f5add473',1,'luci']]],
   ['matrix_4',['Matrix',['../structnnfw_1_1cker_1_1_t_types.html#ad595708194e658a545e2ef15000e810f',1,'nnfw::cker::TTypes']]],
-  ['matrixmap_5',['matrixmap',['../_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2',1,'MatrixMap:&#160;Matrix.h'],['../namespacennfw_1_1cker.html#af0c8d67ba855462165cef7650358e704',1,'nnfw::cker::MatrixMap']]],
+  ['matrixmap_5',['matrixmap',['../namespacennfw_1_1cker.html#af0c8d67ba855462165cef7650358e704',1,'nnfw::cker::MatrixMap'],['../_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2',1,'MatrixMap:&#160;Matrix.h']]],
   ['measurementdata_6',['MeasurementData',['../namespaceonert_1_1exec.html#a893a10751ea3505eaad6ffe3da376aef',1,'onert::exec']]],
   ['memorymanager_7',['memorymanager',['../namespaceluci__interpreter.html#a9f6d3069ae5a00cda9601b213a0d2548',1,'luci_interpreter::MemoryManager'],['../namespaceonert_1_1backend_1_1acl__cl.html#aec9f8d43988a9d43b9dcbfaa13891484',1,'onert::backend::acl_cl::MemoryManager'],['../namespaceonert_1_1backend_1_1acl__neon.html#ab6b72123ac53105035f0411fa9ca2391',1,'onert::backend::acl_neon::MemoryManager'],['../namespaceonert_1_1backend_1_1train.html#a75c58052c0a9c6d3340d8240ed9b52c0',1,'onert::backend::train::MemoryManager']]],
   ['memoryoffset_8',['MemoryOffset',['../namespacekuma.html#a56eb60c063d89aaef20b7ad37a5aa2be',1,'kuma']]],

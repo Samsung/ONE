@@ -478,7 +478,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;recs = _measurements[backend][operation][quant];</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (time == <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">getMax</a>() ||</div>
 <div class="line"><span class="lineno">  102</span>      std::any_of(recs.begin(), recs.end(),</div>
-<div class="line"><span class="lineno">  103</span>                  [](std::pair&lt;const uint32_t, const int64_t&gt; p) { return p.second == getMax(); }))</div>
+<div class="line"><span class="lineno">  103</span>                  [](std::pair&lt;const uint32_t, const int64_t&gt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>) { return p.second == getMax(); }))</div>
 <div class="line"><span class="lineno">  104</span>  {</div>
 <div class="line"><span class="lineno">  105</span>    _measurements[backend][operation][quant].clear();</div>
 <div class="line"><span class="lineno">  106</span>    _measurements[backend][operation][quant].emplace(op_size, <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">getMax</a>());</div>
@@ -495,8 +495,9 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  117</span>  }</div>
 <div class="line"><span class="lineno">  118</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a0d780c5c6bf95e3b4cd47aae36489fd6"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">onert::exec::ExecTime::getMax</a></div><div class="ttdeci">static int64_t getMax()</div><div class="ttdoc">Get the max value of int32_t in int64_t.</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8h_source.html#l00093">ExecTime.h:93</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_exec_time_8h_source.html#l00093">getMax()</a>.</p>
+<p class="reference">References <a class="el" href="_exec_time_8h_source.html#l00093">getMax()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00120">updatePermuteTime()</a>.</p>
 

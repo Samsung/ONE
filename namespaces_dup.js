@@ -395,6 +395,7 @@ var namespaces_dup =
       [ "testcases", "namespacejpeg2hdf5.html#ad6aa1592e59e8dc8ed18604f6a44df77", null ],
       [ "w", "namespacejpeg2hdf5.html#ac7eea56215106b0908497982f6eed453", null ]
     ] ],
+    [ "kbenchmark", "namespacekbenchmark.html", "namespacekbenchmark" ],
     [ "kuma", "namespacekuma.html", "namespacekuma" ],
     [ "loco", "namespaceloco.html", "namespaceloco" ],
     [ "locoex", "namespacelocoex.html", "namespacelocoex" ],
@@ -650,6 +651,7 @@ var namespaces_dup =
       [ "cl_files", "namespaceresolve__includes.html#ac0718ed4c36d2c8b5d61017256cdaf8d", null ],
       [ "embed_files", "namespaceresolve__includes.html#a3380eed9d3c2bd1cbadb1ca6c74dcbf0", null ]
     ] ],
+    [ "session", "namespacesession.html", "namespacesession" ],
     [ "ShapeTransform", "namespace_shape_transform.html", null ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", "namespace_single_operator_test" ],
     [ "Softmax_000", "namespace_softmax__000.html", "namespace_softmax__000" ],

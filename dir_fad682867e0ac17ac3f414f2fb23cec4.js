@@ -73,7 +73,7 @@ var dir_fad682867e0ac17ac3f414f2fb23cec4 =
     [ "ReduceAny.cpp", "tflite_2src_2_op_2_reduce_any_8cpp.html", null ],
     [ "ReduceMax.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_reduce_max_8cpp.html", null ],
     [ "ReduceMin.cpp", "tflite_2src_2_op_2_reduce_min_8cpp.html", null ],
-    [ "ReduceProd.cpp", "tflchef_2tflite_2src_2_op_2_reduce_prod_8cpp.html", null ],
+    [ "ReduceProd.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_reduce_prod_8cpp.html", null ],
     [ "ReLU.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_re_l_u_8cpp.html", null ],
     [ "ReLU0To1.cpp", "tflchef_2tflite_2src_2_op_2_relu0_to1_8cpp.html", null ],
     [ "ReLU6.cpp", "compiler_2tflchef_2tflite_2src_2_op_2_re_l_u6_8cpp.html", null ],

@@ -1877,10 +1877,11 @@ template&lt;typename F &gt; </div>
 <div class="line"><span class="lineno">   67</span>  assert(double_multiplier &lt; 1.0);</div>
 <div class="line"><span class="lineno">   68</span>  assert(double_multiplier &gt; 0.0);</div>
 <div class="line"><span class="lineno">   69</span>  <span class="keywordtype">int</span> <a class="code hl_function" href="namespacemir__interpreter.html#a13c4b27ccfa519a60f9852f5858e4c5d">shift</a>;</div>
-<div class="line"><span class="lineno">   70</span>  QuantizeMultiplier(double_multiplier, quantized_multiplier, &amp;shift);</div>
+<div class="line"><span class="lineno">   70</span>  <a class="code hl_function" href="namespacemir__interpreter.html#af3f6070cfa916c8d578b7023bd975d3b">QuantizeMultiplier</a>(double_multiplier, quantized_multiplier, &amp;shift);</div>
 <div class="line"><span class="lineno">   71</span>  assert(shift &lt;= 0);</div>
 <div class="line"><span class="lineno">   72</span>  *left_shift = <a class="code hl_function" href="namespacemir__interpreter.html#a13c4b27ccfa519a60f9852f5858e4c5d">shift</a>;</div>
 <div class="line"><span class="lineno">   73</span>}</div>
+<div class="ttc" id="anamespacemir__interpreter_html_af3f6070cfa916c8d578b7023bd975d3b"><div class="ttname"><a href="namespacemir__interpreter.html#af3f6070cfa916c8d578b7023bd975d3b">mir_interpreter::QuantizeMultiplier</a></div><div class="ttdeci">void QuantizeMultiplier(double double_multiplier, int32_t *quantized_multiplier, int *shift)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_helpers_8h_source.html#l00027">QuantizationHelpers.h:27</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_quantization_helpers_8h_source.html#l00027">QuantizeMultiplier()</a>, and <a class="el" href="mir-interpreter_2src_2ops_2_common_8cpp_source.html#l00026">shift()</a>.</p>
 

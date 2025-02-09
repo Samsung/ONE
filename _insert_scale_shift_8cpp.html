@@ -162,9 +162,9 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> res;</div>
 <div class="line"><span class="lineno">   48</span>}</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span><span class="keywordtype">bool</span> calculate_smooth_quant_scale(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p)</div>
+<div class="line"><span class="lineno">   50</span><span class="keywordtype">bool</span> calculate_smooth_quant_scale(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>)</div>
 <div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() != 0)</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;scale.size() != 0)</div>
 <div class="line"><span class="lineno">   53</span>  {</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;scale should be empty at this moment.&quot;</span>);</div>
 <div class="line"><span class="lineno">   55</span>  }</div>
@@ -207,7 +207,7 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (weight-&gt;dtype() != loco::DataType::FLOAT32)</div>
 <div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="keyword">auto</span> act_scale = p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>;</div>
+<div class="line"><span class="lineno">   95</span>  <span class="keyword">auto</span> act_scale = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale;</div>
 <div class="line"><span class="lineno">   96</span>  <span class="keywordflow">switch</span> (node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">opcode</a>())</div>
 <div class="line"><span class="lineno">   97</span>  {</div>
 <div class="line"><span class="lineno">   98</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
@@ -249,11 +249,11 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">  134</span> </div>
 <div class="line"><span class="lineno">  135</span>      <span class="comment">// TODO parameterize &quot;alpha&quot;</span></div>
 <div class="line"><span class="lineno">  136</span>      <span class="keyword">auto</span> alpha = 0.5f;</div>
-<div class="line"><span class="lineno">  137</span>      assert(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size() == weight_max.size());</div>
-<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size(); i++)</div>
+<div class="line"><span class="lineno">  137</span>      assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale.size() == weight_max.size());</div>
+<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale.size(); i++)</div>
 <div class="line"><span class="lineno">  139</span>      {</div>
-<div class="line"><span class="lineno">  140</span>        p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.push_back(std::max(</div>
-<div class="line"><span class="lineno">  141</span>          std::pow(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));</div>
+<div class="line"><span class="lineno">  140</span>        <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;scale.push_back(std::max(</div>
+<div class="line"><span class="lineno">  141</span>          std::pow(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));</div>
 <div class="line"><span class="lineno">  142</span>      }</div>
 <div class="line"><span class="lineno">  143</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  144</span>    }</div>
@@ -291,11 +291,11 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">  176</span> </div>
 <div class="line"><span class="lineno">  177</span>      <span class="comment">// TODO parameterize &quot;alpha&quot;</span></div>
 <div class="line"><span class="lineno">  178</span>      <span class="keyword">auto</span> alpha = 0.5f;</div>
-<div class="line"><span class="lineno">  179</span>      assert(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size() == weight_max.size());</div>
-<div class="line"><span class="lineno">  180</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.size(); i++)</div>
+<div class="line"><span class="lineno">  179</span>      assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale.size() == weight_max.size());</div>
+<div class="line"><span class="lineno">  180</span>      <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale.size(); i++)</div>
 <div class="line"><span class="lineno">  181</span>      {</div>
-<div class="line"><span class="lineno">  182</span>        p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.push_back(std::max(</div>
-<div class="line"><span class="lineno">  183</span>          std::pow(p-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a>.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));</div>
+<div class="line"><span class="lineno">  182</span>        <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;scale.push_back(std::max(</div>
+<div class="line"><span class="lineno">  183</span>          std::pow(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>-&gt;act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));</div>
 <div class="line"><span class="lineno">  184</span>      }</div>
 <div class="line"><span class="lineno">  185</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  186</span>    }</div>
@@ -310,7 +310,7 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">  195</span> </div>
 <div class="line"><span class="lineno">  196</span><span class="keyword">struct </span>InsertScaleShiftVisitor final : <span class="keyword">public</span> <a class="code hl_struct" href="structluci_1_1_circle_node_mutable_visitor.html">luci::CircleNodeMutableVisitor</a>&lt;void&gt;</div>
 <div class="line"><span class="lineno">  197</span>{</div>
-<div class="line"><span class="lineno">  198</span>  InsertScaleShiftVisitor(<a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *p) : _pattern(p)</div>
+<div class="line"><span class="lineno">  198</span>  InsertScaleShiftVisitor(<a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> *<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>) : _pattern(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>)</div>
 <div class="line"><span class="lineno">  199</span>  {</div>
 <div class="line"><span class="lineno">  200</span>    <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">  201</span>  }</div>
@@ -504,10 +504,10 @@ Macros</h2></td></tr>
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
 <div class="ttc" id="anamespacennop_html_acf3d089479785117472a0b30cebc048d"><div class="ttname"><a href="namespacennop.html#acf3d089479785117472a0b30cebc048d">nnop::conv</a></div><div class="ttdeci">void conv(const nncc::core::ADT::feature::Shape &amp;out_shape, nncc::core::ADT::feature::Accessor&lt; OutputDType &gt; &amp;out_data, const nncc::core::ADT::feature::Shape &amp;in_shape, const nncc::core::ADT::feature::Reader&lt; InputDType &gt; &amp;in_data, const nncc::core::ADT::kernel::Shape &amp;ker_shape, const nncc::core::ADT::kernel::Reader&lt; KernelDType &gt; &amp;ker_data, const PadInfo &amp;pad_info, const StrideInfo &amp;stride_info)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2nnop_2include_2nnop_2_conv2_d_8h_source.html#l00034">Conv2D.h:34</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html">fme_apply::EqualizePattern</a></div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00025">EqualizePattern.h:26</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a186c00fdb5463c62c18b47a5e7fa377a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">fme_apply::EqualizePattern::front</a></div><div class="ttdeci">std::string front</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00035">EqualizePattern.h:35</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a39712f2bd2845c5aad882727cfab4b99"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">fme_apply::EqualizePattern::scale</a></div><div class="ttdeci">std::vector&lt; float &gt; scale</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00039">EqualizePattern.h:39</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a40af9d56a439e0e66f1dd1254cac8e1a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">fme_apply::EqualizePattern::act_scale</a></div><div class="ttdeci">std::vector&lt; float &gt; act_scale</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00038">EqualizePattern.h:38</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00037">CircleNodeDecl.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00049">CircleNodeDecl.h:49</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>

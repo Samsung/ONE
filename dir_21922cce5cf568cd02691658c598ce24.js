@@ -43,7 +43,7 @@ var dir_21922cce5cf568cd02691658c598ce24 =
     [ "PALPad.h", "luci-interpreter_2pal_2common_2_p_a_l_pad_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_pad_8h" ],
     [ "PALPreluCommon.h", "_p_a_l_prelu_common_8h.html", "_p_a_l_prelu_common_8h" ],
     [ "PALQuantize.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_quantize_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_quantize_8h" ],
-    [ "PALReduceCommon.h", "_p_a_l_reduce_common_8h.html", "_p_a_l_reduce_common_8h" ],
+    [ "PALReduceCommon.h", "luci-interpreter_2pal_2common_2_p_a_l_reduce_common_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_reduce_common_8h" ],
     [ "PALReluCommon.h", "luci-interpreter_2pal_2common_2_p_a_l_relu_common_8h.html", "luci-interpreter_2pal_2common_2_p_a_l_relu_common_8h" ],
     [ "PALResizeBilinear.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_bilinear_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_bilinear_8h" ],
     [ "PALResizeNearestNeighbor.h", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h.html", "onert-micro_2luci-interpreter_2pal_2common_2_p_a_l_resize_nearest_neighbor_8h" ],

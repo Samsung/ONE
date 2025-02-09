@@ -59,7 +59,7 @@ var dir_28d3de3e0f2b67cb3b959accb5527250 =
     [ "Slice.cpp", "compiler_2mir-interpreter_2src_2ops_2_slice_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_slice_8cpp" ],
     [ "Slice.h", "compiler_2mir-interpreter_2src_2ops_2_slice_8h.html", "compiler_2mir-interpreter_2src_2ops_2_slice_8h" ],
     [ "Softmax.cpp", "compiler_2mir-interpreter_2src_2ops_2_softmax_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_softmax_8cpp" ],
-    [ "Softmax.h", "compiler_2mir-interpreter_2src_2ops_2_soft_max_8h.html", "compiler_2mir-interpreter_2src_2ops_2_soft_max_8h" ],
+    [ "Softmax.h", "compiler_2mir-interpreter_2src_2ops_2_softmax_8h.html", "compiler_2mir-interpreter_2src_2ops_2_softmax_8h" ],
     [ "Sqrt.cpp", "compiler_2mir-interpreter_2src_2ops_2_sqrt_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_sqrt_8cpp" ],
     [ "Sqrt.h", "mir-interpreter_2src_2ops_2_sqrt_8h.html", "mir-interpreter_2src_2ops_2_sqrt_8h" ],
     [ "Sub.cpp", "compiler_2mir-interpreter_2src_2ops_2_sub_8cpp.html", "compiler_2mir-interpreter_2src_2ops_2_sub_8cpp" ],

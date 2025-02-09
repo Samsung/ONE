@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classflatbuffers_1_1vector__downward.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a91d7ec62e1b729276605355d12f3456c" id="r_a91d7ec62e1b729276605355d12f3456c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1vector__downward.html#a91d7ec62e1b729276605355d12f3456c">vector_downward</a> (size_t initial_size, <a class="el" href="classflatbuffers_1_1_allocator.html">Allocator</a> *allocator, bool own_allocator, size_t buffer_minalign)</td></tr>
+<tr class="memitem:a91d7ec62e1b729276605355d12f3456c" id="r_a91d7ec62e1b729276605355d12f3456c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1vector__downward.html#a91d7ec62e1b729276605355d12f3456c">vector_downward</a> (size_t initial_size, <a class="el" href="classflatbuffers_1_1_allocator.html">Allocator</a> *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a87208ac749a151fca6837663dd660343">allocator</a>, bool own_allocator, size_t buffer_minalign)</td></tr>
 <tr class="separator:a91d7ec62e1b729276605355d12f3456c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45e25d90a4bd4e1f11ff0abb49015538" id="r_a45e25d90a4bd4e1f11ff0abb49015538"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1vector__downward.html#a45e25d90a4bd4e1f11ff0abb49015538">vector_downward</a> (<a class="el" href="classflatbuffers_1_1vector__downward.html">vector_downward</a> &amp;&amp;other)</td></tr>
 <tr class="separator:a45e25d90a4bd4e1f11ff0abb49015538"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,11 +213,12 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00878">878</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  880</span>    : allocator_(allocator), own_allocator_(own_allocator), initial_size_(initial_size),</div>
+<div class="fragment"><div class="line"><span class="lineno">  880</span>    : allocator_(<a class="code hl_function" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a87208ac749a151fca6837663dd660343">allocator</a>), own_allocator_(own_allocator), initial_size_(initial_size),</div>
 <div class="line"><span class="lineno">  881</span>      buffer_minalign_(buffer_minalign), reserved_(0), buf_(<span class="keyword">nullptr</span>), cur_(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">  882</span>      scratch_(<span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  883</span>  {</div>
 <div class="line"><span class="lineno">  884</span>  }</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a87208ac749a151fca6837663dd660343"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a87208ac749a151fca6837663dd660343">allocator</a></div><div class="ttdeci">src_tensor allocator() -&gt; init(p.src_info&lt; NHWC &gt;())</div></div>
 </div><!-- fragment -->
 </div>
 </div>

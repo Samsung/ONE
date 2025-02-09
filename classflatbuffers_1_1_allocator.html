@@ -104,7 +104,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a96abc6f31fe94e932d7f4daac10388b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fde2800ed6bfcc35472c1219862573e" id="r_a8fde2800ed6bfcc35472c1219862573e"><td class="memItemLeft" align="right" valign="top">virtual uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_allocator.html#a8fde2800ed6bfcc35472c1219862573e">allocate</a> (size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)=0</td></tr>
 <tr class="separator:a8fde2800ed6bfcc35472c1219862573e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab72efb51f31b9238373f5922ac282a89" id="r_ab72efb51f31b9238373f5922ac282a89"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">deallocate</a> (uint8_t *p, size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)=0</td></tr>
+<tr class="memitem:ab72efb51f31b9238373f5922ac282a89" id="r_ab72efb51f31b9238373f5922ac282a89"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">deallocate</a> (uint8_t *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>, size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>)=0</td></tr>
 <tr class="separator:ab72efb51f31b9238373f5922ac282a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c213f8ead50ce81e4427f65ba639892" id="r_a5c213f8ead50ce81e4427f65ba639892"><td class="memItemLeft" align="right" valign="top">virtual uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_allocator.html#a5c213f8ead50ce81e4427f65ba639892">reallocate_downward</a> (uint8_t *old_p, size_t old_size, size_t new_size, size_t in_use_back, size_t in_use_front)</td></tr>
 <tr class="separator:a5c213f8ead50ce81e4427f65ba639892"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,7 +173,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classflatbuffers_1_1_default_allocator.html#aeba7d4a7c546d7725b707ecbeaf68ebf">flatbuffers::DefaultAllocator</a>, and <a class="el" href="classflatbuffers_1_1grpc_1_1_slice_allocator.html#a9119d6a21da5128ffd7408ce0caa1d46">flatbuffers::grpc::SliceAllocator</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00731">flatbuffers::Allocate()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>.</p>
 
 </div>
 </div>
@@ -213,7 +213,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classflatbuffers_1_1grpc_1_1_slice_allocator.html#a3958ea07b2293894ff62439aadbf42d8">flatbuffers::grpc::SliceAllocator</a>, and <a class="el" href="classflatbuffers_1_1_default_allocator.html#acfc866696fe9db8e74d9529d8fc70aac">flatbuffers::DefaultAllocator</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00736">flatbuffers::Deallocate()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>.</p>
 
 </div>
 </div>

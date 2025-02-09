@@ -632,6 +632,21 @@ var annotated_dup =
       [ "Source", "classhermes_1_1_source.html", "classhermes_1_1_source" ],
       [ "SourceSetting", "classhermes_1_1_source_setting.html", "classhermes_1_1_source_setting" ]
     ] ],
+    [ "kbenchmark", "namespacekbenchmark.html", [
+      [ "kernels", "namespacekbenchmark_1_1kernels.html", [
+        [ "acl_common", "namespacekbenchmark_1_1kernels_1_1acl__common.html", [
+          [ "PaddingInfo", "structkbenchmark_1_1kernels_1_1acl__common_1_1_padding_info.html", "structkbenchmark_1_1kernels_1_1acl__common_1_1_padding_info" ]
+        ] ]
+      ] ],
+      [ "operation", "namespacekbenchmark_1_1operation.html", [
+        [ "Convolution", "classkbenchmark_1_1operation_1_1_convolution.html", "classkbenchmark_1_1operation_1_1_convolution" ],
+        [ "TransposeConv", "classkbenchmark_1_1operation_1_1_transpose_conv.html", "classkbenchmark_1_1operation_1_1_transpose_conv" ]
+      ] ],
+      [ "Args", "classkbenchmark_1_1_args.html", "classkbenchmark_1_1_args" ],
+      [ "ConfigFile", "classkbenchmark_1_1_config_file.html", "classkbenchmark_1_1_config_file" ],
+      [ "Operation", "classkbenchmark_1_1_operation.html", "classkbenchmark_1_1_operation" ],
+      [ "OperationLoader", "classkbenchmark_1_1_operation_loader.html", "classkbenchmark_1_1_operation_loader" ]
+    ] ],
     [ "kuma", "namespacekuma.html", [
       [ "details", "namespacekuma_1_1details.html", [
         [ "IntervalMask", "structkuma_1_1details_1_1_interval_mask.html", "structkuma_1_1details_1_1_interval_mask" ],
@@ -3528,6 +3543,7 @@ var annotated_dup =
         [ "NegTestDataInputOutputTypeMismatchLogKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchLogSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel" ],
+        [ "NegTestDataInputOutputTypeMismatchMeanKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_mean_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_mean_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchNegKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_neg_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_neg_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchPadKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel" ],
@@ -3544,6 +3560,7 @@ var annotated_dup =
         [ "NegTestDataInputOutputTypeMismatchSquareKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchStridedSliceKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_strided_slice_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel" ],
+        [ "NegTestDataInputOutputTypeMismatchSumKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sum_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sum_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchSVDFKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchTanhKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel" ],
         [ "NegTestDataInputOutputTypeMismatchUnpackKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_unpack_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_unpack_kernel" ],
@@ -3572,9 +3589,11 @@ var annotated_dup =
         [ "NegTestDataWithInvalidOutputShapeDequantizeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_dequantize_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_dequantize_kernel" ],
         [ "NegTestDataWithInvalidOutputShapeQuantizeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_quantize_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_quantize_kernel" ],
         [ "NegTestDataWrongAxisGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel" ],
+        [ "NegTestDataWrongAxisTypeReduceProdKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_type_reduce_prod_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_type_reduce_prod_kernel" ],
         [ "NegTestDataWrongBiasShapeFullyConnectedKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel" ],
         [ "NegTestDataWrongBiasTypeDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_type_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_type_depthwise_conv2_d_kernel" ],
         [ "NegTestDataWrongInputShapeFillKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_shape_fill_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_shape_fill_kernel" ],
+        [ "NegTestDataWrongInputTypeReduceProdKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_type_reduce_prod_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_type_reduce_prod_kernel" ],
         [ "NegTestDataWrongOutputTypeShapeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_output_type_shape_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_output_type_shape_kernel" ],
         [ "NegTestDataWrongPermTypeTransposeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_perm_type_transpose_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_perm_type_transpose_kernel" ],
         [ "NegTestDataWrongPositionTypeGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_position_type_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_position_type_gather_kernel" ],
@@ -3643,6 +3662,7 @@ var annotated_dup =
         [ "TestDataFloatLogSoftmax", "classonert__micro_1_1test__model_1_1_test_data_float_log_softmax.html", "classonert__micro_1_1test__model_1_1_test_data_float_log_softmax" ],
         [ "TestDataFloatMaximum", "classonert__micro_1_1test__model_1_1_test_data_float_maximum.html", "classonert__micro_1_1test__model_1_1_test_data_float_maximum" ],
         [ "TestDataFloatMaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d" ],
+        [ "TestDataFloatMean", "classonert__micro_1_1test__model_1_1_test_data_float_mean.html", "classonert__micro_1_1test__model_1_1_test_data_float_mean" ],
         [ "TestDataFloatMinimum", "classonert__micro_1_1test__model_1_1_test_data_float_minimum.html", "classonert__micro_1_1test__model_1_1_test_data_float_minimum" ],
         [ "TestDataFloatMul", "classonert__micro_1_1test__model_1_1_test_data_float_mul.html", "classonert__micro_1_1test__model_1_1_test_data_float_mul" ],
         [ "TestDataFloatNeg", "classonert__micro_1_1test__model_1_1_test_data_float_neg.html", "classonert__micro_1_1test__model_1_1_test_data_float_neg" ],
@@ -3650,6 +3670,7 @@ var annotated_dup =
         [ "TestDataFloatPack", "classonert__micro_1_1test__model_1_1_test_data_float_pack.html", "classonert__micro_1_1test__model_1_1_test_data_float_pack" ],
         [ "TestDataFloatPad", "classonert__micro_1_1test__model_1_1_test_data_float_pad.html", "classonert__micro_1_1test__model_1_1_test_data_float_pad" ],
         [ "TestDataFloatQuantize", "classonert__micro_1_1test__model_1_1_test_data_float_quantize.html", "classonert__micro_1_1test__model_1_1_test_data_float_quantize" ],
+        [ "TestDataFloatReduceProd", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod.html", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod" ],
         [ "TestDataFloatReLU", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u" ],
         [ "TestDataFloatReLU6", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6" ],
         [ "TestDataFloatRound", "classonert__micro_1_1test__model_1_1_test_data_float_round.html", "classonert__micro_1_1test__model_1_1_test_data_float_round" ],
@@ -3667,6 +3688,7 @@ var annotated_dup =
         [ "TestDataFloatSquaredDifference", "classonert__micro_1_1test__model_1_1_test_data_float_squared_difference.html", "classonert__micro_1_1test__model_1_1_test_data_float_squared_difference" ],
         [ "TestDataFloatStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice" ],
         [ "TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", "classonert__micro_1_1test__model_1_1_test_data_float_sub" ],
+        [ "TestDataFloatSum", "classonert__micro_1_1test__model_1_1_test_data_float_sum.html", "classonert__micro_1_1test__model_1_1_test_data_float_sum" ],
         [ "TestDataFloatSVDF", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f.html", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f" ],
         [ "TestDataFloatTanh", "classonert__micro_1_1test__model_1_1_test_data_float_tanh.html", "classonert__micro_1_1test__model_1_1_test_data_float_tanh" ],
         [ "TestDataFloatTransposeConv", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv.html", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv" ],
@@ -3697,6 +3719,7 @@ var annotated_dup =
         [ "TestDataIntLess", "classonert__micro_1_1test__model_1_1_test_data_int_less.html", "classonert__micro_1_1test__model_1_1_test_data_int_less" ],
         [ "TestDataIntMul", "classonert__micro_1_1test__model_1_1_test_data_int_mul.html", "classonert__micro_1_1test__model_1_1_test_data_int_mul" ],
         [ "TestDataIntPack", "classonert__micro_1_1test__model_1_1_test_data_int_pack.html", "classonert__micro_1_1test__model_1_1_test_data_int_pack" ],
+        [ "TestDataIntReduceProd", "classonert__micro_1_1test__model_1_1_test_data_int_reduce_prod.html", "classonert__micro_1_1test__model_1_1_test_data_int_reduce_prod" ],
         [ "TestDataIntStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_int_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_int_strided_slice" ],
         [ "TestDataIntSub", "classonert__micro_1_1test__model_1_1_test_data_int_sub.html", "classonert__micro_1_1test__model_1_1_test_data_int_sub" ],
         [ "TestDataL2NormalizationBase", "classonert__micro_1_1test__model_1_1_test_data_l2_normalization_base.html", "classonert__micro_1_1test__model_1_1_test_data_l2_normalization_base" ],
@@ -3709,6 +3732,7 @@ var annotated_dup =
         [ "TestDataLogSoftmaxBase", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base.html", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base" ],
         [ "TestDataMaximumBase", "classonert__micro_1_1test__model_1_1_test_data_maximum_base.html", "classonert__micro_1_1test__model_1_1_test_data_maximum_base" ],
         [ "TestDataMaxPool2DBase", "classonert__micro_1_1test__model_1_1_test_data_max_pool2_d_base.html", "classonert__micro_1_1test__model_1_1_test_data_max_pool2_d_base" ],
+        [ "TestDataMeanBase", "classonert__micro_1_1test__model_1_1_test_data_mean_base.html", "classonert__micro_1_1test__model_1_1_test_data_mean_base" ],
         [ "TestDataMinimumBase", "classonert__micro_1_1test__model_1_1_test_data_minimum_base.html", "classonert__micro_1_1test__model_1_1_test_data_minimum_base" ],
         [ "TestDataMulBase", "classonert__micro_1_1test__model_1_1_test_data_mul_base.html", "classonert__micro_1_1test__model_1_1_test_data_mul_base" ],
         [ "TestDataNegBase", "classonert__micro_1_1test__model_1_1_test_data_neg_base.html", "classonert__micro_1_1test__model_1_1_test_data_neg_base" ],
@@ -3718,6 +3742,7 @@ var annotated_dup =
         [ "TestDataQuantizeBase", "classonert__micro_1_1test__model_1_1_test_data_quantize_base.html", "classonert__micro_1_1test__model_1_1_test_data_quantize_base" ],
         [ "TestDataQuantLess", "classonert__micro_1_1test__model_1_1_test_data_quant_less.html", "classonert__micro_1_1test__model_1_1_test_data_quant_less" ],
         [ "TestDataQuantU8Pack", "classonert__micro_1_1test__model_1_1_test_data_quant_u8_pack.html", "classonert__micro_1_1test__model_1_1_test_data_quant_u8_pack" ],
+        [ "TestDataReduceProdBase", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base" ],
         [ "TestDataReLU6Base", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base.html", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base" ],
         [ "TestDataReLUBase", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base.html", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base" ],
         [ "TestDataReluConcatenation", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation" ],
@@ -3757,6 +3782,7 @@ var annotated_dup =
         [ "TestDataSquaredDifferenceBase", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base.html", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base" ],
         [ "TestDataStridedSliceBase", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base.html", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base" ],
         [ "TestDataSubBase", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", "classonert__micro_1_1test__model_1_1_test_data_sub_base" ],
+        [ "TestDataSumBase", "classonert__micro_1_1test__model_1_1_test_data_sum_base.html", "classonert__micro_1_1test__model_1_1_test_data_sum_base" ],
         [ "TestDataSVDFBase", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base.html", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base" ],
         [ "TestDataTanhBase", "classonert__micro_1_1test__model_1_1_test_data_tanh_base.html", "classonert__micro_1_1test__model_1_1_test_data_tanh_base" ],
         [ "TestDataTransposeConvBase", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base.html", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base" ],
@@ -3902,6 +3928,9 @@ var annotated_dup =
     ] ],
     [ "Reshape_000", "namespace_reshape__000.html", [
       [ "Reshape_000_Q8", "class_reshape__000_1_1_reshape__000___q8.html", "class_reshape__000_1_1_reshape__000___q8" ]
+    ] ],
+    [ "session", "namespacesession.html", [
+      [ "TrainSession", "classsession_1_1_train_session.html", "classsession_1_1_train_session" ]
     ] ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", [
       [ "SingleOperatorTest", "class_single_operator_test_1_1_single_operator_test.html", "class_single_operator_test_1_1_single_operator_test" ]

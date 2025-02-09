@@ -15,7 +15,7 @@ var group___neural_networks =
     [ "ANeuralNetworksModel", "group___neural_networks.html#ga4ce6f20a94d3a2de47fa5a810feeb9a4", null ],
     [ "ANeuralNetworksOperandType", "group___neural_networks.html#gafa3cd67e110c784e28242954d077bf3c", null ],
     [ "ANeuralNetworksOperationType", "group___neural_networks.html#ga1aa0c2cbc257093f98d6f0a2eb1932a5", [
-      [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#ggadc29c2ff13d900c2f185ee95427fb06caae0a47d1fa3a3f0b0861efc77f6865cf", null ]
+      [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#gga06fc87d81c62e9abb8790b6e5713c55baae0a47d1fa3a3f0b0861efc77f6865cf", null ]
     ] ],
     [ "FuseCode", "group___neural_networks.html#ga4ec620045a39909a6bf00b3ee0c4d414", [
       [ "ANEURALNETWORKS_FUSED_NONE", "group___neural_networks.html#gga4ec620045a39909a6bf00b3ee0c4d414a0f7344826e8abfa2ba90c82e856dc4f9", null ],
@@ -113,7 +113,7 @@ var group___neural_networks =
     [ "ANEURALNETWORKS_LSH_PROJECTION", "group___neural_networks.html#ggaabbe492c60331b13038e39d4207940e0a800cdcec5d7ba776789cb2d1ef669965", null ],
     [ "ANEURALNETWORKS_LSTM", "group___neural_networks.html#ggaabbe492c60331b13038e39d4207940e0ad0377e8c305e596fb7f64ff896671fc5", null ],
     [ "ANEURALNETWORKS_MAX_POOL_2D", "group___neural_networks.html#ggaabbe492c60331b13038e39d4207940e0a0f227a4d98ad5af31f7fd4d255d246ce", null ],
-    [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#ggadc29c2ff13d900c2f185ee95427fb06caae0a47d1fa3a3f0b0861efc77f6865cf", null ],
+    [ "ANEURALNETWORKS_MAX_SIZE_OF_IMMEDIATELY_COPIED_VALUES", "group___neural_networks.html#gga06fc87d81c62e9abb8790b6e5713c55baae0a47d1fa3a3f0b0861efc77f6865cf", null ],
     [ "ANEURALNETWORKS_MUL", "group___neural_networks.html#ggaabbe492c60331b13038e39d4207940e0ab34ca99890c827b536ce66256a803d7a", null ],
     [ "ANEURALNETWORKS_NO_ERROR", "group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a3d43394f34347d3a8de3c98dbd8a0365", null ],
     [ "ANEURALNETWORKS_OP_FAILED", "group___neural_networks.html#ggad8097859ab1bdd06be52a8421df152d4a0e0a89d262e5c2b645737c4754451d82", null ],

@@ -2756,11 +2756,11 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  943</span>  }</div>
 <div class="line"><span class="lineno">  944</span> </div>
 <div class="line"><span class="lineno">  945</span>  <span class="comment">// Clamping</span></div>
-<div class="line"><span class="lineno">  946</span>  start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(start, 0, axis_size - 1);</div>
+<div class="line"><span class="lineno">  946</span>  start = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(start, 0, axis_size - 1);</div>
 <div class="line"><span class="lineno">  947</span> </div>
 <div class="line"><span class="lineno">  948</span>  <span class="keywordflow">return</span> start;</div>
 <div class="line"><span class="lineno">  949</span>}</div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a1189dfd5fde5db4cd13ca50c4d7de48b"><div class="ttname"><a href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">nnfw::cker::Clamp</a></div><div class="ttdeci">int Clamp(const int v, const int lo, const int hi)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00032">StridedSlice.h:32</a></div></div>
+<div class="ttc" id="anamespaceluci_1_1sinf_html_aca9ed8a1bc31893cbc00a6c795f7a22e"><div class="ttname"><a href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">luci::sinf::Clamp</a></div><div class="ttdeci">int Clamp(const int32_t v, const int32_t lo, const int32_t hi)</div><div class="ttdef"><b>Definition</b> <a href="service_2src_2_nodes_2_circle_strided_slice_8cpp_source.html#l00115">CircleStridedSlice.cpp:115</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00122">onert::shape_inference::StridedSliceParams::begin_mask</a>, <a class="el" href="_shape_inference_8cc_source.html#l00903">Clamp()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00116">onert::shape_inference::StridedSliceParams::start_indices</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_shape_inference_8h_source.html#l00120">onert::shape_inference::StridedSliceParams::strides</a>.</p>
 
@@ -2856,12 +2856,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno"> 1004</span>  <span class="keywordflow">if</span> (strides[axis] &gt; 0)</div>
 <div class="line"><span class="lineno"> 1005</span>  {</div>
 <div class="line"><span class="lineno"> 1006</span>    <span class="comment">// Forward iteration</span></div>
-<div class="line"><span class="lineno"> 1007</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, 0, axis_size);</div>
+<div class="line"><span class="lineno"> 1007</span>    stop = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(stop, 0, axis_size);</div>
 <div class="line"><span class="lineno"> 1008</span>  }</div>
 <div class="line"><span class="lineno"> 1009</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno"> 1010</span>  {</div>
 <div class="line"><span class="lineno"> 1011</span>    <span class="comment">// Backward iteration</span></div>
-<div class="line"><span class="lineno"> 1012</span>    stop = <a class="code hl_function" href="namespacennfw_1_1cker.html#a1189dfd5fde5db4cd13ca50c4d7de48b">Clamp</a>(stop, -1, axis_size - 1);</div>
+<div class="line"><span class="lineno"> 1012</span>    stop = <a class="code hl_function" href="namespaceluci_1_1sinf.html#aca9ed8a1bc31893cbc00a6c795f7a22e">Clamp</a>(stop, -1, axis_size - 1);</div>
 <div class="line"><span class="lineno"> 1013</span>  }</div>
 <div class="line"><span class="lineno"> 1014</span> </div>
 <div class="line"><span class="lineno"> 1015</span>  <span class="keywordflow">return</span> stop;</div>

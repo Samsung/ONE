@@ -872,7 +872,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  464</span>      <span class="stringliteral">&quot;SpatialBN: non-constant &#39;scale&#39;, &#39;bias&#39;, &#39;mean&#39; and &#39;var&#39; inputs are not supported yet.&quot;</span>);</div>
 <div class="line"><span class="lineno">  465</span> </div>
 <div class="line"><span class="lineno">  466</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;scale_tensor = scale_op-&gt;getValue();</div>
-<div class="line"><span class="lineno">  467</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;bias_tensor = bias_op-&gt;getValue();</div>
+<div class="line"><span class="lineno">  467</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#adf445716aa5fe07b6884d4c940010ed3">bias_tensor</a> = bias_op-&gt;getValue();</div>
 <div class="line"><span class="lineno">  468</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;mean_tensor = mean_op-&gt;getValue();</div>
 <div class="line"><span class="lineno">  469</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;var_tensor = var_op-&gt;getValue();</div>
 <div class="line"><span class="lineno">  470</span>  <span class="keywordtype">float</span> eps = <a class="code hl_function" href="namespacemir__caffe2.html#a4005cc18ee8bb41038c3630dcc197bd1">getSingleArgument</a>(op, <span class="stringliteral">&quot;epsilon&quot;</span>, 1e-5f);</div>
@@ -895,7 +895,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  487</span>  <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::MulOp&gt;(result, scale)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  488</span> </div>
 <div class="line"><span class="lineno">  489</span>  <span class="comment">// overall_res = res2 + bias</span></div>
-<div class="line"><span class="lineno">  490</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = createOp&lt;ops::ConstantOp&gt;(bias_tensor)-&gt;getOutput(0);</div>
+<div class="line"><span class="lineno">  490</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = createOp&lt;ops::ConstantOp&gt;(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#adf445716aa5fe07b6884d4c940010ed3">bias_tensor</a>)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  491</span>  <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a> = createOp&lt;ops::ReshapeOp&gt;(bias, <a class="code hl_struct" href="struct_shape.html">Shape</a>{1, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">bias</a>-&gt;getShape().dim(0), 1, 1})-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  492</span>  <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = createOp&lt;ops::AddOp&gt;(result, bias)-&gt;getOutput(0);</div>
 <div class="line"><span class="lineno">  493</span> </div>
@@ -903,8 +903,9 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  495</span>}</div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">mir_caffe::CaffeOpType::scale</a></div><div class="ttdeci">@ scale</div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_adf445716aa5fe07b6884d4c940010ed3"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#adf445716aa5fe07b6884d4c940010ed3">bias_tensor</a></div><div class="ttdeci">CLTensor bias_tensor</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00294">Convolution.cpp:294</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00031">mir::Tensor&lt; T &gt;::at()</a>, <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00048">mir::Tensor&lt; T &gt;::getShape()</a>, and <a class="el" href="caffe2__proto__helper_8cpp_source.html#l00038">mir_caffe2::getSingleArgument()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00031">mir::Tensor&lt; T &gt;::at()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00294">bias_tensor</a>, <a class="el" href="compiler_2mir_2include_2mir_2_tensor_8h_source.html#l00048">mir::Tensor&lt; T &gt;::getShape()</a>, and <a class="el" href="caffe2__proto__helper_8cpp_source.html#l00038">mir_caffe2::getSingleArgument()</a>.</p>
 
 </div>
 </div>

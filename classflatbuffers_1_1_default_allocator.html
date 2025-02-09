@@ -112,7 +112,7 @@ Collaboration diagram for flatbuffers::DefaultAllocator:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aeba7d4a7c546d7725b707ecbeaf68ebf" id="r_aeba7d4a7c546d7725b707ecbeaf68ebf"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_default_allocator.html#aeba7d4a7c546d7725b707ecbeaf68ebf">allocate</a> (size_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>) FLATBUFFERS_OVERRIDE</td></tr>
 <tr class="separator:aeba7d4a7c546d7725b707ecbeaf68ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfc866696fe9db8e74d9529d8fc70aac" id="r_acfc866696fe9db8e74d9529d8fc70aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_default_allocator.html#acfc866696fe9db8e74d9529d8fc70aac">deallocate</a> (uint8_t *p, size_t) FLATBUFFERS_OVERRIDE</td></tr>
+<tr class="memitem:acfc866696fe9db8e74d9529d8fc70aac" id="r_acfc866696fe9db8e74d9529d8fc70aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_default_allocator.html#acfc866696fe9db8e74d9529d8fc70aac">deallocate</a> (uint8_t *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>, size_t) FLATBUFFERS_OVERRIDE</td></tr>
 <tr class="separator:acfc866696fe9db8e74d9529d8fc70aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classflatbuffers_1_1_allocator"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classflatbuffers_1_1_allocator')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classflatbuffers_1_1_allocator.html">flatbuffers::Allocator</a></td></tr>
 <tr class="memitem:a96abc6f31fe94e932d7f4daac10388b9 inherit pub_methods_classflatbuffers_1_1_allocator" id="r_a96abc6f31fe94e932d7f4daac10388b9"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_allocator.html#a96abc6f31fe94e932d7f4daac10388b9">~Allocator</a> ()</td></tr>
@@ -122,7 +122,7 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7549b946d7bd892dcb773db38a44907c" id="r_a7549b946d7bd892dcb773db38a44907c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_default_allocator.html#a7549b946d7bd892dcb773db38a44907c">dealloc</a> (void *p, size_t)</td></tr>
+<tr class="memitem:a7549b946d7bd892dcb773db38a44907c" id="r_a7549b946d7bd892dcb773db38a44907c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classflatbuffers_1_1_default_allocator.html#a7549b946d7bd892dcb773db38a44907c">dealloc</a> (void *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>, size_t)</td></tr>
 <tr class="separator:a7549b946d7bd892dcb773db38a44907c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
@@ -206,8 +206,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00724">724</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  724</span>{ <span class="keyword">delete</span>[] <span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(p); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  724</span>{ <span class="keyword">delete</span>[] <span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>); }</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <a id="acfc866696fe9db8e74d9529d8fc70aac" name="acfc866696fe9db8e74d9529d8fc70aac"></a>
@@ -247,8 +250,10 @@ Additional Inherited Members</h2></td></tr>
 <p>Implements <a class="el" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">flatbuffers::Allocator</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00722">722</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  722</span>{ <span class="keyword">delete</span>[] p; }</div>
+<div class="fragment"><div class="line"><span class="lineno">  722</span>{ <span class="keyword">delete</span>[] <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>; }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00736">flatbuffers::Deallocate()</a>.</p>
 
 </div>

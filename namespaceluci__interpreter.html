@@ -4232,7 +4232,7 @@ template&lt;<a class="el" href="namespaceluci__interpreter.html#aad9df55f11269ec
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp_source.html#l00024">24</a> of file <a class="el" href="luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp_source.html">ReduceProd.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp_source.html#l00024">24</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2loader_2nodes_2_reduce_prod_8cpp_source.html">ReduceProd.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *node = loco::must_cast&lt;const luci::CircleReduceProd *&gt;(circle_node);</div>
 <div class="line"><span class="lineno">   28</span>  assert(node-&gt;arity() == 2);</div>
@@ -9861,7 +9861,7 @@ template&lt;typename CircleNodeOut &gt; </div>
 <div class="line"><span class="lineno">   67</span>                      ? (*op_params-&gt;squeeze_dims())[idx] + input_num_dims</div>
 <div class="line"><span class="lineno">   68</span>                      : (*op_params-&gt;squeeze_dims())[idx];</div>
 <div class="line"><span class="lineno">   69</span>      assert(current &gt;= 0 &amp;&amp; current &lt; input_num_dims &amp;&amp;</div>
-<div class="line"><span class="lineno">   70</span>             kernels::getTensorShape(input).dims(current) == 1);</div>
+<div class="line"><span class="lineno">   70</span>             kernels::getTensorShape(input).<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>(current) == 1);</div>
 <div class="line"><span class="lineno">   71</span>      <span class="keywordflow">if</span> (!should_squeeze[current])</div>
 <div class="line"><span class="lineno">   72</span>        ++num_squeezed_dims;</div>
 <div class="line"><span class="lineno">   73</span>      should_squeeze[current] = <span class="keyword">true</span>;</div>
@@ -9869,6 +9869,7 @@ template&lt;typename CircleNodeOut &gt; </div>
 <div class="line"><span class="lineno">   75</span>  }</div>
 <div class="line"><span class="lineno">   76</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_graph_html_accb86df90f75104c60f190a5201ec11f"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">luci_interpreter::RuntimeGraph::getDataByTensor</a></div><div class="ttdeci">uint8_t * getDataByTensor(const circle::Tensor *raw_tensor)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00355">RuntimeGraph.cpp:355</a></div></div>
+<div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2core_2_runtime_graph_8cpp_source.html#l00355">luci_interpreter::RuntimeGraph::getDataByTensor()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h_source.html#l00194">luci_interpreter::kernels::getTensorShape()</a>, <a class="el" href="_s_i_s_o_kernel_8h_source.html#l00046">luci_interpreter::kernels::SISOKernel::input()</a>, and <a class="el" href="_s_i_s_o_kernel_8h_source.html#l00047">luci_interpreter::kernels::SISOKernel::output()</a>.</p>
 

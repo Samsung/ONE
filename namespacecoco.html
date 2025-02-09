@@ -1102,9 +1102,9 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">  128</span> </div>
 <div class="line"><span class="lineno">  129</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> obj : <a class="code hl_function" href="namespacecoco.html#a61ac73d9e2aa4735a924a141cd2c03d3">dependent_objects</a>(b))</div>
 <div class="line"><span class="lineno">  130</span>  {</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> p = <a class="code hl_function" href="namespacecoco.html#a54e6ea819f6bdd415a5f11e836362b61">producer</a>(obj))</div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = <a class="code hl_function" href="namespacecoco.html#a54e6ea819f6bdd415a5f11e836362b61">producer</a>(obj))</div>
 <div class="line"><span class="lineno">  132</span>    {</div>
-<div class="line"><span class="lineno">  133</span>      res.insert(p);</div>
+<div class="line"><span class="lineno">  133</span>      res.insert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">  134</span>    }</div>
 <div class="line"><span class="lineno">  135</span>  }</div>
 <div class="line"><span class="lineno">  136</span> </div>
@@ -1120,8 +1120,9 @@ template&lt;&gt; </div>
 <div class="ttc" id="aclasscoco_1_1_bag_html_ab371ac33a034ea05da1f8eaeaac23e00"><div class="ttname"><a href="classcoco_1_1_bag.html#ab371ac33a034ea05da1f8eaeaac23e00">coco::Bag::UpdaterSet</a></div><div class="ttdeci">std::set&lt; Updater * &gt; UpdaterSet</div><div class="ttdef"><b>Definition</b> <a href="_bag_8h_source.html#l00055">Bag.h:55</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a54e6ea819f6bdd415a5f11e836362b61"><div class="ttname"><a href="namespacecoco.html#a54e6ea819f6bdd415a5f11e836362b61">coco::producer</a></div><div class="ttdeci">Object::Producer * producer(const Object *)</div><div class="ttdoc">Return the producer of a given object if it exists.</div><div class="ttdef"><b>Definition</b> <a href="_object_8cpp_source.html#l00055">Object.cpp:55</a></div></div>
 <div class="ttc" id="anamespacemoco_html_ab5e214a07ca737f73ad5eefb10f68f9a"><div class="ttname"><a href="namespacemoco.html#ab5e214a07ca737f73ad5eefb10f68f9a">moco::update</a></div><div class="ttdeci">FeatureShapeUpdater update(loco::FeatureShape &amp;feature_shape)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_shape_inference_helper_8cpp_source.html#l00248">TFShapeInferenceHelper.cpp:248</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_bag_8cpp_source.html#l00087">dependent_objects()</a>, and <a class="el" href="_object_8cpp_source.html#l00055">producer()</a>.</p>
+<p class="reference">References <a class="el" href="_bag_8cpp_source.html#l00087">dependent_objects()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>, and <a class="el" href="_object_8cpp_source.html#l00055">producer()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_dead_bag_elimination_8cpp_source.html#l00050">enco::eliminate_dead_bag()</a>, <a class="el" href="_optimizations_8cpp_source.html#l00025">enco::generate_bypass_shuffle()</a>, and <a class="el" href="_usage_8cpp_source.html#l00040">enco::updaters()</a>.</p>
 

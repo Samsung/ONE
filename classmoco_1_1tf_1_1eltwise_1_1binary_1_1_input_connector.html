@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('classmoco_1_1tf_1_1eltwise_1_1binary_1
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aab5eb5edf67ffa33f8e50e8d8a44461d" id="r_aab5eb5edf67ffa33f8e50e8d8a44461d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmoco_1_1tf_1_1eltwise_1_1binary_1_1_input_connector.html#aab5eb5edf67ffa33f8e50e8d8a44461d">InputConnector</a> (NodeTy *node)</td></tr>
 <tr class="separator:aab5eb5edf67ffa33f8e50e8d8a44461d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74b0eccfaaa6bc3193cd8b2e2ca5849b" id="r_a74b0eccfaaa6bc3193cd8b2e2ca5849b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmoco_1_1tf_1_1eltwise_1_1binary_1_1_input_connector.html#a74b0eccfaaa6bc3193cd8b2e2ca5849b">operator()</a> (const <a class="el" href="namespacemoco_1_1tf_1_1eltwise_1_1binary.html#ab8e1eda974932511117c377c522f48b6">NodePair</a> &amp;p) const</td></tr>
+<tr class="memitem:a74b0eccfaaa6bc3193cd8b2e2ca5849b" id="r_a74b0eccfaaa6bc3193cd8b2e2ca5849b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmoco_1_1tf_1_1eltwise_1_1binary_1_1_input_connector.html#a74b0eccfaaa6bc3193cd8b2e2ca5849b">operator()</a> (const <a class="el" href="namespacemoco_1_1tf_1_1eltwise_1_1binary.html#ab8e1eda974932511117c377c522f48b6">NodePair</a> &amp;<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>) const</td></tr>
 <tr class="separator:a74b0eccfaaa6bc3193cd8b2e2ca5849b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -164,10 +164,13 @@ template&lt;typename NodeTy &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_canonical_eltwise_input_connector_8cpp_source.html#l00030">30</a> of file <a class="el" href="_canonical_eltwise_input_connector_8cpp_source.html">CanonicalEltwiseInputConnector.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  _node-&gt;lhs(p.first);</div>
-<div class="line"><span class="lineno">   33</span>  _node-&gt;rhs(p.second);</div>
+<div class="line"><span class="lineno">   32</span>  _node-&gt;lhs(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.first);</div>
+<div class="line"><span class="lineno">   33</span>  _node-&gt;rhs(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second);</div>
 <div class="line"><span class="lineno">   34</span>}</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

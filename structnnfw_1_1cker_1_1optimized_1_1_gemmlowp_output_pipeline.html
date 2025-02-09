@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('structnnfw_1_1cker_1_1optimized_1_1_ge
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -112,7 +112,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00047">47</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00047">47</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="acada6548fb456a9b81d66b1c9eb6a55e" name="acada6548fb456a9b81d66b1c9eb6a55e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acada6548fb456a9b81d66b1c9eb6a55e">&#9670;&#160;</a></span>ColVectorMap</h2>
@@ -126,7 +126,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00049">49</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00049">49</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
 
 </div>
 </div>
@@ -142,7 +142,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00053">53</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
 
 </div>
 </div>
@@ -211,7 +211,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00054">54</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00054">54</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   57</span>  {</div>
 <div class="line"><span class="lineno">   58</span>    <a class="code hl_typedef" href="structnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline.html#acada6548fb456a9b81d66b1c9eb6a55e">ColVectorMap</a> bias_vector(bias_data, output_rows);</div>
 <div class="line"><span class="lineno">   59</span>    gemmlowp::OutputStageBiasAddition&lt;ColVectorMap&gt; bias_addition_stage;</div>
@@ -227,14 +227,14 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   69</span>    <span class="keywordflow">return</span> std::make_tuple(bias_addition_stage, quantize_down_stage, clamp_stage,</div>
 <div class="line"><span class="lineno">   70</span>                           saturating_cast_stage);</div>
 <div class="line"><span class="lineno">   71</span>  }</div>
-<div class="ttc" id="astructnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline_html_acada6548fb456a9b81d66b1c9eb6a55e"><div class="ttname"><a href="structnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline.html#acada6548fb456a9b81d66b1c9eb6a55e">nnfw::cker::optimized::GemmlowpOutputPipeline::ColVectorMap</a></div><div class="ttdeci">gemmlowp::VectorMap&lt; const int32_t, gemmlowp::VectorShape::Col &gt; ColVectorMap</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00049">Conv.h:49</a></div></div>
+<div class="ttc" id="astructnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline_html_acada6548fb456a9b81d66b1c9eb6a55e"><div class="ttname"><a href="structnnfw_1_1cker_1_1optimized_1_1_gemmlowp_output_pipeline.html#acada6548fb456a9b81d66b1c9eb6a55e">nnfw::cker::optimized::GemmlowpOutputPipeline::ColVectorMap</a></div><div class="ttdeci">gemmlowp::VectorMap&lt; const int32_t, gemmlowp::VectorShape::Col &gt; ColVectorMap</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00049">Conv.h:49</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">nnfw::cker::optimized::Conv()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">nnfw::cker::optimized::Conv()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>compute/cker/include/cker/operation/optimized/<a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a></li>
+<li>runtime/compute/cker/include/cker/operation/optimized/<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html">Conv.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aaf2146c1e5dec7f9170543ac6d864dde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a stored annotation of type T.  <br /></td></tr>
 <tr class="separator:aaf2146c1e5dec7f9170543ac6d864dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18d4b5856d08ac683cd5a67a86b37e4b" id="r_a18d4b5856d08ac683cd5a67a86b37e4b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a18d4b5856d08ac683cd5a67a86b37e4b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classloco_1_1_annotated_item.html#a18d4b5856d08ac683cd5a67a86b37e4b">annot</a> (std::unique_ptr&lt; T &gt; &amp;&amp;p)</td></tr>
+<tr class="memitem:a18d4b5856d08ac683cd5a67a86b37e4b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classloco_1_1_annotated_item.html#a18d4b5856d08ac683cd5a67a86b37e4b">annot</a> (std::unique_ptr&lt; T &gt; &amp;&amp;<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>)</td></tr>
 <tr class="memdesc:a18d4b5856d08ac683cd5a67a86b37e4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach or remove a new annotation of type T.  <br /></td></tr>
 <tr class="separator:a18d4b5856d08ac683cd5a67a86b37e4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -207,17 +207,20 @@ template&lt;typename T &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   62</span>  {</div>
 <div class="line"><span class="lineno">   63</span>    <span class="comment">// TODO: Insert static_assert(T derives Annotation);</span></div>
 <div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (p == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   66</span>    {</div>
 <div class="line"><span class="lineno">   67</span>      _attrs.erase(<span class="keyword">typeid</span>(T));</div>
 <div class="line"><span class="lineno">   68</span>    }</div>
 <div class="line"><span class="lineno">   69</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   70</span>    {</div>
 <div class="line"><span class="lineno">   71</span>      <span class="comment">// TODO: assert(_attribs.find(typeid(T)) == _attribs.end());</span></div>
-<div class="line"><span class="lineno">   72</span>      _attrs[<span class="keyword">typeid</span>(T)] = std::move(p);</div>
+<div class="line"><span class="lineno">   72</span>      _attrs[<span class="keyword">typeid</span>(T)] = std::move(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">   73</span>    }</div>
 <div class="line"><span class="lineno">   74</span>  }</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <a id="aaf2146c1e5dec7f9170543ac6d864dde" name="aaf2146c1e5dec7f9170543ac6d864dde"></a>

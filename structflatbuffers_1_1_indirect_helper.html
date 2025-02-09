@@ -108,7 +108,7 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af64c70657c1e44cb522c2fd02ec26f7d" id="r_af64c70657c1e44cb522c2fd02ec26f7d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structflatbuffers_1_1_indirect_helper.html#af257f8e8aacb6ff0d5dcfc8dd053f3c4">return_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_indirect_helper.html#af64c70657c1e44cb522c2fd02ec26f7d">Read</a> (const uint8_t *p, uoffset_t i)</td></tr>
+<tr class="memitem:af64c70657c1e44cb522c2fd02ec26f7d" id="r_af64c70657c1e44cb522c2fd02ec26f7d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structflatbuffers_1_1_indirect_helper.html#af257f8e8aacb6ff0d5dcfc8dd053f3c4">return_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_indirect_helper.html#af64c70657c1e44cb522c2fd02ec26f7d">Read</a> (const uint8_t *<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>, uoffset_t i)</td></tr>
 <tr class="separator:af64c70657c1e44cb522c2fd02ec26f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -196,9 +196,12 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00113">113</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  114</span>  {</div>
-<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">return</span> EndianScalar((<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(p))[i]);</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">return</span> EndianScalar((<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>T *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>))[i]);</div>
 <div class="line"><span class="lineno">  116</span>  }</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00286">flatbuffers::Vector&lt; T &gt;::Get()</a>, <a class="el" href="flatbuffers_8h_source.html#l00466">flatbuffers::Array&lt; T, length &gt;::Get()</a>, <a class="el" href="flatbuffers_8h_source.html#l00354">flatbuffers::Vector&lt; T &gt;::GetMutableObject()</a>, <a class="el" href="flatbuffers_8h_source.html#l00369">flatbuffers::Vector&lt; T &gt;::LookupByKey()</a>, <a class="el" href="flatbuffers_8h_source.html#l00185">flatbuffers::VectorIterator&lt; T, IT &gt;::operator*()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00189">flatbuffers::VectorIterator&lt; T, IT &gt;::operator-&gt;()</a>.</p>
 
 </div>

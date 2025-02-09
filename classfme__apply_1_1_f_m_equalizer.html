@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classfme__apply_1_1_f_m_equalizer.html
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af41c2ba1b069739f2e0b16b767e3ac56" id="r_af41c2ba1b069739f2e0b16b767e3ac56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfme__apply_1_1_f_m_equalizer.html#af41c2ba1b069739f2e0b16b767e3ac56">equalize</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *g, std::vector&lt; <a class="el" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> &gt; &amp;p)</td></tr>
+<tr class="memitem:af41c2ba1b069739f2e0b16b767e3ac56" id="r_af41c2ba1b069739f2e0b16b767e3ac56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfme__apply_1_1_f_m_equalizer.html#af41c2ba1b069739f2e0b16b767e3ac56">equalize</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *g, std::vector&lt; <a class="el" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> &gt; &amp;<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>)</td></tr>
 <tr class="separator:af41c2ba1b069739f2e0b16b767e3ac56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -137,10 +137,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span>  <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(g != <span class="keyword">nullptr</span>, <span class="stringliteral">&quot;Invalid argument g&quot;</span>);</div>
 <div class="line"><span class="lineno">   66</span> </div>
 <div class="line"><span class="lineno">   67</span>  <span class="comment">// Check the patterns are valid on the graph</span></div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_function" href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">check_patterns_valid</a>(g, p);</div>
+<div class="line"><span class="lineno">   68</span>  <a class="code hl_function" href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">check_patterns_valid</a>(g, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">   69</span> </div>
 <div class="line"><span class="lineno">   70</span>  <span class="comment">// Insert Scale/Shift based on patterns</span></div>
-<div class="line"><span class="lineno">   71</span>  <a class="code hl_class" href="classfme__apply_1_1_insert_scale_shift.html">InsertScaleShift</a> issp(p);</div>
+<div class="line"><span class="lineno">   71</span>  <a class="code hl_class" href="classfme__apply_1_1_insert_scale_shift.html">InsertScaleShift</a> issp(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">   72</span>  issp.run(g);</div>
 <div class="line"><span class="lineno">   73</span> </div>
 <div class="line"><span class="lineno">   74</span>  <a class="code hl_typedef" href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a> phase;</div>
@@ -170,8 +170,9 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacefme__apply_html_a98ba68695a1067f1c7288172ca9a3692"><div class="ttname"><a href="namespacefme__apply.html#a98ba68695a1067f1c7288172ca9a3692">fme_apply::check_patterns_valid</a></div><div class="ttdeci">void check_patterns_valid(loco::Graph *g, const std::vector&lt; EqualizePattern &gt; &amp;patterns)</div><div class="ttdef"><b>Definition</b> <a href="_equalize_pattern_check_8cpp_source.html#l00037">EqualizePatternCheck.cpp:37</a></div></div>
 <div class="ttc" id="anamespacelogo_html_a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d"><div class="ttname"><a href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::PhaseStrategy::Saturate</a></div><div class="ttdeci">@ Saturate</div></div>
 <div class="ttc" id="anamespacelogo_html_ad0979fe288c253875f561bc041393cd4"><div class="ttname"><a href="namespacelogo.html#ad0979fe288c253875f561bc041393cd4">logo::Phase</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Pass &gt; &gt; Phase</div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00031">Phase.h:31</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_equalize_pattern_check_8cpp_source.html#l00037">fme_apply::check_patterns_valid()</a>, <a class="el" href="_insert_scale_shift_8cpp_source.html#l00338">fme_apply::InsertScaleShift::run()</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>, and <a class="el" href="_metric_printer_8cpp_source.html#l00027">THROW_UNLESS</a>.</p>
+<p class="reference">References <a class="el" href="_equalize_pattern_check_8cpp_source.html#l00037">fme_apply::check_patterns_valid()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>, <a class="el" href="_insert_scale_shift_8cpp_source.html#l00338">fme_apply::InsertScaleShift::run()</a>, <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6afbf427bdeb4244eecca41246de32b36d">logo::Saturate</a>, and <a class="el" href="_metric_printer_8cpp_source.html#l00027">THROW_UNLESS</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2fme-apply_2driver_2_driver_8cpp_source.html#l00032">entry()</a>.</p>
 

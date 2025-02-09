@@ -122,11 +122,11 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2me
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><a class="code hl_function" href="classluci__interpreter_1_1_buddy_memory_manager.html#af9422367e1665f0e6dceef767b323bd9">BuddyMemoryManager::BuddyMemoryManager</a>(uint8_t *memory_start, int32_t memSize)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  int32_t p = lowerLog2(memSize);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  int32_t <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = lowerLog2(memSize);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// We assume that the requested size of memory does not exceed 4 GB</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  assert(p &lt; 32);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  memSize = 1 &lt;&lt; p;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> &lt; 32);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  memSize = 1 &lt;&lt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  _start_block = <span class="keyword">reinterpret_cast&lt;</span>Block *<span class="keyword">&gt;</span>(memory_start);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  _start_block-&gt;size = memSize - <span class="keyword">sizeof</span>(Block);</div>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2me
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;_free_block : _free_blocks)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    _free_block = nullptr;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  addToBlocks(_start_block, p);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  addToBlocks(_start_block, <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">void</span> <a class="code hl_function" href="classluci__interpreter_1_1_buddy_memory_manager.html#a33b1ac0cd60d4c969017d9c54f9521d5">BuddyMemoryManager::allocate_memory</a>(<a class="code hl_class" href="classluci__interpreter_1_1_tensor.html">luci_interpreter::Tensor</a> &amp;tensor)</div>
@@ -208,6 +208,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2me
 <div class="ttc" id="anamespaceluci__interpreter_html_aa129d157edeab20d5916101a10cd9f32"><div class="ttname"><a href="namespaceluci__interpreter.html#aa129d157edeab20d5916101a10cd9f32">luci_interpreter::getDataTypeSize</a></div><div class="ttdeci">size_t getDataTypeSize(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_data_type_8h_source.html#l00033">DataType.h:33</a></div></div>
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

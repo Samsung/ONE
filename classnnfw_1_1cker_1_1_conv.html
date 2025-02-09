@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classnnfw_1_1cker_1_1_conv.html',''); 
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00055">55</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00055">55</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2adb1cf48a59543b04bef725b671f753" name="a2adb1cf48a59543b04bef725b671f753"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2adb1cf48a59543b04bef725b671f753">&#9670;&#160;</a></span>Conv()</h2>
@@ -145,7 +145,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00058">58</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00058">58</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   58</span>: _modified_filter_data(), _im2col_shape(4), _need_im2col(<span class="keyword">false</span>), _prepared(<span class="keyword">false</span>) {}</div>
 </div><!-- fragment -->
 </div>
@@ -227,7 +227,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00086">86</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00086">86</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>  {</div>
 <div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (usableMultiThreaded(params.padding_type, params.dilation_width_factor,</div>
 <div class="line"><span class="lineno">   91</span>                            params.dilation_height_factor))</div>
@@ -251,10 +251,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  109</span>    }</div>
 <div class="line"><span class="lineno">  110</span>  }</div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1multithreaded_html_a2a76a60442b85b70622d1e68043897da"><div class="ttname"><a href="namespacennfw_1_1cker_1_1multithreaded.html#a2a76a60442b85b70622d1e68043897da">nnfw::cker::multithreaded::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;filter_shape, const float *filter_data, const Shape &amp;bias_shape, const float *bias_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00254">Conv.h:254</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1reference_html_a954de12511ee583ef0e6b01a0679d4d8"><div class="ttname"><a href="namespacennfw_1_1cker_1_1reference.html#a954de12511ee583ef0e6b01a0679d4d8">nnfw::cker::reference::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;filter_shape, const float *filter_data, const Shape &amp;bias_shape, const float *bias_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">Conv.h:33</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1multithreaded_html_a2a76a60442b85b70622d1e68043897da"><div class="ttname"><a href="namespacennfw_1_1cker_1_1multithreaded.html#a2a76a60442b85b70622d1e68043897da">nnfw::cker::multithreaded::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;filter_shape, const float *filter_data, const Shape &amp;bias_shape, const float *bias_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00254">Conv.h:254</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1reference_html_a954de12511ee583ef0e6b01a0679d4d8"><div class="ttname"><a href="namespacennfw_1_1cker_1_1reference.html#a954de12511ee583ef0e6b01a0679d4d8">nnfw::cker::reference::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const float *input_data, const Shape &amp;filter_shape, const float *filter_data, const Shape &amp;bias_shape, const float *bias_data, const Shape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">Conv.h:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00254">nnfw::cker::multithreaded::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00148">nnfw::cker::ConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00147">nnfw::cker::ConvParams::dilation_width_factor</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00142">nnfw::cker::ConvParams::padding_type</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00254">nnfw::cker::multithreaded::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00148">nnfw::cker::ConvParams::dilation_height_factor</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00147">nnfw::cker::ConvParams::dilation_width_factor</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00142">nnfw::cker::ConvParams::padding_type</a>.</p>
 
 </div>
 </div>
@@ -334,7 +334,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00141">141</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00141">141</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  144</span>  {</div>
 <div class="line"><span class="lineno">  145</span>    reference::Conv&lt;int8_t, false&gt;(params, _per_channel_output_multiplier.data(),</div>
 <div class="line"><span class="lineno">  146</span>                                   _per_channel_output_shift.data(), input_shape, input_data,</div>
@@ -428,7 +428,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00130">130</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00130">130</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  134</span>  {</div>
 <div class="line"><span class="lineno">  135</span>    reference::Conv&lt;uint8_t, true&gt;(params, _per_channel_output_multiplier.data(),</div>
 <div class="line"><span class="lineno">  136</span>                                   _per_channel_output_shift.data(), input_shape, input_data,</div>
@@ -516,7 +516,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00112">112</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00112">112</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  115</span>  {</div>
 <div class="line"><span class="lineno">  116</span>    <span class="keywordflow">if</span> (!_prepared)</div>
 <div class="line"><span class="lineno">  117</span>    {</div>
@@ -531,10 +531,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  126</span>    <a class="code hl_function" href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">optimized::Conv</a>(params, input_shape, input_data, filter_shape, filter_data, bias_shape,</div>
 <div class="line"><span class="lineno">  127</span>                    bias_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, _im2col_shape, im2col_data.data());</div>
 <div class="line"><span class="lineno">  128</span>  }</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">Shape.h:181</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_1_1optimized_html_a201402ddf5f904cc04577124681cf526"><div class="ttname"><a href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">nnfw::cker::optimized::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const uint8_t *input_data, const Shape &amp;filter_shape, const uint8_t *filter_data, const Shape &amp;bias_shape, const int32_t *bias_data, const Shape &amp;output_shape, uint8_t *output_data, const Shape &amp;im2col_shape, uint8_t *im2col_data)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">Conv.h:83</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_ac7e29fd510111992fbd44906e2080f12"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">nnfw::cker::Shape::FlatSize</a></div><div class="ttdeci">int FlatSize() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">Shape.h:181</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_1_1optimized_html_a201402ddf5f904cc04577124681cf526"><div class="ttname"><a href="namespacennfw_1_1cker_1_1optimized.html#a201402ddf5f904cc04577124681cf526">nnfw::cker::optimized::Conv</a></div><div class="ttdeci">void Conv(const ConvParams &amp;params, const Shape &amp;input_shape, const uint8_t *input_data, const Shape &amp;filter_shape, const uint8_t *filter_data, const Shape &amp;bias_shape, const int32_t *bias_data, const Shape &amp;output_shape, uint8_t *output_data, const Shape &amp;im2col_shape, uint8_t *im2col_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">Conv.h:83</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">nnfw::cker::optimized::Conv()</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00148">nnfw::cker::ConvParams::dilation_height_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00147">nnfw::cker::ConvParams::dilation_width_factor</a>, <a class="el" href="compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00146">nnfw::cker::ConvParams::stride_height</a>, and <a class="el" href="compute_2cker_2include_2cker_2_types_8h_source.html#l00145">nnfw::cker::ConvParams::stride_width</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2optimized_2_conv_8h_source.html#l00083">nnfw::cker::optimized::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00148">nnfw::cker::ConvParams::dilation_height_factor</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00147">nnfw::cker::ConvParams::dilation_width_factor</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00146">nnfw::cker::ConvParams::stride_height</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00145">nnfw::cker::ConvParams::stride_width</a>.</p>
 
 </div>
 </div>
@@ -561,7 +561,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00150">150</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00150">150</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  150</span>{ <span class="keywordflow">return</span> _per_channel_output_multiplier; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00284">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
@@ -591,7 +591,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">151</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">151</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  151</span>{ <span class="keywordflow">return</span> _per_channel_output_shift; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00284">onert::backend::cpu::ops::ConvolutionLayer::prepare()</a>.</p>
@@ -656,7 +656,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00060">60</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00060">60</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   63</span>  {</div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (!_prepared)</div>
 <div class="line"><span class="lineno">   65</span>    {</div>
@@ -736,7 +736,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00074">74</a> of file <a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00074">74</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   77</span>  {</div>
 <div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> (!_prepared)</div>
 <div class="line"><span class="lineno">   79</span>    {</div>
@@ -753,7 +753,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>compute/cker/include/cker/operation/<a class="el" href="compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a></li>
+<li>runtime/compute/cker/include/cker/operation/<a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html">Conv.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('circle-quantizer_2src_2_circle_quantiz
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  qcr.<a class="code hl_function" href="struct_q_conf_reader.html#a941bcc34a10987489ed27961a87db8b1">init</a>(filename);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">auto</span> layers = qcr.<a class="code hl_function" href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">root</a>()[<span class="stringliteral">&quot;layers&quot;</span>];</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> p;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer : layers)</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  {</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">if</span> (layer.isMember(<span class="stringliteral">&quot;name&quot;</span>))</div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('circle-quantizer_2src_2_circle_quantiz
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        l-&gt;dtype = layer[<span class="stringliteral">&quot;dtype&quot;</span>].asString();</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        l-&gt;granularity = layer[<span class="stringliteral">&quot;granularity&quot;</span>].asString();</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      p.emplace_back(l);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.emplace_back(l);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="comment">// Multiple names with the same dtype &amp; granularity</span></div>
@@ -199,12 +199,12 @@ $(document).ready(function(){initNavTree('circle-quantizer_2src_2_circle_quantiz
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>          l-&gt;dtype = layer[<span class="stringliteral">&quot;dtype&quot;</span>].asString();</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>          l-&gt;granularity = layer[<span class="stringliteral">&quot;granularity&quot;</span>].asString();</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        p.emplace_back(l);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.emplace_back(l);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>      }</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    }</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  }</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> p;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
 </div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
@@ -661,6 +661,7 @@ $(document).ready(function(){initNavTree('circle-quantizer_2src_2_circle_quantiz
 <div class="ttc" id="anamespaceluci_html_a3f8123e9327a4ce0405499ce4ebe175c"><div class="ttname"><a href="namespaceluci.html#a3f8123e9327a4ce0405499ce4ebe175c">luci::validate</a></div><div class="ttdeci">bool validate(luci::PartitionTable &amp;partition)</div><div class="ttdef"><b>Definition</b> <a href="_partition_validate_8cpp_source.html#l00028">PartitionValidate.cpp:28</a></div></div>
 <div class="ttc" id="anamespacevconone_html_a2bcd74c947907f6fdad6d10eea64427c"><div class="ttname"><a href="namespacevconone.html#a2bcd74c947907f6fdad6d10eea64427c">vconone::get_copyright</a></div><div class="ttdeci">std::string get_copyright(void)</div><div class="ttdoc">get_copyright will return copyright string</div><div class="ttdef"><b>Definition</b> <a href="version_8cpp_source.html#l00054">version.cpp:54</a></div></div>
 <div class="ttc" id="anamespacevconone_html_adbedbd4315319b57ce1fea1acf328e2b"><div class="ttname"><a href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">vconone::get_string</a></div><div class="ttdeci">std::string get_string(void)</div><div class="ttdoc">get_string will return string of major.minor.patch (without build)</div><div class="ttdef"><b>Definition</b> <a href="version_8cpp_source.html#l00044">version.cpp:44</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html"><div class="ttname"><a href="struct_q_conf_reader.html">QConfReader</a></div><div class="ttdef"><b>Definition</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00039">CircleQuantizer.cpp:40</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html_a4060f52980919719972d863b94524f00"><div class="ttname"><a href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">QConfReader::root</a></div><div class="ttdeci">Json::Value &amp; root(void)</div><div class="ttdef"><b>Definition</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00061">CircleQuantizer.cpp:61</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html_a941bcc34a10987489ed27961a87db8b1"><div class="ttname"><a href="struct_q_conf_reader.html#a941bcc34a10987489ed27961a87db8b1">QConfReader::init</a></div><div class="ttdeci">void init(const std::string &amp;filename)</div><div class="ttdef"><b>Definition</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00041">CircleQuantizer.cpp:41</a></div></div>

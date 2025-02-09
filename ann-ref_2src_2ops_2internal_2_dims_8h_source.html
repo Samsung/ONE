@@ -135,12 +135,12 @@ $(document).ready(function(){initNavTree('ann-ref_2src_2ops_2internal_2_dims_8h_
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_struct" href="struct_dims.html">Dims&lt;4&gt;</a> dims;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 4; i++)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i] = 1;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    dims.sizes[i] = 1;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">if</span> (shape.<a class="code hl_variable" href="struct_shape.html#af513f6c766d71241a1f30038242f88e1">dimensions</a>.size() == 1)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[0] = (int)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, 0);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    dims.sizes[0] = (int)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, 0);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  }</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  {</div>
@@ -149,15 +149,15 @@ $(document).ready(function(){initNavTree('ann-ref_2src_2ops_2internal_2_dims_8h_
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordtype">int</span> src = (int)shape.<a class="code hl_variable" href="struct_shape.html#af513f6c766d71241a1f30038242f88e1">dimensions</a>.size() - i - 1;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">if</span> (src &gt;= 0)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i] = (int)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, src);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        dims.sizes[i] = (int)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, src);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      }</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    }</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[0] = 1;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  dims.strides[0] = 1;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; 4; i++)</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[i] = dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[i - 1] * dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i - 1];</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    dims.strides[i] = dims.strides[i - 1] * dims.sizes[i - 1];</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordflow">return</span> dims;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
@@ -167,11 +167,11 @@ $(document).ready(function(){initNavTree('ann-ref_2src_2ops_2internal_2_dims_8h_
 <div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">   64</a></span><span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_dims.html">Dims&lt;4&gt;</a> &amp;dims, <span class="keywordtype">int</span> i0, <span class="keywordtype">int</span> i1, <span class="keywordtype">int</span> i2, <span class="keywordtype">int</span> i3)</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>{</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i0 &gt;= 0 &amp;&amp; i0 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[0]);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i1 &gt;= 0 &amp;&amp; i1 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[1]);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i2 &gt;= 0 &amp;&amp; i2 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[2]);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i3 &gt;= 0 &amp;&amp; i3 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[3]);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">return</span> i0 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[0] + i1 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[1] + i2 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[2] + i3 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[3];</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i0 &gt;= 0 &amp;&amp; i0 &lt; dims.sizes[0]);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i1 &gt;= 0 &amp;&amp; i1 &lt; dims.sizes[1]);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i2 &gt;= 0 &amp;&amp; i2 &lt; dims.sizes[2]);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i3 &gt;= 0 &amp;&amp; i3 &lt; dims.sizes[3]);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordflow">return</span> i0 * dims.strides[0] + i1 * dims.strides[1] + i2 * dims.strides[2] + i3 * dims.strides[3];</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
 </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('ann-ref_2src_2ops_2internal_2_dims_8h_
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordtype">int</span> flat_size = 1;</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    flat_size *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i];</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    flat_size *= dims.sizes[i];</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  }</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordflow">return</span> flat_size;</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>}</div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('ann-ref_2src_2ops_2internal_2_dims_8h_
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">int</span> max_offset = 0;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 4; i++)</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    max_offset += (dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i] - 1) * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[i];</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    max_offset += (dims.sizes[i] - 1) * dims.strides[i];</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  }</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">return</span> max_offset + 1;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
@@ -277,9 +277,9 @@ $(document).ready(function(){initNavTree('ann-ref_2src_2ops_2internal_2_dims_8h_
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keywordtype">int</span> expected_stride = 1;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> d = 0; d &lt; N; d++)</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">if</span> (dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[d] != expected_stride)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">if</span> (dims.strides[d] != expected_stride)</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    expected_stride *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[d];</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    expected_stride *= dims.sizes[d];</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  }</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>}</div>

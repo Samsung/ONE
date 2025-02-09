@@ -177,26 +177,27 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   46</span>    }</div>
 <div class="line"><span class="lineno">   47</span>  }</div>
 <div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;p : patterns)</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : patterns)</div>
 <div class="line"><span class="lineno">   50</span>  {</div>
 <div class="line"><span class="lineno">   51</span>    <span class="comment">// &quot;scale&quot; is empty.</span></div>
 <div class="line"><span class="lineno">   52</span>    <span class="comment">// &quot;scale&quot; is calculated in the runtime.</span></div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (not p.scale.empty())</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (not <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.scale.empty())</div>
 <div class="line"><span class="lineno">   54</span>    {</div>
 <div class="line"><span class="lineno">   55</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;&#39;scale&#39; shouldn&#39;t exist.&quot;</span>};</div>
 <div class="line"><span class="lineno">   56</span>    }</div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>    <span class="comment">// &quot;front&quot; and &quot;back&quot; of the patterns are in the graph.</span></div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (node_by_name.find(p.front) == node_by_name.end() or</div>
-<div class="line"><span class="lineno">   60</span>        node_by_name.find(p.back) == node_by_name.end())</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (node_by_name.find(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.front) == node_by_name.end() or</div>
+<div class="line"><span class="lineno">   60</span>        node_by_name.find(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.back) == node_by_name.end())</div>
 <div class="line"><span class="lineno">   61</span>    {</div>
 <div class="line"><span class="lineno">   62</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Given front or back don&#39;t exist in the graph.&quot;</span>};</div>
 <div class="line"><span class="lineno">   63</span>    }</div>
 <div class="line"><span class="lineno">   64</span>  }</div>
 <div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_f_m_equalizer_8cpp_source.html#l00063">fme_apply::FMEqualizer::equalize()</a>.</p>
 
@@ -489,21 +490,21 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   93</span>    <span class="keyword">auto</span> back = <a class="code hl_function" href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">get_string</a>(<span class="stringliteral">&quot;back&quot;</span>);</div>
 <div class="line"><span class="lineno">   94</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = <a class="code hl_function" href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">get_string</a>(<span class="stringliteral">&quot;type&quot;</span>);</div>
 <div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>    <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> p;</div>
+<div class="line"><span class="lineno">   96</span>    <a class="code hl_struct" href="structfme__apply_1_1_equalize_pattern.html">EqualizePattern</a> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><span class="lineno">   97</span>    {</div>
-<div class="line"><span class="lineno">   98</span>      p.<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">front</a> = front;</div>
-<div class="line"><span class="lineno">   99</span>      p.<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#aed879cbb253b2ac6c69cb65d4081376a">back</a> = back;</div>
-<div class="line"><span class="lineno">  100</span>      p.<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#ac394d1bcd56e7a13938f178a6b4bd90b">type</a> = eq_type(type);</div>
-<div class="line"><span class="lineno">  101</span>      <span class="keywordflow">switch</span> (p.<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#ac394d1bcd56e7a13938f178a6b4bd90b">type</a>)</div>
+<div class="line"><span class="lineno">   98</span>      <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">front</a> = front;</div>
+<div class="line"><span class="lineno">   99</span>      <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.back = back;</div>
+<div class="line"><span class="lineno">  100</span>      <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.type = eq_type(type);</div>
+<div class="line"><span class="lineno">  101</span>      <span class="keywordflow">switch</span> (<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.type)</div>
 <div class="line"><span class="lineno">  102</span>      {</div>
 <div class="line"><span class="lineno">  103</span>        <span class="keywordflow">case</span> EqualizePattern::Type::ScaleOnly:</div>
-<div class="line"><span class="lineno">  104</span>          p.<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">act_scale</a> = get_fp32_array(<span class="stringliteral">&quot;act_scale&quot;</span>);</div>
+<div class="line"><span class="lineno">  104</span>          <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.act_scale = get_fp32_array(<span class="stringliteral">&quot;act_scale&quot;</span>);</div>
 <div class="line"><span class="lineno">  105</span>          <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  106</span>        <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">  107</span>          <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported EqualizePattern type&quot;</span>);</div>
 <div class="line"><span class="lineno">  108</span>      }</div>
 <div class="line"><span class="lineno">  109</span>    }</div>
-<div class="line"><span class="lineno">  110</span>    res.emplace_back(p);</div>
+<div class="line"><span class="lineno">  110</span>    res.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>);</div>
 <div class="line"><span class="lineno">  111</span>  }</div>
 <div class="line"><span class="lineno">  112</span> </div>
 <div class="line"><span class="lineno">  113</span>  <span class="keywordflow">return</span> res;</div>
@@ -512,11 +513,8 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespacevconone_html_adbedbd4315319b57ce1fea1acf328e2b"><div class="ttname"><a href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">vconone::get_string</a></div><div class="ttdeci">std::string get_string(void)</div><div class="ttdoc">get_string will return string of major.minor.patch (without build)</div><div class="ttdef"><b>Definition</b> <a href="version_8cpp_source.html#l00044">version.cpp:44</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html">fme_apply::EqualizePattern</a></div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00025">EqualizePattern.h:26</a></div></div>
 <div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a186c00fdb5463c62c18b47a5e7fa377a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a186c00fdb5463c62c18b47a5e7fa377a">fme_apply::EqualizePattern::front</a></div><div class="ttdeci">std::string front</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00035">EqualizePattern.h:35</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_a40af9d56a439e0e66f1dd1254cac8e1a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#a40af9d56a439e0e66f1dd1254cac8e1a">fme_apply::EqualizePattern::act_scale</a></div><div class="ttdeci">std::vector&lt; float &gt; act_scale</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00038">EqualizePattern.h:38</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_ac394d1bcd56e7a13938f178a6b4bd90b"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#ac394d1bcd56e7a13938f178a6b4bd90b">fme_apply::EqualizePattern::type</a></div><div class="ttdeci">Type type</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00037">EqualizePattern.h:37</a></div></div>
-<div class="ttc" id="astructfme__apply_1_1_equalize_pattern_html_aed879cbb253b2ac6c69cb65d4081376a"><div class="ttname"><a href="structfme__apply_1_1_equalize_pattern.html#aed879cbb253b2ac6c69cb65d4081376a">fme_apply::EqualizePattern::back</a></div><div class="ttdeci">std::string back</div><div class="ttdef"><b>Definition</b> <a href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00036">EqualizePattern.h:36</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00038">fme_apply::EqualizePattern::act_scale</a>, <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00036">fme_apply::EqualizePattern::back</a>, <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00035">fme_apply::EqualizePattern::front</a>, <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00030">fme_apply::EqualizePattern::ScaleOnly</a>, and <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00037">fme_apply::EqualizePattern::type</a>.</p>
+<p class="reference">References <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00035">fme_apply::EqualizePattern::front</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>, and <a class="el" href="fme-apply_2src_2_equalize_pattern_8h_source.html#l00030">fme_apply::EqualizePattern::ScaleOnly</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2fme-apply_2driver_2_driver_8cpp_source.html#l00032">entry()</a>.</p>
 

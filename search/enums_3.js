@@ -9,7 +9,7 @@ var searchData=
   ['depthwisefilteraxis_6',['DepthwiseFilterAxis',['../namespaceloco.html#a1e51c7b6399c983e010e448c36d7ee8d',1,'loco']]],
   ['depthwisefilterlayout_7',['DepthwiseFilterLayout',['../namespaceexo.html#a02102d34572ab4b37ff937cb6eaaa5a6',1,'exo']]],
   ['dialect_8',['Dialect',['../namespaceexo.html#a465d1d127ead8680688e6a734ccc67e8',1,'exo']]],
-  ['dimensiontype_9',['dimensiontype',['../namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484',1,'nnfw::cker::DimensionType'],['../namespaceluci.html#a75d1b28634c64ffe78d7ab4f307135c0',1,'luci::DimensionType']]],
+  ['dimensiontype_9',['dimensiontype',['../namespaceluci.html#a75d1b28634c64ffe78d7ab4f307135c0',1,'luci::DimensionType'],['../namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484',1,'nnfw::cker::DimensionType']]],
   ['direction_10',['Direction',['../classpp_1_1_linear_document.html#ab505a05bf31a02af92bf4f26cee097cf',1,'pp::LinearDocument']]],
   ['divisor_11',['Divisor',['../classcoco_1_1_avg_pool2_d.html#a2e513a9634366acb3c4037148d715545',1,'coco::AvgPool2D']]],
   ['domain_12',['Domain',['../namespaceloco.html#ae87ad1e314ae33a5f9aebb8ddf07e5e6',1,'loco']]],

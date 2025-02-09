@@ -720,7 +720,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   70</span>  qcr.<a class="code hl_function" href="struct_q_conf_reader.html#a941bcc34a10987489ed27961a87db8b1">init</a>(filename);</div>
 <div class="line"><span class="lineno">   71</span> </div>
 <div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> layers = qcr.<a class="code hl_function" href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">root</a>()[<span class="stringliteral">&quot;layers&quot;</span>];</div>
-<div class="line"><span class="lineno">   73</span>  <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> p;</div>
+<div class="line"><span class="lineno">   73</span>  <a class="code hl_typedef" href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> layer : layers)</div>
 <div class="line"><span class="lineno">   75</span>  {</div>
 <div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> (layer.isMember(<span class="stringliteral">&quot;name&quot;</span>))</div>
@@ -731,7 +731,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   81</span>        <a class="code hl_variable" href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">l</a>-&gt;dtype = layer[<span class="stringliteral">&quot;dtype&quot;</span>].asString();</div>
 <div class="line"><span class="lineno">   82</span>        <a class="code hl_variable" href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">l</a>-&gt;granularity = layer[<span class="stringliteral">&quot;granularity&quot;</span>].asString();</div>
 <div class="line"><span class="lineno">   83</span>      }</div>
-<div class="line"><span class="lineno">   84</span>      p.emplace_back(l);</div>
+<div class="line"><span class="lineno">   84</span>      <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.emplace_back(l);</div>
 <div class="line"><span class="lineno">   85</span>    }</div>
 <div class="line"><span class="lineno">   86</span> </div>
 <div class="line"><span class="lineno">   87</span>    <span class="comment">// Multiple names with the same dtype &amp; granularity</span></div>
@@ -745,20 +745,21 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   95</span>          <a class="code hl_variable" href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">l</a>-&gt;dtype = layer[<span class="stringliteral">&quot;dtype&quot;</span>].asString();</div>
 <div class="line"><span class="lineno">   96</span>          <a class="code hl_variable" href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">l</a>-&gt;granularity = layer[<span class="stringliteral">&quot;granularity&quot;</span>].asString();</div>
 <div class="line"><span class="lineno">   97</span>        }</div>
-<div class="line"><span class="lineno">   98</span>        p.emplace_back(l);</div>
+<div class="line"><span class="lineno">   98</span>        <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.emplace_back(l);</div>
 <div class="line"><span class="lineno">   99</span>      }</div>
 <div class="line"><span class="lineno">  100</span>    }</div>
 <div class="line"><span class="lineno">  101</span>  }</div>
 <div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">return</span> p;</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><span class="lineno">  104</span>}</div>
 <div class="ttc" id="a_pattern_solver_8cpp_html_ace3dc99cb50ae96c59ff417cc078e766"><div class="ttname"><a href="_pattern_solver_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766">LayerParams</a></div><div class="ttdeci">luci::CircleQuantizer::Options::LayerParams LayerParams</div><div class="ttdef"><b>Definition</b> <a href="_pattern_solver_8cpp_source.html#l00027">PatternSolver.cpp:27</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_aa7d22a1cfdc39ff0b719ed30286e16b2"><div class="ttname"><a href="namespacejpeg2hdf5.html#aa7d22a1cfdc39ff0b719ed30286e16b2">jpeg2hdf5.l</a></div><div class="ttdeci">l</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00149">jpeg2hdf5.py:149</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html"><div class="ttname"><a href="struct_q_conf_reader.html">QConfReader</a></div><div class="ttdef"><b>Definition</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00039">CircleQuantizer.cpp:40</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html_a4060f52980919719972d863b94524f00"><div class="ttname"><a href="struct_q_conf_reader.html#a4060f52980919719972d863b94524f00">QConfReader::root</a></div><div class="ttdeci">Json::Value &amp; root(void)</div><div class="ttdef"><b>Definition</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00061">CircleQuantizer.cpp:61</a></div></div>
 <div class="ttc" id="astruct_q_conf_reader_html_a941bcc34a10987489ed27961a87db8b1"><div class="ttname"><a href="struct_q_conf_reader.html#a941bcc34a10987489ed27961a87db8b1">QConfReader::init</a></div><div class="ttdeci">void init(const std::string &amp;filename)</div><div class="ttdef"><b>Definition</b> <a href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00041">CircleQuantizer.cpp:41</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00041">QConfReader::init()</a>, and <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00061">QConfReader::root()</a>.</p>
+<p class="reference">References <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00041">QConfReader::init()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>, and <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00061">QConfReader::root()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00163">entry()</a>, and <a class="el" href="circle-quantizer_2src_2_circle_quantizer_8cpp_source.html#l00106">read_layer_params_set()</a>.</p>
 

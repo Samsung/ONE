@@ -125,9 +125,9 @@ $(document).ready(function(){initNavTree('env_8cpp_source.html',''); initResizab
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classpepper_1_1_k_v_store_interface_3_01_k_v_store_trait_1_1_queryable_01_4.html#a1c3d02428dc9f3df9144ea73ba30c87a">   25</a></span>std::string <a class="code hl_class" href="classpepper_1_1_k_v_store_interface.html">KVStoreInterface&lt;KVStoreTrait::Queryable&gt;::get</a>(<span class="keyword">const</span> std::string &amp;key,</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                                                           <span class="keyword">const</span> std::string &amp;default_value)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> p = query(key.c_str()))</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> = query(key.c_str()))</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">return</span> p;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  }</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">return</span> default_value;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
@@ -149,6 +149,7 @@ $(document).ready(function(){initNavTree('env_8cpp_source.html',''); initResizab
 <div class="ttc" id="aclasspepper_1_1_k_v_store_interface_html"><div class="ttname"><a href="classpepper_1_1_k_v_store_interface.html">pepper::KVStoreInterface</a></div><div class="ttdef"><b>Definition</b> <a href="env_8h_source.html#l00033">env.h:33</a></div></div>
 <div class="ttc" id="aenv_8h_html"><div class="ttname"><a href="env_8h.html">env.h</a></div></div>
 <div class="ttc" id="anamespacepepper_html"><div class="ttname"><a href="namespacepepper.html">pepper</a></div><div class="ttdef"><b>Definition</b> <a href="csv2vec_8h_source.html#l00023">csv2vec.h:24</a></div></div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 <div class="ttc" id="astructpepper_1_1_process_environment_html_a46725df7b2b6031dcf64df617397e27f"><div class="ttname"><a href="structpepper_1_1_process_environment.html#a46725df7b2b6031dcf64df617397e27f">pepper::ProcessEnvironment::query</a></div><div class="ttdeci">const char * query(const char *k) const final</div><div class="ttdef"><b>Definition</b> <a href="env_8cpp_source.html#l00045">env.cpp:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

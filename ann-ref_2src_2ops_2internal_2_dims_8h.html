@@ -205,15 +205,15 @@ template&lt;int N&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00031">31</a> of file <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html">Dims.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <a class="code hl_struct" href="struct_dims.html">Dims&lt;4&gt;</a> dims;</div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_struct" href="struct_dims.html">Dims&lt;4&gt;</a> <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>;</div>
 <div class="line"><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 4; i++)</div>
 <div class="line"><span class="lineno">   35</span>  {</div>
-<div class="line"><span class="lineno">   36</span>    dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i] = 1;</div>
+<div class="line"><span class="lineno">   36</span>    <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[i] = 1;</div>
 <div class="line"><span class="lineno">   37</span>  }</div>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (shape.<a class="code hl_variable" href="struct_shape.html#af513f6c766d71241a1f30038242f88e1">dimensions</a>.size() == 1)</div>
 <div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[0] = (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae288bb757fee956352db5044503d59c3">int</a>)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, 0);</div>
+<div class="line"><span class="lineno">   41</span>    <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[0] = (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae288bb757fee956352db5044503d59c3">int</a>)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, 0);</div>
 <div class="line"><span class="lineno">   42</span>  }</div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   44</span>  {</div>
@@ -222,25 +222,25 @@ template&lt;int N&gt; </div>
 <div class="line"><span class="lineno">   47</span>      <span class="keywordtype">int</span> src = (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae288bb757fee956352db5044503d59c3">int</a>)shape.<a class="code hl_variable" href="struct_shape.html#af513f6c766d71241a1f30038242f88e1">dimensions</a>.size() - i - 1;</div>
 <div class="line"><span class="lineno">   48</span>      <span class="keywordflow">if</span> (src &gt;= 0)</div>
 <div class="line"><span class="lineno">   49</span>      {</div>
-<div class="line"><span class="lineno">   50</span>        dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i] = (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae288bb757fee956352db5044503d59c3">int</a>)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, src);</div>
+<div class="line"><span class="lineno">   50</span>        <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[i] = (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae288bb757fee956352db5044503d59c3">int</a>)<a class="code hl_function" href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a>(shape, src);</div>
 <div class="line"><span class="lineno">   51</span>      }</div>
 <div class="line"><span class="lineno">   52</span>    }</div>
 <div class="line"><span class="lineno">   53</span>  }</div>
 <div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>  dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[0] = 1;</div>
+<div class="line"><span class="lineno">   55</span>  <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[0] = 1;</div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; 4; i++)</div>
 <div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[i] = dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[i - 1] * dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i - 1];</div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[i] = <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[i - 1] * <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[i - 1];</div>
 <div class="line"><span class="lineno">   59</span>  }</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> dims;</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>;</div>
 <div class="line"><span class="lineno">   61</span>}</div>
 <div class="ttc" id="acompiler_2ann-ref_2src_2_shape_8cpp_html_a69ce53935456843b2e1609060b3f78ea"><div class="ttname"><a href="compiler_2ann-ref_2src_2_shape_8cpp.html#a69ce53935456843b2e1609060b3f78ea">getSizeOfDimension</a></div><div class="ttdeci">uint32_t getSizeOfDimension(const Shape &amp;shape, uint32_t dimensionIdx)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8cpp_source.html#l00060">Shape.cpp:60</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae288bb757fee956352db5044503d59c3"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae288bb757fee956352db5044503d59c3">GenH5RandomInputs.int</a></div><div class="ttdeci">int</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00034">GenH5RandomInputs.py:34</a></div></div>
+<div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 <div class="ttc" id="astruct_dims_html"><div class="ttname"><a href="struct_dims.html">Dims</a></div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00025">Dims.h:26</a></div></div>
-<div class="ttc" id="astruct_dims_html_ab1a15ff5fa92924d1d4f9f90ddf2a593"><div class="ttname"><a href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">Dims::strides</a></div><div class="ttdeci">int strides[N]</div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00028">Dims.h:28</a></div></div>
 <div class="ttc" id="astruct_shape_html_af513f6c766d71241a1f30038242f88e1"><div class="ttname"><a href="struct_shape.html#af513f6c766d71241a1f30038242f88e1">Shape::dimensions</a></div><div class="ttdeci">std::vector&lt; uint32_t &gt; dimensions</div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00030">Shape.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00030">Shape::dimensions</a>, <a class="el" href="compiler_2ann-ref_2src_2_shape_8cpp_source.html#l00060">getSizeOfDimension()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00028">Dims&lt; N &gt;::strides</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00030">Shape::dimensions</a>, and <a class="el" href="compiler_2ann-ref_2src_2_shape_8cpp_source.html#l00060">getSizeOfDimension()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_concatenation_8float_8cpp_source.html#l00066">concatenationFloat32()</a>, <a class="el" href="compiler_2ann-ref_2src_2ops_2_pad_8cpp_source.html#l00153">padGeneric()</a>, and <a class="el" href="_softmax_8float_8cpp_source.html#l00046">softmaxFloat32()</a>.</p>
 
@@ -277,13 +277,11 @@ template&lt;int N&gt; </div>
 <div class="line"><span class="lineno">   85</span>  <span class="keywordtype">int</span> flat_size = 1;</div>
 <div class="line"><span class="lineno">   86</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
 <div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    flat_size *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i];</div>
+<div class="line"><span class="lineno">   88</span>    flat_size *= <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[i];</div>
 <div class="line"><span class="lineno">   89</span>  }</div>
 <div class="line"><span class="lineno">   90</span>  <span class="keywordflow">return</span> flat_size;</div>
 <div class="line"><span class="lineno">   91</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00108">MatchingFlatSize()</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00131">MatchingFlatSize()</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00143">MatchingFlatSize()</a>.</p>
 
 </div>
@@ -311,15 +309,13 @@ template&lt;int N&gt; </div>
 <div class="line"><span class="lineno">  157</span>  <span class="keywordtype">int</span> expected_stride = 1;</div>
 <div class="line"><span class="lineno">  158</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> d = 0; d &lt; N; d++)</div>
 <div class="line"><span class="lineno">  159</span>  {</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> (dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[d] != expected_stride)</div>
+<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[d] != expected_stride)</div>
 <div class="line"><span class="lineno">  161</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  162</span>    expected_stride *= dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[d];</div>
+<div class="line"><span class="lineno">  162</span>    expected_stride *= <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[d];</div>
 <div class="line"><span class="lineno">  163</span>  }</div>
 <div class="line"><span class="lineno">  164</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  165</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00028">Dims&lt; N &gt;::strides</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="_add_8float_8cpp_source.html#l00028">Add()</a>, <a class="el" href="_concatenation_8float_8cpp_source.html#l00027">Concatenation()</a>, <a class="el" href="_div_8float_8cpp_source.html#l00028">Div()</a>, <a class="el" href="_conv2_d_8float_8cpp_source.html#l00116">Im2col()</a>, <a class="el" href="_mul_8float_8cpp_source.html#l00028">Mul()</a>, and <a class="el" href="_sub_8float_8cpp_source.html#l00028">Sub()</a>.</p>
 
 </div>
@@ -616,14 +612,14 @@ template&lt;int N&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00064">64</a> of file <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html">Dims.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
-<div class="line"><span class="lineno">   66</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i0 &gt;= 0 &amp;&amp; i0 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[0]);</div>
-<div class="line"><span class="lineno">   67</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i1 &gt;= 0 &amp;&amp; i1 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[1]);</div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i2 &gt;= 0 &amp;&amp; i2 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[2]);</div>
-<div class="line"><span class="lineno">   69</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i3 &gt;= 0 &amp;&amp; i3 &lt; dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[3]);</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> i0 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[0] + i1 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[1] + i2 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[2] + i3 * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[3];</div>
+<div class="line"><span class="lineno">   66</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i0 &gt;= 0 &amp;&amp; i0 &lt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[0]);</div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i1 &gt;= 0 &amp;&amp; i1 &lt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[1]);</div>
+<div class="line"><span class="lineno">   68</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i2 &gt;= 0 &amp;&amp; i2 &lt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[2]);</div>
+<div class="line"><span class="lineno">   69</span>  <a class="code hl_define" href="ann-ref_2src_2ops_2internal_2_macro_8h.html#ae17f8119c108cf3070bad3449c7e0006">DCHECK</a>(i3 &gt;= 0 &amp;&amp; i3 &lt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[3]);</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> i0 * <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[0] + i1 * <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[1] + i2 * <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[2] + i3 * <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[3];</div>
 <div class="line"><span class="lineno">   71</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_macro_8h_source.html#l00025">DCHECK</a>, <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00028">Dims&lt; N &gt;::strides</a>.</p>
+<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_macro_8h_source.html#l00025">DCHECK</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_avg_pool2_d_8float_8cpp_source.html#l00029">AveragePool()</a>, <a class="el" href="_add_8float_8cpp_source.html#l00060">BroadcastAdd()</a>, <a class="el" href="_div_8float_8cpp_source.html#l00059">BroadcastDiv()</a>, <a class="el" href="_mul_8float_8cpp_source.html#l00060">BroadcastMul()</a>, <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01388">tflite::reference_ops::BroadcastPow4DSlow()</a>, <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01248">tflite::reference_ops::BroadcastSelect4DSlow()</a>, <a class="el" href="_sub_8float_8cpp_source.html#l00060">BroadcastSub()</a>, <a class="el" href="_conv2_d_8float_8cpp_source.html#l00030">ExtractPatchIntoBufferColumn()</a>, <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l00472">tflite::reference_ops::LstmCell()</a>, <a class="el" href="_max_pool2_d_8float_8cpp_source.html#l00029">MaxPool()</a>, <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01078">tflite::reference_ops::Slice()</a>, and <a class="el" href="cmsisnn_2_p_a_lreference__ops_8h_source.html#l01336">tflite::reference_ops::SparseToDense()</a>.</p>
 
@@ -658,13 +654,11 @@ template&lt;int N&gt; </div>
 <div class="line"><span class="lineno">   96</span>  <span class="keywordtype">int</span> max_offset = 0;</div>
 <div class="line"><span class="lineno">   97</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 4; i++)</div>
 <div class="line"><span class="lineno">   98</span>  {</div>
-<div class="line"><span class="lineno">   99</span>    max_offset += (dims.<a class="code hl_variable" href="struct_dims.html#a17625e8b44a2b7a8976e68cbd5527e6d">sizes</a>[i] - 1) * dims.<a class="code hl_variable" href="struct_dims.html#ab1a15ff5fa92924d1d4f9f90ddf2a593">strides</a>[i];</div>
+<div class="line"><span class="lineno">   99</span>    max_offset += (<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.sizes[i] - 1) * <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>.strides[i];</div>
 <div class="line"><span class="lineno">  100</span>  }</div>
 <div class="line"><span class="lineno">  101</span>  <span class="keywordflow">return</span> max_offset + 1;</div>
 <div class="line"><span class="lineno">  102</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00027">Dims&lt; N &gt;::sizes</a>, and <a class="el" href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00028">Dims&lt; N &gt;::strides</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="_matrix_8h_source.html#l00040">MapAsVector()</a>.</p>
 
 </div>

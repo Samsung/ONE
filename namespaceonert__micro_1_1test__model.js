@@ -414,6 +414,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1maxpool2d__float.html#a80d85d285b96c2645ef3039b22c0db1a", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1maxpool2d__float.html#a545862e42d48bd574f1c3bfd8614f0d4", null ]
     ] ],
+    [ "mean_float", "namespaceonert__micro_1_1test__model_1_1mean__float.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1mean__float.html#ac4b7e7953eed0890064e54329e62bf74", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mean__float.html#aa019547c0fef097709d675a4cfae6925", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mean__float.html#ab46716f7f381bac8ba492529b3590e78", null ]
+    ] ],
     [ "minimum_float_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1minimum__float__no__broadcasting.html", [
       [ "input1_data", "namespaceonert__micro_1_1test__model_1_1minimum__float__no__broadcasting.html#ace4291bb2ba557cf1b7c5b6602bd2e4d", null ],
       [ "input2_data", "namespaceonert__micro_1_1test__model_1_1minimum__float__no__broadcasting.html#ad79b63e28124f03ec030170fef35d7da", null ],
@@ -488,6 +493,9 @@ var namespaceonert__micro_1_1test__model =
     ] ],
     [ "neg_averagepool2d_no_quant_params", "namespaceonert__micro_1_1test__model_1_1neg__averagepool2d__no__quant__params.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__averagepool2d__no__quant__params.html#a7aac48bcb13cc084e71a02b85c74535c", null ]
+    ] ],
+    [ "neg_axis_wrong_type_mismatch_reduce_prod_kernel", "namespaceonert__micro_1_1test__model_1_1neg__axis__wrong__type__mismatch__reduce__prod__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__axis__wrong__type__mismatch__reduce__prod__kernel.html#a02b7237709fd533cf3ed21cc6aee12a8", null ]
     ] ],
     [ "neg_conv2d_input_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__conv2d__input__type__mismatch.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__conv2d__input__type__mismatch.html#ae13d630f93079ce57535cb9a36c4f90c", null ]
@@ -605,6 +613,9 @@ var namespaceonert__micro_1_1test__model =
     [ "neg_input_output_type_mismatch_log_softmax_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__log__softmax__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__log__softmax__kernel.html#af47a0c582a9cbb8008f04532cc54c8e2", null ]
     ] ],
+    [ "neg_input_output_type_mismatch_mean_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__mean__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__mean__kernel.html#a30361eb0ea6dc590e6aad9d47747341d", null ]
+    ] ],
     [ "neg_input_output_type_mismatch_neg_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__neg__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__neg__kernel.html#a92c8643ba439655a039cf9ab84bc5366", null ]
     ] ],
@@ -629,8 +640,14 @@ var namespaceonert__micro_1_1test__model =
     [ "neg_input_output_type_mismatch_sub_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__sub__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__sub__kernel.html#ad0477831a09225ef846b9291e7f99b56", null ]
     ] ],
+    [ "neg_input_output_type_mismatch_sum_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__sum__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__sum__kernel.html#a8142bb854568e02c88db18e16a220ef8", null ]
+    ] ],
     [ "neg_input_output_type_mismatch_svdf_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__svdf__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__svdf__kernel.html#a2d07285458d1abc9b5dfc1b4dd67fc58", null ]
+    ] ],
+    [ "neg_input_wrong_type_mismatch_reduce_prod_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__wrong__type__mismatch__reduce__prod__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__wrong__type__mismatch__reduce__prod__kernel.html#a92ad028c3a1b5a6b96f20a11a1fe00b8", null ]
     ] ],
     [ "neg_inputs_type_mismatch_sub_kernel", "namespaceonert__micro_1_1test__model_1_1neg__inputs__type__mismatch__sub__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__inputs__type__mismatch__sub__kernel.html#a9563d2129387f1cc4abe562872e6f847", null ]
@@ -810,6 +827,16 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#a2360d469beaa51bbf708e2f007739a9b", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#a72fa4a9bc3c5804e6ca4186b67f683af", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#ab6cb4234822e2c7472c118bc53d26832", null ]
+    ] ],
+    [ "reduce_prod_float", "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html#aff519eaaa13dfd144400e8b23bd0f391", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html#a951e30d22aa1e23626ba8e335ccbde59", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html#a68e5339e507a3e3ceb87e851aff79273", null ]
+    ] ],
+    [ "reduce_prod_int", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int.html#a14997e2264f6466f8f6751f9d86423bc", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int.html#a462cb894293c61ba7bc78496a8626b06", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int.html#a0ef101617d00bc421f407e4b9c97e220", null ]
     ] ],
     [ "relu6_float", "namespaceonert__micro_1_1test__model_1_1relu6__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1relu6__float.html#a2fc292ec55a3d8cb36cc7c79546d74c0", null ],
@@ -1028,6 +1055,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html#a049f30c46b92125faf85abe36ee96bec", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sub__s8__no__broadcasting.html#a51e14cd70d363bf34fd5d1cb6a7d5807", null ]
     ] ],
+    [ "sum_float", "namespaceonert__micro_1_1test__model_1_1sum__float.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1sum__float.html#a6c12840c0b90714f4ceefa80567002a5", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sum__float.html#a32e834784954b5a53a8b9e6816454336", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sum__float.html#a57de26f1cef2fd996732684614f9dc01", null ]
+    ] ],
     [ "svdf_float", "namespaceonert__micro_1_1test__model_1_1svdf__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1svdf__float.html#a563e4e35886e5e08f6916358f59238a0", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1svdf__float.html#ab9a8abea62e62ab8ffd3128690637792", null ],
@@ -1118,6 +1150,7 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataInputOutputTypeMismatchLogKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchLogSoftmaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_log_softmax_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchMaxPool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_max_pool2_d_kernel" ],
+    [ "NegTestDataInputOutputTypeMismatchMeanKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_mean_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_mean_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchNegKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_neg_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_neg_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchPadKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel" ],
@@ -1134,6 +1167,7 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataInputOutputTypeMismatchSquareKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_square_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchStridedSliceKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_strided_slice_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_strided_slice_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchSubKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sub_kernel" ],
+    [ "NegTestDataInputOutputTypeMismatchSumKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sum_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_sum_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchSVDFKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchTanhKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_tanh_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchUnpackKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_unpack_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_unpack_kernel" ],
@@ -1162,9 +1196,11 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataWithInvalidOutputShapeDequantizeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_dequantize_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_dequantize_kernel" ],
     [ "NegTestDataWithInvalidOutputShapeQuantizeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_quantize_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_with_invalid_output_shape_quantize_kernel" ],
     [ "NegTestDataWrongAxisGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_gather_kernel" ],
+    [ "NegTestDataWrongAxisTypeReduceProdKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_type_reduce_prod_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_axis_type_reduce_prod_kernel" ],
     [ "NegTestDataWrongBiasShapeFullyConnectedKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_shape_fully_connected_kernel" ],
     [ "NegTestDataWrongBiasTypeDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_type_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_bias_type_depthwise_conv2_d_kernel" ],
     [ "NegTestDataWrongInputShapeFillKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_shape_fill_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_shape_fill_kernel" ],
+    [ "NegTestDataWrongInputTypeReduceProdKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_type_reduce_prod_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_input_type_reduce_prod_kernel" ],
     [ "NegTestDataWrongOutputTypeShapeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_output_type_shape_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_output_type_shape_kernel" ],
     [ "NegTestDataWrongPermTypeTransposeKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_perm_type_transpose_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_perm_type_transpose_kernel" ],
     [ "NegTestDataWrongPositionTypeGatherKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_position_type_gather_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_wrong_position_type_gather_kernel" ],
@@ -1233,6 +1269,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatLogSoftmax", "classonert__micro_1_1test__model_1_1_test_data_float_log_softmax.html", "classonert__micro_1_1test__model_1_1_test_data_float_log_softmax" ],
     [ "TestDataFloatMaximum", "classonert__micro_1_1test__model_1_1_test_data_float_maximum.html", "classonert__micro_1_1test__model_1_1_test_data_float_maximum" ],
     [ "TestDataFloatMaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d" ],
+    [ "TestDataFloatMean", "classonert__micro_1_1test__model_1_1_test_data_float_mean.html", "classonert__micro_1_1test__model_1_1_test_data_float_mean" ],
     [ "TestDataFloatMinimum", "classonert__micro_1_1test__model_1_1_test_data_float_minimum.html", "classonert__micro_1_1test__model_1_1_test_data_float_minimum" ],
     [ "TestDataFloatMul", "classonert__micro_1_1test__model_1_1_test_data_float_mul.html", "classonert__micro_1_1test__model_1_1_test_data_float_mul" ],
     [ "TestDataFloatNeg", "classonert__micro_1_1test__model_1_1_test_data_float_neg.html", "classonert__micro_1_1test__model_1_1_test_data_float_neg" ],
@@ -1240,6 +1277,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatPack", "classonert__micro_1_1test__model_1_1_test_data_float_pack.html", "classonert__micro_1_1test__model_1_1_test_data_float_pack" ],
     [ "TestDataFloatPad", "classonert__micro_1_1test__model_1_1_test_data_float_pad.html", "classonert__micro_1_1test__model_1_1_test_data_float_pad" ],
     [ "TestDataFloatQuantize", "classonert__micro_1_1test__model_1_1_test_data_float_quantize.html", "classonert__micro_1_1test__model_1_1_test_data_float_quantize" ],
+    [ "TestDataFloatReduceProd", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod.html", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod" ],
     [ "TestDataFloatReLU", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u" ],
     [ "TestDataFloatReLU6", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6" ],
     [ "TestDataFloatRound", "classonert__micro_1_1test__model_1_1_test_data_float_round.html", "classonert__micro_1_1test__model_1_1_test_data_float_round" ],
@@ -1257,6 +1295,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatSquaredDifference", "classonert__micro_1_1test__model_1_1_test_data_float_squared_difference.html", "classonert__micro_1_1test__model_1_1_test_data_float_squared_difference" ],
     [ "TestDataFloatStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice" ],
     [ "TestDataFloatSub", "classonert__micro_1_1test__model_1_1_test_data_float_sub.html", "classonert__micro_1_1test__model_1_1_test_data_float_sub" ],
+    [ "TestDataFloatSum", "classonert__micro_1_1test__model_1_1_test_data_float_sum.html", "classonert__micro_1_1test__model_1_1_test_data_float_sum" ],
     [ "TestDataFloatSVDF", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f.html", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f" ],
     [ "TestDataFloatTanh", "classonert__micro_1_1test__model_1_1_test_data_float_tanh.html", "classonert__micro_1_1test__model_1_1_test_data_float_tanh" ],
     [ "TestDataFloatTransposeConv", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv.html", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv" ],
@@ -1287,6 +1326,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataIntLess", "classonert__micro_1_1test__model_1_1_test_data_int_less.html", "classonert__micro_1_1test__model_1_1_test_data_int_less" ],
     [ "TestDataIntMul", "classonert__micro_1_1test__model_1_1_test_data_int_mul.html", "classonert__micro_1_1test__model_1_1_test_data_int_mul" ],
     [ "TestDataIntPack", "classonert__micro_1_1test__model_1_1_test_data_int_pack.html", "classonert__micro_1_1test__model_1_1_test_data_int_pack" ],
+    [ "TestDataIntReduceProd", "classonert__micro_1_1test__model_1_1_test_data_int_reduce_prod.html", "classonert__micro_1_1test__model_1_1_test_data_int_reduce_prod" ],
     [ "TestDataIntStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_int_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_int_strided_slice" ],
     [ "TestDataIntSub", "classonert__micro_1_1test__model_1_1_test_data_int_sub.html", "classonert__micro_1_1test__model_1_1_test_data_int_sub" ],
     [ "TestDataL2NormalizationBase", "classonert__micro_1_1test__model_1_1_test_data_l2_normalization_base.html", "classonert__micro_1_1test__model_1_1_test_data_l2_normalization_base" ],
@@ -1299,6 +1339,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataLogSoftmaxBase", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base.html", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base" ],
     [ "TestDataMaximumBase", "classonert__micro_1_1test__model_1_1_test_data_maximum_base.html", "classonert__micro_1_1test__model_1_1_test_data_maximum_base" ],
     [ "TestDataMaxPool2DBase", "classonert__micro_1_1test__model_1_1_test_data_max_pool2_d_base.html", "classonert__micro_1_1test__model_1_1_test_data_max_pool2_d_base" ],
+    [ "TestDataMeanBase", "classonert__micro_1_1test__model_1_1_test_data_mean_base.html", "classonert__micro_1_1test__model_1_1_test_data_mean_base" ],
     [ "TestDataMinimumBase", "classonert__micro_1_1test__model_1_1_test_data_minimum_base.html", "classonert__micro_1_1test__model_1_1_test_data_minimum_base" ],
     [ "TestDataMulBase", "classonert__micro_1_1test__model_1_1_test_data_mul_base.html", "classonert__micro_1_1test__model_1_1_test_data_mul_base" ],
     [ "TestDataNegBase", "classonert__micro_1_1test__model_1_1_test_data_neg_base.html", "classonert__micro_1_1test__model_1_1_test_data_neg_base" ],
@@ -1308,6 +1349,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataQuantizeBase", "classonert__micro_1_1test__model_1_1_test_data_quantize_base.html", "classonert__micro_1_1test__model_1_1_test_data_quantize_base" ],
     [ "TestDataQuantLess", "classonert__micro_1_1test__model_1_1_test_data_quant_less.html", "classonert__micro_1_1test__model_1_1_test_data_quant_less" ],
     [ "TestDataQuantU8Pack", "classonert__micro_1_1test__model_1_1_test_data_quant_u8_pack.html", "classonert__micro_1_1test__model_1_1_test_data_quant_u8_pack" ],
+    [ "TestDataReduceProdBase", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base" ],
     [ "TestDataReLU6Base", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base.html", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base" ],
     [ "TestDataReLUBase", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base.html", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base" ],
     [ "TestDataReluConcatenation", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_relu_concatenation" ],
@@ -1347,6 +1389,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataSquaredDifferenceBase", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base.html", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base" ],
     [ "TestDataStridedSliceBase", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base.html", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base" ],
     [ "TestDataSubBase", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", "classonert__micro_1_1test__model_1_1_test_data_sub_base" ],
+    [ "TestDataSumBase", "classonert__micro_1_1test__model_1_1_test_data_sum_base.html", "classonert__micro_1_1test__model_1_1_test_data_sum_base" ],
     [ "TestDataSVDFBase", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base.html", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base" ],
     [ "TestDataTanhBase", "classonert__micro_1_1test__model_1_1_test_data_tanh_base.html", "classonert__micro_1_1test__model_1_1_test_data_tanh_base" ],
     [ "TestDataTransposeConvBase", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base.html", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base" ],

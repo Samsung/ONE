@@ -102,7 +102,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac1352829ed974d13c87896abeffb6f44" id="r_ac1352829ed974d13c87896abeffb6f44"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbino_1_1_uniform_transform.html#ac1352829ed974d13c87896abeffb6f44">UniformTransform</a> (Callable &amp;&amp;cb)</td></tr>
 <tr class="separator:ac1352829ed974d13c87896abeffb6f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c9df0eef83ddf1e55434a0ec9749c24" id="r_a9c9df0eef83ddf1e55434a0ec9749c24"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9c9df0eef83ddf1e55434a0ec9749c24"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classbino_1_1_uniform_transform.html#a9c9df0eef83ddf1e55434a0ec9749c24">operator()</a> (const std::pair&lt; T, T &gt; &amp;p) const -&gt; decltype(std::make_pair(std::declval&lt; Callable &gt;()(p.first), std::declval&lt; Callable &gt;()(p.second)))</td></tr>
+<tr class="memitem:a9c9df0eef83ddf1e55434a0ec9749c24"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classbino_1_1_uniform_transform.html#a9c9df0eef83ddf1e55434a0ec9749c24">operator()</a> (const std::pair&lt; T, T &gt; &amp;<a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>) const -&gt; decltype(std::make_pair(std::declval&lt; Callable &gt;()(p.first), std::declval&lt; Callable &gt;()(p.second)))</td></tr>
 <tr class="separator:a9c9df0eef83ddf1e55434a0ec9749c24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -177,9 +177,12 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="bino_8h_source.html#l00035">35</a> of file <a class="el" href="bino_8h_source.html">bino.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> std::make_pair(f(p.first), f(p.second));</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> std::make_pair(f(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.first), f(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second));</div>
 <div class="line"><span class="lineno">   40</span>  }</div>
+<div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
