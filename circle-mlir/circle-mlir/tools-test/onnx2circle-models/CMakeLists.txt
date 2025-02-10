@@ -33,6 +33,30 @@ macro(AddModel MODEL_NAME)
   list(APPEND FILE_DEPS_VALCHK "${TEST_CIRCLE_MODEL_DST}")
 endmacro(AddModel)
 
+macro(AddDownloadModel MODEL_NAME)
+  # copy to build folder only when source file exist
+  set(TEST_ONNX_MODEL_SRC "${DOWNLOAD_ONNX_PATH}/${MODEL_NAME}.onnx")
+  set(TEST_ONNX_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.onnx")
+  if(EXISTS ${TEST_ONNX_MODEL_SRC})
+    add_custom_command(
+      OUTPUT ${TEST_ONNX_MODEL_DST}
+      COMMAND ${CMAKE_COMMAND} -E copy "${TEST_ONNX_MODEL_SRC}" "${TEST_ONNX_MODEL_DST}"
+      DEPENDS ${TEST_ONNX_MODEL_SRC}
+      COMMENT "onnx2circle-models: prepare ${MODEL_NAME}.onnx"
+    )
+
+    set(TEST_CIRCLE_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.circle")
+    add_custom_command(
+      OUTPUT ${TEST_CIRCLE_MODEL_DST}
+      COMMAND "$<TARGET_FILE:onnx2circle>" "${OPTION_O2C_SINGLE}" "${TEST_ONNX_MODEL_DST}" "${TEST_CIRCLE_MODEL_DST}"
+      DEPENDS ${TEST_ONNX_MODEL_DST} onnx2circle
+      COMMENT "onnx2circle-models: generate ${MODEL_NAME}.circle"
+    )
+
+    list(APPEND FILE_DEPS_VALCHK "${TEST_CIRCLE_MODEL_DST}")
+  endif()
+endmacro(AddDownloadModel)
+
 # Read "test.lst"
 include("test.lst")
 # Read "test.local.lst" if exists
