@@ -9,7 +9,13 @@ RUN apt-get update \
 # Build tool
 RUN apt-get update \
  && apt-get -qqy install build-essential cmake git fakeroot autoconf automake libtool unzip wget \
-                         devscripts debmake debhelper lcov clang-format-16
+                         devscripts debmake debhelper lcov
+
+# Install clang-format
+RUN apt-get install -qqy gnupg2
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
+RUN apt-get update && apt-get install -qqy clang-format-16
 
 # additonal tools
 RUN apt-get update \
