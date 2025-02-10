@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)
 endif()
+string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWER)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_compile_options("-fexceptions")
@@ -43,5 +44,6 @@ if(CIRCLE_MLIR_LOCALINST)
 endif()
 
 set(RES_CIRCLE_SCHEMA "${CMAKE_SOURCE_DIR}/../res/CircleSchema")
+set(EXTERNALS_BIN_DIR "${CMAKE_BINARY_DIR}/../externals/${BUILD_TYPE_LOWER}")
 
 add_subdirectory(circle-mlir)
