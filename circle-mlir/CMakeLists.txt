@@ -42,4 +42,6 @@ if(CIRCLE_MLIR_LOCALINST)
   message(STATUS "CIRCLE_MLIR_LOCALINST=${CIRCLE_MLIR_LOCALINST}")
 endif()
 
+set(RES_CIRCLE_SCHEMA "${CMAKE_SOURCE_DIR}/../res/CircleSchema")
+
 add_subdirectory(circle-mlir)
