@@ -3,6 +3,9 @@
 # ConvertUnitModel(test_mode.mlir)
 #
 
+ConvertUnitModel(Add_F32_0.circle.mlir)
+ConvertUnitModel(Add_F32_1.circle.mlir)
+ConvertUnitModel(Add_F32_2.circle.mlir)
 ConvertUnitModel(Add_F32.onnx.mlir)
 
 # shape inference validation
