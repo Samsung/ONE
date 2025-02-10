@@ -1,0 +1,19 @@
+# Match the minimum required version of LLVM and MLIR
+cmake_minimum_required(VERSION 3.13.4)
+
+project(circle-mlir)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)
+endif()
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_compile_options("-fexceptions")
+
+# Avoid warning about DOWNLOAD_EXTRACT_TIMESTAMP in CMake 3.24:
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+  cmake_policy(SET CMP0135 NEW)
+endif()
