@@ -16,6 +16,21 @@ macro(ConvertUnitModel MLIR_FNAME)
   list(APPEND FILE_DEPS "${TEST_MLIR_MODEL_DST}")
 endmacro(ConvertUnitModel)
 
+set(TEST_NEG_MODELS )
+macro(ConvertUnitModelNEG MLIR_FNAME)
+  # copy to build folder
+  set(TEST_MLIR_MODEL_SRC "${CMAKE_SOURCE_DIR}/models/mlir/${MLIR_FNAME}")
+  set(TEST_MLIR_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/models/mlir/${MLIR_FNAME}")
+  add_custom_command(
+    OUTPUT ${TEST_MLIR_MODEL_DST}
+    COMMAND ${CMAKE_COMMAND} -E copy "${TEST_MLIR_MODEL_SRC}" "${TEST_MLIR_MODEL_DST}"
+    DEPENDS ${TEST_MLIR_MODEL_SRC}
+    COMMENT "tools/onnx2circle: prepare mlir/${MLIR_FNAME}"
+  )
+  list(APPEND TEST_NEG_MODELS "${MLIR_FNAME}")
+  list(APPEND FILE_DEPS "${TEST_MLIR_MODEL_DST}")
+endmacro(ConvertUnitModelNEG)
+
 set(VALIDATE_SHAPEINF_MODELS)
 macro(ValidateShapeInf MLIR_FNAME)
   # copy to build folder
@@ -61,6 +76,18 @@ foreach(MODEL IN ITEMS ${TEST_MODELS})
       "${MLIR_MODEL_PATH}"
       "${CIRCLE_MODEL_PATH}"
   )
+endforeach()
+
+foreach(MODEL IN ITEMS ${TEST_NEG_MODELS})
+  set(MLIR_MODEL_PATH "${CMAKE_CURRENT_BINARY_DIR}/models/mlir/${MODEL}")
+  set(CIRCLE_MODEL_PATH "${CMAKE_CURRENT_BINARY_DIR}/models/mlir/${MODEL}.circle")
+  add_test(
+    NAME onnx2circle_neg_test_${MODEL}
+    COMMAND "$<TARGET_FILE:onnx2circle>"
+      "${MLIR_MODEL_PATH}"
+      "${CIRCLE_MODEL_PATH}"
+  )
+  set_tests_properties(onnx2circle_neg_test_${MODEL} PROPERTIES WILL_FAIL TRUE)
 endforeach()
 
 foreach(MODEL IN ITEMS ${VALIDATE_SHAPEINF_MODELS})
