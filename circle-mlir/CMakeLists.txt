@@ -22,3 +22,12 @@ endif()
 
 # configuration flags
 include(CfgOptionFlags)
+
+# enable ctest
+include(CTest)
+
+# enable googletest
+include(GTestHelper)
+include(GoogleTest)
+
+add_subdirectory(circle-mlir)
