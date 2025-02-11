@@ -36,7 +36,7 @@ jobs:
           - ubuntu_code: jammy
             ubuntu_vstr: u2204
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     container:
       image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
