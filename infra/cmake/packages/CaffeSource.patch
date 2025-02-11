@@ -1,0 +1,13 @@
+diff --git a/src/caffe/util/io.cpp b/src/caffe/util/io.cpp
+index 5295d9dd..f71553c9 100644
+--- a/src/caffe/util/io.cpp
++++ b/src/caffe/util/io.cpp
+@@ -54,7 +54,7 @@ bool ReadProtoFromBinaryFile(const char* filename, Message* proto) {
+   CHECK_NE(fd, -1) << "File not found: " << filename;
+   ZeroCopyInputStream* raw_input = new FileInputStream(fd);
+   CodedInputStream* coded_input = new CodedInputStream(raw_input);
+-  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit, 536870912);
++  coded_input->SetTotalBytesLimit(kProtoReadBytesLimit);
+ 
+   bool success = proto->ParseFromCodedStream(coded_input);
+ 
