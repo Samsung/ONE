@@ -163,19 +163,25 @@ std::string getTid(const DurationEvent &evt)
 
 } // namespace
 
-void ChromeTracingWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &recorders)
+ChromeTracingWriter::ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath)
 {
   _os << "{\n";
   _os << "  " << quote("traceEvents") << ": [\n";
+}
 
+ChromeTracingWriter::~ChromeTracingWriter()
+{
+  _os << "    { }\n";
+  _os << "  ]\n";
+  _os << "}\n";
+}
+
+void ChromeTracingWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &recorders)
+{
   for (const auto &recorder : recorders)
   {
     flushOneRecord(*recorder);
   }
-
-  _os << "    { }\n";
-  _os << "  ]\n";
-  _os << "}\n";
 }
 
 void ChromeTracingWriter::flushOneRecord(const EventRecorder &recorder)

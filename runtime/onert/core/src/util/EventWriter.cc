@@ -38,6 +38,8 @@ void EventWriter::readyToFlush(std::unique_ptr<EventRecorder> &&recorder)
   flush(WriteFormat::SNPE_BENCHMARK);
   flush(WriteFormat::CHROME_TRACING);
   flush(WriteFormat::MD_TABLE);
+
+  _recorders.clear();
 }
 
 void EventWriter::flush(WriteFormat write_format)

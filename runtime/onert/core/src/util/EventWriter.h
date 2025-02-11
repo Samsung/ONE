@@ -53,10 +53,8 @@ public:
 class ChromeTracingWriter : public EventFormatWriter
 {
 public:
-  ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath)
-  { /* empty */
-  }
-  ~ChromeTracingWriter() {}
+  ChromeTracingWriter(const std::string &filepath);
+  ~ChromeTracingWriter();
 
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 
