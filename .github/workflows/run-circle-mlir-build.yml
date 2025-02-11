@@ -60,7 +60,9 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
           -DCIRCLE_MLIR_WORKDIR=/workdir
 
-      - name: Build
+      - name: Build, test & install
         run: |
           cd circle-mlir
           cmake --build build/${{ matrix.type }} -j4
+          CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ matrix.type }} --verbose -- test
+          cmake --build build/${{ matrix.type }} -j4 -- install
