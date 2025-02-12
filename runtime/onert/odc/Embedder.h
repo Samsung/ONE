@@ -21,9 +21,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 struct EmbedderOptions
 {
@@ -36,7 +34,6 @@ class Embedder
 public:
   void embed(luci::Module *module, const std::string &minmax_path, const EmbedderOptions &opt);
 };
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __MINMAX_EMBEDDER_EMBEDDER_H__

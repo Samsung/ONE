@@ -72,9 +72,7 @@ void checkHeader(FILE *file)
 
 } // namespace
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 MinMaxReader::MinMaxReader(const std::string &filepath) : _filepath(filepath)
@@ -254,5 +252,4 @@ uint32_t MinMaxReader::readNumRuns() const
   return num_run;
 }
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc

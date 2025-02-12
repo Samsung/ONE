@@ -19,9 +19,7 @@
 
 #include "odc/IQuantizer.h"
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 class Quantizer : public IQuantizer
@@ -56,7 +54,6 @@ private:
   uint32_t _minmax_threshold = 0;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_QUANTIZE_H__

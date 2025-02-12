@@ -22,9 +22,7 @@
 #include <npubinfmt.h>
 #include <typedef.h>
 
-namespace onert
-{
-namespace trix_loader
+namespace onert::trix_loader
 {
 
 /**
@@ -253,8 +251,7 @@ std::unique_ptr<ir::Model> TrixLoader::loadFromFile(const std::string &file_path
   return model;
 }
 
-} // namespace trix_loader
-} // namespace onert
+} // namespace onert::trix_loader
 
 extern "C" {
 

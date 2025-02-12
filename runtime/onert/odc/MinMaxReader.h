@@ -21,9 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 // File structure
@@ -83,7 +81,6 @@ private:
   std::string _filepath;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_MINMAX_READER_H__
