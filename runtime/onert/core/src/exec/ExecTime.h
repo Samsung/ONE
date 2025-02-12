@@ -93,13 +93,13 @@ public:
    * @brief Update metrics file with new data.
    */
   void storeOperationsExecTime() const { _json.storeOperationsExecTime(); }
-  static const int64_t NOT_FOUND = -1;
+  static inline const int64_t NOT_FOUND = -1;
 
 private:
   /// @brief Measurement data, which is shared with serializer
   MeasurementData _measurements;
   // int64_t::max may cause integer overflow
-  static const int64_t _MAX = std::numeric_limits<int32_t>::max();
+  static inline const int64_t _MAX = std::numeric_limits<int32_t>::max();
   /// @brief Serializer
   JSON _json;
 };
