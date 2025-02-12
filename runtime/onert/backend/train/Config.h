@@ -20,11 +20,7 @@
 #include <backend/IConfig.h>
 #include <util/ITimer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class Config : public IConfig
@@ -39,8 +35,6 @@ public:
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_CONFIG_H__

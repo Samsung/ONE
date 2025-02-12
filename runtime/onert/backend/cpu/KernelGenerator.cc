@@ -81,11 +81,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 namespace
@@ -1583,6 +1579,4 @@ void KernelGenerator::visit(const ir::operation::RoPE &node)
   _return_fn = std::move(fn);
 }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu

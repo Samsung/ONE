@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 enum class ElementwiseActivationType
@@ -61,9 +55,6 @@ protected:
   std::function<void(const IPortableTensor *input, IPortableTensor *output)> _kernel;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_ElementwiseActivationLAYER_H__

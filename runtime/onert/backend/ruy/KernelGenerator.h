@@ -27,11 +27,7 @@
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 class KernelGenerator : public basic::KernelGeneratorBase
@@ -57,8 +53,6 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_KERNEL_GENERATOR_H__

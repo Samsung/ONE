@@ -19,17 +19,11 @@
 
 #include <backend/basic/TensorBuilder.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 using TensorBuilder = basic::TensorBuilder;
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_TENSOR_BUILDER_H__

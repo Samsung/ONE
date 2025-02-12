@@ -22,11 +22,7 @@
 #include "KernelGenerator.h"
 #include "DevContext.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -55,8 +51,6 @@ private:
   std::shared_ptr<DevContext> _dev_context;
 };
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_BACKEND_CONTEXT_H__

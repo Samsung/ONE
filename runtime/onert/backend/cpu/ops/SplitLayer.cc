@@ -20,13 +20,7 @@
 
 #include <cker/operation/Split.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 SplitLayer::SplitLayer() : _input(nullptr), _axis(nullptr), _num_splits(0), _outputs()
@@ -97,7 +91,4 @@ void SplitLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

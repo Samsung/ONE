@@ -29,11 +29,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 KernelGenerator::KernelGenerator(
@@ -177,6 +173,4 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   _return_fn = std::move(fn);
 }
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack

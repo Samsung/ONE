@@ -22,11 +22,7 @@
 
 #include <ir/train/OptimizerInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 std::unique_ptr<exec::train::optimizer::Optimizer>
@@ -46,8 +42,6 @@ createOptimizer(const ir::train::OptimizerInfo &optim_info)
                              ir::train::toString(optim_info.optim_code));
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_OPTIMIZER_OPTIMIZERS_H__

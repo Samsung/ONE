@@ -16,15 +16,9 @@
 
 #include "Config.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 bool Config::initialize() { return true; }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix

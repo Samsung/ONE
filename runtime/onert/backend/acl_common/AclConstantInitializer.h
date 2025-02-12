@@ -30,11 +30,7 @@
 #include <backend/ITensorRegistry.h>
 #include <util/logging.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 template <typename T>
@@ -198,8 +194,6 @@ protected:
   std::unordered_map<ir::OperandIndex, Initializer> _init_map;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_COMPILER_ACL_COMMON_ACLCONSTANT_INITIALIZER_H__

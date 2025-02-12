@@ -20,13 +20,7 @@
 
 #include <cker/operation/Tile.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 TileLayer::TileLayer() : _input(nullptr), _multipliers(nullptr), _output(nullptr)
@@ -70,7 +64,4 @@ void TileLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

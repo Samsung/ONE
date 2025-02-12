@@ -23,11 +23,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 template <typename Index> void BumpPlanner<Index>::claim(const Index &ind, size_t size)
@@ -215,6 +211,4 @@ template class FirstFitPlanner<LayerScopeTensorIndex>;
 template class WICPlanner<DisposableTensorIndex>;
 template class WICPlanner<LayerScopeTensorIndex>;
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

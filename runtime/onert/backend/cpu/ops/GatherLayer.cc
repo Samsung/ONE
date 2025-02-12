@@ -21,13 +21,7 @@
 
 #include <cker/operation/Gather.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void GatherLayer::configure(const IPortableTensor *input, const IPortableTensor *indices,
@@ -142,7 +136,4 @@ void GatherLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

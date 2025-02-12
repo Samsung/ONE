@@ -19,17 +19,11 @@
 
 #include "backend/basic/StaticTensorManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 using StaticTensorManager = basic::StaticTensorManager;
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_STATICTENSOR_MANAGER_H__

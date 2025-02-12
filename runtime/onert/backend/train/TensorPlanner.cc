@@ -18,11 +18,7 @@
 
 #include <util/logging.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
@@ -563,6 +559,4 @@ void TensorPlanner::planLayerScopeTensors(TensorBuilder *tensor_builder)
   VERBOSE(TensorPlanner) << "Finish planning layerscope tensors" << std::endl;
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

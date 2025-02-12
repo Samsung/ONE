@@ -19,11 +19,7 @@
 
 #include "AclConstantInitializer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 class ConstantInitializer : public acl_common::AclConstantInitializer
@@ -37,8 +33,6 @@ public:
   void visit(const ir::operation::SpaceToBatchND &node) final;
 };
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon
 
 #endif // __ONERT_BACKEND_ACL_NEON_CONSTANT_INITIALIZER_H__

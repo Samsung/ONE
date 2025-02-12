@@ -20,11 +20,7 @@
 #include <backend/basic/Tensor.h>
 #include <backend/basic/train/TrainableTensor.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 // NOTE This class can be replaced with basic::Tensor if this backend supports dynamic tensors.
@@ -47,8 +43,6 @@ using TrainableTensor = basic::train::TrainableTensor;
 using BackPropTensor = Tensor;
 using GradientTensor = Tensor;
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_H__

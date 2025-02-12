@@ -22,13 +22,7 @@
 
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class MeanLayer : public ::onert::exec::train::ITrainableFunction, public cpu::ops::MeanLayer
@@ -46,9 +40,6 @@ private:
   const IPortableTensor *_back_prop_output;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_MEANLAYER_H__

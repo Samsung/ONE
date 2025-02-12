@@ -24,11 +24,7 @@
 #include <ir/OperandIndexMap.h>
 #include <ir/OperandInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class TensorManager
@@ -75,8 +71,6 @@ private:
   const std::shared_ptr<TensorRegistry> _tensors;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_MANAGER_H__

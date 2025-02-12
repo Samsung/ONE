@@ -20,13 +20,7 @@
 #include <arm_compute/runtime/SubTensor.h>
 #include "INETensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
-{
-namespace operand
+namespace onert::backend::acl_neon::operand
 {
 
 class NESubTensor : public INETensor
@@ -51,9 +45,6 @@ private:
   std::shared_ptr<arm_compute::SubTensor> _ne_sub_tensor;
 };
 
-} // namespace operand
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon::operand
 
 #endif // __ONERT_BACKEND_ACL_NEON_OPERAND_NE_SUB_TENSOR_H__

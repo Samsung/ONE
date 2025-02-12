@@ -20,13 +20,7 @@
 
 #include <cker/operation/Pack.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 PackLayer::PackLayer() : _inputs(), _output(nullptr), _axis(0)
@@ -89,7 +83,4 @@ void PackLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

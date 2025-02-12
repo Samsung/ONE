@@ -56,11 +56,7 @@ int32_t countPhysicalCores()
 
 } // namespace
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 ExternalContext::ExternalContext() : _ruy_context(new ruy::Context)
@@ -81,6 +77,4 @@ void ExternalContext::initGgmlContext()
       ggml_init({.mem_size = 0, .mem_buffer = nullptr, .no_alloc = true}), &ggml_free);
 }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu

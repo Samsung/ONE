@@ -23,21 +23,12 @@
 #include <ir/operation/LSTM.h>
 #include <exec/IFunction.h>
 
-namespace nnfw
-{
-namespace cker
+namespace nnfw::cker
 {
 class FCTempArena;
-}
-} // namespace nnfw
+} // namespace nnfw::cker
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 // TODO Support LSTM, BiDirectionalSequenceLSTM
@@ -121,9 +112,6 @@ private:
   bool _has_cell_state_data{false};
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_LSTMLAYER_H__

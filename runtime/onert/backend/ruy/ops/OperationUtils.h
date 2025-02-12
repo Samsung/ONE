@@ -30,13 +30,7 @@
 using OperandType = onert::ir::DataType;
 using namespace onert::util;
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 
 inline nnfw::ruy::Shape getTensorShape(const IPortableTensor *tensor)
@@ -78,9 +72,6 @@ inline nnfw::ruy::FusedActivationFunctionType convertActivationType(const ir::Ac
 
 nnfw::ruy::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops
 
 #endif // __ONERT_BACKEND_RUY_OPS_OPERATION_UTILS_H__

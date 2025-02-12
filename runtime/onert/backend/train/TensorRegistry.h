@@ -24,11 +24,7 @@
 #include "LayerScopeTensorIndex.h"
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class TensorRegistry
@@ -95,8 +91,6 @@ private:
   std::unordered_map<LayerScopeTensorIndex, std::shared_ptr<LayerScopeTensor>> _layer_scope;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY__

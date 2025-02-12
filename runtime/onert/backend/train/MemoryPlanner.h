@@ -31,11 +31,7 @@
 #include <unordered_set>
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 /**
@@ -162,8 +158,6 @@ private:
   std::multimap<uint32_t, Index, std::greater<uint32_t>> _indices;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_H__

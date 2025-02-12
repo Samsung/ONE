@@ -18,13 +18,7 @@
 #include "cker/operation/ResizeBilinear.h"
 #include <cker/Types.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ResizeBilinearLayer::ResizeBilinearLayer()
@@ -116,7 +110,4 @@ void ResizeBilinearLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -23,13 +23,7 @@
 #include <exec/train/ITrainableFunction.h>
 #include <ir/train/LossInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 enum class LossType
@@ -54,9 +48,6 @@ protected:
   ir::train::LossReductionType _reduction_type;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__

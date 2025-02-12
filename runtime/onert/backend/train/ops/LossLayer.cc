@@ -16,13 +16,7 @@
 
 #include "LossLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 LossLayer::LossLayer()
@@ -48,7 +42,4 @@ void LossLayer::configure(const IPortableTensor *y_pred, const IPortableTensor *
   _reduction_type = reduction_type;
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

@@ -23,11 +23,7 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 // TODO Remove this class if ExecutorFactory creates trainable context only once instead of
@@ -100,8 +96,6 @@ private:
   std::unique_ptr<exec::train::optimizer::Optimizer> _optimizer;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__

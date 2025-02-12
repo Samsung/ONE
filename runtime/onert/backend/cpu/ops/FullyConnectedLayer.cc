@@ -23,13 +23,7 @@
 #include <cker/TensorUtils.h>
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer()
@@ -326,7 +320,4 @@ void FullyConnectedLayer::prepare()
 #endif
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

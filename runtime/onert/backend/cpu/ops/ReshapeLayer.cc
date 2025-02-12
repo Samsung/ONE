@@ -16,13 +16,7 @@
 
 #include "ReshapeLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr)
@@ -51,7 +45,4 @@ void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor
 
 void ReshapeLayer::run() { reshapeGeneric(); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

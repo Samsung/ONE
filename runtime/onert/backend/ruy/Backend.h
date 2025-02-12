@@ -25,11 +25,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 class Backend : public ::onert::backend::Backend
@@ -57,8 +53,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_BACKEND_H__

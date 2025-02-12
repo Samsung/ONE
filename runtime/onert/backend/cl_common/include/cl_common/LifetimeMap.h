@@ -24,11 +24,7 @@
 #include <map>
 #include <vector>
 
-namespace onert
-{
-namespace backend
-{
-namespace cl_common
+namespace onert::backend::cl_common
 {
 
 // TODO Abstract UserType into LifetimeMap and LifetimeSeq
@@ -44,8 +40,6 @@ using LifetimeSeq = std::vector<std::pair<UsesType, ir::OperandIndex>>;
 
 LifetimeMap createLifetimeMap(LifetimeSeq &seq, ir::OperandIndexMap<ParentInfo> &parent_map);
 
-} // namespace cl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cl_common
 
 #endif // __ONERT_BACKEND_CL_COMMON_LIFETIME_MAP_H__

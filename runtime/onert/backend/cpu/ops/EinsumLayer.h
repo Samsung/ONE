@@ -24,21 +24,12 @@
 #include <functional>
 #include <memory>
 
-namespace nnfw
-{
-namespace cker
+namespace nnfw::cker
 {
 class Einsum;
-}
-} // namespace nnfw
+} // namespace nnfw::cker
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class EinsumLayer : public ::onert::exec::IFunction
@@ -64,9 +55,6 @@ private:
   std::unique_ptr<nnfw::cker::Einsum> _einsum_kernel;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_EINSUM_LAYER_H__

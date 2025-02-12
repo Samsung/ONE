@@ -20,13 +20,7 @@
 #include <assert.h>
 #include <cker/operation/Comparison.h>
 using namespace nnfw::cker;
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -166,7 +160,4 @@ void CompareLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

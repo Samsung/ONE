@@ -26,11 +26,7 @@
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 class KernelGenerator : public basic::KernelGeneratorBase
@@ -53,8 +49,6 @@ private:
   const std::shared_ptr<DevContext> _dev_context;
 };
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_KERNEL_GENERATOR_H__

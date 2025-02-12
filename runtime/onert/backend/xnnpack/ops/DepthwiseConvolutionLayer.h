@@ -19,13 +19,7 @@
 
 #include "Layer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
-{
-namespace ops
+namespace onert::backend::xnnpack::ops
 {
 
 class DepthwiseConvolutionLayer : public Layer
@@ -69,9 +63,6 @@ private:
   ir::Activation _activation;
 };
 
-} // namespace ops
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack::ops
 
 #endif // __ONERT_BACKEND_XNNPACK_OPS_DEPTHWISE_CONVOLUTION_LAYER_H__

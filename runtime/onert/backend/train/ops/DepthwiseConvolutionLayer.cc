@@ -22,13 +22,7 @@
 #include <cker/train/operation/DepthwiseConv.h>
 #include <cker/train/operation/ReLU.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
@@ -155,7 +149,4 @@ void DepthwiseConvolutionLayer::backwardFloat32()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

@@ -26,11 +26,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 namespace
@@ -306,6 +302,4 @@ void BackendContext::planLayerScopeTensors([[maybe_unused]] const FunctionMap &f
   return;
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

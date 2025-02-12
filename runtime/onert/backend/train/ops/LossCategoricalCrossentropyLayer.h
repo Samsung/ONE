@@ -20,13 +20,7 @@
 #include "LossLayer.h"
 #include "../Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class LossCategoricalCrossentropyLayer : public LossLayer
@@ -47,9 +41,6 @@ private:
   bool _is_normalization_required{false};
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__

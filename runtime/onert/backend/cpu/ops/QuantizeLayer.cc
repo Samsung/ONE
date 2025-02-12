@@ -24,13 +24,7 @@
 #include <cker/operation/Quantize.h>
 #include <cker/operation/Round.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 template <typename InputT, typename OutputT>
 void affineQuantize(const IPortableTensor *input, IPortableTensor *output)
@@ -94,7 +88,4 @@ void QuantizeLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

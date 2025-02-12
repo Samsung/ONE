@@ -21,13 +21,7 @@
 
 #include <exec/train/optimizer/Optimizer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class GradientApplier : public ::onert::exec::train::IGradientApplier
@@ -46,9 +40,6 @@ private:
   ITrainableTensor *_trainable_tensor;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPLIER_H__

@@ -19,13 +19,7 @@
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void DepthwiseConvolutionLayer::prepareF32()
@@ -367,7 +361,4 @@ void DepthwiseConvolutionLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

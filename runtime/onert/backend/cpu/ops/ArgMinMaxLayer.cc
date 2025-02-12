@@ -21,13 +21,7 @@
 #include <cker/operation/ArgMinMax.h>
 #include <assert.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 namespace
 {
@@ -117,7 +111,4 @@ void ArgMinMaxLayer::run()
 #undef TF_LITE_ARG_MIN_MAX
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

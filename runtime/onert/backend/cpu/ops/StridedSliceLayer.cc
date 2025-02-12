@@ -20,13 +20,7 @@
 
 #include <cker/operation/StridedSlice.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 StridedSliceLayer::StridedSliceLayer()
@@ -87,7 +81,4 @@ void StridedSliceLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

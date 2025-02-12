@@ -21,11 +21,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class LayerScopeTensorIndex
@@ -58,9 +54,7 @@ inline std::ostream &operator<<(std::ostream &o, const LayerScopeTensorIndex &i)
   return o;
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 namespace std
 {

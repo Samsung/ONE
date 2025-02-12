@@ -20,18 +20,12 @@
 #include <backend/basic/Tensor.h>
 #include <ir/Data.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 using Tensor = basic::Tensor;
 using ExternalTensor = basic::ExternalTensor;
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_TENSOR_H__

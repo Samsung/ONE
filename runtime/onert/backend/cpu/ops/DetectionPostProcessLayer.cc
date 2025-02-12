@@ -22,13 +22,7 @@
 #include <utility>
 #include <cmath>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -302,7 +296,4 @@ void DetectionPostProcessLayer::run()
 
 DetectionPostProcessLayer::~DetectionPostProcessLayer() { delete[] _allocations.selections_buffer; }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

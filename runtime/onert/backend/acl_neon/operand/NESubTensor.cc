@@ -16,13 +16,7 @@
 
 #include "NESubTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
-{
-namespace operand
+namespace onert::backend::acl_neon::operand
 {
 
 NESubTensor::NESubTensor(INETensor *parent, const arm_compute::TensorShape &tensor_shape,
@@ -37,7 +31,4 @@ const arm_compute::SubTensor *NESubTensor::handle() const { return _ne_sub_tenso
 
 arm_compute::SubTensor *NESubTensor::handle() { return _ne_sub_tensor.get(); }
 
-} // namespace operand
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon::operand

@@ -20,13 +20,7 @@
 
 #include <cker/operation/SpaceToBatchND.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 SpaceToBatchNDLayer::SpaceToBatchNDLayer()
   : _input(nullptr), _block_shape(nullptr), _padding(nullptr), _output(nullptr)
@@ -106,7 +100,4 @@ void SpaceToBatchNDLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

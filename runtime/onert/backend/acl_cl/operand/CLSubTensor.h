@@ -20,13 +20,7 @@
 #include <arm_compute/runtime/CL/CLSubTensor.h>
 #include "ICLTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-namespace operand
+namespace onert::backend::acl_cl::operand
 {
 
 class CLSubTensor : public ICLTensor
@@ -51,9 +45,6 @@ private:
   std::shared_ptr<arm_compute::CLSubTensor> _cl_sub_tensor;
 };
 
-} // namespace operand
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl::operand
 
 #endif // __ONERT_BACKEND_ACL_CL_OPERAND_CL_SUB_TENSOR_H__

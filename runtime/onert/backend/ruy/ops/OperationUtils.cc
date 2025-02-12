@@ -16,13 +16,7 @@
 
 #include "OperationUtils.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 
 nnfw::ruy::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
@@ -41,7 +35,4 @@ nnfw::ruy::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
   }
 }
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops

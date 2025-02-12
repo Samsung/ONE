@@ -22,13 +22,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class BatchToSpaceNDLayer : public ::onert::exec::IFunction
@@ -51,9 +45,6 @@ private:
   IPortableTensor *_crops;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_BATCHTOSPACEND_LAYER_H__

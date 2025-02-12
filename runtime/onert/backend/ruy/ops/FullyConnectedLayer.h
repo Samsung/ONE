@@ -23,13 +23,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 
 class FullyConnectedLayer : public ::onert::exec::IFunction
@@ -60,9 +54,6 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops
 
 #endif // __ONERT_BACKEND_RUY_OPS_FULLYCONNECTEDLAYER_H__

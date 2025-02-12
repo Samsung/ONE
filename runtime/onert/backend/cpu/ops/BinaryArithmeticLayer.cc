@@ -18,13 +18,7 @@
 
 #include <cker/operation/BinaryArithmeticOps.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -282,7 +276,4 @@ void BinaryArithmeticLayer::configure(const IPortableTensor *lhs, const IPortabl
 
 void BinaryArithmeticLayer::run() { _kernel(_lhs, _rhs, _output); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

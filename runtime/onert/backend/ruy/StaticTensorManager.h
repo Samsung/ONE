@@ -19,17 +19,11 @@
 
 #include "backend/basic/StaticTensorManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 using StaticTensorManager = basic::StaticTensorManager;
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_STATICTENSOR_MANAGER_H__

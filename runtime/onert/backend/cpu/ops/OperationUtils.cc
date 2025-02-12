@@ -20,13 +20,7 @@
 #include <cassert>
 #include <cmath>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 uint32_t getNumberOfDimensions(const IPortableTensor *tensor)
@@ -322,7 +316,4 @@ nnfw::cker::RoPEMode getRoPEMode(ir::operation::RoPE::RoPEMode rope_mode)
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

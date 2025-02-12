@@ -21,13 +21,7 @@
 #include <cker/train/Types.h>
 #include <ir/train/LossInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 using OperandType = onert::ir::DataType;
@@ -87,9 +81,6 @@ void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad)
  */
 nnfw::cker::train::LossReductionType convertLossReductionType(ir::train::LossReductionType type);
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__

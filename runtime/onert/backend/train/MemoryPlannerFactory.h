@@ -21,11 +21,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 template <typename Index> class MemoryPlannerFactory
@@ -41,8 +37,6 @@ public:
   basic::IMemoryPlanner<Index> *create(const std::string &key);
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_FACTORY_H__

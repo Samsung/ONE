@@ -25,11 +25,7 @@
 
 #include <cl_common/BackendContext.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 // TODO Find better way to handle common code (reduce template)
@@ -96,8 +92,6 @@ public:
   std::shared_ptr<T_Optimizer> optimizer;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_ACLBACKEND_CONTEXT_H__

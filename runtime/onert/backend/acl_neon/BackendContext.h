@@ -23,11 +23,7 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 class Optimizer;
@@ -35,8 +31,6 @@ class Optimizer;
 using BackendContext =
   acl_common::AclBackendContext<TensorBuilder, ConstantInitializer, KernelGenerator, Optimizer>;
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon
 
 #endif // __ONERT_BACKEND_ACL_NEON_BACKEND_CONTEXT_H__

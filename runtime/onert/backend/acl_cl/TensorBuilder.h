@@ -22,18 +22,12 @@
 #include "operand/CLTensor.h"
 #include "operand/CLSubTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 using TensorBuilder =
   acl_common::AclTensorBuilder<operand::ICLTensor, operand::CLTensor, operand::CLSubTensor>;
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_TENSOR_BUILDER_H__

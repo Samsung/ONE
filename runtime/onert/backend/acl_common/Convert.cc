@@ -21,11 +21,7 @@
 #include "ir/operation/ElementwiseActivation.h"
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 ::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, bool apply_dim_correction)
@@ -339,6 +335,4 @@ arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height
   return arm_compute::Size2D(dilation_width, dilation_height);
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common

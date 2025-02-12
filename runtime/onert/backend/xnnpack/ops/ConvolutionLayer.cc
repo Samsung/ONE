@@ -18,13 +18,7 @@
 
 #include "ir/Padding.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
-{
-namespace ops
+namespace onert::backend::xnnpack::ops
 {
 ConvolutionLayer::ConvolutionLayer(const std::shared_ptr<ExternalContext> external_context)
   : Layer(external_context), _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
@@ -149,7 +143,4 @@ bool ConvolutionLayer::setup()
   return true;
 }
 
-} // namespace ops
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack::ops

@@ -25,11 +25,7 @@
 
 #include "Convert.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
@@ -118,8 +114,6 @@ AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generate(ir::
   }
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_ACL_ACTIVATION_BUILDER_H__

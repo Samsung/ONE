@@ -18,13 +18,7 @@
 
 #include "ir/Padding.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
-{
-namespace ops
+namespace onert::backend::xnnpack::ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer(const std::shared_ptr<ExternalContext> external_context)
@@ -136,7 +130,4 @@ bool FullyConnectedLayer::setup()
   return true;
 }
 
-} // namespace ops
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack::ops

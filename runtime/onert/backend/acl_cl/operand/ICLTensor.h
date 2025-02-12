@@ -21,13 +21,7 @@
 
 #include <IACLTensor.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-namespace operand
+namespace onert::backend::acl_cl::operand
 {
 
 class ICLTensor : public acl_common::IACLTensor
@@ -48,9 +42,6 @@ private:
   void unmap(cl::CommandQueue &q) { return handle()->unmap(q); }
 };
 
-} // namespace operand
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl::operand
 
 #endif // __ONERT_BACKEND_ACL_CL_OPERAND_I_CL_TENSOR_H__

@@ -22,13 +22,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 class BulkLayer : public ::onert::exec::IFunction
@@ -54,9 +48,6 @@ private:
   std::shared_ptr<DevContext> _dev_context;
 };
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops
 
 #endif // __ONERT_BACKEND_TRIX_OPS_BULKLAYER_H__

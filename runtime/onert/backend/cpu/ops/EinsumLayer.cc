@@ -18,13 +18,7 @@
 
 #include <cker/operation/Einsum.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 EinsumLayer::EinsumLayer()
@@ -77,7 +71,4 @@ void EinsumLayer::configure(const std::vector<const IPortableTensor *> &inputs,
   _output = output;
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

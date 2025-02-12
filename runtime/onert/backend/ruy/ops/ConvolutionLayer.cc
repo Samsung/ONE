@@ -19,13 +19,7 @@
 #include "../Tensor.h"
 #include "ir/Padding.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 ConvolutionLayer::ConvolutionLayer()
   : _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
@@ -147,7 +141,4 @@ void ConvolutionLayer::prepare()
   _prepare = true;
 }
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops

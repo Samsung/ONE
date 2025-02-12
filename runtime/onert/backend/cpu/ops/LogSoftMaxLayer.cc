@@ -20,13 +20,7 @@
 
 #include <cker/operation/LogSoftMax.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 LogSoftMaxLayer::LogSoftMaxLayer() : _input(nullptr), _output(nullptr), _beta(0.0), _axis(0)
@@ -95,7 +89,4 @@ void LogSoftMaxLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

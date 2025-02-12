@@ -16,11 +16,7 @@
 
 #include "SharedMemoryOperands.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 namespace
@@ -89,6 +85,4 @@ ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandIndexes(const ir::I
   return shared_memory_operand_map;
 }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu

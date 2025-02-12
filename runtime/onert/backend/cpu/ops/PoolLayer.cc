@@ -21,13 +21,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -143,7 +137,4 @@ void PoolLayer::run() { _kernel(_input, _output); }
 
 #undef AVGPOOLING_PARAMETERS
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

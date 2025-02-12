@@ -21,20 +21,11 @@
 
 #include <ggml.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor);
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif
