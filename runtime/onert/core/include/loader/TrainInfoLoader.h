@@ -26,8 +26,7 @@ namespace onert
 namespace loader
 {
 
-// TODO change this line to use inline variable after C++17
-extern const char *const TRAININFO_METADATA_NAME;
+inline const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 
