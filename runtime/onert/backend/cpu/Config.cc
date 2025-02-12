@@ -16,15 +16,9 @@
 
 #include "Config.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 bool Config::initialize() { return true; }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu

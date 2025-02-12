@@ -20,13 +20,7 @@
 
 #include <cker/operation/SpaceToDepth.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 SpaceToDepthLayer::SpaceToDepthLayer() : _input(nullptr), _block_size(0), _output(nullptr)
 {
@@ -67,7 +61,4 @@ void SpaceToDepthLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -22,13 +22,7 @@
 #include "ir/Padding.h"
 #include <cker/operation/Conv.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 ConvolutionLayer::ConvolutionLayer()
   : _input(nullptr), _kernel(nullptr), _bias(nullptr), _output(nullptr),
@@ -358,7 +352,4 @@ void ConvolutionLayer::prepare()
   _prepare = true;
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

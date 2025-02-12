@@ -16,13 +16,7 @@
 
 #include "ExpandDimsLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ExpandDimsLayer::ExpandDimsLayer() : _input(nullptr), _output(nullptr)
@@ -46,7 +40,4 @@ void ExpandDimsLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

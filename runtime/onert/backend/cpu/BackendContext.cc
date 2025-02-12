@@ -27,11 +27,7 @@
 
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 ITensorRegistry *BackendContext::genTensors()
@@ -73,6 +69,4 @@ FunctionMap BackendContext::genKernels()
   return ret;
 }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu

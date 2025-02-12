@@ -18,13 +18,7 @@
 
 #include <cker/operation/BroadcastTo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 BroadcastToLayer::BroadcastToLayer() : _input(nullptr), _shape(nullptr), _output(nullptr)
@@ -67,7 +61,4 @@ void BroadcastToLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

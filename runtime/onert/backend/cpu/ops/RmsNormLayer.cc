@@ -21,13 +21,7 @@
 #include <cker/operation/RmsNorm.h>
 #include <cker/Types.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void RmsNormLayer::configure(const IPortableTensor *input, const IPortableTensor *gamma,
@@ -58,7 +52,4 @@ void RmsNormLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

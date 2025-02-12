@@ -20,13 +20,7 @@
 
 #include <cker/operation/MatrixBandPart.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 MatrixBandPartLayer::MatrixBandPartLayer()
@@ -84,7 +78,4 @@ void MatrixBandPartLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

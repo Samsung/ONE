@@ -18,13 +18,7 @@
 
 #include <cker/operation/Pad.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 PadLayer::PadLayer()
@@ -92,7 +86,4 @@ void PadLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

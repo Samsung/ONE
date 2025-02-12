@@ -18,13 +18,7 @@
 
 #include <cker/operation/BatchMatMul.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 BatchMatMulLayer::BatchMatMulLayer()
@@ -78,7 +72,4 @@ void BatchMatMulLayer::run()
 
 #undef AVGPOOLING_PARAMETERS
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -19,13 +19,7 @@
 #include <cker/operation/Pow.h>
 #include <cker/operation/BinaryArithmeticOps.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void PowLayer::powFloat32()
@@ -65,7 +59,4 @@ void PowLayer::run()
     throw std::runtime_error{"Pow: unsupportted data type"};
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

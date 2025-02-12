@@ -18,13 +18,7 @@
 
 #include <cker/operation/FusedBatchNorm.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 FusedBatchNormLayer::FusedBatchNormLayer()
@@ -87,7 +81,4 @@ void FusedBatchNormLayer::configure(const std::vector<const IPortableTensor *> &
   _data_format = data_format;
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

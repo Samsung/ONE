@@ -25,13 +25,7 @@
 #include <cker/operation/ReLU6.h>
 #include <cker/operation/Tanh.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ElementwiseActivationLayer::ElementwiseActivationLayer()
@@ -193,7 +187,4 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
 
 void ElementwiseActivationLayer::run() { _kernel(_input, _output); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

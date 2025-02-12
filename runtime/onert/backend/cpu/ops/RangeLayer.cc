@@ -20,13 +20,7 @@
 
 #include <cker/operation/Range.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 RangeLayer::RangeLayer() : _start(nullptr), _limit(nullptr), _delta(nullptr), _output(nullptr)
 {
@@ -60,7 +54,4 @@ void RangeLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
