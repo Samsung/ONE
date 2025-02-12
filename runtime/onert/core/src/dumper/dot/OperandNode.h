@@ -49,10 +49,10 @@ public:
   };
 
 public:
-  static const std::string INPUT_SHAPE;
-  static const std::string OUTPUT_SHAPE;
-  static const std::string OPERAND_SHAPE;
-  static const std::string BG_COLOR_SCHEME;
+  static inline const std::string INPUT_SHAPE = "doublecircle";
+  static inline const std::string OUTPUT_SHAPE = "doublecircle";
+  static inline const std::string OPERAND_SHAPE = "ellipse";
+  static inline const std::string BG_COLOR_SCHEME = "set18";
 
 public:
   /**
