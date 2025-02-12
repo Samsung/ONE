@@ -18,9 +18,6 @@
 
 #include <cassert>
 
-// initialization
-std::mutex EventWriter::_mutex;
-
 void EventWriter::readyToFlush(std::unique_ptr<EventRecorder> &&recorder)
 {
   {
