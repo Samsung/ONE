@@ -19,9 +19,7 @@
 #include <stdexcept>
 #include <cassert>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 namespace
 {
@@ -152,5 +150,4 @@ const ExplicitPadding calculatePadding(const Padding &padding, const FeatureShap
   }
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

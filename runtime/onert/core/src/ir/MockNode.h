@@ -20,9 +20,7 @@
 #include "ir/Operation.h"
 #include "ir/OperandIndexSequence.h"
 
-namespace onert_test
-{
-namespace ir
+namespace onert_test::ir
 {
 
 class SimpleMock : public onert::ir::Operation
@@ -41,7 +39,6 @@ public:
   onert::ir::OpCode opcode() const final { return onert::ir::OpCode::Invalid; }
 };
 
-} // namespace ir
-} // namespace onert_test
+} // namespace onert_test::ir
 
 #endif // __ONERT_TEST_GRAPH_MOCK_NODE_H__

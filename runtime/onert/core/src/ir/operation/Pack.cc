@@ -16,11 +16,7 @@
 #include "ir/operation/Pack.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void Pack::accept(OperationVisitor &v) const { v.visit(*this); }
 Pack::Pack(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
@@ -28,6 +24,4 @@ Pack::Pack(const OperandIndexSequence &inputs, const OperandIndexSequence &outpu
   : Operation{OperandConstraint::createAtLeast(1u), inputs, outputs}, _param{param}
 {
 }
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -19,11 +19,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Reduce::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -49,6 +45,4 @@ std::string Reduce::name() const
   //  return std::string(toString(opcode())) + reduce_type_str_map.at(_param.reduce_type);
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -18,9 +18,7 @@
 
 #include <assert.h>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 namespace
@@ -64,5 +62,4 @@ std::unique_ptr<Operation> clone(const IOperation &operation)
   return cloner.releaseClone();
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

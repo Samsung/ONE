@@ -17,11 +17,7 @@
 #include "ir/operation/L2Normalization.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void L2Normalization::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ L2Normalization::L2Normalization(const OperandIndexSequence &inputs,
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

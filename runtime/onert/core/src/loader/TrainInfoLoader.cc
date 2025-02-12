@@ -19,9 +19,7 @@
 #include "circle_traininfo_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
@@ -135,5 +133,4 @@ std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer,
   return tinfo;
 }
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader

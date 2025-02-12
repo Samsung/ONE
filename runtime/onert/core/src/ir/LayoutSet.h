@@ -23,9 +23,7 @@
 
 #include "ir/Layout.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class LayoutSet
@@ -53,7 +51,6 @@ private:
   std::unordered_set<Layout> _set;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_LAYOUT_SET_H__

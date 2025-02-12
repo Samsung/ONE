@@ -20,9 +20,7 @@
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 using namespace operation;
@@ -458,5 +456,4 @@ void OperationDumper::visit(const While &node)
   VERBOSE(LIR) << "  - Output : Outputs(" << node.getOutputs() << ")" << std::endl;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

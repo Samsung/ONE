@@ -34,9 +34,7 @@
 #include <unistd.h>
 #include <util/logging.h>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 template <typename LoaderDomain> class BaseLoader
@@ -1789,7 +1787,6 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   _model = std::move(model);
 }
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader
 
 #endif //__ONERT_LOADER_BASE_LOADER_H__

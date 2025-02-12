@@ -17,11 +17,7 @@
 #include "ir/operation/LogSoftmax.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void LogSoftmax::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ LogSoftmax::LogSoftmax(const OperandIndexSequence &inputs, const OperandIndexSeq
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

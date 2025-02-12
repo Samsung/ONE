@@ -19,13 +19,7 @@
 #include "ir/OperationVisitor.h"
 #include "ir/train/TrainableOperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace operation
+namespace onert::ir::train::operation
 {
 
 std::unique_ptr<ITrainableOperation> BinaryArithmetic::clone() const
@@ -43,7 +37,4 @@ BinaryArithmetic::BinaryArithmetic(const OperationType &operation)
   // DO NOTHING
 }
 
-} // namespace operation
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::operation

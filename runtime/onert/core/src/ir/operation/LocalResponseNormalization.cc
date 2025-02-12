@@ -17,11 +17,7 @@
 #include "ir/operation/LocalResponseNormalization.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void LocalResponseNormalization::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -33,6 +29,4 @@ LocalResponseNormalization::LocalResponseNormalization(const OperandIndexSequenc
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

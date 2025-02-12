@@ -20,9 +20,7 @@
 #include <iostream>
 #include <mutex>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 bool QuantizeManager::quantize(const std::string &model_path)
@@ -82,5 +80,4 @@ bool QuantizeManager::deleteMinMaxFile()
   return result;
 }
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc

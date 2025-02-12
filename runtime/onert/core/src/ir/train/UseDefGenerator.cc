@@ -25,11 +25,7 @@
 
 // TODO Reduce duplicate code
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 UseDefGenerator::UseDefGenerator(const TrainableGraph &tgraph)
@@ -458,6 +454,4 @@ void UseDefGenerator::initForBackwardingNodes()
   }
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train

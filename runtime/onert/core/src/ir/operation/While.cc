@@ -17,11 +17,7 @@
 #include "ir/operation/While.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void While::accept(OperationVisitor &v) const { v.visit(*this); }
 While::While(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
@@ -29,6 +25,4 @@ While::While(const OperandIndexSequence &inputs, const OperandIndexSequence &out
   : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
 {
 }
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

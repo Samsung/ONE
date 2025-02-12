@@ -17,11 +17,7 @@
 #include "ir/operation/Fill.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Fill::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -31,6 +27,4 @@ Fill::Fill(const OperandIndexSequence &inputs, const OperandIndexSequence &outpu
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

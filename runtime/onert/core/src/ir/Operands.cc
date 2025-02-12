@@ -19,9 +19,7 @@
 #include <memory>
 #include "util/logging.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 Operands::Operands(const Operands &obj)
@@ -32,5 +30,4 @@ Operands::Operands(const Operands &obj)
   _next_index = obj._next_index;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

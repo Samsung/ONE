@@ -19,11 +19,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -34,6 +30,4 @@ Loss::Loss(const OperandIndexSequence &inputs, const OperandIndexSequence &outpu
   assert(inputs.size() == 2);
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

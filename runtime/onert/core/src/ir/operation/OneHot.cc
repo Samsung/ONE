@@ -17,11 +17,7 @@
 #include "ir/operation/OneHot.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void OneHot::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ OneHot::OneHot(const OperandIndexSequence &inputs, const OperandIndexSequence &o
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

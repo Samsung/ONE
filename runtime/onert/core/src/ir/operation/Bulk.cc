@@ -17,11 +17,7 @@
 #include "ir/operation/Bulk.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void Bulk::accept(OperationVisitor &v) const { v.visit(*this); }
 
@@ -31,6 +27,4 @@ Bulk::Bulk(const OperandIndexSequence &inputs, const OperandIndexSequence &outpu
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

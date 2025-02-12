@@ -19,9 +19,7 @@
 #include <algorithm>
 #include <sstream>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 OperandIndexSequence::OperandIndexSequence(std::initializer_list<OperandIndex> list) : _vec(list)
@@ -78,5 +76,4 @@ std::ostream &operator<<(std::ostream &o, const OperandIndexSequence &operand_se
   return o;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

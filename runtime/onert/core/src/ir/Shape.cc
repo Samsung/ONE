@@ -21,9 +21,7 @@
 #include <numeric>
 #include <algorithm>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 int32_t const Shape::kUnspecifiedDim = -1;
@@ -92,5 +90,4 @@ Shape convertShape(const Shape &shape, const PermuteType &type)
   return ret;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

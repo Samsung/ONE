@@ -238,11 +238,7 @@ private:
 
 } // namespace
 
-namespace onert
-{
-namespace loader
-{
-namespace train
+namespace onert::loader::train
 {
 
 void loadCheckpoint(const std::string &filename,
@@ -255,6 +251,4 @@ void loadCheckpoint(const std::string &filename,
   loader.updateTrainingInfo(train_info);
 }
 
-} // namespace train
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader::train

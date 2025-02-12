@@ -24,9 +24,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace onert
-{
-namespace exporter
+namespace onert::exporter
 {
 
 CircleExporter::CircleExporter(const std::string &source, const std::string &path)
@@ -149,5 +147,4 @@ void CircleExporter::finish()
             static_cast<std::streamsize>(builder.GetSize()));
   dst.close();
 }
-} // namespace exporter
-} // namespace onert
+} // namespace onert::exporter

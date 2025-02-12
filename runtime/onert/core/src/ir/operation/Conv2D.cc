@@ -17,11 +17,7 @@
 #include "ir/operation/Conv2D.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Conv2D::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ Conv2D::Conv2D(const OperandIndexSequence &inputs, const OperandIndexSequence &o
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

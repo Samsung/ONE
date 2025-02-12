@@ -17,11 +17,7 @@
 #include "ir/operation/Permute.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Permute::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -33,6 +29,4 @@ Permute::Permute(const OperandIndex &input, const OperandIndex &output)
   setOutputs({output});
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
