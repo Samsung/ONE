@@ -16,9 +16,7 @@
 
 #include "CustomKernel.h"
 
-namespace onert
-{
-namespace api
+namespace onert::api
 {
 
 using namespace backend::custom;
@@ -107,5 +105,4 @@ void CustomKernel::run()
   delete[] params.outputs;
 }
 
-} // namespace api
-} // namespace onert
+} // namespace onert::api

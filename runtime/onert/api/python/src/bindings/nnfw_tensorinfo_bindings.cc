@@ -18,11 +18,7 @@
 
 #include "nnfw_api_wrapper.h"
 
-namespace onert
-{
-namespace api
-{
-namespace python
+namespace onert::api::python
 {
 
 namespace py = pybind11;
@@ -41,6 +37,4 @@ void bind_tensorinfo(py::module_ &m)
       "The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK).");
 }
 
-} // namespace python
-} // namespace api
-} // namespace onert
+} // namespace onert::api::python

@@ -18,11 +18,7 @@
 
 #include <iostream>
 
-namespace onert
-{
-namespace api
-{
-namespace python
+namespace onert::api::python
 {
 
 namespace py = pybind11;
@@ -300,6 +296,4 @@ void NNFW_SESSION::train_export_checkpoint(const py::str &path)
   ensure_status(nnfw_train_export_checkpoint(session, c_str_path));
 }
 
-} // namespace python
-} // namespace api
-} // namespace onert
+} // namespace onert::api::python
