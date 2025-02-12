@@ -230,7 +230,7 @@ class Execution {
     ANeuralNetworksExecution* mExecution = nullptr;
 
     // Initialized to ComputeMode::SYNC in TestNeuralNetworksWrapper.cpp.
-    static ComputeMode mComputeMode;
+    static inline ComputeMode mComputeMode = Execution::ComputeMode::SYNC;
 };
 
 }  // namespace test_wrapper

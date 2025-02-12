@@ -39,8 +39,8 @@ public:
   bool done();
 
 public:
-  static const char delimiter = ',';
-  static const char newline = '\n';
+  static inline const char delimiter = ',';
+  static inline const char newline = '\n';
 
   friend CsvWriter &operator<<(CsvWriter &csvw, const std::string &val);
   friend CsvWriter &operator<<(CsvWriter &csvw, double val);

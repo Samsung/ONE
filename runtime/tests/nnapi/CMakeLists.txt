@@ -24,7 +24,6 @@ endif(GENERATE_RUNTIME_NNAPI_TESTS)
 
 set(RUNTIME_NNAPI_TEST nnapi_gtest)
 set(RUNTIME_NNAPI_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/TestMain.cpp
-                           ${CMAKE_CURRENT_SOURCE_DIR}/src/TestNeuralNetworksWrapper.cpp
                            ${CMAKE_CURRENT_SOURCE_DIR}/src/TestTrivialModel.cpp
                            ${CMAKE_CURRENT_SOURCE_DIR}/src/TestValidation.cpp)
 set(GENERATED_TEST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/TestGenerated.cpp
