@@ -25,11 +25,7 @@
 
 const int kDefaultNumThreadpoolThreads = 1;
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -62,8 +58,6 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_BACKEND_CONTEXT_H__

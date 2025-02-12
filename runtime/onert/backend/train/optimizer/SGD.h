@@ -19,13 +19,7 @@
 
 #include <exec/train/optimizer/Optimizer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace optimizer
+namespace onert::backend::train::optimizer
 {
 
 /**
@@ -85,9 +79,6 @@ private:
   double _learning_rate;
 };
 
-} // namespace optimizer
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::optimizer
 
 #endif // __ONERT_BACKEND_TRAIN_OPTIMIZER_SGD_H__

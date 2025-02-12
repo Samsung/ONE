@@ -21,13 +21,7 @@
 #include "OperationUtils.h"
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 class RmsNormLayer : public ::onert::exec::IFunction
 {
@@ -50,9 +44,6 @@ private:
   float _epsilon;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_RMSNORM_LAYER_H__

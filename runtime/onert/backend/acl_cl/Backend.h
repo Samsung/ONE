@@ -28,11 +28,7 @@
 #include "Optimizer.h"
 #include "AclTensorRegistry.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 class Backend : public ::onert::backend::Backend
@@ -64,8 +60,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_BACKEND_H__

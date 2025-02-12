@@ -24,11 +24,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 using ModelID = uint32_t;
@@ -144,8 +140,6 @@ private:
   std::exception_ptr _eptr;
 };
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_DEV_CONTEXT_H__

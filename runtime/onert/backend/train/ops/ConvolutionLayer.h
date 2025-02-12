@@ -22,13 +22,7 @@
 #include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class ConvolutionLayer : public ::onert::exec::train::ITrainableFunction,
@@ -60,9 +54,6 @@ private:
   std::unique_ptr<GradientTensor> _transposed_grad_weights;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__

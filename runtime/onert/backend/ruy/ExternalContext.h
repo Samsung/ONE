@@ -22,11 +22,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 class ExternalContext
@@ -53,8 +49,6 @@ private:
   const std::unique_ptr<::ruy::Context> _ruy_context;
 };
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_EXTERNAL_CONTEXT_H__

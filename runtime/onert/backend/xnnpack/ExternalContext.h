@@ -20,11 +20,7 @@
 #include <memory>
 #include <xnnpack.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 class ExternalContext
@@ -39,8 +35,6 @@ private:
   std::unique_ptr<pthreadpool, decltype(&pthreadpool_destroy)> _threadpool;
 };
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_EXTERNAL_CONTEXT_H__

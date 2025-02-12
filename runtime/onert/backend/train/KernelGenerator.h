@@ -28,11 +28,7 @@
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 // TODO Unify TensorRegistry
@@ -70,8 +66,6 @@ private:
   std::unordered_map<const ir::IOperation *, ir::OperationIndex> _node_to_idx;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_H__

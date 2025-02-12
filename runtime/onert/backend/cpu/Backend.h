@@ -26,11 +26,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 class Backend : public ::onert::backend::Backend
@@ -58,8 +54,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_BACKEND_H__

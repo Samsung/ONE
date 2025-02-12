@@ -24,13 +24,7 @@
 #include "../ExternalContext.h"
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class DepthwiseConvolutionLayer : public ::onert::exec::train::ITrainableFunction,
@@ -59,9 +53,6 @@ private:
   std::unique_ptr<Tensor> _filter_dim_buffers;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__

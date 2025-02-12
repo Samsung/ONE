@@ -33,13 +33,7 @@
 using OperandType = onert::ir::DataType;
 using namespace onert::util;
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 union DataPtr {
@@ -194,9 +188,6 @@ template <> inline bool *getBuffer(IPortableTensor *tensor)
   return reinterpret_cast<bool *>(tensor->buffer());
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__

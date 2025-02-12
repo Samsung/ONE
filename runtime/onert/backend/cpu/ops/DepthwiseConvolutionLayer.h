@@ -24,13 +24,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class DepthwiseConvolutionLayer : public ::onert::exec::IFunction
@@ -105,9 +99,6 @@ private:
   std::vector<int32_t> _input_offsets;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_KERNEL_CPU_DEPTHWISECONVOLUTIONLAYER_H__

@@ -19,11 +19,7 @@
 
 #include "backend/ITensorRegistry.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 /**
@@ -46,8 +42,6 @@ private:
   T_AclTensorManager *_tensor_mgr;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_ACL_TENSOR_REGISTRY_H__

@@ -26,13 +26,7 @@
 #include <functional>
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 
 class ConvolutionLayer : public ::onert::exec::IFunction
@@ -82,9 +76,6 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops
 
 #endif // __ONERT_BACKEND_RUY_OPS_CONVOLUTIONLAYER_H__

@@ -21,11 +21,7 @@
 #include <arm_compute/core/ITensor.h>
 #include "Swizzle.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 /**
@@ -88,8 +84,6 @@ protected:
   size_t _rank; // Actual rank (reflects extended rank)
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif //__ONERT_BACKEND_ACL_COMMON_I_ACL_TENSOR_H__

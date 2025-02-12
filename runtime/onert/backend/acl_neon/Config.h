@@ -21,11 +21,7 @@
 #include <memory>
 #include <util/ITimer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 class Config : public IConfig
@@ -40,8 +36,6 @@ public:
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon
 
 #endif // __ONERT_BACKEND_ACL_NEON_CONFIG_H__

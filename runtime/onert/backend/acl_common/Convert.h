@@ -40,11 +40,7 @@
 
 #include <set>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 ::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, bool apply_dim_correction = true);
@@ -81,8 +77,6 @@ arm_compute::ReductionOperation convertReduceType(ir::operation::Reduce::ReduceT
 arm_compute::PixelValue asPixelValue(const ir::Operand &operand);
 arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height);
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_CONVERT_H__

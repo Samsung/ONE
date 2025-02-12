@@ -24,11 +24,7 @@
 #include <libnpuhost.h>
 #include <type_traits>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 /**
@@ -78,8 +74,6 @@ void setBuffers(const std::vector<T *> &tensors, generic_buffers *buf)
   }
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_CONVERT_H__

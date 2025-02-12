@@ -27,11 +27,7 @@
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 class KernelGenerator : public basic::KernelGeneratorBase
@@ -58,8 +54,6 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_KERNEL_GENERATOR_H__

@@ -19,17 +19,11 @@
 
 #include <backend/basic/TensorBuilder.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 using TensorBuilder = basic::TensorBuilder;
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_TENSOR_BUILDER_H__

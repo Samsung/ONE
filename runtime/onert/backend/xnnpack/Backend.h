@@ -25,11 +25,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 class Backend : public ::onert::backend::Backend
@@ -57,8 +53,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_BACKEND_H__

@@ -24,11 +24,7 @@
 #include "AclTensorRegistry.h"
 #include "TensorManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 class KernelGenerator : public basic::KernelGeneratorBase
@@ -88,8 +84,6 @@ private:
   std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> _tensor_reg;
 };
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon
 
 #endif // __ONERT_BACKEND_ACL_NEON_KERNEL_GENERATOR_H__

@@ -20,11 +20,7 @@
 #include "ir/IGraph.h"
 #include "ir/OperandIndexMap.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 /*
  * Find indexed of operands assigned to tensors which can share memory (indicate the same buffer).
@@ -32,8 +28,6 @@ namespace cpu
  */
 ir::OperandIndexMap<ir::OperandIndex> findSharedMemoryOperandIndexes(const ir::IGraph &graph);
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_SHARED_MEMORY_OPERANDS_H__

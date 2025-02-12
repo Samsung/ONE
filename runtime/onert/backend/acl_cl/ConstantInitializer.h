@@ -19,11 +19,7 @@
 
 #include "AclConstantInitializer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 class ConstantInitializer : public acl_common::AclConstantInitializer
@@ -41,8 +37,6 @@ public:
   void visit(const ir::operation::Reverse &) final;
 };
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_CONSTANT_INITIALIZER_H__

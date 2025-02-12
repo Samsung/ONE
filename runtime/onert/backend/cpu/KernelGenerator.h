@@ -27,11 +27,7 @@
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 class KernelGenerator : public basic::KernelGeneratorBase
@@ -108,8 +104,6 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__

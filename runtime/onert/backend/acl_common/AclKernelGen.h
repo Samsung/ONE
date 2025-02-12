@@ -23,11 +23,7 @@
 #include <ir/operation/LSTM.h>
 #include <arm_compute/runtime/CL/CLFunctions.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 void enableDimCorrection(IACLTensor *tensor)
@@ -330,8 +326,6 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   return fn;
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_ACL_KERNEL_GEN_H_

@@ -25,11 +25,7 @@
 #include "Convert.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor> class AclMemoryManager
@@ -93,8 +89,6 @@ private:
   ir::OperandIndexMap<std::shared_ptr<T_SubTensor>> _subtensors;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_MEMORY_MANAGER_H__

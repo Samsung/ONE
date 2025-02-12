@@ -27,11 +27,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 // TODO Unify TensorBuilder
@@ -68,8 +64,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_BACKEND_H__

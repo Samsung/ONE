@@ -26,11 +26,7 @@
 #include <ir/OperationIndexMap.h>
 #include <exec/train/optimizer/Optimizer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 // TODO Support dynamic tensors
@@ -94,8 +90,6 @@ private:
   const exec::train::optimizer::Optimizer *_optimizer;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_BUILDER_H__

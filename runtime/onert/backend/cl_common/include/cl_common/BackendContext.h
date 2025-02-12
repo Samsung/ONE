@@ -23,11 +23,7 @@
 #include <ir/OperandIndexSequence.h>
 #include <util/logging.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cl_common
+namespace onert::backend::cl_common
 {
 
 // TODO Find better way to handle common code (reduce template)
@@ -225,8 +221,6 @@ public:
   std::shared_ptr<T_KernelGenerator> kernel_gen;
 };
 
-} // namespace cl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cl_common
 
 #endif // __ONERT_BACKEND_CL_COMMON_BACKEND_CONTEXT_H__

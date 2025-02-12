@@ -21,11 +21,7 @@
 #include <cassert>
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 // NOTE. If any backend can use something like InternalBufferManager,
@@ -92,8 +88,6 @@ private:
   std::shared_ptr<T_MemoryManager> _internal_manager;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_INTERNAL_BUFFER_MANAGER_H__

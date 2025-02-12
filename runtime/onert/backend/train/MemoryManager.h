@@ -22,11 +22,7 @@
 #include "DisposableTensorIndex.h"
 #include "LayerScopeTensorIndex.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 using MemoryManager = backend::basic::MemoryManager;
@@ -88,8 +84,6 @@ private:
   std::shared_ptr<basic::Allocator> _mem_alloc;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_MEMORY_MANAGER_H__

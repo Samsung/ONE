@@ -21,13 +21,7 @@
 
 #include <IACLTensor.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
-{
-namespace operand
+namespace onert::backend::acl_neon::operand
 {
 
 class INETensor : public acl_common::IACLTensor
@@ -39,9 +33,6 @@ public:
   void access(const std::function<void(ITensor &tensor)> &fn) final;
 };
 
-} // namespace operand
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon::operand
 
 #endif // __ONERT_BACKEND_ACL_NEON_OPERAND_I_NE_TENSOR_H__

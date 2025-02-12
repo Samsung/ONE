@@ -22,13 +22,7 @@
 #include "arm_compute/runtime/TensorAllocator.h"
 #include "INETensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
-{
-namespace operand
+namespace onert::backend::acl_neon::operand
 {
 
 class NETensor : public INETensor
@@ -52,9 +46,6 @@ private:
   size_t _num_uses;
 };
 
-} // namespace operand
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon::operand
 
 #endif // __ONERT_BACKEND_ACL_NEON_OPERAND_NE_TENSOR_H__

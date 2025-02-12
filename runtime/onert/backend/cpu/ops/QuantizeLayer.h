@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 class QuantizeLayer : public ::onert::exec::IFunction
 {
@@ -47,9 +41,6 @@ private:
   int32_t _output_multiplier;
   int _output_shift;
 };
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_QUANTIZELAYER_H__

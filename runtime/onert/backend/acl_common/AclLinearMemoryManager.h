@@ -23,11 +23,7 @@
 #include "ir/OperandIndexMap.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 template <typename T_MemoryManager, typename T_PoolManager, typename T_LifetimeManager>
@@ -98,8 +94,6 @@ private:
   std::shared_ptr<T_MemoryGroup> _io_group;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_LINEAR_MEMORY_MANAGER_H__

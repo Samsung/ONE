@@ -24,23 +24,14 @@
 #include <functional>
 #include <memory>
 
-namespace nnfw
-{
-namespace cker
+namespace nnfw::cker
 {
 class Conv;
 struct ConvHybridTempArena;
 class Shape;
-} // namespace cker
-} // namespace nnfw
+} // namespace nnfw::cker
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class ConvolutionLayer : public ::onert::exec::IFunction
@@ -94,9 +85,6 @@ protected:
   bool _is_hybrid;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__

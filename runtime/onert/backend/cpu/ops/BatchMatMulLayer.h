@@ -22,21 +22,12 @@
 
 #include <exec/IFunction.h>
 
-namespace nnfw
-{
-namespace cker
+namespace nnfw::cker
 {
 class BatchMatMul;
-}
-} // namespace nnfw
+} // namespace nnfw::cker
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class BatchMatMulLayer : public ::onert::exec::IFunction
@@ -64,9 +55,6 @@ private:
   std::unique_ptr<nnfw::cker::BatchMatMul> _kernel;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_BATCH_MATMUL_LAYER_H__

@@ -21,11 +21,7 @@
 #include <memory>
 #include <util/ITimer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 class Config : public IConfig
@@ -43,8 +39,6 @@ public:
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_CONFIG_H__

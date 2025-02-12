@@ -20,18 +20,12 @@
 #include <backend/basic/Tensor.h>
 #include <ir/Data.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 using Tensor = basic::Tensor;
 using ExternalTensor = basic::ExternalTensor;
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack
 
 #endif // __ONERT_BACKEND_XNNPACK_TENSOR_H__

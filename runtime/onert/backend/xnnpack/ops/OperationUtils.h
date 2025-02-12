@@ -22,21 +22,12 @@
 #include <ir/Padding.h>
 #include <util/CalculateActivationRange.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
-{
-namespace ops
+namespace onert::backend::xnnpack::ops
 {
 
 using OperandType = ir::DataType;
 using namespace onert::util; // CalculateActivationRange
 
-} // namespace ops
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack::ops
 
 #endif // __ONERT_BACKEND_XNNPACK_OPS_OPERATION_UTILS_H__

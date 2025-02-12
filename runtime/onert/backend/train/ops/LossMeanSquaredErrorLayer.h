@@ -19,13 +19,7 @@
 
 #include "LossLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class LossMeanSquaredErrorLayer : public LossLayer
@@ -40,9 +34,6 @@ public:
   void backward() override;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_LOSS_MEANSQUAREDERROR_LAYER_H__
