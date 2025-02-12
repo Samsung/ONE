@@ -18,13 +18,7 @@
 
 #include "kernel/PermuteLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
@@ -103,7 +97,4 @@ backend::ITensor *KernelGenerator::getBackPropTensor(const ir::OperandIndex &ind
   return ret;
 }
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train

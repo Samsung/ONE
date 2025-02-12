@@ -16,10 +16,7 @@
 
 #include "backend/BackendContext.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend

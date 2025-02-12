@@ -32,9 +32,7 @@
 #include <mutex>
 #include <vector>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class ExecutorBase : public IExecutor
@@ -118,7 +116,6 @@ protected:
   ExecutionOptions _current_options;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTOR_BASE_H__

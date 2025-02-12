@@ -26,9 +26,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 class ExecTime
 {
@@ -106,7 +104,6 @@ private:
   JSON _json;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXEC_TIME_H__

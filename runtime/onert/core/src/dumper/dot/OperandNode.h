@@ -30,11 +30,7 @@
 #include "ir/Operand.h"
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 /**
@@ -71,8 +67,6 @@ private:
   void addBackendLabel();
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_DOT_OPERAND_INFO_H__

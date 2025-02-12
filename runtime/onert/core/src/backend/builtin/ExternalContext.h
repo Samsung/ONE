@@ -26,11 +26,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 // TODO Unify this with cpu::ExternalContext
@@ -72,8 +68,6 @@ private:
   const std::unique_ptr<ruy::Context> _ruy_context;
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__

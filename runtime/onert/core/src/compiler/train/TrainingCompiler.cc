@@ -38,11 +38,7 @@
 #include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
@@ -300,6 +296,4 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

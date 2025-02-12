@@ -19,22 +19,16 @@
 
 #include "util/Set.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 class Backend;
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 using BackendSet = util::Set<const backend::Backend *>;
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_BACKEND_SET_H__

@@ -20,9 +20,7 @@
 #include "train/TrainableExecutors.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{executors}
@@ -233,5 +231,4 @@ void *Execution::getOutputBuffer(ir::IOIndex ind)
   return _ctx.desc.outputs.at(ind.value())->buffer;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

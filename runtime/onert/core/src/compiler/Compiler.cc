@@ -33,9 +33,7 @@
 #include <misc/string_helpers.h>
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts)
@@ -184,5 +182,4 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

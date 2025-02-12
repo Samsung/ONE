@@ -18,9 +18,7 @@
 #include "util/ShapeInference.h"
 #include <assert.h>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
@@ -1274,5 +1272,4 @@ void DynamicShapeInferer::visit(const ir::operation::Unpack &op)
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

@@ -24,9 +24,7 @@
 
 #include "exec/IFunction.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class WorkQueue
@@ -81,7 +79,6 @@ private:
   std::condition_variable _cv;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_WORK_QUEUE_H__

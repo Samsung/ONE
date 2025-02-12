@@ -20,9 +20,7 @@
 #include "IScheduler.h"
 #include "compiler/Compiler.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class ManualScheduler : public IScheduler
@@ -41,7 +39,6 @@ private:
   compiler::CompilerOptions _options;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_CORE_COMPILER_MANUAL_SCHEDULER_H__

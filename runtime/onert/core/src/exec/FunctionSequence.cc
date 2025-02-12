@@ -19,9 +19,7 @@
 #include "backend/ITensorRegistry.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void FunctionSequence::run()
@@ -80,5 +78,4 @@ void FunctionSequence::iterate(const std::function<void(IFunction &)> &fn)
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

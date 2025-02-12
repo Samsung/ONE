@@ -23,13 +23,7 @@
 #include "../Tensor.h"
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 using BaseTensorRegistry =
@@ -132,9 +126,6 @@ private:
   ir::OperandIndexMap<std::unique_ptr<IOTensor>> _native_io_tensors;
 };
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train
 
 #endif // __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_REGISTRY_H__

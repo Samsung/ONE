@@ -23,9 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 void OperandObserver::updateShapes(const std::vector<ir::OperandInfo> &changed_operands_info,
                                    bool unpredictable)
@@ -1478,6 +1476,4 @@ void StaticShapeInferer::visit(const ir::operation::Bulk &op)
   output.info().shape(new_shape);
 }
 
-} // namespace compiler
-
-} // namespace onert
+} // namespace onert::compiler

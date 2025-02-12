@@ -20,18 +20,13 @@
 #include "ir/Layout.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 class Graph;
 class Operands;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class ShapeValidator : public ir::OperationVisitor
@@ -103,7 +98,6 @@ private:
   const ir::Graph &_graph;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_SHAPE_VALIDATOR_H__

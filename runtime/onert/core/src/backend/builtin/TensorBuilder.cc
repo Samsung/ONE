@@ -20,11 +20,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
@@ -99,6 +95,4 @@ basic::Tensor *TensorBuilder::nativeOwnTensorAt(const ir::OperandIndex &ind)
   return _tensor_reg->getNativeOwnTensor(ind);
 }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

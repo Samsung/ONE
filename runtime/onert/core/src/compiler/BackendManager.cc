@@ -29,9 +29,7 @@ static const char *SHARED_LIB_EXT =
   ".so";
 #endif
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 BackendManager &BackendManager::get()
@@ -149,5 +147,4 @@ const backend::Backend *BackendManager::get(const std::string &key) const
 
 const backend::Backend *BackendManager::getBuiltin() const { return _builtin; }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

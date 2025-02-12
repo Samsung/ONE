@@ -21,9 +21,7 @@
 #include <cassert>
 #include <cmath>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 MinMaxRecorder::MinMaxRecorder(const std::string &workspace_dir, const ir::Graph &graph,
@@ -148,5 +146,4 @@ void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
   raw_dumper.dump(_input_minmax, _op_minmax);
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

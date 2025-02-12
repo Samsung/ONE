@@ -19,11 +19,7 @@
 #include "util/logging.h"
 #include "misc/polymorphic_downcast.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 DynamicTensorManager::DynamicTensorManager(const std::shared_ptr<TensorRegistry> &reg)
@@ -47,6 +43,4 @@ const ITensor *DynamicTensorManager::getRawITensor(ir::OperandIndex ind)
   return ptr;
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

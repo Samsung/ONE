@@ -27,11 +27,7 @@
 #include <unordered_map>
 #include <utility>
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void PermutationInsertionPass::callback(const ir::OperandIndex &index, ir::Operand &object)
@@ -173,6 +169,4 @@ ir::OperationIndex PermutationInsertionPass::insertPermute(const ir::OperandInde
   }
   return node_index;
 }
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

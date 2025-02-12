@@ -20,11 +20,7 @@
 #include "ir/OperationVisitor.h"
 #include "LoweredOperationPass.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 /**
@@ -58,8 +54,6 @@ private:
   ir::OperationIndex _op_ind;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_PERMUTATION_ELIMINATION_PASS_H__

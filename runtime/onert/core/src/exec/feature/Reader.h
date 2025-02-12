@@ -24,11 +24,7 @@
 
 #include <cstdint>
 
-namespace onert
-{
-namespace exec
-{
-namespace feature
+namespace onert::exec::feature
 {
 
 /**
@@ -61,8 +57,6 @@ template <typename T> struct Reader
   virtual T at(uint32_t batch, uint32_t ch, uint32_t row, uint32_t col) const = 0;
 };
 
-} // namespace feature
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::feature
 
 #endif // __ONERT_EXEC_FEATURE_READER_H__

@@ -20,14 +20,11 @@
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 Job::Job(uint32_t index, FunctionSequence *fn_seq) : _index{index}, _fn_seq{fn_seq} {}
 
 void Job::run() { _fn_seq->run(); }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

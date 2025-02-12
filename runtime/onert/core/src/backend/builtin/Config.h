@@ -21,11 +21,7 @@
 #include <memory>
 #include <util/ITimer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 class Config : public IConfig
@@ -45,8 +41,6 @@ public:
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_CONFIG_H__

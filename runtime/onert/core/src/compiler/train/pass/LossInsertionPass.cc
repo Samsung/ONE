@@ -20,13 +20,7 @@
 #include "ir/train/TrainingInfo.h"
 #include "ir/train/operation/Loss.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
-{
-namespace pass
+namespace onert::compiler::train::pass
 {
 
 void LossInsertionPass::run()
@@ -82,7 +76,4 @@ void LossInsertionPass::run()
   _trainable_graph.addLoss(output_index, ir::IOIndex{index});
 }
 
-} // namespace pass
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train::pass

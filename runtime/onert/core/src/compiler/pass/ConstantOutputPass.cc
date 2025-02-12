@@ -20,11 +20,7 @@
 #include "ir/operation/Permute.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void ConstantOutputPass::callback(const ir::OperandIndex &ind, ir::Operand &obj)
@@ -63,6 +59,4 @@ void ConstantOutputPass::callback(const ir::OperandIndex &ind, ir::Operand &obj)
   VERBOSE(ConstantOutputPass) << "  - Output(original) Operand : " << ind << std::endl;
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

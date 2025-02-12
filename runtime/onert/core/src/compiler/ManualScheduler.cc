@@ -24,9 +24,7 @@
 #include "util/logging.h"
 #include "misc/string_helpers.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 ManualScheduler::ManualScheduler(const std::vector<const backend::Backend *> &backends,
@@ -116,5 +114,4 @@ const backend::Backend *ManualScheduler::resolveBackend(const std::string &id,
   return backend;
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

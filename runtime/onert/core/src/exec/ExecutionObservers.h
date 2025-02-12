@@ -28,9 +28,7 @@
 #include "util/ITimer.h"
 #include "util/TracingCtx.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 enum class ObserverType
@@ -123,7 +121,6 @@ private:
   bool _triggered;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_OBSREVERS_H__

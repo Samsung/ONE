@@ -33,9 +33,7 @@
 #include <misc/string_helpers.h>
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
@@ -226,5 +224,4 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

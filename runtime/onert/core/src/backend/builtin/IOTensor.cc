@@ -18,11 +18,7 @@
 
 #include <assert.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 // `dynamic_cast` not working across library boundaries on NDK
@@ -54,6 +50,4 @@ void IOTensor::setTensor(IPortableTensor *tensor)
   }
 }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

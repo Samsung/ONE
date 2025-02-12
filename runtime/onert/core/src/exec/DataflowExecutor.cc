@@ -20,9 +20,7 @@
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 int64_t DataflowExecutor::calculateRank(const std::vector<ir::OperationIndex> &operations)
@@ -178,5 +176,4 @@ void DataflowExecutor::executeImpl(const ExecutionObservee &subject)
   _input_info = _initial_input_info;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

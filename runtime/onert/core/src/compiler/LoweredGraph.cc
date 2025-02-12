@@ -33,9 +33,7 @@
 #include <cassert>
 #include <sstream>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 LoweredGraph::LoweredGraph(const ir::Graph &graph, const CompilerOptions &options) : _graph{graph}
@@ -242,5 +240,4 @@ void LoweredGraph::dumpLowerInfo()
   }
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

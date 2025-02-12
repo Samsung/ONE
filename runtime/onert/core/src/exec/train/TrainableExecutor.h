@@ -29,11 +29,7 @@
 #include "ir/Index.h"
 #include "util/TracingCtx.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 class TrainableExecutor : public IExecutor
@@ -136,8 +132,6 @@ private:
   ExecutionOptions _current_options;
 };
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTOR_H_

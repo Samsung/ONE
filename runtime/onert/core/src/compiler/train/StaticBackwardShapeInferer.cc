@@ -23,11 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 void StaticBackwardShapeInferer::infer()
@@ -145,6 +141,4 @@ void StaticBackwardShapeInferer::visit(const ir::train::operation::Softmax &)
   // NYI
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

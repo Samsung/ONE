@@ -19,11 +19,7 @@
 #include "ir/Graph.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
@@ -91,6 +87,4 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
   }
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

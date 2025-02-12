@@ -27,11 +27,7 @@
 
 #include "DynamicTensorManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 class TensorBuilder
@@ -70,8 +66,6 @@ private:
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__

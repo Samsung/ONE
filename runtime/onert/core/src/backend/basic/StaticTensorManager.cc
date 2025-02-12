@@ -22,11 +22,7 @@
 #include "backend/basic/Tensor.h"
 #include <util/logging.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 StaticTensorManager::StaticTensorManager(
@@ -167,6 +163,4 @@ bool StaticTensorManager::isSharedMemoryOperand(const ir::OperandIndex &ind) con
   return false;
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

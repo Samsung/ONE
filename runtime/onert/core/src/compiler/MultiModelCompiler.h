@@ -26,9 +26,7 @@
 #include "compiler/ICompiler.h"
 #include "ir/NNPkg.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 /**
@@ -62,7 +60,6 @@ private:
   CompilerOptions *_options;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__

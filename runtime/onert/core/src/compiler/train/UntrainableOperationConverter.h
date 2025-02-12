@@ -23,11 +23,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 class UntrainableOperationConverter : public ir::OperationVisitor
@@ -45,8 +41,6 @@ protected:
   std::unique_ptr<ir::train::ITrainableOperation> _return_op;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_UNTRAINABLE_OPERATION_CONVERTER_H__

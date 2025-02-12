@@ -19,13 +19,7 @@
 #include "ir/Graph.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
-{
-namespace pass
+namespace onert::compiler::train::pass
 {
 
 void TrainableConstantInsertionPass::callback(const ir::OperationIndex &node_index,
@@ -90,7 +84,4 @@ void TrainableConstantInsertionPass::updateUseDef(const ir::OperandIndex &old_in
   old_object.removeUse(node_index);
 }
 
-} // namespace pass
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train::pass

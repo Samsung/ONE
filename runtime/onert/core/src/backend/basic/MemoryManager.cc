@@ -22,11 +22,7 @@
 #include "util/ConfigSource.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 MemoryManager::MemoryManager() : _mem_planner{createMemoryPlanner()}
@@ -104,6 +100,4 @@ void DynamicMemoryManager::deallocate(void)
   _mem_alloc_map.clear();
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
