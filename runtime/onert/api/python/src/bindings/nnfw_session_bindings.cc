@@ -18,11 +18,7 @@
 
 #include "nnfw_api_wrapper.h"
 
-namespace onert
-{
-namespace api
-{
-namespace python
+namespace onert::api::python
 {
 
 namespace py = pybind11;
@@ -266,6 +262,4 @@ void bind_experimental_nnfw_session(py::module_ &m)
          "Export the training checkpoint to a file.");
 }
 
-} // namespace python
-} // namespace api
-} // namespace onert
+} // namespace onert::api::python
