@@ -51,9 +51,10 @@ enum BGCOLORS : int
 class Node
 {
 public:
-  const static std::string DEFAULT_FILLCOLOR;
-  const static std::string DEFAULT_COLORSCHEME;
-  const static std::string BG_COLORS[8];
+  const static inline std::string DEFAULT_FILLCOLOR = "x11";
+  const static inline std::string DEFAULT_COLORSCHEME = "white";
+  // RED, BLUE, GREEN, PURPLE, ORANGE, YELLOW, BROWN, PINK
+  const static inline std::string BG_COLORS[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
 public:
   /**

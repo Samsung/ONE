@@ -19,11 +19,6 @@
 namespace onert::dumper::dot
 {
 
-const std::string Node::DEFAULT_COLORSCHEME = "x11";
-const std::string Node::DEFAULT_FILLCOLOR = "white";
-// RED, BLUE, GREEN, PURPLE, ORANGE, YELLOW, BROWN, PINK
-const std::string Node::BG_COLORS[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
-
 Node::Node(const std::string &id) : _id{id}
 {
   // Set default values
