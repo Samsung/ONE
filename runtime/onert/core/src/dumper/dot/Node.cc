@@ -16,11 +16,7 @@
 
 #include "Node.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 const std::string Node::DEFAULT_COLORSCHEME = "x11";
@@ -51,6 +47,4 @@ std::string Node::getAttribute(const std::string &key)
   }
 }
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot

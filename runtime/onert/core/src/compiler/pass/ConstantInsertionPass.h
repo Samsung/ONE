@@ -23,11 +23,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 class ConstantInsertionPass : public LoweredOperationPass
@@ -46,8 +42,6 @@ private:
   std::unordered_map<ir::OperandIndex, const backend::Backend *> _keep_operands_map;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__

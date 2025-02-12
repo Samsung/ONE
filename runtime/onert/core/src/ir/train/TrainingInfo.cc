@@ -16,11 +16,7 @@
 
 #include "ir/train/TrainingInfo.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 bool TrainingInfo::isValid() const
@@ -44,6 +40,4 @@ bool TrainingInfo::isValid() const
   return true;
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train

@@ -27,9 +27,7 @@
 #include "ir/OperandInfo.h"
 #include "ir/OperationIndexSet.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Operand
@@ -115,7 +113,6 @@ private:
   OperationIndex _def;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERAND_H__

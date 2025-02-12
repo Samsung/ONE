@@ -18,9 +18,7 @@
 
 #include <fstream>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 /**
  * @brief Helper function for reading string from stream
@@ -228,5 +226,4 @@ void JSON::loadOperationsExecTime()
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

@@ -24,9 +24,7 @@
 
 #include <map>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -124,7 +122,6 @@ private:
   std::shared_ptr<backend::ITensorRegistry> _tensor_registry;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_DYNAMIC_SHAPE_INFERER_H__

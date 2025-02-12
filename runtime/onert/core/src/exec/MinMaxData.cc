@@ -18,9 +18,7 @@
 
 #include <iostream>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 RawMinMaxDumper::RawMinMaxDumper(const std::string &filename) : _filename(filename) {}
@@ -131,5 +129,4 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
   std::fclose(file);
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

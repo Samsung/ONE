@@ -16,9 +16,7 @@
 
 #include "ExecutionObservee.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 ExecutionObservee::ExecutionObservee(const ExecObservers &observers,
@@ -90,5 +88,4 @@ void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex subg
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

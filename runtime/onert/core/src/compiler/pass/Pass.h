@@ -21,19 +21,12 @@
 
 #include <string>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 class Graph;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 class Pass : public IPass
@@ -50,8 +43,6 @@ protected:
   ir::Graph &_graph;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_PASS_H__

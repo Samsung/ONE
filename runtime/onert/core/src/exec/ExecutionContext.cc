@@ -18,9 +18,7 @@
 
 #include "util/ConfigSource.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void ExecutionOptions::fromGlobalConfig(ExecutionOptions &options)
@@ -30,5 +28,4 @@ void ExecutionOptions::fromGlobalConfig(ExecutionOptions &options)
   options.profile = util::getConfigBool(util::config::PROFILING_MODE);
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

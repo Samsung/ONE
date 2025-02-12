@@ -19,9 +19,7 @@
 
 #include <chrono>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 class ITimer
@@ -53,7 +51,6 @@ private:
   std::chrono::steady_clock::time_point _start_time; // in microseconds
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_ITIMER_H__

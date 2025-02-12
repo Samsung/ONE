@@ -17,11 +17,7 @@
 #include "ir/operation/EmbeddingLookup.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void EmbeddingLookup::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ EmbeddingLookup::EmbeddingLookup(const OperandIndexSequence &inputs,
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

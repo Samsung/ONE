@@ -25,13 +25,7 @@
 #include <exec/train/TrainableFnSequence.h>
 #include <ir/train/TrainableGraph.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 class KernelGenerator : public backend::train::KernelGeneratorBase
@@ -67,9 +61,6 @@ private:
   ir::OperandIndexSequence _whole_graph_outputs;
 };
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train
 
 #endif // __ONERT_BACKEND_BUTIN_TRAIN_KERNEL_GENERATOR_H__

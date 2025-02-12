@@ -20,9 +20,7 @@
 #include "IPermuteFunction.h"
 #include "../backend/builtin/UserTensor.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void SingleModelExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
@@ -179,5 +177,4 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

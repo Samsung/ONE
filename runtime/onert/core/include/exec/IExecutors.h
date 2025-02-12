@@ -19,9 +19,7 @@
 
 #include "IExecutor.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -92,7 +90,6 @@ public:
   virtual void execute(const ExecutionContext &ctx) = 0;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_I_EXECUTORS_H__

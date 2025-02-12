@@ -16,9 +16,7 @@
 
 #include "ir/OperandInfo.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 size_t OperandInfo::total_size() const
@@ -47,5 +45,4 @@ size_t OperandInfo::total_size() const
   }
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

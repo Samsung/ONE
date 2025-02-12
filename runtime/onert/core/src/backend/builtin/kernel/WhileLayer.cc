@@ -23,13 +23,7 @@
 
 #include <algorithm>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 WhileLayer::WhileLayer(const std::vector<backend::IPortableTensor *> input_tensors,
@@ -149,7 +143,4 @@ void WhileLayer::run()
   }
 }
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel

@@ -22,13 +22,7 @@
 
 #include <ruy/thread_pool.h> // from @ruy
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 class PermuteLayer : public onert::exec::IPermuteFunction
@@ -140,9 +134,6 @@ private:
   std::unordered_map<const ITensor *, std::vector<PermuteWorkerTask>> _tasks_map;
 };
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel
 
 #endif // __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__

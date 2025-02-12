@@ -28,9 +28,7 @@
       throw std::runtime_error("ShapeValidator failed at line " + std::to_string(__LINE__)); \
   } while (0)
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 ShapeValidator::ShapeValidator(const ir::Graph &graph) : _graph{graph} {}
@@ -1159,5 +1157,4 @@ void ShapeValidator::visit(const ir::operation::RoPE &node)
   OP_REQUIRES(operands.at(cos_table_index).shape().rank() == 4);
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

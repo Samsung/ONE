@@ -20,11 +20,7 @@
 #include "ir/operation/Permute.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void OddOutputPass::run()
@@ -83,6 +79,4 @@ ir::OperandIndex OddOutputPass::insertPermute(ir::OperandIndex ind)
   return output_ind;
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

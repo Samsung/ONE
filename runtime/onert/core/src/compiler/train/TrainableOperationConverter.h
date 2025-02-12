@@ -21,11 +21,7 @@
 
 #include "ir/train/TrainingInfo.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 class TrainableOperationConverter : public UntrainableOperationConverter
@@ -54,8 +50,6 @@ private:
   [[maybe_unused]] const ir::train::TrainingInfo *_training_info;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_TRAINABLE_OPERATION_CONVERTER_H__

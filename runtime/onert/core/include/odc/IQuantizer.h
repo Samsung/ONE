@@ -20,9 +20,7 @@
 #include "odc/QuantizeType.h"
 #include <cstdint>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 class IQuantizer
@@ -52,7 +50,6 @@ public:
   virtual bool deleteMinMaxFile() = 0;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_IQUANTIZER_H__

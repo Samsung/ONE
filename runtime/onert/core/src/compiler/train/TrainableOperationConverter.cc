@@ -18,11 +18,7 @@
 
 #include "ir/train/Operations.Include.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 TrainableOperationConverter::TrainableOperationConverter(
@@ -94,6 +90,4 @@ void TrainableOperationConverter::visit(const ir::operation::Softmax &node)
   _return_op = std::make_unique<ir::train::operation::Softmax>(node);
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

@@ -27,9 +27,7 @@ static const char *SHARED_LIB_EXT =
   ".so";
 #endif
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 QuantizerLoader &QuantizerLoader::instance()
@@ -100,5 +98,4 @@ int32_t QuantizerLoader::unloadLibrary()
   return 0;
 }
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc

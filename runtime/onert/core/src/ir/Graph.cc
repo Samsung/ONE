@@ -21,9 +21,7 @@
 
 #include "util/Set.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 Graph::Graph() = default;
@@ -212,5 +210,4 @@ std::vector<ir::OperationIndex> Graph::topolSortOperations() const
   return ret;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

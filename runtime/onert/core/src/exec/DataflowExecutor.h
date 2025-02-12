@@ -29,9 +29,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class DataflowExecutor : public ExecutorBase
@@ -90,7 +88,6 @@ protected:
   std::unordered_map<uint32_t, ir::OperationIndex> _job_to_op;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_DATAFLOW_EXECUTOR_H__

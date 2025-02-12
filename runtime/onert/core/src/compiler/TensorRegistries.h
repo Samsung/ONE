@@ -26,9 +26,7 @@
 #include <memory>
 #include <unordered_set>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class TensorRegistries
@@ -85,7 +83,6 @@ private:
   std::shared_ptr<backend::builtin::TensorRegistry> _builtin_tensor_reg;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_TENSOR_REGISTRIES_H__

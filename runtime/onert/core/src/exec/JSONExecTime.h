@@ -24,9 +24,7 @@
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -89,7 +87,6 @@ private:
   void loadOperationsExecTime();
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_JSON_EXEC_TIME_H__

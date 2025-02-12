@@ -23,9 +23,7 @@
 #include "ir/OpCode.h"
 #include "ir/OperandIndexSequence.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 struct OperationVisitor;
@@ -44,7 +42,6 @@ struct IOperation
   virtual const OperandIndexSequence &getOutputs() const = 0;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_IOPERATION_H__

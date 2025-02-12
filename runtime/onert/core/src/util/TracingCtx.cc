@@ -17,14 +17,11 @@
 
 #include "util/TracingCtx.h"
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 // initializing static member var
 std::mutex TracingCtx::_session_id_mutex;
 uint32_t TracingCtx::_next_session_id = 0;
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util

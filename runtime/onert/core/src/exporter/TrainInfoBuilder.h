@@ -21,9 +21,7 @@
 #include "circle_schema_generated.h"
 #include "circle_traininfo_generated.h"
 
-namespace onert
-{
-namespace exporter
+namespace onert::exporter
 {
 
 class TrainInfoBuilder
@@ -110,7 +108,6 @@ private:
   ::flatbuffers::FlatBufferBuilder _builder;
 };
 
-} // namespace exporter
-} // namespace onert
+} // namespace onert::exporter
 
 #endif // __ONERT_EXPORTER_TRAININFO_BUILDER_H__

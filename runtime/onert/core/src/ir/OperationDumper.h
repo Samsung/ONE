@@ -20,9 +20,7 @@
 #include "ir/OperationVisitor.h"
 #include <string>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class OperationDumper : public OperationVisitor
@@ -93,7 +91,6 @@ public:
   void visit(const operation::While &) override;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_OPERATION_DUMPER_H__

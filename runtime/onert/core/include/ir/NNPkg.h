@@ -24,9 +24,7 @@
 #include "ir/Index.h"
 #include "ir/Model.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 using IODesc = std::tuple<ModelIndex, SubgraphIndex, IOIndex>;
@@ -297,8 +295,7 @@ private:
   ModelEdges _edges;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 namespace std
 {

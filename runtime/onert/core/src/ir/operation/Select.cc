@@ -18,11 +18,7 @@
 
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Select::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ Select::Select(const OperandIndexSequence &inputs, const OperandIndexSequence &o
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

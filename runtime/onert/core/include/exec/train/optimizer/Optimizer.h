@@ -22,13 +22,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace exec
-{
-namespace train
-{
-namespace optimizer
+namespace onert::exec::train::optimizer
 {
 
 // Gradient tensor, Trainable Tensor, Number of training steps
@@ -76,9 +70,6 @@ public:
   // TODO Add member functions for exporting optimizer information
 };
 
-} // namespace optimizer
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train::optimizer
 
 #endif // __ONERT_EXEC_TRAIN_OPTIMIZER_OPTIMIZER_H__

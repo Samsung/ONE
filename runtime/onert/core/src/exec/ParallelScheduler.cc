@@ -21,9 +21,7 @@
 #include <memory>
 #include "util/logging.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 ParallelScheduler::ParallelScheduler(const BackendSet &backends)
@@ -51,5 +49,4 @@ void ParallelScheduler::finish()
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

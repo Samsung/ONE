@@ -23,9 +23,7 @@
 
 #include "Layout.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 /**
@@ -127,7 +125,6 @@ private:
  */
 Coordinates convertCoordinates(const Coordinates &coords, const PermuteType &type);
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_COORDINATES_H__

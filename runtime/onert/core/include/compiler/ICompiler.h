@@ -25,9 +25,7 @@
 #include "exec/IExecutors.h"
 #include "util/TracingCtx.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 struct CompilerArtifact
@@ -57,7 +55,6 @@ public:
   virtual std::shared_ptr<CompilerArtifact> compile(void) = 0;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_I_COMPILER_H_

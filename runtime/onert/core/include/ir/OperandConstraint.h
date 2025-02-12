@@ -21,9 +21,7 @@
 #include <limits>
 #include <set>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class OperandConstraint
@@ -52,7 +50,6 @@ private:
   uint32_t _end;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_MODEL_OPERAND_CONSTRAINT_H__

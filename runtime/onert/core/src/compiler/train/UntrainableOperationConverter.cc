@@ -18,11 +18,7 @@
 
 #include "ir/train/operation/UntrainableOperation.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 UntrainableOperationConverter::UntrainableOperationConverter(ir::train::TrainableGraph &tgraph)
@@ -48,6 +44,4 @@ UntrainableOperationConverter::operator()(const ir::IOperation &op)
 #include "ir/Operations.lst"
 #undef OP
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

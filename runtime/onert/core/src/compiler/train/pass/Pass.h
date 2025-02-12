@@ -19,25 +19,13 @@
 
 #include "../../pass/IPass.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 class TrainableGraph;
 class TrainingInfo;
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
-{
-namespace pass
+namespace onert::compiler::train::pass
 {
 
 class Pass : public compiler::pass::IPass
@@ -54,9 +42,6 @@ protected:
   const ir::train::TrainingInfo *_training_info;
 };
 
-} // namespace pass
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train::pass
 
 #endif // __ONERT_COMPILER_TRAIN_PASS_PASS_H__

@@ -30,9 +30,7 @@
 #include <deque>
 #include <semaphore.h>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -203,7 +201,6 @@ private:
   bool finished{false};
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTION_H__

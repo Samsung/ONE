@@ -20,9 +20,7 @@
 #include "compiler/BackendResolver.h"
 #include "ir/Graph.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 struct IScheduler
@@ -32,7 +30,6 @@ struct IScheduler
   virtual std::unique_ptr<BackendResolver> schedule(const ir::Graph &graph) = 0;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_CORE_COMPILER_I_SCHEDULER_H__

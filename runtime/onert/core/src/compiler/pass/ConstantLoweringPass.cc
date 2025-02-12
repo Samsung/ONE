@@ -21,11 +21,7 @@
 #include "util/logging.h"
 #include "util/Utils.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
@@ -48,6 +44,4 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
   }
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

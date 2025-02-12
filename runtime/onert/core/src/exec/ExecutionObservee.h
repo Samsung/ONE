@@ -23,9 +23,7 @@
 
 #include <list>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -53,7 +51,6 @@ private:
   std::list<IExecutionObserver *> _observers;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTION_OBSERVEE__

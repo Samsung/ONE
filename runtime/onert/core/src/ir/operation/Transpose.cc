@@ -17,11 +17,7 @@
 #include "ir/operation/Transpose.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Transpose::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -31,6 +27,4 @@ Transpose::Transpose(const OperandIndexSequence &inputs, const OperandIndexSeque
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -17,11 +17,7 @@
 #include "ir/operation/SquaredDifference.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void SquaredDifference::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ SquaredDifference::SquaredDifference(const OperandIndexSequence &inputs,
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

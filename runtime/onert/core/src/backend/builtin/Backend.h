@@ -31,11 +31,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 class Backend : public ::onert::backend::Backend, public backend::train::ITrainableBackend
@@ -92,8 +88,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_BACKEND_H__

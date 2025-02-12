@@ -22,24 +22,16 @@ namespace circle
 {
 struct ModelT;
 } // namespace circle
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 class Execution;
-} // namespace exec
-namespace ir
-{
-namespace train
+} // namespace onert::exec
+namespace onert::ir::train
 {
 class TrainingInfo;
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
-namespace onert
-{
-namespace exporter
+namespace onert::exporter
 {
 class CircleExporter
 {
@@ -60,5 +52,4 @@ private:
   std::mutex _mutex;
 };
 
-} // namespace exporter
-} // namespace onert
+} // namespace onert::exporter

@@ -16,9 +16,7 @@
 
 #include "LayoutSet.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 LayoutSet::LayoutSet(std::initializer_list<Layout> layouts)
@@ -62,5 +60,4 @@ LayoutSet LayoutSet::operator-(const LayoutSet &other) const
   return ret;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

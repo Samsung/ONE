@@ -17,11 +17,7 @@
 #include "ir/operation/BroadcastTo.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void BroadcastTo::accept(OperationVisitor &v) const { v.visit(*this); }
 
@@ -30,6 +26,4 @@ BroadcastTo::BroadcastTo(const OperandIndexSequence &inputs, const OperandIndexS
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

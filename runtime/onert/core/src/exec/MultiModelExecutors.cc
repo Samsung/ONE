@@ -53,9 +53,7 @@ int32_t find_output_index(const std::vector<ir::IODesc> &pkg_outputs,
 
 } // namespace
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void MultiModelExecutors::emplace(const ir::ModelIndex &model_index,
@@ -596,5 +594,4 @@ uint16_t MultiModelExecutors::modelCount() const
   return model_count;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

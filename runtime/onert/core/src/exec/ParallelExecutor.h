@@ -24,9 +24,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -58,7 +56,6 @@ private:
   std::unique_ptr<ParallelScheduler> _scheduler;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_PARALLEL_EXECUTOR_H__

@@ -24,9 +24,7 @@
 #include "ir/OperandIndexSequence.h"
 #include "backend/Backend.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class Job
@@ -63,7 +61,6 @@ private:
   FunctionSequence *_fn_seq;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_JOB_H__

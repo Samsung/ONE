@@ -22,9 +22,7 @@
 #include <functional>
 #include <memory>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 /**
@@ -90,7 +88,6 @@ private:
   std::unique_ptr<ICodegen, codegen_destory_t> _codegen{nullptr, nullptr};
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_CODEGEN_LOADER_H__

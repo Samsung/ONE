@@ -16,11 +16,7 @@
 
 #include "DotBuilder.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 // DotDumper
@@ -59,6 +55,4 @@ void DotBuilder::addEdge(const Node &node1, const Node &node2)
   _dot << node1.id() << " -> " << node2.id() << ";\n";
 }
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot

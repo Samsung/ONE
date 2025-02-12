@@ -29,9 +29,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 inline void UpdateOffsets(::onert::backend::ITensor *src, ::onert::backend::ITensor *dst,
@@ -265,7 +263,6 @@ public:
   void optimize() override {}
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_I_PERMUTE_FUNCTION_H__

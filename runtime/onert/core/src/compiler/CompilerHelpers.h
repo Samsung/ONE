@@ -24,9 +24,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 /**
@@ -46,7 +44,6 @@ createStaticShapeInferers(
   return StaticShapeInferer::createStaticShapeInferers(lsubgs);
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_COMPILER_HELPERS_H__

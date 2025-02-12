@@ -19,11 +19,7 @@
 
 #include "OperandPass.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 /**
@@ -56,8 +52,6 @@ public:
   void callback(const ir::OperandIndex &i, ir::Operand &o) final;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__

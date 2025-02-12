@@ -16,13 +16,7 @@
 
 #include "IfLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 IfLayer::IfLayer(backend::IPortableTensor *cond_tensor,
@@ -75,7 +69,4 @@ void IfLayer::run()
               << std::endl;
 }
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel

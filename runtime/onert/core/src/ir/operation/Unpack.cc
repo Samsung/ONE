@@ -17,11 +17,7 @@
 #include "ir/operation/Unpack.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void Unpack::accept(OperationVisitor &v) const { v.visit(*this); }
 Unpack::Unpack(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
@@ -29,6 +25,4 @@ Unpack::Unpack(const OperandIndexSequence &inputs, const OperandIndexSequence &o
   : Operation{OperandConstraint::createExact(1u), inputs, outputs}, _param{param}
 {
 }
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

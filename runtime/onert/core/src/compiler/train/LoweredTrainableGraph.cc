@@ -36,11 +36,7 @@
 #include <cassert>
 #include <sstream>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 LoweredTrainableGraph::LoweredTrainableGraph(ir::train::TrainableGraph &graph,
@@ -272,6 +268,4 @@ void LoweredTrainableGraph::dumpLowerInfo()
   }
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

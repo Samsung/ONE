@@ -285,9 +285,7 @@ void generateCodes(backend::train::FunctionMap &codes,
 } // namespace
 } // namespace onert
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 ExecutorFactory &ExecutorFactory::get()
@@ -888,5 +886,4 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   return exec;
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

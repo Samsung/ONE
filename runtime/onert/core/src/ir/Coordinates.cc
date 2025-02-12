@@ -18,9 +18,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 Coordinates convertCoordinates(const Coordinates &coords, const PermuteType &type)
@@ -47,5 +45,4 @@ Coordinates convertCoordinates(const Coordinates &coords, const PermuteType &typ
   return to;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

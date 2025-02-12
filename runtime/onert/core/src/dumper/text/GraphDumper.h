@@ -19,33 +19,23 @@
 
 #include <ir/Index.h>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 class Graph;
 struct IOperation;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 class LoweredGraph;
+} // namespace onert::compiler
 
-namespace train
+namespace onert::compiler::train
 {
 class LoweredTrainableGraph;
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
-namespace onert
-{
-namespace dumper
-{
-namespace text
+namespace onert::dumper::text
 {
 
 std::string formatOperandBrief(ir::OperandIndex ind);
@@ -55,8 +45,6 @@ void dumpGraph(const ir::Graph &graph);
 void dumpLoweredGraph(const compiler::LoweredGraph &lgraph);
 void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph);
 
-} // namespace text
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::text
 
 #endif // __ONERT_DUMPER_TEXT_GRAPH_DUMPER_H__

@@ -19,13 +19,7 @@
 #include "backend/basic/train/TrainableBackendContextHelpers.h"
 #include "exec/FunctionSequence.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 backend::train::FunctionMap BackendContext::gen()
@@ -62,7 +56,4 @@ backend::train::FunctionMap BackendContext::gen()
   return fn_map;
 }
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train

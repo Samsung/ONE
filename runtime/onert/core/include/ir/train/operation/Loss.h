@@ -23,13 +23,7 @@
 #include "ir/train/LossCode.h"
 #include "ir/train/LossInfo.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace operation
+namespace onert::ir::train::operation
 {
 
 class Loss : public ir::operation::Loss, public TrainableOperation
@@ -56,9 +50,6 @@ private:
   ir::OpCode _y_pred_op_code; // The op code of the last node computing y_pred
 };
 
-} // namespace operation
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::operation
 
 #endif // __ONERT_IR_TRAIN_OPERATION_LOSS_H__

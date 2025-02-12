@@ -18,11 +18,7 @@
 
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Pad::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -34,6 +30,4 @@ Pad::Pad(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -20,13 +20,7 @@
 #include "backend/basic/BackendContextHelpers.h"
 #include "backend/train/TrainableBackendContext.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
-{
-namespace train
+namespace onert::backend::basic::train
 {
 
 // TODO Unify with the above `getTensors()` function in `BackendContextHelpers.h`
@@ -54,9 +48,6 @@ ITensorRegistry *genTensors(backend::train::TrainableBackendContext &ctx,
   return ctx.tensor_registry().get();
 }
 
-} // namespace train
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic::train
 
 #endif // __ONERT_BACKEND_BASIC_TRAIN_TRAINABLE_BACKEND_CONTEXT_HELPERS_H__

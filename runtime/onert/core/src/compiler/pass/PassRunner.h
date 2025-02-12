@@ -24,11 +24,7 @@
 #include "IPass.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 /**
@@ -46,8 +42,6 @@ private:
   std::vector<std::unique_ptr<IPass>> _passes;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_PASS_RUNNER_H__

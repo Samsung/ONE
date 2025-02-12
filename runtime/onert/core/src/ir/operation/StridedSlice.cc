@@ -17,11 +17,7 @@
 #include "ir/operation/StridedSlice.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void StridedSlice::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ StridedSlice::StridedSlice(const OperandIndexSequence &inputs, const OperandInde
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

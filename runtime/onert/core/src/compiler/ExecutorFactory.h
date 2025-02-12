@@ -29,9 +29,7 @@
 #include <deque>
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 // TODO Change to a better name
@@ -98,7 +96,6 @@ private:
     _map;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_EXECUTOR_FACTORY_H__

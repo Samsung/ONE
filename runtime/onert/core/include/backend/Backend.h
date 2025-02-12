@@ -23,9 +23,7 @@
 #include "backend/IConfig.h"
 #include "backend/BackendContext.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 namespace custom
@@ -42,7 +40,6 @@ public:
   virtual std::unique_ptr<BackendContext> newContext(ContextData &&) const = 0;
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_BACKEND_H__

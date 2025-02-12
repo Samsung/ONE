@@ -20,9 +20,7 @@
 #include "backend/Backend.h"
 #include "util/Set.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 using BackendSet = util::Set<const backend::Backend *>;
@@ -50,7 +48,6 @@ private:
   BackendSet _use_backends;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_OPERAND_LOWER_INFO_H__

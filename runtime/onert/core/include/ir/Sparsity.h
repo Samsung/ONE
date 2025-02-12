@@ -21,9 +21,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 /**
@@ -58,7 +56,6 @@ private:
   std::vector<int32_t> _block_size;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_SPARSITY_H__

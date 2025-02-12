@@ -21,9 +21,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 /**
@@ -36,7 +34,6 @@ namespace loader
  */
 std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::string &type);
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader
 
 #endif // __ONERT_LOADER_MODEL_LOADER_H__

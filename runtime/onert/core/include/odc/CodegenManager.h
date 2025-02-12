@@ -19,9 +19,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 enum class CodegenPreference
@@ -75,7 +73,6 @@ private:
   std::string _export_model_path = "";
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_CODEGEN_MANAGER_H__

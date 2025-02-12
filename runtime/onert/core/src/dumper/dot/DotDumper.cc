@@ -25,11 +25,7 @@
 #include "backend/IConfig.h"
 #include "compiler/BackendManager.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 namespace
@@ -233,6 +229,4 @@ void DotDumper::dump(const ir::train::TrainableGraph &graph, const std::string &
   dump(graph.graph(), tag);
 }
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot

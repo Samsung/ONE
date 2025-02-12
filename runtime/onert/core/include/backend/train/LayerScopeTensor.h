@@ -19,11 +19,7 @@
 
 #include <backend/basic/Tensor.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 enum class LayerScopeTensorLifeTime : unsigned char
@@ -60,8 +56,6 @@ private:
 
 using LayerScopeTensors = std::vector<std::shared_ptr<LayerScopeTensor>>;
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_LAYER_SCOPE_TENSOR_H__

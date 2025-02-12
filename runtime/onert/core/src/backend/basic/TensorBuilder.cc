@@ -20,11 +20,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 TensorBuilder::TensorBuilder(
@@ -94,6 +90,4 @@ const ir::OperandIndexMap<ir::OperandIndex> &TensorBuilder::getSharedMemoryOpera
   return _shared_memory_operand_indexes;
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

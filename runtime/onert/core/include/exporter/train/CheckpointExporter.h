@@ -21,34 +21,22 @@
 #include <vector>
 #include <memory>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 class Execution;
-} // namespace exec
-namespace ir
-{
-namespace train
+} // namespace onert::exec
+namespace onert::ir::train
 {
 class TrainingInfo;
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
-namespace onert
-{
-namespace exporter
-{
-namespace train
+namespace onert::exporter::train
 {
 
 void exportCheckpoint(const std::string &filename,
                       const std::unique_ptr<ir::train::TrainingInfo> &train_info,
                       const std::unique_ptr<exec::Execution> &exec);
 
-} // namespace train
-} // namespace exporter
-} // namespace onert
+} // namespace onert::exporter::train
 
 #endif // __ONERT_EXPORTER_TRAIN_CHECKPOINT_EXPORTER_H__

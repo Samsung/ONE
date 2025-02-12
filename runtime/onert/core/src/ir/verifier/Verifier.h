@@ -19,19 +19,12 @@
 
 #include "ir/train/UseDefChains.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 class Graph;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace ir
-{
-namespace verifier
+namespace onert::ir::verifier
 {
 
 struct IVerifier
@@ -40,15 +33,9 @@ struct IVerifier
   virtual bool verify(const Graph &graph) const noexcept = 0;
 };
 
-} // namespace verifier
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::verifier
 
-namespace onert
-{
-namespace ir
-{
-namespace verifier
+namespace onert::ir::verifier
 {
 
 class DAGChecker : public IVerifier
@@ -74,8 +61,6 @@ public:
   bool verify(const Graph &graph) const noexcept override;
 };
 
-} // namespace verifier
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::verifier
 
 #endif // __ONERT_GRAPH_VERIFIER_VERIFIER_H__

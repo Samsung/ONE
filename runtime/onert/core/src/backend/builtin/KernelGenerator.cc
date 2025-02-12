@@ -22,11 +22,7 @@
 
 #include "exec/FunctionSequence.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
@@ -156,6 +152,4 @@ backend::IPortableTensor *KernelGenerator::getPortableTensor(const ir::OperandIn
   return ret;
 }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

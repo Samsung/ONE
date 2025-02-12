@@ -21,9 +21,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class EdgeTensor : public backend::IPortableTensor
@@ -66,7 +64,6 @@ private:
   int32_t _ref_count;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EDGE_TENSOR_H__

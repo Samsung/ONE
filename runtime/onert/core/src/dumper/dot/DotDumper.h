@@ -21,11 +21,7 @@
 #ifndef __ONERT_DUMPER_DOT_DOT_DUMPER_H__
 #define __ONERT_DUMPER_DOT_DOT_DUMPER_H__
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 class DotDumper
@@ -73,8 +69,6 @@ private:
   Level _level;
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_DOT_DUMPER_H__

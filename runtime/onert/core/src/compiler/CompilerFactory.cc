@@ -20,9 +20,7 @@
 #include "train/TrainingCompiler.h"
 #include "compiler/Compiler.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 CompilerFactory &CompilerFactory::get()
@@ -46,5 +44,4 @@ std::unique_ptr<ICompiler> CompilerFactory::create(const std::shared_ptr<ir::NNP
   return std::make_unique<MultiModelCompiler>(nnpkg, copts);
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

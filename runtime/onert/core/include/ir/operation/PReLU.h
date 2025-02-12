@@ -19,11 +19,7 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class PReLU : public Operation
@@ -43,8 +39,6 @@ public:
   OpCode opcode() const final { return OpCode::PReLU; }
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_PRELU_H__

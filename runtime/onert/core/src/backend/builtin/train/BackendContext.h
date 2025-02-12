@@ -23,13 +23,7 @@
 #include "../ExternalContext.h"
 #include "../TensorBuilder.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 class BackendContext : public backend::train::TrainableBackendContext
@@ -65,9 +59,6 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
 };
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train
 
 #endif // __ONERT_BACKEND_BUILTIN_TRAIN_BACKEND_CONTEXT_H__

@@ -19,9 +19,7 @@
 #include <algorithm>
 #include <cassert>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 int64_t ExecTime::getOperationExecTime(const backend::Backend *backend,
@@ -131,5 +129,4 @@ int64_t ExecTime::getPermuteTime(const backend::Backend *from_backend,
   return getOperationExecTime(from_backend, to_backend->config()->id(), quant, op_size);
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

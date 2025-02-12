@@ -24,9 +24,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 struct CodeAndInfo
@@ -45,7 +43,6 @@ struct CodeAndInfo
 
 using CodeMap = std::unordered_map<ir::OperationIndex, CodeAndInfo>;
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_CODE_MAP_H__

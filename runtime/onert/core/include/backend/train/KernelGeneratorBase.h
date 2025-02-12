@@ -24,11 +24,7 @@
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/TrainableOperationVisitor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class KernelGeneratorBase : public ir::train::TrainableOperationVisitor
@@ -53,8 +49,6 @@ protected:
   std::unique_ptr<exec::train::ITrainableFunction> _return_fn;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_BASE_H__

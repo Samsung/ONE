@@ -23,9 +23,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class MinMaxRecorder : public IExecutionObserver
@@ -52,7 +50,6 @@ private:
   IOMinMaxMap _input_minmax;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_MINMAX_RECORDER__

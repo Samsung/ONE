@@ -26,13 +26,7 @@
 
 #include "backend/basic/MemoryManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 class WhileLayer : public ::onert::exec::IFunction
@@ -59,9 +53,6 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel
 
 #endif // __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__

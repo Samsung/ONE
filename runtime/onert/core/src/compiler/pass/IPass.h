@@ -19,11 +19,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 struct IPass
@@ -34,8 +30,6 @@ struct IPass
   virtual void run() = 0;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_IPASS_H__

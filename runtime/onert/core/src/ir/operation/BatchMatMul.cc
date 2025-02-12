@@ -17,11 +17,7 @@
 #include "ir/operation/BatchMatMul.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void BatchMatMul::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ BatchMatMul::BatchMatMul(const OperandIndexSequence &inputs, const OperandIndexS
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

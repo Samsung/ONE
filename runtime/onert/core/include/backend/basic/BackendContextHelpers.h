@@ -27,11 +27,7 @@
 #include "backend/basic/TensorRegistry.h"
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
@@ -302,8 +298,6 @@ inline void initConsts(BackendContext &ctx)
   initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(), {});
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__

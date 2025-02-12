@@ -26,9 +26,7 @@
       throw std::runtime_error("OperationValidator failed at line " + std::to_string(__LINE__)); \
   } while (0)
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 OperationValidator::OperationValidator(const Graph &graph)
@@ -570,5 +568,4 @@ void OperationValidator::visit(const operation::While &node)
   OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

@@ -21,9 +21,7 @@
 
 using float16 = Half;
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 size_t sizeOfDataType(DataType data_type)
@@ -58,5 +56,4 @@ size_t sizeOfDataType(DataType data_type)
   }
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

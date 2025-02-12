@@ -21,11 +21,7 @@
 #include "compiler/BackendManager.h"
 #include "ir/Operand.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 class PermutationInsertionPass : public LoweredOperandPass
@@ -50,8 +46,6 @@ private:
                                    const backend::Backend *backend);
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_PERMUTATION_INSERTION_PASS_H__

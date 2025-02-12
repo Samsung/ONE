@@ -20,9 +20,7 @@
 #include <unordered_map>
 #include <utility>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 template <typename N, typename Hash = std::hash<N>> class MinMaxMap
@@ -42,7 +40,6 @@ private:
   std::unordered_map<N, MinMaxPair, Hash> _minmax_map;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_MINMAX_MAP_H_

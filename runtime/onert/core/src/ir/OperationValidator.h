@@ -21,18 +21,13 @@
 #include "ir/Operations.h"
 #include "ir/Operands.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 class Graph;
 class Operands;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class OperationValidator : public OperationVisitor
@@ -97,7 +92,6 @@ private:
   const Operands &_operands;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERATION_VALIDATOR_H__

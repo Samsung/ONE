@@ -20,9 +20,7 @@
 #include "ir/Graph.h"
 #include "compiler/GraphLowerInfo.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 struct ILoweredGraph
@@ -36,7 +34,6 @@ struct ILoweredGraph
   virtual bool getHasDynamicTensor(ir::OperationIndex ind) const = 0;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_ILOWERED_GRAPH_H__

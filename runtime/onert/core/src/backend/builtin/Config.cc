@@ -16,17 +16,11 @@
 
 #include "Config.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 std::string Config::ID = "builtin";
 
 bool Config::initialize() { return true; }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

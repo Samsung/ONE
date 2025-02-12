@@ -18,11 +18,7 @@
 
 #include "ir/Graph.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void OperandPass::run()
@@ -31,6 +27,4 @@ void OperandPass::run()
     [&](const ir::OperandIndex &index, ir::Operand &object) { callback(index, object); });
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

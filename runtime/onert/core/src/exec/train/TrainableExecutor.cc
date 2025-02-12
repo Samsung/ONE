@@ -21,11 +21,7 @@
 
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 TrainableExecutor::TrainableExecutor(
@@ -220,6 +216,4 @@ void TrainableExecutor::iterateTrainableTensors(
   _tensor_regs.iterateTrainableTensors(fn);
 }
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train

@@ -27,11 +27,7 @@
 #include "ir/NNPkg.h"
 #include "ir/train/TrainingInfo.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 /**
@@ -74,8 +70,6 @@ private:
   const ir::train::TrainingInfo _training_info;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_TRAINING_COMPILER_H_

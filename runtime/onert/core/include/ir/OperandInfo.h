@@ -26,9 +26,7 @@
 #include "ir/Shape.h"
 #include "ir/TypeInfo.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 /**
@@ -153,7 +151,6 @@ private:
   OriginIndex _origin;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERAND_INFO_H__

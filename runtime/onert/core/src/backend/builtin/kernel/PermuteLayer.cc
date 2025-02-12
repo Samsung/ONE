@@ -18,13 +18,7 @@
 
 #include <ruy/context.h> // from @ruy
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
@@ -304,7 +298,4 @@ void PermuteLayer::run()
   }
 }
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel

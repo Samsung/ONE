@@ -18,15 +18,7 @@
 
 #include "PermuteLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
-{
-namespace kernel
+namespace onert::backend::builtin::train::kernel
 {
 
 PermuteLayer::PermuteLayer(const std::vector<ITensor *> &src_tensors,
@@ -82,8 +74,4 @@ void PermuteLayer::backward()
   }
 }
 
-} // namespace kernel
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train::kernel

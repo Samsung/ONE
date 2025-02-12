@@ -72,11 +72,7 @@ void disableUnusedBackwardNodes(const UseDefChains &training_usedefs, TrainableG
 
 } // namespace
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 TrainableGraph::TrainableGraph() : _graph{} {}
@@ -389,6 +385,4 @@ void TrainableGraph::updateGraphDependency()
   verifyTrainingUseDefs();
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train

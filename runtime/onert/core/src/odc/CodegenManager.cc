@@ -20,9 +20,7 @@
 #include <mutex>
 #include <stdexcept>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 // TODO Use compile preference
@@ -51,5 +49,4 @@ bool CodegenManager::codegen(const std::string &model_path, const char *target,
   return (result == 0);
 }
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc

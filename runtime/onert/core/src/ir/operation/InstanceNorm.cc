@@ -17,11 +17,7 @@
 #include "ir/operation/InstanceNorm.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void InstanceNorm::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ InstanceNorm::InstanceNorm(const OperandIndexSequence &inputs, const OperandInde
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

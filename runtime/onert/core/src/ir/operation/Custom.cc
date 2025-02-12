@@ -18,11 +18,7 @@
 
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Custom::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -39,6 +35,4 @@ const Custom::Userdata &Custom::userdata() const { return _userdata; }
 
 std::string Custom::name() const { return id(); }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -17,11 +17,7 @@
 #include "ir/operation/Shape.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Shape::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -31,6 +27,4 @@ Shape::Shape(const OperandIndexSequence &inputs, const OperandIndexSequence &out
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

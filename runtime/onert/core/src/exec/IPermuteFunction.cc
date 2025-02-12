@@ -205,9 +205,7 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor, const ir::Per
 
 } // namespace
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void IPermuteFunction::IPermuteFunction::run()
@@ -313,5 +311,4 @@ const std::type_info &IPermuteFunction::underlying_type(ir::DataType type) const
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

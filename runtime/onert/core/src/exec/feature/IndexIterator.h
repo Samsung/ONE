@@ -24,11 +24,7 @@
 
 #include "ir/Shape.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace feature
+namespace onert::exec::feature
 {
 
 /**
@@ -97,8 +93,6 @@ template <typename Callable> IndexIterator &operator<<(IndexIterator &&it, Calla
   return it.iter(cb);
 }
 
-} // namespace feature
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::feature
 
 #endif // __ONERT_EXEC_FEATURE_INDEX_ITERATOR_H__

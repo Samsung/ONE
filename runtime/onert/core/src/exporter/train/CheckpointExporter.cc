@@ -240,11 +240,7 @@ private:
 
 } // namespace
 
-namespace onert
-{
-namespace exporter
-{
-namespace train
+namespace onert::exporter::train
 {
 
 void exportCheckpoint(const std::string &filename,
@@ -255,6 +251,4 @@ void exportCheckpoint(const std::string &filename,
   exporter.save(filename);
 }
 
-} // namespace train
-} // namespace exporter
-} // namespace onert
+} // namespace onert::exporter::train

@@ -22,9 +22,7 @@
 #include <functional>
 #include <memory>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 /**
@@ -83,7 +81,6 @@ private:
   std::unique_ptr<IQuantizer, quantizer_destory_t> _quantizer{nullptr, nullptr};
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_QUANTIZER_LOADER_H__

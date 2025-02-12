@@ -17,11 +17,7 @@
 #include "ir/operation/ExpandDims.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void ExpandDims::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -31,6 +27,4 @@ ExpandDims::ExpandDims(const OperandIndexSequence &inputs, const OperandIndexSeq
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -26,11 +26,7 @@
 
 #include <unordered_set>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 // TODO Find optimized algorithm to manage memory.
@@ -66,8 +62,6 @@ private:
     _dealloc_tensor_map;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_DYNAMICTENSOR_MANAGER_H__

@@ -19,9 +19,7 @@
 #include "BaseLoader.h"
 #include "circle_schema_generated.h"
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 namespace
@@ -298,5 +296,4 @@ std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size)
   return model;
 }
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader

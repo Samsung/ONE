@@ -17,11 +17,7 @@
 #include "ir/operation/Comparison.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Comparison::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ Comparison::Comparison(const OperandIndexSequence &inputs, const OperandIndexSeq
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -19,11 +19,7 @@
 #include "ir/DataType.h"
 #include "backend/basic/MemoryManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 Tensor::~Tensor() {}
@@ -65,23 +61,15 @@ void Tensor::deallocBuffer()
   }
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 // ExternalTensor
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 // `dynamic_cast` not working across library boundaries on NDK
 // With this as a key function, `dynamic_cast` works across dl
 ExternalTensor::~ExternalTensor() {}
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

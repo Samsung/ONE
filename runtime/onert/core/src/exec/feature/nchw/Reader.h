@@ -24,13 +24,7 @@
 #include "backend/ITensor.h"
 #include "ir/Shape.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace feature
-{
-namespace nchw
+namespace onert::exec::feature::nchw
 {
 
 template <typename T> class Reader : public feature::Reader<T>
@@ -106,9 +100,6 @@ private:
   size_t _len;
 };
 
-} // namespace nchw
-} // namespace feature
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::feature::nchw
 
 #endif // __ONERT_EXEC_FEATURE_NCHW_READER_H__

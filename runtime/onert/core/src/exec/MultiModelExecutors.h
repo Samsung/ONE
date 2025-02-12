@@ -37,9 +37,7 @@ template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::Subgraph
 
 } // namespace std
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -146,7 +144,6 @@ private:
   std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_output_tensors;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTORS_H__

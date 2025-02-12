@@ -22,11 +22,7 @@
 
 #include <set>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 class UseDefChain
@@ -79,8 +75,6 @@ private:
   std::set<TrainingOperationIndex> _defs;
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_USEDEFCHAIN_H__

@@ -18,9 +18,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 const char *toString(OpCode opcode)
@@ -43,5 +41,4 @@ OpCode toOpCode(const std::string str)
   return map.at(str);
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

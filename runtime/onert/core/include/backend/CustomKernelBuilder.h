@@ -24,21 +24,14 @@
 #include <vector>
 #include <memory>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class IFunction;
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
-namespace onert
-{
-namespace backend
-{
-namespace custom
+namespace onert::backend::custom
 {
 
 struct TypeInfo
@@ -67,10 +60,6 @@ public:
                                                        CustomKernelConfigParams &&params) const = 0;
 };
 
-} // namespace custom
-
-} // namespace backend
-
-} // namespace onert
+} // namespace onert::backend::custom
 
 #endif // __ONERT_BACKEND_CUSTOM_KERNEL_BUILDER_H__

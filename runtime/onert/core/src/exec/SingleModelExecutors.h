@@ -20,9 +20,7 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -64,7 +62,6 @@ private:
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_SINGLE_MODEL_EXECUTORS_H__

@@ -29,11 +29,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 enum BGCOLORS : int
@@ -120,8 +116,6 @@ private:
   std::vector<Node *> _out_edges;
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_NODE_H__

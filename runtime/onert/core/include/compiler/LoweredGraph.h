@@ -23,9 +23,7 @@
 #include "compiler/ILoweredGraph.h"
 #include "ir/Graph.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 /**
@@ -71,7 +69,6 @@ private:
   ir::OperationIndexMap<bool> _has_dynamic_tensor_map;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_LOWERED_GRAPH_H__

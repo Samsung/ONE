@@ -23,11 +23,7 @@
 #include "IOTensor.h"
 #include <assert.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 /**
@@ -127,8 +123,6 @@ private:
   ir::OperandIndexMap<std::unique_ptr<IOTensor>> _native_io_tensors;
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__

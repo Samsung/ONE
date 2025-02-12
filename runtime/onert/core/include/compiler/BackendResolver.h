@@ -23,9 +23,7 @@
 #include "backend/Backend.h"
 #include "ir/OperationIndexMap.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class BackendResolver
@@ -54,7 +52,6 @@ private:
   ir::OperationIndexMap<const backend::Backend *> _gen_map;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_BACKEND_RESOLVER_H__

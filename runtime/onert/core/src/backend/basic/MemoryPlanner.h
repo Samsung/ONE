@@ -31,11 +31,7 @@
 #include "backend/basic/IMemoryPlanner.h"
 #include "ir/OperandIndexMap.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 /**
@@ -153,8 +149,6 @@ private:
   std::multimap<uint32_t, ir::OperandIndex, std::greater<uint32_t>> _operands;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__

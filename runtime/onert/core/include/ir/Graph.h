@@ -25,9 +25,7 @@
 #include "ir/Operands.h"
 #include "ir/Operations.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Graph : public IGraph
@@ -127,7 +125,6 @@ private:
   std::unordered_map<std::string, IOIndex> _name_to_output;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_GRAPH_H__

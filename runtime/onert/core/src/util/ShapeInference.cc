@@ -25,9 +25,7 @@
 #include <sstream>
 #include <cmath>
 
-namespace onert
-{
-namespace shape_inference
+namespace onert::shape_inference
 {
 
 //
@@ -1131,5 +1129,4 @@ ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank)
   return out_shape;
 }
 
-} // namespace shape_inference
-} // namespace onert
+} // namespace onert::shape_inference

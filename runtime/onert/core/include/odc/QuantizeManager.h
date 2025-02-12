@@ -23,9 +23,7 @@
 #include <functional>
 #include <string>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 class Quantize;
@@ -92,7 +90,6 @@ private:
   QuantizeType _qtype = ODC_QTYPE_NOT_SET;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_QUANTIZE_MANAGER_H__

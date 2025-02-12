@@ -18,11 +18,7 @@
 
 #include "MemoryPlanner.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 MemoryPlannerFactory &MemoryPlannerFactory::get()
@@ -48,6 +44,4 @@ IMemoryPlanner<ir::OperandIndex> *MemoryPlannerFactory::create(const std::string
   return new FirstFitPlanner; // Default Planner
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

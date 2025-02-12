@@ -24,20 +24,12 @@
 #include "ir/Index.h"
 #include "util/ObjectManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace custom
+namespace onert::backend::custom
 {
 class IKernelBuilder;
-} // namespace custom
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::custom
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Model
@@ -203,7 +195,6 @@ public:
 private:
   std::unordered_map<std::string, std::unique_ptr<const ir::Data>> _metadatas;
 };
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_MODEL_H__

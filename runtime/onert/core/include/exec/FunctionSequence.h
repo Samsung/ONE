@@ -27,9 +27,7 @@
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class FunctionSequence : public IFunction
@@ -123,7 +121,6 @@ protected:
   std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_FUNCTION_SEQUENCE_H__

@@ -24,11 +24,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 /**
@@ -49,8 +45,6 @@ private:
   std::unique_ptr<uint8_t[]> _base;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_ALLOCATOR_H__

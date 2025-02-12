@@ -26,9 +26,7 @@
 #include <cassert>
 #include <memory>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 using namespace nnfw::misc;
@@ -129,14 +127,9 @@ int getConfigInt(const std::string &key)
 
 std::string getConfigString(const std::string &key) { return getConfigOrDefault(key); }
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
-namespace onert
-{
-namespace util
-{
-namespace config
+namespace onert::util::config
 {
 
 #define CONFIG(Name, Type, Default) const char *Name = #Name;
@@ -145,6 +138,4 @@ namespace config
 
 #undef CONFIG
 
-} // namespace config
-} // namespace util
-} // namespace onert
+} // namespace onert::util::config

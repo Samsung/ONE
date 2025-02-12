@@ -21,11 +21,7 @@
 #include "backend/IConfig.h"
 #include "backend/Backend.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 const std::string Operation::OPERATION_SHAPE = "rect";
@@ -40,6 +36,4 @@ Operation::Operation(const ir::OperationIndex &index, const ir::IOperation &node
   setAttribute("fillcolor", DEFAULT_FILLCOLOR);
 }
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
