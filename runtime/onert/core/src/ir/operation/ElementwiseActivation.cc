@@ -61,6 +61,4 @@ std::string ElementwiseActivation::name() const
   return name_map.at(_param.op_type);
 }
 
-float ElementwiseActivation::infinity = std::numeric_limits<float>::infinity();
-
 } // namespace onert::ir::operation

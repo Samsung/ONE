@@ -28,7 +28,7 @@ namespace onert::backend::ruy
 class ExternalContext
 {
 private:
-  static const int kDefaultNumThreadpoolThreads = 4;
+  static inline const int kDefaultNumThreadpoolThreads = 4;
 
 public:
   ExternalContext() : _ruy_context(new ::ruy::Context)
