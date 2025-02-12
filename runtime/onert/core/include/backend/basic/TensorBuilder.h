@@ -27,11 +27,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 class TensorBuilder
@@ -68,8 +64,6 @@ private:
   ir::OperandIndexMap<ir::OperandIndex> _shared_memory_operand_indexes;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__

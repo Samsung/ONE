@@ -21,11 +21,7 @@
 #include <cstdint>
 #include <unordered_map>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 /**
@@ -69,8 +65,6 @@ template <typename Index> struct IMemoryPlanner
   virtual ~IMemoryPlanner() = default;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_IMEMORY_PLANNER_H__

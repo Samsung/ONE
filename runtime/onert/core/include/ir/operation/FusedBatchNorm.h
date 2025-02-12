@@ -20,11 +20,7 @@
 #include "ir/Operation.h"
 #include "ir/InternalType.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class FusedBatchNorm : public Operation
@@ -61,8 +57,6 @@ private:
   Param _param;
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_FUSEDBATCHNORM_H__

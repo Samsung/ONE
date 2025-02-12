@@ -21,9 +21,7 @@
 #include "ir/Index.h"
 #include "IMemoryPlanner.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 class ITensor;
@@ -70,7 +68,7 @@ private:
 };
 
 } // namespace basic
-} // namespace backend
-} // namespace onert
+
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_CPU_MEMORY_MANAGER_H__

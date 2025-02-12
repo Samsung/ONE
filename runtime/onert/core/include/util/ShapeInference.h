@@ -31,9 +31,7 @@
 #include "backend/ITensor.h"
 #include "backend/ITensorRegistry.h"
 
-namespace onert
-{
-namespace shape_inference
+namespace onert::shape_inference
 {
 
 using Shapes = std::vector<ir::Shape>;
@@ -142,7 +140,6 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm_buf
 
 ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank);
 
-} // namespace shape_inference
-} // namespace onert
+} // namespace onert::shape_inference
 
 #endif // __ONERT_GRAPH_SHAPE_INFERENCE_H__

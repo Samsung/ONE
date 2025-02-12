@@ -23,9 +23,7 @@
 #include "backend/ITensor.h"
 #include "backend/IPortableTensor.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 struct ITensorRegistry
@@ -61,14 +59,11 @@ struct ITensorRegistry
   virtual bool setMigrantTensor(const ir::OperandIndex &, IPortableTensor *) { return false; }
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #include "ir/OperandIndexMap.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 /**
@@ -140,7 +135,6 @@ private:
   ir::OperandIndexMap<std::unique_ptr<T_Tensor>> _native;
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_ITENSOR_REGISTRY__

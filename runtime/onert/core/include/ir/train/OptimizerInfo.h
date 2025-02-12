@@ -19,11 +19,7 @@
 
 #include "OptimizerCode.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 struct OptimizerInfo
@@ -35,8 +31,6 @@ struct OptimizerInfo
   OptimizerInfo() : optim_code{OptimizerCode::Undefined}, learning_rate{0.0f} {}
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_OPTIMIZER_INFO_H__

@@ -24,9 +24,7 @@
 #include <unordered_map>
 #include <mutex>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 /**
@@ -75,7 +73,6 @@ private:
   static uint32_t _next_session_id;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_TRACING_CTX_H__

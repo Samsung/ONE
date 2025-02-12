@@ -23,11 +23,7 @@
 #include "ir/InternalType.h"
 #include "ir/Padding.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class Conv2D : public Operation
@@ -63,8 +59,6 @@ private:
   Param _param;
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_CONV2D_H__

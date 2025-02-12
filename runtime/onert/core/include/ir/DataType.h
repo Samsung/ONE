@@ -19,9 +19,7 @@
 
 #include <cstdlib>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 enum class DataType
@@ -45,7 +43,6 @@ enum class DataType
 
 size_t sizeOfDataType(DataType data_type);
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_DATATYPE_H__

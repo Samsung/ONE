@@ -24,9 +24,7 @@
 #include "exec/FunctionSequence.h"
 #include "util/Set.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 class Backend;
@@ -77,7 +75,6 @@ public:
 
 using BackendContexts = std::unordered_map<const Backend *, std::unique_ptr<BackendContext>>;
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_BACKEND_CONTEXT_H__

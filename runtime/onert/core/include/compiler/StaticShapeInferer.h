@@ -24,9 +24,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 /**
  * @brief Class that observe and update operands.
@@ -188,7 +186,6 @@ private:
   std::unordered_map<ir::SubgraphIndex, compiler::StaticShapeInferer *> _child_inferers;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_STATIC_SHAPE_INFERER_H__

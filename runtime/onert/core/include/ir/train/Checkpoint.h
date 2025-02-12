@@ -17,13 +17,7 @@
 #ifndef __ONERT_IR_TRAIN_CHECKPOINT_H__
 #define __ONERT_IR_TRAIN_CHECKPOINT_H__
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace checkpoint
+namespace onert::ir::train::checkpoint
 {
 
 struct __attribute__((packed)) Header
@@ -46,9 +40,6 @@ struct __attribute__((packed)) Footer
 constexpr uint16_t MAGIC_NUMBER = 429;
 constexpr uint8_t SCHEMA_VERSION = 1;
 
-} // namespace checkpoint
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::checkpoint
 
 #endif // __ONERT_IR_TRAIN_CHECKPOINT_H__

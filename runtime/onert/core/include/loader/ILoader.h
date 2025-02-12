@@ -22,9 +22,7 @@
 #include <memory>
 #include <string>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 class ILoader
@@ -41,7 +39,6 @@ public:
   virtual std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) = 0;
 };
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader
 
 #endif // __ONERT_LOADER_ILOADER_H__

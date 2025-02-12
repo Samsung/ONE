@@ -23,9 +23,7 @@
 #include <map>
 #include <memory>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class BackendManager
@@ -75,7 +73,6 @@ private:
   void loadBuiltinBackend();
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_BACKEND_MANAGER_H__

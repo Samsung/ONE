@@ -25,9 +25,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 struct GraphLowerInfo
@@ -36,7 +34,6 @@ struct GraphLowerInfo
   util::ObjectManager<ir::OperandIndex, OperandLowerInfo> operand;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_GRAPH_LOWER_INFO_MAP_H__

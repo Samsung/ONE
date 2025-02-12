@@ -19,11 +19,7 @@
 
 #include <cstdint>
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 class IGradientApplier
@@ -39,8 +35,6 @@ public:
   virtual void applyGradient(uint32_t training_step) = 0;
 };
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_IGRADIENT_APPLIER_H__

@@ -24,13 +24,7 @@
 
 #include <type_traits>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace operation
+namespace onert::ir::train::operation
 {
 
 // `UntrainableOperation` wraps operations that are not yet supported for training.
@@ -56,9 +50,6 @@ public:
   bool hasTrainableParameter() const override { return false; }
 };
 
-} // namespace operation
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::operation
 
 #endif // __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__

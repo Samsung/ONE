@@ -19,11 +19,7 @@
 
 #include "ir/IOperation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 struct TrainableOperationVisitor;
@@ -58,8 +54,6 @@ public:
   virtual bool isRequiredForBackward() const = 0;
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_ITRAINABLE_OPERATION_H__

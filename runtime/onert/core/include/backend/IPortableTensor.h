@@ -21,9 +21,7 @@
 #include "ir/OperandInfo.h"
 #include "ir/Sparsity.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 /**
@@ -73,7 +71,6 @@ protected:
   ir::OperandInfo _info;
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_I_PORTABLE_TENSOR_H__

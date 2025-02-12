@@ -19,9 +19,7 @@
 
 #include "ir/Operations.Include.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 struct OperationVisitor
@@ -34,7 +32,6 @@ struct OperationVisitor
 #undef OP
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERATION_VISITOR_H__

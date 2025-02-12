@@ -22,9 +22,7 @@
 #include <stdint.h>
 #include <string>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 /**
@@ -151,8 +149,7 @@ private:
   T _index;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 namespace std
 {

@@ -24,9 +24,7 @@
 
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class OperationIndexSet
@@ -59,7 +57,6 @@ private:
   std::unordered_set<OperationIndex> _set;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_MODEL_OPERATION_INDEX_SET_H__

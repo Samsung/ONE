@@ -26,11 +26,7 @@
 #include "exec/FunctionSequence.h"
 #include "backend/ITensorRegistry.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 class KernelGeneratorBase : public ir::OperationVisitor
@@ -64,8 +60,6 @@ protected:
   std::unique_ptr<exec::IFunction> _return_fn;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_KERNEL_GENERATOR_BASE_H__

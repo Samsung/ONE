@@ -21,9 +21,7 @@
 #include "ir/IOperation.h"
 #include "util/ObjectManager.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Operations : public util::ObjectManager<OperationIndex, IOperation>
@@ -37,7 +35,6 @@ public:
   ~Operations() = default;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_MODEL_OPERATION_MANAGER_H__

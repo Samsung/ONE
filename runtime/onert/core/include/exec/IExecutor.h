@@ -32,9 +32,7 @@
 #include <memory>
 #include <vector>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 /**
  * @brief Struct to define interface of Executor
@@ -123,7 +121,6 @@ struct IExecutor
   virtual const ExecutionOptions &currentOptions() const = 0;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_I_EXECUTOR_H__

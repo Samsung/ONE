@@ -24,9 +24,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 /**
@@ -152,7 +150,6 @@ Shape convertShape(const Shape &shape, const PermuteType &type);
  */
 inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_SHAPE_H__

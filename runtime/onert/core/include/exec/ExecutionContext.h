@@ -24,9 +24,7 @@
 #include "ir/OperandInfo.h"
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 struct InputDesc
@@ -79,7 +77,6 @@ struct ExecutionContext
   ExecutionOptions options;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTION_CONTEXT_H__

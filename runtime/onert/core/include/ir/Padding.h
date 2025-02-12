@@ -23,9 +23,7 @@
 #include <cstdint>
 #include <string>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 enum class PaddingType
@@ -68,7 +66,6 @@ const ExplicitPadding calculatePadding(const Padding &padding, const FeatureShap
                                        uint32_t kw, uint32_t kh, uint32_t dwf = 1,
                                        uint32_t dhf = 1);
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif

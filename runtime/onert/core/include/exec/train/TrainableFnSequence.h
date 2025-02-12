@@ -24,11 +24,7 @@
 #include <vector>
 #include <functional>
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 class TrainableFnSequence
 {
@@ -45,8 +41,6 @@ public:
   std::vector<std::unique_ptr<ITrainableFunction>> _functions;
   std::vector<std::unique_ptr<IGradientApplier>> _appliers;
 };
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__

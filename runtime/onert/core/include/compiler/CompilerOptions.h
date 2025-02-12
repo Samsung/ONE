@@ -25,9 +25,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 struct ManualSchedulerOptions
@@ -76,7 +74,6 @@ struct CompilerOptions
   std::string workspace_dir; //< Workspace directory path
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_COMPILER_OPTIONS_H_

@@ -19,11 +19,7 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class Reverse : public Operation
@@ -43,8 +39,6 @@ public:
   OpCode opcode() const final { return OpCode::Reverse; }
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_REVERSE_H__

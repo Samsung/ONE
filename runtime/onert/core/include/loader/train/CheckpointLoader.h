@@ -20,34 +20,22 @@
 #include <string>
 #include <memory>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 class Execution;
-} // namespace exec
-namespace ir
-{
-namespace train
+} // namespace onert::exec
+namespace onert::ir::train
 {
 class TrainingInfo;
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
-namespace onert
-{
-namespace loader
-{
-namespace train
+namespace onert::loader::train
 {
 
 void loadCheckpoint(const std::string &filename,
                     const std::unique_ptr<ir::train::TrainingInfo> &train_info,
                     const std::unique_ptr<exec::Execution> &exec);
 
-} // namespace train
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader::train
 
 #endif // __ONERT_LOADER_TRAIN_CHECKPOINT_LOADER_H__

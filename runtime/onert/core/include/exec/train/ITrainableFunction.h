@@ -22,11 +22,7 @@
 
 #include "backend/train/LayerScopeTensor.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 class ITrainableFunction
@@ -43,8 +39,6 @@ public:
   }
 };
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__

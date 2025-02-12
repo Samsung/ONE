@@ -27,9 +27,7 @@
 #include "ir/Shape.h"
 #include "ir/Coordinates.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 class ITensor
@@ -118,7 +116,6 @@ public:
   }
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_OPERAND_I_TENSOR_H__

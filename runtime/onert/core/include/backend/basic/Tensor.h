@@ -23,11 +23,7 @@
 #include <ir/OperandInfo.h>
 #include <ir/Data.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 class DynamicMemoryManager;
@@ -221,8 +217,6 @@ public:
 private:
   std::shared_ptr<const ir::Data> _data;
 };
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_TENSOR_H__

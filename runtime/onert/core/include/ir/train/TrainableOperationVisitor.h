@@ -19,11 +19,7 @@
 
 #include "ir/train/Operations.Include.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 struct TrainableOperationVisitor
@@ -36,8 +32,6 @@ struct TrainableOperationVisitor
 #undef OP
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_TRAINABLE_OPERATION_VISITOR_H__

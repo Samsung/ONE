@@ -23,9 +23,7 @@
 #include "ir/Operand.h"
 #include "ir/OperandConstraint.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 // NOTE Virtual inheritance is introduced because trainable operations inherit
@@ -64,7 +62,6 @@ private:
   OperandIndexSequence _outputs;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERATION_H__

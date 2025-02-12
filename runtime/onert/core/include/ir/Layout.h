@@ -21,9 +21,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 enum class Layout
@@ -55,8 +53,7 @@ inline std::string to_string(Layout layout)
   }
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 namespace std
 {

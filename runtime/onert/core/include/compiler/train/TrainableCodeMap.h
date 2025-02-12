@@ -23,11 +23,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 struct TrainableCodeAndInfo
@@ -48,8 +44,6 @@ struct TrainableCodeAndInfo
 
 using TrainableCodeMap = std::unordered_map<ir::OperationIndex, TrainableCodeAndInfo>;
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_TRAINABLE_CODE_MAP_H__

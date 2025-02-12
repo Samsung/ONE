@@ -31,9 +31,7 @@
 // }
 // #endif
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 class ICodegen
@@ -44,7 +42,6 @@ public:
   virtual int codegen(const char *in, const char *out) const = 0;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_ICODEGEN_H__

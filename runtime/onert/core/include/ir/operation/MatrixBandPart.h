@@ -21,11 +21,7 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class MatrixBandPart : public Operation
@@ -46,8 +42,6 @@ public:
   OpCode opcode() const final { return OpCode::MatrixBandPart; }
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_MATRIX_BAND_PART_H__

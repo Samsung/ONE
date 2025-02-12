@@ -22,9 +22,7 @@
 #include "ir/NNPkg.h"
 #include "ir/train/TrainingInfo.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 // TODO Support register and use compiler plugin
@@ -42,7 +40,6 @@ private:
   CompilerFactory() = default;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_COMPILER_FACTORY_H__

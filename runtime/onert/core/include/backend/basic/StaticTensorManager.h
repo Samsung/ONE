@@ -24,11 +24,7 @@
 #include "ir/OperandInfo.h"
 #include "TensorRegistry.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 class DynamicTensorManager;
@@ -71,8 +67,6 @@ private:
   ir::OperandIndexMap<uint32_t> _source_operand_inds_ref_counter;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_STATICTENSOR_MANAGER_H__
