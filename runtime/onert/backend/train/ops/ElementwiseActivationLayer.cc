@@ -21,13 +21,7 @@
 #include <cker/train/operation/ReLU.h>
 #include <cker/train/operation/ReLU6.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 ElementwiseActivationLayer::ElementwiseActivationLayer() : cpu::ops::ElementwiseActivationLayer()
@@ -96,7 +90,4 @@ void ElementwiseActivationLayer::backward()
   _backward_kernel(_output, _back_prop_output, _back_prop_input);
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

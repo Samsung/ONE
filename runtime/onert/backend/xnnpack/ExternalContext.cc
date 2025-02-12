@@ -18,11 +18,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 ExternalContext::ExternalContext(size_t num_threads)
@@ -31,6 +27,4 @@ ExternalContext::ExternalContext(size_t num_threads)
   assert(_threadpool);
 }
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack

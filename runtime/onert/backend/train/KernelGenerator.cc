@@ -39,11 +39,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 namespace
@@ -640,6 +636,4 @@ IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_
   return _tensor_reg->getBackPropTensor(output_index);
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

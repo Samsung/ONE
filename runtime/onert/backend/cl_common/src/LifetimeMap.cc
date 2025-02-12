@@ -18,11 +18,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace backend
-{
-namespace cl_common
+namespace onert::backend::cl_common
 {
 
 LifetimeMap createLifetimeMap(LifetimeSeq &lifetime_seq,
@@ -80,6 +76,4 @@ LifetimeMap createLifetimeMap(LifetimeSeq &lifetime_seq,
   return lifetime_map;
 }
 
-} // namespace cl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cl_common

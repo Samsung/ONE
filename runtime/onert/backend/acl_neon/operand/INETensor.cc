@@ -16,13 +16,7 @@
 
 #include "INETensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
-{
-namespace operand
+namespace onert::backend::acl_neon::operand
 {
 
 void INETensor::access(const std::function<void(ITensor &tensor)> &fn)
@@ -34,7 +28,4 @@ void INETensor::access(const std::function<void(ITensor &tensor)> &fn)
   fn(*this);
 }
 
-} // namespace operand
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon::operand

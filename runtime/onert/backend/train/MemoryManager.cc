@@ -22,11 +22,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TrainableMemoryManager::TrainableMemoryManager(uint32_t optim_vars_count)
@@ -129,6 +125,4 @@ void LayerScopeMemoryManager::releasePlan(const LayerScopeTensorIndex &ind)
   _mem_planner->release(ind);
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

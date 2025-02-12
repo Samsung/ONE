@@ -18,15 +18,9 @@
 
 #include <util/ConfigSource.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 bool Config::initialize() { return true; }
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon

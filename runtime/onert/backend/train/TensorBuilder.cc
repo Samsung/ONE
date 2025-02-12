@@ -18,11 +18,7 @@
 
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
@@ -239,6 +235,4 @@ void TensorBuilder::allocateBackward(void)
 
 void TensorBuilder::allocateLayerScope(void) { _tensor_mgr->allocateLayerScopeTensors(); }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

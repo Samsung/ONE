@@ -21,11 +21,7 @@
 
 #include "ConstantInitializer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
@@ -119,6 +115,4 @@ void ConstantInitializer::visit(const ir::operation::Reverse &node)
   }
 }
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl

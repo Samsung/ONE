@@ -46,11 +46,7 @@ inline size_t alignedSize(const size_t size, const uint64_t align)
 
 } // namespace
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_t optim_vars_count)
@@ -208,6 +204,4 @@ void TensorManager::releaseLayerScopePlan(const LayerScopeTensorIndex &index)
   _layer_scope_mgr->releasePlan(index);
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

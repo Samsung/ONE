@@ -18,11 +18,7 @@
 
 #include <xnnpack.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace xnnpack
+namespace onert::backend::xnnpack
 {
 
 Config::~Config() { xnn_deinitialize(); }
@@ -37,6 +33,4 @@ bool Config::initialize()
   return true;
 }
 
-} // namespace xnnpack
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::xnnpack

@@ -23,11 +23,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 Optimizer::Optimizer(BackendContext *context)
@@ -50,6 +46,4 @@ void Optimizer::optimize()
   }
 }
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl

@@ -16,15 +16,9 @@
 
 #include "Config.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 bool Config::initialize() { return true; }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

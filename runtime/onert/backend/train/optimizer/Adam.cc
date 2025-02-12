@@ -21,13 +21,7 @@
 #include <cmath>
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace optimizer
+namespace onert::backend::train::optimizer
 {
 
 double Adam::getLearningRate(uint32_t training_step) const
@@ -73,7 +67,4 @@ void Adam::applyGradient(const UpdateFactors &factors) const
   }
 }
 
-} // namespace optimizer
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::optimizer

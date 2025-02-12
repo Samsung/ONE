@@ -22,13 +22,7 @@
 
 #include <Convert.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-namespace operand
+namespace onert::backend::acl_cl::operand
 {
 
 CLTensor::CLTensor(const arm_compute::TensorInfo &info, size_t rank, size_t num_uses)
@@ -52,7 +46,4 @@ void CLTensor::setBuffer(void *host_ptr)
   allocator()->import_memory(buffer);
 }
 
-} // namespace operand
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl::operand

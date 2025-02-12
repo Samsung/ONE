@@ -19,11 +19,7 @@
 #include "DisposableTensorIndex.h"
 #include "LayerScopeTensorIndex.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 template <typename Index> MemoryPlannerFactory<Index> &MemoryPlannerFactory<Index>::get()
@@ -53,6 +49,4 @@ basic::IMemoryPlanner<Index> *MemoryPlannerFactory<Index>::create(const std::str
 template class MemoryPlannerFactory<DisposableTensorIndex>;
 template class MemoryPlannerFactory<LayerScopeTensorIndex>;
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

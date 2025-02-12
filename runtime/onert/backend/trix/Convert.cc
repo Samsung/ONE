@@ -16,11 +16,7 @@
 
 #include "Convert.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 data_type convertDataType(const ir::DataType type)
@@ -36,6 +32,4 @@ data_type convertDataType(const ir::DataType type)
   }
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix

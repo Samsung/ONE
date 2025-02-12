@@ -18,13 +18,7 @@
 
 #include "../Convert.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
-{
-namespace ops
+namespace onert::backend::trix::ops
 {
 
 BulkLayer::BulkLayer() : _inputs(), _outputs(), _model_id(0), _dev_context(nullptr)
@@ -70,7 +64,4 @@ void BulkLayer::prepare()
   // DO NOTHING
 }
 
-} // namespace ops
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix::ops

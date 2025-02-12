@@ -16,15 +16,9 @@
 
 #include "Config.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 bool Config::initialize() { return true; }
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy

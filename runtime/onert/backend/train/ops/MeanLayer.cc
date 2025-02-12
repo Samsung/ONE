@@ -22,13 +22,7 @@
 #include <cker/train/operation/ReduceMean.h>
 #include <cker/operation/BinaryArithmeticOps.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 MeanLayer::MeanLayer()
@@ -79,7 +73,4 @@ void MeanLayer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

@@ -32,11 +32,7 @@
 #include "util/logging.h"
 #include "AclKernelGen.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 using ::onert::backend::acl_common::asAclFunction;
@@ -1546,6 +1542,4 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl

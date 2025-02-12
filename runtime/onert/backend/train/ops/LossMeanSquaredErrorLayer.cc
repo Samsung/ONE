@@ -19,13 +19,7 @@
 
 #include <cker/train/operation/Loss.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 void LossMeanSquaredErrorLayer::configure(const IPortableTensor *y_pred,
@@ -67,7 +61,4 @@ void LossMeanSquaredErrorLayer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

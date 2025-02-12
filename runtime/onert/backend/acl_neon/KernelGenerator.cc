@@ -31,11 +31,7 @@
 #include "util/logging.h"
 #include "AclKernelGen.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 using ::onert::backend::acl_common::asAclFunction;
@@ -1348,6 +1344,4 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon

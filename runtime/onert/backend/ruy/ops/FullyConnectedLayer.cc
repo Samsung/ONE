@@ -20,13 +20,7 @@
 #include <ruy/operation/FullyConnected.h>
 #include <ruy/TensorUtils.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer()
@@ -95,7 +89,4 @@ void FullyConnectedLayer::prepare()
   }
 }
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops

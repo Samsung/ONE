@@ -20,11 +20,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 // All things related to npu device handle are gathered this Class, but when implementing npu
@@ -308,6 +304,4 @@ void DevContext::setBufferByBatch(const generic_buffer &origin_buf, uint32_t bat
   batch_buf->type = BUFFER_MAPPED;
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
