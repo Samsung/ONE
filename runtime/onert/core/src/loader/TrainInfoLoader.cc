@@ -24,8 +24,6 @@ namespace onert
 namespace loader
 {
 
-const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
-
 namespace
 {
 
