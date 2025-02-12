@@ -277,7 +277,9 @@ std::shared_ptr<onert::ir::Model> ANeuralNetworksModel::getModel() const
 {
   auto model = std::make_shared<onert::ir::Model>();
 
-  model->push(onert::ir::SubgraphIndex{0}, _graph);
+  // Create new copy of graph to prevent modifying original graph
+  model->push(onert::ir::SubgraphIndex{0}, std::make_shared<onert::ir::Graph>(*_graph));
+
   // TODO Find all child subgraphs and copy them to all_subgs
   // Must find the same subgraph by using to compare pointer of subgraphs and set subgraph's index
   // to operands of control flow operations
