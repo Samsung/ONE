@@ -30,4 +30,13 @@ include(CTest)
 include(GTestHelper)
 include(GoogleTest)
 
+# to override submodules install
+if(DEFINED ENV{CIRCLE_MLIR_LOCALINST})
+  set(CIRCLE_MLIR_LOCALINST $ENV{CIRCLE_MLIR_LOCALINST})
+endif()
+
+if(CIRCLE_MLIR_LOCALINST)
+  message(STATUS "CIRCLE_MLIR_LOCALINST=${CIRCLE_MLIR_LOCALINST}")
+endif()
+
 add_subdirectory(circle-mlir)
