@@ -120,13 +120,13 @@ void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor 
   ARM_COMPUTE_ERROR_THROW_ON(
     validate_arguments(indices->info(), on_value->info(), output->info(), depth, axis));
   // Configure kernel window
-  auto win_config =
+  auto [error, window] =
     validate_and_configure_window(indices->info(), on_value->info(), output->info(), depth, axis);
-  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
+  ARM_COMPUTE_ERROR_THROW_ON(error);
   if (_is_off_value_memset)
   {
     // Replace window with calculated by infices info
-    win_config.second = calculate_max_window(*indices->info(), Steps());
+    window = calculate_max_window(*indices->info(), Steps());
   }
   _indices = indices;
   _on_value = on_value;
@@ -144,7 +144,7 @@ void CLOneHotKernel::configure_common(const ICLTensor *indices, const ICLTensor 
   const std::string kernel_name = _is_off_value_memset ? "one_hot_only_on_value" : "one_hot";
   _kernel = static_cast<cl::Kernel>(
     CLKernelLibraryEx::get().create_kernel(kernel_name, build_opts.options()));
-  ICLKernel::configure_internal(win_config.second);
+  ICLKernel::configure_internal(window);
 }
 Status CLOneHotKernel::validate(const ITensorInfo *indices, const ITensorInfo *on_value,
                                 const ITensorInfo *off_value, const ITensorInfo *output, int depth,

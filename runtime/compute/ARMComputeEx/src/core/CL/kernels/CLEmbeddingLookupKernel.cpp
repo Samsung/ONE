@@ -115,9 +115,9 @@ void CLEmbeddingLookupKernel::configure(const ICLTensor *input, ICLTensor *outpu
     static_cast<cl::Kernel>(CLKernelLibraryEx::get().create_kernel(kernel_name.str(), build_opts));
 
   // Configure kernel window
-  auto win_config = validate_and_configure_window(input->info(), output->info());
-  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
-  ICLKernel::configure_internal(win_config.second);
+  auto [error, window] = validate_and_configure_window(input->info(), output->info());
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  ICLKernel::configure_internal(window);
 }
 
 void CLEmbeddingLookupKernel::run(const Window &window, cl::CommandQueue &queue)

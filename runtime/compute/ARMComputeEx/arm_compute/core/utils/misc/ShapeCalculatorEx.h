@@ -77,8 +77,7 @@ inline TensorShape compute_transposeconv_upsampled_shape(
   unsigned int invalid_bottom, unsigned int &pad_left, unsigned int &pad_right,
   unsigned int &pad_top, unsigned int &pad_bottom)
 {
-  unsigned int sx = info.stride().first;
-  unsigned int sy = info.stride().second;
+  auto [sx, sy] = info.stride();
   const DataLayout data_layout = input.data_layout();
   const size_t idx_w = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
   const size_t idx_h = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
@@ -139,8 +138,9 @@ compute_transposeconv_output_shape(const std::pair<unsigned int, unsigned int> &
   const int batch_idx = get_data_layout_dimension_index(data_layout, DataLayoutDimension::BATCHES);
 
   TensorShape out_shape{input_shape};
-  out_shape.set(width_idx, out_dims.first);
-  out_shape.set(height_idx, out_dims.second);
+  auto [width, height] = out_dims;
+  out_shape.set(width_idx, width);
+  out_shape.set(height_idx, height);
   out_shape.set(channel_idx, weights_shape[batch_idx]);
   return out_shape;
 }

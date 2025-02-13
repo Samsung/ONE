@@ -121,11 +121,11 @@ void CLScaleFactorSymm8Kernel::configure(const ICLTensor *input, ICLTensor *outp
   _kernel = static_cast<cl::Kernel>(
     CLKernelLibraryEx::get().create_kernel("scale_factor_symm8", build_opts));
 
-  auto win_config = validate_and_configure_window(input->info(), output->info());
+  auto [error, window] = validate_and_configure_window(input->info(), output->info());
 
-  ARM_COMPUTE_ERROR_THROW_ON(std::get<0>(win_config));
+  ARM_COMPUTE_ERROR_THROW_ON(error);
 
-  ICLKernel::configure_internal(std::get<1>(win_config));
+  ICLKernel::configure_internal(window);
 }
 
 Status CLScaleFactorSymm8Kernel::validate(const ITensorInfo *input, const ITensorInfo *output)

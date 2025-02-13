@@ -274,10 +274,9 @@ void NEInstanceNormalizationLayerKernelEx::configure(ITensor *input, ITensor *ou
   }
 
   // Configure kernel window
-  auto win_config = validate_and_configure_window(_input->info(), _output->info());
-  ARM_COMPUTE_ERROR_THROW_ON(std::get<0>(win_config));
-
-  INEKernel::configure(std::get<1>(win_config));
+  auto [error, window] = validate_and_configure_window(_input->info(), _output->info());
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  INEKernel::configure(window);
 }
 
 Status NEInstanceNormalizationLayerKernelEx::validate(const ITensorInfo *input,
