@@ -1,6 +1,6 @@
 FROM ubuntu:22.04 AS build
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Install 'add-apt-repository'
 RUN apt-get update \
