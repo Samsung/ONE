@@ -22,11 +22,6 @@
 namespace onert::dumper::dot
 {
 
-const std::string Operand::INPUT_SHAPE = "doublecircle";
-const std::string Operand::OUTPUT_SHAPE = "doublecircle";
-const std::string Operand::OPERAND_SHAPE = "ellipse";
-const std::string Operand::BG_COLOR_SCHEME = "set18";
-
 Operand::Operand(const ir::OperandIndex &index, Type type)
   : Node{"operand" + std::to_string(index.value())}
 {
