@@ -215,20 +215,14 @@ struct GemmParams
   // The bias vector data, if not null.
   const AccumScalar *bias = nullptr;
   // min clamp bound of destination values.
-  DstScalar clamp_min = []() -> DstScalar {
-    if constexpr (std::is_floating_point_v<DstScalar>)
-      return -std::numeric_limits<DstScalar>::infinity();
-    else
-      return std::numeric_limits<DstScalar>::lowest();
-  }();
+  DstScalar clamp_min = std::is_floating_point<DstScalar>::value
+                          ? -std::numeric_limits<DstScalar>::infinity()
+                          : std::numeric_limits<DstScalar>::lowest();
 
   // max clamp bound of destination values.
-  DstScalar clamp_max = []() -> DstScalar {
-    if constexpr (std::is_floating_point_v<DstScalar>)
-      return std::numeric_limits<DstScalar>::infinity();
-    else
-      return std::numeric_limits<DstScalar>::max();
-  }();
+  DstScalar clamp_max = std::is_floating_point<DstScalar>::value
+                          ? std::numeric_limits<DstScalar>::infinity()
+                          : std::numeric_limits<DstScalar>::max();
 };
 
 // Validates self-consistency of GemmParams.

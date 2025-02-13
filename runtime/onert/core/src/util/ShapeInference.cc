@@ -582,15 +582,10 @@ template <typename T> ir::Shape inferRangeShape(T start_val, T limit_val, T delt
 {
   ir::Shape out_shape(static_cast<int>(1));
 
-  if constexpr (std::is_integral_v<T>)
-  {
-    out_shape.dim(0) =
-      ((std::abs(start_val - limit_val) + std::abs(delta_val) - 1) / std::abs(delta_val));
-  }
-  else
-  {
-    out_shape.dim(0) = std::ceil(std::abs((start_val - limit_val) / delta_val));
-  }
+  out_shape.dim(0) =
+    (std::is_integral<T>::value
+       ? ((std::abs(start_val - limit_val) + std::abs(delta_val) - 1) / std::abs(delta_val))
+       : std::ceil(std::abs((start_val - limit_val) / delta_val)));
   return out_shape;
 }
 
