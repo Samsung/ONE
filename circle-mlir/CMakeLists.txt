@@ -23,6 +23,9 @@ endif()
 # configuration flags
 include(CfgOptionFlags)
 
+# enable test coverage
+include(TestCoverage)
+
 # enable ctest
 include(CTest)
 
