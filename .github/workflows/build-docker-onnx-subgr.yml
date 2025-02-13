@@ -23,6 +23,6 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v6
         with:
-          file: ./onnx_subgraph/docker/Dockerfile.${{ matrix.version }}
+          file: ./tools/onnx_subgraph/docker/Dockerfile.${{ matrix.version }}
           push: true
           tags: nnfw/onnx-subgraph-build-${{ matrix.version }}
