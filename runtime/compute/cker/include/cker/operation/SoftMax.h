@@ -296,11 +296,10 @@ inline void SoftmaxInt8LUT(const SoftmaxParams &params, const Shape &input_shape
 
   // Offset is used to interpret the input data "correctly".
   // If the input is uint8, the data will be unchanged.
-  // If the input is int8, since it will be reinterpret as uint8.
-  // e.g.,
-  // int8 127 will be applied "offset" to become 255 in uint8.
+  // If the input is int8, since it will be reinterpreted as uint8.
+  // e.g., int8 127 will be offset to become 255 in uint8.
   uint8_t offset = 0;
-  if (std::is_same<In, int8_t>::value)
+  if constexpr (std::is_same_v<In, int8_t>)
   {
     offset = 0x80;
   }

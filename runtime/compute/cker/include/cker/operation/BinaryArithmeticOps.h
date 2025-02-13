@@ -37,40 +37,41 @@ template <BinaryArithmeticOpType op_type, typename T,
           typename std::enable_if_t<!std::is_same<T, bool>::value, bool> = true>
 const std::function<T(const T &, const T &)> GetBinaryArtithmeticFn()
 {
-  switch (op_type)
+  if constexpr (op_type == BinaryArithmeticOpType::ADD)
   {
-    case BinaryArithmeticOpType::ADD:
+    return [](const T &a, const T &b) -> T { return a + b; };
+  }
+  else if constexpr (op_type == BinaryArithmeticOpType::MUL)
+  {
+    return [](const T &a, const T &b) -> T { return a * b; };
+  }
+  else if constexpr (op_type == BinaryArithmeticOpType::SUB)
+  {
+    return [](const T &a, const T &b) -> T { return a - b; };
+  }
+  else if constexpr (op_type == BinaryArithmeticOpType::DIV)
+  {
+    if constexpr (std::is_floating_point<T>::value)
     {
-      return [](const T &a, const T &b) -> T { return a + b; };
+      return [](const T &a, const T &b) -> T { return a / b; };
     }
-    case BinaryArithmeticOpType::MUL:
+    else
     {
-      return [](const T &a, const T &b) -> T { return a * b; };
+      return [](const T &a, const T &b) -> T {
+        if (b == 0)
+          throw std::runtime_error("Divide by zero");
+        return a / b;
+      };
     }
-    case BinaryArithmeticOpType::SUB:
-    {
-      return [](const T &a, const T &b) -> T { return a - b; };
-    }
-    case BinaryArithmeticOpType::DIV:
-    {
-      if (std::is_floating_point<T>::value)
-        return [](const T &a, const T &b) -> T { return a / b; };
-      else
-        return [](const T &a, const T &b) -> T {
-          if (b == 0)
-            throw std::runtime_error("Divide by zero");
-          return a / b;
-        };
-    }
-    case BinaryArithmeticOpType::POW:
-    {
-      return [](const T &a, const T &b) -> T { return std::pow(a, b); };
-    }
-    default:
-    {
-      assert(false);
-      return nullptr;
-    }
+  }
+  else if constexpr (op_type == BinaryArithmeticOpType::POW)
+  {
+    return [](const T &a, const T &b) -> T { return std::pow(a, b); };
+  }
+  else
+  {
+    assert(false);
+    return nullptr;
   }
 }
 
@@ -78,16 +79,13 @@ template <BinaryArithmeticOpType op_type, typename T,
           typename std::enable_if_t<std::is_same<T, bool>::value, bool> = true>
 const std::function<T(const bool &, const bool &)> GetBinaryArtithmeticFn()
 {
-  switch (op_type)
+  if constexpr (op_type == BinaryArithmeticOpType::MUL)
   {
-    case BinaryArithmeticOpType::MUL:
-    {
-      return [](const bool &a, const bool &b) -> bool { return a && b; };
-    }
-    default:
-    {
-      throw std::runtime_error("GetBinaryArtithmeticFn: Unsupported OpType with Bool8");
-    }
+    return [](const bool &a, const bool &b) -> bool { return a && b; };
+  }
+  else
+  {
+    throw std::runtime_error("GetBinaryArtithmeticFn: Unsupported OpType with Bool8");
   }
 }
 } // namespace
@@ -234,22 +232,24 @@ BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_sh
                    const T *input1_data, const Shape &input2_shape, const T *input2_data,
                    const Shape &output_shape, T *output_data)
 {
-  switch (op_type)
+  if constexpr (op_type == nnfw::cker::BinaryArithmeticOpType::ADD ||
+                op_type == nnfw::cker::BinaryArithmeticOpType::SUB)
   {
-    case nnfw::cker::BinaryArithmeticOpType::ADD:
-    case nnfw::cker::BinaryArithmeticOpType::SUB:
-      optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                     output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
-                     output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::DIV:
-      throw std::runtime_error{"Quant8 Asymm NYI"};
-    default:
-      assert(false);
-      break;
+    optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                   output_data);
+  }
+  else if constexpr (op_type == nnfw::cker::BinaryArithmeticOpType::MUL)
+  {
+    optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, output_shape,
+                   output_data);
+  }
+  else if constexpr (op_type == nnfw::cker::BinaryArithmeticOpType::DIV)
+  {
+    throw std::runtime_error{"Quant8 Asymm NYI"};
+  }
+  else
+  {
+    assert(false);
   }
 }
 
@@ -301,23 +301,25 @@ BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const Shape &input1
                             const T *input1_data, const Shape &input2_shape, const T *input2_data,
                             const Shape &output_shape, T *output_data)
 {
-  switch (op_type)
+  if constexpr (op_type == nnfw::cker::BinaryArithmeticOpType::ADD ||
+                op_type == nnfw::cker::BinaryArithmeticOpType::SUB)
   {
-    case nnfw::cker::BinaryArithmeticOpType::ADD:
-    case nnfw::cker::BinaryArithmeticOpType::SUB:
-      optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
-                                      output_shape, output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::MUL:
-      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
-                                      output_shape, output_data);
-      break;
-    case nnfw::cker::BinaryArithmeticOpType::DIV:
-    case nnfw::cker::BinaryArithmeticOpType::POW:
-      throw std::runtime_error{"Quant8 Asymm NYI"};
-    default:
-      assert(false);
-      break;
+    optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+                                    output_shape, output_data);
+  }
+  else if constexpr (op_type == nnfw::cker::BinaryArithmeticOpType::MUL)
+  {
+    optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,
+                                    output_shape, output_data);
+  }
+  else if constexpr (op_type == nnfw::cker::BinaryArithmeticOpType::DIV ||
+                     op_type == nnfw::cker::BinaryArithmeticOpType::POW)
+  {
+    throw std::runtime_error{"Quant8 Asymm NYI"};
+  }
+  else
+  {
+    assert(false);
   }
 }
 

@@ -530,13 +530,19 @@ struct GemmParams
   // The bias vector data, if not null.
   const AccumScalar *bias = nullptr;
   // min clamp bound of destination values.
-  DstScalar clamp_min = std::is_floating_point<DstScalar>::value
-                          ? -std::numeric_limits<DstScalar>::infinity()
-                          : std::numeric_limits<DstScalar>::lowest();
+  DstScalar clamp_min = []() -> DstScalar {
+    if constexpr (std::is_floating_point_v<DstScalar>)
+      return -std::numeric_limits<DstScalar>::infinity();
+    else
+      return std::numeric_limits<DstScalar>::lowest();
+  }();
   // max clamp bound of destination values.
-  DstScalar clamp_max = std::is_floating_point<DstScalar>::value
-                          ? std::numeric_limits<DstScalar>::infinity()
-                          : std::numeric_limits<DstScalar>::max();
+  DstScalar clamp_max = []() -> DstScalar {
+    if constexpr (std::is_floating_point_v<DstScalar>)
+      return std::numeric_limits<DstScalar>::infinity();
+    else
+      return std::numeric_limits<DstScalar>::max();
+  }();
 };
 
 // Validates self-consistency of GemmParams.
@@ -545,23 +551,23 @@ void ValidateGemmParams(
   [[maybe_unused]] const GemmParams<AccumScalar, DstScalar, quantization_flavor> &params)
 {
   // Guard consistency of the quantized multiplier fields.
-  if (quantization_flavor == QuantizationFlavor::kFloatingPoint)
+  if constexpr (quantization_flavor == QuantizationFlavor::kFloatingPoint)
   {
     assert(!params.multiplier_fixedpoint);
     assert(!params.multiplier_exponent);
     assert(!params.multiplier_fixedpoint_perchannel);
     assert(!params.multiplier_exponent_perchannel);
   }
-  else if (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &&
-           !std::is_same<DstScalar, int32_t>::value)
+  else if constexpr (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &&
+                     !std::is_same_v<DstScalar, int32_t>)
   {
     assert(params.multiplier_fixedpoint);
     // Nothing to check about multiplier_exponent
     assert(!params.multiplier_fixedpoint_perchannel);
     assert(!params.multiplier_exponent_perchannel);
   }
-  else if (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &&
-           !std::is_same<DstScalar, int32_t>::value)
+  else if constexpr (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &&
+                     !std::is_same_v<DstScalar, int32_t>)
   {
     assert(!params.multiplier_fixedpoint);
     assert(!params.multiplier_exponent);

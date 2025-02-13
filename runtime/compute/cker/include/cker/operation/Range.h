@@ -34,10 +34,14 @@ template <typename T> inline int GetSize(T start, T limit, T delta)
     throw std::runtime_error("Range: invalid input values");
   }
 
-  int size = (std::is_integral<T>::value
-                ? ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta))
-                : std::ceil(std::abs((limit - start) / delta)));
-  return size;
+  if constexpr (std::is_integral_v<T>)
+  {
+    return ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta));
+  }
+  else
+  {
+    return static_cast<int>(std::ceil(std::abs((limit - start) / delta)));
+  }
 }
 
 template <typename T>
