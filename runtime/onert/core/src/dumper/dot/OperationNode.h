@@ -38,8 +38,8 @@ namespace onert::dumper::dot
 class Operation : public Node
 {
 public:
-  static const std::string OPERATION_SHAPE;
-  static const std::string BG_COLOR_SCHEME;
+  static inline const std::string OPERATION_SHAPE = "rect";
+  static inline const std::string BG_COLOR_SCHEME = "pastel18";
 
 public:
   /**
