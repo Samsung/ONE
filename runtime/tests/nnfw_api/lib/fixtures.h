@@ -176,7 +176,7 @@ protected:
 template <int PackageNo> class ValidationTestFourModelsSetInput : public ValidationTest
 {
 protected:
-  static const uint32_t NUM_SESSIONS = 4;
+  static inline const uint32_t NUM_SESSIONS = 4;
 
   void SetUp() override
   {
