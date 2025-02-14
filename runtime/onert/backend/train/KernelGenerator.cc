@@ -418,16 +418,16 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
     {
       const auto y_pred_op_code = node.y_pred_op_code();
       bool is_normalization_required = (y_pred_op_code != ir::OpCode::Softmax);
+      auto cce_params = std::get<ir::train::CategoricalCrossentropyParam>(loss_param);
       auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    reduction_type, loss_param.cce.axis, loss_param.cce.label_smoothing,
+                    reduction_type, cce_params.axis, cce_params.label_smoothing,
                     is_normalization_required);
       _return_fn = std::move(fn);
       break;
     }
     default:
       throw std::runtime_error("LossLayer: unsupported loss type");
-      break;
   }
 }
 
