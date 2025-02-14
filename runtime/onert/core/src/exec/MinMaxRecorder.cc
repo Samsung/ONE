@@ -133,8 +133,8 @@ void MinMaxRecorder::handleSubgraphBegin(ir::SubgraphIndex subg_idx)
     if (tensor->data_type() != ir::DataType::FLOAT32)
       return;
 
-    auto minmax = minmaxFrom(tensor);
-    _input_minmax.append({subg_idx, ir::IOIndex{i}}, minmax.first, minmax.second);
+    auto [min, max] = minmaxFrom(tensor);
+    _input_minmax.append({subg_idx, ir::IOIndex{i}}, min, max);
   }
 }
 

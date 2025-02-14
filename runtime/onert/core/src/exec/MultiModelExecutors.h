@@ -31,7 +31,8 @@ template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::Subgraph
   size_t operator()(
     const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const noexcept
   {
-    return (hash<uint32_t>()(pair.first.value()) << 16) ^ hash<uint32_t>()(pair.second.value());
+    const auto &[model, subgraph] = pair;
+    return (hash<uint32_t>()(model.value()) << 16) ^ hash<uint32_t>()(subgraph.value());
   }
 };
 

@@ -27,10 +27,8 @@ int32_t find_input_index(const std::vector<ir::IODesc> &pkg_inputs,
 {
   for (size_t i = 0; i < pkg_inputs.size(); i++)
   {
-    auto &input_desc = pkg_inputs[i];
-    if ((std::get<ir::ModelIndex>(input_desc) == model_index) &&
-        (std::get<ir::SubgraphIndex>(input_desc) == subg_index) &&
-        (std::get<ir::IOIndex>(input_desc) == io_index))
+    const auto &[m, s, io] = pkg_inputs[i];
+    if ((m == model_index) && (s == subg_index) && (io == io_index))
       return static_cast<int32_t>(i);
   }
   return -1;
@@ -42,10 +40,8 @@ int32_t find_output_index(const std::vector<ir::IODesc> &pkg_outputs,
 {
   for (size_t i = 0; i < pkg_outputs.size(); i++)
   {
-    auto &input_desc = pkg_outputs[i];
-    if ((std::get<ir::ModelIndex>(input_desc) == model_index) &&
-        (std::get<ir::SubgraphIndex>(input_desc) == subg_index) &&
-        (std::get<ir::IOIndex>(input_desc) == io_index))
+    const auto &[m, s, io] = pkg_outputs[i];
+    if ((m == model_index) && (s == subg_index) && (io == io_index))
       return static_cast<int32_t>(i);
   }
   return -1;
@@ -75,20 +71,14 @@ uint32_t MultiModelExecutors::outputSize() const { return _model_edges->pkg_outp
 
 const ir::OperandInfo &MultiModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  auto const desc = _model_edges->pkg_inputs[index.value()];
-  auto const model_index = std::get<0>(desc);
-  auto const subg_index = std::get<1>(desc);
-  auto const io_index = std::get<2>(desc);
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_inputs[index.value()];
   auto const executor = at(model_index, subg_index);
   return executor->inputInfo(io_index.value());
 }
 
 const ir::OperandInfo &MultiModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  auto const desc = _model_edges->pkg_outputs[index.value()];
-  auto const model_index = std::get<0>(desc);
-  auto const subg_index = std::get<1>(desc);
-  auto const io_index = std::get<2>(desc);
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
   auto const executor = at(model_index, subg_index);
   return executor->outputInfo(io_index.value());
 }
@@ -126,11 +116,10 @@ void MultiModelExecutors::checkSupportedMultimodel() const
   {
     auto first_executor = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
     auto search_first_model = [&](const ir::IOIndex &input_index) {
-      for (const auto &input : _model_edges->pkg_inputs)
+      for (const auto &[model_index, subg_index, io_index] : _model_edges->pkg_inputs)
       {
-        if ((std::get<ir::ModelIndex>(input) == ir::ModelIndex{0}) ||
-            (std::get<ir::SubgraphIndex>(input) == ir::SubgraphIndex{0}) ||
-            (std::get<ir::IOIndex>(input) == input_index))
+        if ((model_index == ir::ModelIndex{0}) || (subg_index == ir::SubgraphIndex{0}) ||
+            (io_index == input_index))
           return true;
       }
 
@@ -167,9 +156,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
   for (const auto &pair : _edge_map)
   {
     const auto &from_iodesc = pair.first;
-    const auto &from_model_index = std::get<ir::ModelIndex>(from_iodesc);
-    const auto &from_subg_index = std::get<ir::SubgraphIndex>(from_iodesc);
-    const auto &from_io_index = std::get<ir::IOIndex>(from_iodesc);
+    const auto &[from_model_index, from_subg_index, from_io_index] = from_iodesc;
 
     const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
     const auto &from_info = from_executor->outputInfo(from_io_index.value());
@@ -194,9 +181,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
 
         for (const auto &to_iodesc : to_list)
         {
-          const auto &to_model_index = std::get<ir::ModelIndex>(to_iodesc);
-          const auto &to_subg_index = std::get<ir::SubgraphIndex>(to_iodesc);
-          const auto &to_io_index = std::get<ir::IOIndex>(to_iodesc);
+          const auto &[to_model_index, to_subg_index, to_io_index] = to_iodesc;
 
           const auto to_executor = _executors.at({to_model_index, to_subg_index}).get();
           const auto &to_info = to_executor->inputInfo(to_io_index.value());
@@ -233,9 +218,7 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
   for (const auto &pkg_input : _model_edges->pkg_inputs)
   {
     // Create IOTensor for nnpkg inputs
-    const auto &model_index = std::get<ir::ModelIndex>(pkg_input);
-    const auto &subg_index = std::get<ir::SubgraphIndex>(pkg_input);
-    const auto &io_index = std::get<ir::IOIndex>(pkg_input);
+    const auto &[model_index, subg_index, io_index] = pkg_input;
     const auto input_pkg_index =
       find_input_index(_model_edges->pkg_inputs, model_index, subg_index, io_index);
     if (input_pkg_index == -1)
@@ -251,9 +234,7 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
   for (const auto &pkg_output : _model_edges->pkg_outputs)
   {
     // Create IOTensor for nnpkg outputs
-    const auto &model_index = std::get<ir::ModelIndex>(pkg_output);
-    const auto &subg_index = std::get<ir::SubgraphIndex>(pkg_output);
-    const auto &io_index = std::get<ir::IOIndex>(pkg_output);
+    const auto &[model_index, subg_index, io_index] = pkg_output;
     const auto output_pkg_index =
       find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
     if (output_pkg_index == -1)

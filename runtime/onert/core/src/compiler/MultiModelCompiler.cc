@@ -135,15 +135,10 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
   _nnpkg.reset();
 
-  for (const auto &pair : lowered_subgs)
+  for (const auto &[model_index, model_lsubg] : lowered_subgs)
   {
-    const auto &model_index = pair.first;
-    const auto &model_lsubg = pair.second;
-
-    for (const auto &pair_inner : model_lsubg)
+    for (const auto &[subg_index, lowered_subg] : model_lsubg)
     {
-      const auto &subg_index = pair_inner.first;
-      const auto &lowered_subg = pair_inner.second;
       dot_dumper.dump(*lowered_subg, nnfw::misc::str("after_lower_model-", model_index.value(),
                                                      "-subg-", subg_index.value()));
     }
