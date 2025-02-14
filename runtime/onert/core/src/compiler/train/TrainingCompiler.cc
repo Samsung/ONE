@@ -247,8 +247,9 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
 
     // NOTE StaticBackwardShapeInferer is allocated for each subgraph,
     //      so it does not support models that have controlflow operations yet.
-    for (auto &&[_, lowered_subg] : lowered_subgs)
+    for (auto &&pair : lowered_subgs)
     {
+      auto &lowered_subg = pair.second;
       auto inferer = std::make_unique<StaticBackwardShapeInferer>(lowered_subg.get());
       inferer->infer();
       inferer->dump();
