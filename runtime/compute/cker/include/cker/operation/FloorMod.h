@@ -40,9 +40,6 @@ inline void FloorModBroadcast(const Shape &unextended_input1_shape, const T *inp
     float operator()(const float lhs, const float rhs) const { return std::fmod(lhs, rhs); }
   };
 
-  using ModFunc =
-    typename std::conditional<std::is_integral<T>::value, std::modulus<T>, FloatMod>::type;
-
   if (unextended_output_shape.DimensionsCount() > 4)
     throw std::runtime_error(std::string("cker::FloorModBroadcast: Unsupported rank size : ") +
                              std::to_string(unextended_output_shape.DimensionsCount()));
@@ -67,8 +64,15 @@ inline void FloorModBroadcast(const Shape &unextended_input1_shape, const T *inp
           auto in1_val = input1_data[in1_idx];
           auto in2_val = input2_data[in2_idx];
 
-          ModFunc mod_func;
-          T trunc_mod = mod_func(in1_val, in2_val);
+          T trunc_mod;
+          if constexpr (std::is_integral_v<T>)
+          {
+            trunc_mod = std::modulus<T>()(in1_val, in2_val);
+          }
+          else
+          {
+            trunc_mod = FloatMod{}(in1_val, in2_val);
+          }
           output_data[out_idx] = (trunc_mod != 0) && ((in2_val < 0) != (trunc_mod < 0))
                                    ? (trunc_mod + in2_val)
                                    : trunc_mod;
@@ -82,21 +86,20 @@ template <typename T>
 inline void FloorModElementwise(const Shape &shape, const T *input1_data, const T *input2_data,
                                 T *output_data)
 {
-  struct FloatMod
-  {
-    float operator()(const float lhs, const float rhs) const { return std::fmod(lhs, rhs); }
-  };
-
-  using ModFunc =
-    typename std::conditional<std::is_integral<T>::value, std::modulus<T>, FloatMod>::type;
-
   int num_elements = shape.FlatSize();
   for (int t = 0; t < num_elements; t++)
   {
-    ModFunc mod_func;
-    auto in1_val = input1_data[t];
-    auto in2_val = input2_data[t];
-    T trunc_mod = mod_func(in1_val, in2_val);
+    T in1_val = input1_data[t];
+    T in2_val = input2_data[t];
+    T trunc_mod;
+    if constexpr (std::is_integral_v<T>)
+    {
+      trunc_mod = std::modulus<T>()(in1_val, in2_val);
+    }
+    else
+    {
+      trunc_mod = std::fmod(in1_val, in2_val);
+    }
     output_data[t] =
       (trunc_mod != 0) && ((in2_val < 0) != (trunc_mod < 0)) ? (trunc_mod + in2_val) : trunc_mod;
   }

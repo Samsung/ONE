@@ -545,23 +545,23 @@ void ValidateGemmParams(
   [[maybe_unused]] const GemmParams<AccumScalar, DstScalar, quantization_flavor> &params)
 {
   // Guard consistency of the quantized multiplier fields.
-  if (quantization_flavor == QuantizationFlavor::kFloatingPoint)
+  if constexpr (quantization_flavor == QuantizationFlavor::kFloatingPoint)
   {
     assert(!params.multiplier_fixedpoint);
     assert(!params.multiplier_exponent);
     assert(!params.multiplier_fixedpoint_perchannel);
     assert(!params.multiplier_exponent_perchannel);
   }
-  else if (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &&
-           !std::is_same<DstScalar, int32_t>::value)
+  else if constexpr (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &&
+                     !std::is_same_v<DstScalar, int32_t>)
   {
     assert(params.multiplier_fixedpoint);
     // Nothing to check about multiplier_exponent
     assert(!params.multiplier_fixedpoint_perchannel);
     assert(!params.multiplier_exponent_perchannel);
   }
-  else if (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &&
-           !std::is_same<DstScalar, int32_t>::value)
+  else if constexpr (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &&
+                     !std::is_same_v<DstScalar, int32_t>)
   {
     assert(!params.multiplier_fixedpoint);
     assert(!params.multiplier_exponent);

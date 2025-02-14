@@ -139,7 +139,7 @@ inline void DepthwiseConv(const DepthwiseConvParams &params, const Shape &input_
   thread_count = std::max(1, std::min(thread_count, max_threads));
   // Cap the number of threads to 2 for float path to avoid regression in
   // performance (b/132294857).
-  if (std::is_floating_point<T>::value)
+  if constexpr (std::is_floating_point<T>::value)
   {
     thread_count = std::min(thread_count, 2);
   }
