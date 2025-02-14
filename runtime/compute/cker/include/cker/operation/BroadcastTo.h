@@ -37,7 +37,7 @@ namespace cker
 {
 namespace functor
 {
-static const int32_t kint32max = ((int32_t)0x7FFFFFFF);
+static constexpr const int32_t kint32max = ((int32_t)0x7FFFFFFF);
 
 template <typename Device, typename T> struct FillFunctor
 {
