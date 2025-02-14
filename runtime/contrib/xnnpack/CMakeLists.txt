@@ -1,3 +1,7 @@
+if(NOT BUILD_XNNPACK_BACKEND)
+  return()
+endif(NOT BUILD_XNNPACK_BACKEND)
+
 set(LIB_ONERT_BACKEND_XNNPACK onert_backend_xnnpack)
 
 # Unsupported architecture

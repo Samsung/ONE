@@ -16,9 +16,9 @@ if(ARMCompute_FOUND)
 endif(ARMCompute_FOUND)
 
 nnfw_find_package(Xnnpack QUIET)
-if(Xnnpack_FOUND)
+if(Xnnpack_FOUND AND BUILD_XNNPACK_BACKEND)
   target_compile_definitions(${RUNTIME_NNFW_API_TEST} PRIVATE TEST_XNNPACK_BACKEND)
-endif(Xnnpack_FOUND)
+endif(Xnnpack_FOUND AND BUILD_XNNPACK_BACKEND)
 
 nnas_find_package(Opencl_Headers QUIET)
 if(Opencl_Headers_FOUND)

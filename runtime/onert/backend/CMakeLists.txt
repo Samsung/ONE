@@ -10,7 +10,6 @@ add_subdirectory(cpu)
 add_subdirectory(acl_cl)
 add_subdirectory(acl_neon)
 add_subdirectory(ruy)
-add_subdirectory(xnnpack)
 add_subdirectory(trix)
 
 # Backend to train
