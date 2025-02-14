@@ -125,9 +125,9 @@ void CLQuantizationSymmetricKernel::configure(const ICLTensor *input, const ICLT
   const bool multi_access_x = (input_width_x / vec_size_x > 0);
 
   // Configure kernel window
-  auto win_config = validate_and_configure_window(input->info(), output->info());
-  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
-  ICLKernel::configure_internal(win_config.second);
+  auto [error, window] = validate_and_configure_window(input->info(), output->info());
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  ICLKernel::configure_internal(window);
 
   // Create kernel
   CLBuildOptions build_opts;

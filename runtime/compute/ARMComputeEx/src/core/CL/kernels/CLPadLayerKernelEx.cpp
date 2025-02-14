@@ -65,8 +65,9 @@ Status validate_arguments(const ITensorInfo *input, const ITensorInfo *output,
     const auto is_reflect = static_cast<unsigned int>(mode == PaddingMode::REFLECT);
     for (size_t i = 0; i < padding.size(); ++i)
     {
-      ARM_COMPUTE_RETURN_ERROR_ON(padding.at(i).first > (input->dimension(i) - is_reflect));
-      ARM_COMPUTE_RETURN_ERROR_ON(padding.at(i).second > (input->dimension(i) - is_reflect));
+      auto [pad_before, pad_after] = padding.at(i);
+      ARM_COMPUTE_RETURN_ERROR_ON(pad_before > (input->dimension(i) - is_reflect));
+      ARM_COMPUTE_RETURN_ERROR_ON(pad_after > (input->dimension(i) - is_reflect));
     }
   }
 
@@ -152,10 +153,10 @@ void CLPadLayerKernelEx::configure(const CLCompileContext &compile_context, cons
 
   // Configure window
   unsigned int vec_size;
-  auto win_config = validate_and_configure_window(input->info(), output->info(), padding,
-                                                  constant_value, mode, vec_size);
-  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
-  ICLKernel::configure_internal(win_config.second);
+  auto [error, window] = validate_and_configure_window(input->info(), output->info(), padding,
+                                                       constant_value, mode, vec_size);
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  ICLKernel::configure_internal(window);
 
   // Set build options
   std::string kernel_name = "pad_layer_";

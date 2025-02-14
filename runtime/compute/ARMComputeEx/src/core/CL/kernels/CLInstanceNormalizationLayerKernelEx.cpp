@@ -139,9 +139,9 @@ void CLInstanceNormalizationLayerKernelEx::configure(ICLTensor *input, ICLTensor
     CLKernelLibraryEx::get().create_kernel("instance_normalization_ex", build_opts.options()));
 
   // Configure kernel window
-  auto win_config = validate_and_configure_window(_input->info(), _output->info());
-  ARM_COMPUTE_ERROR_THROW_ON(std::get<0>(win_config));
-  ICLKernel::configure_internal(std::get<1>(win_config));
+  auto [error, window] = validate_and_configure_window(_input->info(), _output->info());
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  ICLKernel::configure_internal(window);
 }
 
 Status CLInstanceNormalizationLayerKernelEx::validate(const ITensorInfo *input,

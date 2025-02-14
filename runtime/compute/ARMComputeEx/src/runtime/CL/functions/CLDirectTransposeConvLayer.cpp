@@ -154,8 +154,7 @@ void CLDirectTransposeConvLayer::configure(const CLCompileContext &compile_conte
   unsigned int pad_right = 0;
   unsigned int pad_top = 0;
   unsigned int pad_bottom = 0;
-  const unsigned int stride_x = info.stride().first;
-  const unsigned int stride_y = info.stride().second;
+  const auto [stride_x, stride_y] = info.stride();
 
   const DataLayout data_layout = input->info()->data_layout();
 

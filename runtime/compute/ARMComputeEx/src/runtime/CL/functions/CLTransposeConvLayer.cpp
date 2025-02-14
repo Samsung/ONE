@@ -142,9 +142,9 @@ DeconvolutionMethod CLTransposeConvLayer::get_deconvolution_method(
   const size_t idx_w = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);
   const size_t idx_h = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);
 
-  if (weights->dimension(idx_w) != deconv_info.stride().first ||
-      weights->dimension(idx_h) != deconv_info.stride().second || invalid_right != 0 ||
-      invalid_bottom != 0)
+  auto [stride_w, stride_h] = deconv_info.stride();
+  if (weights->dimension(idx_w) != stride_w || weights->dimension(idx_h) != stride_h ||
+      invalid_right != 0 || invalid_bottom != 0)
   {
     return DeconvolutionMethod::DIRECT;
   }

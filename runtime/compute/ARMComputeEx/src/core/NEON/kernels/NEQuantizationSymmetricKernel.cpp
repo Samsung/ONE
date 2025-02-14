@@ -186,7 +186,8 @@ template <typename T> void NEQuantizationSymmetricKernel::quantize(const Window 
       const auto start = reinterpret_cast<const T *>(input.ptr());
       const auto min_max = std::minmax_element(start, start + dim_x);
       const auto int8_scale = 127;
-      auto range = std::max(std::abs(*min_max.first), std::abs(*min_max.second));
+      auto [min_val_ptr, max_val_ptr] = min_max;
+      auto range = std::max(std::abs(*min_val_ptr), std::abs(*max_val_ptr));
       if (range == 0)
       {
         *reinterpret_cast<T *>(_scale_factor->ptr_to_element({id.y()})) = 1;
