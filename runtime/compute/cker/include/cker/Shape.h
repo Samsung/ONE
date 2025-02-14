@@ -19,8 +19,12 @@
 #define __NNFW_CKER_SHAPE_H__
 
 #include <algorithm>
-#include <cstring>
+#include <array>
 #include <cassert>
+#include <cstring>
+#include <initializer_list>
+#include <iterator>
+#include <variant>
 #include <vector>
 
 namespace nnfw
@@ -37,17 +41,21 @@ public:
 
   Shape &operator=(Shape const &) = delete;
 
-  Shape() : _size(0) {}
+  Shape() : _size(0), _dims(std::array<int32_t, kMaxSmallSize>{}) {}
 
   explicit Shape(int dimensions_count) : _size(dimensions_count)
   {
     if (dimensions_count > kMaxSmallSize)
     {
-      _dims_pointer = new int32_t[dimensions_count];
+      _dims = std::vector<int32_t>(dimensions_count);
+    }
+    else
+    {
+      _dims = std::array<int32_t, kMaxSmallSize>{};
     }
   }
 
-  Shape(int shape_size, int32_t value) : _size(0)
+  Shape(int shape_size, int32_t value) : _size(0), _dims(std::array<int32_t, kMaxSmallSize>{})
   {
     Resize(shape_size);
     for (int i = 0; i < shape_size; ++i)
@@ -56,12 +64,17 @@ public:
     }
   }
 
-  Shape(int dimensions_count, const int32_t *dims_data) : _size(0)
+  Shape(int dimensions_count, const int32_t *dims_data)
+    : _size(0), _dims(std::array<int32_t, kMaxSmallSize>{})
   {
     ReplaceWith(dimensions_count, dims_data);
   }
 
-  Shape(const std::initializer_list<int> init_list) : _size(0) { BuildFrom(init_list); }
+  Shape(const std::initializer_list<int> init_list)
+    : _size(0), _dims(std::array<int32_t, kMaxSmallSize>{})
+  {
+    BuildFrom(init_list);
+  }
 
   // Avoid using this constructor.  We should be able to delete it when C++17
   // rolls out.
@@ -69,31 +82,33 @@ public:
   {
     if (_size > kMaxSmallSize)
     {
-      _dims_pointer = new int32_t[_size];
+      auto tmp = std::vector<int32_t>(other.DimsData(), other.DimsData() + _size);
+      std::memcpy(tmp.data(), other.DimsData(), sizeof(int32_t) * _size);
+      _dims = tmp;
     }
-    std::memcpy(DimsData(), other.DimsData(), sizeof(int32_t) * _size);
+    else
+    {
+      std::array<int32_t, kMaxSmallSize> tmp{};
+      std::memcpy(tmp.data(), other.DimsData(), sizeof(int32_t) * _size);
+      _dims = tmp;
+    }
   }
 
   bool operator==(const Shape &comp) const
   {
-    return this->_size == comp._size &&
+    return _size == comp._size &&
            std::memcmp(DimsData(), comp.DimsData(), _size * sizeof(int32_t)) == 0;
   }
 
-  ~Shape()
-  {
-    if (_size > kMaxSmallSize)
-    {
-      delete[] _dims_pointer;
-    }
-  }
+  ~Shape() = default;
 
   inline int32_t DimensionsCount() const { return _size; }
   inline int32_t Dims(int i) const
   {
     assert(i >= 0);
     assert(i < _size);
-    return _size > kMaxSmallSize ? _dims_pointer[i] : _dims[i];
+    return _size > kMaxSmallSize ? std::get<std::vector<int32_t>>(_dims)[i]
+                                 : std::get<std::array<int32_t, kMaxSmallSize>>(_dims)[i];
   }
   inline void SetDim(int i, int32_t val)
   {
@@ -101,30 +116,58 @@ public:
     assert(i < _size);
     if (_size > kMaxSmallSize)
     {
-      _dims_pointer[i] = val;
+      std::get<std::vector<int32_t>>(_dims)[i] = val;
     }
     else
     {
-      _dims[i] = val;
+      std::get<std::array<int32_t, kMaxSmallSize>>(_dims)[i] = val;
     }
   }
 
-  inline int32_t *DimsData() { return _size > kMaxSmallSize ? _dims_pointer : _dims; }
-  inline const int32_t *DimsData() const { return _size > kMaxSmallSize ? _dims_pointer : _dims; }
+  inline int32_t *DimsData()
+  {
+    return _size > kMaxSmallSize ? std::get<std::vector<int32_t>>(_dims).data()
+                                 : std::get<std::array<int32_t, kMaxSmallSize>>(_dims).data();
+  }
+  inline const int32_t *DimsData() const
+  {
+    return _size > kMaxSmallSize ? std::get<std::vector<int32_t>>(_dims).data()
+                                 : std::get<std::array<int32_t, kMaxSmallSize>>(_dims).data();
+  }
   // The caller must ensure that the shape is no bigger than 4-D.
-  inline const int32_t *DimsDataUpTo4D() const { return _dims; }
+  inline const int32_t *DimsDataUpTo4D() const
+  {
+    return std::get<std::array<int32_t, kMaxSmallSize>>(_dims).data();
+  }
 
   inline void Resize(int dimensions_count)
   {
     if (_size > kMaxSmallSize)
     {
-      delete[] _dims_pointer;
+      if (dimensions_count > kMaxSmallSize)
+      {
+        std::get<std::vector<int32_t>>(_dims).resize(dimensions_count);
+      }
+      else
+      {
+        std::array<int32_t, kMaxSmallSize> new_arr{};
+        const auto &vec = std::get<std::vector<int32_t>>(_dims);
+        std::copy(vec.begin(), vec.begin() + dimensions_count, new_arr.begin());
+        _dims = new_arr;
+      }
+    }
+    else
+    {
+      if (dimensions_count > kMaxSmallSize)
+      {
+        std::vector<int32_t> new_vec(dimensions_count);
+        const auto &arr = std::get<std::array<int32_t, kMaxSmallSize>>(_dims);
+        new_vec.assign(arr.begin(), arr.begin() + _size);
+        _dims = std::move(new_vec);
+      }
+      // else remain as array
     }
     _size = dimensions_count;
-    if (dimensions_count > kMaxSmallSize)
-    {
-      _dims_pointer = new int32_t[dimensions_count];
-    }
   }
 
   inline void ReplaceWith(int dimensions_count, const int32_t *dims_data)
@@ -141,12 +184,21 @@ public:
 
   inline void ReplaceWith(Shape &&other)
   {
+    const auto prev_size = _size;
     Resize(0);
     std::swap(_size, other._size);
     if (_size <= kMaxSmallSize)
-      std::copy(other._dims, other._dims + kMaxSmallSize, _dims);
+    {
+      if (prev_size > kMaxSmallSize)
+        _dims = std::array<int32_t, kMaxSmallSize>{};
+      auto src = std::get<std::array<int32_t, kMaxSmallSize>>(other._dims).data();
+      auto dst = std::get<std::array<int32_t, kMaxSmallSize>>(_dims).data();
+      std::copy(src, src + kMaxSmallSize, dst);
+    }
     else
-      _dims_pointer = other._dims_pointer;
+    {
+      _dims = std::move(other._dims);
+    }
   }
 
   template <typename T> inline void BuildFrom(const T &src_iterable)
@@ -161,23 +213,12 @@ public:
     }
   }
 
-  // This will probably be factored out. Old code made substantial use of 4-D
-  // shapes, and so this function is used to extend smaller shapes. Note that
-  // (a) as Dims<4>-dependent code is eliminated, the reliance on this should be
-  // reduced, and (b) some kernels are stricly 4-D, but then the shapes of their
-  // inputs should already be 4-D, so this function should not be needed.
-  inline static Shape ExtendedShape(int new_shape_size, const Shape &shape)
-  {
-    return Shape(new_shape_size, shape, 1);
-  }
-
   inline void BuildFrom(const std::initializer_list<int> init_list)
   {
     BuildFrom<const std::initializer_list<int>>(init_list);
   }
 
-  // Returns the total count of elements, that is the size when flattened into a
-  // vector.
+  // Returns the total count of elements, that is the size when flattened into a vector.
   inline int FlatSize() const
   {
     int buffer_size = 1;
@@ -192,9 +233,18 @@ public:
 
   bool operator!=(const Shape &comp) const { return !((*this) == comp); }
 
+  // This will probably be factored out. Old code made substantial use of 4-D
+  // shapes, and so this function is used to extend smaller shapes. Note that
+  // (a) as Dims<4>-dependent code is eliminated, the reliance on this should be
+  // reduced, and (b) some kernels are stricly 4-D, but then the shapes of their
+  // inputs should already be 4-D, so this function should not be needed.
+  inline static Shape ExtendedShape(int new_shape_size, const Shape &shape)
+  {
+    return Shape(new_shape_size, shape, 1);
+  }
+
 private:
-  // For use only by ExtendedShape(), written to guarantee (return-value) copy
-  // elision in C++17.
+  // For use only by ExtendedShape(), written to guarantee (return-value) copy elision in C++17.
   // This creates a shape padded to the desired size with the specified value.
   Shape(int new_shape_size, const Shape &shape, int pad_value) : _size(0)
   {
@@ -211,10 +261,8 @@ private:
   }
 
   int32_t _size;
-  union {
-    int32_t _dims[kMaxSmallSize];
-    int32_t *_dims_pointer{nullptr};
-  };
+  // _dims now uses std::variant to store either a small fixed array or a vector.
+  std::variant<std::array<int32_t, kMaxSmallSize>, std::vector<int32_t>> _dims;
 };
 
 inline int MatchingDim(const Shape &shape1, int index1, [[maybe_unused]] const Shape &shape2,
@@ -225,8 +273,8 @@ inline int MatchingDim(const Shape &shape1, int index1, [[maybe_unused]] const S
 }
 
 template <typename... Args>
-int MatchingDim(const Shape &shape1, int index1, [[maybe_unused]] const Shape &shape2,
-                [[maybe_unused]] int index2, Args... args)
+inline int MatchingDim(const Shape &shape1, int index1, [[maybe_unused]] const Shape &shape2,
+                       [[maybe_unused]] int index2, Args... args)
 {
   assert(shape1.Dims(index1) == shape2.Dims(index2));
   return MatchingDim(shape1, index1, args...);
@@ -263,8 +311,7 @@ inline int FlatSizeSkipDim(const Shape &shape, int skip_dim)
   return flat_size;
 }
 
-// Flat size calculation, checking that dimensions match with one or more other
-// arrays.
+// Flat size calculation, checking that dimensions match with one or more other arrays.
 template <typename... Ts> inline bool checkMatching(const Shape &shape, Ts... check_shapes)
 {
   const Shape check_shapes_array[sizeof...(Ts)] = {std::forward<Ts>(check_shapes)...};
@@ -294,6 +341,7 @@ struct UNUSED_ALL
 {
   template <typename... Args> UNUSED_ALL(Args const &...) {}
 };
+
 template <typename... Ts> inline int MatchingFlatSize(const Shape &shape, Ts... check_shapes)
 {
   UNUSED_ALL{check_shapes...};
