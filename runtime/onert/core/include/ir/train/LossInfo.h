@@ -19,6 +19,9 @@
 
 #include "LossCode.h"
 
+#include <variant>
+#include <utility>
+
 namespace onert::ir::train
 {
 
@@ -39,13 +42,11 @@ struct LossInfo
 {
   LossCode loss_code;
   LossReductionType reduction_type;
-  union LossParam {
-    CategoricalCrossentropyParam cce;
-  } loss_param;
+  std::variant<std::monostate, CategoricalCrossentropyParam> loss_param;
 
   LossInfo()
     : loss_code{LossCode::Undefined}, reduction_type{LossReductionType::Undefined},
-      loss_param{-1, 0.0f}
+      loss_param{CategoricalCrossentropyParam{-1, 0.0f}}
   {
   }
 };
