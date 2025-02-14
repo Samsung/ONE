@@ -64,10 +64,10 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
     case 1:
     {
       const int32_t in_row_len = input_shape.Dims(0);
-      std::fill_n(output_data, padding_list[0].first, constant_value);
-      std::memcpy(output_data + padding_list[0].first, input_data, in_row_len * sizeof(T));
-      std::fill_n(output_data + padding_list[0].first + in_row_len, padding_list[0].second,
-                  constant_value);
+      [[maybe_unused]] auto [pad_before, pad_after] = padding_list[0];
+      std::fill_n(output_data, pad_before, constant_value);
+      std::memcpy(output_data + pad_before, input_data, in_row_len * sizeof(T));
+      std::fill_n(output_data + pad_before + in_row_len, pad_after, constant_value);
       break;
     }
     case 2: // HW
@@ -75,31 +75,32 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
       const int32_t in_row_len = input_shape.Dims(1);
       const int32_t out_row_size = output_shape.Dims(1);
 
-      // prepend padding rows
-      std::fill_n(output_data, padding_list[0].first * out_row_size, constant_value);
+      auto [pad_top, pad_bottom] = padding_list[0];
+      auto [pad_left, pad_right] = padding_list[1];
 
-      const auto r_h_inp_lim = input_shape.Dims(0) + padding_list[0].first;
-      for (auto i = padding_list[0].first, j = 0; i < r_h_inp_lim; ++i, ++j)
+      // Prepend padding rows
+      std::fill_n(output_data, pad_top * out_row_size, constant_value);
+
+      const auto r_h_inp_lim = input_shape.Dims(0) + pad_top;
+      for (auto i = pad_top, j = 0; i < r_h_inp_lim; ++i, ++j)
       {
         auto out_offset = i * out_row_size;
         const auto in_offset = j * in_row_len;
 
-        // prepend padding values
-        std::fill_n(output_data + out_offset, padding_list[1].first, constant_value);
+        // Prepend padding values
+        std::fill_n(output_data + out_offset, pad_left, constant_value);
+        out_offset += pad_left;
 
-        out_offset += padding_list[1].first;
-
-        // copy a row of input data
+        // Copy a row of input data
         memcpy(output_data + out_offset, input_data + in_offset, in_row_len * sizeof(T));
-
         out_offset += in_row_len;
 
-        // append padding values
-        std::fill_n(output_data + out_offset, padding_list[1].second, constant_value);
+        // Append padding values
+        std::fill_n(output_data + out_offset, pad_right, constant_value);
       }
 
-      // append padding rows
-      std::fill_n(output_data + r_h_inp_lim * out_row_size, padding_list[0].second * out_row_size,
+      // Append padding rows
+      std::fill_n(output_data + r_h_inp_lim * out_row_size, pad_bottom * out_row_size,
                   constant_value);
       break;
     }
@@ -109,45 +110,47 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
       const int32_t out_row_size = output_shape.Dims(2);
       const auto plain_size = out_row_size * output_shape.Dims(1);
 
-      // prepend padding plains
-      std::fill_n(output_data, padding_list[0].first * plain_size, constant_value);
+      auto [pad_batches_before, pad_batches_after] = padding_list[0];
+      auto [pad_parallelepipes_before, pad_parallelepipes_after] = padding_list[1];
+      auto [pad_plains_before, pad_plains_after] = padding_list[2];
 
-      const auto r_h_inp_lim = input_shape.Dims(0) + padding_list[0].first;
-      for (auto i = padding_list[0].first, i_inp = 0; i < r_h_inp_lim; ++i, ++i_inp)
+      // Prepend padding plains
+      std::fill_n(output_data, pad_batches_before * plain_size, constant_value);
+
+      const auto r_h_inp_lim = input_shape.Dims(0) + pad_batches_before;
+      for (auto i = pad_batches_before, i_inp = 0; i < r_h_inp_lim; ++i, ++i_inp)
       {
-        const auto out_w_offset = (i * output_shape.Dims(1) + 0) * output_shape.Dims(2);
+        const auto out_w_offset = (i * output_shape.Dims(1)) * output_shape.Dims(2);
 
-        // prepend padding rows
-        std::fill_n(output_data + out_w_offset, padding_list[1].first * out_row_size,
+        // Prepend padding rows
+        std::fill_n(output_data + out_w_offset, pad_parallelepipes_before * out_row_size,
                     constant_value);
 
-        const auto r_w_inp_lim = input_shape.Dims(1) + padding_list[1].first;
-        for (auto j = padding_list[1].first, j_inp = 0; j < r_w_inp_lim; ++j, ++j_inp)
+        const auto r_w_inp_lim = input_shape.Dims(1) + pad_parallelepipes_before;
+        for (auto j = pad_parallelepipes_before, j_inp = 0; j < r_w_inp_lim; ++j, ++j_inp)
         {
           auto out_offset = (i * output_shape.Dims(1) + j) * output_shape.Dims(2);
           const auto in_offset = (i_inp * input_shape.Dims(1) + j_inp) * input_shape.Dims(2);
 
-          // prepend padding values
-          std::fill_n(output_data + out_offset, padding_list[2].first, constant_value);
+          // Prepend padding values
+          std::fill_n(output_data + out_offset, pad_plains_before, constant_value);
+          out_offset += pad_plains_before;
 
-          out_offset += padding_list[2].first;
-
-          // copy a row of input data
+          // Copy a row of input data
           memcpy(output_data + out_offset, input_data + in_offset, in_row_len * sizeof(T));
-
           out_offset += in_row_len;
 
-          // append padding values
-          std::fill_n(output_data + out_offset, padding_list[2].second, constant_value);
+          // Append padding values
+          std::fill_n(output_data + out_offset, pad_plains_after, constant_value);
         }
 
-        // append padding rows
+        // Append padding rows
         std::fill_n(output_data + out_w_offset + r_w_inp_lim * out_row_size,
-                    padding_list[1].second * out_row_size, constant_value);
+                    pad_parallelepipes_after * out_row_size, constant_value);
       }
 
-      // append padding plains
-      std::fill_n(output_data + r_h_inp_lim * plain_size, padding_list[0].second * plain_size,
+      // Append padding plains
+      std::fill_n(output_data + r_h_inp_lim * plain_size, pad_batches_after * plain_size,
                   constant_value);
       break;
     }
@@ -161,57 +164,62 @@ inline void Pad(const int32_t *padding_data, int32_t pad_rank, const Shape &inpu
       const auto plain_size = out_row_size * output_shape.Dims(2);
       const auto parallelepiped_size = plain_size * output_shape.Dims(1);
 
-      // prepend padding parallelepipeds
-      std::fill_n(output_data, padding_list[0].first * parallelepiped_size, constant_value);
+      auto [pad_batches_before, pad_batches_after] = padding_list[0];
+      auto [pad_parallelepipes_before, pad_parallelepipes_after] = padding_list[1];
+      auto [pad_plains_before, pad_plains_after] = padding_list[2];
+      auto [pad_rows_before, pad_rows_after] = padding_list[3];
 
-      const auto r_b_inp_lim = input_shape.Dims(0) + padding_list[0].first;
-      for (auto i = padding_list[0].first, i_inp = 0; i < r_b_inp_lim; ++i, ++i_inp)
+      // Prepend padding parallelepipeds
+      std::fill_n(output_data, pad_batches_before * parallelepiped_size, constant_value);
+
+      const auto r_b_inp_lim = input_shape.Dims(0) + pad_batches_before;
+      for (auto i = pad_batches_before, i_inp = 0; i < r_b_inp_lim; ++i, ++i_inp)
       {
         const auto out_h_offset = get_offset(output_shape, i, 0, 0);
-        // prepend padding plains
-        std::fill_n(output_data + out_h_offset, padding_list[1].first * plain_size, constant_value);
+        // Prepend padding plains
+        std::fill_n(output_data + out_h_offset, pad_parallelepipes_before * plain_size,
+                    constant_value);
 
-        const auto r_h_inp_lim = input_shape.Dims(1) + padding_list[1].first;
-        for (auto j = padding_list[1].first, j_inp = 0; j < r_h_inp_lim; ++j, ++j_inp)
+        const auto r_h_inp_lim = input_shape.Dims(1) + pad_parallelepipes_before;
+        for (auto j = pad_parallelepipes_before, j_inp = 0; j < r_h_inp_lim; ++j, ++j_inp)
         {
           const auto out_w_offset = get_offset(output_shape, i, j, 0);
 
-          // prepend padding rows
-          std::fill_n(output_data + out_w_offset, padding_list[2].first * out_row_size,
-                      constant_value);
+          // Prepend padding rows
+          std::fill_n(output_data + out_w_offset, pad_plains_before * out_row_size, constant_value);
 
-          const auto r_w_inp_lim = input_shape.Dims(2) + padding_list[2].first;
-          for (auto k = padding_list[2].first, k_inp = 0; k < r_w_inp_lim; ++k, ++k_inp)
+          const auto r_w_inp_lim = input_shape.Dims(2) + pad_plains_before;
+          for (auto k = pad_plains_before, k_inp = 0; k < r_w_inp_lim; ++k, ++k_inp)
           {
             auto out_c_offset = get_offset(output_shape, i, j, k);
             const auto in_offset = get_offset(input_shape, i_inp, j_inp, k_inp);
 
-            // prepend padding values
-            std::fill_n(output_data + out_c_offset, padding_list[3].first, constant_value);
+            // Prepend padding values
+            std::fill_n(output_data + out_c_offset, pad_rows_before, constant_value);
+            out_c_offset += pad_rows_before;
 
-            out_c_offset += padding_list[3].first;
-
-            // copy a row of input data
+            // Copy a row of input data
             memcpy(output_data + out_c_offset, input_data + in_offset, in_row_len * sizeof(T));
-
             out_c_offset += in_row_len;
 
-            // append padding values
-            std::fill_n(output_data + out_c_offset, padding_list[3].second, constant_value);
+            // Append padding values
+            std::fill_n(output_data + out_c_offset, pad_rows_after, constant_value);
           }
 
-          // append padding rows
+          // Append padding rows
           std::fill_n(output_data + out_w_offset + r_w_inp_lim * out_row_size,
-                      padding_list[2].second * out_row_size, constant_value);
+                      pad_plains_after * out_row_size, constant_value);
         }
 
-        // append padding plains
+        // Append padding plains
         std::fill_n(output_data + out_h_offset + r_h_inp_lim * plain_size,
-                    padding_list[1].second * plain_size, constant_value);
+                    pad_parallelepipes_after * plain_size, constant_value);
       }
-      // append padding parallelepipeds
+
+      // Append padding parallelepipeds
       std::fill_n(output_data + r_b_inp_lim * parallelepiped_size,
-                  padding_list[0].second * parallelepiped_size, constant_value);
+                  pad_batches_after * parallelepiped_size, constant_value);
+      break;
       break;
     }
     default:

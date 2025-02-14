@@ -122,9 +122,9 @@ inline void PortableSymmetricQuantizeFloats(const float *values, const int size,
                                             int8_t *quantized_values, float *min_value,
                                             float *max_value, float *scaling_factor)
 {
-  auto minmax = std::minmax_element(values, values + size);
-  *min_value = *minmax.first;
-  *max_value = *minmax.second;
+  auto [min_ptr, max_ptr] = std::minmax_element(values, values + size);
+  *min_value = *min_ptr;
+  *max_value = *max_ptr;
   const int kScale = 127;
   const float range = std::max(std::abs(*min_value), std::abs(*max_value));
   if (range == 0)
@@ -153,9 +153,9 @@ inline void PortableAsymmetricQuantizeFloats(const float *values, const int size
   const int32_t kMaxScale = 127;
   const double qmin_double = kMinScale;
   const double qmax_double = kMaxScale;
-  const auto minmax = std::minmax_element(values, values + size);
-  const double rmin = static_cast<double>(std::min(0.0f, *minmax.first));
-  const double rmax = static_cast<double>(std::max(0.0f, *minmax.second));
+  const auto [min_ptr, max_ptr] = std::minmax_element(values, values + size);
+  const double rmin = static_cast<double>(std::min(0.0f, *min_ptr));
+  const double rmax = static_cast<double>(std::max(0.0f, *max_ptr));
   if (rmin == rmax)
   {
     memset(quantized_values, 0, size * sizeof(int8_t));

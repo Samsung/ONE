@@ -667,9 +667,9 @@ inline void NeonSymmetricQuantizeFloats(const float *values, const int size,
                                         float *scaling_factor)
 {
   // TODO(raziel): vectorize min/max calculation.
-  auto minmax = std::minmax_element(values, values + size);
-  *min = *minmax.first;
-  *max = *minmax.second;
+  auto [min_ptr, max_ptr] = std::minmax_element(values, values + size);
+  *min = *min_ptr;
+  *max = *max_ptr;
   const int kScale = 127;
   const float range = std::max(std::abs(*min), std::abs(*max));
   if (range == 0)
