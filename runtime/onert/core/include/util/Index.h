@@ -36,7 +36,7 @@ namespace onert::util
 template <typename T, typename DummyTag> class Index
 {
 private:
-  static const T UNDEFINED = std::numeric_limits<T>::max();
+  static inline const T UNDEFINED = std::numeric_limits<T>::max();
 
 public:
   /**

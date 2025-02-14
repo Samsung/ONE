@@ -60,7 +60,7 @@ public:
   const Param &param() const { return _param; }
 
 public:
-  static float infinity;
+  static inline float infinity = std::numeric_limits<float>::infinity();
 
 private:
   Param _param;
